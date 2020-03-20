@@ -1,0 +1,53 @@
+@import 'scss/general/variables.scss';
+
+// Style for search categories on startpage
+.startpage-categories {
+    max-width: 1130px;
+    padding: 0px 0px;
+    margin-bottom: $space-48;
+
+    h2 {
+        margin-top: 0px;
+    }
+
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        list-style-type: none;
+        padding: 0px;
+        margin: 0px;
+
+        li {
+            margin-bottom: $space-16;
+
+            &:not(:last-of-type) {
+                a {
+                    margin-right: $space-16;
+                    &:after {
+                        content: ',';
+                    }
+                }
+            }
+
+            a {
+                color: $black100;
+                font-size: 20px;
+                line-height: 32px;
+
+                &:hover {
+                    transition: .2s;
+                    text-decoration: none;
+                }
+
+                &:focus {
+                    outline: $focus-style;
+                    outline-offset: 4px;
+                }
+
+                @media screen and (max-width: 600px) {
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+}

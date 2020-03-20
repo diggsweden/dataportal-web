@@ -1,0 +1,147 @@
+@import 'scss/general/variables.scss';
+
+.dataportal-logo {
+    &:focus {
+        outline: $focus-style;
+        outline-offset: $focus-offset;
+    }
+}
+
+.header-box {
+    position: relative;
+}
+
+.header-links {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+
+    div {
+        display: flex;
+        justify-content: center;
+
+        &:first-of-type {
+            min-width: 100px;
+        }
+
+        &:last-of-type {
+            min-width: 150px;
+            margin-left: $space-32;
+        }
+    }
+
+    .header-link {
+        font-family: Ubuntu !important;
+        color: $black100;
+        font-size: 20px;
+        margin-top: $space-8;
+        padding-bottom: 2px;
+        text-decoration: none;
+        border-bottom: 2px solid transparent;
+
+        &:hover {
+            transition: border-color 0.2s;
+            border-color: $pink10;
+        }
+
+        &:focus {
+            outline: $focus-style;
+            outline-offset: $focus-offset;
+        }
+
+        &.active {
+            // font-weight: 700;
+            text-decoration: none;
+            border-bottom: 2px solid $pink100;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    header {
+        margin-bottom: $space-16;
+    }
+
+    .logo-box {
+        margin-top: $space-8;
+    }
+
+    .header-box {
+        flex-direction: column;
+        align-items: flex-start !important;
+        height: 7rem !important;
+
+        .header-links {
+            margin-top: 10px;
+            flex-direction: row;
+            justify-content: flex-start;
+            text-align: start;
+        }
+
+        svg {
+            width: 270px;
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+
+        .header-links {
+            flex-direction: row;
+            justify-content: flex-start;
+            text-align: start;
+
+            div {
+                justify-content: start;
+
+                &:last-of-type {
+                    margin-left: $space-16;
+                }
+
+                .header-link {
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+}
+
+//Beta information banner
+.beta-banner {
+    max-width: $page-width;
+    width: 100%;
+    padding: $space-16;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $orange10;
+
+    p {
+        margin: 0px;
+        text-align: left;
+    }
+}
+
+//Language
+.lang-select{
+    position: absolute;
+    top: 0;
+    right: 0;
+    a {
+        text-decoration: none;
+    }
+    a,button{
+        margin-top: $space-8;
+        height: 20px;
+        color: $green100;
+        border:none;
+        padding-right: 2px;
+        padding-left: 2px;
+        min-width: 0px;
+        border-radius: 0px;
+
+        &:hover{
+            transition: ease-in-out .2s;
+            color: $black100;
+        }
+    }
+}

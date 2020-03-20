@@ -1,0 +1,27 @@
+{
+  "about":
+  {
+    "path":"om-webbplatsen",
+    "title":"Om webbplatsen"
+  },
+  "accessibility":{
+    "path":"om-webbplatsen/tillganglighet",
+    "title":"Tillgänglighet"
+  },
+  "register-data":{
+    "path":"registrera-data",
+    "title":"Registrera data"
+  },  
+  "datasets":{
+    "path":"datasets",
+    "title":"Datamängder"
+  },
+  "specifications":{
+    "path":"specifications",
+    "title":"Specifikationer"
+  },
+  "concepts":{
+    "path":"concepts",
+    "title":"Begrepp"
+  }
+}

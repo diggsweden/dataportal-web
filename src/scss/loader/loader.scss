@@ -1,0 +1,93 @@
+@import 'scss/general/variables.scss';
+
+//Loader
+.loader{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-family: Ubuntu !important;
+    margin-left: $space-16;
+}
+
+//Loader text for mobile.
+//Used on datasets.
+.loader-sm{
+    opacity: 0;
+    transition: ease-in-out;
+}
+
+//Dont display loader on smaller screens.
+@media screen and (max-width: 600px) {
+    .loader {
+        display: none !important;
+    }
+    .loader-sm{
+        opacity: 1;
+        transition: ease-in-out;
+        animation-delay: .2s;
+    }
+}
+
+.dataloader {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 48px;
+    height: 48px;
+    margin-right: $space-16;
+}
+
+.dataloader div {
+    width: 12px;
+    height: 12px;
+    border-radius: 0%;
+    background: #fff;
+    animation: lds-grid 2s linear infinite;
+}
+
+.dataloader div:nth-child(2) {
+    animation-delay: 2.7s;
+    background-color: $pink50;
+}
+
+.dataloader div:nth-child(7) {
+    animation-delay: .1s;
+    background-color: $brown100;
+}
+
+.dataloader div:nth-child(8) {
+    animation-delay: .5s;
+    background-color: $brown25;
+}
+
+.dataloader div:nth-child(9) {
+    animation-delay: 1.5s;
+    background-color: $green100;
+}
+
+.dataloader div:nth-child(10) {
+    animation-delay: 1s;
+    background-color: $green50;
+}
+
+.dataloader div:nth-child(12) {
+    animation-delay: 1.5s;
+    background-color: $orange10;
+}
+
+.dataloader div:nth-child(15) {
+    animation-delay: 1s;
+    background-color: $orange100;
+}
+
+@keyframes lds-grid {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+}

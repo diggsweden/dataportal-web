@@ -1,0 +1,49 @@
+@import 'scss/general/variables.scss';
+
+
+.highlight{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;    
+    margin-top: $space-16;
+    margin-bottom: $space-64;
+    
+    h2{
+        margin-top: $space-16;
+    }
+    
+    div{
+        width: 50%;
+        img{
+            width: 544px;
+            max-width: 100%;
+            height: auto;
+            @media screen and (max-width: 800px) {
+                width: 749px;
+            }
+        }
+
+        &:last-of-type{
+            display: flex;
+            align-items: flex-start;
+            
+            @media screen and (min-width: 800px) {
+            margin-left: $space-32;
+            }
+            
+            @media screen and (max-width: 1080px) {
+            padding-top: $space-16;
+            }
+        }
+    }
+
+    @media screen and (max-width: 800px) {
+        flex-direction: column-reverse;
+        h2{
+            margin-top: $space-32;
+        }
+        div{
+            width: 100%;
+        }
+    }
+}

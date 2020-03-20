@@ -1,0 +1,64 @@
+@import 'scss/general/variables.scss';
+
+.footer-main {
+    display: flex;
+    flex-wrap: wrap-reverse;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+
+    span {
+        margin-right: $space-8;
+    }
+
+    .footer-link {
+        margin-right: $space-24;
+        &:last-of-type {
+            margin-right: 0px;
+        }
+
+        &:focus {
+            outline: $focus-style;
+            outline-offset: $focus-offset;
+        }
+    }
+}
+
+//Back to top button
+.back-to-top {
+    a {
+        height: $space-48;
+        background-color: $green10;
+        color: $black100;
+        border: none;
+
+        &:hover,
+        &:focus {
+            background-color: $green25;
+            color: $black100;
+            border: none;
+        }
+        &:focus{
+            outline: $focus-style !important;
+            outline-offset: $focus-offset !important;
+        }
+    }
+}
+
+@media screen and (max-width: 840px) {
+    .footer-links {
+        margin-bottom: $space-32;
+        justify-content: flex-start !important;
+
+        span {
+            margin-bottom: $space-8;
+        }
+
+        .footer-link {
+            margin-right: $space-16;
+            margin-bottom: $space-8;
+        }
+    }
+}

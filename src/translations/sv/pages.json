@@ -1,0 +1,53 @@
+{
+  "startpage" : {
+    "search_placeholder" : "Sök efter datamängd"
+  },
+  "statistic" : {
+    "statistic-header" : "Statistik på dataportalen",
+    "dataset-numbers" : "Antal datamängder senaste 12 månaderna",
+    "statistic-numbers" : "Portalen i siffror",
+    "top-organizations" : "organisationer",
+    "top-categories" : "kategorier",
+    "top" : "Topp"
+  },
+"highlight" : {
+  "highlight-header":"Sveriges dataportal för ökad innovationskraft",
+  "highlight-text":"Data är en nationell resurs för samhällets, näringslivets och den offentliga sektorns utveckling. Det är en väg till transparens, innovation och tillväxt som gynnar hela samhället som skapas av medborgarna, näringslivet och myndigheter tillsammans. Sveriges dataportal är ett nav som samordnar och tillgängliggör data som tillhandahålls av offentliga, privata och civilsamhällsorganisationer. Här finns enbart informationen om datamängderna. Själva datamängderna hämtas eller efterfrågas via länkar för åtkomst hos den organisation som ansvarar för den."
+},
+  "search" : {
+    "search" : "Sök",
+    "dataset-hits" : "datamängder",
+    "concept-hits" : "begrepp",
+    "specification-hits" : "specifikationer",
+    "next-page" : "Nästa",
+    "prev-page" : "Föregående",
+    "first-page" : "Första",
+    "page" : "Sida",
+    "of" : "av",
+    "datasets" : "Datamängder",
+    "concepts" : "Begrepp",
+    "specifications" : "Specifikationer",
+    "organization" : "Organisationer",
+    "relevance" : "Relevans",
+    "date" : "Senast ändrad"
+  },
+  "datasets" : {
+    "search-datasets" : "Sök efter datamängd",
+    "datasets" : "datamängder"
+  },
+  "concepts" : {
+    "search-concept" : "Sök efter begrepp",
+    "concepts" : "begrepp"
+  },
+  "specifications" : {
+    "search-specifications" : "Sök efter specifikationer",
+    "specifications" : "specifikationer"
+  },
+  "notfoundpage" : {
+    "heading" : "404 - Sidan hittades inte",
+    "body" : "Vi kunde tyvärr inte hitta sidan du letade efter. Den kan ha blivit borttagen eller så har du skrivit in en felaktig länk.",
+    "tostart" : "Gå till Startsidan"
+  }
+}
+
+

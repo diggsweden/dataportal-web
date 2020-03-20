@@ -1,0 +1,230 @@
+//style for searchfilter
+@import 'scss/general/variables.scss';
+
+.search-filter-box {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 600px) {
+    .search-filter-box {
+        opacity: 0;
+        height: 0px;
+        overflow: hidden;
+        flex-direction: column;
+
+        .search-filter {
+            margin-right: 0px;
+        }
+
+        &.show-filter {
+            opacity: 1;
+            height: auto;
+        }
+    }
+
+    .search-filter {
+        margin-right: $space-16;
+
+        div {
+            padding: 0px;
+        }
+    }
+}
+
+//Filter dropdowns of accordions from designsystem.
+.search-filter {
+    margin-right: $space-16;
+    margin-bottom: $space-16;
+
+    div {
+        div:first-of-type {
+            button {
+                padding-left: 12px;
+                padding-right: 12px;
+
+                svg {
+                    color: $green100;
+                }
+
+                &:hover {
+                    background-color: $white !important;
+                    border-color: $green-hover;
+                    // color: $green-hover;
+
+                    svg {
+                        color: $green-hover;
+                    }
+                }
+
+                &:focus {
+                    background-color: $white !important;
+                    // color: $black100 !important;
+                    // outline: none !important;
+
+                    svg {
+                        color: $black100 !important;
+                    }
+                }
+
+                div {
+                    display: flex;
+                    justify-content: space-between;
+
+                    div:last-of-type {
+                        width: 22px;
+                    }
+
+                    @media screen and (max-width: 600px) {
+                        width: 100%;
+                    }
+                }
+
+                &[aria-expanded="true"] {
+                    background-color:  $white;
+                    border-color: $black100;
+                }
+            }
+        }
+
+        div:last-of-type {
+            padding: 0px;
+            .search-filter-list {
+                flex-direction: column;
+                width: 300px;
+                margin-top: 10px;
+                margin-bottom: $space-16;
+                background-color: $white;
+                position: absolute;
+                -webkit-box-shadow: 0px 5px 15px 5px rgba(0, 0, 0, 0.15);
+                -moz-box-shadow: 0px 5px 15px 5px rgba(0, 0, 0, 0.15);
+                box-shadow: 0px 5px 15px 5px rgba(0, 0, 0, 0.15);
+                z-index: 10000;
+                max-height: 300px;
+                overflow-y: auto;
+        
+                button {
+                    display: flex;
+                    justify-content: space-between;
+                    padding-left: 20px;
+                    padding-right: 20px;
+                    height: inherit;
+                    border: none;
+                    border-radius: 0px;
+                    border-bottom: 1px solid $green10;
+                    cursor: pointer;
+                    margin-bottom: 0px;
+                    width: 100%;
+                    overflow-wrap: break-word;
+                    word-wrap: break-word;
+                    -ms-word-break: break-all;
+                    word-break: break-all;
+                    word-break: break-word;
+                    -ms-hyphens: auto;
+                    -moz-hyphens: auto;
+                    -webkit-hyphens: auto;
+                    hyphens: auto;
+                    text-align: left;
+                    color: $black100;
+                    padding: 0.75rem 1.25rem;
+        
+                    &:hover {
+                        background-color: #eff0ee !important;
+                        color: #5a5856 !important;
+                    }
+        
+                    &:focus {
+                        outline-offset: -4px !important;
+                        background-color: $green25 !important;
+                        color: #5a5856 !important;
+        
+                        svg {
+                            // fill: #5a5856 !important;
+                        }   
+                    }
+                }
+
+                button.selected {
+                    background-color: $green25;
+                }
+
+                button:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+}
+
+//Style for selected filter tags.
+.selected-filters {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0px;
+    margin: 0px;
+
+    button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $brown10;
+        border: none;
+        padding: $space-8;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        height: $space-32;
+        border-radius: 2px;
+        margin-right: $space-16;
+        cursor: pointer;
+        margin-bottom: $space-16;
+        min-width: 30px;
+        text-align: left;
+
+        svg{
+            margin-bottom: -2px;
+        }
+        &:hover {
+            background-color: $black10;
+            color: $black100;
+            svg {
+                // fill: $black100;
+            }
+        }
+        &:focus {
+            outline: $focus-style;
+        }
+        &:active {
+            color: $green-hover;
+        }
+        span {
+            margin-left: 10px;
+            svg {
+                // fill: $green100;
+            }
+        }
+    }
+}
+
+.mobile-filters {
+    margin-bottom: $space-16;
+}
+
+@media screen and (min-width: 600px) {
+    .mobile-filters {
+        display: none;
+    }
+}
+
+.clear-filters {
+    display: none;
+
+    button {
+        margin-bottom: $space-16;
+    }
+
+    &.show {
+        display: block;
+    }
+}

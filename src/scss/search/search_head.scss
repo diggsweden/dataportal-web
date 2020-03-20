@@ -1,0 +1,62 @@
+@import 'scss/general/variables.scss';
+
+//Css for searchhead.
+
+.search-head {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: $space-24;
+
+    div {
+        border-bottom: 2px solid $black10;
+    }
+
+    @media screen and (max-width: 600px) {
+        margin-top: $space-32;
+
+        div {
+            a {
+                min-width: 50px !important;
+                padding-left: $space-8;
+                padding-right: $space-8;
+            }
+            margin-bottom: $space-8;
+        }
+    }
+
+    .active {
+        font-weight: bold;
+        border-bottom: 2px solid $pink100;
+
+        &:hover {
+            border-color: $pink100;
+        }
+    }
+
+    div {
+        display: flex;
+        justify-content: center;
+
+        &:last-of-type {
+            a {
+                margin-right: 0px;
+                min-width: 155px;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            border-bottom: 2px solid $black10;
+            margin-bottom: -2px;
+            padding-bottom: 2px;
+            min-width: 149px;
+            text-align: center;
+
+            &:hover {
+                transition: border-color 0.2s ease-in-out;
+                color: $black100;
+                border-color: $pink10;
+            }
+        }
+    }
+}

@@ -1,0 +1,131 @@
+//General styles for wrapping container etc.
+
+@import 'scss/general/variables.scss';
+
+//For search and top image on startpage
+.main-search-container {
+    max-width: $page-width;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+//Main wrapping container
+.main-container {
+    max-width: $page-width;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 1440px) {
+    .main-container {
+        padding: 0px $space-16;
+    }
+}
+
+//For screenreaders
+.screen-reader {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+//Focus for most elements
+html a:focus,
+html button:focus,
+html input:focus,
+html input[type="radio"]:focus,
+html textarea:focus {
+    outline: $focus-style !important;
+    outline-offset: $focus-offset !important;
+}
+
+//Remove focus before tabbing..
+.no-focus-outline a:focus,
+.no-focus-outline button:focus,
+.no-focus-outline input:focus,
+.no-focus-outline input[type="radio"]:focus,
+.no-focus-outline textarea:focus {
+    outline: none !important;
+}
+
+
+
+//Cookie banner, base from designsystem.
+.cookie-banner {
+    color: $black100;
+    button {
+        &:focus {
+            outline: $focus-style !important;
+            outline-offset: $focus-offset !important;
+            background-color: $green-hover;
+            border-color: $green-hover;
+        }
+    }
+    a {
+        color: $black100;
+        &:focus {
+            outline: $focus-style;
+            outline-offset: $focus-offset;
+        }
+    }
+}
+
+//Skip to content without js.
+.skiptocontent_nojs {
+    display: none;
+    padding: $space-16;
+    background-color: $green10;
+    color: $black100;
+    border-radius: 2px;
+
+    &:focus {
+        display: block;
+        outline: $focus-style;
+        outline-offset: $focus-offset;
+    }
+}
+
+
+
+//Disabled link boxes
+.disabled-linkbox{
+    position: relative;
+    background-color: rgba(240, 239, 238, 1) !important;
+    
+    cursor: default !important;
+    a, span, p{
+        color:#646363 !important;
+    }
+}
+
+//Soon badge
+.soon {
+    padding: 0px;
+    font-size: 18px;
+    font-weight: bold;
+    position: absolute;
+    background-color: transparent !important;
+    right: $space-8;
+    top: $space-8;
+    text-align: right;
+    width: 210px;
+    color: #646363;
+    cursor: default !important;
+
+    @media screen and (max-width: 600px) {
+        font-size: 16px;
+    }
+}
+
+.link-wrapper{
+    .soon{
+        top: auto;
+        bottom: 10px;
+    }
+}
+

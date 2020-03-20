@@ -1,0 +1,131 @@
+// Typografi
+@import 'scss/general/variables.scss';
+
+* {
+  font-family: "Ubuntu", sans-serif !important;
+}
+
+.text-0 {
+  font-weight: bold;
+  font-size: 4rem; //64px
+  line-height: 72px;
+  letter-spacing: -0.04em;
+  color: $black100;
+}
+
+.text-1 {
+  font-weight: bold;
+  font-size: 2.625rem; //42px
+  line-height: 48px;
+  letter-spacing: -0.03em;
+  color: $black100;
+}
+
+.text-2 {
+  font-weight: bold;
+  font-size: 2rem; //32px
+  line-height: 40px;
+  letter-spacing: -0.03em;
+  color: $black100;
+}
+
+.text-3 {
+  font-weight: bold;
+  font-size: 1.5rem; //24px
+  line-height: 32px;
+  letter-spacing: -0.02em;
+  color: $black100;
+}
+
+.text-4 {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: -0.01em;
+  color: $black100;
+}
+
+.text-4-link {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: -0.01em;
+  text-decoration-line: underline;
+  color: $black100;
+
+  &:focus {
+    outline: $focus-style;
+    outline-offset: $focus-offset;
+  }
+}
+
+.text-5 {
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 27px;
+  color: $black100;
+}
+
+.text-5-bold {
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 27px;
+  letter-spacing: -0.01em;
+  color: $black100;
+}
+
+.text-5-link {
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 27px;
+  text-decoration-line: underline;
+  color: $black100;
+
+  &:focus {
+    outline: $focus-style;
+    outline-offset: $focus-offset;
+  }
+}
+
+.text-6 {
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: $black100;
+}
+
+.text-6-bold {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  color: $black100;
+}
+
+.text-6-link {
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  text-decoration-line: underline;
+  color: $black100;
+
+  &:focus {
+    outline: $focus-style;
+    outline-offset: $focus-offset;
+  }
+}
+
+.text-7 {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: $black100;
+}
+
+.text-7-bold {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 20px;
+  color: $black100;
+}
+

@@ -1,0 +1,210 @@
+@import 'scss/general/variables.scss';
+
+.statistic {
+    transition: ease-in-out .5s;
+    display: flex;
+    flex-direction: column;
+
+    h2 {
+        margin-top: 0px;
+    }
+
+    .statistic-numbers {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        // max-width: 850px;
+        max-width: 445px;
+        transition: ease-in-out .5s;
+        margin-bottom: $space-24;
+        padding: $space-16;
+        padding-bottom: 0px;
+        border: 1px solid $black10;
+        box-shadow: 2px 2px 10px #f2f2f2;
+
+        @media screen and (max-width: 400px) {
+        padding: 0px;
+        border: none;
+        box-shadow: none;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            min-width: 180px;
+            border-radius: 2px;
+            padding: $space-16;
+            padding-top: 10px;
+            padding-bottom: 12px;
+            margin-bottom: $space-16;
+            margin-right: $space-24;
+            border-left: 10px solid;
+
+            &:nth-of-type(1) {
+                border-color: $black10;
+            }
+
+            &:nth-of-type(2) {
+                border-color: $pink25;
+            }
+
+            &:nth-of-type(3) {
+                border-color: $green25;
+            }
+
+            &:nth-of-type(4) {
+                border-color: $orange25;
+            }
+
+            @media screen and (max-width: 750px) {}
+        }
+    }
+
+    .statistic-toplist {
+        display: flex;
+        flex-wrap: wrap;
+
+        .toplist-wrapper {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            min-width: 456px;
+            margin-bottom: $space-24;
+
+            @media screen and (max-width: 550px) {
+                min-width: 100%;
+            }
+
+            &:first-of-type {
+                margin-right: $space-32;
+
+                span {
+                    background-color: $orange50;
+                    border-radius: 0px;
+                }
+            }
+
+            &:last-of-type {
+                span {
+                    background-color: $pink50;
+                }
+            }
+
+            .top-list {
+                background-color: $white;
+                padding: $space-16;
+                border: 1px solid $black10;
+                box-shadow: 2px 2px 10px #f2f2f2;
+
+                @media screen and (max-width: 400px) {
+                box-shadow: none;
+                border: none;
+                padding: 0px;
+                }
+
+                ol {
+                    counter-reset: section;
+                    margin: 0px;
+
+                    li {
+                        margin-bottom: 4px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-left: -40px;
+
+                        &::before {
+                            counter-increment: section;
+                            content: counters(section, ".") ".";
+                        }
+
+                        a {
+                            margin-left: $space-8;
+                            width: 100%;
+                            min-width: 140px;
+
+                            &:hover {
+                                text-decoration: none;
+                            }
+                        }
+
+                        span {
+                            padding: 2px $space-8;
+                            margin-left: 20px;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.graphbox {
+    border: 1px solid $black10;
+    border-radius: 2px;
+    padding-top: 8px;
+    padding-left: $space-16;
+    padding-right: 0px;
+    margin-bottom: $space-24;
+    box-shadow: 2px 2px 10px #f2f2f2;
+    max-width: 1000px;
+
+    @media screen and (max-width: 400px) {
+        padding: 0px;
+        border: none;
+        box-shadow: none;
+    }
+
+    span {
+        margin-bottom: 20px;
+    }
+
+    .rv-xy-plot {
+        margin-top: $space-8;
+    }
+
+    .rv-xy-plot__axis--horizontal,
+    .rv-xy-plot__axis--vertical {
+        line {
+            display: none;
+        }
+
+        .rv-xy-plot__axis__tick {
+            text {
+                font-size: 14px;
+            }
+        }
+    }
+
+    .rv-xy-plot__axis--horizontal {
+        @media screen and (max-width: 800px) {
+            .rv-xy-plot__axis__tick{
+                display: none;
+            }
+            .rv-xy-plot__axis__tick:first-of-type{
+                display: block;
+            }
+            .rv-xy-plot__axis__tick:last-of-type{
+                display: block;
+            }
+            .rv-xy-plot__axis__tick:nth-of-type(4){
+                display: block;
+            }
+            .rv-xy-plot__axis__tick:nth-of-type(8){
+                display: block;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .rv-xy-plot__axis__tick:nth-of-type(4){
+                display: none;
+            }
+            .rv-xy-plot__axis__tick:nth-of-type(8){
+                display: none;
+            }
+        }
+    }
+}

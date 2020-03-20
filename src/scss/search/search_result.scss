@@ -1,0 +1,282 @@
+//Style for searchresults
+@import 'scss/general/variables.scss';
+
+.search-result {
+
+    .search-result-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: $space-8;
+
+        //Sorting buttons
+        .search-sort {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            span{
+                margin-right: $space-8;
+            }
+
+            button{
+                padding: 0px;
+                padding-left: 12px;
+                padding-right: 12px;
+                min-width: 0px;
+                border:none;
+                background-color: $brown10;
+                height: 32px;
+                min-width: 50px;
+                border-radius: 0px;
+                color: $green100;
+                transition: ease-in-out .1s;
+                &:hover{
+                    background-color: $black10;
+                    color: $black100;
+                }
+                &:focus{
+                    z-index: 1;
+                }
+            }
+
+            //Style for sorting results, after relevance or date
+            .sort-active{
+                background-color:$green100;
+                color: $white;
+                &:hover{
+                    background-color:$green100;
+                    color: $white;
+                }
+            }
+        }
+    }
+
+    .search-result-list {
+        list-style-type: none;
+        min-height: 400px;
+        padding: 0px;
+        margin: 0px;
+
+        li {
+            margin-bottom: $space-16;
+
+            &:last-of-type {
+                margin-bottom: $space-32;
+            }
+
+            &.search-result-list-item {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 100%;
+                min-height: 150px;
+                padding: $space-32;
+                padding-bottom: 40px;
+                background-color: #F5F5F4;
+                text-decoration: none;
+                color: $black100;
+                cursor: pointer;
+
+                &:hover,
+                &:focus {
+                    transition: ease-in-out .2s;
+
+                    h3 {
+                        text-decoration: none;
+                    }
+                }
+
+                .result-theme {
+                    margin-bottom: 0px;
+
+                    &:empty {
+                        margin-top: -18px;
+                    }
+                }
+
+                //Searchresult link
+                a {
+                    margin-bottom: $space-16;
+                    margin-top: $space-16;
+                    text-decoration: none;
+
+                    h3{
+                        text-decoration: underline;
+                        word-break: break-all;
+                    }
+
+                    &:focus {
+                        h3 {
+                            text-decoration: none;
+                        }
+                    }
+                }
+
+                //Searchresult title
+                h3 {
+                    margin: 0px;
+                }
+
+                //Searchresult description
+                p {
+                    font-family: Ubuntu !important;
+                    margin: 0px;
+                    max-width: 750px;
+                    margin-bottom: $space-16;
+                    line-height: $space-24;
+                }
+
+                //Searchresult organisation
+                .result-org {
+                    margin-top: 0px;
+                    margin-bottom: $space-16 ;
+                    &:empty{
+                        display: none;;
+                    }
+                }
+
+                //Searchresult formats
+                .result-format {
+                    margin-top: $space-8;
+                    margin-bottom: 0px;
+                    margin-right: $space-8 !important;
+                    max-width: none !important;
+
+                    span:empty {
+                        display: none;
+                    }
+
+                    span {
+                        word-break: break-all;
+                        display: block;
+                        font-size: 14px;
+                        border: 2px solid $black100;
+                        border-radius: 2px;
+                        margin-bottom: 0px;
+                        text-transform: uppercase;
+                        padding: 6px 8px;
+                    }
+
+                    //Colors for format badges
+                    .bc-1 {
+                        border-color: $pink50;
+                    }
+
+                    .bc-2 {
+                        border-color: $brown50;
+                    }
+
+                    .bc-3 {
+                        border-color: $orange100;
+                    }
+
+                    .bc-4 {
+                        border-color: $green50;
+                    }
+
+                    .bc-5 {
+                        border-color: $brown100;
+                    }
+
+                    .bc-6 {
+                        border-color: $orange50;
+                    }
+
+                    .bc-7 {
+                        border-color: $green100;
+                    }
+
+                    .bc-8 {
+                        border-color: $pink25;
+                    }
+                }
+            }
+
+            //Search results for specifications
+            &.specification {
+                a {
+                    margin-top: 0px;
+                }
+
+                p {
+                    margin-bottom: 0px;
+                }
+            }
+        }
+    }
+}
+
+// Formats in searchresult
+.format-row {
+    display: flex;
+    flex-wrap: wrap;
+
+    &:empty {
+        margin-bottom: -16px;
+    }
+}
+
+//For view more results.
+.view-more {
+    display: flex;
+}
+
+.pagination {
+    width: 100%;
+    position: relative;
+
+    button {
+        min-width: 115px;
+
+        &:disabled {
+            color: $green25;
+            border-color: $green25;
+            background-color: $white;
+            cursor: default;
+        }
+    }
+
+    .first-page {
+        margin-left: 0px;
+        position: absolute;
+    }
+
+    .prev-next-page {
+        min-width: 350px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+        flex-wrap: wrap;
+    }
+
+    span {
+        margin-left: $space-16;
+        margin-right: $space-16;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .pagination {
+        .first-page {
+            top: 70px;
+            margin: auto;
+            position: absolute;
+        }
+
+        .prev-next-page {
+            justify-content: flex-start !important;
+            margin-right: 100% !important;
+        }
+
+        span {
+            margin: $space-8;
+        }
+    }
+    .search-sort{
+        display: none !important;
+    }
+}
+
+

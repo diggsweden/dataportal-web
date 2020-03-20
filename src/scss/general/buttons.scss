@@ -1,0 +1,118 @@
+@import 'scss/general/variables.scss';
+
+//Default button
+button,
+.default-button {
+  // min-width: 99px;
+  height: 48px;
+  background-color: $white;
+  color: $green100;
+  font-size: 16px;
+  text-decoration: none;
+  border: 2px solid $green100;
+  border-radius: 2px;
+  margin: 4px;
+  cursor: pointer;
+  padding-left: 12px;
+  padding-right: 12px;
+
+  &:hover {
+    border-color: $green-hover;
+    color: $green-hover;
+  }
+
+  &:active {
+    border-color: $black100;
+    color: $black100;
+  }
+
+  // important needed on focus for firefox
+  &:focus {
+    outline: $focus-style !important;
+    outline-offset: $focus-offset !important;
+  }
+
+  &:disabled {
+    background-color: $green25;
+  }
+}
+
+/* Primary button */
+.primary-btn {
+  // min-width: 99px;
+  height: 48px;
+  background-color: $green100;
+  color: $white;
+  font-size: 16px;
+  border: none;
+  border-radius: 2px;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $green-hover;
+    color: $white;
+  }
+
+  &:active {
+    background-color: $black100;
+    color: $white;
+  }
+
+  &:focus {
+    outline: $focus-style;
+    outline-offset: $focus-offset;
+  }
+
+  &:disabled {
+    background-color: $green25;
+  }
+}
+
+/* Secondary button */
+.secondary-btn {
+  min-width: 99px;
+  height: 48px;
+  background-color: $white;
+  color: $green100;
+  border: none;
+  cursor: pointer;
+  border-radius: 2px;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 4px;
+  font-size: 16px;
+
+  &:active {
+    background-color: $black10;
+    color: $black100;
+  }
+
+  &:hover {
+    color: $green-hover;
+    background-color: $green10;
+  }
+
+  &:focus {
+    outline: $focus-style;
+    outline-offset: $focus-offset;
+  }
+
+  &:disabled {
+    border-color: $green25;
+    color: $green25;
+  }
+}
+
+button.filter-active {
+  border-color: $black100;
+  color: $black100;
+
+  &:hover,
+  &:active {
+    border-color: $green-hover;
+    color: $green-hover;
+  }
+}

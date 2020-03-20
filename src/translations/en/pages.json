@@ -1,0 +1,51 @@
+{
+  "startpage" : {
+    "search_placeholder" : "Search for data"
+  },
+  "statistic" : {
+    "statistic-header" : "Statistics of the data portal",
+    "dataset-numbers" : "Number of datasets over the last 12 months",
+    "statistic-numbers" : "Statistics at a glance",
+    "top-organizations" : "organizations",
+    "top-categories" : "categories",
+    "top" : "Top"
+  },
+  "highlight" : {
+    "highlight-header":"Sweden's data portal for increased innovation",
+    "highlight-text":"Data is a national resource for the development of society, industry and the public sector. It is a path to transparency, innovation and growth that benefits the entire society created by citizens, businesses and the government bodies together. Sweden’s data portal is a hub that coordinates and makes available data for re-use provided by public, private and civil society organisations. The portal only contains information about the datasets. Data is retrieved or requested via links to the organization responsible for it."
+  },
+  "search" : {
+    "search" : "Search",
+    "dataset-hits" : "datasets",
+    "concept-hits" : "concepts",
+    "specification-hits" : "specifications",
+    "next-page" : "Next",
+    "prev-page" : "Previous",
+    "first-page" : "First",
+    "page" : "Page",
+    "of" : "of",
+    "datasets" : "Datasets",
+    "concepts" : "Concepts",
+    "specifications" : "Specifications",
+    "organization" : "Organizations",
+    "relevance" : "Relevance",
+    "date" : "Last modified"
+  },
+  "datasets" : {
+    "search-datasets" : "Search datasets",
+    "datasets" : "datasets"
+  },
+  "concepts" : {
+    "search-concept" : "Search concepts",
+    "concepts" : "concepts"
+  },
+  "specifications" : {
+    "search-specifications" : "Search specifications",
+    "specifications" : "specifications"
+  },
+  "notfoundpage" : {
+    "heading" : "404 - Page not found",
+    "body" : "The page you requested could not be found.",
+    "tostart" : "To startpage"
+  }
+}

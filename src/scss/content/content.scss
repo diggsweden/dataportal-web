@@ -1,0 +1,124 @@
+@import 'scss/general/variables.scss';
+
+.text-header {
+    max-width: 50em; //800px //50em
+}
+
+@media screen and (max-width: 37.5em) {
+    .text-header {
+        font-size: 2rem;
+        line-height: 40px;
+    }
+}
+
+.content {
+    max-width: 40em; //640px //40rem //40em
+
+    h1, h2, h3, h4, h5{
+        word-break: break-word;
+    }
+
+
+    .preamble {
+        margin-top: 0px;
+        margin-bottom: $space-24;
+
+        a {
+            color: $black100;
+
+            &:focus {
+                outline: $focus-style;
+                outline-offset: $focus-offset;
+            }
+        }
+
+        a[target=_blank]:after {
+            content: '\f08e';
+            margin-left: 5px;
+            font-family: "FontAwesome" !important;
+            font-size: .8em;
+        }
+    }
+
+    .main-text {
+        margin-bottom: $space-24;
+
+        a {
+            color: $black100;
+
+            &:focus {
+                outline: $focus-style;
+                outline-offset: $focus-offset;
+            }
+        }
+
+        a[target=_blank]:after {
+            content: '\f08e';
+            margin-left: 5px;
+            font-family: "FontAwesome" !important;
+            font-size: .8em;
+        }
+
+        li {
+            margin-bottom: $space-8;
+        }
+    }
+
+    //Linkblocks / Pixels
+    .link-blocks {
+        display: flex;
+        margin-bottom: $space-48;
+
+        .link-block {
+            background-color: $pink50;
+            position: relative;
+            cursor: pointer;
+            width: 50%;
+            padding-top: 50%;
+
+            .link-wrapper {
+                position: absolute;
+                top: 16px;
+                left: 16px;
+                right: 16px;
+                bottom: 16px;
+            }
+
+            a {
+                font-weight: bold;
+                font-size: 1.4rem;
+                line-height: 32px;
+                letter-spacing: -0.02em;
+                color: $black100;
+            }
+
+            &:hover {
+                a {
+                    text-decoration: none;
+                }
+            }
+
+            &:last-of-type {
+                background-color: $pink25;
+            }
+        }
+
+        @media screen and (max-width: 37.5em) {
+            flex-direction: column;
+
+            .link-block {
+                width: 100%;
+                padding: $space-16;
+                min-height: 240px;
+
+                .link-wrapper {
+                    position: initial;
+
+                    a {
+                        font-size: 1.5rem;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,100 @@
+//Style for searchbar
+@import 'scss/general/variables.scss';
+
+@media screen and (max-width: 600px) {
+    .search-header {
+        position: absolute;
+        left: -10000px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+    }
+
+    .search-box {
+        // margin-top: $space-32;
+    }
+}
+
+.search-box {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 48px;
+    margin-bottom: $space-24;
+
+    .search-label {
+        display: none;
+    }
+
+    input {
+        height: 100%;
+        min-height: 48px;
+        max-width: 486px;
+        min-width: 200px;
+        width: 100%;
+        border: 2px solid $black100;
+        border-right: none;
+        padding-left: 20px;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+
+        &:hover {
+            border-color: $green-hover;
+        }
+
+        &::placeholder {
+            color: $black50;
+        }
+
+        &:focus {
+        border-color: $black100;
+            &::placeholder {
+                color: $black10;
+                transition: color .1s;
+            }
+
+            &::-ms-input-placeholder {
+                color: $black10;
+            }
+
+            &:-ms-input-placeholder {
+                color: $black10;
+            }
+        }
+    }
+
+    button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        min-height: 48px;
+        width: 48px;
+        min-width: 50px;
+        background-color: $black100;
+        color: $white;
+        border: none;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        cursor: pointer;
+
+        span {
+
+            // margin-right: $space-8;
+            svg {
+                // fill: $white;
+            }
+        }
+
+        &:hover {
+            background-color: $black-hover;
+            color: $white;
+        }
+
+        &:focus {
+            outline: $focus-style;
+            outline-offset: $focus-offset !important;
+        }
+    }
+}
