@@ -179,7 +179,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                         <ul>
                           <li>
                             <a
-                              aria-label="Search datasets within the environment category"
+                              aria-label="Search datasets in the environment category"
                               href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FENVI%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CMiljö`}
                             >
                               Environment
@@ -187,7 +187,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                           </li>
                           <li>
                             <a
-                              aria-label="Search datasets in the category finance and finance"
+                              aria-label="Search datasets in the finance and finance category"
                               href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FECON%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CEkonomi%20och%20finans`}
                             >
                               Economy & Finance
@@ -211,7 +211,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                           </li>
                           <li>
                             <a
-                              aria-label="Search for datasets in the category government and public sector"
+                              aria-label="Search for datasets in the government and public sector category"
                               href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FGOVE%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CRegeringen%20och%20den%20offentliga%20sektorn`}
                             >
                               Goverment & Public Sector
@@ -219,7 +219,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                           </li>
                           <li>
                             <a
-                              aria-label="Search datasets in the category agriculture, fisheries, forestry and foods"
+                              aria-label="Search datasets in the agriculture, fisheries, forestry and foods category"
                               href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FAGRI%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CJordbruk%2C%20fiske%2C%20skogsbruk%20och%20livsmedel`}
                             >
                               Agriculture, Fisheries, Forestry & Foods
@@ -228,7 +228,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
 
                           <li>
                             <a
-                              aria-label="Sök datamängder inom kategorin hälsa"
+                              aria-label="Search datasets in the health category"
                               href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FHEAL%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CHälsa`}
                             >
                               Health
@@ -236,7 +236,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                           </li>
                           <li>
                             <a
-                              aria-label="Search datasets within the category health"
+                              aria-label="Search datasets within the energy category"
                               href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FENER%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CEnergi`}
                             >
                               Energy
@@ -244,15 +244,15 @@ export class StartPageEn extends React.Component<PageProps, any> {
                           </li>
                           <li>
                             <a
-                              aria-label="Search for datasets in the category justice, legal systems and public safety"
+                              aria-label="Search for datasets in the justice, legal systems and public safety category"
                               href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FJUST%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CRättvisa%2C%20rättsliga%20system%20och%20allmän%20säkerhet`}
                             >
-                              Justice, Legal System & Public Sector
+                              Justice, Legal System & Public Safety
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label="Search datasets within the category population and community"
+                              aria-label="Search datasets in the population and community category"
                               href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FSOCI%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CBefolkning%20och%20samhälle`}
                             >
                               Population & Society
@@ -260,7 +260,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                           </li>
                           <li>
                             <a
-                              aria-label="Search for datasets in the category of international issues"
+                              aria-label="Search for datasets in the international issues category"
                               href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FINTR%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CInternationella%20frågor`}
                             >
                               International issues
@@ -268,7 +268,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                           </li>
                           <li>
                             <a
-                              aria-label="Search datasets in the category science and technology"
+                              aria-label="Search datasets in the science and technology category"
                               href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FTECH%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CVetenskap%20och%20teknik`}
                             >
                               Science & Technology
@@ -276,7 +276,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                           </li>
                           <li>
                             <a
-                              aria-label="Search datasets in the category transport"
+                              aria-label="Search datasets in the transport category"
                               href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FTRAN%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CTransport`}
                             >
                               Transport
@@ -286,7 +286,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                       </div>
 
                       <Highlight env={settings.env} />
-                      <StatisticGraph env={settings.env} />      
+                      <StatisticGraph env={settings.env} />
                       <Statistic env={settings.env} />
                     </div>
                   </div>

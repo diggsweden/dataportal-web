@@ -169,7 +169,7 @@ export class StartPage extends React.Component<PageProps, any> {
                               {i18n.t('pages|search|specifications')}
                             </a>
                             <span className="text-6">
-                              Specifikationer av informations och datamodeller
+                              Specifikationer av informations- och datamodeller
                             </span>
                           </div>
                         </div>

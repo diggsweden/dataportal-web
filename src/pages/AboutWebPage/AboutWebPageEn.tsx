@@ -91,14 +91,14 @@ export class AboutWebPageEn extends React.Component<PagePropsEn> {
                     together.
                   </p>
                   <p className="main-text text-5">
-                    Sweden's data portal coordinates and makes available data
-                    sets provided by public and private organizations. The data
+                    Sweden's data portal coordinates and makes available datasets
+                    provided by public and private organizations. The data
                     portal also functions as the hub where the Swedish
                     authorities publish information about the types of documents
                     that are usually provided electronically for re-use.
                   </p>
                   <p className="main-text text-5">
-                    The data portal only contains information about datasets, ie
+                    The data portal only contains information about datasets, ie.
                     metadata. Data is retrieved via links for download or
                     requested by the respective organization responsible for
                     their own datasets.

@@ -70,7 +70,7 @@ export class AccessibilityWebPageEn extends React.Component<PagePropsEn> {
                 <div className="content">
                   <p className="preamble text-4">
                     The Digital Agency is responsible for this site. We want as
-                    many people as possible to able to use the site. This document
+                    many people as possible to be able to use the site. This document
                     describes how Sweden's data portal fulfills{' '}
                     <cite>the Act on Access to Digital Public Service</cite>,
                     any known accessibility issues, and how to report
@@ -125,7 +125,7 @@ export class AccessibilityWebPageEn extends React.Component<PagePropsEn> {
                   </p>
                   <h2 className="text-2">Oversight</h2>
                   <p className="main-text text-5">
-                    The digital administration authority is responsible for the
+                    The Digital Administration Authority is responsible for the
                     oversight of{' '}
                     <cite>
                       the Act on Accessibility for Digital Public Service
@@ -153,7 +153,7 @@ export class AccessibilityWebPageEn extends React.Component<PagePropsEn> {
                     completely accessible.
                   </p>
                   <h3 className="text-3">Lack of compliance with the legal requirements</h3>
-                  
+
                   <h4 className="text-4-bold" id="usage-1">Problems when used without vision</h4>
                   <div className="main-text text-5">
                     <ul>
