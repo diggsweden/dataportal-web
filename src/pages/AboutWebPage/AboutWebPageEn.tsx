@@ -71,7 +71,7 @@ export class AboutWebPageEn extends React.Component<PagePropsEn> {
                     available in a beta version. In 2020, the data portal will
                     be further developed with more features and more content.
                     The new data portal is being further developed and managed
-                    by the Agency for Digital Goverment (DIGG). You can still use the
+                    by the Agency for Digital Government (DIGG). You can still use the
                     old data portal,{' '}
                     <a
                       target="_blank"
@@ -98,7 +98,7 @@ export class AboutWebPageEn extends React.Component<PagePropsEn> {
                     that are usually provided electronically for re-use.
                   </p>
                   <p className="main-text text-5">
-                    The data portal only contains information about datasets, ie
+                    The data portal only contains information about datasets, i.e.
                     metadata. Data is retrieved via links for download or
                     requested by the respective organization responsible for
                     their own datasets.
@@ -136,7 +136,7 @@ export class AboutWebPageEn extends React.Component<PagePropsEn> {
                     Accessibility report for the data portal
                   </h2>
                   <p className="main-text text-5">
-                    The Agency for Digital Goverment (DIGG) is responsible for this site.{' '}
+                    The Agency for Digital Government (DIGG) is responsible for this site.{' '}
                     <a
                       href={`/${i18n.languages[0]}/${i18n.t(
                         'routes|accessibility|path'

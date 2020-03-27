@@ -73,7 +73,7 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                     You have the opportunity to contribute content to Sweden's
                     data portal yourself by publishing your datasets. They then
                     become searchable for everyone and thus the chances of being
-                    used increase. It is only when using data that the benefit
+                    used increase. It is only when using data that benefit
                     arises.
                   </p>
                   <p className="main-text text-5">
@@ -106,17 +106,18 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                     <div
                       className="link-block"
                       onClick={e => {
-                        window.location.href = 'https://registrera.oppnadata.se/';
+                        window.location.href =
+                          'https://registrera.oppnadata.se/';
                       }}
                     >
                       <div className="link-wrapper">
                         <a className="" href="https://registrera.oppnadata.se/">
-                        View your data on Sweden's data portal{' '}
+                          View your data on Sweden's data portal{' '}
                         </a>
                         <p className="text-5">
-                        Register your organization and harvesting source on
-                        Sweden's data portal. Check data volumes harvested and
-                        manage your data directory before publishing.
+                          Register your organization and harvesting source on
+                          Sweden's data portal. Check data volumes harvested and
+                          manage your data directory before publishing.
                         </p>
                       </div>
                     </div>
@@ -134,12 +135,12 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                           className=""
                           // href="https://editera.dataportal.se/"
                         >
-                        Manage and concepts and specifications
+                          Manage and concepts and specifications
                         </a>
                         <p className="text-5">
-                        Register your organization to access tools where actors
-                        can describe, link, entertain and publish concepts and
-                        specifications.
+                          Register your organization to access tools where
+                          actors can describe, link, maintain and publish
+                          concepts and specifications.
                         </p>
                       </div>
                     </div>
@@ -205,7 +206,7 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                         target="_blank"
                         href="https://registrera.oppnadata.se/"
                       >
-                        register.dataportal.se
+                        registrera.dataportal.se
                       </a>
                       . The Data Portal provides here tools to validate, merge,
                       and examine your data directory before publishing.
@@ -219,7 +220,7 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                         target="_blank"
                         href="https://registrera.oppnadata.se/"
                       >
-                        register.dataportal.se
+                        registrera.dataportal.se
                       </a>{' '}
                       works.
                     </li>

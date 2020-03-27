@@ -26,7 +26,7 @@ import { PageProps } from 'pages/PageProps';
 
 // import RenderInBrowser from 'react-render-in-browser';
 
-import {StatisticGraph} from '../../components/StatisticGraph';
+import { StatisticGraph } from '../../components/StatisticGraph';
 import { Highlight } from '../../components/Highlight';
 
 const MainContent = Box.withComponent('main');
@@ -112,7 +112,10 @@ export class StartPage extends React.Component<PageProps, any> {
                               type="submit"
                               aria-label="Sök"
                             >
-                              <SearchIcon color={colorPalette.white} width={[32]} />
+                              <SearchIcon
+                                color={colorPalette.white}
+                                width={[32]}
+                              />
                             </button>
                           </form>
                         </div>
@@ -169,7 +172,8 @@ export class StartPage extends React.Component<PageProps, any> {
                               {i18n.t('pages|search|specifications')}
                             </a>
                             <span className="text-6">
-                              Specifikationer av informations och datamodeller
+                              Utforska specifikationer av informations- och
+                              datamodeller
                             </span>
                           </div>
                         </div>
@@ -178,9 +182,7 @@ export class StartPage extends React.Component<PageProps, any> {
 
                     <div className="main-container">
                       <div className="startpage-categories">
-                        <h2 className="text-3">
-                          Datamängder efter kategorier
-                        </h2>
+                        <h2 className="text-3">Datamängder efter kategorier</h2>
                         <ul>
                           <li>
                             <a
@@ -291,9 +293,9 @@ export class StartPage extends React.Component<PageProps, any> {
 
                       <Highlight env={settings.env} />
 
-                     {/* <RenderInBrowser except ie> */}
+                      {/* <RenderInBrowser except ie> */}
                       <StatisticGraph env={settings.env} />
-                     {/* </RenderInBrowser> */}
+                      {/* </RenderInBrowser> */}
                       <Statistic env={settings.env} />
                     </div>
                   </div>

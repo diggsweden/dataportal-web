@@ -62,8 +62,7 @@ class RoutesComponent extends React.Component<RouteProps> {
                 <Route path={['/about-webpage/accessibility', '/en/about-webpage/accessibility']} exact render={(props)=><AccessibilityWebPageEn {...props}/>} />
                 <Route path={['/register-data', '/en/register-data']} exact render={(props)=><PublishDataPageEn {...props}/>} />
                 <Route path="/en" exact render={(props)=><StartPageEn {...props}/>} />
-                {/* Swedish */}
-                <Redirect exact from="/" to="/sv/" />
+                {/* Swedish */}                
                 <Route path={['/registrera-data', '/sv/registrera-data']} exact render={(props)=><PublishDataPage {...props}/>} />
                 <Route path={['/om-webbplatsen', '/sv/om-webbplatsen']} exact render={(props)=><AboutWebPage {...props}/>} />
                 <Route path={['/om-webbplatsen/tillganglighet', '/sv/om-webbplatsen/tillganglighet']} exact render={(props)=><AccessibilityWebPage {...props}/>} />

@@ -73,7 +73,7 @@ export class PublishDataPage extends React.Component<PageProps, any> {
                     Du har möjlighet att själv bidra med innehåll till Sveriges
                     dataportal genom att publicera dina datamängder. De blir då
                     sökbara för alla och därmed ökar chanserna att de används.
-                    Det är först vid användningen av data som nyttan uppstår.
+                    Det är först vid användningen av data som nytta uppstår.
                   </p>
                   <p className="main-text text-5">
                     Det ska vara enkelt för användare att hitta och förstå om
@@ -208,16 +208,24 @@ export class PublishDataPage extends React.Component<PageProps, any> {
                       dataportalen automatiskt hämtar er datakatalog ifrån.
                     </li>
                     <li>
-                      Skapa en användare eller logga in på
-                      registrera.dataportal.se. Sveriges dataportal
-                      tillhandahåller verktyg för att validera, slå samman och
-                      undersöka din datakatalog innan publicering.
-                    </li>
+                      Skapa en användare eller logga in på{' '}
+                      <a target="_blank"
+                        href="https://registrera.oppnadata.se/">
+                          registrera.dataportal.se</a>. Sveriges dataportal
+                          tillhandahåller verktyg för att validera, slå samman och
+                          undersöka din datakatalog innan publicering.
+                      </li>
                     <li>
                       Länka upp Sveriges dataportal till er organisations data
                       genom att registrera, ändra och bekräfta er
                       skördningskälla. Validera och spara. Vid behov,
-                      kontrollera att skördningen till registrera.dataportal.se
+                      kontrollera att skördningen till {' '}
+                      <a
+                        target="_blank"
+                        href="https://registrera.oppnadata.se/"
+                      >
+                        registrera.dataportal.se
+                      </a>{' '}
                       fungerar.
                     </li>
                     <li>

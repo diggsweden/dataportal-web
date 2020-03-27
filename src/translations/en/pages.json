@@ -29,7 +29,8 @@
     "specifications" : "Specifications",
     "organization" : "Organizations",
     "relevance" : "Relevance",
-    "date" : "Last modified"
+    "date" : "Last modified",
+    "sort" : "Order by:"
   },
   "datasets" : {
     "search-datasets" : "Search datasets",

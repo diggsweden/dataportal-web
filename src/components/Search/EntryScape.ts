@@ -361,7 +361,9 @@ export class EntryScape {
       modifiedQuery.forEach((q) => {
         let trimmed = q.trim();
         if(trimmed) {
-          esQuery.or({title:`${trimmed}~1`,'tag.literal':`${trimmed}`,description:`${trimmed}~1`});
+          esQuery.or({title:`${trimmed}`,'tag.literal':`${trimmed}`,description:`${trimmed}`});
+          //For adding search tolerance use the following, TODO: setting
+          //esQuery.or({title:`${trimmed}~1`,'tag.literal':`${trimmed}`,description:`${trimmed}~1`});
         }
       })
 

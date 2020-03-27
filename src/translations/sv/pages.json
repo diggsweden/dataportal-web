@@ -29,7 +29,8 @@
     "specifications" : "Specifikationer",
     "organization" : "Organisationer",
     "relevance" : "Relevans",
-    "date" : "Senast ändrad"
+    "date" : "Senast ändrad",
+    "sort" : "Sortera:"
   },
   "datasets" : {
     "search-datasets" : "Sök efter datamängd",

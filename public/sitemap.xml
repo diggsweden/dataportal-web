@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+<url>
+  <loc>https://www.dataportal.se/sv/</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?q=&amp;f=</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/registrera-data</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?p=1&amp;q=*&amp;f=</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FENVI%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CMilj%C3%B6</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FSOCI%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CBefolkning%20och%20samh%C3%A4lle</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FHEAL%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CH%C3%A4lsa</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FENER%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CEnergi</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FEDUC%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CUtbildning%2C%20kultur%20och%20sport</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FTRAN%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CTransport</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FREGI%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CRegioner%20och%20st%C3%A4der</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FECON%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CEkonomi%20och%20finans</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FAGRI%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CJordbruk%2C%20fiske%2C%20skogsbruk%20och%20livsmedel</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FGOVE%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CRegeringen%20och%20den%20offentliga%20sektorn</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FTECH%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CVetenskap%20och%20teknik</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FINTR%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CInternationella%20fr%C3%A5gor</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FJUST%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CR%C3%A4ttvisa%2C%20r%C3%A4ttsliga%20system%20och%20allm%C3%A4n%20s%C3%A4kerhet</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/om-webbplatsen</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.dataportal.se/sv/om-webbplatsen/tillganglighet</loc>
+  <lastmod>2020-03-26T13:23:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+</urlset>

@@ -404,7 +404,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
                             </h2>
 
                             <div className="search-sort">
-                              <span className="text-6-bold">Sortera:</span>
+                              <span className="text-6-bold"> {i18n.t('pages|search|sort')}</span>
                               <button
                                 onClick={event => {
                                   event.preventDefault();

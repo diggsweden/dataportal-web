@@ -65,8 +65,8 @@ app.use('/dist/client/fonts', express.static(path.join(cwd, '/dist/client/fonts'
   maxAge:'365d'
 }));
 
-//Robots and google site verification
-app.get(['/robots.txt','/google*.html','/favicon.ico'], async (req, res) => {  
+//Robots, sitemap and google site verification
+app.get(['/robots.txt','/sitemap.xml','/google*.html','/favicon.ico'], async (req, res) => {  
   res.sendFile(path.join(cwd, req.path));
 });
   

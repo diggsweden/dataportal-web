@@ -69,8 +69,8 @@ export class AccessibilityWebPageEn extends React.Component<PagePropsEn> {
                 </h1>
                 <div className="content">
                   <p className="preamble text-4">
-                    The Digital Agency is responsible for this site. We want as
-                    many people as possible to able to use the site. This document
+                    The Agency for Digital Government is responsible for this site. We want as
+                    many people as possible to be able to use the site. This document
                     describes how Sweden's data portal fulfills{' '}
                     <cite>the Act on Access to Digital Public Service</cite>,
                     any known accessibility issues, and how to report
@@ -125,7 +125,7 @@ export class AccessibilityWebPageEn extends React.Component<PagePropsEn> {
                   </p>
                   <h2 className="text-2">Oversight</h2>
                   <p className="main-text text-5">
-                    The digital administration authority is responsible for the
+                    The Agency for Digital Government is responsible for the
                     oversight of{' '}
                     <cite>
                       the Act on Accessibility for Digital Public Service
@@ -133,7 +133,7 @@ export class AccessibilityWebPageEn extends React.Component<PagePropsEn> {
                     . If you are not happy with how we handle your views, you
                     can{' '}
                     <a href="https://www.digg.se/tdosanmalan">
-                      contact the Digital Administration Authority
+                      contact the Agency for Digital Government
                     </a>{' '}
                     and address it.
                   </p>

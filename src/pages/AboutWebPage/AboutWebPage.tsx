@@ -99,7 +99,7 @@ export class AboutWebPage extends React.Component<PageProps> {
                     vidareutnyttjande.
                   </p>
                   <p className="main-text text-5">
-                    På dataportalen finns enbart information om datamängder, dvs
+                    På dataportalen finns enbart information om datamängder, dvs.
                     metadata. Data hämtas via länkar för nedladdning eller
                     efterfrågas hos respektive organisation som ansvarar för
                     sina egna datamängder.

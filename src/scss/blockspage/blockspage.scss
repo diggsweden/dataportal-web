@@ -429,6 +429,8 @@
     .rdformsUrl {
         color: $black100;
         text-decoration: underline;
+        word-wrap: break-word;
+        word-break: break-all;
     }
 }
 
