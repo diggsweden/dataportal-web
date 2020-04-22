@@ -28,6 +28,7 @@ import { PageProps } from 'pages/PageProps';
 
 import { StatisticGraph } from '../../components/StatisticGraph';
 import { Highlight } from '../../components/Highlight';
+import { News } from '../../components/News';
 
 const MainContent = Box.withComponent('main');
 

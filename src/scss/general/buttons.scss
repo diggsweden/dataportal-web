@@ -3,7 +3,9 @@
 //Default button
 button,
 .default-button {
-  // min-width: 99px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 48px;
   background-color: $white;
   color: $green100;
@@ -11,10 +13,10 @@ button,
   text-decoration: none;
   border: 2px solid $green100;
   border-radius: 2px;
-  margin: 4px;
   cursor: pointer;
   padding-left: 12px;
   padding-right: 12px;
+  width: max-content;
 
   &:hover {
     border-color: $green-hover;
@@ -39,7 +41,6 @@ button,
 
 /* Primary button */
 .primary-btn {
-  // min-width: 99px;
   height: 48px;
   background-color: $green100;
   color: $white;

@@ -502,7 +502,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
                             <div className="first-page">
                               {(search.request.page || 0) > 1 && (
                                 <button
-                                  className="first-page-btn"
+                                  className=""
                                   onClick={() => {
                                     search
                                       .set({

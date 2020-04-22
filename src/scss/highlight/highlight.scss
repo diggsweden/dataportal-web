@@ -1,48 +1,59 @@
 @import 'scss/general/variables.scss';
 
 
-.highlight{
+.highlight {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;    
+    align-items: flex-start;
     margin-top: $space-16;
     margin-bottom: $space-64;
-    
-    h2{
+
+    h2 {
         margin-top: $space-16;
     }
-    
-    div{
+
+    p {
+        max-width: 544px;
+
+        @media screen and (max-width: 800px) {
+            max-width: 749px;
+        }
+    }
+
+    div {
         width: 50%;
         img{
             width: 560px;
             max-width: 100%;
             height: auto;
+
             @media screen and (max-width: 800px) {
                 width: 749px;
             }
         }
 
-        &:last-of-type{
+        &:last-of-type {
             display: flex;
             align-items: flex-start;
-            
+
             @media screen and (min-width: 800px) {
-            margin-left: $space-32;
+                margin-left: $space-32;
             }
-            
+
             @media screen and (max-width: 1080px) {
-            padding-top: $space-16;
+                padding-top: $space-16;
             }
         }
     }
 
     @media screen and (max-width: 800px) {
         flex-direction: column-reverse;
-        h2{
+
+        h2 {
             margin-top: $space-32;
         }
-        div{
+
+        div {
             width: 100%;
         }
     }

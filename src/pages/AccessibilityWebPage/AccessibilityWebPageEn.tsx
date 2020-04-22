@@ -91,9 +91,6 @@ export class AccessibilityWebPageEn extends React.Component<PagePropsEn> {
                       <li>
                         <a href="#usage-1">Use without vision</a>
                       </li>
-                      <li>
-                        <a href="#usage-2">Use with visual impairment</a>
-                      </li>
                     </ul>
                   </div>
                   <h2 className="text-2">What can you do if you can't use parts of the site?</h2>
@@ -162,20 +159,6 @@ export class AccessibilityWebPageEn extends React.Component<PagePropsEn> {
                         The generated bar chart displayed on the home page has no text option.{' '}
                           <span>
                             [<abbr>WCAG</abbr> 1.1.1 (A)]
-                          </span>
-                        </p>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <h4 className="text-4-bold" id="usage-2">Problems when used with visual impairment</h4>
-                  <div className="main-text text-5">
-                    <ul>
-                      <li>
-                        <p>
-                          On the page for registering data there is a text that becomes difficult to read at 200% text zoom and increased distance between characters. We will correct the error soon.{' '}
-                          <span>
-                            [<abbr>WCAG</abbr> 1.4.12 (AA)]
                           </span>
                         </p>
                       </li>

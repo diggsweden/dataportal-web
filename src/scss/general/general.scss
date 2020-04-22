@@ -58,6 +58,7 @@ html textarea:focus {
 //Cookie banner, base from designsystem.
 .cookie-banner {
     color: $black100;
+
     button {
         &:focus {
             outline: $focus-style !important;
@@ -66,8 +67,10 @@ html textarea:focus {
             border-color: $green-hover;
         }
     }
+
     a {
         color: $black100;
+
         &:focus {
             outline: $focus-style;
             outline-offset: $focus-offset;
@@ -93,13 +96,16 @@ html textarea:focus {
 
 
 //Disabled link boxes
-.disabled-linkbox{
+.disabled-linkbox {
     position: relative;
     background-color: rgba(240, 239, 238, 1) !important;
-    
+
     cursor: default !important;
-    a, span, p{
-        color:#646363 !important;
+
+    a,
+    span,
+    p {
+        color: #646363 !important;
     }
 }
 
@@ -122,10 +128,22 @@ html textarea:focus {
     }
 }
 
-.link-wrapper{
-    .soon{
+.link-wrapper {
+    .soon {
         top: auto;
         bottom: 10px;
     }
 }
 
+//View more link
+.view-more-link {
+    align-self: flex-start;
+    // text-decoration: none;
+    // padding: 4px 8px;
+    // color: $green100 !important;    border: 2px solid $green100;
+    // color: $green100;
+    // border-radius: 2px;
+    // &:hover {
+    //     border-color: $green-hover;
+    // }
+}

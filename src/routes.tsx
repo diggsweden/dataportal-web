@@ -17,6 +17,9 @@ import { AccessibilityWebPage } from './pages/AccessibilityWebPage';
 import { AccessibilityWebPageEn } from './pages/AccessibilityWebPage';
 import { PublishDataPage} from './pages/PublishDataPage';
 import { PublishDataPageEn} from './pages/PublishDataPage';
+// import { NewsListPage } from './pages/News';
+// import { NewsPage } from './pages/News';
+
 // import i18n from './i18n';
 import { StartPage } from './pages/StartPage';
 import { StartPageEn } from './pages/StartPage';

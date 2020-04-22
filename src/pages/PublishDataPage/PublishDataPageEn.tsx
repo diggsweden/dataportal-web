@@ -115,9 +115,10 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                           View your data on Sweden's data portal{' '}
                         </a>
                         <p className="text-5">
-                          Register your organization and harvesting source on
-                          Sweden's data portal. Check data volumes harvested and
-                          manage your data directory before publishing.
+                          Register your organisation and harvesting source on
+                          Sweden´s data portal. Search and explore data sets
+                          harvested and manage your data directory before
+                          publishing.
                         </p>
                       </div>
                     </div>

@@ -106,7 +106,8 @@ export class PublishDataPage extends React.Component<PageProps, any> {
                     <div
                       className="link-block"
                       onClick={e => {
-                        window.location.href = 'https://registrera.oppnadata.se/';
+                        window.location.href =
+                          'https://registrera.oppnadata.se/';
                       }}
                     >
                       <div className="link-wrapper">
@@ -115,9 +116,9 @@ export class PublishDataPage extends React.Component<PageProps, any> {
                         </a>
                         <p className="text-5">
                           Registrera din organisation och skördningskälla på
-                          Sveriges dataportal. Kontrollera datamängder som
-                          skördats och administrera din datakatalog innan
-                          publicering.
+                          Sveriges dataportal. Sök fram och utforska datamängder
+                          som skördats och validera, slå samman och undersök din
+                          datakatalog innan publicering.
                         </p>
                       </div>
                     </div>
@@ -167,7 +168,7 @@ export class PublishDataPage extends React.Component<PageProps, any> {
                       href="https://www.europeandataportal.eu/sv/homepage"
                       target="_blank"
                     >
-                      Den euoropeiska dataportalen
+                      Den europeiska dataportalens
                     </a>{' '}
                     skördar och visar i sin tur data från Sveriges dataportal.
                   </p>
@@ -209,17 +210,21 @@ export class PublishDataPage extends React.Component<PageProps, any> {
                     </li>
                     <li>
                       Skapa en användare eller logga in på{' '}
-                      <a target="_blank"
-                        href="https://registrera.oppnadata.se/">
-                          registrera.dataportal.se</a>. Sveriges dataportal
-                          tillhandahåller verktyg för att validera, slå samman och
-                          undersöka din datakatalog innan publicering.
-                      </li>
+                      <a
+                        target="_blank"
+                        href="https://registrera.oppnadata.se/"
+                      >
+                        registrera.dataportal.se
+                      </a>
+                      . Sveriges dataportal tillhandahåller verktyg för att
+                      validera, slå samman och undersöka din datakatalog innan
+                      publicering.
+                    </li>
                     <li>
                       Länka upp Sveriges dataportal till er organisations data
                       genom att registrera, ändra och bekräfta er
                       skördningskälla. Validera och spara. Vid behov,
-                      kontrollera att skördningen till {' '}
+                      kontrollera att skördningen till{' '}
                       <a
                         target="_blank"
                         href="https://registrera.oppnadata.se/"

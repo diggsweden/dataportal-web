@@ -23,5 +23,13 @@
   "concepts":{
     "path":"concepts",
     "title":"Concepts"
+  },
+  "news":{
+    "path":"news",
+    "title":"News"
+  },
+  "news-article":{
+    "path":"news-article",
+    "title":"news-article"
   }
 }

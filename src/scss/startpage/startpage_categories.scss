@@ -4,7 +4,7 @@
 .startpage-categories {
     max-width: 1130px;
     padding: 0px 0px;
-    margin-bottom: $space-48;
+    margin-bottom: $space-64;
 
     h2 {
         margin-top: 0px;
@@ -23,6 +23,7 @@
             &:not(:last-of-type) {
                 a {
                     margin-right: $space-16;
+
                     &:after {
                         content: ',';
                     }

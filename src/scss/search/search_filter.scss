@@ -108,7 +108,7 @@
                     justify-content: space-between;
                     padding-left: 20px;
                     padding-right: 20px;
-                    height: inherit;
+                    height: auto;
                     border: none;
                     border-radius: 0px;
                     border-bottom: 1px solid $green10;
@@ -137,10 +137,6 @@
                         outline-offset: -4px !important;
                         background-color: $green25 !important;
                         color: #5a5856 !important;
-        
-                        svg {
-                            // fill: #5a5856 !important;
-                        }   
                     }
                 }
 
@@ -170,13 +166,12 @@
         justify-content: center;
         align-items: center;
         background-color: $brown10;
-        border: none;
+        height: auto;
+        max-height: 52px;
         padding: $space-8;
-        padding-top: 0px;
-        padding-bottom: 0px;
-        height: $space-32;
-        border-radius: 2px;
         margin-right: $space-16;
+        border: none;
+        border-radius: 2px;
         cursor: pointer;
         margin-bottom: $space-16;
         min-width: 30px;

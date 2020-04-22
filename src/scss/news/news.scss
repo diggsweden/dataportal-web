@@ -1,0 +1,144 @@
+@import 'scss/general/variables.scss';
+
+// Compact newslist component startpage
+.news-compact {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: $space-16;
+    margin-bottom: $space-64;
+
+    .news-pinned,
+    .news-list-compact {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+    }
+
+    .news-pinned {
+        &:hover {
+            cursor: pointer;
+            a {
+                text-decoration: none;
+            }
+        }
+        img {
+            width: 100%;
+            max-width: 544px;
+
+            @media screen and (max-width: 800px) {
+                max-width: 749px;
+            }
+        }
+        span {
+            margin-top: $space-16;
+            display: block;
+        }
+        h3 {
+            margin-top: $space-8;
+            margin-bottom: $space-8;
+            a {
+                color: $black100;
+            }
+        }
+        p {
+            margin: 0px;
+            max-width: 544px;
+
+            @media screen and (max-width: 800px) {
+                max-width: 749px;
+            }
+        }
+    }
+
+    .news-list-compact {
+        ul {
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+            li {
+                margin-bottom: $space-16;
+                &:hover {
+                    cursor: pointer;
+                    a {
+                        text-decoration: none;
+                    }
+                }
+                h3 {
+                    margin-top: $space-8;
+                    margin-bottom: $space-8;
+                    color: $black100;
+                    a {
+                        color: $black100;
+                    }
+                }
+                p {
+                    margin-top: 0px;
+                    margin-bottom: 0px;
+                    padding-bottom: $space-8;
+                }
+            }
+        }
+
+        @media screen and (min-width: 800px) {
+            margin-left: $space-32;
+        }
+    }
+
+    @media screen and (max-width: 800px) {
+        flex-direction: column;
+        .news-pinned,
+        .news-list-compact {
+            width: 100%;
+        }
+        .news-pinned {
+            margin-bottom: $space-24;
+        }
+    }
+}
+
+// NewsListPage
+.news-list {
+    ul {
+        list-style: none;
+        padding: 0px;
+        li {
+            display: flex;
+            flex-direction: column;
+            border-left: 10px solid;
+            padding-top: $space-8;
+            padding-bottom: $space-8;
+            padding-left: $space-16;
+            margin-bottom: $space-32;
+            a {
+                margin-top: $space-8;
+                margin-bottom: $space-8;
+            }
+            p {
+                margin-top: 0px;
+                margin-bottom: 0px;
+            }
+            &:hover {
+                cursor: pointer;
+                a {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+// NewsPage
+.news-article {
+    img{
+        width: 100%;
+        height: auto;
+        margin-bottom: $space-24;
+    }
+
+    margin-top: $space-24;
+    h1 {
+        margin-top: $space-24;
+        margin-bottom: $space-32;
+    }
+}

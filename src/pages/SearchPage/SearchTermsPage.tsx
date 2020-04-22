@@ -1,4 +1,4 @@
-import { Box, SearchIcon, Button, CloseIcon } from '@digg/design-system';
+import { Box, SearchIcon, Button, CloseIcon, colorPalette } from '@digg/design-system';
 import React from 'react';
 import 'url-search-params-polyfill';
 import { ErrorBoundary } from '../../components/ErrorBoundary';
@@ -210,7 +210,7 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
                               }
                             ></input>
                             <button type="submit" aria-label="Sök">
-                              <SearchIcon width={[25]} />
+                              <SearchIcon color={colorPalette.white} width={[25]} />
                             </button>
                             {search.loadingFacets && <Loader />}
                           </div>
@@ -432,7 +432,7 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
                             <div className="first-page">
                               {(search.request.page || 0) > 1 && (
                                 <button
-                                  className="first-page-btn"
+                                  className=""
                                   onClick={() => {
                                     search
                                       .set({

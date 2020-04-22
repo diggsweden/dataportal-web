@@ -23,5 +23,13 @@
   "concepts":{
     "path":"concepts",
     "title":"Begrepp"
+  },
+  "news":{
+    "path":"nyheter",
+    "title":"Nyheter"
+  },
+  "nyhet":{
+    "path":"nyhets-artikel",
+    "title":"nyhets-artikel"
   }
 }

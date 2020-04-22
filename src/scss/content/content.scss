@@ -14,7 +14,11 @@
 .content {
     max-width: 40em; //640px //40rem //40em
 
-    h1, h2, h3, h4, h5{
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
         word-break: break-word;
     }
 
@@ -64,6 +68,8 @@
         }
     }
 
+
+
     //Linkblocks / Pixels
     .link-blocks {
         display: flex;
@@ -71,18 +77,10 @@
 
         .link-block {
             background-color: $pink50;
-            position: relative;
             cursor: pointer;
             width: 50%;
-            padding-top: 50%;
-
-            .link-wrapper {
-                position: absolute;
-                top: 16px;
-                left: 16px;
-                right: 16px;
-                bottom: 16px;
-            }
+            min-height: 320px;
+            padding: $space-16;
 
             a {
                 font-weight: bold;

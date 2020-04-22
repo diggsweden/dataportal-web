@@ -23,9 +23,9 @@
         box-shadow: 2px 2px 10px #f2f2f2;
 
         @media screen and (max-width: 400px) {
-        padding: 0px;
-        border: none;
-        box-shadow: none;
+            padding: 0px;
+            border: none;
+            box-shadow: none;
         }
 
         div {
@@ -62,6 +62,7 @@
         }
     }
 
+    //Statistic component - toplist
     .statistic-toplist {
         display: flex;
         flex-wrap: wrap;
@@ -99,9 +100,9 @@
                 box-shadow: 2px 2px 10px #f2f2f2;
 
                 @media screen and (max-width: 400px) {
-                box-shadow: none;
-                border: none;
-                padding: 0px;
+                    box-shadow: none;
+                    border: none;
+                    padding: 0px;
                 }
 
                 ol {
@@ -142,6 +143,7 @@
     }
 }
 
+//Statistic graph component
 .graphbox {
     border: 1px solid $black10;
     border-radius: 2px;
@@ -181,28 +183,33 @@
 
     .rv-xy-plot__axis--horizontal {
         @media screen and (max-width: 800px) {
-            .rv-xy-plot__axis__tick{
+            .rv-xy-plot__axis__tick {
                 display: none;
             }
-            .rv-xy-plot__axis__tick:first-of-type{
+
+            .rv-xy-plot__axis__tick:first-of-type {
                 display: block;
             }
-            .rv-xy-plot__axis__tick:last-of-type{
+
+            .rv-xy-plot__axis__tick:last-of-type {
                 display: block;
             }
-            .rv-xy-plot__axis__tick:nth-of-type(4){
+
+            .rv-xy-plot__axis__tick:nth-of-type(4) {
                 display: block;
             }
-            .rv-xy-plot__axis__tick:nth-of-type(8){
+
+            .rv-xy-plot__axis__tick:nth-of-type(8) {
                 display: block;
             }
         }
 
         @media screen and (max-width: 400px) {
-            .rv-xy-plot__axis__tick:nth-of-type(4){
+            .rv-xy-plot__axis__tick:nth-of-type(4) {
                 display: none;
             }
-            .rv-xy-plot__axis__tick:nth-of-type(8){
+
+            .rv-xy-plot__axis__tick:nth-of-type(8) {
                 display: none;
             }
         }

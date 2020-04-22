@@ -95,10 +95,6 @@ export class AccessibilityWebPage extends React.Component<PageProps> {
                         <a href="#usage-1">Användning utan synförmåga</a>
                       </li>
 
-                      <li>
-                        <a href="#usage-2">Användning med nedsatt synförmåga</a>
-                      </li>
-
                     </ul>
                   </div>
                   <h2 className="text-2">
@@ -177,30 +173,16 @@ export class AccessibilityWebPage extends React.Component<PageProps> {
                     </ul>
                   </div>
 
-                  <h4 className="text-5-bold" id="usage-2">Problem vid användning med nedsatt synförmåga</h4>
-                  <div className="main-text text-5">
-                    <ul>
-                      <li>
-                        <p>
-                        På sidan registrera data finns en text som blir svårläst vid 200% text-zoom och ökat avstånd mellan tecken. Vi kommer att rätta felet inom kort.{' '}
-                          <span>
-                            [<abbr>WCAG</abbr> 1.4.12 (AA)]
-                          </span>
-                        </p>
-                      </li>
-                    </ul>
-                  </div>
-
                   <h2 className="text-2">Hur vi testat webbplatsen</h2>
                   <p className="main-text text-5">
                     Vi har gjort en självskattning (intern testning) av Sveriges
                     dataportal.
                   </p>
                   <p className="main-text text-5">
-                    Senaste bedömingen gjordes den 16&#160;mars 2020.
+                    Senaste bedömingen gjordes den 16 mars 2020.
                   </p>
                   <p className="main-text text-5">
-                    Redogörelsen uppdaterades senast den 18&#160;mars 2020.
+                    Redogörelsen uppdaterades senast den 22 April 2020.
                   </p>
                 </div>
               </div>

@@ -63,7 +63,7 @@ export const getHeader = ({
           <link rel="mask-icon" href="/dist/client/js/safari-pinned-tab.svg" color="black">  
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700&display=swap" type="text/css">
           <meta name="og:type" content="website">
-          <meta name="og:site_name" content="Dataportalen">          
+          <meta name="og:site_name" content="Sveriges dataportal">          
           ${styleBundles.map(src => createStyleTag(src))}              
           ${metaTags}                                       
           <link rel="preload" href="https://dataportal.azureedge.net/cdn/entrystore.4.7.5.modified.js" as="script" crossorigin="anonymous">   
