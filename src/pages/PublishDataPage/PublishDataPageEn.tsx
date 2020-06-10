@@ -70,19 +70,24 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                 <h1 className="text-header text-1">Register data</h1>
                 <div className="content">
                   <p className="preamble text-4">
-                    You have the opportunity to contribute content to Sweden's
-                    data portal yourself by publishing your datasets. They then
-                    become searchable for everyone and thus the chances of being
-                    used increase. It is only when using data that benefit
-                    arises.
+                    Welcome in contributing content to Sweden's data portal by
+                    publishing your datasets. Your contribution will then be
+                    searchable for everyone and thus the chances of your
+                    datasets being used will increase. It is only when data is
+                    used that the benefits will arise.
                   </p>
                   <p className="main-text text-5">
-                    It should be easy for users to find and understand if data
-                    is suitable for the purposes they have, both in terms of
-                    content and technically. Soon, Sweden's data portal will
-                    contain three different services. The services simplify both
-                    for the users who want to use data, but also for the actors
-                    who want to make information available.
+                    It is important to make it easy for users to find and
+                    understand the data by ensuring that the content of the data
+                    is suitable for the purposes they are intended for and that
+                    it is technically feasible to access these data.
+                  </p>
+
+                  <p className="main-text text-5">
+                    Soon, Sweden's data portal will deliver services that will
+                    simplify for both the users who want to use data, but also
+                    for the actors who want to make information available. The
+                    three different services that are planned for are:
                   </p>
 
                   <ul className="main-text text-5">
@@ -92,7 +97,7 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                   </ul>
 
                   <p className="main-text text-5">
-                    The data portal enables a more efficient exchange of
+                    The data portal aims to enable a more efficient exchange of
                     information in a digital ecosystem by linking data with its
                     specification and concepts.
                   </p>
@@ -116,7 +121,7 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                         </a>
                         <p className="text-5">
                           Register your organisation and harvesting source on
-                          Sweden´s data portal. Search and explore data sets
+                          Sweden´s data portal. Search and explore datasets
                           harvested and manage your data directory before
                           publishing.
                         </p>
@@ -136,28 +141,27 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                           className=""
                           // href="https://editera.dataportal.se/"
                         >
-                          Manage and concepts and specifications
+                          Register and manage concepts and specifications
                         </a>
                         <p className="text-5">
-                          Register your organization to access tools where
-                          actors can describe, link, maintain and publish
-                          concepts and specifications.
+                          Get access tools where you can describe, link,
+                          maintain and publish concepts and specifications.
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <h2 className="text-2">This is how it works</h2>
+                  <h2 className="text-2">How it works</h2>
                   <p className="main-text text-5">
-                    Sweden's data portal collects daily descriptions of data
-                    volumes published publicly by organizations. Another word
-                    for a description of a dataset is metadata. Only the
-                    metadata is published on the portal, while the actual data
-                    sources remain with the publishing organization. Both open
-                    and limited data can be described. Data that can be used by
-                    everyone is given direct access via links on the portal.
-                    Data that has some kind of restriction is requested or
-                    agreed upon by the respective organization.
+                    Sweden's data portal collects daily descriptions of datasets
+                    published publicly by organisations. Another word for
+                    describing a dataset is metadata. The portal publishes only
+                    metadata while the actual data sources remain with the
+                    publishing organisation. Both open and limited data can be
+                    described here. Data that can be used by everyone is given
+                    direct access via links on the portal. Data that has some
+                    kind of restriction is requested from or agreed upon by
+                    respective organisation.
                   </p>
 
                   <p className="main-text text-5">
@@ -173,15 +177,19 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
 
                   <h2 className="text-2">How to get started publishing data</h2>
                   <p className="main-text text-5">
-                    A prerequisite for publishing data to Sweden data portal is
-                    to create and publish a directory of metadata in a common
-                    and standardized way.
+                    In order for Sweden's data portal to know what data you
+                    have, you must publish a directory of your data. In the
+                    directory, your data must be described as datasets. For
+                    example, a dataset may correspond to the data stored in a
+                    particular system, data that a particular target group is
+                    interested in, data that relates to a specific topic or data
+                    that is managed in a uniform manner.
                   </p>
 
                   <p className="main-text text-5">
-                    Once you have identified one or more datasets whose
-                    descriptions you want to publish to Sweden's data portal
-                    should you do the following:{' '}
+                    You should do the following once you have identified
+                    descriptions to one or more datasets you want to publish on
+                    the data portal:{' '}
                   </p>
 
                   <ol className="main-text text-5">
@@ -197,37 +205,24 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                       . Many users use an external tool for this step.
                     </li>
                     <li>
-                      Publish the specification to your own stable URL. This URL
-                      is your so-called "harvesting source" from which the data
-                      portal automatically retrieves your data directory.
+                      Publish the specification with a stable URL. This URL is
+                      your so-called "harvesting source" to which the data
+                      portal will automatically retrieve your data directory
+                      from.
                     </li>
                     <li>
-                      Create a user or log in to{' '}
-                      <a
-                        target="_blank"
-                        href="https://registrera.oppnadata.se/"
-                      >
-                        registrera.dataportal.se
-                      </a>
-                      . The Data Portal provides here tools to validate, merge,
-                      and examine your data directory before publishing.
+                      Create a user or log in to registera.dataportal.se. The
+                      Data Portal provides tools to validate, merge, and examine
+                      your data directory before publishing.
                     </li>
                     <li>
-                      Link Sweden's data portal to your organization's data by
-                      registering, modifying and confirming you harvesting
-                      source. Validate and save. If necessary, check that the
-                      harvest to{' '}
-                      <a
-                        target="_blank"
-                        href="https://registrera.oppnadata.se/"
-                      >
-                        registrera.dataportal.se
-                      </a>{' '}
-                      works.
+                      Make sure the harvesting source matches the URL you
+                      created in step 2. If necessary, check that the harvesting
+                      to register.dataportal.se works.
                     </li>
                     <li>
                       When you are done, your datasets will appear on Sweden's
-                      data portal.
+                      data portal within a day.
                     </li>
                   </ol>
 

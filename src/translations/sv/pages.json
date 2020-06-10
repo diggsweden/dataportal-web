@@ -30,7 +30,8 @@
     "organization" : "Organisationer",
     "relevance" : "Relevans",
     "date" : "Senast ändrad",
-    "sort" : "Sortera:"
+    "sort" : "Sortera:",
+    "nohits" : "Inga träffar"
   },
   "datasets" : {
     "search-datasets" : "Sök efter datamängd",

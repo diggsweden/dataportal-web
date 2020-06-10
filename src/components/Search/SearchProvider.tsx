@@ -42,7 +42,7 @@ export interface SearchContextData {
  */
 const defaultSettings:SearchContextData = {
   request: {query:'',fetchFacets:true,takeFacets:5,facetValues:[], take:10, page:0},
-  result: {hits:[],facets:{},count:0},    
+  result: {hits:[],facets:{},count:-1},    
   set: () =>  new Promise<void>(resolve => {}),  
   toggleFacet: () =>  new Promise<void>(resolve => {}),  
   fetchMoreFacets: () => new Promise<void>(resolve => {}),
@@ -585,7 +585,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
       let sortOrder = this.state.request.sortOrder && this.state.request.sortOrder? 
         this.state.request.sortOrder as SearchSortOrder
         : 
-        SearchSortOrder.score_asc;
+        SearchSortOrder.score_desc;
 
       let facets = this.state.request && this.state.request.facetValues? 
 
@@ -614,7 +614,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
         let page = qs.p && qs.p.toString().length > 0? qs.p.toString() : null;
         let queryfacets:SearchFacetValue[] = [];
 
-        let sortOrder:SearchSortOrder = qs.s as SearchSortOrder || SearchSortOrder.score_asc;
+        let sortOrder:SearchSortOrder = qs.s as SearchSortOrder || SearchSortOrder.score_desc;
         
         let facetstrings:{ [facet: string]: string[]; } = {};        
               

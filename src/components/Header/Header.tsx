@@ -212,8 +212,8 @@ export class Header extends React.Component<HeaderProps> {
                   rel="noreferrer"
                 >
                   {i18n.t('common|beta-link-text')}
-                </a>{' '}
-                {i18n.t('common|beta-text2')}{' '}
+                </a>
+                {i18n.t('common|beta-text2')}
                 <a
                   className="text-6-link"
                   href="https://oppnadata.se"
@@ -261,7 +261,7 @@ export class Header extends React.Component<HeaderProps> {
 
                 {/* <LanguageSelector /> */}
                 <div className="lang-select">
-                  <a className="text-7" href={ i18n.t('common|language') === 'English' ? '/en' : '/sv'}>{i18n.t('common|language')}</a>
+                  <a className="text-7" href={ i18n.t('common|language').includes('english') ? '/en' : '/sv'}>{i18n.t('common|language')}</a>
                 </div>
 
                 <div className="header-links">

@@ -11,12 +11,15 @@ import { QueryParamProvider } from '../../components/QueryParamProvider';
 import { __RouterContext } from 'react-router';
 import { PageMetadata } from '../PageMetadata';
 import i18n from 'i18n';
-import { string } from 'prop-types';
+import { NewsList } from '../../components/News'
+import { EnvSettings } from '../../../config/env/EnvSettings';
+import { SettingsContext } from 'components/SettingsProvider';
 
 const MainContent = Box.withComponent('main');
 
 export interface NewsListProps
-  extends RouteComponentProps<any, RouterContext> {}
+  extends RouteComponentProps<any, RouterContext> {    
+  }
 
 export class NewsListPage extends React.Component<NewsListProps> {
   private headerRef: React.RefObject<Header>;
@@ -48,94 +51,45 @@ export class NewsListPage extends React.Component<NewsListProps> {
   render() {
     const { location } = this.props;
     let uri = new URLSearchParams(location.search);
-
+    
     return (
       <QueryParamProvider params={uri}>
         <PageMetadata
-          seoTitle="Nyheter - Sveriges dataportal"
-          seoDescription=""
-          seoImageUrl=""
-          seoKeywords=""
-          robotsFollow={true}
-          robotsIndex={true}
-          lang={i18n.languages[0]}
-        />
-        <Box
-          id="top"
-          display="flex"
-          direction="column"
-          minHeight="100vh"
-          bgColor="#fff"
-        >
-          <NoJavaScriptWarning text="" />
+            seoTitle="Nyheter - Sveriges dataportal"
+            seoDescription=""
+            seoImageUrl=""
+            seoKeywords=""
+            robotsFollow={true}
+            robotsIndex={true}
+            lang={i18n.languages[0]}
+          />
+        <SettingsContext.Consumer>
+          {settings => (            
+          <Box
+            id="top"
+            display="flex"
+            direction="column"
+            minHeight="100vh"
+            bgColor="#fff"
+          >
+            <NoJavaScriptWarning text="" />
 
-          <Header ref={this.headerRef} />
+            <Header ref={this.headerRef} />
 
-          <ErrorBoundary>
-            <MainContent flex="1 1 auto">
-              <div className="main-container">
-                <h1 className="text-header text-1">Nyheter</h1>
-                <div className="content">
-                    <div className="news-list">
-                        {/* <ul>
-                            <li style={{borderColor: this.state.bgColor[Math.floor(Math.random()*this.state.bgColor.length)]}}>
-                                <span className="text-6">7 Maj 2020</span>
-                                <a className="text-3" href="#">Nyhet nummer uno</a>
-                                <p className="text-5">
-                                Convallis est lorem habitasse mollis. Feugiat id ullamcorper imperdiet amet sapien, aliquet. Et libero nisl quisque netus et fames scelerisque. Etiam facilisis faucibus pretium elit nulla pharetra, eu purus. 
-                                </p>
-                            </li>
-                            <li style={{borderColor: this.state.bgColor[Math.floor(Math.random()*this.state.bgColor.length)]}}>
-                                <span className="text-6">7 Maj 2020</span>
-                                <a className="text-3" href="#">Nyhet nummer uno</a>
-                                <p className="text-5">
-                                Convallis est lorem habitasse mollis. Feugiat id ullamcorper imperdiet amet sapien, aliquet. Et libero nisl quisque netus et fames scelerisque. Etiam facilisis faucibus pretium elit nulla pharetra, eu purus. 
-                                </p>
-                            </li>
-                            <li style={{borderColor: this.state.bgColor[Math.floor(Math.random()*this.state.bgColor.length)]}}>
-                                <span className="text-6">7 Maj 2020</span>
-                                <a className="text-3" href="#">Nyhet nummer uno</a>
-                                <p className="text-5">
-                                Convallis est lorem habitasse mollis. Feugiat id ullamcorper imperdiet amet sapien, aliquet. Et libero nisl quisque netus et fames scelerisque. Etiam facilisis faucibus pretium elit nulla pharetra, eu purus. 
-                                </p>
-                            </li>
-                            <li style={{borderColor: this.state.bgColor[Math.floor(Math.random()*this.state.bgColor.length)]}}>
-                                <span className="text-6">7 Maj 2020</span>
-                                <a className="text-3" href="#">Nyhet nummer uno</a>
-                                <p className="text-5">
-                                Convallis est lorem habitasse mollis. Feugiat id ullamcorper imperdiet amet sapien, aliquet. Et libero nisl quisque netus et fames scelerisque. Etiam facilisis faucibus pretium elit nulla pharetra, eu purus. 
-                                </p>
-                            </li>
-                            <li style={{borderColor: this.state.bgColor[Math.floor(Math.random()*this.state.bgColor.length)]}}>
-                                <span className="text-6">7 Maj 2020</span>
-                                <a className="text-3" href="#">Nyhet nummer uno</a>
-                                <p className="text-5">
-                                Convallis est lorem habitasse mollis. Feugiat id ullamcorper imperdiet amet sapien, aliquet. Et libero nisl quisque netus et fames scelerisque. Etiam facilisis faucibus pretium elit nulla pharetra, eu purus. 
-                                </p>
-                            </li>
-                            <li style={{borderColor: this.state.bgColor[Math.floor(Math.random()*this.state.bgColor.length)]}}>
-                                <span className="text-6">7 Maj 2020</span>
-                                <a className="text-3" href="#">Nyhet nummer uno</a>
-                                <p className="text-5">
-                                Convallis est lorem habitasse mollis. Feugiat id ullamcorper imperdiet amet sapien, aliquet. Et libero nisl quisque netus et fames scelerisque. Etiam facilisis faucibus pretium elit nulla pharetra, eu purus. 
-                                </p>
-                            </li>
-                            <li style={{borderColor: this.state.bgColor[Math.floor(Math.random()*this.state.bgColor.length)]}}>
-                                <span className="text-6">7 Maj 2020</span>
-                                <a className="text-3" href="#">Nyhet nummer uno</a>
-                                <p className="text-5">
-                                Convallis est lorem habitasse mollis. Feugiat id ullamcorper imperdiet amet sapien, aliquet. Et libero nisl quisque netus et fames scelerisque. Etiam facilisis faucibus pretium elit nulla pharetra, eu purus. 
-                                </p>
-                            </li>
-                        </ul> */}
-                        <button>Visa fler nyheter</button>
-                    </div>
+            <ErrorBoundary>
+              <MainContent flex="1 1 auto">
+                <div className="main-container">
+                  <h1 className="text-header text-1">Nyheter</h1>
+                  <div className="content">
+                    <NewsList env={settings.env}/>
+                  </div>
                 </div>
-              </div>
-            </MainContent>
-          </ErrorBoundary>
-          <Footer onToTopButtonPushed={this.setFocus} />
-        </Box>
+              </MainContent>
+            </ErrorBoundary>
+            <Footer onToTopButtonPushed={this.setFocus} />
+          </Box>
+          )}
+        </SettingsContext.Consumer>
       </QueryParamProvider>
     );
   }

@@ -12,6 +12,10 @@ export class Settings_Sandbox extends EnvSettings {
 
   ENTRYSCAPE_BLOCKS_URL="https://dataportal.azureedge.net/cdn/blocks.0.18.3.app.js"
 
+  CONTENTBACKEND_SITEURL="dev.digg.se";
+
+  CONTENTBACKEND_GRAPHAPI="https://digg-test-graphproxy.azurewebsites.net";
+
   envName = 'sandbox';
 
   public constructor()

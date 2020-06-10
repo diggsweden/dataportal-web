@@ -10,5 +10,10 @@ export abstract class EnvSettings {
 
   
   abstract ENTRYSCAPE_BLOCKS_URL:string;  
+
+  abstract CONTENTBACKEND_SITEURL: string;
+
+  abstract CONTENTBACKEND_GRAPHAPI: string;
+
   abstract envName: string;
 }

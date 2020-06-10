@@ -13,6 +13,10 @@ export class Settings_Prod extends EnvSettings {
 
   ENTRYSCAPE_BLOCKS_URL="https://dataportal.azureedge.net/cdn/blocks.0.18.3.app.js"
 
+  CONTENTBACKEND_SITEURL="digg.se";
+
+  CONTENTBACKEND_GRAPHAPI="https://digg-test-graphproxy.azurewebsites.net";
+
   envName = 'prod';
 
   public constructor()

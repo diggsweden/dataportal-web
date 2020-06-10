@@ -1,7 +1,6 @@
 import {ESFacetField, ESType, ESRdfType} from './EntryScape'
 
-export enum SearchSortOrder {
-  score_asc = 1,
+export enum SearchSortOrder {  
   score_desc = 2,
   modified_asc = 4,
   modified_desc = 8

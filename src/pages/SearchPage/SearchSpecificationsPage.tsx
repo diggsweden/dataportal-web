@@ -200,6 +200,7 @@ export class SearchSpecificationsPage extends React.Component<
                               {i18n.t('pages|concept|search-concept')}
                             </label>
                             <input
+                              autoFocus
                               id="search-field"
                               autoComplete="off"
                               name="q"
@@ -382,12 +383,17 @@ export class SearchSpecificationsPage extends React.Component<
                         <noscript>{i18n.t('common|no-js-text')}</noscript>
 
                         <div id="search-result" className="search-result">
-                          <h2 className="text-4 search-result-header">
-                            {search.loadingHits
-                              ? `${i18n.t('common|loading')}...`
-                              : `${search.result.count} ${i18n.t(
-                                  'pages|search|specification-hits'
-                                )}`}{' '}
+                          <h2 className="text-4 search-result-header">                           
+                              {search.loadingHits &&
+                                 `${i18n.t('common|loading')}...`
+                              }
+                              {!search.loadingHits && search.result && (search.result.count || -1) > 0 &&                                
+                                `${search.result.count} ${i18n.t('pages|search|specification-hits')}`                                
+                              }
+                              {!search.loadingHits && search.result && (search.result.count || -1) == -1 &&
+                                `${i18n.t('pages|search|nohits')}`
+                              }
+                              {' '}                                
                           </h2>
                           <div>
                             <ul className="search-result-list">

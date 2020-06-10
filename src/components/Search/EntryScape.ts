@@ -1,6 +1,8 @@
 import { SearchHit, SearchResult, SearchRequest, SearchFacetValue, SearchFacet, HitSpecification, FacetSpecification, FacetSpecificationItem, SearchSortOrder } from './Search';
 import i18next from 'i18next';
 import { request } from 'express';
+const lucene = require('lucene');
+import { slugify } from 'utilities/urlHelpers'
 
 //unfortunate hack to get a entrystore class instance, script is inserted in head
 declare var EntryStore:any;
@@ -242,39 +244,24 @@ export class EntryScape {
     
     if(es)
     {         
-      values['organisation_literal'] = es.getMetadata().find(null, "http://www.w3.org/ns/dcat#keyword").map((f:any) => {return f.getValue()} );      
-      values['theme_literal'] = es.getMetadata().find(null, "http://www.w3.org/ns/dcat#theme")
+      let metadata = es.getMetadata();
+
+      values['organisation_literal'] = metadata
+        .find(null, "http://www.w3.org/ns/dcat#keyword")        
+        .filter((f:any) => f.getLanguage() == undefined)
+        .map((f:any) => { return f.getValue()} );      
+
+      values['theme_literal'] = metadata.find(null, "http://www.w3.org/ns/dcat#theme")
         .map((f:any) => {
           return i18next.t('resource|' + f.getValue())
         });      
-      values['format_literal'] = es.getMetadata().find(null, "http://purl.org/dc/terms/format").map((f:any) => {return f.getValue()} );      
+      values['format_literal'] = metadata.find(null, "http://purl.org/dc/terms/format").map((f:any) => {return f.getValue()} );      
 
       //theme needs to be translated
       //if(values['theme_literal'])
         //values['theme_literal'] = i18next.t('facetvalues|'+values['theme_literal']);
     }    
     return values;
-  }
-
-  /**
-   * Make @param str URL-friendly  
-   */
-  slugify(str:string) {
-    const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
-    const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
-    const p = new RegExp(a.split('').join('|'), 'g')
-  
-    if(!str)
-      return '';
-
-    return str.toString().toLowerCase()
-      .replace(/\s+/g, '-') // Replace spaces with -
-      .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
-      .replace(/&/g, '-and-') // Replace & with 'and'
-      .replace(/[^\w\-]+/g, '') // Remove all non-word characters
-      .replace(/\-\-+/g, '-') // Replace multiple - with single -
-      .replace(/^-+/, '') // Trim - from start of text
-      .replace(/-+$/, '') // Trim - from end of text
   }
 
   /**
@@ -319,6 +306,43 @@ export class EntryScape {
   };
 
   /**
+   * Constructs a lucene friendly query text value
+   * 
+   * @param query RAW query
+   */
+  luceneFriendlyQuery(query:string) : string {        
+    let q = '';
+        
+    if(query == 'AND')
+      return 'and';
+
+    if(query == 'OR')
+      return 'or';
+
+    if(query && (query.startsWith('AND ') || query.startsWith('AND+')))
+    {
+      query = query.substring(4,query.length)
+    }
+
+    if(query && (query.startsWith('OR ') || query.startsWith('OR+')))
+    {
+      query = query.substring(3,query.length)
+    }
+
+    const ast = lucene.parse(query);
+    q = lucene.toString(ast);
+    q = q.replace(/ OR /g,"+OR+");
+    q = q.replace(/ AND /g,"+AND+");
+
+    if(q.indexOf("\"") == -1)
+      q = q.replace(/ /g,"+AND+");
+      
+    console.log(q);    
+
+    return q;
+  }
+
+  /**
    * Query EntryScape backend from given request
    * 
    * @param request 
@@ -330,7 +354,10 @@ export class EntryScape {
 
       let hits: SearchHit[] = [];      
       let query = request.query || '*';
+
+      this.luceneFriendlyQuery(query);
       let modifiedQuery = query.split(' ');
+      modifiedQuery = modifiedQuery.map(s => s.trim()).filter(s => s.length > 0 && s != 'AND');
       let lang = request.language || 'sv';
 
       const es = new EntryStore.EntryStore(this.entryscapeUrl);            
@@ -347,25 +374,8 @@ export class EntryScape {
             else if(fSpec.type == ESType.uri)
               esQuery.uriFacet(fSpec.resource);
           });
-        }
-        // esQuery
-        //   .uriFacet('http://www.w3.org/ns/dcat#theme')  
-        //   .uriFacet('http://purl.org/dc/terms/publisher')                            
-        //   // .uriFacet('http://purl.org/dc/terms/type',true) //Vi tar bort org.typ i MVP 1      
-        //   .literalFacet('http://purl.org/dc/terms/format')
-        //   .uriFacet('http://purl.org/dc/terms/accessRights')
-        //   //.uriFacet('http://www.w3.org/1999/02/22-rdf-syntax-ns#type') //typer av resurser
+        }        
       }
-
-      if(modifiedQuery && modifiedQuery.length > 0)
-      modifiedQuery.forEach((q) => {
-        let trimmed = q.trim();
-        if(trimmed) {
-          esQuery.or({title:`${trimmed}`,'tag.literal':`${trimmed}`,description:`${trimmed}`});
-          //For adding search tolerance use the following, TODO: setting
-          //esQuery.or({title:`${trimmed}~1`,'tag.literal':`${trimmed}`,description:`${trimmed}~1`});
-        }
-      })
 
       //if request has facetValues object, add facets to query
       if(request.facetValues && request.facetValues.length > 0)
@@ -403,35 +413,42 @@ export class EntryScape {
         switch(request.sortOrder)
         {
           case SearchSortOrder.modified_asc:
-            esQuery.sort('modified asc');
+            esQuery.sort('modified+asc');
             break;
           case SearchSortOrder.modified_desc:
-            esQuery.sort('modified desc');
-            break;
-          case SearchSortOrder.score_asc:
-            esQuery.sort('score asc');
-            break;
+            esQuery.sort('modified+desc');
+            break;          
           case SearchSortOrder.score_desc:
-            esQuery.sort('score desc');
+            esQuery.sort('score+desc');
             break;
         }        
 
       esQuery        
-        .limit(request.take || 10)                
+        .limit(request.take || 20)                
         .rdfType(request.esRdfTypes || [ESRdfType.dataset]) //we will use dataset as default if no resource type is defined                                
-        .publicRead(true);
+        .publicRead(true);      
 
-      searchList = es.createSearchList(esQuery);      
+      searchList = esQuery.list();             
+      
+      let queryUrl = searchList.getQuery().getQuery();      
 
-      searchList                  
-        .getEntries(request.page || 0)
-        .then((children:any) => {                           
+      let q = this.luceneFriendlyQuery(query);//modifiedQuery.join("+AND+");       
 
-           //facets must be retrieved explicitly if requested
-           if(request.fetchFacets)
-           {
-              var metaFacets = searchList.getFacets();                            
-           }                  
+      //set query text
+      queryUrl = queryUrl.replace("&query=",
+      `&query=(metadata.object.literal:(${q})+OR+title:(${q})+OR+description:(${q})+OR+tag.literal:(${q}))+AND+`)
+
+      fetch(queryUrl)
+      .then(response => {
+        response.json().then(data => {
+          let children = EntryStore.factory.extractSearchResults(data, searchList, es);
+      
+          //facets must be retrieved explicitly if requested
+          if(request.fetchFacets)
+          {              
+            searchList.setFacets(data.facetFields);                       
+            var metaFacets = searchList.getFacets();     
+          }                  
                       
           //construct SearchHit-array
           children.forEach((child:any) => {      
@@ -447,7 +464,7 @@ export class EntryScape {
               metadata: this.getMetaValues(child),
               url:''
             };
-            hit.url = `${this.hitSpecification.path || 'datamangd'}${context.getId()}_${hit.entryId}/${this.slugify(hit.title)}`;
+            hit.url = `${this.hitSpecification.path || 'datamangd'}${context.getId()}_${hit.entryId}/${slugify(hit.title)}`;
             hit.description = hit.description && hit.description.length > 250? `${(hit.description + '').substr(0,250)}...` : hit.description;            
 
             hits.push(hit);         
@@ -460,6 +477,7 @@ export class EntryScape {
             esFacets: metaFacets   
           });
         });     
-    });     
+    });  
+  })   
   }
 }

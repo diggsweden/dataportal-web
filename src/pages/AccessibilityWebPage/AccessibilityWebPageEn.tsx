@@ -175,7 +175,7 @@ export class AccessibilityWebPageEn extends React.Component<PagePropsEn> {
                     2020.
                   </p>
                   <p className="main-text text-5">
-                    The report was last updated on 18&#160;March 2020.
+                    The report was last updated on 22 April 2020.
                   </p>
                 </div>
               </div>

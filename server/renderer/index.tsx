@@ -16,6 +16,11 @@ import { Routes } from '../../src/routes';
 import { getBundles, getStyleBundles } from './getBundles';
 import { getFooter, getHeader } from './html-template';
 import { GlobalStyles } from '../../src/GlobalStyles';
+import { ApolloProvider } from '@apollo/react-hooks'
+import { ApolloClient } from 'apollo-client'
+import { createHttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { SettingsUtil } from "../../config/env/SettingsUtil";
 
 export interface RenderResponseProfileItem {
   name: string;
@@ -50,7 +55,25 @@ export const renderer = async (
   const cache = createCache()
   const { extractCritical } = createEmotionServer(cache)
 
+  const env = SettingsUtil.create(host);
+
+  const link = createHttpLink({
+    uri:env.CONTENTBACKEND_GRAPHAPI,
+    credentials: 'same-origin',
+    headers: {
+      cookie: cookies,
+    },
+    fetch: fetch as any
+  });
+
+  const client = new ApolloClient({
+    ssrMode: true,
+    link,
+    cache: new InMemoryCache()    
+  });
+
   const frontend = (
+  <ApolloProvider client={client}>
     <CacheProvider value={cache}>
       <GlobalStyles theme={themes.default} />
       <ThemeProvider theme={themes.opendata}>
@@ -65,6 +88,7 @@ export const renderer = async (
         </HelmetProvider>
       </ThemeProvider>      
     </CacheProvider>
+    </ApolloProvider>
   );
 
   try {

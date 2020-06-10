@@ -65,6 +65,7 @@ export class AboutWebPage extends React.Component<PageProps> {
             <MainContent flex="1 1 auto">
               <div className="main-container">
                 <h1 className="text-header text-1">Om webbplatsen</h1>
+                
                 <div className="content">
                   <p className="preamble text-4">
                     Sveriges dataportal är under utveckling och finns i nuläget
@@ -139,6 +140,17 @@ export class AboutWebPage extends React.Component<PageProps> {
                       <li>Gjort justeringar för bättre tillgänglighet</li>
                     </ul>
                   </div>
+
+                  <div className="main-text">
+                    <span className="text-5-bold">2020-06-10:</span>
+                    <ul className="text-5">
+                      <li>Gjort justeringar i designen</li>
+                      <li>Gjort justeringar av sökfunktionen</li>
+                      <li>Sökfraser med AND, OR och NOT går att använda</li>
+                      <li>Förbättrat relevansen i träfflistan efter sökning</li>
+                    </ul>
+                  </div>
+
 
                   <h2 className="text-2">
                     Tillgänglighetsredogörelse för dataportalen

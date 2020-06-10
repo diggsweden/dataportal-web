@@ -16,6 +16,10 @@
     }
 }
 
+.search-header{
+    margin-top: $space-32;
+}
+
 .search-box {
     display: flex;
     flex-wrap: nowrap;
@@ -29,17 +33,17 @@
     input {
         height: 100%;
         min-height: 48px;
-        max-width: 486px;
+        max-width: 500px;
         min-width: 200px;
         width: 100%;
         border: 2px solid $black100;
         border-right: none;
-        padding-left: 20px;
+        padding-left: 12px;
         border-top-left-radius: 2px;
         border-bottom-left-radius: 2px;
 
         &:hover {
-            border-color: $green-hover;
+            border-color: $black-hover;
         }
 
         &::placeholder {

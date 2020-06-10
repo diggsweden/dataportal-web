@@ -129,6 +129,11 @@ export class FileFormatBadge extends React.Component<
         className = 'bc-8';
         break;
 
+      case 'application/xml':
+        text = 'xml';
+        className = 'bc-8';
+        break;
+
       case 'pdf':
         text = 'pdf';
         className = 'bc-8';

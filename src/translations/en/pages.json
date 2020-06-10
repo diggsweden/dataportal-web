@@ -30,7 +30,8 @@
     "organization" : "Organizations",
     "relevance" : "Relevance",
     "date" : "Last modified",
-    "sort" : "Order by:"
+    "sort" : "Order by:",
+    "nohits" : "No hits"
   },
   "datasets" : {
     "search-datasets" : "Search datasets",

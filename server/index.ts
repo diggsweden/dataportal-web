@@ -40,6 +40,7 @@ var csp_headers = {
     '*.dataportal.se',
     '*.googleapis.com',
     '*.gstatic.com',
+    'digg-test-graphproxy.azurewebsites.net'
   ],
   'base-uri': ["'self'"],
   'manifest-src': ["'self'"],
@@ -62,7 +63,7 @@ var csp_headers = {
     '*.oppnadata.se',
     '*.dataportal.se',
   ],
-  'frame-ancestors': ["'none'"],
+  'frame-ancestors': ['https://dev.digg.se'],
   'connect-src': ['*'],
 };
 app.use('/', function(req, res, done) {

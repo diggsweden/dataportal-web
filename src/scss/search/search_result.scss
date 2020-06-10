@@ -10,6 +10,7 @@
         margin-top: $space-8;
 
         //Sorting buttons
+        //Relevace, last modified
         .search-sort {
             display: flex;
             align-items: center;
@@ -38,6 +39,15 @@
                 &:focus{
                     z-index: 1;
                 }
+
+                &:first-of-type{
+                    border-top-left-radius: 2px;
+                    border-bottom-left-radius: 2px;
+                }
+                &:last-of-type{
+                    border-top-right-radius: 2px;
+                    border-bottom-right-radius: 2px;
+                }
             }
 
             //Style for sorting results, after relevance or date
@@ -59,7 +69,7 @@
         margin: 0px;
 
         li {
-            margin-bottom: $space-16;
+            margin-bottom: $space-8;
 
             &:last-of-type {
                 margin-bottom: $space-32;
@@ -68,12 +78,12 @@
             &.search-result-list-item {
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between;
+                // justify-content: space-between;
                 width: 100%;
                 min-height: 150px;
-                padding: $space-32;
-                padding-bottom: 40px;
-                background-color: #F5F5F4;
+                padding: $space-24;
+                padding-bottom: 24px;
+                background-color: $brown10;
                 text-decoration: none;
                 color: $black100;
                 cursor: pointer;
@@ -91,19 +101,26 @@
                     margin-bottom: 0px;
 
                     &:empty {
-                        margin-top: -18px;
+                        margin-top: -14px;
                     }
                 }
 
                 //Searchresult link
                 a {
-                    margin-bottom: $space-16;
-                    margin-top: $space-16;
+                    margin-bottom: $space-8;
+                    margin-top: $space-8;
                     text-decoration: none;
 
                     h3{
                         text-decoration: underline;
                         word-break: break-word;
+                        max-width: 850px;
+                    }
+
+                    &:visited{
+                        h3{
+                            // color:$brown100;
+                        }
                     }
 
                     &:focus {
@@ -116,6 +133,7 @@
                 //Searchresult title
                 h3 {
                     margin: 0px;
+                    // max-width: 750px;
                 }
 
                 //Searchresult description
@@ -123,14 +141,14 @@
                     font-family: Ubuntu !important;
                     margin: 0px;
                     max-width: 750px;
-                    margin-bottom: $space-16;
+                    margin-bottom: $space-8;
                     line-height: $space-24;
                 }
 
                 //Searchresult organisation
                 .result-org {
                     margin-top: 0px;
-                    margin-bottom: $space-16 ;
+                    margin-bottom: $space-8 ;
                     &:empty{
                         display: none;;
                     }
@@ -139,7 +157,7 @@
                 //Searchresult formats
                 .result-format {
                     margin-top: $space-8;
-                    margin-bottom: 0px;
+                    margin-bottom: 4px;
                     margin-right: $space-8 !important;
                     max-width: none !important;
 
@@ -213,7 +231,10 @@
     flex-wrap: wrap;
 
     &:empty {
-        margin-bottom: -16px;
+        // margin-bottom: -16px;
+        // display: none;
+        margin-top: -8px;
+
     }
 }
 

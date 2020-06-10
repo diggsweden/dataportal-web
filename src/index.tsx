@@ -12,6 +12,12 @@ import { CacheProvider } from '@emotion/core';
 import { GlobalStyles } from './GlobalStyles';
 import { SettingsProvider } from './components/SettingsProvider';
 import './i18n';
+import { ApolloProvider } from '@apollo/react-hooks'
+import { ApolloClient } from 'apollo-client'
+import { createHttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { SettingsUtil } from "../config/env/SettingsUtil";
+import 'isomorphic-unfetch'
 
 import 'scss/general/general.scss';
 import 'scss/general/typography.scss';
@@ -39,26 +45,37 @@ const serverState = (window as any).__DATA__ || null;
 const cache = createCache();
 const renderMethod = serverState != null ? ReactDOM.hydrate : ReactDOM.render;
 
+const env = SettingsUtil.create(typeof window !== 'undefined'? window.location.href : '');
+
+const link = createHttpLink({  
+  fetch: fetch as any,
+  uri:env.CONTENTBACKEND_GRAPHAPI,
+  credentials: 'same-origin'
+});
+
+const client = new ApolloClient({
+  link,
+  cache: new InMemoryCache()
+});
+
 function render() {
-  return renderMethod(
-    <CacheProvider value={cache}>
-      <GlobalStyles theme={themes.default} />
-      <ThemeProvider theme={themes.opendata}>
-        <HelmetProvider>
-          <LocalStoreProvider>
-            <SettingsProvider
-              applicationUrl={
-                typeof window !== 'undefined' ? window.location.href : ''
-              }
-            >
-              <BrowserRouter>
-                <Routes />
-              </BrowserRouter>
-            </SettingsProvider>
-          </LocalStoreProvider>
-        </HelmetProvider>
-      </ThemeProvider>
-    </CacheProvider>,
+  return renderMethod(   
+    <ApolloProvider client={client}>
+      <CacheProvider value={cache}>
+        <GlobalStyles theme={themes.default} />
+        <ThemeProvider theme={themes.opendata}>
+          <HelmetProvider>       
+            <LocalStoreProvider>        
+              <SettingsProvider applicationUrl={typeof window !== 'undefined'? window.location.href : ''}>
+                <BrowserRouter>
+                  <Routes />
+                </BrowserRouter>
+              </SettingsProvider>                            
+            </LocalStoreProvider>      
+          </HelmetProvider>
+        </ThemeProvider>
+      </CacheProvider>
+    </ApolloProvider> ,  
     document.querySelector('#root')
   );
 }

@@ -136,7 +136,7 @@ export class PublishDataPage extends React.Component<PageProps, any> {
                           className=""
                           // href="https://editera.dataportal.se/"
                         >
-                          Förvalta och begrepp och specifikationer
+                          Registrera och förvalta begrepp och specifikationer
                         </a>
                         <p className="text-5">
                           Få åtkomst till verktyg där ni kan beskriva,
@@ -168,7 +168,7 @@ export class PublishDataPage extends React.Component<PageProps, any> {
                       href="https://www.europeandataportal.eu/sv/homepage"
                       target="_blank"
                     >
-                      Den europeiska dataportalens
+                      Den europeiska dataportalen
                     </a>{' '}
                     skördar och visar i sin tur data från Sveriges dataportal.
                   </p>
@@ -193,8 +193,8 @@ export class PublishDataPage extends React.Component<PageProps, any> {
 
                   <ol className="main-text text-5">
                     <li>
-                      Beskriv dina datamängder enligt den standardiserade
-                      metadataspecifikationen{' '}
+                      Beskriv dina datamängder genom att upprätta en datakatalog
+                      enligt den standardiserade metadataspecifikationen{' '}
                       <a
                         target="_blank"
                         href="https://diggsweden.github.io/DCAT-AP-SE/"
@@ -204,9 +204,9 @@ export class PublishDataPage extends React.Component<PageProps, any> {
                       . Många använder ett externt verktyg för detta steg.
                     </li>
                     <li>
-                      Publicera specifikationen på en egen stabil webbadress.
-                      Denna webbadress är er så kallade ”skördningskälla” som
-                      dataportalen automatiskt hämtar er datakatalog ifrån.
+                      Publicera katalogen på en egen stabil webbadress. Denna
+                      webbadress är din så kallade ”skördningskälla” som
+                      dataportalen automatiskt hämtar datakatalogen ifrån.
                     </li>
                     <li>
                       Skapa en användare eller logga in på{' '}
@@ -216,26 +216,17 @@ export class PublishDataPage extends React.Component<PageProps, any> {
                       >
                         registrera.dataportal.se
                       </a>
-                      . Sveriges dataportal tillhandahåller verktyg för att
-                      validera, slå samman och undersöka din datakatalog innan
-                      publicering.
+                      . Här finns verktyg för att validera, slå samman och
+                      undersöka din datakatalog innan publicering.
                     </li>
                     <li>
-                      Länka upp Sveriges dataportal till er organisations data
-                      genom att registrera, ändra och bekräfta er
-                      skördningskälla. Validera och spara. Vid behov,
-                      kontrollera att skördningen till{' '}
-                      <a
-                        target="_blank"
-                        href="https://registrera.oppnadata.se/"
-                      >
-                        registrera.dataportal.se
-                      </a>{' '}
-                      fungerar.
+                      Se till skördningskällan stämmer överens med den
+                      webbadress du tagit fram i steg 2. Vid behov, kontrollera
+                      att skördningen till registrera.dataportal.se fungerar.
                     </li>
                     <li>
                       När du är klar kommer dina datamängder att dyka upp på
-                      Sveriges dataportal.
+                      Sveriges dataportal inom ett dygn.
                     </li>
                   </ol>
 

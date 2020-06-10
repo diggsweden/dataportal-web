@@ -1,11 +1,11 @@
 {
   "search-data" : "Sök data",
-  "language" : "English",
+  "language" : "In english",
 
   "contact" : "Kontakt",
-  "beta-text1" : "Sveriges dataportal är i betaversion. Skicka gärna dina",
-  "beta-link-text" : "synpunkter",
-  "beta-text2" : "till oss! Gå till gamla",
+  "beta-text1" : "Sveriges dataportal är i betaversion. Skicka gärna dina ",
+  "beta-link-text" : "synpunkter ",
+  "beta-text2" : "till oss! Gå till gamla ",
   "logo-title" : "Sveriges dataportal",
   "to-top" : "Till toppen",
   "show-filter" : "Visa filter",
@@ -16,3 +16,4 @@
   "no-js-text" : "JavaScript måste vara aktiverat för att söksidan ska fungera.",
   "soon" : "KOMMER SNART"
 }
+

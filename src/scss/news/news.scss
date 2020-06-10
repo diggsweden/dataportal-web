@@ -107,9 +107,9 @@
             flex-direction: column;
             border-left: 10px solid;
             padding-top: $space-8;
-            padding-bottom: $space-8;
+            padding-bottom: $space-16;
             padding-left: $space-16;
-            margin-bottom: $space-32;
+            margin-bottom: $space-16;
             a {
                 margin-top: $space-8;
                 margin-bottom: $space-8;
@@ -117,6 +117,10 @@
             p {
                 margin-top: 0px;
                 margin-bottom: 0px;
+                padding-right: $space-16;
+
+                word-wrap: break-word;
+                word-break: break-all;
             }
             &:hover {
                 cursor: pointer;
@@ -130,15 +134,53 @@
 
 // NewsPage
 .news-article {
+    margin-top: $space-24;
+
     img{
         width: 100%;
         height: auto;
         margin-bottom: $space-24;
     }
 
-    margin-top: $space-24;
+    p{
+        margin-top: 0px;
+    }
+
     h1 {
-        margin-top: $space-24;
+        margin-top: $space-16;
         margin-bottom: $space-32;
+    }
+    h2{
+        margin-top: $space-32;
+        margin-bottom: $space-24;
+
+        font-weight: bold;
+        font-size: 2rem; //32px
+        line-height: 40px;
+        letter-spacing: -0.03em;
+        color: $black100;
+    }
+    h3{
+        margin-top: $space-32;
+        margin-bottom: $space-16;
+
+        font-weight: bold;
+        font-size: 1.5rem; //24px
+        line-height: 32px;
+        letter-spacing: -0.02em;
+        color: $black100;
+    }
+    h4{
+        margin-top: $space-32;
+        margin-bottom: $space-8;
+
+        font-weight: bold;
+        font-size:1.25rem; //20px
+        line-height: 28px;
+        letter-spacing: -0.01em;
+        color: $black100;
+    }
+    ul, ol{
+        margin-bottom: $space-24;
     }
 }

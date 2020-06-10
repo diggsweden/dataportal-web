@@ -166,7 +166,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                               {i18n.t('pages|search|specifications')}
                             </a>
                             <span className="text-6">
-                              Specifications of information and data models
+                              Explore specifications of information and data models
                             </span>
                           </div>
                         </div>

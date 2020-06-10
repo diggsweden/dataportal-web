@@ -87,9 +87,9 @@ export class Footer extends React.Component<FooterProps> {
         className="footer-box"
         bgColor=""
         paddingX={2}
-        paddingTop={[2, 8]}
+        paddingTop={[2, 4]}
         paddingBottom={4}
-        marginTop={[8, 0]}
+        marginTop={[10]}
         lang="sv"
       >
         <Text color={colorPalette.grey1}>

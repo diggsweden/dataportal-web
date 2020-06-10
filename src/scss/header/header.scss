@@ -1,5 +1,10 @@
 @import 'scss/general/variables.scss';
 
+header{
+    border-bottom: 1px solid $black10;
+    padding-bottom: 10px;
+}
+
 .dataportal-logo {
     &:focus {
         outline: $focus-style;
@@ -9,6 +14,7 @@
 
 .header-box {
     position: relative;
+    margin-top: 10px;
 }
 
 .header-links {
@@ -25,7 +31,7 @@
         }
 
         &:last-of-type {
-            min-width: 150px;
+            // min-width: 150px;
             margin-left: $space-32;
         }
     }
@@ -41,6 +47,7 @@
 
         &:hover {
             transition: border-color 0.2s;
+            // color: $black-hover;
             border-color: $pink10;
         }
 
@@ -107,17 +114,26 @@
 
 //Beta information banner
 .beta-banner {
-    max-width: $page-width;
+    // max-width: $page-width;
     width: 100%;
-    padding: $space-16;
+    // padding: $space-16;
+    padding-top: 6px;
+    padding-bottom: 8px;
+    padding-left: $space-16;
+    padding-right: $space-16;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: $orange10;
-
+    
     p {
+        max-width: $page-width;
+        width: 100%;
         margin: 0px;
+        text-align: center;
+        @media screen and (max-width: 500px) {
         text-align: left;
+        }
     }
 }
 
@@ -129,19 +145,24 @@
     a {
         text-decoration: none;
     }
+    
     a,button{
         margin-top: $space-8;
         height: 20px;
-        color: $green100;
+        color: $black100;
         border:none;
         padding-right: 2px;
         padding-left: 2px;
+        padding-top: 5px;
+        padding-bottom: 5px;
         min-width: 0px;
         border-radius: 0px;
+        text-decoration: none;
 
         &:hover{
             transition: ease-in-out .2s;
-            color: $black100;
+            // color: $black-hover;
+            // text-decoration: none;
         }
     }
 }

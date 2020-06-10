@@ -140,6 +140,16 @@ export class AboutWebPageEn extends React.Component<PagePropsEn> {
                     </ul>
                   </div>
 
+                  <div className="main-text">
+                    <span className="text-5-bold">2020-06-10:</span>
+                    <ul className="text-5">
+                    <li>Design adjustments</li>
+                      <li>Improved search functionality</li>
+                      <li>Search phrases with AND, OR and NOT can be used</li>
+                      <li>Improved relevance in the hit list after searching</li>
+                    </ul>
+                  </div>
+
                   <h2 className="text-2">
                     Accessibility report for the data portal
                   </h2>

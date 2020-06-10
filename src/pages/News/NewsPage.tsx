@@ -13,6 +13,8 @@ import { PageMetadata } from '../PageMetadata';
 import i18n from 'i18n';
 import { TopImage } from 'assets/TopImage';
 import { string } from 'prop-types';
+import { NewsItem } from '../../components/News'
+import { SettingsContext } from 'components/SettingsProvider';
 
 const MainContent = Box.withComponent('main');
 
@@ -53,55 +55,32 @@ export class NewsPage extends React.Component<NewsPageProps> {
           robotsIndex={true}
           lang={i18n.languages[0]}
         />
-        <Box
-          id="top"
-          display="flex"
-          direction="column"
-          minHeight="100vh"
-          bgColor="#fff"
-        >
-          <NoJavaScriptWarning text="" />
+        <SettingsContext.Consumer>
+          {settings => (       
+          <Box
+            id="top"
+            display="flex"
+            direction="column"
+            minHeight="100vh"
+            bgColor="#fff"
+          >
+            <NoJavaScriptWarning text="" />
 
-          <Header ref={this.headerRef} />
+            <Header ref={this.headerRef} />
 
-          <ErrorBoundary>
-            <MainContent flex="1 1 auto">
-              <div className="main-container">
-                
-                <div className="news-article content">
-
-                <TopImage />
-
-
-
-                <span className="text-6">7 Maj 2020</span>
-                <h1 className="text-1">Nyhets artikel</h1>
-                  <p className="preamble text-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Phasellus purus metus, viverra quis urna at, hendrerit
-                    tempor lorem. Maecenas iaculis est in mattis egestas.
-                    Suspendisse pulvinar, lacus eu egestas ornare, mi nisl
-                    euismod purus, placerat pulvinar leo quam ac turpis.
-                  </p>
-                  <p className="main-text text-5">
-                    Pellentesque quis pharetra dui, et vestibulum metus.
-                    Suspendisse eget aliquet leo. In imperdiet lacinia
-                    facilisis. Praesent ipsum nunc, sagittis sed dignissim quis,
-                    ultrices id neque. Curabitur tincidunt malesuada tempor.
-                    Donec fringilla eros nec semper vehicula. Sed in bibendum
-                    ex, ac malesuada nibh. Sed commodo lorem leo, eget commodo
-                    sapien rhoncus consequat. Praesent condimentum pulvinar
-                    tristique. Nullam commodo volutpat sem. Donec feugiat justo
-                    vel auctor efficitur. Nullam in massa finibus nisl
-                    vestibulum volutpat. Cras lacinia leo blandit arcu rhoncus
-                    tincidunt.
-                  </p>
+            <ErrorBoundary>
+              <MainContent flex="1 1 auto">
+                <div className="main-container">                  
+                  <div className="">
+                  <NewsItem env={settings.env} id={this.props.match.params.nid} />
+                  </div>
                 </div>
-              </div>
-            </MainContent>
-          </ErrorBoundary>
-          <Footer onToTopButtonPushed={this.setFocus} />
-        </Box>
+              </MainContent>
+            </ErrorBoundary>
+            <Footer onToTopButtonPushed={this.setFocus} />
+          </Box>
+          )}
+        </SettingsContext.Consumer>
       </QueryParamProvider>
     );
   }

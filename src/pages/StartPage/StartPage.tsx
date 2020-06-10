@@ -28,7 +28,7 @@ import { PageProps } from 'pages/PageProps';
 
 import { StatisticGraph } from '../../components/StatisticGraph';
 import { Highlight } from '../../components/Highlight';
-import { News } from '../../components/News';
+// import { NewsBlock } from 'components/News';
 
 const MainContent = Box.withComponent('main');
 
@@ -293,6 +293,8 @@ export class StartPage extends React.Component<PageProps, any> {
                       </div>
 
                       <Highlight env={settings.env} />
+
+                      {/* <NewsBlock env={settings.env}/> */}
 
                       {/* <RenderInBrowser except ie> */}
                       <StatisticGraph env={settings.env} />

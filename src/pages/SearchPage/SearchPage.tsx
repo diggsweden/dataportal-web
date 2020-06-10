@@ -155,6 +155,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
             esRdfTypes: [ESRdfType.dataset],
             takeFacets: 30,
             language: i18n.languages[0],
+            sortOrder: SearchSortOrder.score_desc
           }}
         >
           <PageMetadata
@@ -213,6 +214,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
                               {i18n.t('pages|datasets|search-datasets')}
                             </label>
                             <input
+                              autoFocus
                               id="search-field"
                               autoComplete="off"
                               name="q"
@@ -395,12 +397,17 @@ export class SearchPage extends React.Component<SearchProps, any> {
 
                         <div id="search-result" className="search-result">
                           <div className="search-result-head">
-                            <h2 className="text-4 search-result-header">
-                              {search.loadingHits
-                                ? `${i18n.t('common|loading')}...`
-                                : `${search.result.count} ${i18n.t(
-                                    'pages|search|dataset-hits'
-                                  )}`}{' '}
+                            <h2 className="text-4 search-result-header">                                     
+                              {search.loadingHits &&
+                                 `${i18n.t('common|loading')}...`
+                              }
+                              {!search.loadingHits && search.result && (search.result.count || -1) > 0 &&                                
+                                `${search.result.count} ${i18n.t('pages|search|dataset-hits')}`                                
+                              }
+                              {!search.loadingHits && search.result && (search.result.count || -1) == -1 &&
+                                `${i18n.t('pages|search|nohits')}`
+                              }
+                              {' '}
                             </h2>
 
                             <div className="search-sort">
@@ -411,14 +418,14 @@ export class SearchPage extends React.Component<SearchProps, any> {
                                   search
                                     .set({
                                       page: 0,
-                                      sortOrder: SearchSortOrder.score_asc,
+                                      sortOrder: SearchSortOrder.score_desc,
                                     })
                                     .then(() => search.doSearch());
                                 }}
                                 className={
                                   search.request.sortOrder &&
                                   search.request.sortOrder ==
-                                    SearchSortOrder.score_asc
+                                    SearchSortOrder.score_desc
                                     ? 'text-7 sort-active'
                                     : 'text-7'
                                 }
@@ -467,7 +474,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
                                         )}
                                     </p>{' '}
                                     <a href={`${hit.url}`}>
-                                      <h3 className="text-3">{hit.title}</h3>
+                                      <h3 className="text-4">{hit.title}</h3>
                                     </a>
                                     <p className="text-6">{hit.description}</p>
                                     <p className="result-org text-6-bold">

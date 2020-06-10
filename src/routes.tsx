@@ -17,8 +17,8 @@ import { AccessibilityWebPage } from './pages/AccessibilityWebPage';
 import { AccessibilityWebPageEn } from './pages/AccessibilityWebPage';
 import { PublishDataPage} from './pages/PublishDataPage';
 import { PublishDataPageEn} from './pages/PublishDataPage';
-// import { NewsListPage } from './pages/News';
-// import { NewsPage } from './pages/News';
+import { NewsListPage } from './pages/News';
+import { NewsPage } from './pages/News';
 
 // import i18n from './i18n';
 import { StartPage } from './pages/StartPage';
@@ -64,8 +64,18 @@ class RoutesComponent extends React.Component<RouteProps> {
                 <Route path={['/about-webpage' ,'/en/about-webpage']} exact render={(props)=><AboutWebPageEn {...props}/>} />
                 <Route path={['/about-webpage/accessibility', '/en/about-webpage/accessibility']} exact render={(props)=><AccessibilityWebPageEn {...props}/>} />
                 <Route path={['/register-data', '/en/register-data']} exact render={(props)=><PublishDataPageEn {...props}/>} />
+                <Route path={['/news', '/en/news']} exact render={(props)=><NewsListPage {...props}/>} />
+                <Route path={['/news/:nid/*', '/en/news/:nid/*','/en/news/*']} exact render={(props)=><NewsPage {...props}/>} />
                 <Route path="/en" exact render={(props)=><StartPageEn {...props}/>} />
-                {/* Swedish */}                
+                {/* <Route path={['/news', '/en/news']} exact render={(props)=><NewsListPage {...props}/>} /> */}
+
+                {/* Swedish */}
+                <Redirect exact from="/" to="/sv/" />
+
+                <Route path={['/nyhets-artikel', '/sv/nyhets-artikel']} exact render={(props)=><NewsPage {...props}/>} />
+                <Route path={['/nyheter', '/sv/nyheter']} exact render={(props)=><NewsListPage {...props}/>} />
+                <Route path={['/nyheter/:nid/*', '/sv/nyheter/:nid/*','/sv/nyheter/*']} exact render={(props)=><NewsPage {...props}/>} />
+
                 <Route path={['/registrera-data', '/sv/registrera-data']} exact render={(props)=><PublishDataPage {...props}/>} />
                 <Route path={['/om-webbplatsen', '/sv/om-webbplatsen']} exact render={(props)=><AboutWebPage {...props}/>} />
                 <Route path={['/om-webbplatsen/tillganglighet', '/sv/om-webbplatsen/tillganglighet']} exact render={(props)=><AccessibilityWebPage {...props}/>} />
