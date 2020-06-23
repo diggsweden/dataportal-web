@@ -387,12 +387,9 @@ export class SearchSpecificationsPage extends React.Component<
                               {search.loadingHits &&
                                  `${i18n.t('common|loading')}...`
                               }
-                              {!search.loadingHits && search.result && (search.result.count || -1) > 0 &&                                
+                              {!search.loadingHits && search.result && (search.result.count || 0) >= 0 &&                                
                                 `${search.result.count} ${i18n.t('pages|search|specification-hits')}`                                
-                              }
-                              {!search.loadingHits && search.result && (search.result.count || -1) == -1 &&
-                                `${i18n.t('pages|search|nohits')}`
-                              }
+                              }                              
                               {' '}                                
                           </h2>
                           <div>

@@ -4,6 +4,7 @@ export abstract class EnvSettings {
   abstract ENTRYSCAPE_TERMS_PATH:string;
   abstract ENTRYSCAPE_ORG_STATS_URL:string;
   abstract ENTRYSCAPE_THEME_STATS_URL:string;
+  abstract ENTRYSCAPE_THEME_STATS_URL_EN:string;
 
   abstract ENTRYSCAPE_CONCEPT_STATS_URL:string;
   abstract ENTRYSCAPE_HISTORY_STATS_URL:string;

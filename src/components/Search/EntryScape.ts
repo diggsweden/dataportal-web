@@ -308,16 +308,12 @@ export class EntryScape {
   /**
    * Constructs a lucene friendly query text value
    * 
-   * @param query RAW query
+   * if lucene syntax is used incorrectly the query will be run without lucene special characters
+   * 
+   * @param query RAW query input
    */
   luceneFriendlyQuery(query:string) : string {        
-    let q = '';
-        
-    if(query == 'AND')
-      return 'and';
-
-    if(query == 'OR')
-      return 'or';
+    let q = '';       
 
     if(query && (query.startsWith('AND ') || query.startsWith('AND+')))
     {
@@ -329,15 +325,32 @@ export class EntryScape {
       query = query.substring(3,query.length)
     }
 
-    const ast = lucene.parse(query);
-    q = lucene.toString(ast);
+    if(query && (query.startsWith('NOT ') || query.startsWith('NOT+')))
+    {
+      query = query.substring(4,query.length)
+    }    
+
+    let ast = {};
+    try{
+      ast = lucene.parse(query); 
+      q = lucene.toString(ast);
+    }
+    //could not parse as lucene, remove all special chars and trim 
+    catch(err)
+    {      
+      q = query.replace(/([\!\*\-\+\&\|\(\)\[\]\{\}\^\~\?\:\"])/g, "").trim();    
+      q = q.replace(/\s+/g, ' '); //removes mulitple whitespaces
+    }
+    
     q = q.replace(/ OR /g,"+OR+");
     q = q.replace(/ AND /g,"+AND+");
+    q = q.replace(/ NOT /g,"+-");    
 
     if(q.indexOf("\"") == -1)
       q = q.replace(/ /g,"+AND+");
-      
-    console.log(q);    
+          
+    if(q.length == 0)
+      q = "*";
 
     return q;
   }

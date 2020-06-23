@@ -49,5 +49,10 @@
     "heading" : "404 - Page not found",
     "body" : "The page you requested could not be found.",
     "tostart" : "To startpage"
+  },
+  "datasetpage" : {
+    "about-dataset" : "About dataset",
+    "download-dataset" : "Access data",
+    "catalog" : "Catalog"
   }
 }

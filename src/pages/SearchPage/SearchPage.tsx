@@ -401,12 +401,9 @@ export class SearchPage extends React.Component<SearchProps, any> {
                               {search.loadingHits &&
                                  `${i18n.t('common|loading')}...`
                               }
-                              {!search.loadingHits && search.result && (search.result.count || -1) > 0 &&                                
+                              {!search.loadingHits && search.result && (search.result.count || 0) >= 0 &&                                
                                 `${search.result.count} ${i18n.t('pages|search|dataset-hits')}`                                
-                              }
-                              {!search.loadingHits && search.result && (search.result.count || -1) == -1 &&
-                                `${i18n.t('pages|search|nohits')}`
-                              }
+                              }                              
                               {' '}
                             </h2>
 

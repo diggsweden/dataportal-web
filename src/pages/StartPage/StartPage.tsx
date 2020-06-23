@@ -147,7 +147,7 @@ export class StartPage extends React.Component<PageProps, any> {
 
                             <a
                               className="text-4"
-                              aria-label="Sök efter specifikationer"
+                              aria-label="Sök efter begrepp"
                               // href={`/${i18n.languages[0]}/concepts?p=1&q=*&f=`}
                             >
                               {i18n.t('pages|search|concepts')}

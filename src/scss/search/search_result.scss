@@ -69,7 +69,7 @@
         margin: 0px;
 
         li {
-            margin-bottom: $space-8;
+            margin-bottom: $space-16;
 
             &:last-of-type {
                 margin-bottom: $space-32;
@@ -81,8 +81,8 @@
                 // justify-content: space-between;
                 width: 100%;
                 min-height: 150px;
-                padding: $space-24;
-                padding-bottom: 24px;
+                padding: $space-16;
+                padding-bottom: 20px;
                 background-color: $brown10;
                 text-decoration: none;
                 color: $black100;
@@ -110,11 +110,11 @@
                     margin-bottom: $space-8;
                     margin-top: $space-8;
                     text-decoration: none;
+                    max-width: 850px;
 
                     h3{
                         text-decoration: underline;
                         word-break: break-word;
-                        max-width: 850px;
                     }
 
                     &:visited{

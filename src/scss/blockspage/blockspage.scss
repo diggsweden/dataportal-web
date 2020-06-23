@@ -1,8 +1,8 @@
 @import 'scss/general/variables.scss';
 
 //Redesign of datasetpages rendered with blocks version 0.18.
-//Blocks already have its own css.. 
-//Thats why there is alot of !importants in this file..
+//Blocks already have its own css.
+//Thats why there is alot of !importants in this file.
 
 //Color fix for links under h3 tags.
 .boxed {
@@ -84,7 +84,7 @@
     }
 
     //H2 for about datasets
-    .about-header {
+    .data-header {
         margin-top: $space-32;
     }
 
@@ -95,7 +95,7 @@
         font-weight: normal;
         font-size: 18px !important;
         line-height: 27px !important;
-        margin-bottom: $space-32 !important;
+        // margin-bottom: $space-32 !important;
         max-width: 640px;
         word-break: break-word;
     }
@@ -235,7 +235,7 @@
     //New span for catalog
     .catalog-span {
         width: 10em;
-        padding-top: 6px;
+        padding-top:11px;
         padding-bottom: 0.5em;
         font-family: Ubuntu !important;
     }
@@ -544,7 +544,11 @@
 //Blocks .18
 .esbRow {
     box-shadow: none !important;
-    margin-bottom: $space-24 !important;
+    margin-bottom: $space-16 !important;
+
+    &:last-of-type{
+        margin-bottom:$space-8 !important;
+    }
 
     .esbRowHead {
         min-height: 164px !important;
@@ -552,7 +556,7 @@
         flex-direction: column;
         justify-content: space-between;
         background-color: $green10;
-        padding: $space-24;
+        padding: $space-16;
         overflow: initial;
 
         .esbRowMain {
@@ -627,7 +631,7 @@
                 justify-content: center;
                 align-items: center;
                 background-color: $green25;
-                color: $green100 !important;
+                color: $black100 !important;
                 font-size: 16px;
                 min-width: 120px;
                 min-height: 32px;
@@ -990,3 +994,13 @@
         width: 100% !important;
     }
 }
+
+
+#text-load {
+    animation: cssAnimation 0s 0.5s forwards;
+    visibility: hidden;
+  }
+  
+  @keyframes cssAnimation {
+    to   { visibility: visible; }
+  }

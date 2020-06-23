@@ -59,8 +59,8 @@ export class Statistic extends React.Component<StatisticProps, StatisticState> {
   }
 
   componentWillMount() {
-    if (typeof fetch !== 'undefined') {
-      
+    if (typeof fetch !== 'undefined') {         
+
       fetch(
         this.props.env.ENTRYSCAPE_ORG_STATS_URL
           ? this.props.env.ENTRYSCAPE_ORG_STATS_URL
@@ -94,11 +94,19 @@ export class Statistic extends React.Component<StatisticProps, StatisticState> {
             });
         });
 
+      let url = 'https://registrera.oppnadata.se/charts/themeData.json';
+
+      if(this.props.env.ENTRYSCAPE_THEME_STATS_URL_EN && i18n.languages[0] != 'sv')
+      {
+        url = this.props.env.ENTRYSCAPE_THEME_STATS_URL_EN;
+      }
+      else if(this.props.env.ENTRYSCAPE_THEME_STATS_URL)
+      {
+        url = this.props.env.ENTRYSCAPE_THEME_STATS_URL;
+      }
 
       fetch(
-        this.props.env.ENTRYSCAPE_THEME_STATS_URL
-          ? this.props.env.ENTRYSCAPE_THEME_STATS_URL
-          : 'https://registrera.oppnadata.se/charts/themeData.json'
+        url
       )
         .then(response => response.json())
         .then(data => {
