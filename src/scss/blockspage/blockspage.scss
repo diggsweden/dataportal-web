@@ -637,6 +637,7 @@
                 min-height: 32px;
                 line-height: -0px;
                 max-height: 32px;
+                margin-right: 0px;
 
                 &:focus {
                     outline: $focus-style;
@@ -724,7 +725,7 @@
             .esbRowControl {
                 button {
                     min-height: 48px !important;
-                    min-width: 100px;
+                    // min-width: 100px;
                 }
             }
         }

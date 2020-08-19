@@ -315,6 +315,9 @@ export class EntryScape {
   luceneFriendlyQuery(query:string) : string {        
     let q = '';       
 
+    if(query == "AND" || query == "NOT" || query == "OR")
+      return '*';
+
     if(query && (query.startsWith('AND ') || query.startsWith('AND+')))
     {
       query = query.substring(4,query.length)
@@ -342,9 +345,14 @@ export class EntryScape {
       q = q.replace(/\s+/g, ' '); //removes mulitple whitespaces
     }
     
+    q = q.replace(/\+\-/g,"");    
+    q = q.replace(/ NOT \-/g," NOT ");
+    q = q.replace(/ AND NOT /g,"+NOT+");    
+    q = q.replace(/ OR NOT /g,"+NOT+");
     q = q.replace(/ OR /g,"+OR+");
     q = q.replace(/ AND /g,"+AND+");
     q = q.replace(/ NOT /g,"+-");    
+    //q = q.replace(/ NOT \-/g,"");
 
     if(q.indexOf("\"") == -1)
       q = q.replace(/ /g,"+AND+");
@@ -435,11 +443,15 @@ export class EntryScape {
             esQuery.sort('score+desc');
             break;
         }        
+        
+      let page = request.page || 0;
+      let offset = page > 0? page * (request.take || 20) : 0;     
 
       esQuery        
         .limit(request.take || 20)                
         .rdfType(request.esRdfTypes || [ESRdfType.dataset]) //we will use dataset as default if no resource type is defined                                
-        .publicRead(true);      
+        .publicRead(true)
+        .offset(offset || 0);      
 
       searchList = esQuery.list();             
       
@@ -454,6 +466,19 @@ export class EntryScape {
       fetch(queryUrl)
       .then(response => {
         response.json().then(data => {
+
+          //if backend error return empty result and error message
+          if(data.error)
+          {            
+            resolve({
+              error: data.error,
+              hits:[],
+              count: 0,
+              facets: {},
+              esFacets: []   
+            });
+          }
+
           let children = EntryStore.factory.extractSearchResults(data, searchList, es);
       
           //facets must be retrieved explicitly if requested
@@ -483,11 +508,11 @@ export class EntryScape {
             hits.push(hit);         
           });
 
-          resolve({
+          resolve({            
             hits:hits,
             count: searchList.getSize(),
             facets: {},
-            esFacets: metaFacets   
+            esFacets: metaFacets
           });
         });     
     });  

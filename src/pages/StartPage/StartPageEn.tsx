@@ -117,13 +117,13 @@ export class StartPageEn extends React.Component<PageProps, any> {
                         <div className="search-boxes">
                           <div
                             onClick={e => {
-                              window.location.href = `/${i18n.languages[0]}/datasets?p=1&q=*&f=`;
+                              window.location.href = `/${i18n.languages[0]}/datasets?p=1&q=&f=`;
                             }}
                           >
                             <a
                               className="text-4"
                               aria-label="Sök efter termer"
-                              href={`/${i18n.languages[0]}/datasets?p=1&q=*&f=`}
+                              href={`/${i18n.languages[0]}/datasets?p=1&q=&f=`}
                             >
                               {i18n.t('pages|search|datasets')}
                             </a>
@@ -133,7 +133,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                           <div
                             className="disabled-linkbox"
                             // onClick={e => {
-                            //   window.location.href = `/${i18n.languages[0]}/concepts?p=1&q=*&f=`;
+                            //   window.location.href = `/${i18n.languages[0]}/concepts?p=1&q=&f=`;
                             // }}
                           >
                             <span className="soon">COMING SOON</span>
@@ -141,7 +141,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                             <a
                               className="text-4"
                               aria-label="Sök efter specifikationer"
-                              // href={`/${i18n.languages[0]}/concepts?p=1&q=*&f=`}
+                              // href={`/${i18n.languages[0]}/concepts?p=1&q=&f=`}
                             >
                               {i18n.t('pages|search|concepts')}
                             </a>
@@ -153,7 +153,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                           <div
                             className="disabled-linkbox"
                             // onClick={e => {
-                            //   window.location.href = `/${i18n.languages[0]}/specifications?p=1&q=*&f=`;
+                            //   window.location.href = `/${i18n.languages[0]}/specifications?p=1&q=&f=`;
                             // }}
                           >
                             <span className="soon">COMING SOON</span>
@@ -161,7 +161,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                             <a
                               className="text-4"
                               aria-label="Sök efter specifikationer"
-                              // href={`/${i18n.languages[0]}/specifications?p=1&q=*&f=`}
+                              // href={`/${i18n.languages[0]}/specifications?p=1&q=&f=`}
                             >
                               {i18n.t('pages|search|specifications')}
                             </a>

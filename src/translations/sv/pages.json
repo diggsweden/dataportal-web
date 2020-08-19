@@ -12,7 +12,9 @@
   },
 "highlight" : {
   "highlight-header":"Sveriges dataportal för ökad innovationskraft",
-  "highlight-text":"Data är en nationell resurs för samhällets, näringslivets och den offentliga sektorns utveckling. Det är en väg till transparens, innovation och tillväxt som gynnar hela samhället som skapas av medborgarna, näringslivet och myndigheter tillsammans. Sveriges dataportal är ett nav som samordnar och tillgängliggör data som tillhandahålls av offentliga, privata och civilsamhällsorganisationer. Här finns enbart informationen om datamängderna. Själva datamängderna hämtas eller efterfrågas via länkar för åtkomst hos den organisation som ansvarar för den."
+  "highlight-text":"Data är en nationell resurs för samhällets, näringslivets och den offentliga sektorns utveckling. Det är en väg till transparens, innovation och tillväxt som gynnar hela samhället som skapas av medborgarna, näringslivet och myndigheter tillsammans.",
+  "highlight-text2":"Sveriges dataportal är ett nav som samordnar och tillgängliggör data som tillhandahålls av offentliga, privata och civilsamhällsorganisationer. Här finns enbart informationen om datamängderna. Själva datamängderna hämtas eller efterfrågas via länkar för åtkomst hos den organisation som ansvarar för den."
+
 },
   "search" : {
     "search" : "Sök",

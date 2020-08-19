@@ -150,6 +150,16 @@ export class AboutWebPageEn extends React.Component<PagePropsEn> {
                     </ul>
                   </div>
 
+                  <div className="main-text">
+                    <span className="text-5-bold">2020-08-19:</span>
+                    <ul className="text-5">
+                      <li>Sitemap that enabels indexing and search on google</li>
+                      <li>Newspublishing</li>
+                      <li>Various bug fixes</li>
+                      <li>Security updates</li>
+                    </ul>
+                  </div>
+
                   <h2 className="text-2">
                     Accessibility report for the data portal
                   </h2>

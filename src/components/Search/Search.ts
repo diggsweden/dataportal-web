@@ -29,7 +29,8 @@ export interface SearchResult {
   count?: number;  
   pages?: number;  
   facets?: { [facet: string]: SearchFacet; };
-  esFacets?: ESFacetField[]
+  esFacets?: ESFacetField[];
+  error? : string;
 }
 
 export interface SearchHit {

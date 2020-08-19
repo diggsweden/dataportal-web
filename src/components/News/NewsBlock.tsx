@@ -5,6 +5,7 @@ import { EnvSettings } from '../../../config/env/EnvSettings';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import ChopLines from 'chop-lines';
+import { slugify } from 'utilities/urlHelpers';
 let moment = require('moment');
 
 export interface NewsBlockProps {
@@ -12,101 +13,115 @@ export interface NewsBlockProps {
   env: EnvSettings;
 }
 
-const lang = "sv";
+const lang = 'sv';
 
-const NEWS = gql `
+const NEWS = gql`
   {
-    news(siteurl:"dataportal.web.local", lang:"${lang}", take:5, skip:0){
-      id        
-      heading
-      preamble
-      published
-      modified
-      tags
-      body 
-    }
+    othernews:
+      news(siteurl:"*", lang:"${lang}", take:3, skip:0, skiptags:["sticky"]){
+        id        
+        heading
+        preamble
+        published
+        modified
+        tags
+        body
+        imageUrl
+      }          
   }
 `;
 
-export const NewsBlock : React.FC<NewsBlockProps> = () => {  
+export const NewsBlock: React.FC<NewsBlockProps> = () => {
+  const { loading, error, data } = useQuery<{
+    othernews: Array<any>;
+  }>(NEWS);
 
-  const { loading, error, data } = useQuery<{news:Array<any>}>(NEWS);
+  // const stickyNews =
+  //   data && data.stickynews && data.stickynews.length > 0
+  //     ? data.stickynews
+  //     : [];
 
-  const stickyNews = data && data.news && data.news.length > 0
-  ? data.news.filter((n) => n.tags && n.tags.filter((t:any) => t == "Sticky").length > 0)
-  : [];
+  const newsList =
+    data && data.othernews && data.othernews.length > 0 ? data.othernews : [];
 
-  const newsList = data && data.news && data.news.length > 0
-  ? data.news.filter((n) => (!n.tags) || (n.tags && n.tags.length == 0) || (n.tags && n.tags.length > 0 && n.tags.filter((t:any) => t != "Sticky").length > 0))
-  : [];  
+  // if (stickyNews.length == 0 && newsList.length == 0) {
+  //   return <></>;
+  // }
 
-return (
-    <div>
-      <h2 className="text-3">Nyheter</h2>
-      <div className="news-compact">
-        <div className="news-pinned">
-          <div>
-            <TopImage />
-          </div>          
-          {!loading && stickyNews && stickyNews.length > 0 &&
-              //stickyNews.map((n,index) => {                
-               // return (
-                  <div>
-                    <span className="text-6">{stickyNews[0].published}</span>
-                    <h3 className="">
-                      <a className="text-4" href="#">
-                      {stickyNews[0].heading}
-                      </a>
-                    </h3>
-                    <ChopLines
-                      lines={4}
-                      lineHeight={26}>                    
-                      <p
-                        className="text-5"
-                        dangerouslySetInnerHTML={{
-                          __html: stickyNews[0].preamble,
-                        }}
-                      />                
-                    </ChopLines> 
-                  </div>
-              //)})
-          }                        
-        </div>
+  if(newsList && newsList.length > 0) {
+    return (
+      <div>
+        <h2 className="text-3">Nyheter</h2>
+        <div className="news-compact">
+          <div className="news-list-compact">
+            <ul>
+              {loading && <span className="text-5 loading">{i18n.t('common|loading')}</span>}
+              {!loading && error && (
+                <li>Det finns inga nyheter att visa för tillfället.</li>
+              )}
+              {!loading &&
+                newsList &&
+                newsList.length > 0 &&
+                newsList.map((n, index) => {
+                  return (
 
-        <div className="news-list-compact">          
-          <ul>          
-            {loading && (<li>laddar..</li>)}
-            {!loading && error && (<li>Det finns inga nyheter att visa för tillfället.</li>)}
-            {!loading && newsList && newsList.length > 0 &&              
-              newsList.map((n,index) => {                                
-                return (
-                <li key={index}>   
-                  <span className="text-6">{n.published}</span>     
-                  <h3>
-                    <a className="text-4" href="#">
-                      {n.heading}
-                    </a>
-                  </h3>                                    
-                  <ChopLines
-                    lines={2}
-                    lineHeight={26}>                    
-                    <p
-                      dangerouslySetInnerHTML={{
-                        __html: n.preamble,
-                      }}
-                    />                
-                  </ChopLines>                                                   
-                </li>)
-              })                
-            }            
-          </ul>
-          <a
-            href={`/${i18n.languages[0]}/${i18n.t('routes|news|path')}`}
-            className="default-button text-5">
-            Visa alla nyheter
-          </a>
+
+                    <li key={index}
+                    onClick={() => {
+                      (window as any).location.href = `/${i18n.languages[0]}/nyheter/${
+                        n.id
+                      }/${slugify(n.heading)}`;
+                    }}
+                    >
+
+
+                      <div className="news-img">
+                        {n.imageUrl && <img src={`${n.imageUrl}?width=500`} alt={n.heading || 'nyhetsbild'} />}
+                      </div>
+
+                      
+                      <div className="news-text">
+                        <span className="text-6">
+                          {moment(n.published.toString()).format('D MMM YYYY')}
+                        </span>
+
+                        <h3>
+                          <a
+                            className="text-4"
+                            href={`/${i18n.languages[0]}/nyheter/${
+                              n.id
+                            }/${slugify(n.heading)}`}
+                          >
+                            {n.heading}
+                          </a>
+                        </h3>
+
+                        <ChopLines lines={3} lineHeight={27}>
+                          <p
+                            className="text-5"
+                            dangerouslySetInnerHTML={{
+                              __html: n.preamble,
+                            }}
+                          />
+                        </ChopLines>
+                      </div>
+                    </li>
+                  );
+                })}
+            </ul>
+            <a
+              href={`/${i18n.languages[0]}/${i18n.t('routes|news|path')}`}
+              className="text-5"
+            >
+              Visa alla nyheter
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-  );  
-}
+    );
+  }
+  else{
+    return <></>
+  }
+};
+

@@ -9,12 +9,15 @@ export abstract class EnvSettings {
   abstract ENTRYSCAPE_CONCEPT_STATS_URL:string;
   abstract ENTRYSCAPE_HISTORY_STATS_URL:string;
 
+  abstract ENTRYSCAPE_SITEMAP_JSON_URL:string;
   
   abstract ENTRYSCAPE_BLOCKS_URL:string;  
 
   abstract CONTENTBACKEND_SITEURL: string;
 
   abstract CONTENTBACKEND_GRAPHAPI: string;
+
+  abstract CANONICAL_URL: string;
 
   abstract envName: string;
 }

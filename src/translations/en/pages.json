@@ -12,7 +12,8 @@
   },
   "highlight" : {
     "highlight-header":"Sweden's data portal for increased innovation",
-    "highlight-text":"Data is a national resource for the development of society, industry and the public sector. It is a path to transparency, innovation and growth that benefits the entire society created by citizens, businesses and the government bodies together. Sweden’s data portal is a hub that coordinates and makes available data for re-use provided by public, private and civil society organisations. The portal only contains information about the datasets. Data is retrieved or requested via links to the organization responsible for it."
+    "highlight-text":"Data is a national resource for the development of society, industry and the public sector. It is a path to transparency, innovation and growth that benefits the entire society created by citizens, businesses and the government bodies together.",
+    "highlight-text2":"Sweden’s data portal is a hub that coordinates and makes available data for re-use provided by public, private and civil society organisations. The portal only contains information about the datasets. Data is retrieved or requested via links to the organization responsible for it."
   },
   "search" : {
     "search" : "Search",

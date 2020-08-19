@@ -4,6 +4,7 @@ import { TopImage } from 'assets/TopImage';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
+import { Loader } from '../../components/Loader';
 import ChopLines from 'chop-lines';
 import { slugify } from 'utilities/urlHelpers'
 let moment = require('moment');
@@ -46,8 +47,8 @@ export const NewsList : React.FC<NewsListProps> = (props) => {
 return (
   <div className="news-list">
     <ul>
-      {loading && (<li>laddar..</li>)}
-      {!loading && error && (<li>Det finns inga nyheter att visa för tillfället.</li>)}
+      {loading && (<span className="text-5 loading">{i18n.t('common|loading')}</span>)}
+      {!loading && error && (<span className="loading-msg">Det finns inga nyheter att visa för tillfället.</span>)}
       {!loading && newsList && newsList.length > 0 &&              
         newsList.map((n,index) => {                                
         return (
@@ -57,10 +58,12 @@ return (
           <li
           onClick={() => {(window as any).location.href = `/${i18n.languages[0]}/nyheter/${n.id}/${slugify(n.heading)}`;}}
           key={index} style={{borderColor: bgColor[Math.floor(Math.random()*bgColor.length)]}}>          
+            
             <span className="text-6">{moment(n.published.toString()).format("D MMM YYYY")}</span>
+            
             <a className="text-3" href={`/${i18n.languages[0]}/nyheter/${n.id}/${slugify(n.heading)}`}>{n.heading}</a>
             <ChopLines
-              lines={3}
+              lines={2}
               lineHeight={27}
               >                    
               <p

@@ -151,6 +151,16 @@ export class AboutWebPage extends React.Component<PageProps> {
                     </ul>
                   </div>
 
+                  <div className="main-text">
+                    <span className="text-5-bold">2020-08-19:</span>
+                    <ul className="text-5">
+                      <li>Utvecklat sitemap för webbplatsen som möjliggör indexering och sökning på google</li>
+                      <li>Förberett för publicering av nyheter</li>
+                      <li>Diverse buggrättningar, bland annat i sökfunktionen</li>
+                      <li>Säkerhetsuppdateringar</li>
+                    </ul>
+                  </div>
+
 
                   <h2 className="text-2">
                     Tillgänglighetsredogörelse för dataportalen

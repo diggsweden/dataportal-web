@@ -15,6 +15,8 @@ import { encode, decode } from 'qss';
 import { Loader } from '../../components/Loader';
 import i18n from 'i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
+import { slugify } from 'utilities/urlHelpers';
+import { EntrystoreProvider, EntrystoreContext } from '../../components/EntrystoreProvider'
 
 const MainContent = Box.withComponent('main');
 
@@ -177,135 +179,141 @@ export class TermPage extends React.Component<
     let uri = new URLSearchParams(location.search);
 
     return (
-      <QueryParamProvider params={uri}>
-        <PageMetadata
-          seoTitle="Datamängd - Sveriges dataportal"
-          seoDescription=""
-          seoImageUrl=""
-          seoKeywords=""
-          robotsFollow={true}
-          robotsIndex={true}
-          lang={i18n.languages[0]}
-        />
-        <Box
-          id="top"
-          display="flex"
-          direction="column"
-          minHeight="100vh"
-          bgColor="#fff"
-        >
-          <NoJavaScriptWarning text="" />
+      <EntrystoreProvider env={this.props.env} cid={this.props.match.params.cid} eid={this.props.match.params.eid}>
+        <EntrystoreContext.Consumer>        
+          {entry => (
+          <QueryParamProvider params={uri}>
+            <PageMetadata
+              seoTitle="Datamängd - Sveriges dataportal"
+              seoDescription=""
+              seoImageUrl=""
+              seoKeywords=""
+              robotsFollow={true}
+              robotsIndex={true}
+              lang={i18n.languages[0]}              
+            />
+            <Box
+              id="top"
+              display="flex"
+              direction="column"
+              minHeight="100vh"
+              bgColor="#fff"
+            >
+              <NoJavaScriptWarning text="" />
 
-          <Header ref={this.headerRef} />
+              <Header ref={this.headerRef} />
 
-          <ErrorBoundary>
-            <MainContent flex="1 1 auto">
-              <div className="main-container">
-                <div
-                  className="col span_4 boxed about-dataset concept"
-                  data-animation=""
-                  data-delay="0"
-                >
-                  <h1 className="text-1">
-                    <span
-                      data-entryscape="text"
-                      data-entryscape-content="${skos:prefLabel}"
-                      data-entryscape-define="concept"
-                    ></span>
-                  </h1>
+              <ErrorBoundary>
+                <MainContent flex="1 1 auto">
+                  <div className="main-container">
+                    <div
+                      className="col span_4 boxed about-dataset concept"
+                      data-animation=""
+                      data-delay="0"
+                    >
+                      <h1 className="text-1">
+                        <span
+                          data-entryscape="text"
+                          data-entryscape-content="${skos:prefLabel}"
+                          data-entryscape-define="concept"
+                        ></span>
+                      </h1>
 
-                  <p className="description">
-                    <span
-                      data-entryscape="text"
-                      data-entryscape-fallback="Ingen definition given för begreppet."
-                      data-entryscape-content="${skos:definition}"
-                      data-entryscape-use="concept"
-                    ></span>
-                  </p>
+                      <p className="description">
+                        <span
+                          data-entryscape="text"
+                          data-entryscape-fallback="Ingen definition given för begreppet."
+                          data-entryscape-content="${skos:definition}"
+                          data-entryscape-use="concept"
+                        ></span>
+                      </p>
 
-                  <div className="download-rdf rdfLinks">
-                    <script type="text/x-entryscape-handlebar">
-                      <span className="text-5-bold">Ladda ner begreppet:</span>
+                      <div className="download-rdf rdfLinks">
+                        <script type="text/x-entryscape-handlebar">
+                          <span className="text-5-bold">Ladda ner begreppet:</span>
 
-                      <div>
-                        <a href="{{ metadataURI}}" target="_blank">
-                          RDF/XML,
-                        </a>
+                          <div>
+                            <a href="{{ metadataURI}}" target="_blank">
+                              RDF/XML,
+                            </a>
 
-                        <a
-                          href="{{ metadataURI }}?format=text/turtle"
-                          target="_blank"
-                        >
-                          TURTLE,
-                        </a>
+                            <a
+                              href="{{ metadataURI }}?format=text/turtle"
+                              target="_blank"
+                            >
+                              TURTLE,
+                            </a>
 
-                        <a
-                          href="{{ metadataURI }}?format=text/n-triples"
-                          target="_blank"
-                        >
-                          N-TRIPLES,
-                        </a>
+                            <a
+                              href="{{ metadataURI }}?format=text/n-triples"
+                              target="_blank"
+                            >
+                              N-TRIPLES,
+                            </a>
 
-                        <a
-                          href="{{ metadataURI }}?format=application/ld+json"
-                          target="_blank"
-                        >
-                          JSON-LD
-                        </a>
+                            <a
+                              href="{{ metadataURI }}?format=application/ld+json"
+                              target="_blank"
+                            >
+                              JSON-LD
+                            </a>
+                          </div>
+                        </script>
                       </div>
-                    </script>
-                  </div>
 
-                  <div className="terminology-group">
-                    <h2 className="text-5-bold">Terminologi</h2>
-                    <span
-                      className="terminology entryscape"
-                      data-entryscape="terminologyButton"
-                    ></span>
+                      <div className="terminology-group">
+                        <h2 className="text-5-bold">Terminologi</h2>
+                        <span
+                          className="terminology entryscape"
+                          data-entryscape="terminologyButton"
+                        ></span>
 
-                    <h2 className="text-5-bold">Överliggande begrepp</h2>
-                    <span
-                      className="terminology entryscape"
-                      data-entryscape="maybeBroaderButton"
-                    ></span>
-                  </div>
+                        <h2 className="text-5-bold">Överliggande begrepp</h2>
+                        <span
+                          className="terminology entryscape"
+                          data-entryscape="maybeBroaderButton"
+                        ></span>
+                      </div>
 
-                  <div className="myrow">
-                    <h2 className="text-5-bold">Underordnade begrepp</h2>
-                    <div className="mycolumn">
-                      <span
-                        data-entryscape="list"
-                        data-entryscape-listplaceholder="Det finns inga underordnade begrepp"
-                        data-entryscape-click="details.html"
-                        data-entryscape-relation="skos:narrower"
-                      ></span>
+                      <div className="myrow">
+                        <h2 className="text-5-bold">Underordnade begrepp</h2>
+                        <div className="mycolumn">
+                          <span
+                            data-entryscape="list"
+                            data-entryscape-listplaceholder="Det finns inga underordnade begrepp"
+                            data-entryscape-click="details.html"
+                            data-entryscape-relation="skos:narrower"
+                          ></span>
+                        </div>
+                        <h2 className="text-5-bold">Relaterade begrepp</h2>
+                        <div className="mycolumn">
+                          <span
+                            data-entryscape="list"
+                            data-entryscape-listplaceholder="Det finns inga relaterade begrepp"
+                            data-entryscape-click="details.html"
+                            data-entryscape-relation="skos:related"
+                          ></span>
+                        </div>
+                      </div>
+
+                      <div className="concept-details">
+                        <h2>Detaljer om begreppet</h2>
+                        <span
+                          data-entryscape="view"
+                          data-entryscape-filterpredicates="skos:narrower,skos:broader,skos:inScheme,skos:topConceptOf"
+                          data-entryscape-rdformsid="skosmos:concept"
+                        ></span>
+                      </div>
                     </div>
-                    <h2 className="text-5-bold">Relaterade begrepp</h2>
-                    <div className="mycolumn">
-                      <span
-                        data-entryscape="list"
-                        data-entryscape-listplaceholder="Det finns inga relaterade begrepp"
-                        data-entryscape-click="details.html"
-                        data-entryscape-relation="skos:related"
-                      ></span>
-                    </div>
                   </div>
-
-                  <div className="concept-details">
-                    <h2>Detaljer om begreppet</h2>
-                    <span
-                      data-entryscape="view"
-                      data-entryscape-filterpredicates="skos:narrower,skos:broader,skos:inScheme,skos:topConceptOf"
-                      data-entryscape-rdformsid="skosmos:concept"
-                    ></span>
-                  </div>
-                </div>
-              </div>
-            </MainContent>
-          </ErrorBoundary>
-          <Footer onToTopButtonPushed={this.setFocus} />
-        </Box>
-      </QueryParamProvider>
+                </MainContent>
+              </ErrorBoundary>
+              <Footer onToTopButtonPushed={this.setFocus} />
+            </Box>
+          </QueryParamProvider>
+        )}
+        </EntrystoreContext.Consumer>
+      </EntrystoreProvider>
     );
   }
 }

@@ -9,16 +9,18 @@ export class Settings_Dev extends EnvSettings {
   ENTRYSCAPE_THEME_STATS_URL_EN="https://registrera.oppnadata.se/charts/themeData_en.json"
   
   ENTRYSCAPE_CONCEPT_STATS_URL="https://editera.dataportal.se/stats/entityData.json"
-  ENTRYSCAPE_HISTORY_STATS_URL="https://registrera.oppnadata.se/stats/historyData.json"
-
-
-
+  ENTRYSCAPE_HISTORY_STATS_URL="https://registrera.oppnadata.se/stats/historyData.json"  
   
-  ENTRYSCAPE_BLOCKS_URL="https://dataportal.azureedge.net/cdn/blocks.0.18.3.app.js"
+  ENTRYSCAPE_BLOCKS_URL="https://dataportal.azureedge.net/cdn/blocks.0.19.app.js"
 
-  CONTENTBACKEND_SITEURL="*.dataportal.local";
+  ENTRYSCAPE_SITEMAP_JSON_URL="https://registrera.oppnadata.se/sitemap.json";
+
+  CONTENTBACKEND_SITEURL="*";
 
   CONTENTBACKEND_GRAPHAPI="https://digg-test-graphproxy.azurewebsites.net";
+  // CONTENTBACKEND_GRAPHAPI="http://localhost:4444";
+
+  CANONICAL_URL = "http://localhost:8080";
 
   envName = 'dev';
 

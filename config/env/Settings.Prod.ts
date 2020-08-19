@@ -11,12 +11,15 @@ export class Settings_Prod extends EnvSettings {
   ENTRYSCAPE_CONCEPT_STATS_URL="https://editera.dataportal.se/stats/entityData.json"
   ENTRYSCAPE_HISTORY_STATS_URL="https://registrera.oppnadata.se/stats/historyData.json"
 
+  ENTRYSCAPE_BLOCKS_URL="https://dataportal.azureedge.net/cdn/blocks.0.19.app.js"
 
-  ENTRYSCAPE_BLOCKS_URL="https://dataportal.azureedge.net/cdn/blocks.0.18.3.app.js"
+  ENTRYSCAPE_SITEMAP_JSON_URL="https://registrera.oppnadata.se/sitemap.json";
 
-  CONTENTBACKEND_SITEURL="digg.se";
+  CONTENTBACKEND_SITEURL="*"; //set to digg.se when backend is multisite enabled
 
-  CONTENTBACKEND_GRAPHAPI="https://digg-test-graphproxy.azurewebsites.net";
+  CONTENTBACKEND_GRAPHAPI="https://digg-prod-graphproxy.azurewebsites.net";
+
+  CANONICAL_URL = "https://dataportal.se";
 
   envName = 'prod';
 

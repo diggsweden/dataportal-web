@@ -9,10 +9,11 @@ export type PageMetadataProps = {
   seoImageUrl: string | null;
   robotsIndex: boolean;
   robotsFollow: boolean;
+  canonicalUrl?: string | null;
 };
 
 export const PageMetadata: React.SFC<PageMetadataProps> = props => {
-  const { seoTitle, seoDescription, robotsFollow, robotsIndex, lang } = props;
+  const { seoTitle, seoDescription, robotsFollow, robotsIndex, lang, canonicalUrl } = props;
 
   const robots = [
     robotsFollow ? 'follow' : 'nofollow',
@@ -26,6 +27,9 @@ export const PageMetadata: React.SFC<PageMetadataProps> = props => {
         <meta name="description" content={seoDescription} />
       )}
       <meta name="robots" content={robots.join(',')} />        
+      {canonicalUrl && (
+        <link rel="canonical" href={canonicalUrl} />
+      )}      
     </Helmet>
   );
 };

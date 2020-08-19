@@ -610,7 +610,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
       {
         var qs = decode(window.location.search.substring(1)) as any;        
 
-        let querytext = qs.q && qs.q.toString().length > 0? qs.q.toString() : '*';
+        let querytext = qs.q && qs.q.toString().length > 0? qs.q.toString() : '';
         let page = qs.p && qs.p.toString().length > 0? qs.p.toString() : null;
         let queryfacets:SearchFacetValue[] = [];
 
@@ -731,7 +731,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
             hits = (this.state.result.hits as SearchHit[]).concat(hits);
         }
         
-        res.pages = res.count? Math.ceil(res.count / (this.state.request.take || 10)) : 0;
+        res.pages = res.count? Math.ceil(res.count / (this.state.request.take || 20)) : 0;
         
         //rerender so hits is available to consumers
         this.setState({
@@ -742,7 +742,8 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
             ...this.state.result,
             hits:hits,
             count:res.count,       
-            pages: res.pages   
+            pages: res.pages,
+            error: res.error
           },
           request:{
             ...this.state.request

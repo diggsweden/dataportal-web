@@ -18,8 +18,7 @@ export const CMSContent : React.FC = () => {
 
   return (
     <div>      
-      Hello world
-      {loading && (<p>laddar..</p>)}
+      {loading && (<p>Laddar..</p>)}
       {!loading && error && (<p>Fel!</p>)}
       <ul>
       {!loading && data && data.news.length > 0 &&

@@ -15,6 +15,8 @@ import { encode, decode } from 'qss';
 import { Loader } from '../../components/Loader';
 import i18n from 'i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
+import { slugify } from 'utilities/urlHelpers';
+import { EntrystoreProvider, EntrystoreContext } from '../../components/EntrystoreProvider'
 
 const MainContent = Box.withComponent('main');
 
@@ -159,76 +161,82 @@ export class SpecificationPage extends React.Component<
     let uri = new URLSearchParams(location.search);
 
     return (
-      <QueryParamProvider params={uri}>
-        <PageMetadata
-          seoTitle="Datamängd - Sveriges dataportal"
-          seoDescription=""
-          seoImageUrl=""
-          seoKeywords=""
-          robotsFollow={true}
-          robotsIndex={true}
-          lang={i18n.languages[0]}
-        />
-        <Box
-          id="top"
-          display="flex"
-          direction="column"
-          minHeight="100vh"
-          bgColor="#fff"
-        >
-          <NoJavaScriptWarning text="" />
+      <EntrystoreProvider env={this.props.env} cid={this.props.match.params.cid} eid={this.props.match.params.eid}>
+        <EntrystoreContext.Consumer>        
+          {entry => (
+            <QueryParamProvider params={uri}>
+              <PageMetadata
+                seoTitle="Datamängd - Sveriges dataportal"
+                seoDescription=""
+                seoImageUrl=""
+                seoKeywords=""
+                robotsFollow={true}
+                robotsIndex={true}
+                lang={i18n.languages[0]}                
+              />
+              <Box
+                id="top"
+                display="flex"
+                direction="column"
+                minHeight="100vh"
+                bgColor="#fff"
+              >
+                <NoJavaScriptWarning text="" />
 
-          <Header ref={this.headerRef} />
+                <Header ref={this.headerRef} />
 
-          <ErrorBoundary>
-            <MainContent flex="1 1 auto">
-              <div className="main-container">
-                <div
-                  className="col span_8 boxed dataset"
-                  data-animation=""
-                  data-delay="0"
-                >
+                <ErrorBoundary>
+                  <MainContent flex="1 1 auto">
+                    <div className="main-container">
+                      <div
+                        className="col span_8 boxed dataset"
+                        data-animation=""
+                        data-delay="0"
+                      >
 
-                  <h1 className="text-1">
-                    <span
-                      data-entryscape="text"
-                      data-entryscape-content="${dcterms:title}"
-                      data-entryscape-define="specification"
-                    ></span>
-                  </h1>
+                        <h1 className="text-1">
+                          <span
+                            data-entryscape="text"
+                            data-entryscape-content="${dcterms:title}"
+                            data-entryscape-define="specification"
+                          ></span>
+                        </h1>
 
-                  <p className="description">
-                    <span
-                      data-entryscape="text"
-                      data-entryscape-content="${dcterms:description}"
-                      data-entryscape-use="specification"
-                    ></span>
-                  </p>
+                        <p className="description">
+                          <span
+                            data-entryscape="text"
+                            data-entryscape-content="${dcterms:description}"
+                            data-entryscape-use="specification"
+                          ></span>
+                        </p>
 
-                  <div data-entryscape="resourceDescriptors"></div>
+                        <div data-entryscape="resourceDescriptors"></div>
 
-                  <h2 className="about-header">Om specifikation</h2>
+                        <h2 className="about-header">Om specifikation</h2>
 
-                  <div
-                    className="specificationDetails"
-                    data-entryscape="view"
-                    data-entryscape-rdformsid="prof:Profile"
-                    data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution"
-                  ></div>
-                </div>
+                        <div
+                          className="specificationDetails"
+                          data-entryscape="view"
+                          data-entryscape-rdformsid="prof:Profile"
+                          data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution"
+                        ></div>
+                      </div>
 
-                <div
-                  className="col span_4 boxed about-specification about-dataset"
-                  data-animation=""
-                  data-delay="0"
-                >
-                </div>
-              </div>
-            </MainContent>
-          </ErrorBoundary>
-          <Footer onToTopButtonPushed={this.setFocus} />
-        </Box>
-      </QueryParamProvider>
+                      <div
+                        className="col span_4 boxed about-specification about-dataset"
+                        data-animation=""
+                        data-delay="0"
+                      >
+                      </div>
+                    </div>
+                  </MainContent>
+                </ErrorBoundary>
+                <Footer onToTopButtonPushed={this.setFocus} />
+              </Box>
+            </QueryParamProvider>
+          )}
+        </EntrystoreContext.Consumer>
+      </EntrystoreProvider>
     );
   }
 }

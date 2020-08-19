@@ -11,11 +11,15 @@ export class Settings_Sandbox extends EnvSettings {
   ENTRYSCAPE_CONCEPT_STATS_URL="https://editera.dataportal.se/stats/entityData.json"
   ENTRYSCAPE_HISTORY_STATS_URL="https://registrera.oppnadata.se/stats/historyData.json"
 
-  ENTRYSCAPE_BLOCKS_URL="https://dataportal.azureedge.net/cdn/blocks.0.18.3.app.js"
+  ENTRYSCAPE_BLOCKS_URL="https://dataportal.azureedge.net/cdn/blocks.0.19.app.js"
 
-  CONTENTBACKEND_SITEURL="dev.digg.se";
+  ENTRYSCAPE_SITEMAP_JSON_URL="https://registrera.oppnadata.se/sitemap.json";
 
-  CONTENTBACKEND_GRAPHAPI="https://digg-test-graphproxy.azurewebsites.net";
+  CONTENTBACKEND_SITEURL="*"; //set to digg.se when backend is multisite enabled
+
+  CONTENTBACKEND_GRAPHAPI="https://digg-prod-graphproxy.azurewebsites.net";
+
+  CANONICAL_URL = "https://www-sandbox.dataportal.se";
 
   envName = 'sandbox';
 

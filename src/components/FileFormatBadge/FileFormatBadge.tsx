@@ -1,5 +1,4 @@
 import React from 'react';
-import { application } from 'express';
 
 //  Creates format badges with different colors in searchresult..
 
@@ -13,14 +12,9 @@ export class FileFormatBadge extends React.Component<
 > {
   constructor(props: FileFormatBadgeProps) {
     super(props);
-
-    this.state = {
-      badgeText: '',
-      badgeClass: '',
-    };
   }
 
-  componentDidMount() {
+  render() {
     let text, className;
 
     switch (this.props.badgeName) {
@@ -145,13 +139,9 @@ export class FileFormatBadge extends React.Component<
         break;
     }
 
-    this.setState({ badgeClass: className, badgeText: text });
-  }
-
-  render() {
     return (
-      <span className={`format ${this.state.badgeClass}`}>
-        {this.state.badgeText}
+      <span className={`format ${className}`}>
+        {text}
       </span>
     );
   }

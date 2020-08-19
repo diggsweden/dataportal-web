@@ -15,6 +15,8 @@ import { encode, decode } from 'qss';
 import { Loader } from '../../components/Loader';
 import i18n from 'i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
+import { slugify } from 'utilities/urlHelpers';
+import { EntrystoreProvider, EntrystoreContext } from '../../components/EntrystoreProvider'
 
 const MainContent = Box.withComponent('main');
 
@@ -92,225 +94,223 @@ export class DataSetPage extends React.Component<
     let uri = new URLSearchParams(location.search);
 
     return (
-      <QueryParamProvider params={uri}>
-        <PageMetadata
-          seoTitle="Datamängd - Sveriges dataportal"
-          seoDescription=""
-          seoImageUrl=""
-          seoKeywords=""
-          robotsFollow={true}
-          robotsIndex={true}
-          lang={i18n.languages[0]}
-        />
-        <Box
-          id="top"
-          display="flex"
-          direction="column"
-          minHeight="100vh"
-          bgColor="#fff"
-        >
-          <NoJavaScriptWarning text="" />
+      <EntrystoreProvider env={this.props.env} cid={this.props.match.params.cid} eid={this.props.match.params.eid}>
+        <EntrystoreContext.Consumer>        
+          {entry => (
+            <QueryParamProvider params={uri}>
+            <PageMetadata
+              seoTitle={`${entry.title} - Sveriges dataportal`}          
+              seoDescription=""
+              seoImageUrl=""
+              seoKeywords=""
+              robotsFollow={true}
+              robotsIndex={true}
+              lang={i18n.languages[0]}
+              canonicalUrl={`${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/datasets/${this.props.match.params.cid}_${this.props.match.params.eid}/${slugify(entry.title)}`}
+            />
+            <Box
+              id="top"
+              display="flex"
+              direction="column"
+              minHeight="100vh"
+              bgColor="#fff"
+            >
+              <NoJavaScriptWarning text="" />
 
-          <Header ref={this.headerRef} />
+              <Header ref={this.headerRef} />
 
-          <ErrorBoundary>
-            <MainContent flex="1 1 auto">
-              <div className="main-container">
-                <div
-                  className="col span_8 boxed dataset"
-                  data-animation=""
-                  data-delay="0"
-                >
-                  {/* {(this.props.history && this.props.history.length > 0 &&
-                    <a onClick={() => this.props.history.goBack()} className="back-to-search">
-                      Tillbaka
-                    </a>
-                  )} */}
+              <ErrorBoundary>
+                <MainContent flex="1 1 auto">
+                  <div className="main-container">
+                    <div
+                      className="col span_8 boxed dataset"
+                      data-animation=""
+                      data-delay="0"
+                    >
+                      {/* {(this.props.history && this.props.history.length > 0 &&
+                        <a onClick={() => this.props.history.goBack()} className="back-to-search">
+                          Tillbaka
+                        </a>
+                      )} */}
 
-                  {/* <span className="bottom-line"></span> */}
+                      {/* <span className="bottom-line"></span> */}
 
-                  <script
-                    type="text/x-entryscape-handlebar"
-                    data-entryscape="true"
-                    data-entryscape-component="template"
-                    dangerouslySetInnerHTML={{
-                      __html: `
-                      <span>{{#eachprop "dcat:theme"}}<span class="tema md5_{{md5}}">{{label}}</span>{{/eachprop}}</span>
-                      `,
-                    }}
-                  ></script>
+                      <script
+                        type="text/x-entryscape-handlebar"
+                        data-entryscape="true"
+                        data-entryscape-component="template"
+                        dangerouslySetInnerHTML={{
+                          __html: `
+                          <span>{{#eachprop "dcat:theme"}}<span class="tema md5_{{md5}}">{{label}}</span>{{/eachprop}}</span>
+                          `,
+                        }}
+                      ></script>
+                      
+                      <h1>{entry.title}</h1>
 
-                  <script
-                    type="text/x-entryscape-handlebar"
-                    data-entryscape="true"
-                    data-entryscape-component="template"
-                    dangerouslySetInnerHTML={{
-                      __html: `
-                      <h1>{{ text }}</h1>
-                      `,
-                    }}
-                  ></script>
+                      <script
+                        type="text/x-entryscape-handlebar"
+                        data-entryscape="true"
+                        data-entryscape-component="template"
+                        dangerouslySetInnerHTML={{
+                          __html: `
+                          <div class="publisher-name">
+                          <p class="text-5">
+                            {{text relation="dcterms:publisher"}} 
+                          <p>
+                          `,
+                        }}
+                      ></script>
 
-                  <script
-                    type="text/x-entryscape-handlebar"
-                    data-entryscape="true"
-                    data-entryscape-component="template"
-                    dangerouslySetInnerHTML={{
-                      __html: `
-                      <div class="publisher-name">
-                      <p class="text-5">
-                        {{text relation="dcterms:publisher"}} 
-                      <p>
-                      `,
-                    }}
-                  ></script>
+                      <script
+                        type="text/x-entryscape-handlebar"
+                        data-entryscape="true"
+                        data-entryscape-component="template"
+                        dangerouslySetInnerHTML={{
+                          __html: `
+                          <div class="description">{{text content="\${dcterms:description}"}}</div>
+                          `,
+                        }}
+                      ></script>
 
-                  <script
-                    type="text/x-entryscape-handlebar"
-                    data-entryscape="true"
-                    data-entryscape-component="template"
-                    dangerouslySetInnerHTML={{
-                      __html: `
-                      <div class="description">{{text content="\${dcterms:description}"}}</div>
-                      `,
-                    }}
-                  ></script>
+                      <h2 id="text-load" className="data-header text-3">
+                        {i18n.t('pages|datasetpage|download-dataset')}
+                      </h2>
 
-                  <h2 id="text-load" className="data-header text-3">
-                    {i18n.t('pages|datasetpage|download-dataset')}
-                  </h2>
+                      <script
+                        type="text/x-entryscape-handlebar"
+                        data-entryscape="true"
+                        data-entryscape-component="template"
+                        dangerouslySetInnerHTML={{
+                          __html: `
+                        
 
-                  <script
-                    type="text/x-entryscape-handlebar"
-                    data-entryscape="true"
-                    data-entryscape-component="template"
-                    dangerouslySetInnerHTML={{
-                      __html: `
-                    
+                        {{#list relation="dcat:distribution" template="dcat:OnlyDistribution" onecol="true" expandTooltip="Mer information" unexpandTooltip="Mindre information"}}
+                        
+                              {{{{listbody}}}}
+                                <div class="formats">{{body}}</div>
+                              {{{{/listbody}}}}
 
-                    {{#list relation="dcat:distribution" template="dcat:OnlyDistribution" onecol="true" expandTooltip="Mer information" unexpandTooltip="Mindre information"}}
-                    
-                          {{{{listbody}}}}
-                            <div class="formats">{{body}}</div>
-                          {{{{/listbody}}}}
+                              {{{{listplaceholder}}}}
+                                <div class="alert alert-info" role="alert">Denna datamängd har inga dataresurser angivna</div>
+                              {{{{/listplaceholder}}}}
 
-                          {{{{listplaceholder}}}}
-                            <div class="alert alert-info" role="alert">Denna datamängd har inga dataresurser angivna</div>
-                          {{{{/listplaceholder}}}}
+                              {{{{listhead}}}}
+                              {{{{/listhead}}}}
 
-                           {{{{listhead}}}}
-                           {{{{/listhead}}}}
+                              {{{{rowhead}}}}
+                                
+                                {{#ifprop "dcat:downloadURL"}}
+                                  <a aria-label="Ladda ned distribution" href=\'{{prop "dcat:downloadURL"}}\' class="pull-right btn btn-sm btn-default" role="button" target="_blank"> Ladda ned</a>                              
+                                {{/ifprop}}                                                                                
+                              
+                                <div class="accordion-col">
+                                  <span title="Titel på distribution" class="resourceLabel">{{text fallback="<span class=\'distributionNoName\'>Ingen titel given</span>"}}</span>
+                                  <span title="Licens" class="licence text-5">
+                                  {{prop "dcterms:license" render="label"}}
+                                  </span>
 
-                          {{{{rowhead}}}}
-                            
-                            {{#ifprop "dcat:downloadURL"}}
-                              <a aria-label="Ladda ned distribution" href=\'{{prop "dcat:downloadURL"}}\' class="pull-right btn btn-sm btn-default" role="button" target="_blank"> Ladda ned</a>                              
-                            {{/ifprop}}                                                                                
-                           
-                            <div class="accordion-col">
-                              <span title="Titel på distribution" class="resourceLabel">{{text fallback="<span class=\'distributionNoName\'>Ingen titel given</span>"}}</span>
-                              <span title="Licens" class="licence text-5">
-                              {{prop "dcterms:license" render="label"}}
-                              </span>
+                                  <div class="format-div">
+                                      <span title="Format" class="format label formatLabel label-success md5_{{prop "dcterms:format" render="md5"}}"
+                                      title="{{prop "dcterms:format"}}">{{prop "dcterms:format" render="label"}}</span>\
+                                  </div>
+                                  </div>
 
-                              <div class="format-div">
-                                  <span title="Format" class="format label formatLabel label-success md5_{{prop "dcterms:format" render="md5"}}"
-                                  title="{{prop "dcterms:format"}}">{{prop "dcterms:format" render="label"}}</span>\
-                              </div>
-                              </div>
+                                {{{{/rowhead}}}}
 
-                            {{{{/rowhead}}}}
+                        {{/list}}
+                        
+                        `,
+                        }}
+                      ></script>
 
-                    {{/list}}
-                    
-                    `,
-                    }}
-                  ></script>
+                      <h2 id="text-load" className="data-header">
+                        {i18n.t('pages|datasetpage|about-dataset')}
+                      </h2>
 
-                  <h2 id="text-load" className="data-header">
-                    {i18n.t('pages|datasetpage|about-dataset')}
-                  </h2>
+                      <script
+                        type="text/x-entryscape-handlebar"
+                        data-entryscape="true"
+                        data-entryscape-component="template"
+                        dangerouslySetInnerHTML={{
+                          __html: `
+                        
+                        <div class="viewMetadata">
+                          {{viewMetadata 
+                              template="dcat:OnlyDataset" 
+                              filterpredicates="dcterms:title,dcterms:description,dcterms:publisher,dcat:theme"}}
+                        </div>
 
-                  <script
-                    type="text/x-entryscape-handlebar"
-                    data-entryscape="true"
-                    data-entryscape-component="template"
-                    dangerouslySetInnerHTML={{
-                      __html: `
-                    
-                    <div class="viewMetadata">
-                      {{viewMetadata 
-                          template="dcat:OnlyDataset" 
-                          filterpredicates="dcterms:title,dcterms:description,dcterms:publisher,dcat:theme"}}
+                        `,
+                        }}
+                      ></script>
                     </div>
 
-                    `,
-                    }}
-                  ></script>
-                </div>
+                    <div
+                      className="col span_4 boxed about-dataset"
+                      data-animation=""
+                      data-delay="0"
+                    >
+                      <span className="bottom-line"></span>
 
-                <div
-                  className="col span_4 boxed about-dataset"
-                  data-animation=""
-                  data-delay="0"
-                >
-                  <span className="bottom-line"></span>
+                      <span
+                        className="entryscape"
+                        data-entryscape="true"
+                        data-entryscape-block="view"
+                        data-entryscape-template="dcat:foaf:Agent"
+                        data-entryscape-filterpredicates="foaf:name"
+                        data-entryscape-use="_org"
+                      ></span>
 
-                  <span
-                    className="entryscape"
-                    data-entryscape="true"
-                    data-entryscape-block="view"
-                    data-entryscape-template="dcat:foaf:Agent"
-                    data-entryscape-filterpredicates="foaf:name"
-                    data-entryscape-use="_org"
-                  ></span>
+                      <div className="information-row">
+                        <span id="text-load" className="catalog-span">
+                          {' '}
+                          {i18n.t('pages|datasetpage|catalog')}
+                        </span>
+                        <script
+                          type="text/x-entryscape-handlebar"
+                          data-entryscape="true"
+                          data-entryscape-block="template"
+                          dangerouslySetInnerHTML={{
+                            __html: `<span class="catalog-name">{{text relationinverse="dcat:dataset" define="cat"}}</span>`,
+                          }}
+                        ></script>
+                      </div>
 
-                  <div className="information-row">
-                    <span id="text-load" className="catalog-span">
-                      {' '}
-                      {i18n.t('pages|datasetpage|catalog')}
-                    </span>
-                    <script
-                      type="text/x-entryscape-handlebar"
-                      data-entryscape="true"
-                      data-entryscape-block="template"
-                      dangerouslySetInnerHTML={{
-                        __html: `<span class="catalog-name">{{text relationinverse="dcat:dataset" define="cat"}}</span>`,
-                      }}
-                    ></script>
+                      <script
+                        type="text/x-entryscape-handlebar"
+                        data-entryscape="true"
+                        data-entryscape-block="template"
+                        dangerouslySetInnerHTML={{
+                          __html: `{{viewMetadata 
+                              relationinverse="dcat:dataset" 
+                              onecol=true 
+                              template="dcat:OnlyCatalog" 
+                              use="cat" 
+                              filterpredicates="dcterms:title"}}`,
+                        }}
+                      ></script>
+
+                      <script
+                        type="text/x-entryscape-handlebar"
+                        data-entryscape="true"
+                        data-entryscape-block="template"
+                        dangerouslySetInnerHTML={{
+                          __html: `
+                        <a class="download-rdf" target="_blank" href="{{metadataURI}}?recursive=dcat">Ladda ner som RDF</a>
+                        `,
+                        }}
+                      ></script>
+                    </div>
                   </div>
-
-                  <script
-                    type="text/x-entryscape-handlebar"
-                    data-entryscape="true"
-                    data-entryscape-block="template"
-                    dangerouslySetInnerHTML={{
-                      __html: `{{viewMetadata 
-                          relationinverse="dcat:dataset" 
-                          onecol=true 
-                          template="dcat:OnlyCatalog" 
-                          use="cat" 
-                          filterpredicates="dcterms:title"}}`,
-                    }}
-                  ></script>
-
-                  <script
-                    type="text/x-entryscape-handlebar"
-                    data-entryscape="true"
-                    data-entryscape-block="template"
-                    dangerouslySetInnerHTML={{
-                      __html: `
-                    <a class="download-rdf" target="_blank" href="{{metadataURI}}?recursive=dcat">Ladda ner som RDF</a>
-                    `,
-                    }}
-                  ></script>
-                </div>
-              </div>
-            </MainContent>
-          </ErrorBoundary>
-          <Footer onToTopButtonPushed={this.setFocus} />
-        </Box>
-      </QueryParamProvider>
+                </MainContent>
+              </ErrorBoundary>
+              <Footer onToTopButtonPushed={this.setFocus} />
+            </Box>
+          </QueryParamProvider>
+          )}
+        </EntrystoreContext.Consumer>
+      </EntrystoreProvider>
     );
   }
 }

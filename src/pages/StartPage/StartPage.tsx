@@ -28,7 +28,7 @@ import { PageProps } from 'pages/PageProps';
 
 import { StatisticGraph } from '../../components/StatisticGraph';
 import { Highlight } from '../../components/Highlight';
-// import { NewsBlock } from 'components/News';
+import { NewsBlock } from 'components/News';
 
 const MainContent = Box.withComponent('main');
 
@@ -124,13 +124,13 @@ export class StartPage extends React.Component<PageProps, any> {
                         <div className="search-boxes">
                           <div
                             onClick={e => {
-                              window.location.href = `/${i18n.languages[0]}/datasets?p=1&q=*&f=`;
+                              window.location.href = `/${i18n.languages[0]}/datasets?p=1&q=&f=`;
                             }}
                           >
                             <a
                               className="text-4"
                               aria-label="Sök efter termer"
-                              href={`/${i18n.languages[0]}/datasets?p=1&q=*&f=`}
+                              href={`/${i18n.languages[0]}/datasets?p=1&q=&f=`}
                             >
                               {i18n.t('pages|search|datasets')}
                             </a>
@@ -140,18 +140,18 @@ export class StartPage extends React.Component<PageProps, any> {
                           <div
                             className="disabled-linkbox"
                             // onClick={e => {
-                            //   window.location.href = `/${i18n.languages[0]}/concepts?p=1&q=*&f=`;
+                            //   window.location.href = `/${i18n.languages[0]}/concepts?p=1&q=&f=`;
                             // }}
                           >
                             <span className="soon">KOMMER SNART</span>
 
-                            <a
+                            <span
                               className="text-4"
-                              aria-label="Sök efter begrepp"
-                              // href={`/${i18n.languages[0]}/concepts?p=1&q=*&f=`}
+                              // aria-label="Sök efter begrepp"
+                              // href={`/${i18n.languages[0]}/concepts?p=1&q=&f=`}
                             >
                               {i18n.t('pages|search|concepts')}
-                            </a>
+                            </span>
                             <span className="text-6">
                               Utforska begrepp och terminologier
                             </span>
@@ -160,18 +160,18 @@ export class StartPage extends React.Component<PageProps, any> {
                           <div
                             className="disabled-linkbox"
                             // onClick={e => {
-                            //   window.location.href = `/${i18n.languages[0]}/specifications?p=1&q=*&f=`;
+                            //   window.location.href = `/${i18n.languages[0]}/specifications?p=1&q=&f=`;
                             // }}
                           >
                             <span className="soon">KOMMER SNART</span>
 
-                            <a
+                            <span
                               className="text-4"
-                              aria-label="Sök efter specifikationer"
-                              // href={`/${i18n.languages[0]}/specifications?p=1&q=*&f=`}
+                              // aria-label="Sök efter specifikationer"
+                              // href={`/${i18n.languages[0]}/specifications?p=1&q=&f=`}
                             >
                               {i18n.t('pages|search|specifications')}
-                            </a>
+                            </span>
                             <span className="text-6">
                               Utforska specifikationer av informations- och
                               datamodeller
@@ -294,7 +294,7 @@ export class StartPage extends React.Component<PageProps, any> {
 
                       <Highlight env={settings.env} />
 
-                      {/* <NewsBlock env={settings.env}/> */}
+                      <NewsBlock env={settings.env}/>
 
                       {/* <RenderInBrowser except ie> */}
                       <StatisticGraph env={settings.env} />

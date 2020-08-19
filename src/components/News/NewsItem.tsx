@@ -58,11 +58,11 @@ console.log(qs);
     return (                    
       <div className="news-article content">
 
-        {loading && (<div>laddar..</div>)}
+        {loading && (<span className="text-5 loading">{i18n.t('common|loading')}</span>)}
         {!loading && newsItem && id && id != '0' ?
           <>
             {newsItem && newsItem.imageUrl && (
-              <img src={newsItem.imageUrl} />
+              <img src={`${newsItem.imageUrl}?width=1024`} />
             )}
 
             <span className="text-6">{moment(newsItem.published.toString()).format("D MMM YYYY")}</span>

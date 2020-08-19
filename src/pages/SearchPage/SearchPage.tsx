@@ -49,7 +49,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
     this.headerRef = React.createRef();
     this.setFocus = this.setFocus.bind(this);
     this.inputQueryRef = React.createRef();
-    this.state = { query: '*', activeLink: 'search', showFilters: false };
+    this.state = { query: '', activeLink: 'search', showFilters: false };
     this.state = { activeLink: 'search' };
   }
 
@@ -195,7 +195,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
                             search
                               .set({
                                 page: 0,
-                                query: this.inputQueryRef.current!.value || '*',
+                                query: this.inputQueryRef.current!.value || '',
                                 fetchFacets: true,
                               })
                               .then(() => search.doSearch());
@@ -236,7 +236,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
                               
                               <SearchIcon color={colorPalette.white} width={[25]} />
                             </button>
-                            {search.loadingFacets && <Loader />}
+                            {search.loadingFacets && <Loader />}                            
                           </div>
                         </form>
 
@@ -398,13 +398,14 @@ export class SearchPage extends React.Component<SearchProps, any> {
                         <div id="search-result" className="search-result">
                           <div className="search-result-head">
                             <h2 className="text-4 search-result-header">                                     
-                              {search.loadingHits &&
-                                 `${i18n.t('common|loading')}...`
+                            {search.loadingHits &&
+                                 <span className="loading">{i18n.t('common|loading')}</span>
                               }
+                            
                               {!search.loadingHits && search.result && (search.result.count || 0) >= 0 &&                                
                                 `${search.result.count} ${i18n.t('pages|search|dataset-hits')}`                                
                               }                              
-                              {' '}
+                              {' '}                                                   
                             </h2>
 
                             <div className="search-sort">
@@ -488,7 +489,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
                                             <p
                                               className="result-format"
                                               key={index}
-                                            >
+                                            >                                              
                                               <FileFormatBadge badgeName={m} />
                                             </p>
                                           )

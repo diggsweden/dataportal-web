@@ -7,6 +7,7 @@ import prettyBytes from 'pretty-bytes';
 import { promisify } from 'util';
 import zlib from 'zlib';
 import { renderer, RenderResponseProfileItem } from './renderer';
+import { getSitemap } from './SiteMap'
 var csp = require('simple-csp');
 const app = express();
 
@@ -102,8 +103,10 @@ app.use(
   })
 );
 
+app.use('/sitemap.xml', getSitemap)
+
 //Robots, sitemap and google site verification
-app.get(['/robots.txt','/sitemap.xml','/google*.html','/favicon.ico'], async (req, res) => {  
+app.get(['/robots.txt','/google*.html','/favicon.ico'], async (req, res) => {  
   res.sendFile(path.join(cwd, req.path));
 });
 

@@ -17,7 +17,12 @@ export class Highlight extends React.Component<HighlightProps> {
           <h2 className="text-3">
             {i18n.t('pages|highlight|highlight-header')}
           </h2>
-          <p className="text-5">{i18n.t('pages|highlight|highlight-text')}</p>
+          <p className="text-5">
+          {i18n.t('pages|highlight|highlight-text')}
+          </p>
+          <p className="text-5">
+          {i18n.t('pages|highlight|highlight-text2')}
+          </p>
         </div>
         <div>
           <TopImage />
