@@ -464,58 +464,58 @@ export class EntryScape {
       `&query=(metadata.object.literal:(${q})+OR+title:(${q})+OR+description:(${q})+OR+tag.literal:(${q}))+AND+`)
 
       fetch(queryUrl)
-      .then(response => {
-        response.json().then(data => {
+      .then(response => {           
+        response.json()
+          .then(data => {            
+            //if backend error return empty result and error message
+            if(data.error)
+            {            
+              resolve({
+                error: data.error,
+                hits:[],
+                count: 0,
+                facets: {},
+                esFacets: []   
+              });
+            }
 
-          //if backend error return empty result and error message
-          if(data.error)
-          {            
-            resolve({
-              error: data.error,
-              hits:[],
-              count: 0,
-              facets: {},
-              esFacets: []   
+            let children = EntryStore.factory.extractSearchResults(data, searchList, es);
+        
+            //facets must be retrieved explicitly if requested
+            if(request.fetchFacets)
+            {              
+              searchList.setFacets(data.facetFields);                       
+              var metaFacets = searchList.getFacets();     
+            }                  
+                        
+            //construct SearchHit-array
+            children.forEach((child:any) => {      
+              
+              let metaData = child.getMetadata();
+              let context = child.getContext();            
+
+              let hit = {
+                entryId: child.getId(),
+                title: this.getLocalizedValue(metaData,this.hitSpecification.titleResource || "dcterms:title",lang),
+                description: this.getLocalizedValue(metaData,this.hitSpecification.descriptionResource || "dcterms:description",lang),
+                esEntry: child,
+                metadata: this.getMetaValues(child),
+                url:''
+              };
+              hit.url = `${this.hitSpecification.path || 'datamangd'}${context.getId()}_${hit.entryId}/${slugify(hit.title)}`;
+              hit.description = hit.description && hit.description.length > 250? `${(hit.description + '').substr(0,250)}...` : hit.description;            
+
+              hits.push(hit);         
             });
-          }
-
-          let children = EntryStore.factory.extractSearchResults(data, searchList, es);
-      
-          //facets must be retrieved explicitly if requested
-          if(request.fetchFacets)
-          {              
-            searchList.setFacets(data.facetFields);                       
-            var metaFacets = searchList.getFacets();     
-          }                  
-                      
-          //construct SearchHit-array
-          children.forEach((child:any) => {      
             
-            let metaData = child.getMetadata();
-            let context = child.getContext();            
-
-            let hit = {
-              entryId: child.getId(),
-              title: this.getLocalizedValue(metaData,this.hitSpecification.titleResource || "dcterms:title",lang),
-              description: this.getLocalizedValue(metaData,this.hitSpecification.descriptionResource || "dcterms:description",lang),
-              esEntry: child,
-              metadata: this.getMetaValues(child),
-              url:''
-            };
-            hit.url = `${this.hitSpecification.path || 'datamangd'}${context.getId()}_${hit.entryId}/${slugify(hit.title)}`;
-            hit.description = hit.description && hit.description.length > 250? `${(hit.description + '').substr(0,250)}...` : hit.description;            
-
-            hits.push(hit);         
-          });
-
-          resolve({            
-            hits:hits,
-            count: searchList.getSize(),
-            facets: {},
-            esFacets: metaFacets
-          });
-        });     
-    });  
+            resolve({            
+              hits:hits,
+              count: searchList.getSize(),
+              facets: {},
+              esFacets: metaFacets
+            });
+          })             
+      });  
   })   
   }
 }

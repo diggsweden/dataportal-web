@@ -7,6 +7,7 @@
   "beta-link-text" : "synpunkter ",
   "beta-text2" : "till oss! Gå till gamla ",
   "logo-title" : "Sveriges dataportal",
+  "logo-alt-title" : "Sveriges dataportal logotyp",
   "to-top" : "Till toppen",
   "show-filter" : "Visa filter",
   "hide-filter" : "Dölj filter",
@@ -14,6 +15,7 @@
   "load-more" : "Ladda fler",
   "clear-filters" : "Rensa alla filter",
   "no-js-text" : "JavaScript måste vara aktiverat för att söksidan ska fungera.",
-  "soon" : "KOMMER SNART"
+  "soon" : "KOMMER SNART",
+  "seo-title" : "Sveriges dataportal"
 }
 

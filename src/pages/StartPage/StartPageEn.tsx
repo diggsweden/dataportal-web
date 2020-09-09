@@ -25,6 +25,7 @@ import { PageProps } from 'pages/PageProps';
 import { SettingsContext } from 'components/SettingsProvider';
 import {StatisticGraph} from '../../components/StatisticGraph';
 import { Highlight } from '../../components/Highlight';
+import { ArticleBlock } from 'components/Articles';
 
 const MainContent = Box.withComponent('main');
 
@@ -70,6 +71,7 @@ export class StartPageEn extends React.Component<PageProps, any> {
                 robotsFollow={true}
                 robotsIndex={true}
                 lang={i18n.languages[0]}
+                canonicalUrl={`${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/`}
               />
               <NoJavaScriptWarning text="" />
 
@@ -286,6 +288,10 @@ export class StartPageEn extends React.Component<PageProps, any> {
                       </div>
 
                       <Highlight env={settings.env} />
+
+                      <ArticleBlock env={settings.env}/>
+
+
                       <StatisticGraph env={settings.env} />      
                       <Statistic env={settings.env} />
                     </div>

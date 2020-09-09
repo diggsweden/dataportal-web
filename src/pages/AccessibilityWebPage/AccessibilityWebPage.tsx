@@ -11,10 +11,9 @@ import { QueryParamProvider } from '../../components/QueryParamProvider';
 import { __RouterContext } from 'react-router';
 import { PageMetadata } from '../PageMetadata';
 import i18n from 'i18n';
+import { PageProps } from '../PageProps'
 
 const MainContent = Box.withComponent('main');
-
-export interface PageProps extends RouteComponentProps<any, RouterContext> {}
 
 export class AccessibilityWebPage extends React.Component<PageProps> {
   private headerRef: React.RefObject<Header>;
@@ -49,6 +48,7 @@ export class AccessibilityWebPage extends React.Component<PageProps> {
           robotsFollow={true}
           robotsIndex={true}
           lang={i18n.languages[0]}
+          canonicalUrl={`${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|accessibility|path')}/`}
         />
         <Box
           id="top"

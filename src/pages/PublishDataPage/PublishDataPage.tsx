@@ -11,10 +11,9 @@ import { QueryParamProvider } from '../../components/QueryParamProvider';
 import { __RouterContext } from 'react-router';
 import { PageMetadata } from '../PageMetadata';
 import i18n from 'i18n';
+import { PageProps } from '../PageProps'
 
 const MainContent = Box.withComponent('main');
-
-export interface PageProps extends RouteComponentProps<any, RouterContext> {}
 
 export class PublishDataPage extends React.Component<PageProps, any> {
   private headerRef: React.RefObject<Header>;
@@ -52,6 +51,7 @@ export class PublishDataPage extends React.Component<PageProps, any> {
           robotsFollow={true}
           robotsIndex={true}
           lang={i18n.languages[0]}
+          canonicalUrl={`${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|register-data|path')}/`}
         />
         <Box
           id="top"
@@ -105,7 +105,7 @@ export class PublishDataPage extends React.Component<PageProps, any> {
                   <div className="link-blocks">
                     <div
                       className="link-block"
-                      onClick={e => {
+                      onClick={(e) => {
                         window.location.href =
                           'https://registrera.oppnadata.se/';
                       }}
@@ -197,7 +197,7 @@ export class PublishDataPage extends React.Component<PageProps, any> {
                       enligt den standardiserade metadataspecifikationen{' '}
                       <a
                         target="_blank"
-                        href="https://diggsweden.github.io/DCAT-AP-SE/"
+                        href="https://docs.dataportal.se/dcat/sv/"
                       >
                         DCAT-AP-SE
                       </a>
@@ -238,6 +238,15 @@ export class PublishDataPage extends React.Component<PageProps, any> {
                     </a>{' '}
                     för vägledning kring tillgängliggörande av information och
                     publicering av metadata till dataportalen.
+                  </p>
+
+                  <p className="main-text text-5">
+                    För mer information om dataportalens tekniska ramverk samt
+                    rekommendationer kring skördning av metadata, se{' '}
+                    <a href="https://docs.dataportal.se/" target="_blank">
+                      docs.dataportal.se/
+                    </a>
+                    .
                   </p>
                 </div>
               </div>

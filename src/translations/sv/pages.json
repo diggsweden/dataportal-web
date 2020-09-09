@@ -56,6 +56,11 @@
     "about-dataset" : "Om datamängd",
     "download-dataset" : "Hämta datamängd",
     "catalog" : "Hämtad från katalog"
+  },
+  "articles" :{
+    "news" : "nyheter",
+    "articles" : "Artiklar",
+    "view-all" : "Visa alla artiklar"
   }
 }
 

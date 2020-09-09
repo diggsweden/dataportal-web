@@ -11,15 +11,14 @@ import { QueryParamProvider } from '../../components/QueryParamProvider';
 import { __RouterContext } from 'react-router';
 import { PageMetadata } from '../PageMetadata';
 import i18n from 'i18n';
+import { PageProps } from '../PageProps'
 
 const MainContent = Box.withComponent('main');
 
-export interface PagePropsEn extends RouteComponentProps<any, RouterContext> {}
-
-export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
+export class PublishDataPageEn extends React.Component<PageProps, any> {
   private headerRef: React.RefObject<Header>;
 
-  constructor(props: PagePropsEn) {
+  constructor(props: PageProps) {
     super(props);
     this.headerRef = React.createRef();
     this.setFocus = this.setFocus.bind(this);
@@ -52,6 +51,7 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
           robotsFollow={true}
           robotsIndex={true}
           lang={i18n.languages[0]}
+          canonicalUrl={`${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|register-data|path')}/`}
         />
         <Box
           id="top"
@@ -110,7 +110,7 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                   <div className="link-blocks">
                     <div
                       className="link-block"
-                      onClick={e => {
+                      onClick={(e) => {
                         window.location.href =
                           'https://registrera.oppnadata.se/';
                       }}
@@ -198,7 +198,7 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                       metadata specification{' '}
                       <a
                         target="_blank"
-                        href="https://diggsweden.github.io/DCAT-AP-SE/"
+                        href="https://docs.dataportal.se/dcat/en/"
                       >
                         DCAT-AP-SE
                       </a>
@@ -234,6 +234,16 @@ export class PublishDataPageEn extends React.Component<PagePropsEn, any> {
                     </a>{' '}
                     for guidance on making information available and publishing
                     metadata to the data portal.
+                  </p>
+
+                  <p className="main-text text-5">
+                    For more information about the data portals technical
+                    framework and recommendations regarding harvesting metadata,
+                    see{' '}
+                    <a href="https://docs.dataportal.se/" target="_blank">
+                      docs.dataportal.se/
+                    </a>
+                    .
                   </p>
                 </div>
               </div>

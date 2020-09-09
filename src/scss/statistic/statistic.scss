@@ -97,10 +97,8 @@
                 background-color: $white;
                 padding: $space-16;
                 border: 1px solid $black10;
-                // box-shadow: 2px 2px 10px #f2f2f2;
 
                 @media screen and (max-width: 400px) {
-                    box-shadow: none;
                     border: none;
                     padding: 0px;
                 }
@@ -125,6 +123,9 @@
                             margin-left: $space-8;
                             width: 100%;
                             min-width: 140px;
+                            a{
+                                width: fit-content;
+                            }
 
                             &:hover {
                                 text-decoration: none;

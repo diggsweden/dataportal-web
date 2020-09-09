@@ -19,7 +19,7 @@ export class Settings_Prod extends EnvSettings {
 
   CONTENTBACKEND_GRAPHAPI="https://digg-prod-graphproxy.azurewebsites.net";
 
-  CANONICAL_URL = "https://dataportal.se";
+  CANONICAL_URL = "https://www.dataportal.se";
 
   envName = 'prod';
 

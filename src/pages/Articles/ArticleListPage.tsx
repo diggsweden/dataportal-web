@@ -11,20 +11,17 @@ import { QueryParamProvider } from '../../components/QueryParamProvider';
 import { __RouterContext } from 'react-router';
 import { PageMetadata } from '../PageMetadata';
 import i18n from 'i18n';
-import { NewsList } from '../../components/News'
+import { NewsList } from '../../components/Articles'
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { SettingsContext } from 'components/SettingsProvider';
+import { PageProps } from '../PageProps'
 
 const MainContent = Box.withComponent('main');
 
-export interface NewsListProps
-  extends RouteComponentProps<any, RouterContext> {    
-  }
-
-export class NewsListPage extends React.Component<NewsListProps> {
+export class ArticleListPage extends React.Component<PageProps> {
   private headerRef: React.RefObject<Header>;
 
-  constructor(props: NewsListProps) {
+  constructor(props: PageProps) {
     super(props);
     this.headerRef = React.createRef();
     this.setFocus = this.setFocus.bind(this);
@@ -55,7 +52,7 @@ export class NewsListPage extends React.Component<NewsListProps> {
     return (
       <QueryParamProvider params={uri}>
         <PageMetadata
-            seoTitle="Nyheter - Sveriges dataportal"
+            seoTitle="Artiklar - Sveriges dataportal"
             seoDescription=""
             seoImageUrl=""
             seoKeywords=""
@@ -79,7 +76,7 @@ export class NewsListPage extends React.Component<NewsListProps> {
             <ErrorBoundary>
               <MainContent flex="1 1 auto">
                 <div className="main-container">
-                  <h1 className="text-header text-1">Nyheter</h1>
+                  <h1 className="text-header text-1">{i18n.t('pages|articles|articles')}</h1>
                   <div className="content">
                     <NewsList env={settings.env}/>
                   </div>

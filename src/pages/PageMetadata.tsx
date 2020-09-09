@@ -21,8 +21,8 @@ export const PageMetadata: React.SFC<PageMetadataProps> = props => {
   ];
 
   return (
-    <Helmet htmlAttributes={{ lang }} title={seoTitle || ''}>
-      {seoTitle && <title>{seoTitle}</title>}
+    <Helmet htmlAttributes={{ lang }} title={seoTitle || 'Sveriges dataportal'}>
+      {seoTitle && <title>{seoTitle}</title>}     
       {seoDescription && (
         <meta name="description" content={seoDescription} />
       )}

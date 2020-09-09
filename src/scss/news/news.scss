@@ -14,101 +14,6 @@
         width: 100%;
     }
 
-    // OLD newsblock style
-
-    // .news-pinned {
-    //     &:hover {
-    //         cursor: pointer;
-    //         a {
-    //             text-decoration: none;
-    //         }
-    //     }
-    //     img {
-    //         width: 100%;
-    //         max-width: 544px;
-
-    //         @media screen and (max-width: 800px) {
-    //             max-width: 749px;
-    //         }
-    //     }
-    //     span {
-    //         margin-top: $space-16;
-    //         display: block;
-    //         // display: block;
-    //         // width: 81px;
-    //         // overflow: hidden;
-    //         // white-space: nowrap;
-    //         color: $black-hover;
-    //     }
-    //     h3 {
-    //         margin-top: 4px;
-    //         margin-bottom: $space-8;
-    //         a {
-    //             color: $black100;
-    //         }
-    //     }
-    //     p {
-    //         margin: 0px;
-    //         max-width: 544px;
-
-    //         @media screen and (max-width: 800px) {
-    //             max-width: 749px;
-    //         }
-    //     }
-    // }
-
-    // OLD newsblock style
-
-    // .news-list-compact {
-    //     ul {
-    //         margin: 0px;
-    //         padding: 0px;
-    //         list-style: none;
-
-    //         li {
-    //             margin-bottom: $space-24;
-    //             &:hover {
-    //                 cursor: pointer;
-    //                 a {
-    //                     text-decoration: none;
-    //                 }
-    //             }
-    //             span{
-    //                 color:$black-hover ;
-    //                 display: block;
-    //                 // width: 81px;
-    //                 // overflow: hidden;
-    //                 // white-space: nowrap;
-    //             }
-    //             h3 {
-    //                 margin-top: 4px;
-    //                 margin-bottom: 8px;
-    //                 color: $black100;
-    //                 a {
-    //                     color: $black100;
-    //                 }
-    //             }
-    //             p {
-    //                 margin-top: 0px;
-    //                 margin-bottom: 0px;
-    //                 padding-bottom: $space-8;
-    //             }
-    //         }
-    //     }
-
-    //     a{
-    //         &:hover{
-    //             text-decoration: none;;
-    //         }
-    //     }
-
-    //     @media screen and (min-width: 800px) {
-    //         margin-left: $space-48;
-    //     }
-    // }
-
-
-
     .news-list-compact {
         ul {
             display: flex;
@@ -126,6 +31,7 @@
             li {
                 min-height: 480px;
                 background-color: $orange10;
+                width: inherit;
 
                 &:nth-last-of-type(2) {
                     margin-left: $space-32;
@@ -142,6 +48,7 @@
 
                 .news-img {
                     height: 240px;
+
                     img {
                         object-fit: cover;
                         width: 100%;
@@ -175,6 +82,7 @@
                     margin-top: 0px;
                     margin-bottom: 0px;
                     padding-bottom: $space-8;
+                    hyphens: auto
                 }
 
                 @media screen and (max-width: 800px) {
@@ -185,16 +93,19 @@
                 }
 
                 @media screen and (max-width: 800px) {
-                    min-height: 400px;
                     margin-bottom: $space-16;
+
                     &:nth-last-of-type(2) {
                         margin-left: 0px;
                         margin-right: 0px;
-                    }                }
+                    }
+                }
             }
         }
 
         a {
+            width: fit-content;
+
             &:hover {
                 text-decoration: none;
             }
@@ -239,9 +150,9 @@
                 margin-top: 0px;
                 margin-bottom: 0px;
                 padding-right: $space-16;
-
-                word-wrap: break-word;
-                word-break: break-all;
+                -webkit-hyphens: auto;
+                -ms-hyphens: auto;
+                hyphens: auto;
             }
 
             &:hover {
@@ -257,7 +168,7 @@
 
 // NewsPage
 .news-article {
-    margin-top: $space-24;
+    margin-top: $space-32;
 
     img {
         width: 100%;
@@ -268,6 +179,16 @@
     p {
         margin-top: 0px;
     }
+
+    p {
+        img {
+            margin-bottom: 0px;
+        }
+        em{
+            font-style: italic;
+        }
+    }
+
 
     h1 {
         margin-top: $space-16;

@@ -20,7 +20,7 @@ const createScriptPreload = (src: string) => {
 };
 
 const createStyleTag = (src: string) => {
-  return `<link rel="stylesheet" href="${src}" type="text/css" />`;
+  return `<link rel="stylesheet" href="${src}" type="text/css" />`;  
 };
 
 export type FooterData = {  
@@ -48,10 +48,14 @@ export const getHeader = ({
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width,initial-scale=1">
           <meta name="theme-color" content="#171A21">         
-          <meta name="referrer" content="no-referrer">           
-          <link href="https://fonts.googleapis.com" rel="preconnect" crossorigin>
-          <!--link href="https://fonts.gstatic.com" rel="preconnect" crossorigin-->
+          <meta name="referrer" content="no-referrer">   
+          <link rel="stylesheet" href="/dist/client/js/font-awesome.min.css" media="print" onload="this.media='all'" type="text/css">                  
+          <link href="https://fonts.googleapis.com" rel="preconnect" crossorigin>   
+          <link href="https://fonts.googleapis.com" rel="dns-prefetch" crossorigin>         
           <link href="https://registrera.oppnadata.se" rel="preconnect" crossorigin>
+          <link href="https://registrera.oppnadata.se" rel="dns-prefetch" crossorigin>
+          <link href="https://dataportal.azureedge.net" rel="preconnect" crossorigin>
+          <link href="https://dataportal.azureedge.net" rel="dns-prefetch" crossorigin>
           <link rel="manifest" href="/dist/client/js/manifest.json">
           <link rel="icon" type="image/png" href="/dist/client/js/svdp-favicon-16.png" sizes="16x16">
           <link rel="icon" type="image/png" href="/dist/client/js/svdp-favicon-32.png" sizes="32x32">
@@ -61,21 +65,13 @@ export const getHeader = ({
           <link rel="apple-touch-icon" sizes="152x152" href="/dist/client/js/svdp-favicon.png">
           <link rel="apple-touch-icon" sizes="167x167" href="/dist/client/js/svdp-favicon.png">
           <link rel="mask-icon" href="/dist/client/js/safari-pinned-tab.svg" color="black">  
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700&display=swap" type="text/css">
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700&display=swap" media="print" onload="this.media='all'" type="text/css">                  
           <meta name="og:type" content="website">
-          <meta name="og:site_name" content="Sveriges dataportal">          
+          <meta name="og:site_name" content="Sveriges dataportal">                   
           ${styleBundles.map(src => createStyleTag(src))}              
-          ${metaTags}                                       
-          <link rel="preload" href="https://dataportal.azureedge.net/cdn/entrystore.4.7.5.modified.js" as="script" crossorigin="anonymous">   
-          <link rel="preload" href="https://dataportal.azureedge.net/cdn/rdfjson.4.7.5.modified.js" as="script" crossorigin="anonymous">   
-          <link rel="preload" href="https://dataportal.azureedge.net/cdn/postscribe.min.js" as="script" crossorigin="anonymous">       
-          <link rel="stylesheet" href="/dist/client/js/font-awesome.min.css">                
-          ${bundles.map(src => createScriptPreload(src))}                
-          <script>
-          /* <![CDATA[ */
-          var __entryscape_plugin_config = {"entrystore_base":"https:\/\/registrera.oppnadata.se\/store","entryscape_base":"https:\/\/static.entryscape.com\/blocks\/0.18"};
-          /* ]]> */
-          </script>                          
+          ${metaTags}                                                  
+          <link rel="preload" href="https://dataportal.azureedge.net/cdn/postscribe.min.js" as="script" crossorigin="anonymous">                                 
+          ${bundles.map(src => createScriptPreload(src))}                                                  
         `;
 };
 
@@ -83,9 +79,7 @@ export const getFooter = ({ bundles, ids }: FooterData) => {
   return html`<div id="popup"></div>            
       <script>window.__EMOTION_IDS__ = ${serialize(ids)};</script>                   
       <div id="scriptsPlaceholder"></div>     
-      <script src="https://dataportal.azureedge.net/cdn/postscribe.min.js" crossorigin="anonymous"></script>      
-      <script src="https://dataportal.azureedge.net/cdn/entrystore.4.7.5.modified.js" crossorigin="anonymous"></script>      
-      <script src="https://dataportal.azureedge.net/cdn/rdfjson.4.7.5.modified.js" crossorigin="anonymous"></script>      
+      <script src="https://dataportal.azureedge.net/cdn/postscribe.min.js" crossorigin="anonymous"></script>              
       ${bundles.map(src => createScriptTag(src))}                        
     </body>
     </html>

@@ -17,8 +17,8 @@ import { AccessibilityWebPage } from './pages/AccessibilityWebPage';
 import { AccessibilityWebPageEn } from './pages/AccessibilityWebPage';
 import { PublishDataPage} from './pages/PublishDataPage';
 import { PublishDataPageEn} from './pages/PublishDataPage';
-import { NewsListPage } from './pages/News';
-import { NewsPage } from './pages/News';
+import { ArticleListPage } from './pages/Articles';
+import { ArticlePage } from './pages/Articles';
 
 // import i18n from './i18n';
 import { StartPage } from './pages/StartPage';
@@ -61,24 +61,24 @@ class RoutesComponent extends React.Component<RouteProps> {
             <App>
               <Switch>
                 {/* English */}
-                <Route path={['/about-webpage' ,'/en/about-webpage']} exact render={(props)=><AboutWebPageEn {...props}/>} />
-                <Route path={['/about-webpage/accessibility', '/en/about-webpage/accessibility']} exact render={(props)=><AccessibilityWebPageEn {...props}/>} />
-                <Route path={['/register-data', '/en/register-data']} exact render={(props)=><PublishDataPageEn {...props}/>} />
-                <Route path={['/news', '/en/news']} exact render={(props)=><NewsListPage {...props}/>} />
-                <Route path={['/news/:nid/*', '/en/news/:nid/*','/en/news/*']} exact render={(props)=><NewsPage {...props}/>} />
-                <Route path="/en" exact render={(props)=><StartPageEn {...props}/>} />
+                <Route path={['/about-webpage' ,'/en/about-webpage']} exact render={(props)=><AboutWebPageEn env={settings.env} {...props}/>} />
+                <Route path={['/about-webpage/accessibility', '/en/about-webpage/accessibility']} exact render={(props)=><AccessibilityWebPageEn env={settings.env} {...props}/>} />
+                <Route path={['/register-data', '/en/register-data']} exact render={(props)=><PublishDataPageEn env={settings.env} {...props}/>} />
+                <Route path={['/articles', '/en/articles']} exact render={(props)=><ArticleListPage env={settings.env} {...props}/>} />
+                <Route path={['/articles/:nid/*', '/en/articles/:nid/*','/en/articles/*']} exact render={(props)=><ArticlePage env={settings.env} {...props}/>} />
+                <Route path="/en" exact render={(props)=><StartPageEn env={settings.env} {...props}/>} />
                 {/* <Route path={['/news', '/en/news']} exact render={(props)=><NewsListPage {...props}/>} /> */}
 
                 {/* Swedish */}
-                <Redirect exact from="/" to="/sv/" />
+                {/* <Redirect exact from="/" to="/sv/" /> */}
 
-                <Route path={['/nyhets-artikel', '/sv/nyhets-artikel']} exact render={(props)=><NewsPage {...props}/>} />
-                <Route path={['/nyheter', '/sv/nyheter']} exact render={(props)=><NewsListPage {...props}/>} />
-                <Route path={['/nyheter/:nid/*', '/sv/nyheter/:nid/*','/sv/nyheter/*']} exact render={(props)=><NewsPage {...props}/>} />
+                <Route path={['/nyhets-artikel', '/sv/nyhets-artikel']} exact render={(props)=><ArticlePage env={settings.env} {...props}/>} />
+                <Route path={['/artiklar', '/sv/artiklar']} exact render={(props)=><ArticleListPage env={settings.env} {...props}/>} />
+                <Route path={['/artiklar/:nid/*', '/sv/artiklar/:nid/*','/sv/artiklar/*']} exact render={(props)=><ArticlePage env={settings.env} {...props}/>} />
 
-                <Route path={['/registrera-data', '/sv/registrera-data']} exact render={(props)=><PublishDataPage {...props}/>} />
-                <Route path={['/om-webbplatsen', '/sv/om-webbplatsen']} exact render={(props)=><AboutWebPage {...props}/>} />
-                <Route path={['/om-webbplatsen/tillganglighet', '/sv/om-webbplatsen/tillganglighet']} exact render={(props)=><AccessibilityWebPage {...props}/>} />
+                <Route path={['/registrera-data', '/sv/registrera-data']} exact render={(props)=><PublishDataPage env={settings.env} {...props}/>} />
+                <Route path={['/om-webbplatsen', '/sv/om-webbplatsen']} exact render={(props)=><AboutWebPage env={settings.env} {...props}/>} />
+                <Route path={['/om-webbplatsen/tillganglighet', '/sv/om-webbplatsen/tillganglighet']} exact render={(props)=><AccessibilityWebPage env={settings.env} {...props}/>} />
                 {/* dataset, concepts, specifications */}
                 <Route path={['/datasets', '/en/datasets', '/sv/datasets']} exact render={(props)=><SearchPage env={settings.env} {...props} />} />
                 <Route path={['/specifications', '/sv/specifications', '/en/specifications']} exact render={(props)=><SearchSpecificationsPage env={settings.env} {...props} />} />
@@ -87,7 +87,7 @@ class RoutesComponent extends React.Component<RouteProps> {
                 <Route path={['/concepts/:cid*_:eid/*', '/sv/concepts/:cid*_:eid/*', '/en/concepts/:cid*_:eid/*']} exact render={(props)=><TermPage env={settings.env} {...props}/>} />
                 <Route path={['/specifications/:cid*_:eid/*', '/sv/specifications/:cid*_:eid/*', '/en/specifications/:cid*_:eid/*']} exact render={(props)=><SpecificationPage env={settings.env} {...props}/>} />
                 {/* default */}
-                <Route path={['/', '/sv']} exact render={(props)=><StartPage {...props}/>} />
+                <Route path={['/', '/sv']} exact render={(props)=><StartPage env={settings.env} {...props}/>} />
                 <Route render={(props)=><NotFoundPage {...props}/>} />
               </Switch>
             </App>

@@ -25,6 +25,7 @@ export interface SearchContextData {
   showMoreFacets: (facetkey:string) => void;
   updateFacetStats: () => Promise<void>;
   facetSelected: (key:string,value:string) => boolean;
+  facetHasSelectedValues: (key:string) => boolean;
   doSearch: (appendHits?:Boolean, setStateToLocation?:Boolean, reSortOnDone?:Boolean) => Promise<void>;     
   setStateToLocation: () => void;     
   sortAllFacets: (excludeFacet?:string) => void;
@@ -50,6 +51,7 @@ const defaultSettings:SearchContextData = {
   showMoreFacets: () => {},
   updateFacetStats: () => new Promise<void>(resolve => {}),
   facetSelected: () => false,
+  facetHasSelectedValues: () => false,
   doSearch: () => new Promise<void>(resolve => {}),   
   setStateToLocation: () => {},   
   sortAllFacets: () => {},
@@ -71,7 +73,8 @@ export const SearchContext = createContext<SearchContextData>(
  * SearchProvider component
  */
 export class SearchProvider extends React.Component<SearchProviderProps, SearchContextData> {
-  
+  private postscribe: any;
+
   constructor(props:SearchProviderProps){
     super(props);        
 
@@ -91,6 +94,57 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
     }
   }  
 
+  addScripts() {
+    if (typeof window !== 'undefined') {
+      let reactThis = this;
+
+      this.postscribe = (window as any).postscribe;
+     
+      this.postscribe(
+        '#scriptsPlaceholder',
+        ` 
+        <script
+        src="https://dataportal.azureedge.net/cdn/entrystore.4.7.5.modified.js" 
+        crossorigin="anonymous"></script>
+        <script
+          src="https://dataportal.azureedge.net/cdn/rdfjson.4.7.5.modified.js" 
+          crossorigin="anonymous"></script>          
+        `,
+        {
+          done: function() {
+            if(reactThis.state && reactThis.state.fetchAllFacetsOnMount) {      
+              reactThis.parseLocationToState().then(anyParsed => {
+                  if(anyParsed)
+                  {      
+                    reactThis.set({
+                      fetchFacets:true
+                    }).then(() => {
+                      reactThis.fetchAllFacets().finally(() => {                        
+                        reactThis.doSearch().finally(() => {                                                           
+                        });
+                      });
+                    })                          
+                  }
+                });      
+            }
+            else {
+              reactThis.parseLocationToState().then(anyParsed => {
+                if(anyParsed)
+                {
+                  reactThis.set({
+                    fetchFacets:true
+                  }).then(() => {
+                    reactThis.doSearch(false, false);
+                  });
+                }
+              }); 
+            } 
+          },
+        }
+      );      
+    }
+  }
+
   /**
    * On component mount
    * 
@@ -101,7 +155,9 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
     let reactThis = this;
 
     if(hasWindow)
-    {
+    { 
+      this.addScripts();
+
       //handles back/forward button, we need to make a new search when the URL has changed
       window.addEventListener("popstate", () => {
         reactThis.parseLocationToState().then(anyParsed => {
@@ -116,35 +172,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
             });
           }
         });
-      });    
-            
-      if(this.state && this.state.fetchAllFacetsOnMount) {      
-          this.parseLocationToState().then(anyParsed => {
-            if(anyParsed)
-            {      
-              this.set({
-                fetchFacets:true
-              }).then(() => {
-                this.fetchAllFacets().finally(() => {                        
-                  this.doSearch().finally(() => {                                                           
-                  });
-                });
-              })                          
-            }
-          });      
-      }
-      else {
-        this.parseLocationToState().then(anyParsed => {
-          if(anyParsed)
-          {
-            this.set({
-              fetchFacets:true
-            }).then(() => {
-              this.doSearch(false, false);
-            });
-          }
-        }); 
-      }    
+      });                
     }
   }  
 
@@ -159,7 +187,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
           ...this.state.request,       
           ...req          
         }
-      }, () => {
+      }, () => {        
         resolve();
       });
     });      
@@ -193,81 +221,86 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
             return acc;
           }, {});  
 
+          let searchPromises:Promise<any>[] = []  
+
           //iterate all facets by type, make one search for every facet group, updateing the facet count in allFacets
-          if(groupedFacets)
-          {
+          if(groupedFacets && Object.entries(groupedFacets).length > 0)
+          {            
             for(let group in groupedFacets)
-            {      
+            {                   
               let facetsNotInGroup:SearchFacetValue[] = facetValues.filter((f) => 
                 f.facet !== group
               );
+                         
+              searchPromises.push(entryScape.solrSearch({
+                ...this.state.request,
+                takeFacets: 100,                  
+                fetchFacets: true,
+                facetValues: facetsNotInGroup,
+                take:0
+              })                
+              .then((res) => {                                     
+                //fetch metafacets
+                if(res.esFacets)
+                {                      
+                  //set array allFacets state          
+                  this.setState(state => {
+                    const allFacets = this.state.allFacets  as { [facet: string]: SearchFacet; };                                
 
-              //if(facetsNotInGroup && facetsNotInGroup.length > 0)
-            // {
-                entryScape.solrSearch({
-                  ...this.state.request,
-                  takeFacets: 100,                  
-                  fetchFacets: true,
-                  facetValues: facetsNotInGroup,
-                  take:0
-                }).then((res) => {
-                  //fetch metafacets
-                  if(res.esFacets)
-                  {                      
-                    //set array allFacets state          
-                    this.setState(state => {
-                      const allFacets = this.state.allFacets  as { [facet: string]: SearchFacet; };                                
+                    //check every instance in allFacet for hitcounts in current SearchResult
+                    Object.entries(allFacets).forEach(([k,v]) => {
 
-                      //check every instance in allFacet for hitcounts in current SearchResult
-                      Object.entries(allFacets).forEach(([k,v]) => {
+                      if(k == group) {                            
 
-                        if(k == group) {                            
-
-                          let esFacetsInGroup = res.esFacets!.find(f => 
-                            f.predicate == group
-                          )
+                        let esFacetsInGroup = res.esFacets!.find(f => 
+                          f.predicate == group
+                        )
+                        
+                        v.facetValues.forEach((f) => {
                           
-                          v.facetValues.forEach((f) => {
-                            
-                            if(esFacetsInGroup && esFacetsInGroup.values)
-                            {                                                                                  
-                              var resultFacetValue = esFacetsInGroup!.values.find(fv => 
-                                fv.name == f.resource
-                              );                                            
+                          if(esFacetsInGroup && esFacetsInGroup.values)
+                          {                                                                                  
+                            var resultFacetValue = esFacetsInGroup!.values.find(fv => 
+                              fv.name == f.resource
+                            );                                            
 
-                              if(resultFacetValue)
-                              {                                                          
-                                f.count = resultFacetValue.count || 0;
-                              }      
-                              // else
-                              //    f.count = 0;                 
-                            }
-                          })
-                          //Sort facet values according to count, TODO: Parameterize
-                          // v.facetValues = v.facetValues.sort((a,b) => {
-                          //   return b.count - a.count;
-                          // });
-                        }
-                      });                                          
-
-                      return {
-                        ...this.state,                        
-                        allFacets:allFacets                        
+                            if(resultFacetValue)
+                            {                                                          
+                              f.count = resultFacetValue.count || 0;
+                            }      
+                            // else
+                            //    f.count = 0;                 
+                          }
+                        })
+                        //Sort facet values according to count, TODO: Parameterize
+                        // v.facetValues.sort((a,b) => 
+                        //   b.count - a.count
+                        // );
                       }
-                    }, () => {
-                      resolve();
-                    }); 
+                    });                                                                
+                    return {
+                      ...this.state,                        
+                      allFacets:allFacets                        
+                    }
+                  }, () => {                                                                                 
+                  }); 
+                }                  
+              }));
+            }    
 
-                  }
-                });
-            //}                    
-            }            
+            Promise.all(searchPromises).then(() => {              
+              resolve();        
+            });
           }  
           else
             resolve();        
         }  
         else
           resolve();             
+      }
+      else
+      {       
+        resolve();
       }                 
     });      
   };
@@ -278,43 +311,43 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
    * 
    * @param excludedFacet is for resorting all but facets within that group
    */
-  sortAllFacets = (excludedFacet:string = '') => {
-    
-    const allFacets = this.state.allFacets  as { [facet: string]: SearchFacet; };
-
-    this.setState({
-      ...this.state,
-      loadingFacets:true
-    });  
-
+  sortAllFacets = (excludedFacet:string = '') => {    
+    let allFacets = this.state.allFacets as { [facet: string]: SearchFacet; };
+   
     //check every instance in allFacet for hitcounts in current SearchResult
-    Object.entries(allFacets).forEach(([k,v]) => {             
+    Object.entries(allFacets).forEach(([k,v]) => {       
+    
         if(excludedFacet != k)
-        {                      
-          //Sort facet values according to count and selected
-          v.facetValues = v.facetValues.sort((a,b) => {             
-            return b.count - a.count;
-          });          
-          
+        {                                    
           //iterate sorted array and make sure selected items appear first
           let tmpArr:SearchFacetValue[] = [];
           let tmpArrSelected:SearchFacetValue[] = [];
-          v.facetValues.forEach(f =>
-          {
-            if(this.facetSelected(f.facet,f.resource))                   
-              tmpArrSelected.push(f);
+          //let tmpArrZero:SearchFacetValue[] = [];
+
+          v.facetValues.forEach((f) =>
+          {                         
+            if(this.facetSelected(f.facet,f.resource))   
+            {                
+              tmpArrSelected.push(f);              
+            }
+            // else if(f.count == 0) {       
+            //   tmpArrZero.push(f);              
+            // }
             else 
-              tmpArr.push(f);
-          });
+            {
+              tmpArr.push(f);          
+            }
+          });               
 
-          tmpArrSelected = tmpArrSelected.sort((a,b) => {             
-            return b.count - a.count;
-          });         
+          tmpArr.sort((a,b) => b.count - a.count);
 
-          v.facetValues = tmpArrSelected.concat(tmpArr);
-        }
+          //tmpArrZero.sort((a,b) => (b.title || '').localeCompare(a.title || ''))                
+
+          v.facetValues = tmpArrSelected.concat(tmpArr);         
+       }
+        
     }); 
-
+    
     this.setState({
       ...this.state,
       allFacets:allFacets,
@@ -375,10 +408,11 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
             ...this.state,
            allFacets:allFacets
           }
-        });   
+        }, () => {
+          resolve();
+        });
   
-      }   
-      resolve();
+      }         
     });      
   };
 
@@ -390,9 +424,12 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
       {             
         var facetValues = this.state.request.facetValues as SearchFacetValue[];
 
+        if(!facetValues)
+          return false;
+
         var existing = facetValues.filter((v:SearchFacetValue) => v.facet == key && v.resource == value);
 
-        //existed - remove from array
+        //existed
         if(existing && existing.length > 0)
         {
           return true;
@@ -402,6 +439,25 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
       return false;
   };
 
+  /**
+   * Check if facet with @param key has any selected facetvalues in current SearchRequest
+   */
+  facetHasSelectedValues = (key:string) => {    
+    if(this.state.allFacets && this.state.result && this.state.result.facets)
+    {             
+      var facetValues = this.state.request.facetValues as SearchFacetValue[];
+
+      var existing = facetValues.filter((v:SearchFacetValue) => v.facet == key);
+
+      //existed
+      if(existing && existing.length > 0)
+      {
+        return true;
+      }         
+    }    
+    
+    return false;
+};
 
   /**
    * Fetch all facets from entrystore, store in state sorted by count
@@ -440,7 +496,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
         else {          
           //found in cache, use cached
           if(allFacets)
-          {
+          {            
             this.setState({
               ...this.state,
               allFacets:allFacets
@@ -717,10 +773,10 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
         loadingHits:true,
         loadingFacets:true
       })            
-
+    
       if(setStateToLocation)
         this.setStateToLocation();    
-
+        
       let entryScape = new EntryScape(this.props.entryscapeUrl || 'https://registrera.oppnadata.se/store', this.props.hitSpecification, this.props.facetSpecification);
       entryScape.solrSearch(this.state.request).then((res) => {
               
@@ -748,12 +804,13 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
           request:{
             ...this.state.request
           }
-        }, () => {   
+        }, () => {             
           //fetch metafacets
           if(res.esFacets)
-          {                      
+          {                                
             entryScape.getFacets(res.esFacets,this.state.request.takeFacets || 5)
-            .then((res) => {                                  
+            .then((res) => {    
+                                           
               this.setState({
                 ...this.state,             
                 loadingFacets:false,
@@ -762,26 +819,24 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
                   ...this.state.result,                      
                   facets:res              
                 }
-              }, () => {                                
-                this.mergeAllFacetsAndResult().finally(() => {                                    
-                  this.updateFacetStatsGrouped().finally(() => {  
+              }, () => {                
+                                
+                this.mergeAllFacetsAndResult().then(() => {                                                      
+                  this.updateFacetStatsGrouped().then(() => {  
                     if(reSortOnDone)        
-                      this.sortAllFacets();                                                                            
+                      this.sortAllFacets()    
+                                                                                                      
                     resolve();                  
                   });
                 });
               
               });
-            })
-            .finally(() => {              
-              resolve();                      
-            });
+            })           
           }
-          else{     
-            if(reSortOnDone)   
-            {              
+          else{               
+            if(reSortOnDone)                             
               this.sortAllFacets();
-            }
+            
             resolve();
           } 
         });     
@@ -809,8 +864,9 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
             this.setState({
               ...this.state,
               loadingFacets:false          
-            })   
-            resolve();
+            }, () => {
+              resolve();
+            })               
           });            
         }
       )                                                                                          
@@ -830,6 +886,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
       fetchAllFacets: this.fetchAllFacets,
       updateFacetStats: this.mergeAllFacetsAndResult,
       facetSelected: this.facetSelected,
+      facetHasSelectedValues: this.facetHasSelectedValues,
       sortAllFacets: this.sortAllFacets,
       request: this.state.request,
       result: this.state.result,

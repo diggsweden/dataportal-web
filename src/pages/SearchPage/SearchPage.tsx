@@ -32,17 +32,18 @@ import { id } from 'common-tags';
 import { text } from 'express';
 import { FileFormatBadge } from '../../components/FileFormatBadge';
 import { EnvSettings } from '../../../config/env/EnvSettings';
+import { PageProps } from '../PageProps'
 
 const MainContent = Box.withComponent('main');
 
-interface SearchProps extends RouteComponentProps<any, RouterContext> {
+interface SearchProps extends PageProps {
   activeLink?: string;
-  env: EnvSettings;
 }
 
 export class SearchPage extends React.Component<SearchProps, any> {
   private headerRef: React.RefObject<Header>;
   private inputQueryRef: React.RefObject<HTMLInputElement>;
+  private postscribe: any;
 
   constructor(props: SearchProps) {
     super(props);
@@ -78,7 +79,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
     this.setState({ headerHeight: height });
   }
 
-  componentDidMount() {
+  componentDidMount() {   
     //needed for handling back/forward buttons and changing state for input correctly
     if (typeof window !== 'undefined') {
       //handles back/forward button
@@ -108,7 +109,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
     }
   }
 
-  handleChange = (target: any) => {
+  handleChange = (target: any) => {    
     this.setState({ query: target.value });
   };
 
@@ -121,7 +122,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
     let uri = new URLSearchParams(location.search);
 
     return (
-      <QueryParamProvider params={uri}>
+      <QueryParamProvider params={uri}>        
         <SearchProvider
           entryscapeUrl={this.props.env.ENTRYSCAPE_DATASETS_PATH? `https://${this.props.env.ENTRYSCAPE_DATASETS_PATH}/store`: 'https://registrera.oppnadata.se/store'}
           hitSpecification={{
@@ -190,15 +191,19 @@ export class SearchPage extends React.Component<SearchProps, any> {
                           {i18n.t('common|search-data')}
                         </h1>
                         <form
-                          onSubmit={event => {
+                          onSubmit={event => {                            
                             event.preventDefault();
+                            this.setState({
+                              query:this.inputQueryRef.current!.value
+                            })
                             search
                               .set({
                                 page: 0,
                                 query: this.inputQueryRef.current!.value || '',
                                 fetchFacets: true,
                               })
-                              .then(() => search.doSearch());
+                              .then(() => search.doSearch()                               
+                              );
                           }}
                         >
                           {/* <SearchHeader
@@ -287,21 +292,25 @@ export class SearchPage extends React.Component<SearchProps, any> {
                                                     ? 'selected'
                                                     : ''
                                                 }
-                                                onClick={() => {
+                                                onClick={() => {                                                  
                                                   search
-
                                                     .toggleFacet(facetValue)
                                                     .then(() => {
+                                                      
                                                       search
                                                         .doSearch(
                                                           false,
                                                           true,
                                                           false
                                                         )
-                                                        .then(() => {
-                                                          search.sortAllFacets(
-                                                            key
-                                                          );
+                                                        .then(() => {                                                              
+                                                          if(search.facetSelected(key,facetValue.resource)) {                                                                                                         
+                                                            search.sortAllFacets(
+                                                              key
+                                                            )
+                                                          }else {                                                           
+                                                            search.sortAllFacets()
+                                                          }
                                                         });
                                                     });
                                                 }}
@@ -352,9 +361,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
                                   className="selectedfilter"
                                   onClick={() => {
                                     search.toggleFacet(facetValue).then(() => {
-                                      search.doSearch().finally(() => {
-                                        search.sortAllFacets();
-                                      });
+                                      search.doSearch();
                                     });
                                   }}
                                 >

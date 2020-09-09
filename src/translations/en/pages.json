@@ -55,5 +55,10 @@
     "about-dataset" : "About dataset",
     "download-dataset" : "Access data",
     "catalog" : "Catalog"
+  },
+  "articles" :{
+    "news" : "news",
+    "articles" : "Articles",
+    "view-all" : "View all articles"
   }
 }

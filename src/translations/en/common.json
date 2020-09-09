@@ -7,6 +7,7 @@
   "beta-link-text" : "opinions ",
   "beta-text2" : "to us! Link to the old ",
   "logo-title" : "The Swedish dataportal",
+  "logo-alt-title" : "The Swedish dataportal logo",
   "to-top" : "To the top",
   "show-filter" : "Show filter",
   "hide-filter" : "Hide filter",
@@ -15,5 +16,6 @@
   "clear-filters" : "Clear all filters",
   "no-js-text" : "JavaScript must be enabled for the search page to work.",
   "soon" : "COMING SOON",
-  "logo" : ""
+  "logo" : "",
+  "seo-title" : "The Swedish dataportal"
 }

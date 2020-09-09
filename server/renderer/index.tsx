@@ -127,7 +127,7 @@ export const renderer = async (
     if(!helmet)
     {
       const helmetServer = Helmet.renderStatic();
-      response += `${helmetServer.title.toString()}${helmetServer.meta.toString()}${helmetServer.link.toString()}`;      
+      response += `<title data-react-helmet="true">Sveriges dataportal</title>${helmetServer.meta.toString()}${helmetServer.link.toString()}`;      
     }
 
     response += `<style data-emotion-css>${css}</style></head>`;

@@ -11,15 +11,14 @@ import { QueryParamProvider } from '../../components/QueryParamProvider';
 import { __RouterContext } from 'react-router';
 import { PageMetadata } from '../PageMetadata';
 import i18n from 'i18n';
+import { PageProps } from '../PageProps'
 
 const MainContent = Box.withComponent('main');
 
-export interface PagePropsEn extends RouteComponentProps<any, RouterContext> {}
-
-export class AboutWebPageEn extends React.Component<PagePropsEn> {
+export class AboutWebPageEn extends React.Component<PageProps> {
   private headerRef: React.RefObject<Header>;
 
-  constructor(props: PagePropsEn) {
+  constructor(props: PageProps) {
     super(props);
     this.headerRef = React.createRef();
     this.setFocus = this.setFocus.bind(this);
@@ -49,6 +48,7 @@ export class AboutWebPageEn extends React.Component<PagePropsEn> {
           robotsFollow={true}
           robotsIndex={true}
           lang={i18n.languages[0]}
+          canonicalUrl={`${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|about|path')}/`}
         />
         <Box
           id="top"

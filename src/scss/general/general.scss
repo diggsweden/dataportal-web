@@ -2,6 +2,16 @@
 
 @import 'scss/general/variables.scss';
 
+//Background-color for root
+//Max-width for content
+#root{
+    background-color: #f3f3f3;
+    #top{
+        max-width: 1440px;
+        margin: auto;
+    }
+}
+
 //For search and top image on startpage
 .main-search-container {
     max-width: $page-width;
@@ -39,7 +49,8 @@ html a:focus,
 html button:focus,
 html input:focus,
 html input[type="radio"]:focus,
-html textarea:focus {
+html textarea:focus,
+html select:focus {
     outline: $focus-style !important;
     outline-offset: $focus-offset !important;
 }
@@ -49,7 +60,8 @@ html textarea:focus {
 .no-focus-outline button:focus,
 .no-focus-outline input:focus,
 .no-focus-outline input[type="radio"]:focus,
-.no-focus-outline textarea:focus {
+.no-focus-outline textarea:focus,
+.no-focus-outline select:focus {
     outline: none !important;
 }
 

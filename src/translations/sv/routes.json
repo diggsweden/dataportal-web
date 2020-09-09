@@ -25,8 +25,8 @@
     "title":"Begrepp"
   },
   "news":{
-    "path":"nyheter",
-    "title":"Nyheter"
+    "path":"artiklar",
+    "title":"Artiklar"
   },
   "nyhet":{
     "path":"nyhets-artikel",

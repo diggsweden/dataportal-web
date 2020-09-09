@@ -26,12 +26,12 @@ import { SearchHeader } from 'components/SearchHead';
 import { ESRdfType, ESType } from 'components/Search/EntryScape';
 import i18n from 'i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
+import { PageProps } from '../PageProps'
 
 const MainContent = Box.withComponent('main');
 
-interface SearchProps extends RouteComponentProps<any, RouterContext> {
-  activeLink?: string;
-  env: EnvSettings;
+interface SearchProps extends PageProps {
+  activeLink?: string; 
 }
 
 export class SearchSpecificationsPage extends React.Component<

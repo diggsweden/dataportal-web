@@ -13,18 +13,16 @@ import { PageMetadata } from '../PageMetadata';
 import i18n from 'i18n';
 import { TopImage } from 'assets/TopImage';
 import { string } from 'prop-types';
-import { NewsItem } from '../../components/News'
+import { ArticleItem } from '../../components/Articles'
 import { SettingsContext } from 'components/SettingsProvider';
+import { PageProps } from '../PageProps'
 
 const MainContent = Box.withComponent('main');
 
-export interface NewsPageProps
-  extends RouteComponentProps<any, RouterContext> {}
-
-export class NewsPage extends React.Component<NewsPageProps> {
+export class ArticlePage extends React.Component<PageProps> {
   private headerRef: React.RefObject<Header>;
 
-  constructor(props: NewsPageProps) {
+  constructor(props: PageProps) {
     super(props);
     this.headerRef = React.createRef();
     this.setFocus = this.setFocus.bind(this);
@@ -47,7 +45,7 @@ export class NewsPage extends React.Component<NewsPageProps> {
     return (
       <QueryParamProvider params={uri}>
         <PageMetadata
-          seoTitle="Nyheter - Sveriges dataportal"
+          seoTitle="Artiklar - Sveriges dataportal"
           seoDescription=""
           seoImageUrl=""
           seoKeywords=""
@@ -72,7 +70,7 @@ export class NewsPage extends React.Component<NewsPageProps> {
               <MainContent flex="1 1 auto">
                 <div className="main-container">                  
                   <div className="">
-                  <NewsItem env={settings.env} id={this.props.match.params.nid} />
+                  <ArticleItem env={settings.env} id={this.props.match.params.nid} />
                   </div>
                 </div>
               </MainContent>

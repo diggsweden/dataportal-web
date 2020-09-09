@@ -3,7 +3,7 @@ import i18n from 'i18n';
 import { LogoSE } from './LogoSE';
 import { LogoEN } from './LogoEN';
 
-const title = i18n.t('common|logo-title');
+const title = i18n.t('common|logo-alt-title');
 const titleID = 'LogoID';
 
 export const DataportalLogo: React.FC = () => {

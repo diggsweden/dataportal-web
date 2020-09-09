@@ -37,6 +37,8 @@ export const EntrystoreContext = createContext<ESEntry>(
  * setting properties in the provider state (eg. title)
  */
 export class EntrystoreProvider extends React.Component<EntrystoreProviderProps, ESEntry> {
+  private postscribe: any;
+
   constructor(props:EntrystoreProviderProps){
     super(props);    
 
@@ -45,29 +47,58 @@ export class EntrystoreProvider extends React.Component<EntrystoreProviderProps,
     }
   }
 
-  componentDidMount() {        
+  addScripts(callback:Function) {
+    if (typeof window !== 'undefined') {
+      let reactThis = this;
 
-    //if we have an ES url, contextID and entryId, try to get a active instance of EntryScape
-    if(defaultESEntry.env && defaultESEntry.env.ENTRYSCAPE_DATASETS_PATH && this.props.cid && this.props.eid)
-    {      
-      defaultESEntry.entrystore = new EntryStore.EntryStore(defaultESEntry.env.ENTRYSCAPE_DATASETS_PATH? `https://${defaultESEntry.env.ENTRYSCAPE_DATASETS_PATH}/store`: 'https://registrera.oppnadata.se/store');   
-      let es = defaultESEntry.entrystore;
-
-      var entryURI = es.getEntryURI(this.props.cid, this.props.eid);
-
-      //fetch entry from entryscape https://entrystore.org/js/stable/doc/
-      es.getEntry(entryURI).then((entry:any) => {        
-        defaultESEntry.entry = entry;
-
-        let graph = entry.getMetadata();
-        
-        defaultESEntry.title = graph.findFirstValue(entry.getResourceURI(), "dcterms:title");                
-        
-        this.setState({
-          ...defaultESEntry
-        });
-      });
+      this.postscribe = (window as any).postscribe;
+     
+      this.postscribe(
+        '#scriptsPlaceholder',
+        ` 
+        <script
+        src="https://dataportal.azureedge.net/cdn/entrystore.4.7.5.modified.js" 
+        crossorigin="anonymous"></script>
+        <script
+          src="https://dataportal.azureedge.net/cdn/rdfjson.4.7.5.modified.js" 
+          crossorigin="anonymous"></script>          
+        `,
+        {
+          done: function() {
+            callback();
+          }
+        }
+      );      
     }
+    else{
+      callback();
+    }
+  }
+
+  componentDidMount() {        
+    this.addScripts(() => {
+      //if we have an ES url, contextID and entryId, try to get a active instance of EntryScape
+      if(defaultESEntry.env && defaultESEntry.env.ENTRYSCAPE_DATASETS_PATH && this.props.cid && this.props.eid)
+      {      
+        defaultESEntry.entrystore = new EntryStore.EntryStore(defaultESEntry.env.ENTRYSCAPE_DATASETS_PATH? `https://${defaultESEntry.env.ENTRYSCAPE_DATASETS_PATH}/store`: 'https://registrera.oppnadata.se/store');   
+        let es = defaultESEntry.entrystore;
+
+        var entryURI = es.getEntryURI(this.props.cid, this.props.eid);
+
+        //fetch entry from entryscape https://entrystore.org/js/stable/doc/
+        es.getEntry(entryURI).then((entry:any) => {        
+          defaultESEntry.entry = entry;
+
+          let graph = entry.getMetadata();
+          
+          defaultESEntry.title = graph.findFirstValue(entry.getResourceURI(), "dcterms:title");                
+          
+          this.setState({
+            ...defaultESEntry
+          });
+        });
+      }
+    })
   }
 
   render() {    

@@ -1,10 +1,6 @@
-import { any } from 'prop-types';
+//import { any } from 'prop-types';
 
-// declare module '@entryscape/entrystore-js'{
-//   const EntryStore:any;
-//   export default EntryStore;
-// }
-
+//declare module '@entryscape/entrystore-js'
 
 // declare module 'react-vis' {
 // export const XYPlot: any;

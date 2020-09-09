@@ -17,22 +17,18 @@ import i18n from 'i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { slugify } from 'utilities/urlHelpers';
 import { EntrystoreProvider, EntrystoreContext } from '../../components/EntrystoreProvider'
+import { PageProps } from '../PageProps'
 
 const MainContent = Box.withComponent('main');
 
-export interface SpecificationPageProps
-  extends RouteComponentProps<any, RouterContext> {
-    env: EnvSettings;
-  }
-
 export class SpecificationPage extends React.Component<
-  SpecificationPageProps,
+  PageProps,
   { scriptsAdded: Boolean; scriptsLoaded: Boolean }
 > {
   private headerRef: React.RefObject<Header>;
   private postscribe: any;
 
-  constructor(props: SpecificationPageProps) {
+  constructor(props: PageProps) {
     super(props);
     this.headerRef = React.createRef();
     this.setFocus = this.setFocus.bind(this);    

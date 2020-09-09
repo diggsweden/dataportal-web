@@ -4,17 +4,17 @@ import { TopImage } from 'assets/TopImage';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-import { Loader } from '../../components/Loader';
+import { Loader } from '../Loader';
 import ChopLines from 'chop-lines';
 import { slugify } from 'utilities/urlHelpers'
 let moment = require('moment');
 
-export interface NewsListProps {
+export interface ArticleListProps {
   children?: React.ReactNode;
   env: EnvSettings;
 }
 
-export const NewsList : React.FC<NewsListProps> = (props) => {  
+export const NewsList : React.FC<ArticleListProps> = (props) => {  
   moment.locale(i18n.languages[0]);
   const NEWS = gql `
   {
@@ -40,7 +40,7 @@ export const NewsList : React.FC<NewsListProps> = (props) => {
 
   const { loading, error, data } = useQuery<{news:Array<any>}>(NEWS);
 
-  const newsList = data && data.news && data.news.length > 0
+  const articleList = data && data.news && data.news.length > 0
   ? data.news
   : [];  
 
@@ -49,19 +49,17 @@ return (
     <ul>
       {loading && (<span className="text-5 loading">{i18n.t('common|loading')}</span>)}
       {!loading && error && (<span className="loading-msg">Det finns inga nyheter att visa för tillfället.</span>)}
-      {!loading && newsList && newsList.length > 0 &&              
-        newsList.map((n,index) => {                                
+      {!loading && articleList && articleList.length > 0 &&              
+        articleList.map((n,index) => {                                
         return (
           
-
-          
           <li
-          onClick={() => {(window as any).location.href = `/${i18n.languages[0]}/nyheter/${n.id}/${slugify(n.heading)}`;}}
+          onClick={() => {(window as any).location.href = `/${i18n.languages[0]}/${i18n.t('routes|news|path')}/${n.id}/${slugify(n.heading)}`;}}
           key={index} style={{borderColor: bgColor[Math.floor(Math.random()*bgColor.length)]}}>          
             
             <span className="text-6">{moment(n.published.toString()).format("D MMM YYYY")}</span>
             
-            <a className="text-3" href={`/${i18n.languages[0]}/nyheter/${n.id}/${slugify(n.heading)}`}>{n.heading}</a>
+            <a className="text-3" href={`/${i18n.languages[0]}/${i18n.t('routes|news|path')}/${n.id}/${slugify(n.heading)}`}>{n.heading}</a>
             <ChopLines
               lines={2}
               lineHeight={27}

@@ -17,12 +17,9 @@ import i18n from 'i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { slugify } from 'utilities/urlHelpers';
 import { EntrystoreProvider, EntrystoreContext } from '../../components/EntrystoreProvider'
+import { PageProps } from '../PageProps'
 
 const MainContent = Box.withComponent('main');
-
-export interface PageProps extends RouteComponentProps<any, RouterContext> {
-  env: EnvSettings;
-}
 
 export class DataSetPage extends React.Component<
   PageProps,
@@ -146,7 +143,7 @@ export class DataSetPage extends React.Component<
                         }}
                       ></script>
                       
-                      <h1>{entry.title}</h1>
+                      <h1 data-entryscape="text"></h1>
 
                       <script
                         type="text/x-entryscape-handlebar"
