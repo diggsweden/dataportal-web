@@ -1,7 +1,17 @@
 {
   "startpage" : {
-    "search_placeholder" : "Search for data"
-  },
+    "search_placeholder" : "Search for data",
+    "seo_description" : "Sweden's national data portal for finding, exploring and using data from the public and private sectors",
+    "seo_title" : "The Swedish dataportal",
+    "search_title_1" : "Search and explore",
+    "search_title_2" : "data from Sweden",    
+    "explore_datasets" : "Explore datasets",
+    "explore_concepts" : "Explore concepts and terminologies",
+    "explore_specs" : "Explore specifications of information and data models",
+    "coming_soon" : "COMING SOON",
+    "search_datasets_format" : "Search datasets in the {{category}} category",
+    "datasets_by_category" : "Datasets by categories"
+   },
   "statistic" : {
     "statistic-header" : "Statistics of the data portal",
     "dataset-numbers" : "Number of datasets over the last 12 months",

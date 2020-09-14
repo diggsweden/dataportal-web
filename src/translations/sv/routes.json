@@ -31,5 +31,9 @@
   "nyhet":{
     "path":"nyhets-artikel",
     "title":"nyhets-artikel"
+  },
+  "start":{
+    "path" : "",
+    "title" : "Sveriges dataportal"    
   }
 }

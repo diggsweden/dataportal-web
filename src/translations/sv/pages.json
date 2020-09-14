@@ -1,6 +1,16 @@
 {
   "startpage" : {
-    "search_placeholder" : "Sök efter datamängd"
+    "search_placeholder" : "Sök efter datamängd",
+    "seo_description" : "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor",
+    "seo_title" : "Sveriges dataportal",
+    "search_title_1" : "Sök och utforska",
+    "search_title_2" : "data i Sverige",    
+    "explore_datasets" : "Utforska datamängder",
+    "explore_concepts" : "Utforska begrepp och terminologier",
+    "explore_specs" : "Utforska specifikationer av informations- och datamodeller",
+    "coming_soon" : "KOMMER SNART",
+    "search_datasets_format" : "Sök datamängder inom kategorin {{category}}",
+    "datasets_by_category" : "Datamängder efter kategorier"
   },
   "statistic" : {
     "statistic-header" : "Statistik på dataportalen",

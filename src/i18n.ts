@@ -15,7 +15,7 @@ i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     detection:({
-      order:['path','querystring', 'localStorage', 'navigator', 'htmlTag'],
+      order:['path', 'localStorage', 'navigator', 'htmlTag'],
       lookupQuerystring: 'lng',
       lookupLocalStorage: 'i18nextLng',
       caches: ['localStorage'],

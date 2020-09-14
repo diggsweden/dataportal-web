@@ -23,12 +23,10 @@ import i18n from 'i18n';
 import { Statistic } from '../../components/Statistic';
 import { SettingsContext } from '../../components/SettingsProvider';
 import { PageProps } from 'pages/PageProps';
-
-// import RenderInBrowser from 'react-render-in-browser';
-
 import { StatisticGraph } from '../../components/StatisticGraph';
 import { Highlight } from '../../components/Highlight';
 import { ArticleBlock } from 'components/Articles';
+import { searchDatasetsPagePath } from 'utilities/urlHelpers'
 
 const MainContent = Box.withComponent('main');
 
@@ -67,8 +65,8 @@ export class StartPage extends React.Component<PageProps, any> {
               bgColor="#fff"
             >
               <PageMetadata
-                seoTitle="Sveriges dataportal"
-                seoDescription="Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor"
+                seoTitle={i18n.t('pages|startpage|seo_title')}
+                seoDescription={i18n.t('pages|startpage|seo_description')}
                 seoImageUrl=""
                 seoKeywords=""
                 robotsFollow={true}
@@ -87,7 +85,9 @@ export class StartPage extends React.Component<PageProps, any> {
                       <div className="startpage-top">
                         <div className="startpage-search">
                           <h1 className="">
-                            Sök och utforska <br /> data i Sverige
+                            {i18n.t('pages|startpage|search_title_1')}
+                            <br/>
+                            {i18n.t('pages|startpage|search_title_2')}
                           </h1>
                           <form
                             className="startpage-form"
@@ -112,7 +112,7 @@ export class StartPage extends React.Component<PageProps, any> {
                             <button
                               className="startpage-searchbtn"
                               type="submit"
-                              aria-label="Sök"
+                              aria-label={i18n.t('pages|startpage|search_placeholder')}
                             >
                               <SearchIcon
                                 color={colorPalette.white}
@@ -130,12 +130,12 @@ export class StartPage extends React.Component<PageProps, any> {
                           >
                             <a
                               className="text-4"
-                              aria-label="Sök efter termer"
+                              aria-label={i18n.t('pages|search|datasets')}
                               href={`/${i18n.languages[0]}/datasets?p=1&q=&f=`}
                             >
                               {i18n.t('pages|search|datasets')}
                             </a>
-                            <span className="text-6">Utforska datamängder</span>
+                            <span className="text-6">{i18n.t('pages|startpage|explore_datasets')}</span>
                           </div>
 
                           <div
@@ -144,7 +144,7 @@ export class StartPage extends React.Component<PageProps, any> {
                             //   window.location.href = `/${i18n.languages[0]}/concepts?p=1&q=&f=`;
                             // }}
                           >
-                            <span className="soon">KOMMER SNART</span>
+                            <span className="soon">{i18n.t('pages|startpage|coming_soon')}</span>
 
                             <span
                               className="text-4"
@@ -154,7 +154,7 @@ export class StartPage extends React.Component<PageProps, any> {
                               {i18n.t('pages|search|concepts')}
                             </span>
                             <span className="text-6">
-                              Utforska begrepp och terminologier
+                            {i18n.t('pages|startpage|explore_concepts')}
                             </span>
                           </div>
 
@@ -164,7 +164,7 @@ export class StartPage extends React.Component<PageProps, any> {
                             //   window.location.href = `/${i18n.languages[0]}/specifications?p=1&q=&f=`;
                             // }}
                           >
-                            <span className="soon">KOMMER SNART</span>
+                            <span className="soon">{i18n.t('pages|startpage|coming_soon')}</span>
 
                             <span
                               className="text-4"
@@ -174,8 +174,7 @@ export class StartPage extends React.Component<PageProps, any> {
                               {i18n.t('pages|search|specifications')}
                             </span>
                             <span className="text-6">
-                              Utforska specifikationer av informations- och
-                              datamodeller
+                              {i18n.t('pages|startpage|explore_specs')}
                             </span>
                           </div>
                         </div>
@@ -184,110 +183,110 @@ export class StartPage extends React.Component<PageProps, any> {
 
                     <div className="main-container">
                       <div className="startpage-categories">
-                        <h2 className="text-3">Datamängder efter kategorier</h2>
+                          <h2 className="text-3">{i18n.t('pages|startpage|datasets_by_category')}</h2>
                         <ul>
                           <li>
                             <a
-                              aria-label="Sök datamängder inom kategorin miljö"
-                              href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FENVI%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CMiljö`}
+                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/ENVI') })}
+                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/ENVI')}
                             >
-                              Miljö
+                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/ENVI')}
+                            </a>
+                          </li>
+                          <li>
+                          <a
+                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/SOCI') })}
+                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/SOCI')}
+                            >
+                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/SOCI')}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label="Sök datamängder inom kategorin befolkning och samhälle"
-                              href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FSOCI%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CBefolkning%20och%20samhälle`}
+                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/HEAL') })}
+                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/HEAL')}
                             >
-                              Befolkning och samhälle
+                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/HEAL')}
+                            </a>
+                          </li>
+                          <li>
+                          <a
+                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/ENER') })}
+                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/ENER')}
+                            >
+                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/ENER')}
+                            </a>
+                          </li>
+                          <li>
+                          <a
+                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/EDUC') })}
+                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/EDUC')}
+                            >
+                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/EDUC')}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label="Sök datamängder inom kategorin hälsa"
-                              href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FHEAL%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CHälsa`}
+                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/TRAN') })}
+                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/TRAN')}
                             >
-                              Hälsa
+                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/TRAN')}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label="Sök datamängder inom kategorin energi"
-                              href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FENER%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CEnergi`}
+                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/REGI') })}
+                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/REGI')}
                             >
-                              Energi
+                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/REGI')}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label="Sök datamängder inom kategorin utbildning, kultur och sport"
-                              href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FEDUC%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CUtbildning%2C%20kultur%20och%20sport`}
+                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/ECON') })}
+                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/ECON')}
                             >
-                              Utbildning, kultur och sport
+                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/ECON')}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label="Sök datamängder inom kategorin transport"
-                              href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FTRAN%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CTransport`}
+                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/AGRI') })}
+                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/AGRI')}
                             >
-                              Transport
+                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/AGRI')}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label="Sök datamängder inom kategorin regioner och städer"
-                              href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FREGI%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CRegioner%20och%20städer`}
+                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/GOVE') })}
+                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/GOVE')}
                             >
-                              Regioner och städer
+                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/GOVE')}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label="Sök datamängder inom kategorin ekonomi och finans"
-                              href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FECON%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CEkonomi%20och%20finans`}
+                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/TECH') })}
+                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/TECH')}
                             >
-                              Ekonomi och finans
+                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/TECH')}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label="Sök datamängder inom kategorin jordbruk, fiske, skogsbruk och livsmedel"
-                              href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FAGRI%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CJordbruk%2C%20fiske%2C%20skogsbruk%20och%20livsmedel`}
+                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/INTR') })}
+                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/INTR')}
                             >
-                              Jordbruk, fiske, skogsbruk och livsmedel
+                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/INTR')}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label="Sök datamängder inom kategorin regeringen och den offentliga sektorn"
-                              href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FGOVE%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CRegeringen%20och%20den%20offentliga%20sektorn`}
+                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/JUST') })}
+                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/JUST')}
                             >
-                              Regeringen och den offentliga sektorn
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              aria-label="Sök datamängder inom kategorin vetenskap och teknik"
-                              href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FTECH%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CVetenskap%20och%20teknik`}
-                            >
-                              Vetenskap och teknik
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              aria-label="Sök datamängder inom kategorin internationella frågor"
-                              href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FINTR%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CInternationella%20frågor`}
-                            >
-                              Internationella frågor
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              aria-label="Sök datamängder inom kategorin rättvisa, rättsliga system och allmän säkerhet"
-                              href={`/${i18n.languages[0]}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7Chttp%3A%2F%2Fpublications.europa.eu%2Fresource%2Fauthority%2Fdata-theme%2FJUST%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7CRättvisa%2C%20rättsliga%20system%20och%20allmän%20säkerhet`}
-                            >
-                              Rättvisa, rättsliga system och allmän säkerhet
+                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/JUST')}
                             </a>
                           </li>
                         </ul>

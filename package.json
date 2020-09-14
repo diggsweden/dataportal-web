@@ -111,7 +111,7 @@
     "mini-css-extract-plugin": "^0.8.0",
     "minimist": "1.2.3",
     "moment": "^2.25.3",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "2.6.1",
     "node-sass": "^4.13.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "qss": "^2.0.3",
@@ -140,6 +140,7 @@
     "**/**/yargs-parser": "^13.1.2",
     "**/**/dot-prop": "^5.1.1",
     "**/**/serialize-javascript": "^3.1.0",
+    "**/**/node-fetch": "^2.6.1",
     "@digg/react-ideal-image": "file:local_modules/digg_react-ideal-image-1.0.2.tgz"
   },
   "jest": {

@@ -22,7 +22,6 @@ import { ArticlePage } from './pages/Articles';
 
 // import i18n from './i18n';
 import { StartPage } from './pages/StartPage';
-import { StartPageEn } from './pages/StartPage';
 import { SettingsContext } from 'components/SettingsProvider';
 
 
@@ -66,7 +65,7 @@ class RoutesComponent extends React.Component<RouteProps> {
                 <Route path={['/register-data', '/en/register-data']} exact render={(props)=><PublishDataPageEn env={settings.env} {...props}/>} />
                 <Route path={['/articles', '/en/articles']} exact render={(props)=><ArticleListPage env={settings.env} {...props}/>} />
                 <Route path={['/articles/:nid/*', '/en/articles/:nid/*','/en/articles/*']} exact render={(props)=><ArticlePage env={settings.env} {...props}/>} />
-                <Route path="/en" exact render={(props)=><StartPageEn env={settings.env} {...props}/>} />
+                {/* <Route path="/en" exact render={(props)=><StartPageEn env={settings.env} {...props}/>} /> */}
                 {/* <Route path={['/news', '/en/news']} exact render={(props)=><NewsListPage {...props}/>} /> */}
 
                 {/* Swedish */}
@@ -87,7 +86,7 @@ class RoutesComponent extends React.Component<RouteProps> {
                 <Route path={['/concepts/:cid*_:eid/*', '/sv/concepts/:cid*_:eid/*', '/en/concepts/:cid*_:eid/*']} exact render={(props)=><TermPage env={settings.env} {...props}/>} />
                 <Route path={['/specifications/:cid*_:eid/*', '/sv/specifications/:cid*_:eid/*', '/en/specifications/:cid*_:eid/*']} exact render={(props)=><SpecificationPage env={settings.env} {...props}/>} />
                 {/* default */}
-                <Route path={['/', '/sv']} exact render={(props)=><StartPage env={settings.env} {...props}/>} />
+                <Route path={['/', '/sv','/en']} exact render={(props)=><StartPage env={settings.env} {...props}/>} />
                 <Route render={(props)=><NotFoundPage {...props}/>} />
               </Switch>
             </App>

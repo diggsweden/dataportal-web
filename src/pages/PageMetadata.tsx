@@ -27,7 +27,7 @@ export const PageMetadata: React.SFC<PageMetadataProps> = props => {
         <meta name="description" content={seoDescription} />
       )}
       <meta name="robots" content={robots.join(',')} />        
-      {canonicalUrl && (
+      {(canonicalUrl && canonicalUrl.length > 0) && (
         <link rel="canonical" href={canonicalUrl} />
       )}      
     </Helmet>

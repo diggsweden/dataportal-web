@@ -103,7 +103,7 @@ export class DataSetPage extends React.Component<
               robotsFollow={true}
               robotsIndex={true}
               lang={i18n.languages[0]}
-              canonicalUrl={`${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/datasets/${this.props.match.params.cid}_${this.props.match.params.eid}/${slugify(entry.title)}`}
+              canonicalUrl={entry && entry.title? `${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/datasets/${this.props.match.params.cid}_${this.props.match.params.eid}/${slugify(entry.title)}` : ''}
             />
             <Box
               id="top"

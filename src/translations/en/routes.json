@@ -31,5 +31,9 @@
   "news-article":{
     "path":"news-article",
     "title":"news-article"
+  },
+  "start":{
+    "path" : "",
+    "title" : "The Swedish dataportal"    
   }
 }
