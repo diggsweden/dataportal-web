@@ -67,6 +67,7 @@ header{
 @media screen and (max-width: 600px) {
     header {
         margin-bottom: $space-16;
+        padding-bottom: $space-16;
     }
 
     .logo-box {

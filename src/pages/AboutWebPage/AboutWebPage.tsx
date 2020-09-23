@@ -11,7 +11,7 @@ import { QueryParamProvider } from '../../components/QueryParamProvider';
 import { __RouterContext } from 'react-router';
 import { PageMetadata } from '../PageMetadata';
 import i18n from 'i18n';
-import { PageProps } from '../PageProps'
+import { PageProps } from '../PageProps';
 
 const MainContent = Box.withComponent('main');
 
@@ -48,7 +48,9 @@ export class AboutWebPage extends React.Component<PageProps> {
           robotsFollow={true}
           robotsIndex={true}
           lang={i18n.languages[0]}
-          canonicalUrl={`${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|about|path')}/`}
+          canonicalUrl={`${this.props.env.CANONICAL_URL}/${
+            i18n.languages[0]
+          }/${i18n.t('routes|about|path')}/`}
         />
         <Box
           id="top"
@@ -65,24 +67,14 @@ export class AboutWebPage extends React.Component<PageProps> {
             <MainContent flex="1 1 auto">
               <div className="main-container">
                 <h1 className="text-header text-1">Om webbplatsen</h1>
-                
+
                 <div className="content">
                   <p className="preamble text-4">
-                    Sveriges dataportal är under utveckling och finns i nuläget
-                    tillgänglig i en betaversion. Under 2020 kommer dataportalen
-                    att vidareutvecklas med fler funktioner och mer innehåll.
-                    Den nya dataportalen vidareutvecklas och förvaltas av
-                    Myndigheten för digital förvaltning (DIGG). Du kan
-                    fortfarande använda den gamla dataportalen,{' '}
-                    <a
-                      target="_blank"
-                      href="https://oppnadata.se"
-                      rel="noreferrer"
-                    >
-                      oppnadata.se
-                    </a>
-                    . Oppnadata.se planeras att stängas ned under 2020.
-                  </p>
+                    Sveriges dataportal är under utveckling och kommer att
+                    vidareutvecklas under 2020 med fler funktioner och mer
+                    innehåll. Dataportalen vidareutvecklas och förvaltas
+                    av Myndigheten för digital förvaltning (DIGG). 
+                    </p>
 
                   <p className="main-text text-5">
                     Data är en nationell resurs för näringslivets, samhällets
@@ -100,8 +92,8 @@ export class AboutWebPage extends React.Component<PageProps> {
                     vidareutnyttjande.
                   </p>
                   <p className="main-text text-5">
-                    På dataportalen finns enbart information om datamängder, dvs.
-                    metadata. Data hämtas via länkar för nedladdning eller
+                    På dataportalen finns enbart information om datamängder,
+                    dvs. metadata. Data hämtas via länkar för nedladdning eller
                     efterfrågas hos respektive organisation som ansvarar för
                     sina egna datamängder.
                   </p>
@@ -154,26 +146,44 @@ export class AboutWebPage extends React.Component<PageProps> {
                   <div className="main-text">
                     <span className="text-5-bold">2020-08-19:</span>
                     <ul className="text-5">
-                      <li>Utvecklat sitemap för webbplatsen som möjliggör indexering och sökning på google</li>
+                      <li>
+                        Utvecklat sitemap för webbplatsen som möjliggör
+                        indexering och sökning på google
+                      </li>
                       <li>Förberett för publicering av nyheter</li>
-                      <li>Diverse buggrättningar, bland annat i sökfunktionen</li>
+                      <li>
+                        Diverse buggrättningar, bland annat i sökfunktionen
+                      </li>
                       <li>Säkerhetsuppdateringar</li>
                     </ul>
                   </div>
 
+                  <div className="main-text">
+                    <span className="text-5-bold">2020-09-22:</span>
+                    <ul className="text-5">
+                      <li>
+                        Sida som presenterar statistik i textform
+                      </li>
+                      <li>Diverse buggrättningar</li>
+                      <li>
+                        Förbättrat prestandan
+                      </li>
+                      <li>Stängt webbplatsen Öppna data och PSI</li>
+                    </ul>
+                  </div>
 
                   <h2 className="text-2">
                     Tillgänglighetsredogörelse för dataportalen
                   </h2>
                   <p className="main-text text-5">
                     Myndigheten för digital förvaltning (DIGG) står bakom den
-                    här webbplatsen.{' '}
+                    här webbplatsen. Här kan du ta del av {' '}
                     <a
                       href={`/${i18n.languages[0]}/${i18n.t(
                         'routes|accessibility|path'
                       )}`}
                     >
-                      Här kan du ta del av tillgänglighetsredogörelsen
+                      tillgänglighetsredogörelsen
                     </a>
                     .
                   </p>
@@ -195,7 +205,9 @@ export class AboutWebPage extends React.Component<PageProps> {
                   </p>
 
                   <div className="main-text text-5">
-                    <span className="text-5-bold">Kakor som kan förekomma:</span>
+                    <span className="text-5-bold">
+                      Kakor som kan förekomma:
+                    </span>
                     <ul className="text-5">
                       <li>CONSENT</li>
                       <li>_fbp</li>
@@ -209,14 +221,14 @@ export class AboutWebPage extends React.Component<PageProps> {
 
                   <h2 className="text-2">Synpunkter på dataportalen</h2>
                   <p className="main-text text-5">
+                  Skicka gärna in dina {' '}
                     <a
                       target="_blank"
                       href="https://webropol.com/s/beta-sveriges-dataportal"
                       rel="noreferrer"
                     >
-                      Skicka gärna in dina synpunkter
+                      synpunkter
                     </a>{' '}
-                    på den nya dataportalen till oss!
                   </p>
                 </div>
               </div>

@@ -41,7 +41,8 @@ var csp_headers = {
     '*.dataportal.se',
     '*.googleapis.com',
     '*.gstatic.com',
-    'digg-test-graphproxy.azurewebsites.net'
+    'digg-test-graphproxy.azurewebsites.net',
+    'digg-prod-graphproxy.azurewebsites.net'
   ],
   'base-uri': ["'self'"],
   'manifest-src': ["'self'"],
@@ -64,7 +65,7 @@ var csp_headers = {
     '*.oppnadata.se',
     '*.dataportal.se',
   ],
-  'frame-ancestors': ['https://dev.digg.se'],
+  'frame-ancestors': ['https://dev.digg.se','https://digg.se','https://www.digg.se'],
   'connect-src': ['*'],
 };
 app.use('/', function(req, res, done) {
@@ -78,6 +79,17 @@ app.use(function forceLiveDomain(req, res, next) {
   var host = req.get('Host');
   if (host === 'beta.dataportal.se' || host === 'dataportal.se') {
     return res.redirect(301, 'https://www.dataportal.se' + req.originalUrl);
+  }
+  if (host === 'oppnadata.se' || 
+      host === 'xn--ppnadata-m4a.se'|| 
+      host === 'ckan.xn--ppnadata-m4a.se' || 
+      host === 'www.xn--ppnadata-m4a.se' || 
+      host === 'ckan.oppnadata.se' || 
+      host === 'www.oppnadata.se') {
+    return res.redirect(301, 'https://www.dataportal.se/oppnadata');
+  }
+  if (host === 'oppnadata.local:3003') {
+    return res.redirect(301, 'http://localhost:3003/oppnadata');
   }
   return next();
 });
@@ -107,6 +119,11 @@ app.use('/sitemap.xml', getSitemap)
 
 //Robots, sitemap and google site verification
 app.get(['/robots.txt','/google*.html','/favicon.ico'], async (req, res) => {  
+  res.sendFile(path.join(cwd, req.path));
+});
+
+//Acme-challange
+app.get(['/.well-known/acme-challenge/*'], async (req, res) => {  
   res.sendFile(path.join(cwd, req.path));
 });
 

@@ -133,6 +133,17 @@ export class FileFormatBadge extends React.Component<
         className = 'bc-8';
         break;
 
+        case '.PX - ett standardformat för statistikfiler och används av en stor grupp statistikbyråer.':
+          text = 'PX';
+          className = 'bc-3';
+          break;
+
+          case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ':
+            text = 'APPLICATION/XML/SPREADSHEET';
+            className = 'bc-1';
+            break;
+
+
       default:
         text = this.props.badgeName;
         className = '';

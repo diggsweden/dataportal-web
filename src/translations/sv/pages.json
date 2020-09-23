@@ -14,17 +14,23 @@
   },
   "statistic" : {
     "statistic-header" : "Statistik på dataportalen",
-    "dataset-numbers" : "Antal datamängder senaste 12 månaderna",
+    "dataset-numbers" : "Skördade datamängder per månad",
     "statistic-numbers" : "Portalen i siffror",
     "top-organizations" : "organisationer",
     "top-categories" : "kategorier",
-    "top" : "Topp"
+    "top" : "Topp",
+    "statistic-link" : "Beskrivning av statistik",
+    "graph-screenreader" : "Grafen nedan finns även presenterad i text. Följ länken Beskrivning av statistik",
+    "statistic-page-text" :"Statistiken som visualiseras på startsidan presenteras här i textform. Statistiken gäller skördade datamängder per månad, topp 5 gällande datamängder för organisationer och kategorier.",
+    "statistic-page-header" : "Statistik",
+    "statistic-page-numberofdatasets" :"Antal datamängder på dataportalen idag: ",
+    "statistic-page-seotitle" : "Statistik - Sveriges dataportal",
+    "statistic-page-link" : "statistik"
   },
 "highlight" : {
   "highlight-header":"Sveriges dataportal för ökad innovationskraft",
   "highlight-text":"Data är en nationell resurs för samhällets, näringslivets och den offentliga sektorns utveckling. Det är en väg till transparens, innovation och tillväxt som gynnar hela samhället som skapas av medborgarna, näringslivet och myndigheter tillsammans.",
   "highlight-text2":"Sveriges dataportal är ett nav som samordnar och tillgängliggör data som tillhandahålls av offentliga, privata och civilsamhällsorganisationer. Här finns enbart informationen om datamängderna. Själva datamängderna hämtas eller efterfrågas via länkar för åtkomst hos den organisation som ansvarar för den."
-
 },
   "search" : {
     "search" : "Sök",
@@ -43,7 +49,8 @@
     "relevance" : "Relevans",
     "date" : "Senast ändrad",
     "sort" : "Sortera:",
-    "nohits" : "Inga träffar"
+    "nohits" : "Inga träffar",
+    "numberofhits" : "Antal träffar:"
   },
   "datasets" : {
     "search-datasets" : "Sök efter datamängd",
@@ -60,7 +67,8 @@
   "notfoundpage" : {
     "heading" : "404 - Sidan hittades inte",
     "body" : "Vi kunde tyvärr inte hitta sidan du letade efter. Den kan ha blivit borttagen eller så har du skrivit in en felaktig länk.",
-    "tostart" : "Gå till Startsidan"
+    "startpage" : "startsidan",
+    "goto" : "Gå till "
   },
   "datasetpage" : {
     "about-dataset" : "Om datamängd",
@@ -71,6 +79,13 @@
     "news" : "nyheter",
     "articles" : "Artiklar",
     "view-all" : "Visa alla artiklar"
+  },
+  "redirect" :{
+    "pagenotfound_header" : "Oj, sidan kan inte hittas!",
+    "pagenotfound-text" : "Det kan bero på att oppnadata.se flyttade till dataportal.se den 23 september 2020. Förhoppningsvis kan de här länkarna hjälpa dig att hitta det du söker.",
+    "pagenotfound-label" : "Sveriges dataportal",
+    "pagenotfound-link" : "Startsidan",
+    "pagenotfound-link2" : "Sök data"
   }
 }
 

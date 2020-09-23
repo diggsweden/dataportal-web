@@ -13,7 +13,9 @@ import { PageMetadata } from '../PageMetadata';
 import { Footer } from '../../components/Footer';
 import { Header } from '../../components/Header';
 import { DataportalLogo } from '../../assets/Logo';
-import i18n from 'i18n'
+import i18n from 'i18n';
+
+const MainContent = Box.withComponent('main');
 
 export const NotFoundPage: React.SFC<RouteComponentProps<
   any,
@@ -24,34 +26,53 @@ export const NotFoundPage: React.SFC<RouteComponentProps<
   }
 
   return (
-    <Box>
-      <Container>
-        <Box bgColor="background" padding={2}>
-          <Box maxWidth="37.5rem">
-            <PageMetadata
-              seoTitle={i18n.t('pages|notfoundpage|heading')}
-              seoDescription={i18n.t('pages|notfoundpage|heading')}
-              seoImageUrl=""
-              seoKeywords=""
-              robotsFollow={true}
-              robotsIndex={true}
-              lang={i18n.languages[0]}
-            />
+    <Box
+      id="top"
+      display="flex"
+      direction="column"
+      minHeight="100vh"
+      bgColor="#fff"
+      className="notfoundpage"
+    >
+      <PageMetadata
+        seoTitle={i18n.t('pages|notfoundpage|heading')}
+        seoDescription={i18n.t('pages|notfoundpage|heading')}
+        seoImageUrl=""
+        seoKeywords=""
+        robotsFollow={true}
+        robotsIndex={true}
+        lang={i18n.languages[0]}
+      />
 
-            <a className="404logo" href="/" aria-label="Sveriges dataportal">
-              <DataportalLogo />
-            </a>
-              <h1 className="text-1">{i18n.t('pages|notfoundpage|heading')}</h1>
-            <Text marginBottom={3}>
-            <p className="text-5">{i18n.t('pages|notfoundpage|body')}</p>            
-            </Text>
+      <Header />
+      <MainContent flex="1 1 auto">
+        <div className="main-container">
+          <h1 className="text-1">
+            {i18n.t('pages|redirect|pagenotfound_header')}
+          </h1>
+          <div className="content redirectpage__content">
+            <span className="text-5">{i18n.t('pages|notfoundpage|body')}</span>
 
-            <a href="/" className="text-5-link">
-              {i18n.t('pages|notfoundpage|tostart')}
-            </a>
-          </Box>
-        </Box>
-      </Container>
+            <ul>
+              <li>
+                <a className="text-4" href={`/${i18n.languages[0]}`}>
+                  {i18n.t('pages|redirect|pagenotfound-link')}
+                </a>
+              </li>
+              <li>
+                <a
+                  className="text-4"
+                  href={`/${i18n.languages[0]}/${i18n.t(
+                    'routes|datasets|path'
+                  )}?q=&f=`}
+                >
+                  {i18n.t('pages|redirect|pagenotfound-link2')}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </MainContent>
       <Footer onToTopButtonPushed={() => {}} />
     </Box>
   );

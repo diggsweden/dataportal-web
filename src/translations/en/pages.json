@@ -14,11 +14,18 @@
    },
   "statistic" : {
     "statistic-header" : "Statistics of the data portal",
-    "dataset-numbers" : "Number of datasets over the last 12 months",
+    "dataset-numbers" : "Harvested datasets per month",
     "statistic-numbers" : "Statistics at a glance",
     "top-organizations" : "organizations",
     "top-categories" : "categories",
-    "top" : "Top"
+    "top" : "Top",
+    "statistic-link" : "Description of statistics",
+    "graph-screenreader" : "The following information is also avaliable in text. Follow the link Description of statistics",
+    "statistic-page-text" :"Statistics visualized on the startpage is here available in text. The statistics shows harvested datasets per months, top 5 organizations and categories.",
+    "statistic-page-header" : "Statistic",
+    "statistic-page-numberofdatasets" :"Number of datasets on dataportalen today: ",
+    "statistic-page-seotitle" : "Statistic - Sveriges dataportal",
+    "statistic-page-link" : "statistic"
   },
   "highlight" : {
     "highlight-header":"Sweden's data portal for increased innovation",
@@ -42,7 +49,8 @@
     "relevance" : "Relevance",
     "date" : "Last modified",
     "sort" : "Order by:",
-    "nohits" : "No hits"
+    "nohits" : "No hits",
+    "numberofhits" : "Number of hits:"
   },
   "datasets" : {
     "search-datasets" : "Search datasets",
@@ -58,8 +66,9 @@
   },
   "notfoundpage" : {
     "heading" : "404 - Page not found",
-    "body" : "The page you requested could not be found.",
-    "tostart" : "To startpage"
+    "body" : "The page you requested could not be found. Hopefully one of these links can help you find the information.",
+    "startpage" : "Sveriges dataportals's home page",
+    "goto" : "Go to "
   },
   "datasetpage" : {
     "about-dataset" : "About dataset",
@@ -70,5 +79,13 @@
     "news" : "news",
     "articles" : "Articles",
     "view-all" : "View all articles"
+  },  
+  "redirect" :{
+    "pagenotfound_header" : "Oops, the page could not be found!",
+    "pagenotfound-label" : "The Swedish dataportal",
+    "pagenotfound-text" : "This may be because oppnadata.se moved to dataportal.se September 23, 2020. Hopefully these links can help you find what you were looking for.",
+    "pagenotfound-link" : "Home page",
+    "pagenotfound-link2" : "Search data"
   }
 }
+

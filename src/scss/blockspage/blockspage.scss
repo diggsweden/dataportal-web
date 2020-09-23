@@ -193,7 +193,6 @@
     font-size: 18px;
     line-height: 27px;
     max-width: 640px;
-    margin-bottom: $space-64;
     word-break: break-all;
     padding: 0px !important;
 
@@ -997,7 +996,7 @@
 }
 
 
-#text-load {
+#text-load1, #text-load2, #text-load3 {
     animation: cssAnimation 0s 0.5s forwards;
     visibility: hidden;
   }

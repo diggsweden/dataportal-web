@@ -12,7 +12,7 @@ export class StatisticDataPresentation extends React.Component<StatisticDataPres
     render() {
         return (
             <div>
-                <span className="text-3">{this.props.dataNumber || 0}</span>
+                <span className="text-1">{this.props.dataNumber || 0}</span>
                 <span className="text-5">{this.props.dataText || ''}</span>
             </div>
         );

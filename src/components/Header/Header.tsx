@@ -198,8 +198,6 @@ export class Header extends React.Component<HeaderProps> {
   render() {
     return (
       <>
-        {/* <Box height="6.25rem" /> */}
-        {/* <StickyElem height="6.25rem" lang="sv"> */}
         <header>
           <InnerBox display="flex" justifyContent="center">
             <div className="beta-banner">
@@ -211,16 +209,9 @@ export class Header extends React.Component<HeaderProps> {
                   href="https://webropol.com/s/beta-sveriges-dataportal"
                   rel="noreferrer"
                 >
-                  {i18n.t('common|beta-link-text')}
+                {i18n.t('common|beta-link-text')}
                 </a>
                 {i18n.t('common|beta-text2')}
-                <a
-                  className="text-6-link"
-                  href="https://oppnadata.se"
-                  rel="noreferrer"
-                >
-                  oppnadata.se
-                </a>
               </p>
             </div>
           </InnerBox>

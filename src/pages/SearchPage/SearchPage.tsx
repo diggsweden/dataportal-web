@@ -1,4 +1,10 @@
-import { Box, SearchIcon, Button, CloseIcon, colorPalette } from '@digg/design-system';
+import {
+  Box,
+  SearchIcon,
+  Button,
+  CloseIcon,
+  colorPalette,
+} from '@digg/design-system';
 import React from 'react';
 import 'url-search-params-polyfill';
 import { ErrorBoundary } from '../../components/ErrorBoundary';
@@ -24,6 +30,8 @@ import { PageMetadata } from '../PageMetadata';
 import { RouteComponentProps } from 'react-router-dom';
 import { RouterContext } from '../../../shared/RouterContext';
 import { SearchFilter } from '../../components/SearchFilter';
+import { NumberOfHits } from '../../components/SearchFilter';
+
 import { Loader } from '../../components/Loader';
 import { SearchHeader } from '../../components/SearchHead';
 import { ESRdfType, ESType } from 'components/Search/EntryScape';
@@ -32,7 +40,8 @@ import { id } from 'common-tags';
 import { text } from 'express';
 import { FileFormatBadge } from '../../components/FileFormatBadge';
 import { EnvSettings } from '../../../config/env/EnvSettings';
-import { PageProps } from '../PageProps'
+import ChopLines from 'chop-lines';
+import { PageProps } from '../PageProps';
 
 const MainContent = Box.withComponent('main');
 
@@ -43,6 +52,7 @@ interface SearchProps extends PageProps {
 export class SearchPage extends React.Component<SearchProps, any> {
   private headerRef: React.RefObject<Header>;
   private inputQueryRef: React.RefObject<HTMLInputElement>;
+  private selectQueryRef: React.RefObject<HTMLInputElement>;
   private postscribe: any;
 
   constructor(props: SearchProps) {
@@ -50,6 +60,9 @@ export class SearchPage extends React.Component<SearchProps, any> {
     this.headerRef = React.createRef();
     this.setFocus = this.setFocus.bind(this);
     this.inputQueryRef = React.createRef();
+
+    this.selectQueryRef = React.createRef();
+
     this.state = { query: '', activeLink: 'search', showFilters: false };
     this.state = { activeLink: 'search' };
   }
@@ -79,7 +92,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
     this.setState({ headerHeight: height });
   }
 
-  componentDidMount() {   
+  componentDidMount() {
     //needed for handling back/forward buttons and changing state for input correctly
     if (typeof window !== 'undefined') {
       //handles back/forward button
@@ -109,7 +122,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
     }
   }
 
-  handleChange = (target: any) => {    
+  handleChange = (target: any) => {
     this.setState({ query: target.value });
   };
 
@@ -122,9 +135,13 @@ export class SearchPage extends React.Component<SearchProps, any> {
     let uri = new URLSearchParams(location.search);
 
     return (
-      <QueryParamProvider params={uri}>        
+      <QueryParamProvider params={uri}>
         <SearchProvider
-          entryscapeUrl={this.props.env.ENTRYSCAPE_DATASETS_PATH? `https://${this.props.env.ENTRYSCAPE_DATASETS_PATH}/store`: 'https://registrera.oppnadata.se/store'}
+          entryscapeUrl={
+            this.props.env.ENTRYSCAPE_DATASETS_PATH
+              ? `https://${this.props.env.ENTRYSCAPE_DATASETS_PATH}/store`
+              : 'https://registrera.oppnadata.se/store'
+          }
           hitSpecification={{
             path: `/${i18n.languages[0]}/datasets/`,
             titleResource: 'dcterms:title',
@@ -149,14 +166,13 @@ export class SearchPage extends React.Component<SearchProps, any> {
                 resource: 'http://purl.org/dc/terms/license',
                 type: ESType.uri,
               },
-              
             ],
           }}
           initRequest={{
             esRdfTypes: [ESRdfType.dataset],
             takeFacets: 30,
             language: i18n.languages[0],
-            sortOrder: SearchSortOrder.score_desc
+            sortOrder: SearchSortOrder.score_desc,
           }}
         >
           <PageMetadata
@@ -184,26 +200,25 @@ export class SearchPage extends React.Component<SearchProps, any> {
             <ErrorBoundary>
               <MainContent id="main" flex="1 1 auto">
                 <SearchContext.Consumer>
-                  {search => (
+                  {(search) => (
                     <div className="wpb_wrapper">
                       <div className="main-container">
                         <h1 className="text-2 search-header">
                           {i18n.t('common|search-data')}
                         </h1>
                         <form
-                          onSubmit={event => {                            
+                          onSubmit={(event) => {
                             event.preventDefault();
                             this.setState({
-                              query:this.inputQueryRef.current!.value
-                            })
+                              query: this.inputQueryRef.current!.value,
+                            });
                             search
                               .set({
                                 page: 0,
                                 query: this.inputQueryRef.current!.value || '',
                                 fetchFacets: true,
                               })
-                              .then(() => search.doSearch()                               
-                              );
+                              .then(() => search.doSearch());
                           }}
                         >
                           {/* <SearchHeader
@@ -238,10 +253,12 @@ export class SearchPage extends React.Component<SearchProps, any> {
                               type="submit"
                               aria-label={i18n.t('common|search')}
                             >
-                              
-                              <SearchIcon color={colorPalette.white} width={[25]} />
+                              <SearchIcon
+                                color={colorPalette.white}
+                                width={[25]}
+                              />
                             </button>
-                            {search.loadingFacets && <Loader />}                            
+                            {search.loadingFacets}
                           </div>
                         </form>
 
@@ -292,24 +309,28 @@ export class SearchPage extends React.Component<SearchProps, any> {
                                                     ? 'selected'
                                                     : ''
                                                 }
-                                                onClick={() => {                                                  
+                                                onClick={() => {
                                                   search
                                                     .toggleFacet(facetValue)
                                                     .then(() => {
-                                                      
                                                       search
                                                         .doSearch(
                                                           false,
                                                           true,
                                                           false
                                                         )
-                                                        .then(() => {                                                              
-                                                          if(search.facetSelected(key,facetValue.resource)) {                                                                                                         
+                                                        .then(() => {
+                                                          if (
+                                                            search.facetSelected(
+                                                              key,
+                                                              facetValue.resource
+                                                            )
+                                                          ) {
                                                             search.sortAllFacets(
                                                               key
-                                                            )
-                                                          }else {                                                           
-                                                            search.sortAllFacets()
+                                                            );
+                                                          } else {
+                                                            search.sortAllFacets();
                                                           }
                                                         });
                                                     });
@@ -404,60 +425,108 @@ export class SearchPage extends React.Component<SearchProps, any> {
 
                         <div id="search-result" className="search-result">
                           <div className="search-result-head">
-                            <h2 className="text-4 search-result-header">                                     
-                            {search.loadingHits &&
-                                 <span className="loading">{i18n.t('common|loading')}</span>
-                              }
-                            
-                              {!search.loadingHits && search.result && (search.result.count || 0) >= 0 &&                                
-                                `${search.result.count} ${i18n.t('pages|search|dataset-hits')}`                                
-                              }                              
-                              {' '}                                                   
-                            </h2>
+                            {search.loadingHits && (
+                              <h2 className="text-4 search-result-header">
+                                <span className="loading">
+                                  {i18n.t('common|loading')}
+                                </span>
+                              </h2>
+                            )}
+                            <div>
+                              {!search.loadingHits &&
+                                search.result &&
+                                (search.result.count || 0) >= 0 && (
+                                  <h2 className="text-4 search-result-header">
+                                    {search.result.count}{' '}
+                                    {i18n.t('pages|search|dataset-hits')}{' '}
+                                  </h2>
+                                )}
+                            </div>
+                            <div className="sorting-options">
+                              <div className="search-hits">
+                                <label htmlFor="hits" className="text-6-bold">
+                                  {i18n.t('pages|search|numberofhits')}
+                                </label>
+                                <select
+                                  id="hits"
+                                  name={i18n.t('pages|search|numberofhits')}
+                                  onChange={(event) => {
+                                    event?.preventDefault();
+                                    search
+                                      .set({
+                                        take: parseInt(event.target.value),
+                                      })
+                                      .then(() => search.doSearch());
+                                  }}
+                                >
+                                  <option
+                                    selected={search.request.take == 20}
+                                    value="20"
+                                  >
+                                    20
+                                  </option>
+                                  <option
+                                    selected={search.request.take == 40}
+                                    value="40"
+                                  >
+                                    40
+                                  </option>
+                                  <option
+                                    selected={search.request.take == 60}
+                                    value="60"
+                                  >
+                                    60
+                                  </option>
+                                </select>
+                              </div>
 
-                            <div className="search-sort">
-                              <span className="text-6-bold"> {i18n.t('pages|search|sort')}</span>
-                              <button
-                                onClick={event => {
-                                  event.preventDefault();
-                                  search
-                                    .set({
-                                      page: 0,
-                                      sortOrder: SearchSortOrder.score_desc,
-                                    })
-                                    .then(() => search.doSearch());
-                                }}
-                                className={
-                                  search.request.sortOrder &&
-                                  search.request.sortOrder ==
-                                    SearchSortOrder.score_desc
-                                    ? 'text-7 sort-active'
-                                    : 'text-7'
-                                }
-                              >
-                                {i18n.t('pages|search|relevance')}
-                              </button>
+                              <div className="search-sort">
+                                <span className="text-6-bold">
+                                  {' '}
+                                  {i18n.t('pages|search|sort')}
+                                </span>
+                                <button
+                                  onClick={(event) => {
+                                    event.preventDefault();
+                                    search
+                                      .set({
+                                        page: 0,
+                                        sortOrder: SearchSortOrder.score_desc,
+                                      })
+                                      .then(() => search.doSearch());
+                                  }}
+                                  className={
+                                    search.request.sortOrder &&
+                                    search.request.sortOrder ==
+                                      SearchSortOrder.score_desc
+                                      ? 'text-7 sort-active'
+                                      : 'text-7'
+                                  }
+                                >
+                                  {i18n.t('pages|search|relevance')}
+                                </button>
 
-                              <button
-                                onClick={event => {
-                                  event.preventDefault();
-                                  search
-                                    .set({
-                                      page: 0,
-                                      sortOrder: SearchSortOrder.modified_asc,
-                                    })
-                                    .then(() => search.doSearch());
-                                }}
-                                className={
-                                  search.request.sortOrder &&
-                                  search.request.sortOrder ==
-                                    SearchSortOrder.modified_asc
-                                    ? 'text-7 sort-active'
-                                    : 'text-7'
-                                }
-                              >
-                                {i18n.t('pages|search|date')}
-                              </button>
+                                <button
+                                  onClick={(event) => {
+                                    event.preventDefault();
+                                    search
+                                      .set({
+                                        page: 0,
+                                        sortOrder: SearchSortOrder.modified_asc,
+                                      })
+                                      .then(() => search.doSearch());
+                                  }}
+                                  className={
+                                    search.request.sortOrder &&
+                                    search.request.sortOrder ==
+                                      SearchSortOrder.modified_asc
+                                      ? 'text-7 sort-active'
+                                      : 'text-7'
+                                  }
+                                >
+                                  {i18n.t('pages|search|date')}
+                                </button>
+                              </div>
                             </div>
                           </div>
 
@@ -468,27 +537,28 @@ export class SearchPage extends React.Component<SearchProps, any> {
                                   <li
                                     className="search-result-list-item"
                                     key={index}
-                                    onClick={() => {
-                                      (window as any).location.href = hit.url;
-                                    }}
+                                    // onClick={() => {
+                                    //   (window as any).location.href = hit.url;
+                                    // }}
                                   >
-                                    <p className="result-theme text-6">
-                                      {hit.metadata &&
-                                        hit.metadata['theme_literal'].join(
-                                          ',  '
-                                        )}
-                                    </p>{' '}
+                                    <span className="result-theme text-6">
+                                      <ChopLines lines={1} lineHeight={27}>
+                                        {hit.metadata &&
+                                          hit.metadata['theme_literal'].join(
+                                            ',  '
+                                          )}
+                                      </ChopLines>
+                                    </span>{' '}
                                     <a href={`${hit.url}`}>
                                       <h3 className="text-4">{hit.title}</h3>
                                     </a>
                                     <p className="text-6">{hit.description}</p>
-                                    <p className="result-org text-6-bold">
+                                    <span className="result-org text-6-bold">
                                       {hit.metadata &&
                                         hit.metadata['organisation_literal'] &&
                                         hit.metadata['organisation_literal'][0]}
-                                    </p>
+                                    </span>
                                     <div className="format-row">
-
                                       {hit.metadata &&
                                         hit.metadata['format_literal'] &&
                                         hit.metadata['format_literal'].map(
@@ -496,12 +566,11 @@ export class SearchPage extends React.Component<SearchProps, any> {
                                             <p
                                               className="result-format"
                                               key={index}
-                                            >                                              
+                                            >
                                               <FileFormatBadge badgeName={m} />
                                             </p>
                                           )
                                         )}
-
                                     </div>
                                   </li>
                                 ))}

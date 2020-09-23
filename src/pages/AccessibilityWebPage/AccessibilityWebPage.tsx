@@ -80,23 +80,27 @@ export class AccessibilityWebPage extends React.Component<PageProps> {
                     rapportera brister till oss så att vi kan åtgärda dem.
                   </p>
                   <h2 className="text-2">Hur tillgänglig är webbplatsen?</h2>
+                  
                   <p className="main-text text-5">
+                  Vi har inga kända brister i tillgängligheten för den här webbplatsen.
+                  </p>
+                  {/* <p className="main-text text-5">
                     Vi är medvetna om att delar av webbplatsen inte är helt
                     tillgängliga.
-                  </p>
-                  <p className="main-text text-5">
+                  </p> */}
+                  {/* <p className="main-text text-5">
                     Länkarna nedan leder till detaljerad information om vilka
                     tillgänglighetsproblem du kan möta i olika
                     användningssituationer.
-                  </p>
-                  <div className="main-text text-5">
+                  </p> */}
+                  {/* <div className="main-text text-5">
                     <ul>
                       <li>
                         <a href="#usage-1">Användning utan synförmåga</a>
                       </li>
 
                     </ul>
-                  </div>
+                  </div> */}
                   <h2 className="text-2">
                     Vad kan du göra om du inte kan använda delar av webbplatsen?
                   </h2>
@@ -143,24 +147,24 @@ export class AccessibilityWebPage extends React.Component<PageProps> {
                     </a>{' '}
                     och påtala det.
                   </p>
-                  <h2 className="text-2">Teknisk information om webbplatsens tillgänglighet</h2>
+                  {/* <h2 className="text-2">Teknisk information om webbplatsens tillgänglighet</h2>
                   <p className="main-text text-5">
                     Den här webbplatsen är inte förenlig med{' '}
                     <cite>
                       lagen om tillgänglighet till digital offentlig service
                     </cite>
                     . Otillgängliga delar beskrivs nedan.
-                  </p>
-                  <h2 className="text-2" id="inaccessible-content">
+                  </p> */}
+                  {/* <h2 className="text-2" id="inaccessible-content">
                     Innehåll som inte är tillgängligt
-                  </h2>
-                  <p className="main-text text-5">
+                  </h2> */}
+                  {/* <p className="main-text text-5">
                     Det innehåll som beskrivs nedan är på ett eller annat sätt
                     inte helt tillgängligt.
                   </p>
                   <h3 className="text-3">Bristande förenlighet med lagkraven</h3>
-                  <h4 className="text-5-bold" id="usage-1">Problem vid användning utan synförmåga</h4>
-                  <div className="main-text text-5">
+                  <h4 className="text-5-bold" id="usage-1">Problem vid användning utan synförmåga</h4> */}
+                  {/* <div className="main-text text-5">
                     <ul>
                       <li>
                         <p>
@@ -171,7 +175,7 @@ export class AccessibilityWebPage extends React.Component<PageProps> {
                         </p>
                       </li>
                     </ul>
-                  </div>
+                  </div> */}
 
                   <h2 className="text-2">Hur vi testat webbplatsen</h2>
                   <p className="main-text text-5">

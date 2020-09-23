@@ -30,46 +30,6 @@ export interface FooterProps {
 
 const FooterBox = Box.withComponent('footer');
 
-const SocialLink = styled('a')`
-  display: inline-block;
-  border: none;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    background: ${colorPalette.red3};
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    background: ${colorPalette.darkred};
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transform: scale(1, 0);
-    will-change: transform;
-    transition: transform 0.3s ${props => props.theme.timings.fast};
-    transform-origin: 0 100%;
-  }
-
-  &:hover::after,
-  &:focus::after {
-    transform: scale(1, 1);
-    transform-origin: 0 0;
-  }
-
-  &:focus {
-    outline: solid 1px #000;
-  }
-`;
-
 const SocialIcons: { [key: string]: typeof TwitterIcon } = {
   twitter: TwitterIcon,
   facebook: FacebookIcon,
@@ -84,90 +44,84 @@ export class Footer extends React.Component<FooterProps> {
   render() {
     return (
       <FooterBox
-        className="footer-box"
+        className="footer"
         bgColor=""
         paddingX={2}
-        paddingTop={[2, 4]}
-        paddingBottom={4}
-        marginTop={[10]}
+        // paddingTop={4}
         lang="sv"
       >
-        <Text color={colorPalette.grey1}>
+        <Text>
           <Container>
             <SettingsContext.Consumer>
-              {settings => (
+              {(settings) => (
                 <>
-                  <Box display="flex" direction="column-reverse">
-                    <Box
-                      className="footer-main"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="space-between"
-                    >
-                      <Box width="15rem" marginRight={2}>
-                        {process.env.CLIENT && (
-                          <Logo
-                            aria-label="Diggs logotyp"
-                            id="footer"
-                            mode="wide"
-                            width={30 * 16}
-                          />
-                        )}
+                  <Box>
+                    <Box className="footer-main">
+                      <Box className="footer__links">
+                        <div className="footer__links-nav">
+                          <a
+                            href={`/${i18n.languages[0]}/${i18n.t(
+                              'routes|about|path'
+                            )}`}
+                            className="footer-link text-6-link"
+                          >
+                            {i18n.t('routes|about|title')}
+                          </a>
+
+                          <a
+                            className="footer-link text-6-link"
+                            href={`/${i18n.languages[0]}/${i18n.t(
+                              'routes|accessibility|path'
+                            )}`}
+                          >
+                            {i18n.t('common|accessibility-report')}
+                          </a>
+
+                          <div>
+                            <span className="text-6-bold">
+                              {i18n.t('common|contact')}:
+                            </span>
+                            <a
+                              className="footer-link text-6-link"
+                              href="mailto:dataportal@digg.se"
+                            >
+                              dataportal@digg.se
+                            </a>
+                          </div>
+                        </div>
+
+                        <div className="footer__links-contact">
+                          <a
+                            target="_blank"
+                            rel="noreferrer"
+                            href="https://www.facebook.com/oppnadata.psi/"
+                            className="footer-link text-6-link"
+                          >
+                            Facebook
+                          </a>
+                          <a
+                            target="_blank"
+                            rel="noreferrer"
+                            href="https://twitter.com/oppnadata_psi"
+                            className="footer-link text-6-link"
+                          >
+                            Twitter
+                          </a>
+                        </div>
                       </Box>
-                      <Box
-                        className="footer-links"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="space-between"
-                      >
-                        <span className="text-6-bold">{i18n.t('common|contact')}:</span>
-                        <a
-                          className="footer-link text-6-link"
-                          href="mailto:dataportal@digg.se"
-                        >
-                          dataportal@digg.se
-                        </a>
-
-                        <a
-                          href={`/${i18n.languages[0]}/${i18n.t('routes|about|path')}`}
-                          className="footer-link text-6-link"
-                        >
-                          {i18n.t('routes|about|title')}
-                        </a>
-
-                        <a
-                          target="_blank"
-                          rel="noreferrer"
-                          href="https://www.facebook.com/oppnadata.psi/"
-                          className="footer-link text-6-link"
-                        >
-                          Facebook
-                        </a>
-
-                        <a
-                          target="_blank"
-                          rel="noreferrer"
-                          href="https://twitter.com/oppnadata_psi"
-                          className="footer-link text-6-link"
-                        >
-                          Twitter
-                        </a>
+                      <Box className="digg__">
+                        <Box width="15rem" marginRight={2}>
+                          {process.env.CLIENT && (
+                            <Logo
+                              aria-label="Diggs logotyp"
+                              id="footer"
+                              mode="wide"
+                              width={30 * 16}
+                            />
+                          )}
+                        </Box>
                       </Box>
                     </Box>
-                    {/* <Box
-                      display="flex"
-                      justifyContent="flex-end"
-                      direction={['row']}
-                      flexWrap
-                      marginBottom={4}
-                    >
-                      <div className="back-to-top">
-                        {' '}
-                        <ScrollToTop
-                          onScroll={this.props.onToTopButtonPushed}
-                        />
-                      </div>
-                    </Box> */}
                   </Box>
                 </>
               )}

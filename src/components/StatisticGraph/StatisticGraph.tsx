@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import i18n from 'i18n';
-import { StatisticListItem } from '../StatisticListItem';
-import { StatisticDataPresentation } from '../StatisticDataPresentation';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { isIE } from 'react-device-detect';
-
 import '../../../node_modules/react-vis/dist/style.css';
 // import {XYPlot, LineSeries} from 'react-vis';
 
@@ -17,6 +14,8 @@ interface StatisticGraphState {
   x?: any;
   y?: any;
   screenWidth: number;
+  publishers?: number;
+  datasets?: number;
 }
 
 export class StatisticGraph extends React.Component<
@@ -30,6 +29,8 @@ export class StatisticGraph extends React.Component<
       x: [],
       y: [],
       screenWidth: 1080,
+      publishers: 151,
+      datasets: 2180,
     };
   }
 
@@ -48,13 +49,14 @@ export class StatisticGraph extends React.Component<
           ? this.props.env.ENTRYSCAPE_HISTORY_STATS_URL
           : 'https://registrera.oppnadata.se/stats/historyData.json'
       )
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
+          
           let list = [];
 
           for (let i = 0; i < data.length; i++) {
             let item = {
-              x: data[i].x.toString().substring(0, 7),
+              x: data[i].x.toString().substring(2, 7),
               y: data[i].y,
             };
 
@@ -85,42 +87,47 @@ export class StatisticGraph extends React.Component<
       }));
 
       return (
-        <div>
-          <h2 className="text-4">
-            {i18n.t('pages|statistic|dataset-numbers')}
-          </h2>
+        <div className="statistic-div">
+          <span className="screen-reader">
+          {i18n.t('pages|statistic|statistic-screenreader')}
+          </span>
+
           <div className="graphbox">
             <reactvis.FlexibleXYPlot
               xType="ordinal"
-              height={340}
-              color="#D6D9D3"
+              height={430}
+              color="#ACB3A8"
               margin={{
-                bottom: 55,
-                left: 50,
-                right: 20,
+                bottom: 64,
+                left: 70,
+                right: 0,
               }}
             >
               <reactvis.XAxis
                 height={0}
-                width={60}
                 tickSizeOuter={0}
                 style={{
-                  text: { fill: '#2B2A29', fontWeight: 600 },
+                  text: { fill: '#2B2A29', fontWeight: 500 },
                 }}
               />
               <reactvis.YAxis
-                width={50}
+                width={64}
                 style={{
-                  text: { fill: '#2B2A29', fontWeight: 600 },
+                  text: { fill: '#2B2A29', fontWeight: 500 },
                 }}
               />
-
               <BarSeries
                 className="vertical-bar-series-example"
                 data={this.state.x}
               />
             </reactvis.FlexibleXYPlot>
+            <span className="graph-text text-5">
+              {i18n.t('pages|statistic|dataset-numbers')}
+            </span>
           </div>
+          <a href={`/${i18n.languages[0]}/${i18n.t('pages|statistic|statistic-page-link')}`} className="text-5">
+          {i18n.t('pages|statistic|statistic-link')}
+          </a>
         </div>
       );
     }

@@ -1,11 +1,10 @@
 {
   "search-data" : "Sök data",
   "language" : "In english",
-
   "contact" : "Kontakt",
-  "beta-text1" : "Sveriges dataportal är i betaversion. Skicka gärna dina ",
-  "beta-link-text" : "synpunkter ",
-  "beta-text2" : "till oss! Gå till gamla ",
+  "beta-text1" : "Sveriges dataportal utvecklas löpande. Skicka gärna dina ",
+  "beta-link-text" : "synpunkter",
+  "beta-text2" : " till oss!",
   "logo-title" : "Sveriges dataportal",
   "logo-alt-title" : "Sveriges dataportal logotyp",
   "to-top" : "Till toppen",
@@ -16,6 +15,8 @@
   "clear-filters" : "Rensa alla filter",
   "no-js-text" : "JavaScript måste vara aktiverat för att söksidan ska fungera.",
   "soon" : "KOMMER SNART",
-  "seo-title" : "Sveriges dataportal"
+  "seo-title" : "Sveriges dataportal",
+  "accessibility-report" : "Tillgänglighetsredogörelse",
+  "logo-text" : " - Myndigheten för digital förvaltning"
 }
 

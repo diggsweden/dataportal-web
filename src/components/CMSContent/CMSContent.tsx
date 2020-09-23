@@ -13,7 +13,6 @@ const NEWS = gql `
 `;
 
 export const CMSContent : React.FC = () => {
-
   const { loading, error, data } = useQuery<{news:Array<any>}>(NEWS);
 
   return (

@@ -11,7 +11,7 @@ import { QueryParamProvider } from '../../components/QueryParamProvider';
 import { __RouterContext } from 'react-router';
 import { PageMetadata } from '../PageMetadata';
 import i18n from 'i18n';
-import { NewsList } from '../../components/Articles'
+import { ArticleList } from '../../components/Articles'
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { SettingsContext } from 'components/SettingsProvider';
 import { PageProps } from '../PageProps'
@@ -25,14 +25,14 @@ export class ArticleListPage extends React.Component<PageProps> {
     super(props);
     this.headerRef = React.createRef();
     this.setFocus = this.setFocus.bind(this);
-    this.state = {
-        bgColor: [
-          '#F0EFEE',
-          '#F4E0CE',
-          '#D6D9D3',
-          "#EBC0B8",
-        ],
-    };
+    // this.state = {
+    //     bgColor: [
+    //       '#F0EFEE',
+    //       '#F4E0CE',
+    //       '#D6D9D3',
+    //       "#EBC0B8",
+    //     ],
+    // };
 }
 
   setFocus() {
@@ -78,7 +78,7 @@ export class ArticleListPage extends React.Component<PageProps> {
                 <div className="main-container">
                   <h1 className="text-header text-1">{i18n.t('pages|articles|articles')}</h1>
                   <div className="content">
-                    <NewsList env={settings.env}/>
+                    <ArticleList env={settings.env}/>
                   </div>
                 </div>
               </MainContent>

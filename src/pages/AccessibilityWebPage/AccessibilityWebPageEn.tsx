@@ -78,10 +78,9 @@ export class AccessibilityWebPageEn extends React.Component<PageProps> {
                   </p>
                   <h2 className="text-2">How accessible is the site?</h2>
                   <p className="main-text text-5">
-                    We are aware that parts of the site are not fully
-                    accessible.
+                    There are no accessibility problems on the website that we are aware of.
                   </p>
-                  <p className="main-text text-5">
+                  {/* <p className="main-text text-5">
                     The links below lead to detailed information about which
                     ones accessibility problems you may encounter in different
                     use situations.
@@ -92,7 +91,7 @@ export class AccessibilityWebPageEn extends React.Component<PageProps> {
                         <a href="#usage-1">Use without vision</a>
                       </li>
                     </ul>
-                  </div>
+                  </div> */}
                   <h2 className="text-2">What can you do if you can't use parts of the site?</h2>
                   <p className="main-text text-5">
                   If you need content from Sweden's data portal that is not accessible to you, but which is excluded from the law's scope as described below, you can{' '}
@@ -134,15 +133,15 @@ export class AccessibilityWebPageEn extends React.Component<PageProps> {
                     </a>{' '}
                     and address it.
                   </p>
-                  <h2 className="text-2">Technical information on site accessibility</h2>
+                  {/* <h2 className="text-2">Technical information on site accessibility</h2>
                   <p className="main-text text-5">
                     This site is not compatible with{' '}
                     <cite>
                       the Act on Accessibility for Digital Public Service
                     </cite>
                     . Inaccessible parts are described below.
-                  </p>
-                  <h2 className="text-2" id="inaccessible-content">
+                  </p> */}
+                  {/* <h2 className="text-2" id="inaccessible-content">
                     Content that is not accessible
                   </h2>
                   <p className="main-text text-5">
@@ -163,7 +162,7 @@ export class AccessibilityWebPageEn extends React.Component<PageProps> {
                         </p>
                       </li>
                     </ul>
-                  </div>
+                  </div> */}
 
                   <h2 className="text-2">How we tested the site</h2>
                   <p className="main-text text-5">

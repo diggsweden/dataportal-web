@@ -4,10 +4,11 @@
 
 //Background-color for root
 //Max-width for content
-#root{
-    background-color: #f3f3f3;
-    #top{
-        max-width: 1440px;
+#root {
+    background-color: $bg-color;
+
+    #top {
+        max-width: 80rem;
         margin: auto;
     }
 }
@@ -26,13 +27,13 @@
     margin: auto;
     display: flex;
     flex-direction: column;
-}
+    // margin-bottom: $space-64;
 
-@media screen and (max-width: 1440px) {
-    .main-container {
+    @media screen and (max-width: 1440px) {
         padding: 0px $space-16;
     }
 }
+
 
 //For screenreaders
 .screen-reader {
@@ -64,8 +65,6 @@ html select:focus {
 .no-focus-outline select:focus {
     outline: none !important;
 }
-
-
 
 //Cookie banner, base from designsystem.
 .cookie-banner {
@@ -104,8 +103,6 @@ html select:focus {
         outline-offset: $focus-offset;
     }
 }
-
-
 
 //Disabled link boxes
 .disabled-linkbox {
@@ -150,12 +147,4 @@ html select:focus {
 //View more link
 .view-more-link {
     align-self: flex-start;
-    // text-decoration: none;
-    // padding: 4px 8px;
-    // color: $green100 !important;    border: 2px solid $green100;
-    // color: $green100;
-    // border-radius: 2px;
-    // &:hover {
-    //     border-color: $green-hover;
-    // }
 }

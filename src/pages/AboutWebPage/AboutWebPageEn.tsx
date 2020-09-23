@@ -11,7 +11,7 @@ import { QueryParamProvider } from '../../components/QueryParamProvider';
 import { __RouterContext } from 'react-router';
 import { PageMetadata } from '../PageMetadata';
 import i18n from 'i18n';
-import { PageProps } from '../PageProps'
+import { PageProps } from '../PageProps';
 
 const MainContent = Box.withComponent('main');
 
@@ -48,7 +48,9 @@ export class AboutWebPageEn extends React.Component<PageProps> {
           robotsFollow={true}
           robotsIndex={true}
           lang={i18n.languages[0]}
-          canonicalUrl={`${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|about|path')}/`}
+          canonicalUrl={`${this.props.env.CANONICAL_URL}/${
+            i18n.languages[0]
+          }/${i18n.t('routes|about|path')}/`}
         />
         <Box
           id="top"
@@ -67,20 +69,10 @@ export class AboutWebPageEn extends React.Component<PageProps> {
                 <h1 className="text-header text-1">About this website</h1>
                 <div className="content">
                   <p className="preamble text-4">
-                    Sweden's data portal is under development and is currently
-                    available in a beta version. In 2020, the data portal will
-                    be further developed with more features and more content.
-                    The new data portal is being further developed and managed
-                    by the Agency for Digital Government (DIGG). You can still use the
-                    old data portal,{' '}
-                    <a
-                      target="_blank"
-                      href="https://oppnadata.se"
-                      rel="noreferrer"
-                    >
-                      oppnadata.se
-                    </a>
-                    . Oppnadata.se is planned to be closed down in 2020.
+                    Sweden's data portal is under development and will be
+                    further developed during 2020 with more features and more
+                    content. The new data portal is being managed by the Agency
+                    for Digital Government (DIGG).
                   </p>
 
                   <p className="main-text text-5">
@@ -98,8 +90,8 @@ export class AboutWebPageEn extends React.Component<PageProps> {
                     that are usually provided electronically for re-use.
                   </p>
                   <p className="main-text text-5">
-                    The data portal only contains information about datasets, i.e.
-                    metadata. Data is retrieved via links for download or
+                    The data portal only contains information about datasets,
+                    i.e. metadata. Data is retrieved via links for download or
                     requested by the respective organization responsible for
                     their own datasets.
                   </p>
@@ -143,20 +135,36 @@ export class AboutWebPageEn extends React.Component<PageProps> {
                   <div className="main-text">
                     <span className="text-5-bold">2020-06-10:</span>
                     <ul className="text-5">
-                    <li>Design adjustments</li>
+                      <li>Design adjustments</li>
                       <li>Improved search functionality</li>
                       <li>Search phrases with AND, OR and NOT can be used</li>
-                      <li>Improved relevance in the hit list after searching</li>
+                      <li>
+                        Improved relevance in the hit list after searching
+                      </li>
                     </ul>
                   </div>
 
                   <div className="main-text">
                     <span className="text-5-bold">2020-08-19:</span>
                     <ul className="text-5">
-                      <li>Sitemap that enabels indexing and search on google</li>
+                      <li>
+                        Sitemap that enabels indexing and search on google
+                      </li>
                       <li>Newspublishing</li>
                       <li>Various bug fixes</li>
                       <li>Security updates</li>
+                    </ul>
+                  </div>
+
+                  <div className="main-text">
+                    <span className="text-5-bold">2020-08-19:</span>
+                    <ul className="text-5">
+                      <li>
+                        Page for statistics in text
+                      </li>
+                      <li>Various bug fixes</li>
+                      <li>Improved performance</li>
+                      <li>Shut down the website Oppna data och PSI</li>
                     </ul>
                   </div>
 
@@ -164,13 +172,14 @@ export class AboutWebPageEn extends React.Component<PageProps> {
                     Accessibility report for the data portal
                   </h2>
                   <p className="main-text text-5">
-                    The Agency for Digital Government (DIGG) is responsible for this site.{' '}
+                    The Agency for Digital Government (DIGG) is responsible for
+                    this site. Read the {' '}
                     <a
                       href={`/${i18n.languages[0]}/${i18n.t(
                         'routes|accessibility|path'
                       )}`}
                     >
-                      Here you can read the accessibility report
+                      accessibility report
                     </a>
                     .
                   </p>
@@ -192,7 +201,9 @@ export class AboutWebPageEn extends React.Component<PageProps> {
                   </p>
 
                   <div className="main-text">
-                    <span className="text-5-bold">Cookies that may be present:</span>
+                    <span className="text-5-bold">
+                      Cookies that may be present:
+                    </span>
                     <ul>
                       <li>CONSENT</li>
                       <li>_fbp</li>
@@ -206,14 +217,14 @@ export class AboutWebPageEn extends React.Component<PageProps> {
 
                   <h2 className="text-2">Comments on the data portal</h2>
                   <p className="main-text text-5">
+                    Please send your {' '}
                     <a
                       target="_blank"
                       href="https://webropol.com/s/beta-sveriges-dataportal"
                       rel="noreferrer"
                     >
-                      Please send your comments
-                    </a>{' '}
-                    on the new data portal to us!
+                      comments
+                    </a>
                   </p>
                 </div>
               </div>

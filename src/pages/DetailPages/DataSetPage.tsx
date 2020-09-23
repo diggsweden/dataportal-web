@@ -170,7 +170,7 @@ export class DataSetPage extends React.Component<
                         }}
                       ></script>
 
-                      <h2 id="text-load" className="data-header text-3">
+                      <h2 id="text-load1" className="data-header text-3">
                         {i18n.t('pages|datasetpage|download-dataset')}
                       </h2>
 
@@ -221,7 +221,7 @@ export class DataSetPage extends React.Component<
                         }}
                       ></script>
 
-                      <h2 id="text-load" className="data-header">
+                      <h2 id="text-load2" className="data-header">
                         {i18n.t('pages|datasetpage|about-dataset')}
                       </h2>
 
@@ -260,7 +260,7 @@ export class DataSetPage extends React.Component<
                       ></span>
 
                       <div className="information-row">
-                        <span id="text-load" className="catalog-span">
+                        <span id="text-load3" className="catalog-span">
                           {' '}
                           {i18n.t('pages|datasetpage|catalog')}
                         </span>

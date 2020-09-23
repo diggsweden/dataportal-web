@@ -638,6 +638,8 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
 
       let page = this.state.request && this.state.request.page? this.state.request.page + 1: '1';
 
+      let take = this.state.request && this.state.request.take? this.state.request.take : 20;
+
       let sortOrder = this.state.request.sortOrder && this.state.request.sortOrder? 
         this.state.request.sortOrder as SearchSortOrder
         : 
@@ -648,7 +650,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
         Object.values(this.state.request.facetValues).map((fval:SearchFacetValue) => fval.facetValueString)
         : [];          
 
-      let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + encode({p:page,q:query,s:sortOrder, f:facets.join('$')});
+      let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + encode({p:page,q:query,s:sortOrder, t:take, f:facets.join('$')});
       window.history.pushState({path:newurl},'',newurl);
     }
   }
@@ -669,6 +671,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
         let querytext = qs.q && qs.q.toString().length > 0? qs.q.toString() : '';
         let page = qs.p && qs.p.toString().length > 0? qs.p.toString() : null;
         let queryfacets:SearchFacetValue[] = [];
+        let take = qs.t && qs.t.toString().length > 0? qs.t.toString() : 20;
 
         let sortOrder:SearchSortOrder = qs.s as SearchSortOrder || SearchSortOrder.score_desc;
         
@@ -745,6 +748,11 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
           if(queryfacets){
             fetchResults = true;
             state.request.facetValues = queryfacets;
+          }
+
+          if(take){
+            fetchResults = true;
+            state.request.take = take;      
           }
 
           if(sortOrder){

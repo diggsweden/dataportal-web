@@ -23,10 +23,13 @@ import i18n from 'i18n';
 import { Statistic } from '../../components/Statistic';
 import { SettingsContext } from '../../components/SettingsProvider';
 import { PageProps } from 'pages/PageProps';
+
+// import RenderInBrowser from 'react-render-in-browser';
+import { StatisticNumbers } from '../../components/StatisticNumbers';
 import { StatisticGraph } from '../../components/StatisticGraph';
 import { Highlight } from '../../components/Highlight';
 import { ArticleBlock } from 'components/Articles';
-import { searchDatasetsPagePath } from 'utilities/urlHelpers'
+import { searchDatasetsPagePath } from 'utilities/urlHelpers';
 
 const MainContent = Box.withComponent('main');
 
@@ -56,7 +59,7 @@ export class StartPage extends React.Component<PageProps, any> {
     return (
       <QueryParamProvider params={uri}>
         <SettingsContext.Consumer>
-          {settings => (
+          {(settings) => (
             <Box
               id="top"
               display="flex"
@@ -86,7 +89,7 @@ export class StartPage extends React.Component<PageProps, any> {
                         <div className="startpage-search">
                           <h1 className="">
                             {i18n.t('pages|startpage|search_title_1')}
-                            <br/>
+                            <br />
                             {i18n.t('pages|startpage|search_title_2')}
                           </h1>
                           <form
@@ -112,7 +115,9 @@ export class StartPage extends React.Component<PageProps, any> {
                             <button
                               className="startpage-searchbtn"
                               type="submit"
-                              aria-label={i18n.t('pages|startpage|search_placeholder')}
+                              aria-label={i18n.t(
+                                'pages|startpage|search_placeholder'
+                              )}
                             >
                               <SearchIcon
                                 color={colorPalette.white}
@@ -124,7 +129,7 @@ export class StartPage extends React.Component<PageProps, any> {
 
                         <div className="search-boxes">
                           <div
-                            onClick={e => {
+                            onClick={(e) => {
                               window.location.href = `/${i18n.languages[0]}/datasets?p=1&q=&f=`;
                             }}
                           >
@@ -135,7 +140,9 @@ export class StartPage extends React.Component<PageProps, any> {
                             >
                               {i18n.t('pages|search|datasets')}
                             </a>
-                            <span className="text-6">{i18n.t('pages|startpage|explore_datasets')}</span>
+                            <span className="text-6">
+                              {i18n.t('pages|startpage|explore_datasets')}
+                            </span>
                           </div>
 
                           <div
@@ -144,7 +151,9 @@ export class StartPage extends React.Component<PageProps, any> {
                             //   window.location.href = `/${i18n.languages[0]}/concepts?p=1&q=&f=`;
                             // }}
                           >
-                            <span className="soon">{i18n.t('pages|startpage|coming_soon')}</span>
+                            <span className="soon">
+                              {i18n.t('pages|startpage|coming_soon')}
+                            </span>
 
                             <span
                               className="text-4"
@@ -154,7 +163,7 @@ export class StartPage extends React.Component<PageProps, any> {
                               {i18n.t('pages|search|concepts')}
                             </span>
                             <span className="text-6">
-                            {i18n.t('pages|startpage|explore_concepts')}
+                              {i18n.t('pages|startpage|explore_concepts')}
                             </span>
                           </div>
 
@@ -164,7 +173,9 @@ export class StartPage extends React.Component<PageProps, any> {
                             //   window.location.href = `/${i18n.languages[0]}/specifications?p=1&q=&f=`;
                             // }}
                           >
-                            <span className="soon">{i18n.t('pages|startpage|coming_soon')}</span>
+                            <span className="soon">
+                              {i18n.t('pages|startpage|coming_soon')}
+                            </span>
 
                             <span
                               className="text-4"
@@ -183,124 +194,301 @@ export class StartPage extends React.Component<PageProps, any> {
 
                     <div className="main-container">
                       <div className="startpage-categories">
-                          <h2 className="text-3">{i18n.t('pages|startpage|datasets_by_category')}</h2>
+                        <h2 className="text-3">
+                          {i18n.t('pages|startpage|datasets_by_category')}
+                        </h2>
                         <ul>
                           <li>
                             <a
-                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/ENVI') })}
-                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/ENVI')}
+                              aria-label={i18n.t(
+                                'pages|startpage|search_datasets_format',
+                                {
+                                  category: i18n.t(
+                                    'resource|http://publications.europa.eu/resource/authority/data-theme/ENVI'
+                                  ),
+                                }
+                              )}
+                              href={searchDatasetsPagePath(
+                                i18n.languages[0],
+                                'http://www.w3.org/ns/dcat#theme',
+                                'http://publications.europa.eu/resource/authority/data-theme/ENVI'
+                              )}
                             >
-                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/ENVI')}
-                            </a>
-                          </li>
-                          <li>
-                          <a
-                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/SOCI') })}
-                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/SOCI')}
-                            >
-                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/SOCI')}
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/HEAL') })}
-                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/HEAL')}
-                            >
-                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/HEAL')}
-                            </a>
-                          </li>
-                          <li>
-                          <a
-                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/ENER') })}
-                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/ENER')}
-                            >
-                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/ENER')}
-                            </a>
-                          </li>
-                          <li>
-                          <a
-                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/EDUC') })}
-                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/EDUC')}
-                            >
-                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/EDUC')}
+                              {i18n.t(
+                                'resource|http://publications.europa.eu/resource/authority/data-theme/ENVI'
+                              )}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/TRAN') })}
-                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/TRAN')}
+                              aria-label={i18n.t(
+                                'pages|startpage|search_datasets_format',
+                                {
+                                  category: i18n.t(
+                                    'resource|http://publications.europa.eu/resource/authority/data-theme/SOCI'
+                                  ),
+                                }
+                              )}
+                              href={searchDatasetsPagePath(
+                                i18n.languages[0],
+                                'http://www.w3.org/ns/dcat#theme',
+                                'http://publications.europa.eu/resource/authority/data-theme/SOCI'
+                              )}
                             >
-                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/TRAN')}
+                              {i18n.t(
+                                'resource|http://publications.europa.eu/resource/authority/data-theme/SOCI'
+                              )}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/REGI') })}
-                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/REGI')}
+                              aria-label={i18n.t(
+                                'pages|startpage|search_datasets_format',
+                                {
+                                  category: i18n.t(
+                                    'resource|http://publications.europa.eu/resource/authority/data-theme/HEAL'
+                                  ),
+                                }
+                              )}
+                              href={searchDatasetsPagePath(
+                                i18n.languages[0],
+                                'http://www.w3.org/ns/dcat#theme',
+                                'http://publications.europa.eu/resource/authority/data-theme/HEAL'
+                              )}
                             >
-                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/REGI')}
+                              {i18n.t(
+                                'resource|http://publications.europa.eu/resource/authority/data-theme/HEAL'
+                              )}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/ECON') })}
-                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/ECON')}
+                              aria-label={i18n.t(
+                                'pages|startpage|search_datasets_format',
+                                {
+                                  category: i18n.t(
+                                    'resource|http://publications.europa.eu/resource/authority/data-theme/ENER'
+                                  ),
+                                }
+                              )}
+                              href={searchDatasetsPagePath(
+                                i18n.languages[0],
+                                'http://www.w3.org/ns/dcat#theme',
+                                'http://publications.europa.eu/resource/authority/data-theme/ENER'
+                              )}
                             >
-                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/ECON')}
+                              {i18n.t(
+                                'resource|http://publications.europa.eu/resource/authority/data-theme/ENER'
+                              )}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/AGRI') })}
-                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/AGRI')}
+                              aria-label={i18n.t(
+                                'pages|startpage|search_datasets_format',
+                                {
+                                  category: i18n.t(
+                                    'resource|http://publications.europa.eu/resource/authority/data-theme/EDUC'
+                                  ),
+                                }
+                              )}
+                              href={searchDatasetsPagePath(
+                                i18n.languages[0],
+                                'http://www.w3.org/ns/dcat#theme',
+                                'http://publications.europa.eu/resource/authority/data-theme/EDUC'
+                              )}
                             >
-                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/AGRI')}
+                              {i18n.t(
+                                'resource|http://publications.europa.eu/resource/authority/data-theme/EDUC'
+                              )}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/GOVE') })}
-                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/GOVE')}
+                              aria-label={i18n.t(
+                                'pages|startpage|search_datasets_format',
+                                {
+                                  category: i18n.t(
+                                    'resource|http://publications.europa.eu/resource/authority/data-theme/TRAN'
+                                  ),
+                                }
+                              )}
+                              href={searchDatasetsPagePath(
+                                i18n.languages[0],
+                                'http://www.w3.org/ns/dcat#theme',
+                                'http://publications.europa.eu/resource/authority/data-theme/TRAN'
+                              )}
                             >
-                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/GOVE')}
+                              {i18n.t(
+                                'resource|http://publications.europa.eu/resource/authority/data-theme/TRAN'
+                              )}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/TECH') })}
-                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/TECH')}
+                              aria-label={i18n.t(
+                                'pages|startpage|search_datasets_format',
+                                {
+                                  category: i18n.t(
+                                    'resource|http://publications.europa.eu/resource/authority/data-theme/REGI'
+                                  ),
+                                }
+                              )}
+                              href={searchDatasetsPagePath(
+                                i18n.languages[0],
+                                'http://www.w3.org/ns/dcat#theme',
+                                'http://publications.europa.eu/resource/authority/data-theme/REGI'
+                              )}
                             >
-                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/TECH')}
+                              {i18n.t(
+                                'resource|http://publications.europa.eu/resource/authority/data-theme/REGI'
+                              )}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/INTR') })}
-                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/INTR')}
+                              aria-label={i18n.t(
+                                'pages|startpage|search_datasets_format',
+                                {
+                                  category: i18n.t(
+                                    'resource|http://publications.europa.eu/resource/authority/data-theme/ECON'
+                                  ),
+                                }
+                              )}
+                              href={searchDatasetsPagePath(
+                                i18n.languages[0],
+                                'http://www.w3.org/ns/dcat#theme',
+                                'http://publications.europa.eu/resource/authority/data-theme/ECON'
+                              )}
                             >
-                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/INTR')}
+                              {i18n.t(
+                                'resource|http://publications.europa.eu/resource/authority/data-theme/ECON'
+                              )}
                             </a>
                           </li>
                           <li>
                             <a
-                              aria-label={i18n.t('pages|startpage|search_datasets_format', {category: i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/JUST') })}
-                              href={searchDatasetsPagePath(i18n.languages[0],'http://www.w3.org/ns/dcat#theme','http://publications.europa.eu/resource/authority/data-theme/JUST')}
+                              aria-label={i18n.t(
+                                'pages|startpage|search_datasets_format',
+                                {
+                                  category: i18n.t(
+                                    'resource|http://publications.europa.eu/resource/authority/data-theme/AGRI'
+                                  ),
+                                }
+                              )}
+                              href={searchDatasetsPagePath(
+                                i18n.languages[0],
+                                'http://www.w3.org/ns/dcat#theme',
+                                'http://publications.europa.eu/resource/authority/data-theme/AGRI'
+                              )}
                             >
-                              {i18n.t('resource|http://publications.europa.eu/resource/authority/data-theme/JUST')}
+                              {i18n.t(
+                                'resource|http://publications.europa.eu/resource/authority/data-theme/AGRI'
+                              )}
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              aria-label={i18n.t(
+                                'pages|startpage|search_datasets_format',
+                                {
+                                  category: i18n.t(
+                                    'resource|http://publications.europa.eu/resource/authority/data-theme/GOVE'
+                                  ),
+                                }
+                              )}
+                              href={searchDatasetsPagePath(
+                                i18n.languages[0],
+                                'http://www.w3.org/ns/dcat#theme',
+                                'http://publications.europa.eu/resource/authority/data-theme/GOVE'
+                              )}
+                            >
+                              {i18n.t(
+                                'resource|http://publications.europa.eu/resource/authority/data-theme/GOVE'
+                              )}
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              aria-label={i18n.t(
+                                'pages|startpage|search_datasets_format',
+                                {
+                                  category: i18n.t(
+                                    'resource|http://publications.europa.eu/resource/authority/data-theme/TECH'
+                                  ),
+                                }
+                              )}
+                              href={searchDatasetsPagePath(
+                                i18n.languages[0],
+                                'http://www.w3.org/ns/dcat#theme',
+                                'http://publications.europa.eu/resource/authority/data-theme/TECH'
+                              )}
+                            >
+                              {i18n.t(
+                                'resource|http://publications.europa.eu/resource/authority/data-theme/TECH'
+                              )}
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              aria-label={i18n.t(
+                                'pages|startpage|search_datasets_format',
+                                {
+                                  category: i18n.t(
+                                    'resource|http://publications.europa.eu/resource/authority/data-theme/INTR'
+                                  ),
+                                }
+                              )}
+                              href={searchDatasetsPagePath(
+                                i18n.languages[0],
+                                'http://www.w3.org/ns/dcat#theme',
+                                'http://publications.europa.eu/resource/authority/data-theme/INTR'
+                              )}
+                            >
+                              {i18n.t(
+                                'resource|http://publications.europa.eu/resource/authority/data-theme/INTR'
+                              )}
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              aria-label={i18n.t(
+                                'pages|startpage|search_datasets_format',
+                                {
+                                  category: i18n.t(
+                                    'resource|http://publications.europa.eu/resource/authority/data-theme/JUST'
+                                  ),
+                                }
+                              )}
+                              href={searchDatasetsPagePath(
+                                i18n.languages[0],
+                                'http://www.w3.org/ns/dcat#theme',
+                                'http://publications.europa.eu/resource/authority/data-theme/JUST'
+                              )}
+                            >
+                              {i18n.t(
+                                'resource|http://publications.europa.eu/resource/authority/data-theme/JUST'
+                              )}
                             </a>
                           </li>
                         </ul>
                       </div>
-
                       <Highlight env={settings.env} />
+                      <ArticleBlock env={settings.env} />
+                    </div>
+                  </div>
 
-                      <ArticleBlock env={settings.env}/>
+                  <div className="statistic">
+                    <div className="statistic-header">
+                      <h2 className="text-3">Portalen i siffror</h2>
+                    </div>
 
+                    <div className="statistic-wrapper">
                       {/* <RenderInBrowser except ie> */}
                       <StatisticGraph env={settings.env} />
-                      {/* </RenderInBrowser> */}
-                      <Statistic env={settings.env} />
+                      <StatisticNumbers env={settings.env} />
                     </div>
+                    <Statistic env={settings.env} />
                   </div>
                 </MainContent>
               </ErrorBoundary>

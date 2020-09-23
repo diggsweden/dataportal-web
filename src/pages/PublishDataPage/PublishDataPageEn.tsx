@@ -227,16 +227,6 @@ export class PublishDataPageEn extends React.Component<PageProps, any> {
                   </ol>
 
                   <p className="main-text text-5">
-                    During the development of the beta version of dataportal.se,
-                    publishers are referred to{' '}
-                    <a href="https://oppnadata.se" target="_blank">
-                      oppnadata.se
-                    </a>{' '}
-                    for guidance on making information available and publishing
-                    metadata to the data portal.
-                  </p>
-
-                  <p className="main-text text-5">
                     For more information about the data portals technical
                     framework and recommendations regarding harvesting metadata,
                     see{' '}

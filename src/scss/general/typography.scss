@@ -8,7 +8,7 @@
 .text-0 {
   font-weight: bold;
   font-size: 4rem; //64px
-  line-height: 72px;
+  line-height: 4.5rem; //72px
   letter-spacing: -0.04em;
   color: $black100;
 }
@@ -16,7 +16,7 @@
 .text-1 {
   font-weight: bold;
   font-size: 2.625rem; //42px
-  line-height: 48px;
+  line-height: 3rem; //48px
   letter-spacing: -0.03em;
   color: $black100;
 }
@@ -24,7 +24,7 @@
 .text-2 {
   font-weight: bold;
   font-size: 2rem; //32px
-  line-height: 40px;
+  line-height: 2.5rem; //40px
   letter-spacing: -0.03em;
   color: $black100;
 }
@@ -32,7 +32,7 @@
 .text-3 {
   font-weight: bold;
   font-size: 1.5rem; //24px
-  line-height: 32px;
+  line-height: 2rem; //32px
   letter-spacing: -0.02em;
   color: $black100;
 }
@@ -40,7 +40,7 @@
 .text-4 {
   font-weight: bold;
   font-size:1.25rem; //20px
-  line-height: 28px;
+  line-height: 1.75rem; //28px
   letter-spacing: -0.01em;
   color: $black100;
 }
@@ -48,7 +48,7 @@
 .text-4-link {
   font-weight: bold;
   font-size:1.25rem; //20px
-  line-height: 28px;
+  line-height: 1.75rem; //28px
   letter-spacing: -0.01em;
   text-decoration-line: underline;
   color: $black100;
@@ -62,14 +62,14 @@
 .text-5 {
   font-weight: normal;
   font-size: 1.125rem; //18px
-  line-height: 27px;
+  line-height: 1.6875rem; //27px
   color: $black100;
 }
 
 .text-5-bold {
   font-weight: bold;
   font-size: 1.125rem; //18px
-  line-height: 27px;
+  line-height: 1.6875rem; //27px
   letter-spacing: -0.01em;
   color: $black100;
 }
@@ -77,7 +77,7 @@
 .text-5-link {
   font-weight: normal;
   font-size: 1.125rem; //18px
-  line-height: 27px;
+  line-height: 1.6875rem; //27px
   text-decoration-line: underline;
   color: $black100;
 
@@ -90,14 +90,14 @@
 .text-6 {
   font-weight: normal;
   font-size: 1rem; //16px
-  line-height: 24px;
+  line-height: 1.5rem; //24px
   color: $black100;
 }
 
 .text-6-bold {
   font-weight: bold;
   font-size: 1rem; //16px
-  line-height: 24px;
+  line-height: 1.5rem; //24px
   letter-spacing: -0.01em;
   color: $black100;
 }
@@ -105,7 +105,7 @@
 .text-6-link {
   font-weight: normal;
   font-size: 1rem; //16px
-  line-height: 24px;
+  line-height: 1.5rem; //24px
   text-decoration-line: underline;
   color: $black100;
 
@@ -118,14 +118,14 @@
 .text-7 {
   font-weight: normal;
   font-size:0.875rem; //14px
-  line-height: 20px;
+  line-height: 1.25rem; //20px
   color: $black100;
 }
 
 .text-7-bold {
   font-weight: bold;
   font-size:0.875rem; //14px
-  line-height: 20px;
+  line-height: 1.25rem; //20px
   color: $black100;
 }
 
