@@ -81,7 +81,7 @@
                 }
 
                 &[aria-expanded="true"] {
-                    background-color:  $white;
+                    background-color: $white;
                     border-color: $black100;
                 }
             }
@@ -89,6 +89,7 @@
 
         div:last-of-type {
             padding: 0px;
+
             .search-filter-list {
                 flex-direction: column;
                 width: 300px;
@@ -96,13 +97,13 @@
                 margin-bottom: $space-16;
                 background-color: $white;
                 position: absolute;
-                -webkit-box-shadow: 0px 5px 15px 5px rgba(0, 0, 0, 0.15);
-                -moz-box-shadow: 0px 5px 15px 5px rgba(0, 0, 0, 0.15);
-                box-shadow: 0px 5px 15px 5px rgba(0, 0, 0, 0.15);
+                -webkit-box-shadow: -1px 2px 3px 3px rgba(189, 189, 189, 0.46);
+                -moz-box-shadow: -1px 2px 3px 3px rgba(189, 189, 189, 0.46);
+                box-shadow: -1px 2px 3px 3px rgba(189, 189, 189, 0.46);
                 z-index: 10000;
                 max-height: 300px;
                 overflow-y: auto;
-        
+
                 button {
                     display: flex;
                     justify-content: space-between;
@@ -133,7 +134,7 @@
                         background-color: #eff0ee !important;
                         color: #5a5856 !important;
                     }
-        
+
                     &:focus {
                         outline-offset: -4px !important;
                         background-color: $green25 !important;
@@ -178,24 +179,30 @@
         min-width: 30px;
         text-align: left;
 
-        svg{
+        svg {
             margin-bottom: -2px;
         }
+
         &:hover {
             background-color: $black10;
             color: $black100;
+
             svg {
                 // fill: $black100;
             }
         }
+
         &:focus {
             outline: $focus-style;
         }
+
         &:active {
             color: $green-hover;
         }
+
         span {
             margin-left: 10px;
+
             svg {
                 // fill: $green100;
             }
@@ -222,5 +229,83 @@
 
     &.show {
         display: block;
+    }
+}
+
+
+
+/*style wrapper to give some space*/
+.checkbox__wrapper {
+    position: relative;
+}
+
+/*style label to give some more space*/
+.checkbox__wrapper label {
+    display: block;
+    padding: 12px 0 12px 44px;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+
+//CUSTOM CHECKBOX FOR API ONLY FILTER
+/*style and hide original checkbox*/
+.checkbox__wrapper input {
+    height: 2.5rem;
+    width: 2.5rem;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+}
+
+/*position new box*/
+.checkbox__wrapper input+label::before {
+    border: 2px solid $green100;
+    border-radius: 2px;
+    content: "";
+    height: 2rem;
+    width: 2rem;
+    left: 0;
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+    margin-top: $space-8;
+    margin-bottom: $space-8;
+}
+
+/*svg background styles*/
+.checkbox__wrapper input+label::after {
+    content: "";
+    opacity: 0;
+    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/check.svg");
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 1rem;
+    width: 1rem;
+    left: 0.5rem;
+    top: 1rem;
+    cursor: pointer;
+}
+
+/*Show checked*/
+.checkbox__wrapper input:checked+label::after {
+    opacity: .7;
+}
+
+/*focus styles*/
+.checkbox__wrapper input:focus+label::before {
+    outline: $focus-style;
+    outline-offset: $focus-offset;
+}
+
+.no-focus-outline {
+    .checkbox__wrapper input:focus+label::before {
+        outline: none;
     }
 }

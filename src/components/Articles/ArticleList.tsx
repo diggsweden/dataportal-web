@@ -1,6 +1,5 @@
 import React, { Component, useState } from 'react';
 import i18n from '../../i18n';
-import { TopImage } from 'assets/TopImage';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
@@ -23,8 +22,7 @@ export const ArticleList: React.FC<ArticleListProps> = (props) => {
       heading
       preamble
       published
-      modified
-      tags
+      modified      
       body 
     }
   }
@@ -73,7 +71,7 @@ export const ArticleList: React.FC<ArticleListProps> = (props) => {
                 <a
                   className="text-4"
                   href={`/${i18n.languages[0]}/${i18n.t(
-                    'pages|articles|articles'
+                    'routes|news|path'
                   )}/${n.id}/${slugify(n.heading)}`}
                 >
                   {n.heading}

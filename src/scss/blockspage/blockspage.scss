@@ -1,986 +1,89 @@
 @import 'scss/general/variables.scss';
 
-//Redesign of datasetpages rendered with blocks version 0.18.
-//Blocks already have its own css.
-//Thats why there is alot of !importants in this file.
+.detailpage {
+    width: 100%;
 
-//Color fix for links under h3 tags.
-.boxed {
-    display: flex;
-    flex-direction: column;
-
-    h3 {
-        span {
-            a {
-                color: $black100 !important;
-
-                &:focus {
-                    outline: $focus-style;
-                    outline-offset: $focus-offset;
-                }
-            }
-        }
-    }
-}
-
-//New style for datasets
-.dataset {
-    max-width: 40em; //640px
-    margin-top: $space-32;
-    font-family: Ubuntu !important;
-
-    //Theme
-    .tema {
-        font-size: 18px !important;
-        font-family: Ubuntu;
-
-        &:not(:last-child):after {
-            content: ', ';
-        }
-    }
-
-    //Alert, used when datasets dosnt have any distrubutions for example.
-    .entryscape .alert-info {
-        color: $black100 !important;
-        background-color: $orange10;
-        border-radius: 0px;
-        border: 0px;
-        border-color: transparent;
-        max-width: 640px;
-        font-size: 16px;
-        padding: $space-16;
-    }
-
-    h1 {
-        margin-top: $space-16 !important;
-        margin-bottom: $space-16 !important;
-        max-width: 640px;
-
-        span {
-            display: block;
-            font-weight: bold;
-            font-size: 42px;
-            line-height: 48px;
-            letter-spacing: -0.03em;
-            color: $black100;
-            //**
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            -ms-word-break: break-all;
-            word-break: break-all;
-            word-break: break-word;
-            -ms-hyphens: auto;
-            -moz-hyphens: auto;
-            -webkit-hyphens: auto;
-        }
-    }
-
-    h2 {
-        font-weight: bold !important;
-        font-size: 24px !important;
-        line-height: $space-32 !important;
-        letter-spacing: -0.02em !important;
-        color: $black100 !important;
-    }
-
-    //H2 for about datasets
-    .data-header {
-        margin-top: $space-32;
-    }
-
-    //Description
-    .description {
-        font-family: Ubuntu;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 18px !important;
-        line-height: 27px !important;
-        // margin-bottom: $space-32 !important;
-        max-width: 640px;
-        word-break: break-word;
-    }
-
-    .publisher-name {
-        margin-bottom: $space-16;
-    }
-
-    // Accordions
-    .listRowSurface {
-        .entryName {
-            span {
-                padding: 0px !important;
-            }
-        }
-    }
-
-    //Removes box-shadow on donloadbutton for distrubutions
-    .entryscape .btn:focus,
-    .entryscape .btn.focus {
-        box-shadow: none;
-    }
-
-    //fixes all text to be inline under more information about distrubutions.
-    .rdformsPresenter {
-        .rdformsFields {
-            padding-left: 0px;
-
-            .rdformsField {
-                margin-left: 0px !important;
-            }
-
-            .rdformsGroup {
-                .rdformsRow {
-                    padding-left: 0px;
-
-                    .rdformsField {
-                        padding-left: 0px !important;
-                    }
-                }
-            }
-        }
-    }
-}
-
-//Expanded metadata for distrubution
-.compact {
-    background-color: $green10;
-    line-height: 27px;
-    font-size: 18px;
-    font-family: Ubuntu !important;
-
-    .rdformsUrl {
-        &:hover {
-            color: $black100;
-        }
-
-        &:focus {
-            outline: $focus-style;
-            outline-offset: $focus-offset;
-        }
-    }
-    .cardgroup{
-        .rdformsFields{
-            .rdformsGroup{
-                margin-left: 0px !important;
-            }
-        }
-    }
-}
-
-//Removes margin for distrubutions on smaller screens.
-@media (max-width: 720px) {
-    .flex-wrapper {
-        margin-top: 0px !important;
-        display: block;
-    }
-
-    .entryRow {
-        flex-wrap: wrap !important;
-    }
-}
-
-.about-specification {
-    .rdformsTopLevel .rdformsFields .rdformsField {
-        margin-left: 0px !important;
-    }
-
-}
-
-//About datasets
-//from organisation
-.about-dataset {
-    font-family: Ubuntu !important;
-    font-size: 18px;
-    line-height: 27px;
-    max-width: 640px;
-    word-break: break-all;
-    padding: 0px !important;
-
-    .rdformsFields {
-        margin-left: 0px !important;
-    }
-
-    .information-row {
+    .detailpage__wrapper {
         display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        font-family: Ubuntu !important;
-
-        .entryscape {
-            padding-top: 6px;
-            display: flex;
-            justify-content: space-between;
-
-            .catalog-span {
-                width: 10em;
-            }
-
-            .catalog-name {
-                margin-left: 30px !important;
-                margin-bottom: $space-8;
-            }
-        }
-    }
-
-    //New span for organisation
-    .organisation-span {
-        width: 10em;
-        margin-right: 0px;
-        padding-top: 6px;
-        padding-bottom: 0.5em;
-        font-family: Ubuntu !important;
-    }
-
-    //New span for catalog
-    .catalog-span {
-        width: 10em;
-        padding-top:11px;
-        padding-bottom: 0.5em;
-        font-family: Ubuntu !important;
-    }
-
-    .catalog-name {
-        padding-left: 0px !important;
-        margin-left: 0.6em !important;
-        padding-top: 6px;
-        font-family: Ubuntu !important;
-        display: block;
-    }
-
-    .org-name {
-        padding-top: 0px !important;
-        margin-left: 30px !important;
-        margin-top: 12px;
-        margin-left: 0px;
-        font-family: Ubuntu !important;
-        display: block;
-        color: $black100;
-
-        &:focus {
-            outline: $focus-style;
-            outline-offset: $focus-offset;
-        }
-    }
-
-    @media screen and (max-width: 600px) {
-
-        .rdformsFields .rdformsField div {
-            margin-left: 0px;
-        }
-
-        .rdformsFields .rdformsField a {
-            margin-left: 0px;
-        }
-
-        .information-row {
-            flex-direction: column;
-            align-items: flex-start;
-
-            .entryscape {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-
-                .catalog-span {
-                    font-weight: bold;
-                }
-
-                .catalog-name {
-                    margin-left: 0px !important;
-                    padding-left: 0px;
-                }
-            }
-
-            .organisation-span {
-                font-weight: bold;
-                padding-bottom: 0px;
-            }
-
-            .org-name {
-                padding-top: 0px;
-                padding-left: 0px;
-                margin-left: 0em !important;
-            }
-
-            .catalog-name {
-                margin-left: 0px;
-                padding-left: 0px;
-                padding-top: 0px;
-            }
-
-            .catalog-span {
-                font-weight: bold;
-                padding-bottom: 0px;
-            }
-        }
-    }
-
-    //Links
-    .entryscape a {
-        color: $black100;
-        text-decoration: underline;
-
-        &:focus {
-            outline: $focus-style;
-            outline-offset: $focus-offset;
-        }
-    }
-
-    //Removes borders on licens
-    //Removes margin + padding on licens
-    .rdformsGroup {
-        .rdformsRow {
-            .rdformsLabel {
-                border: none;
-            }
-
-            .rdformsFields {
-                .rdformsField {
-                    margin-left: 0px;
-                    padding-left: 0px !important;
-                }
-            }
-        }
-    }
-
-    //Download as rdf
-    .entryscape {
-        .download-rdf {
-            font-weight: bold;
-            text-decoration: none;
-            margin-top: $space-24;
-            text-decoration: underline;
-            word-break: break-all;
-            display: inline-block;
-
-            &:hover {
-                color: $black100;
-            }
-        }
-    }
-
-    .compact {
-        background-color: transparent;
-    }
-
-    //Removes language tags under about dataset.
-    .rdformsFields {
-        .rdformsLanguage {
-            display: none !important;
-        }
-    }
-}
-
-//Removes languge tags.
-.rdformsLanguage {
-    display: none;
-}
-
-//Removes border on keywords...
-.rdformsPresenter .rdformsRepeatedValue {
-    border-top: none !important;
-}
-
-
-.viewMetadataSpecs {
-    .rdformsPresenter {
-        background-color: transparent;
-
-        .rdformsTopLevel .rdformsFields .rdformsField {
-            margin-left: 0px;
-        }
-    }
-}
-
-//Removes backgroundcolors under about dataset
-.viewMetadata {
-    .rdformsPresenter {
-        background-color: transparent;
-        font-size: 18px;
-        // margin-bottom: $space-8;
-    }
-
-    //Fix for spacing between text columns under distrubutions.
-    .rdformsFields {
-        margin-left: 30px !important;
-    }
-}
-
-//Fix to display keywords in a row instead of column.
-.rdformsFields {
-    display: flex !important;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    .rdformsSingleline {
-        padding-right: $space-8 !important;
-
-        &:not(:last-of-type) {
-            div::after {
-                content: ',';
-            }
-        }
-    }
-}
-
-//Links under about dataset
-.rdformsField {
-    .rdformsUrl {
-        color: $black100;
-        text-decoration: underline;
-        word-wrap: break-word;
-        word-break: break-all;
-    }
-}
-
-.notCompact {
-    padding: 0px !important;
-
-    //For map/coordinates
-    .rdformsInvisibleGroup {
-        .rdformsFields {
-            margin-left: 0px !important;
-
-            .escoPosition {
-                label {
-                    margin-left: 0px;
-                }
-
-                span {
-                    margin-right: $space-16;
-                }
-
-                .escoPosition__globe {
-                    display: none;
-                }
-            }
-        }
-    }
-}
-
-.cardgroup>.rdformsFields>.rdformsGroup {
-    background-color: transparent !important;
-    border: none !important;
-
-    .rdformsRow {
-        display: flex;
-
-        .rdformsLabel {
-            border-bottom: none;
-        }
-    }
-}
-
-//Padding and margin for rows under about dataset
-.compact .rdformsRow>.rdformsFields>a,
-.compact .rdformsRow>.rdformsFields>div {
-    margin-bottom: 0px !important;
-    padding-left: 0px !important;
-}
-
-//Texttransform for information under about dataset
-.compact .rdformsRow>.rdformsFields>.rdformsField>div:first-letter {
-    text-transform: uppercase;
-}
-
-//For smaller screens, from rows to columns.
-@media screen and (max-width: 600px) {
-
-    //Hides map under datasets in mobile.
-    .notCompact {
-        padding-bottom: 0px !important;
-    }
-
-    .compact .rdformsRow.rdformsTopLevel {
-        display: flex !important;
-        flex-direction: column;
-    }
-
-    .viewMetadata .rdformsFields {
-        margin-left: 0px !important;
-    }
-
-    .compact .rdformsRow>.rdformsFields>a,
-    .compact .rdformsRow>.rdformsFields>div {
-        padding-left: 0px !important;
-    }
-
-    .rdformsLabel {
-        font-weight: bold;
-    }
-
-    .compact .rdformsField {
-        margin-left: 0em !important;
-    }
-
-    .org-name {
-        margin-top: 0px !important;
-    }
-}
-
-
-//View more button for distrubutions, specs...
-//Expanded.
-.entryList {
-    .esbRowExpanded {
-        .esbRowHead {
-            .esbRowControl {
-                button {
-                    background-color: transparent;
-                    border: 2px solid $green100;
-                    color: $black100
-                }
-
-                button::before {
-                    content: "Visa mer";
-                    font-weight: normal !important;
-                }
-            }
-        }
-    }
-}
-
-//Blocks .18
-.esbRow {
-    box-shadow: none !important;
-    margin-bottom: $space-16 !important;
-
-    &:last-of-type{
-        margin-bottom:$space-8 !important;
-    }
-
-    .esbRowHead {
-        min-height: 164px !important;
-        max-height: 364px !important;
-        flex-direction: column;
         justify-content: space-between;
-        background-color: $green10;
-        padding: $space-16;
-        overflow: initial;
 
-        .esbRowMain {
-            width: 100% !important;
-            padding: 0px !important;
-
-            .accordion-col {
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-
-                .resourceLabel {
-                    font-size: 20px;
-                    font-weight: bold;
-                    margin-bottom: $space-16 !important;
-                }
-
-                .licence {
-                    min-height: 27px;
-                }
-
-                .format-div {
-                    display: block;
-                    margin-top: $space-16;
-                    position: relative;
-
-                    .format {
-                        position: absolute;
-                        bottom: -34px;
-                        border: 2px solid $black100;
-                        border-radius: 2px;
-                        padding: 6px;
-                        text-transform: uppercase;
-                        max-width: 400px;
-
-                        &:empty {
-                            border: none;
-                        }
-                    }
-                }
-            }
-
-            a {
-                line-height: 37px;
-                min-width: 120px;
-                min-height: 48px;
-                background-color: $green100;
-                color: $white;
-                font-size: 16px;
-
-                &:focus {
-                    outline: $focus-style;
-                    outline-offset: $focus-offset;
-                }
-
-                &:hover {
-                    background-color: $green-hover;
-                }
-            }
-        }
-
-        .esbRowControl {
-            position: relative;
-            width: 100%;
-
-            button {
-                position: absolute;
-                bottom: 0;
-                right: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: $green25;
-                color: $black100 !important;
-                font-size: 16px;
-                min-width: 120px;
-                min-height: 32px;
-                line-height: -0px;
-                max-height: 32px;
-                margin-right: 0px;
-
-                &:focus {
-                    outline: $focus-style;
-                    outline-offset: $focus-offset;
-                    text-decoration: none;
-                }
-
-                &:hover {
-                    text-decoration: none;
-                    background-color: $green50;
-                    color: $black100;
-                }
-
-                span {
-                    font-size: 16px;
-                    line-height: 12px;
-                    font-family: "Font Awesome 5 Free" !important;
-                }
-
-                span {
-                    margin-left: 8px;
-                }
-            }
-
-            button::before {
-                content: "Visa mer";
-                font-weight: normal !important;
-            }
-
-            button::after {
-                font-weight: normal !important;
-            }
-        }
-    }
-
-    .esbRowExpand {
-        background-color: $green10;
-        padding-left: $space-16 !important;
-        padding-right: $space-16 !important;
-    }
-}
-
-//Ugly fix to make license under about datset
-.rdformsPresenter {
-    .notCompact {
-
-        #dijit_es_dijit__Widget_3,
-        #dijit_es_dijit__Widget_2 {
-            // margin-left: 30px !important;
-        }
-    }
-}
-
-
-//Distrubution accordions in below 600px..
-@media screen and (max-width: 600px) {
-    .esbRow {
-        box-shadow: none !important;
-        margin-bottom: $space-24 !important;
-
-        .esbRowHead {
-            min-height: 300px !important;
-            padding: $space-16;
-
-            .esbRowMain {
-                width: 100% !important;
-                padding: 0px !important;
-                position: relative;
-
-                a {
-                    min-width: 100px;
-                    position: absolute;
-                    top: 220px;
-                }
-
-                .accordion-col {
-                    width: 100%;
-                    height: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: flex-start;
-                }
-            }
-
-            .esbRowControl {
-                button {
-                    min-height: 48px !important;
-                    // min-width: 100px;
-                }
-            }
-        }
-    }
-}
-
-.rdformsFields {
-    .rdformsField {
-        div {
-            word-break: break-word !important;
-        }
-    }
-}
-
-.rdformsGroup {
-    .rdformsRow {
-        padding-left: 0px !important;
-    }
-}
-
-//Hides stuff from blocks that initially are hidden by default.
-// .hiddenProperty {
-//     padding-bottom: 0px !important;
-//     padding-top: 0px !important;
-
-//     .rdformsLabel {
-//         display: none !important;
-//     }
-
-//     .rdformsFields {
-//         display: none;
-
-//         .rdformsField {
-//             display: none;
-//         }
-//     }
-// }
-
-
-//Fix for spaces
-.rdformsTopLevel {
-    .rdformsFields {
-        .rdformsSingleline {
-            margin-right: 0px !important;
-        }
-
-        .rdformsField {
-            margin-left: 30px;
-        }
-        .rdformsGroup{
-            margin-left: 30px !important;
-        }
-    }
-}
-
-//Pagination
-//For datasets with more than 50 distrubutions
-.entryPagination {
-    .disabled {
-        a {
-            cursor: none;
-            opacity: 0.5;
-        }
-    }
-
-    .page-item {
-
-        &:first-of-type,
-        &:last-of-type {
-            display: none;
-        }
-
-        a {
-            cursor: pointer;
-            border: 2px solid $green100 !important;
-            border-radius: 2px;
-
-            i {
-                font-family: "Font Awesome 5 Free" !important;
-                color: $green100;
-            }
-        }
-    }
-}
-
-
-//For specoficationpage
-//For specoficationpage
-//For specoficationpage
-
-//Remove background-color of specification details.
-.specificationDetails {
-    .rdformsPresenter {
-        background-color: transparent;
-    }
-}
-
-//For conceptpage
-//For conceptpage
-//For conceptpage
-.concept {
-
-    .terminology-group {
-        background-color: $pink10;
-        padding: $space-16;
-        padding-bottom: $space-8;
-
-        h2 {
-            margin-top: $space-8;
-            margin-bottom: 0px;
-
-            &:first-of-type {
-                margin-top: 0px;
-            }
-        }
-    }
-
-    .download-rdf {
-        span {
-            display: flex;
+        //Window 800px
+        @media screen and (max-width: 50rem) {
             flex-direction: column;
+        }
 
-            a {
-                margin-right: $space-16;
+        .detailpage__wrapper--leftcol {
+            width: 100%;
+            max-width: 40rem;
+
+            //Window 800px
+            @media screen and (min-width: 50rem) {
+                margin-right: $space-32;
             }
 
-            h2 {
-                font-weight: bold !important;
-                font-size: 24px !important;
-                line-height: $space-32 !important;
-                letter-spacing: -0.02em !important;
-                color: $black100 !important;
+            h1 {
+                margin-bottom: $space-16;
             }
-        }
-    }
 
-    .terminology {
-        margin-bottom: $space-8;
-        padding: 0px !important;
-        font-size: 18px !important;
-        box-shadow: none;
-
-        a {
-            padding: 0px;
-        }
-
-        &:focus {
-            box-shadow: none !important;
-        }
-    }
-
-    .myrow {
-        background-color: $pink10;
-        padding: $space-16;
-        padding-top: $space-8;
-
-        h2 {
-            font-weight: bold !important;
-            font-size: 18px !important;
-            line-height: $space-32 !important;
-            letter-spacing: -0.02em !important;
-            color: $black100 !important;
-            margin-top: 0px;
-            margin-bottom: 0px;
-
-            &:last-of-type {
-                margin-top: $space-16;
+            .description {
+                margin-bottom: $space-32;
+                word-break: break-word;
             }
-        }
 
-        .mycolumn {
-            display: flex;
-
-            .entryList {
-                display: flex;
-                flex-wrap: wrap;
-
-                .entryListRow {
-                    margin-right: $space-16;
-
-                    &:not(:last-of-type) {
-                        span::after {
-                            content: ',';
-                        }
-                    }
+            .escoList {
+                .alert {
+                    width: fit-content;
+                    border-radius: 0rem;
+                    border: none;
+                    color: $white;
+                    background-color: $brown100;
                 }
             }
-        }
-    }
 
-    //Download concept
-    .download-rdf {
-        margin-bottom: $space-24;
-        background-color: $green10;
-        padding: $space-16;
+            .dataset__map {
+                margin-bottom: $space-48;
 
-        h2 {
-            font-weight: bold !important;
-            font-size: 32px !important;
-            line-height: $space-32 !important;
-            letter-spacing: -0.02em !important;
-            color: $black100 !important;
-            margin-top: $space-16;
-        }
-    }
-
-    //Concept details 
-    .concept-details {
-        margin-top: $space-8;
-
-        h2 {
-            font-weight: bold !important;
-            font-size: 32px !important;
-            line-height: $space-32 !important;
-            letter-spacing: -0.02em !important;
-            color: $black100 !important;
-            margin-top: $space-32;
-            margin-bottom: $space-8;
-        }
-
-        .notCompact {
-            width: 100% !important;
-            margin-right: 0px;
-
-            .noPointer {
-                border-bottom: none !important;
-                font-weight: bold;
-                font-size: 24px;
-                line-height: 32px;
-                letter-spacing: -0.02em;
-                color: $black100;
-            }
-
-            .rdformsFields {
-                .rdformsPresenter {
-                    margin-left: 0px !important;
-
+                .rdforms {
                     .rdformsRow {
-                        margin-bottom: $space-16;
-                        display: flex !important;
-                        flex-direction: column;
-
-                        .rdformsLabel{
-                            min-width: 20em !important;
-                            font-weight: bold;
-                        }
+                        margin: 0rem;
+                        width: 100%;
 
                         .rdformsFields {
-                            // margin-left: $space-32 !important;
+                            .rdformsGroup {
+                                margin: 0rem;
+                                padding: 0rem;
 
-                            .rdformsField {
-                                // min-width: 300px !important;
+                                .rdformsRow {
+                                    padding: 0rem;
 
-                                &:not(:last-of-type) {
-                                    a::after {
-                                        content: ',';
+                                    .rdformsFields {
+                                        .rdformsField {
+                                            padding: 0rem;
+
+                                            .escoPosition {
+                                                font-weight: bold;
+                                                font-size: 1.5rem; //24px
+                                                line-height: 2rem; //32px
+                                                letter-spacing: -0.02em;
+                                                color: $black100;
+
+                                                margin-bottom: $space-16;
+
+                                                &::after {
+                                                    content: "Geografiskt område";
+                                                }
+
+                                                label,
+                                                span {
+                                                    display: none;
+                                                }
+
+                                            }
+
+                                            .escoMap {
+                                                height: 23.75rem;
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -988,19 +91,626 @@
                     }
                 }
             }
+
+            //Access to dataservice
+            .dataservice__access {
+                margin-bottom: $space-32;
+
+                .rdforms {
+                    .rdformsRow {
+                        display: flex;
+                        flex-direction: column;
+
+                        .rdformsLabel {
+                            font-weight: bold;
+                            font-size: 1.25rem; //20px
+                            line-height: 1.75rem; //28px
+                            letter-spacing: -0.01em;
+                            color: $black100;
+                        }
+
+                        .rdformsFields {
+
+                            .rdformsField,
+                            .rdformsRepeatedValue {
+                                border: none;
+                                padding: 0rem;
+                                margin: 0rem;
+                                margin-top: $space-8;
+
+                                a {
+                                    font-weight: normal;
+                                    font-size: 1.125rem; //18px
+                                    line-height: 1.6875rem; //27px
+                                    text-decoration-line: underline;
+                                    color: $black100;
+
+                                    &:hover {
+                                        background-color: $pink10;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .esbRow {
+                box-shadow: none;
+                border: 2px solid $green25;
+                margin-top: $space-16;
+
+                .esbRowHead {
+                    position: relative;
+                    justify-content: space-between;
+                    padding: $space-16;
+                    padding-bottom: 1.25rem;
+                    max-height: none;
+
+                    //Window 374px
+                    @media screen and (max-width: 23.375rem) {
+                        flex-direction: column;
+                    }
+
+                    .esbRowMain {
+                        padding: 0rem;
+
+                        @media screen and (max-width: 23.375rem) {
+                            width: 100%;
+                        }
+
+                        .distribution_links {
+                            display: flex;
+                            flex-wrap: wrap;
+
+                            //Window 448px
+                            @media screen and (max-width: 28rem) {
+                                flex-direction: column;
+                            }
+
+                            .distribution_link {
+                                font-weight: normal;
+                                font-size: 1.125rem; //18px
+                                line-height: 1.6875rem; //27px
+                                text-decoration-line: underline;
+                                color: $black100;
+
+                                @media screen and (max-width: 28rem) {
+                                    &:nth-of-type(odd) {
+                                        margin-bottom: 0.25rem;
+                                    }
+                                }
+
+                                &:hover {
+                                    background-color: $pink10;
+                                }
+
+                                &:nth-of-type(odd) {
+                                    margin-right: $space-24;
+                                }
+                            }
+                        }
+                    }
+
+                    .esbRowControl {
+                        display: flex;
+                        justify-content: end;
+                        align-items: flex-end;
+                        margin: 0rem;
+                        width: fit-content;
+
+                        @media screen and (max-width: 23.375rem) {
+                            margin-top: $space-8;
+                            align-self: flex-end;
+                        }
+
+                        button {
+                            margin: 0rem;
+                            width: 2.75rem;
+                            height: 2.75rem;
+                            background-color: $brown10;
+
+                            span {
+                                font-family: "Font Awesome 5 Free" !important;
+                                color: $black100;
+                                margin-top: 0.125rem;
+                            }
+
+                            &:hover {
+                                background-color: $black10;
+                                transition: 0ms;
+                            }
+
+                            &:focus {
+                                border: none;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //  Distrubutionslista
+            .entryList {
+                .esbRowExpand {
+                    background-color: $white;
+                    padding: $space-16;
+                    padding-top: 0rem;
+                    padding-bottom: $space-24;
+
+                    .distribution_files_header {
+                        font-weight: bold;
+                        font-size: 1rem; //16px
+                        line-height: 1.5rem; //24px
+                        letter-spacing: -0.01em;
+                        color: $black100;
+                        margin-bottom: 0rem;
+                        margin-top: 1rem;
+                    }
+
+                    .text-6 {
+                        font-weight: normal;
+                        font-size: 1rem; //16px
+                        line-height: 1.5rem; //24px
+                        color: $black100;
+                    }
+
+                    .rdforms {
+                        .rdformsRow {
+                            display: flex;
+                            flex-direction: column;
+                            padding: 0rem;
+                            margin: 0rem;
+
+                            &:not(:first-of-type) {
+                                margin-top: $space-16;
+                            }
+
+                            .rdformsLabel {
+                                font-weight: bold;
+                                padding: 0rem;
+                                margin: 0rem;
+                                width: 100% !important;
+                                margin-bottom: $space-8;
+                            }
+
+                            .rdformsFields {
+                                .rdformsField {
+                                    margin: 0rem;
+                                    padding: 0rem;
+
+                                    .rdformsUrl {
+                                        text-decoration: underline;
+                                    }
+
+                                    .rdformsUrl:hover {
+                                        color: $black100;
+                                        background-color: $pink10;
+                                    }
+
+                                    .rdformsLanguage {
+                                        display: none;
+                                    }
+                                }
+                            }
+                        }
+
+                        .cardgroup {
+                            display: flex !important;
+                            flex-direction: column;
+
+                            .rdformsFields {
+
+                                .rdformsGroup,
+                                .rdforms,
+                                .rdformsPresenter {
+                                    margin: 0rem !important;
+                                    padding: 0rem !important;
+                                    background-color: transparent;
+                                    border: none;
+
+                                    .rdformsRow {
+                                        padding: 0rem;
+
+                                        .rdformsLabel {
+                                            font-weight: normal;
+                                            border: none;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .entryList {
+                        margin-bottom: $space-24;
+
+                        .distribution__extended-list {
+                            border: none;
+                            border-bottom: 2px dotted $black10;
+                            margin: 0rem;
+
+                            .esbRowHead {
+                                padding: 0rem;
+                                padding-bottom: $space-16;
+                                padding-top: $space-16;
+
+                                .esbRowAlignPrimary {
+                                    word-break: break-all;
+                                }
+                            }
+
+                            a {
+                                font-weight: normal;
+                                font-size: 1rem; //16px
+                                line-height: 1.5rem; //24px
+                                color: $black100;
+
+                                &:hover {
+                                    // text-decoration: none;
+                                    background-color: $pink10;
+                                }
+                            }
+                        }
+                    }
+
+                    .api_readmore {
+                        display: block;
+                        margin-top: $space-16;
+                        color: $black100;
+                        text-decoration: underline;
+                        width: fit-content !important;
+
+                        &:hover {
+                            background-color: $pink10;
+                        }
+                    }
+
+                    hr {
+                        margin-top: $space-24;
+                        margin-bottom: $space-24;
+                        border-top: 2px dotted $green25;
+                    }
+
+                    .rdformsRepeatedValue {
+                        margin-top: $space-8 !important;
+                        border: none;
+                    }
+                }
+            }
+
+            // distribution accordions
+            .distribution {
+                display: flex;
+                flex-direction: column;
+
+                .distribution_row {
+                    display: flex;
+                    align-items: center;
+                    flex-wrap: wrap;
+
+                    .distribution_format {
+                        margin-right: $space-24;
+                        margin-bottom: $space-8;
+                        text-transform: uppercase;
+
+                        &:empty {
+                            display: none;
+                        }
+                    }
+                }
+
+                .distribution_licens {
+                    margin-bottom: $space-8;
+                    color: $brown100;
+
+                    &:empty {
+                        display: none;
+                    }
+                }
+
+                .distribution_title {
+                    margin-right: $space-8;
+                    margin-bottom: $space-8;
+
+                    &:empty {
+                        display: none;
+                    }
+                }
+            }
         }
-    }
-    .compact .rdformsTopLevel.rdformsRow.rdformsHeading>.rdformsFields>.rdformsGroup>.rdformsRow {
-        width: 100% !important;
+
+
+        .detailpage__wrapper--rightcol {
+            width: 100%;
+            max-width: 40rem;
+            display: flex;
+            flex-direction: column;
+
+            //Text transform
+            .compact .rdformsRow>.rdformsFields>.rdformsField>div:first-letter {
+                text-transform: uppercase;
+            }
+
+            // Window 800px
+            @media screen and (min-width: 50rem) {
+                max-width: 26rem;
+                margin-top: 2.2rem;
+            }
+
+            .detailpage__wrapper--rightcol-info {
+                border: 2px solid $green25;
+                padding-bottom: $space-32;
+                margin-bottom: $space-16;
+
+                // Window 800px
+                @media screen and (min-width: 50rem) {
+                    margin-bottom: $space-32;
+                }
+
+                h2 {
+                    background-color: $green25;
+                    padding-left: $space-16;
+                    padding-right: $space-16;
+                    padding-top: $space-8;
+                    padding-bottom: $space-8;
+                    margin: 0rem;
+                    margin-left: -1px;
+                    margin-top: -1px;
+                }
+
+                .blocks-row {
+                    display: flex;
+                    flex-direction: column;
+                    padding-left: $space-16;
+                    padding-right: $space-16;
+                    padding-top: $space-16;
+
+                    span {
+                        margin-bottom: $space-8;
+                    }
+                }
+
+                .entryscape {
+                    .rdforms {
+                        display: flex;
+                        flex-direction: column;
+
+                        .rdformsRow {
+                            display: flex;
+                            flex-direction: column;
+                            padding-top: $space-16;
+                            padding-left: $space-16;
+                            padding-right: $space-16;
+                            padding-bottom: 0rem;
+
+                            .rdformsLabel {
+                                width: fit-content !important;
+                                font-weight: bold;
+                                padding-top: 0rem;
+                                margin-bottom: 0.25rem;
+                            }
+
+                            .rdformsFields {
+                                .rdformsField {
+                                    margin-left: 0rem;
+                                    padding: 0rem;
+
+                                    .rdformsUrl {
+                                        text-decoration: underline;
+                                    }
+
+                                    .rdformsUrl:hover {
+                                        color: $black100;
+                                        background-color: $pink10;
+                                    }
+
+                                    .rdformsLanguage {
+                                        display: none;
+                                    }
+
+                                    div {
+                                        word-break: break-all;
+                                        hyphens: auto;
+                                    }
+                                }
+
+                                .rdformsRepeatedValue {
+                                    margin-top: 0.25rem;
+                                    border: none;
+                                }
+
+                                .rdformsGroup {
+                                    padding: 0rem;
+                                    margin: 0rem;
+
+                                    .rdformsRow {
+                                        padding: 0rem;
+                                        margin: 0rem;
+
+                                        .rdformsLabel {
+                                            font-weight: normal;
+                                            border: none;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .cardgroup {
+                            .rdformsFields {
+                                .rdformsGroup {
+                                    background-color: transparent;
+                                    border: none;
+
+                                    .rdformsRow {
+                                        display: flex;
+                                        flex-direction: row;
+
+                                        .rdformsLabel {
+                                            margin-right: $space-8;
+
+                                            &::after {
+                                                content: ':';
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            .dataset__map--title {
+                margin-top: $space-32;
+
+                .rdforms {
+
+                    .rdformsRow,
+                    .rdformsTopLevel,
+                    .notCompact {
+                        width: 100% !important;
+                        padding: 0rem;
+                        margin: 0rem;
+
+                        .rdformsLabel {
+                            width: 100%;
+                        }
+
+                        .rdformsFields {
+                            display: none !important;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        //List with distribution
+        .distribution__list {
+            margin-bottom: $space-48;
+
+            .esbRowMain {
+                font-weight: normal;
+                font-size: 1.125rem; //18px
+                line-height: 1.6875rem; //27px
+                color: $black100;
+
+                .esbRowAlign {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    padding-right: $space-16;
+                    min-height: 5rem;
+
+                    .esbBadge {
+                        padding: 0rem;
+                        background-color: transparent;
+                        font-weight: bold;
+                        display: block;
+                        margin-bottom: $space-8;
+                    }
+
+                    .resourceLabel {
+                        margin-bottom: $space-8;
+                    }
+
+                    .esbRowAlignOther {
+                        margin-bottom: $space-8;
+                        text-transform: uppercase;
+
+                        &:empty {
+                            display: none;
+                        }
+                    }
+
+                    .esbRowAlignPrimary {
+                        margin-bottom: $space-8;
+                    }
+
+                    .esbRowAlignSecondary {
+                        a {
+                            background-color: transparent;
+                            border: none;
+                            font-weight: normal;
+                            font-size: 1.125rem; //18px
+                            line-height: 1.6875rem; //27px
+                            text-decoration-line: underline;
+                            color: $black100;
+
+                            &:focus {
+                                outline: $focus-style;
+                                outline-offset: $focus-offset;
+                            }
+                        }
+
+                        a:first-of-type {
+                            margin-right: $space-16;
+                        }
+
+                        .distribution__link {
+                            color: $black100;
+                            margin: 0rem;
+                            margin-left: 0px !important;
+                            text-decoration: underline;
+
+                            &:hover {
+                                background-color: $pink10;
+                            }
+                        }
+                    }
+
+                    .distribution_api-flag {
+                        position: absolute;
+                        color: $black-hover;
+
+                        i {
+                            font-family: Font Awesome\ 5 Free !important;
+                            font-size: 1rem;
+                            padding-right: .25rem;
+                            color: $orange100;
+                        }
+                        
+                        @media screen and (min-width: 23.375rem) {
+                            top: 1rem;
+                            right: 1rem;
+                        }
+
+                        @media screen and (max-width: 23.375rem) {
+                            left: 1rem;
+                            bottom: 2rem;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        .api-flag {
+            display: block;
+            color: $orange100;
+            margin-bottom: $space-16;
+
+            i {
+                font-family: Font Awesome\ 5 Free !important;
+                padding-right: 0.5rem;
+                font-size: 1rem;
+            }
+        }
     }
 }
 
 
-#text-load1, #text-load2, #text-load3 {
+//Hide before blocks renders
+.hbbr {
     animation: cssAnimation 0s 0.5s forwards;
     visibility: hidden;
-  }
-  
-  @keyframes cssAnimation {
-    to   { visibility: visible; }
-  }
+}
+
+@keyframes cssAnimation {
+    to {
+        visibility: visible;
+    }
+}
+
+

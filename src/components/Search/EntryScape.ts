@@ -17,10 +17,12 @@ export enum ESType {
 }
 
 export enum ESRdfType {
-  dataset = 'http\://www.w3.org/ns/dcat#Dataset',
-  spec_profile = 'http\://www.w3.org/ns/dx/prof',
-  spec_standard = 'http\://purl.org/dc/terms/Standard',
-  term = 'http\://www.w3.org/2004/02/skos/core#Concept'
+  dataset = "http\://www.w3.org/ns/dcat#Dataset",
+  spec_profile = "http\://www.w3.org/ns/dx/prof",
+  spec_standard = "http\://purl.org/dc/terms/Standard",
+  term = "http\://www.w3.org/2004/02/skos/core#Concept",
+  esterms_IndependentDataService = "esterms:IndependentDataService",
+  esterms_ServedByDataService = "esterms:ServedByDataService"
 }
 
 export interface ESEntryField {
@@ -48,14 +50,24 @@ export interface ESFacetField {
  * EntryScape instance connected to EntryStore https://entrystore.org/
  */
 export class EntryScape {    
-  entryscapeUrl:string;  
-  hitSpecification:HitSpecification;
+  entryscapeUrl:string;    
+  hitSpecifications:{ [key:string] : HitSpecification }
   facetSpecification:FacetSpecification;
 
-  constructor(entryscapeUrl:string, hitSpecification?:HitSpecification, facetSpecification?: FacetSpecification){
-    this.entryscapeUrl = entryscapeUrl;    
-    this.hitSpecification = hitSpecification || { path:'/datamangd/'};    
-    this.facetSpecification = facetSpecification || {};    
+  constructor(entryscapeUrl:string, facetSpecification?: FacetSpecification, hitSpecifications?: { [key:string] : HitSpecification } ){
+    this.entryscapeUrl = entryscapeUrl;            
+    this.facetSpecification = facetSpecification || {};        
+
+    this.hitSpecifications = 
+      hitSpecifications 
+      || 
+      { "dataset" : {
+        descriptionResource: "",
+        path: "/datamangd/",
+        titleResource: ""
+      }};    
+    
+    EntryStore.namespaces.add('esterms', 'http://entryscape.com/terms/');       
   } 
 
   /**
@@ -379,9 +391,10 @@ export class EntryScape {
       this.luceneFriendlyQuery(query);
       let modifiedQuery = query.split(' ');
       modifiedQuery = modifiedQuery.map(s => s.trim()).filter(s => s.length > 0 && s != 'AND');
-      let lang = request.language || 'sv';
+      let lang = request.language || 'sv';      
 
-      const es = new EntryStore.EntryStore(this.entryscapeUrl);            
+      const es = new EntryStore.EntryStore(this.entryscapeUrl);     
+      
       let esQuery = es.newSolrQuery();      
       let searchList:any;
 
@@ -488,21 +501,30 @@ export class EntryScape {
               var metaFacets = searchList.getFacets();     
             }                  
                         
+            let hitSpecification:HitSpecification = {
+              descriptionResource: "blaa",
+              path: "hmm",
+              titleResource: "blaa"
+            };
+
             //construct SearchHit-array
             children.forEach((child:any) => {      
               
               let metaData = child.getMetadata();
-              let context = child.getContext();            
-
+              let context = child.getContext();                          
+              let rdfType = metaData.findFirstValue(child.getResourceURI(), "http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+              
+              hitSpecification = this.hitSpecifications[rdfType] || { titleResource:"dcterms:title", path: "/dataset/", descriptionResource: "dcterms:description" }
+                            
               let hit = {
                 entryId: child.getId(),
-                title: this.getLocalizedValue(metaData,this.hitSpecification.titleResource || "dcterms:title",lang),
-                description: this.getLocalizedValue(metaData,this.hitSpecification.descriptionResource || "dcterms:description",lang),
+                title: this.getLocalizedValue(metaData,hitSpecification.titleResource || "dcterms:title",lang),
+                description: this.getLocalizedValue(metaData,hitSpecification.descriptionResource || "dcterms:description",lang),
                 esEntry: child,
                 metadata: this.getMetaValues(child),
                 url:''
               };
-              hit.url = `${this.hitSpecification.path || 'datamangd'}${context.getId()}_${hit.entryId}/${slugify(hit.title)}`;
+              hit.url = `${hitSpecification.path || 'datamangd'}${context.getId()}_${hit.entryId}/${slugify(hit.title)}`;
               hit.description = hit.description && hit.description.length > 250? `${(hit.description + '').substr(0,250)}...` : hit.description;            
 
               hits.push(hit);         

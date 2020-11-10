@@ -3,72 +3,54 @@
 
 .highlight {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: $space-48;
-    background-color: $brown10;
+    flex-direction: column;
+    align-items: center;
+    margin-top: $space-96;
+    margin-bottom: $space-96;
 
-    @media screen and (max-width: 1151px) {
-        background-color: $white;
+    @media screen and (max-width: 40.625rem) {
+        margin-top: $space-24;
+        margin-bottom: $space-24;
     }
 
-
-    h2 {
-        margin: 0px;
-        padding-top: $space-24;
-        padding-left: $space-24;
-        padding-right: $space-24;
-
-        @media screen and (max-width: 1151px) {
-            padding-top: 0px;
-            padding-left: 0px;
-            padding-right: 24px;
-        }
-
-        @media screen and (max-width: 800px) {
-            padding-top: $space-8;
-            padding-right: 0px;
-        }
-    }
-
-    p {
-        padding: $space-8 $space-24 0px;
-        margin: 0px;
-
-        @media screen and (max-width: 1151px) {
-            padding-left: 0px;
-            padding-right: $space-24;
-        }
-
-        @media screen and (max-width: 800px) {
-            padding-top: $space-8;
-            padding-right: 0px;
-        }
-    }
-
-    div {
-        width: 50%;
-
+    .highlight__illustraitons {
         img {
-            max-width: 100%;
-            height: auto;
-        }
+            margin-left: $space-16;
+            margin-right: $space-16;
+            margin-bottom: $space-24;
 
-        &:last-of-type {
-            display: flex;
-            align-items: flex-start;
+            @media screen and (max-width: 53.125rem) {
+                &:nth-last-of-type(2) {
+                    display: none;
+                }
+            }
+
+            @media screen and (max-width: 36.563rem) {
+                &:nth-last-of-type(1) {
+                    display: none;
+                }
+            }
         }
     }
 
-    @media screen and (max-width: 800px) {
-        flex-direction: column-reverse;
+    .highlight__txt {
+        max-width: 680px;
+        margin-bottom: $space-24;
 
         h2 {
-            margin-top: $space-16;
+            @media screen and (min-width: 40.625rem) {
+                text-align: center;
+
+            }
         }
 
-        div {
-            width: 100%;
+        p {
+            text-align: justify;
+            margin-top: $space-24;
+
+            @media screen and (max-width: 650px) {
+                text-align: left;
+            }
         }
     }
 }

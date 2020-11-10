@@ -13,6 +13,10 @@ export abstract class EnvSettings {
   
   abstract ENTRYSCAPE_BLOCKS_URL:string;  
 
+  abstract ENTRYSCAPE_OPENDATA_SV_URL:string;  
+
+  abstract ENTRYSCAPE_OPENDATA_EN_URL:string;  
+
   abstract CONTENTBACKEND_SITEURL: string;
 
   abstract CONTENTBACKEND_GRAPHAPI: string;

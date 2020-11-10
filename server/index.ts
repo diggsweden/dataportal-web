@@ -42,7 +42,8 @@ var csp_headers = {
     '*.googleapis.com',
     '*.gstatic.com',
     'digg-test-graphproxy.azurewebsites.net',
-    'digg-prod-graphproxy.azurewebsites.net'
+    'digg-prod-graphproxy.azurewebsites.net',
+    'webbanalys.digg.se'
   ],
   'base-uri': ["'self'"],
   'manifest-src': ["'self'"],
@@ -85,7 +86,8 @@ app.use(function forceLiveDomain(req, res, next) {
       host === 'ckan.xn--ppnadata-m4a.se' || 
       host === 'www.xn--ppnadata-m4a.se' || 
       host === 'ckan.oppnadata.se' || 
-      host === 'www.oppnadata.se') {
+      host === 'www.oppnadata.se' ||
+      host === 'vidareutnyttjande.se') {
     return res.redirect(301, 'https://www.dataportal.se/oppnadata');
   }
   if (host === 'oppnadata.local:3003') {

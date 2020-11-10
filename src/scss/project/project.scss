@@ -1,0 +1,412 @@
+@import 'scss/general/variables.scss';
+
+
+.project__page {
+    //Project item
+
+    .project__topimage {
+        max-height: 22.5rem; //360px
+        overflow: hidden;
+        margin-bottom: -4px;
+
+        @media screen and (max-width: 37.5rem) {
+            height: 12.5rem;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .project__banner {
+        padding-top: $space-32;
+        padding-bottom: 2.5rem;
+
+        //window 600px
+        @media screen and (max-width: 37.5rem) {}
+
+        h1 {
+            margin-top: 0rem;
+            margin-bottom: 0rem;
+        }
+
+        p {
+            margin-bottom: 0px;
+            max-width: 40rem;
+        }
+
+        .project__banner--box {
+            display: flex;
+            flex-direction: column;
+            max-width: 72rem;
+            margin: auto;
+        }
+    }
+
+    .project__editor {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0rem;
+
+        .project__editor--p {
+            margin-bottom: 1rem;
+
+            p {
+                margin-bottom: $space-16;
+
+                img {
+                    margin-top: $space-16;
+                    margin-bottom: 0rem;
+                }
+            }
+
+            blockquote {
+                padding: $space-24;
+                padding-top: $space-24;
+                padding-bottom: $space-24;
+                border-left: 0.125rem solid;
+                margin-left: 0rem;
+                margin-right: 0rem;
+                font-weight: bold;
+                font-size: 1.5rem; //24px
+                line-height: 2rem; //32px
+                letter-spacing: -0.02em;
+                color: $black100;
+                margin-top: $space-16;
+                margin-bottom: $space-32;
+
+                p,
+                span {
+                    margin: 0rem;
+                }
+            }
+        }
+    }
+
+    //Projectpage
+
+    .info-wrapper {
+        padding: $space-24;
+        padding-top: $space-24;
+        border-left: 0.125rem solid;
+        margin-left: 0rem;
+        margin-right: 0rem;
+        line-height: 2rem; //32px
+        letter-spacing: -0.02em;
+        color: $black100;
+        margin-top: $space-32;
+        margin-bottom: $space-32;
+
+        p,
+        span,
+        a {
+            margin-bottom: $space-8;
+            font-weight: normal;
+            font-size: 1.125rem; //18px
+            line-height: 1.6875rem; //27px
+            color: $black100;
+        }
+
+        h2,
+        h3,
+        h4 {
+            margin: 0rem;
+            margin-bottom: $space-16;
+
+            font-weight: bold;
+            font-size: 1.25rem; //20px
+            line-height: 1.75rem; //28px
+            letter-spacing: -0.01em;
+            color: $black100;
+        }
+    }
+
+    table {
+        margin-bottom: $space-32;
+        height: auto !important;
+
+        td {
+            border: 0.125rem solid $green50;
+            padding: $space-8;
+        }
+    }
+}
+
+
+
+//Project tip us page
+.project__submitpage {
+    .content {
+        margin-top: $space-48;
+
+        h2 {
+            margin-top: 0rem;
+        }
+    }
+
+    .submit-link {
+        font-size: 18px;
+        color: $black100;
+
+        &:hover {
+            // text-decoration: none;
+            background-color: $pink10;
+        }
+    }
+}
+
+//Special theme for project tip us page.
+.theme_black {
+    .project__banner {
+        background-color: $black100;
+
+        h1,
+        p {
+            color: $white;
+        }
+    }
+
+    .project__editor {
+        .project__editor--p {
+
+            .info-wrapper,
+            blockquote {
+                background-color: $black10;
+                border-color: $black100;
+            }
+        }
+    }
+}
+
+
+//Thems for projects
+
+.standard {
+    .project__banner {
+        background-color: $green10;
+    }
+
+    .project__editor {
+        .project__editor--p {
+
+            .info-wrapper,
+            blockquote {
+                background-color: $green25;
+                border-color: $green100;
+            }
+        }
+    }
+}
+
+.theme_red1 {
+    .project__banner {
+        background-color: $pink10;
+    }
+
+    .project__editor {
+        .project__editor--p {
+
+            .info-wrapper,
+            blockquote {
+                background-color: $pink10;
+                border-color: $pink100;
+            }
+        }
+    }
+}
+
+.theme_red2 {
+    .project__banner {
+        background-color: $pink25;
+    }
+
+    .project__editor {
+        .project__editor--p {
+
+            .info-wrapper,
+            blockquote {
+                border-color: $pink100;
+                background-color: $pink25;
+            }
+        }
+    }
+}
+
+.theme_red3 {
+    .project__banner {
+        background-color: $pink50;
+    }
+
+    .project__editor {
+        .project__editor--p {
+
+            .info-wrapper,
+            blockquote {
+                background-color: $pink50;
+                border-color: $pink100;
+            }
+        }
+    }
+}
+
+.theme_orange1 {
+    .project__banner {
+        background-color: $orange10;
+    }
+
+    .project__editor {
+        .project__editor--p {
+
+            .info-wrapper,
+            blockquote {
+                background-color: $orange10;
+                border-color: $orange100;
+            }
+        }
+    }
+}
+
+.theme_orange2 {
+
+    .project__banner {
+        background-color: $orange25;
+    }
+
+    .project__editor {
+        .project__editor--p {
+
+            .info-wrapper,
+            blockquote {
+                background-color: $orange25;
+                border-color: $orange100;
+            }
+        }
+    }
+}
+
+.theme_orange3 {
+
+    .project__banner {
+        background-color: $orange50;
+    }
+
+    .project__editor {
+        .project__editor--p {
+
+            .info-wrapper,
+            blockquote {
+                background-color: $orange50;
+                border-color: $orange100;
+            }
+        }
+    }
+}
+
+.theme_green1 {
+
+    .project__banner {
+        background-color: $green10;
+    }
+
+    .project__editor {
+        .project__editor--p {
+
+            .info-wrapper,
+            blockquote {
+                background-color: $green10;
+                border-color: $green100;
+            }
+        }
+    }
+}
+
+.theme_green2 {
+
+    .project__banner {
+        background-color: $green25;
+    }
+
+    .project__editor {
+        .project__editor--p {
+
+            .info-wrapper,
+            blockquote {
+                background-color: $green25;
+                border-color: $green100;
+            }
+        }
+    }
+}
+
+.theme_green3 {
+    .project__banner {
+        background-color: $green50;
+    }
+
+    .project__editor {
+        .project__editor--p {
+
+            .info-wrapper,
+            blockquote {
+                background-color: $green50;
+                border-color: $green100;
+            }
+        }
+    }
+}
+
+.theme_brown1 {
+
+    .project__banner {
+        background-color: $brown10;
+    }
+
+    .project__editor {
+        .project__editor--p {
+
+            .info-wrapper,
+            blockquote {
+                background-color: $brown10;
+                border-color: $brown100;
+            }
+        }
+    }
+}
+
+.theme_brown2 {
+
+    .project__banner {
+        background-color: $brown25;
+
+        .project__editor {
+            .project__editor--p {
+
+                .info-wrapper,
+                blockquote {
+                    background-color: $brown25;
+                    border-color: $brown100;
+                }
+            }
+        }
+    }
+}
+
+.theme_black1 {
+
+    .project__banner {
+        background-color: $black10;
+    }
+
+    .project__editor {
+        .project__editor--p {
+
+            .info-wrapper,
+            blockquote {
+                background-color: $black10;
+                border-color: $black100;
+            }
+        }
+    }
+}

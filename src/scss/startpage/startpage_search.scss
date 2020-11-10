@@ -1,78 +1,85 @@
 // Style for search and image on startpage
 @import 'scss/general/variables.scss';
 
-.startpage-top {
+.main-search-container {
+    margin: auto;
     display: flex;
-    justify-content: space-between;
-    margin-top: $space-48;
-    margin-bottom: $space-96;
+    flex-direction: column;
+    position: relative;
+    @media screen and (max-width: 40.625rem) {
+        position: static;
+    }
+    img{
+        object-fit: cover;
+        @media screen and (max-width: 40.625rem) {
+        display: none;
+        }
+    }
+}
 
-    @media screen and (max-width: 650px) {
-        margin-top: $space-16;
+.startpage-top {
+    position: absolute;
+    top: 2%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: $space-32;
+    margin-bottom: $space-16;
+
+    @media screen and (min-width: 40.625rem) {
+        padding-bottom: 9.375rem;
         margin-bottom: $space-64;
     }
 
-    @media screen and (max-width: 1440px) {
-        margin-left: 16px;
-        margin-right: 16px;
+    @media screen and (max-width: 40.625rem) {
+        position: static;
+        background-image: none;
+        padding-top: 0rem;
+        padding-bottom: 0rem;
     }
 
-    @media screen and (max-width: 900px) {
+    @media screen and (max-width: 56.25rem) {
         flex-direction: column;
     }
 
     .startpage-search {
         display: flex;
         flex-direction: column;
+        align-items: center;
         width: 100%;
 
-
         h1 {
-            font-size: 58px;
-            margin: 16px 0px 32px 0px;
+            font-size: 3rem;
 
-            @media screen and (max-width: 900px) {
-                font-size: 48px;
-            }
-
-            @media screen and (max-width: 600px) {
-                font-size: 40px;
-            }
-
-            @media screen and (max-width: 380px) {
-                font-size: 32px;
+            @media screen and (max-width: 40.625rem) {
+                font-size: 2.375rem;
+                padding-left: $space-16;
+                padding-right: $space-16;
             }
         }
 
         .startpage-form {
             display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 4px;
 
             input {
-                height: 60px;
-                max-width: 600px;
+                max-width: 36.875rem;
                 width: 100%;
+                background-color: $white;
+                border: none;
                 padding-left: $space-16;
-                border: 4px solid $black100;
-
-                border-right: none;
-                font-size: 20px;
-                margin-bottom: $space-32;
-                border-top-left-radius: 2px;
-                border-bottom-left-radius: 2px;
-
-                // box-shadow: 8px 8px 11px #f2f2f2,
-                //     -8px -8px 11px #ffffff;
-
-                @media screen and (max-width: 600px) {
-                    width: 100%;
-                }
-
-                @media screen and (max-width: 400px) {
-                    font-size: 18px;
-                }
+                font-size: 1.25rem;
 
                 &::placeholder {
                     color: $black50;
+                }
+
+                &:focus {
+                    z-index: 1;
                 }
 
                 &:hover {
@@ -83,7 +90,6 @@
                 &:focus {
                     transition: color 3s ease-in;
                     border-color: $black-hover;
-                    // box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.1);
 
                     &::placeholder {
                         color: $black10;
@@ -97,33 +103,50 @@
                         color: $black10;
                     }
                 }
+
+                @media screen and (max-width: 40.625rem) {
+                    background-color: $black100;
+                    color: $white;
+
+                    &::placeholder {
+                        color: $black10;
+                    }
+
+                    &:focus {
+                        &::placeholder {
+                            color: $black50;
+                        }
+                    }
+                }
             }
 
             button {
-                height: 60px;
-                min-width: 60px;
-                padding: 0px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                height: 3.75rem;
+                min-width: 3.75rem;
+                padding: 0px;
                 background-color: $black100;
                 border: none;
                 border-radius: 0px;
-                border-top-right-radius: 2px;
-                border-bottom-right-radius: 2px;
-
-                margin-bottom: $space-32;
-
-                // box-shadow: 8px 8px 11px #f2f2f2;
-
-                svg {
-                    // fill: $white;
-                }
 
                 &:hover,
                 &:focus {
                     transition: background-color .2s;
                     background-color: $black-hover;
+                    z-index: 1;
+                }
+
+                @media screen and (max-width: 40.625rem) {
+                    background-color: $green100;
+                    &:hover{
+                        background-color: $brown10;
+                    }
+
+                    svg {
+                        fill: $white;
+                    }
                 }
             }
         }
@@ -132,50 +155,44 @@
     .search-boxes {
         display: flex;
         flex-direction: column;
+        max-width: 40.625rem;
+        width: 100%;
 
-        @media screen and (min-width: 900px) {
-            margin-left: $space-24;
-        }
+        @media screen and (min-width: 56.25rem) {}
 
         div {
             display: flex;
             flex-direction: column;
-            padding: $space-16;
-            min-height: 90px;
-            min-width: 390px;
-            background-color: $green10;
+            background-color: $brown10;
+            padding-left: $space-16;
+            padding-right: $space-16;
+            padding-top: $space-8;
+            padding-bottom: $space-8;
+            width: 100%;
 
-            a{
-                width: fit-content;
-            }
-            
-            @media screen and (max-width: 440px) {
-                min-width: 270px;
+            &:first-of-type {
+                padding-top: $space-16;
             }
 
-            &:hover {
-                transition: .2s;
-                cursor: pointer;
+            &:last-of-type {
+                padding-bottom: 1.25rem;
+            }
 
-                a {
-                    text-decoration: none;
+            //Disabled links
+            &:nth-of-type(2),&:nth-of-type(3){
+                span{
+                    // color: $black-hover;
+                    color: #6E6C68;
                 }
             }
 
-            &:not(:last-of-type) {
-                margin-bottom: 10px;
-            }
+            a {
+                width: fit-content;
 
-            &:nth-of-type(1) {
-                background-color: $orange50;
-            }
-
-            &:nth-of-type(2) {
-                background-color: $green50;
-            }
-
-            &:nth-of-type(3) {
-                background-color: $pink50;
+                &:hover {
+                    text-decoration: none;
+                    color: $black100;
+                }
             }
         }
     }

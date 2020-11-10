@@ -80,7 +80,7 @@ export const getFooter = ({ bundles, ids }: FooterData) => {
       <script>window.__EMOTION_IDS__ = ${serialize(ids)};</script>                   
       <div id="scriptsPlaceholder"></div>     
       <script src="https://dataportal.azureedge.net/cdn/postscribe.min.js" crossorigin="anonymous"></script>              
-      ${bundles.map(src => createScriptTag(src))}                        
+      ${bundles.map(src => createScriptTag(src))}                   
     </body>
     </html>
   `;

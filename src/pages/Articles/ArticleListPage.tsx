@@ -18,21 +18,14 @@ import { PageProps } from '../PageProps'
 
 const MainContent = Box.withComponent('main');
 
-export class ArticleListPage extends React.Component<PageProps> {
+export class ArticleListPage extends React.Component<PageProps, any> {
   private headerRef: React.RefObject<Header>;
 
   constructor(props: PageProps) {
     super(props);
     this.headerRef = React.createRef();
     this.setFocus = this.setFocus.bind(this);
-    // this.state = {
-    //     bgColor: [
-    //       '#F0EFEE',
-    //       '#F4E0CE',
-    //       '#D6D9D3',
-    //       "#EBC0B8",
-    //     ],
-    // };
+    this.state = { activeLink: 'artiklar' };
 }
 
   setFocus() {
@@ -52,7 +45,7 @@ export class ArticleListPage extends React.Component<PageProps> {
     return (
       <QueryParamProvider params={uri}>
         <PageMetadata
-            seoTitle="Artiklar - Sveriges dataportal"
+            seoTitle="Nyheter - Sveriges dataportal"
             seoDescription=""
             seoImageUrl=""
             seoKeywords=""
@@ -71,7 +64,7 @@ export class ArticleListPage extends React.Component<PageProps> {
           >
             <NoJavaScriptWarning text="" />
 
-            <Header ref={this.headerRef} />
+            <Header ref={this.headerRef} activeLink={this.state.activeLink} />
 
             <ErrorBoundary>
               <MainContent flex="1 1 auto">

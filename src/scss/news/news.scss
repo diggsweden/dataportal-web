@@ -5,7 +5,11 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: $space-48;
+    margin-bottom: $space-96;
+
+    @media screen and (max-width: 40.625rem) {
+        margin-bottom: $space-48;
+    }
 
     .news-pinned,
     .news-list-compact {
@@ -20,16 +24,16 @@
             flex-direction: row;
             width: 100%;
             list-style: none;
-            padding: 0px;
-            margin: 0px 0px $space-16 0px;
+            padding: 0rem;
+            margin: 0rem 0rem $space-16 0rem;
 
 
-            @media screen and (max-width: 800px) {
+            @media screen and (max-width: 50rem) {
                 flex-wrap: wrap;
             }
 
             li {
-                min-height: 480px;
+                min-height: 30rem;
                 background-color: $orange10;
                 width: inherit;
 
@@ -47,7 +51,7 @@
                 }
 
                 .news-img {
-                    height: 240px;
+                    height: 13.125rem;
 
                     img {
                         object-fit: cover;
@@ -58,10 +62,9 @@
 
                 .news-text {
                     height: 50%;
-                    padding: $space-24;
+                    padding: $space-16;
                     padding-bottom: $space-32;
                 }
-
 
                 span {
                     color: $black-hover;
@@ -69,8 +72,8 @@
                 }
 
                 h3 {
-                    margin-top: 4px;
-                    margin-bottom: 8px;
+                    margin-top: 0.5rem;
+                    margin-bottom: $space-8;
                     color: $black100;
 
                     a {
@@ -79,25 +82,25 @@
                 }
 
                 p {
-                    margin-top: 0px;
-                    margin-bottom: 0px;
+                    margin-top: 0rem;
+                    margin-bottom: 0rem;
                     padding-bottom: $space-8;
                     hyphens: auto
                 }
 
-                @media screen and (max-width: 800px) {
+                @media screen and (max-width: 50rem) {
                     &:nth-last-of-type(2) {
                         margin-left: $space-16;
                         margin-right: $space-16;
                     }
                 }
 
-                @media screen and (max-width: 800px) {
+                @media screen and (max-width: 50rem) {
                     margin-bottom: $space-16;
 
                     &:nth-last-of-type(2) {
-                        margin-left: 0px;
-                        margin-right: 0px;
+                        margin-left: 0rem;
+                        margin-right: 0rem;
                     }
                 }
             }
@@ -113,7 +116,7 @@
     }
 
 
-    @media screen and (max-width: 800px) {
+    @media screen and (max-width: 50rem) {
         flex-direction: column;
 
         .news-list-compact {
@@ -137,10 +140,10 @@
             flex-direction: column;
             padding-top: $space-8;
             padding-bottom: $space-16;
-            border-bottom: 2px dotted $black10;
+            border-bottom: 0.125rem dotted $black10;
 
             &:first-of-type {
-                border-top: 2px dotted $black10;
+                border-top: 0.125rem dotted $black10;
             }
 
             a {
@@ -155,8 +158,8 @@
             }
 
             p {
-                margin-top: 0px;
-                margin-bottom: 0px;
+                margin-top: 0rem;
+                margin-bottom: 0rem;
                 padding-right: $space-16;
                 -webkit-hyphens: auto;
                 -ms-hyphens: auto;
@@ -171,25 +174,24 @@
     margin-top: $space-32;
 
     img {
-        width: 100%;
+        max-width: 100%;
         height: auto;
         margin-bottom: $space-24;
     }
 
     p {
-        margin-top: 0px;
+        margin-top: 0rem;
     }
 
     p {
         img {
-            margin-bottom: 0px;
+            margin-bottom: 0rem;
         }
 
         em {
             font-style: italic;
         }
     }
-
 
     h1 {
         margin-top: $space-16;
@@ -202,7 +204,7 @@
 
         font-weight: bold;
         font-size: 2rem; //32px
-        line-height: 40px;
+        line-height: 2.5rem; //40px
         letter-spacing: -0.03em;
         color: $black100;
     }
@@ -210,10 +212,9 @@
     h3 {
         margin-top: $space-32;
         margin-bottom: $space-16;
-
         font-weight: bold;
         font-size: 1.5rem; //24px
-        line-height: 32px;
+        line-height: 2rem; //32px
         letter-spacing: -0.02em;
         color: $black100;
     }
@@ -221,10 +222,9 @@
     h4 {
         margin-top: $space-32;
         margin-bottom: $space-8;
-
         font-weight: bold;
         font-size: 1.25rem; //20px
-        line-height: 28px;
+        line-height: 1.75rem; //28px
         letter-spacing: -0.01em;
         color: $black100;
     }

@@ -1,20 +1,20 @@
 {
   "startpage" : {
-    "search_placeholder" : "Sök efter datamängd",
+    "search_placeholder" : "Sök",
     "seo_description" : "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor",
     "seo_title" : "Sveriges dataportal",
-    "search_title_1" : "Sök och utforska",
+    "search_title_1" : "Sök och utforska data i Sverige",
     "search_title_2" : "data i Sverige",    
-    "explore_datasets" : "Utforska datamängder",
+    "explore_datasets" : "Utforska data och API:er",
     "explore_concepts" : "Utforska begrepp och terminologier",
     "explore_specs" : "Utforska specifikationer av informations- och datamodeller",
-    "coming_soon" : "KOMMER SNART",
+    "coming_soon" : "Kommer snart",
     "search_datasets_format" : "Sök datamängder inom kategorin {{category}}",
-    "datasets_by_category" : "Datamängder efter kategorier"
+    "datasets_by_category" : "Data efter kategorier"
   },
   "statistic" : {
     "statistic-header" : "Statistik på dataportalen",
-    "dataset-numbers" : "Skördade datamängder per månad",
+    "dataset-numbers" : "Skördat data per månad",
     "statistic-numbers" : "Portalen i siffror",
     "top-organizations" : "organisationer",
     "top-categories" : "kategorier",
@@ -33,8 +33,8 @@
   "highlight-text2":"Sveriges dataportal är ett nav som samordnar och tillgängliggör data som tillhandahålls av offentliga, privata och civilsamhällsorganisationer. Här finns enbart informationen om datamängderna. Själva datamängderna hämtas eller efterfrågas via länkar för åtkomst hos den organisation som ansvarar för den."
 },
   "search" : {
-    "search" : "Sök",
-    "dataset-hits" : "datamängder",
+    "search" : "Sök data",
+    "dataset-hits" : "träffar",
     "concept-hits" : "begrepp",
     "specification-hits" : "specifikationer",
     "next-page" : "Nästa",
@@ -42,7 +42,7 @@
     "first-page" : "Första",
     "page" : "Sida",
     "of" : "av",
-    "datasets" : "Datamängder",
+    "datasets" : "Data & API:er",
     "concepts" : "Begrepp",
     "specifications" : "Specifikationer",
     "organization" : "Organisationer",
@@ -53,7 +53,7 @@
     "numberofhits" : "Antal träffar:"
   },
   "datasets" : {
-    "search-datasets" : "Sök efter datamängd",
+    "search-datasets" : "Sök",
     "datasets" : "datamängder"
   },
   "concepts" : {
@@ -73,12 +73,24 @@
   "datasetpage" : {
     "about-dataset" : "Om datamängd",
     "download-dataset" : "Hämta datamängd",
-    "catalog" : "Hämtad från katalog"
+    "catalog" : "Hämtad från katalog",
+    "use-data" : "Använd data",
+    "download_link_adress" : "Webbsida för åtkomst",
+    "download_link" : "Ladda ner data",
+    "several_links" : "Datat har flertalet länkar för nedladdning",
+    "several_links_header" : "Dataresursen består av följande filer",
+    "no_title" : "Ingen titel given",
+    "no_data" : "Denna datamängd har inga dataresurser",
+    "read_about_api" : "Läs mer om API",
+    "fileformat" : "övrigt filformat"
+  },
+  "dataservicepage" : {
+    "api" : "Om API"
   },
   "articles" :{
     "news" : "nyheter",
-    "articles" : "Artiklar",
-    "view-all" : "Visa alla artiklar"
+    "articles" : "Nyheter",
+    "view-all" : "Visa alla nyheter"
   },
   "redirect" :{
     "pagenotfound_header" : "Oj, sidan kan inte hittas!",

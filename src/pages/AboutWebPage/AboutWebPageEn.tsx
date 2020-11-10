@@ -157,14 +157,21 @@ export class AboutWebPageEn extends React.Component<PageProps> {
                   </div>
 
                   <div className="main-text">
-                    <span className="text-5-bold">2020-08-19:</span>
+                    <span className="text-5-bold">2020-09-22:</span>
                     <ul className="text-5">
-                      <li>
-                        Page for statistics in text
-                      </li>
+                      <li>Page for statistics in text</li>
                       <li>Various bug fixes</li>
                       <li>Improved performance</li>
                       <li>Shut down the website Oppna data och PSI</li>
+                    </ul>
+                  </div>
+
+                  <div className="main-text">
+                    <span className="text-5-bold">2020-11-04:</span>
+                    <ul className="text-5">
+                      <li>Design adjustments</li>
+                      <li>Implemented search based on DCAT-AP-SE 2.0.0</li>
+                      <li>Search filter for API:s</li>
                     </ul>
                   </div>
 
@@ -173,13 +180,26 @@ export class AboutWebPageEn extends React.Component<PageProps> {
                   </h2>
                   <p className="main-text text-5">
                     The Agency for Digital Government (DIGG) is responsible for
-                    this site. Read the {' '}
+                    this site. Read the{' '}
                     <a
                       href={`/${i18n.languages[0]}/${i18n.t(
                         'routes|accessibility|path'
                       )}`}
                     >
                       accessibility report
+                    </a>
+                    .
+                  </p>
+
+                  <h2 className="text-2">How we process your personal data</h2>
+                  <p className="main-text text-5">
+                    If you want to know how your personal data is processed,
+                    read{' '}
+                    <a
+                      target="_blank"
+                      href="https://www.digg.se/om-oss/sa-behandlas-dina-personuppgifter"
+                    >
+                      DIGGs personal data policy
                     </a>
                     .
                   </p>
@@ -217,7 +237,7 @@ export class AboutWebPageEn extends React.Component<PageProps> {
 
                   <h2 className="text-2">Comments on the data portal</h2>
                   <p className="main-text text-5">
-                    Please send your {' '}
+                    Please send your{' '}
                     <a
                       target="_blank"
                       href="https://webropol.com/s/beta-sveriges-dataportal"

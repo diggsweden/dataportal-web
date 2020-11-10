@@ -23,7 +23,7 @@ import {
   SearchRequest,
   FacetSpecification,
   FacetSpecificationItem,
-  SearchSortOrder,
+  SearchSortOrder  
 } from '../../components/Search/Search';
 import { decode } from 'qss';
 import { PageMetadata } from '../PageMetadata';
@@ -53,7 +53,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
   private headerRef: React.RefObject<Header>;
   private inputQueryRef: React.RefObject<HTMLInputElement>;
   private selectQueryRef: React.RefObject<HTMLInputElement>;
-  private postscribe: any;
+  private postscribe: any;    
 
   constructor(props: SearchProps) {
     super(props);
@@ -63,8 +63,11 @@ export class SearchPage extends React.Component<SearchProps, any> {
 
     this.selectQueryRef = React.createRef();
 
-    this.state = { query: '', activeLink: 'search', showFilters: false };
-    this.state = { activeLink: 'search' };
+    this.state = {       
+      query: '', 
+      activeLink: 'search', 
+      showFilters: false      
+    };
   }
 
   setFocus() {
@@ -142,10 +145,17 @@ export class SearchPage extends React.Component<SearchProps, any> {
               ? `https://${this.props.env.ENTRYSCAPE_DATASETS_PATH}/store`
               : 'https://registrera.oppnadata.se/store'
           }
-          hitSpecification={{
-            path: `/${i18n.languages[0]}/datasets/`,
-            titleResource: 'dcterms:title',
-            descriptionResource: 'dcterms:description',
+          hitSpecifications={{
+            'http://www.w3.org/ns/dcat#Dataset': {
+              path: `/${i18n.languages[0]}/datasets/`,
+              titleResource: 'dcterms:title',
+              descriptionResource: 'dcterms:description',
+            },
+            'http://www.w3.org/ns/dcat#DataService': {
+              path: `/${i18n.languages[0]}/dataservice/`,
+              titleResource: 'dcterms:title',
+              descriptionResource: 'dcterms:description',
+            },
           }}
           facetSpecification={{
             facets: [
@@ -169,7 +179,11 @@ export class SearchPage extends React.Component<SearchProps, any> {
             ],
           }}
           initRequest={{
-            esRdfTypes: [ESRdfType.dataset],
+            esRdfTypes: [
+              ESRdfType.dataset,
+              ESRdfType.esterms_IndependentDataService,
+              ESRdfType.esterms_ServedByDataService,
+            ],
             takeFacets: 30,
             language: i18n.languages[0],
             sortOrder: SearchSortOrder.score_desc,
@@ -369,6 +383,60 @@ export class SearchPage extends React.Component<SearchProps, any> {
                                 </Box>
                               )
                             )}
+
+
+                          <div className="checkbox__wrapper">
+                            <input
+                              id="api_only"
+                              name="API"
+                              type="checkbox"                                                            
+                              checked={
+                                search.request.esRdfTypes?.some((t) => t == ESRdfType.esterms_ServedByDataService) &&
+                                search.request.esRdfTypes?.some((t) => t == ESRdfType.esterms_IndependentDataService) &&
+                                !search.request.esRdfTypes?.some((t) => t == ESRdfType.dataset) 
+                              }                  
+                              onChange={(event) => {                                
+                                if(search.request.esRdfTypes?.some((t) => t == ESRdfType.esterms_ServedByDataService) &&
+                                   search.request.esRdfTypes?.some((t) => t == ESRdfType.esterms_IndependentDataService) &&
+                                  !search.request.esRdfTypes?.some((t) => t == ESRdfType.dataset) )
+                                  {
+                                    this.setState({
+                                      query: this.inputQueryRef.current!.value,
+                                    });
+                                    search                                  
+                                      .set({
+                                        esRdfTypes:[
+                                          ESRdfType.dataset,
+                                          ESRdfType.esterms_IndependentDataService,
+                                          ESRdfType.esterms_ServedByDataService
+                                        ],
+                                        query: this.inputQueryRef.current!.value || ''
+                                      })
+                                      .then(() => search.doSearch());
+                                  }
+                                  else {
+                                    this.setState({
+                                      query: this.inputQueryRef.current!.value,
+                                    });
+                                    search
+                                    .set({
+                                      esRdfTypes:[                                        
+                                        ESRdfType.esterms_IndependentDataService,
+                                        ESRdfType.esterms_ServedByDataService
+                                      ],
+                                      query: this.inputQueryRef.current!.value || '',
+                                    })
+                                    .then(() => search.doSearch());       
+                                  }                         
+                              }}
+                            ></input>
+                            <label className="text-6" htmlFor="api_only">
+                              API
+                            </label>
+                          </div>
+
+                          
+
                         </div>
 
                         <div className="selected-filters">
@@ -447,6 +515,11 @@ export class SearchPage extends React.Component<SearchProps, any> {
                                 <label htmlFor="hits" className="text-6-bold">
                                   {i18n.t('pages|search|numberofhits')}
                                 </label>
+
+
+
+
+
                                 <select
                                   id="hits"
                                   name={i18n.t('pages|search|numberofhits')}
@@ -466,16 +539,16 @@ export class SearchPage extends React.Component<SearchProps, any> {
                                     20
                                   </option>
                                   <option
-                                    selected={search.request.take == 40}
-                                    value="40"
+                                    selected={search.request.take == 50}
+                                    value="50"
                                   >
-                                    40
+                                    50
                                   </option>
                                   <option
-                                    selected={search.request.take == 60}
-                                    value="60"
+                                    selected={search.request.take == 100}
+                                    value="100"
                                   >
-                                    60
+                                    100
                                   </option>
                                 </select>
                               </div>

@@ -40,8 +40,7 @@ export const ArticleItem : React.FC<ArticleItemProps> = (props) => {
       heading
       preamble
       published
-      modified
-      tags
+      modified      
       body 
       imageUrl
     }
@@ -57,18 +56,15 @@ export const ArticleItem : React.FC<ArticleItemProps> = (props) => {
 
     return (                    
       <div className="news-article content">
-
         {loading && (<span className="text-5 loading">{i18n.t('common|loading')}</span>)}
         {!loading && articleItem && id && id != '0' ?
           <>
             <Helmet>
               <title>{articleItem.heading} - {i18n.t('common|seo-title')}</title>
-            </Helmet>
-            
+            </Helmet>            
             {articleItem && articleItem.imageUrl && (
               <img src={`${articleItem.imageUrl}?width=1024`} />
             )}
-
             <span className="text-6">{moment(articleItem.published.toString()).format("D MMM YYYY")}</span>
             <h1 className="text-1">{articleItem.heading}</h1>
             <p className="preamble text-4">

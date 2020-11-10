@@ -1,8 +1,7 @@
 @import 'scss/general/variables.scss';
 
-header{
+header {
     border-bottom: 1px solid $black10;
-    padding-bottom: 10px;
 }
 
 .dataportal-logo {
@@ -13,41 +12,60 @@ header{
 }
 
 .header-box {
-    position: relative;
-    margin-top: 10px;
+    padding-top: $space-24;
+    padding-bottom: $space-24;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+
+    @media screen and (max-width: 650px) {
+        padding-top: $space-16;
+        padding-bottom: $space-16;
+    }
+
+    svg {
+        width: 18.75rem; //300px
+    }
 }
 
 .header-links {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     flex-wrap: nowrap;
 
-    div {
-        display: flex;
-        justify-content: center;
-
-        &:first-of-type {
-            min-width: 100px;
-        }
-
-        &:last-of-type {
-            // min-width: 150px;
-            margin-left: $space-32;
-        }
-    }
+    // display: none;
 
     .header-link {
         font-family: Ubuntu !important;
         color: $black100;
-        font-size: 20px;
+        font-size: 16px;
         margin-top: $space-8;
         padding-bottom: 2px;
         text-decoration: none;
         border-bottom: 2px solid transparent;
 
+        @media screen and (max-width: 650px) {
+            margin-top: $space-24;
+            transition: .1s;
+        }
+
+        &:not(:first-of-type) {
+            margin-left: $space-32;
+
+            @media screen and (max-width: 650px) {
+                margin-left: $space-24;
+                transition: .1s;
+
+            }
+
+            @media screen and (max-width: 385px) {
+                margin-left: $space-16;
+                transition: .1s;
+            }
+        }
+
         &:hover {
-            transition: border-color 0.2s;
-            // color: $black-hover;
             border-color: $pink10;
         }
 
@@ -57,113 +75,62 @@ header{
         }
 
         &.active {
-            // font-weight: 700;
             text-decoration: none;
             border-bottom: 2px solid $pink100;
         }
     }
-}
 
-@media screen and (max-width: 600px) {
-    header {
-        margin-bottom: $space-16;
-        padding-bottom: $space-16;
+    //Hide in /en
+    .no-en{
+        display: none;
     }
 
-    .logo-box {
-        margin-top: $space-8;
-    }
-
-    .header-box {
-        flex-direction: column;
-        align-items: flex-start !important;
-        height: 7rem !important;
-
-        .header-links {
-            margin-top: 10px;
-            flex-direction: row;
-            justify-content: flex-start;
-            text-align: start;
-        }
-
-        svg {
-            width: 270px;
-        }
-    }
-
-    @media screen and (max-width: 500px) {
-
-        .header-links {
-            flex-direction: row;
-            justify-content: flex-start;
-            text-align: start;
-
-            div {
-                justify-content: start;
-
-                &:last-of-type {
-                    margin-left: $space-16;
-                }
-
-                .header-link {
-                    font-size: 18px;
-                }
-            }
-        }
+    .header-link--lang {
+        color: $black-hover;
     }
 }
+
+//Mobile nav menu button
+
+.nav-btn {
+    display: none;
+    height: 2.75rem;
+    // width: 2.75rem;
+    border: 0.125rem solid $green50;
+
+    span {
+        width: fit-content;
+    }
+
+    svg {
+        width: $space-24;
+        fill: $green100;
+        margin-right: $space-8;
+    }
+}
+
+@media screen and (max-width: 42.5rem) {}
 
 //Beta information banner
 .beta-banner {
-    // max-width: $page-width;
     width: 100%;
-    // padding: $space-16;
-    padding-top: 6px;
-    padding-bottom: 8px;
+    padding-top: 0.375rem;
+    padding-bottom: $space-8;
     padding-left: $space-16;
     padding-right: $space-16;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: $orange10;
-    
+
     p {
         max-width: $page-width;
         width: 100%;
-        margin: 0px;
+        margin: 0rem;
         text-align: center;
-        @media screen and (max-width: 500px) {
-        text-align: left;
-        }
-    }
-}
 
-//Language
-.lang-select{
-    position: absolute;
-    top: 0;
-    right: 0;
-    a {
-        text-decoration: none;
-    }
-    
-    a,button{
-        margin-top: $space-8;
-        height: 20px;
-        color: $black100;
-        border:none;
-        padding-right: 2px;
-        padding-left: 2px;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        min-width: 0px;
-        border-radius: 0px;
-        text-decoration: none;
-
-        &:hover{
-            transition: ease-in-out .2s;
-            // color: $black-hover;
-            // text-decoration: none;
+        @media screen and (max-width: 31.25rem) {
+            text-align: left;
         }
     }
 }

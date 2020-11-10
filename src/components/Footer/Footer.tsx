@@ -61,6 +61,15 @@ export class Footer extends React.Component<FooterProps> {
                         <div className="footer__links-nav">
                           <a
                             href={`/${i18n.languages[0]}/${i18n.t(
+                              'routes|register-data|path'
+                            )}`}
+                            className="footer-link text-6-link"
+                          >
+                            {i18n.t('routes|register-data|title')}
+                          </a>
+
+                          <a
+                            href={`/${i18n.languages[0]}/${i18n.t(
                               'routes|about|path'
                             )}`}
                             className="footer-link text-6-link"

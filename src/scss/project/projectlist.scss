@@ -1,0 +1,220 @@
+@import 'scss/general/variables.scss';
+
+
+//Projectlistpage
+
+.projectlistpage {
+    .projectlistpage__img {
+
+        //Window 800px
+        @media screen and (max-width: 50rem) {
+            display: none;
+        }
+
+        //Top banner image
+        img {
+            width: 100%;
+        }
+    }
+}
+
+
+//ProjectList-component
+.project {
+
+    .loading,
+    .loading-msg {
+        margin-left: $space-16;
+    }
+
+    margin-top: $space-24;
+    margin-left: -1rem;
+    margin-right: -1rem;
+
+    //Window 600px
+    @media screen and (max-width: 37.5rem) {
+        margin-left: 0rem;
+        margin-right: 0rem;
+
+        .loading,
+        .loading-msg {
+            margin-left: 0rem;
+        }
+    }
+
+    //Project list ul
+    .project__list {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        list-style: none;
+        flex-wrap: wrap;
+        width: fit-content;
+        padding: 0rem;
+        margin: 0rem;
+
+        &:after {
+            content: "";
+            width: 33.33%;
+
+            @media screen and (max-width: 975px) {
+                width: 50%;
+            }
+        }
+
+        //project list - li
+        .project__li {
+            height: 28.75rem; //460px
+            width: 31%;
+            min-width: 12.5rem; //200px
+            margin: auto;
+            margin-bottom: $space-24;
+            background-color: $green10;
+            cursor: pointer;
+
+            &:hover {
+                .project__title {
+                    text-decoration: none;
+                }
+            }
+
+            &:nth-of-type(2) {
+                order: -1;
+            }
+
+            &:nth-of-type(3) {
+                order: -1;
+            }
+
+            //Window 975px
+            @media screen and (max-width: 60.938rem) {
+                width: 46%;
+            }
+
+            //Window 540px
+            @media screen and (max-width: 33.75rem) {
+                width: 100%;
+            }
+
+            .project__img {
+                height: 13.125rem; //210px
+                overflow: hidden;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            .project__text {
+                padding: $space-16;
+                .project__desciption {
+                    margin-top: $space-8;
+                }
+            }
+        }
+
+        .project__placeholder:empty {
+            opacity: 0;
+            height: 0rem;
+        }
+
+        .project__suggest {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            cursor: default;
+            background-color: $black100;
+            padding-bottom: $space-32;
+
+            .project__text {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            a {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 0.125rem solid $white;
+                border-radius: 0.125rem;
+                min-height: 3rem;
+                width: fit-content;
+                color: $white;
+                padding-left: $space-8;
+                padding-right: $space-8;
+                text-decoration: none;
+
+                &:hover,
+                &:focus {
+                    background-color: $white;
+                    color: $black100;
+                }
+            }
+
+            h2,
+            p {
+                color: $white;
+                margin-top: 0rem;
+                margin-bottom: $space-16;
+            }
+        }
+
+
+        //Thems for projectlist items
+        .standard {
+            background-color: $green10;
+        }
+
+        .theme_red1 {
+            background-color: $pink10;
+        }
+
+        .theme_red2 {
+            background-color: $pink25;
+        }
+
+        .theme_red3 {
+            background-color: $pink50;
+        }
+
+        .theme_orange1 {
+            background-color: $orange10;
+        }
+
+        .theme_orange2 {
+            background-color: $orange25;
+        }
+
+        .theme_orange3 {
+            background-color: $orange50;
+        }
+
+        .theme_green1 {
+            background-color: $green10;
+        }
+
+        .theme_green2 {
+            background-color: $green25;
+        }
+
+        .theme_green3 {
+            background-color: $green50;
+        }
+
+        .theme_brown1 {
+            background-color: $brown10;
+        }
+
+        .theme_brown2 {
+            background-color: $brown25;
+        }
+
+        .theme_black1 {
+            background-color: $black10;
+        }
+    }
+}

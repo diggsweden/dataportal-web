@@ -1,52 +1,70 @@
 @import 'scss/general/variables.scss';
 
+
 // Style for search categories on startpage
-.startpage-categories {
-    max-width: 1130px;
-    padding: 0px 0px;
+.categoriesnav__wrapper {
+    background-color: $black100;
     margin-bottom: $space-64;
 
-    h2 {
-        margin-top: 0px;
+    @media screen and (max-width: 650px) {
+    display: none;
     }
 
-    ul {
+    .startpage-categories {
         display: flex;
-        flex-wrap: wrap;
-        list-style-type: none;
-        padding: 0px;
-        margin: 0px;
+        flex-direction: column;
+        align-items: center;
+        max-width: 980px;
+        padding: 0rem;
+        margin: auto;
+        margin-top: $space-32;
+        margin-bottom: $space-64;
 
-        li {
-            margin-bottom: $space-16;
+        h2 {
+            color: $white;
+            margin-top: $space-32;
+        }
 
-            &:not(:last-of-type) {
-                a {
-                    margin-right: $space-16;
+        ul {
+            display: flex;
+            justify-content: start;
+            flex-wrap: wrap;
+            list-style-type: none;
+            padding: 0rem;
+            margin: 0rem;
 
-                    &:after {
-                        content: ',';
+            li {
+                margin-bottom: $space-16;
+                margin-left: 10px;
+
+                &:not(:last-of-type) {
+                    a {
+                        margin-right: 10px;
+                        &:after {
+                            content: ',';
+                        }
                     }
                 }
-            }
 
-            a {
-                color: $black100;
-                font-size: 20px;
-                line-height: 32px;
+                a {
+                    color: $white;
+                    font-size: 1.25rem;
+                    line-height: 2rem;
 
-                &:hover {
-                    transition: .2s;
-                    text-decoration: none;
-                }
+                    &:hover {
+                        transition: .2s;
+                        text-decoration: none;
+                    }
 
-                &:focus {
-                    outline: $focus-style;
-                    outline-offset: 4px;
-                }
+                    &:focus {
+                        outline: $focus-style;
+                        outline-offset: 4px;
+                        outline-color: $white !important;
+                    }
 
-                @media screen and (max-width: 600px) {
-                    font-size: 18px;
+                    @media screen and (max-width: 37.5rem) {
+                        font-size: 1.125rem;
+                    }
                 }
             }
         }

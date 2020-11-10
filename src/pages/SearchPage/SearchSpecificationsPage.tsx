@@ -122,11 +122,18 @@ export class SearchSpecificationsPage extends React.Component<
 
     return (
       <QueryParamProvider params={uri}>
-        <SearchProvider
-          hitSpecification={{
-            path: `/${i18n.languages[0]}/specifications/`,
-            titleResource: 'dcterms:title',
-            descriptionResource: 'dcterms:description',
+        <SearchProvider          
+          hitSpecifications={{ 
+            "http\://www.w3.org/ns/dx/prof" : {
+              path: `/${i18n.languages[0]}/specifications/`,
+              titleResource: 'dcterms:title',
+              descriptionResource: 'dcterms:description'
+            },
+            "http\://purl.org/dc/terms/Standard" : {
+              path: `/${i18n.languages[0]}/specifications/`,
+              titleResource: 'dcterms:title',
+              descriptionResource: 'dcterms:description',
+            }
           }}
           facetSpecification={{
             facets: [

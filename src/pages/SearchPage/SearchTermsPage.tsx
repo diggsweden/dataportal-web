@@ -123,12 +123,14 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
     return (
       <QueryParamProvider params={uri}>
         <SearchProvider
-          entryscapeUrl={this.props.env.ENTRYSCAPE_TERMS_PATH? `https://${this.props.env.ENTRYSCAPE_TERMS_PATH}/store`: 'https://editera.dataportal.se/store'}
-          hitSpecification={{
-            path: `/${i18n.languages[0]}/concepts/`,
+          entryscapeUrl={this.props.env.ENTRYSCAPE_TERMS_PATH? `https://${this.props.env.ENTRYSCAPE_TERMS_PATH}/store`: 'https://editera.dataportal.se/store'}          
+          hitSpecifications={                        
+            { "http\://www.w3.org/2004/02/skos/core#Concept" : {
+              path: `/${i18n.languages[0]}/concepts/`,
             titleResource: 'http://www.w3.org/2004/02/skos/core#prefLabel',
             descriptionResource:
               'http://www.w3.org/2004/02/skos/core#definition',
+            }
           }}
           facetSpecification={{
             facets: [],

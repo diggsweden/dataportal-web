@@ -951,6 +951,18 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@datapunt/matomo-tracker-js@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.npmjs.org/@datapunt/matomo-tracker-js/-/matomo-tracker-js-0.2.1.tgz#202bc6215c7209893ffc04ca69bc2c98063b076e"
+  integrity sha512-XI4xXpBS4S3BKl9wO6uda7GM/LUreS2N5Ep1cAtpIrKm4pZXTwF5Du/Qpv1HyBWoEjjCpRM7jIvyfrcVzEAQqg==
+
+"@datapunt/matomo-tracker-react@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.npmjs.org/@datapunt/matomo-tracker-react/-/matomo-tracker-react-0.2.1.tgz#764554dfc3817b5f21dc57ef4c5217b5adb426d6"
+  integrity sha512-7PN+IsjF5rL85U52dSbY1tsdrBIkAp/qRS3eLWZSK2seLk4KoluuKUoVZRH/FvVX/nv43GKtjooYErui3UPH4Q==
+  dependencies:
+    "@datapunt/matomo-tracker-js" "^0.2.1"
+
 "@digg/design-system@file:local_modules/digg_design-system-1.1.87.tgz":
   version "1.1.87"
   resolved "file:local_modules/digg_design-system-1.1.87.tgz#8518121a7796e4b78033c6f61e14507c5a435724"

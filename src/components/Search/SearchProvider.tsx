@@ -1,15 +1,17 @@
 import React, { createContext } from 'react';
 import { SearchResult, SearchRequest, SearchFacetValue, SearchFacet,SearchHit, HitSpecification, FacetSpecification, SearchSortOrder } from './Search';
-import { EntryScape, ESType } from './EntryScape';
+import { EntryScape, ESRdfType, ESType } from './EntryScape';
 import { encode, decode } from 'qss';
 import { json } from 'body-parser';
+import { assertValidExecutionArguments } from 'graphql/execution/execute';
+import { types } from '@babel/core';
 
 /**
  * Props for search provider
  */
 export interface SearchProviderProps {
   entryscapeUrl?: string;  
-  hitSpecification?: HitSpecification;
+  hitSpecifications?: { [key:string] : HitSpecification; };
   facetSpecification?: FacetSpecification;
   initRequest: SearchRequest;
 }
@@ -203,7 +205,8 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
       //only continue if we have allFacets and a SearchResult
       if(this.state.allFacets && this.state.result && this.state.result.facets)
       {                   
-        let entryScape = new EntryScape(this.props.entryscapeUrl || 'https://registrera.oppnadata.se/store', this.props.hitSpecification, this.props.facetSpecification);
+        let entryScape = 
+          new EntryScape(this.props.entryscapeUrl || 'https://registrera.oppnadata.se/store', this.props.facetSpecification,this.props.hitSpecifications);
         
         var facetValues = this.state.request.facetValues as SearchFacetValue[];
        
@@ -510,7 +513,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
 
       if(!wasCached)
       {        
-        let entryScape = new EntryScape(this.props.entryscapeUrl || 'https://registrera.oppnadata.se/store', this.props.hitSpecification, this.props.facetSpecification);
+        let entryScape = new EntryScape(this.props.entryscapeUrl || 'https://registrera.oppnadata.se/store', this.props.facetSpecification, this.props.hitSpecifications);
 
         entryScape.solrSearch({
           query: '*',
@@ -633,13 +636,15 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
    */
   setStateToLocation = () => {
     if(hasWindow && history.pushState)
-    {
+    {     
+      let rdftypes:string[] = [];
+
       let query = this.state.request && this.state.request.query? this.state.request.query : '';
 
       let page = this.state.request && this.state.request.page? this.state.request.page + 1: '1';
 
       let take = this.state.request && this.state.request.take? this.state.request.take : 20;
-
+      
       let sortOrder = this.state.request.sortOrder && this.state.request.sortOrder? 
         this.state.request.sortOrder as SearchSortOrder
         : 
@@ -648,9 +653,19 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
       let facets = this.state.request && this.state.request.facetValues? 
 
         Object.values(this.state.request.facetValues).map((fval:SearchFacetValue) => fval.facetValueString)
-        : [];          
+        : [];       
+        
+      if(this.state.request.esRdfTypes)
+      {
 
-      let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + encode({p:page,q:query,s:sortOrder, t:take, f:facets.join('$')});
+        const getKeyFromValue =(value:string)=> Object.entries(ESRdfType).filter((item)=>item[1]===value)[0][0];
+
+        this.state.request.esRdfTypes!.forEach((e) => {  
+          rdftypes.push(getKeyFromValue(e));
+        })       
+      }
+
+      let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + encode({p:page,q:query,s:sortOrder, t:take, f:facets.join('$'),rt:rdftypes.join('$')});
       window.history.pushState({path:newurl},'',newurl);
     }
   }
@@ -671,12 +686,22 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
         let querytext = qs.q && qs.q.toString().length > 0? qs.q.toString() : '';
         let page = qs.p && qs.p.toString().length > 0? qs.p.toString() : null;
         let queryfacets:SearchFacetValue[] = [];
+        let rdftypes:ESRdfType[] = [];
         let take = qs.t && qs.t.toString().length > 0? qs.t.toString() : 20;
 
         let sortOrder:SearchSortOrder = qs.s as SearchSortOrder || SearchSortOrder.score_desc;
         
         let facetstrings:{ [facet: string]: string[]; } = {};        
-              
+            
+        if(qs.rt && qs.rt.length > 0)
+        {
+          qs.rt.split('$').forEach((e:string) => {            
+            let rdf = ESRdfType[e as keyof typeof ESRdfType];
+            if(rdf)
+              rdftypes.push(rdf);
+          });
+        }
+
         //check if facets set in url
         if(qs.f && qs.f.length > 0)
         {
@@ -759,6 +784,12 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
             fetchResults = true;
             state.request.sortOrder = sortOrder;
           }
+
+          if(rdftypes && rdftypes.length > 0)
+          {
+            fetchResults = true;
+            state.request.esRdfTypes = rdftypes;
+          }
   
           return {
             ...state         
@@ -785,7 +816,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
       if(setStateToLocation)
         this.setStateToLocation();    
         
-      let entryScape = new EntryScape(this.props.entryscapeUrl || 'https://registrera.oppnadata.se/store', this.props.hitSpecification, this.props.facetSpecification);
+      let entryScape = new EntryScape(this.props.entryscapeUrl || 'https://registrera.oppnadata.se/store', this.props.facetSpecification,this.props.hitSpecifications);
       entryScape.solrSearch(this.state.request).then((res) => {
               
         let hits:SearchHit[] = res.hits || [];

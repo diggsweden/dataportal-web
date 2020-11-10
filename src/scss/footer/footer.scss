@@ -1,7 +1,7 @@
 @import 'scss/general/variables.scss';
 
 footer {
-    margin-top: $space-96;
+    margin-top: 10rem;
 }
 
 .footer {
@@ -33,7 +33,7 @@ footer {
     flex-wrap: wrap;
     margin-bottom: $space-16;
 
-    @media screen and (max-width: 700px) {
+    @media screen and (max-width: 43.75rem) {
         flex-direction: column;
     }
 
@@ -58,6 +58,10 @@ footer {
             outline: $focus-style;
             outline-offset: $focus-offset;
         }
+
+        &:hover {
+            text-decoration: none;
+        }
     }
 
     .footer__links-nav {
@@ -70,7 +74,7 @@ footer {
             margin-bottom: $space-16;
         }
 
-        @media screen and (max-width: 700px) {
+        @media screen and (max-width: 43.75rem) {
             flex-direction: column;
         }
     }
@@ -83,7 +87,7 @@ footer {
             margin-right: 0px;
         }
 
-        @media screen and (max-width: 700px) {
+        @media screen and (max-width: 43.75rem) {
             flex-direction: column;
         }
     }

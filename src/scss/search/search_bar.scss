@@ -10,13 +10,9 @@
         height: 1px;
         overflow: hidden;
     }
-
-    .search-box {
-        // margin-top: $space-32;
-    }
 }
 
-.search-header{
+.search-header {
     margin-top: $space-32;
 }
 
@@ -51,7 +47,8 @@
         }
 
         &:focus {
-        border-color: $black100;
+            border-color: $black100;
+
             &::placeholder {
                 color: $black10;
                 transition: color .1s;

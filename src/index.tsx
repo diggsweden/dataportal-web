@@ -34,6 +34,10 @@ import 'scss/blockspage/blockspage.scss';
 import 'scss/search/search_head.scss';
 import 'scss/highlight/highlight.scss';
 import 'scss/news/news.scss';
+import 'scss/project/projectlist.scss';
+import 'scss/project/project.scss';
+
+
 import 'scss/redirectpage/redirectpage.scss';
 
 const emotionIds = (window as any).__EMOTION_IDS__ || null;

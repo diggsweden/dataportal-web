@@ -72,9 +72,9 @@ export class AboutWebPage extends React.Component<PageProps> {
                   <p className="preamble text-4">
                     Sveriges dataportal är under utveckling och kommer att
                     vidareutvecklas under 2020 med fler funktioner och mer
-                    innehåll. Dataportalen vidareutvecklas och förvaltas
-                    av Myndigheten för digital förvaltning (DIGG). 
-                    </p>
+                    innehåll. Dataportalen vidareutvecklas och förvaltas av
+                    Myndigheten för digital förvaltning (DIGG).
+                  </p>
 
                   <p className="main-text text-5">
                     Data är en nationell resurs för näringslivets, samhällets
@@ -161,29 +161,48 @@ export class AboutWebPage extends React.Component<PageProps> {
                   <div className="main-text">
                     <span className="text-5-bold">2020-09-22:</span>
                     <ul className="text-5">
-                      <li>
-                        Sida som presenterar statistik i textform
-                      </li>
+                      <li>Sida som presenterar statistik i textform</li>
                       <li>Diverse buggrättningar</li>
-                      <li>
-                        Förbättrat prestandan
-                      </li>
+                      <li>Förbättrat prestandan</li>
                       <li>Stängt webbplatsen Öppna data och PSI</li>
                     </ul>
                   </div>
+
+                  <div className="main-text">
+                    <span className="text-5-bold">2020-11-04:</span>
+                    <ul className="text-5">
+                      <li>Gjort designförändringar</li>
+                      <li>Implementerat sökning utifrån DCAT-AP-SE 2.0.0</li>
+                      <li>Möjlighet att filtrera datamängder på API</li>
+                    </ul>
+                  </div>
+
 
                   <h2 className="text-2">
                     Tillgänglighetsredogörelse för dataportalen
                   </h2>
                   <p className="main-text text-5">
                     Myndigheten för digital förvaltning (DIGG) står bakom den
-                    här webbplatsen. Här kan du ta del av {' '}
+                    här webbplatsen. Här kan du ta del av{' '}
                     <a
                       href={`/${i18n.languages[0]}/${i18n.t(
                         'routes|accessibility|path'
                       )}`}
                     >
                       tillgänglighetsredogörelsen
+                    </a>
+                    .
+                  </p>
+
+                  <h2 className="text-2">Så behandlas dina personuppgifter</h2>
+                  <p className="main-text text-5">
+                    Om du vill veta hur dina personuppgifter behandlas kan du
+                    läsa {' '}
+                    <a
+                      target="_blank"
+                      href="https://www.digg.se/om-oss/sa-behandlas-dina-personuppgifter"
+                    >
+                      DIGGs policy för personuppgifter
                     </a>
                     .
                   </p>
@@ -221,7 +240,7 @@ export class AboutWebPage extends React.Component<PageProps> {
 
                   <h2 className="text-2">Synpunkter på dataportalen</h2>
                   <p className="main-text text-5">
-                  Skicka gärna in dina {' '}
+                    Skicka gärna in dina{' '}
                     <a
                       target="_blank"
                       href="https://webropol.com/s/beta-sveriges-dataportal"

@@ -55,6 +55,10 @@
         a {
             color: $black100;
 
+            &:hover{
+                background-color: $pink10;
+            }
+
             &:focus {
                 outline: $focus-style;
                 outline-offset: $focus-offset;

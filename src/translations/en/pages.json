@@ -1,20 +1,20 @@
 {
   "startpage" : {
-    "search_placeholder" : "Search for data",
+    "search_placeholder" : "Search",
     "seo_description" : "Sweden's national data portal for finding, exploring and using data from the public and private sectors",
     "seo_title" : "The Swedish dataportal",
-    "search_title_1" : "Search and explore",
+    "search_title_1" : "Search and explore data from Sweden",
     "search_title_2" : "data from Sweden",    
-    "explore_datasets" : "Explore datasets",
+    "explore_datasets" : "Explore datasets and APIs",
     "explore_concepts" : "Explore concepts and terminologies",
     "explore_specs" : "Explore specifications of information and data models",
-    "coming_soon" : "COMING SOON",
+    "coming_soon" : "Coming soon",
     "search_datasets_format" : "Search datasets in the {{category}} category",
-    "datasets_by_category" : "Datasets by categories"
+    "datasets_by_category" : "Data by categories"
    },
   "statistic" : {
     "statistic-header" : "Statistics of the data portal",
-    "dataset-numbers" : "Harvested datasets per month",
+    "dataset-numbers" : "Harvested data per month",
     "statistic-numbers" : "Statistics at a glance",
     "top-organizations" : "organizations",
     "top-categories" : "categories",
@@ -33,8 +33,8 @@
     "highlight-text2":"Sweden’s data portal is a hub that coordinates and makes available data for re-use provided by public, private and civil society organisations. The portal only contains information about the datasets. Data is retrieved or requested via links to the organization responsible for it."
   },
   "search" : {
-    "search" : "Search",
-    "dataset-hits" : "datasets",
+    "search" : "Search data",
+    "dataset-hits" : "results ",
     "concept-hits" : "concepts",
     "specification-hits" : "specifications",
     "next-page" : "Next",
@@ -42,7 +42,7 @@
     "first-page" : "First",
     "page" : "Page",
     "of" : "of",
-    "datasets" : "Datasets",
+    "datasets" : "Data & APIs",
     "concepts" : "Concepts",
     "specifications" : "Specifications",
     "organization" : "Organizations",
@@ -53,7 +53,7 @@
     "numberofhits" : "Number of hits:"
   },
   "datasets" : {
-    "search-datasets" : "Search datasets",
+    "search-datasets" : "Search",
     "datasets" : "datasets"
   },
   "concepts" : {
@@ -73,12 +73,24 @@
   "datasetpage" : {
     "about-dataset" : "About dataset",
     "download-dataset" : "Access data",
-    "catalog" : "Catalog"
+    "catalog" : "Catalog",
+    "use-data" : "Use data",
+    "download_link_adress" : "Access URL",
+    "download_link" : "Download data",
+    "several_links" : "The data has several links for download",
+    "several_links_header" : "The data resource consists of the following files",
+    "no_title" : "No title given",
+    "no_data" : "This data set has no data resources",
+    "read_about_api" : "Read more about API",
+    "fileformat" : "other file format"
+  },
+  "dataservicepage" : {
+    "api" : "About API"
   },
   "articles" :{
     "news" : "news",
-    "articles" : "Articles",
-    "view-all" : "View all articles"
+    "articles" : "News",
+    "view-all" : "View all news"
   },  
   "redirect" :{
     "pagenotfound_header" : "Oops, the page could not be found!",

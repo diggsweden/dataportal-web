@@ -30,7 +30,8 @@
                     border: none;
                     border-radius: 2px;
                     height: 32px;
-                    background-color: $green10;
+                    background-color: $brown10;
+                    color: $green100;
                     padding-left: 4px;
                     padding-right: 4px;
                     margin-left: $space-8;
@@ -72,6 +73,7 @@
                     }
 
                     &:first-of-type {
+                        border-right: none;
                         border-top-left-radius: 2px;
                         border-bottom-left-radius: 2px;
                     }
@@ -214,7 +216,7 @@
                         word-break: break-all;
                         display: block;
                         font-size: 14px;
-                        border: 2px solid $black100;
+                        border: 2px solid $black10;
                         border-radius: 0px;
                         margin-bottom: 0px;
                         text-transform: uppercase;
@@ -223,35 +225,35 @@
 
                     //Colors for format badges
                     .bc-1 {
-                        border-color: $pink50;
+                        border-color: $black10;
                     }
 
                     .bc-2 {
-                        border-color: $brown50;
+                        border-color: $black10;
                     }
 
                     .bc-3 {
-                        border-color: $orange100;
+                        border-color: $black10;
                     }
 
                     .bc-4 {
-                        border-color: $green50;
+                        border-color: $black10;
                     }
 
                     .bc-5 {
-                        border-color: $brown100;
+                        border-color: $black10;
                     }
 
                     .bc-6 {
-                        border-color: $orange50;
+                        border-color: $black10;
                     }
 
                     .bc-7 {
-                        border-color: $green100;
+                        border-color: $black10;
                     }
 
                     .bc-8 {
-                        border-color: $pink25;
+                        border-color: $black10;
                     }
                 }
             }
