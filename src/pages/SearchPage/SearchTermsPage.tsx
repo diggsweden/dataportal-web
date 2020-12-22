@@ -27,6 +27,8 @@ import { ESRdfType, ESType } from 'components/Search/EntryScape';
 import i18n from 'i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { PageProps } from '../PageProps'
+import { StaticBreadcrumb } from 'components/Breadcrumb';
+import { validate } from 'graphql';
 
 const MainContent = Box.withComponent('main');
 
@@ -132,11 +134,15 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
               'http://www.w3.org/2004/02/skos/core#definition',
             }
           }}
-          facetSpecification={{
-            facets: [],
+          facetSpecification={{            
+            facets: [{
+              resource: "http://www.w3.org/2004/02/skos/core#inScheme",
+              type: ESType.uri
+            }],
           }}
           initRequest={{
             esRdfTypes: [ESRdfType.term],
+            language: i18n.languages[0],
             takeFacets: 30,
           }}
         >
@@ -164,14 +170,22 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
 
             <ErrorBoundary>
               <MainContent id="main" flex="1 1 auto">
+                <StaticBreadcrumb env={this.props.env} staticPaths={[
+                  {
+                    path: `/${i18n.languages[0]}/${i18n.t('routes|concepts|path')}`,
+                    title: i18n.t('routes|concepts|title')
+                  }
+                ]} />
                 <SearchContext.Consumer>
                   {search => (
                     <div className="wpb_wrapper">
                       <div className="main-container">
+                        <div className="row">
                         <h1 className="text-2 search-header">
-                          {i18n.t('common|search-data')}
+                          {i18n.t('common|search-concept')}
                         </h1>
-
+                        <span className="text-6-bold beta_badge--lg">BETA</span>
+                        </div>
                         <SearchHeader
                           ref={this.headerRef}
                           activeLink={this.state.activeLink}
@@ -393,20 +407,20 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
                                   <li
                                     className="search-result-list-item"
                                     key={index}
-                                    onClick={() => {
-                                      (window as any).location.href = hit.url;
-                                    }}
-                                  >
-                                    <p className="result-theme text-6">
-                                      {hit.metadata &&
-                                        hit.metadata['theme_literal'].join(
-                                          ',  '
-                                        )}
-                                    </p>{' '}
+                                    // onClick={() => {
+                                    //   (window as any).location.href = hit.url;
+                                    // }}
+                                  >           
+                                  { hit.metadata && search.allFacets && !search.loadingFacets
+                                    && hit.metadata['inScheme_resource'] && search.getFacetValueTitle('http://www.w3.org/2004/02/skos/core#inScheme',hit.metadata['inScheme_resource'][0]) &&                                                                            
+                                    <span className="result-theme text-6">
+                                      {search.getFacetValueTitle('http://www.w3.org/2004/02/skos/core#inScheme',hit.metadata['inScheme_resource'][0])}
+                                    </span> 
+                                    }
                                     <a href={`${hit.url}`}>
                                       <h3 className="text-3">{hit.title}</h3>
                                     </a>
-                                    <p className="text-6">{hit.description}</p>
+                                    <p className="result-desc text-6">{hit.description}</p>
                                     <p className="result-org text-6-bold">
                                       {hit.metadata &&
                                         hit.metadata['organisation_literal'] &&

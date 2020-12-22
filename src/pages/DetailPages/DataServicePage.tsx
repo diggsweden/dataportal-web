@@ -21,6 +21,7 @@ import {
   EntrystoreContext,
 } from '../../components/EntrystoreProvider';
 import { PageProps } from '../PageProps';
+import { StaticBreadcrumb } from 'components/Breadcrumb';
 
 const MainContent = Box.withComponent('main');
 
@@ -30,6 +31,7 @@ export class DataServicePage extends React.Component<
 > {
   private headerRef: React.RefObject<Header>;
   private postscribe: any;
+  private referredSearch: string = `/${i18n.languages[0]}/${i18n.t('routes|datasets|path')}/?q=`; 
 
   constructor(props: PageProps) {
     super(props);
@@ -42,6 +44,19 @@ export class DataServicePage extends React.Component<
    * or else blocks wont have access to DOM
    */
   componentDidMount() {
+
+    //we need to reload the page when using the back/forward buttons to a blocks rendered page
+    if (typeof window !== 'undefined') {      
+
+      //check if reffereing search params is set to hash
+      if(window.location && window.location.hash && window.location.hash.includes("ref=?"))
+        this.referredSearch = `/${i18n.languages[0]}/${i18n.t('routes|datasets|path')}/?${window.location.hash.split("ref=?")[1]}`;
+
+      window.onpopstate = ((e:any) => {        
+        window.location.reload();
+      })
+    }
+
     this.addScripts();
   }
 
@@ -140,6 +155,7 @@ export class DataServicePage extends React.Component<
         env={this.props.env}
         cid={this.props.match.params.cid}
         eid={this.props.match.params.eid}
+        entrystoreUrl={this.props.env.ENTRYSCAPE_DATASETS_PATH}
       >
         <EntrystoreContext.Consumer>
           {(entry) => (
@@ -156,7 +172,7 @@ export class DataServicePage extends React.Component<
                   entry && entry.title
                     ? `${this.props.env.CANONICAL_URL}/${
                         i18n.languages[0]
-                      }/datasets/${this.props.match.params.cid}_${
+                      }/${i18n.t('routes|dataservices|path')}/${this.props.match.params.cid}_${
                         this.props.match.params.eid
                       }/${slugify(entry.title)}`
                     : ''
@@ -178,13 +194,23 @@ export class DataServicePage extends React.Component<
                     className="detailpage main-container"
                     flex="1 1 auto"
                   >
+                    <StaticBreadcrumb env={this.props.env} staticPaths={[
+                      {
+                        path: this.referredSearch,
+                        title: i18n.t('routes|datasets|title')
+                      },
+                      {
+                        path:  `/${i18n.languages[0]}/${i18n.t('routes|dataservices|path')}/${this.props.match.params.cid}_${this.props.match.params.eid}/${slugify(entry.title)}`,
+                        title: entry.title
+                      }
+                    ]} />
                     <div className="detailpage__wrapper">
                       {/* Left column */}
                       {/* Left column */}
                       <div className="detailpage__wrapper--leftcol content">
                         {/* <div data-entryscape="dataserviceView"></div> */}
 
-                        <h1 className="text-2" data-entryscape="text"></h1>
+                        <h1 className="text-2">{entry.title}</h1>
 
                         {/* Publisher */}
                         <script

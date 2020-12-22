@@ -21,6 +21,9 @@ import {
   EntrystoreContext,
 } from '../../components/EntrystoreProvider';
 import { PageProps } from '../PageProps';
+import ShowMoreText from 'react-show-more-text';
+import ChopLines from 'chop-lines';
+import { StaticBreadcrumb } from 'components/Breadcrumb';
 
 const MainContent = Box.withComponent('main');
 
@@ -30,6 +33,7 @@ export class DataSetPage extends React.Component<
 > {
   private headerRef: React.RefObject<Header>;
   private postscribe: any;
+  private referredSearch: string = `/${i18n.languages[0]}/${i18n.t('routes|datasets|path')}/?q=`; 
 
   constructor(props: PageProps) {
     super(props);
@@ -37,11 +41,36 @@ export class DataSetPage extends React.Component<
     this.setFocus = this.setFocus.bind(this);
   }
 
+  // componentDidUpdate(){    
+  //   console.log('update');
+  //   console.log(window);
+  //   if (typeof window !== 'undefined') {
+  //     console.log('window');
+  //     window.onpopstate = ((e:any) => {
+  //       console.log('pop!');
+  //       window.location.reload();
+  //     })
+  //   }
+  // }
+
   /**
    * Async load scripts requiered for EntryScape blocks,
    * or else blocks wont have access to DOM
    */
   componentDidMount() {
+
+    //we need to reload the page when using the back/forward buttons to a blocks rendered page
+    if (typeof window !== 'undefined') {      
+
+      //check if reffereing search params is set to hash
+      if(window.location && window.location.hash && window.location.hash.includes("ref=?"))
+        this.referredSearch = `/${i18n.languages[0]}/${i18n.t('routes|datasets|path')}/?${window.location.hash.split("ref=?")[1]}`;
+
+      window.onpopstate = ((e:any) => {        
+        window.location.reload();
+      })
+    }
+
     this.addScripts();
   }
 
@@ -192,6 +221,12 @@ export class DataSetPage extends React.Component<
                   )}"}}'          
               },
               {
+                block: 'aboutDataset',
+                extends: 'template',
+                relation: 'dcat:Dataset',
+                template: '{{viewMetadata rdformsid="dcat:Dataset"}}'          
+              },
+              {
                 block: 'distributionList2',
                 extends: 'list',
                 relation: 'dcat:distribution',
@@ -251,7 +286,7 @@ export class DataSetPage extends React.Component<
     }
   }
 
-  render() {
+  render() {    
     const { location } = this.props;
     let uri = new URLSearchParams(location.search);
 
@@ -260,6 +295,7 @@ export class DataSetPage extends React.Component<
         env={this.props.env}
         cid={this.props.match.params.cid}
         eid={this.props.match.params.eid}
+        entrystoreUrl={this.props.env.ENTRYSCAPE_DATASETS_PATH}
       >
         <EntrystoreContext.Consumer>
           {(entry) => (
@@ -276,12 +312,13 @@ export class DataSetPage extends React.Component<
                   entry && entry.title
                     ? `${this.props.env.CANONICAL_URL}/${
                         i18n.languages[0]
-                      }/datasets/${this.props.match.params.cid}_${
+                      }/${i18n.t('routes|datasets|path')}/${this.props.match.params.cid}_${
                         this.props.match.params.eid
                       }/${slugify(entry.title)}`
                     : ''
                 }
               />
+
               <Box
                 id="top"
                 display="flex"
@@ -298,12 +335,22 @@ export class DataSetPage extends React.Component<
                     className="detailpage main-container"
                     flex="1 1 auto"
                   >
+                    <StaticBreadcrumb env={this.props.env} staticPaths={[
+                      {
+                        path: this.referredSearch,
+                        title: i18n.t('routes|datasets|title')
+                      },
+                      {
+                        path:  `/${i18n.languages[0]}/${i18n.t('routes|datasets|path')}/${this.props.match.params.cid}_${this.props.match.params.eid}/${slugify(entry.title)}`,
+                        title: entry.title
+                      }
+                    ]} />
                     <div className="detailpage__wrapper">
                       {/* Left column */}
                       {/* Left column */}
-                      <div className="detailpage__wrapper--leftcol content">
+                      <div className="detailpage__wrapper--leftcol">
                         {/* Title */}
-                        <h1 className="text-2" data-entryscape="text"></h1>
+                        <h1 className="text-2">{entry.title}</h1>
 
                         {/* Publisher */}
                         <script
@@ -319,18 +366,19 @@ export class DataSetPage extends React.Component<
                           }}
                         ></script>
                         
+                        <div className="description">
+                        <ShowMoreText
+                          lines={8}
+                          more={i18n.t('pages|datasetpage|view_more')}
+                          less={i18n.t('pages|datasetpage|view_less')}
+                          className="text-5"
+                          anchorClass="text-5 view-more-text-link"
+                          expanded={false}
+                        >
+                          <span className="text-5">{entry.description}</span>
+                        </ShowMoreText>
+                        </div>
 
-                        {/* Description */}
-                        <script
-                          type="text/x-entryscape-handlebar"
-                          data-entryscape="true"
-                          data-entryscape-component="template"
-                          dangerouslySetInnerHTML={{
-                            __html: `
-                          <div class="description text-5">{{text content="\${dcterms:description}"}}</div>
-                          `,
-                          }}
-                        ></script>
 
                         {/* Use data header */}
                         <h2 className="text-3 hbbr">
@@ -343,6 +391,20 @@ export class DataSetPage extends React.Component<
                           data-entryscape="distributionList2"
                           data-entryscape-registry="true"
                         ></div>
+
+                        <script
+                          className="download__rdf"
+                          type="text/x-entryscape-handlebar"
+                          data-entryscape="true"
+                          data-entryscape-block="template"
+                          dangerouslySetInnerHTML={{
+                            __html: `
+                        <a class="download__rdf--link text-5-link" target="_blank" href="{{metadataURI}}?recursive=dcat">${i18n.t(
+                          'pages|datasetpage|rdf'
+                        )}</a>
+                        `,
+                          }}
+                        ></script>
 
                         <div
                           className="dataset__map"
@@ -368,15 +430,15 @@ export class DataSetPage extends React.Component<
                             data-entryscape-component="template"
                             dangerouslySetInnerHTML={{
                               __html: `
-                        
-                        <div class="viewMetadata">
-                          {{viewMetadata 
-                              template="dcat:Dataset" 
-                              filterpredicates="dcterms:title,dcterms:description,dcterms:publisher,dcat:bbox,dcterms:spatial,dcterms:provenance"}}
-                        </div>
-                        `,
+                              <div class="viewMetadata">
+                                {{viewMetadata 
+                                template="dcat:Dataset" 
+                                filterpredicates="dcterms:title,dcterms:description,dcterms:publisher,dcat:bbox,dcterms:spatial,dcterms:provenance"}}
+                              </div>
+                            `,
                             }}
                           ></script>
+
                         </div>
 
                         <div className="detailpage__wrapper--rightcol-info text-6">
@@ -395,6 +457,7 @@ export class DataSetPage extends React.Component<
                               onecol=true 
                               template="dcat:OnlyCatalog" 
                               use="cat" 
+                              filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi"
                               }}`,
                             }}
                           ></script>

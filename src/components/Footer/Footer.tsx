@@ -19,7 +19,6 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { EventEffect } from '../EventEffect';
 import { ScrollToTop } from '../ScrollToTop';
 import { SettingsContext } from '../SettingsProvider';
-import { FooterLink } from './FooterLink';
 import i18n from 'i18n';
 
 import 'scss/footer/footer.scss';
@@ -30,26 +29,14 @@ export interface FooterProps {
 
 const FooterBox = Box.withComponent('footer');
 
-const SocialIcons: { [key: string]: typeof TwitterIcon } = {
-  twitter: TwitterIcon,
-  facebook: FacebookIcon,
-  youtube: YoutubeIcon,
-  linkedIn: LinkedinIcon,
-};
-
 export class Footer extends React.Component<FooterProps> {
   shouldComponentUpdate() {
     return false;
   }
+
   render() {
     return (
-      <FooterBox
-        className="footer"
-        bgColor=""
-        paddingX={2}
-        // paddingTop={4}
-        lang="sv"
-      >
+      <FooterBox className="footer" bgColor="" paddingX={2} lang="sv">
         <Text>
           <Container>
             <SettingsContext.Consumer>
@@ -59,63 +46,100 @@ export class Footer extends React.Component<FooterProps> {
                     <Box className="footer-main">
                       <Box className="footer__links">
                         <div className="footer__links-nav">
-                          <a
-                            href={`/${i18n.languages[0]}/${i18n.t(
-                              'routes|register-data|path'
-                            )}`}
-                            className="footer-link text-6-link"
-                          >
-                            {i18n.t('routes|register-data|title')}
-                          </a>
+                          {settings.footermenu &&
+                            settings.footermenu[0] &&
+                            settings.footermenu[0].children &&
+                            settings.footermenu[0].children
+                              ?.sort(
+                                (a:any, b:any) =>
+                                  parseInt(a.data.indexOrder + '0') -
+                                  parseInt(b.data.indexOrder + '0')
+                              )
+                              .map((m:any, i:any) => {
+                                var output = [];
 
-                          <a
-                            href={`/${i18n.languages[0]}/${i18n.t(
-                              'routes|about|path'
-                            )}`}
-                            className="footer-link text-6-link"
-                          >
-                            {i18n.t('routes|about|title')}
-                          </a>
+                                if (m && m.data && m.data.externalUrl) {
+                                  output.push(
+                                    <a
+                                      key={i}
+                                      className={'footer-link text-6-link'}
+                                      href={m.data.externalUrl}
+                                      target="_blank"
+                                    >
+                                      {m.data.title}
+                                    </a>
+                                  );
+                                } else if (
+                                  m &&
+                                  m.data &&
+                                  m.data.connectedContent
+                                )
+                                  output.push(
+                                    <Link
+                                      key={i}
+                                      className={'footer-link text-6-link'}
+                                      to={`/${i18n.languages[0]}${m.data.urlsegment}`}
+                                    >
+                                      {m.data.title}
+                                    </Link>
+                                  );
+                                else if (m && m.data && m.data.title) {
+                                  var parent: any = [];
 
-                          <a
-                            className="footer-link text-6-link"
-                            href={`/${i18n.languages[0]}/${i18n.t(
-                              'routes|accessibility|path'
-                            )}`}
-                          >
-                            {i18n.t('common|accessibility-report')}
-                          </a>
+                                  if (m && m.children && m.children.length > 0)
+                                    m.children
+                                      .sort(
+                                        (a:any, b:any) =>
+                                          parseInt(a.data.indexOrder + '0') -
+                                          parseInt(b.data.indexOrder + '0')
+                                      )
+                                      .map((c:any,i:any) => {
+                                        if (c && c.data && c.data.externalUrl)
+                                          parent.push(
+                                            <a
+                                              key={i}
+                                              className={
+                                                'footer-link text-6-link external-link'
+                                              }
+                                              href={c.data.externalUrl}
+                                              // target="_blank"
+                                            >
+                                              {c.data.title}
+                                            </a>
+                                          );
 
-                          <div>
-                            <span className="text-6-bold">
-                              {i18n.t('common|contact')}:
-                            </span>
-                            <a
-                              className="footer-link text-6-link"
-                              href="mailto:dataportal@digg.se"
-                            >
-                              dataportal@digg.se
-                            </a>
-                          </div>
-                        </div>
+                                        if (
+                                          c &&
+                                          c.data &&
+                                          c.data.connectedContent
+                                        )
+                                          parent.push(
+                                            <Link
+                                              key={i}
+                                              className={
+                                                'footer-link text-6-link'
+                                              }
+                                              to={`/${i18n.languages[0]}${c.data.urlsegment}`}
+                                            >
+                                              {c.data.title}
+                                            </Link>
+                                          );
+                                      });
 
-                        <div className="footer__links-contact">
-                          <a
-                            target="_blank"
-                            rel="noreferrer"
-                            href="https://www.facebook.com/oppnadata.psi/"
-                            className="footer-link text-6-link"
-                          >
-                            Facebook
-                          </a>
-                          <a
-                            target="_blank"
-                            rel="noreferrer"
-                            href="https://twitter.com/oppnadata_psi"
-                            className="footer-link text-6-link"
-                          >
-                            Twitter
-                          </a>
+                                  output.push(
+                                    <ul>
+                                      <li className="text-5-bold footer__links-nav--heading">
+                                        {m.data.title}
+                                      </li>
+                                      {parent.map((p: any, i: any) => {
+                                        return <li key={i}>{p}</li>;
+                                      })}
+                                    </ul>
+                                  );
+                                }
+
+                                return output;
+                              })}
                         </div>
                       </Box>
                       <Box className="digg__">

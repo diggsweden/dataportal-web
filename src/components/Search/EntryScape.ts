@@ -18,7 +18,7 @@ export enum ESType {
 
 export enum ESRdfType {
   dataset = "http\://www.w3.org/ns/dcat#Dataset",
-  spec_profile = "http\://www.w3.org/ns/dx/prof",
+  spec_profile = "http\://www.w3.org/ns/dx/prof/Profile",
   spec_standard = "http\://purl.org/dc/terms/Standard",
   term = "http\://www.w3.org/2004/02/skos/core#Concept",
   esterms_IndependentDataService = "esterms:IndependentDataService",
@@ -85,7 +85,8 @@ export class EntryScape {
       let returnFacets:{ [key: string]: SearchFacet; } = {};      
       let resources:string[] = [];            
 
-      metaFacets.forEach((f:ESFacetField) => {              
+      metaFacets.forEach((f:ESFacetField) => {     
+        
         //literal types, add to response directly         
         if(f.type == ESType.literal || f.type == ESType.literal_s)
         {               
@@ -120,7 +121,7 @@ export class EntryScape {
         
         //uri types, concat resourceURIs for fetching from backend
         if(f.type == ESType.uri)              
-        {
+        {          
           uriFacets[f.predicate] = {
             name: f.name,
             facetValues:[],
@@ -161,16 +162,25 @@ export class EntryScape {
         this.getResources(resources).then((res) => {          
 
           Object.entries(uriFacets).forEach(([key,value]) => {           
-             value.facetValues.forEach((f) => {                              
-                let entry = res.find((entry:any) => entry.getResourceURI() == f.resource);
+             value.facetValues.forEach((f) => {       
+               
+               if(f && f.title == f.resource)
+               {
+                  let entry = res.find((entry:any) => entry.getResourceURI() == f.resource);
 
-                if(entry){
-                    f.title = entry.getMetadata().findFirstValue(null, "http://xmlns.com/foaf/0.1/name")
-                    || f.resource;       
-                    
-                    f.title =f.title!.trim();
-                }
-             })
+                  if(entry){                  
+                      var meta = entry.getMetadata();                    
+
+                      var title = meta.findFirstValue(null, "http://xmlns.com/foaf/0.1/name");
+
+                      if(!title)
+                        title = meta.findFirstValue(null, "http://purl.org/dc/terms/title");
+
+                      f.title = title || f.resource;                           
+                      f.title =f.title!.trim();
+                  }
+               }
+             })             
           })
       
           Object.entries(returnFacets).forEach(([key,value]) => {           
@@ -268,6 +278,8 @@ export class EntryScape {
           return i18next.t('resource|' + f.getValue())
         });      
       values['format_literal'] = metadata.find(null, "http://purl.org/dc/terms/format").map((f:any) => {return f.getValue()} );      
+
+      values['inScheme_resource'] = metadata.find(null, "http://www.w3.org/2004/02/skos/core#inScheme").map((f:any) => {return f.getValue()} );            
 
       //theme needs to be translated
       //if(values['theme_literal'])
@@ -496,9 +508,9 @@ export class EntryScape {
         
             //facets must be retrieved explicitly if requested
             if(request.fetchFacets)
-            {              
+            {               
               searchList.setFacets(data.facetFields);                       
-              var metaFacets = searchList.getFacets();     
+              var metaFacets = searchList.getFacets();             
             }                  
                         
             let hitSpecification:HitSpecification = {
@@ -528,8 +540,8 @@ export class EntryScape {
               hit.description = hit.description && hit.description.length > 250? `${(hit.description + '').substr(0,250)}...` : hit.description;            
 
               hits.push(hit);         
-            });
-            
+            });            
+
             resolve({            
               hits:hits,
               count: searchList.getSize(),

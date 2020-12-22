@@ -22,6 +22,7 @@
             }
 
             h1 {
+                margin-top: 0rem;
                 margin-bottom: $space-16;
             }
 
@@ -434,7 +435,6 @@
             // Window 800px
             @media screen and (min-width: 50rem) {
                 max-width: 26rem;
-                margin-top: 2.2rem;
             }
 
             .detailpage__wrapper--rightcol-info {
@@ -559,8 +559,31 @@
                         }
                     }
                 }
-            }
 
+                .entryscape {
+
+                    .terminology__label {
+                        display: block;
+                        margin-top: $space-16;
+                        margin-bottom: 0.25rem;
+                        padding-left: $space-16;
+                        padding-right: $space-16;
+                    }
+                }
+
+                .terminology {
+                    display: block;
+                    margin-top: $space-16;
+                    margin-bottom: 0.25rem;
+                    padding-left: $space-16;
+                    padding-right: $space-16;
+                    font-weight: bold;
+                    font-size: 1rem; //16px
+                    line-height: 1.5rem; //24px
+                    letter-spacing: -0.01em;
+                    color: $black100;
+                }
+            }
 
             .dataset__map--title {
                 margin-top: $space-32;
@@ -584,12 +607,11 @@
                     }
                 }
             }
-
         }
 
         //List with distribution
         .distribution__list {
-            margin-bottom: $space-48;
+            margin-bottom: $space-32;
 
             .esbRowMain {
                 font-weight: normal;
@@ -670,7 +692,7 @@
                             padding-right: .25rem;
                             color: $orange100;
                         }
-                        
+
                         @media screen and (min-width: 23.375rem) {
                             top: 1rem;
                             right: 1rem;
@@ -698,10 +720,427 @@
             }
         }
     }
+
+    .detailpage__wrapper--fullwith {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+    }
+}
+
+.entryscape {
+    .download__rdf--link {
+        display: block;
+        width: fit-content;
+        margin-bottom: $space-32;
+        text-decoration: underline;
+        color: $black100;
+
+        &:hover {
+            color: $black100;
+            background-color: $pink10;
+        }
+    }
 }
 
 
-//Hide before blocks renders
+//Conceptpage /Terminology
+
+.terminology_header::first-letter {
+    text-transform: uppercase;
+}
+
+
+.terminology-group {
+    .entryscape {
+        display: block;
+
+        &:last-of-type {
+            margin-bottom: $space-24;
+        }
+
+        &:empty {
+            display: none;
+        }
+
+        h2 {
+            margin-top: 0rem;
+            margin-bottom: $space-8;
+            font-weight: bold;
+            font-size: 1.125rem; //18px
+            line-height: 1.6875rem; //27px
+            letter-spacing: -0.01em;
+            color: $black100;
+        }
+    }
+
+    span {
+
+        .entryscape,
+        .btn {
+            padding: 0rem;
+            border: none;
+        }
+
+        .related-concept {
+            color: $black100;
+            text-decoration: underline;
+
+            &:hover {
+                color: $black100;
+                background-color: $pink10;
+            }
+        }
+    }
+}
+
+
+
+.entryscape {
+    .terminology__path {
+        color: $black100;
+        text-decoration: underline;
+        margin-left: $space-16;
+        margin-right: $space-16;
+
+        &:hover {
+            color: $black100;
+            background-color: $pink10;
+        }
+    }
+}
+
+.terminology__download-links {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: $space-16;
+    padding-right: $space-16;
+
+    .terminology__download-link {
+        margin-right: $space-16;
+        color: $black100;
+        text-decoration: underline;
+
+        &:hover {
+            color: $black100;
+            background-color: $pink10;
+        }
+    }
+}
+
+.terminology-group {
+    span {
+        .entryscape {
+            display: block;
+            text-decoration: underline;
+            width: fit-content;
+            margin-top: $space-8;
+
+            h2 {
+                margin-top: 0rem !important;
+            }
+
+            &::first-letter {
+                text-transform: uppercase;
+            }
+
+            a {
+                color: $black100;
+
+                &:hover {
+                    color: $black100;
+                    background-color: $pink10;
+                }
+            }
+
+            .entryListRow {
+                font-weight: normal;
+                font-size: 1.125rem; //18px
+                line-height: 1.6875rem; //27px
+                color: $black100;
+
+                &:hover {
+                    color: $black100;
+                    background-color: $pink10;
+                }
+            }
+        }
+    }
+
+    .mycolumn {
+        .terminology-group--list {
+            .entryscape {
+                .escoList {
+                    .entryList {
+                        display: flex;
+
+                        .esbRow {
+                            margin: 0rem;
+                            margin-right: $space-8;
+                            border: none;
+
+                            .esbRowHead,
+                            .esbRowLink {
+                                display: block;
+                                padding: 0rem;
+                                height: fit-content;
+                                width: fit-content;
+                                min-height: 0rem;
+                                text-decoration: underline;
+
+                                &::first-letter {
+                                    text-transform: uppercase;
+                                }
+
+                                &:hover {
+                                    color: $black100;
+                                    background-color: $pink10;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//Terminologi pagination 
+
+.terminology-group {
+    .entryPagination {
+        padding-bottom: $space-16;
+
+        .pagination {
+            margin: 0rem;
+            margin-top: $space-24;
+            justify-content: flex-start !important;
+
+            .page-item {
+                margin-right: $space-8;
+
+                .page-text {
+                    margin: 0rem;
+                }
+
+                button {
+                    min-width: $space-48;
+                    border: 0.125rem solid $green100;
+                    border-radius: 0.125rem;
+
+                    &:hover {
+                        background-color: $white;
+                        filter: brightness(0.98);
+                    }
+
+                    &:focus {
+                        box-shadow: none;
+                    }
+
+                    i {
+                        font-family: Font Awesome\ 5 Free !important;
+                        color: $green100;
+                    }
+                }
+            }
+
+            .disabled {
+                button {
+                    border: 0.125rem solid $green25;
+
+                    i {
+                        color: $green25;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//Number of concepts in terminologi
+
+.terminologi-size {
+    margin-top: $space-48;
+
+    h2 {
+        font-weight: bold !important;
+        font-size: 1.25rem !important;
+        line-height: 1.75rem; //28px
+        letter-spacing: -0.01em;
+        color: $black100;
+    }
+}
+
+.terminology-numbers {
+    padding-left: $space-16;
+
+    &:empty {
+        display: none;
+    }
+}
+
+.conceptsearch {
+    display: none;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+
+    .concept-detail {
+        margin-top: $space-8;
+        margin-bottom: $space-24;
+        font-weight: normal;
+        font-size: 1.125rem; //18px
+        line-height: 1.6875rem; //27px
+        color: $black100;
+
+        &:empty {
+            margin: 0rem;
+        }
+    }
+}
+
+.terminology__top-concepts {
+    .toplist-header {
+        display: block;
+        margin-bottom: $space-8;
+        font-weight: bold;
+        font-size: 1.25rem; //20px
+        line-height: 1.75rem; //28px
+        letter-spacing: -0.01em;
+        color: $black100;
+    }
+
+    .entryList {
+        margin-bottom: $space-32;
+
+        .entryscape {
+            .entryListRow {
+                text-decoration: underline;
+                font-weight: normal;
+                font-size: 1.125rem; //18px
+                line-height: 1.6875rem; //27px
+                color: $black100;
+                margin-top: $space-8;
+                display: block;
+                width: fit-content;
+
+                &:hover {
+                    background-color: $pink10;
+                }
+            }
+        }
+    }
+
+    .entryPagination {
+        .pagination {
+            margin: 0rem;
+            margin-top: $space-24;
+            justify-content: flex-start !important;
+
+            .page-item {
+                margin-right: $space-8;
+
+                button {
+                    min-width: $space-48;
+                    border: 0.125rem solid $green100;
+                    border-radius: 0.125rem;
+
+                    &:hover {
+                        background-color: $white;
+                        filter: brightness(0.98);
+                    }
+
+                    &:focus {
+                        box-shadow: none;
+                    }
+
+                    i {
+                        font-family: Font Awesome\ 5 Free !important;
+                        color: $green100;
+                    }
+                }
+            }
+
+            .disabled {
+                button {
+                    border: 0.125rem solid $green25;
+
+                    i {
+                        color: $green25;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//Specificationpage
+
+.specification__resource {
+    margin-bottom: $space-48;
+
+    .specification__resource--body {
+        span {
+            .entryList {
+                .esbRow {
+                    .esbRowHead {
+                        .esbRowMain {
+                            display: flex;
+                            flex-direction: column;
+
+                            .specification__resource--header,
+                            .specification__resource--type {
+                                margin-bottom: $space-8;
+
+                                &:empty {
+                                    margin-bottom: 0rem;
+                                }
+
+                                &::first-letter {
+                                    text-transform: uppercase;
+                                }
+                            }
+
+                            .specification__resource--description {
+                                span {
+                                    margin-bottom: $space-8;
+
+                                    &:empty {
+                                        margin-bottom: 0rem;
+                                    }
+                                }
+                            }
+
+                            .specification__resource--downloadlink {
+                                text-decoration: underline;
+                                color: $black100;
+                                width: fit-content;
+                                text-transform: lowercase;
+
+                                &::first-letter {
+                                    text-transform: uppercase;
+                                }
+
+                                &:hover {
+                                    background-color: $pink10;
+                                }
+                            }
+                        }
+
+                        .esbRowControl {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//Hide before blocks renders-ish
 .hbbr {
     animation: cssAnimation 0s 0.5s forwards;
     visibility: hidden;
@@ -713,4 +1152,115 @@
     }
 }
 
+//View more text link
+.view-more-text-link {
+    background-color: $green10;
+    border-radius: 0.125rem;
+    padding: 0.25rem;
+    word-break: keep-all;
+    text-decoration: none;
+    white-space: nowrap;
 
+    &:hover {
+        background-color: $green25;
+    }
+}
+
+.entryscape {
+    .concept_hierarchy--header {
+        font-weight: bold !important;
+    }
+}
+
+.detailpage__wrapper--fullwith {
+    .concept-hierarchy-header{
+        span{
+            display: block;
+            font-weight: bold;
+            font-size: 1.125rem; //18px
+            line-height: 1.6875rem; //27px
+            letter-spacing: -0.01em;
+            color: $black100;
+            margin-bottom: $space-16;
+        }
+    }
+
+    .entryscape {
+        .concept_hierarchy {
+            position: relative;
+            margin-bottom: $space-48;
+            padding-left: 0.25rem;
+            padding-right: 0.25rem;
+            padding-top: $space-32;
+            padding-bottom: $space-32;
+            border: 0.125rem solid $black10;
+            max-width: 100%;
+            max-height: 37.5rem;
+            overflow: auto;
+
+            .esbHierarchy__node rect {
+                stroke: $black10;
+                fill: $black10;
+                stroke-width: 0.125rem;
+            }
+
+            .esbHierarchy__rootNode rect {
+                stroke: $orange50;
+                fill: $orange50;
+            }
+
+            .esbHierarchy__expandableNode rect {
+                stroke: $green50;
+                fill: $green50;
+            }
+        }
+    }
+}
+
+.terminology-group {
+    .entryPagination {
+        .pagination {
+            margin: 0rem;
+            margin-top: $space-24;
+            justify-content: flex-start !important;
+
+            .page-item {
+                margin-right: $space-8;
+
+                .page-text {
+                    margin: 0rem;
+                }
+
+                button {
+                    min-width: $space-48;
+                    border: 0.125rem solid $green100;
+                    border-radius: 0.125rem;
+
+                    &:hover {
+                        background-color: $white;
+                        filter: brightness(0.98);
+                    }
+
+                    &:focus {
+                        box-shadow: none;
+                    }
+
+                    i {
+                        font-family: Font Awesome\ 5 Free !important;
+                        color: $green100;
+                    }
+                }
+            }
+
+            .disabled {
+                button {
+                    border: 0.125rem solid $green25;
+
+                    i {
+                        color: $green25;
+                    }
+                }
+            }
+        }
+    }
+}

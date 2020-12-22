@@ -1,80 +1,67 @@
-import React from 'react';
-import { hot } from 'react-hot-loader';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import { App } from './components/App';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { SearchProvider } from './components/Search';
 import { SearchPage } from './pages/SearchPage';
 import { SearchTermsPage } from './pages/SearchPage';
 import { SearchSpecificationsPage } from './pages/SearchPage';
-import { DataSetPage} from './pages/DetailPages';
+import { DataServicePage, DataSetPage} from './pages/DetailPages';
 import { SpecificationPage} from './pages/DetailPages';
-import { TermPage} from './pages/DetailPages';
-import { AboutWebPage} from './pages/AboutWebPage';
-import { AboutWebPageEn} from './pages/AboutWebPage';
-import { NotFoundPage} from './pages/NotFoundPage';
-import { AccessibilityWebPage } from './pages/AccessibilityWebPage';
-import { AccessibilityWebPageEn } from './pages/AccessibilityWebPage';
-import { PublishDataPage} from './pages/PublishDataPage';
-import { PublishDataPageEn} from './pages/PublishDataPage';
+import { ConceptPage} from './pages/DetailPages';
 import { StatisticPage } from './pages/StatisticPage';
 import { ArticleListPage } from './pages/Articles';
 import { ArticlePage } from './pages/Articles';
-import { ProjectSubmitPage } from './pages/ProjectPage';
+// import { ProjectListPage } from './pages/ProjectPage';
+// import { ProjectPage } from './pages/ProjectPage';
+import { ProjectListPage, ProjectPage, ProjectSubmitPage } from './pages/ProjectPage';
 import { RedirectPage} from './pages/RedirectPage';
 import { StartPage } from './pages/StartPage';
 import { SettingsContext } from 'components/SettingsProvider';
-import { DataServicePage } from 'pages/DetailPages/DataServicePage';
+import { ContentRouter } from 'pages/ContentPage';
+import { useMatomo } from '@datapunt/matomo-tracker-react';
 
-export interface RouteProps {
+export interface RouteProps  {
   formdata?: object;
   vars?: object;
 }
 
-class RoutesComponent extends React.Component<RouteProps> {
-  constructor(props: RouteProps) {
-    super(props);
-  }
+export const Routes = ({formdata, vars}:RouteProps) => {    
 
-  render() {
-    return (
-      <ErrorBoundary>
-        <SettingsContext.Consumer>
-          {settings => (     
-            <App>
-              <Switch>
-                <Route path={['/oppnadata', '/oppnadata/*' ]} exact render={(props)=><RedirectPage env={settings.env} {...props}/>} />
-                {/* English */}
-                <Route path={['/about-webpage' ,'/en/about-webpage']} exact render={(props)=><AboutWebPageEn env={settings.env} {...props}/>} />
-                <Route path={['/about-webpage/accessibility', '/en/about-webpage/accessibility']} exact render={(props)=><AccessibilityWebPageEn env={settings.env} {...props}/>} />
-                <Route path={['/register-data', '/en/register-data']} exact render={(props)=><PublishDataPageEn env={settings.env} {...props}/>} />
-                
+  const { trackPageView } = useMatomo();
+  const location = useLocation();  
+
+  useEffect(() => {
+    trackPageView({});
+  },[location.pathname])  
+
+  return (
+    <ErrorBoundary>
+      <SettingsContext.Consumer>
+        {settings => (     
+          <App>
+            <Switch>
+              
+            <Route path={['/oppnadata', '/oppnadata/*' ]} exact render={(props)=><RedirectPage env={settings.env} {...props}/>} />
+                {/* English */}                
                 <Redirect exact from="/articles" to="/news"/>
                 <Redirect exact from="/articles/:nid/*" to="/news/:nid"/>
-
                 <Route path={['/news', '/en/news']} exact render={(props)=><ArticleListPage env={settings.env} {...props}/>} />
                 <Route path={['/news/:nid/*', '/en/news/:nid/*','/en/news/*']} exact render={(props)=><ArticlePage env={settings.env} {...props}/>} />                              
 
-                <Route path={['/sv/tipsaoss','/tipsaoss', '/en/submitproject']} exact render={(props)=><ProjectSubmitPage env={settings.env} {...props}/>} />
-
-
                 {/* Swedish */}
+                <Route path={['/sv/inspiration','/inspiration', '/en/inspiration']} exact render={(props)=><ProjectListPage env={settings.env} {...props}/>} />
+                <Route path={['/sv/inspiration/:nid/*','/inspiration/:nid/*', '/en/inspiration/:nid/*','/en/inspiration/*']} exact render={(props)=><ProjectPage env={settings.env} {...props}/>} />
+
+                <Route path={['/sv/tipsaoss','/tipsaoss', '/en/submitproject']} exact render={(props)=><ProjectSubmitPage env={settings.env} {...props}/>} />
+                
                 <Redirect exact from="/artiklar/:nid/*" to="/nyheter/:nid/*"/>
                 <Redirect exact from="/sv/artiklar/:nid/*" to="/sv/nyheter/:nid/*"/>
 
                 <Route path={['/nyheter/:nid/*', '/sv/nyheter/:nid/*','/sv/nyheter/*']} exact render={(props)=><ArticlePage env={settings.env} {...props}/>} />
-                <Route path={['/nyheter','/sv/nyheter','/nyheter','/sv/nyheter']} exact render={(props)=><ArticleListPage env={settings.env} {...props}/>} />                
+                <Route path={['/nyheter','/sv/nyheter','/nyheter','/sv/nyheter']} exact render={(props)=><ArticleListPage env={settings.env} {...props}/>} />                                
 
-
-                <Route path={['/registrera-data', '/sv/registrera-data']} exact render={(props)=><PublishDataPage env={settings.env} {...props}/>} />
-                <Route path={['/om-webbplatsen', '/sv/om-webbplatsen']} exact render={(props)=><AboutWebPage env={settings.env} {...props}/>} />
-                <Route path={['/om-webbplatsen/tillganglighet', '/sv/om-webbplatsen/tillganglighet']} exact render={(props)=><AccessibilityWebPage env={settings.env} {...props}/>} />
-
-                <Route path={['/statistik', '/sv/statistik', '/en/statistic']} exact render={(props)=><StatisticPage  env={settings.env} {...props}/>} />
-
-                <Route path={['/registrera-data', '/sv/registrera-data']} exact render={(props)=><PublishDataPage env={settings.env} {...props}/>} />
-                <Route path={['/om-webbplatsen', '/sv/om-webbplatsen']} exact render={(props)=><AboutWebPage env={settings.env} {...props}/>} />
-                <Route path={['/om-webbplatsen/tillganglighet', '/sv/om-webbplatsen/tillganglighet']} exact render={(props)=><AccessibilityWebPage env={settings.env} {...props}/>} />
+                <Route path={['/statistik', '/sv/statistik', '/en/statistic', '/en/statistics']} exact render={(props)=><StatisticPage  env={settings.env} {...props}/>} />
+                
                 {/* dataset, concepts, specifications */}
                 <Route path={['/datasets', '/en/datasets', '/sv/datasets']} exact render={(props)=><SearchPage env={settings.env} {...props} />} />
                 {/* dataservice */}
@@ -86,20 +73,19 @@ class RoutesComponent extends React.Component<RouteProps> {
                 
                 <Route path={['/dataservice/:cid*_:eid/*', '/en/dataservice/:cid*_:eid/*', '/sv/dataservice/:cid*_:eid/*']} exact render={(props)=><DataServicePage env={settings.env} {...props}/>} />
                 
-                <Route path={['/concepts/:cid*_:eid/*', '/sv/concepts/:cid*_:eid/*', '/en/concepts/:cid*_:eid/*']} exact render={(props)=><TermPage env={settings.env} {...props}/>} />
+                <Route path={['/concepts/:cid*_:eid/*', '/sv/concepts/:cid*_:eid/*', '/en/concepts/:cid*_:eid/*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} />
                 <Route path={['/specifications/:cid*_:eid/*', '/sv/specifications/:cid*_:eid/*', '/en/specifications/:cid*_:eid/*']} exact render={(props)=><SpecificationPage env={settings.env} {...props}/>} />
                 {/* default */}
-                <Route path={['/', '/sv','/en']} exact render={(props)=><StartPage env={settings.env} {...props}/>} />
-                <Route render={(props)=><NotFoundPage {...props}/>} />
+                <Route path={['/', '/sv','/en']} exact render={(props)=><StartPage env={settings.env} {...props}/>} />                
 
-
-              </Switch>
-            </App>
-          )}
-        </SettingsContext.Consumer>
-      </ErrorBoundary>
-    );
-  }
+                {/* query graphql for connectedcontentpath */}
+                <Route path={['/en/:path*']} exact render={(props) => (<ContentRouter env={settings.env} lang="en" {...props} />)} />                              
+                <Route path={['/sv/:path*']} exact render={(props) => (<ContentRouter env={settings.env} lang="sv" {...props} />)} />                              
+                <Route path={['/:path*']} exact render={(props) => (<ContentRouter env={settings.env} lang="sv" {...props} />)} />      
+            </Switch>
+          </App>
+        )}
+      </SettingsContext.Consumer>
+    </ErrorBoundary>
+  );
 }
-
-export const Routes = hot(module)(RoutesComponent);

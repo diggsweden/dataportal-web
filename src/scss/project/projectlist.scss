@@ -73,6 +73,7 @@
             cursor: pointer;
 
             &:hover {
+                filter: brightness(1.01);
                 .project__title {
                     text-decoration: none;
                 }

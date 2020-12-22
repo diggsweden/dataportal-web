@@ -1,31 +1,27 @@
-import { Box, Container, Spinner, Text, themes } from '@digg/design-system';
-import { ThemeProvider } from 'emotion-theming';
 import React from 'react';
+import { Box } from '@digg/design-system';
+import { Header } from '../../components/Header';
+import { Footer } from '../../components/Footer';
+import { Loader } from '../../components/Loader';
+
+const MainContent = Box.withComponent('main');
 
 export const LoadingPage: React.SFC = () => (
-  <ThemeProvider theme={themes.red}>
-    <Container>
-      <Box
-        bgColor="background"
-        paddingX={[2, 4]}
-        paddingY={2}
-        marginTop={[2, 4]}
-        marginBottom={4}
-        minHeight="30vh"
-      >
-        <Box
-          display="flex"
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          paddingY={4}
-        >
-          <Box marginTop={3} marginBottom={1}>
-            <Spinner />
-          </Box>
-          <Text>Laddar...</Text>
+  <Box
+    id="top"
+    display="flex"
+    direction="column"
+    minHeight="101vh"
+    bgColor="#fff"
+    className="notfoundpage"
+  >
+    <Header />
+    <MainContent flex="1 1 auto">
+      <div className="main-container">
+        <Box display="flex" justifyContent="center">
         </Box>
-      </Box>
-    </Container>
-  </ThemeProvider>
+      </div>
+    </MainContent>
+    <Footer onToTopButtonPushed={() => {}} />
+  </Box>
 );

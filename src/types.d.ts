@@ -119,3 +119,5 @@ declare module '@digg/react-ideal-image' {
   const IdealImage: IdealImageComponent;
   export default IdealImage;
 }
+
+declare module 'react-show-more-text';

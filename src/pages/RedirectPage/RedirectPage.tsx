@@ -7,7 +7,7 @@ import {
   colorPalette,
 } from '@digg/design-system';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import 'url-search-params-polyfill';
 import { RouterContext } from '../../../shared/RouterContext';
 import { ErrorBoundary } from '../../components/ErrorBoundary';
@@ -79,16 +79,16 @@ export class RedirectPage extends React.Component<PageProps> {
 
                   <ul>
                     <li>
-                      <a className="text-4" href={`/${i18n.languages[0]}`}>
+                      <Link className="text-4" to={`/${i18n.languages[0]}`}>
                         {i18n.t('pages|redirect|pagenotfound-link')}
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a className="text-4" href={`/${i18n.languages[0]}/${i18n.t(
+                      <Link className="text-4" to={`/${i18n.languages[0]}/${i18n.t(
                         'routes|datasets|path'
                       )}?q=&f=`}>
                       {i18n.t('pages|redirect|pagenotfound-link2')}
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </div>

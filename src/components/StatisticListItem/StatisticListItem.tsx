@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface StatisticListItemProps {
     listText?: any;
@@ -13,9 +14,9 @@ export class StatisticListItem extends React.Component<StatisticListItemProps> {
     render() {
         return (
             <li>
-                <a className="text-5" href={this.props.listUrl || '#'}>
+                <Link className="text-5" to={this.props.listUrl || '#'}>
                   {this.props.listText}
-                </a>
+                </Link>
                 <span className="list-value text-5-bold">
                     {this.props.listNumber}
                 </span>

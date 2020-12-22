@@ -16,9 +16,9 @@ export class SearchHeader extends React.Component<SearchHeaderProps> {
     render(){
         return(
             <div className="search-head">
-            <div><a className={'text-6 ' + (this.props.activeLink == 'search' ? 'active' : '')} href={`/${i18n.languages[0]}/datasets?q=&f=`} ><span>{i18n.t('pages|search|datasets')}</span></a></div>
-            <div><a className={'text-6 ' + (this.props.activeLink == 'terms' ? 'active' : '')} href={`/${i18n.languages[0]}/concepts?q=&f=`}><span>{i18n.t('pages|search|concepts')}</span></a></div>
-            <div><a className={'text-6 ' + (this.props.activeLink == 'specifications' ? 'active' : '')} href={`/${i18n.languages[0]}/specifications?q=&f=`}><span>{i18n.t('pages|search|specifications')}</span></a></div>
+            <div><Link className={'text-6 ' + (this.props.activeLink == 'search' ? 'active' : '')} to={`/${i18n.languages[0]}/datasets?q=&f=`} ><span>{i18n.t('pages|search|datasets')}</span></Link></div>
+            <div><Link className={'text-6 ' + (this.props.activeLink == 'terms' ? 'active' : '')} to={`/${i18n.languages[0]}/concepts?q=&f=`}><span>{i18n.t('pages|search|concepts')}</span></Link></div>
+            <div><Link className={'text-6 ' + (this.props.activeLink == 'specifications' ? 'active' : '')} to={`/${i18n.languages[0]}/specifications?q=&f=`}><span>{i18n.t('pages|search|specifications')}</span></Link></div>
           </div>
         );   
     }

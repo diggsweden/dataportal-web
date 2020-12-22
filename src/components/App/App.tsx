@@ -2,18 +2,15 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ScrollManager } from '../ScrollManager';
 import { SkipToContent } from '../SkipToContent';
-// import { CookieBanner } from '../CookieBanner';
-import {KeyFocus } from '../KeyFocus';
+import { CookieBanner } from '../CookieBanner';
+import { KeyFocus } from '../KeyFocus';
 
 export const App: React.SFC = ({ children }) => (
   <>
-    <Helmet
-      titleTemplate="%s"
-      htmlAttributes={{ lang: 'sv' }}
-    />
-     <ScrollManager />
+    <Helmet titleTemplate="%s" htmlAttributes={{ lang: 'sv' }} />
+    <CookieBanner />
+    <ScrollManager />
     <SkipToContent />
-    {/* <CookieBanner /> */}
     <KeyFocus />
 
     {children}

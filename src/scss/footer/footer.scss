@@ -2,13 +2,17 @@
 
 footer {
     margin-top: 10rem;
+
+    svg {
+        filter: brightness(10);
+    }
 }
 
 .footer {
-    background-color: $white;
+    background-color: $black100;
     padding-top: $space-32;
-    padding-bottom: $space-96;
-    border-top: 2px solid #E4E4E4;
+    padding-bottom: $space-64;
+    border-top: 1px solid #E4E4E4;
 
     .footer-main {
         display: flex;
@@ -31,7 +35,7 @@ footer {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    margin-bottom: $space-16;
+    margin-bottom: $space-24;
 
     @media screen and (max-width: 43.75rem) {
         flex-direction: column;
@@ -39,15 +43,13 @@ footer {
 
     span,
     a {
-        color: $black100;
-    }
-
-    span {
-        margin-right: $space-8;
+        color: $white;
     }
 
     a {
         margin-right: $space-24;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
     }
 
     .footer-link {
@@ -57,6 +59,7 @@ footer {
         &:focus {
             outline: $focus-style;
             outline-offset: $focus-offset;
+            outline-color: $white !important;
         }
 
         &:hover {
@@ -64,14 +67,50 @@ footer {
         }
     }
 
+    .external-link::after {
+        content: '\f08e';
+        margin-left: 5px;
+        font-family: "FontAwesome" !important;
+        font-size: .8em;
+        text-decoration: none !important;
+        display: inline-block;
+    }
+
+    .external-link[href^="mailto:"]::after {
+        content: none;
+    }
+
     .footer__links-nav {
         display: flex;
         flex-wrap: wrap;
-        margin-right: $space-24;
+        width: 100%;
+        margin-left: -1rem;
+        margin-right: -1rem;
 
         div {
             margin-right: $space-24;
             margin-bottom: $space-16;
+        }
+
+        .footer__links-nav--heading {
+            margin-bottom: $space-16;
+            color: $white;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0rem;
+            padding: $space-16;
+
+            @media screen and (min-width: 31.25rem) {
+                &:not(:last-of-type) {
+                    margin-right: $space-48;
+                }
+            }
+
+            li {
+                margin-bottom: $space-16;
+            }
         }
 
         @media screen and (max-width: 43.75rem) {

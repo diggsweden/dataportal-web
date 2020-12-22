@@ -22,15 +22,19 @@
   }, 
   "datasets":{
     "path":"datasets",
-    "title":"Search data"
+    "title":"Search data & APIs"
   },
   "specifications":{
     "path":"specifications",
-    "title":"Specifications"
+    "title":"Search specifications"
   },
   "concepts":{
     "path":"concepts",
-    "title":"Concepts"
+    "title":"Search concepts"
+  },
+  "dataservices":{
+    "path":"dataservice",
+    "title":"api"
   },
   "news":{
     "path":"news",
@@ -43,5 +47,9 @@
   "start":{
     "path" : "",
     "title" : "The Swedish dataportal"    
+  },
+  "statistics":{
+    "path" : "statistics",
+    "title" : "Statistics"    
   }
 }

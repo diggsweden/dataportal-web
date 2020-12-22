@@ -1,25 +1,21 @@
 //Style for searchbar
 @import 'scss/general/variables.scss';
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 37.5rem) {
     .search-header {
-        position: absolute;
-        left: -10000px;
-        top: auto;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
+        font-size: 1.5rem; //24px
+        margin-bottom: 0rem;
     }
 }
 
 .search-header {
-    margin-top: $space-32;
+    margin-top: 0rem;
 }
 
 .search-box {
     display: flex;
     flex-wrap: nowrap;
-    height: 48px;
+    height: $space-48;
     margin-bottom: $space-16;
 
     .search-label {
@@ -28,15 +24,15 @@
 
     input {
         height: 100%;
-        min-height: 48px;
-        max-width: 500px;
-        min-width: 200px;
+        min-height: $space-48;
+        max-width: 31.25rem;
+        min-width: 12.5rem;
         width: 100%;
-        border: 2px solid $black100;
+        border: 0.125rem solid $black100;
         border-right: none;
-        padding-left: 12px;
-        border-top-left-radius: 2px;
-        border-bottom-left-radius: 2px;
+        padding-left: 0.75rem;
+        border-top-left-radius: 0.125rem;
+        border-bottom-left-radius: 0.125rem;
 
         &:hover {
             border-color: $black-hover;
@@ -70,23 +66,15 @@
         justify-content: center;
         align-items: center;
         height: 100%;
-        min-height: 48px;
-        width: 48px;
-        min-width: 50px;
+        min-height: $space-48;
+        width: $space-48;
+        min-width: 3.125rem;
         background-color: $black100;
         color: $white;
         border: none;
-        border-top-left-radius: 0px;
-        border-bottom-left-radius: 0px;
+        border-top-left-radius: 0rem;
+        border-bottom-left-radius: 0rem;
         cursor: pointer;
-
-        span {
-
-            // margin-right: $space-8;
-            svg {
-                // fill: $white;
-            }
-        }
 
         &:hover {
             background-color: $black-hover;

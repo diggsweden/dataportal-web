@@ -14,16 +14,16 @@
    },
   "statistic" : {
     "statistic-header" : "Statistics of the data portal",
-    "dataset-numbers" : "Harvested data per month",
+    "dataset-numbers" : "Data per month",
     "statistic-numbers" : "Statistics at a glance",
     "top-organizations" : "organizations",
     "top-categories" : "categories",
     "top" : "Top",
     "statistic-link" : "Description of statistics",
     "graph-screenreader" : "The following information is also avaliable in text. Follow the link Description of statistics",
-    "statistic-page-text" :"Statistics visualized on the startpage is here available in text. The statistics shows harvested datasets per months, top 5 organizations and categories.",
+    "statistic-page-text" :"Statistics visualized on the startpage is here available in text. The statistics shows the amount of data on Sweden´s dataportal per month, top 5 organizations and categories.",
     "statistic-page-header" : "Statistic",
-    "statistic-page-numberofdatasets" :"Number of datasets on dataportalen today: ",
+    "statistic-page-numberofdatasets" :"The amount of data on Sweden´s dataportal today: ",
     "statistic-page-seotitle" : "Statistic - Sveriges dataportal",
     "statistic-page-link" : "statistic"
   },
@@ -35,8 +35,8 @@
   "search" : {
     "search" : "Search data",
     "dataset-hits" : "results ",
-    "concept-hits" : "concepts",
-    "specification-hits" : "specifications",
+    "concept-hits" : "results",
+    "specification-hits" : "results",
     "next-page" : "Next",
     "prev-page" : "Previous",
     "first-page" : "First",
@@ -57,11 +57,11 @@
     "datasets" : "datasets"
   },
   "concepts" : {
-    "search-concept" : "Search concepts",
+    "search-concept" : "Search",
     "concepts" : "concepts"
   },
   "specifications" : {
-    "search-specifications" : "Search specifications",
+    "search-specifications" : "Search",
     "specifications" : "specifications"
   },
   "notfoundpage" : {
@@ -82,7 +82,10 @@
     "no_title" : "No title given",
     "no_data" : "This data set has no data resources",
     "read_about_api" : "Read more about API",
-    "fileformat" : "other file format"
+    "fileformat" : "other file format",
+    "rdf" : "Download as RDF",
+    "view_more" : "View more",
+    "view_less" : "View less"
   },
   "dataservicepage" : {
     "api" : "About API"

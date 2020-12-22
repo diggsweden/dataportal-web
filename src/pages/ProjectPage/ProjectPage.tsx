@@ -67,12 +67,8 @@ export class ProjectPage extends React.Component<PageProps> {
 
             <Header ref={this.headerRef} />
 
-            <ErrorBoundary>
-              {/* <MainContent flex="1 1 auto">
-                <div className="main-container">                   */}
-                  <ProjectItem env={settings.env} id={this.props.match.params.nid} />
-                {/* </div> */}
-              {/* </MainContent> */}
+            <ErrorBoundary>              
+              <ProjectItem env={settings.env} id={this.props.match.params.nid} />                
             </ErrorBoundary>
             <Footer onToTopButtonPushed={this.setFocus} />
           </Box>

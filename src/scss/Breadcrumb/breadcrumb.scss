@@ -1,0 +1,76 @@
+@import 'scss/general/variables.scss';
+
+
+.breadcrumb {
+    // border-bottom: 1px solid $black10;
+    margin-bottom: $space-16;
+
+    .breadcrumb__list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        word-break: keep-all;
+        list-style: none;
+        padding: 0px;
+        max-width: 72rem;
+        margin: auto;
+        padding-top: $space-8;
+        padding-bottom: 0.625rem;
+
+        @media screen and (max-width: 1440px) {
+            padding-left: $space-16;
+            padding-right: $space-16;
+        }
+
+        .breadcrumb__list--item {
+            padding-top: $space-8;
+            padding-bottom: $space-8;
+
+            a {
+                margin-right: $space-8;
+                text-decoration: underline;
+                color: $black100;
+
+                &:hover {
+                    text-decoration: none;
+                    cursor: pointer;
+                }
+            }
+
+            &:last-of-type {
+                a {
+                    text-decoration: none;
+                    cursor: default;
+
+                    &:focus {
+                        outline: none !important;
+                    }
+                }
+            }
+
+            &:not(:first-of-type) {
+                a {
+                    &:empty::after {
+                        content: ". . .";
+                    }
+
+                    &::before {
+                        content: "/";
+                        text-decoration: none !important;
+                        display: inline-block;
+                        padding-right: $space-8;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//Fix for detailpages
+
+.detailpage {
+    .breadcrumb__list {
+        padding-left: 0rem;
+        padding-right: 0rem;
+    }
+}

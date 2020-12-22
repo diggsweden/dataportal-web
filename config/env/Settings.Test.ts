@@ -11,18 +11,20 @@ export class Settings_Test extends EnvSettings {
   ENTRYSCAPE_CONCEPT_STATS_URL="https://editera.dataportal.se/stats/entityData.json"
   ENTRYSCAPE_HISTORY_STATS_URL="https://registrera.oppnadata.se/stats/historyData.json"
 
-  ENTRYSCAPE_BLOCKS_URL="https://dataportal.azureedge.net/cdn/blocks.0.20.app-0.6.js"
+  ENTRYSCAPE_BLOCKS_URL="https://dataportal.azureedge.net/cdn/blocks.0.20.app-0.10.js"
 
   ENTRYSCAPE_OPENDATA_SV_URL="https://dataportal.azureedge.net/cdn/ext-opendata-sv-0.6.js"
   ENTRYSCAPE_OPENDATA_EN_URL="https://dataportal.azureedge.net/cdn/ext-opendata-en-0.6.js"
 
   ENTRYSCAPE_SITEMAP_JSON_URL="https://registrera.oppnadata.se/sitemap.json";
 
-  CONTENTBACKEND_SITEURL = "*";  //set to dev.digg.se when backend is multisite enabled
+  CONTENTBACKEND_SITEURL="*test.dataportal.se";
 
   CONTENTBACKEND_GRAPHAPI="https://digg-test-graphproxy.azurewebsites.net";
 
   CANONICAL_URL = "https://digg-test-dataportal.azurewebsites.net";
+
+  MATOMO_SITEID = 5;
 
   envName = 'test';
 

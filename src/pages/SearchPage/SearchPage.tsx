@@ -23,14 +23,13 @@ import {
   SearchRequest,
   FacetSpecification,
   FacetSpecificationItem,
-  SearchSortOrder  
+  SearchSortOrder,
 } from '../../components/Search/Search';
 import { decode } from 'qss';
 import { PageMetadata } from '../PageMetadata';
 import { RouteComponentProps } from 'react-router-dom';
 import { RouterContext } from '../../../shared/RouterContext';
 import { SearchFilter } from '../../components/SearchFilter';
-import { NumberOfHits } from '../../components/SearchFilter';
 
 import { Loader } from '../../components/Loader';
 import { SearchHeader } from '../../components/SearchHead';
@@ -42,6 +41,7 @@ import { FileFormatBadge } from '../../components/FileFormatBadge';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import ChopLines from 'chop-lines';
 import { PageProps } from '../PageProps';
+import { StaticBreadcrumb } from 'components/Breadcrumb';
 
 const MainContent = Box.withComponent('main');
 
@@ -53,7 +53,7 @@ export class SearchPage extends React.Component<SearchProps, any> {
   private headerRef: React.RefObject<Header>;
   private inputQueryRef: React.RefObject<HTMLInputElement>;
   private selectQueryRef: React.RefObject<HTMLInputElement>;
-  private postscribe: any;    
+  private postscribe: any;
 
   constructor(props: SearchProps) {
     super(props);
@@ -63,10 +63,10 @@ export class SearchPage extends React.Component<SearchProps, any> {
 
     this.selectQueryRef = React.createRef();
 
-    this.state = {       
-      query: '', 
-      activeLink: 'search', 
-      showFilters: false      
+    this.state = {
+      query: '',
+      activeLink: 'search',
+      showFilters: false,
     };
   }
 
@@ -213,12 +213,23 @@ export class SearchPage extends React.Component<SearchProps, any> {
 
             <ErrorBoundary>
               <MainContent id="main" flex="1 1 auto">
+                <StaticBreadcrumb
+                  env={this.props.env}
+                  staticPaths={[
+                    {
+                      path: `/${i18n.languages[0]}/${i18n.t(
+                        'routes|datasets|path'
+                      )}`,
+                      title: i18n.t('routes|datasets|title'),
+                    },
+                  ]}
+                />
                 <SearchContext.Consumer>
                   {(search) => (
                     <div className="wpb_wrapper">
                       <div className="main-container">
                         <h1 className="text-2 search-header">
-                          {i18n.t('common|search-data')}
+                          {i18n.t('common|search-dataapi')}
                         </h1>
                         <form
                           onSubmit={(event) => {
@@ -235,10 +246,10 @@ export class SearchPage extends React.Component<SearchProps, any> {
                               .then(() => search.doSearch());
                           }}
                         >
-                          {/* <SearchHeader
+                          <SearchHeader
                             ref={this.headerRef}
                             activeLink={this.state.activeLink}
-                          /> */}
+                          />
 
                           <div className="search-box">
                             <label
@@ -384,59 +395,75 @@ export class SearchPage extends React.Component<SearchProps, any> {
                               )
                             )}
 
-
                           <div className="checkbox__wrapper">
                             <input
                               id="api_only"
                               name="API"
-                              type="checkbox"                                                            
+                              type="checkbox"
                               checked={
-                                search.request.esRdfTypes?.some((t) => t == ESRdfType.esterms_ServedByDataService) &&
-                                search.request.esRdfTypes?.some((t) => t == ESRdfType.esterms_IndependentDataService) &&
-                                !search.request.esRdfTypes?.some((t) => t == ESRdfType.dataset) 
-                              }                  
-                              onChange={(event) => {                                
-                                if(search.request.esRdfTypes?.some((t) => t == ESRdfType.esterms_ServedByDataService) &&
-                                   search.request.esRdfTypes?.some((t) => t == ESRdfType.esterms_IndependentDataService) &&
-                                  !search.request.esRdfTypes?.some((t) => t == ESRdfType.dataset) )
-                                  {
-                                    this.setState({
-                                      query: this.inputQueryRef.current!.value,
-                                    });
-                                    search                                  
-                                      .set({
-                                        esRdfTypes:[
-                                          ESRdfType.dataset,
-                                          ESRdfType.esterms_IndependentDataService,
-                                          ESRdfType.esterms_ServedByDataService
-                                        ],
-                                        query: this.inputQueryRef.current!.value || ''
-                                      })
-                                      .then(() => search.doSearch());
-                                  }
-                                  else {
-                                    this.setState({
-                                      query: this.inputQueryRef.current!.value,
-                                    });
-                                    search
+                                search.request.esRdfTypes?.some(
+                                  (t) =>
+                                    t == ESRdfType.esterms_ServedByDataService
+                                ) &&
+                                search.request.esRdfTypes?.some(
+                                  (t) =>
+                                    t ==
+                                    ESRdfType.esterms_IndependentDataService
+                                ) &&
+                                !search.request.esRdfTypes?.some(
+                                  (t) => t == ESRdfType.dataset
+                                )
+                              }
+                              onChange={(event) => {
+                                if (
+                                  search.request.esRdfTypes?.some(
+                                    (t) =>
+                                      t == ESRdfType.esterms_ServedByDataService
+                                  ) &&
+                                  search.request.esRdfTypes?.some(
+                                    (t) =>
+                                      t ==
+                                      ESRdfType.esterms_IndependentDataService
+                                  ) &&
+                                  !search.request.esRdfTypes?.some(
+                                    (t) => t == ESRdfType.dataset
+                                  )
+                                ) {
+                                  this.setState({
+                                    query: this.inputQueryRef.current!.value,
+                                  });
+                                  search
                                     .set({
-                                      esRdfTypes:[                                        
+                                      esRdfTypes: [
+                                        ESRdfType.dataset,
                                         ESRdfType.esterms_IndependentDataService,
-                                        ESRdfType.esterms_ServedByDataService
+                                        ESRdfType.esterms_ServedByDataService,
                                       ],
-                                      query: this.inputQueryRef.current!.value || '',
+                                      query:
+                                        this.inputQueryRef.current!.value || '',
                                     })
-                                    .then(() => search.doSearch());       
-                                  }                         
+                                    .then(() => search.doSearch());
+                                } else {
+                                  this.setState({
+                                    query: this.inputQueryRef.current!.value,
+                                  });
+                                  search
+                                    .set({
+                                      esRdfTypes: [
+                                        ESRdfType.esterms_IndependentDataService,
+                                        ESRdfType.esterms_ServedByDataService,
+                                      ],
+                                      query:
+                                        this.inputQueryRef.current!.value || '',
+                                    })
+                                    .then(() => search.doSearch());
+                                }
                               }}
                             ></input>
                             <label className="text-6" htmlFor="api_only">
                               API
                             </label>
                           </div>
-
-                          
-
                         </div>
 
                         <div className="selected-filters">
@@ -515,10 +542,6 @@ export class SearchPage extends React.Component<SearchProps, any> {
                                 <label htmlFor="hits" className="text-6-bold">
                                   {i18n.t('pages|search|numberofhits')}
                                 </label>
-
-
-
-
 
                                 <select
                                   id="hits"
@@ -622,7 +645,11 @@ export class SearchPage extends React.Component<SearchProps, any> {
                                           )}
                                       </ChopLines>
                                     </span>{' '}
-                                    <a href={`${hit.url}`}>
+                                    <a
+                                      href={`${hit.url}#ref=${
+                                        window ? window.location.search : ''
+                                      }`}
+                                    >
                                       <h3 className="text-4">{hit.title}</h3>
                                     </a>
                                     <p className="text-6">{hit.description}</p>

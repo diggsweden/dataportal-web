@@ -131,7 +131,6 @@
                 color: $black100;
                 text-decoration: none;
                 border-bottom: 2px dotted $black10;
-                // cursor: pointer;
 
                 &:first-of-type {
                     border-top: 2px dotted $black10;
@@ -150,6 +149,10 @@
                     }
                 }
 
+                .result-desc:empty{
+                    display: none;
+                }
+
                 //Searchresult link
                 a {
                     margin-bottom: $space-8;
@@ -161,6 +164,10 @@
                     h3 {
                         text-decoration: underline;
                         word-break: break-word;
+
+                        &::first-letter {
+                            text-transform: uppercase;
+                        }
 
                         &:hover {
                             text-decoration: none;

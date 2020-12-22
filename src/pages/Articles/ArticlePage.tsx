@@ -16,6 +16,7 @@ import { string } from 'prop-types';
 import { ArticleItem } from '../../components/Articles'
 import { SettingsContext } from 'components/SettingsProvider';
 import { PageProps } from '../PageProps'
+import { StaticBreadcrumb } from 'components/Breadcrumb';
 
 const MainContent = Box.withComponent('main');
 
@@ -67,12 +68,8 @@ export class ArticlePage extends React.Component<PageProps> {
             <Header ref={this.headerRef} />
 
             <ErrorBoundary>
-              <MainContent flex="1 1 auto">
-                <div className="main-container">                  
-                  <div className="">
-                  <ArticleItem env={settings.env} id={this.props.match.params.nid} />
-                  </div>
-                </div>
+              <MainContent flex="1 1 auto">                              
+                <ArticleItem env={settings.env} id={this.props.match.params.nid} />                
               </MainContent>
             </ErrorBoundary>
             <Footer onToTopButtonPushed={this.setFocus} />

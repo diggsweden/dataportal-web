@@ -1,0 +1,60 @@
+@import 'scss/general/variables.scss';
+
+.cookiebanner {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: $orange25;
+    padding-top: $space-24;
+    padding-bottom: $space-24;
+
+    .cookiebanner__text {
+        span {
+            display: block;
+            color: $black-hover;
+            max-width: 56.25rem;
+        }
+
+        a {
+            white-space: nowrap;
+            padding: 0.25rem;
+
+            &:hover {
+                background-color: $pink25;
+            }
+        }
+    }
+
+    .cookiebanner__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: $space-32;
+
+        button {
+            padding-left: $space-24;
+            padding-right: $space-24;
+            background-color: $black100;
+
+            &:hover {
+                background-color: $black-hover;
+            }
+        }
+    }
+
+    @media screen and (max-width: 33.75rem) {
+        flex-direction: column;
+
+        .cookiebanner__text {
+            margin-bottom: $space-24;
+        }
+
+        .cookiebanner__button {
+            margin-left: 0rem;
+            
+            button{
+                width: 100%;
+            }
+        }
+    }
+}

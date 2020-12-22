@@ -16,6 +16,7 @@ import { EnvSettings } from '../../../config/env/EnvSettings';
 import { SettingsContext } from 'components/SettingsProvider';
 import { PageProps } from '../PageProps';
 import { TopImageInspo } from 'assets/TopImageInspo';
+import { StaticBreadcrumb } from 'components/Breadcrumb';
 
 const MainContent = Box.withComponent('main');
 
@@ -71,6 +72,12 @@ export class ProjectListPage extends React.Component<PageProps, any> {
 
               <ErrorBoundary>
                 <MainContent className="projectlistpage" flex="1 1 auto">
+                  <StaticBreadcrumb env={settings.env} staticPaths={[
+                    {
+                      path: `/${i18n.languages[0]}/${i18n.t('routes|projects|path')}`,
+                      title: i18n.t('routes|projects|title')
+                    }
+                  ]} />
                   <div className="projectlistpage__img">
                     <TopImageInspo></TopImageInspo>
                   </div>

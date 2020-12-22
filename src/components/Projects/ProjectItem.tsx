@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import i18n from '../../i18n';
 import { Box } from '@digg/design-system';
 import { EnvSettings } from '../../../config/env/EnvSettings';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { gql } from 'apollo-boost';
 let moment = require('moment');
 import { decode } from 'qss';
 import { Helmet } from 'react-helmet';
+import { StaticBreadcrumb } from 'components/Breadcrumb';
+import { slugify } from 'utilities/urlHelpers';
 
 export interface ProjectItemProps {
   children?: React.ReactNode;
@@ -36,10 +38,10 @@ export const ProjectItem: React.FC<ProjectItemProps> = (props) => {
     projects(siteurl:"*", lang:"${i18n.languages[0]}",id:"${id}"){
       id        
       heading
-      preamble
+      preambleHTML
       published
       modified      
-      body 
+      bodyHTML
       bannerImageUrl
       bannerImageText
       imageUrl
@@ -53,12 +55,22 @@ export const ProjectItem: React.FC<ProjectItemProps> = (props) => {
   const projectItem =
     data && data.projects && data.projects.length > 0 ? data.projects[0] : null;
 
-  console.log({ projectItem });
-
   return (
-    <MainContent flex="1 1 auto">
+    <MainContent flex="1 1 auto">     
       {!loading && projectItem && id && id != '0' ? (
         <>
+         <StaticBreadcrumb env={props.env} staticPaths={[
+            {
+              path: `/${i18n.languages[0]}/${i18n.t('routes|projects|path')}`,
+              title: i18n.t('routes|projects|title')
+            },
+            {
+              path: `/${i18n.languages[0]}/${i18n.t(
+                'routes|projects|path'
+                )}/${projectItem.id}/${slugify(projectItem.heading)}`,
+              title: projectItem.heading
+            }
+          ]} />
           <Helmet>
             <title>
               {projectItem.heading} - {i18n.t('common|seo-title')}
@@ -74,8 +86,13 @@ export const ProjectItem: React.FC<ProjectItemProps> = (props) => {
             <div className={projectItem.projectColor}>
               <div className="project__banner">
                 <div className="main-container">
-                  <h1 className="text-1">{projectItem.heading}</h1>
-                  <p className="preamble text-4">{projectItem.preamble}</p>
+                  <h1 className="text-1">{projectItem.heading}</h1>                  
+                  <p
+                  className="preamble text-4"
+                    dangerouslySetInnerHTML={{
+                    __html: projectItem.preambleHTML,
+                  }}
+                />
                   {/* Theme */}
                   {/* <p className="preamble text-4">{projectItem.projectColor}</p> */}
                 </div>
@@ -90,10 +107,10 @@ export const ProjectItem: React.FC<ProjectItemProps> = (props) => {
                   </span>
                 )}
 
-                <p
+                <div
                   className="project__editor--p main-text text-5"
                   dangerouslySetInnerHTML={{
-                    __html: projectItem.body,
+                    __html: projectItem.bodyHTML,
                   }}
                 />
 

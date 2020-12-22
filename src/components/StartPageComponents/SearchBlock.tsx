@@ -10,6 +10,7 @@ import React, { Component } from 'react';
 import i18n from '../../i18n';
 import { TopImage } from 'assets/TopImage';
 import { EnvSettings } from '../../../config/env/EnvSettings';
+import { Link } from 'react-router-dom';
 
 export interface SearchBlockProps {
   children?: React.ReactNode;
@@ -52,71 +53,64 @@ export class SearchBlock extends React.Component<SearchBlockProps> {
             </form>
           </div>
 
-          <div className="search-boxes">
+          <div className="search__box">
             <div
-            // onClick={(e) => {
-            //   window.location.href = `/${i18n.languages[0]}/datasets?p=1&q=&f=`;
-            // }}
+              className="search__box--link"
+              // onClick={(e) => {
+              //   window.location.href = `/${i18n.languages[0]}/datasets?p=1&q=&f=`;
+              // }}
             >
-              <a
+              <Link
                 className="text-5-bold"
                 aria-label={i18n.t('pages|search|datasets')}
-                href={`/${i18n.languages[0]}/datasets?p=1&q=&f=`}
+                to={`/${i18n.languages[0]}/datasets?p=1&q=&f=`}
               >
                 {i18n.t('pages|search|datasets')}
-              </a>
+              </Link>
               <span className="text-6">
                 {i18n.t('pages|startpage|explore_datasets')}
               </span>
             </div>
 
             <div
-              className=""
-              // onClick={e => {
+              className="search__box--link"
+              // onClick={(e) => {
               //   window.location.href = `/${i18n.languages[0]}/concepts?p=1&q=&f=`;
               // }}
             >
-              {/* <span className="soon">
-                  {i18n.t('pages|startpage|coming_soon')}
-                </span> */}
-
-              <span
-                className="text-5-bold"
-                // aria-label="Sök efter begrepp"
-                // href={`/${i18n.languages[0]}/concepts?p=1&q=&f=`}
-              >
-                {i18n.t('pages|search|concepts')}{' '}
-                <span className="text-6">
-                  {' '}
-                  ({i18n.t('pages|startpage|coming_soon')})
-                </span>
+              <span className="row">
+                <Link
+                  className="text-5-bold"
+                  aria-label="Sök efter begrepp"
+                  to={`/${i18n.languages[0]}/concepts?p=1&q=&f=`}
+                >
+                  {i18n.t('pages|search|concepts')}{' '}
+                </Link>
+                <span className="beta_badge text-7-bold"> {i18n.t('common|beta')}</span>
               </span>
+
               <span className="text-6">
                 {i18n.t('pages|startpage|explore_concepts')}
               </span>
             </div>
 
             <div
-              className=""
-              // onClick={e => {
+              className="search__box--link"
+              // onClick={(e) => {
               //   window.location.href = `/${i18n.languages[0]}/specifications?p=1&q=&f=`;
               // }}
             >
-              {/* <span className="soon">
-                  {i18n.t('pages|startpage|coming_soon')}
-                </span> */}
-
-              <span
-                className="text-5-bold"
-                // aria-label="Sök efter specifikationer"
-                // href={`/${i18n.languages[0]}/specifications?p=1&q=&f=`}
-              >
-                {i18n.t('pages|search|specifications')}{' '}
-                <span className="text-6">
-                  {' '}
-                  ({i18n.t('pages|startpage|coming_soon')})
-                </span>
+              <span className="row">
+                <Link
+                  className="text-5-bold"
+                  aria-label="Sök efter specifikationer"
+                  to={`/${i18n.languages[0]}/specifications?p=1&q=&f=`}
+                >
+                  {i18n.t('pages|search|specifications')}{' '}
+                </Link>
+                <span className="beta_badge text-7-bold"> {i18n.t('common|beta')}</span>
               </span>
+
               <span className="text-6">
                 {i18n.t('pages|startpage|explore_specs')}
               </span>

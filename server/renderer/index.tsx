@@ -16,11 +16,12 @@ import { Routes } from '../../src/routes';
 import { getBundles, getStyleBundles } from './getBundles';
 import { getFooter, getHeader } from './html-template';
 import { GlobalStyles } from '../../src/GlobalStyles';
-import { ApolloProvider } from '@apollo/react-hooks'
-import { ApolloClient } from 'apollo-client'
-import { createHttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { ApolloProvider } from '@apollo/client'
 import { SettingsUtil } from "../../config/env/SettingsUtil";
+import { getDataFromTree } from "@apollo/client/react/ssr";
+import { createApolloClient } from '../../shared/graphql/client';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../../src/i18n';
 
 export interface RenderResponseProfileItem {
   name: string;
@@ -57,101 +58,110 @@ export const renderer = async (
 
   const env = SettingsUtil.create(host);
 
-  const link = createHttpLink({
-    uri:env.CONTENTBACKEND_GRAPHAPI,
-    credentials: 'same-origin',
-    headers: {
-      cookie: cookies,
-    },
-    fetch: fetch as any
+  const client = createApolloClient({     
+    ssrMode: true, 
+    backendUrl: env.CONTENTBACKEND_GRAPHAPI,
+    cookies:cookies,    
+    fetch: fetch as any 
   });
 
-  const client = new ApolloClient({
-    ssrMode: true,
-    link,
-    cache: new InMemoryCache()    
-  });
+  if(path.startsWith("/en/") || path == "/en")
+    i18n.changeLanguage("en");
+
+  if(path.startsWith("/sv/")  || path == "/sv")
+    i18n.changeLanguage("sv");
 
   const frontend = (
-  <ApolloProvider client={client}>
-    <CacheProvider value={cache}>
-      <GlobalStyles theme={themes.default} />
-      <ThemeProvider theme={themes.opendata}>
-        <HelmetProvider context={helmetContext}>       
-          <LocalStoreProvider>
-            <SettingsProvider applicationUrl={host}>
-              <StaticRouter location={path} context={routerContext}>
-                <Routes formdata={formdata} vars={vars} />
-              </StaticRouter>
-            </SettingsProvider>
-          </LocalStoreProvider>       
-        </HelmetProvider>
-      </ThemeProvider>      
-    </CacheProvider>
-    </ApolloProvider>
+    <I18nextProvider i18n={i18n}>
+      <ApolloProvider client={client}>
+        <CacheProvider value={cache}>
+          <GlobalStyles theme={themes.default} />
+          <ThemeProvider theme={themes.opendata}>
+            <HelmetProvider context={helmetContext}>                 
+              <LocalStoreProvider>
+                <SettingsProvider applicationUrl={host}>
+                  <StaticRouter location={path} context={routerContext}>
+                    <Routes formdata={formdata} vars={vars} />
+                  </StaticRouter>
+                </SettingsProvider>
+              </LocalStoreProvider>        
+            </HelmetProvider>
+          </ThemeProvider>      
+        </CacheProvider>
+      </ApolloProvider>
+    </I18nextProvider>
   );
+      
+    try {
+      const bundlesPromise = getBundles(manifestPath);    
+      const styleBundlesPromise = getStyleBundles(manifestPath);    
 
-  try {
-    const bundlesPromise = getBundles(manifestPath);    
-    const styleBundlesPromise = getStyleBundles(manifestPath);    
+      await getDataFromTree(frontend);      
 
-    if (routerContext.url) {
+      if (routerContext.url) {
+        return {
+          statusCode: 301,
+          redirectTo: routerContext.url,
+          profile,
+        };
+      }
+
+      const { helmet } = helmetContext as FilledContext;    
+
+      const bundles: string[] = await bundlesPromise;    
+      const styleBundles: string[] = await styleBundlesPromise;    
+
+      let response = getHeader({
+        metaTags: helmet
+          ? `<title data-rh="true">Sveriges dataportal</title>${helmet.meta.toString()}${helmet.link.toString()}`
+          : '',
+        bundles,  
+        styleBundles,    
+        htmlAttributes: 'lang="sv"',
+      });
+
+      start = Date.now();                   
+
+      const { html, ids, css } = extractCritical(renderToString(frontend));        
+
+      end = Date.now();
+
+      profile.push({ name: 'Render Body', duration: end - start });
+
+      if(!helmet)
+      {
+        const helmetServer = Helmet.renderStatic();
+        response += `<title data-react-helmet="true">Sveriges dataportal</title>${helmetServer.meta.toString()}${helmetServer.link.toString()}`;      
+      }
+
+      let data = client.extract();
+      if(data)
+        try {
+          response += `<script>window.__APOLLO_STATE__ = ${JSON.stringify(data)};</script>`
+        }catch{}
+
+      response += `<style data-emotion-css>${css}</style></head>`;
+
+      response += `<body><div id="root">${html}</div>`;
+
+      response += getFooter({ bundles, ids });
+
       return {
-        statusCode: 301,
-        redirectTo: routerContext.url,
+        statusCode: routerContext.statusCode || 200,
+        body: response,
+        profile,
+      };
+    } catch (e) {
+      console.error(e);
+      return {
+        statusCode: 500,
+        error: { message: e.message, stack: e.stack, name: e.name },
         profile,
       };
     }
 
-    const { helmet } = helmetContext as FilledContext;    
-
-    const bundles: string[] = await bundlesPromise;    
-    const styleBundles: string[] = await styleBundlesPromise;    
-
-    let response = getHeader({
-      metaTags: helmet
-        ? `${helmet.title.toString()}${helmet.meta.toString()}${helmet.link.toString()}`
-        : '',
-      bundles,  
-      styleBundles,    
-      htmlAttributes: 'lang="sv"',
-    });
-
-    start = Date.now();
-    const { html, ids, css } = extractCritical(renderToString(frontend));
-
-    end = Date.now();
-
-    profile.push({ name: 'Render Body', duration: end - start });
-
-    if(!helmet)
-    {
-      const helmetServer = Helmet.renderStatic();
-      response += `<title data-react-helmet="true">Sveriges dataportal</title>${helmetServer.meta.toString()}${helmetServer.link.toString()}`;      
-    }
-
-    response += `<style data-emotion-css>${css}</style></head>`;
-
-    response += `<body><div id="root">${html}</div>`;
-
-    response += getFooter({ bundles, ids });
-
-    return {
-      statusCode: routerContext.statusCode || 200,
-      body: response,
-      profile,
-    };
-  } catch (e) {
-    console.error(e);
-    return {
-      statusCode: 500,
-      error: { message: e.message, stack: e.stack, name: e.name },
-      profile,
-    };
-  }
-
   return {
     statusCode: 500,
     profile,
-  };
+  };  
 };

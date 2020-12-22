@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import i18n from 'i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { isIE } from 'react-device-detect';
 import '../../../node_modules/react-vis/dist/style.css';
+import { Link } from 'react-router-dom';
 // import {XYPlot, LineSeries} from 'react-vis';
 
 interface StatisticGraphProps {
@@ -18,70 +19,73 @@ interface StatisticGraphState {
   datasets?: number;
 }
 
-export class StatisticGraph extends React.Component<
-  StatisticGraphProps,
-  StatisticGraphState
-> {
-  constructor(props: StatisticGraphProps) {
-    super(props);
-    this.state = {
-      useCanvas: false,
-      x: [],
-      y: [],
-      screenWidth: 1080,
-      publishers: 151,
-      datasets: 2180,
-    };
-  }
 
-  // updateDimensions() {
-  //   let current = -1;
-  //   if (typeof window !== 'undefined') {
-  //     current = window.innerWidth;
-  //   }
-  //   this.setState({ screenWidth: current });
-  // }
 
-  componentWillMount() {
-    if (typeof fetch !== 'undefined') {
-      fetch(
-        this.props.env.ENTRYSCAPE_HISTORY_STATS_URL
-          ? this.props.env.ENTRYSCAPE_HISTORY_STATS_URL
-          : 'https://registrera.oppnadata.se/stats/historyData.json'
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          
-          let list = [];
+export const StatisticGraph: React.FC<StatisticGraphProps> = (props) => {
 
-          for (let i = 0; i < data.length; i++) {
-            let item = {
-              x: data[i].x.toString().substring(2, 7),
-              y: data[i].y,
-            };
+  const [stats, setStats] = useState<StatisticGraphState>({
+        useCanvas: false,
+        x: [],
+        y: [],
+        screenWidth: 1080,
+        publishers: 151,
+        datasets: 2180,
+      })
 
-            if (i < 12) {
-              list.push(item);
-            }
-          }
-          this.setState({ x: list.reverse() });
-        });
+  const updateDimensions = () => {
+    let current = -1;
+    if (typeof window !== 'undefined') {
+      current = window.innerWidth;
     }
+    setStats(prev => { 
+      return {
+        ...prev, 
+        screenWidth: current }
+      });
   }
 
-  render() {
+    useEffect(() => {
+      if (typeof fetch !== 'undefined') {
+          fetch(
+            props.env.ENTRYSCAPE_HISTORY_STATS_URL
+              ? props.env.ENTRYSCAPE_HISTORY_STATS_URL
+              : 'https://registrera.oppnadata.se/stats/historyData.json'
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              
+              let list: { x: any; y: any; }[] = [];
+    
+              for (let i = 0; i < data.length; i++) {
+                let item = {
+                  x: data[i].x.toString().substring(2, 7),
+                  y: data[i].y,
+                };
+    
+                if (i < 12) {
+                  list.push(item);
+                }
+              }
+              setStats(prev => { return {
+                ...prev,
+                x: list.reverse()
+              }})
+            });
+        }
+    },[])
+
     if (isIE) {
       return <></>;
     } else {
       const reactvis = require('react-vis');
 
-      const useCanvas = this.state.useCanvas;
+      const useCanvas = stats.useCanvas;
       const content = useCanvas ? 'TOGGLE TO SVG' : 'TOGGLE TO CANVAS';
       const BarSeries = useCanvas
         ? reactvis.VerticalBarSeriesCanvas
         : reactvis.VerticalBarSeries;
 
-      const labelData = this.state.x.map((d: any, idx: any) => ({
+      const labelData = stats.x.map((d: any, idx: any) => ({
         x: d.x,
         y: d.y,
       }));
@@ -118,18 +122,19 @@ export class StatisticGraph extends React.Component<
               />
               <BarSeries
                 className="vertical-bar-series-example"
-                data={this.state.x}
+                data={stats.x}
               />
             </reactvis.FlexibleXYPlot>
             <span className="graph-text text-5">
               {i18n.t('pages|statistic|dataset-numbers')}
             </span>
           </div>
-          <a href={`/${i18n.languages[0]}/${i18n.t('pages|statistic|statistic-page-link')}`} className="text-5">
+          <Link to={`/${i18n.languages[0]}/${i18n.t('routes|statistics|path')}`} className="text-5">
           {i18n.t('pages|statistic|statistic-link')}
-          </a>
+          </Link>
         </div>
-      );
-    }
+        
+      );    
+    
   }
 }

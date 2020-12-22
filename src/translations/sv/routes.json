@@ -22,15 +22,19 @@
   },   
   "datasets":{
     "path":"datasets",
-    "title":"Sök data"
+    "title":"Sök data & API:er"
   },
   "specifications":{
     "path":"specifications",
-    "title":"Specifikationer"
+    "title":"Sök specifikationer"
   },
   "concepts":{
     "path":"concepts",
-    "title":"Begrepp"
+    "title":"Sök begrepp"
+  },
+  "dataservices":{
+    "path":"dataservice",
+    "title":"api"
   },
   "news":{
     "path":"nyheter",
@@ -43,5 +47,9 @@
   "start":{
     "path" : "",
     "title" : "Sveriges dataportal"    
+  },
+  "statistics":{
+    "path" : "statistik",
+    "title" : "Statistik"    
   }
 }

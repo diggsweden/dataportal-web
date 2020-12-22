@@ -57,5 +57,7 @@
     "http://purl.org/adms/publishertype/RegionalAuthority":"Regional myndighet/landsting",
     "http://purl.org/adms/publishertype/NonProfitOrganisation":"Ej vinstdrivande organisation",
     "http://purl.org/adms/publishertype/NonGovernmentalOrganisation":"Icke-statlig organisation",
-    "http://purl.org/adms/publishertype/Academia-ScientificOrganisation":"Akademia/Vetenskaplig organisation"
+    "http://purl.org/adms/publishertype/Academia-ScientificOrganisation":"Akademia/Vetenskaplig organisation",
+
+    "http://www.w3.org/2004/02/skos/core#inScheme" : "Terminologies"
 }

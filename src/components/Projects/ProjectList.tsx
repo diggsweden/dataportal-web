@@ -1,11 +1,12 @@
 import React, { Component, useState } from 'react';
 import i18n from '../../i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { gql } from 'apollo-boost';
 import { Loader } from '../Loader';
 import ChopLines from 'chop-lines';
 import { slugify } from 'utilities/urlHelpers';
+import { Link } from 'react-router-dom';
 let moment = require('moment');
 
 export interface ProjectListProps {
@@ -20,10 +21,10 @@ export const ProjectList: React.FC<ProjectListProps> = (props) => {
     projects(siteurl:"*", lang:"${i18n.languages[0]}", take:1000, skip:0){
       id        
       heading
-      preamble
+      preambleHTML
       published
       modified      
-      body
+      bodyHTML
       bannerImageUrl
       bannerImageText
       imageUrl
@@ -60,12 +61,12 @@ export const ProjectList: React.FC<ProjectListProps> = (props) => {
                 Vet du något spännande som är skapat med data från Sveriges
                 dataportal?
               </p>
-              <a
+              <Link
                 className="text-5"
-                href={`/${i18n.languages[0]}/${i18n.t('routes|projectsubmit|path')}`}
+                to={`/${i18n.languages[0]}/${i18n.t('routes|projectsubmit|path')}`}
               >
                 Skicka in tips!
-              </a>
+              </Link>
             </div>
           </li>
         )}
@@ -97,19 +98,19 @@ export const ProjectList: React.FC<ProjectListProps> = (props) => {
                   )}
                 </div>
                 <div className="project__text">
-                  <a
+                  <Link
                     className="project__title text-4"
-                    href={`/${i18n.languages[0]}/inspiration/${n.id}/${slugify(
+                    to={`/${i18n.languages[0]}/inspiration/${n.id}/${slugify(
                       n.heading
                     )}`}
                   >
                     {n.heading}
-                  </a>
+                  </Link>
                   <ChopLines lines={5} lineHeight={23}>
                     <p
                       className="project__desciption text-5"
                       dangerouslySetInnerHTML={{
-                        __html: n.preamble,
+                        __html: n.preambleHTML,
                       }}
                     />
                   </ChopLines>

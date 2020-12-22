@@ -3,6 +3,7 @@ import i18n from '../../i18n';
 // import { TopImage } from 'assets/TopImage';
 import { searchDatasetsPagePath } from '../../../src/utilities/urlHelpers';
 import { EnvSettings } from '../../../config/env/EnvSettings';
+import { Link } from 'react-router-dom';
 
 export interface CategoriesNavProps {
   children?: React.ReactNode;
@@ -20,13 +21,13 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
             </h2>
             <ul>
             <li>
-                <a
+                <Link
                   aria-label={i18n.t('pages|startpage|search_datasets_format', {
                     category: i18n.t(
                       'resource|http://publications.europa.eu/resource/authority/data-theme/ENVI'
                     ),
                   })}
-                  href={searchDatasetsPagePath(
+                  to={searchDatasetsPagePath(
                     i18n.languages[0],
                     'http://www.w3.org/ns/dcat#theme',
                     'http://publications.europa.eu/resource/authority/data-theme/ENVI'
@@ -35,16 +36,16 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
                   {i18n.t(
                     'resource|http://publications.europa.eu/resource/authority/data-theme/ENVI'
                   )}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   aria-label={i18n.t('pages|startpage|search_datasets_format', {
                     category: i18n.t(
                       'resource|http://publications.europa.eu/resource/authority/data-theme/ECON'
                     ),
                   })}
-                  href={searchDatasetsPagePath(
+                  to={searchDatasetsPagePath(
                     i18n.languages[0],
                     'http://www.w3.org/ns/dcat#theme',
                     'http://publications.europa.eu/resource/authority/data-theme/ECON'
@@ -53,16 +54,16 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
                   {i18n.t(
                     'resource|http://publications.europa.eu/resource/authority/data-theme/ECON'
                   )}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   aria-label={i18n.t('pages|startpage|search_datasets_format', {
                     category: i18n.t(
                       'resource|http://publications.europa.eu/resource/authority/data-theme/EDUC'
                     ),
                   })}
-                  href={searchDatasetsPagePath(
+                  to={searchDatasetsPagePath(
                     i18n.languages[0],
                     'http://www.w3.org/ns/dcat#theme',
                     'http://publications.europa.eu/resource/authority/data-theme/EDUC'
@@ -71,18 +72,18 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
                   {i18n.t(
                     'resource|http://publications.europa.eu/resource/authority/data-theme/EDUC'
                   )}
-                </a>
+                </Link>
               </li>
 
 
               <li>
-                <a
+                <Link
                   aria-label={i18n.t('pages|startpage|search_datasets_format', {
                     category: i18n.t(
                       'resource|http://publications.europa.eu/resource/authority/data-theme/REGI'
                     ),
                   })}
-                  href={searchDatasetsPagePath(
+                  to={searchDatasetsPagePath(
                     i18n.languages[0],
                     'http://www.w3.org/ns/dcat#theme',
                     'http://publications.europa.eu/resource/authority/data-theme/REGI'
@@ -91,17 +92,17 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
                   {i18n.t(
                     'resource|http://publications.europa.eu/resource/authority/data-theme/REGI'
                   )}
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   aria-label={i18n.t('pages|startpage|search_datasets_format', {
                     category: i18n.t(
                       'resource|http://publications.europa.eu/resource/authority/data-theme/INTR'
                     ),
                   })}
-                  href={searchDatasetsPagePath(
+                  to={searchDatasetsPagePath(
                     i18n.languages[0],
                     'http://www.w3.org/ns/dcat#theme',
                     'http://publications.europa.eu/resource/authority/data-theme/INTR'
@@ -110,17 +111,17 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
                   {i18n.t(
                     'resource|http://publications.europa.eu/resource/authority/data-theme/INTR'
                   )}
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   aria-label={i18n.t('pages|startpage|search_datasets_format', {
                     category: i18n.t(
                       'resource|http://publications.europa.eu/resource/authority/data-theme/GOVE'
                     ),
                   })}
-                  href={searchDatasetsPagePath(
+                  to={searchDatasetsPagePath(
                     i18n.languages[0],
                     'http://www.w3.org/ns/dcat#theme',
                     'http://publications.europa.eu/resource/authority/data-theme/GOVE'
@@ -129,16 +130,16 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
                   {i18n.t(
                     'resource|http://publications.europa.eu/resource/authority/data-theme/GOVE'
                   )}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   aria-label={i18n.t('pages|startpage|search_datasets_format', {
                     category: i18n.t(
                       'resource|http://publications.europa.eu/resource/authority/data-theme/ENER'
                     ),
                   })}
-                  href={searchDatasetsPagePath(
+                  to={searchDatasetsPagePath(
                     i18n.languages[0],
                     'http://www.w3.org/ns/dcat#theme',
                     'http://publications.europa.eu/resource/authority/data-theme/ENER'
@@ -147,17 +148,17 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
                   {i18n.t(
                     'resource|http://publications.europa.eu/resource/authority/data-theme/ENER'
                   )}
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   aria-label={i18n.t('pages|startpage|search_datasets_format', {
                     category: i18n.t(
                       'resource|http://publications.europa.eu/resource/authority/data-theme/JUST'
                     ),
                   })}
-                  href={searchDatasetsPagePath(
+                  to={searchDatasetsPagePath(
                     i18n.languages[0],
                     'http://www.w3.org/ns/dcat#theme',
                     'http://publications.europa.eu/resource/authority/data-theme/JUST'
@@ -166,17 +167,17 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
                   {i18n.t(
                     'resource|http://publications.europa.eu/resource/authority/data-theme/JUST'
                   )}
-                </a>
+                </Link>
               </li>
               
               <li>
-                <a
+                <Link
                   aria-label={i18n.t('pages|startpage|search_datasets_format', {
                     category: i18n.t(
                       'resource|http://publications.europa.eu/resource/authority/data-theme/HEAL'
                     ),
                   })}
-                  href={searchDatasetsPagePath(
+                  to={searchDatasetsPagePath(
                     i18n.languages[0],
                     'http://www.w3.org/ns/dcat#theme',
                     'http://publications.europa.eu/resource/authority/data-theme/HEAL'
@@ -185,16 +186,16 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
                   {i18n.t(
                     'resource|http://publications.europa.eu/resource/authority/data-theme/HEAL'
                   )}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   aria-label={i18n.t('pages|startpage|search_datasets_format', {
                     category: i18n.t(
                       'resource|http://publications.europa.eu/resource/authority/data-theme/SOCI'
                     ),
                   })}
-                  href={searchDatasetsPagePath(
+                  to={searchDatasetsPagePath(
                     i18n.languages[0],
                     'http://www.w3.org/ns/dcat#theme',
                     'http://publications.europa.eu/resource/authority/data-theme/SOCI'
@@ -203,18 +204,18 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
                   {i18n.t(
                     'resource|http://publications.europa.eu/resource/authority/data-theme/SOCI'
                   )}
-                </a>
+                </Link>
               </li>
 
 
               <li>
-                <a
+                <Link
                   aria-label={i18n.t('pages|startpage|search_datasets_format', {
                     category: i18n.t(
                       'resource|http://publications.europa.eu/resource/authority/data-theme/AGRI'
                     ),
                   })}
-                  href={searchDatasetsPagePath(
+                  to={searchDatasetsPagePath(
                     i18n.languages[0],
                     'http://www.w3.org/ns/dcat#theme',
                     'http://publications.europa.eu/resource/authority/data-theme/AGRI'
@@ -223,18 +224,18 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
                   {i18n.t(
                     'resource|http://publications.europa.eu/resource/authority/data-theme/AGRI'
                   )}
-                </a>
+                </Link>
               </li>
 
 
               <li>
-                <a
+                <Link
                   aria-label={i18n.t('pages|startpage|search_datasets_format', {
                     category: i18n.t(
                       'resource|http://publications.europa.eu/resource/authority/data-theme/TRAN'
                     ),
                   })}
-                  href={searchDatasetsPagePath(
+                  to={searchDatasetsPagePath(
                     i18n.languages[0],
                     'http://www.w3.org/ns/dcat#theme',
                     'http://publications.europa.eu/resource/authority/data-theme/TRAN'
@@ -243,16 +244,16 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
                   {i18n.t(
                     'resource|http://publications.europa.eu/resource/authority/data-theme/TRAN'
                   )}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   aria-label={i18n.t('pages|startpage|search_datasets_format', {
                     category: i18n.t(
                       'resource|http://publications.europa.eu/resource/authority/data-theme/TECH'
                     ),
                   })}
-                  href={searchDatasetsPagePath(
+                  to={searchDatasetsPagePath(
                     i18n.languages[0],
                     'http://www.w3.org/ns/dcat#theme',
                     'http://publications.europa.eu/resource/authority/data-theme/TECH'
@@ -261,7 +262,7 @@ export class CategoriesNav extends React.Component<CategoriesNavProps> {
                   {i18n.t(
                     'resource|http://publications.europa.eu/resource/authority/data-theme/TECH'
                   )}
-                </a>
+                </Link>
               </li>
 
 

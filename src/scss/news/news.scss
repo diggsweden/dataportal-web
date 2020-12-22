@@ -44,6 +44,7 @@
 
                 &:hover {
                     cursor: pointer;
+                    filter: brightness(1.01);
 
                     a {
                         text-decoration: none;
@@ -130,6 +131,7 @@
     ul {
         list-style: none;
         padding: 0px;
+        margin: 0rem;
 
         .loading-msg {
             border-left: none !important;
@@ -171,7 +173,7 @@
 
 // NewsPage
 .news-article {
-    margin-top: $space-32;
+    // margin-top: $space-32;
 
     img {
         max-width: 100%;
@@ -194,7 +196,7 @@
     }
 
     h1 {
-        margin-top: $space-16;
+        margin-top: 0rem;
         margin-bottom: $space-32;
     }
 

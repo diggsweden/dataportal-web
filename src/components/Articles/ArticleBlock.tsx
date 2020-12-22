@@ -1,11 +1,12 @@
-import React, { Component, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import i18n from '../../i18n';
-import { TopImage } from 'assets/TopImage';
 import { EnvSettings } from '../../../config/env/EnvSettings';
-import { useQuery } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/client';
 import { gql } from 'apollo-boost';
 import ChopLines from 'chop-lines';
 import { slugify } from 'utilities/urlHelpers';
+import { Link } from 'react-router-dom';
 let moment = require('moment');
 
 export interface ArticleBlockProps {
@@ -13,32 +14,53 @@ export interface ArticleBlockProps {
   env: EnvSettings;
 }
 
-const lang = 'sv';
-
-const NEWS = gql`
+const NEWS = gql`  
+  query news($siteurl: String!, $lang: String!)  
   {
-    othernews:
-      news(siteurl:"*", lang:"${i18n.languages[0]}", take:3, skip:0){
-        id        
-        heading
-        preamble
-        published
-        modified        
-        body
-        imageUrl
-      }          
-  }
+    news(siteurl:$siteurl,lang:$lang, take:3, skip:0, orderby:"startpublish desc"){
+      id        
+      heading
+      preambleHTML
+      published
+      modified                
+      imageUrl
+    }          
+  }  
 `;
 
-export const ArticleBlock: React.FC<ArticleBlockProps> = () => {
-  const { loading, error, data } = useQuery<{
-    othernews: Array<any>;
-  }>(NEWS);
+/**
+ * Block for rendering newslist-items, in blockformat. Will only render in browser, no SSR.
+ * @param props route props
+ */
+export const ArticleBlock: React.FC<ArticleBlockProps> = (props) => {
+  
+  const [fetchNews,{loading, error, data}] = useLazyQuery<{
+    news: Array<any>;
+  }>(
+    NEWS, 
+    {                  
+      variables: {
+        siteurl: props.env.CONTENTBACKEND_SITEURL,
+        lang: i18n.languages[0]
+      }
+      ,
+    });
 
+  //Skips SSR, We only fetch this when rendering on the browser
+  useEffect(() => {
+    fetchNews();
+  },[]);
+
+  const history = useHistory();
+
+  function handleClick(id:any,heading:any) {
+    history.push(`/${i18n.languages[0]}/${i18n.t('routes|news|path')}/${id}/${slugify(heading)}`);
+  }
+    
   const articleList =
-    data && data.othernews && data.othernews.length > 0 ? data.othernews : [];
+    data && data.news && data.news.length > 0 ? data.news : [];
 
-  if (articleList && articleList.length > 0) {
+  if (!loading && articleList && articleList.length > 0) {
     return (
       <div className="main-container">
         <h2 className="text-3">{i18n.t('pages|articles|articles')}</h2>
@@ -60,13 +82,7 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = () => {
                   return (
                     <li
                       key={index}
-                      onClick={() => {
-                        (window as any).location.href = `/${
-                          i18n.languages[0]
-                        }/${i18n.t('routes|news|path')}/${n.id}/${slugify(
-                          n.heading
-                        )}`;
-                      }}
+                      onClick={() => handleClick(n.id,n.heading)}                      
                     >
                       <div className="news-img">
                         {n.imageUrl && (
@@ -81,20 +97,20 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = () => {
                           {moment(n.published.toString()).format('D MMM YYYY')}
                         </span>
                         <h3>
-                          <a
+                          <Link
                             className="text-4"
-                            href={`/${i18n.languages[0]}/${i18n.t(
+                            to={`/${i18n.languages[0]}/${i18n.t(
                               'routes|news|path'
                             )}/${n.id}/${slugify(n.heading)}`}
                           >
                             {n.heading}
-                          </a>
+                          </Link>
                         </h3>
                         <ChopLines lines={3} lineHeight={27}>
                           <p
                             className="text-5"
                             dangerouslySetInnerHTML={{
-                              __html: n.preamble,
+                              __html: n.preambleHTML,
                             }}
                           />
                         </ChopLines>
@@ -103,17 +119,17 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = () => {
                   );
                 })}
             </ul>
-            <a
-              href={`/${i18n.languages[0]}/${i18n.t('routes|news|path')}`}
+            <Link
+              to={`/${i18n.languages[0]}/${i18n.t('routes|news|path')}`}
               className="text-5"
             >
               {i18n.t('pages|articles|view-all')}
-            </a>
+            </Link>
           </div>
         </div>
       </div>
     );
   } else {
     return <></>;
-  }
+ }
 };

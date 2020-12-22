@@ -14,16 +14,16 @@
   },
   "statistic" : {
     "statistic-header" : "Statistik på dataportalen",
-    "dataset-numbers" : "Skördat data per månad",
+    "dataset-numbers" : "Data per månad",
     "statistic-numbers" : "Portalen i siffror",
     "top-organizations" : "organisationer",
     "top-categories" : "kategorier",
     "top" : "Topp",
     "statistic-link" : "Beskrivning av statistik",
     "graph-screenreader" : "Grafen nedan finns även presenterad i text. Följ länken Beskrivning av statistik",
-    "statistic-page-text" :"Statistiken som visualiseras på startsidan presenteras här i textform. Statistiken gäller skördade datamängder per månad, topp 5 gällande datamängder för organisationer och kategorier.",
+    "statistic-page-text" :"Statistiken som visualiseras på startsidan presenteras här i textform.  Statistiken visar mängden data på Sveriges dataportal per månad, topp 5 gällande datamängder för organisationer och kategorier.",
     "statistic-page-header" : "Statistik",
-    "statistic-page-numberofdatasets" :"Antal datamängder på dataportalen idag: ",
+    "statistic-page-numberofdatasets" :"Antal data på dataportalen idag: ",
     "statistic-page-seotitle" : "Statistik - Sveriges dataportal",
     "statistic-page-link" : "statistik"
   },
@@ -35,8 +35,8 @@
   "search" : {
     "search" : "Sök data",
     "dataset-hits" : "träffar",
-    "concept-hits" : "begrepp",
-    "specification-hits" : "specifikationer",
+    "concept-hits" : "träffar",
+    "specification-hits" : "träffar",
     "next-page" : "Nästa",
     "prev-page" : "Föregående",
     "first-page" : "Första",
@@ -57,11 +57,11 @@
     "datasets" : "datamängder"
   },
   "concepts" : {
-    "search-concept" : "Sök efter begrepp",
+    "search-concept" : "Sök",
     "concepts" : "begrepp"
   },
   "specifications" : {
-    "search-specifications" : "Sök efter specifikationer",
+    "search-specifications" : "Sök",
     "specifications" : "specifikationer"
   },
   "notfoundpage" : {
@@ -82,7 +82,10 @@
     "no_title" : "Ingen titel given",
     "no_data" : "Denna datamängd har inga dataresurser",
     "read_about_api" : "Läs mer om API",
-    "fileformat" : "övrigt filformat"
+    "fileformat" : "övrigt filformat",
+    "rdf" : "Ladda ner som RDF",
+    "view_more" : "Visa mer",
+    "view_less" : "Visa mindre"
   },
   "dataservicepage" : {
     "api" : "Om API"

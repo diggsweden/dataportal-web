@@ -1,3 +1,4 @@
+import i18n from 'i18n';
 import React, { createContext } from 'react';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { SettingsUtil } from '../../../config/env/SettingsUtil';
@@ -9,25 +10,29 @@ export interface EntrystoreProviderProps{
   env: EnvSettings;
   eid: string;
   cid: string;
+  entrystoreUrl: string | 'registrera.oppnadata.se';
 }
 
 export interface ESEntry {   
   env: EnvSettings;  
   entrystore: any;  
   entry:any;  
-  title: string;  
+  title: string;
+  description: string;  
 }
 
 const defaultESEntry: ESEntry = {      
   env: SettingsUtil.getDefault(),
   entrystore: {},
   entry:{},  
-  title: '',  
+  title: '', 
+  description: '',
 };
 
 export const EntrystoreContext = createContext<ESEntry>(
   defaultESEntry
 );
+
 
 /**
  * Provider for entrystore entry, 
@@ -75,12 +80,53 @@ export class EntrystoreProvider extends React.Component<EntrystoreProviderProps,
     }
   }
 
+  /**
+   * Search graph for localized value from meta graph
+   * 
+   * value retrieve order:
+   * 1. exists in sent in lang 
+   * 2. exists in fallback lang (en)
+   * 3. take first
+   * 
+   * @param metadataGraph 
+   * @param prop 
+   * @param lang 
+   */
+  getLocalizedValue(metadataGraph:any, prop:any, lang:string) {
+
+    let val = '';
+    let fallbackLang = 'en';
+
+    const stmts = metadataGraph.find(null, prop);
+    if (stmts.length > 0) {      
+      const obj:any = {};
+      for (let s = 0; s < stmts.length; s++) {
+        obj[stmts[s].getLanguage() || ''] = stmts[s].getValue();
+      }
+
+      if(typeof obj[lang] != "undefined")
+      {        
+        val = obj[lang];
+      }
+      else if(obj[fallbackLang] && fallbackLang != lang)
+      {       
+        val = obj[fallbackLang];
+      }
+      else
+      {        
+        val = Object.entries(obj)[0][1] as string;
+      }
+    }
+
+    return val;
+  };
+
   componentDidMount() {        
     this.addScripts(() => {
       //if we have an ES url, contextID and entryId, try to get a active instance of EntryScape
       if(defaultESEntry.env && defaultESEntry.env.ENTRYSCAPE_DATASETS_PATH && this.props.cid && this.props.eid)
       {      
-        defaultESEntry.entrystore = new EntryStore.EntryStore(defaultESEntry.env.ENTRYSCAPE_DATASETS_PATH? `https://${defaultESEntry.env.ENTRYSCAPE_DATASETS_PATH}/store`: 'https://registrera.oppnadata.se/store');   
+        defaultESEntry.entrystore = new EntryStore.EntryStore(`https://${this.props.entrystoreUrl}/store`);   
         let es = defaultESEntry.entrystore;
 
         var entryURI = es.getEntryURI(this.props.cid, this.props.eid);
@@ -88,11 +134,16 @@ export class EntrystoreProvider extends React.Component<EntrystoreProviderProps,
         //fetch entry from entryscape https://entrystore.org/js/stable/doc/
         es.getEntry(entryURI).then((entry:any) => {        
           defaultESEntry.entry = entry;
-
+          
           let graph = entry.getMetadata();
           
-          defaultESEntry.title = graph.findFirstValue(entry.getResourceURI(), "dcterms:title");                
+          defaultESEntry.title = this.getLocalizedValue(graph,"dcterms:title", i18n.languages[0]);                
           
+          if(!defaultESEntry.title)
+            defaultESEntry.title = this.getLocalizedValue(graph,"http://www.w3.org/2004/02/skos/core#prefLabel", i18n.languages[0]);                
+
+          defaultESEntry.description = this.getLocalizedValue(graph,"dcterms:description", i18n.languages[0]);                
+
           this.setState({
             ...defaultESEntry
           });

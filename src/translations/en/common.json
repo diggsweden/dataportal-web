@@ -1,7 +1,9 @@
 {
   "search-data" : "Search data",
+  "search-dataapi" : "Search data & APIs",
+  "search-concept" : "Search concepts",
+  "search-specs" : "Search specifications",
   "language" : "På svenska",
-
   "contact" : "Contact",
   "beta-text1" : "We are constantly developing Sveriges dataportal. Please send your ",
   "beta-link-text" : "opinions",
@@ -19,5 +21,9 @@
   "logo" : "",
   "seo-title" : "The Swedish dataportal",
   "accessibility-report" : "Accessibility report",
-  "logo-text" : " - Agency for digital government"
+  "logo-text" : " - Agency for digital government",
+  "cookie-text" : "We use cookies on Sweden's data portal to improve your experience of the website. By continuing to browse, you agree that we use cookies.",
+  "cookie-btn" : "I understand",
+  "cookie-link" : "Read more about cookies",
+  "home-text" : "Home"
 }

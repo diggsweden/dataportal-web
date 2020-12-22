@@ -1,11 +1,12 @@
 import React, { Component, useState } from 'react';
 import i18n from '../../i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { gql } from 'apollo-boost';
 import { Loader } from '../Loader';
 import ChopLines from 'chop-lines';
 import { slugify } from 'utilities/urlHelpers';
+import { Link } from 'react-router-dom';
 let moment = require('moment');
 
 export interface ArticleListProps {
@@ -17,24 +18,15 @@ export const ArticleList: React.FC<ArticleListProps> = (props) => {
   moment.locale(i18n.languages[0]);
   const NEWS = gql`
   {
-    news(siteurl:"*", lang:"${i18n.languages[0]}", take:5, skip:0){
+    news(siteurl:"${props.env.CONTENTBACKEND_SITEURL}", lang:"${i18n.languages[0]}", take:50, skip:0, orderby:"startpublish desc"){
       id        
       heading
-      preamble
+      preambleHTML
       published
-      modified      
-      body 
+      modified            
     }
   }
 `;
-
-  // const [bgColor] =
-  //   useState(
-  //     ['#F0EFEE',
-  //     '#F4E0CE',
-  //     '#D6D9D3',
-  //     "#EBC0B8"
-  //     ]);
 
   const { loading, error, data } = useQuery<{ news: Array<any> }>(NEWS);
 
@@ -68,19 +60,19 @@ export const ArticleList: React.FC<ArticleListProps> = (props) => {
                 <span className="text-6">
                   {moment(n.published.toString()).format('D MMM YYYY')}
                 </span>
-                <a
+                <Link
                   className="text-4"
-                  href={`/${i18n.languages[0]}/${i18n.t(
+                  to={`/${i18n.languages[0]}/${i18n.t(
                     'routes|news|path'
                   )}/${n.id}/${slugify(n.heading)}`}
                 >
                   {n.heading}
-                </a>
+                </Link>
                 <ChopLines lines={2} lineHeight={27}>
                   <p
                     className="text-5"
                     dangerouslySetInnerHTML={{
-                      __html: n.preamble,
+                      __html: n.preambleHTML,
                     }}
                   />
                 </ChopLines>

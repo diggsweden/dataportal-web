@@ -1,4 +1,10 @@
-import { Box, SearchIcon, Button, CloseIcon, colorPalette } from '@digg/design-system';
+import {
+  Box,
+  SearchIcon,
+  Button,
+  CloseIcon,
+  colorPalette,
+} from '@digg/design-system';
 import React from 'react';
 import 'url-search-params-polyfill';
 import { ErrorBoundary } from '../../components/ErrorBoundary';
@@ -26,12 +32,13 @@ import { SearchHeader } from 'components/SearchHead';
 import { ESRdfType, ESType } from 'components/Search/EntryScape';
 import i18n from 'i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
-import { PageProps } from '../PageProps'
+import { PageProps } from '../PageProps';
+import { StaticBreadcrumb } from 'components/Breadcrumb';
 
 const MainContent = Box.withComponent('main');
 
 interface SearchProps extends PageProps {
-  activeLink?: string; 
+  activeLink?: string;
 }
 
 export class SearchSpecificationsPage extends React.Component<
@@ -122,18 +129,18 @@ export class SearchSpecificationsPage extends React.Component<
 
     return (
       <QueryParamProvider params={uri}>
-        <SearchProvider          
-          hitSpecifications={{ 
-            "http\://www.w3.org/ns/dx/prof" : {
-              path: `/${i18n.languages[0]}/specifications/`,
-              titleResource: 'dcterms:title',
-              descriptionResource: 'dcterms:description'
-            },
-            "http\://purl.org/dc/terms/Standard" : {
+        <SearchProvider
+          hitSpecifications={{
+            'http://www.w3.org/ns/dx/prof/Profile': {
               path: `/${i18n.languages[0]}/specifications/`,
               titleResource: 'dcterms:title',
               descriptionResource: 'dcterms:description',
-            }
+            },
+            'http://purl.org/dc/terms/Standard': {
+              path: `/${i18n.languages[0]}/specifications/`,
+              titleResource: 'dcterms:title',
+              descriptionResource: 'dcterms:description',
+            },
           }}
           facetSpecification={{
             facets: [
@@ -144,9 +151,14 @@ export class SearchSpecificationsPage extends React.Component<
               },
             ],
           }}
-          entryscapeUrl= {this.props.env.ENTRYSCAPE_SPECS_PATH? `https://${this.props.env.ENTRYSCAPE_SPECS_PATH}/store`: 'https://editera.dataportal.se/store'}
+          entryscapeUrl={
+            this.props.env.ENTRYSCAPE_SPECS_PATH
+              ? `https://${this.props.env.ENTRYSCAPE_SPECS_PATH}/store`
+              : 'https://editera.dataportal.se/store'
+          }
           initRequest={{
             esRdfTypes: [ESRdfType.spec_standard, ESRdfType.spec_profile],
+            language: i18n.languages[0],
             takeFacets: 30,
           }}
         >
@@ -174,21 +186,34 @@ export class SearchSpecificationsPage extends React.Component<
 
             <ErrorBoundary>
               <MainContent id="main" flex="1 1 auto">
+                <StaticBreadcrumb
+                  env={this.props.env}
+                  staticPaths={[
+                    {
+                      path: `/${i18n.languages[0]}/${i18n.t(
+                        'routes|specifications|path'
+                      )}`,
+                      title: i18n.t('routes|specifications|title'),
+                    },
+                  ]}
+                />
                 <SearchContext.Consumer>
-                  {search => (
+                  {(search) => (
                     <div className="wpb_wrapper">
                       <div className="main-container">
-                        <h1 className="text-2 search-header">
-                          {i18n.t('common|search-data')}
-                        </h1>
-
+                        <div className="row">
+                          <h1 className="text-2 search-header">
+                            {i18n.t('common|search-specs')}
+                          </h1>
+                          <span className="text-6-bold beta_badge--lg">BETA</span>
+                        </div>
                         <SearchHeader
                           ref={this.headerRef}
                           activeLink={this.state.activeLink}
                         />
 
                         <form
-                          onSubmit={event => {
+                          onSubmit={(event) => {
                             event.preventDefault();
                             search
                               .set({
@@ -228,7 +253,10 @@ export class SearchSpecificationsPage extends React.Component<
                                 'pages|concept|search-concept'
                               )}
                             >
-                              <SearchIcon color={colorPalette.white} width={[25]} />
+                              <SearchIcon
+                                color={colorPalette.white}
+                                width={[25]}
+                              />
                             </button>
                             {search.loadingFacets && <Loader />}
                           </div>
@@ -300,7 +328,7 @@ export class SearchSpecificationsPage extends React.Component<
                                                         });
                                                     });
                                                 }}
-                                              >
+                                              >                                                
                                                 {facetValue.title ||
                                                   facetValue.resource}{' '}
                                                 ({facetValue.count}){' '}
@@ -324,7 +352,9 @@ export class SearchSpecificationsPage extends React.Component<
                                         >
                                           {search.loadingFacets
                                             ? `${i18n.t('common|loading')}...`
-                                            : `${i18n.t('common|load-more')}...`}
+                                            : `${i18n.t(
+                                                'common|load-more'
+                                              )}...`}
                                         </Button>
                                       )}
                                     </div>
@@ -378,8 +408,7 @@ export class SearchSpecificationsPage extends React.Component<
                                 });
                             }}
                           >
-                            {i18n.t('common|clear-filters')}
-                            (
+                            {i18n.t('common|clear-filters')}(
                             {search.request &&
                               search.request.facetValues &&
                               search.request.facetValues.length}
@@ -390,14 +419,15 @@ export class SearchSpecificationsPage extends React.Component<
                         <noscript>{i18n.t('common|no-js-text')}</noscript>
 
                         <div id="search-result" className="search-result">
-                          <h2 className="text-4 search-result-header">                           
-                              {search.loadingHits &&
-                                 `${i18n.t('common|loading')}...`
-                              }
-                              {!search.loadingHits && search.result && (search.result.count || 0) >= 0 &&                                
-                                `${search.result.count} ${i18n.t('pages|search|specification-hits')}`                                
-                              }                              
-                              {' '}                                
+                          <h2 className="text-4 search-result-header">
+                            {search.loadingHits &&
+                              `${i18n.t('common|loading')}...`}
+                            {!search.loadingHits &&
+                              search.result &&
+                              (search.result.count || 0) >= 0 &&
+                              `${search.result.count} ${i18n.t(
+                                'pages|search|specification-hits'
+                              )}`}{' '}
                           </h2>
                           <div>
                             <ul className="search-result-list">
@@ -407,10 +437,18 @@ export class SearchSpecificationsPage extends React.Component<
                                     className="specification search-result-list-item"
                                     key={index}
                                     onClick={() => {
-                                      (window as any).location.href = hit.url;
+                                      (window as any).location.href =
+                                        hit.url +
+                                        `#ref=${
+                                          window ? window.location.search : ''
+                                        }`;
                                     }}
                                   >
-                                    <a href={`${hit.url}`}>
+                                    <a
+                                      href={`${hit.url}#ref=${
+                                        window ? window.location.search : ''
+                                      }`}
+                                    >
                                       <h3 className="text-3">{hit.title}</h3>
                                     </a>
                                     <p className="text-6">{hit.description}</p>
@@ -439,7 +477,7 @@ export class SearchSpecificationsPage extends React.Component<
                                     this.searchFocus();
                                   }}
                                 >
-                            {i18n.t('pages|search|first-page')}
+                                  {i18n.t('pages|search|first-page')}
                                 </button>
                               )}
                             </div>

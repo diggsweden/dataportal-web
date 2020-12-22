@@ -15,6 +15,7 @@ import { ArticleList } from '../../components/Articles'
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { SettingsContext } from 'components/SettingsProvider';
 import { PageProps } from '../PageProps'
+import { StaticBreadcrumb } from 'components/Breadcrumb';
 
 const MainContent = Box.withComponent('main');
 
@@ -68,6 +69,12 @@ export class ArticleListPage extends React.Component<PageProps, any> {
 
             <ErrorBoundary>
               <MainContent flex="1 1 auto">
+                <StaticBreadcrumb env={settings.env} staticPaths={[
+                  {
+                    path: `/${i18n.languages[0]}/${i18n.t('routes|news|path')}`,
+                    title: i18n.t('routes|news|title')
+                  }
+                ]} />
                 <div className="main-container">
                   <h1 className="text-header text-1">{i18n.t('pages|articles|articles')}</h1>
                   <div className="content">

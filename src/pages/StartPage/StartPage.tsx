@@ -93,7 +93,10 @@ export class StartPage extends React.Component<PageProps, any> {
 
                   <div className="statistic">
                     <div className="statistic-header">
-                      <h2 className="text-3">Portalen i siffror</h2>
+                      <h2 className="text-3">
+                        {' '}
+                        {i18n.t('pages|statistic|statistic-numbers')}
+                      </h2>
                     </div>
 
                     <div className="statistic-wrapper">

@@ -28,6 +28,7 @@ export interface SearchContextData {
   updateFacetStats: () => Promise<void>;
   facetSelected: (key:string,value:string) => boolean;
   facetHasSelectedValues: (key:string) => boolean;
+  getFacetValueTitle: (key:string,valueKey:string) => string | null;
   doSearch: (appendHits?:Boolean, setStateToLocation?:Boolean, reSortOnDone?:Boolean) => Promise<void>;     
   setStateToLocation: () => void;     
   sortAllFacets: (excludeFacet?:string) => void;
@@ -54,6 +55,7 @@ const defaultSettings:SearchContextData = {
   updateFacetStats: () => new Promise<void>(resolve => {}),
   facetSelected: () => false,
   facetHasSelectedValues: () => false,
+  getFacetValueTitle: () => '',
   doSearch: () => new Promise<void>(resolve => {}),   
   setStateToLocation: () => {},   
   sortAllFacets: () => {},
@@ -460,6 +462,35 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
     }    
     
     return false;
+};
+
+/**
+ * Get title for facetvalue in facet with key
+ */
+getFacetValueTitle = (key:string,valueKey:string) => {    
+  var title = null;  
+
+  if(this.state.allFacets)
+  {                       
+    var existing = Object.entries(this.state.allFacets)
+      .filter(([v,f]) => {return v == key});
+
+    //existed
+    if(existing && existing.length > 0)
+    {     
+      if(existing && existing.length > 0)
+      {
+        existing.forEach(([facKey,facValue]) => {
+          facValue.facetValues && facValue.facetValues.forEach((f) => {
+            if(f.resource == valueKey)
+              title = f.title || '';
+          })
+        });
+      }
+    }
+  }
+  
+  return title;
 };
 
   /**
@@ -926,6 +957,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
       updateFacetStats: this.mergeAllFacetsAndResult,
       facetSelected: this.facetSelected,
       facetHasSelectedValues: this.facetHasSelectedValues,
+      getFacetValueTitle: this.getFacetValueTitle,
       sortAllFacets: this.sortAllFacets,
       request: this.state.request,
       result: this.state.result,

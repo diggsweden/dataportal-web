@@ -5,13 +5,18 @@ This is the main repository for the dataportal.se web client.
 
 ## Prerequisites
 
-- node 10.16.3
+- node 10.19.0
 - yarn
 
 ## EntryScape
 
 The Swedish data portal is tightly integrated with the EntryScape product suite from MetaSolutions AB, https://entryscape.com/en/.
 EntryScape Registry is a solution for managing a registry of data catalogs and related information.
+
+## Federerat innehåll
+
+The Swedish Dataportal consumes news and content via a GraphQL proxy. The content is 
+rendered with Apollo GraphQl and React. The proxy is not published on Github.
 
 ## Development
 
@@ -50,6 +55,7 @@ This will generate static files in the dist directory. `dist/server` for the ser
 - [React](https://reactjs.org/) for UI
 - [Emotion](https://emotion.sh) for styling
 - [React Router](https://reacttraining.com/react-router/) for routing
+- [Apollo GraphQL](https://www.apollographql.com/) for federerated content
 
 ## Notes
 

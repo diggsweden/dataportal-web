@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'scss/statistic/statistic.scss';
 import i18n from 'i18n';
 import { StatisticListItemHistory } from '../StatisticListItem';
@@ -23,68 +23,51 @@ interface StatisticState {
   screenWidth: number;
 }
 
-//Statistic
-export class StatisticGraphNumbers extends React.Component<
-  StatisticProps,
-  StatisticState
-> {
-  constructor(props: StatisticProps) {
-    super(props);
-    this.state = {
-      x: [],
-      y: [],
-      xList: [],
-      yList: [],
+export const StatisticGraphNumbers: React.FC<StatisticProps> = (props) => {
 
-      toSort: [],
-      topItemsToShow: 12,
-      screenWidth: 1080,
-    };
-  }
+  const [stats, setStats] = useState<StatisticState>({
+    x: [],
+    y: [],
+    xList: [],
+    yList: [],
+    toSort: [],
+    topItemsToShow: 12,
+    screenWidth: 1080,
+  });
 
-  updateDimensions() {
-    let current = -1;
-    if (typeof window !== 'undefined') {
-      current = window.innerWidth;
-    }
-    this.setState({ screenWidth: current });
-  }
-
-  componentWillMount() {
-
+  useEffect(() => {
     if (typeof fetch !== 'undefined') {
-      fetch(
-        this.props.env.ENTRYSCAPE_HISTORY_STATS_URL
-          ? this.props.env.ENTRYSCAPE_HISTORY_STATS_URL
-          : 'https://registrera.oppnadata.se/stats/historyData.json'
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          let list = [];
-
-          console.log(data)
-
-          for (let i = 0; i < data.length; i++) {
-            let item = {
-              x: data[i].x.toString().substring(0, 7),
-              y: data[i].y,
-            };
-
-            if (i < 12) {
-              this.state.toSort.push(item);
-              // list.push(item);
+        fetch(
+          props.env.ENTRYSCAPE_HISTORY_STATS_URL
+            ? props.env.ENTRYSCAPE_HISTORY_STATS_URL
+            : 'https://registrera.oppnadata.se/stats/historyData.json'
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            let list = [];
+  
+            for (let i = 0; i < data.length; i++) {
+              let item = {
+                x: data[i].x.toString().substring(0, 7),
+                y: data[i].y,
+              };
+  
+              if (i < 12) {
+                stats.toSort.push(item);
+                // list.push(item);
+              }
             }
-          }
-
-          this.setState({
-            xList: this.state.toSort.map((item: any) => item.x),
-            yList: this.state.toSort.map((item: any) => item.y),
+           
+            setStats(prev => { 
+              return {
+                ...prev, 
+                xList: stats.toSort.map((item: any) => item.x),
+                yList: stats.toSort.map((item: any) => item.y),
+              }});
           });
-        });
     }
-  }
-
-  render() {
+  },[])
+  
     if (isIE) {
       return <></>;
     } else {
@@ -96,15 +79,15 @@ export class StatisticGraphNumbers extends React.Component<
               <h2 className="text-4">{i18n.t('pages|statistic|dataset-numbers')}</h2>
               <div className="top-list">
                 <ol className="text-5-bold">
-                  {this.state.yList &&
-                    this.state.yList
-                      .slice(0, this.state.topItemsToShow)
+                  {stats.yList &&
+                    stats.yList
+                      .slice(0, stats.topItemsToShow)
                       .map((item: any, index: any) => {
                         return (
                           <StatisticListItemHistory
                             key={'cat-' + index}
                             listText={
-                              this.state.xList && this.state.xList[index]
+                              stats.xList && stats.xList[index]
                             }
                             listNumber={item}
                           />
@@ -115,7 +98,6 @@ export class StatisticGraphNumbers extends React.Component<
             </div>
           </div>
         </div>
-      );
-    }
+      );    
   }
 }

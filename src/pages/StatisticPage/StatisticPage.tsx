@@ -18,6 +18,7 @@ import { StatisticGraphNumbers } from '../../components/StatisticGraphNumbers';
 import { Statistic } from '../../components/Statistic';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { StatisticNumbersDatasets } from 'components/StatisticNumbers';
+import { StaticBreadcrumb } from 'components/Breadcrumb';
 
 const MainContent = Box.withComponent('main');
 
@@ -73,6 +74,12 @@ export class StatisticPage extends React.Component<PageProps> {
               <Header ref={this.headerRef} />
               <ErrorBoundary>
                 <MainContent flex="1 1 auto">
+                <StaticBreadcrumb env={settings.env} staticPaths={[
+                  {
+                    path: `/${i18n.languages[0]}/${i18n.t('routes|statistics|path')}`,
+                    title: i18n.t('routes|statistics|title')
+                  }
+                ]} />
                   <div className="main-container">
                     <h1 className="text-header text-1">
                       {i18n.t('pages|statistic|statistic-page-header')}{' '}

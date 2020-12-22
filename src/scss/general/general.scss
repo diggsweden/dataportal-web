@@ -26,7 +26,6 @@
     }
 }
 
-
 //For screenreaders
 .screen-reader {
     position: absolute;
@@ -35,6 +34,48 @@
     width: 1px;
     height: 1px;
     overflow: hidden;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.beta_badge{
+    color: $white !important;
+    margin-left: $space-8;
+    padding:0.03rem 0.20rem;
+    background-color: $brown100;
+    border-radius: 3px;
+}
+.beta_badge--lg{
+    color: $white !important;
+    margin-left: $space-16;
+    padding:0.03rem 0.20rem;
+    background-color: $brown100;
+    border-radius: 3px;
+    margin-bottom: 1.125rem;
+    @media screen and (max-width: 37.5rem) {
+        margin-bottom: 0rem;
+    }
+
+}
+
+.beta_badge--xl{
+    display: block;
+    color: $white !important;
+    padding:0.03rem 0.20rem;
+    background-color: $brown100;
+    border-radius: 3px;
+    margin-bottom: $space-16;
+    width: fit-content;
+
 }
 
 //Focus for most elements
@@ -56,29 +97,6 @@ html select:focus {
 .no-focus-outline textarea:focus,
 .no-focus-outline select:focus {
     outline: none !important;
-}
-
-//Cookie banner, base from designsystem.
-.cookie-banner {
-    color: $black100;
-
-    button {
-        &:focus {
-            outline: $focus-style !important;
-            outline-offset: $focus-offset !important;
-            background-color: $green-hover;
-            border-color: $green-hover;
-        }
-    }
-
-    a {
-        color: $black100;
-
-        &:focus {
-            outline: $focus-style;
-            outline-offset: $focus-offset;
-        }
-    }
 }
 
 //Skip to content without js.

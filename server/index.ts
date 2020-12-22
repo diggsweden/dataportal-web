@@ -8,12 +8,17 @@ import { promisify } from 'util';
 import zlib from 'zlib';
 import { renderer, RenderResponseProfileItem } from './renderer';
 import { getSitemap } from './SiteMap'
+import { renderToNodeStream } from 'react-dom/server';
+import { createElement } from 'react';
+import * as basicAuth from 'express-basic-auth'
 var csp = require('simple-csp');
+import i18n from "i18next";
+
 const app = express();
 
 const cwd = process.cwd();
 app.set('port', process.env.PORT || 80);
-app.set('basic_auth', process.env.BASIC_AUTH || false);
+app.set('basic_auth', true)//process.env.BASIC_AUTH || false);
 
 app.use(compression()); //makes sure we use gzip
 app.use(helmet()); //express hardening lib
@@ -74,23 +79,44 @@ app.use('/', function(req, res, done) {
   done();
 });
 
+//simple basic auth for some environments
+app.use(function(req,res, next)
+{
+  var host = req.get('Host');
+  if(host === 'digg-test-dataportal.azurewebsites.net') {
+   basicAuth({
+      users: { 'digg': 'opendata' },
+      challenge: true,
+      realm: 'digg-test-dataportal.azurewebsites.net',
+    })(req, res, next);
+  }
+  else
+    next();
+});
+
 app.use(express.json());
 
 app.use(function forceLiveDomain(req, res, next) {
   var host = req.get('Host');
+  var origUrl = req.originalUrl || '';
+
   if (host === 'beta.dataportal.se' || host === 'dataportal.se') {
-    return res.redirect(301, 'https://www.dataportal.se' + req.originalUrl);
+    return res.redirect(301, 'https://www.dataportal.se' + origUrl);
   }
-  if (host === 'oppnadata.se' || 
+  if (!origUrl.includes("/.well-known/acme-challenge/") &&
+      (
+      host === 'oppnadata.se' || 
       host === 'xn--ppnadata-m4a.se'|| 
       host === 'ckan.xn--ppnadata-m4a.se' || 
       host === 'www.xn--ppnadata-m4a.se' || 
       host === 'ckan.oppnadata.se' || 
       host === 'www.oppnadata.se' ||
-      host === 'vidareutnyttjande.se') {
+      host === 'vidareutnyttjande.se'
+      )
+    ) {
     return res.redirect(301, 'https://www.dataportal.se/oppnadata');
   }
-  if (host === 'oppnadata.local:3003') {
+  if (!origUrl.includes("/.well-known/acme-challenge/") && host === 'oppnadata.local:3003') {
     return res.redirect(301, 'http://localhost:3003/oppnadata');
   }
   return next();
@@ -124,12 +150,18 @@ app.get(['/robots.txt','/google*.html','/favicon.ico'], async (req, res) => {
   res.sendFile(path.join(cwd, req.path));
 });
 
+//manifest.json
+app.get(['/dist/client/js/manifest.json'], async (req, res) => {  
+  res.sendFile(path.join(cwd, req.path));
+});
+
 //Acme-challange
 app.get(['/.well-known/acme-challenge/*'], async (req, res) => {  
   res.sendFile(path.join(cwd, req.path));
 });
 
-app.get('*', async (req, res) => {
+app.get('*', async (req, res) => {  
+
   const host = req.hostname;
   const url = req.url;
 
@@ -138,7 +170,7 @@ app.get('*', async (req, res) => {
   let spinner = ora().start(`[___] ${url} Rendering...`);
 
   try {
-    const start = Date.now();
+    const start = Date.now();    
 
     const result = await renderer(
       host,

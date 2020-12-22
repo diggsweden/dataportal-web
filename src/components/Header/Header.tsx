@@ -16,6 +16,7 @@ import { skipToContent } from '../SkipToContent';
 import i18n from 'i18n';
 import 'scss/header/header.scss';
 import 'scss/general/general.scss';
+import { SettingsContext } from 'components/SettingsProvider';
 
 const hasWindow = typeof window !== 'undefined';
 
@@ -40,96 +41,102 @@ export class Header extends React.Component<HeaderProps> {
     return false;
   }
 
-  render() {
-    console.log(this.props.activeLink)
+  render() {       
     return (
       <>
         <header>
-          <InnerBox display="flex" justifyContent="center">
-            <div className="beta-banner">
-              <p className="text-6">
-                {i18n.t('common|beta-text1')}{' '}
-                <a
-                  className="text-6-link"
-                  target="_blank"
-                  href="https://webropol.com/s/beta-sveriges-dataportal"
-                  rel="noreferrer"
-                >
-                  {i18n.t('common|beta-link-text')}
-                </a>
-                {i18n.t('common|beta-text2')}
-              </p>
-            </div>
-          </InnerBox>
-
           <InnerBox paddingY={0} paddingX={2}>
             <Container>
               <Box className="header-box">
                 <EventEffect outline noHover>
                   {({ className }) => (
-                    <a
-                      href={`/${i18n.languages[0]}`}
+                    <Link
+                      to={`/${i18n.languages[0]}`}
                       aria-label={i18n.t('common|logo-title')}
-                      className={'dataportal-logo'}
+                      className={'dataportal-logo'}                      
                     >
                       <Box>
                         <div className="logo-box">
                           <DataportalLogo />
                         </div>
                       </Box>
-                    </a>
+                    </Link>
                   )}
                 </EventEffect>
 
+                
                 <nav className="header-links">
-                  <a
-                    className={
-                      'header-link ' +
-                      (this.props.activeLink == 'search' ||
-                      this.props.activeLink == 'terms' ||
-                      this.props.activeLink == 'specifications'
-                        ? 'active'
-                        : '')
-                    }
-                    href={`/${i18n.languages[0]}/${i18n.t(
-                      'routes|datasets|path'
-                    )}?q=&f=`}
-                  >
-                    {i18n.t('common|search-data')}
-                  </a>
+                  <Link
+                        className={
+                          'header-link ' +
+                          (this.props.activeLink == 'search' ||
+                          this.props.activeLink == 'terms' ||
+                          this.props.activeLink == 'specifications'
+                            ? 'active'
+                            : '')
+                        }
+                        to={`/${i18n.languages[0]}/${i18n.t(
+                          'routes|datasets|path'
+                        )}?q=&f=`}
+                      >
+                        {i18n.t('common|search-data')}
+                      </Link>
 
-                  <a
-                    href={`/${i18n.languages[0]}/${i18n.t('routes|news|path')}`}
-                    className={
-                      'header-link ' +
-                      (this.props.activeLink == 'artiklar' ? 'active' : '') +
-                      (i18n.t('common|language').includes('English')
-                        ? ''
-                        : ' no-en')
-                    }
-                  >
-                    {i18n.t('pages|articles|articles')}
-                  </a>
-
-                  {/* <a
-                    href={`/${i18n.languages[0]}/${i18n.t(
-                      'routes|projects|path'
-                    )}`}
-                    className={
-                      'header-link ' +
-                      (this.props.activeLink == 'projects' ? 'active' : '') +
-                      (i18n.t('common|language').includes('English')
-                        ? ''
-                        : ' no-en')
-                    }
-                  >
-                    {i18n.t('routes|projects|title')}
-                  </a> */}
-
-                  <a
+                      <Link
+                        to={`/${i18n.languages[0]}/${i18n.t(
+                          'routes|news|path'
+                        )}`}
+                        className={
+                          'header-link ' +
+                          (this.props.activeLink == 'artiklar'
+                            ? 'active'
+                            : '') +
+                          (i18n.t('common|language').includes('English')
+                            ? ''
+                            : ' no-en')
+                        }
+                      >
+                        {i18n.t('pages|articles|articles')}
+                      </Link>  
+                <SettingsContext.Consumer>
+                  {(settings) => (               
+                    <>                                                                    
+                      {settings.mainmenu &&
+                        settings.mainmenu[0] &&
+                        settings.mainmenu[0].children &&
+                        settings.mainmenu[0].children
+                          ?.sort(
+                            (a, b) =>
+                              parseInt(a.data.indexOrder + '0') -
+                              parseInt(b.data.indexOrder + '0')
+                          )
+                          .map((m, i) => {                                           
+                          if (m && m.data && m.data.connectedContent) {
+                            return (
+                              <Link
+                                key={i}
+                                className={
+                                  'header-link ' +
+                                  (this.props.activeLink == 'Om oss' ||
+                                  this.props.activeLink == 'About us'
+                                    ? 'active'
+                                    : '')
+                                }
+                                to={`/${i18n.languages[0]}${m.data.urlsegment}`}
+                              >
+                                {m.data.title}
+                              </Link>
+                            );
+                          }
+                          return;
+                        })}            
+                      </>         
+                  )}
+                </SettingsContext.Consumer>
+                <a                        
                     className="header-link header-link--lang"
                     href={
-                      i18n.t('common|language').includes('English')
+                      i18n.language == "sv"
                         ? '/en'
                         : '/sv'
                     }

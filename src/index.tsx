@@ -11,13 +11,11 @@ import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/core';
 import { GlobalStyles } from './GlobalStyles';
 import { SettingsProvider } from './components/SettingsProvider';
-import './i18n';
-import { ApolloProvider } from '@apollo/react-hooks'
-import { ApolloClient } from 'apollo-client'
-import { createHttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { ApolloProvider } from '@apollo/client'
+import { createInstance, MatomoProvider } from '@datapunt/matomo-tracker-react';
 import { SettingsUtil } from "../config/env/SettingsUtil";
 import 'isomorphic-unfetch'
+import { createApolloClient } from '../shared/graphql/client';
 
 import 'scss/general/general.scss';
 import 'scss/general/typography.scss';
@@ -36,9 +34,14 @@ import 'scss/highlight/highlight.scss';
 import 'scss/news/news.scss';
 import 'scss/project/projectlist.scss';
 import 'scss/project/project.scss';
+import 'scss/breadcrumb/breadcrumb.scss';
+import 'scss/cookiebanner/cookiebanner.scss';
 
 
 import 'scss/redirectpage/redirectpage.scss';
+import fetch from 'node-fetch';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n';
 
 const emotionIds = (window as any).__EMOTION_IDS__ || null;
 
@@ -46,43 +49,43 @@ if (emotionIds) {
   hydrate(emotionIds);
 }
 
-const serverState = (window as any).__DATA__ || null;
+const serverState = (window as any).__APOLLO_STATE__ || null;
 const cache = createCache();
-const renderMethod = serverState != null ? ReactDOM.hydrate : ReactDOM.render;
-
 const env = SettingsUtil.create(typeof window !== 'undefined'? window.location.href : '');
 
-const link = createHttpLink({  
-  fetch: fetch as any,
-  uri:env.CONTENTBACKEND_GRAPHAPI,
-  credentials: 'same-origin'
-});
+const client = createApolloClient({ 
+  serverState: serverState, 
+  fetch: fetch,  
+  ssrForceFetchDelay: 100,
+  backendUrl: env.CONTENTBACKEND_GRAPHAPI });
 
-const client = new ApolloClient({
-  link,
-  cache: new InMemoryCache()
-});
-
-function render() {
-  return renderMethod(   
+ReactDOM.hydrate(
+  <I18nextProvider i18n={i18n}>
     <ApolloProvider client={client}>
       <CacheProvider value={cache}>
-        <GlobalStyles theme={themes.default} />
-        <ThemeProvider theme={themes.opendata}>
-          <HelmetProvider>       
-            <LocalStoreProvider>        
-              <SettingsProvider applicationUrl={typeof window !== 'undefined'? window.location.href : ''}>
-                <BrowserRouter>
-                  <Routes />
-                </BrowserRouter>
-              </SettingsProvider>                            
-            </LocalStoreProvider>      
-          </HelmetProvider>
-        </ThemeProvider>
+        <SettingsProvider applicationUrl={typeof window !== 'undefined'? window.location.href : ''}>
+          <MatomoProvider
+                  value={createInstance({
+                    urlBase: 'https://webbanalys.digg.se',
+                    siteId: env.MATOMO_SITEID > 0
+                      ? env.MATOMO_SITEID
+                      : -1,
+                  })}
+                >
+              <GlobalStyles theme={themes.default} />
+              <ThemeProvider theme={themes.opendata}>
+                <HelmetProvider>       
+                  <LocalStoreProvider>                    
+                      <BrowserRouter>
+                        <Routes />
+                      </BrowserRouter>            
+                  </LocalStoreProvider>      
+                </HelmetProvider>
+              </ThemeProvider>
+            </MatomoProvider>
+          </SettingsProvider>                            
       </CacheProvider>
-    </ApolloProvider> ,  
-    document.querySelector('#root')
-  );
-}
-
-render();
+    </ApolloProvider>
+  </I18nextProvider> ,  
+  document.getElementById('root')
+);

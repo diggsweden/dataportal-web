@@ -23,5 +23,7 @@ export abstract class EnvSettings {
 
   abstract CANONICAL_URL: string;
 
+  abstract MATOMO_SITEID: number;
+
   abstract envName: string;
 }

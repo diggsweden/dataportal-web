@@ -16,8 +16,12 @@ import { Loader } from '../../components/Loader';
 import i18n from 'i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { slugify } from 'utilities/urlHelpers';
-import { EntrystoreProvider, EntrystoreContext } from '../../components/EntrystoreProvider'
-import { PageProps } from '../PageProps'
+import {
+  EntrystoreProvider,
+  EntrystoreContext,
+} from '../../components/EntrystoreProvider';
+import { PageProps } from '../PageProps';
+import { StaticBreadcrumb } from 'components/Breadcrumb';
 
 const MainContent = Box.withComponent('main');
 
@@ -27,11 +31,12 @@ export class SpecificationPage extends React.Component<
 > {
   private headerRef: React.RefObject<Header>;
   private postscribe: any;
+  private referredSearch: string = `/${i18n.languages[0]}/${i18n.t('routes|specifications|path')}/?q=`; 
 
   constructor(props: PageProps) {
     super(props);
     this.headerRef = React.createRef();
-    this.setFocus = this.setFocus.bind(this);    
+    this.setFocus = this.setFocus.bind(this);
   }
 
   /**
@@ -39,6 +44,19 @@ export class SpecificationPage extends React.Component<
    * or else blocks wont have access to DOM
    */
   componentDidMount() {
+
+    //we need to reload the page when using the back/forward buttons to a blocks rendered page
+    if (typeof window !== 'undefined') {      
+
+      //check if reffereing search params is set to hash
+      if(window.location && window.location.hash && window.location.hash.includes("ref=?"))
+        this.referredSearch = `/${i18n.languages[0]}/${i18n.t('routes|specifications|path')}/?${window.location.hash.split("ref=?")[1]}`;
+
+      window.onpopstate = ((e:any) => {        
+        window.location.reload();
+      })
+    }
+
     this.addScripts();
   }
 
@@ -48,15 +66,18 @@ export class SpecificationPage extends React.Component<
 
       this.postscribe = (window as any).postscribe;
 
-      if(this.props.match.params.eid && this.props.match.params.cid)
-      {
+      if (this.props.match.params.eid && this.props.match.params.cid) {
         this.postscribe(
           '#scriptsPlaceholder',
 
           `
           <script>
             var __entryscape_plugin_config = {
-              entrystore_base: 'https:\/\/${this.props.env.ENTRYSCAPE_SPECS_PATH? this.props.env.ENTRYSCAPE_SPECS_PATH : 'editera.dataportal.se'}\/store'            
+              entrystore_base: 'https:\/\/${
+                this.props.env.ENTRYSCAPE_SPECS_PATH
+                  ? this.props.env.ENTRYSCAPE_SPECS_PATH
+                  : 'editera.dataportal.se'
+              }\/store'            
             };
           </script>
 
@@ -66,7 +87,11 @@ export class SpecificationPage extends React.Component<
             page_language: '${i18n.languages[0]}',
             entry: '${this.props.match.params.eid}', 
             context: '${this.props.match.params.cid}',
-            entrystore: 'https://${this.props.env.ENTRYSCAPE_SPECS_PATH? this.props.env.ENTRYSCAPE_SPECS_PATH : 'editera.dataportal.se'}/store',
+            entrystore: 'https://${
+              this.props.env.ENTRYSCAPE_SPECS_PATH
+                ? this.props.env.ENTRYSCAPE_SPECS_PATH
+                : 'editera.dataportal.se'
+            }/store',
             clicks: {
               specification: 'details.html',
               specifications: 'index.html',
@@ -78,8 +103,16 @@ export class SpecificationPage extends React.Component<
             itemstore: {
               bundles: [
                 'dcat',
-                'https://${this.props.env.ENTRYSCAPE_SPECS_PATH? this.props.env.ENTRYSCAPE_SPECS_PATH : 'editera.dataportal.se'}/theme/templates/adms.json',
-                'https://${this.props.env.ENTRYSCAPE_SPECS_PATH? this.props.env.ENTRYSCAPE_SPECS_PATH : 'editera.dataportal.se'}/theme/templates/prof.json',
+                'https://${
+                  this.props.env.ENTRYSCAPE_SPECS_PATH
+                    ? this.props.env.ENTRYSCAPE_SPECS_PATH
+                    : 'editera.dataportal.se'
+                }/theme/templates/adms.json',
+                'https://${
+                  this.props.env.ENTRYSCAPE_SPECS_PATH
+                    ? this.props.env.ENTRYSCAPE_SPECS_PATH
+                    : 'editera.dataportal.se'
+                }/theme/templates/prof.json',
               ],
             },
             collections: [
@@ -112,18 +145,18 @@ export class SpecificationPage extends React.Component<
                   '{{ text content="\${dcterms:description}" }}',
               },
               {
-                block: 'resourceDescriptors',
+                block: 'resourceDescriptors2',
                 extends: 'list',
                 relation: 'prof:hasResource',
                 template: 'prof:ResourceDescriptor',
                 expandTooltip: 'Mer information',
                 unexpandTooltip: 'Mindre information',
-                listbody: '<div class="formats">{{body}}</div>',
+                listbody: '<div class="specification__resource--body">{{body}}</div>',
                 listplaceholder: '<div class="alert alert-info" role="alert">Denna specifikation har inga resurser.</div>',
-                rowhead: '<a target="_blank" class="float-right btn btn-sm btn-default primaryBtn" href="{{resourceURI}}">Gå till resurs</a>' +
-                  '<h2>{{text}}</h2>' +
-                  '{{prop "prof:hasRole" render="label"}}' +
-                  '<div class="esbDescription">{{ text content="\${skos:definition}" }}</div>',
+                rowhead:'<span class="specification__resource--header text-4">{{text}}</span>' + 
+                  '<span class="specification__resource--type text-5">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
+                  '<div class="specification__resource--description text-5 esbDescription">{{ text content="\${skos:definition}" }}</div>' +
+                  '<a target="_blank" class="specification__resource--downloadlink text-5" href="{{resourceURI}}">Ladda ner {{prop "prof:hasRole" class="type" render="label"}}</a>',
               },
               {
                 block: 'indexLink',
@@ -133,13 +166,16 @@ export class SpecificationPage extends React.Component<
                   '</a>',
               },
             ],
-
           };
           </script>
-          <script src="${this.props.env.ENTRYSCAPE_BLOCKS_URL? this.props.env.ENTRYSCAPE_BLOCKS_URL : 'https://dataportal.azureedge.net/cdn/blocks.0.18.2.app.js'}"></script>                
+          <script src="${
+            this.props.env.ENTRYSCAPE_BLOCKS_URL
+              ? this.props.env.ENTRYSCAPE_BLOCKS_URL
+              : 'https://dataportal.azureedge.net/cdn/blocks.0.18.2.app.js'
+          }"></script>                
           `,
           {
-            done: function() {},
+            done: function () {},
           }
         );
       }
@@ -157,18 +193,32 @@ export class SpecificationPage extends React.Component<
     let uri = new URLSearchParams(location.search);
 
     return (
-      <EntrystoreProvider env={this.props.env} cid={this.props.match.params.cid} eid={this.props.match.params.eid}>
-        <EntrystoreContext.Consumer>        
-          {entry => (
+      <EntrystoreProvider
+        env={this.props.env}
+        cid={this.props.match.params.cid}
+        eid={this.props.match.params.eid}
+        entrystoreUrl={this.props.env.ENTRYSCAPE_SPECS_PATH}
+      >
+        <EntrystoreContext.Consumer>
+          {(entry) => (
             <QueryParamProvider params={uri}>
               <PageMetadata
-                seoTitle="Datamängd - Sveriges dataportal"
+                seoTitle={`${entry.title} - Sveriges dataportal`}
                 seoDescription=""
                 seoImageUrl=""
                 seoKeywords=""
                 robotsFollow={true}
                 robotsIndex={true}
-                lang={i18n.languages[0]}                
+                lang={i18n.languages[0]}
+                canonicalUrl={
+                  entry && entry.title
+                    ? `${this.props.env.CANONICAL_URL}/${
+                        i18n.languages[0]
+                      }/${i18n.t('routes|specifications|path')}/${this.props.match.params.cid}_${
+                        this.props.match.params.eid
+                      }/${slugify(entry.title)}`
+                    : ''
+                }
               />
               <Box
                 id="top"
@@ -182,47 +232,71 @@ export class SpecificationPage extends React.Component<
                 <Header ref={this.headerRef} />
 
                 <ErrorBoundary>
-                  <MainContent flex="1 1 auto">
-                    <div className="main-container">
-                      <div
-                        className="col span_8 boxed dataset"
-                        data-animation=""
-                        data-delay="0"
-                      >
+                  <MainContent
+                    flex="1 1 auto"
+                    className="detailpage main-container"
+                  >
+                    <StaticBreadcrumb env={this.props.env} staticPaths={[
+                      {
+                        path: this.referredSearch,
+                        title: i18n.t('routes|specifications|title')
+                      },
+                      {
+                        path:  `/${i18n.languages[0]}/${i18n.t('routes|specifications|path')}/${this.props.match.params.cid}_${this.props.match.params.eid}/${slugify(entry.title)}`,
+                        title: entry.title
+                      }
+                    ]} />
+                    <div className="detailpage__wrapper">
+                      {/* Left column */}
+                      <div className="detailpage__wrapper--leftcol content">
+                      <span className="text-6-bold beta_badge--xl">BETA</span>
 
-                        <h1 className="text-1">
-                          <span
-                            data-entryscape="text"
-                            data-entryscape-content="${dcterms:title}"
-                            data-entryscape-define="specification"
-                          ></span>
+                        <h1 className="text-2">
+                        {entry.title}
                         </h1>
 
-                        <p className="description">
+                        <script
+                          type="text/x-entryscape-handlebar"
+                          data-entryscape="true"
+                          data-entryscape-component="template"
+                          dangerouslySetInnerHTML={{
+                            __html: `
+                          <p class="text-5">
+                            {{text relation="dcterms:publisher"}} 
+                          <p>
+                          `,
+                          }}
+                        ></script>
+
+                        <p className="text-5">
                           <span
                             data-entryscape="text"
                             data-entryscape-content="${dcterms:description}"
-                            data-entryscape-use="specification"
                           ></span>
                         </p>
 
-                        <div data-entryscape="resourceDescriptors"></div>
-
-                        <h2 className="about-header">Om specifikation</h2>
-
+                        <h2 className="text-3">Resurs</h2>
                         <div
-                          className="specificationDetails"
-                          data-entryscape="view"
-                          data-entryscape-rdformsid="prof:Profile"
-                          data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution"
+                          className="specification__resource"
+                          data-entryscape="resourceDescriptors2"
                         ></div>
                       </div>
 
-                      <div
-                        className="col span_4 boxed about-specification about-dataset"
-                        data-animation=""
-                        data-delay="0"
-                      >
+                      {/* Right column */}
+                      <div className="detailpage__wrapper--rightcol hbbr">
+                        <div className="detailpage__wrapper--rightcol-info text-6">
+                          <h2 className="text-5-bold">
+                            Om specifikation
+                            {/* {i18n.t('pages|datasetpage|about-dataset')} */}
+                          </h2>
+
+                          <div
+                            className="specificationDetails"
+                            data-entryscape="view"
+                            data-entryscape-rdformsid="prof:Profile"
+                            data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev"
+                          ></div>
+                        </div>
                       </div>
                     </div>
                   </MainContent>

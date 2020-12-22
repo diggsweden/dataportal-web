@@ -2,6 +2,7 @@
 
 .text-header {
     max-width: 50em; //800px //50em
+    margin-top: 0rem;
 }
 
 @media screen and (max-width: 37.5em) {
@@ -26,6 +27,10 @@
         word-break: break-word;
     }
 
+    .date_published{
+        display: block;
+        margin-bottom: $space-16;
+    }
 
     .preamble {
         margin-top: 0px;
@@ -55,7 +60,7 @@
         a {
             color: $black100;
 
-            &:hover{
+            &:hover {
                 background-color: $pink10;
             }
 
@@ -70,6 +75,7 @@
             margin-left: 5px;
             font-family: "FontAwesome" !important;
             font-size: .8em;
+            display: inline-block;
         }
 
         li {
@@ -79,53 +85,62 @@
 
 
 
-    //Linkblocks / Pixels
-    .link-blocks {
-        display: flex;
-        margin-bottom: $space-48;
+    .info-wrapper {
+        padding: $space-24;
+        padding-top: $space-24;
+        border-left: 0.125rem solid $green50;
+        background-color: $green10;
+        margin-left: 0rem;
+        margin-right: 0rem;
+        line-height: 2rem; //32px
+        letter-spacing: -0.02em;
+        color: $black100;
+        margin-top: $space-32;
+        margin-bottom: $space-32;
 
-        .link-block {
-            background-color: $pink50;
-            cursor: pointer;
-            width: 50%;
-            min-height: 320px;
-            padding: $space-16;
-
-            a {
-                font-weight: bold;
-                font-size: 1.4rem;
-                line-height: 32px;
-                letter-spacing: -0.02em;
-                color: $black100;
-            }
-
-            &:hover {
-                a {
-                    text-decoration: none;
-                }
-            }
-
-            &:last-of-type {
-                background-color: $pink25;
-            }
+        p,
+        span,
+        a {
+            margin-bottom: $space-8;
+            font-weight: normal;
+            font-size: 1.125rem; //18px
+            line-height: 1.6875rem; //27px
+            color: $black100;
         }
 
-        @media screen and (max-width: 37.5em) {
-            flex-direction: column;
+        h2,
+        h3,
+        h4 {
+            margin: 0rem;
+            margin-bottom: $space-16;
 
-            .link-block {
-                width: 100%;
-                padding: $space-16;
-                min-height: 240px;
+            font-weight: bold;
+            font-size: 1.25rem; //20px
+            line-height: 1.75rem; //28px
+            letter-spacing: -0.01em;
+            color: $black100;
+        }
+    }
 
-                .link-wrapper {
-                    position: initial;
+    blockquote {
+        padding: $space-24;
+        padding-top: $space-24;
+        padding-bottom: $space-24;
+        border-left: 0.125rem solid $green50;
+        background-color: $green10;
+        margin-left: 0rem;
+        margin-right: 0rem;
+        font-weight: bold;
+        font-size: 1.5rem; //24px
+        line-height: 2rem; //32px
+        letter-spacing: -0.02em;
+        color: $black100;
+        margin-top: $space-16;
+        margin-bottom: $space-32;
 
-                    a {
-                        font-size: 1.5rem;
-                    }
-                }
-            }
+        p,
+        span {
+            margin: 0rem;
         }
     }
 }

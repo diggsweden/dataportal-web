@@ -55,19 +55,19 @@ export const NotFoundPage: React.SFC<RouteComponentProps<
 
             <ul>
               <li>
-                <a className="text-4" href={`/${i18n.languages[0]}`}>
+                <Link className="text-4" to={`/${i18n.languages[0]}`}>
                   {i18n.t('pages|redirect|pagenotfound-link')}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   className="text-4"
-                  href={`/${i18n.languages[0]}/${i18n.t(
+                  to={`/${i18n.languages[0]}/${i18n.t(
                     'routes|datasets|path'
                   )}?q=&f=`}
                 >
                   {i18n.t('pages|redirect|pagenotfound-link2')}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

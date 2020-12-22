@@ -5,13 +5,19 @@ Här finns källkoden för dataportalens webbklient
 
 ## Förutsättningar
 
-- node 10.16.3
+- node 10.19.0
 - yarn
 
 ## EntryScape
 
 Den svenska dataportalen är starkt integrerad med produktsviten EntryScape från MetaSolutions AB, https://entryscape.com/sv/.
-EntryScape Registry är en lösning för att hantera ett register över datakataloger och relaterad information.”
+EntryScape Registry är en lösning för att hantera ett register över datakataloger och relaterad information.
+
+## Federerat innehåll
+
+Den svenska dataportalen konsumerar nyheter och innehållssidor via en GraphQL proxy, 
+som presenteras med hjälp av Apollo GraphQL och React. GraphQL-proxyn är för tillfället 
+inte publicerad på Github. 
 
 ## Utveckling
 
@@ -50,6 +56,7 @@ Detta kommer generera applikationen som statiska filer i dist-mappen. `dist/serv
 - [React](https://reactjs.org/) för UI
 - [Emotion](https://emotion.sh) för styling
 - [React Router](https://reacttraining.com/react-router/) för routing
+- [Apollo GraphQL](https://www.apollographql.com/) för federerat innehåll
 
 
 ## Noteringar
