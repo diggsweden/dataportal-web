@@ -22,7 +22,8 @@ export enum ESRdfType {
   spec_standard = "http\://purl.org/dc/terms/Standard",
   term = "http\://www.w3.org/2004/02/skos/core#Concept",
   esterms_IndependentDataService = "esterms:IndependentDataService",
-  esterms_ServedByDataService = "esterms:ServedByDataService"
+  esterms_ServedByDataService = "esterms:ServedByDataService",
+  agent = "http\://xmlns.com/foaf/0.1/Agent"
 }
 
 export interface ESEntryField {
@@ -95,7 +96,8 @@ export class EntryScape {
             facetValues:[],
             show: 25,
             predicate: f.predicate,            
-            title: i18next.t('resource|'+f.predicate)
+            title: i18next.t('resource|'+f.predicate),
+            count: f.valueCount
           };
           
           f.values.splice(0,take).forEach((fvalue:ESFacetFieldValue) => {      
@@ -121,13 +123,14 @@ export class EntryScape {
         
         //uri types, concat resourceURIs for fetching from backend
         if(f.type == ESType.uri)              
-        {          
+        {                    
           uriFacets[f.predicate] = {
             name: f.name,
             facetValues:[],
             show: 25,
             predicate: f.predicate, 
-            title: i18next.t('resource|'+f.predicate),            
+            title: i18next.t('resource|'+f.predicate),   
+            count: f.valueCount         
           };
           
           f.values.splice(0,take).forEach((fvalue:ESFacetFieldValue) => {
@@ -165,16 +168,16 @@ export class EntryScape {
              value.facetValues.forEach((f) => {       
                
                if(f && f.title == f.resource)
-               {
+               {                 
                   let entry = res.find((entry:any) => entry.getResourceURI() == f.resource);
-
+                  
                   if(entry){                  
-                      var meta = entry.getMetadata();                    
+                      var meta = entry.getMetadata();                                          
 
-                      var title = meta.findFirstValue(null, "http://xmlns.com/foaf/0.1/name");
+                      var title = this.getLocalizedValue(meta,"http://xmlns.com/foaf/0.1/name",i18next.languages[0])
 
                       if(!title)
-                        title = meta.findFirstValue(null, "http://purl.org/dc/terms/title");
+                        title = this.getLocalizedValue(meta,"http://purl.org/dc/terms/title",i18next.languages[0]);
 
                       f.title = title || f.resource;                           
                       f.title =f.title!.trim();
@@ -483,10 +486,15 @@ export class EntryScape {
       let queryUrl = searchList.getQuery().getQuery();      
 
       let q = this.luceneFriendlyQuery(query);//modifiedQuery.join("+AND+");       
+      let titleQ = request.titleQuery ? this.luceneFriendlyQuery(request.titleQuery) : undefined;    
 
       //set query text
-      queryUrl = queryUrl.replace("&query=",
-      `&query=(metadata.object.literal:(${q})+OR+title:(${q})+OR+description:(${q})+OR+tag.literal:(${q}))+AND+`)
+      if(titleQ)
+        queryUrl = queryUrl.replace("&query=",
+          `&query=(title:(${titleQ}))+AND+`)
+      else
+        queryUrl = queryUrl.replace("&query=",
+          `&query=(metadata.object.literal:(${q})+OR+title:(${q})+OR+description:(${q})+OR+tag.literal:(${q}))+AND+`)
 
       fetch(queryUrl)
       .then(response => {           

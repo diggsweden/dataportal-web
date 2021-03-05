@@ -272,6 +272,7 @@
                                 margin: 0rem;
                                 width: 100% !important;
                                 margin-bottom: $space-8;
+                                border: none;
                             }
 
                             .rdformsFields {
@@ -314,7 +315,6 @@
 
                                         .rdformsLabel {
                                             font-weight: normal;
-                                            border: none;
                                         }
                                     }
                                 }
@@ -488,6 +488,7 @@
                                 font-weight: bold;
                                 padding-top: 0rem;
                                 margin-bottom: 0.25rem;
+                                border: none;
                             }
 
                             .rdformsFields {
@@ -568,6 +569,15 @@
                         margin-bottom: 0.25rem;
                         padding-left: $space-16;
                         padding-right: $space-16;
+                    }
+
+                    .terminilogy__download-wrapper {
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    .terminology__label {
+                        font-weight: bold;
                     }
                 }
 
@@ -1025,7 +1035,7 @@
                 color: $black100;
                 margin-top: $space-8;
                 display: block;
-                width: fit-content;
+                width: max-content;
 
                 &:hover {
                     background-color: $pink10;
@@ -1173,8 +1183,8 @@
 }
 
 .detailpage__wrapper--fullwith {
-    .concept-hierarchy-header{
-        span{
+    .concept-hierarchy-header {
+        span {
             display: block;
             font-weight: bold;
             font-size: 1.125rem; //18px
@@ -1261,6 +1271,141 @@
                     }
                 }
             }
+        }
+    }
+}
+
+//Contact publisher
+
+.contact__publisher {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: $green10;
+    padding: $space-16;
+    padding-bottom: $space-24;
+    margin-bottom: $space-48;
+
+    h3 {
+        margin-top: 0px;
+        margin-bottom: $space-8;
+    }
+
+    p {
+        margin: 0rem;
+    }
+
+    a:hover {
+        background-color: $pink10;
+    }
+}
+
+
+//Indicators
+.indicators {
+    flex-wrap: wrap;
+
+    div {
+        margin-right: $space-8;
+    }
+}
+
+.accessRightsIndicator {
+    width: fit-content;
+    margin-bottom: $space-16;
+
+    &:empty {
+        display: none;
+    }
+
+    span {
+        display: flex;
+        align-items: center;
+        color: $black100;
+        padding: 0rem;
+
+        span {
+            display: block;
+
+            &::first-letter {
+                text-transform: uppercase;
+            }
+        }
+
+        i {
+            font-family: "Font Awesome 5 Free" !important;
+            margin-right: $space-8;
+            color: $black-hover;
+            border-radius: 100px;
+            border: 3px solid $black-hover;
+            padding: 5px;
+            height: 32px;
+            width: 32px;
+        }
+    }
+}
+
+.architectureIndicator {
+    width: fit-content;
+    margin-bottom: $space-16;
+
+    &:empty {
+        display: none;
+    }
+
+    span {
+        display: flex;
+        align-items: center;
+        color: $black100;
+
+        span {
+            display: block;
+
+            &::first-letter {
+                text-transform: uppercase;
+            }
+        }
+
+        i {
+            font-family: "Font Awesome 5 Free" !important;
+            margin-right: $space-8;
+            color: $black-hover;
+            border-radius: 100px;
+            border: 3px solid $black-hover;
+            padding: 5px;
+            height: 32px;
+            width: 32px;
+        }
+    }
+}
+
+.licenseIndicator {
+    width: fit-content;
+    margin-bottom: $space-16;
+
+    &:empty {
+        display: none;
+    }
+
+    span {
+        display: flex;
+        align-items: center;
+        color: $black100;
+        padding: 0rem;
+
+        span {
+            display: block;
+
+            &::first-letter {
+                text-transform: uppercase;
+            }
+        }
+
+        i {
+            font-family: "Font Awesome 5 Brands" !important;
+            margin-right: $space-8;
+            color: $black-hover;
+            font-size: 32px;
         }
     }
 }

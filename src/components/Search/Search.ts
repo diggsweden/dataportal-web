@@ -50,6 +50,7 @@ export interface SearchFacet {
   show: number,
   facetValues: SearchFacetValue[]
   lastFetched?:number;
+  count: number;
 }
 
 export interface SearchFacetValue {  
@@ -64,6 +65,7 @@ export interface SearchFacetValue {
 
 export interface SearchRequest {
   query?: string;  
+  titleQuery?: string;
   language?: string;  
   take?: number;
   page?: number;  

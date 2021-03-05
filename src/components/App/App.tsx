@@ -5,7 +5,7 @@ import { SkipToContent } from '../SkipToContent';
 import { CookieBanner } from '../CookieBanner';
 import { KeyFocus } from '../KeyFocus';
 
-export const App: React.SFC = ({ children }) => (
+export const App: React.FunctionComponent = ({ children }) => (
   <>
     <Helmet titleTemplate="%s" htmlAttributes={{ lang: 'sv' }} />
     <CookieBanner />

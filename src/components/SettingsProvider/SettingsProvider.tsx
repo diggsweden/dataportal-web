@@ -78,12 +78,12 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
   if(applicationUrl)
       defaultSettings.env = SettingsUtil.create(applicationUrl);    
   
-  const {loading, error, data } = 
+  const {error, data } = 
     useQuery<{ mainmenu: Array<any>,footer: Array<any> }>(MENUS,{              
         variables:{          
           siteurl: defaultSettings.env.CONTENTBACKEND_SITEURL,
           lang: i18n.languages[0],
-        }
+        },ssr: true
       });
 
   return (
@@ -91,8 +91,8 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
       value={{
         env: defaultSettings.env,
         noScriptContent: defaultSettings.noScriptContent,
-        mainmenu: !loading && data && data.mainmenu? createNavigationTree(data.mainmenu) : null,
-        footermenu: !loading && data && data.footer? createNavigationTree(data.footer) : null
+        mainmenu: data && data.mainmenu? createNavigationTree(data.mainmenu) : null,
+        footermenu: data && data.footer? createNavigationTree(data.footer) : null
         }}
     >          
       {children}

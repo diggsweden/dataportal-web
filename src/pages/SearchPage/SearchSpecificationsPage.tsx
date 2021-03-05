@@ -436,20 +436,20 @@ export class SearchSpecificationsPage extends React.Component<
                                   <li
                                     className="specification search-result-list-item"
                                     key={index}
-                                    onClick={() => {
-                                      (window as any).location.href =
-                                        hit.url +
-                                        `#ref=${
-                                          window ? window.location.search : ''
-                                        }`;
-                                    }}
+                                    // onClick={() => {
+                                    //   (window as any).location.href =
+                                    //     hit.url +
+                                    //     `#ref=${
+                                    //       window ? window.location.search : ''
+                                    //     }`;
+                                    // }}
                                   >
                                     <a
                                       href={`${hit.url}#ref=${
                                         window ? window.location.search : ''
                                       }`}
                                     >
-                                      <h3 className="text-3">{hit.title}</h3>
+                                      <h3 className="text-4">{hit.title}</h3>
                                     </a>
                                     <p className="text-6">{hit.description}</p>
                                   </li>

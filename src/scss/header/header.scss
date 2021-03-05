@@ -2,6 +2,8 @@
 
 header {
     border-bottom: 1px solid $black10;
+    position: relative;
+
 }
 
 .dataportal-logo {
@@ -25,16 +27,28 @@ header {
     }
 
     svg {
-        width: 18.75rem; //300px
+        width: 18.75rem;
+        transition: .5s;
+
+        @media screen and (max-width: 28.75rem) {
+            width: 12.75rem;
+            transition: .2s;
+        }
     }
 }
+
+
 
 .header-links {
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
+    display: block;
 
-    // display: none;
+    @media screen and (max-width: 42.5rem) {
+        display: none;
+        flex-wrap: wrap;
+    }
 
     .header-link {
         font-family: Ubuntu !important;
@@ -44,6 +58,7 @@ header {
         padding-bottom: 2px;
         text-decoration: none;
         border-bottom: 2px solid transparent;
+        word-break: keep-all;
 
         @media screen and (max-width: 650px) {
             font-size: 16px;
@@ -51,19 +66,19 @@ header {
             transition: .1s;
         }
 
-        &:not(:first-of-type) {
-            margin-left: $space-32;
+        &:not(:last-of-type) {
+            margin-right: $space-32;
 
-            @media screen and (max-width: 650px) {
-                margin-left: $space-24;
-                transition: .1s;
+            // @media screen and (max-width: 650px) {
+            //     margin-left: $space-24;
+            //     transition: .1s;
 
-            }
+            // }
 
-            @media screen and (max-width: 385px) {
-                margin-left: $space-16;
-                transition: .1s;
-            }
+            // @media screen and (max-width: 385px) {
+            //     margin-left: $space-16;
+            //     transition: .1s;
+            // }
         }
 
         &:hover {
@@ -82,7 +97,7 @@ header {
     }
 
     //Hide in /en
-    .no-en{
+    .no-en {
         display: none;
     }
 
@@ -91,13 +106,115 @@ header {
     }
 }
 
+.menu-bg {
+    position: absolute;
+    top: 5.875rem;
+    height: 110vh;
+    width: 100%;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    z-index: 3800;
+    background-color: $black10;
+    display: none;
+}
+
+.menu-bg--active {
+    display: block;
+}
+
+.click-outside {
+    height: 100%;
+    width: 100%;
+    min-height: 400px;
+
+    @media screen and (min-width: 42.49999rem) {
+        display: none;
+    }
+}
+
+.header-links--active {
+    z-index: 4000;
+    position: absolute;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    height: 100vh;
+    top: 0rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (min-width: 42.49999rem) {
+        display: none;
+    }
+
+    .header-link {
+        width: 100%;
+        padding: $space-16;
+        background-color: $white;
+        color: $black100;
+        margin-bottom: 2px;
+        text-decoration: none;
+        border-left: 0px solid $pink100;
+
+        &:hover {
+            border-left: 5px solid $pink25;
+            transition: .1s;
+        }
+
+        &:focus {
+            outline-offset: -2px !important;
+        }
+
+        &:first-of-type {
+            margin-top: 2px;
+        }
+    }
+
+    .active {
+        border-left: 5px solid $pink100;
+
+        &:hover {
+            border-color: $pink100;
+        }
+    }
+
+}
+
+
+
+
 //Mobile nav menu button
 
+.menu-wrapper {
+    position: relative;
+}
+
 .nav-btn {
-    display: none;
     height: 2.75rem;
-    // width: 2.75rem;
     border: 0.125rem solid $green50;
+
+    .menu-icon,
+    .close-icon {
+        margin-top: 0.125rem;
+    }
+
+    @media screen and (max-width: 28.75rem) {
+
+        .menu-icon,
+        .close-icon {
+            svg {
+                margin-right: 0rem;
+            }
+        }
+
+        .nav-btn--text {
+            display: none;
+        }
+    }
+
+    @media screen and (min-width: 42.49999rem) {
+        display: none;
+    }
 
     span {
         width: fit-content;
@@ -110,7 +227,55 @@ header {
     }
 }
 
-@media screen and (max-width: 42.5rem) {}
+.nav-btn--open {
+    display: none;
+}
+
+
+.menu {
+    display: none;
+    opacity: 0;
+    height: 0px;
+    overflow: hidden;
+    position: absolute;
+    z-index: 5000;
+
+    &.show-menu {
+        display: block;
+        opacity: 1;
+        width: 400px;
+        height: auto;
+        background-color: $green10;
+    }
+}
+
+
+// @media screen and (max-width: 42.5rem) {
+//     display: none;
+// }
+
+.close-menu-btn-wrapper {
+    display: none;
+    min-height: 5.875rem;
+    padding-right: 1rem;
+}
+
+.close-menu-btn-wrapper--active {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.close-menu-btn {
+    // width: 100vh;
+    // display: flex;
+    // justify-content: center;
+
+    @media screen and (min-width: 42.49999rem) {
+        display: none;
+    }
+}
+
 
 //Beta information banner
 .beta-banner {

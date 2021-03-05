@@ -71,7 +71,7 @@ export class RedirectPage extends React.Component<PageProps> {
           <ErrorBoundary>
             <MainContent flex="1 1 auto">
               <div className="main-container">
-                <h1 className="text-header text-1">
+                <h1 className="text-1">
                   {i18n.t('pages|redirect|pagenotfound_header')}{' '}
                 </h1>
                 <div className="content text-5 redirectpage__content">

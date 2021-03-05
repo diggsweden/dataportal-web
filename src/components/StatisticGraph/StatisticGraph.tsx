@@ -49,7 +49,7 @@ export const StatisticGraph: React.FC<StatisticGraphProps> = (props) => {
           fetch(
             props.env.ENTRYSCAPE_HISTORY_STATS_URL
               ? props.env.ENTRYSCAPE_HISTORY_STATS_URL
-              : 'https://registrera.oppnadata.se/stats/historyData.json'
+              : 'https://admin.dataportal.se/stats/historyData.json'
           )
             .then((response) => response.json())
             .then((data) => {

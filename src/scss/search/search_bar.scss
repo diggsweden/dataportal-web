@@ -25,8 +25,8 @@
     input {
         height: 100%;
         min-height: $space-48;
-        max-width: 31.25rem;
         min-width: 12.5rem;
+        max-width: 31.25rem;
         width: 100%;
         border: 0.125rem solid $black100;
         border-right: none;
@@ -39,7 +39,7 @@
         }
 
         &::placeholder {
-            color: $black50;
+            color: $black-hover;
         }
 
         &:focus {

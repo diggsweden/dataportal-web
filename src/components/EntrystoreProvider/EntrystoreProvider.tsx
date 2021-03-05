@@ -10,7 +10,7 @@ export interface EntrystoreProviderProps{
   env: EnvSettings;
   eid: string;
   cid: string;
-  entrystoreUrl: string | 'registrera.oppnadata.se';
+  entrystoreUrl: string | 'admin.dataportal.se';
 }
 
 export interface ESEntry {   

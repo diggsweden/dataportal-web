@@ -482,10 +482,7 @@ export class ConceptPage extends React.Component<
                       <div className="detailpage__wrapper--leftcol content">
                         <span className="text-6-bold beta_badge--xl">BETA</span>
                         <h1 className="text-2 terminology_header">
-                          
-                          <span
-                            data-entryscape="hemvist"
-                          ></span>
+                          <span data-entryscape="hemvist"></span>
                           <span
                             data-entryscape="text"
                             data-entryscape-content="${skos:prefLabel}"
@@ -513,7 +510,6 @@ export class ConceptPage extends React.Component<
                             data-entryscape-content="${dcterms:description}"
                             data-entryscape-use="terminology"
                           ></span>
-                          
                         </p>
 
                         <div className="column">
@@ -722,49 +718,54 @@ export class ConceptPage extends React.Component<
                           ></span>
 
                           <script
-                            className=""
                             type="text/x-entryscape-handlebar"
-                          >
-                            <span className="terminology__label text-6-bold">
-                              Nedladdning
-                            </span>
-
-                            <div className="terminology__download-links text-6">
-                              <a
-                                className="terminology__download-link"
-                                href="{{ metadataURI}}"
-                                target="_blank"
-                              >
-                                RDF/XML
-                              </a>
-
-                              <a
-                                className="terminology__download-link"
-                                href="{{ metadataURI }}?format=text/turtle"
-                                target="_blank"
-                              >
-                                TURTLE
-                              </a>
-
-                              <a
-                                className="terminology__download-link"
-                                href="{{ metadataURI }}?format=text/n-triples"
-                                target="_blank"
-                              >
-                                N-TRIPLES
-                              </a>
-
-                              <a
-                                className="terminology__download-link"
-                                href="{{ metadataURI }}?format=application/ld+json"
-                                target="_blank"
-                              >
-                                JSON-LD
-                              </a>
-                            </div>
-                          </script>
+                            data-entryscape="true"
+                            data-entryscape-component="template"
+                            dangerouslySetInnerHTML={{
+                              __html: `
+                                    <div class="terminilogy__download-wrapper">
+                                    <span class="terminology__label text-6-bold">
+                                      Nedladdning
+                                    </span>
+      
+                                  <div class="terminology__download-links text-6">
+                                    <a
+                                      class="terminology__download-link"
+                                      href="{{ metadataURI}}"
+                                      target="_blank"
+                                    >
+                                      RDF/XML
+                                    </a>
+      
+                                    <a
+                                      class="terminology__download-link"
+                                      href="{{ metadataURI }}?format=text/turtle"
+                                      target="_blank"
+                                    >
+                                      TURTLE
+                                    </a>
+      
+                                    <a
+                                      class="terminology__download-link"
+                                      href="{{ metadataURI }}?format=text/n-triples"
+                                      target="_blank"
+                                    >
+                                      N-TRIPLES
+                                    </a>
+      
+                                    <a
+                                      class="terminology__download-link"
+                                      href="{{ metadataURI }}?format=application/ld+json"
+                                      target="_blank"
+                                    >
+                                      JSON-LD
+                                    </a>
+                                  </div>
+                                  </div>
+                                  `,
+                            }}
+                          ></script>
                         </div>
-
                       </div>
                     </div>
                     <div className="detailpage__wrapper--fullwith">

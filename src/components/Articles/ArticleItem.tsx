@@ -50,7 +50,10 @@ export const ArticleItem : React.FC<ArticleItemProps> = (props) => {
 `
 ;
 
-  const { loading, error, data } = useQuery<{news:Array<any>}>(NEWS);
+  const { error, data } = 
+    useQuery<{news:Array<any>}>(NEWS,{
+      ssr:true
+    });
 
   const articleItem = data && data.news && data.news.length > 0
   ? data.news[0]
@@ -58,7 +61,15 @@ export const ArticleItem : React.FC<ArticleItemProps> = (props) => {
 
     return (    
       <>
-        {!loading && articleItem &&
+        {!articleItem &&
+          <StaticBreadcrumb env={props.env} staticPaths={[
+            {
+              path: `/${i18n.languages[0]}/${i18n.t('routes|news|path')}`,
+              title: i18n.t('routes|news|title')
+            }
+          ]} />
+        }
+        {articleItem &&
           <StaticBreadcrumb env={props.env} staticPaths={[
             {
               path: `/${i18n.languages[0]}/${i18n.t('routes|news|path')}`,
@@ -75,8 +86,8 @@ export const ArticleItem : React.FC<ArticleItemProps> = (props) => {
         <div className="main-container">                  
           <div className="">
             <div className="news-article content">
-          {loading && (<span className="text-5 loading">{i18n.t('common|loading')}</span>)}
-          {!loading && articleItem && id && id != '0' ?
+          {/* {loading && (<span className="text-5 loading">{i18n.t('common|loading')}</span>)} */}
+          {articleItem && id && id != '0' &&
             <>
               <Helmet>
                 <title>{articleItem.heading} - {i18n.t('common|seo-title')}</title>
@@ -99,10 +110,10 @@ export const ArticleItem : React.FC<ArticleItemProps> = (props) => {
                 }}
               ></div>                          
             </>  
-            : !loading &&
-            <>
-              <h1 className="text-1">Den artikeln finns inte längre kvar.</h1>
-            </>
+            // : !loading &&
+            // <>
+            //   <h1 className="text-1">Den artikeln finns inte längre kvar.</h1>
+            // </>
           }
         </div>                                                    
           </div>

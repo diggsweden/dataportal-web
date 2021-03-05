@@ -15,9 +15,9 @@ EntryScape Registry är en lösning för att hantera ett register över datakata
 
 ## Federerat innehåll
 
-Den svenska dataportalen konsumerar nyheter och innehållssidor via en GraphQL proxy, 
-som presenteras med hjälp av Apollo GraphQL och React. GraphQL-proxyn är för tillfället 
-inte publicerad på Github. 
+Den svenska dataportalen konsumerar nyheter och innehållssidor via en GraphQL proxy,
+som presenteras med hjälp av Apollo GraphQL och React. GraphQL-proxyn är för tillfället
+inte publicerad på Github.
 
 ## Utveckling
 
@@ -44,7 +44,7 @@ Besök [http://localhost:3003](http://localhost:3003) i din webbläsare.
 
 Bygg för produktion genom att köra följande:
 
-```
+```sh
 yarn build
 ```
 

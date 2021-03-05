@@ -1,18 +1,22 @@
 import compression from 'compression';
 import helmet from 'helmet';
 import express from 'express';
-import ora from 'ora';
 import path from 'path';
-import prettyBytes from 'pretty-bytes';
-import { promisify } from 'util';
-import zlib from 'zlib';
-import { renderer, RenderResponseProfileItem } from './renderer';
+import { renderer } from './renderer';
 import { getSitemap } from './SiteMap'
-import { renderToNodeStream } from 'react-dom/server';
-import { createElement } from 'react';
 import * as basicAuth from 'express-basic-auth'
+import i18next from 'i18next';
 var csp = require('simple-csp');
-import i18n from "i18next";
+var cache = require('memory-cache');
+var middleware = require('i18next-http-middleware')
+import resources_sv from '../src/translations/sv/resources.json';
+import pages_sv from '../src/translations/sv/pages.json';
+import resources_en from '../src/translations/en/resources.json';
+import pages_en from '../src/translations/en/pages.json';
+import routes_sv from '../src/translations/sv/routes.json';
+import routes_en from '../src/translations/en/routes.json';
+import common_sv from '../src/translations/sv/common.json';
+import common_en from '../src/translations/en/common.json';
 
 const app = express();
 
@@ -23,13 +27,57 @@ app.set('basic_auth', true)//process.env.BASIC_AUTH || false);
 app.use(compression()); //makes sure we use gzip
 app.use(helmet()); //express hardening lib
 
-// Sets "Strict-Transport-Security: max-age=31536000; includeSubDomains".
+// Sets "Strict-Transport-Security: max-age=31536000; includeSubDomains; preload;".
 app.use(
   helmet.hsts({
     maxAge: 31536000,
-    includeSubDomains: 'preload',
+    includeSubDomains: true,
+    preload: true
   })
 );
+
+i18next.use(middleware.LanguageDetector).init({    
+    preload: ['sv', 'en'],
+    detection:({
+      order:['path','header'],     
+      lookupHeader: 'accept-language',
+      lookupPath: 'lng',
+      lookupFromPathIndex: 0,
+    }),    
+    resources: {
+      sv: {
+        resource:resources_sv,
+        pages:pages_sv,
+        routes: routes_sv,
+        common: common_sv
+      },
+      en: {
+        resource:resources_en,
+        pages:pages_en,
+        routes: routes_en,
+        common: common_en
+      }
+    },
+    load: 'languageOnly',
+    whitelist:['sv','en'],    
+    fallbackLng: {
+      'sv-SE':['se'],
+      'en-US':['en'],
+      'default':['sv']
+    },        
+    debug: false,    
+    keySeparator: '>',
+    nsSeparator: '|',
+
+    interpolation: {
+      escapeValue: false // react already safes from xss
+    }
+  })
+
+app.use(
+  middleware.handle(i18next, { 
+  })
+)
 
 app.disable('x-powered-by');
 
@@ -160,6 +208,37 @@ app.get(['/.well-known/acme-challenge/*'], async (req, res) => {
   res.sendFile(path.join(cwd, req.path));
 });
 
+const getCacheKey = (url:string, acceptLang:string) => {
+  //we wont cache urls with parameters
+  let cacheKey = url.includes("?") ? url.split("?")[0] : url;    
+  
+  //Is item page for crawled data - create cachekey
+  if(new RegExp("\/(?<lang>sv|en)\/(?<type>datasets|concepts|specifications)\/.*\/").test(url))
+  {
+    var r =new RegExp("\/(?<lang>sv|en)\/(?<type>datasets|concepts|specifications)\/.*\/");
+    var m =  cacheKey.match(r);
+    if(m && m.groups && m.groups.lang && m.groups.type)
+    {
+      cacheKey = `/${m.groups.lang}/${m.groups.type}/itempages`      
+      return cacheKey;
+    }
+  }
+
+  //if is searchpage - return cachekey
+  if(new RegExp("\/(?<lang>sv|en)\/(?<type>datasets|concepts|specifications)").test(url))
+    return cacheKey;
+
+  //is item startpage - return cachekey
+  if(cacheKey == "/sv" || cacheKey == "/en")
+    return cacheKey;
+  
+  //if no langpart in url check accept-lang and return /sv  or /en
+  if(cacheKey == "/" && (acceptLang.includes("sv") || acceptLang.includes("en")))
+    return "/" + acceptLang.substring(0,2);
+
+  return "";
+}
+
 app.get('*', async (req, res) => {  
 
   const host = req.hostname;
@@ -167,29 +246,49 @@ app.get('*', async (req, res) => {
 
   let body = '';
 
-  let spinner = ora().start(`[___] ${url} Rendering...`);
-
   try {
-    const start = Date.now();    
+    //true for skipping cache get this request
+    var skipCache = url.includes("nocache=true") || url.includes(".");
+    //true for clearing server cache
+    var clearCache = url.includes("clearcache=true");
 
-    const result = await renderer(
-      host,
-      url,
-      path.join(cwd, '/dist/client/js/assets.json'),
-      '',
-      ''
-    );
+    if(clearCache)
+      cache.clear();
 
-    const end = Date.now();
+    let acceptLang = req.acceptsLanguages();
 
-    res.status(result.statusCode);
+    var cacheKey = getCacheKey(url, acceptLang && acceptLang.length > 0? acceptLang[0] : null);
+    var cachedBody = skipCache && cacheKey.length > 0? '' : cache.get(cacheKey);
 
-    if (result.statusCode === 301 && result.redirectTo) {
-      res.redirect(result.redirectTo);
-      return;
+    if(cachedBody && cachedBody.length > 1)
+    {     
+      body = cachedBody;
     }
+    else {
+      const result = await renderer(
+        host,
+        url,
+        path.join(cwd, '/dist/client/js/assets.json'),
+        '',
+        '',
+        null,
+        null,
+        acceptLang && acceptLang.length > 0? acceptLang[0] : null,
+        (req as any).i18n
+      );
 
-    body = result.body || '';
+      res.status(result.statusCode);
+
+      if (result.statusCode === 301 && result.redirectTo) {
+        res.redirect(result.redirectTo);
+        return;
+      }
+
+      body = result.body || '';
+
+      if(result.statusCode == 200 && body && body.length > 0 && cacheKey.length > 0)
+        cache.put(cacheKey,body,900000); //cache expire = 15 minutes
+    }
   } catch (e) {
     console.error(e);
   }

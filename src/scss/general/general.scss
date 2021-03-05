@@ -47,35 +47,37 @@
     justify-content: flex-start;
 }
 
-.beta_badge{
+.beta_badge {
     color: $white !important;
     margin-left: $space-8;
-    padding:0.03rem 0.20rem;
+    padding: 0.03rem 0.20rem;
     background-color: $brown100;
     border-radius: 3px;
+    width: fit-content;
 }
-.beta_badge--lg{
+
+.beta_badge--lg {
     color: $white !important;
     margin-left: $space-16;
-    padding:0.03rem 0.20rem;
+    padding: 0.03rem 0.20rem;
     background-color: $brown100;
     border-radius: 3px;
     margin-bottom: 1.125rem;
+
     @media screen and (max-width: 37.5rem) {
         margin-bottom: 0rem;
     }
 
 }
 
-.beta_badge--xl{
+.beta_badge--xl {
     display: block;
     color: $white !important;
-    padding:0.03rem 0.20rem;
+    padding: 0.03rem 0.20rem;
     background-color: $brown100;
     border-radius: 3px;
     margin-bottom: $space-16;
-    width: fit-content;
-
+    width: max-content;
 }
 
 //Focus for most elements

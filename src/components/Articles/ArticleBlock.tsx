@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import i18n from '../../i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import { gql } from 'apollo-boost';
 import ChopLines from 'chop-lines';
 import { slugify } from 'utilities/urlHelpers';
@@ -33,8 +33,8 @@ const NEWS = gql`
  * @param props route props
  */
 export const ArticleBlock: React.FC<ArticleBlockProps> = (props) => {
-  
-  const [fetchNews,{loading, error, data}] = useLazyQuery<{
+    
+  const {loading, error, data} = useQuery<{
     news: Array<any>;
   }>(
     NEWS, 
@@ -43,13 +43,8 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = (props) => {
         siteurl: props.env.CONTENTBACKEND_SITEURL,
         lang: i18n.languages[0]
       }
-      ,
+      ,ssr: true
     });
-
-  //Skips SSR, We only fetch this when rendering on the browser
-  useEffect(() => {
-    fetchNews();
-  },[]);
 
   const history = useHistory();
 
@@ -130,6 +125,6 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = (props) => {
       </div>
     );
   } else {
-    return <></>;
+    return <div className="main-container"></div>;
  }
 };

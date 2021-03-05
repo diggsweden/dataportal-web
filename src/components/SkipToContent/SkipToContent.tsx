@@ -7,14 +7,25 @@ import 'scss/general/general.scss';
 const SkipLink = styled('button')`
   display: block;
   position: absolute;
-  top: 0;
-  padding: 2rem 4rem;
+  top: 1rem;
+  left: 1rem;
+  padding: 2rem;
   z-index: 10;
-  background-color: ${props => props.theme.color.background};
-  color: ${props => props.theme.color.primary};
+  background-color: #2b2a29;
+  border-color: #2b2a29;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   transform: translateY(-100%);
   opacity: 0;
+
+  &:hover {
+    color: #ffffff;
+    background-color: #5a5856;
+    border-color: #2b2a29;
+  }
 
   &:focus {
     transform: translateY(0);

@@ -31,7 +31,9 @@ export class SpecificationPage extends React.Component<
 > {
   private headerRef: React.RefObject<Header>;
   private postscribe: any;
-  private referredSearch: string = `/${i18n.languages[0]}/${i18n.t('routes|specifications|path')}/?q=`; 
+  private referredSearch: string = `/${i18n.languages[0]}/${i18n.t(
+    'routes|specifications|path'
+  )}/?q=`;
 
   constructor(props: PageProps) {
     super(props);
@@ -44,17 +46,21 @@ export class SpecificationPage extends React.Component<
    * or else blocks wont have access to DOM
    */
   componentDidMount() {
-
     //we need to reload the page when using the back/forward buttons to a blocks rendered page
-    if (typeof window !== 'undefined') {      
-
+    if (typeof window !== 'undefined') {
       //check if reffereing search params is set to hash
-      if(window.location && window.location.hash && window.location.hash.includes("ref=?"))
-        this.referredSearch = `/${i18n.languages[0]}/${i18n.t('routes|specifications|path')}/?${window.location.hash.split("ref=?")[1]}`;
+      if (
+        window.location &&
+        window.location.hash &&
+        window.location.hash.includes('ref=?')
+      )
+        this.referredSearch = `/${i18n.languages[0]}/${i18n.t(
+          'routes|specifications|path'
+        )}/?${window.location.hash.split('ref=?')[1]}`;
 
-      window.onpopstate = ((e:any) => {        
+      window.onpopstate = (e: any) => {
         window.location.reload();
-      })
+      };
     }
 
     this.addScripts();
@@ -214,9 +220,9 @@ export class SpecificationPage extends React.Component<
                   entry && entry.title
                     ? `${this.props.env.CANONICAL_URL}/${
                         i18n.languages[0]
-                      }/${i18n.t('routes|specifications|path')}/${this.props.match.params.cid}_${
-                        this.props.match.params.eid
-                      }/${slugify(entry.title)}`
+                      }/${i18n.t('routes|specifications|path')}/${
+                        this.props.match.params.cid
+                      }_${this.props.match.params.eid}/${slugify(entry.title)}`
                     : ''
                 }
               />
@@ -236,24 +242,29 @@ export class SpecificationPage extends React.Component<
                     flex="1 1 auto"
                     className="detailpage main-container"
                   >
-                    <StaticBreadcrumb env={this.props.env} staticPaths={[
-                      {
-                        path: this.referredSearch,
-                        title: i18n.t('routes|specifications|title')
-                      },
-                      {
-                        path:  `/${i18n.languages[0]}/${i18n.t('routes|specifications|path')}/${this.props.match.params.cid}_${this.props.match.params.eid}/${slugify(entry.title)}`,
-                        title: entry.title
-                      }
-                    ]} />
+                    <StaticBreadcrumb
+                      env={this.props.env}
+                      staticPaths={[
+                        {
+                          path: this.referredSearch,
+                          title: i18n.t('routes|specifications|title'),
+                        },
+                        {
+                          path: `/${i18n.languages[0]}/${i18n.t(
+                            'routes|specifications|path'
+                          )}/${this.props.match.params.cid}_${
+                            this.props.match.params.eid
+                          }/${slugify(entry.title)}`,
+                          title: entry.title,
+                        },
+                      ]}
+                    />
                     <div className="detailpage__wrapper">
                       {/* Left column */}
                       <div className="detailpage__wrapper--leftcol content">
-                      <span className="text-6-bold beta_badge--xl">BETA</span>
+                        <span className="text-6-bold beta_badge--xl">BETA</span>
 
-                        <h1 className="text-2">
-                        {entry.title}
-                        </h1>
+                        <h1 className="text-2">{entry.title}</h1>
 
                         <script
                           type="text/x-entryscape-handlebar"
@@ -280,15 +291,31 @@ export class SpecificationPage extends React.Component<
                           className="specification__resource"
                           data-entryscape="resourceDescriptors2"
                         ></div>
+
+                        <div className="contact__publisher hbbr">
+                          <h3 className="text-4">
+                            {i18n.t('pages|datasetpage|contact-publisher')}
+                          </h3>
+                          <p className="text-5">
+                            {i18n.t('pages|datasetpage|contact-publisher-text')}
+                            {i18n.t(
+                              'pages|datasetpage|contact-publisher-text2'
+                            )}{' '}
+                            <a
+                              className="text-5-link"
+                              href="https://community.dataportal.se/"
+                            >
+                              community
+                            </a>
+                            .
+                          </p>
+                        </div>
                       </div>
 
                       {/* Right column */}
                       <div className="detailpage__wrapper--rightcol hbbr">
                         <div className="detailpage__wrapper--rightcol-info text-6">
-                          <h2 className="text-5-bold">
-                            Om specifikation
-                            {/* {i18n.t('pages|datasetpage|about-dataset')} */}
-                          </h2>
+                          <h2 className="text-5-bold">Om specifikation</h2>
 
                           <div
                             className="specificationDetails"

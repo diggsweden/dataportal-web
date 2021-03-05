@@ -30,7 +30,7 @@ StatisticNumbersPublishersState
       fetch(
         this.props.env.ENTRYSCAPE_ORG_STATS_URL
           ? this.props.env.ENTRYSCAPE_ORG_STATS_URL
-          : 'https://registrera.oppnadata.se/charts/orgData.json'
+          : 'https://admin.dataportal.se/charts/orgData.json'
       )
         .then((response) => response.json())
         .then((data) => {

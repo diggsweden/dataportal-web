@@ -24,6 +24,7 @@ export interface SearchContextData {
   toggleFacet: (facetValue: SearchFacetValue) => Promise<void>;  
   fetchMoreFacets: (facetkey:string) => Promise<void>;  
   fetchAllFacets: () => Promise<void>;  
+  searchInFacets: (query:string, facetkey:string) => Promise<void>;  
   showMoreFacets: (facetkey:string) => void;
   updateFacetStats: () => Promise<void>;
   facetSelected: (key:string,value:string) => boolean;
@@ -51,6 +52,7 @@ const defaultSettings:SearchContextData = {
   toggleFacet: () =>  new Promise<void>(resolve => {}),  
   fetchMoreFacets: () => new Promise<void>(resolve => {}),
   fetchAllFacets: () => new Promise<void>(resolve => {}),
+  searchInFacets: () => new Promise<void>(resolve => {}),
   showMoreFacets: () => {},
   updateFacetStats: () => new Promise<void>(resolve => {}),
   facetSelected: () => false,
@@ -208,7 +210,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
       if(this.state.allFacets && this.state.result && this.state.result.facets)
       {                   
         let entryScape = 
-          new EntryScape(this.props.entryscapeUrl || 'https://registrera.oppnadata.se/store', this.props.facetSpecification,this.props.hitSpecifications);
+          new EntryScape(this.props.entryscapeUrl || 'https://admin.dataportal.se/store', this.props.facetSpecification,this.props.hitSpecifications);
         
         var facetValues = this.state.request.facetValues as SearchFacetValue[];
        
@@ -381,7 +383,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
             if(facets[k] && facets[k].facetValues) {              
               v.facetValues.forEach((f) => {
                 var resultFacetValue = facets[k].facetValues.find(fv => 
-                  fv.title === f.title && fv.resource === f.resource
+                  fv.resource === f.resource// fv.title === f.title && fv.resource === f.resource
                 );                
 
                 if(resultFacetValue)
@@ -399,10 +401,10 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
               allFacets[k] = v;              
             }
             //existed, sync values
-            else{
+            else{              
               v.facetValues.forEach((f:SearchFacetValue) => {
-                if(!allFacets[k].facetValues.find(ff => ff.title == f.title && ff.resource == f.resource))
-                {
+                if(!allFacets[k].facetValues.find(ff => ff.resource == f.resource)) //ff.title == f.title &&
+                {                  
                   (allFacets[k].facetValues as SearchFacetValue[]).push(f);                  
                 }
               });
@@ -493,110 +495,195 @@ getFacetValueTitle = (key:string,valueKey:string) => {
   return title;
 };
 
-  /**
-   * Fetch all facets from entrystore, store in state sorted by count
-   * 
-   * Will cache and fetch from localStorage, cache expires in 5 mins
-   */
-  fetchAllFacets = () => {
+/**
+ * Fetch all facets from entrystore, store in state sorted by count
+ * 
+ * Will cache and fetch from localStorage, cache expires in 5 mins
+ */
+fetchAllFacets = () => {
+  return new Promise<void>(resolve => {    
+    
+    let wasCached = false;
+    let store_cache_key = `${this.state.request.language || ''}_${this.state.request.esRdfTypes? this.state.request.esRdfTypes[0].toString() : ''}_facets-cache`;
+    let store_cache_key_stamp = `${this.state.request.language || ''}_${this.state.request.esRdfTypes? this.state.request.esRdfTypes[0].toString() : ''}_facets-cache-ts`;
+
+    this.setState({
+      ...this.state,
+      loadingFacets:true
+    });      
+
+    if(hasLocalStore && hasWindow && window.localStorage[store_cache_key])
+    {        
+      let ls_AllFacets = window.localStorage.getItem(store_cache_key);
+      let ls_Stamp =  window.localStorage.getItem(store_cache_key_stamp);        
+
+      let allFacets = ls_AllFacets? JSON.parse(ls_AllFacets) as { [facet: string]: SearchFacet; } : null;
+      let stampAllFacets = ls_Stamp? JSON.parse(ls_Stamp) as Date : new Date('1982-04-22 03:04');
+
+      //validate cache date
+      let diff = (new Date(Date.now()).getTime() - new Date(stampAllFacets).getTime()) / 60000;          
+
+      //cache stamp invalid, clear facets
+      if(diff > 5)
+      {          
+        window.localStorage.removeItem(store_cache_key);
+      }
+      //cache stamp valid
+      else {          
+        //found in cache, use cached
+        if(allFacets)
+        {            
+          this.setState({
+            ...this.state,
+            allFacets:allFacets
+          }, () => {          
+            wasCached = true;                      
+            resolve();                      
+          });            
+        }
+      }
+    }
+
+    if(!wasCached)
+    {        
+      let entryScape = new EntryScape(this.props.entryscapeUrl || 'https://admin.dataportal.se/store', this.props.facetSpecification, this.props.hitSpecifications);
+
+      entryScape.solrSearch({          
+        query: '*',          
+        fetchFacets: true,
+        take:1,
+        //facetValues:this.state.request.facetValues || [],
+        takeFacets: this.state.request.takeFacets || 30
+      }).then((res) => {        
+        if(res.esFacets)
+        {                                  
+          entryScape.getFacets(res.esFacets,30).then((r) => {           
+            if(r)
+            {                                    
+              this.setState({
+                ...this.state,
+                allFacets:r
+              }, () => {                                  
+                if(hasLocalStore && hasWindow)
+                {
+                  window.localStorage.setItem(store_cache_key,JSON.stringify(r));
+                  window.localStorage.setItem(store_cache_key_stamp,JSON.stringify(new Date(Date.now())));
+                }                                  
+                resolve();
+              });
+            }
+            else
+            {
+              this.setState({
+                ...this.state,
+                loadingFacets:false
+              }, () => {                  
+                resolve()
+              });
+            }                        
+          });
+        }
+        else {
+          this.setState({
+            ...this.state,
+            loadingFacets:false
+          }, () => {              
+            resolve();
+          });            
+        }
+      }).catch( () => {
+        this.setState({
+          ...this.state,
+          loadingFacets:false
+        });                  
+        resolve();        
+      });
+    }
+  });      
+} 
+
+/**
+ * Use when query filtering facets, cannot retrive facets count, 
+ * will only fetch entries fromES from querytext, any found entries will be appended to the AllFacets state and localstorage 
+ * 
+ * TODO: Is now hardcoded to RDF: http://xmlns.com/foaf/0.1/Agent and URI estypes. Meaning only works for organisations for now.
+ *    
+ */
+searchInFacets = (query:string, facetkey:string) => {
     return new Promise<void>(resolve => {    
-      
-      let wasCached = false;
+            
       let store_cache_key = `${this.state.request.language || ''}_${this.state.request.esRdfTypes? this.state.request.esRdfTypes[0].toString() : ''}_facets-cache`;
       let store_cache_key_stamp = `${this.state.request.language || ''}_${this.state.request.esRdfTypes? this.state.request.esRdfTypes[0].toString() : ''}_facets-cache-ts`;
 
       this.setState({
         ...this.state,
         loadingFacets:true
-      });      
+      });            
+        var facets = this.state.allFacets;
 
-      if(hasLocalStore && hasWindow && window.localStorage[store_cache_key])
-      {        
-        let ls_AllFacets = window.localStorage.getItem(store_cache_key);
-        let ls_Stamp =  window.localStorage.getItem(store_cache_key_stamp);        
+        let entryScape = 
+          new EntryScape(this.props.entryscapeUrl || 'https://admin.dataportal.se/store', 
+          undefined, 
+          {
+            'http://xmlns.com/foaf/0.1/Agent': {
+              path: ``,
+              titleResource: 'http://xmlns.com/foaf/0.1/name',
+              descriptionResource: ''              
+            }
+          });
 
-        let allFacets = ls_AllFacets? JSON.parse(ls_AllFacets) as { [facet: string]: SearchFacet; } : null;
-        let stampAllFacets = ls_Stamp? JSON.parse(ls_Stamp) as Date : new Date('1982-04-22 03:04');
+        entryScape.solrSearch({                    
+          titleQuery: query && query.length > 0? query : '*',
+          fetchFacets: false,
+          take:100,
+          page: 0,
+          esRdfTypes: [ESRdfType.agent]                       
+        }).then((res) => {                  
+            
+            if(res && res.hits)
+            {
+              res.hits.forEach((h) => {
 
-        //validate cache date
-        let diff = (new Date(Date.now()).getTime() - new Date(stampAllFacets).getTime()) / 60000;          
+                let url = h.esEntry.getResourceURI();
 
-        //cache stamp invalid, clear facets
-        if(diff > 5)
-        {          
-          window.localStorage.removeItem(store_cache_key);
-        }
-        //cache stamp valid
-        else {          
-          //found in cache, use cached
-          if(allFacets)
-          {            
+                if(facets[facetkey] && facets[facetkey].facetValues && h.title && !facets[facetkey].facetValues.some(f => f.title?.toLowerCase() == h.title.toLowerCase()))
+                {      
+                  var newValue:SearchFacetValue = 
+                  {              
+                    count:-1,
+                    title:h.title.trim(),
+                    resource: h.esEntry.getResourceURI(),
+                    facet:facetkey,              
+                    facetType:ESType.uri,
+                    facetValueString: '',
+                    related:false
+                  };                            
+
+                  newValue.facetValueString = `${facetkey}||${newValue.resource}||${newValue.related}||${ESType.uri}||${facets[facetkey].title}||${newValue.title}`;
+                  
+                  (facets[facetkey].facetValues as SearchFacetValue[]).push(newValue);                  
+                }
+              })
+            }            
             this.setState({
-              ...this.state,
-              allFacets:allFacets
-            }, () => {          
-              wasCached = true;                      
-              resolve();                      
-            });            
-          }
-        }
-      }
+              allFacets:facets
+            }, () => {
+              if(hasLocalStore && hasWindow)
+                {
+                  window.localStorage.setItem(store_cache_key,JSON.stringify(facets));
+                  window.localStorage.setItem(store_cache_key_stamp,JSON.stringify(new Date(Date.now())));
+                }   
 
-      if(!wasCached)
-      {        
-        let entryScape = new EntryScape(this.props.entryscapeUrl || 'https://registrera.oppnadata.se/store', this.props.facetSpecification, this.props.hitSpecifications);
-
-        entryScape.solrSearch({
-          query: '*',
-          fetchFacets: true,
-          take:1,
-          //facetValues:this.state.request.facetValues || [],
-          takeFacets: this.state.request.takeFacets || 30
-        }).then((res) => {        
-          if(res.esFacets)
-          {                                  
-            entryScape.getFacets(res.esFacets,30).then((r) => {           
-              if(r)
-              {                                    
-                this.setState({
-                  ...this.state,
-                  allFacets:r
-                }, () => {                                  
-                  if(hasLocalStore && hasWindow)
-                  {
-                    window.localStorage.setItem(store_cache_key,JSON.stringify(r));
-                    window.localStorage.setItem(store_cache_key_stamp,JSON.stringify(new Date(Date.now())));
-                  }                                  
-                  resolve();
-                });
-              }
-              else
-              {
-                this.setState({
-                  ...this.state,
-                  loadingFacets:false
-                }, () => {                  
-                  resolve()
-                });
-              }                        
-            });
-          }
-          else {
-            this.setState({
-              ...this.state,
-              loadingFacets:false
-            }, () => {              
-              resolve();
-            });            
-          }
+              this.mergeAllFacetsAndResult();
+              resolve()
+            });       
         }).catch( () => {
           this.setState({
             ...this.state,
             loadingFacets:false
           });                  
           resolve();        
-        });
-      }
+        });      
     });      
   } 
 
@@ -847,7 +934,7 @@ getFacetValueTitle = (key:string,valueKey:string) => {
       if(setStateToLocation)
         this.setStateToLocation();    
         
-      let entryScape = new EntryScape(this.props.entryscapeUrl || 'https://registrera.oppnadata.se/store', this.props.facetSpecification,this.props.hitSpecifications);
+      let entryScape = new EntryScape(this.props.entryscapeUrl || 'https://admin.dataportal.se/store', this.props.facetSpecification,this.props.hitSpecifications);
       entryScape.solrSearch(this.state.request).then((res) => {
               
         let hits:SearchHit[] = res.hits || [];
@@ -926,7 +1013,7 @@ getFacetValueTitle = (key:string,valueKey:string) => {
         request:{
           ...this.state.request,
           fetchFacets: true,
-          takeFacets: 100 //EntryScape is limited to 100 facets
+          takeFacets: 100 //EntryScape is limited to 100 facets          
         }  
       }, () => {                
           this.doSearch().then(() => {                  
@@ -954,6 +1041,7 @@ getFacetValueTitle = (key:string,valueKey:string) => {
       fetchMoreFacets: this.fetchMoreFacets,
       showMoreFacets: this.showMoreFacets,
       fetchAllFacets: this.fetchAllFacets,
+      searchInFacets: this.searchInFacets,
       updateFacetStats: this.mergeAllFacetsAndResult,
       facetSelected: this.facetSelected,
       facetHasSelectedValues: this.facetHasSelectedValues,

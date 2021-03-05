@@ -35,7 +35,7 @@ export class ContentPage extends React.Component<ContentPageProps, any> {
     this.state = { activeLink: this.props.content.name};
   }
 
-  setFocus() {
+  setFocus() {    
     if (this.headerRef.current) {
       this.headerRef.current.setFocusOnMenuButton();
     }
@@ -44,11 +44,11 @@ export class ContentPage extends React.Component<ContentPageProps, any> {
   setTopMargin(height: number) {
     this.setState({ headerHeight: height });
   }
-
+  
   render() {
     const { location } = this.props;
     let uri = new URLSearchParams(location.search);
-
+    
     return (   
       <QueryParamProvider params={uri}>
       <PageMetadata

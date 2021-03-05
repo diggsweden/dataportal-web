@@ -42,7 +42,7 @@ export class ArticlePage extends React.Component<PageProps> {
   render() {
     const { location } = this.props;
     let uri = new URLSearchParams(location.search);
-
+    
     return (
       <QueryParamProvider params={uri}>
         <PageMetadata

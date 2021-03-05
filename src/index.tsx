@@ -56,8 +56,10 @@ const env = SettingsUtil.create(typeof window !== 'undefined'? window.location.h
 const client = createApolloClient({ 
   serverState: serverState, 
   fetch: fetch,  
-  ssrForceFetchDelay: 100,
-  backendUrl: env.CONTENTBACKEND_GRAPHAPI });
+  //ssrForceFetchDelay: 100,
+  backendUrl: env.CONTENTBACKEND_GRAPHAPI,
+  fetchPolicy: 'cache-and-network'
+});
 
 ReactDOM.hydrate(
   <I18nextProvider i18n={i18n}>
@@ -65,12 +67,12 @@ ReactDOM.hydrate(
       <CacheProvider value={cache}>
         <SettingsProvider applicationUrl={typeof window !== 'undefined'? window.location.href : ''}>
           <MatomoProvider
-                  value={createInstance({
+                  value={createInstance({                    
                     urlBase: 'https://webbanalys.digg.se',
                     siteId: env.MATOMO_SITEID > 0
                       ? env.MATOMO_SITEID
                       : -1,
-                  })}
+                  })}                 
                 >
               <GlobalStyles theme={themes.default} />
               <ThemeProvider theme={themes.opendata}>

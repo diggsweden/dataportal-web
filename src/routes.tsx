@@ -19,6 +19,7 @@ import { StartPage } from './pages/StartPage';
 import { SettingsContext } from 'components/SettingsProvider';
 import { ContentRouter } from 'pages/ContentPage';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
+import i18n from 'i18n';
 
 export interface RouteProps  {
   formdata?: object;

@@ -418,7 +418,7 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
                                     </span> 
                                     }
                                     <a href={`${hit.url}`}>
-                                      <h3 className="text-3">{hit.title}</h3>
+                                      <h3 className="text-4">{hit.title}</h3>
                                     </a>
                                     <p className="result-desc text-6">{hit.description}</p>
                                     <p className="result-org text-6-bold">

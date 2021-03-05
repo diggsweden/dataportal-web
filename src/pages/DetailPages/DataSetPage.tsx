@@ -33,7 +33,9 @@ export class DataSetPage extends React.Component<
 > {
   private headerRef: React.RefObject<Header>;
   private postscribe: any;
-  private referredSearch: string = `/${i18n.languages[0]}/${i18n.t('routes|datasets|path')}/?q=`; 
+  private referredSearch: string = `/${i18n.languages[0]}/${i18n.t(
+    'routes|datasets|path'
+  )}/?q=`;
 
   constructor(props: PageProps) {
     super(props);
@@ -41,7 +43,7 @@ export class DataSetPage extends React.Component<
     this.setFocus = this.setFocus.bind(this);
   }
 
-  // componentDidUpdate(){    
+  // componentDidUpdate(){
   //   console.log('update');
   //   console.log(window);
   //   if (typeof window !== 'undefined') {
@@ -58,17 +60,21 @@ export class DataSetPage extends React.Component<
    * or else blocks wont have access to DOM
    */
   componentDidMount() {
-
     //we need to reload the page when using the back/forward buttons to a blocks rendered page
-    if (typeof window !== 'undefined') {      
-
+    if (typeof window !== 'undefined') {
       //check if reffereing search params is set to hash
-      if(window.location && window.location.hash && window.location.hash.includes("ref=?"))
-        this.referredSearch = `/${i18n.languages[0]}/${i18n.t('routes|datasets|path')}/?${window.location.hash.split("ref=?")[1]}`;
+      if (
+        window.location &&
+        window.location.hash &&
+        window.location.hash.includes('ref=?')
+      )
+        this.referredSearch = `/${i18n.languages[0]}/${i18n.t(
+          'routes|datasets|path'
+        )}/?${window.location.hash.split('ref=?')[1]}`;
 
-      window.onpopstate = ((e:any) => {        
+      window.onpopstate = (e: any) => {
         window.location.reload();
-      })
+      };
     }
 
     this.addScripts();
@@ -89,7 +95,7 @@ export class DataSetPage extends React.Component<
             entrystore_base: 'https:\/\/${
               this.props.env.ENTRYSCAPE_DATASETS_PATH
                 ? this.props.env.ENTRYSCAPE_DATASETS_PATH
-                : 'registrera.oppnadata.se'
+                : 'admin.dataportal.se'
             }\/store'          
           };
           window.__entryscape_config = [{
@@ -102,7 +108,8 @@ export class DataSetPage extends React.Component<
               i18n.languages[0]
             }/dataservice/\${context}_\${entry}/"},
             namespaces:{
-              esterms: 'http://entryscape.com/terms/'
+              esterms: 'http://entryscape.com/terms/',
+              peu: 'http://publications.europa.eu/resource/authority/'
             },
 
             collections: [
@@ -227,6 +234,65 @@ export class DataSetPage extends React.Component<
                 template: '{{viewMetadata rdformsid="dcat:Dataset"}}'          
               },
               {
+                block: 'architectureIndicator',
+                extends: 'template',
+                template: '{{#ifprop "dcterms:type"}}' +
+                  '<span class="esbIndicator" title="TjÃ¤nstens arkitekturstil">' +
+                  '<span class="material-icons-outlined">build_circle</span>' +
+                  '<i class="fas fa-wrench"></i>' +
+                  '<span class="esbIndicatorLabel">{{#eachprop "dcterms:type"}}{{label}}{{separator}}{{/eachprop}}</span></span>' +
+                  '{{/ifprop}}',
+              },
+              {
+                block: 'costIndicator',
+                extends: 'template',
+                template: '{{#ifprop "schema:offers"}}<span class="esbIndicator" title="Avgift">' +
+                  '<i class="fas fa-coins"></i>' +
+                  '<span class="esbIndicatorLabel">Avgift</span></span>' +
+                  '{{/ifprop}}',
+              },
+              {
+                block: 'accessRightsIndicator',
+                extends: 'template',
+                template: '{{#ifprop "dcterms:accessRights"}}' +
+                  '{{#eachprop "dcterms:accessRights"}}<span class="esbIndicator" title="{{description}}">' +
+                  '{{#ifprop "dcterms:accessRights" uri="peu:access-right/PUBLIC"}}' +
+                  '<i class="fas fa-lock-open"></i>{{/ifprop}}' +
+                  '{{#ifprop "dcterms:accessRights" uri="peu:access-right/NON_PUBLIC"}}' +
+                  '<i class="fas fa-key"></i>{{/ifprop}}' +
+                  '{{#ifprop "dcterms:accessRights" uri="peu:access-right/RESTRICTED"}}' +
+                  '<i class="fas fa-lock"></i>{{/ifprop}}' +
+                  '<span class="esbIndicatorLabel">{{label}}</span>{{/eachprop}}' +
+                  '</span>{{/ifprop}}',
+              },
+              {
+                block: 'periodicityIndicator',
+                extends: 'template',
+                template: '{{#eachprop "dcterms:accrualPeriodicity"}}<span class="esbIndicator" title="Uppdateringsfrekvens">' +
+                  '<i class="fas fa-redo"></i>' +
+                  '<span class="">{{label}}</span></span>{{/eachprop}}',
+              },
+              {
+                block: 'licenseIndicator',
+                loadEntry: true,
+                run: function(node, data, items, entry) {
+                  var v = entry.getMetadata().findFirstValue(null, 'dcterms:license');
+                  if (v.indexOf("http://creativecommons.org/") === 0) {
+                    var variant;
+                    if (v === "http://creativecommons.org/publicdomain/zero/1.0/") {
+                      variant = "zero";
+                    } else if (v.indexOf("http://creativecommons.org/licenses/") === 0) {
+                      variant = v.substr(36).split('/')[0];
+                    } else {
+                      return; // Unknown cc version.
+                    }
+                    node.innerHTML = '<span class="esbIndicator" title="Licens från Creative Commons">' +
+                      '<i class="license-icon fab fa-creative-commons"></i>' +
+                      '<span class="esbIndicatorLabel">' + variant.toLowerCase() + '</span></span>';
+                  }
+                },
+              },
+              {
                 block: 'distributionList2',
                 extends: 'list',
                 relation: 'dcat:distribution',
@@ -286,7 +352,7 @@ export class DataSetPage extends React.Component<
     }
   }
 
-  render() {    
+  render() {
     const { location } = this.props;
     let uri = new URLSearchParams(location.search);
 
@@ -312,9 +378,9 @@ export class DataSetPage extends React.Component<
                   entry && entry.title
                     ? `${this.props.env.CANONICAL_URL}/${
                         i18n.languages[0]
-                      }/${i18n.t('routes|datasets|path')}/${this.props.match.params.cid}_${
-                        this.props.match.params.eid
-                      }/${slugify(entry.title)}`
+                      }/${i18n.t('routes|datasets|path')}/${
+                        this.props.match.params.cid
+                      }_${this.props.match.params.eid}/${slugify(entry.title)}`
                     : ''
                 }
               />
@@ -335,16 +401,23 @@ export class DataSetPage extends React.Component<
                     className="detailpage main-container"
                     flex="1 1 auto"
                   >
-                    <StaticBreadcrumb env={this.props.env} staticPaths={[
-                      {
-                        path: this.referredSearch,
-                        title: i18n.t('routes|datasets|title')
-                      },
-                      {
-                        path:  `/${i18n.languages[0]}/${i18n.t('routes|datasets|path')}/${this.props.match.params.cid}_${this.props.match.params.eid}/${slugify(entry.title)}`,
-                        title: entry.title
-                      }
-                    ]} />
+                    <StaticBreadcrumb
+                      env={this.props.env}
+                      staticPaths={[
+                        {
+                          path: this.referredSearch,
+                          title: i18n.t('routes|datasets|title'),
+                        },
+                        {
+                          path: `/${i18n.languages[0]}/${i18n.t(
+                            'routes|datasets|path'
+                          )}/${this.props.match.params.cid}_${
+                            this.props.match.params.eid
+                          }/${slugify(entry.title)}`,
+                          title: entry.title,
+                        },
+                      ]}
+                    />
                     <div className="detailpage__wrapper">
                       {/* Left column */}
                       {/* Left column */}
@@ -365,20 +438,35 @@ export class DataSetPage extends React.Component<
                           `,
                           }}
                         ></script>
-                        
-                        <div className="description">
-                        <ShowMoreText
-                          lines={8}
-                          more={i18n.t('pages|datasetpage|view_more')}
-                          less={i18n.t('pages|datasetpage|view_less')}
-                          className="text-5"
-                          anchorClass="text-5 view-more-text-link"
-                          expanded={false}
-                        >
-                          <span className="text-5">{entry.description}</span>
-                        </ShowMoreText>
+
+                        {/* Indicators */}
+                        <div className="row indicators">
+                          <div
+                            data-entryscape="accessRightsIndicator"
+                            className="accessRightsIndicator"
+                          ></div>
+                          <div
+                            data-entryscape="periodicityIndicator"
+                            className="architectureIndicator"
+                          ></div>
+                          <div
+                            data-entryscape="licenseIndicator"
+                            className="licenseIndicator"
+                          ></div>
                         </div>
 
+                        <div className="description">
+                          <ShowMoreText
+                            lines={8}
+                            more={i18n.t('pages|datasetpage|view_more')}
+                            less={i18n.t('pages|datasetpage|view_less')}
+                            className="text-5"
+                            anchorClass="text-5 view-more-text-link"
+                            expanded={false}
+                          >
+                            <span className="text-5">{entry.description}</span>
+                          </ShowMoreText>
+                        </div>
 
                         {/* Use data header */}
                         <h2 className="text-3 hbbr">
@@ -392,20 +480,6 @@ export class DataSetPage extends React.Component<
                           data-entryscape-registry="true"
                         ></div>
 
-                        <script
-                          className="download__rdf"
-                          type="text/x-entryscape-handlebar"
-                          data-entryscape="true"
-                          data-entryscape-block="template"
-                          dangerouslySetInnerHTML={{
-                            __html: `
-                        <a class="download__rdf--link text-5-link" target="_blank" href="{{metadataURI}}?recursive=dcat">${i18n.t(
-                          'pages|datasetpage|rdf'
-                        )}</a>
-                        `,
-                          }}
-                        ></script>
-
                         <div
                           className="dataset__map"
                           data-entryscape="view"
@@ -413,7 +487,24 @@ export class DataSetPage extends React.Component<
                           data-entryscape-label="false"
                         ></div>
 
-                        {/* <div data-entryscape="dataserviceView"></div> */}
+                        <div className="contact__publisher hbbr">
+                          <h3 className="text-4">
+                            {i18n.t('pages|datasetpage|contact-publisher')}
+                          </h3>
+                          <p className="text-5">
+                            {i18n.t('pages|datasetpage|contact-publisher-text')}
+                            {i18n.t(
+                              'pages|datasetpage|contact-publisher-text2'
+                            )}{' '}
+                            <a
+                              className="text-5-link"
+                              href="https://community.dataportal.se/"
+                            >
+                              community
+                            </a>
+                            .
+                          </p>
+                        </div>
                       </div>
 
                       {/* Right column */}
@@ -438,7 +529,6 @@ export class DataSetPage extends React.Component<
                             `,
                             }}
                           ></script>
-
                         </div>
 
                         <div className="detailpage__wrapper--rightcol-info text-6">
@@ -462,6 +552,19 @@ export class DataSetPage extends React.Component<
                             }}
                           ></script>
                         </div>
+                        <script
+                          className="download__rdf"
+                          type="text/x-entryscape-handlebar"
+                          data-entryscape="true"
+                          data-entryscape-block="template"
+                          dangerouslySetInnerHTML={{
+                            __html: `
+                        <a class="download__rdf--link text-5-link" target="_blank" href="{{metadataURI}}?recursive=dcat">${i18n.t(
+                          'pages|datasetpage|rdf'
+                        )}</a>
+                        `,
+                          }}
+                        ></script>
                       </div>
                     </div>
                   </MainContent>

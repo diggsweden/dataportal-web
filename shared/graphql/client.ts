@@ -1,7 +1,7 @@
 import {
     InMemoryCache, IntrospectionFragmentMatcher,    
   } from 'apollo-cache-inmemory';
-  import { ApolloClient } from '@apollo/client';
+  import { ApolloClient, WatchQueryFetchPolicy } from '@apollo/client';
   import { createHttpLink } from 'apollo-link-http'
   import { BatchHttpLink } from 'apollo-link-batch-http';
   
@@ -15,16 +15,18 @@ import {
       cookies?: any;
       fetch?: any;
       ssrForceFetchDelay?: number;
+      fetchPolicy? : WatchQueryFetchPolicy;
     } = {
         backendUrl: '/',
       ssrMode: false,
       serverState: null,
       cookies: null,
       fetch: null,
-      ssrForceFetchDelay: 0
+      ssrForceFetchDelay: 0,
+      fetchPolicy : 'cache-and-network'
     }
   ) => {
-    const { backendUrl, ssrMode, serverState, cookies,ssrForceFetchDelay } = options;
+    const { backendUrl, ssrMode, serverState, cookies,ssrForceFetchDelay, fetchPolicy } = options;
 
   
     // ! Setting type as any to supress ts error.
@@ -51,7 +53,7 @@ import {
       headers: {
         cookie: cookies,
       },
-      fetch: typeof fetch !== 'undefined' ? fetch : options.fetch,
+      fetch: typeof fetch !== 'undefined' ? fetch : options.fetch      
     });
   
     const client = new ApolloClient({
@@ -61,7 +63,7 @@ import {
       cache: serverState != null ? cache.restore(serverState) : cache,
       defaultOptions: {
         watchQuery: {
-          fetchPolicy: 'cache-and-network',
+          fetchPolicy: options.fetchPolicy || 'cache-and-network',
         },
       },
     });

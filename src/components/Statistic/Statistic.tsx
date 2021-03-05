@@ -53,7 +53,7 @@ export const Statistic: React.FC<StatisticProps> = (props) => {
             fetch(
               props.env.ENTRYSCAPE_ORG_STATS_URL
                 ? props.env.ENTRYSCAPE_ORG_STATS_URL
-                : 'https://registrera.oppnadata.se/charts/orgData.json'
+                : 'https://admin.dataportal.se/charts/orgData.json'
             )
               .then((response) => response.json())
               .then((data) => {
@@ -93,7 +93,7 @@ export const Statistic: React.FC<StatisticProps> = (props) => {
                 })                 
               });
       
-            let url = 'https://registrera.oppnadata.se/charts/themeData.json';
+            let url = 'https://admin.dataportal.se/charts/themeData.json';
       
             if (
               props.env.ENTRYSCAPE_THEME_STATS_URL_EN &&

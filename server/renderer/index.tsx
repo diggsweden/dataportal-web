@@ -43,7 +43,9 @@ export const renderer = async (
   cookies: string,
   apiUrl: string,
   formdata?: object,
-  vars?: object
+  vars?: object,
+  acceptLang?: string,
+  i18nreq?: any
 ): Promise<RenderResponse> => {
   const profile: RenderResponseProfileItem[] = [];  
 
@@ -62,17 +64,14 @@ export const renderer = async (
     ssrMode: true, 
     backendUrl: env.CONTENTBACKEND_GRAPHAPI,
     cookies:cookies,    
-    fetch: fetch as any 
+    fetch: fetch as any,
+    fetchPolicy: 'network-only'
   });
 
-  if(path.startsWith("/en/") || path == "/en")
-    i18n.changeLanguage("en");
-
-  if(path.startsWith("/sv/")  || path == "/sv")
-    i18n.changeLanguage("sv");
+  i18n.changeLanguage(i18nreq.languages[0]);  
 
   const frontend = (
-    <I18nextProvider i18n={i18n}>
+    <I18nextProvider i18n={i18nreq}>
       <ApolloProvider client={client}>
         <CacheProvider value={cache}>
           <GlobalStyles theme={themes.default} />
@@ -94,9 +93,7 @@ export const renderer = async (
       
     try {
       const bundlesPromise = getBundles(manifestPath);    
-      const styleBundlesPromise = getStyleBundles(manifestPath);    
-
-      await getDataFromTree(frontend);      
+      const styleBundlesPromise = getStyleBundles(manifestPath);          
 
       if (routerContext.url) {
         return {
@@ -105,6 +102,8 @@ export const renderer = async (
           profile,
         };
       }
+
+      await getDataFromTree(frontend);      
 
       const { helmet } = helmetContext as FilledContext;    
 
@@ -117,7 +116,7 @@ export const renderer = async (
           : '',
         bundles,  
         styleBundles,    
-        htmlAttributes: 'lang="sv"',
+        htmlAttributes: `lang="${i18nreq.languages[0]}"`,
       });
 
       start = Date.now();                   
@@ -158,10 +157,5 @@ export const renderer = async (
         error: { message: e.message, stack: e.stack, name: e.name },
         profile,
       };
-    }
-
-  return {
-    statusCode: 500,
-    profile,
-  };  
+    } 
 };
