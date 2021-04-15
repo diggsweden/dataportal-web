@@ -11,6 +11,7 @@ export interface HitSpecification
   path?: string;
   titleResource?: string;
   descriptionResource?: string;
+  pathResolver?: (hit:any) => string
 }
 
 export interface FacetSpecification
@@ -60,7 +61,7 @@ export interface SearchFacetValue {
   facetType: ESType;  
   count: number;
   facetValueString: string;
-  related: Boolean;
+  related: Boolean;  
 }
 
 export interface SearchRequest {

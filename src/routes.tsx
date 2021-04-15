@@ -30,8 +30,8 @@ export const Routes = ({formdata, vars}:RouteProps) => {
 
   const { trackPageView } = useMatomo();
   const location = useLocation();  
-
-  useEffect(() => {
+  
+  useEffect(() => {    
     trackPageView({});
   },[location.pathname])  
 
@@ -69,13 +69,17 @@ export const Routes = ({formdata, vars}:RouteProps) => {
                 <Route path={['/dataservice', '/en/dataservice', '/sv/dataservice']} exact render={(props)=><SearchPage env={settings.env} {...props} />} />
 
                 <Route path={['/specifications', '/sv/specifications', '/en/specifications']} exact render={(props)=><SearchSpecificationsPage env={settings.env} {...props} />} />
-                <Route path={['/concepts', '/sv/concepts', '/en/concepts']} exact render={(props)=><SearchTermsPage env={settings.env} {...props} />} />
+                <Route path={['/concepts', '/sv/concepts', '/en/concepts']} exact render={(props)=><SearchTermsPage env={settings.env} {...props} />} />                
                 <Route path={['/datasets/:cid*_:eid/*', '/en/datasets/:cid*_:eid/*', '/sv/datasets/:cid*_:eid/*']} exact render={(props)=><DataSetPage env={settings.env} {...props}/>} />
                 
                 <Route path={['/dataservice/:cid*_:eid/*', '/en/dataservice/:cid*_:eid/*', '/sv/dataservice/:cid*_:eid/*']} exact render={(props)=><DataServicePage env={settings.env} {...props}/>} />
                 
-                <Route path={['/concepts/:cid*_:eid/*', '/sv/concepts/:cid*_:eid/*', '/en/concepts/:cid*_:eid/*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} />
-                <Route path={['/specifications/:cid*_:eid/*', '/sv/specifications/:cid*_:eid/*', '/en/specifications/:cid*_:eid/*']} exact render={(props)=><SpecificationPage env={settings.env} {...props}/>} />
+                {/* <Route path={['/concepts/:cid*_:eid/*', '/sv/concepts/:cid*_:eid/*', '/en/concepts/:cid*_:eid/*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} /> */}
+                <Route path={['/concepts/:scheme/:curi*', '/sv/concepts/:scheme/:curi*', '/en/concepts/:scheme/:curi*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} />
+                <Route path={['/externalconcepts/:scheme/:curi*', '/sv/externalconcepts/:scheme/:curi*', '/en/externalconcepts/:scheme/:curi*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} />
+                <Route path={['/externalterminology/:scheme/:curi*', '/sv/externalterminology/:scheme/:curi*', '/en/externalterminology/:scheme/:curi*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} />
+                <Route path={['/terminology/:scheme/:curi*', '/sv/terminology/:scheme/:curi*', '/en/terminology/:scheme/:curi*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} />
+                <Route path={['/specifications/:curi*', '/sv/specifications/:curi*', '/en/specifications/:curi*']} exact render={(props)=><SpecificationPage env={settings.env} {...props}/>} />                                
                 {/* default */}
                 <Route path={['/', '/sv','/en']} exact render={(props)=><StartPage env={settings.env} {...props}/>} />                
 

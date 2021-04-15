@@ -51,7 +51,25 @@
     "sort" : "Order by:",
     "nohits" : "No hits",
     "numberofhits" : "Number of hits:",
-    "filtersearch" : "Search within filter"
+    "filtersearch" : "Search within filter",
+    "search-tips" : "Search tips",
+    "search-tips-search-head" : "Filtering",
+    "search-tips-search-txt" : "Filtering",
+
+    "search-tips-filter-head" : "Filtering",
+    "search-tips-filter-txt" : "Searching with different filters (e.g. categories and licenses) creates an AND between the filters. Searching with several options within a filter (e.g. several different formats) creates an OR between the options.",
+    "search-tips-searchfilter-head" : "Search within filters",
+    "search-tips-searchfilter-txt" : "Within the filters for category, organization and format, it is possible to perform a search, e.g. it is possible to search for a special authority or municipality within the filter for organization.",
+    "search-tips-sort-head" : "Sorting",
+    "search-tips-sort-txt1" : "When sorting the search result by",
+    "search-tips-sort-txt2" : "Relevance",
+    "search-tips-sort-txt3" : ", the search term is matched by heading. When sorting by",
+    "search-tips-sort-txt4" : "Last modified",
+    "search-tips-sort-txt5" : ", the most recently updated metadata (information about the data) is displayed first. The fact that the metadata is updated does to mean that the actual data is updated.",
+    "search-tips-license-head" : "Licenses",
+    "search-tips-license-txt" : "Licenses are rules for how data may be used, read more about",
+    "search-tips-license-link" : "licenses"
+
   },
   "datasets" : {
     "search-datasets" : "Search",
@@ -105,6 +123,57 @@
     "pagenotfound-text" : "This may be because oppnadata.se moved to dataportal.se September 23, 2020. Hopefully these links can help you find what you were looking for.",
     "pagenotfound-link" : "Home page",
     "pagenotfound-link2" : "Search data"
+  },
+  "concept_page" :{
+    "superior_concept" : "Superior concept",
+    "no_superior_concept" : "No superior concepts",
+
+    "subordinate_concepts" : "Subordinate concepts",
+    "no_subordinate_concepts" : "No subordinate concepts",
+
+    "related_concepts" : "Related concepts",
+    "no_related_concepts" : "No related concepts",
+
+    "visualization_concepts" : "Visualization of subordinate concepts",
+    "terminology_concept" : "Terminology",
+    "download_concept" : "Download",
+
+    "number_of_concepts" : "Number of concepts in terminology",
+    "first_level_concepts" : "Concepts in the first level of terminology",
+
+    "preferred_term" : "Preferred term",
+    "alternativ_term" : "Alternative term",
+    "hidden_term" : "Hidden term",
+
+    "example" : "Example",
+
+    "historical_note" : "Historical note",
+
+    "editorial_note" : "Editorial note",
+    
+    "note" : "Note",
+
+    "exact_match" : "Has exact match",
+
+    "close_match" : "Has close match",
+
+    "related_match" : "Has related match",
+
+    "superior_match" : "Has superior match",
+
+    "subordinate_match" : "Has subordinate match",
+
+    "about_concept" : "About concept",
+
+    "about_terminology" : "About terminology"
+  },
+  "specification_page" :{
+    "about_specification" : "About specification",
+    "resource_specification" : "Resource",
+    "scheme_download" : "Download schema",
+    "guidance_download" : "Download guidance",
+    "specification_download" : "Download specification",
+    "download" : "Download"
   }
 }
 

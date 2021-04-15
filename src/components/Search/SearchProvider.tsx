@@ -45,7 +45,7 @@ export interface SearchContextData {
 /**
  * Default value for Search provider
  */
-const defaultSettings:SearchContextData = {
+export const defaultSettings:SearchContextData = {
   request: {query:'',fetchFacets:true,takeFacets:5,facetValues:[], take:10, page:0},
   result: {hits:[],facets:{},count:-1},    
   set: () =>  new Promise<void>(resolve => {}),  
@@ -106,27 +106,31 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
 
       this.postscribe = (window as any).postscribe;
      
+      // <script
+      //   src="https://dataportal.azureedge.net/cdn/entrystore.4.7.5.modified.js" 
+      //   crossorigin="anonymous"></script>
+      //   <script
+      //     src="https://dataportal.azureedge.net/cdn/rdfjson.4.7.5.modified.js" 
+      //     crossorigin="anonymous"></script>   
+
       this.postscribe(
         '#scriptsPlaceholder',
         ` 
         <script
-        src="https://dataportal.azureedge.net/cdn/entrystore.4.7.5.modified.js" 
-        crossorigin="anonymous"></script>
-        <script
-          src="https://dataportal.azureedge.net/cdn/rdfjson.4.7.5.modified.js" 
-          crossorigin="anonymous"></script>          
+         src="https://dataportal.azureedge.net/cdn/entrystore_2021-03-18.js" 
+         crossorigin="anonymous"></script>
         `,
         {
           done: function() {
             if(reactThis.state && reactThis.state.fetchAllFacetsOnMount) {      
               reactThis.parseLocationToState().then(anyParsed => {
                   if(anyParsed)
-                  {      
-                    reactThis.set({
+                  {                          
+                    reactThis.set({                      
                       fetchFacets:true
-                    }).then(() => {
-                      reactThis.fetchAllFacets().finally(() => {                        
-                        reactThis.doSearch().finally(() => {                                                           
+                    }).then(() => {                                                                          
+                      reactThis.fetchAllFacets().finally(() => {                                
+                        reactThis.doSearch().finally(() => {                                                                                     
                         });
                       });
                     })                          
@@ -172,7 +176,7 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
             reactThis.set({
               fetchFacets:true
             }).then(() => {    
-              reactThis.fetchAllFacets().finally(() => {               
+              reactThis.fetchAllFacets().finally(() => {                              
                 reactThis.doSearch(false,false);
               });
             });
@@ -532,20 +536,20 @@ fetchAllFacets = () => {
       else {          
         //found in cache, use cached
         if(allFacets)
-        {            
+        {                             
           this.setState({
-            ...this.state,
-            allFacets:allFacets
-          }, () => {          
-            wasCached = true;                      
+            ...this.state,                           
+            allFacets:allFacets            
+          }, () => {                             
+            wasCached = true;                                  
             resolve();                      
           });            
         }
       }
     }
-
+    
     if(!wasCached)
-    {        
+    {                    
       let entryScape = new EntryScape(this.props.entryscapeUrl || 'https://admin.dataportal.se/store', this.props.facetSpecification, this.props.hitSpecifications);
 
       entryScape.solrSearch({          
@@ -576,6 +580,7 @@ fetchAllFacets = () => {
             {
               this.setState({
                 ...this.state,
+                request:this.state.request,
                 loadingFacets:false
               }, () => {                  
                 resolve()
@@ -656,7 +661,7 @@ searchInFacets = (query:string, facetkey:string) => {
                     facet:facetkey,              
                     facetType:ESType.uri,
                     facetValueString: '',
-                    related:false
+                    related:false                    
                   };                            
 
                   newValue.facetValueString = `${facetkey}||${newValue.resource}||${newValue.related}||${ESType.uri}||${facets[facetkey].title}||${newValue.title}`;
@@ -732,9 +737,8 @@ searchInFacets = (query:string, facetkey:string) => {
       }
       //did not exist, add to array
       else{
-        facetValues.push(facetValue);
+        facetValues.push(facetValue);        
       }
-
       this.setState({
         ...this.state,
         loadingFacets:false,
@@ -775,7 +779,6 @@ searchInFacets = (query:string, facetkey:string) => {
         
       if(this.state.request.esRdfTypes)
       {
-
         const getKeyFromValue =(value:string)=> Object.entries(ESRdfType).filter((item)=>item[1]===value)[0][0];
 
         this.state.request.esRdfTypes!.forEach((e) => {  
@@ -858,6 +861,9 @@ searchInFacets = (query:string, facetkey:string) => {
                     case 'uri':
                         facetType = ESType.uri;
                         break;
+                    case 'wildcard':
+                      facetType = ESType.wildcard;
+                      break;
                   }
 
                   queryfacets.push({
@@ -867,7 +873,7 @@ searchInFacets = (query:string, facetkey:string) => {
                     facetValueString:`${facetstring[0]}||${facetstring[1]}||${facetstring[2]}||${facetstring[3]}||${facetstring[4]}||${facetstring[5]}`,
                     related:facetstring[2] == 'true',
                     resource: facetstring[1],
-                    title:facetstring[5]
+                    title:facetstring[5]                    
                   });
                 }
               }                

@@ -429,7 +429,8 @@
 
             //Text transform
             .compact .rdformsRow>.rdformsFields>.rdformsField>div:first-letter {
-                text-transform: uppercase;
+                //Not workning in safari
+                // text-transform: uppercase;
             }
 
             // Window 800px
@@ -1391,14 +1392,10 @@
         display: flex;
         align-items: center;
         color: $black100;
-        padding: 0rem;
-
+        padding: 0rem;;
         span {
             display: block;
-
-            &::first-letter {
-                text-transform: uppercase;
-            }
+            text-transform: uppercase;
         }
 
         i {

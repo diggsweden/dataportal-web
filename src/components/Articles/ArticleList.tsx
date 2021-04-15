@@ -7,6 +7,7 @@ import { Loader } from '../Loader';
 import ChopLines from 'chop-lines';
 import { slugify } from 'utilities/urlHelpers';
 import { Link } from 'react-router-dom';
+import Truncate from 'react-truncate';
 let moment = require('moment');
 
 export interface ArticleListProps {
@@ -62,20 +63,16 @@ export const ArticleList: React.FC<ArticleListProps> = (props) => {
                 </span>
                 <Link
                   className="text-4"
-                  to={`/${i18n.languages[0]}/${i18n.t(
-                    'routes|news|path'
-                  )}/${n.id}/${slugify(n.heading)}`}
+                  to={`/${i18n.languages[0]}/${i18n.t('routes|news|path')}/${
+                    n.id
+                  }/${slugify(n.heading)}`}
                 >
                   {n.heading}
                 </Link>
-                <ChopLines lines={2} lineHeight={27}>
-                  <p
-                    className="text-5"
-                    dangerouslySetInnerHTML={{
-                      __html: n.preambleHTML,
-                    }}
-                  />
-                </ChopLines>
+
+                <p className="text-5">
+                  <Truncate lines={2}>{n.preambleHTML}</Truncate>
+                </p>
               </li>
             );
           })}

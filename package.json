@@ -85,6 +85,7 @@
     "@types/lodash": "^4.14.168",
     "@types/mini-css-extract-plugin": "^0.8.0",
     "@types/react-i18next": "^8.1.0",
+    "@types/react-truncate": "^2.3.3",
     "apollo-boost": "^0.4.7",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-link-batch-http": "^1.2.14",
@@ -97,6 +98,7 @@
     "core-js": "^3.4.1",
     "css-loader": "^3.2.0",
     "dot-prop": "5.1.1",
+    "elliptic": "6.5.4",
     "emotion": "^10.0.17",
     "emotion-server": "10.0.17",
     "emotion-theming": "^10.0.19",
@@ -130,6 +132,7 @@
     "react-hooks": "^1.0.1",
     "react-router-dom": "^5.1.2",
     "react-show-more-text": "^1.4.6",
+    "react-truncate": "^2.4.0",
     "react-vis": "^1.11.7",
     "sass-loader": "^8.0.0",
     "serialize-javascript": "3.1.0",
@@ -140,6 +143,7 @@
     "unfetch": "^4.1.0",
     "url-polyfill": "^1.1.7",
     "url-search-params-polyfill": "^7.0.0",
+    "y18n": "5.0.5",
     "yargs-parser": "13.1.2"
   },
   "resolutions": {
@@ -150,6 +154,8 @@
     "**/**/dot-prop": "^5.1.1",
     "**/**/serialize-javascript": "^3.1.0",
     "**/**/node-fetch": "^2.6.1",
+    "**/**/elliptic": "^6.5.4",
+    "**/**/y18n": "^5.0.5",    
     "@digg/react-ideal-image": "file:local_modules/digg_react-ideal-image-1.0.2.tgz"
   },
   "jest": {

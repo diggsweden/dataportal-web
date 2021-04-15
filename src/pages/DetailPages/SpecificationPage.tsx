@@ -72,7 +72,7 @@ export class SpecificationPage extends React.Component<
 
       this.postscribe = (window as any).postscribe;
 
-      if (this.props.match.params.eid && this.props.match.params.cid) {
+      if (this.props.match.params.curi) {
         this.postscribe(
           '#scriptsPlaceholder',
 
@@ -91,8 +91,15 @@ export class SpecificationPage extends React.Component<
           window.__entryscape_config = {
             block: 'config',
             page_language: '${i18n.languages[0]}',
-            entry: '${this.props.match.params.eid}', 
-            context: '${this.props.match.params.cid}',
+            //entry: '${this.props.match.params.eid}', 
+            //context: '${this.props.match.params.cid}',
+            routes: [              
+              {
+                regex:new RegExp('(\/*\/specifications\/)(.+)'),
+                uri:'https://dataportal.se/specifications/${this.props.match.params.curi}',
+                page_language: '${i18n.languages[0]}'
+              }              
+            ],
             entrystore: 'https://${
               this.props.env.ENTRYSCAPE_SPECS_PATH
                 ? this.props.env.ENTRYSCAPE_SPECS_PATH
@@ -162,7 +169,7 @@ export class SpecificationPage extends React.Component<
                 rowhead:'<span class="specification__resource--header text-4">{{text}}</span>' + 
                   '<span class="specification__resource--type text-5">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
                   '<div class="specification__resource--description text-5 esbDescription">{{ text content="\${skos:definition}" }}</div>' +
-                  '<a target="_blank" class="specification__resource--downloadlink text-5" href="{{resourceURI}}">Ladda ner {{prop "prof:hasRole" class="type" render="label"}}</a>',
+                  '<a target="_blank" class="specification__resource--downloadlink text-5" href="{{resourceURI}}">${i18n.t('pages|specification_page|download')} {{prop "prof:hasRole" class="type" render="label"}}</a>',
               },
               {
                 block: 'indexLink',
@@ -201,8 +208,7 @@ export class SpecificationPage extends React.Component<
     return (
       <EntrystoreProvider
         env={this.props.env}
-        cid={this.props.match.params.cid}
-        eid={this.props.match.params.eid}
+        entryUri={`https://dataportal.se/specifications/${this.props.match.params.curi}`}
         entrystoreUrl={this.props.env.ENTRYSCAPE_SPECS_PATH}
       >
         <EntrystoreContext.Consumer>
@@ -221,8 +227,7 @@ export class SpecificationPage extends React.Component<
                     ? `${this.props.env.CANONICAL_URL}/${
                         i18n.languages[0]
                       }/${i18n.t('routes|specifications|path')}/${
-                        this.props.match.params.cid
-                      }_${this.props.match.params.eid}/${slugify(entry.title)}`
+                        this.props.match.params.curi}`
                     : ''
                 }
               />
@@ -252,9 +257,7 @@ export class SpecificationPage extends React.Component<
                         {
                           path: `/${i18n.languages[0]}/${i18n.t(
                             'routes|specifications|path'
-                          )}/${this.props.match.params.cid}_${
-                            this.props.match.params.eid
-                          }/${slugify(entry.title)}`,
+                          )}/${this.props.match.params.curi}`,
                           title: entry.title,
                         },
                       ]}
@@ -286,7 +289,7 @@ export class SpecificationPage extends React.Component<
                           ></span>
                         </p>
 
-                        <h2 className="text-3">Resurs</h2>
+                        <h2 className="text-3">{i18n.t('pages|specification_page|resource_specification')}</h2>
                         <div
                           className="specification__resource"
                           data-entryscape="resourceDescriptors2"
@@ -315,7 +318,7 @@ export class SpecificationPage extends React.Component<
                       {/* Right column */}
                       <div className="detailpage__wrapper--rightcol hbbr">
                         <div className="detailpage__wrapper--rightcol-info text-6">
-                          <h2 className="text-5-bold">Om specifikation</h2>
+                          <h2 className="text-5-bold">{i18n.t('pages|specification_page|about_specification')}</h2>
 
                           <div
                             className="specificationDetails"

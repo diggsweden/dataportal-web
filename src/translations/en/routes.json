@@ -1,11 +1,11 @@
 {
   "about":
   {
-    "path":"about-webpage",
+    "path":"about-this-website",
     "title":"About this website"
   },
   "accessibility":{
-    "path":"about-webpage/accessibility",
+    "path":"about-this-website/accessibility",
     "title":"Accessibility"
   },
   "register-data":{
@@ -51,5 +51,9 @@
   "statistics":{
     "path" : "statistics",
     "title" : "Statistics"    
+  },
+  "about-us":{
+    "path" : "about-us#how_you_may_use_the_data_on_the_portal",
+    "title" : "about-us"    
   }
 }

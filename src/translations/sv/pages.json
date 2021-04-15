@@ -51,7 +51,24 @@
     "sort" : "Sortera:",
     "nohits" : "Inga träffar",
     "numberofhits" : "Antal träffar:",
-    "filtersearch" : "Sök inom filter"
+    "filtersearch" : "Sök inom filter",
+    "search-tips" : "Söktips",
+    "search-tips-search-head" : "Vidga sökning med asterisk (*)",
+    "search-tips-search-txt" : "En sökning kan vidgas om det läggs till en asterisk (*) i slutet av sökordet. Det gör att sökningen inkluderar olika ändelser av aktuellt sökord. Exempelvis ger sökningen laddst* träffar på laddstolpe, laddstolpar, laddstation etc.",
+    "search-tips-filter-head" : "Filtrering",
+    "search-tips-filter-txt" : "Sökning med olika filter (t.ex. kategorier och licenser) skapar ett OCH mellan filtren. Sökning med flera alternativ inom ett filter (t.ex. flera olika format) skapar ett ELLER mellan alternativen.",
+    "search-tips-searchfilter-head" : "Sökning inom filter",
+    "search-tips-searchfilter-txt" : "Inom filtren för kategori, organisation och format går det att göra en sökning, t.ex. går det att söka efter en särskild myndighet eller kommun inom filtret för organisation.",
+    "search-tips-sort-head" : "Sortering",
+    "search-tips-sort-txt1" : "Vid sortering av sökresultatet med",
+    "search-tips-sort-txt2" : "Relevans",
+    "search-tips-sort-txt3" : " matchas sökterm mot rubrik. Vid sortering med",
+    "search-tips-sort-txt4" : "Senast ändrad",
+    "search-tips-sort-txt5" : " visas senast uppdaterad metadata (information om datamängden). Att metadata är uppdaterat behöver inte innebära att själva datamängden är det.",
+    "search-tips-license-head" : "Licenser",
+    "search-tips-license-txt" : "Licenser är regler för hur data får användas, läs mer om",
+    "search-tips-license-link" : "licenser"
+
   },
   "datasets" : {
     "search-datasets" : "Sök",
@@ -105,6 +122,60 @@
     "pagenotfound-label" : "Sveriges dataportal",
     "pagenotfound-link" : "Startsidan",
     "pagenotfound-link2" : "Sök data"
+  },
+  "concept_page" :{
+    "superior_concept" : "Överordnade begrepp",
+    "no_superior_concept" : "Har inga överordnade begrepp",
+
+    "subordinate_concepts" : "Underordnade begrepp",
+    "no_subordinate_concepts" : "Har inga underordnade begrepp",
+
+    "related_concepts" : "Relaterade begrepp",
+    "no_related_concepts" : "Har inga relaterade begrepp",
+
+    "visualization_concepts" : "Visualisering av underordnade begrepp",
+    "terminology_concept" : "Terminologi",
+
+    "download_concept" : "Nedladdning",
+
+    "number_of_concepts" : "Antal begrepp inom terminologin",
+
+    "first_level_concepts" : "Begrepp i terminologins första nivå",
+
+    "preferred_term" : "Föredragen term",
+    "alternativ_term" : "Alternativ term",
+    "hidden_term" : "Dold term",
+
+    "example" : "Exempel",
+
+    "historical_note" : "Historisk anmärkning",
+
+    "editorial_note" : "Redaktionell anmärkning ",
+    
+    "note" : "Anmärkning",
+
+    "exact_match" : "Har exakt motsvarande begrepp",
+
+    "close_match" : "Har snarlikt motsvarande begrepp ",
+
+    "related_match" : "Har relaterat motsvarande begrepp",
+
+    "superior_match" : "Har överordnat motsvarande begrepp",
+
+    "subordinate_match" : "Har underordnat motsvarande begrepp",
+
+    "about_concept" : "Om begrepp",
+
+    "about_terminology" : "Om terminologi"
+
+  },
+  "specification_page" :{
+    "about_specification" : "Om specification",
+    "resource_specification" : "Resurs",
+    "scheme_download" : "Ladda ner schema",
+    "guidance_download" : "Ladda ner guidance",
+    "specification_download" : "Ladda ner specifikation",
+    "download" : "Ladda ner"
   }
 }
 

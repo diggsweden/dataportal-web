@@ -62,7 +62,7 @@ export const StatisticGraph: React.FC<StatisticGraphProps> = (props) => {
                   y: data[i].y,
                 };
     
-                if (i < 12) {
+                if (i < 19) {
                   list.push(item);
                 }
               }
@@ -100,11 +100,11 @@ export const StatisticGraph: React.FC<StatisticGraphProps> = (props) => {
             <reactvis.FlexibleXYPlot
               xType="ordinal"
               height={430}
-              color="#ACB3A8"
+              color="#889787"
               margin={{
                 bottom: 64,
                 left: 70,
-                right: 0,
+                right: 15,
               }}
             >
               <reactvis.XAxis

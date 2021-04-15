@@ -8,7 +8,7 @@
     padding-top: $space-16;
     padding-left: $space-16;
     padding-right: $space-16;
-    padding-bottom: 8.75rem;//140px
+    padding-bottom: 8.75rem; //140px
     margin-bottom: -10rem;
 
     h2 {
@@ -77,39 +77,62 @@
                     font-size: 0.875rem;
                 }
             }
+
+            .rv-xy-plot__axis__tick__line,
+            .rv-xy-plot__axis__line {
+                display: none;
+            }
         }
 
         .rv-xy-plot__axis--horizontal {
+
+            .rv-xy-plot__axis__tick:nth-of-type(even) {
+                display: none;
+            }
+
             @media screen and (max-width: 800px) {
-                .rv-xy-plot__axis__tick {
+                .rv-xy-plot__axis__tick:nth-of-type(even) {
                     display: none;
                 }
 
-                .rv-xy-plot__axis__tick:first-of-type {
-                    display: block;
+                .rv-xy-plot__axis__tick:nth-of-type(odd) {
+                    display: none;
                 }
 
+                .rv-xy-plot__axis__tick:first-of-type,
                 .rv-xy-plot__axis__tick:last-of-type {
                     display: block;
                 }
 
-                .rv-xy-plot__axis__tick:nth-of-type(4) {
-                    display: block;
-                }
+                // .rv-xy-plot__axis__tick {
+                //     display: none;
+                // }
 
-                .rv-xy-plot__axis__tick:nth-of-type(8) {
-                    display: block;
-                }
+                // .rv-xy-plot__axis__tick:first-of-type {
+                //     display: block;
+                // }
+
+                // .rv-xy-plot__axis__tick:last-of-type {
+                //     display: block;
+                // }
+
+                // .rv-xy-plot__axis__tick:nth-of-type(4) {
+                //     display: block;
+                // }
+
+                // .rv-xy-plot__axis__tick:nth-of-type(8) {
+                //     display: block;
+                // }
             }
 
             @media screen and (max-width: 400px) {
-                .rv-xy-plot__axis__tick:nth-of-type(4) {
-                    display: none;
-                }
+                // .rv-xy-plot__axis__tick:nth-of-type(4) {
+                //     display: none;
+                // }
 
-                .rv-xy-plot__axis__tick:nth-of-type(8) {
-                    display: none;
-                }
+                // .rv-xy-plot__axis__tick:nth-of-type(8) {
+                //     display: none;
+                // }
             }
         }
     }
@@ -272,6 +295,10 @@
                     padding-bottom: $space-24;
                 }
 
+                ol {
+                    list-style-type: none;
+                }
+
                 li {
                     border-bottom: 2px dotted $green25;
 
@@ -283,4 +310,3 @@
         }
     }
 }
-

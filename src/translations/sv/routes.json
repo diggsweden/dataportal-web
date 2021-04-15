@@ -51,5 +51,9 @@
   "statistics":{
     "path" : "statistik",
     "title" : "Statistik"    
+  },
+  "about-us":{
+    "path" : "om-oss#sa_har_far_du_anvanda_data",
+    "title" : "om-oss"    
   }
 }

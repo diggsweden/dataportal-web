@@ -41,7 +41,7 @@ export class CookieBanner extends React.Component {
                             <Link
                               to={`/${i18n.languages[0]}/${i18n.t(
                                 'routes|about|path'
-                              )}#cookies_section`}
+                              )}#${i18n.t('common|cookies')}`}
                               className="text-5"
                             >
                               {i18n.t('common|cookie-link')}

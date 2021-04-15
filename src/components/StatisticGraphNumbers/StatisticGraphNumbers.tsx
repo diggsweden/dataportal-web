@@ -31,7 +31,7 @@ export const StatisticGraphNumbers: React.FC<StatisticProps> = (props) => {
     xList: [],
     yList: [],
     toSort: [],
-    topItemsToShow: 12,
+    topItemsToShow: 19,
     screenWidth: 1080,
   });
 
@@ -52,7 +52,7 @@ export const StatisticGraphNumbers: React.FC<StatisticProps> = (props) => {
                 y: data[i].y,
               };
   
-              if (i < 12) {
+              if (i < 19) {
                 stats.toSort.push(item);
                 // list.push(item);
               }

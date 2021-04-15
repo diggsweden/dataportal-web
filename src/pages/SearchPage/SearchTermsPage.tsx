@@ -1,4 +1,8 @@
-import { Box, SearchIcon, Button, CloseIcon, colorPalette } from '@digg/design-system';
+import {
+  Box,
+  SearchIcon,
+  colorPalette,
+} from '@digg/design-system';
 import React from 'react';
 import 'url-search-params-polyfill';
 import { ErrorBoundary } from '../../components/ErrorBoundary';
@@ -9,31 +13,22 @@ import { QueryParamProvider } from '../../components/QueryParamProvider';
 import { __RouterContext } from 'react-router';
 import {
   SearchContext,
-  SearchContextData,
   SearchProvider,
 } from '../../components/Search';
-import {
-  SearchFacetValue,
-  SearchRequest,
-} from '../../components/Search/Search';
 import { decode } from 'qss';
 import { PageMetadata } from '../PageMetadata';
-import { RouteComponentProps } from 'react-router-dom';
-import { RouterContext } from '../../../shared/RouterContext';
-import { SearchFilter } from '../../components/SearchFilter';
 import { Loader } from '../../components/Loader';
 import { SearchHeader } from 'components/SearchHead';
 import { ESRdfType, ESType } from 'components/Search/EntryScape';
 import i18n from 'i18n';
-import { EnvSettings } from '../../../config/env/EnvSettings';
-import { PageProps } from '../PageProps'
+import { PageProps } from '../PageProps';
 import { StaticBreadcrumb } from 'components/Breadcrumb';
-import { validate } from 'graphql';
+import SearchFilters from './SearchFilters';
 
 const MainContent = Box.withComponent('main');
 
 interface SearchProps extends PageProps {
-  activeLink?: string; 
+  activeLink?: string;
 }
 
 export class SearchTermsPage extends React.Component<SearchProps, any> {
@@ -118,6 +113,24 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
     this.setState({ showFilter: !this.state.showFilter });
   };
 
+  pathResover = (hitMeta: any) => {
+    var resourceUri = hitMeta.getResourceURI();
+
+    var path = '';
+
+    if (resourceUri.indexOf('://') > -1) {
+      var tmp = resourceUri.split("://");
+      path = tmp[0] + '/' + tmp[1];
+    }
+    else
+      path = resourceUri;
+
+    if (resourceUri && !resourceUri.includes('dataportal.se'))
+      return `/${i18n.languages[0]}/externalconcepts/${path}`;
+    else
+      return `/${i18n.languages[0]}/concepts/${path}`;
+  };
+
   render() {
     const { location } = this.props;
     let uri = new URLSearchParams(location.search);
@@ -125,20 +138,23 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
     return (
       <QueryParamProvider params={uri}>
         <SearchProvider
-          entryscapeUrl={this.props.env.ENTRYSCAPE_TERMS_PATH? `https://${this.props.env.ENTRYSCAPE_TERMS_PATH}/store`: 'https://editera.dataportal.se/store'}          
-          hitSpecifications={                        
-            { "http\://www.w3.org/2004/02/skos/core#Concept" : {
+          entryscapeUrl={this.props.env.ENTRYSCAPE_TERMS_PATH ? `https://${this.props.env.ENTRYSCAPE_TERMS_PATH}/store` : 'https://editera.dataportal.se/store'}
+          hitSpecifications={{
+            "http\://www.w3.org/2004/02/skos/core#Concept":
+            {
               path: `/${i18n.languages[0]}/concepts/`,
-            titleResource: 'http://www.w3.org/2004/02/skos/core#prefLabel',
-            descriptionResource:
-              'http://www.w3.org/2004/02/skos/core#definition',
+              titleResource: 'http://www.w3.org/2004/02/skos/core#prefLabel',
+              descriptionResource: 'http://www.w3.org/2004/02/skos/core#definition',
+              pathResolver: this.pathResover
             }
           }}
-          facetSpecification={{            
-            facets: [{
-              resource: "http://www.w3.org/2004/02/skos/core#inScheme",
-              type: ESType.uri
-            }],
+          facetSpecification={{
+            facets: [
+              {
+                resource: 'http://www.w3.org/2004/02/skos/core#inScheme',
+                type: ESType.uri,
+              },
+            ],
           }}
           initRequest={{
             esRdfTypes: [ESRdfType.term],
@@ -170,29 +186,37 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
 
             <ErrorBoundary>
               <MainContent id="main" flex="1 1 auto">
-                <StaticBreadcrumb env={this.props.env} staticPaths={[
-                  {
-                    path: `/${i18n.languages[0]}/${i18n.t('routes|concepts|path')}`,
-                    title: i18n.t('routes|concepts|title')
-                  }
-                ]} />
+                <StaticBreadcrumb
+                  env={this.props.env}
+                  staticPaths={[
+                    {
+                      path: `/${i18n.languages[0]}/${i18n.t(
+                        'routes|concepts|path'
+                      )}`,
+                      title: i18n.t('routes|concepts|title'),
+                    },
+                  ]}
+                />
                 <SearchContext.Consumer>
-                  {search => (
+                  {(search) => (
                     <div className="wpb_wrapper">
                       <div className="main-container">
-                        <div className="row">
-                        <h1 className="text-2 search-header">
-                          {i18n.t('common|search-concept')}
-                        </h1>
-                        <span className="text-6-bold beta_badge--lg">BETA</span>
-                        </div>
                         <SearchHeader
                           ref={this.headerRef}
                           activeLink={this.state.activeLink}
                         />
 
+                        <div className="row">
+                          <h1 className="text-2 search-header">
+                            {i18n.t('common|search-concept')}
+                          </h1>
+                          <span className="text-6-bold beta_badge--lg">
+                            BETA
+                          </span>
+                        </div>
+
                         <form
-                          onSubmit={event => {
+                          onSubmit={(event) => {
                             event.preventDefault();
                             search
                               .set({
@@ -227,7 +251,10 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
                               }
                             ></input>
                             <button type="submit" aria-label="Sök">
-                              <SearchIcon color={colorPalette.white} width={[25]} />
+                              <SearchIcon
+                                color={colorPalette.white}
+                                width={[25]}
+                              />
                             </button>
                             {search.loadingFacets && <Loader />}
                           </div>
@@ -246,159 +273,20 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
                           </button>
                         </div>
 
-                        <div
-                          className={
-                            'search-filter-box' +
-                            (this.state.showFilter ? ' show-filter' : '')
-                          }
-                        >
-                          {search.allFacets &&
-                            Object.entries(search.allFacets).map(
-                              ([key, value]) => (
-                                <Box
-                                  key={'box' + value.title}
-                                  className="search-filter"
-                                >
-                                  <SearchFilter title={value.title}>
-                                    <div className="search-filter-list">
-                                      {value &&
-                                        value.facetValues &&
-                                        (value.facetValues as SearchFacetValue[])
-                                          .slice(0, value.show || 20)
-                                          .map(
-                                            (
-                                              facetValue: SearchFacetValue,
-                                              index: number
-                                            ) => (
-                                              <Button
-                                                key={index}
-                                                className={
-                                                  search.facetSelected(
-                                                    key,
-                                                    facetValue.resource
-                                                  )
-                                                    ? 'selected'
-                                                    : ''
-                                                }
-                                                onClick={() => {
-                                                  search
-                                                    //Stäng filter här
-
-                                                    .toggleFacet(facetValue)
-                                                    .then(() => {
-                                                      search
-                                                        .doSearch(
-                                                          false,
-                                                          true,
-                                                          false
-                                                        )
-                                                        .then(() => {
-                                                          search.sortAllFacets(
-                                                            key
-                                                          );
-                                                        });
-                                                    });
-                                                }}
-                                              >
-                                                {facetValue.title ||
-                                                  facetValue.resource}{' '}
-                                                ({facetValue.count}){' '}
-                                                {search.facetSelected(
-                                                  key,
-                                                  facetValue.resource
-                                                ) && (
-                                                  <span className="right">
-                                                    <CloseIcon width={[18]} />
-                                                  </span>
-                                                )}
-                                              </Button>
-                                            )
-                                          )}
-                                      {value.facetValues.length >
-                                        value.show && (
-                                        <Button
-                                          onClick={() => {
-                                            search.fetchMoreFacets(key);
-                                          }}
-                                        >
-                                          {search.loadingFacets
-                                            ? `${i18n.t('common|loading')}...`
-                                            : `${i18n.t(
-                                                'common|load-more'
-                                              )}...`}
-                                        </Button>
-                                      )}
-                                    </div>
-                                  </SearchFilter>
-                                </Box>
-                              )
-                            )}
-                        </div>
-
-                        <div className="selected-filters">
-                          {search.request &&
-                            search.request.facetValues &&
-                            (search.request
-                              .facetValues as SearchFacetValue[]).map(
-                              (facetValue: SearchFacetValue, index: number) => (
-                                <button
-                                  key={index}
-                                  className="selectedfilter"
-                                  onClick={() => {
-                                    search.toggleFacet(facetValue).then(() => {
-                                      search.doSearch().finally(() => {
-                                        search.sortAllFacets();
-                                      });
-                                    });
-                                  }}
-                                >
-                                  {facetValue.title || facetValue.resource}{' '}
-                                  <CloseIcon width={[15]} />
-                                </button>
-                              )
-                            )}
-                        </div>
-                        <div
-                          className={
-                            'clear-filters' +
-                            (search.request &&
-                            search.request.facetValues &&
-                            search.request.facetValues.length >= 2
-                              ? ' show'
-                              : '')
-                          }
-                        >
-                          <button
-                            onClick={() => {
-                              search
-                                .set({
-                                  facetValues: [],
-                                })
-                                .then(() => {
-                                  search.doSearch();
-                                });
-                            }}
-                          >
-                            {i18n.t('common|clear-filters')}
-                            (
-                            {search.request &&
-                              search.request.facetValues &&
-                              search.request.facetValues.length}
-                            )
-                          </button>
-                        </div>
+                        <SearchFilters showFilter={this.state.showFilter} search={search} />
 
                         <noscript>{i18n.t('common|search-datasets')}</noscript>
 
                         <div id="search-result" className="search-result">
-                          <h2 className="text-4 search-result-header">                                                       
+                          <h2 className="text-4 search-result-header">
                             {search.loadingHits &&
-                                `${i18n.t('common|loading')}...`
-                            }
-                            {!search.loadingHits && search.result && (search.result.count || 0) >= 0 &&                                
-                              `${search.result.count} ${i18n.t('pages|search|concept-hits')}`                                
-                            }                           
-                            {' '}
+                              `${i18n.t('common|loading')}...`}
+                            {!search.loadingHits &&
+                              search.result &&
+                              (search.result.count || 0) >= 0 &&
+                              `${search.result.count} ${i18n.t(
+                                'pages|search|concept-hits'
+                              )}`}{' '}
                           </h2>
                           <div>
                             <ul className="search-result-list">
@@ -407,17 +295,20 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
                                   <li
                                     className="search-result-list-item"
                                     key={index}
-                                    // onClick={() => {
-                                    //   (window as any).location.href = hit.url;
-                                    // }}
-                                  >           
-                                  { hit.metadata && search.allFacets && !search.loadingFacets
-                                    && hit.metadata['inScheme_resource'] && search.getFacetValueTitle('http://www.w3.org/2004/02/skos/core#inScheme',hit.metadata['inScheme_resource'][0]) &&                                                                            
-                                    <span className="result-theme text-6">
-                                      {search.getFacetValueTitle('http://www.w3.org/2004/02/skos/core#inScheme',hit.metadata['inScheme_resource'][0])}
-                                    </span> 
+                                  // onClick={() => {
+                                  //   (window as any).location.href = hit.url;
+                                  // }}
+                                  >
+                                    { hit.metadata && search.allFacets && !search.loadingFacets
+                                      && hit.metadata['inScheme_resource'] && search.getFacetValueTitle('http://www.w3.org/2004/02/skos/core#inScheme', hit.metadata['inScheme_resource'][0]) &&
+                                      <span className="result-theme text-6">
+                                        {search.getFacetValueTitle('http://www.w3.org/2004/02/skos/core#inScheme', hit.metadata['inScheme_resource'][0])}
+                                      </span>
                                     }
-                                    <a href={`${hit.url}`}>
+                                    <a
+                                      href={`${hit.url}#ref=${window ? window.location.search : ''
+                                        }`}
+                                    >
                                       <h3 className="text-4">{hit.title}</h3>
                                     </a>
                                     <p className="result-desc text-6">{hit.description}</p>
@@ -513,7 +404,7 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
                                   this.searchFocus();
                                 }}
                               >
-                               {i18n.t('pages|search|next-page')}
+                                {i18n.t('pages|search|next-page')}
                               </button>
                             </div>
                           </div>

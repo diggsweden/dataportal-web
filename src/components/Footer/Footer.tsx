@@ -61,7 +61,7 @@ export class Footer extends React.Component<FooterProps> {
                                 if (m && m.data && m.data.externalUrl) {
                                   output.push(
                                     <a
-                                      key={i}
+                                      key={`output-externalUrl-${i}`}
                                       className={'footer-link text-6-link'}
                                       href={m.data.externalUrl}
                                       target="_blank"
@@ -76,7 +76,7 @@ export class Footer extends React.Component<FooterProps> {
                                 )
                                   output.push(
                                     <Link
-                                      key={i}
+                                      key={`output-connectedContent-${i}`}
                                       className={'footer-link text-6-link'}
                                       to={`/${i18n.languages[0]}${m.data.urlsegment}`}
                                     >
@@ -97,7 +97,7 @@ export class Footer extends React.Component<FooterProps> {
                                         if (c && c.data && c.data.externalUrl)
                                           parent.push(
                                             <a
-                                              key={i}
+                                              key={`parent-externalUrl-${i}`}
                                               className={
                                                 'footer-link text-6-link external-link'
                                               }
@@ -115,7 +115,7 @@ export class Footer extends React.Component<FooterProps> {
                                         )
                                           parent.push(
                                             <Link
-                                              key={i}
+                                              key={`parent-connectedContent-${i}`}
                                               className={
                                                 'footer-link text-6-link'
                                               }
@@ -127,12 +127,12 @@ export class Footer extends React.Component<FooterProps> {
                                       });
 
                                   output.push(
-                                    <ul>
+                                    <ul key={`ul-${i}`}>
                                       <li className="text-5-bold footer__links-nav--heading">
                                         {m.data.title}
                                       </li>
                                       {parent.map((p: any, i: any) => {
-                                        return <li key={i}>{p}</li>;
+                                        return <li key={`parent-${i}`}>{p}</li>;
                                       })}
                                     </ul>
                                   );

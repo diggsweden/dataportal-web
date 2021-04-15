@@ -10,6 +10,8 @@ import routes_sv from '../src/translations/sv/routes.json';
 import routes_en from '../src/translations/en/routes.json';
 import common_sv from '../src/translations/sv/common.json';
 import common_en from '../src/translations/en/common.json';
+import filters_sv from '../src/translations/sv/filters.json';
+import filters_en from '../src/translations/en/filters.json';
 
 i18n
   .use(LanguageDetector)
@@ -25,13 +27,15 @@ i18n
         resource:resources_sv,
         pages:pages_sv,
         routes: routes_sv,
-        common: common_sv
+        common: common_sv,
+        filters: filters_sv
       },
       en: {
         resource:resources_en,
         pages:pages_en,
         routes: routes_en,
-        common: common_en
+        common: common_en,
+        filters: filters_en
       }
     },
     load: 'languageOnly',

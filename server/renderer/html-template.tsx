@@ -68,7 +68,24 @@ export const getHeader = ({
           <link rel="apple-touch-icon" sizes="152x152" href="/dist/client/js/svdp-favicon.png">
           <link rel="apple-touch-icon" sizes="167x167" href="/dist/client/js/svdp-favicon.png">
           <link rel="mask-icon" href="/dist/client/js/safari-pinned-tab.svg" color="black">            
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700&display=swap" media="print" onload="this.media='all'" integrity="sha384-gOfoRGJakvgzXC82eMlRjBbjZ8nG+qkOgOTWF53Ow+BWizmpRPKU0HfR2bu9WP+9" crossorigin="anonymous" type="text/css">
+          <script nonce="${nonceKey}">            
+            function loadFont(url) {              
+              var xhr = new XMLHttpRequest();
+              xhr.open('GET', url, true);
+              xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                  var css = xhr.responseText;
+                  css = css.replace(/}/g, 'font-display: swap; }');
+                  var head = document.getElementsByTagName('head')[0];
+                  var style = document.createElement('style');
+                  style.appendChild(document.createTextNode(css));
+                  head.appendChild(style);
+                }
+              };
+              xhr.send();
+            }
+            loadFont('https://fonts.googleapis.com/css?family=Ubuntu:400,500,700&display=swap');
+          </script>
           <meta name="og:type" content="website">
           <meta name="og:site_name" content="Sveriges dataportal">                   
           ${styleBundles.map(src => createStyleTag(src))}              

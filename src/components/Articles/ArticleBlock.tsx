@@ -1,31 +1,35 @@
 import React, { useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import i18n from '../../i18n';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { gql } from 'apollo-boost';
-import ChopLines from 'chop-lines';
 import { slugify } from 'utilities/urlHelpers';
 import { Link } from 'react-router-dom';
 let moment = require('moment');
-
+import Truncate from 'react-truncate';
 export interface ArticleBlockProps {
   children?: React.ReactNode;
   env: EnvSettings;
 }
 
-const NEWS = gql`  
-  query news($siteurl: String!, $lang: String!)  
-  {
-    news(siteurl:$siteurl,lang:$lang, take:3, skip:0, orderby:"startpublish desc"){
-      id        
+const NEWS = gql`
+  query news($siteurl: String!, $lang: String!) {
+    news(
+      siteurl: $siteurl
+      lang: $lang
+      take: 3
+      skip: 0
+      orderby: "startpublish desc"
+    ) {
+      id
       heading
       preambleHTML
       published
-      modified                
+      modified
       imageUrl
-    }          
-  }  
+    }
+  }
 `;
 
 /**
@@ -33,25 +37,26 @@ const NEWS = gql`
  * @param props route props
  */
 export const ArticleBlock: React.FC<ArticleBlockProps> = (props) => {
-    
-  const {loading, error, data} = useQuery<{
+  const { loading, error, data } = useQuery<{
     news: Array<any>;
-  }>(
-    NEWS, 
-    {                  
-      variables: {
-        siteurl: props.env.CONTENTBACKEND_SITEURL,
-        lang: i18n.languages[0]
-      }
-      ,ssr: true
-    });
+  }>(NEWS, {
+    variables: {
+      siteurl: props.env.CONTENTBACKEND_SITEURL,
+      lang: i18n.languages[0],
+    },
+    ssr: true,
+  });
 
   const history = useHistory();
 
-  function handleClick(id:any,heading:any) {
-    history.push(`/${i18n.languages[0]}/${i18n.t('routes|news|path')}/${id}/${slugify(heading)}`);
+  function handleClick(id: any, heading: any) {
+    history.push(
+      `/${i18n.languages[0]}/${i18n.t('routes|news|path')}/${id}/${slugify(
+        heading
+      )}`
+    );
   }
-    
+
   const articleList =
     data && data.news && data.news.length > 0 ? data.news : [];
 
@@ -77,7 +82,7 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = (props) => {
                   return (
                     <li
                       key={index}
-                      onClick={() => handleClick(n.id,n.heading)}                      
+                      onClick={() => handleClick(n.id, n.heading)}
                     >
                       <div className="news-img">
                         {n.imageUrl && (
@@ -101,14 +106,11 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = (props) => {
                             {n.heading}
                           </Link>
                         </h3>
-                        <ChopLines lines={3} lineHeight={27}>
-                          <p
-                            className="text-5"
-                            dangerouslySetInnerHTML={{
-                              __html: n.preambleHTML,
-                            }}
-                          />
-                        </ChopLines>
+                        <p className="text-5">
+                        <Truncate lines={3}>
+                          {n.preambleHTML}
+                        </Truncate>
+                        </p>
                       </div>
                     </li>
                   );
@@ -126,5 +128,5 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = (props) => {
     );
   } else {
     return <div className="main-container"></div>;
- }
+  }
 };

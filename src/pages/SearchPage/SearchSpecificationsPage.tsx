@@ -1,8 +1,6 @@
 import {
   Box,
   SearchIcon,
-  Button,
-  CloseIcon,
   colorPalette,
 } from '@digg/design-system';
 import React from 'react';
@@ -15,25 +13,18 @@ import { QueryParamProvider } from '../../components/QueryParamProvider';
 import { __RouterContext } from 'react-router';
 import {
   SearchContext,
-  SearchContextData,
   SearchProvider,
 } from '../../components/Search';
-import {
-  SearchFacetValue,
-  SearchRequest,
-} from '../../components/Search/Search';
 import { decode } from 'qss';
 import { PageMetadata } from '../PageMetadata';
-import { RouteComponentProps } from 'react-router-dom';
-import { RouterContext } from '../../../shared/RouterContext';
-import { SearchFilter } from '../../components/SearchFilter';
 import { Loader } from '../../components/Loader';
 import { SearchHeader } from 'components/SearchHead';
 import { ESRdfType, ESType } from 'components/Search/EntryScape';
 import i18n from 'i18n';
-import { EnvSettings } from '../../../config/env/EnvSettings';
 import { PageProps } from '../PageProps';
 import { StaticBreadcrumb } from 'components/Breadcrumb';
+import { getLocalizedValue } from 'utilities/entrystoreUtil'
+import SearchFilters from './SearchFilters';
 
 const MainContent = Box.withComponent('main');
 
@@ -123,6 +114,27 @@ export class SearchSpecificationsPage extends React.Component<
     this.setState({ showFilter: !this.state.showFilter });
   };
 
+  pathResover = (hitMeta: any) => {
+    var resourceUri = hitMeta.getResourceURI();
+
+    var scheme = 'https';
+    var path = '';
+
+    if (resourceUri.includes('://')) {
+      var tmp = resourceUri.split("://");
+      path = tmp[1];
+      scheme = tmp[0];
+
+      if (path.includes('dataportal.se/')) {
+        path = path.replace('dataportal.se/', '');
+      }
+    }
+    else
+      path = resourceUri;
+
+    return `/${i18n.languages[0]}/${path}`;
+  };
+
   render() {
     const { location } = this.props;
     let uri = new URLSearchParams(location.search);
@@ -135,11 +147,13 @@ export class SearchSpecificationsPage extends React.Component<
               path: `/${i18n.languages[0]}/specifications/`,
               titleResource: 'dcterms:title',
               descriptionResource: 'dcterms:description',
+              pathResolver: this.pathResover
             },
             'http://purl.org/dc/terms/Standard': {
               path: `/${i18n.languages[0]}/specifications/`,
               titleResource: 'dcterms:title',
               descriptionResource: 'dcterms:description',
+              pathResolver: this.pathResover
             },
           }}
           facetSpecification={{
@@ -201,16 +215,19 @@ export class SearchSpecificationsPage extends React.Component<
                   {(search) => (
                     <div className="wpb_wrapper">
                       <div className="main-container">
-                        <div className="row">
-                          <h1 className="text-2 search-header">
-                            {i18n.t('common|search-specs')}
-                          </h1>
-                          <span className="text-6-bold beta_badge--lg">BETA</span>
-                        </div>
                         <SearchHeader
                           ref={this.headerRef}
                           activeLink={this.state.activeLink}
                         />
+
+                        <div className="row">
+                          <h1 className="text-2 search-header">
+                            {i18n.t('common|search-specs')}
+                          </h1>
+                          <span className="text-6-bold beta_badge--lg">
+                            BETA
+                          </span>
+                        </div>
 
                         <form
                           onSubmit={(event) => {
@@ -275,146 +292,7 @@ export class SearchSpecificationsPage extends React.Component<
                           </button>
                         </div>
 
-                        <div
-                          className={
-                            'search-filter-box' +
-                            (this.state.showFilter ? ' show-filter' : '')
-                          }
-                        >
-                          {search.allFacets &&
-                            Object.entries(search.allFacets).map(
-                              ([key, value]) => (
-                                <Box
-                                  key={'box' + value.title}
-                                  className="search-filter"
-                                >
-                                  <SearchFilter title={value.title}>
-                                    <div className="search-filter-list">
-                                      {value &&
-                                        value.facetValues &&
-                                        (value.facetValues as SearchFacetValue[])
-                                          .slice(0, value.show || 20)
-                                          .map(
-                                            (
-                                              facetValue: SearchFacetValue,
-                                              index: number
-                                            ) => (
-                                              <Button
-                                                key={index}
-                                                className={
-                                                  search.facetSelected(
-                                                    key,
-                                                    facetValue.resource
-                                                  )
-                                                    ? 'selected'
-                                                    : ''
-                                                }
-                                                onClick={() => {
-                                                  search
-                                                    //Stäng filter här
-
-                                                    .toggleFacet(facetValue)
-                                                    .then(() => {
-                                                      search
-                                                        .doSearch(
-                                                          false,
-                                                          true,
-                                                          false
-                                                        )
-                                                        .then(() => {
-                                                          search.sortAllFacets(
-                                                            key
-                                                          );
-                                                        });
-                                                    });
-                                                }}
-                                              >                                                
-                                                {facetValue.title ||
-                                                  facetValue.resource}{' '}
-                                                ({facetValue.count}){' '}
-                                                {search.facetSelected(
-                                                  key,
-                                                  facetValue.resource
-                                                ) && (
-                                                  <span className="right">
-                                                    <CloseIcon width={[18]} />
-                                                  </span>
-                                                )}
-                                              </Button>
-                                            )
-                                          )}
-                                      {value.facetValues.length >
-                                        value.show && (
-                                        <Button
-                                          onClick={() => {
-                                            search.fetchMoreFacets(key);
-                                          }}
-                                        >
-                                          {search.loadingFacets
-                                            ? `${i18n.t('common|loading')}...`
-                                            : `${i18n.t(
-                                                'common|load-more'
-                                              )}...`}
-                                        </Button>
-                                      )}
-                                    </div>
-                                  </SearchFilter>
-                                </Box>
-                              )
-                            )}
-                        </div>
-
-                        <div className="selected-filters">
-                          {search.request &&
-                            search.request.facetValues &&
-                            (search.request
-                              .facetValues as SearchFacetValue[]).map(
-                              (facetValue: SearchFacetValue, index: number) => (
-                                <button
-                                  key={index}
-                                  className="selectedfilter"
-                                  onClick={() => {
-                                    search.toggleFacet(facetValue).then(() => {
-                                      search.doSearch().finally(() => {
-                                        search.sortAllFacets();
-                                      });
-                                    });
-                                  }}
-                                >
-                                  {facetValue.title || facetValue.resource}{' '}
-                                  <CloseIcon width={[15]} />
-                                </button>
-                              )
-                            )}
-                        </div>
-                        <div
-                          className={
-                            'clear-filters' +
-                            (search.request &&
-                            search.request.facetValues &&
-                            search.request.facetValues.length >= 2
-                              ? ' show'
-                              : '')
-                          }
-                        >
-                          <button
-                            onClick={() => {
-                              search
-                                .set({
-                                  facetValues: [],
-                                })
-                                .then(() => {
-                                  search.doSearch();
-                                });
-                            }}
-                          >
-                            {i18n.t('common|clear-filters')}(
-                            {search.request &&
-                              search.request.facetValues &&
-                              search.request.facetValues.length}
-                            )
-                          </button>
-                        </div>
+                        <SearchFilters search={search} showFilter={this.state.showFilter} />
 
                         <noscript>{i18n.t('common|no-js-text')}</noscript>
 
@@ -436,18 +314,17 @@ export class SearchSpecificationsPage extends React.Component<
                                   <li
                                     className="specification search-result-list-item"
                                     key={index}
-                                    // onClick={() => {
-                                    //   (window as any).location.href =
-                                    //     hit.url +
-                                    //     `#ref=${
-                                    //       window ? window.location.search : ''
-                                    //     }`;
-                                    // }}
+                                  // onClick={() => {
+                                  //   (window as any).location.href =
+                                  //     hit.url +
+                                  //     `#ref=${
+                                  //       window ? window.location.search : ''
+                                  //     }`;
+                                  // }}
                                   >
                                     <a
-                                      href={`${hit.url}#ref=${
-                                        window ? window.location.search : ''
-                                      }`}
+                                      href={`${hit.url}#ref=${window ? window.location.search : ''
+                                        }`}
                                     >
                                       <h3 className="text-4">{hit.title}</h3>
                                     </a>

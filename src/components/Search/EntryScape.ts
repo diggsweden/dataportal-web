@@ -3,6 +3,7 @@ import i18next from 'i18next';
 import { request } from 'express';
 const lucene = require('lucene');
 import { slugify } from 'utilities/urlHelpers'
+//const tokenize = require('edge-ngrams')()
 
 //unfortunate hack to get a entrystore class instance, script is inserted in head
 declare var EntryStore:any;
@@ -13,7 +14,8 @@ export enum ESType {
   unknown = 'unknown',
   literal_s = 'literal_s',
   literal = 'literal',
-  uri = 'uri'
+  uri = 'uri',
+  wildcard = "wildcard"
 }
 
 export enum ESRdfType {
@@ -89,7 +91,7 @@ export class EntryScape {
       metaFacets.forEach((f:ESFacetField) => {     
         
         //literal types, add to response directly         
-        if(f.type == ESType.literal || f.type == ESType.literal_s)
+        if(f.type == ESType.literal || f.type == ESType.literal_s || f.type == ESType.wildcard)
         {               
           literalFacets[f.predicate] = {
             name: f.name,
@@ -110,7 +112,7 @@ export class EntryScape {
               facet:f.predicate,              
               facetType:f.type,
               facetValueString: '',
-              related:f.name.startsWith('related.')
+              related:f.name.startsWith('related.')              
             };
 
             newValue.facetValueString = `${f.predicate}||${newValue.resource}||${newValue.related}||${f.type}||${literalFacets[f.predicate].title}||${newValue.title}`;
@@ -146,7 +148,7 @@ export class EntryScape {
                 facet:f.predicate,
                 facetType:f.type,
                 facetValueString: '',
-                related:f.name.startsWith('related.')              
+                related:f.name.startsWith('related.')                
               };
 
               newValue.facetValueString = `${f.predicate}||${newValue.resource}||${newValue.related}||${f.type}||${uriFacets[f.predicate].title}||${newValue.title}`;
@@ -359,15 +361,16 @@ export class EntryScape {
     {
       query = query.substring(4,query.length)
     }    
-
+    
     let ast = {};
     try{
       ast = lucene.parse(query); 
       q = lucene.toString(ast);
+      q = q.replace(/\~ /g, '~')      
     }
     //could not parse as lucene, remove all special chars and trim 
     catch(err)
-    {      
+    {            
       q = query.replace(/([\!\*\-\+\&\|\(\)\[\]\{\}\^\~\?\:\"])/g, "").trim();    
       q = q.replace(/\s+/g, ' '); //removes mulitple whitespaces
     }
@@ -420,7 +423,7 @@ export class EntryScape {
           this.facetSpecification.facets.forEach(fSpec => {                         
             if(fSpec.type == ESType.literal || fSpec.type == ESType.literal_s)
               esQuery.literalFacet(fSpec.resource);
-            else if(fSpec.type == ESType.uri)
+            else if(fSpec.type == ESType.uri || fSpec.type == ESType.wildcard)
               esQuery.uriFacet(fSpec.resource);
           });
         }        
@@ -443,14 +446,15 @@ export class EntryScape {
 
         //iterate groups and add facets within each, will be "OR" between facets in group, and "AND" between groups
         Object.entries(groupedFacets).forEach(([key, fvalue]) => {        
-          if(fvalue && fvalue.length > 0)
+          if(fvalue && fvalue.length > 0)         
             switch(fvalue[0].facetType)
             {
               case ESType.literal:
-              case ESType.literal_s:
-                esQuery.literalProperty(key,fvalue.map(f => {return f.title}),null,fvalue[0].related);                
+              case ESType.literal_s:              
+                esQuery.literalProperty(key,fvalue.map(f => {return f.title}),null,'string',fvalue[0].related);                
                 break;
-              case ESType.uri:                                          
+              case ESType.uri:      
+              case ESType.wildcard:                                    
                 esQuery.uriProperty(key,fvalue.map(f => {return f.resource}),null,fvalue[0].related);                
                 break;
             } 
@@ -485,16 +489,45 @@ export class EntryScape {
       
       let queryUrl = searchList.getQuery().getQuery();      
 
-      let q = this.luceneFriendlyQuery(query);//modifiedQuery.join("+AND+");       
+      //let q = this.luceneFriendlyQuery(query);//modifiedQuery.join("+AND+");       
       let titleQ = request.titleQuery ? this.luceneFriendlyQuery(request.titleQuery) : undefined;    
 
+      /*
+      För titeln (dcterms:title, dvs http://purl.org/dc/terms/title):
+      metadata.predicate.literal_t.3f2ae919
+
+      För beskrivningen (dcterms:description):
+      metadata.predicate.literal_t.feda1d30
+
+      För nyckelord (dcat:keyword):
+      metadata.predicate.literal_t.a6424133
+
+      För att få fram hashen gör jag:
+      echo -n http://www.w3.org/ns/dcat#keyword | md5sum | cut -c1-8
+       */      
+
+      let gram = query.split(' ').reduce((memo:string[], token) => 
+        {          
+          let tmpMemo:string[] = [];
+          if(token.length > 4)            
+            tmpMemo = [...tmpMemo, token.substr(0, token.length - 2)+ "*"]
+          else
+            tmpMemo = [...tmpMemo, token]
+           
+          memo.push(`${tmpMemo.join("+AND+")}`)
+          return memo
+        }, [])
+
+      query = this.luceneFriendlyQuery(query);
+      let gramQuery = this.luceneFriendlyQuery(gram.join(" "));//modifiedQuery.join("+AND+");    
+      
       //set query text
       if(titleQ)
         queryUrl = queryUrl.replace("&query=",
           `&query=(title:(${titleQ}))+AND+`)
       else
-        queryUrl = queryUrl.replace("&query=",
-          `&query=(metadata.object.literal:(${q})+OR+title:(${q})+OR+description:(${q})+OR+tag.literal:(${q}))+AND+`)
+        queryUrl = queryUrl.replace("&query=",                    
+          `&query=(metadata.object.literal:(${query})+OR+metadata.predicate.literal_t.3f2ae919:(${gramQuery})+OR+metadata.predicate.literal_t.feda1d30:(${gramQuery})+OR+metadata.predicate.literal_t.a6424133:(${gramQuery}))+AND+`)
 
       fetch(queryUrl)
       .then(response => {           
@@ -534,8 +567,8 @@ export class EntryScape {
               let context = child.getContext();                          
               let rdfType = metaData.findFirstValue(child.getResourceURI(), "http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
               
-              hitSpecification = this.hitSpecifications[rdfType] || { titleResource:"dcterms:title", path: "/dataset/", descriptionResource: "dcterms:description" }
-                            
+              hitSpecification = this.hitSpecifications[rdfType] || { titleResource:"dcterms:title", path: "/datasets/", descriptionResource: "dcterms:description" }              
+              
               let hit = {
                 entryId: child.getId(),
                 title: this.getLocalizedValue(metaData,hitSpecification.titleResource || "dcterms:title",lang),
@@ -544,7 +577,12 @@ export class EntryScape {
                 metadata: this.getMetaValues(child),
                 url:''
               };
-              hit.url = `${hitSpecification.path || 'datamangd'}${context.getId()}_${hit.entryId}/${slugify(hit.title)}`;
+
+              if(hitSpecification.pathResolver)
+                hit.url = hitSpecification.pathResolver(child);
+              else
+                hit.url = `${hitSpecification.path || 'datamangd'}${context.getId()}_${hit.entryId}/${slugify(hit.title)}`;
+
               hit.description = hit.description && hit.description.length > 250? `${(hit.description + '').substr(0,250)}...` : hit.description;            
 
               hits.push(hit);         
