@@ -4,8 +4,8 @@ import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import webpack, { Configuration } from 'webpack';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import webpackMerge from 'webpack-merge';
-import MiniCssExtractPlugin  from 'mini-css-extract-plugin'
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
+import MiniCssExtractPlugin  from 'mini-css-extract-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import TerserJSPlugin from 'terser-webpack-plugin';
 
 const env = process.env.NODE_ENV || 'development';
@@ -57,7 +57,7 @@ export const createWebpackConfig = (
             {
               targets: options.babelTarget,
               modules: false,
-              corejs: '2',
+              corejs: '3',
               useBuiltIns: 'entry',
               debug: false,
             },
@@ -67,6 +67,12 @@ export const createWebpackConfig = (
           ['emotion', emotionConfig],
           '@babel/plugin-syntax-object-rest-spread',
           '@babel/plugin-syntax-dynamic-import',
+          '@babel/plugin-transform-modules-commonjs',
+          ["@babel/plugin-transform-runtime",
+            {
+              "regenerator": true
+            }
+          ],
           ...options.babelPlugins,
         ],
       }
@@ -77,6 +83,12 @@ export const createWebpackConfig = (
           ['emotion', emotionConfig],
           '@babel/plugin-syntax-object-rest-spread',
           '@babel/plugin-syntax-dynamic-import',
+          '@babel/plugin-transform-modules-commonjs',
+          ["@babel/plugin-transform-runtime",
+            {
+              "regenerator": true
+            }
+          ],
           ...options.babelPlugins,
         ],
       };
@@ -175,7 +187,7 @@ export const createWebpackConfig = (
       new MiniCssExtractPlugin({        
         filename: isProd ? 'app.[contenthash].css' : 'app.css',
         chunkFilename: 'app'        
-      }),
+      }),      
       new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
       new ManifestPlugin({ fileName: 'assets.json', seed: options.seed }),
       new webpack.DefinePlugin({
@@ -198,7 +210,7 @@ export const createWebpackConfig = (
       // https://twitter.com/wSokra/status/969679223278505985
       // runtimeChunk: isProd ? 'single' : false,
       minimize: isProd,
-      minimizer: [new TerserJSPlugin({}),new OptimizeCSSAssetsPlugin({})]
+      minimizer: [new TerserJSPlugin({}),new CssMinimizerPlugin()]
     },
     stats: {
       errors: true,

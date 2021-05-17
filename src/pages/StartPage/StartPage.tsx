@@ -79,6 +79,11 @@ export class StartPage extends React.Component<PageProps, any> {
                 robotsIndex={true}
                 lang={i18n.languages[0]}
                 canonicalUrl={`${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/`}
+                socialMeta={{
+                  socialDescription : i18n.t('pages|startpage|social_meta_description'),
+                  socialTitle : i18n.t('pages|startpage|social_meta_title'),
+                  socialUrl : `${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/`
+                }}
               />
               <NoJavaScriptWarning text="" />
 

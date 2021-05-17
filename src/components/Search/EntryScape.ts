@@ -3,6 +3,7 @@ import i18next from 'i18next';
 import { request } from 'express';
 const lucene = require('lucene');
 import { slugify } from 'utilities/urlHelpers'
+import {getLocalizedValue, getEntryLang} from 'utilities/entrystoreUtil'
 //const tokenize = require('edge-ngrams')()
 
 //unfortunate hack to get a entrystore class instance, script is inserted in head
@@ -176,10 +177,10 @@ export class EntryScape {
                   if(entry){                  
                       var meta = entry.getMetadata();                                          
 
-                      var title = this.getLocalizedValue(meta,"http://xmlns.com/foaf/0.1/name",i18next.languages[0])
+                      var title = getLocalizedValue(meta,"http://xmlns.com/foaf/0.1/name",i18next.languages[0])
 
                       if(!title)
-                        title = this.getLocalizedValue(meta,"http://purl.org/dc/terms/title",i18next.languages[0]);
+                        title = getLocalizedValue(meta,"http://purl.org/dc/terms/title",i18next.languages[0]);
 
                       f.title = title || f.resource;                           
                       f.title =f.title!.trim();
@@ -293,46 +294,6 @@ export class EntryScape {
     return values;
   }
 
-  /**
-   * Search graph for localized value from meta graph
-   * 
-   * value retrieve order:
-   * 1. exists in sent in lang 
-   * 2. exists in fallback lang (en)
-   * 3. take first
-   * 
-   * @param metadataGraph 
-   * @param prop 
-   * @param lang 
-   */
-  getLocalizedValue(metadataGraph:any, prop:any, lang:string) {
-
-    let val = '';
-    let fallbackLang = 'en';
-
-    const stmts = metadataGraph.find(null, prop);
-    if (stmts.length > 0) {      
-      const obj:any = {};
-      for (let s = 0; s < stmts.length; s++) {
-        obj[stmts[s].getLanguage() || ''] = stmts[s].getValue();
-      }
-
-      if(typeof obj[lang] != "undefined")
-      {        
-        val = obj[lang];
-      }
-      else if(obj[fallbackLang] && fallbackLang != lang)
-      {       
-        val = obj[fallbackLang];
-      }
-      else
-      {        
-        val = Object.entries(obj)[0][1] as string;
-      }
-    }
-
-    return val;
-  };
 
   /**
    * Constructs a lucene friendly query text value
@@ -571,12 +532,18 @@ export class EntryScape {
               
               let hit = {
                 entryId: child.getId(),
-                title: this.getLocalizedValue(metaData,hitSpecification.titleResource || "dcterms:title",lang),
-                description: this.getLocalizedValue(metaData,hitSpecification.descriptionResource || "dcterms:description",lang),
+                title: getLocalizedValue(metaData,hitSpecification.titleResource || "dcterms:title",lang),
+                description: getLocalizedValue(metaData,hitSpecification.descriptionResource || "dcterms:description",lang),
                 esEntry: child,
                 metadata: this.getMetaValues(child),
-                url:''
+                url:'',
+
+                titleLang: getEntryLang(metaData,hitSpecification.titleResource || "dcterms:title",lang),
+                descriptionLang: getEntryLang(metaData,hitSpecification.descriptionResource || "dcterms:description",lang),
+
+                
               };
+
 
               if(hitSpecification.pathResolver)
                 hit.url = hitSpecification.pathResolver(child);

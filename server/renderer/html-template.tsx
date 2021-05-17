@@ -46,7 +46,7 @@ export const getHeader = ({
 }: HeaderData) => {
   return html`
       <!DOCTYPE html>
-      <html ${htmlAttributes} class="no-focus-outline">
+      <html ${htmlAttributes} class="no-focus-outline" prefix="og: https://ogp.me/ns#">
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -85,9 +85,7 @@ export const getHeader = ({
               xhr.send();
             }
             loadFont('https://fonts.googleapis.com/css?family=Ubuntu:400,500,700&display=swap');
-          </script>
-          <meta name="og:type" content="website">
-          <meta name="og:site_name" content="Sveriges dataportal">                   
+          </script>                       
           ${styleBundles.map(src => createStyleTag(src))}              
           ${metaTags}                                                  
           <link rel="preload" href="https://dataportal.azureedge.net/cdn/postscribe.min.js" as="script" integrity="sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM" crossorigin="anonymous">                                 

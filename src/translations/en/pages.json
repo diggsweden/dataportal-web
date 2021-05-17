@@ -10,7 +10,9 @@
     "explore_specs" : "Explore specifications of information and data models",
     "coming_soon" : "Coming soon",
     "search_datasets_format" : "Search datasets in the {{category}} category",
-    "datasets_by_category" : "Data by categories"
+    "datasets_by_category" : "Data by categories",
+    "social_meta_title" : "The Swedish dataportal",
+    "social_meta_description" : "Sweden's national data portal for finding, exploring and using data from the public and private sectors"    
    },
   "statistic" : {
     "statistic-header" : "Statistics of the data portal",
@@ -25,7 +27,9 @@
     "statistic-page-header" : "Statistics",
     "statistic-page-numberofdatasets" :"The amount of data on Sweden´s dataportal today: ",
     "statistic-page-seotitle" : "Statistics - Sveriges dataportal",
-    "statistic-page-link" : "statistics"
+    "statistic-page-link" : "statistics",
+    "social_meta_title" : "Statistics of the data portal",
+    "social_meta_description" : "The following information is also avaliable in text."
   },
   "highlight" : {
     "highlight-header":"Sweden's data portal for increased innovation",
@@ -53,9 +57,8 @@
     "numberofhits" : "Number of hits:",
     "filtersearch" : "Search within filter",
     "search-tips" : "Search tips",
-    "search-tips-search-head" : "Filtering",
-    "search-tips-search-txt" : "Filtering",
-
+    "search-tips-search-head" : "Expand search with asterisk (*)",
+    "search-tips-search-txt" : "A search can be expanded by adding an asterisk (*) at the end of the search word. This allows the search to include different endings of the current search word.",
     "search-tips-filter-head" : "Filtering",
     "search-tips-filter-txt" : "Searching with different filters (e.g. categories and licenses) creates an AND between the filters. Searching with several options within a filter (e.g. several different formats) creates an OR between the options.",
     "search-tips-searchfilter-head" : "Search within filters",
@@ -73,15 +76,21 @@
   },
   "datasets" : {
     "search-datasets" : "Search",
-    "datasets" : "datasets"
+    "datasets" : "datasets",
+    "social_meta_title" : "Search datasets",
+    "social_meta_description" : "Datasets on Sweden's data portal"
   },
   "concepts" : {
     "search-concept" : "Search",
-    "concepts" : "concepts"
+    "concepts" : "concepts",
+    "social_meta_title" : "Search concepts",
+    "social_meta_description" : "Concepts on Sweden's data portal"
   },
   "specifications" : {
     "search-specifications" : "Search",
-    "specifications" : "specifications"
+    "specifications" : "specifications",
+    "social_meta_title" : "Search specifications",
+    "social_meta_description" : "Specifications on Sweden's data portal"
   },
   "notfoundpage" : {
     "heading" : "404 - Page not found",
@@ -115,7 +124,9 @@
   "articles" :{
     "news" : "news",
     "articles" : "News",
-    "view-all" : "View all news"
+    "view-all" : "View all news",
+    "social_meta_title" : "News - The Swedish dataportal",
+    "social_meta_description" : "News on The Swedish dataportal"
   },  
   "redirect" :{
     "pagenotfound_header" : "Oops, the page could not be found!",
@@ -165,7 +176,11 @@
 
     "about_concept" : "About concept",
 
-    "about_terminology" : "About terminology"
+    "about_terminology" : "About terminology",
+
+    "concept_adress" : "Address for concept",
+
+    "term_adress" : "Address for terminology"
   },
   "specification_page" :{
     "about_specification" : "About specification",

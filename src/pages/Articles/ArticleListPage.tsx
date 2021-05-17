@@ -46,13 +46,18 @@ export class ArticleListPage extends React.Component<PageProps, any> {
     return (
       <QueryParamProvider params={uri}>
         <PageMetadata
-            seoTitle="Nyheter - Sveriges dataportal"
+            seoTitle={`${i18n.t('pages|articles|articles')} - ${i18n.t('common|seo-title')}`}
             seoDescription=""
             seoImageUrl=""
             seoKeywords=""
             robotsFollow={true}
             robotsIndex={true}
             lang={i18n.languages[0]}
+            socialMeta={{
+              socialDescription : i18n.t('pages|articles|social_meta_description'),
+              socialTitle : i18n.t('pages|articles|social_meta_title'),
+              socialUrl : `${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|news|path')}`
+            }}
           />
         <SettingsContext.Consumer>
           {settings => (            

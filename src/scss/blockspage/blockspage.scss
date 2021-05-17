@@ -1392,10 +1392,12 @@
         display: flex;
         align-items: center;
         color: $black100;
-        padding: 0rem;;
+        padding: 0rem;
+        ;
+
         span {
             display: block;
-            text-transform: uppercase;
+            text-transform: capitalize;
         }
 
         i {
@@ -1403,6 +1405,32 @@
             margin-right: $space-8;
             color: $black-hover;
             font-size: 32px;
+        }
+    }
+}
+
+//Hemvist concept page
+.hemvist {
+    display: flex;
+    flex-direction: column;
+    margin-top: $space-24;
+
+    span {
+        margin-top: 0rem;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        font-size: 1.125rem;
+        line-height: 1.6875rem;
+        letter-spacing: -0.01em;
+    }
+
+    a {
+        color: $black100 !important;
+        width: max-content;
+        text-decoration: underline !important;
+
+        &:hover {
+            background-color: $pink10;
         }
     }
 }

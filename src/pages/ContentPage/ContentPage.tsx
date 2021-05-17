@@ -94,19 +94,12 @@ export const ContentPage: React.FC<ContentPageProps> = (props) => {
 
   let uri = new URLSearchParams(location.search);
 
+  let contentUrlSegment = props.staticPaths && props.staticPaths.length > 0? props.staticPaths[props.staticPaths.length-1].path : '';
+
   return (
-    <QueryParamProvider params={uri}>
-      <PageMetadata
-        seoTitle="Artiklar - Sveriges dataportal"
-        seoDescription=""
-        seoImageUrl=""
-        seoKeywords=""
-        robotsFollow={true}
-        robotsIndex={true}
-        lang={i18n.languages[0]}
-      />
+    <QueryParamProvider params={uri}>      
       <SettingsContext.Consumer>
-        {(settings) => (
+        {(settings) => (          
           <Box
             id="top"
             display="flex"
@@ -118,6 +111,22 @@ export const ContentPage: React.FC<ContentPageProps> = (props) => {
 
             <Header ref={headerRef} />
 
+            <PageMetadata
+              seoTitle={`${props.content?.name} - ${i18n.t('common|seo-title')}`}
+              seoDescription=""
+              seoImageUrl=""
+              seoKeywords=""
+              robotsFollow={true}
+              robotsIndex={true}
+              lang={i18n.languages[0]}
+              socialMeta={{
+                socialDescription : props.content?.preambleHTML,
+                socialTitle : props.content?.name,
+                socialUrl : `${props.env.CANONICAL_URL}${contentUrlSegment}`
+              }}
+              
+            />
+
             <ErrorBoundary>
               <MainContent flex="1 1 auto">
                 <StaticBreadcrumb
@@ -126,12 +135,7 @@ export const ContentPage: React.FC<ContentPageProps> = (props) => {
                 />
 
                 <div className="main-container">
-                  <div className="news-article content">
-                    <Helmet>
-                      <title>
-                        {props.content.name} - {i18n.t('common|seo-title')}
-                      </title>
-                    </Helmet>
+                  <div className="news-article content">                    
                     {props.content && props.content.imageUrl && (
                       <img src={`${props.content.imageUrl}?width=1024`} />
                     )}

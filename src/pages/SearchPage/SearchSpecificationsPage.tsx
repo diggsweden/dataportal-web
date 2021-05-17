@@ -1,7 +1,5 @@
 import {
   Box,
-  SearchIcon,
-  colorPalette,
 } from '@digg/design-system';
 import React from 'react';
 import 'url-search-params-polyfill';
@@ -17,14 +15,14 @@ import {
 } from '../../components/Search';
 import { decode } from 'qss';
 import { PageMetadata } from '../PageMetadata';
-import { Loader } from '../../components/Loader';
 import { SearchHeader } from 'components/SearchHead';
 import { ESRdfType, ESType } from 'components/Search/EntryScape';
 import i18n from 'i18n';
 import { PageProps } from '../PageProps';
 import { StaticBreadcrumb } from 'components/Breadcrumb';
-import { getLocalizedValue } from 'utilities/entrystoreUtil'
 import SearchFilters from './SearchFilters';
+import SearchInput from './SearchInput';
+import SearchResults from './SearchResults';
 
 const MainContent = Box.withComponent('main');
 
@@ -37,15 +35,11 @@ export class SearchSpecificationsPage extends React.Component<
   any
 > {
   private headerRef: React.RefObject<Header>;
-  private searchRef: React.RefObject<SearchHeader>;
-  private inputQueryRef: React.RefObject<HTMLInputElement>;
 
   constructor(props: SearchProps) {
     super(props);
     this.headerRef = React.createRef();
-    this.searchRef = React.createRef();
     this.setFocus = this.setFocus.bind(this);
-    this.inputQueryRef = React.createRef();
     this.state = { query: '*', activeLink: 'search', showFilters: false };
     this.state = { activeLink: 'specifications' };
   }
@@ -53,21 +47,6 @@ export class SearchSpecificationsPage extends React.Component<
   setFocus() {
     if (this.headerRef.current) {
       this.headerRef.current.setFocusOnMenuButton();
-    }
-  }
-
-  searchFocus() {
-    let content = document.querySelector('#search-result');
-    if (!content) return;
-
-    const focusable = content.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-
-    const first = focusable[0];
-
-    if (first) {
-      first.focus();
     }
   }
 
@@ -106,8 +85,10 @@ export class SearchSpecificationsPage extends React.Component<
     }
   }
 
-  handleChange = (target: any) => {
-    this.setState({ query: target.value });
+  setQuery = (value: string) => {
+    this.setState({
+      query: value,
+    });
   };
 
   toggleShowOrHide = () => {
@@ -186,6 +167,11 @@ export class SearchSpecificationsPage extends React.Component<
             robotsFollow={true}
             robotsIndex={true}
             lang={i18n.languages[0]}
+            socialMeta={{
+              socialDescription : i18n.t('pages|specifications|social_meta_description'),
+              socialTitle : i18n.t('pages|specifications|social_meta_title'),
+              socialUrl : `${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|specifications|path')}`
+            }}
           />
           <Box
             id="top"
@@ -229,55 +215,7 @@ export class SearchSpecificationsPage extends React.Component<
                           </span>
                         </div>
 
-                        <form
-                          onSubmit={(event) => {
-                            event.preventDefault();
-                            search
-                              .set({
-                                page: 0,
-                                query: this.inputQueryRef.current!.value || '*',
-                                fetchFacets: true,
-                              })
-                              .then(() => search.doSearch());
-                          }}
-                        >
-                          <div className="search-box">
-                            <label
-                              className="screen-reader"
-                              htmlFor="search-field"
-                            >
-                              {i18n.t('pages|concept|search-concept')}
-                            </label>
-                            <input
-                              autoFocus
-                              id="search-field"
-                              autoComplete="off"
-                              name="q"
-                              ref={this.inputQueryRef}
-                              type="text"
-                              placeholder={i18n.t(
-                                'pages|specifications|search-specifications'
-                              )}
-                              value={this.state.query}
-                              onChange={this.handleChange}
-                              key={
-                                search.request.query ? 'loaded' : 'not loaded'
-                              }
-                            ></input>
-                            <button
-                              type="submit"
-                              aria-label={i18n.t(
-                                'pages|concept|search-concept'
-                              )}
-                            >
-                              <SearchIcon
-                                color={colorPalette.white}
-                                width={[25]}
-                              />
-                            </button>
-                            {search.loadingFacets && <Loader />}
-                          </div>
-                        </form>
+                        <SearchInput search={search} searchType="specifikationer" query={this.state.query} setQuery={this.setQuery} />
 
                         <div className="mobile-filters">
                           <button
@@ -292,121 +230,12 @@ export class SearchSpecificationsPage extends React.Component<
                           </button>
                         </div>
 
-                        <SearchFilters search={search} showFilter={this.state.showFilter} />
+                        <SearchFilters search={search} showFilter={this.state.showFilter} searchType="specifikationer" query={this.state.query} />
 
                         <noscript>{i18n.t('common|no-js-text')}</noscript>
 
-                        <div id="search-result" className="search-result">
-                          <h2 className="text-4 search-result-header">
-                            {search.loadingHits &&
-                              `${i18n.t('common|loading')}...`}
-                            {!search.loadingHits &&
-                              search.result &&
-                              (search.result.count || 0) >= 0 &&
-                              `${search.result.count} ${i18n.t(
-                                'pages|search|specification-hits'
-                              )}`}{' '}
-                          </h2>
-                          <div>
-                            <ul className="search-result-list">
-                              {search.result.hits &&
-                                search.result.hits.map((hit, index) => (
-                                  <li
-                                    className="specification search-result-list-item"
-                                    key={index}
-                                  // onClick={() => {
-                                  //   (window as any).location.href =
-                                  //     hit.url +
-                                  //     `#ref=${
-                                  //       window ? window.location.search : ''
-                                  //     }`;
-                                  // }}
-                                  >
-                                    <a
-                                      href={`${hit.url}#ref=${window ? window.location.search : ''
-                                        }`}
-                                    >
-                                      <h3 className="text-4">{hit.title}</h3>
-                                    </a>
-                                    <p className="text-6">{hit.description}</p>
-                                  </li>
-                                ))}
-                            </ul>
-                          </div>
-                        </div>
+                        <SearchResults search={search} searchType="specifikationer" />
 
-                        {(search.result.pages || 0) > 1 && (
-                          <div className="pagination">
-                            <div className="first-page">
-                              {(search.request.page || 0) > 1 && (
-                                <button
-                                  className=""
-                                  onClick={() => {
-                                    search
-                                      .set({
-                                        page: 0,
-                                      })
-                                      .then(() => search.doSearch());
-                                    window.scrollTo({
-                                      top: 0,
-                                      behavior: 'smooth',
-                                    });
-                                    this.searchFocus();
-                                  }}
-                                >
-                                  {i18n.t('pages|search|first-page')}
-                                </button>
-                              )}
-                            </div>
-
-                            <div className="prev-next-page">
-                              <button
-                                disabled={(search.request.page || 0) === 0}
-                                className=""
-                                onClick={() => {
-                                  search
-                                    .set({
-                                      page: (search.request.page || 0) - 1,
-                                    })
-                                    .then(() => search.doSearch());
-                                  window.scrollTo({
-                                    top: 0,
-                                    behavior: 'smooth',
-                                  });
-                                  this.searchFocus();
-                                }}
-                              >
-                                {i18n.t('pages|search|prev-page')}
-                              </button>
-                              <span>
-                                {i18n.t('pages|search|page')}{' '}
-                                {(search.request.page || 0) + 1}{' '}
-                                {i18n.t('common|of')} {search.result.pages}
-                              </span>
-                              <button
-                                className=""
-                                disabled={
-                                  (search.result.pages || 1) ===
-                                  (search.request.page || 0) + 1
-                                }
-                                onClick={() => {
-                                  search
-                                    .set({
-                                      page: (search.request.page || 0) + 1,
-                                    })
-                                    .then(() => search.doSearch());
-                                  window.scrollTo({
-                                    top: 0,
-                                    behavior: 'smooth',
-                                  });
-                                  this.searchFocus();
-                                }}
-                              >
-                                {i18n.t('pages|search|next-page')}
-                              </button>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </div>
                   )}

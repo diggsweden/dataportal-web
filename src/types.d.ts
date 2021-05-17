@@ -7,7 +7,7 @@
 // export const LineSeries: any;
 // }
 
-
+//declare module '@entryscape/rdfjson';
 
 declare module 'react-render-in-browser' {
   const RenderInBrowser: any;

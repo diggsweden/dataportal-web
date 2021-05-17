@@ -75,10 +75,10 @@ export const Routes = ({formdata, vars}:RouteProps) => {
                 <Route path={['/dataservice/:cid*_:eid/*', '/en/dataservice/:cid*_:eid/*', '/sv/dataservice/:cid*_:eid/*']} exact render={(props)=><DataServicePage env={settings.env} {...props}/>} />
                 
                 {/* <Route path={['/concepts/:cid*_:eid/*', '/sv/concepts/:cid*_:eid/*', '/en/concepts/:cid*_:eid/*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} /> */}
-                <Route path={['/concepts/:scheme/:curi*', '/sv/concepts/:scheme/:curi*', '/en/concepts/:scheme/:curi*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} />
+                <Route path={['/concepts/:curi*', '/sv/concepts/:curi*', '/en/concepts/:curi*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} />
                 <Route path={['/externalconcepts/:scheme/:curi*', '/sv/externalconcepts/:scheme/:curi*', '/en/externalconcepts/:scheme/:curi*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} />
                 <Route path={['/externalterminology/:scheme/:curi*', '/sv/externalterminology/:scheme/:curi*', '/en/externalterminology/:scheme/:curi*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} />
-                <Route path={['/terminology/:scheme/:curi*', '/sv/terminology/:scheme/:curi*', '/en/terminology/:scheme/:curi*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} />
+                <Route path={['/terminology/:curi*', '/sv/terminology/:curi*', '/en/terminology/:curi*']} exact render={(props)=><ConceptPage env={settings.env} {...props}/>} />
                 <Route path={['/specifications/:curi*', '/sv/specifications/:curi*', '/en/specifications/:curi*']} exact render={(props)=><SpecificationPage env={settings.env} {...props}/>} />                                
                 {/* default */}
                 <Route path={['/', '/sv','/en']} exact render={(props)=><StartPage env={settings.env} {...props}/>} />                

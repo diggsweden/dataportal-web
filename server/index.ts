@@ -4,7 +4,7 @@ import express from 'express';
 import path from 'path';
 import { renderer } from './renderer';
 import { getSitemap } from './SiteMap'
-import * as basicAuth from 'express-basic-auth'
+import basicAuth from 'express-basic-auth'
 import i18next from 'i18next';
 var csp = require('simple-csp');
 var cache = require('memory-cache');

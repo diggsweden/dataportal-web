@@ -1,7 +1,5 @@
 import {
   Box,
-  SearchIcon,
-  colorPalette,
 } from '@digg/design-system';
 import React from 'react';
 import 'url-search-params-polyfill';
@@ -17,13 +15,14 @@ import {
 } from '../../components/Search';
 import { decode } from 'qss';
 import { PageMetadata } from '../PageMetadata';
-import { Loader } from '../../components/Loader';
 import { SearchHeader } from 'components/SearchHead';
 import { ESRdfType, ESType } from 'components/Search/EntryScape';
 import i18n from 'i18n';
 import { PageProps } from '../PageProps';
 import { StaticBreadcrumb } from 'components/Breadcrumb';
 import SearchFilters from './SearchFilters';
+import SearchInput from './SearchInput';
+import SearchResults from './SearchResults';
 
 const MainContent = Box.withComponent('main');
 
@@ -33,15 +32,11 @@ interface SearchProps extends PageProps {
 
 export class SearchTermsPage extends React.Component<SearchProps, any> {
   private headerRef: React.RefObject<Header>;
-  private searchRef: React.RefObject<SearchHeader>;
-  private inputQueryRef: React.RefObject<HTMLInputElement>;
 
   constructor(props: SearchProps) {
     super(props);
     this.headerRef = React.createRef();
-    this.searchRef = React.createRef();
     this.setFocus = this.setFocus.bind(this);
-    this.inputQueryRef = React.createRef();
     this.state = { query: '*', activeLink: 'search', showFilters: false };
     this.state = { activeLink: 'terms' };
   }
@@ -49,21 +44,6 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
   setFocus() {
     if (this.headerRef.current) {
       this.headerRef.current.setFocusOnMenuButton();
-    }
-  }
-
-  searchFocus() {
-    let content = document.querySelector('#search-result');
-    if (!content) return;
-
-    const focusable = content.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-
-    const first = focusable[0];
-
-    if (first) {
-      first.focus();
     }
   }
 
@@ -105,8 +85,10 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
     }
   }
 
-  handleChange = (target: any) => {
-    this.setState({ query: target.value });
+  setQuery = (value: string) => {
+    this.setState({
+      query: value,
+    });
   };
 
   toggleShowOrHide = () => {
@@ -128,7 +110,13 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
     if (resourceUri && !resourceUri.includes('dataportal.se'))
       return `/${i18n.languages[0]}/externalconcepts/${path}`;
     else
-      return `/${i18n.languages[0]}/concepts/${path}`;
+    {
+      //NDP-343
+      if(path.startsWith("https/dataportal.se/concepts"))
+        path = path.replace("https/dataportal.se/concepts","");    
+
+      return `/${i18n.languages[0]}/concepts${path}`;
+    }
   };
 
   render() {
@@ -172,6 +160,11 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
             robotsFollow={true}
             robotsIndex={true}
             lang={i18n.languages[0]}
+            socialMeta={{
+              socialDescription : i18n.t('pages|specifications|social_meta_description'),
+              socialTitle : i18n.t('pages|specifications|social_meta_title'),
+              socialUrl : `${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|specifications|path')}`
+            }}
           />
           <Box
             id="top"
@@ -215,50 +208,7 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
                           </span>
                         </div>
 
-                        <form
-                          onSubmit={(event) => {
-                            event.preventDefault();
-                            search
-                              .set({
-                                page: 0,
-                                query: this.inputQueryRef.current!.value || '*',
-                                fetchFacets: true,
-                              })
-                              .then(() => search.doSearch());
-                          }}
-                        >
-                          <div className="search-box">
-                            <label
-                              className="screen-reader"
-                              htmlFor="search-field"
-                            >
-                              {i18n.t('pages|concepts|search-concept')}
-                            </label>
-                            <input
-                              autoFocus
-                              id="search-field"
-                              autoComplete="off"
-                              name="q"
-                              ref={this.inputQueryRef}
-                              type="text"
-                              placeholder={i18n.t(
-                                'pages|concepts|search-concept'
-                              )}
-                              value={this.state.query}
-                              onChange={this.handleChange}
-                              key={
-                                search.request.query ? 'loaded' : 'not loaded'
-                              }
-                            ></input>
-                            <button type="submit" aria-label="Sök">
-                              <SearchIcon
-                                color={colorPalette.white}
-                                width={[25]}
-                              />
-                            </button>
-                            {search.loadingFacets && <Loader />}
-                          </div>
-                        </form>
+                        <SearchInput search={search} searchType="begrepp" query={this.state.query} setQuery={this.setQuery} />
 
                         <div className="mobile-filters">
                           <button
@@ -273,142 +223,12 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
                           </button>
                         </div>
 
-                        <SearchFilters showFilter={this.state.showFilter} search={search} />
+                        <SearchFilters showFilter={this.state.showFilter} search={search} searchType="begrepp" query={this.state.query} />
 
                         <noscript>{i18n.t('common|search-datasets')}</noscript>
 
-                        <div id="search-result" className="search-result">
-                          <h2 className="text-4 search-result-header">
-                            {search.loadingHits &&
-                              `${i18n.t('common|loading')}...`}
-                            {!search.loadingHits &&
-                              search.result &&
-                              (search.result.count || 0) >= 0 &&
-                              `${search.result.count} ${i18n.t(
-                                'pages|search|concept-hits'
-                              )}`}{' '}
-                          </h2>
-                          <div>
-                            <ul className="search-result-list">
-                              {search.result.hits &&
-                                search.result.hits.map((hit, index) => (
-                                  <li
-                                    className="search-result-list-item"
-                                    key={index}
-                                  // onClick={() => {
-                                  //   (window as any).location.href = hit.url;
-                                  // }}
-                                  >
-                                    { hit.metadata && search.allFacets && !search.loadingFacets
-                                      && hit.metadata['inScheme_resource'] && search.getFacetValueTitle('http://www.w3.org/2004/02/skos/core#inScheme', hit.metadata['inScheme_resource'][0]) &&
-                                      <span className="result-theme text-6">
-                                        {search.getFacetValueTitle('http://www.w3.org/2004/02/skos/core#inScheme', hit.metadata['inScheme_resource'][0])}
-                                      </span>
-                                    }
-                                    <a
-                                      href={`${hit.url}#ref=${window ? window.location.search : ''
-                                        }`}
-                                    >
-                                      <h3 className="text-4">{hit.title}</h3>
-                                    </a>
-                                    <p className="result-desc text-6">{hit.description}</p>
-                                    <p className="result-org text-6-bold">
-                                      {hit.metadata &&
-                                        hit.metadata['organisation_literal'] &&
-                                        hit.metadata['organisation_literal'][0]}
-                                    </p>
-                                    <div className="format-row">
-                                      {hit.metadata &&
-                                        hit.metadata['format_literal'] &&
-                                        hit.metadata['format_literal'].map(
-                                          (m: string, index: number) => (
-                                            <p
-                                              className="result-format"
-                                              key={index}
-                                            >
-                                              <span>{m}</span>
-                                            </p>
-                                          )
-                                        )}
-                                    </div>
-                                  </li>
-                                ))}
-                            </ul>
-                          </div>
-                        </div>
+                        <SearchResults search={search} searchType="begrepp" />
 
-                        {(search.result.pages || 0) > 1 && (
-                          <div className="pagination">
-                            <div className="first-page">
-                              {(search.request.page || 0) > 1 && (
-                                <button
-                                  className=""
-                                  onClick={() => {
-                                    search
-                                      .set({
-                                        page: 0,
-                                      })
-                                      .then(() => search.doSearch());
-                                    window.scrollTo({
-                                      top: 0,
-                                      behavior: 'smooth',
-                                    });
-                                    this.searchFocus();
-                                  }}
-                                >
-                                  {i18n.t('pages|search|first-page')}
-                                </button>
-                              )}
-                            </div>
-
-                            <div className="prev-next-page">
-                              <button
-                                disabled={(search.request.page || 0) === 0}
-                                className=""
-                                onClick={() => {
-                                  search
-                                    .set({
-                                      page: (search.request.page || 0) - 1,
-                                    })
-                                    .then(() => search.doSearch());
-                                  window.scrollTo({
-                                    top: 0,
-                                    behavior: 'smooth',
-                                  });
-                                  this.searchFocus();
-                                }}
-                              >
-                                {i18n.t('pages|search|prev-page')}
-                              </button>
-                              <span>
-                                {i18n.t('pages|search|page')}{' '}
-                                {(search.request.page || 0) + 1}{' '}
-                                {i18n.t('common|of')} {search.result.pages}
-                              </span>
-                              <button
-                                className=""
-                                disabled={
-                                  (search.result.pages || 1) ===
-                                  (search.request.page || 0) + 1
-                                }
-                                onClick={() => {
-                                  search
-                                    .set({
-                                      page: (search.request.page || 0) + 1,
-                                    })
-                                    .then(() => search.doSearch());
-                                  window.scrollTo({
-                                    top: 0,
-                                    behavior: 'smooth',
-                                  });
-                                  this.searchFocus();
-                                }}
-                              >
-                                {i18n.t('pages|search|next-page')}
-                              </button>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </div>
                   )}

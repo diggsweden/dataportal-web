@@ -44,16 +44,7 @@ export class ArticlePage extends React.Component<PageProps> {
     let uri = new URLSearchParams(location.search);
     
     return (
-      <QueryParamProvider params={uri}>
-        <PageMetadata
-          seoTitle="Artiklar - Sveriges dataportal"
-          seoDescription=""
-          seoImageUrl=""
-          seoKeywords=""
-          robotsFollow={true}
-          robotsIndex={true}
-          lang={i18n.languages[0]}
-        />
+      <QueryParamProvider params={uri}>        
         <SettingsContext.Consumer>
           {settings => (       
           <Box

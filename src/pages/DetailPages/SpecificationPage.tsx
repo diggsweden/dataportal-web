@@ -215,13 +215,23 @@ export class SpecificationPage extends React.Component<
           {(entry) => (
             <QueryParamProvider params={uri}>
               <PageMetadata
-                seoTitle={`${entry.title} - Sveriges dataportal`}
+                seoTitle={`${entry.title} - ${i18n.t('common|seo-title')}`}
                 seoDescription=""
                 seoImageUrl=""
                 seoKeywords=""
                 robotsFollow={true}
                 robotsIndex={true}
                 lang={i18n.languages[0]}
+                socialMeta={{
+                  socialDescription : entry.description,
+                  socialTitle : entry.title,
+                  socialUrl :  entry && entry.title
+                    ? `${this.props.env.CANONICAL_URL}/${
+                        i18n.languages[0]
+                      }/${i18n.t('routes|specifications|path')}/${
+                        this.props.match.params.curi}`
+                    : ''
+                }}
                 canonicalUrl={
                   entry && entry.title
                     ? `${this.props.env.CANONICAL_URL}/${

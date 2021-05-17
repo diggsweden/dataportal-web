@@ -138,16 +138,16 @@ export class DataServicePage extends React.Component<
                   '<span class="">{{label}}</span></span>{{/eachprop}}',
               },
               {
-                block: 'licenseIndicator',
+                block: 'licenseIndicator2',
                 loadEntry: true,
                 run: function(node, data, items, entry) {
                   var v = entry.getMetadata().findFirstValue(null, 'dcterms:license');
                   if (v.indexOf("http://creativecommons.org/") === 0) {
                     var variant;
                     if (v === "http://creativecommons.org/publicdomain/zero/1.0/") {
-                      variant = "zero";
+                      variant = "Creative Commons";
                     } else if (v.indexOf("http://creativecommons.org/licenses/") === 0) {
-                      variant = v.substr(36).split('/')[0];
+                      variant = "Creative commons";
                     } else {
                       return; // Unknown cc version.
                     }
@@ -206,8 +206,8 @@ export class DataServicePage extends React.Component<
 
   render() {
     const { location } = this.props;
-    let uri = new URLSearchParams(location.search);
-
+    let uri = new URLSearchParams(location.search);    
+    
     return (
       <EntrystoreProvider
         env={this.props.env}
@@ -219,13 +219,24 @@ export class DataServicePage extends React.Component<
           {(entry) => (
             <QueryParamProvider params={uri}>
               <PageMetadata
-                seoTitle={`${entry.title} - Sveriges dataportal`}
+                seoTitle={`${entry.title} - ${i18n.t('common|seo-title')}`}
                 seoDescription=""
                 seoImageUrl=""
                 seoKeywords=""
                 robotsFollow={true}
                 robotsIndex={true}
                 lang={i18n.languages[0]}
+                socialMeta={{
+                  socialDescription : entry.description,
+                  socialTitle : entry.title,
+                  socialUrl : entry && entry.title
+                    ? `${this.props.env.CANONICAL_URL}/${
+                        i18n.languages[0]
+                      }/${i18n.t('routes|dataservices|path')}/${
+                        this.props.match.params.cid
+                      }_${this.props.match.params.eid}/${slugify(entry.title)}`
+                    : ''
+                }}
                 canonicalUrl={
                   entry && entry.title
                     ? `${this.props.env.CANONICAL_URL}/${
@@ -303,7 +314,7 @@ export class DataServicePage extends React.Component<
                             className="architectureIndicator"
                           ></div>
                           <div
-                            data-entryscape="licenseIndicator"
+                            data-entryscape="licenseIndicator2"
                             className="licenseIndicator"
                           ></div>
                         </div>

@@ -41,7 +41,9 @@ export interface SearchHit {
   description?: string,
   info?: { [facet: string]: string[]; },
   metadata?: { [facet: string]: string[]; },
-  esEntry: any
+  esEntry: any,
+  titleLang?: string; 
+  descriptionLang?: string;
 }
 
 export interface SearchFacet {

@@ -13,8 +13,8 @@ export class Settings_Sandbox extends EnvSettings {
 
   ENTRYSCAPE_BLOCKS_URL="https://static.cdn.entryscape.com/blocks/0.20/app.js"
 
-  ENTRYSCAPE_OPENDATA_SV_URL="https://dataportal.azureedge.net/cdn/ext-opendata-sv-0.6.js"
-  ENTRYSCAPE_OPENDATA_EN_URL="https://dataportal.azureedge.net/cdn/ext-opendata-en-0.6.js"
+  ENTRYSCAPE_OPENDATA_SV_URL="https://static.entryscape.com/blocks/0.20/ext/opendata-sv.js"
+  ENTRYSCAPE_OPENDATA_EN_URL="https://static.entryscape.com/blocks/0.20/ext/opendata-en.js"
 
   ENTRYSCAPE_SITEMAP_JSON_URL="https://sandbox.admin.dataportal.se/sitemap.json";
 

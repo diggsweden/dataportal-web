@@ -104,20 +104,9 @@ export const renderer = async (
       }
 
       await getDataFromTree(frontend);      
-
-      const { helmet } = helmetContext as FilledContext;    
-
+      
       const bundles: string[] = await bundlesPromise;    
       const styleBundles: string[] = await styleBundlesPromise;    
-
-      let response = getHeader({
-        metaTags: helmet
-          ? `<title data-rh="true">Sveriges dataportal</title>${helmet.meta.toString()}${helmet.link.toString()}`
-          : '',
-        bundles,  
-        styleBundles,    
-        htmlAttributes: `lang="${i18nreq.languages[0]}"`,
-      });
 
       start = Date.now();                   
 
@@ -125,13 +114,16 @@ export const renderer = async (
 
       end = Date.now();
 
-      profile.push({ name: 'Render Body', duration: end - start });
+      const helmetServer = Helmet.renderStatic();
 
-      if(!helmet)
-      {
-        const helmetServer = Helmet.renderStatic();
-        response += `<title data-react-helmet="true">Sveriges dataportal</title>${helmetServer.meta.toString()}${helmetServer.link.toString()}`;      
-      }
+      let response = getHeader({        
+        metaTags:`${helmetServer.title?.toString()}${helmetServer.meta?.toString()}${helmetServer.link?.toString()}`,
+        bundles,  
+        styleBundles,    
+        htmlAttributes: `lang="${i18nreq.languages[0]}"`,
+      });      
+
+      profile.push({ name: 'Render Body', duration: end - start });
 
       let data = client.extract();
       if(data)

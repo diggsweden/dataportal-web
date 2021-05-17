@@ -46,7 +46,6 @@ export class ConceptPage extends React.Component<
    * or else blocks wont have access to DOM
    */
   componentDidMount() {
-    
     //we need to reload the page when using the back/forward buttons to a blocks rendered page
     if (typeof window !== 'undefined') {
       //check if reffereing search params is set to hash
@@ -60,7 +59,6 @@ export class ConceptPage extends React.Component<
         )}/?${window.location.hash.split('ref=?')[1]}`;
 
       window.onpopstate = (e: any) => {
-        
         window.location.reload();
       };
     }
@@ -91,15 +89,15 @@ export class ConceptPage extends React.Component<
           
           function getDataportalUri(resourceUri, isTerm){
 
-            var path = '';
-            
+            var path = '';                      
+
             if(resourceUri.indexOf('://') > -1)
             {
               var tmp = resourceUri.split("://");
               path = tmp[0] + '/' + tmp[1];
             }
             else
-              path = resourceUri;
+              path = resourceUri;              
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalconcepts/") > -1)
               if(isTerm)
@@ -108,23 +106,30 @@ export class ConceptPage extends React.Component<
                 return "/${i18n.languages[0]}/externalconcepts/" + path;
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/concepts/") > -1)
+            {
+              var entryPath = resourceUri.replace("https://dataportal.se/concepts","");
+
               if(isTerm)
-                return "/${i18n.languages[0]}/terminology/" + path;
+                return "/${i18n.languages[0]}/terminology" + entryPath;
               else
-                return "/${i18n.languages[0]}/concepts/" + path;
+                return "/${i18n.languages[0]}/concepts" + entryPath;
+            }
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalterminology/") > -1)                            
               return "/${i18n.languages[0]}/externalconcepts/" + path;
 
-            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/terminology/") > -1)                
-               return "/${i18n.languages[0]}/concepts/" + path;
+            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/terminology/") > -1)    
+            {
+              var entryPath = resourceUri.replace("https://dataportal.se/concepts","");            
+               return "/${i18n.languages[0]}/concepts" + entryPath;
+            }
 
             return resourceUri;
           }
 
           function getLocalizedValue(metadataGraph, prop, lang) {
               var val = '';
-              var fallbackLang = 'en';
+              var fallbackLang = 'sv';
           
               var stmts = metadataGraph.find(null, prop);
               if (stmts.length > 0) {      
@@ -157,22 +162,30 @@ export class ConceptPage extends React.Component<
             routes: [              
               {
                 regex:new RegExp('(\/*\/externalconcepts\/)(.+)'),
-                uri:'${this.props.match.params.scheme}://${this.props.match.params.curi}',
+                uri:'${this.props.match.params.scheme}://${
+            this.props.match.params.curi
+          }',
                 page_language: '${i18n.languages[0]}'
               },             
               {
                 regex:new RegExp('(\/*\/externalterminology\/)(.+)'),
-                uri:'${this.props.match.params.scheme}://${this.props.match.params.curi}',
+                uri:'${this.props.match.params.scheme}://${
+            this.props.match.params.curi
+          }',
                 page_language: '${i18n.languages[0]}'
               },         
               {
                 regex:new RegExp('(\/*\/terminology\/)(.+)'),
-                uri:'${this.props.match.params.scheme}://${this.props.match.params.curi}',
+                uri:'https://dataportal.se/concepts/${
+                  this.props.match.params.curi
+                }',
                 page_language: '${i18n.languages[0]}'
               },             
               {
                 regex:new RegExp('(\/*\/concepts\/)(.+)'),
-                uri:'${this.props.match.params.scheme}://${this.props.match.params.curi}',
+                uri:'https://dataportal.se/concepts/${
+                  this.props.match.params.curi
+                }',
                 page_language: '${i18n.languages[0]}'
               }                            
             ],           
@@ -332,7 +345,9 @@ export class ConceptPage extends React.Component<
                     node.firstElementChild.appendChild(el);
                          
                     var ruri = entry.getResourceURI();
-                    var label = getLocalizedValue(entry.getMetadata(),'skos:prefLabel','${i18n.languages[0]}'); 
+                    var label = getLocalizedValue(entry.getMetadata(),'skos:prefLabel','${
+                      i18n.languages[0]
+                    }'); 
                     el.innerHTML = label
                     var dpUri = getDataportalUri(ruri);
                     el.setAttribute('href', dpUri)
@@ -352,11 +367,15 @@ export class ConceptPage extends React.Component<
                     
                     node.firstElementChild.appendChild(el);
 
-                    var ruri = getLocalizedValue(entry.getMetadata(),'skos:inScheme','${i18n.languages[0]}');                                             
+                    var ruri = getLocalizedValue(entry.getMetadata(),'skos:inScheme','${
+                      i18n.languages[0]
+                    }');                                             
 
                     if(ruri)
                       util.getEntryByResourceURI(ruri).then((e) => {                              
-                        var label = getLocalizedValue(e.getMetadata(),'dcterms:title','${i18n.languages[0]}'); 
+                        var label = getLocalizedValue(e.getMetadata(),'dcterms:title','${
+                          i18n.languages[0]
+                        }'); 
                         el.innerHTML = label
                         var dpUri = getDataportalUri(ruri,true);
                         el.setAttribute('href', dpUri)
@@ -365,7 +384,29 @@ export class ConceptPage extends React.Component<
                   }
                 },
                 loadEntry:true
-              },              
+              },
+
+              {
+                block: 'hemvist',
+                loadEntry: true,
+                run: function(node, data, items, entry) {
+                  
+                  var resourceURI = entry.getResourceURI();
+                  var linkTitle = '${i18n.t('pages|concept_page|concept_adress')}';
+
+                  if(window.location.pathname.indexOf("/terminology/") > -1 || window.location.pathname.indexOf("/externalterminology/") > -1)
+                    linkTitle = '${i18n.t('pages|concept_page|term_adress')}';
+                  
+                  if (resourceURI.indexOf('https://dataportal.se/') === 0) {
+                    node.innerHTML=linkTitle + ': <a href='+resourceURI+'>'+resourceURI+'</a>';
+                  }
+                  else
+                  {
+                    node.innerHTML='<span class="">'+linkTitle+'</span> <a href='+resourceURI+'>'+resourceURI+'</a>';
+                  } 
+                }
+              },
+              
               {
                 block: 'conceptSearchInTemplate',
                 extends: 'searchList',
@@ -607,27 +648,39 @@ export class ConceptPage extends React.Component<
   render() {
     const { location } = this.props;
     let uri = new URLSearchParams(location.search);
+    let entryUri = this.props.match.params.scheme
+      ? `${this.props.match.params.scheme}://${this.props.match.params.curi}`
+      : `https://dataportal.se/concepts/${this.props.match.params.curi}`;
 
     return (
       <EntrystoreProvider
         env={this.props.env}
-        entryUri={`${this.props.match.params.scheme}://${this.props.match.params.curi}`}
+        entryUri={entryUri}
         entrystoreUrl={this.props.env.ENTRYSCAPE_TERMS_PATH}
       >
         <EntrystoreContext.Consumer>
           {(entry) => (
             <QueryParamProvider params={uri}>
               <PageMetadata
-                seoTitle={`${entry.title} - Sveriges dataportal`}
+                seoTitle={`${entry.title} - ${i18n.t('common|seo-title')}`}
                 seoDescription=""
                 seoImageUrl=""
                 seoKeywords=""
                 robotsFollow={true}
                 robotsIndex={true}
                 lang={i18n.languages[0]}
+                socialMeta={{
+                  socialDescription : entry.description,
+                  socialTitle : entry.title,
+                  socialUrl : `${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|concepts|path')}/${this.props.match.params.scheme}/${this.props.match.params.curi}`                                    
+                }}
                 canonicalUrl={
                   entry && entry.title
-                    ? `${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|concepts|path')}/${this.props.match.params.scheme}/${this.props.match.params.curi}`
+                    ? `${this.props.env.CANONICAL_URL}/${
+                        i18n.languages[0]
+                      }/${i18n.t('routes|concepts|path')}/${
+                        this.props.match.params.curi
+                      }`
                     : ''
                 }
               />
@@ -657,7 +710,9 @@ export class ConceptPage extends React.Component<
                         {
                           path: `/${i18n.languages[0]}/${i18n.t(
                             'routes|concepts|path'
-                          )}/${this.props.match.params.scheme}/${this.props.match.params.curi}`,
+                          )}/${this.props.match.params.scheme}/${
+                            this.props.match.params.curi
+                          }`,
                           title: '',
                         },
                       ]}
@@ -668,7 +723,6 @@ export class ConceptPage extends React.Component<
                       <div className="detailpage__wrapper--leftcol content">
                         <span className="text-6-bold beta_badge--xl">BETA</span>
                         <h1 className="text-2 terminology_header">
-                          <span data-entryscape="hemvist"></span>                          
                           <span>{entry.title}</span>
                         </h1>
 
@@ -676,15 +730,19 @@ export class ConceptPage extends React.Component<
                           <span
                             data-entryscape="text"
                             data-entryscape-fallback=""
-                            data-entryscape-content="${skos:definition}"                            
+                            data-entryscape-content="${skos:definition}"
+                          ></span>
+
+                          <span
+                            data-entryscape="hemvist"
+                            className="entryscape hemvist"
                           ></span>
 
                           <span
                             data-entryscape="text"
                             data-entryscape-fallback=""
-                            data-entryscape-content="${dcterms:description}"                            
-                          ></span>                          
-                          
+                            data-entryscape-content="${dcterms:description}"
+                          ></span>
                         </p>
 
                         <div className="column">
@@ -693,7 +751,7 @@ export class ConceptPage extends React.Component<
                             className="concept-detail"
                             data-entryscape="text"
                             data-entryscape-fallback=""
-                            data-entryscape-content="${skos:altLabel}"                            
+                            data-entryscape-content="${skos:altLabel}"
                           ></span>
 
                           <span data-entryscape="example-Label"></span>
@@ -701,7 +759,7 @@ export class ConceptPage extends React.Component<
                             className="concept-detail"
                             data-entryscape="text"
                             data-entryscape-fallback=""
-                            data-entryscape-content="${skos:example}"                            
+                            data-entryscape-content="${skos:example}"
                           ></span>
                         </div>
 
@@ -720,14 +778,13 @@ export class ConceptPage extends React.Component<
                           ></span>
                         </div>
 
-                        <div className="column">                       
-
+                        <div className="column">
                           <span data-entryscape="history-Label"></span>
                           <span
                             className="concept-detail"
                             data-entryscape="text"
                             data-entryscape-fallback=""
-                            data-entryscape-content="${skos:historyNote}"                            
+                            data-entryscape-content="${skos:historyNote}"
                           ></span>
 
                           <span data-entryscape="editorial-Label"></span>
@@ -735,7 +792,7 @@ export class ConceptPage extends React.Component<
                             className="concept-detail"
                             data-entryscape="text"
                             data-entryscape-fallback=""
-                            data-entryscape-content="${skos:editorialNote}"                            
+                            data-entryscape-content="${skos:editorialNote}"
                           ></span>
 
                           <span data-entryscape="note-Label"></span>
@@ -743,7 +800,7 @@ export class ConceptPage extends React.Component<
                             className="concept-detail"
                             data-entryscape="text"
                             data-entryscape-fallback=""
-                            data-entryscape-content="${skos:note}"                            
+                            data-entryscape-content="${skos:note}"
                           ></span>
 
                           <span
@@ -761,13 +818,12 @@ export class ConceptPage extends React.Component<
                           className="conceptsearch"
                           data-entryscape="conceptSearchInTemplate"
                         ></span>   */}
-
                       </div>
 
                       {/* Right column */}
                       <div className="detailpage__wrapper--rightcol hbbr">
                         <div className="detailpage__wrapper--rightcol-info text-6">
-                          <h2 className="text-5-bold">                           
+                          <h2 className="text-5-bold">
                             <span data-entryscape="term-head"></span>
                             <span data-entryscape="concept-head"></span>
                           </h2>

@@ -68,6 +68,12 @@ export class StatisticPage extends React.Component<PageProps> {
                 robotsFollow={true}
                 robotsIndex={true}
                 lang={i18n.languages[0]}
+                canonicalUrl={`${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|statistics|path')}`}
+                socialMeta={{
+                  socialDescription : i18n.t('pages|statistic|social_meta_description'),
+                  socialTitle : i18n.t('pages|statistic|social_meta_title'),
+                  socialUrl : `${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|statistics|path')}`
+                }}
               />
 
               <NoJavaScriptWarning text="" />

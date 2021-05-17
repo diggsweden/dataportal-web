@@ -2,7 +2,7 @@
   "startpage" : {
     "search_placeholder" : "Sök",
     "seo_description" : "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor",
-    "seo_title" : "Sveriges dataportal",
+    "seo_title" : "Sveriges dataportal",    
     "search_title_1" : "Sök och utforska data i Sverige",
     "search_title_2" : "data i Sverige",    
     "explore_datasets" : "Utforska data och API:er",
@@ -10,7 +10,9 @@
     "explore_specs" : "Utforska specifikationer av informations- och datamodeller",
     "coming_soon" : "Kommer snart",
     "search_datasets_format" : "Sök datamängder inom kategorin {{category}}",
-    "datasets_by_category" : "Data efter kategorier"
+    "datasets_by_category" : "Data efter kategorier",
+    "social_meta_title" : "Sveriges dataportal",
+    "social_meta_description" : "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor"    
   },
   "statistic" : {
     "statistic-header" : "Statistik på dataportalen",
@@ -25,7 +27,9 @@
     "statistic-page-header" : "Statistik",
     "statistic-page-numberofdatasets" :"Antal data på dataportalen idag: ",
     "statistic-page-seotitle" : "Statistik - Sveriges dataportal",
-    "statistic-page-link" : "statistik"
+    "statistic-page-link" : "statistik",
+    "social_meta_title" : "Statistik på dataportalen",
+    "social_meta_description" : "Statistiken som visualiseras på startsidan presenteras här i textform"
   },
 "highlight" : {
   "highlight-header":"Sveriges dataportal för ökad innovationskraft",
@@ -72,15 +76,21 @@
   },
   "datasets" : {
     "search-datasets" : "Sök",
-    "datasets" : "datamängder"
+    "datasets" : "datamängder",
+    "social_meta_title" : "Sök data & API:er",
+    "social_meta_description" : "Data & API:er på Sveriges dataportal"
   },
   "concepts" : {
     "search-concept" : "Sök",
-    "concepts" : "begrepp"
+    "concepts" : "begrepp",
+    "social_meta_title" : "Sök begrepp",
+    "social_meta_description" : "Begrepp på Sveriges dataportal"
   },
   "specifications" : {
     "search-specifications" : "Sök",
-    "specifications" : "specifikationer"
+    "specifications" : "specifikationer",
+    "social_meta_title" : "Sök specifikationer",
+    "social_meta_description" : "Specifikationer på Sveriges dataportal"
   },
   "notfoundpage" : {
     "heading" : "404 - Sidan hittades inte",
@@ -114,7 +124,9 @@
   "articles" :{
     "news" : "nyheter",
     "articles" : "Nyheter",
-    "view-all" : "Visa alla nyheter"
+    "view-all" : "Visa alla nyheter",
+    "social_meta_title" : "Nyheter - Sveriges dataportal",
+    "social_meta_description" : "Nyheter på Sveriges dataportal"
   },
   "redirect" :{
     "pagenotfound_header" : "Oj, sidan kan inte hittas!",
@@ -166,11 +178,14 @@
 
     "about_concept" : "Om begrepp",
 
-    "about_terminology" : "Om terminologi"
+    "about_terminology" : "Om terminologi",
 
+    "concept_adress" : "Adress för begrepp",
+
+    "term_adress" : "Adress för terminologi"
   },
   "specification_page" :{
-    "about_specification" : "Om specification",
+    "about_specification" : "Om specifikation",
     "resource_specification" : "Resurs",
     "scheme_download" : "Ladda ner schema",
     "guidance_download" : "Ladda ner guidance",

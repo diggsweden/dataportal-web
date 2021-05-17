@@ -10,6 +10,7 @@ import { decode } from 'qss';
 import { Helmet } from 'react-helmet'
 import { StaticBreadcrumb } from 'components/Breadcrumb';
 import { slugify } from 'utilities/urlHelpers';
+import { PageMetadata } from 'pages/PageMetadata';
 
 export interface ArticleItemProps {
   children?: React.ReactNode;
@@ -89,9 +90,23 @@ export const ArticleItem : React.FC<ArticleItemProps> = (props) => {
           {/* {loading && (<span className="text-5 loading">{i18n.t('common|loading')}</span>)} */}
           {articleItem && id && id != '0' &&
             <>
-              <Helmet>
-                <title>{articleItem.heading} - {i18n.t('common|seo-title')}</title>
-              </Helmet>            
+              <PageMetadata
+                seoTitle={`${articleItem.heading} - ${i18n.t('common|seo-title')}`}
+                seoDescription={articleItem.preambleHTML}
+                seoImageUrl=""
+                seoKeywords=""
+                robotsFollow={true}
+                robotsIndex={true}
+                lang={i18n.languages[0]}
+                socialMeta={{
+                  socialDescription : articleItem.preambleHTML || '',
+                  socialTitle : articleItem.heading,
+                  socialImageUrl: articleItem.imageUrl,
+                  socialUrl : `${props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t(
+                    'routes|news|path'
+                    )}/${articleItem.id}/${slugify(articleItem.heading)}`
+                }}
+              />           
               {articleItem && articleItem.imageUrl && (
                 <img alt={articleItem.heading || 'nyhetsbild'} src={`${articleItem.imageUrl}?width=1024`} />
               )}
