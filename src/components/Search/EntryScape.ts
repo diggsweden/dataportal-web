@@ -287,6 +287,8 @@ export class EntryScape {
 
       values['inScheme_resource'] = metadata.find(null, "http://www.w3.org/2004/02/skos/core#inScheme").map((f:any) => {return f.getValue()} );            
 
+      values['modified'] = metadata.find(null, "http://purl.org/dc/terms/modified").map((f:any) => {return f.getValue()} );      
+
       //theme needs to be translated
       //if(values['theme_literal'])
         //values['theme_literal'] = i18next.t('facetvalues|'+values['theme_literal']);
@@ -430,7 +432,7 @@ export class EntryScape {
             esQuery.sort('modified+asc');
             break;
           case SearchSortOrder.modified_desc:
-            esQuery.sort('modified+desc');
+            esQuery.sort('metadata.predicate.literal_s.3e2f60da+desc');
             break;          
           case SearchSortOrder.score_desc:
             esQuery.sort('score+desc');
@@ -543,7 +545,7 @@ export class EntryScape {
 
                 
               };
-
+              
 
               if(hitSpecification.pathResolver)
                 hit.url = hitSpecification.pathResolver(child);

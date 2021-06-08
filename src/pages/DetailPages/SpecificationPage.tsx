@@ -303,6 +303,7 @@ export class SpecificationPage extends React.Component<
                         <div
                           className="specification__resource"
                           data-entryscape="resourceDescriptors2"
+                          data-entryscape-rdftype= "prof:ResourceDescriptor"
                         ></div>
 
                         <div className="contact__publisher hbbr">

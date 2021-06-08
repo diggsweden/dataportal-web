@@ -173,6 +173,10 @@
 .news-article {
     // margin-top: $space-32;
 
+    iframe {
+        max-width: 100%;
+    }
+
     img {
         max-width: 100%;
         height: auto;

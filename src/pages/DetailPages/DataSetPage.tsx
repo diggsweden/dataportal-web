@@ -293,6 +293,13 @@ export class DataSetPage extends React.Component<
                 },
               },
               {
+                block: 'costIndicator2',
+                extends: 'template',
+                template: '{{#ifprop "schema:offers"}}<span class="esbIndicator" title="Avgift"><i class="fas fa-coins"></i>' +
+                  '<span class="esbIndicatorLabel">Avgift</span></span>{{/ifprop}}',
+              },
+
+              {
                 block: 'distributionList2',
                 extends: 'list',
                 relation: 'dcat:distribution',
@@ -375,15 +382,18 @@ export class DataSetPage extends React.Component<
                 robotsIndex={true}
                 lang={i18n.languages[0]}
                 socialMeta={{
-                  socialDescription : entry.description,
-                  socialTitle : entry.title,
-                  socialUrl : entry && entry.title
-                    ? `${this.props.env.CANONICAL_URL}/${
-                        i18n.languages[0]
-                      }/${i18n.t('routes|datasets|path')}/${
-                        this.props.match.params.cid
-                      }_${this.props.match.params.eid}/${slugify(entry.title)}`
-                    : ''
+                  socialDescription: entry.description,
+                  socialTitle: entry.title,
+                  socialUrl:
+                    entry && entry.title
+                      ? `${this.props.env.CANONICAL_URL}/${
+                          i18n.languages[0]
+                        }/${i18n.t('routes|datasets|path')}/${
+                          this.props.match.params.cid
+                        }_${this.props.match.params.eid}/${slugify(
+                          entry.title
+                        )}`
+                      : '',
                 }}
                 canonicalUrl={
                   entry && entry.title
@@ -433,8 +443,8 @@ export class DataSetPage extends React.Component<
                       {/* Left column */}
                       {/* Left column */}
                       <div className="detailpage__wrapper--leftcol">
-                        {/* Title */}                        
-                        <h1 className="text-2">{entry.title}</h1>                        
+                        {/* Title */}
+                        <h1 className="text-2">{entry.title}</h1>
                         {/* Publisher */}
                         <script
                           type="text/x-entryscape-handlebar"
@@ -462,6 +472,11 @@ export class DataSetPage extends React.Component<
                           <div
                             data-entryscape="licenseIndicator2"
                             className="licenseIndicator"
+                          ></div>
+
+                          <div
+                            data-entryscape="costIndicator2"
+                            className="costIndicator"
                           ></div>
                         </div>
 

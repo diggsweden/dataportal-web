@@ -41,9 +41,20 @@
                 a {
                     text-decoration: none;
                     cursor: default;
+                    margin-right: 0;
 
                     &:focus {
                         outline: none !important;
+                    }
+
+                    display: block;
+                    max-width: 52vmin;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+
+                    @media screen and (max-width: 550px) {
+                        max-width: 38vmin;
                     }
                 }
             }

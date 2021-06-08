@@ -2,6 +2,8 @@ import { EnvSettings } from "./EnvSettings";
 
 export class Settings_Dev extends EnvSettings {
   ENTRYSCAPE_DATASETS_PATH="admin.dataportal.se"
+  // ENTRYSCAPE_DATASETS_PATH="sandbox.admin.dataportal.se"
+
   ENTRYSCAPE_SPECS_PATH="editera.dataportal.se"
   ENTRYSCAPE_TERMS_PATH="editera.dataportal.se"
   ENTRYSCAPE_ORG_STATS_URL="https://admin.dataportal.se/charts/orgData.json"

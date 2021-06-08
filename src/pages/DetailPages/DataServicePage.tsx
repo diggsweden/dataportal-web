@@ -143,7 +143,9 @@ export class DataServicePage extends React.Component<
                 run: function(node, data, items, entry) {
                   var v = entry.getMetadata().findFirstValue(null, 'dcterms:license');
                   if (v.indexOf("http://creativecommons.org/") === 0) {
+
                     var variant;
+                    
                     if (v === "http://creativecommons.org/publicdomain/zero/1.0/") {
                       variant = "Creative Commons";
                     } else if (v.indexOf("http://creativecommons.org/licenses/") === 0) {

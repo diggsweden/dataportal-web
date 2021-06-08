@@ -121,6 +121,7 @@ var csp_headers = {
   ],
   'frame-ancestors': ['https://dev.digg.se','https://digg.se','https://www.digg.se'],
   'connect-src': ['*'],
+  'frame-src' : ["'self'", "https://www.youtube.com/"]
 };
 app.use('/', function(req, res, done) {
   csp.header(csp_headers, res);

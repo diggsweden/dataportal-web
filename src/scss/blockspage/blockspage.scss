@@ -206,15 +206,35 @@
                         }
 
                         button {
+                            display: flex;
                             margin: 0rem;
-                            width: 2.75rem;
+                            min-width: max-content;
                             height: 2.75rem;
                             background-color: $brown10;
+                            text-decoration: none;
+                            color: $black100;
+
+                            &:hover {
+                                text-decoration: none;
+                            }
+
+                            &[aria-expanded="false"] {
+                                &::before {
+                                    content: "Visa mer";
+                                }
+                            }
+
+                            &[aria-expanded="true"] {
+                                &::before {
+                                    content: "Visa mindre";
+                                }
+                            }
 
                             span {
                                 font-family: "Font Awesome 5 Free" !important;
                                 color: $black100;
                                 margin-top: 0.125rem;
+                                margin-left: .25rem;
                             }
 
                             &:hover {
@@ -633,7 +653,7 @@
                 .esbRowAlign {
                     flex-direction: column;
                     align-items: flex-start;
-                    padding-right: $space-16;
+                    padding-right: $space-8;
                     min-height: 5rem;
 
                     .esbBadge {
@@ -677,9 +697,9 @@
                             }
                         }
 
-                        a:first-of-type {
-                            margin-right: $space-16;
-                        }
+                        // a:first-of-type {
+                        //     margin-right: $space-16;
+                        // }
 
                         .distribution__link {
                             color: $black100;
@@ -739,6 +759,29 @@
 
     }
 }
+
+
+html:lang(en) {
+    .esbRowControl {
+        button {
+            &[aria-expanded="false"] {
+                &::before {
+                    content: "View more" !important;
+                }
+            }
+
+            &[aria-expanded="true"] {
+                &::before {
+                    content: "View less" !important;
+                }
+            }
+        }
+    }
+}
+
+
+
+
 
 .entryscape {
     .download__rdf--link {
@@ -1342,6 +1385,7 @@
             padding: 5px;
             height: 32px;
             width: 32px;
+            text-align: center;
         }
     }
 }
@@ -1376,6 +1420,7 @@
             padding: 5px;
             height: 32px;
             width: 32px;
+            text-align: center;
         }
     }
 }
@@ -1408,6 +1453,44 @@
         }
     }
 }
+
+.costIndicator {
+    width: fit-content;
+    margin-bottom: $space-16;
+
+    &:empty {
+        display: none;
+    }
+
+    span {
+        display: flex;
+        align-items: center;
+        color: $black100;
+        padding: 0rem;
+        ;
+
+        span {
+            display: block;
+            text-transform: capitalize;
+        }
+
+        i {
+            margin-right: $space-8;
+            color: $black-hover;
+            border-radius: 100px;
+            border: 3px solid $black-hover;
+            padding: 5px;
+            height: 32px;
+            width: 32px;
+            text-align: center;
+        }
+
+        .fa-coins::before {
+            font-family: "Font Awesome 5 Free" !important;
+        }
+    }
+}
+
 
 //Hemvist concept page
 .hemvist {
