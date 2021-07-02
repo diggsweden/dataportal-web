@@ -175,7 +175,7 @@ export class SearchTermsPage extends React.Component<SearchProps, any> {
           >
             <NoJavaScriptWarning text="" />
 
-            <Header ref={this.headerRef} activeLink={this.state.activeLink} />
+            <Header ref={this.headerRef} activeLink={this.state.activeLink} env={this.props.env} />
 
             <ErrorBoundary>
               <MainContent id="main" flex="1 1 auto">

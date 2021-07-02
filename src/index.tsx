@@ -12,10 +12,10 @@ import { CacheProvider } from '@emotion/core';
 import { GlobalStyles } from './GlobalStyles';
 import { SettingsProvider } from './components/SettingsProvider';
 import { ApolloProvider } from '@apollo/client'
-import { createInstance, MatomoProvider } from '@datapunt/matomo-tracker-react';
 import { SettingsUtil } from "../config/env/SettingsUtil";
 import 'isomorphic-unfetch'
 import { createApolloClient } from '../shared/graphql/client';
+import { TrackingProvider } from './components/TrackingProvider';
 
 import 'scss/general/general.scss';
 import 'scss/general/typography.scss';
@@ -51,43 +51,43 @@ if (emotionIds) {
 
 const serverState = (window as any).__APOLLO_STATE__ || null;
 const cache = createCache();
-const env = SettingsUtil.create(typeof window !== 'undefined'? window.location.href : '');
+const env = SettingsUtil.create(typeof window !== 'undefined' ? window.location.href : '');
 
-const client = createApolloClient({ 
-  serverState: serverState, 
-  fetch: fetch,  
+const client = createApolloClient({
+  serverState: serverState,
+  fetch: fetch,
   //ssrForceFetchDelay: 100,
   backendUrl: env.CONTENTBACKEND_GRAPHAPI,
   fetchPolicy: 'cache-and-network'
 });
 
+const GetCookiesAccepted = () => {
+  try {
+    const store = JSON.parse(localStorage.getItem("digg-store")!)
+    return store ? store.cookiesAccepted == true : false;
+  } catch { console.error("Could not parse digg-store"); return false }
+};
+
 ReactDOM.hydrate(
   <I18nextProvider i18n={i18n}>
     <ApolloProvider client={client}>
       <CacheProvider value={cache}>
-        <SettingsProvider applicationUrl={typeof window !== 'undefined'? window.location.href : ''}>
-          <MatomoProvider
-                  value={createInstance({                    
-                    urlBase: 'https://webbanalys.digg.se',
-                    siteId: env.MATOMO_SITEID > 0
-                      ? env.MATOMO_SITEID
-                      : -1,
-                  })}                 
-                >
-              <GlobalStyles theme={themes.default} />
-              <ThemeProvider theme={themes.opendata}>
-                <HelmetProvider>       
-                  <LocalStoreProvider>                    
-                      <BrowserRouter>
-                        <Routes />
-                      </BrowserRouter>            
-                  </LocalStoreProvider>      
-                </HelmetProvider>
-              </ThemeProvider>
-            </MatomoProvider>
-          </SettingsProvider>                            
+        <SettingsProvider applicationUrl={typeof window !== 'undefined' ? window.location.href : ''}>
+          <TrackingProvider initalActivation={GetCookiesAccepted()}>
+            <GlobalStyles theme={themes.default} />
+            <ThemeProvider theme={themes.opendata}>
+              <HelmetProvider>
+                <LocalStoreProvider>
+                  <BrowserRouter>
+                    <Routes />
+                  </BrowserRouter>
+                </LocalStoreProvider>
+              </HelmetProvider>
+            </ThemeProvider>
+          </TrackingProvider>
+        </SettingsProvider>
       </CacheProvider>
     </ApolloProvider>
-  </I18nextProvider> ,  
+  </I18nextProvider>,
   document.getElementById('root')
 );

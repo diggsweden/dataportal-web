@@ -95,7 +95,7 @@ export const ContentRouter: React.FC<ContentPageProps> = (props) => {
     }
 
     if(loading)
-      return <LoadingPage />
+      return <LoadingPage  />
     //content found with id, switch type for corrent Content component
     else if(!loading && data && data.contents && data.contents.length > 0)
     {      

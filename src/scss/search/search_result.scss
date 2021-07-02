@@ -27,14 +27,20 @@
                 }
 
                 select {
-                    border: none;
+                    border: 2px solid $green25;
                     border-radius: 2px;
                     height: 32px;
-                    background-color: $brown10;
-                    color: $green100;
+                    background-color: $green25;
+                    color: $black100;
                     padding-left: 4px;
                     padding-right: 4px;
                     margin-left: $space-8;
+                    transition: ease-in-out .1s;
+                    cursor: pointer;
+
+                    &:hover {
+                        border-color: $green50;
+                    }
                 }
             }
 
@@ -55,17 +61,17 @@
                     padding-left: 12px;
                     padding-right: 12px;
                     min-width: 0px;
-                    border: none;
                     background-color: $brown10;
                     height: 32px;
                     min-width: 50px;
-                    border-radius: 0px;
-                    color: $green100;
+                    border-radius: 2px;
+                    border-color: $green25;
+                    background-color: $white;
+                    color: $black100;
                     transition: ease-in-out .1s;
 
                     &:hover {
-                        background-color: $black10;
-                        color: $black100;
+                        border-color: $green50;
                     }
 
                     &:focus {
@@ -73,26 +79,13 @@
                     }
 
                     &:first-of-type {
-                        border-right: none;
-                        border-top-left-radius: 2px;
-                        border-bottom-left-radius: 2px;
-                    }
-
-                    &:last-of-type {
-                        border-top-right-radius: 2px;
-                        border-bottom-right-radius: 2px;
+                        margin-right: .5rem;
                     }
                 }
 
                 //Style for sorting results, after relevance or date
                 .sort-active {
-                    background-color: $green100;
-                    color: $white;
-
-                    &:hover {
-                        background-color: $green100;
-                        color: $white;
-                    }
+                    background-color: $green25;
                 }
             }
         }
@@ -149,7 +142,7 @@
                     }
                 }
 
-                .result-desc:empty{
+                .result-desc:empty {
                     display: none;
                 }
 
@@ -329,26 +322,6 @@
     }
 }
 
-// @media screen and (max-width: 600px) {
-//     .pagination {
-//         margin-bottom: $space-64;
-//         .first-page {
-//             top: 70px;
-//             margin: auto;
-//             position: absolute;
-//         }
-
-//         .prev-next-page {
-//             justify-content: flex-start !important;
-//             margin-right: 100% !important;
-//         }
-
-//         span {
-//             margin: $space-8;
-//         }
-//     }
-// }
-
 @media screen and (max-width: 660px) {
     .pagination {
         .first-page {
@@ -360,7 +333,8 @@
         .prev-next-page {
             flex-direction: column;
             align-items: baseline;
-            span{
+
+            span {
                 margin-top: $space-16;
                 margin-bottom: $space-16;
             }
@@ -406,5 +380,89 @@
         text-shadow:
             .25em 0 0 black,
             .5em 0 0 black;
+    }
+}
+
+
+
+//view-options detaild or compact
+
+.listview-options {
+    display: flex;
+    align-items: center;
+    margin-right: 1.5rem;
+
+    @media screen and (max-width: 750px) {
+        margin-bottom: 1.5rem;
+    }
+
+    button {
+        padding: 0;
+        height: 2rem;
+        width: 2rem;
+        border-color: $green25;
+        background-color: $white;
+        transition: ease-in-out .1s;
+
+        &:hover {
+            border-color: $green50;
+        }
+
+        &.active {
+            background-color: $green25;
+        }
+
+        &:first-of-type {
+            margin-left: .5rem;
+            margin-right: .5rem;
+        }
+    }
+}
+
+
+//organisation & format row
+.search-result-list-item .org-format {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+
+    .text-6 {
+        color: $black-hover;
+    }
+
+    .org-format-filebadges {
+        display: flex;
+        text-transform: uppercase;
+        flex-wrap: wrap;
+
+        &:empty {
+            display: none;
+        }
+
+        @media screen and (min-width: 600px) {
+            &::before {
+                top: 2px;
+                position: relative;
+                content: '|';
+                margin-left: 1rem;
+                color: $black-hover;
+            }
+        }
+
+        .file {
+            margin-right: 1rem;
+            word-break: break-all;
+
+            @media screen and (min-width: 600px) {
+                margin-left: 1rem;
+                margin-right: 0;
+            }
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }

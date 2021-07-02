@@ -5,7 +5,7 @@ Här finns källkoden för dataportalens webbklient
 
 ## Förutsättningar
 
-- node 10.19.0
+- node 12.13.0 (LTS)
 - yarn
 
 ## EntryScape

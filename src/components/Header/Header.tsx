@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { NoScriptLogo } from '../../assets/NoScriptLogo';
 import { DataportalLogo } from '../../assets/Logo';
+import { SandboxLogo } from '../../assets/LogoSandbox';
 import { EventEffect } from '../EventEffect';
 import { skipToContent } from '../SkipToContent';
 import i18n from 'i18n';
@@ -21,6 +22,7 @@ import { SettingsContext } from 'components/SettingsProvider';
 import { bool, string } from 'prop-types';
 import { boolean } from 'yup';
 import FocusTrap from 'focus-trap-react';
+import { EnvSettings } from '../../../config/env/EnvSettings';
 
 // const hasWindow = typeof window !== 'undefined';
 
@@ -34,6 +36,7 @@ const InnerBox = styled(Box)`
 
 interface HeaderProps {
   activeLink?: string;
+  env: EnvSettings;
 }
 
 export class Header extends React.Component<HeaderProps, any> {
@@ -57,6 +60,7 @@ export class Header extends React.Component<HeaderProps, any> {
 
   openMenu = () => {
     this.setState({ showMenu: true });
+    this.setState({ focusTrap : false});
     // this.toggleShowOrHideMenu();
     document.body.setAttribute('style', `position:fixed;`);
   };
@@ -64,6 +68,7 @@ export class Header extends React.Component<HeaderProps, any> {
   closeMenu = () => {
     // this.toggleShowOrHideMenu();
     this.setState({ showMenu: false });
+    this.setState({ focusTrap : true});
     document.body.setAttribute('style', ``);
   };
 
@@ -83,7 +88,13 @@ export class Header extends React.Component<HeaderProps, any> {
                     >
                       <Box>
                         <div className="logo-box">
-                          <DataportalLogo />
+                          {this.props.env.envName == 'sandbox' ? (
+                            <SandboxLogo />
+                          ) : this.props.env.envName == 'test' ? (
+                            <SandboxLogo />
+                          ) : (
+                            <DataportalLogo />
+                          )}
                         </div>
                       </Box>
                     </Link>

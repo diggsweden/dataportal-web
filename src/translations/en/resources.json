@@ -1,7 +1,7 @@
 {      
-    "http://purl.org/dc/terms/publisher": "Organizations",
-    "http://www.w3.org/ns/dcat#theme" : "Themes",
-    "http://purl.org/dc/terms/type": "Organization types",
+    "http://purl.org/dc/terms/publisher": "Organization",
+    "http://www.w3.org/ns/dcat#theme" : "Theme",
+    "http://purl.org/dc/terms/type": "Organization type",
     "http://purl.org/dc/terms/format": "Format",
     "http://purl.org/dc/terms/accessRights":"Access",
     "http://purl.org/dc/terms/license":"License",
@@ -65,5 +65,31 @@
     "http://purl.org/adms/publishertype/NonGovernmentalOrganisation":"Icke-statlig organisation",
     "http://purl.org/adms/publishertype/Academia-ScientificOrganisation":"Akademia/Vetenskaplig organisation",
 
-    "http://www.w3.org/2004/02/skos/core#inScheme" : "Terminologies"
+    "http://www.w3.org/2004/02/skos/core#inScheme" : "Terminologies",
+
+    "http://purl.org/dc/terms/accrualPeriodicity" :"Update frequency",
+
+    "http://publications.europa.eu/resource/authority/frequency/OTHER" : "Other",
+    "http://publications.europa.eu/resource/authority/frequency/DAILY" : "Daily",
+    "http://publications.europa.eu/resource/authority/frequency/ANNUAL_2":"Annual",
+    "http://publications.europa.eu/resource/authority/frequency/CONT":"Continuous",
+    "http://publications.europa.eu/resource/authority/frequencyCONT" : "Continuous",
+    "http://publications.europa.eu/resource/authority/frequency/QUARTERLY":"Quarterly",
+    "http://publications.europa.eu/resource/authority/frequency/MONTHLY":"Monthly",
+    "http://publications.europa.eu/resource/authority/frequency/UNKNOWN":"Unknown",
+    "http://publications.europa.eu/resource/authority/frequency/IRREG":"Irregular",
+    "http://publications.europa.eu/resource/authority/frequency/MONTHLY_3":"Three times a month",
+    "http://publications.europa.eu/resource/authority/frequency/WEEKLY_3":"Three times a week",
+    "http://publications.europa.eu/resource/authority/frequency/ANNUAL_3":"Three times a year",
+    "http://publications.europa.eu/resource/authority/frequency/WEEKLY_2":"Two times a week",
+    "http://publications.europa.eu/resource/authority/frequency/DAILY_2":"Two times a day",
+    "http://publications.europa.eu/resource/authority/frequency/MONTHLY_2":"Two times a month",
+    "http://publications.europa.eu/resource/authority/frequency/UPDATE_CONT":"Continuously updated",        
+    "http://publications.europa.eu/resource/authority/frequency/BIWEEKLY":"Biweekly",
+    "http://publications.europa.eu/resource/authority/frequency/BIMONTHLY":"Bimonthly",
+    "http://publications.europa.eu/resource/authority/frequency/TRIENNIAL":"Triennial",
+    "http://publications.europa.eu/resource/authority/frequency/BIENNIAL":"Biennial",
+    "http://publications.europa.eu/resource/authority/frequency/WEEKLY":"Weekly",
+    "http://publications.europa.eu/resource/authority/frequency/ANNUAL":"Annual",
+    "http://purl.org/cld/freq/Annual":"Annual"
 }

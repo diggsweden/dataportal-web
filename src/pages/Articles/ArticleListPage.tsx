@@ -70,7 +70,7 @@ export class ArticleListPage extends React.Component<PageProps, any> {
           >
             <NoJavaScriptWarning text="" />
 
-            <Header ref={this.headerRef} activeLink={this.state.activeLink} />
+            <Header ref={this.headerRef} activeLink={this.state.activeLink}  env={this.props.env}/>
 
             <ErrorBoundary>
               <MainContent flex="1 1 auto">

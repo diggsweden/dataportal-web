@@ -693,7 +693,7 @@ export class ConceptPage extends React.Component<
               >
                 <NoJavaScriptWarning text="" />
 
-                <Header ref={this.headerRef} />
+                <Header ref={this.headerRef}  env={this.props.env}/>
 
                 <ErrorBoundary>
                   <MainContent

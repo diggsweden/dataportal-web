@@ -182,7 +182,7 @@ export class SearchSpecificationsPage extends React.Component<
           >
             <NoJavaScriptWarning text="" />
 
-            <Header ref={this.headerRef} activeLink={this.state.activeLink} />
+            <Header ref={this.headerRef} activeLink={this.state.activeLink} env={this.props.env} />
 
             <ErrorBoundary>
               <MainContent id="main" flex="1 1 auto">

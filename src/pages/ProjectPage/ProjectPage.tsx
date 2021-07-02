@@ -65,7 +65,7 @@ export class ProjectPage extends React.Component<PageProps> {
           >
             <NoJavaScriptWarning text="" />
 
-            <Header ref={this.headerRef} />
+            <Header ref={this.headerRef} env={this.props.env} />
 
             <ErrorBoundary>              
               <ProjectItem env={settings.env} id={this.props.match.params.nid} />                

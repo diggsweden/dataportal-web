@@ -68,24 +68,35 @@ export class StatisticPage extends React.Component<PageProps> {
                 robotsFollow={true}
                 robotsIndex={true}
                 lang={i18n.languages[0]}
-                canonicalUrl={`${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|statistics|path')}`}
+                canonicalUrl={`${this.props.env.CANONICAL_URL}/${
+                  i18n.languages[0]
+                }/${i18n.t('routes|statistics|path')}`}
                 socialMeta={{
-                  socialDescription : i18n.t('pages|statistic|social_meta_description'),
-                  socialTitle : i18n.t('pages|statistic|social_meta_title'),
-                  socialUrl : `${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|statistics|path')}`
+                  socialDescription: i18n.t(
+                    'pages|statistic|social_meta_description'
+                  ),
+                  socialTitle: i18n.t('pages|statistic|social_meta_title'),
+                  socialUrl: `${this.props.env.CANONICAL_URL}/${
+                    i18n.languages[0]
+                  }/${i18n.t('routes|statistics|path')}`,
                 }}
               />
 
               <NoJavaScriptWarning text="" />
-              <Header ref={this.headerRef} />
+              <Header ref={this.headerRef} env={this.props.env} />
               <ErrorBoundary>
                 <MainContent flex="1 1 auto">
-                <StaticBreadcrumb env={settings.env} staticPaths={[
-                  {
-                    path: `/${i18n.languages[0]}/${i18n.t('routes|statistics|path')}`,
-                    title: i18n.t('routes|statistics|title')
-                  }
-                ]} />
+                  <StaticBreadcrumb
+                    env={settings.env}
+                    staticPaths={[
+                      {
+                        path: `/${i18n.languages[0]}/${i18n.t(
+                          'routes|statistics|path'
+                        )}`,
+                        title: i18n.t('routes|statistics|title'),
+                      },
+                    ]}
+                  />
                   <div className="main-container">
                     <h1 className="text-header text-1">
                       {i18n.t('pages|statistic|statistic-page-header')}{' '}

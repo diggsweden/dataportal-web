@@ -385,9 +385,9 @@ export class EntryScape {
         {
           this.facetSpecification.facets.forEach(fSpec => {                         
             if(fSpec.type == ESType.literal || fSpec.type == ESType.literal_s)
-              esQuery.literalFacet(fSpec.resource);
+              esQuery.literalFacet(fSpec.resource, fSpec.related? true : false);
             else if(fSpec.type == ESType.uri || fSpec.type == ESType.wildcard)
-              esQuery.uriFacet(fSpec.resource);
+              esQuery.uriFacet(fSpec.resource, fSpec.related? true : false);
           });
         }        
       }

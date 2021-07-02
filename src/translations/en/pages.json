@@ -71,8 +71,14 @@
     "search-tips-sort-txt5" : ", the most recently updated metadata (information about the data) is displayed first. The fact that the metadata is updated does to mean that the actual data is updated.",
     "search-tips-license-head" : "Licenses",
     "search-tips-license-txt" : "Licenses are rules for how data may be used, read more about",
-    "search-tips-license-link" : "licenses"
-
+    "search-tips-license-link" : "licenses",
+    "list-view" : "List view",
+    "more-filters" : "View more filters",
+    "less-filters" : "View less filters",
+    "detailed-list": "Detailed list",
+    "detailed-list-active": "Detailed list aktiv",
+    "compact-list": "Compact list",
+    "compact-list-active": "Compact list"
   },
   "datasets" : {
     "search-datasets" : "Search",

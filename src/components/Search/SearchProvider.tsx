@@ -766,6 +766,8 @@ searchInFacets = (query:string, facetkey:string) => {
       let page = this.state.request && this.state.request.page? this.state.request.page + 1: '1';
 
       let take = this.state.request && this.state.request.take? this.state.request.take : 20;
+
+      let compact = this.state.request && this.state.request.compact? true : false;
       
       let sortOrder = this.state.request.sortOrder && this.state.request.sortOrder? 
         this.state.request.sortOrder as SearchSortOrder
@@ -786,7 +788,7 @@ searchInFacets = (query:string, facetkey:string) => {
         })       
       }
 
-      let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + encode({p:page,q:query,s:sortOrder, t:take, f:facets.join('$'),rt:rdftypes.join('$')});
+      let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + "?" + encode({p:page,q:query,s:sortOrder, t:take, f:facets.join('$'),rt:rdftypes.join('$'), c:compact});
       window.history.pushState({path:newurl},'',newurl);
     }
   }
@@ -809,6 +811,7 @@ searchInFacets = (query:string, facetkey:string) => {
         let queryfacets:SearchFacetValue[] = [];
         let rdftypes:ESRdfType[] = [];
         let take = qs.t && qs.t.toString().length > 0? qs.t.toString() : 20;
+        let compact = qs.c && qs.c == true? true : false;                
 
         let sortOrder:SearchSortOrder = qs.s as SearchSortOrder || SearchSortOrder.score_desc;
         
@@ -915,6 +918,8 @@ searchInFacets = (query:string, facetkey:string) => {
             state.request.esRdfTypes = rdftypes;
           }
   
+          state.request.compact = compact;
+
           return {
             ...state         
           }

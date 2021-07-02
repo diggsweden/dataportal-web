@@ -32,17 +32,25 @@ export const SearchInput: React.FC<SearchInputProps> = ({ search, searchType, qu
         }
     }
 
-    useEffect(() => {
-        setTrackedQuery(query || "");
-        if (query && trackedQuery !== query && search.result.count === 0 ? true : false) {
-            trackEvent({ category: `Sökord utan resultat - Typ: ${searchType}`, action: query || '', name: `${searchType}: Inga sökträffar` })
+    const clearCurrentScrollPos = () => {
+        if(typeof localStorage != "undefined" && typeof location != "undefined")
+        {      
+          localStorage.setItem(`ScrollposY_${location.search}`, "0")
         }
-    }, [search.result])
+      }
+
+    // useEffect(() => {
+    //     setTrackedQuery(query || "");
+    //     if (query && trackedQuery !== query && search.result.count === 0 ? true : false) {
+    //         trackEvent({ category: `Sökord utan resultat - Typ: ${searchType}`, action: query || '', name: `${searchType}: Inga sökträffar` })
+    //     }
+    // }, [search.result])
 
     return (
         <div>
             <form
                 onSubmit={(event) => {
+                    clearCurrentScrollPos();
                     event.preventDefault();
                     search
                         .set({ page: 0, query: searchType == "data" ? query : query ? query : '*', fetchFacets: true })
@@ -64,7 +72,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({ search, searchType, qu
                         type="text"
                         placeholder={getLabel()}
                         value={query || ""}
-                        onChange={e => setQuery(e.target.value)}
+                        onChange={e => {clearCurrentScrollPos();setQuery(e.target.value)}}
                         key={search.request.query ? 'loaded' : 'not loaded'}
                     ></input>
                     <button

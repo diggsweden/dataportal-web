@@ -1,7 +1,7 @@
 {      
-    "http://purl.org/dc/terms/publisher": "Organisationer",
-    "http://www.w3.org/ns/dcat#theme" : "Kategorier",
-    "http://purl.org/dc/terms/type": "Organisationstyper",
+    "http://purl.org/dc/terms/publisher": "Organisation",
+    "http://www.w3.org/ns/dcat#theme" : "Kategori",
+    "http://purl.org/dc/terms/type": "Organisationstyp",
     "http://purl.org/dc/terms/format": "Format",
     "http://purl.org/dc/terms/accessRights":"Åtkomsträttigheter",
     "http://purl.org/dc/terms/license":"Licens",
@@ -63,7 +63,31 @@
     "http://purl.org/adms/publishertype/NonGovernmentalOrganisation":"Icke-statlig organisation",
     "http://purl.org/adms/publishertype/Academia-ScientificOrganisation":"Akademia/Vetenskaplig organisation",
 
-    "http://www.w3.org/2004/02/skos/core#inScheme" : "Terminologier"
+    "http://www.w3.org/2004/02/skos/core#inScheme" : "Terminologier",
 
+    "http://purl.org/dc/terms/accrualPeriodicity" :"Uppdateringsfrekvens",
 
+    "http://publications.europa.eu/resource/authority/frequency/OTHER" : "Annan",
+    "http://publications.europa.eu/resource/authority/frequency/DAILY" : "Dagligen",
+    "http://publications.europa.eu/resource/authority/frequency/ANNUAL_2":"Halvårs",
+    "http://publications.europa.eu/resource/authority/frequency/CONT":"Kontinuerlig",
+    "http://publications.europa.eu/resource/authority/frequencyCONT" : "Kontinuerlig",
+    "http://publications.europa.eu/resource/authority/frequency/QUARTERLY":"Kvartalsvis",
+    "http://publications.europa.eu/resource/authority/frequency/MONTHLY":"Månatligen",
+    "http://publications.europa.eu/resource/authority/frequency/UNKNOWN":"Obekant",
+    "http://publications.europa.eu/resource/authority/frequency/IRREG":"Oregelbundet",
+    "http://publications.europa.eu/resource/authority/frequency/MONTHLY_3":"Tre gånger per månad",
+    "http://publications.europa.eu/resource/authority/frequency/WEEKLY_3":"Tre gånger per vecka",
+    "http://publications.europa.eu/resource/authority/frequency/ANNUAL_3":"Tre gånger per år",
+    "http://publications.europa.eu/resource/authority/frequency/WEEKLY_2":"Två gånger per vecka",
+    "http://publications.europa.eu/resource/authority/frequency/DAILY_2":"Två gånger per dag",
+    "http://publications.europa.eu/resource/authority/frequency/MONTHLY_2":"Två gånger per månad",
+    "http://publications.europa.eu/resource/authority/frequency/UPDATE_CONT":"Uppdateras kontinuerligt",        
+    "http://publications.europa.eu/resource/authority/frequency/BIWEEKLY":"Var fjortonde dag",
+    "http://publications.europa.eu/resource/authority/frequency/BIMONTHLY":"Varannan månad",
+    "http://publications.europa.eu/resource/authority/frequency/TRIENNIAL":"Vart tredje år",
+    "http://publications.europa.eu/resource/authority/frequency/BIENNIAL":"Vartannat år",
+    "http://publications.europa.eu/resource/authority/frequency/WEEKLY":"Veckovis",
+    "http://publications.europa.eu/resource/authority/frequency/ANNUAL":"Årlig",
+    "http://purl.org/cld/freq/Annual":"Årlig"
 }

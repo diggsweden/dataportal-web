@@ -23,6 +23,7 @@ export interface FacetSpecificationItem
 {
   resource: string;
   type:ESType;  
+  related?: boolean;
 }
 
 export interface SearchResult {
@@ -77,4 +78,5 @@ export interface SearchRequest {
   takeFacets?: number;
   esRdfTypes?: ESRdfType[];
   sortOrder?: SearchSortOrder;
+  compact?: Boolean;
 }

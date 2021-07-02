@@ -1,7 +1,4 @@
-import {
-  Box,
-  ArrowDropIcon,
-} from '@digg/design-system';
+import { Box, ArrowDropIcon, SortIcon } from '@digg/design-system';
 import React from 'react';
 import 'url-search-params-polyfill';
 import { ErrorBoundary } from '../../components/ErrorBoundary';
@@ -36,6 +33,7 @@ interface SearchPageState {
   showFilter: boolean;
   facetFilter: { [facet: string]: string };
   showTip?: boolean;
+  showFilters?: boolean;
   headerHeight?: number;
 }
 
@@ -87,12 +85,6 @@ export class SearchPage extends React.Component<SearchProps, SearchPageState> {
           query: decodeURIComponent(querytext.replace(/\+/g, '%20')),
         });
       //***
-    }
-  }
-
-  componentDidUpdate() {
-    if (typeof window !== 'undefined') {
-      window.scrollTo(0, 0);
     }
   }
 
@@ -150,6 +142,15 @@ export class SearchPage extends React.Component<SearchProps, SearchPageState> {
                 type: ESType.literal,
               },
               {
+                resource: 'http://purl.org/dc/terms/accrualPeriodicity',
+                type: ESType.uri,
+              },
+              {
+                resource: 'http://purl.org/dc/terms/type',
+                type: ESType.uri,
+                related: true,
+              },
+              {
                 resource: 'http://purl.org/dc/terms/license',
                 type: ESType.uri,
               },
@@ -177,9 +178,13 @@ export class SearchPage extends React.Component<SearchProps, SearchPageState> {
             robotsIndex={true}
             lang={i18n.languages[0]}
             socialMeta={{
-              socialDescription : i18n.t('pages|datasets|social_meta_description'),
-              socialTitle : i18n.t('pages|datasets|social_meta_title'),
-              socialUrl : `${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|datasets|path')}`
+              socialDescription: i18n.t(
+                'pages|datasets|social_meta_description'
+              ),
+              socialTitle: i18n.t('pages|datasets|social_meta_title'),
+              socialUrl: `${this.props.env.CANONICAL_URL}/${
+                i18n.languages[0]
+              }/${i18n.t('routes|datasets|path')}`,
             }}
           />
           <Box
@@ -191,7 +196,11 @@ export class SearchPage extends React.Component<SearchProps, SearchPageState> {
           >
             <NoJavaScriptWarning text="" />
 
-            <Header ref={this.headerRef} activeLink={this.state.activeLink} />
+            <Header
+              ref={this.headerRef}
+              activeLink={this.state.activeLink}
+              env={this.props.env}
+            />
 
             <ErrorBoundary>
               <MainContent id="main" flex="1 1 auto">
@@ -303,7 +312,12 @@ export class SearchPage extends React.Component<SearchProps, SearchPageState> {
                           </div>
                         </div>
 
-                        <SearchInput search={search} searchType={"data"} query={this.state.query} setQuery={this.setQuery} />
+                        <SearchInput
+                          search={search}
+                          searchType={'data'}
+                          query={this.state.query}
+                          setQuery={this.setQuery}
+                        />
 
                         <div className="mobile-filters">
                           <button
@@ -328,7 +342,6 @@ export class SearchPage extends React.Component<SearchProps, SearchPageState> {
                         <noscript>{i18n.t('common|no-js-text')}</noscript>
 
                         <SearchResults search={search} searchType="data" />
-
                       </div>
                     </div>
                   )}

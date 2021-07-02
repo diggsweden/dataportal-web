@@ -109,7 +109,7 @@ export const ContentPage: React.FC<ContentPageProps> = (props) => {
           >
             <NoJavaScriptWarning text="" />
 
-            <Header ref={headerRef} />
+            <Header ref={headerRef} env={settings.env} />
 
             <PageMetadata
               seoTitle={`${props.content?.name} - ${i18n.t('common|seo-title')}`}

@@ -66,7 +66,7 @@ export class RedirectPage extends React.Component<PageProps> {
           >
           <NoJavaScriptWarning text="" />
 
-          <Header ref={this.headerRef} />
+          <Header ref={this.headerRef} env={this.props.env} />
 
           <ErrorBoundary>
             <MainContent flex="1 1 auto">

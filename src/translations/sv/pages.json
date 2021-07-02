@@ -71,8 +71,14 @@
     "search-tips-sort-txt5" : " visas senast uppdaterad metadata (information om datamängden). Att metadata är uppdaterat behöver inte innebära att själva datamängden är det.",
     "search-tips-license-head" : "Licenser",
     "search-tips-license-txt" : "Licenser är regler för hur data får användas, läs mer om",
-    "search-tips-license-link" : "licenser"
-
+    "search-tips-license-link" : "licenser",
+    "list-view" : "Listvy",
+    "more-filters" : "Visa fler filter",
+    "less-filters" : "Visa färre filter",
+    "detailed-list": "Detaljerad listvy",
+    "detailed-list-active": "Detaljerad listvy aktiv",
+    "compact-list": "Kompakt listvy",
+    "compact-list-active": "Kompakt listvy aktiv"
   },
   "datasets" : {
     "search-datasets" : "Sök",
