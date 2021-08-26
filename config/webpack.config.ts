@@ -53,6 +53,7 @@ export default [
           { from: path.join(__dirname, '../public/*.ico'), flatten: true },
           { from: path.join(__dirname, '../public/*.xml'), flatten: true },
           { from: path.join(__dirname, '../public/*.svg'), flatten: true },          
+          { from: path.join(__dirname, '../public/*.txt'), flatten: true },          
           { from: path.join(__dirname, '../public/fonts/'), flatten: false, to: path.join(__dirname, '../dist/client/fonts') },          
           { from: path.join(__dirname, '../public/font-awesome.min.css'), flatten: true },          
           { from: path.join(__dirname, '../assets/*.png'), flatten: false },

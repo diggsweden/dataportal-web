@@ -513,6 +513,8 @@
     padding: 0;
     height: max-content;
     text-decoration: underline;
+    font-size: .875rem;
+    line-height: 1.25rem;
 
     &:hover {
         color: $black100;

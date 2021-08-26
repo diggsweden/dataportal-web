@@ -150,6 +150,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                   )
                 : value?.facetValues.slice(0, show);
               return (
+                
                 <Box key={'box' + value.title} className="search-filter">
                   <SearchFilter title={value.title}>
                     <div className="search-filter-list">
@@ -312,6 +313,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
         )}
       </div>
 
+      {searchType == 'data' && (
       <div className="search-toolbar">
         <button
           className={isOpen ? 'more-filters-btn' : 'more-filters-btn active'}
@@ -323,6 +325,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
           <FilterIcon />
         </button>
       </div>
+      )}
 
       <div className="selected-filters">
         {search.request &&

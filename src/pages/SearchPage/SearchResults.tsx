@@ -281,6 +281,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                       </h3>
                     </Link>
 
+                    
                     {isCompact ? (
                       <p lang={hit.descriptionLang} className="text-6">
                         {hit.description}

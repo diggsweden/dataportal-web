@@ -3,7 +3,7 @@ import React from 'react';
 export const FilterIcon: React.FC = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    enable-background="new 0 0 24 24"
+    // enable-background="new 0 0 24 24"
     height="18px"
     viewBox="0 0 24 24"
     width="18px"

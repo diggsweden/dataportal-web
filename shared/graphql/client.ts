@@ -2,10 +2,7 @@ import {
     InMemoryCache, IntrospectionFragmentMatcher,    
   } from 'apollo-cache-inmemory';
   import { ApolloClient, WatchQueryFetchPolicy } from '@apollo/client';
-  import { createHttpLink } from 'apollo-link-http'
   import { BatchHttpLink } from 'apollo-link-batch-http';
-  
-  let globalWindow = typeof window !== 'undefined' ? window : null;
   
   export const createApolloClient = (
     options: {
@@ -28,7 +25,6 @@ import {
   ) => {
     const { backendUrl, ssrMode, serverState, cookies,ssrForceFetchDelay, fetchPolicy } = options;
 
-  
     // ! Setting type as any to supress ts error.
     // ! Might cause problems but seems to work for now
     const cache: any = new InMemoryCache({
@@ -63,7 +59,7 @@ import {
       cache: serverState != null ? cache.restore(serverState) : cache,
       defaultOptions: {
         watchQuery: {
-          fetchPolicy: options.fetchPolicy || 'cache-and-network',
+          fetchPolicy: fetchPolicy || 'cache-and-network',
         },
       },
     });

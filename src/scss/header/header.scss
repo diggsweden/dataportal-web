@@ -35,6 +35,10 @@ header {
             transition: .2s;
         }
     }
+
+    @media screen and (max-width: 42.49999rem) {
+        z-index: 4000;
+    }
 }
 
 
@@ -125,7 +129,7 @@ header {
 .click-outside {
     height: 100%;
     width: 100%;
-    min-height: 400px;
+    min-height: 200px;
 
     @media screen and (min-width: 42.49999rem) {
         display: none;
@@ -138,10 +142,12 @@ header {
     margin-left: -1rem;
     margin-right: -1rem;
     height: 100vh;
-    top: 0rem;
+    top: 5.875rem;
     width: 100%;
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
+
 
     @media screen and (min-width: 42.49999rem) {
         display: none;
@@ -177,10 +183,7 @@ header {
             border-color: $pink100;
         }
     }
-
 }
-
-
 
 
 //Mobile nav menu button
@@ -249,11 +252,6 @@ header {
     }
 }
 
-
-// @media screen and (max-width: 42.5rem) {
-//     display: none;
-// }
-
 .close-menu-btn-wrapper {
     display: none;
     min-height: 5.875rem;
@@ -267,10 +265,6 @@ header {
 }
 
 .close-menu-btn {
-    // width: 100vh;
-    // display: flex;
-    // justify-content: center;
-
     @media screen and (min-width: 42.49999rem) {
         display: none;
     }

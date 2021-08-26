@@ -3,12 +3,12 @@ import helmet from 'helmet';
 import express from 'express';
 import path from 'path';
 import { renderer } from './renderer';
-import { getSitemap } from './SiteMap'
-import basicAuth from 'express-basic-auth'
+import { getSitemap } from './SiteMap';
+import basicAuth from 'express-basic-auth';
 import i18next from 'i18next';
 var csp = require('simple-csp');
 var cache = require('memory-cache');
-var middleware = require('i18next-http-middleware')
+var middleware = require('i18next-http-middleware');
 import resources_sv from '../src/translations/sv/resources.json';
 import pages_sv from '../src/translations/sv/pages.json';
 import resources_en from '../src/translations/en/resources.json';
@@ -22,7 +22,7 @@ const app = express();
 
 const cwd = process.cwd();
 app.set('port', process.env.PORT || 80);
-app.set('basic_auth', true)//process.env.BASIC_AUTH || false);
+app.set('basic_auth', true); //process.env.BASIC_AUTH || false);
 
 app.use(compression()); //makes sure we use gzip
 app.use(helmet()); //express hardening lib
@@ -32,52 +32,49 @@ app.use(
   helmet.hsts({
     maxAge: 31536000,
     includeSubDomains: true,
-    preload: true
+    preload: true,
   })
 );
 
-i18next.use(middleware.LanguageDetector).init({    
-    preload: ['sv', 'en'],
-    detection:({
-      order:['path','header'],     
-      lookupHeader: 'accept-language',
-      lookupPath: 'lng',
-      lookupFromPathIndex: 0,
-    }),    
-    resources: {
-      sv: {
-        resource:resources_sv,
-        pages:pages_sv,
-        routes: routes_sv,
-        common: common_sv
-      },
-      en: {
-        resource:resources_en,
-        pages:pages_en,
-        routes: routes_en,
-        common: common_en
-      }
+i18next.use(middleware.LanguageDetector).init({
+  preload: ['sv', 'en'],
+  detection: {
+    order: ['path', 'header'],
+    lookupHeader: 'accept-language',
+    lookupPath: 'lng',
+    lookupFromPathIndex: 0,
+  },
+  resources: {
+    sv: {
+      resource: resources_sv,
+      pages: pages_sv,
+      routes: routes_sv,
+      common: common_sv,
     },
-    load: 'languageOnly',
-    whitelist:['sv','en'],    
-    fallbackLng: {
-      'sv-SE':['se'],
-      'en-US':['en'],
-      'default':['sv']
-    },        
-    debug: false,    
-    keySeparator: '>',
-    nsSeparator: '|',
+    en: {
+      resource: resources_en,
+      pages: pages_en,
+      routes: routes_en,
+      common: common_en,
+    },
+  },
+  load: 'languageOnly',
+  whitelist: ['sv', 'en'],
+  fallbackLng: {
+    'sv-SE': ['se'],
+    'en-US': ['en'],
+    default: ['sv'],
+  },
+  debug: false,
+  keySeparator: '>',
+  nsSeparator: '|',
 
-    interpolation: {
-      escapeValue: false // react already safes from xss
-    }
-  })
+  interpolation: {
+    escapeValue: false, // react already safes from xss
+  },
+});
 
-app.use(
-  middleware.handle(i18next, { 
-  })
-)
+app.use(middleware.handle(i18next, {}));
 
 app.disable('x-powered-by');
 
@@ -96,7 +93,7 @@ var csp_headers = {
     '*.gstatic.com',
     'digg-test-graphproxy.azurewebsites.net',
     'digg-prod-graphproxy.azurewebsites.net',
-    'webbanalys.digg.se'
+    'webbanalys.digg.se',
   ],
   'base-uri': ["'self'"],
   'manifest-src': ["'self'"],
@@ -119,28 +116,29 @@ var csp_headers = {
     '*.oppnadata.se',
     '*.dataportal.se',
   ],
-  'frame-ancestors': ['https://dev.digg.se','https://digg.se','https://www.digg.se'],
+  'frame-ancestors': [
+    'https://dev.digg.se',
+    'https://digg.se',
+    'https://www.digg.se',
+  ],
   'connect-src': ['*'],
-  'frame-src' : ["'self'", "https://www.youtube.com/"]
+  'frame-src': ["'self'", 'https://www.youtube.com/'],
 };
-app.use('/', function(req, res, done) {
+app.use('/', function (req, res, done) {
   csp.header(csp_headers, res);
   done();
 });
 
 //simple basic auth for some environments
-app.use(function(req,res, next)
-{
+app.use(function (req, res, next) {
   var host = req.get('Host');
-  if(host === 'digg-test-dataportal.azurewebsites.net') {
-   basicAuth({
-      users: { 'digg': 'opendata' },
+  if (host === 'digg-test-dataportal.azurewebsites.net') {
+    basicAuth({
+      users: { digg: 'opendata' },
       challenge: true,
       realm: 'digg-test-dataportal.azurewebsites.net',
     })(req, res, next);
-  }
-  else
-    next();
+  } else next();
 });
 
 app.use(express.json());
@@ -152,20 +150,22 @@ app.use(function forceLiveDomain(req, res, next) {
   if (host === 'beta.dataportal.se' || host === 'dataportal.se') {
     return res.redirect(301, 'https://www.dataportal.se' + origUrl);
   }
-  if (!origUrl.includes("/.well-known/acme-challenge/") &&
-      (
-      host === 'oppnadata.se' || 
-      host === 'xn--ppnadata-m4a.se'|| 
-      host === 'ckan.xn--ppnadata-m4a.se' || 
-      host === 'www.xn--ppnadata-m4a.se' || 
-      host === 'ckan.oppnadata.se' || 
+  if (
+    !origUrl.includes('/.well-known/acme-challenge/') &&
+    (host === 'oppnadata.se' ||
+      host === 'xn--ppnadata-m4a.se' ||
+      host === 'ckan.xn--ppnadata-m4a.se' ||
+      host === 'www.xn--ppnadata-m4a.se' ||
+      host === 'ckan.oppnadata.se' ||
       host === 'www.oppnadata.se' ||
-      host === 'vidareutnyttjande.se'
-      )
-    ) {
+      host === 'vidareutnyttjande.se')
+  ) {
     return res.redirect(301, 'https://www.dataportal.se/oppnadata');
   }
-  if (!origUrl.includes("/.well-known/acme-challenge/") && host === 'oppnadata.local:3003') {
+  if (
+    !origUrl.includes('/.well-known/acme-challenge/') &&
+    host === 'oppnadata.local:3003'
+  ) {
     return res.redirect(301, 'http://localhost:3003/oppnadata');
   }
   return next();
@@ -192,56 +192,80 @@ app.use(
   })
 );
 
-app.use('/sitemap.xml', getSitemap)
+app.use('/sitemap.xml', getSitemap);
 
-//Robots, sitemap and google site verification
-app.get(['/robots.txt','/google*.html','/favicon.ico'], async (req, res) => {  
-  res.sendFile(path.join(cwd, req.path));
-});
+//Robots, security, sitemap and google site verification
+app.get(
+  ['/robots.txt', '/security.txt', '/google*.html', '/favicon.ico'],
+  async (req, res) => {
+    let reqPath = req.path;
+    switch (req.path) {
+      case '/robots.txt':
+        reqPath = '/dist/client/js/robots.txt';
+        break;
+      case '/security.txt':
+        reqPath = '/dist/client/js/security.txt';
+        break;
+      case '/favicon.ico':
+        reqPath = '/dist/client/js/favicon.ico';
+        break;
+    }
+    res.sendFile(path.join(cwd, reqPath));
+  }
+);
 
 //manifest.json
-app.get(['/dist/client/js/manifest.json'], async (req, res) => {  
+app.get(['/dist/client/js/manifest.json'], async (req, res) => {
   res.sendFile(path.join(cwd, req.path));
 });
 
 //Acme-challange
-app.get(['/.well-known/acme-challenge/*'], async (req, res) => {  
+app.get(['/.well-known/acme-challenge/*'], async (req, res) => {
   res.sendFile(path.join(cwd, req.path));
 });
 
-const getCacheKey = (url:string, acceptLang:string) => {
+const getCacheKey = (url: string, acceptLang: string) => {
   //we wont cache urls with parameters
-  let cacheKey = url.includes("?") ? url.split("?")[0] : url;    
-  
+  let cacheKey = url.includes('?') ? url.split('?')[0] : url;
+
   //Is item page for crawled data - create cachekey
-  if(new RegExp("\/(?<lang>sv|en)\/(?<type>datasets|concepts|specifications)\/.*\/").test(url))
-  {
-    var r =new RegExp("\/(?<lang>sv|en)\/(?<type>datasets|concepts|specifications)\/.*\/");
-    var m =  cacheKey.match(r);
-    if(m && m.groups && m.groups.lang && m.groups.type)
-    {
-      cacheKey = `/${m.groups.lang}/${m.groups.type}/itempages`      
+  if (
+    new RegExp(
+      '/(?<lang>sv|en)/(?<type>datasets|concepts|specifications)/.*/'
+    ).test(url)
+  ) {
+    var r = new RegExp(
+      '/(?<lang>sv|en)/(?<type>datasets|concepts|specifications)/.*/'
+    );
+    var m = cacheKey.match(r);
+    if (m && m.groups && m.groups.lang && m.groups.type) {
+      cacheKey = `/${m.groups.lang}/${m.groups.type}/itempages`;
       return cacheKey;
     }
   }
 
   //if is searchpage - return cachekey
-  if(new RegExp("\/(?<lang>sv|en)\/(?<type>datasets|concepts|specifications)").test(url))
+  if (
+    new RegExp(
+      '/(?<lang>sv|en)/(?<type>datasets|concepts|specifications)'
+    ).test(url)
+  )
     return cacheKey;
 
   //is item startpage - return cachekey
-  if(cacheKey == "/sv" || cacheKey == "/en")
-    return cacheKey;
-  
+  if (cacheKey == '/sv' || cacheKey == '/en') return cacheKey;
+
   //if no langpart in url check accept-lang and return /sv  or /en
-  if(cacheKey == "/" && (acceptLang.includes("sv") || acceptLang.includes("en")))
-    return "/" + acceptLang.substring(0,2);
+  if (
+    cacheKey == '/' &&
+    (acceptLang.includes('sv') || acceptLang.includes('en'))
+  )
+    return '/' + acceptLang.substring(0, 2);
 
-  return "";
-}
+  return '';
+};
 
-app.get('*', async (req, res) => {  
-
+app.get('*', async (req, res) => {
   const host = req.hostname;
   const url = req.url;
 
@@ -249,32 +273,29 @@ app.get('*', async (req, res) => {
 
   try {
     //true for skipping cache get this request
-    var skipCache = url.includes("nocache=true") || url.includes(".");
+    var skipCache = url.includes('nocache=true') || url.includes('.');
     //true for clearing server cache
-    var clearCache = url.includes("clearcache=true");
+    var clearCache = url.includes('clearcache=true');
 
-    if(clearCache)
-      cache.clear();
+    if (clearCache) cache.clear();
 
     let acceptLang = req.acceptsLanguages();
 
-    var cacheKey = getCacheKey(url, acceptLang && acceptLang.length > 0? acceptLang[0] : null);
-    var cachedBody = skipCache && cacheKey.length > 0? '' : cache.get(cacheKey);
+    var cacheKey = getCacheKey(
+      url,
+      acceptLang && acceptLang.length > 0 ? acceptLang[0] : null
+    );
+    var cachedBody =
+      skipCache && cacheKey.length > 0 ? '' : cache.get(cacheKey);
 
-    if(cachedBody && cachedBody.length > 1)
-    {     
+    if (cachedBody && cachedBody.length > 1) {
       body = cachedBody;
-    }
-    else {
+    } else {
       const result = await renderer(
         host,
         url,
         path.join(cwd, '/dist/client/js/assets.json'),
         '',
-        '',
-        null,
-        null,
-        acceptLang && acceptLang.length > 0? acceptLang[0] : null,
         (req as any).i18n
       );
 
@@ -287,8 +308,13 @@ app.get('*', async (req, res) => {
 
       body = result.body || '';
 
-      if(result.statusCode == 200 && body && body.length > 0 && cacheKey.length > 0)
-        cache.put(cacheKey,body,900000); //cache expire = 15 minutes
+      if (
+        result.statusCode == 200 &&
+        body &&
+        body.length > 0 &&
+        cacheKey.length > 0
+      )
+        cache.put(cacheKey, body, 900000); //cache expire = 15 minutes
     }
   } catch (e) {
     console.error(e);

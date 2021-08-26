@@ -39,12 +39,12 @@ export const SearchInput: React.FC<SearchInputProps> = ({ search, searchType, qu
         }
       }
 
-    // useEffect(() => {
-    //     setTrackedQuery(query || "");
-    //     if (query && trackedQuery !== query && search.result.count === 0 ? true : false) {
-    //         trackEvent({ category: `Sökord utan resultat - Typ: ${searchType}`, action: query || '', name: `${searchType}: Inga sökträffar` })
-    //     }
-    // }, [search.result])
+     useEffect(() => {
+         setTrackedQuery(query || "");
+         if (query && trackedQuery !== query && search.result.count === 0 ? true : false) {
+             trackEvent({ category: `Sökord utan resultat - Typ: ${searchType}`, action: query || '', name: `${searchType}: Inga sökträffar` })
+         }
+     }, [search.result])
 
     return (
         <div>

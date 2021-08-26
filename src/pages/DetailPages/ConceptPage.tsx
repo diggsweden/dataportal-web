@@ -1,21 +1,8 @@
-import { Box } from '@digg/design-system';
-import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import 'url-search-params-polyfill';
-import { RouterContext } from '../../../shared/RouterContext';
-import { ErrorBoundary } from '../../components/ErrorBoundary';
-import { Footer } from '../../components/Footer';
-import { Header } from '../../components/Header';
-import { NoJavaScriptWarning } from '../../components/NoJavaScriptWarning';
-import { QueryParamProvider } from '../../components/QueryParamProvider';
 import { __RouterContext } from 'react-router';
-import { Link } from 'react-router-dom';
 import { PageMetadata } from '../PageMetadata';
-import { encode, decode } from 'qss';
-import { Loader } from '../../components/Loader';
 import i18n from 'i18n';
-import { EnvSettings } from '../../../config/env/EnvSettings';
-import { slugify } from 'utilities/urlHelpers';
 import {
   EntrystoreProvider,
   EntrystoreContext,
@@ -23,29 +10,17 @@ import {
 import { PageProps } from '../PageProps';
 import { StaticBreadcrumb } from 'components/Breadcrumb';
 
-const MainContent = Box.withComponent('main');
-
-export class ConceptPage extends React.Component<
-  PageProps,
-  { scriptsAdded: Boolean; scriptsLoaded: Boolean }
-> {
-  private headerRef: React.RefObject<Header>;
-  private postscribe: any;
-  private referredSearch: string = `/${i18n.languages[0]}/${i18n.t(
+export const ConceptPage: React.FC<PageProps> = ({ env, match }) => {
+  let postscribe: any;
+  let referredSearch: string = `/${i18n.languages[0]}/${i18n.t(
     'routes|concepts|path'
   )}/?q=`;
-
-  constructor(props: PageProps) {
-    super(props);
-    this.headerRef = React.createRef();
-    this.setFocus = this.setFocus.bind(this);
-  }
 
   /**
    * Async load scripts requiered for EntryScape blocks,
    * or else blocks wont have access to DOM
    */
-  componentDidMount() {
+  useEffect(() => {
     //we need to reload the page when using the back/forward buttons to a blocks rendered page
     if (typeof window !== 'undefined') {
       //check if reffereing search params is set to hash
@@ -54,7 +29,7 @@ export class ConceptPage extends React.Component<
         window.location.hash &&
         window.location.hash.includes('ref=?')
       )
-        this.referredSearch = `/${i18n.languages[0]}/${i18n.t(
+        referredSearch = `/${i18n.languages[0]}/${i18n.t(
           'routes|concepts|path'
         )}/?${window.location.hash.split('ref=?')[1]}`;
 
@@ -63,23 +38,23 @@ export class ConceptPage extends React.Component<
       };
     }
 
-    this.addScripts();
-  }
+    addScripts();
+  }, []);
 
-  addScripts() {
+  const addScripts = () => {
     if (typeof window !== 'undefined') {
-      this.postscribe = (window as any).postscribe;
+      postscribe = (window as any).postscribe;
 
-      if (this.props.match.params.curi) {
-        this.postscribe(
+      if (match.params.curi) {
+        postscribe(
           '#scriptsPlaceholder',
           `                     
           <script>          
 
           var __entryscape_plugin_config = {
             entrystore_base: 'https:\/\/${
-              this.props.env.ENTRYSCAPE_TERMS_PATH
-                ? this.props.env.ENTRYSCAPE_TERMS_PATH
+              env.ENTRYSCAPE_TERMS_PATH
+                ? env.ENTRYSCAPE_TERMS_PATH
                 : 'editera.dataportal.se'
             }\/store'          
           };
@@ -162,36 +137,28 @@ export class ConceptPage extends React.Component<
             routes: [              
               {
                 regex:new RegExp('(\/*\/externalconcepts\/)(.+)'),
-                uri:'${this.props.match.params.scheme}://${
-            this.props.match.params.curi
-          }',
+                uri:'${match.params.scheme}://${match.params.curi}',
                 page_language: '${i18n.languages[0]}'
               },             
               {
                 regex:new RegExp('(\/*\/externalterminology\/)(.+)'),
-                uri:'${this.props.match.params.scheme}://${
-            this.props.match.params.curi
-          }',
+                uri:'${match.params.scheme}://${match.params.curi}',
                 page_language: '${i18n.languages[0]}'
               },         
               {
                 regex:new RegExp('(\/*\/terminology\/)(.+)'),
-                uri:'https://dataportal.se/concepts/${
-                  this.props.match.params.curi
-                }',
+                uri:'https://dataportal.se/concepts/${match.params.curi}',
                 page_language: '${i18n.languages[0]}'
               },             
               {
                 regex:new RegExp('(\/*\/concepts\/)(.+)'),
-                uri:'https://dataportal.se/concepts/${
-                  this.props.match.params.curi
-                }',
+                uri:'https://dataportal.se/concepts/${match.params.curi}',
                 page_language: '${i18n.languages[0]}'
               }                            
             ],           
             entrystore: 'https://${
-              this.props.env.ENTRYSCAPE_TERMS_PATH
-                ? this.props.env.ENTRYSCAPE_TERMS_PATH
+              env.ENTRYSCAPE_TERMS_PATH
+                ? env.ENTRYSCAPE_TERMS_PATH
                 : 'editera.dataportal.se'
             }/store',
             clicks: {
@@ -392,7 +359,9 @@ export class ConceptPage extends React.Component<
                 run: function(node, data, items, entry) {
                   
                   var resourceURI = entry.getResourceURI();
-                  var linkTitle = '${i18n.t('pages|concept_page|concept_adress')}';
+                  var linkTitle = '${i18n.t(
+                    'pages|concept_page|concept_adress'
+                  )}';
 
                   if(window.location.pathname.indexOf("/terminology/") > -1 || window.location.pathname.indexOf("/externalterminology/") > -1)
                     linkTitle = '${i18n.t('pages|concept_page|term_adress')}';
@@ -626,8 +595,8 @@ export class ConceptPage extends React.Component<
           </script>
           
           <script src="${
-            this.props.env.ENTRYSCAPE_BLOCKS_URL
-              ? this.props.env.ENTRYSCAPE_BLOCKS_URL
+            env.ENTRYSCAPE_BLOCKS_URL
+              ? env.ENTRYSCAPE_BLOCKS_URL
               : 'https://dataportal.azureedge.net/cdn/blocks.0.18.2.app.js'
           }"></script>          
           `,
@@ -637,222 +606,179 @@ export class ConceptPage extends React.Component<
         );
       }
     }
-  }
+  };
 
-  setFocus() {
-    if (this.headerRef.current) {
-      this.headerRef.current.setFocusOnMenuButton();
-    }
-  }
+  let entryUri = match.params.scheme
+    ? `${match.params.scheme}://${match.params.curi}`
+    : `https://dataportal.se/concepts/${match.params.curi}`;
 
-  render() {
-    const { location } = this.props;
-    let uri = new URLSearchParams(location.search);
-    let entryUri = this.props.match.params.scheme
-      ? `${this.props.match.params.scheme}://${this.props.match.params.curi}`
-      : `https://dataportal.se/concepts/${this.props.match.params.curi}`;
+  return (
+    <EntrystoreProvider
+      env={env}
+      entryUri={entryUri}
+      entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
+    >
+      <EntrystoreContext.Consumer>
+        {(entry) => (
+          <div className="detailpage">
+            <PageMetadata
+              seoTitle={`${entry.title} - ${i18n.t('common|seo-title')}`}
+              seoDescription=""
+              seoImageUrl=""
+              seoKeywords=""
+              robotsFollow={true}
+              robotsIndex={true}
+              lang={i18n.languages[0]}
+              socialMeta={{
+                socialDescription: entry.description,
+                socialTitle: entry.title,
+                socialUrl: `${env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t(
+                  'routes|concepts|path'
+                )}/${match.params.scheme}/${match.params.curi}`,
+              }}
+              canonicalUrl={
+                entry && entry.title
+                  ? `${env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t(
+                      'routes|concepts|path'
+                    )}/${match.params.curi}`
+                  : ''
+              }
+            />
+            <StaticBreadcrumb
+              env={env}
+              staticPaths={[
+                {
+                  path: referredSearch,
+                  title: i18n.t('routes|concepts|title'),
+                },
+                {
+                  path: `/${i18n.languages[0]}/${i18n.t(
+                    'routes|concepts|path'
+                  )}/${match.params.scheme}/${match.params.curi}`,
+                  title: '',
+                },
+              ]}
+            />
+            <div className="detailpage__wrapper">
+              {/* Left column */}
+              <div className="detailpage__wrapper--leftcol content">
+                <span className="text-6-bold beta_badge--xl">BETA</span>
+                <h1 className="text-2 terminology_header">
+                  <span>{entry.title}</span>
+                </h1>
 
-    return (
-      <EntrystoreProvider
-        env={this.props.env}
-        entryUri={entryUri}
-        entrystoreUrl={this.props.env.ENTRYSCAPE_TERMS_PATH}
-      >
-        <EntrystoreContext.Consumer>
-          {(entry) => (
-            <QueryParamProvider params={uri}>
-              <PageMetadata
-                seoTitle={`${entry.title} - ${i18n.t('common|seo-title')}`}
-                seoDescription=""
-                seoImageUrl=""
-                seoKeywords=""
-                robotsFollow={true}
-                robotsIndex={true}
-                lang={i18n.languages[0]}
-                socialMeta={{
-                  socialDescription : entry.description,
-                  socialTitle : entry.title,
-                  socialUrl : `${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|concepts|path')}/${this.props.match.params.scheme}/${this.props.match.params.curi}`                                    
-                }}
-                canonicalUrl={
-                  entry && entry.title
-                    ? `${this.props.env.CANONICAL_URL}/${
-                        i18n.languages[0]
-                      }/${i18n.t('routes|concepts|path')}/${
-                        this.props.match.params.curi
-                      }`
-                    : ''
-                }
-              />
-              <Box
-                id="top"
-                display="flex"
-                direction="column"
-                minHeight="100vh"
-                bgColor="#fff"
-              >
-                <NoJavaScriptWarning text="" />
+                <p className="description text-5">
+                  <span
+                    data-entryscape="text"
+                    data-entryscape-fallback=""
+                    data-entryscape-content="${skos:definition}"
+                  ></span>
 
-                <Header ref={this.headerRef}  env={this.props.env}/>
+                  <span
+                    data-entryscape="hemvist"
+                    className="entryscape hemvist"
+                  ></span>
 
-                <ErrorBoundary>
-                  <MainContent
-                    flex="1 1 auto"
-                    className="detailpage main-container"
-                  >
-                    <StaticBreadcrumb
-                      env={this.props.env}
-                      staticPaths={[
-                        {
-                          path: this.referredSearch,
-                          title: i18n.t('routes|concepts|title'),
-                        },
-                        {
-                          path: `/${i18n.languages[0]}/${i18n.t(
-                            'routes|concepts|path'
-                          )}/${this.props.match.params.scheme}/${
-                            this.props.match.params.curi
-                          }`,
-                          title: '',
-                        },
-                      ]}
-                    />
-                    <div className="detailpage__wrapper">
-                      {/* Left column */}
-                      {/* Left column */}
-                      <div className="detailpage__wrapper--leftcol content">
-                        <span className="text-6-bold beta_badge--xl">BETA</span>
-                        <h1 className="text-2 terminology_header">
-                          <span>{entry.title}</span>
-                        </h1>
+                  <span
+                    data-entryscape="text"
+                    data-entryscape-fallback=""
+                    data-entryscape-content="${dcterms:description}"
+                  ></span>
+                </p>
 
-                        <p className="description text-5">
-                          <span
-                            data-entryscape="text"
-                            data-entryscape-fallback=""
-                            data-entryscape-content="${skos:definition}"
-                          ></span>
+                <div className="column">
+                  <span data-entryscape="alt-Label"></span>
+                  <span
+                    className="concept-detail"
+                    data-entryscape="text"
+                    data-entryscape-fallback=""
+                    data-entryscape-content="${skos:altLabel}"
+                  ></span>
 
-                          <span
-                            data-entryscape="hemvist"
-                            className="entryscape hemvist"
-                          ></span>
+                  <span data-entryscape="example-Label"></span>
+                  <span
+                    className="concept-detail"
+                    data-entryscape="text"
+                    data-entryscape-fallback=""
+                    data-entryscape-content="${skos:example}"
+                  ></span>
+                </div>
 
-                          <span
-                            data-entryscape="text"
-                            data-entryscape-fallback=""
-                            data-entryscape-content="${dcterms:description}"
-                          ></span>
-                        </p>
+                <div className="terminology-group">
+                  <span data-entryscape="broader"></span>
+                </div>
 
-                        <div className="column">
-                          <span data-entryscape="alt-Label"></span>
-                          <span
-                            className="concept-detail"
-                            data-entryscape="text"
-                            data-entryscape-fallback=""
-                            data-entryscape-content="${skos:altLabel}"
-                          ></span>
+                <div className="terminology-group">
+                  <span data-entryscape="narrower"></span>
+                </div>
 
-                          <span data-entryscape="example-Label"></span>
-                          <span
-                            className="concept-detail"
-                            data-entryscape="text"
-                            data-entryscape-fallback=""
-                            data-entryscape-content="${skos:example}"
-                          ></span>
-                        </div>
+                <div className="terminology-group">
+                  <span
+                    data-entryscape="related"
+                    data-entryscape-click=""
+                  ></span>
+                </div>
 
-                        <div className="terminology-group">
-                          <span data-entryscape="broader"></span>
-                        </div>
+                <div className="column">
+                  <span data-entryscape="history-Label"></span>
+                  <span
+                    className="concept-detail"
+                    data-entryscape="text"
+                    data-entryscape-fallback=""
+                    data-entryscape-content="${skos:historyNote}"
+                  ></span>
 
-                        <div className="terminology-group">
-                          <span data-entryscape="narrower"></span>
-                        </div>
+                  <span data-entryscape="editorial-Label"></span>
+                  <span
+                    className="concept-detail"
+                    data-entryscape="text"
+                    data-entryscape-fallback=""
+                    data-entryscape-content="${skos:editorialNote}"
+                  ></span>
 
-                        <div className="terminology-group">
-                          <span
-                            data-entryscape="related"
-                            data-entryscape-click=""
-                          ></span>
-                        </div>
+                  <span data-entryscape="note-Label"></span>
+                  <span
+                    className="concept-detail"
+                    data-entryscape="text"
+                    data-entryscape-fallback=""
+                    data-entryscape-content="${skos:note}"
+                  ></span>
 
-                        <div className="column">
-                          <span data-entryscape="history-Label"></span>
-                          <span
-                            className="concept-detail"
-                            data-entryscape="text"
-                            data-entryscape-fallback=""
-                            data-entryscape-content="${skos:historyNote}"
-                          ></span>
+                  <span
+                    className="terminology__top-concepts text-6"
+                    data-entryscape="alt-term"
+                  ></span>
+                </div>
 
-                          <span data-entryscape="editorial-Label"></span>
-                          <span
-                            className="concept-detail"
-                            data-entryscape="text"
-                            data-entryscape-fallback=""
-                            data-entryscape-content="${skos:editorialNote}"
-                          ></span>
+                <span
+                  className="terminology__top-concepts text-6"
+                  data-entryscape="toppbegrepp"
+                ></span>
+              </div>
 
-                          <span data-entryscape="note-Label"></span>
-                          <span
-                            className="concept-detail"
-                            data-entryscape="text"
-                            data-entryscape-fallback=""
-                            data-entryscape-content="${skos:note}"
-                          ></span>
+              {/* Right column */}
+              <div className="detailpage__wrapper--rightcol hbbr">
+                <div className="detailpage__wrapper--rightcol-info text-6">
+                  <h2 className="text-5-bold">
+                    <span data-entryscape="term-head"></span>
+                    <span data-entryscape="concept-head"></span>
+                  </h2>
+                  <span
+                    className="text-6 terminology"
+                    data-entryscape="terminology"
+                  ></span>
 
-                          <span
-                            className="terminology__top-concepts text-6"
-                            data-entryscape="alt-term"
-                          ></span>
-                        </div>
+                  <span
+                    className="terminology__path text-6"
+                    data-entryscape="terminologyButton"
+                  ></span>
 
-                        <span
-                          className="terminology__top-concepts text-6"
-                          data-entryscape="toppbegrepp"
-                        ></span>
-
-                        {/* <span
-                          className="conceptsearch"
-                          data-entryscape="conceptSearchInTemplate"
-                        ></span>   */}
-                      </div>
-
-                      {/* Right column */}
-                      <div className="detailpage__wrapper--rightcol hbbr">
-                        <div className="detailpage__wrapper--rightcol-info text-6">
-                          <h2 className="text-5-bold">
-                            <span data-entryscape="term-head"></span>
-                            <span data-entryscape="concept-head"></span>
-                          </h2>
-
-                          {/* <span
-                            className="text-6 terminology"
-                            data-entryscape="terminology-numbers"
-                          ></span>
-                          <span
-                            className="text-6 terminology-numbers"
-                            data-entryscape="terminology-size"
-                          ></span> */}
-
-                          <span
-                            className="text-6 terminology"
-                            data-entryscape="terminology"
-                          ></span>
-
-                          <span
-                            className="terminology__path text-6"
-                            data-entryscape="terminologyButton"
-                          ></span>
-
-                          <script
-                            type="text/x-entryscape-handlebar"
-                            data-entryscape="true"
-                            data-entryscape-component="template"
-                            dangerouslySetInnerHTML={{
-                              __html: `
+                  <script
+                    type="text/x-entryscape-handlebar"
+                    data-entryscape="true"
+                    data-entryscape-component="template"
+                    dangerouslySetInnerHTML={{
+                      __html: `
                                     <div class="terminilogy__download-wrapper">
                                     <span class="terminology__label text-6-bold">
                                     ${i18n.t(
@@ -895,30 +821,25 @@ export class ConceptPage extends React.Component<
                                   </div>
                                   </div>
                                   `,
-                            }}
-                          ></script>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="detailpage__wrapper--fullwith">
-                      <div
-                        data-entryscape="concept-hierarchy-header"
-                        className="concept-hierarchy-header"
-                      ></div>
+                    }}
+                  ></script>
+                </div>
+              </div>
+            </div>
+            <div className="detailpage__wrapper--fullwith">
+              <div
+                data-entryscape="concept-hierarchy-header"
+                className="concept-hierarchy-header"
+              ></div>
 
-                      <div
-                        data-entryscape="concept-hierarchy"
-                        data-entryscape-scale="1.7"
-                      ></div>
-                    </div>
-                  </MainContent>
-                </ErrorBoundary>
-                <Footer onToTopButtonPushed={this.setFocus} />
-              </Box>
-            </QueryParamProvider>
-          )}
-        </EntrystoreContext.Consumer>
-      </EntrystoreProvider>
-    );
-  }
-}
+              <div
+                data-entryscape="concept-hierarchy"
+                data-entryscape-scale="1.7"
+              ></div>
+            </div>
+          </div>
+        )}
+      </EntrystoreContext.Consumer>
+    </EntrystoreProvider>
+  );
+};

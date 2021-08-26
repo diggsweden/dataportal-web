@@ -1,1519 +1,1497 @@
 @import 'scss/general/variables.scss';
 
+@mixin Layout {
+  padding: 0 16px;
+  max-width: 72rem;
+  margin: auto;
+}
+
 .detailpage {
-    width: 100%;
+  width: 100%;
 
-    .detailpage__wrapper {
-        display: flex;
-        justify-content: space-between;
+  .detailpage__wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 64px;
+    padding: 0 16px;
+    @include Layout;
+    
+    //Window 800px
+    @media screen and (max-width: 50rem) {
+      flex-direction: column;
+    }
 
-        //Window 800px
-        @media screen and (max-width: 50rem) {
-            flex-direction: column;
+    .detailpage__wrapper--leftcol {
+      width: 100%;
+      max-width: 40rem;
+
+      //Window 800px
+      @media screen and (min-width: 50rem) {
+        margin-right: $space-32;
+      }
+
+      h1 {
+        margin-top: 0rem;
+        margin-bottom: $space-16;
+      }
+
+      .description {
+        margin-bottom: $space-32;
+        word-break: break-word;
+      }
+
+      .escoList {
+        .alert {
+          width: fit-content;
+          border-radius: 0rem;
+          border: none;
+          color: $white;
+          background-color: $brown100;
         }
+      }
 
-        .detailpage__wrapper--leftcol {
+      .dataset__map {
+        margin-bottom: $space-48;
+
+        .rdforms {
+          .rdformsRow {
+            margin: 0rem;
             width: 100%;
-            max-width: 40rem;
 
-            //Window 800px
-            @media screen and (min-width: 50rem) {
-                margin-right: $space-32;
-            }
+            .rdformsFields {
+              .rdformsGroup {
+                margin: 0rem;
+                padding: 0rem;
 
-            h1 {
-                margin-top: 0rem;
-                margin-bottom: $space-16;
-            }
+                .rdformsRow {
+                  padding: 0rem;
 
-            .description {
-                margin-bottom: $space-32;
-                word-break: break-word;
-            }
+                  .rdformsFields {
+                    .rdformsField {
+                      padding: 0rem;
 
-            .escoList {
-                .alert {
-                    width: fit-content;
-                    border-radius: 0rem;
-                    border: none;
-                    color: $white;
-                    background-color: $brown100;
-                }
-            }
-
-            .dataset__map {
-                margin-bottom: $space-48;
-
-                .rdforms {
-                    .rdformsRow {
-                        margin: 0rem;
-                        width: 100%;
-
-                        .rdformsFields {
-                            .rdformsGroup {
-                                margin: 0rem;
-                                padding: 0rem;
-
-                                .rdformsRow {
-                                    padding: 0rem;
-
-                                    .rdformsFields {
-                                        .rdformsField {
-                                            padding: 0rem;
-
-                                            .escoPosition {
-                                                font-weight: bold;
-                                                font-size: 1.5rem; //24px
-                                                line-height: 2rem; //32px
-                                                letter-spacing: -0.02em;
-                                                color: $black100;
-
-                                                margin-bottom: $space-16;
-
-                                                &::after {
-                                                    content: "Geografiskt område";
-                                                }
-
-                                                label,
-                                                span {
-                                                    display: none;
-                                                }
-
-                                            }
-
-                                            .escoMap {
-                                                height: 23.75rem;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            //Access to dataservice
-            .dataservice__access {
-                margin-bottom: $space-32;
-
-                .rdforms {
-                    .rdformsRow {
-                        display: flex;
-                        flex-direction: column;
-
-                        .rdformsLabel {
-                            font-weight: bold;
-                            font-size: 1.25rem; //20px
-                            line-height: 1.75rem; //28px
-                            letter-spacing: -0.01em;
-                            color: $black100;
-                        }
-
-                        .rdformsFields {
-
-                            .rdformsField,
-                            .rdformsRepeatedValue {
-                                border: none;
-                                padding: 0rem;
-                                margin: 0rem;
-                                margin-top: $space-8;
-
-                                a {
-                                    font-weight: normal;
-                                    font-size: 1.125rem; //18px
-                                    line-height: 1.6875rem; //27px
-                                    text-decoration-line: underline;
-                                    color: $black100;
-
-                                    &:hover {
-                                        background-color: $pink10;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            .esbRow {
-                box-shadow: none;
-                border: 2px solid $green25;
-                margin-top: $space-16;
-
-                .esbRowHead {
-                    position: relative;
-                    justify-content: space-between;
-                    padding: $space-16;
-                    padding-bottom: 1.25rem;
-                    max-height: none;
-
-                    //Window 374px
-                    @media screen and (max-width: 23.375rem) {
-                        flex-direction: column;
-                    }
-
-                    .esbRowMain {
-                        padding: 0rem;
-
-                        @media screen and (max-width: 23.375rem) {
-                            width: 100%;
-                        }
-
-                        .distribution_links {
-                            display: flex;
-                            flex-wrap: wrap;
-
-                            //Window 448px
-                            @media screen and (max-width: 28rem) {
-                                flex-direction: column;
-                            }
-
-                            .distribution_link {
-                                font-weight: normal;
-                                font-size: 1.125rem; //18px
-                                line-height: 1.6875rem; //27px
-                                text-decoration-line: underline;
-                                color: $black100;
-
-                                @media screen and (max-width: 28rem) {
-                                    &:nth-of-type(odd) {
-                                        margin-bottom: 0.25rem;
-                                    }
-                                }
-
-                                &:hover {
-                                    background-color: $pink10;
-                                }
-
-                                &:nth-of-type(odd) {
-                                    margin-right: $space-24;
-                                }
-                            }
-                        }
-                    }
-
-                    .esbRowControl {
-                        display: flex;
-                        justify-content: end;
-                        align-items: flex-end;
-                        margin: 0rem;
-                        width: fit-content;
-
-                        @media screen and (max-width: 23.375rem) {
-                            margin-top: $space-8;
-                            align-self: flex-end;
-                        }
-
-                        button {
-                            display: flex;
-                            margin: 0rem;
-                            min-width: max-content;
-                            height: 2.75rem;
-                            background-color: $brown10;
-                            text-decoration: none;
-                            color: $black100;
-
-                            &:hover {
-                                text-decoration: none;
-                            }
-
-                            &[aria-expanded="false"] {
-                                &::before {
-                                    content: "Visa mer";
-                                }
-                            }
-
-                            &[aria-expanded="true"] {
-                                &::before {
-                                    content: "Visa mindre";
-                                }
-                            }
-
-                            span {
-                                font-family: "Font Awesome 5 Free" !important;
-                                color: $black100;
-                                margin-top: 0.125rem;
-                                margin-left: .25rem;
-                            }
-
-                            &:hover {
-                                background-color: $black10;
-                                transition: 0ms;
-                            }
-
-                            &:focus {
-                                border: none;
-                            }
-                        }
-                    }
-                }
-            }
-
-            //  Distrubutionslista
-            .entryList {
-                .esbRowExpand {
-                    background-color: $white;
-                    padding: $space-16;
-                    padding-top: 0rem;
-                    padding-bottom: $space-24;
-
-                    .distribution_files_header {
+                      .escoPosition {
                         font-weight: bold;
-                        font-size: 1rem; //16px
-                        line-height: 1.5rem; //24px
-                        letter-spacing: -0.01em;
+                        font-size: 1.5rem; //24px
+                        line-height: 2rem; //32px
+                        letter-spacing: -0.02em;
                         color: $black100;
-                        margin-bottom: 0rem;
-                        margin-top: 1rem;
-                    }
 
-                    .text-6 {
-                        font-weight: normal;
-                        font-size: 1rem; //16px
-                        line-height: 1.5rem; //24px
-                        color: $black100;
-                    }
+                        margin-bottom: $space-16;
 
-                    .rdforms {
-                        .rdformsRow {
-                            display: flex;
-                            flex-direction: column;
-                            padding: 0rem;
-                            margin: 0rem;
-
-                            &:not(:first-of-type) {
-                                margin-top: $space-16;
-                            }
-
-                            .rdformsLabel {
-                                font-weight: bold;
-                                padding: 0rem;
-                                margin: 0rem;
-                                width: 100% !important;
-                                margin-bottom: $space-8;
-                                border: none;
-                            }
-
-                            .rdformsFields {
-                                .rdformsField {
-                                    margin: 0rem;
-                                    padding: 0rem;
-
-                                    .rdformsUrl {
-                                        text-decoration: underline;
-                                    }
-
-                                    .rdformsUrl:hover {
-                                        color: $black100;
-                                        background-color: $pink10;
-                                    }
-
-                                    .rdformsLanguage {
-                                        display: none;
-                                    }
-                                }
-                            }
+                        &::after {
+                          content: 'Geografiskt område';
                         }
 
-                        .cardgroup {
-                            display: flex !important;
-                            flex-direction: column;
-
-                            .rdformsFields {
-
-                                .rdformsGroup,
-                                .rdforms,
-                                .rdformsPresenter {
-                                    margin: 0rem !important;
-                                    padding: 0rem !important;
-                                    background-color: transparent;
-                                    border: none;
-
-                                    .rdformsRow {
-                                        padding: 0rem;
-
-                                        .rdformsLabel {
-                                            font-weight: normal;
-                                        }
-                                    }
-                                }
-                            }
+                        label,
+                        span {
+                          display: none;
                         }
+                      }
+
+                      .escoMap {
+                        height: 23.75rem;
+                      }
                     }
-
-                    .entryList {
-                        margin-bottom: $space-24;
-
-                        .distribution__extended-list {
-                            border: none;
-                            border-bottom: 2px dotted $black10;
-                            margin: 0rem;
-
-                            .esbRowHead {
-                                padding: 0rem;
-                                padding-bottom: $space-16;
-                                padding-top: $space-16;
-
-                                .esbRowAlignPrimary {
-                                    word-break: break-all;
-                                }
-                            }
-
-                            a {
-                                font-weight: normal;
-                                font-size: 1rem; //16px
-                                line-height: 1.5rem; //24px
-                                color: $black100;
-
-                                &:hover {
-                                    // text-decoration: none;
-                                    background-color: $pink10;
-                                }
-                            }
-                        }
-                    }
-
-                    .api_readmore {
-                        display: block;
-                        margin-top: $space-16;
-                        color: $black100;
-                        text-decoration: underline;
-                        width: fit-content !important;
-
-                        &:hover {
-                            background-color: $pink10;
-                        }
-                    }
-
-                    hr {
-                        margin-top: $space-24;
-                        margin-bottom: $space-24;
-                        border-top: 2px dotted $green25;
-                    }
-
-                    .rdformsRepeatedValue {
-                        margin-top: $space-8 !important;
-                        border: none;
-                    }
+                  }
                 }
+              }
             }
-
-            // distribution accordions
-            .distribution {
-                display: flex;
-                flex-direction: column;
-
-                .distribution_row {
-                    display: flex;
-                    align-items: center;
-                    flex-wrap: wrap;
-
-                    .distribution_format {
-                        margin-right: $space-24;
-                        margin-bottom: $space-8;
-                        text-transform: uppercase;
-
-                        &:empty {
-                            display: none;
-                        }
-                    }
-                }
-
-                .distribution_licens {
-                    margin-bottom: $space-8;
-                    color: $brown100;
-
-                    &:empty {
-                        display: none;
-                    }
-                }
-
-                .distribution_title {
-                    margin-right: $space-8;
-                    margin-bottom: $space-8;
-
-                    &:empty {
-                        display: none;
-                    }
-                }
-            }
+          }
         }
+      }
 
+      //Access to dataservice
+      .dataservice__access {
+        margin-bottom: $space-32;
 
-        .detailpage__wrapper--rightcol {
-            width: 100%;
-            max-width: 40rem;
+        .rdforms {
+          .rdformsRow {
             display: flex;
             flex-direction: column;
 
-            //Text transform
-            .compact .rdformsRow>.rdformsFields>.rdformsField>div:first-letter {
-                //Not workning in safari
-                // text-transform: uppercase;
+            .rdformsLabel {
+              font-weight: bold;
+              font-size: 1.25rem; //20px
+              line-height: 1.75rem; //28px
+              letter-spacing: -0.01em;
+              color: $black100;
             }
 
-            // Window 800px
-            @media screen and (min-width: 50rem) {
-                max-width: 26rem;
+            .rdformsFields {
+              .rdformsField,
+              .rdformsRepeatedValue {
+                border: none;
+                padding: 0rem;
+                margin: 0rem;
+                margin-top: $space-8;
+
+                a {
+                  font-weight: normal;
+                  font-size: 1.125rem; //18px
+                  line-height: 1.6875rem; //27px
+                  text-decoration-line: underline;
+                  color: $black100;
+
+                  &:hover {
+                    background-color: $pink10;
+                  }
+                }
+              }
             }
-
-            .detailpage__wrapper--rightcol-info {
-                border: 2px solid $green25;
-                padding-bottom: $space-32;
-                margin-bottom: $space-16;
-
-                // Window 800px
-                @media screen and (min-width: 50rem) {
-                    margin-bottom: $space-32;
-                }
-
-                h2 {
-                    background-color: $green25;
-                    padding-left: $space-16;
-                    padding-right: $space-16;
-                    padding-top: $space-8;
-                    padding-bottom: $space-8;
-                    margin: 0rem;
-                    margin-left: -1px;
-                    margin-top: -1px;
-                }
-
-                .blocks-row {
-                    display: flex;
-                    flex-direction: column;
-                    padding-left: $space-16;
-                    padding-right: $space-16;
-                    padding-top: $space-16;
-
-                    span {
-                        margin-bottom: $space-8;
-                    }
-                }
-
-                .entryscape {
-                    .rdforms {
-                        display: flex;
-                        flex-direction: column;
-
-                        .rdformsRow {
-                            display: flex;
-                            flex-direction: column;
-                            padding-top: $space-16;
-                            padding-left: $space-16;
-                            padding-right: $space-16;
-                            padding-bottom: 0rem;
-
-                            .rdformsLabel {
-                                width: fit-content !important;
-                                font-weight: bold;
-                                padding-top: 0rem;
-                                margin-bottom: 0.25rem;
-                                border: none;
-                            }
-
-                            .rdformsFields {
-                                .rdformsField {
-                                    margin-left: 0rem;
-                                    padding: 0rem;
-
-                                    .rdformsUrl {
-                                        text-decoration: underline;
-                                    }
-
-                                    .rdformsUrl:hover {
-                                        color: $black100;
-                                        background-color: $pink10;
-                                    }
-
-                                    .rdformsLanguage {
-                                        display: none;
-                                    }
-
-                                    div {
-                                        word-break: break-all;
-                                        hyphens: auto;
-                                    }
-                                }
-
-                                .rdformsRepeatedValue {
-                                    margin-top: 0.25rem;
-                                    border: none;
-                                }
-
-                                .rdformsGroup {
-                                    padding: 0rem;
-                                    margin: 0rem;
-
-                                    .rdformsRow {
-                                        padding: 0rem;
-                                        margin: 0rem;
-
-                                        .rdformsLabel {
-                                            font-weight: normal;
-                                            border: none;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        .cardgroup {
-                            .rdformsFields {
-                                .rdformsGroup {
-                                    background-color: transparent;
-                                    border: none;
-
-                                    .rdformsRow {
-                                        display: flex;
-                                        flex-direction: row;
-
-                                        .rdformsLabel {
-                                            margin-right: $space-8;
-
-                                            &::after {
-                                                content: ':';
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                .entryscape {
-
-                    .terminology__label {
-                        display: block;
-                        margin-top: $space-16;
-                        margin-bottom: 0.25rem;
-                        padding-left: $space-16;
-                        padding-right: $space-16;
-                    }
-
-                    .terminilogy__download-wrapper {
-                        display: flex;
-                        flex-direction: column;
-                    }
-
-                    .terminology__label {
-                        font-weight: bold;
-                    }
-                }
-
-                .terminology {
-                    display: block;
-                    margin-top: $space-16;
-                    margin-bottom: 0.25rem;
-                    padding-left: $space-16;
-                    padding-right: $space-16;
-                    font-weight: bold;
-                    font-size: 1rem; //16px
-                    line-height: 1.5rem; //24px
-                    letter-spacing: -0.01em;
-                    color: $black100;
-                }
-            }
-
-            .dataset__map--title {
-                margin-top: $space-32;
-
-                .rdforms {
-
-                    .rdformsRow,
-                    .rdformsTopLevel,
-                    .notCompact {
-                        width: 100% !important;
-                        padding: 0rem;
-                        margin: 0rem;
-
-                        .rdformsLabel {
-                            width: 100%;
-                        }
-
-                        .rdformsFields {
-                            display: none !important;
-                        }
-                    }
-                }
-            }
+          }
         }
+      }
 
-        //List with distribution
-        .distribution__list {
-            margin-bottom: $space-32;
+      .esbRow {
+        box-shadow: none;
+        border: 2px solid $green25;
+        margin-top: $space-16;
 
-            .esbRowMain {
+        .esbRowHead {
+          position: relative;
+          justify-content: space-between;
+          padding: $space-16;
+          padding-bottom: 1.25rem;
+          max-height: none;
+
+          //Window 374px
+          @media screen and (max-width: 23.375rem) {
+            flex-direction: column;
+          }
+
+          .esbRowMain {
+            padding: 0rem;
+
+            @media screen and (max-width: 23.375rem) {
+              width: 100%;
+            }
+
+            .distribution_links {
+              display: flex;
+              flex-wrap: wrap;
+
+              //Window 448px
+              @media screen and (max-width: 28rem) {
+                flex-direction: column;
+              }
+
+              .distribution_link {
                 font-weight: normal;
                 font-size: 1.125rem; //18px
                 line-height: 1.6875rem; //27px
+                text-decoration-line: underline;
                 color: $black100;
 
-                .esbRowAlign {
-                    flex-direction: column;
-                    align-items: flex-start;
-                    padding-right: $space-8;
-                    min-height: 5rem;
-
-                    .esbBadge {
-                        padding: 0rem;
-                        background-color: transparent;
-                        font-weight: bold;
-                        display: block;
-                        margin-bottom: $space-8;
-                    }
-
-                    .resourceLabel {
-                        margin-bottom: $space-8;
-                    }
-
-                    .esbRowAlignOther {
-                        margin-bottom: $space-8;
-                        text-transform: uppercase;
-
-                        &:empty {
-                            display: none;
-                        }
-                    }
-
-                    .esbRowAlignPrimary {
-                        margin-bottom: $space-8;
-                    }
-
-                    .esbRowAlignSecondary {
-                        a {
-                            background-color: transparent;
-                            border: none;
-                            font-weight: normal;
-                            font-size: 1.125rem; //18px
-                            line-height: 1.6875rem; //27px
-                            text-decoration-line: underline;
-                            color: $black100;
-
-                            &:focus {
-                                outline: $focus-style;
-                                outline-offset: $focus-offset;
-                            }
-                        }
-
-                        // a:first-of-type {
-                        //     margin-right: $space-16;
-                        // }
-
-                        .distribution__link {
-                            color: $black100;
-                            margin: 0rem;
-                            margin-left: 0px !important;
-                            text-decoration: underline;
-
-                            &:hover {
-                                background-color: $pink10;
-                            }
-                        }
-                    }
-
-                    .distribution_api-flag {
-                        position: absolute;
-                        color: $black-hover;
-
-                        i {
-                            font-family: Font Awesome\ 5 Free !important;
-                            font-size: 1rem;
-                            padding-right: .25rem;
-                            color: $orange100;
-                        }
-
-                        @media screen and (min-width: 23.375rem) {
-                            top: 1rem;
-                            right: 1rem;
-                        }
-
-                        @media screen and (max-width: 23.375rem) {
-                            left: 1rem;
-                            bottom: 2rem;
-                        }
-                    }
+                @media screen and (max-width: 28rem) {
+                  &:nth-of-type(odd) {
+                    margin-bottom: 0.25rem;
+                  }
                 }
+
+                &:hover {
+                  background-color: $pink10;
+                }
+
+                &:nth-of-type(odd) {
+                  margin-right: $space-24;
+                }
+              }
             }
+          }
+
+          .esbRowControl {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            margin: 0rem;
+            width: fit-content;
+
+            @media screen and (max-width: 23.375rem) {
+              margin-top: $space-8;
+              align-self: flex-end;
+            }
+
+            button {
+              display: flex;
+              margin: 0rem;
+              min-width: max-content;
+              height: 2.75rem;
+              background-color: $brown10;
+              text-decoration: none;
+              color: $black100;
+
+              &:hover {
+                text-decoration: none;
+              }
+
+              &[aria-expanded='false'] {
+                &::before {
+                  content: 'Visa mer';
+                }
+              }
+
+              &[aria-expanded='true'] {
+                &::before {
+                  content: 'Visa mindre';
+                }
+              }
+
+              span {
+                font-family: 'Font Awesome 5 Free' !important;
+                color: $black100;
+                margin-top: 0.125rem;
+                margin-left: 0.25rem;
+              }
+
+              &:hover {
+                background-color: $black10;
+                transition: 0ms;
+              }
+
+              &:focus {
+                border: none;
+              }
+            }
+          }
         }
+      }
 
+      //  Distrubutionslista
+      .entryList {
+        .esbRowExpand {
+          background-color: $white;
+          padding: $space-16;
+          padding-top: 0rem;
+          padding-bottom: $space-24;
 
-        .api-flag {
+          .distribution_files_header {
+            font-weight: bold;
+            font-size: 1rem; //16px
+            line-height: 1.5rem; //24px
+            letter-spacing: -0.01em;
+            color: $black100;
+            margin-bottom: 0rem;
+            margin-top: 1rem;
+          }
+
+          .text-6 {
+            font-weight: normal;
+            font-size: 1rem; //16px
+            line-height: 1.5rem; //24px
+            color: $black100;
+          }
+
+          .rdforms {
+            .rdformsRow {
+              display: flex;
+              flex-direction: column;
+              padding: 0rem;
+              margin: 0rem;
+
+              &:not(:first-of-type) {
+                margin-top: $space-16;
+              }
+
+              .rdformsLabel {
+                font-weight: bold;
+                padding: 0rem;
+                margin: 0rem;
+                width: 100% !important;
+                margin-bottom: $space-8;
+                border: none;
+              }
+
+              .rdformsFields {
+                .rdformsField {
+                  margin: 0rem;
+                  padding: 0rem;
+
+                  .rdformsUrl {
+                    text-decoration: underline;
+                  }
+
+                  .rdformsUrl:hover {
+                    color: $black100;
+                    background-color: $pink10;
+                  }
+
+                  .rdformsLanguage {
+                    display: none;
+                  }
+                }
+              }
+            }
+
+            .cardgroup {
+              display: flex !important;
+              flex-direction: column;
+
+              .rdformsFields {
+                .rdformsGroup,
+                .rdforms,
+                .rdformsPresenter {
+                  margin: 0rem !important;
+                  padding: 0rem !important;
+                  background-color: transparent;
+                  border: none;
+
+                  .rdformsRow {
+                    padding: 0rem;
+
+                    .rdformsLabel {
+                      font-weight: normal;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          .entryList {
+            margin-bottom: $space-24;
+
+            .distribution__extended-list {
+              border: none;
+              border-bottom: 2px dotted $black10;
+              margin: 0rem;
+
+              .esbRowHead {
+                padding: 0rem;
+                padding-bottom: $space-16;
+                padding-top: $space-16;
+
+                .esbRowAlignPrimary {
+                  word-break: break-all;
+                }
+              }
+
+              a {
+                font-weight: normal;
+                font-size: 1rem; //16px
+                line-height: 1.5rem; //24px
+                color: $black100;
+
+                &:hover {
+                  // text-decoration: none;
+                  background-color: $pink10;
+                }
+              }
+            }
+          }
+
+          .api_readmore {
             display: block;
-            color: $orange100;
-            margin-bottom: $space-16;
+            margin-top: $space-16;
+            color: $black100;
+            text-decoration: underline;
+            width: fit-content !important;
 
-            i {
-                font-family: Font Awesome\ 5 Free !important;
-                padding-right: 0.5rem;
-                font-size: 1rem;
+            &:hover {
+              background-color: $pink10;
             }
-        }
-    }
+          }
 
-    .detailpage__wrapper--fullwith {
+          hr {
+            margin-top: $space-24;
+            margin-bottom: $space-24;
+            border-top: 2px dotted $green25;
+          }
+
+          .rdformsRepeatedValue {
+            margin-top: $space-8 !important;
+            border: none;
+          }
+        }
+      }
+
+      // distribution accordions
+      .distribution {
         display: flex;
         flex-direction: column;
-        width: 100%;
 
-    }
-}
+        .distribution_row {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
 
+          .distribution_format {
+            margin-right: $space-24;
+            margin-bottom: $space-8;
+            text-transform: uppercase;
 
-html:lang(en) {
-    .esbRowControl {
-        button {
-            &[aria-expanded="false"] {
-                &::before {
-                    content: "View more" !important;
-                }
+            &:empty {
+              display: none;
             }
-
-            &[aria-expanded="true"] {
-                &::before {
-                    content: "View less" !important;
-                }
-            }
-        }
-    }
-}
-
-
-
-
-
-.entryscape {
-    .download__rdf--link {
-        display: block;
-        width: fit-content;
-        margin-bottom: $space-32;
-        text-decoration: underline;
-        color: $black100;
-
-        &:hover {
-            color: $black100;
-            background-color: $pink10;
-        }
-    }
-}
-
-
-//Conceptpage /Terminology
-
-.terminology_header::first-letter {
-    text-transform: uppercase;
-}
-
-
-.terminology-group {
-    .entryscape {
-        display: block;
-
-        &:last-of-type {
-            margin-bottom: $space-24;
+          }
         }
 
-        &:empty {
+        .distribution_licens {
+          margin-bottom: $space-8;
+          color: $brown100;
+
+          &:empty {
             display: none;
+          }
+        }
+
+        .distribution_title {
+          margin-right: $space-8;
+          margin-bottom: $space-8;
+
+          &:empty {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .detailpage__wrapper--rightcol {
+      width: 100%;
+      max-width: 40rem;
+      display: flex;
+      flex-direction: column;
+
+      // Window 800px
+      @media screen and (min-width: 50rem) {
+        max-width: 26rem;
+      }
+
+      .detailpage__wrapper--rightcol-info {
+        border: 2px solid $green25;
+        padding-bottom: $space-32;
+        margin-bottom: $space-16;
+
+        // Window 800px
+        @media screen and (min-width: 50rem) {
+          margin-bottom: $space-32;
         }
 
         h2 {
-            margin-top: 0rem;
+          background-color: $green25;
+          padding-left: $space-16;
+          padding-right: $space-16;
+          padding-top: $space-8;
+          padding-bottom: $space-8;
+          margin: 0rem;
+          margin-left: -1px;
+          margin-top: -1px;
+        }
+
+        .blocks-row {
+          display: flex;
+          flex-direction: column;
+          padding-left: $space-16;
+          padding-right: $space-16;
+          padding-top: $space-16;
+
+          span {
             margin-bottom: $space-8;
-            font-weight: bold;
-            font-size: 1.125rem; //18px
-            line-height: 1.6875rem; //27px
-            letter-spacing: -0.01em;
-            color: $black100;
-        }
-    }
-
-    span {
-
-        .entryscape,
-        .btn {
-            padding: 0rem;
-            border: none;
+          }
         }
 
-        .related-concept {
-            color: $black100;
-            text-decoration: underline;
-
-            &:hover {
-                color: $black100;
-                background-color: $pink10;
-            }
-        }
-    }
-}
-
-
-
-.entryscape {
-    .terminology__path {
-        color: $black100;
-        text-decoration: underline;
-        margin-left: $space-16;
-        margin-right: $space-16;
-
-        &:hover {
-            color: $black100;
-            background-color: $pink10;
-        }
-    }
-}
-
-.terminology__download-links {
-    display: flex;
-    flex-wrap: wrap;
-    padding-left: $space-16;
-    padding-right: $space-16;
-
-    .terminology__download-link {
-        margin-right: $space-16;
-        color: $black100;
-        text-decoration: underline;
-
-        &:hover {
-            color: $black100;
-            background-color: $pink10;
-        }
-    }
-}
-
-.terminology-group {
-    span {
         .entryscape {
-            display: block;
-            text-decoration: underline;
-            width: fit-content;
-            margin-top: $space-8;
+          .rdforms {
+            display: flex;
+            flex-direction: column;
 
-            h2 {
-                margin-top: 0rem !important;
-            }
+            .rdformsRow {
+              display: flex;
+              flex-direction: column;
+              padding-top: $space-16;
+              padding-left: $space-16;
+              padding-right: $space-16;
+              padding-bottom: 0rem;
 
-            &::first-letter {
-                text-transform: uppercase;
-            }
+              .rdformsLabel {
+                width: fit-content !important;
+                font-weight: bold;
+                padding-top: 0rem;
+                margin-bottom: 0.25rem;
+                border: none;
+              }
 
-            a {
-                color: $black100;
+              .rdformsFields {
+                .rdformsField {
+                  margin-left: 0rem;
+                  padding: 0rem;
 
-                &:hover {
+                  .rdformsUrl {
+                    text-decoration: underline;
+                  }
+
+                  .rdformsUrl:hover {
                     color: $black100;
                     background-color: $pink10;
+                  }
+
+                  .rdformsLanguage {
+                    display: none;
+                  }
+
+                  div {
+                    word-break: break-all;
+                    hyphens: auto;
+                  }
                 }
-            }
 
-            .entryListRow {
-                font-weight: normal;
-                font-size: 1.125rem; //18px
-                line-height: 1.6875rem; //27px
-                color: $black100;
-
-                &:hover {
-                    color: $black100;
-                    background-color: $pink10;
+                .rdformsRepeatedValue {
+                  margin-top: 0.25rem;
+                  border: none;
                 }
-            }
-        }
-    }
 
-    .mycolumn {
-        .terminology-group--list {
-            .entryscape {
-                .escoList {
-                    .entryList {
-                        display: flex;
+                .rdformsGroup {
+                  padding: 0rem;
+                  margin: 0rem;
 
-                        .esbRow {
-                            margin: 0rem;
-                            margin-right: $space-8;
-                            border: none;
-
-                            .esbRowHead,
-                            .esbRowLink {
-                                display: block;
-                                padding: 0rem;
-                                height: fit-content;
-                                width: fit-content;
-                                min-height: 0rem;
-                                text-decoration: underline;
-
-                                &::first-letter {
-                                    text-transform: uppercase;
-                                }
-
-                                &:hover {
-                                    color: $black100;
-                                    background-color: $pink10;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-//Terminologi pagination 
-
-.terminology-group {
-    .entryPagination {
-        padding-bottom: $space-16;
-
-        .pagination {
-            margin: 0rem;
-            margin-top: $space-24;
-            justify-content: flex-start !important;
-
-            .page-item {
-                margin-right: $space-8;
-
-                .page-text {
+                  .rdformsRow {
+                    padding: 0rem;
                     margin: 0rem;
+
+                    .rdformsLabel {
+                      font-weight: normal;
+                      border: none;
+                    }
+                  }
                 }
-
-                button {
-                    min-width: $space-48;
-                    border: 0.125rem solid $green100;
-                    border-radius: 0.125rem;
-
-                    &:hover {
-                        background-color: $white;
-                        filter: brightness(0.98);
-                    }
-
-                    &:focus {
-                        box-shadow: none;
-                    }
-
-                    i {
-                        font-family: Font Awesome\ 5 Free !important;
-                        color: $green100;
-                    }
-                }
+              }
             }
 
-            .disabled {
-                button {
-                    border: 0.125rem solid $green25;
+            .cardgroup {
+              .rdformsFields {
+                .rdformsGroup {
+                  background-color: transparent;
+                  border: none;
 
-                    i {
-                        color: $green25;
+                  .rdformsRow {
+                    display: flex;
+                    flex-direction: row;
+
+                    .rdformsLabel {
+                      margin-right: $space-8;
+
+                      &::after {
+                        content: ':';
+                      }
                     }
+                  }
                 }
+              }
             }
+          }
         }
+
+        .entryscape {
+          .terminology__label {
+            display: block;
+            margin-top: $space-16;
+            margin-bottom: 0.25rem;
+            padding-left: $space-16;
+            padding-right: $space-16;
+          }
+
+          .terminilogy__download-wrapper {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .terminology__label {
+            font-weight: bold;
+          }
+        }
+
+        .terminology {
+          display: block;
+          margin-top: $space-16;
+          margin-bottom: 0.25rem;
+          padding-left: $space-16;
+          padding-right: $space-16;
+          font-weight: bold;
+          font-size: 1rem; //16px
+          line-height: 1.5rem; //24px
+          letter-spacing: -0.01em;
+          color: $black100;
+        }
+      }
+
+      .dataset__map--title {
+        margin-top: $space-32;
+
+        .rdforms {
+          .rdformsRow,
+          .rdformsTopLevel,
+          .notCompact {
+            width: 100% !important;
+            padding: 0rem;
+            margin: 0rem;
+
+            .rdformsLabel {
+              width: 100%;
+            }
+
+            .rdformsFields {
+              display: none !important;
+            }
+          }
+        }
+      }
     }
-}
 
-//Number of concepts in terminologi
+    //List with distribution
+    .distribution__list {
+      margin-bottom: $space-32;
 
-.terminologi-size {
-    margin-top: $space-48;
-
-    h2 {
-        font-weight: bold !important;
-        font-size: 1.25rem !important;
-        line-height: 1.75rem; //28px
-        letter-spacing: -0.01em;
-        color: $black100;
-    }
-}
-
-.terminology-numbers {
-    padding-left: $space-16;
-
-    &:empty {
-        display: none;
-    }
-}
-
-.conceptsearch {
-    display: none;
-}
-
-.column {
-    display: flex;
-    flex-direction: column;
-
-    .concept-detail {
-        margin-top: $space-8;
-        margin-bottom: $space-24;
+      .esbRowMain {
         font-weight: normal;
         font-size: 1.125rem; //18px
         line-height: 1.6875rem; //27px
         color: $black100;
 
-        &:empty {
-            margin: 0rem;
+        .esbRowAlign {
+          flex-direction: column;
+          align-items: flex-start;
+          padding-right: $space-8;
+          min-height: 5rem;
+
+          .esbBadge {
+            padding: 0rem;
+            background-color: transparent;
+            font-weight: bold;
+            display: block;
+            margin-bottom: $space-8;
+          }
+
+          .resourceLabel {
+            margin-bottom: $space-8;
+          }
+
+          .esbRowAlignOther {
+            margin-bottom: $space-8;
+            text-transform: uppercase;
+
+            &:empty {
+              display: none;
+            }
+          }
+
+          .esbRowAlignPrimary {
+            margin-bottom: $space-8;
+          }
+
+          .esbRowAlignSecondary {
+            a {
+              background-color: transparent;
+              border: none;
+              font-weight: normal;
+              font-size: 1.125rem; //18px
+              line-height: 1.6875rem; //27px
+              text-decoration-line: underline;
+              color: $black100;
+
+              &:focus {
+                outline: $focus-style;
+                outline-offset: $focus-offset;
+              }
+            }
+
+            // a:first-of-type {
+            //     margin-right: $space-16;
+            // }
+
+            .distribution__link {
+              color: $black100;
+              margin: 0rem;
+              margin-left: 0px !important;
+              text-decoration: underline;
+
+              &:hover {
+                background-color: $pink10;
+              }
+            }
+          }
+
+          .distribution_api-flag {
+            position: absolute;
+            color: $black-hover;
+
+            i {
+              font-family: "FontAwesome" !important;
+              font-weight: normal;
+              font-size: 1rem;
+              padding-right: 0.25rem;
+              color: $orange100;
+            }
+
+            @media screen and (min-width: 23.375rem) {
+              top: 1rem;
+              right: 1rem;
+            }
+
+            @media screen and (max-width: 23.375rem) {
+              left: 1rem;
+              bottom: 2rem;
+            }
+          }
         }
+      }
     }
+
+    .api-flag {
+      display: block;
+      color: $orange100;
+      margin-bottom: $space-16;
+
+      i {
+        font-family: Font Awesome\5 Free !important;
+        padding-right: 0.5rem;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .detailpage__wrapper--fullwith {
+    @include Layout;
+  }
+}
+
+html:lang(en) {
+  .esbRowControl {
+    button {
+      &[aria-expanded='false'] {
+        &::before {
+          content: 'View more' !important;
+        }
+      }
+
+      &[aria-expanded='true'] {
+        &::before {
+          content: 'View less' !important;
+        }
+      }
+    }
+  }
+}
+
+.entryscape {
+  .download__rdf--link {
+    display: block;
+    width: fit-content;
+    margin-bottom: $space-32;
+    text-decoration: underline;
+    color: $black100;
+
+    &:hover {
+      color: $black100;
+      background-color: $pink10;
+    }
+  }
+}
+
+//Conceptpage /Terminology
+
+.terminology_header::first-letter {
+  text-transform: uppercase;
+}
+
+.terminology-group {
+  .entryscape {
+    display: block;
+
+    &:last-of-type {
+      margin-bottom: $space-24;
+    }
+
+    &:empty {
+      display: none;
+    }
+
+    h2 {
+      margin-top: 0rem;
+      margin-bottom: $space-8;
+      font-weight: bold;
+      font-size: 1.125rem; //18px
+      line-height: 1.6875rem; //27px
+      letter-spacing: -0.01em;
+      color: $black100;
+    }
+  }
+
+  span {
+    .entryscape,
+    .btn {
+      padding: 0rem;
+      border: none;
+    }
+
+    .related-concept {
+      color: $black100;
+      text-decoration: underline;
+
+      &:hover {
+        color: $black100;
+        background-color: $pink10;
+      }
+    }
+  }
+}
+
+.entryscape {
+  .terminology__path {
+    color: $black100;
+    text-decoration: underline;
+    margin-left: $space-16;
+    margin-right: $space-16;
+
+    &:hover {
+      color: $black100;
+      background-color: $pink10;
+    }
+  }
+}
+
+.terminology__download-links {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: $space-16;
+  padding-right: $space-16;
+
+  .terminology__download-link {
+    margin-right: $space-16;
+    color: $black100;
+    text-decoration: underline;
+
+    &:hover {
+      color: $black100;
+      background-color: $pink10;
+    }
+  }
+}
+
+.terminology-group {
+  span {
+    .entryscape {
+      display: block;
+      text-decoration: underline;
+      width: fit-content;
+      margin-top: $space-8;
+
+      h2 {
+        margin-top: 0rem !important;
+      }
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+
+      a {
+        color: $black100;
+
+        &:hover {
+          color: $black100;
+          background-color: $pink10;
+        }
+      }
+
+      .entryListRow {
+        font-weight: normal;
+        font-size: 1.125rem; //18px
+        line-height: 1.6875rem; //27px
+        color: $black100;
+
+        &:hover {
+          color: $black100;
+          background-color: $pink10;
+        }
+      }
+    }
+  }
+
+  .mycolumn {
+    .terminology-group--list {
+      .entryscape {
+        .escoList {
+          .entryList {
+            display: flex;
+
+            .esbRow {
+              margin: 0rem;
+              margin-right: $space-8;
+              border: none;
+
+              .esbRowHead,
+              .esbRowLink {
+                display: block;
+                padding: 0rem;
+                height: fit-content;
+                width: fit-content;
+                min-height: 0rem;
+                text-decoration: underline;
+
+                &::first-letter {
+                  text-transform: uppercase;
+                }
+
+                &:hover {
+                  color: $black100;
+                  background-color: $pink10;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//Terminologi pagination
+
+.terminology-group {
+  .entryPagination {
+    padding-bottom: $space-16;
+
+    .pagination {
+      margin: 0rem;
+      margin-top: $space-24;
+      justify-content: flex-start !important;
+
+      .page-item {
+        margin-right: $space-8;
+
+        .page-text {
+          margin: 0rem;
+        }
+
+        button {
+          min-width: $space-48;
+          border: 0.125rem solid $green100;
+          border-radius: 0.125rem;
+
+          &:hover {
+            background-color: $white;
+            filter: brightness(0.98);
+          }
+
+          &:focus {
+            box-shadow: none;
+          }
+
+          i {
+            font-family: Font Awesome\5 Free !important;
+            color: $green100;
+          }
+        }
+      }
+
+      .disabled {
+        button {
+          border: 0.125rem solid $green25;
+
+          i {
+            color: $green25;
+          }
+        }
+      }
+    }
+  }
+}
+
+//Number of concepts in terminologi
+
+.terminologi-size {
+  margin-top: $space-48;
+
+  h2 {
+    font-weight: bold !important;
+    font-size: 1.25rem !important;
+    line-height: 1.75rem; //28px
+    letter-spacing: -0.01em;
+    color: $black100;
+  }
+}
+
+.terminology-numbers {
+  padding-left: $space-16;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.conceptsearch {
+  display: none;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+
+  .concept-detail {
+    margin-top: $space-8;
+    margin-bottom: $space-24;
+    font-weight: normal;
+    font-size: 1.125rem; //18px
+    line-height: 1.6875rem; //27px
+    color: $black100;
+
+    &:empty {
+      margin: 0rem;
+    }
+  }
 }
 
 .terminology__top-concepts {
-    .toplist-header {
-        display: block;
-        margin-bottom: $space-8;
-        font-weight: bold;
-        font-size: 1.25rem; //20px
-        line-height: 1.75rem; //28px
-        letter-spacing: -0.01em;
+  .toplist-header {
+    display: block;
+    margin-bottom: $space-8;
+    font-weight: bold;
+    font-size: 1.25rem; //20px
+    line-height: 1.75rem; //28px
+    letter-spacing: -0.01em;
+    color: $black100;
+  }
+
+  .entryList {
+    margin-bottom: $space-32;
+
+    .entryscape {
+      .entryListRow {
+        text-decoration: underline;
+        font-weight: normal;
+        font-size: 1.125rem; //18px
+        line-height: 1.6875rem; //27px
         color: $black100;
-    }
+        margin-top: $space-8;
+        display: block;
+        width: max-content;
 
-    .entryList {
-        margin-bottom: $space-32;
-
-        .entryscape {
-            .entryListRow {
-                text-decoration: underline;
-                font-weight: normal;
-                font-size: 1.125rem; //18px
-                line-height: 1.6875rem; //27px
-                color: $black100;
-                margin-top: $space-8;
-                display: block;
-                width: max-content;
-
-                &:hover {
-                    background-color: $pink10;
-                }
-            }
+        &:hover {
+          background-color: $pink10;
         }
+      }
     }
+  }
 
-    .entryPagination {
-        .pagination {
-            margin: 0rem;
-            margin-top: $space-24;
-            justify-content: flex-start !important;
+  .entryPagination {
+    .pagination {
+      margin: 0rem;
+      margin-top: $space-24;
+      justify-content: flex-start !important;
 
-            .page-item {
-                margin-right: $space-8;
+      .page-item {
+        margin-right: $space-8;
 
-                button {
-                    min-width: $space-48;
-                    border: 0.125rem solid $green100;
-                    border-radius: 0.125rem;
+        button {
+          min-width: $space-48;
+          border: 0.125rem solid $green100;
+          border-radius: 0.125rem;
 
-                    &:hover {
-                        background-color: $white;
-                        filter: brightness(0.98);
-                    }
+          &:hover {
+            background-color: $white;
+            filter: brightness(0.98);
+          }
 
-                    &:focus {
-                        box-shadow: none;
-                    }
+          &:focus {
+            box-shadow: none;
+          }
 
-                    i {
-                        font-family: Font Awesome\ 5 Free !important;
-                        color: $green100;
-                    }
-                }
-            }
-
-            .disabled {
-                button {
-                    border: 0.125rem solid $green25;
-
-                    i {
-                        color: $green25;
-                    }
-                }
-            }
+          i {
+            font-family: Font Awesome\5 Free !important;
+            color: $green100;
+          }
         }
+      }
+
+      .disabled {
+        button {
+          border: 0.125rem solid $green25;
+
+          i {
+            color: $green25;
+          }
+        }
+      }
     }
+  }
 }
 
 //Specificationpage
 
 .specification__resource {
-    margin-bottom: $space-48;
+  margin-bottom: $space-48;
 
-    .specification__resource--body {
-        span {
-            .entryList {
-                .esbRow {
-                    .esbRowHead {
-                        .esbRowMain {
-                            display: flex;
-                            flex-direction: column;
+  .specification__resource--body {
+    span {
+      .entryList {
+        .esbRow {
+          .esbRowHead {
+            .esbRowMain {
+              display: flex;
+              flex-direction: column;
 
-                            .specification__resource--header,
-                            .specification__resource--type {
-                                margin-bottom: $space-8;
+              .specification__resource--header,
+              .specification__resource--type {
+                margin-bottom: $space-8;
 
-                                &:empty {
-                                    margin-bottom: 0rem;
-                                }
-
-                                &::first-letter {
-                                    text-transform: uppercase;
-                                }
-                            }
-
-                            .specification__resource--description {
-                                span {
-                                    margin-bottom: $space-8;
-
-                                    &:empty {
-                                        margin-bottom: 0rem;
-                                    }
-                                }
-                            }
-
-                            .specification__resource--downloadlink {
-                                text-decoration: underline;
-                                color: $black100;
-                                width: fit-content;
-                                text-transform: lowercase;
-
-                                &::first-letter {
-                                    text-transform: uppercase;
-                                }
-
-                                &:hover {
-                                    background-color: $pink10;
-                                }
-                            }
-                        }
-
-                        .esbRowControl {
-                            display: none;
-                        }
-                    }
+                &:empty {
+                  margin-bottom: 0rem;
                 }
+
+                &::first-letter {
+                  text-transform: uppercase;
+                }
+              }
+
+              .specification__resource--description {
+                span {
+                  margin-bottom: $space-8;
+
+                  &:empty {
+                    margin-bottom: 0rem;
+                  }
+                }
+              }
+
+              .specification__resource--downloadlink {
+                text-decoration: underline;
+                color: $black100;
+                width: fit-content;
+                text-transform: lowercase;
+
+                &::first-letter {
+                  text-transform: uppercase;
+                }
+
+                &:hover {
+                  background-color: $pink10;
+                }
+              }
             }
+
+            .esbRowControl {
+              display: none;
+            }
+          }
         }
+      }
     }
+  }
 }
 
 //Hide before blocks renders-ish
 .hbbr {
-    animation: cssAnimation 0s 0.5s forwards;
-    visibility: hidden;
+  animation: cssAnimation 0s 0.5s forwards;
+  visibility: hidden;
 }
 
 @keyframes cssAnimation {
-    to {
-        visibility: visible;
-    }
+  to {
+    visibility: visible;
+  }
 }
 
 //View more text link
 .view-more-text-link {
-    background-color: $green10;
-    border-radius: 0.125rem;
-    padding: 0.25rem;
-    word-break: keep-all;
-    text-decoration: none;
-    white-space: nowrap;
+  background-color: $green10;
+  border-radius: 0.125rem;
+  padding: 0.25rem;
+  word-break: keep-all;
+  text-decoration: none;
+  white-space: nowrap;
 
-    &:hover {
-        background-color: $green25;
-    }
+  &:hover {
+    background-color: $green25;
+  }
 }
 
 .entryscape {
-    .concept_hierarchy--header {
-        font-weight: bold !important;
-    }
+  .concept_hierarchy--header {
+    font-weight: bold !important;
+  }
 }
 
 .detailpage__wrapper--fullwith {
-    .concept-hierarchy-header {
-        span {
-            display: block;
-            font-weight: bold;
-            font-size: 1.125rem; //18px
-            line-height: 1.6875rem; //27px
-            letter-spacing: -0.01em;
-            color: $black100;
-            margin-bottom: $space-16;
-        }
+  .concept-hierarchy-header {
+    span {
+      display: block;
+      font-weight: bold;
+      font-size: 1.125rem; //18px
+      line-height: 1.6875rem; //27px
+      letter-spacing: -0.01em;
+      color: $black100;
+      margin-bottom: $space-16;
     }
+  }
 
-    .entryscape {
-        .concept_hierarchy {
-            position: relative;
-            margin-bottom: $space-48;
-            padding-left: 0.25rem;
-            padding-right: 0.25rem;
-            padding-top: $space-32;
-            padding-bottom: $space-32;
-            border: 0.125rem solid $black10;
-            max-width: 100%;
-            max-height: 37.5rem;
-            overflow: auto;
+  .entryscape {
+    .concept_hierarchy {
+      position: relative;
+      margin-bottom: $space-48;
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+      padding-top: $space-32;
+      padding-bottom: $space-32;
+      border: 0.125rem solid $black10;
+      max-width: 100%;
+      max-height: 37.5rem;
+      overflow: auto;
 
-            .esbHierarchy__node rect {
-                stroke: $black10;
-                fill: $black10;
-                stroke-width: 0.125rem;
-            }
+      .esbHierarchy__node rect {
+        stroke: $black10;
+        fill: $black10;
+        stroke-width: 0.125rem;
+      }
 
-            .esbHierarchy__rootNode rect {
-                stroke: $orange50;
-                fill: $orange50;
-            }
+      .esbHierarchy__rootNode rect {
+        stroke: $orange50;
+        fill: $orange50;
+      }
 
-            .esbHierarchy__expandableNode rect {
-                stroke: $green50;
-                fill: $green50;
-            }
-        }
+      .esbHierarchy__expandableNode rect {
+        stroke: $green50;
+        fill: $green50;
+      }
     }
+  }
 }
 
 .terminology-group {
-    .entryPagination {
-        .pagination {
-            margin: 0rem;
-            margin-top: $space-24;
-            justify-content: flex-start !important;
+  .entryPagination {
+    .pagination {
+      margin: 0rem;
+      margin-top: $space-24;
+      justify-content: flex-start !important;
 
-            .page-item {
-                margin-right: $space-8;
+      .page-item {
+        margin-right: $space-8;
 
-                .page-text {
-                    margin: 0rem;
-                }
-
-                button {
-                    min-width: $space-48;
-                    border: 0.125rem solid $green100;
-                    border-radius: 0.125rem;
-
-                    &:hover {
-                        background-color: $white;
-                        filter: brightness(0.98);
-                    }
-
-                    &:focus {
-                        box-shadow: none;
-                    }
-
-                    i {
-                        font-family: Font Awesome\ 5 Free !important;
-                        color: $green100;
-                    }
-                }
-            }
-
-            .disabled {
-                button {
-                    border: 0.125rem solid $green25;
-
-                    i {
-                        color: $green25;
-                    }
-                }
-            }
+        .page-text {
+          margin: 0rem;
         }
+
+        button {
+          min-width: $space-48;
+          border: 0.125rem solid $green100;
+          border-radius: 0.125rem;
+
+          &:hover {
+            background-color: $white;
+            filter: brightness(0.98);
+          }
+
+          &:focus {
+            box-shadow: none;
+          }
+
+          i {
+            font-family: Font Awesome\5 Free !important;
+            color: $green100;
+          }
+        }
+      }
+
+      .disabled {
+        button {
+          border: 0.125rem solid $green25;
+
+          i {
+            color: $green25;
+          }
+        }
+      }
     }
+  }
 }
 
 //Contact publisher
 
 .contact__publisher {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    background-color: $green10;
-    padding: $space-16;
-    padding-bottom: $space-24;
-    margin-bottom: $space-48;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: $green10;
+  padding: $space-16;
+  padding-bottom: $space-24;
+  margin-bottom: $space-48;
 
-    h3 {
-        margin-top: 0px;
-        margin-bottom: $space-8;
-    }
+  h3 {
+    margin-top: 0px;
+    margin-bottom: $space-8;
+  }
 
-    p {
-        margin: 0rem;
-    }
+  p {
+    margin: 0rem;
+  }
 
-    a:hover {
-        background-color: $pink10;
-    }
+  a:hover {
+    background-color: $pink10;
+  }
 }
-
 
 //Indicators
 .indicators {
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 
-    div {
-        margin-right: $space-8;
-    }
+  div {
+    margin-right: $space-8;
+  }
 }
 
 .accessRightsIndicator {
-    width: fit-content;
-    margin-bottom: $space-16;
+  width: fit-content;
+  margin-bottom: $space-16;
 
-    &:empty {
-        display: none;
-    }
+  &:empty {
+    display: none;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    color: $black100;
+    padding: 0rem;
 
     span {
-        display: flex;
-        align-items: center;
-        color: $black100;
-        padding: 0rem;
+      display: block;
 
-        span {
-            display: block;
-
-            &::first-letter {
-                text-transform: uppercase;
-            }
-        }
-
-        i {
-            font-family: "Font Awesome 5 Free" !important;
-            margin-right: $space-8;
-            color: $black-hover;
-            border-radius: 100px;
-            border: 3px solid $black-hover;
-            padding: 5px;
-            height: 32px;
-            width: 32px;
-            text-align: center;
-        }
+      &::first-letter {
+        text-transform: uppercase;
+      }
     }
+
+    i {
+      font-family: 'Font Awesome 5 Free' !important;
+      margin-right: $space-8;
+      color: $black-hover;
+      border-radius: 100px;
+      border: 3px solid $black-hover;
+      padding: 5px;
+      height: 32px;
+      width: 32px;
+      text-align: center;
+    }
+  }
 }
 
 .architectureIndicator {
-    width: fit-content;
-    margin-bottom: $space-16;
+  width: fit-content;
+  margin-bottom: $space-16;
 
-    &:empty {
-        display: none;
-    }
+  &:empty {
+    display: none;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    color: $black100;
 
     span {
-        display: flex;
-        align-items: center;
-        color: $black100;
+      display: block;
 
-        span {
-            display: block;
-
-            &::first-letter {
-                text-transform: uppercase;
-            }
-        }
-
-        i {
-            font-family: "Font Awesome 5 Free" !important;
-            margin-right: $space-8;
-            color: $black-hover;
-            border-radius: 100px;
-            border: 3px solid $black-hover;
-            padding: 5px;
-            height: 32px;
-            width: 32px;
-            text-align: center;
-        }
+      &::first-letter {
+        text-transform: uppercase;
+      }
     }
+
+    i {
+      font-family: 'Font Awesome 5 Free' !important;
+      margin-right: $space-8;
+      color: $black-hover;
+      border-radius: 100px;
+      border: 3px solid $black-hover;
+      padding: 5px;
+      height: 32px;
+      width: 32px;
+      text-align: center;
+    }
+  }
 }
 
 .licenseIndicator {
-    width: fit-content;
-    margin-bottom: $space-16;
+  width: fit-content;
+  margin-bottom: $space-16;
 
-    &:empty {
-        display: none;
-    }
+  &:empty {
+    display: none;
+  }
 
+  span {
+    display: flex;
+    align-items: center;
+    color: $black100;
+    padding: 0rem;
     span {
-        display: flex;
-        align-items: center;
-        color: $black100;
-        padding: 0rem;
-        ;
-
-        span {
-            display: block;
-            text-transform: capitalize;
-        }
-
-        i {
-            font-family: "Font Awesome 5 Brands" !important;
-            margin-right: $space-8;
-            color: $black-hover;
-            font-size: 32px;
-        }
+      display: block;
+      text-transform: capitalize;
     }
+
+    i {
+      font-family: 'Font Awesome 5 Brands' !important;
+      margin-right: $space-8;
+      color: $black-hover;
+      font-size: 32px;
+    }
+  }
 }
 
 .costIndicator {
-    width: fit-content;
-    margin-bottom: $space-16;
+  width: fit-content;
+  margin-bottom: $space-16;
 
-    &:empty {
-        display: none;
-    }
+  &:empty {
+    display: none;
+  }
 
+  span {
+    display: flex;
+    align-items: center;
+    color: $black100;
+    padding: 0rem;
     span {
-        display: flex;
-        align-items: center;
-        color: $black100;
-        padding: 0rem;
-        ;
-
-        span {
-            display: block;
-            text-transform: capitalize;
-        }
-
-        i {
-            margin-right: $space-8;
-            color: $black-hover;
-            border-radius: 100px;
-            border: 3px solid $black-hover;
-            padding: 5px;
-            height: 32px;
-            width: 32px;
-            text-align: center;
-        }
-
-        .fa-coins::before {
-            font-family: "Font Awesome 5 Free" !important;
-        }
+      display: block;
+      text-transform: capitalize;
     }
-}
 
+    i {
+      margin-right: $space-8;
+      color: $black-hover;
+      border-radius: 100px;
+      border: 3px solid $black-hover;
+      padding: 5px;
+      height: 32px;
+      width: 32px;
+      text-align: center;
+    }
+
+    .fa-coins::before {
+      font-family: 'Font Awesome 5 Free' !important;
+    }
+  }
+}
 
 //Hemvist concept page
 .hemvist {
-    display: flex;
-    flex-direction: column;
-    margin-top: $space-24;
+  display: flex;
+  flex-direction: column;
+  margin-top: $space-24;
 
-    span {
-        margin-top: 0rem;
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-        font-size: 1.125rem;
-        line-height: 1.6875rem;
-        letter-spacing: -0.01em;
+  span {
+    margin-top: 0rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-size: 1.125rem;
+    line-height: 1.6875rem;
+    letter-spacing: -0.01em;
+  }
+
+  a {
+    color: $black100 !important;
+    width: max-content;
+    text-decoration: underline !important;
+
+    &:hover {
+      background-color: $pink10;
     }
-
-    a {
-        color: $black100 !important;
-        width: max-content;
-        text-decoration: underline !important;
-
-        &:hover {
-            background-color: $pink10;
-        }
-    }
+  }
 }

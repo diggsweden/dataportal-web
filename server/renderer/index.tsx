@@ -41,10 +41,6 @@ export const renderer = async (
   path: string,
   manifestPath: string,
   cookies: string,
-  apiUrl: string,
-  formdata?: object,
-  vars?: object,
-  acceptLang?: string,
   i18nreq?: any
 ): Promise<RenderResponse> => {
   const profile: RenderResponseProfileItem[] = [];  
@@ -80,7 +76,7 @@ export const renderer = async (
               <LocalStoreProvider>
                 <SettingsProvider applicationUrl={host}>
                   <StaticRouter location={path} context={routerContext}>
-                    <Routes formdata={formdata} vars={vars} />
+                    <Routes />
                   </StaticRouter>
                 </SettingsProvider>
               </LocalStoreProvider>        

@@ -1,21 +1,8 @@
-import { Box } from '@digg/design-system';
-import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import 'url-search-params-polyfill';
-import { RouterContext } from '../../../shared/RouterContext';
-import { ErrorBoundary } from '../../components/ErrorBoundary';
-import { Footer } from '../../components/Footer';
-import { Header } from '../../components/Header';
-import { NoJavaScriptWarning } from '../../components/NoJavaScriptWarning';
-import { QueryParamProvider } from '../../components/QueryParamProvider';
 import { __RouterContext } from 'react-router';
-import { Link } from 'react-router-dom';
 import { PageMetadata } from '../PageMetadata';
-import { encode, decode } from 'qss';
-import { Loader } from '../../components/Loader';
 import i18n from 'i18n';
-import { EnvSettings } from '../../../config/env/EnvSettings';
-import { slugify } from 'utilities/urlHelpers';
 import {
   EntrystoreProvider,
   EntrystoreContext,
@@ -23,29 +10,21 @@ import {
 import { PageProps } from '../PageProps';
 import { StaticBreadcrumb } from 'components/Breadcrumb';
 
-const MainContent = Box.withComponent('main');
 
-export class SpecificationPage extends React.Component<
-  PageProps,
-  { scriptsAdded: Boolean; scriptsLoaded: Boolean }
-> {
-  private headerRef: React.RefObject<Header>;
-  private postscribe: any;
-  private referredSearch: string = `/${i18n.languages[0]}/${i18n.t(
+export const SpecificationPage: React.FC<PageProps> = ({
+  env,
+  match,
+}) => {
+  let postscribe: any;
+  let referredSearch: string = `/${i18n.languages[0]}/${i18n.t(
     'routes|specifications|path'
   )}/?q=`;
-
-  constructor(props: PageProps) {
-    super(props);
-    this.headerRef = React.createRef();
-    this.setFocus = this.setFocus.bind(this);
-  }
 
   /**
    * Async load scripts requiered for EntryScape blocks,
    * or else blocks wont have access to DOM
    */
-  componentDidMount() {
+  useEffect(() => {
     //we need to reload the page when using the back/forward buttons to a blocks rendered page
     if (typeof window !== 'undefined') {
       //check if reffereing search params is set to hash
@@ -54,7 +33,7 @@ export class SpecificationPage extends React.Component<
         window.location.hash &&
         window.location.hash.includes('ref=?')
       )
-        this.referredSearch = `/${i18n.languages[0]}/${i18n.t(
+        referredSearch = `/${i18n.languages[0]}/${i18n.t(
           'routes|specifications|path'
         )}/?${window.location.hash.split('ref=?')[1]}`;
 
@@ -63,25 +42,23 @@ export class SpecificationPage extends React.Component<
       };
     }
 
-    this.addScripts();
-  }
+    addScripts();
+  }, []);
 
-  addScripts() {
+  const addScripts = () => {
     if (typeof window !== 'undefined') {
-      let reactThis = this;
+      postscribe = (window as any).postscribe;
 
-      this.postscribe = (window as any).postscribe;
-
-      if (this.props.match.params.curi) {
-        this.postscribe(
+      if (match.params.curi) {
+        postscribe(
           '#scriptsPlaceholder',
 
           `
           <script>
             var __entryscape_plugin_config = {
               entrystore_base: 'https:\/\/${
-                this.props.env.ENTRYSCAPE_SPECS_PATH
-                  ? this.props.env.ENTRYSCAPE_SPECS_PATH
+                env.ENTRYSCAPE_SPECS_PATH
+                  ? env.ENTRYSCAPE_SPECS_PATH
                   : 'editera.dataportal.se'
               }\/store'            
             };
@@ -91,18 +68,18 @@ export class SpecificationPage extends React.Component<
           window.__entryscape_config = {
             block: 'config',
             page_language: '${i18n.languages[0]}',
-            //entry: '${this.props.match.params.eid}', 
-            //context: '${this.props.match.params.cid}',
+            //entry: '${match.params.eid}', 
+            //context: '${match.params.cid}',
             routes: [              
               {
                 regex:new RegExp('(\/*\/specifications\/)(.+)'),
-                uri:'https://dataportal.se/specifications/${this.props.match.params.curi}',
+                uri:'https://dataportal.se/specifications/${match.params.curi}',
                 page_language: '${i18n.languages[0]}'
               }              
             ],
             entrystore: 'https://${
-              this.props.env.ENTRYSCAPE_SPECS_PATH
-                ? this.props.env.ENTRYSCAPE_SPECS_PATH
+              env.ENTRYSCAPE_SPECS_PATH
+                ? env.ENTRYSCAPE_SPECS_PATH
                 : 'editera.dataportal.se'
             }/store',
             clicks: {
@@ -117,13 +94,13 @@ export class SpecificationPage extends React.Component<
               bundles: [
                 'dcat',
                 'https://${
-                  this.props.env.ENTRYSCAPE_SPECS_PATH
-                    ? this.props.env.ENTRYSCAPE_SPECS_PATH
+                  env.ENTRYSCAPE_SPECS_PATH
+                    ? env.ENTRYSCAPE_SPECS_PATH
                     : 'editera.dataportal.se'
                 }/theme/templates/adms.json',
                 'https://${
-                  this.props.env.ENTRYSCAPE_SPECS_PATH
-                    ? this.props.env.ENTRYSCAPE_SPECS_PATH
+                  env.ENTRYSCAPE_SPECS_PATH
+                    ? env.ENTRYSCAPE_SPECS_PATH
                     : 'editera.dataportal.se'
                 }/theme/templates/prof.json',
               ],
@@ -169,7 +146,9 @@ export class SpecificationPage extends React.Component<
                 rowhead:'<span class="specification__resource--header text-4">{{text}}</span>' + 
                   '<span class="specification__resource--type text-5">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
                   '<div class="specification__resource--description text-5 esbDescription">{{ text content="\${skos:definition}" }}</div>' +
-                  '<a target="_blank" class="specification__resource--downloadlink text-5" href="{{resourceURI}}">${i18n.t('pages|specification_page|download')} {{prop "prof:hasRole" class="type" render="label"}}</a>',
+                  '<a target="_blank" class="specification__resource--downloadlink text-5" href="{{resourceURI}}">${i18n.t(
+                    'pages|specification_page|download'
+                  )} {{prop "prof:hasRole" class="type" render="label"}}</a>',
               },
               {
                 block: 'indexLink',
@@ -182,8 +161,8 @@ export class SpecificationPage extends React.Component<
           };
           </script>
           <script src="${
-            this.props.env.ENTRYSCAPE_BLOCKS_URL
-              ? this.props.env.ENTRYSCAPE_BLOCKS_URL
+            env.ENTRYSCAPE_BLOCKS_URL
+              ? env.ENTRYSCAPE_BLOCKS_URL
               : 'https://dataportal.azureedge.net/cdn/blocks.0.18.2.app.js'
           }"></script>                
           `,
@@ -193,161 +172,131 @@ export class SpecificationPage extends React.Component<
         );
       }
     }
-  }
+  };
 
-  setFocus() {
-    if (this.headerRef.current) {
-      this.headerRef.current.setFocusOnMenuButton();
-    }
-  }
-
-  render() {
-    const { location } = this.props;
-    let uri = new URLSearchParams(location.search);
-
-    return (
-      <EntrystoreProvider
-        env={this.props.env}
-        entryUri={`https://dataportal.se/specifications/${this.props.match.params.curi}`}
-        entrystoreUrl={this.props.env.ENTRYSCAPE_SPECS_PATH}
-      >
-        <EntrystoreContext.Consumer>
-          {(entry) => (
-            <QueryParamProvider params={uri}>
-              <PageMetadata
-                seoTitle={`${entry.title} - ${i18n.t('common|seo-title')}`}
-                seoDescription=""
-                seoImageUrl=""
-                seoKeywords=""
-                robotsFollow={true}
-                robotsIndex={true}
-                lang={i18n.languages[0]}
-                socialMeta={{
-                  socialDescription : entry.description,
-                  socialTitle : entry.title,
-                  socialUrl :  entry && entry.title
-                    ? `${this.props.env.CANONICAL_URL}/${
-                        i18n.languages[0]
-                      }/${i18n.t('routes|specifications|path')}/${
-                        this.props.match.params.curi}`
-                    : ''
-                }}
-                canonicalUrl={
+  return (
+    <EntrystoreProvider
+      env={env}
+      entryUri={`https://dataportal.se/specifications/${match.params.curi}`}
+      entrystoreUrl={env.ENTRYSCAPE_SPECS_PATH}
+    >
+      <EntrystoreContext.Consumer>
+        {(entry) => (
+          <div className="detailpage">
+            <PageMetadata
+              seoTitle={`${entry.title} - ${i18n.t('common|seo-title')}`}
+              seoDescription=""
+              seoImageUrl=""
+              seoKeywords=""
+              robotsFollow={true}
+              robotsIndex={true}
+              lang={i18n.languages[0]}
+              socialMeta={{
+                socialDescription: entry.description,
+                socialTitle: entry.title,
+                socialUrl:
                   entry && entry.title
-                    ? `${this.props.env.CANONICAL_URL}/${
-                        i18n.languages[0]
-                      }/${i18n.t('routes|specifications|path')}/${
-                        this.props.match.params.curi}`
-                    : ''
-                }
-              />
-              <Box
-                id="top"
-                display="flex"
-                direction="column"
-                minHeight="100vh"
-                bgColor="#fff"
-              >
-                <NoJavaScriptWarning text="" />
+                    ? `${env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t(
+                        'routes|specifications|path'
+                      )}/${match.params.curi}`
+                    : '',
+              }}
+              canonicalUrl={
+                entry && entry.title
+                  ? `${env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t(
+                      'routes|specifications|path'
+                    )}/${match.params.curi}`
+                  : ''
+              }
+            />
+            <StaticBreadcrumb
+              env={env}
+              staticPaths={[
+                {
+                  path: referredSearch,
+                  title: i18n.t('routes|specifications|title'),
+                },
+                {
+                  path: `/${i18n.languages[0]}/${i18n.t(
+                    'routes|specifications|path'
+                  )}/${match.params.curi}`,
+                  title: entry.title,
+                },
+              ]}
+            />
+            <div className="detailpage__wrapper">
+              {/* Left column */}
+              <div className="detailpage__wrapper--leftcol content">
+                <span className="text-6-bold beta_badge--xl">BETA</span>
 
-                <Header ref={this.headerRef} env={this.props.env} />
+                <h1 className="text-2">{entry.title}</h1>
 
-                <ErrorBoundary>
-                  <MainContent
-                    flex="1 1 auto"
-                    className="detailpage main-container"
-                  >
-                    <StaticBreadcrumb
-                      env={this.props.env}
-                      staticPaths={[
-                        {
-                          path: this.referredSearch,
-                          title: i18n.t('routes|specifications|title'),
-                        },
-                        {
-                          path: `/${i18n.languages[0]}/${i18n.t(
-                            'routes|specifications|path'
-                          )}/${this.props.match.params.curi}`,
-                          title: entry.title,
-                        },
-                      ]}
-                    />
-                    <div className="detailpage__wrapper">
-                      {/* Left column */}
-                      <div className="detailpage__wrapper--leftcol content">
-                        <span className="text-6-bold beta_badge--xl">BETA</span>
-
-                        <h1 className="text-2">{entry.title}</h1>
-
-                        <script
-                          type="text/x-entryscape-handlebar"
-                          data-entryscape="true"
-                          data-entryscape-component="template"
-                          dangerouslySetInnerHTML={{
-                            __html: `
+                <script
+                  type="text/x-entryscape-handlebar"
+                  data-entryscape="true"
+                  data-entryscape-component="template"
+                  dangerouslySetInnerHTML={{
+                    __html: `
                           <p class="text-5">
                             {{text relation="dcterms:publisher"}} 
                           <p>
                           `,
-                          }}
-                        ></script>
+                  }}
+                ></script>
 
-                        <p className="text-5">
-                          <span
-                            data-entryscape="text"
-                            data-entryscape-content="${dcterms:description}"
-                          ></span>
-                        </p>
+                <p className="text-5">
+                  <span
+                    data-entryscape="text"
+                    data-entryscape-content="${dcterms:description}"
+                  ></span>
+                </p>
 
-                        <h2 className="text-3">{i18n.t('pages|specification_page|resource_specification')}</h2>
-                        <div
-                          className="specification__resource"
-                          data-entryscape="resourceDescriptors2"
-                          data-entryscape-rdftype= "prof:ResourceDescriptor"
-                        ></div>
+                <h2 className="text-3">
+                  {i18n.t('pages|specification_page|resource_specification')}
+                </h2>
+                <div
+                  className="specification__resource"
+                  data-entryscape="resourceDescriptors2"
+                  data-entryscape-rdftype="prof:ResourceDescriptor"
+                ></div>
 
-                        <div className="contact__publisher hbbr">
-                          <h3 className="text-4">
-                            {i18n.t('pages|datasetpage|contact-publisher')}
-                          </h3>
-                          <p className="text-5">
-                            {i18n.t('pages|datasetpage|contact-publisher-text')}
-                            {i18n.t(
-                              'pages|datasetpage|contact-publisher-text2'
-                            )}{' '}
-                            <a
-                              className="text-5-link"
-                              href="https://community.dataportal.se/"
-                            >
-                              community
-                            </a>
-                            .
-                          </p>
-                        </div>
-                      </div>
+                <div className="contact__publisher hbbr">
+                  <h3 className="text-4">
+                    {i18n.t('pages|datasetpage|contact-publisher')}
+                  </h3>
+                  <p className="text-5">
+                    {i18n.t('pages|datasetpage|contact-publisher-text')}
+                    {i18n.t('pages|datasetpage|contact-publisher-text2')}{' '}
+                    <a
+                      className="text-5-link"
+                      href="https://community.dataportal.se/"
+                    >
+                      community
+                    </a>
+                    .
+                  </p>
+                </div>
+              </div>
 
-                      {/* Right column */}
-                      <div className="detailpage__wrapper--rightcol hbbr">
-                        <div className="detailpage__wrapper--rightcol-info text-6">
-                          <h2 className="text-5-bold">{i18n.t('pages|specification_page|about_specification')}</h2>
+              {/* Right column */}
+              <div className="detailpage__wrapper--rightcol hbbr">
+                <div className="detailpage__wrapper--rightcol-info text-6">
+                  <h2 className="text-5-bold">
+                    {i18n.t('pages|specification_page|about_specification')}
+                  </h2>
 
-                          <div
-                            className="specificationDetails"
-                            data-entryscape="view"
-                            data-entryscape-rdformsid="prof:Profile"
-                            data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </MainContent>
-                </ErrorBoundary>
-                <Footer onToTopButtonPushed={this.setFocus} />
-              </Box>
-            </QueryParamProvider>
-          )}
-        </EntrystoreContext.Consumer>
-      </EntrystoreProvider>
-    );
-  }
-}
+                  <div
+                    className="specificationDetails"
+                    data-entryscape="view"
+                    data-entryscape-rdformsid="prof:Profile"
+                    data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </EntrystoreContext.Consumer>
+    </EntrystoreProvider>
+  );
+};

@@ -1,0 +1,10 @@
+# Our security address
+Contact: mailto:webbsupport-sundsvall@knowit.se
+
+# Preferred language is Swedish, but English is also okay
+Preferred-Languages: sv
+
+# Yes, this is the security.txt for dataportalen.se
+Canonical: https://dataportalen.se/security.txt
+
+Expires: Fri, 31 Dec 2022 12:00:00 +0100”
