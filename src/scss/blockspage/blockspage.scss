@@ -15,7 +15,6 @@
     margin: 0 64px;
     padding: 0 16px;
     @include Layout;
-    
     //Window 800px
     @media screen and (max-width: 50rem) {
       flex-direction: column;
@@ -119,6 +118,7 @@
             }
 
             .rdformsFields {
+
               .rdformsField,
               .rdformsRepeatedValue {
                 border: none;
@@ -328,6 +328,7 @@
               flex-direction: column;
 
               .rdformsFields {
+
                 .rdformsGroup,
                 .rdforms,
                 .rdformsPresenter {
@@ -618,6 +619,7 @@
         margin-top: $space-32;
 
         .rdforms {
+
           .rdformsRow,
           .rdformsTopLevel,
           .notCompact {
@@ -817,6 +819,7 @@ html:lang(en) {
   }
 
   span {
+
     .entryscape,
     .btn {
       padding: 0rem;
@@ -977,7 +980,7 @@ html:lang(en) {
           }
 
           i {
-            font-family: Font Awesome\5 Free !important;
+            font-family: "FontAwesome" !important;
             color: $green100;
           }
         }
@@ -1096,7 +1099,7 @@ html:lang(en) {
           }
 
           i {
-            font-family: Font Awesome\5 Free !important;
+            font-family: "FontAwesome" !important;
             color: $green100;
           }
         }
@@ -1284,7 +1287,7 @@ html:lang(en) {
           }
 
           i {
-            font-family: Font Awesome\5 Free !important;
+            font-family: "FontAwesome" !important;
             color: $green100;
           }
         }

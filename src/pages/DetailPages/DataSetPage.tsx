@@ -135,13 +135,13 @@ export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
                     'pages|datasetpage|several_links'
                   )}{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" min="2" invert="true"}}' +
-                  '<a href="{{prop "dcat:downloadURL"}}" class="text-5 distribution__link" target="_blank">${i18n.t(
+                  '<a href="{{prop "dcat:downloadURL"}}" class="text-5 matomo_download distribution__link" target="_blank">${i18n.t(
                     'pages|datasetpage|download_link'
                   )}</a>' +
                   '{{/ifprop}}' +
                   '{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" invert="true"}}' +
-                  '<a href="{{prop "dcat:accessURL"}}" class="text-5 distribution__link" target="_blank">' +
+                  '<a href="{{prop "dcat:accessURL"}}" class="text-5 matomo_download distribution__link" target="_blank">' +
                   '${i18n.t('pages|datasetpage|download_link_adress')}' +
                   '{{/ifprop}}',
               },
@@ -499,8 +499,7 @@ export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
                       __html: `{{viewMetadata 
                               relationinverse="dcat:dataset" 
                               onecol=true 
-                              template="dcat:OnlyCatalog" 
-                              use="cat" 
+                              template="dcat:OnlyCatalog"                               
                               filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi"
                               }}`,
                     }}

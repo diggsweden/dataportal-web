@@ -81,6 +81,16 @@
     width: max-content;
 }
 
+//Remove focus before tabbing..
+.no-focus-outline a:focus,
+.no-focus-outline button:focus,
+.no-focus-outline input:focus,
+.no-focus-outline input[type="radio"]:focus,
+.no-focus-outline textarea:focus,
+.no-focus-outline select:focus {
+    outline: none !important;
+}
+
 //Focus for most elements
 html a:focus,
 html button:focus,
@@ -90,16 +100,6 @@ html textarea:focus,
 html select:focus {
     outline: $focus-style !important;
     outline-offset: $focus-offset !important;
-}
-
-//Remove focus before tabbing..
-.no-focus-outline a:focus,
-.no-focus-outline button:focus,
-.no-focus-outline input:focus,
-.no-focus-outline input[type="radio"]:focus,
-.no-focus-outline textarea:focus,
-.no-focus-outline select:focus {
-    outline: none !important;
 }
 
 //Skip to content without js.

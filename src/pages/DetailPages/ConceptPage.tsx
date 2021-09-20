@@ -131,7 +131,7 @@ export const ConceptPage: React.FC<PageProps> = ({ env, match }) => {
           }
 
           
-          window.__entryscape_config = {
+          window.__entryscape_config = [{
             block: 'config',
             page_language: '${i18n.languages[0]}',
             routes: [              
@@ -590,15 +590,18 @@ export const ConceptPage: React.FC<PageProps> = ({ env, match }) => {
             type2template: {
               'skos:Concept': 'skosmos:concept',
             },
-          };
+          }];
 
           </script>
           
           <script src="${
+            i18n.languages[0] == 'sv'
+              ? env.ENTRYSCAPE_OPENDATA_SV_URL
+              : env.ENTRYSCAPE_OPENDATA_EN_URL
+          }"></script>
+          <script src="${
             env.ENTRYSCAPE_BLOCKS_URL
-              ? env.ENTRYSCAPE_BLOCKS_URL
-              : 'https://dataportal.azureedge.net/cdn/blocks.0.18.2.app.js'
-          }"></script>          
+          }"></script>         
           `,
           {
             done: function () {},

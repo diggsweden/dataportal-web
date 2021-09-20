@@ -64,7 +64,8 @@
                     border-color: $green25;
                     background-color: $white;
                     color: $black100;
-                    transition: ease-in-out .1s;
+                    transition: border-color ease .1s;
+                    transition: background-color ease .1s;
 
                     &:hover {
                         border-color: $green50;
@@ -393,7 +394,8 @@
         width: 2rem;
         border-color: $green25;
         background-color: $white;
-        transition: ease-in-out .1s;
+        transition: background-color ease .1s;
+        transition: border-color ease .1s;
 
         &:hover {
             border-color: $green50;

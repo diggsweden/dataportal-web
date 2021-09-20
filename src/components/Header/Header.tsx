@@ -126,7 +126,7 @@ export const Header: React.FC<HeaderProps> = ({ env, activeLink }) => {
                     {i18n.t('common|search-data')}
                   </Link>
 
-                  {i18n.language === 'sv' ? (
+                  {i18n.language.toLowerCase() === 'sv' || i18n.language.toLowerCase() === 'sv-se' ? (
                     <Link
                       onClick={closeMenu}
                       to={`/${i18n.languages[0]}/${i18n.t('routes|news|path')}`}

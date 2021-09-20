@@ -112,7 +112,7 @@ const SortingOptions: React.FC<{
               ? `${i18n.t('pages|search|compact-list')}`
               : `${i18n.t('pages|search|compact-list-active')}`
           }
-          className={isCompact  ? '' : 'active'}
+          className={isCompact  ? ' ' : 'active'}
           onClick={() => {            
             clearCurrentScrollPos();
             search.set({compact:true}).then(() => {search.setStateToLocation();setCompact(false);});            
@@ -139,7 +139,7 @@ const SortingOptions: React.FC<{
             search.request.sortOrder &&
             search.request.sortOrder == SearchSortOrder.score_desc
               ? 'text-7 sort-active'
-              : 'text-7'
+              : 'text-7 '
           }
         >
           {i18n.t('pages|search|relevance')}
@@ -160,7 +160,7 @@ const SortingOptions: React.FC<{
             search.request.sortOrder &&
             search.request.sortOrder == SearchSortOrder.modified_desc
               ? 'text-7 sort-active'
-              : 'text-7'
+              : 'text-7 '
           }
         >
           {i18n.t('pages|search|date')}

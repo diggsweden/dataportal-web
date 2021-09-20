@@ -13,6 +13,7 @@ import { StaticBreadcrumb } from 'components/Breadcrumb';
 
 export const SpecificationPage: React.FC<PageProps> = ({
   env,
+  location,
   match,
 }) => {
   let postscribe: any;
@@ -65,11 +66,9 @@ export const SpecificationPage: React.FC<PageProps> = ({
           </script>
 
           <script>
-          window.__entryscape_config = {
+          window.__entryscape_config = [{
             block: 'config',
-            page_language: '${i18n.languages[0]}',
-            //entry: '${match.params.eid}', 
-            //context: '${match.params.cid}',
+            page_language: '${i18n.languages[0]}',            
             routes: [              
               {
                 regex:new RegExp('(\/*\/specifications\/)(.+)'),
@@ -158,13 +157,17 @@ export const SpecificationPage: React.FC<PageProps> = ({
                   '</a>',
               },
             ],
-          };
+          }];
           </script>
+
+          <script src="${
+            i18n.languages[0] == 'sv'
+              ? env.ENTRYSCAPE_OPENDATA_SV_URL
+              : env.ENTRYSCAPE_OPENDATA_EN_URL
+          }"></script>
           <script src="${
             env.ENTRYSCAPE_BLOCKS_URL
-              ? env.ENTRYSCAPE_BLOCKS_URL
-              : 'https://dataportal.azureedge.net/cdn/blocks.0.18.2.app.js'
-          }"></script>                
+          }"></script>                      
           `,
           {
             done: function () {},
