@@ -1,0 +1,1798 @@
+{
+    "data": [
+      {
+        "contextId": "16",
+        "entryId": "1587",
+        "detections": [
+          {
+            "entryId": "1586",
+            "apiDefinition": "https://taxonomy.api.jobtechdev.se/v1/taxonomy/swagger.json",
+            "type": "swagger",
+            "version": "2.0"
+          }          
+        ]
+      },
+      {
+        "contextId": "347",
+        "entryId": "2101",
+        "detections": [
+          {
+            "entryId": "2100",
+            "apiDefinition": "https://data.tomelilla.se/rowstore/dataset/60e27849-ecd8-46c1-aa69-d73154c77b3e/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "31",
+        "entryId": "2078",
+        "detections": [
+          {
+            "entryId": "2077",
+            "apiDefinition": "https://catalog.vara.se/rowstore/dataset/f7374a5d-4795-4057-8f65-5e9783345767/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "420",
+        "entryId": "2118",
+        "detections": [
+          {
+            "entryId": "2117",
+            "apiDefinition": "https://catalog.gullspang.se/rowstore/dataset/d14623ef-1e5b-45ef-b589-e20661225092/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "66",
+        "entryId": "71434",
+        "detections": [
+          {
+            "entryId": "71433",
+            "apiDefinition": "https://catalog.goteborg.se/rowstore/dataset/ce5b8afd-6721-49c7-9ebc-f1ad33fba266/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "506",
+        "entryId": "2116",
+        "detections": [
+          {
+            "entryId": "2115",
+            "apiDefinition": "https://catalog.mariestad.se/rowstore/dataset/70a67783-331c-4838-bf19-9eb3df31eff2/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "1927",
+        "detections": [
+          {
+            "entryId": "1932",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/6dc2b750-8fd5-4717-9d4e-e92f547c2b38/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "428",
+        "entryId": "2070",
+        "detections": [
+          {
+            "entryId": "2069",
+            "apiDefinition": "https://catalog.essunga.se/rowstore/dataset/dc0776c2-9487-4171-928a-1a9097d62431/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "391",
+        "entryId": "2066",
+        "detections": [
+          {
+            "entryId": "2065",
+            "apiDefinition": "https://catalog.lidkoping.se/rowstore/dataset/5b82d441-5f0d-4ebb-b21b-a82df3d4b0e9/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "309",
+        "entryId": "2115",
+        "detections": [
+          {
+            "entryId": "2114",
+            "apiDefinition": "https://catalog.toreboda.se/rowstore/dataset/d8dab4ee-1b3a-48ae-bfba-c47e569531ca/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "75",
+        "entryId": "2058",
+        "detections": [
+          {
+            "entryId": "3038",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/9b2578b0-26e7-4bda-b703-0767c3e86dda/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          },
+          {
+            "entryId": "2056",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/f09b17b8-5538-44c1-b1d9-748cc0f79dfa/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "83",
+        "entryId": "2065",
+        "detections": [
+          {
+            "entryId": "2064",
+            "apiDefinition": "https://catalog.skara.se/rowstore/dataset/d30e8943-d132-41ec-863b-9fbd9914ed56/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "760",
+        "entryId": "1718",
+        "detections": [
+          {
+            "entryId": "1717",
+            "apiDefinition": "https://catalog.digg.se/rowstore/dataset/a4cc5504-cfd5-4e30-a082-d6ae1ff2b8ef/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "653",
+        "entryId": "26843",
+        "detections": [
+          {
+            "entryId": "28890",
+            "apiDefinition": "https://catalog.skl.se/rowstore/dataset/13e89a69-b7d7-443f-9944-5f936b8a1959/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "3870",
+        "detections": [
+          {
+            "entryId": "3869",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/781db658-39a9-428e-b505-dd1584cfa206/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "653",
+        "entryId": "26811",
+        "detections": [
+          {
+            "entryId": "28866",
+            "apiDefinition": "https://catalog.skl.se/rowstore/dataset/ed60ba69-f267-4b63-9f62-840342ba29f6/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "4580",
+        "detections": [
+          {
+            "entryId": "4578",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/4e789168-1d3d-468c-b9a1-0cce9a9a4f1e/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "4199",
+        "detections": [
+          {
+            "entryId": "4224",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/6c9ea4d0-030c-4031-be46-fd90c27a201c/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "347",
+        "entryId": "2080",
+        "detections": [
+          {
+            "entryId": "2075",
+            "apiDefinition": "https://data.tomelilla.se/rowstore/dataset/96392dee-98d7-469a-a479-729ec77bd4ad/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "66",
+        "entryId": "70346",
+        "detections": [
+          {
+            "entryId": "71699",
+            "apiDefinition": "https://catalog.goteborg.se/rowstore/dataset/3ec70191-60d2-4cdd-823e-f92f9938034b/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          },
+          {
+            "entryId": "71632",
+            "apiDefinition": "https://catalog.goteborg.se/rowstore/dataset/12e75096-583d-4c0b-afac-093e90d8489e/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          },
+          {
+            "entryId": "70345",
+            "apiDefinition": "https://catalog.goteborg.se/rowstore/dataset/cb541050-487e-4eea-b7b6-640d58f28092/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "347",
+        "entryId": "1636",
+        "detections": [
+          {
+            "entryId": "2079",
+            "apiDefinition": "https://data.tomelilla.se/rowstore/dataset/1b27b61c-1201-45e4-bc5a-b6fb9ffc4407/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "653",
+        "entryId": "26847",
+        "detections": [
+          {
+            "entryId": "27479",
+            "apiDefinition": "https://catalog.skl.se/rowstore/dataset/4e7a4004-9ebb-4ae7-8346-9f573aba3951/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "75",
+        "entryId": "1415",
+        "detections": [
+          {
+            "entryId": "3035",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/ac00d7bf-8993-465c-b24f-7ddf34e07b7d/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          },
+          {
+            "entryId": "1991",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/d93a0957-e401-4575-b86f-8b263b3fcf17/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "70774",
+        "detections": [
+          {
+            "entryId": "70770",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/a49359af-b48a-4868-a30a-2bc0beb47077/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "347",
+        "entryId": "2081",
+        "detections": [
+          {
+            "entryId": "2077",
+            "apiDefinition": "https://data.tomelilla.se/rowstore/dataset/412f918b-a570-4db6-b264-866ddc815ffa/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "70772",
+        "detections": [
+          {
+            "entryId": "70766",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/58781f58-1f0c-4e19-b60d-22aab39bbb0c/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "70773",
+        "detections": [
+          {
+            "entryId": "70768",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/bcf9a71e-b77a-45b1-906f-1ce361e1c756/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "653",
+        "entryId": "26795",
+        "detections": [
+          {
+            "entryId": "26794",
+            "apiDefinition": "https://catalog.skl.se/rowstore/dataset/fd6b1974-7e4b-4c0e-83ac-eb634e387c55/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "653",
+        "entryId": "26835",
+        "detections": [
+          {
+            "entryId": "28889",
+            "apiDefinition": "https://catalog.skl.se/rowstore/dataset/b80d412c-9a81-4de3-a62c-724192295677/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "70771",
+        "detections": [
+          {
+            "entryId": "70764",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/48bf2437-1ee2-42b5-b45e-c5fd5299c868/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "347",
+        "entryId": "2007",
+        "detections": [
+          {
+            "entryId": "2016",
+            "apiDefinition": "https://data.tomelilla.se/rowstore/dataset/d7be24ed-9770-4f2f-bea3-505e2764a047/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "3128",
+        "detections": [
+          {
+            "entryId": "3820",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/bb88b658-4230-4c9a-9ded-b8952cfd77a1/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "174",
+        "entryId": "1446",
+        "detections": [
+          {
+            "entryId": "2570",
+            "apiDefinition": "https://ei.entryscape.net/rowstore/dataset/5dd4838f-caf8-4816-a589-1235eff86488/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "3664",
+        "detections": [
+          {
+            "entryId": "3907",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/c6f266a7-66fd-4c76-84e9-b9b57c9d6968/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "75",
+        "entryId": "2719",
+        "detections": [
+          {
+            "entryId": "3032",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/2125a59b-9c25-4e48-8ea8-a0a021e47114/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          },
+          {
+            "entryId": "2718",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/44cc725e-cee4-406f-a624-02b57fc928c3/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          },
+          {
+            "entryId": "2717",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/ede5ef13-536f-4570-995b-16dac0f28358/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "761",
+        "entryId": "379",
+        "detections": [
+          {
+            "entryId": "381",
+            "apiDefinition": "https://catalog.lansstyrelsen.se/rowstore/dataset/8f4250ac-cd80-4920-a6fd-d727709f04ba/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "1857",
+        "detections": [
+          {
+            "entryId": "1852",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/99cfd9c9-a4ff-460f-b1eb-7475e01fa79e/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "1906",
+        "detections": [
+          {
+            "entryId": "1905",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/71c226ea-f838-4d95-b853-544779d645ec/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "761",
+        "entryId": "17",
+        "detections": [
+          {
+            "entryId": "93",
+            "apiDefinition": "https://catalog.lansstyrelsen.se/rowstore/dataset/9d8050d3-e53d-4fcb-9494-181565601160/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "75",
+        "entryId": "1975",
+        "detections": [
+          {
+            "entryId": "2865",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/ee44b6b8-ab8c-44dc-ab0c-f7acf9a5e20d/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "653",
+        "entryId": "26820",
+        "detections": [
+          {
+            "entryId": "26818",
+            "apiDefinition": "https://catalog.skl.se/rowstore/dataset/938b12d5-4523-48b9-bf4d-c74d3c101d45/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "66",
+        "entryId": "69022",
+        "detections": [
+          {
+            "entryId": "70057",
+            "apiDefinition": "https://catalog.goteborg.se/rowstore/dataset/58766878-4df0-4a62-9d9d-3de64e0345eb/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "1855",
+        "detections": [
+          {
+            "entryId": "1848",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/b8b8a535-7a78-4818-a222-b2442b58f00d/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "3125",
+        "detections": [
+          {
+            "entryId": "3829",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/192d8c46-8bf7-41ee-aaf2-0945da104296/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "761",
+        "entryId": "11",
+        "detections": [
+          {
+            "entryId": "36",
+            "apiDefinition": "https://catalog.lansstyrelsen.se/rowstore/dataset/6ed50cc9-ce88-4a17-8c24-3392547abc79/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "761",
+        "entryId": "142",
+        "detections": [
+          {
+            "entryId": "140",
+            "apiDefinition": "https://catalog.lansstyrelsen.se/rowstore/dataset/9f832f72-082f-465a-8043-b02bcee1b06b/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "761",
+        "entryId": "6",
+        "detections": [
+          {
+            "entryId": "1254",
+            "apiDefinition": "https://catalog.lansstyrelsen.se/rowstore/dataset/728071fd-f1a9-4426-9f58-06dbba8d1b34/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "1854",
+        "detections": [
+          {
+            "entryId": "1846",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/46659b03-ddab-4f3b-bbed-e24aeecdf374/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "75",
+        "entryId": "1552",
+        "detections": [
+          {
+            "entryId": "2639",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/40b39700-0053-4ebb-aae6-ac5c6b4bb305/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "761",
+        "entryId": "1261",
+        "detections": [
+          {
+            "entryId": "1259",
+            "apiDefinition": "https://catalog.lansstyrelsen.se/rowstore/dataset/ab029167-f4e7-4a2c-8841-5aeb8959a71f/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "761",
+        "entryId": "43",
+        "detections": [
+          {
+            "entryId": "41",
+            "apiDefinition": "https://catalog.lansstyrelsen.se/rowstore/dataset/4ee46a30-8eff-4290-b55c-44cd01ebf7a6/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68529",
+        "detections": [
+          {
+            "entryId": "68527",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/fad86bf9-67e3-4d68-829c-7b9a23bc5e42/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "75",
+        "entryId": "1918",
+        "detections": [
+          {
+            "entryId": "1917",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/1503eefc-7f16-409d-a721-76ad669f725e/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "1856",
+        "detections": [
+          {
+            "entryId": "1850",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/fb103cad-3739-4390-96a2-2675ea95411e/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "197",
+        "entryId": "1669",
+        "detections": [
+          {
+            "entryId": "1672",
+            "apiDefinition": "https://vgregion.entryscape.net/rowstore/dataset/3d6b77d0-4557-4c82-9d24-e2bd22d4d090/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "275",
+        "entryId": "1263",
+        "detections": [
+          {
+            "entryId": "1252",
+            "apiDefinition": "https://konsumentverket.entryscape.net/rowstore/dataset/86ce5095-1641-4390-8987-bdc3c77625a7/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          },
+          {
+            "entryId": "2707",
+            "apiDefinition": "https://konsumentverket.entryscape.net/rowstore/dataset/2c212eff-163e-4756-8fab-929041c6bf4f/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          },
+          {
+            "entryId": "1254",
+            "apiDefinition": "https://konsumentverket.entryscape.net/rowstore/dataset/c1e0dd8c-60c1-4e79-b13b-d559f6e6b273/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          },
+          {
+            "entryId": "1257",
+            "apiDefinition": "https://konsumentverket.entryscape.net/rowstore/dataset/9f209322-73d5-4a4b-ad3b-383af9fadc10/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "3112",
+        "detections": [
+          {
+            "entryId": "3811",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/eb9eee0d-0a3a-47e4-af93-af42a11f2a44/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "197",
+        "entryId": "1241",
+        "detections": [
+          {
+            "entryId": "1247",
+            "apiDefinition": "https://vgregion.entryscape.net/rowstore/dataset/70241cef-e111-4b07-bb55-99b5981f47de/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "1482",
+        "detections": [
+          {
+            "entryId": "1481",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/0189db9e-a9f9-4cdc-8d9f-74446265828d/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "174",
+        "entryId": "1707",
+        "detections": [
+          {
+            "entryId": "1823",
+            "apiDefinition": "https://ei.entryscape.net/rowstore/dataset/8db5a77c-ef90-49f0-8e2f-18327735c463/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68000",
+        "detections": [
+          {
+            "entryId": "67997",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/c67b320b-ffee-4876-b073-dd9236cd2a99/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "3862",
+        "detections": [
+          {
+            "entryId": "3857",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/14d7ec2f-76f2-4e65-86bf-23319d4f4b56/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "574",
+        "entryId": "888",
+        "detections": [
+          {
+            "entryId": "887",
+            "apiDefinition": "https://catalog.gavle.se/rowstore/dataset/2bc022d9-abd2-4808-a8f7-1a7b209a7de6/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "3122",
+        "detections": [
+          {
+            "entryId": "3830",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/adc0c731-9845-42d2-871b-967be6c534fa/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67959",
+        "detections": [
+          {
+            "entryId": "67956",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/b4de7df7-63c0-4e7e-bb59-1f156a591763/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "197",
+        "entryId": "1248",
+        "detections": [
+          {
+            "entryId": "1243",
+            "apiDefinition": "https://vgregion.entryscape.net/rowstore/dataset/c5491a87-e5a0-4edb-80fe-2c76a0696902/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "1301",
+        "detections": [
+          {
+            "entryId": "1299",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/852b153c-42c3-44c6-b53c-abad07656cce/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "333",
+        "detections": [
+          {
+            "entryId": "332",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/f16eb5e3-c352-40c5-84a2-d15fd5325f8f/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "4197",
+        "detections": [
+          {
+            "entryId": "4192",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/85c35206-b3e6-4696-961f-6a4a7c5e288d/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "174",
+        "entryId": "1309",
+        "detections": [
+          {
+            "entryId": "1348",
+            "apiDefinition": "https://ei.entryscape.net/rowstore/dataset/db5aa3eb-4fa4-496b-9745-bbf83829f9d2/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "3861",
+        "detections": [
+          {
+            "entryId": "3860",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/cca1e1ba-ed4d-411e-be40-abe6f4441fa7/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "1422",
+        "detections": [
+          {
+            "entryId": "1415",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/5724fdc9-662b-4eb9-90da-d5490c129b75/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "4137",
+        "detections": [
+          {
+            "entryId": "4134",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/708b2621-d308-4aee-a011-727dc1eeb44a/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "75",
+        "entryId": "1592",
+        "detections": [
+          {
+            "entryId": "1957",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/bd34bf56-8ebe-427a-8e8d-0a126f481f33/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "174",
+        "entryId": "2247",
+        "detections": [
+          {
+            "entryId": "2221",
+            "apiDefinition": "https://ei.entryscape.net/rowstore/dataset/de581f97-adde-483a-bfa3-846c4a05e17b/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "174",
+        "entryId": "1308",
+        "detections": [
+          {
+            "entryId": "1345",
+            "apiDefinition": "https://ei.entryscape.net/rowstore/dataset/5e724427-c4b1-4771-9850-3dff3db48870/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "3115",
+        "detections": [
+          {
+            "entryId": "3828",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/84b8876c-091a-4b00-a625-918060ce10b9/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68455",
+        "detections": [
+          {
+            "entryId": "68454",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/1429b654-11eb-401e-ae3c-0dd6b52e6c89/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "4559",
+        "detections": [
+          {
+            "entryId": "4552",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/909e204a-dea1-4530-9459-810d647b13fd/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "1421",
+        "detections": [
+          {
+            "entryId": "1413",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/6745ef13-f748-4316-9507-82ccb4c0d3db/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67921",
+        "detections": [
+          {
+            "entryId": "67920",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/9f29fe09-4dbc-4d2f-848f-7cffdd075383/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "4198",
+        "detections": [
+          {
+            "entryId": "4188",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/a10a62d7-f54b-4a37-8539-43a7a1e48de3/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "75",
+        "entryId": "1025",
+        "detections": [
+          {
+            "entryId": "1024",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/50908ed4-e062-4c90-b133-9a37b3f3a821/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "174",
+        "entryId": "2138",
+        "detections": [
+          {
+            "entryId": "2137",
+            "apiDefinition": "https://ei.entryscape.net/rowstore/dataset/371c6030-275e-4053-915e-c4d9aa3ab2e6/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "69867",
+        "detections": [
+          {
+            "entryId": "69865",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/e2009032-6d05-4bd4-9329-ae66e8d92de6/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "75",
+        "entryId": "2023",
+        "detections": [
+          {
+            "entryId": "2021",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/4f3e7b7a-1140-4501-b4e4-852ff60b9d2b/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          },
+          {
+            "entryId": "2022",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/31509b86-47c2-4bff-b8d5-7dd7cfd64725/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67899",
+        "detections": [
+          {
+            "entryId": "67897",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/006353ad-aa05-4757-bdfd-fae344433a50/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "69324",
+        "detections": [
+          {
+            "entryId": "69323",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/91940080-6456-44fe-a10d-abee79196c48/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "4560",
+        "detections": [
+          {
+            "entryId": "4555",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/0dc8d0f6-5f95-47d4-b9a4-561e7e1e2268/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67883",
+        "detections": [
+          {
+            "entryId": "67882",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/28cbac7c-395a-438a-80db-12b955ea3caf/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "75",
+        "entryId": "2352",
+        "detections": [
+          {
+            "entryId": "2359",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/ad01a6d6-e986-4d97-820b-f7d5f44d0a03/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "1423",
+        "detections": [
+          {
+            "entryId": "1417",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/0168c3e7-8692-4fde-91d9-1e24e0a8db38/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "75",
+        "entryId": "2166",
+        "detections": [
+          {
+            "entryId": "2406",
+            "apiDefinition": "https://catalog.sodertalje.se/rowstore/dataset/01753ee9-bd97-460f-96da-b51e0b2a504c/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68470",
+        "detections": [
+          {
+            "entryId": "68469",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/70ccea31-b64c-4bf5-84c7-673f04f32505/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "69252",
+        "detections": [
+          {
+            "entryId": "69250",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/29a80060-59ec-4a9b-b28f-bca33d6dde2f/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67947",
+        "detections": [
+          {
+            "entryId": "67946",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/658b7b2d-a9d4-42f8-9913-e9f40e4ec994/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "3109",
+        "detections": [
+          {
+            "entryId": "3106",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/46110f1f-8972-41ba-9cca-34ab8f184445/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67935",
+        "detections": [
+          {
+            "entryId": "67934",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/403c85f5-98cf-43c9-af6f-29961aa3ccfa/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68487",
+        "detections": [
+          {
+            "entryId": "68486",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/0d3eae5d-99c5-4fd3-b954-9ab3bc705671/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67976",
+        "detections": [
+          {
+            "entryId": "67975",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/f292f172-48d1-48fb-8c1d-3ed89ae4c304/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67927",
+        "detections": [
+          {
+            "entryId": "67925",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/f9a0bdfc-7f9a-4a3f-bb07-6d5c3cec5189/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67880",
+        "detections": [
+          {
+            "entryId": "67879",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/43902bf8-cb34-4288-ab95-2080f8a878dc/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67932",
+        "detections": [
+          {
+            "entryId": "67930",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/ebbd8d70-9b9c-4327-b2ce-a371ee66744c/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68714",
+        "detections": [
+          {
+            "entryId": "68705",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/af0d6718-85b7-4023-9d24-58145eb8c0b7/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "275",
+        "entryId": "2188",
+        "detections": [
+          {
+            "entryId": "2186",
+            "apiDefinition": "https://konsumentverket.entryscape.net/rowstore/dataset/0a745b96-5f29-4c1d-a5f8-379b337901dc/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67914",
+        "detections": [
+          {
+            "entryId": "67912",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/805f5a46-dbca-4a72-aeea-dbdda1bf791b/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "286",
+        "entryId": "4447",
+        "detections": [
+          {
+            "entryId": "4445",
+            "apiDefinition": "https://skovde.entryscape.net/rowstore/dataset/d962e3df-9882-46e5-ba4f-79d029abef91/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "653",
+        "detections": [
+          {
+            "entryId": "650",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/625394b8-2330-4dfc-b63e-2112eea79f9d/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "523",
+        "detections": [
+          {
+            "entryId": "524",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/c8ae3355-c15f-491d-9e53-8f7736b24ee7/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68479",
+        "detections": [
+          {
+            "entryId": "68476",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/7ff3d36c-cee6-4a88-8c64-fe3a3fee38c3/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "275",
+        "entryId": "1264",
+        "detections": [
+          {
+            "entryId": "1251",
+            "apiDefinition": "https://konsumentverket.entryscape.net/rowstore/dataset/6059d20a-4d8f-40f0-8696-ee40f080294b/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "275",
+        "entryId": "1260",
+        "detections": [
+          {
+            "entryId": "1248",
+            "apiDefinition": "https://konsumentverket.entryscape.net/rowstore/dataset/ee53f020-2d4a-4a77-bffd-2b940dec5589/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "238",
+        "entryId": "35358",
+        "detections": [
+          {
+            "entryId": "35356",
+            "apiDefinition": "https://lidingo.entryscape.net/rowstore/dataset/a7edd4ff-676c-4afe-a46a-6a1676429ee0/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "238",
+        "entryId": "36082",
+        "detections": [
+          {
+            "entryId": "36080",
+            "apiDefinition": "https://lidingo.entryscape.net/rowstore/dataset/de1fa174-75c3-4356-a023-a84732472d2a/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68480",
+        "detections": [
+          {
+            "entryId": "68474",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/ff337e26-7ca3-4501-94b4-1d412e98598c/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "597",
+        "entryId": "1489",
+        "detections": [
+          {
+            "entryId": "1488",
+            "apiDefinition": "https://eskilstuna.entryscape.net/rowstore/dataset/cb4c63bd-c56b-45ac-94fd-043ddd867abb/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "4558",
+        "detections": [
+          {
+            "entryId": "4607",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/9a1d6efb-d34c-4b8c-890f-f1625050a6bd/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "238",
+        "entryId": "36125",
+        "detections": [
+          {
+            "entryId": "36123",
+            "apiDefinition": "https://lidingo.entryscape.net/rowstore/dataset/d859bbfc-f514-422f-b68d-750f31ff876d/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68722",
+        "detections": [
+          {
+            "entryId": "68709",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/c54191c1-f856-4709-b560-23ac3f4b95a6/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "275",
+        "entryId": "1262",
+        "detections": [
+          {
+            "entryId": "1243",
+            "apiDefinition": "https://konsumentverket.entryscape.net/rowstore/dataset/1d985294-b775-4aa0-8424-ef1ad7b71dd1/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "763",
+        "entryId": "654",
+        "detections": [
+          {
+            "entryId": "651",
+            "apiDefinition": "https://stuns.entryscape.net/rowstore/dataset/52477c19-febe-4948-b5ae-7253fe47ab88/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "238",
+        "entryId": "35401",
+        "detections": [
+          {
+            "entryId": "35399",
+            "apiDefinition": "https://lidingo.entryscape.net/rowstore/dataset/366db3f2-1438-4bcc-8bea-068dc171fd22/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "286",
+        "entryId": "5576",
+        "detections": [
+          {
+            "entryId": "5573",
+            "apiDefinition": "https://skovde.entryscape.net/rowstore/dataset/20b72b63-25e8-45a4-8780-922bb35cadc1/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68488",
+        "detections": [
+          {
+            "entryId": "68484",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/293993a8-1b6d-437b-9949-6665836776d5/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "265",
+        "entryId": "3718",
+        "detections": [
+          {
+            "entryId": "3717",
+            "apiDefinition": "https://kronofogden.entryscape.net/rowstore/dataset/9b2030e3-43b7-458f-ba50-4587f7bb439b/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "66",
+        "entryId": "70654",
+        "detections": [
+          {
+            "entryId": "70653",
+            "apiDefinition": "https://catalog.goteborg.se/rowstore/dataset/400fc192-19f1-40dc-b170-e6e39b4e18cf/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68841",
+        "detections": [
+          {
+            "entryId": "68840",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/86c18d69-7139-4c43-96dc-0770ffb4e3d8/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68023",
+        "detections": [
+          {
+            "entryId": "68021",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/83de1864-b2aa-4ef4-837a-df3f9d58c4af/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67938",
+        "detections": [
+          {
+            "entryId": "67937",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/88320397-5c32-4c16-ae79-d36d95b17b95/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68721",
+        "detections": [
+          {
+            "entryId": "68711",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/1a73b1dc-aa2a-4a07-bce6-d24351ec2cca/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "70013",
+        "detections": [
+          {
+            "entryId": "70012",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/34e896be-3c42-47eb-ba06-54140fa3e8d8/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          },
+          {
+            "entryId": "70011",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/c3e87b7c-6c9a-4272-ab14-a2935e3e55a6/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68635",
+        "detections": [
+          {
+            "entryId": "68631",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/8c105cf7-97fe-464e-b016-a7ae3def6623/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "69531",
+        "detections": [
+          {
+            "entryId": "69526",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/cf65bd23-ab66-4f8e-8592-15631062acb9/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68717",
+        "detections": [
+          {
+            "entryId": "68699",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/ef0ea7d7-1614-4e0b-81af-cd02dbed9d88/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68634",
+        "detections": [
+          {
+            "entryId": "68633",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/15560713-db6d-4560-bbce-1c1b297f6080/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68718",
+        "detections": [
+          {
+            "entryId": "68698",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/f85d15ab-ab51-4889-8ff8-eb609e564841/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68720",
+        "detections": [
+          {
+            "entryId": "68707",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/6d5d9b9c-03f7-460d-8313-1f2dad7cebbe/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68842",
+        "detections": [
+          {
+            "entryId": "68839",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/71d96e3c-4cde-4e4b-acdb-d7d496ac10b6/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67993",
+        "detections": [
+          {
+            "entryId": "69327",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/cd52cab1-5925-4471-8fe2-7824f8ba7c46/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67908",
+        "detections": [
+          {
+            "entryId": "67907",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/2927e831-9075-4bc0-b3a2-3336a992ca4b/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68719",
+        "detections": [
+          {
+            "entryId": "68708",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/faaae9ba-ea64-4963-a00f-f39d4f59920d/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "67971",
+        "detections": [
+          {
+            "entryId": "67970",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/120b9d9d-e509-4801-836f-c4444cf81fcc/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68716",
+        "detections": [
+          {
+            "entryId": "68701",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/a6ce1405-e8c2-4bc4-8d85-6ac76e06da46/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      },
+      {
+        "contextId": "6",
+        "entryId": "68715",
+        "detections": [
+          {
+            "entryId": "68703",
+            "apiDefinition": "https://skatteverket.entryscape.net/rowstore/dataset/d7024e65-0f64-4a8f-9ef2-418ae32ab12e/swagger",
+            "type": "swagger",
+            "version": "2.0"
+          }
+        ]
+      }
+    ]
+  }

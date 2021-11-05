@@ -122,7 +122,7 @@ var csp_headers = {
     'https://www.digg.se',
   ],
   'connect-src': ['*'],
-  'frame-src': ["'self'", 'https://www.youtube.com/'],
+  'frame-src': ["'self'", 'https://www.youtube.com/','https://www.youtube-nocookie.com/'],
 };
 app.use('/', function (req, res, done) {
   csp.header(csp_headers, res);
@@ -196,7 +196,7 @@ app.use('/sitemap.xml', getSitemap);
 
 //Robots, security, sitemap and google site verification
 app.get(
-  ['/robots.txt', '/security.txt', '/google*.html', '/favicon.ico'],
+  ['/apiDetections.json', '/robots.txt', '/security.txt', '/google*.html', '/favicon.ico'],
   async (req, res) => {
     let reqPath = req.path;
     switch (req.path) {
@@ -208,6 +208,9 @@ app.get(
         break;
       case '/favicon.ico':
         reqPath = '/dist/client/js/favicon.ico';
+        break;
+      case '/apiDetections.json':
+        reqPath = '/dist/client/js/apiDetections.json';
         break;
     }
     res.sendFile(path.join(cwd, reqPath));
@@ -234,6 +237,10 @@ const getCacheKey = (url: string, acceptLang: string) => {
       '/(?<lang>sv|en)/(?<type>datasets|concepts|specifications)/.*/'
     ).test(url)
   ) {
+    //skip caching the apiexplorer
+    if(url.includes("/apiexplore/"))
+      return '';
+
     var r = new RegExp(
       '/(?<lang>sv|en)/(?<type>datasets|concepts|specifications)/.*/'
     );

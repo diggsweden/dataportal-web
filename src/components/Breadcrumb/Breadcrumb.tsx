@@ -88,11 +88,9 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = (props) => {
           {data!.tags.map((n, index) => {
             return (
               <li className="breadcrumb__list--item text-7">
-                {/* <Truncate lines={1}> */}
-                  <Link to={`/${i18n.languages[0]}${n.connectedTagPath}`}>
-                    {n.title}
-                  </Link>
-                {/* </Truncate> */}
+                <Link to={`/${i18n.languages[0]}${n.connectedTagPath}`}>
+                  {n.title}
+                </Link>
               </li>
             );
           })}

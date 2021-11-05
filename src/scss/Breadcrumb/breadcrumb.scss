@@ -2,8 +2,12 @@
 
 
 .breadcrumb {
-    // border-bottom: 1px solid $black10;
     margin-bottom: $space-16;
+
+    @media screen and (max-width: 74rem) {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 
     .breadcrumb__list {
         display: flex;
@@ -17,11 +21,6 @@
         padding-top: $space-8;
         padding-bottom: 0.625rem;
 
-        @media screen and (max-width: 1440px) {
-            padding-left: $space-16;
-            padding-right: $space-16;
-        }
-
         .breadcrumb__list--item {
             padding-top: $space-8;
             padding-bottom: $space-8;
@@ -31,9 +30,36 @@
                 text-decoration: underline;
                 color: $black100;
 
+                @media screen and (max-width: 550px) {
+                    display: block;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 15vmin;
+                }
+
+
+                &::first-letter {
+                    text-transform: uppercase;
+                }
+
                 &:hover {
                     text-decoration: none;
                     cursor: pointer;
+                }
+            }
+
+            &:nth-of-type(3) {
+                a {
+                    display: block;
+                    max-width: 25vmin;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+
+                    @media screen and (max-width: 550px) {
+                        max-width: 15vmin;
+                    }
                 }
             }
 
@@ -56,21 +82,26 @@
                     @media screen and (max-width: 550px) {
                         max-width: 38vmin;
                     }
+
+                    &:empty::after {
+                        content: ". . .";
+                    }
                 }
             }
 
             &:not(:first-of-type) {
-                a {
-                    &:empty::after {
-                        content: ". . .";
-                    }
+                display: flex;
+                align-items: center;
 
-                    &::before {
-                        content: "/";
-                        text-decoration: none !important;
-                        display: inline-block;
-                        padding-right: $space-8;
-                    }
+                &:empty::after {
+                    content: ". . .";
+                }
+
+                &::before {
+                    content: "/";
+                    text-decoration: none !important;
+                    display: inline-block;
+                    padding-right: $space-8;
                 }
             }
         }

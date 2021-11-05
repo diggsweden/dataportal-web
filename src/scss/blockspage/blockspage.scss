@@ -1,11 +1,5 @@
 @import 'scss/general/variables.scss';
 
-@mixin Layout {
-  padding: 0 16px;
-  max-width: 72rem;
-  margin: auto;
-}
-
 .detailpage {
   width: 100%;
 
@@ -13,8 +7,9 @@
     display: flex;
     justify-content: space-between;
     margin: 0 64px;
-    padding: 0 16px;
+
     @include Layout;
+
     //Window 800px
     @media screen and (max-width: 50rem) {
       flex-direction: column;
@@ -32,11 +27,19 @@
       h1 {
         margin-top: 0rem;
         margin-bottom: $space-16;
+
+        &::first-letter {
+          text-transform: capitalize;
+        }
       }
 
       .description {
         margin-bottom: $space-32;
         word-break: break-word;
+
+        @media screen and (max-width: 26.375rem) {
+          margin-bottom: $space-48;
+        }
       }
 
       .escoList {
@@ -148,6 +151,12 @@
         border: 2px solid $green25;
         margin-top: $space-16;
 
+        @media screen and (max-width: 26.375rem) {
+          &:first-of-type {
+            padding-top: 0;
+          }
+        }
+
         .esbRowHead {
           position: relative;
           justify-content: space-between;
@@ -156,14 +165,14 @@
           max-height: none;
 
           //Window 374px
-          @media screen and (max-width: 23.375rem) {
+          @media screen and (max-width: 26.375rem) {
             flex-direction: column;
           }
 
           .esbRowMain {
             padding: 0rem;
 
-            @media screen and (max-width: 23.375rem) {
+            @media screen and (max-width: 26.375rem) {
               width: 100%;
             }
 
@@ -207,9 +216,10 @@
             margin: 0rem;
             width: fit-content;
 
-            @media screen and (max-width: 23.375rem) {
-              margin-top: $space-8;
-              align-self: flex-end;
+            @media screen and (max-width: 26.375rem) {
+              margin-top: $space-16;
+              align-self: flex-start;
+              justify-content: flex-start;
             }
 
             button {
@@ -217,9 +227,13 @@
               margin: 0rem;
               min-width: max-content;
               height: 2.75rem;
-              background-color: $brown10;
+              background-color: $white;
               text-decoration: none;
-              color: $black100;
+              color: $black-hover;
+              fill: $black-hover;
+              font-weight: normal;
+              font-size: 1.125rem; //18px
+              line-height: 1.6875rem; //27px
 
               &:hover {
                 text-decoration: none;
@@ -239,18 +253,23 @@
 
               span {
                 font-family: 'Font Awesome 5 Free' !important;
-                color: $black100;
+                font-size: 1rem;
                 margin-top: 0.125rem;
                 margin-left: 0.25rem;
               }
 
               &:hover {
-                background-color: $black10;
+                filter: brightness(.98);
                 transition: 0ms;
               }
 
               &:focus {
                 border: none;
+              }
+
+              @media screen and (max-width: 26.375rem) {
+                border: 2px solid $green25 !important;
+                font-size: 0.98rem;
               }
             }
           }
@@ -350,16 +369,15 @@
           }
 
           .entryList {
-            margin-bottom: $space-24;
+            margin-bottom: $space-16;
 
             .distribution__extended-list {
               border: none;
-              border-bottom: 2px dotted $black10;
               margin: 0rem;
 
               .esbRowHead {
                 padding: 0rem;
-                padding-bottom: $space-16;
+                padding-bottom: $space-8;
                 padding-top: $space-16;
 
                 .esbRowAlignPrimary {
@@ -367,15 +385,31 @@
                 }
               }
 
+              //Download links when multiple files / extended-list
               a {
+                display: flex;
+                align-items: center;
                 font-weight: normal;
-                font-size: 1rem; //16px
-                line-height: 1.5rem; //24px
+                font-size: 1.125rem; //18px
+                line-height: 1.6875rem; //27px
                 color: $black100;
+                text-decoration: none;
+                height: 2.75rem;
+                padding-top: .5rem;
+                padding-bottom: .5rem;
+                padding-left: .6rem;
+                padding-right: .6rem;
+                border-radius: 2px;
+                background-color: $green10;
 
                 &:hover {
-                  // text-decoration: none;
-                  background-color: $pink10;
+                  filter: brightness(.98);
+                }
+
+                &:after {
+                  content: url(../../assets/file_download_icon.svg);
+                  margin-left: .5rem;
+                  margin-bottom: -5px;
                 }
               }
             }
@@ -460,8 +494,8 @@
 
       .detailpage__wrapper--rightcol-info {
         border: 2px solid $green25;
-        padding-bottom: $space-32;
         margin-bottom: $space-16;
+        padding-bottom: 1rem;
 
         // Window 800px
         @media screen and (min-width: 50rem) {
@@ -495,14 +529,17 @@
           .rdforms {
             display: flex;
             flex-direction: column;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
 
             .rdformsRow {
               display: flex;
               flex-direction: column;
-              padding-top: $space-16;
               padding-left: $space-16;
               padding-right: $space-16;
-              padding-bottom: 0rem;
+              padding-top: 0;
+              padding-bottom: 0;
+              margin-bottom: $space-16;
 
               .rdformsLabel {
                 width: fit-content !important;
@@ -639,9 +676,32 @@
       }
     }
 
-    //List with distribution
+    .dataservice-explore-api-link {
+      display: block;
+      margin-left: 1rem;
+      background-color: $orange10;
+      width: fit-content;
+      padding: .5rem .6rem;
+      margin-left: 0px;
+
+      &:hover {
+        filter: brightness(.98);
+      }
+
+      &:after {
+        content: url(../../assets/tools.svg);
+        margin-left: .5rem;
+        display: inline-block;
+      }
+    }
+
+    //List with distributions
     .distribution__list {
       margin-bottom: $space-32;
+
+      @media screen and (max-width: 26.375rem) {
+        margin-bottom: $space-48;
+      }
 
       .esbRowMain {
         font-weight: normal;
@@ -654,6 +714,54 @@
           align-items: flex-start;
           padding-right: $space-8;
           min-height: 5rem;
+
+          @media screen and (max-width: 26.375rem) {
+            padding-right: 0;
+          }
+
+          .distribution_link-row {
+            display: flex;
+            flex-direction: row-reverse;
+
+            span {
+              a {
+                display: block;
+                font-weight: normal;
+                font-size: 1.125rem; //18px
+                line-height: 1.6875rem; //27px
+                text-decoration: none;
+                color: $black100;
+                background-color: $pink10;
+                min-height: 2.75rem;
+                padding-top: .5rem;
+                padding-bottom: .5rem;
+                padding-left: .6rem;
+                padding-right: .6rem;
+                border-radius: 2px;
+
+                @media screen and (max-width: 26.375rem) {
+                  font-size: 0.98rem;
+                }
+
+                &.explore-api-link {
+                  display: flex;
+                  align-items: center;
+                  margin-left: 1rem;
+                  background-color: $orange10 !important;
+
+                  &:hover {
+                    filter: brightness(.98);
+                  }
+
+                  &:after {
+                    content: url(../../assets/tools.svg);
+                    margin-left: .5rem;
+                    display: inline-block;
+                  }
+                }
+              }
+            }
+          }
 
           .esbBadge {
             padding: 0rem;
@@ -677,7 +785,7 @@
           }
 
           .esbRowAlignPrimary {
-            margin-bottom: $space-8;
+            margin-bottom: $space-16;
           }
 
           .esbRowAlignSecondary {
@@ -696,18 +804,34 @@
               }
             }
 
-            // a:first-of-type {
-            //     margin-right: $space-16;
-            // }
-
             .distribution__link {
+              display: flex;
+              align-items: center;
               color: $black100;
               margin: 0rem;
               margin-left: 0px !important;
-              text-decoration: underline;
+              text-decoration: none;
 
               &:hover {
-                background-color: $pink10;
+                filter: brightness(.98);
+              }
+
+              &.download_url {
+                background-color: $green10;
+
+                &:after {
+                  content: url(../../assets/file_download_icon.svg);
+                  margin-left: .5rem;
+                  margin-bottom: -5px;
+                }
+              }
+
+              &.access_url {
+                &:after {
+                  content: url(../../assets/external_link_icon.svg);
+                  margin-left: .5rem;
+                  margin-bottom: -5px;
+                }
               }
             }
           }
@@ -715,6 +839,8 @@
           .distribution_api-flag {
             position: absolute;
             color: $black-hover;
+            top: 1rem;
+            right: 1rem;
 
             i {
               font-family: "FontAwesome" !important;
@@ -722,16 +848,6 @@
               font-size: 1rem;
               padding-right: 0.25rem;
               color: $orange100;
-            }
-
-            @media screen and (min-width: 23.375rem) {
-              top: 1rem;
-              right: 1rem;
-            }
-
-            @media screen and (max-width: 23.375rem) {
-              left: 1rem;
-              bottom: 2rem;
             }
           }
         }
@@ -1424,6 +1540,7 @@ html:lang(en) {
     align-items: center;
     color: $black100;
     padding: 0rem;
+
     span {
       display: block;
       text-transform: capitalize;
@@ -1451,6 +1568,7 @@ html:lang(en) {
     align-items: center;
     color: $black100;
     padding: 0rem;
+
     span {
       display: block;
       text-transform: capitalize;
@@ -1490,8 +1608,9 @@ html:lang(en) {
 
   a {
     color: $black100 !important;
-    width: max-content;
+    width: fit-content;
     text-decoration: underline !important;
+    word-break: break-all;
 
     &:hover {
       background-color: $pink10;

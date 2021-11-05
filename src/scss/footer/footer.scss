@@ -68,16 +68,17 @@ footer {
     }
 
     .external-link::after {
-        content: '\f08e';
+        content: "\f08e";
         margin-left: 5px;
-        font-family: "FontAwesome" !important;
+        font-family: FontAwesome!important;
         font-size: .8em;
-        text-decoration: none !important;
+        text-decoration: none!important;
         display: inline-block;
     }
 
     .external-link[href^="mailto:"]::after {
         content: none;
+        background-image: none;
     }
 
     .footer__links-nav {

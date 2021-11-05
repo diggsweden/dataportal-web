@@ -33,6 +33,7 @@ export default [
       plugins: [
         ...plugins,        
         new CopyWebpackPlugin([
+          { from: path.join(__dirname, '../node_modules/swagger-ui-react/swagger-ui.css'), flatten: true },
           //REMOVED until MetaSolutions fixes the package, >4.7.5 & <4.7.14 does not work with IE 11
           //{ from: path.join(__dirname, '../node_modules/@entryscape/entrystore-js/dist/entrystore.js'), flatten: true },
           //{ from: path.join(__dirname, '../node_modules/@entryscape/rdfjson/dist/rdfjson.js'), flatten: true },          

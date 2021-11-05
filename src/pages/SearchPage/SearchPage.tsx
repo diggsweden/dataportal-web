@@ -1,4 +1,4 @@
-import { Box, ArrowDropIcon } from '@digg/design-system';
+import { Box, ArrowDropIcon, CloseIcon, ArrowIcon } from '@digg/design-system';
 import React, { useEffect, useState } from 'react';
 import 'url-search-params-polyfill';
 import { __RouterContext } from 'react-router';
@@ -15,6 +15,7 @@ import { StaticBreadcrumb } from 'components/Breadcrumb';
 import { Link } from 'react-router-dom';
 import { SearchInput } from './SearchInput';
 import { SearchResults } from './SearchResults';
+import { InfoIcon } from '../../assets/InfoIcon';
 interface SearchProps extends PageProps {
   activeLink?: string;
 }
@@ -140,7 +141,7 @@ export const SearchPage: React.FC<SearchProps> = ({ location, env }) => {
         {(search) => (
           <div className="wpb_wrapper">
             <div className="main-container">
-              <SearchHeader activeLink={"search"} />
+              <SearchHeader activeLink={'search'} />
 
               <div className="row search-header-wrapper">
                 <h1 className="text-2 search-header">
@@ -153,20 +154,18 @@ export const SearchPage: React.FC<SearchProps> = ({ location, env }) => {
                     'search-tip__btn text-7' +
                     (showTip ? ' search-tip__btn--active' : '')
                   }
-                  onClick={() => {clearCurrentScrollPos();setShowTip(!showTip)}}
+                  onClick={() => {
+                    clearCurrentScrollPos();
+                    setShowTip(!showTip);
+                  }}
                 >
                   {i18n.t('pages|search|search-tips')}{' '}
-                  <ArrowDropIcon
-                    rotation={showTip ? -180 : 0}
-                    width={[20, 25]}
-                  />
+                  <ArrowDropIcon rotation={showTip ? 180 : 0} width={'24px'} />
                 </button>
               </div>
 
               <div
-                className={
-                  'search-tip__modal' + (showTip ? ' show-tip' : '')
-                }
+                className={'search-tip__modal' + (showTip ? ' show-tip' : '')}
               >
                 <div className="search-tip__modal-wrapper">
                   <span className="text-7-bold">

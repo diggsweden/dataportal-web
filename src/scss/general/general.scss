@@ -19,10 +19,11 @@
     margin: auto;
     display: flex;
     flex-direction: column;
-    // margin-bottom: $space-64;
 
-    @media screen and (max-width: 1440px) {
-        padding: 0px $space-16;
+    @media screen and (max-width: 74rem) {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        max-width: none;
     }
 }
 
@@ -100,6 +101,7 @@ html textarea:focus,
 html select:focus {
     outline: $focus-style !important;
     outline-offset: $focus-offset !important;
+    transition: outline-offset 0s !important;
 }
 
 //Skip to content without js.

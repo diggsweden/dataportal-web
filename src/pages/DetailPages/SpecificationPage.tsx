@@ -182,6 +182,7 @@ export const SpecificationPage: React.FC<PageProps> = ({
       env={env}
       entryUri={`https://dataportal.se/specifications/${match.params.curi}`}
       entrystoreUrl={env.ENTRYSCAPE_SPECS_PATH}
+      fetchMore={false}
     >
       <EntrystoreContext.Consumer>
         {(entry) => (
@@ -230,7 +231,7 @@ export const SpecificationPage: React.FC<PageProps> = ({
             <div className="detailpage__wrapper">
               {/* Left column */}
               <div className="detailpage__wrapper--leftcol content">
-                <span className="text-6-bold beta_badge--xl">BETA</span>
+                <span className="text-7-bold beta_badge--xl">BETA</span>
 
                 <h1 className="text-2">{entry.title}</h1>
 

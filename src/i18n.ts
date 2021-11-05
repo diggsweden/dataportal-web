@@ -39,7 +39,7 @@ i18n
       }
     },
     load: 'languageOnly',
-    whitelist:['sv','en'],    
+    //whitelist:['sv','en'],    
     fallbackLng: {
       'sv-SE':['se'],
       'en-US':['en'],

@@ -1,4 +1,5 @@
 import i18n from 'i18n';
+import { result } from 'lodash';
 import React, { createContext } from 'react';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { SettingsUtil } from '../../../config/env/SettingsUtil';
@@ -12,6 +13,7 @@ export interface EntrystoreProviderProps{
   cid?: string;
   entryUri?: string;
   entrystoreUrl: string | 'admin.dataportal.se';
+  fetchMore: boolean
 }
 
 export interface ESEntry {   
@@ -19,7 +21,14 @@ export interface ESEntry {
   entrystore: any;  
   entry:any;  
   title: string;
-  description: string;  
+  description: string;
+  publisher: string;
+  contact?: ESContact;  
+}
+
+export interface ESContact {
+  name: string;
+  email?: string;
 }
 
 const defaultESEntry: ESEntry = {      
@@ -28,6 +37,7 @@ const defaultESEntry: ESEntry = {
   entry:{},  
   title: '', 
   description: '',
+  publisher: '',  
 };
 
 export const EntrystoreContext = createContext<ESEntry>(
@@ -81,7 +91,10 @@ export class EntrystoreProvider extends React.Component<EntrystoreProviderProps,
   /**
    * Search graph for localized value from meta graph
    * 
-   * value retrieve order:
+   * Supports uri-types (will fetch uri and display foaf:name, if any) 
+   * TODO: support 
+   * 
+   * value type retrieve order:
    * 1. exists in sent in lang 
    * 2. exists in fallback lang (en)
    * 3. take first
@@ -90,16 +103,34 @@ export class EntrystoreProvider extends React.Component<EntrystoreProviderProps,
    * @param prop 
    * @param lang 
    */
-  getLocalizedValue(metadataGraph:any, prop:any, lang:string) {
+  async getLocalizedValue(metadataGraph:any, prop:any, lang:string,es:any, uriTypeName:string = "foaf:name") {
 
     let val = '';
     let fallbackLang = 'en';
 
     const stmts = metadataGraph.find(null, prop);
+
     if (stmts.length > 0) {      
       const obj:any = {};
       for (let s = 0; s < stmts.length; s++) {
-        obj[stmts[s].getLanguage() || ''] = stmts[s].getValue();
+        let stType = stmts[s].getType();
+        let stValue = stmts[s].getValue();
+
+        if(stType && stType == "uri" && !stValue.includes('mailto:'))
+        {          
+          let res = await this.resourcesSearch([stValue],es);          
+          if(res && res.length > 0)
+          {            
+            let meta = res[0].getMetadata();            
+            
+            if(meta)            
+              obj[stmts[s].getLanguage() || ''] = this.getLocalizedValue(meta,uriTypeName, i18n.languages[0],es);
+          }
+          else
+            obj[stmts[s].getLanguage() || ''] = stValue;  
+        }
+        else
+          obj[stmts[s].getLanguage() || ''] = stValue;
       }
 
       if(typeof obj[lang] != "undefined")
@@ -119,8 +150,36 @@ export class EntrystoreProvider extends React.Component<EntrystoreProviderProps,
     return val;
   };
 
-  componentDidMount() {        
-    this.addScripts(() => {
+  /**
+   * Make SolrSearch and retrive entries from entryscape
+   * Does not handle to large resource arrays, can leed to request URI errors,
+   * use in batches
+   * 
+   * @param resources 
+   * @param es 
+   */
+   resourcesSearch(resources:string[],es:any) : Promise<any> {
+    return new Promise<any>(resolve => {
+      let esQuery = es.newSolrQuery();
+        esQuery                          
+          .resource(resources,null)          
+          .getEntries(0)
+          .then((children:any) => {   
+            resolve(children);            
+          });
+    })
+  }
+
+  parseEmail(mailStr:string){
+    if(mailStr && mailStr.includes("mailto:")){
+      return mailStr.replace("mailto:","");
+    }
+
+    return mailStr;
+  }
+
+  componentDidMount()  {        
+    this.addScripts(async () => {
       //if we have an ES url, try to get a active instance of EntryScape
       if(defaultESEntry.env)
       {      
@@ -131,17 +190,41 @@ export class EntrystoreProvider extends React.Component<EntrystoreProviderProps,
         //we have entryUri
         if(this.props.entryUri)
         {         
-          util.getEntryByResourceURI(this.props.entryUri).then((entry:any) => {        
+          util.getEntryByResourceURI(this.props.entryUri).then(async (entry:any) => {        
             defaultESEntry.entry = entry;            
 
             let graph = entry.getMetadata();            
 
-            defaultESEntry.title = this.getLocalizedValue(graph,"dcterms:title", i18n.languages[0]);                
-            
-            if(!defaultESEntry.title)
-              defaultESEntry.title = this.getLocalizedValue(graph,"http://www.w3.org/2004/02/skos/core#prefLabel", i18n.languages[0]);                
+            let valuePromises:Promise<string>[] = []; 
 
-            defaultESEntry.description = this.getLocalizedValue(graph,"dcterms:description", i18n.languages[0]);                
+            //the getLocalizedValue function might fetch from network, so start all IO with promises 
+            valuePromises.push(this.getLocalizedValue(graph,"dcterms:title", i18n.languages[0],es));
+            valuePromises.push(this.getLocalizedValue(graph,"http://www.w3.org/2004/02/skos/core#prefLabel", i18n.languages[0],es));            
+            valuePromises.push(this.getLocalizedValue(graph,"dcterms:description", i18n.languages[0],es));
+            if(this.props.fetchMore)
+            {
+              valuePromises.push(this.getLocalizedValue(graph,"dcterms:publisher", i18n.languages[0],es,"foaf:name"));
+              valuePromises.push(this.getLocalizedValue(graph,"dcat:contactPoint", i18n.languages[0],es,"http://www.w3.org/2006/vcard/ns#fn"));
+              valuePromises.push(this.getLocalizedValue(graph,"dcat:contactPoint", i18n.languages[0],es,"http://www.w3.org/2006/vcard/ns#hasEmail"));
+            }
+            //wait for all values to be fetched
+            let results = await Promise.all(valuePromises);
+
+            if(results && results.length > 0)
+            {              
+              defaultESEntry.title = results[0] || results[1];
+              defaultESEntry.description = results[2];
+              if(this.props.fetchMore)
+              {
+                defaultESEntry.publisher = results[3];              
+                if(results[4] || results[5]){
+                  defaultESEntry.contact = {
+                    name : results[4],
+                    email : this.parseEmail(results[5])
+                  } 
+                }              
+              }
+            }   
 
             this.setState({
               ...defaultESEntry
@@ -155,18 +238,42 @@ export class EntrystoreProvider extends React.Component<EntrystoreProviderProps,
           entryURI = es.getEntryURI(this.props.cid, this.props.eid);                  
 
           //fetch entry from entryscape https://entrystore.org/js/stable/doc/
-          es.getEntry(entryURI).then((entry:any) => {        
+          es.getEntry(entryURI).then(async (entry:any) => {        
             defaultESEntry.entry = entry;
             
             let graph = entry.getMetadata();
-            
-            defaultESEntry.title = this.getLocalizedValue(graph,"dcterms:title", i18n.languages[0]);                
-            
-            if(!defaultESEntry.title)
-              defaultESEntry.title = this.getLocalizedValue(graph,"http://www.w3.org/2004/02/skos/core#prefLabel", i18n.languages[0]);                
+          
+            let valuePromises:Promise<string>[] = []; 
 
-            defaultESEntry.description = this.getLocalizedValue(graph,"dcterms:description", i18n.languages[0]);                
+            //the getLocalizedValue function might fetch from network, so start all IO with promises 
+            valuePromises.push(this.getLocalizedValue(graph,"dcterms:title", i18n.languages[0],es));
+            valuePromises.push(this.getLocalizedValue(graph,"http://www.w3.org/2004/02/skos/core#prefLabel", i18n.languages[0],es));            
+            valuePromises.push(this.getLocalizedValue(graph,"dcterms:description", i18n.languages[0],es));
+            if(this.props.fetchMore)
+            {
+              valuePromises.push(this.getLocalizedValue(graph,"dcterms:publisher", i18n.languages[0],es,"foaf:name"));
+              valuePromises.push(this.getLocalizedValue(graph,"dcat:contactPoint", i18n.languages[0],es,"http://www.w3.org/2006/vcard/ns#fn"));
+              valuePromises.push(this.getLocalizedValue(graph,"dcat:contactPoint", i18n.languages[0],es,"http://www.w3.org/2006/vcard/ns#hasEmail"));
+            }
+            //wait for all values to be fetched
+            let results = await Promise.all(valuePromises);
 
+            if(results && results.length > 0)
+            {              
+              defaultESEntry.title = results[0] || results[1];
+              defaultESEntry.description = results[2];
+              if(this.props.fetchMore)
+              {
+                defaultESEntry.publisher = results[3];              
+                if(results[4] || results[5]){
+                  defaultESEntry.contact = {
+                    name : results[4],
+                    email : this.parseEmail(results[5])
+                  } 
+                }              
+              }
+            }                             
+            
             this.setState({
               ...defaultESEntry
             });        

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import 'url-search-params-polyfill';
 import { __RouterContext } from 'react-router';
 import { PageMetadata } from '../PageMetadata';
@@ -10,12 +10,17 @@ import {
 } from '../../components/EntrystoreProvider';
 import { PageProps } from '../PageProps';
 import { StaticBreadcrumb } from 'components/Breadcrumb';
+import { ApiIndexContext } from 'components/ApiExploring';
+import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
 
 export const DataServicePage: React.FC<PageProps> = ({ env, match }) => {
   let postscribe: any;
   let referredSearch: string = `/${i18n.languages[0]}/${i18n.t(
     'routes|datasets|path'
   )}/?q=`;
+
+  const apiIndexContext = useContext(ApiIndexContext);
 
   /**
    * Async load scripts requiered for EntryScape blocks,
@@ -58,6 +63,12 @@ export const DataServicePage: React.FC<PageProps> = ({ env, match }) => {
                 : 'admin.dataportal.se'
             }\/store'          
           };
+
+          function getApiExploreUrl(entryid,apientryid)
+          {
+            return '/${i18n.languages[0]}/${i18n.t('routes|dataservices|path')}/${match.params.cid}_'+entryid+'/${match.params.name}/apiexplore/'+apientryid
+          }
+
           window.__entryscape_config = [{
 
             block: 'config',
@@ -110,6 +121,39 @@ export const DataServicePage: React.FC<PageProps> = ({ env, match }) => {
                 template: '{{#eachprop "dcterms:accrualPeriodicity"}}<span class="esbIndicator" title="Uppdateringsfrekvens">' +
                   '<i class="fas fa-redo"></i>' +
                   '<span class="">{{label}}</span></span>{{/eachprop}}',
+              },
+              {
+                block: 'exploreApiLinkRun',                     
+                run: function(node,a2,a3,entry) {                                        
+                  if(node && node.firstElementChild)
+                  { 
+                    var showExploreApi = false;                   
+                    var entryId = entry.getId();
+                    var contextId = '${match.params.cid}';
+
+                    if(window.__es_has_apis)
+                      for(var a in window.__es_has_apis)
+                      {
+                        if(window.__es_has_apis[a] === contextId + '_' + entryId)
+                          showExploreApi = true;                    
+                      }
+
+                    if(showExploreApi)
+                    {
+                      var el = document.createElement('a');                    
+                      node.firstElementChild.appendChild(el);
+                      el.innerHTML = 'Utforska API'
+                      el.setAttribute('href', getApiExploreUrl('${match.params.eid}',entryId))
+                      el.setAttribute('class', 'entryscape explore-api-link text-5-link') 
+                    }
+                  }
+                },
+                loadEntry:true
+              },
+              {
+                block: 'exploreApiLink',
+                extends: 'template',
+                template: '{{exploreApiLinkRun}}' 
               },
               {
                 block: 'licenseIndicator2',
@@ -180,6 +224,7 @@ export const DataServicePage: React.FC<PageProps> = ({ env, match }) => {
       cid={match.params.cid}
       eid={match.params.eid}
       entrystoreUrl={env.ENTRYSCAPE_DATASETS_PATH}
+      fetchMore={false}
     >
       <EntrystoreContext.Consumer>
         {(entry) => (
@@ -214,6 +259,7 @@ export const DataServicePage: React.FC<PageProps> = ({ env, match }) => {
                   : ''
               }
             />
+
             <StaticBreadcrumb
               env={env}
               staticPaths={[
@@ -287,8 +333,7 @@ export const DataServicePage: React.FC<PageProps> = ({ env, match }) => {
                   data-entryscape="true"
                   data-entryscape-component="template"
                   dangerouslySetInnerHTML={{
-                    __html: `
-                        
+                    __html: `                        
                         <div class="dataservice__access">
                           {{viewMetadata 
                               template="dcat:DataService"
@@ -298,6 +343,13 @@ export const DataServicePage: React.FC<PageProps> = ({ env, match }) => {
                         `,
                   }}
                 ></script>
+
+                {apiIndexContext.findDetection(match.params.cid,match.params.eid) &&                 
+                  <span className="esbRowAlignSecondary">
+                    <Link className="dataservice-explore-api-link entryscape text-5-link" to={`/${i18n.languages[0]}/${i18n.t('routes|dataservices|path')}/${match.params.cid}_${match.params.eid}/${match.params.name}/apiexplore/${match.params.eid}`} >Utforska API</Link>
+                    <br/>              
+                  </span>                      
+                }
 
                 <div className="contact__publisher hbbr">
                   <h3 className="text-4">

@@ -20,6 +20,7 @@ header {
     justify-content: space-between;
     flex-wrap: wrap;
     align-items: center;
+    transition: padding .25s ease;
 
     @media screen and (max-width: 650px) {
         padding-top: $space-16;
@@ -34,9 +35,14 @@ header {
             width: 13.75rem;
             transition: .2s;
         }
+
+        @media screen and (max-width: 20.75rem) {
+            width: 12rem;
+            transition: .2s;
+        }
     }
 
-    @media screen and (max-width: 42.49999rem) {
+    @media screen and (max-width: 55rem) {
         z-index: 4000;
     }
 }
@@ -49,7 +55,7 @@ header {
     flex-wrap: nowrap;
     display: block;
 
-    @media screen and (max-width: 42.5rem) {
+    @media screen and (max-width: 55rem) {
         display: none;
         flex-wrap: wrap;
     }
@@ -131,7 +137,7 @@ header {
     width: 100%;
     min-height: 200px;
 
-    @media screen and (min-width: 42.49999rem) {
+    @media screen and (min-width: 55rem) {
         display: none;
     }
 }
@@ -149,7 +155,7 @@ header {
     overflow-y: scroll;
 
 
-    @media screen and (min-width: 42.49999rem) {
+    @media screen and (min-width: 55rem) {
         display: none;
     }
 
@@ -215,7 +221,7 @@ header {
         }
     }
 
-    @media screen and (min-width: 42.49999rem) {
+    @media screen and (min-width: 55rem) {
         display: none;
     }
 
@@ -265,7 +271,7 @@ header {
 }
 
 .close-menu-btn {
-    @media screen and (min-width: 42.49999rem) {
+    @media screen and (min-width: 55rem) {
         display: none;
     }
 }

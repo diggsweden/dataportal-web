@@ -105,6 +105,7 @@
     "goto" : "Go to "
   },
   "datasetpage" : {
+    "explore-api": "Explore API",
     "about-dataset" : "About dataset",
     "download-dataset" : "Access data",
     "catalog" : "Catalog",
@@ -195,6 +196,18 @@
     "guidance_download" : "Download guidance",
     "specification_download" : "Download specification",
     "download" : "Download"
+  },
+  "explore-api-page":{
+    "explore-api" : "Explore API",
+    "belongs-to-dataset" : "Refers to dataset",
+    "access-to-api" : "Access to API",
+    "access-to-api-txt" : "The data portal provides both APIs that are fully open and those that require an API key.",
+    "open-apis" : "Open APIs",
+    "open-apis-txt" : "If the API is open you are able to directly make API calls and explore the data.",
+    "api-key" : "APIs that require an API key",
+    "api-key-txt" : "There are APIs that need to be unlocked with an API key to enable you to make calls and explore the amount of data. To get access to an API key you need to contact the publisher. ",
+    "contact-publisher" : "Contact to publisher",
+    "api-contract" : "API Contract"    
   }
 }
 

@@ -53,6 +53,7 @@ export const getHeader = ({
           <meta name="theme-color" content="#171A21">         
           <meta name="referrer" content="no-referrer">   
           <link rel="stylesheet" href="/dist/client/js/font-awesome.min.css" media="print" onload="this.media='all'" type="text/css">                  
+          <link rel="stylesheet" href="/dist/client/js/swagger-ui.css" media="print" onload="this.media='all'" type="text/css">      
           <link href="https://fonts.googleapis.com" rel="preconnect" crossorigin>   
           <link href="https://fonts.googleapis.com" rel="dns-prefetch" crossorigin>         
           <link href="https://admin.dataportal.se" rel="preconnect" crossorigin>

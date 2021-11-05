@@ -50,6 +50,7 @@ export const createWebpackConfig = (
 
   const babelConfig = isProd
     ? {
+        compact: false,
         babelrc: false,
         presets: [
           [
@@ -77,6 +78,7 @@ export const createWebpackConfig = (
         ],
       }
     : {
+        compact: false,
         babelrc: false,
         plugins: [
           'react-hot-loader/babel',
@@ -134,7 +136,7 @@ export const createWebpackConfig = (
             ]
           : [{
             test: [/.css$|.scss$/],                             
-            use:["style-loader","css-loader","sass-loader"]
+            use:["style-loader","css-loader","sass-loader"]            
           }]),
         {
           test: /\.tsx?$/,

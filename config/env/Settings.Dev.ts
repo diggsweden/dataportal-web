@@ -20,6 +20,9 @@ export class Settings_Dev extends EnvSettings {
 
   ENTRYSCAPE_SITEMAP_JSON_URL="https://admin.dataportal.se/sitemap.json";
 
+  API_DETECTION_PATH = "https://admin.dataportal.se/detectedapis.json";
+  //API_DETECTION_PATH = "/apiDetections.json";
+
   CONTENTBACKEND_SITEURL="*dataportal*";
 
 

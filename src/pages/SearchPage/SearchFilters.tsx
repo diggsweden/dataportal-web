@@ -43,6 +43,14 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
   setFilter,
   fetchMore,
 }) => {
+
+  const clearCurrentScrollPos = () => {
+    if(typeof localStorage != "undefined" && typeof location != "undefined")
+    {      
+      localStorage.setItem(`ScrollposY_${location.search}`, "0")
+    }
+  }
+
   return (
     <div className="filter-search">
       <input
@@ -50,7 +58,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
         className="filter-search__input"
         value={filter[filterKey] || ''}
         onChange={(e) => (
-          fetchMore(), setFilter({ ...filter, [filterKey]: e.target.value })
+          clearCurrentScrollPos(),fetchMore(), setFilter({ ...filter, [filterKey]: e.target.value })
         )}
       />
       <i className="filter-search__icon">
@@ -61,7 +69,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
   );
 };
 
-const MarkAll: React.FC<MarkAllProps> = ({ search, toggleKey, title }) => {
+const MarkAll: React.FC<MarkAllProps> = ({ search, toggleKey, title }) => {  
   return (
     <div className="filter-checkall">
       <Button

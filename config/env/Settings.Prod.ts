@@ -18,6 +18,8 @@ export class Settings_Prod extends EnvSettings {
 
   ENTRYSCAPE_SITEMAP_JSON_URL="https://admin.dataportal.se/sitemap.json";
 
+  API_DETECTION_PATH = "https://admin.dataportal.se/detectedapis.json";
+
   CONTENTBACKEND_SITEURL="*www.dataportal.*";
 
   CONTENTBACKEND_GRAPHAPI="https://digg-prod-graphproxy.azurewebsites.net";

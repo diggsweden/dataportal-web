@@ -18,6 +18,8 @@ export class Settings_Sandbox extends EnvSettings {
 
   ENTRYSCAPE_SITEMAP_JSON_URL="https://sandbox.admin.dataportal.se/sitemap.json";
 
+  API_DETECTION_PATH = "https://sandbox.admin.dataportal.se/detectedapis.json";
+
   CONTENTBACKEND_SITEURL="*.test.dataportal.*";
 
   CONTENTBACKEND_GRAPHAPI="https://digg-prod-graphproxy.azurewebsites.net";

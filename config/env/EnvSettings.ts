@@ -17,6 +17,8 @@ export abstract class EnvSettings {
 
   abstract ENTRYSCAPE_OPENDATA_EN_URL:string;  
 
+  abstract API_DETECTION_PATH: string;
+
   abstract CONTENTBACKEND_SITEURL: string;
 
   abstract CONTENTBACKEND_GRAPHAPI: string;

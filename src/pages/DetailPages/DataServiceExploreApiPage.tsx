@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import 'url-search-params-polyfill';
 import { __RouterContext } from 'react-router';
 import { PageMetadata } from '../PageMetadata';
@@ -11,20 +11,27 @@ import {
 import { PageProps } from '../PageProps';
 import ShowMoreText from 'react-show-more-text';
 import { StaticBreadcrumb } from 'components/Breadcrumb';
-import SwaggerUI from 'swagger-ui-react';
-// import "swagger-ui-react/swagger-ui.css"
-import 'scss/swagger/swagger.scss';
-import { ApiIndexContext, ApiIndexProvider } from 'components/ApiExploring';
-import { json } from 'express';
-import { Helmet } from 'react-helmet';
+import {
+  ApiExplorer,
+  ApiIndexContext,
+  ApiIndexProvider,
+} from 'components/ApiExploring';
 
-export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
+export const DataServiceExploreApiPage: React.FC<PageProps> = ({
+  env,
+  location,
+  match,
+}) => {
+  const [toggleState, setToggleState] = useState(1);
   let postscribe: any;
   let referredSearch: string = `/${i18n.languages[0]}/${i18n.t(
     'routes|datasets|path'
   )}/?q=`;
 
-  const apiIndexContext = useContext(ApiIndexContext);
+ //Toggle between tabs
+ const toggleTab = (index: any) => {
+    setToggleState(index);
+  };
 
   /**
    * Async load scripts requiered for EntryScape blocks,
@@ -33,7 +40,7 @@ export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
   useEffect(() => {
     //we need to reload the page when using the back/forward buttons to a blocks rendered page
     if (typeof window !== 'undefined') {
-      //check if reffereing search params is set to hash
+      //check if refering search params is set to hash
       if (
         window.location &&
         window.location.hash &&
@@ -47,6 +54,7 @@ export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
         window.location.reload();
       };
     }
+
     addScripts();
   }, []);
 
@@ -65,20 +73,12 @@ export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
                 ? env.ENTRYSCAPE_DATASETS_PATH
                 : 'admin.dataportal.se'
             }\/store'          
-          };          
-
-          function getApiExploreUrl(entryid,apientryid)
-          {
-            return '/${i18n.languages[0]}/${i18n.t('routes|datasets|path')}/${
-            match.params.cid
-          }_'+entryid+'/${match.params.name}/apiexplore/'+apientryid
-          }          
-
+          };
           window.__entryscape_config = [{
 
             block: 'config',
             page_language: '${i18n.languages[0]}',
-            entry: '${match.params.eid}', 
+            entry: '${match.params.apieid}', 
             context: '${match.params.cid}',
             clicks: {"dataservice-link":"/${
               i18n.languages[0]
@@ -143,20 +143,20 @@ export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
                 '{{/eachprop}}',
               },
               {
-                block: 'distributionAccessCustom',
+                block: 'distributionAccess2',
                 extends: 'template',
                 template: '{{#ifprop "dcat:downloadURL"}}' +
                   '{{#ifprop "dcat:downloadURL" min="2"}}${i18n.t(
                     'pages|datasetpage|several_links'
                   )}{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" min="2" invert="true"}}' +
-                  '<a href="{{prop "dcat:downloadURL"}}" class="text-5 matomo_download distribution__link download_url" target="_blank">${i18n.t(
+                  '<a href="{{prop "dcat:downloadURL"}}" class="text-5 matomo_download distribution__link" target="_blank">${i18n.t(
                     'pages|datasetpage|download_link'
                   )}</a>' +
                   '{{/ifprop}}' +
                   '{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" invert="true"}}' +
-                  '<a href="{{prop "dcat:accessURL"}}" class="text-5 distribution__link access_url" target="_blank">' +
+                  '<a href="{{prop "dcat:accessURL"}}" class="text-5 matomo_download distribution__link" target="_blank">' +
                   '${i18n.t('pages|datasetpage|download_link_adress')}' +
                   '{{/ifprop}}',
               },
@@ -194,7 +194,7 @@ export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
                   '</span></span>',
               },
               {
-                block: 'accessServiceCustom',
+                block: 'accessService2',
                 extends: 'template',
                 relation: 'dcat:accessService',
                 template: '<hr>' +
@@ -249,7 +249,7 @@ export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
                   '<span class="">{{label}}</span></span>{{/eachprop}}',
               },
               {
-                block: 'licenseIndicatorCustom',
+                block: 'licenseIndicator2',
                 loadEntry: true,
                 run: function(node, data, items, entry) {
                   var v = entry.getMetadata().findFirstValue(null, 'dcterms:license');
@@ -274,45 +274,9 @@ export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
                 template: '{{#ifprop "schema:offers"}}<span class="esbIndicator" title="Avgift"><i class="fas fa-coins"></i>' +
                   '<span class="esbIndicatorLabel">Avgift</span></span>{{/ifprop}}',
               },
-              {
-                block: 'exploreApiLinkRun',                     
-                run: function(node,a2,a3,entry) {                                        
-                  if(node && node.firstElementChild)
-                  { 
-                    var showExploreApi = false;                   
-                    var entryId = entry.getId();
-                    var contextId = '${match.params.cid}';
 
-                    if(window.__es_has_apis)
-                      for(var a in window.__es_has_apis)
-                      {
-                        if(window.__es_has_apis[a] === contextId + '_' + entryId)
-                          showExploreApi = true;                    
-                      }
-
-                    if(showExploreApi)
-                    {
-                      var el = document.createElement('a');                    
-                      node.firstElementChild.appendChild(el);
-                      el.innerHTML = '${i18n.t(
-                        'pages|datasetpage|explore-api'
-                      )}'
-                      el.setAttribute('href', getApiExploreUrl('${
-                        match.params.eid
-                      }',entryId))
-                      el.setAttribute('class', 'explore-api-link entryscape text-5-link') 
-                    }
-                  }
-                },
-                loadEntry:true
-              },
               {
-                block: 'exploreApiLink',
-                extends: 'template',
-                template: '{{exploreApiLinkRun}}' 
-              },
-              {
-                block: 'distributionListCustom',
+                block: 'distributionList2',
                 extends: 'list',
                 relation: 'dcat:distribution',
                 expandTooltip: 'Mer information',
@@ -329,18 +293,12 @@ export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
                   '<span class="esbRowAlignOther">{{formatBadges2}}</span>' +
                   '{{#ifprop "rdf:type" uri="esterms:ServiceDistribution"}}' +
                     '<span class="distribution_api-flag text-5"><i class="fas fa-cog"></i>API</span>' +
-                  '{{/ifprop}}' +                  
+                  '{{/ifprop}}' +
                   '<span class="esbRowAlignPrimary">{{text fallback="<span class=\\\'distributionNoName\\\'>${i18n.t(
                     'pages|datasetpage|no_title'
-                  )}</span>"}}</span>' +                  
-                  '<div class="distribution_link-row">' +
-                  
-                  '{{exploreApiLink}}' +
-
-                  '<span class="esbRowAlignSecondary">{{distributionAccessCustom}}</span></span>',
+                  )}</span>"}}</span>' +
+                  '<span class="esbRowAlignSecondary">{{distributionAccess2}}</span></span>',
                   rowexpand: '{{#ifprop "dcat:downloadURL"}}' +
-                  '</div>' +
-
                   '{{#ifprop "dcat:downloadURL" min="2"}}' +
                   '<h{{hinc}} class="distribution_files_header">${i18n.t(
                     'pages|datasetpage|several_links_header'
@@ -349,7 +307,7 @@ export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
                   '{{/ifprop}}' +
                   '{{/ifprop}}' +
                   '{{view rdformsid="dcat:Distribution" filterpredicates="dcat:downloadURL,dcterms:title,dcat:accessService"}}' +
-                  '{{#ifprop "dcat:accessService"}}{{accessServiceCustom}}{{/ifprop}}',
+                  '{{#ifprop "dcat:accessService"}}{{accessService2}}{{/ifprop}}',
               },]
           }]
           </script>              
@@ -377,219 +335,248 @@ export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
       cid={match.params.cid}
       eid={match.params.eid}
       entrystoreUrl={env.ENTRYSCAPE_DATASETS_PATH}
-      fetchMore={false}
+      fetchMore={true}
     >
-      <EntrystoreContext.Consumer>
-        {(entry) => (
-          <div className="detailpage">
-            <PageMetadata
-              seoTitle={`${entry.title} - ${i18n.t('common|seo-title')}`}
-              seoDescription=""
-              seoImageUrl=""
-              seoKeywords=""
-              robotsFollow={true}
-              robotsIndex={true}
-              lang={i18n.languages[0]}
-              socialMeta={{
-                socialDescription: entry.description,
-                socialTitle: entry.title,
-                socialUrl:
-                  entry && entry.title
-                    ? `${env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t(
-                        'routes|datasets|path'
-                      )}/${match.params.cid}_${match.params.eid}/${slugify(
-                        entry.title
-                      )}`
-                    : '',
-              }}
-              canonicalUrl={
-                entry && entry.title
-                  ? `${env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t(
-                      'routes|datasets|path'
-                    )}/${match.params.cid}_${match.params.eid}/${slugify(
-                      entry.title
-                    )}`
-                  : ''
-              }
-            />
+      <ApiIndexProvider apiIndexFileUrl={env.API_DETECTION_PATH}>
+        <EntrystoreContext.Consumer>
+          {(entry) => (
+            <ApiIndexContext.Consumer>
+              {(apiIndex) => (
+                <div className="detailpage">
+                  <PageMetadata
+                    seoTitle={`${i18n.t('routes|api_explore|title')} - ${entry.title} - ${i18n.t('common|seo-title')}`}
+                    seoDescription=""
+                    seoImageUrl=""
+                    seoKeywords=""
+                    robotsFollow={true}
+                    robotsIndex={true}
+                    lang={i18n.languages[0]}
+                    socialMeta={{
+                      socialDescription: entry.description,
+                      socialTitle: entry.title,
+                      socialUrl:
+                        entry && entry.title
+                          ? `${env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|dataservices|path')}/${match.params.cid}_${match.params.eid}/${slugify(entry.title)}/${i18n.t('routes|api_explore|path')}/${match.params.apieid}`
+                          : '',
+                    }}
+                    canonicalUrl={
+                      entry && entry.title
+                        ? `${env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|dataservices|path')}/${match.params.cid}_${match.params.eid}/${slugify(entry.title)}/${i18n.t('routes|api_explore|path')}/${match.params.apieid}`
+                        : ''
+                    }
+                  />
+                  <StaticBreadcrumb
+                    env={env}
+                    staticPaths={[
+                      {
+                        path: referredSearch,
+                        title: i18n.t('routes|datasets|title'),
+                      },
+                      {
+                        path: `/${i18n.languages[0]}/${i18n.t('routes|dataservices|path')}/${match.params.cid}_${match.params.eid}/${slugify(entry.title)}`,
+                        title: entry.title,
+                      },
+                      {
+                        path: `/${i18n.languages[0]}/${i18n.t('routes|dataservices|path')}/${match.params.cid}_${match.params.eid}/${slugify(entry.title)}/${i18n.t('routes|api_explore|path')}/${match.params.apieid}`,
+                        title: i18n.t('routes|api_explore|title'),
+                      },
+                    ]}
+                  />
+                  <div className="detailpage__wrapper detailpage__wrapper--apiexplore">
+                    <div className="detailpage__wrapper-topinfo">
+                      <span className="text-7-bold beta_badge--xl">BETA</span>
 
-            <StaticBreadcrumb
-              env={env}
-              staticPaths={[
-                {
-                  path: referredSearch,
-                  title: i18n.t('routes|datasets|title'),
-                },
-                {
-                  path: `/${i18n.languages[0]}/${i18n.t(
-                    'routes|datasets|path'
-                  )}/${match.params.cid}_${match.params.eid}/${slugify(
-                    entry.title
-                  )}`,
-                  title: entry.title,
-                },
-              ]}
-            />
-            <div className="detailpage__wrapper">
-              {/* Left column */}
-              <div className="detailpage__wrapper--leftcol">
-                {/* Title */}
-                <h1 className="text-2">{entry.title}</h1>
+                      {/* Title */}
+                      <h1 className="api-title">
+                        Utforska API{' '}
+                        <script
+                          type="text/x-entryscape-handlebar"
+                          data-entryscape="true"
+                          data-entryscape-component="template"
+                          dangerouslySetInnerHTML={{
+                            __html: `
+                           <span>{{text content="\${dcterms:title}"}}</span>
+                          `,
+                          }}
+                        ></script>
+                      </h1>
 
-                {/* Publisher */}
-                <script
-                  type="text/x-entryscape-handlebar"
-                  data-entryscape="true"
-                  data-entryscape-component="template"
-                  dangerouslySetInnerHTML={{
-                    __html: `
-                                <p class="text-5">
-                                  {{text relation="dcterms:publisher"}} 
+                      <span className="text-5 api-publisher">
+                        {entry.publisher}
+                      </span>
+
+                      <div className="row indicators">
+                        <div
+                          data-entryscape="accessRightsIndicator"
+                          className="accessRightsIndicator"
+                        ></div>
+                        <div
+                          data-entryscape="periodicityIndicator"
+                          className="architectureIndicator"
+                        ></div>
+                        <div
+                          data-entryscape="licenseIndicator2"
+                          className="licenseIndicator"
+                        ></div>
+
+                        <div
+                          data-entryscape="costIndicator2"
+                          className="costIndicator"
+                        ></div>
+                      </div>
+
+                      {/* Publisher */}
+                      <span className="text-5-bold">Tillhör datamängd</span>
+                      <span className="text-5">{entry.title}</span>
+                    </div>
+
+                    <nav className="tabs-nav">
+                      <ul>
+                        <li>
+                          <button
+                            className={
+                              toggleState === 1 ? 'active-tab text-6' : 'text-6'
+                            }
+                            onClick={() => toggleTab(1)}
+                          >
+                            API-kontrakt
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className={toggleState === 2 ? 'active-tab' : ''}
+                            onClick={() => toggleTab(2)}
+                          >
+                            Information
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className={
+                              toggleState === 3 ? 'active-tab text-6' : 'text-6'
+                            }
+                            onClick={() => toggleTab(3)}
+                          >
+                            Åtkomst
+                          </button>
+                        </li>
+                      </ul>
+                    </nav>
+
+                    <div className="content-tabs-wrapper">
+                      <div
+                        id="content-tab-1"
+                        className={
+                          toggleState === 1
+                            ? 'content-tab active-content-tab'
+                            : 'content-tab'
+                        }
+                      >
+                        <ApiExplorer
+                          env={env}
+                          contextId={match.params.cid}
+                          entryId={match.params.apieid}
+                        />
+                      </div>
+                      <div
+                        id="content-tab-2"
+                        className={
+                          toggleState === 2
+                            ? 'active-content-tab content-tab'
+                            : 'content-tab'
+                        }
+                      >
+                        <div
+                          data-entryscape="view"
+                          data-entryscape-filterpredicates="dcterms:title,dcterms:license,dcat:accessURL"
+                        ></div>
+                      </div>
+                      <div
+                        id="content-tab-3"
+                        className={
+                          toggleState === 3
+                            ? 'content-tab active-content-tab'
+                            : 'content-tab'
+                        }
+                      >
+                        <div className="text-5">
+                          <div className="content-tab-text">
+                            <h2 className="text-5-bold">
+                              Webbadress för åtkomst
+                            </h2>{' '}
+                            <p>
+                              <script
+                                type="text/x-entryscape-handlebar"
+                                data-entryscape="true"
+                                data-entryscape-component="template"
+                                dangerouslySetInnerHTML={{
+                                  __html: `
+                                    <a class="text-6 link" href="{{prop "dcat:accessURL"}}" >{{text content="\${dcat:accessURL}"}}</a>
+                                    `,
+                                }}
+                              ></script>
+                            </p>
+                            <h2 className="text-5-bold">Licens</h2>{' '}
+                            <p>
+                              <script
+                                type="text/x-entryscape-handlebar"
+                                data-entryscape="true"
+                                data-entryscape-component="template"
+                                dangerouslySetInnerHTML={{
+                                  __html: `
+                                    <a class="text-6 link" href="{{prop "dcterms:license"}}" >{{text content="\${dcterms:license}"}}</a>
+                                    `,
+                                }}
+                              ></script>
+                            </p>
+                            {entry.contact && (
+                              <>
+                                <h2 className="text-5-bold">Kontakt</h2>
                                 <p>
-                                `,
-                  }}
-                ></script>
-
-                {/* Indicators */}
-                <div className="row indicators">
-                  <div
-                    data-entryscape="accessRightsIndicator"
-                    className="accessRightsIndicator"
-                  ></div>
-                  <div
-                    data-entryscape="periodicityIndicator"
-                    className="architectureIndicator"
-                  ></div>
-                  <div
-                    data-entryscape="licenseIndicatorCustom"
-                    className="licenseIndicator"
-                  ></div>
-
-                  <div
-                    data-entryscape="costIndicator2"
-                    className="costIndicator"
-                  ></div>
+                                  <a
+                                    className="text-6 link"
+                                    href={`mailto:${entry.contact.email}`}
+                                  >
+                                    {entry.contact.name}
+                                  </a>
+                                </p>
+                              </>
+                            )}
+                            <div className="highlight-block">
+                              <h2 className="text-5-bold">
+                                Åtkomst till API:er
+                              </h2>
+                              <p>
+                                På dataportalen tillhandahålls både API:er som
+                                är helt öppna och de som kräver en API-nyckel.
+                              </p>
+                              <h2 className="text-5-bold">API som är öppet</h2>
+                              <p>
+                                För API:er som är öppna går det direkt att göra
+                                anrop och utforska datat.
+                              </p>
+                              <h2 className="text-5-bold">
+                                API som kräver API-nyckel
+                              </h2>
+                              <p>
+                                Vissa API:er måste låsas upp med en API-nyckel
+                                för att möjliggöra att kunna göra anrop och
+                                utforska datat. För att få tillgång till en
+                                API-nyckel behöver tillhandahållande myndighet
+                                eller organisation kontaktas.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
-                {/* Description */}
-                <div className="description">
-                  <ShowMoreText
-                    lines={8}
-                    more={i18n.t('pages|datasetpage|view_more')}
-                    less={i18n.t('pages|datasetpage|view_less')}
-                    className="text-5"
-                    anchorClass="text-5 view-more-text-link"
-                    expanded={false}
-                  >
-                    <span className="text-5">{entry.description}</span>
-                  </ShowMoreText>
-                </div>
-
-                {/* Use data - header */}
-                <h2 className="text-3 hbbr">
-                  {i18n.t('pages|datasetpage|use-data')}
-                </h2>
-
-                {/* Distribution list */}
-                <div
-                  className="distribution__list"
-                  data-entryscape="distributionListCustom"
-                  data-entryscape-registry="true"
-                ></div>
-
-                {/* Dataset map */}
-                <div
-                  className="dataset__map"
-                  data-entryscape="view"
-                  data-entryscape-rdformsid="dcat:dcterms:spatial_bb_da"
-                  data-entryscape-label="false"
-                ></div>
-
-                {/* Questions  or comments */}
-                <div className="contact__publisher hbbr">
-                  <h3 className="text-4">
-                    {i18n.t('pages|datasetpage|contact-publisher')}
-                  </h3>
-                  <p className="text-5">
-                    {i18n.t('pages|datasetpage|contact-publisher-text')}
-                    {i18n.t('pages|datasetpage|contact-publisher-text2')}{' '}
-                    <a
-                      className="text-5-link"
-                      href="https://community.dataportal.se/"
-                    >
-                      community
-                    </a>
-                    .
-                  </p>
-                </div>
-              </div>
-
-              {/* Right column */}
-              <div className="detailpage__wrapper--rightcol hbbr">
-                {/* About dataset - wrapper  */}
-                <div className="detailpage__wrapper--rightcol-info text-6">
-                  <h2 className="text-5-bold">
-                    {i18n.t('pages|datasetpage|about-dataset')}
-                  </h2>
-
-                  {/* About dataset */}
-                  <script
-                    type="text/x-entryscape-handlebar"
-                    data-entryscape="true"
-                    data-entryscape-component="template"
-                    dangerouslySetInnerHTML={{
-                      __html: `
-                                    <div class="viewMetadata">
-                                      {{viewMetadata 
-                                      template="dcat:Dataset" 
-                                      filterpredicates="dcterms:title,dcterms:description,dcterms:publisher,dcat:bbox,dcterms:spatial,dcterms:provenance"}}
-                                    </div>
-                                  `,
-                    }}
-                  ></script>
-                </div>
-
-                {/* Catalog informaton wrapper */}
-                <div className="detailpage__wrapper--rightcol-info text-6">
-                  <h2 className="text-5-bold">
-                    {i18n.t('pages|datasetpage|catalog')}
-                  </h2>
-
-                  {/* Catalog */}
-                  <script
-                    type="text/x-entryscape-handlebar"
-                    data-entryscape="true"
-                    data-entryscape-block="template"
-                    dangerouslySetInnerHTML={{
-                      __html: `{{viewMetadata 
-                                    relationinverse="dcat:dataset" 
-                                    onecol=true 
-                                    template="dcat:OnlyCatalog"                               
-                                    filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi"
-                                    }}`,
-                    }}
-                  ></script>
-                </div>
-
-                {/* Download RDF */}
-                <script
-                  className="download__rdf"
-                  type="text/x-entryscape-handlebar"
-                  data-entryscape="true"
-                  data-entryscape-block="template"
-                  dangerouslySetInnerHTML={{
-                    __html: `
-                              <a class="download__rdf--link matomo_download text-5-link" target="_blank" href="{{metadataURI}}?recursive=dcat">${i18n.t(
-                                'pages|datasetpage|rdf'
-                              )}</a>
-                              `,
-                  }}
-                ></script>
-              </div>
-            </div>
-          </div>
-        )}
-      </EntrystoreContext.Consumer>
+              )}
+            </ApiIndexContext.Consumer>
+          )}
+        </EntrystoreContext.Consumer>
+      </ApiIndexProvider>
     </EntrystoreProvider>
   );
 };

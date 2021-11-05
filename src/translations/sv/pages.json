@@ -105,12 +105,13 @@
     "goto" : "Gå till "
   },
   "datasetpage" : {
+    "explore-api": "Utforska API",
     "about-dataset" : "Om datamängd",
     "download-dataset" : "Hämta datamängd",
     "catalog" : "Hämtad från katalog",
     "use-data" : "Använd data",
-    "download_link_adress" : "Webbsida för åtkomst",
-    "download_link" : "Ladda ner data",
+    "download_link_adress" : "Åtkomst",
+    "download_link" : "Ladda ner",
     "several_links" : "Datat har flertalet länkar för nedladdning",
     "several_links_header" : "Dataresursen består av följande filer",
     "no_title" : "Ingen titel given",
@@ -197,6 +198,18 @@
     "guidance_download" : "Ladda ner guidance",
     "specification_download" : "Ladda ner specifikation",
     "download" : "Ladda ner"
+  },
+  "explore-api-page":{
+    "explore-api" : "Utforska API",
+    "belongs-to-dataset" : "Tillhör datamängd",
+    "access-to-api" : "Åtkomst till API",
+    "access-to-api-txt" : "På dataportalen tillhandahålls både API:er som är helt öppna och de som kräver en API-nyckel.",
+    "open-apis" : "API:er som är öppna",
+    "open-apis-txt" : "För API:er som är öppna går det att direkt göra anrop till och utforska datamängden.",
+    "api-key" : "API:er som kräver API-nyckel",
+    "api-key-txt" : "Vissa API:er måste låsas upp med en API-nyckel för att möjliggöra att kunna göra anrop och utforska datamängden. För att få tillgång till en API-nyckel behöver utgivaren kontaktas.",
+    "contact-publisher" : "Kontakt till utgivare",
+    "api-contract" : "API-kontrakt"    
   }
 }
 

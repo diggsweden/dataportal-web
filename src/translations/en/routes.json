@@ -55,5 +55,9 @@
   "about-us":{
     "path" : "about-us#how_you_may_use_the_data_on_the_portal",
     "title" : "about-us"    
-  }
+  },
+  "api_explore":{
+    "path" : "apiexplore",
+    "title" : "Explore API"    
+  }  
 }

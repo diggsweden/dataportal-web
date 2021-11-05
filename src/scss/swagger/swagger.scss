@@ -1,0 +1,823 @@
+@import '/node_modules/swagger-ui-react/swagger-ui.css';
+@import 'scss/general/variables.scss';
+
+//Swagger colors
+$swagger-green:#258659;
+$swagger-green-bg:rgba(73, 204, 144, .3);
+
+$swagger-blue:#0173E4;
+$swagger-blue-bg:rgba(97, 175, 254, .3);
+
+$swagger-orange:#A86629;
+$swagger-orange-bg:rgba(252, 161, 48, .3);
+
+$swagger-grey:#989898;
+$swagger-grey-bg:#ebebeb;
+
+$swagger-red:#ED0707;
+$swagger-red-bg:rgba(249, 62, 62, .2);
+
+$swagger-turquoise:#12827B;
+$swagger-turquoise-bg: #E3EEED;
+
+$swagger-required-red:#CC0000;
+
+$authorize-btn-green: #258659;
+
+//Accordion badge in mobile
+@mixin accordion-badge_sm {
+    @media screen and (max-width: 42.49999rem) {
+        padding: .95rem .6rem;
+        min-width: max-content;
+    }
+}
+
+//Accordion head i mobile
+@mixin accordion-head_sm {
+    @media screen and (max-width: 42.49999rem) {
+        padding: 0;
+        padding-right: .5rem;
+    }
+}
+
+.api-title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.api-title .entryscape span::before {
+    content: "-";
+    margin-left: .5rem;
+    margin-right: .5rem;
+
+    &:empty {
+        display: none;
+    }
+}
+
+.api-publisher::first-letter {
+    text-transform: capitalize;
+}
+
+.detailpage {
+    .detailpage__wrapper--apiexplore {
+        width: 100%;
+        flex-direction: column;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        max-width: none !important;
+        margin-bottom: -10rem !important;
+
+        .detailpage__wrapper-topinfo {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 2rem;
+            width: 100%;
+
+            .beta_badge--xl {
+                margin-bottom: 0;
+            }
+
+            @include Layout;
+
+            .text-5 {
+                margin-bottom: 1rem;
+            }
+
+            .api-title-sm::first-letter {
+                text-transform: capitalize;
+            }
+        }
+    }
+}
+
+.swagger-ui button {
+    height: max-content;
+}
+
+.swagger-ui .arrow{
+    min-width: 20px;
+}
+
+//Swagger h2
+.swagger-ui {
+    margin-bottom: $space-64;
+
+    * {
+        font-family: "Ubuntu", sans-serif !important;
+    }
+
+    .info {
+        h2.title {
+            color: $black100;
+            font-weight: bold;
+            font-size: 1.125rem; //18px
+            line-height: 1.6875rem; //27px
+            letter-spacing: -0.01em;
+            margin-bottom: .5rem;
+
+            small {
+                display: none;
+            }
+        }
+    }
+}
+
+
+.swagger-ui .no-margin {
+    overflow: auto;
+}
+
+.swagger-ui .opblock-body {
+    min-width: 500px;
+}
+
+.swagger-ui .info .base-url,
+.swagger-ui .info hgroup.main a {
+    font-weight: normal;
+    font-size: 1rem; //16px
+    line-height: 1.5rem; //24px
+    color: $black100;
+    margin-bottom: .5rem;
+}
+
+
+//Hide baseurl
+.swagger-ui .info .base-url {
+    display: none;
+}
+
+.swagger-ui .info .title small pre {
+    border-radius: 2px;
+}
+
+//Remove transition for safari
+.swagger-ui .btn {
+    transition: outline-offset 0s;
+}
+
+//Authorize btn
+.swagger-ui .btn.authorize {
+    background-color: $authorize-btn-green;
+    border-color: $authorize-btn-green;
+    color: white;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-right: 0;
+
+    svg {
+        fill: white;
+    }
+
+    &:hover {
+        filter: brightness(.95);
+        box-shadow: none;
+    }
+}
+
+//Swagger info section above swagger.
+.swagger-ui .info {
+    max-width: 40rem;
+    margin-top: 0;
+}
+
+.swagger-ui .info .title small {
+    background: transparent;
+    color: $black100;
+    border-radius: 57px;
+    display: inline-block;
+    font-size: 10px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    margin-left: .25rem;
+
+    pre {
+        color: $black100;
+    }
+}
+
+.swagger-ui .info a {
+    color: $black100;
+    text-decoration: underline;
+    word-break: break-all;
+    font-weight: normal;
+    font-size: 1rem; //16px
+    line-height: 1.5rem; //24px
+
+    &:hover {
+        background-color: $pink10;
+        color: $black100;
+    }
+}
+
+//Section in swagger head
+.swagger-ui .info hgroup.main {
+    margin: 0;
+}
+
+//Swagger wrapper
+.swagger-ui .wrapper {
+    padding: 0;
+}
+
+//Unlocked
+.swagger-ui .authorization__btn.unlocked {
+    opacity: 1;
+    fill: $black100;
+    padding-right: 0;
+    padding-left: 0;
+    margin-left: 10px;
+
+    &:hover {
+        fill: $black-hover;
+    }
+}
+
+.opblock-tag-section {
+    &.is-open {
+        margin-bottom: 1rem;
+    }
+}
+
+//Scheme container//dropdown//label
+.schemes-title {
+    margin-bottom: .5rem;
+}
+
+//Scheme container//dropdown
+.swagger-ui select {
+    border: none;
+    border-radius: 2px;
+    background-color: $black10;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    box-shadow: none;
+
+    &:hover {
+        filter: brightness(.98);
+    }
+}
+
+//Swagger Scheme container//dropdown//Authorize
+.swagger-ui .scheme-container {
+    background-color: transparent;
+    box-shadow: none;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+}
+
+//Swagger accordions
+.swagger-ui .opblock {
+    border-radius: 2px;
+    margin-bottom: .5rem;
+
+    button {
+        border-radius: 2px;
+    }
+}
+
+//Swagger accordions head
+.swagger-ui .opblock-tag {
+    background-color: $black10;
+    color: $black100;
+    border-bottom: 0;
+    border-radius: 2px;
+    padding-right: 1rem;
+
+    &:hover {
+        background-color: $black10;
+        filter: brightness(.98);
+    }
+}
+
+//Accordion arrow
+.swagger-ui .expand-methods,
+.swagger-ui .expand-operation {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+//Swagger accordion title width
+.swagger-ui .opblock .opblock-summary-path {
+    max-width: 80%;
+}
+
+//Accordion background
+.swagger-ui .opblock {
+    box-shadow: none;
+}
+
+//Accordion background green
+.swagger-ui .opblock.opblock-post {
+    border: none;
+    background: $swagger-green-bg;
+}
+
+//Accordion badge green
+.swagger-ui .opblock.opblock-post .opblock-summary-method {
+    background: $swagger-green;
+
+    @include accordion-badge_sm;
+}
+
+.swagger-ui .opblock.opblock-post .opblock-summary {
+    border: none;
+
+    @include accordion-head_sm;
+}
+
+//Accordion background orange
+.swagger-ui .opblock.opblock-put {
+    border: none;
+    background: $swagger-orange-bg;
+}
+
+//Accordion badge orange
+.swagger-ui .opblock.opblock-put .opblock-summary-method {
+    background: $swagger-orange;
+
+    @include accordion-badge_sm;
+}
+
+.swagger-ui .opblock.opblock-put .opblock-summary {
+    border: none;
+    @include accordion-head_sm;
+}
+
+//Accordion badge blue
+.swagger-ui .opblock.opblock-get .opblock-summary-method {
+    background: $swagger-blue;
+
+    @include accordion-badge_sm;
+}
+
+//Accordion background blue
+.swagger-ui .opblock.opblock-get {
+    background: $swagger-blue-bg;
+    border: none;
+}
+
+.swagger-ui .opblock.opblock-get .opblock-summary {
+    border: none;
+
+    @include accordion-head_sm;
+}
+
+//Accordion badge grey
+.swagger-ui .opblock.opblock-deprecated .opblock-summary-method {
+    background: $swagger-grey;
+
+    @include accordion-badge_sm;
+}
+
+//Accordion background grey
+.swagger-ui .opblock.opblock-deprecated .opblock-summary {
+    border: none;
+    background: $swagger-grey-bg;
+
+    @include accordion-head_sm;
+}
+
+//Accordion turquoise badge
+.swagger-ui .opblock.opblock-patch .opblock-summary-method {
+    background: $swagger-turquoise;
+
+    @include accordion-badge_sm;
+}
+
+//Accordion turquoise background
+.swagger-ui .opblock.opblock-patch {
+    background: $swagger-turquoise-bg;
+    border: none;
+}
+
+.swagger-ui .opblock.opblock-patch .opblock-summary {
+    border: none;
+
+    @include accordion-head_sm;
+}
+
+
+//Accordion background red
+.swagger-ui .opblock.opblock-delete {
+    background: $swagger-red-bg;
+    border: none;
+}
+
+//Accordion badge red
+.swagger-ui .opblock.opblock-delete .opblock-summary-method {
+    background: $swagger-red;
+
+    @include accordion-badge_sm;
+}
+
+.swagger-ui .opblock.opblock-delete .opblock-summary {
+    border: none;
+
+    @include accordion-head_sm;
+}
+
+//Accordion badge depricated
+.swagger-ui .opblock.opblock-deprecated {
+    opacity: 1;
+}
+
+.swagger-ui .opblock.opblock-deprecated .opblock-summary-method {
+    background-color: $black-hover;
+}
+
+
+//Color of required // depricated
+.swagger-ui .parameter__name.required:after,
+.swagger-ui .parameter__deprecated,
+.swagger-ui .parameter__name.required span {
+    color: $swagger-required-red;
+}
+
+//Parameter in
+.swagger-ui .parameter__extension,
+.swagger-ui .parameter__in {
+    color: $black-hover;
+}
+
+//Controls accepted
+.swagger-ui .response-control-media-type__accept-message {
+    color: $black100;
+}
+
+.swagger-ui .opblock .opblock-summary {
+    padding-right: 1rem;
+}
+
+//OpBlock-section-header
+.swagger-ui .opblock .opblock-section-header {
+    box-shadow: none;
+}
+
+//Checkboxes inside dialog
+.swagger-ui .checkbox input[type=checkbox] {
+    display: block;
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.swagger-ui {
+    input[type=checkbox]:focus+label {
+        outline: 3px dotted #2B2A29;
+        outline-offset: 3px;
+        width: max-content;
+    }
+}
+
+.no-focus-outline .swagger-ui input[type=checkbox]:focus+label {
+    outline: none !important;
+}
+
+//--//
+
+//Models
+.swagger-ui section.models {
+    border: none;
+    margin-top: 20px;
+}
+
+.swagger-ui section.models h4 {
+    border-radius: 2px;
+}
+
+.swagger-ui section.models.is-open {
+    border: none;
+}
+
+.swagger-ui section.models h4 {
+    border: none;
+    padding: 0;
+    margin-bottom: 1rem;
+    background-color: transparent;
+
+    button {
+        background-color: $black10;
+        height: 100%;
+        height: 64px;
+        padding-left: 10px;
+        padding-right: 20px;
+        margin: 0;
+        color: $black100;
+    }
+}
+
+.swagger-ui section.models.is-open h4 {
+    border: none;
+}
+
+.swagger-ui section.models .model-container:first-of-type,
+.swagger-ui section.models .model-container:last-of-type,
+.swagger-ui section.models .model-container {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: .5rem;
+    border-radius: 2px;
+}
+
+//Models--//--
+
+
+//Code plate//
+.swagger-ui .opblock-body pre.microlight {
+    color: $black100;
+    background: white !important;
+    border: 2px solid $black10;
+}
+
+//Code color//
+.swagger-ui .highlight-code>.microlight code,
+.swagger-ui .opblock-body pre.microlight code {
+    color: $black100;
+    filter: brightness(0.5);
+}
+
+//Modelbox //under schema
+.swagger-ui .model-box {
+    background-color: $white;
+}
+
+.swagger-ui .model .property {
+    color: $black-hover;
+}
+
+
+.tabs-nav {
+    border-bottom: 2px solid $black10;
+}
+
+//Tabs navigation ul
+.tabs-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    @include Layout;
+    margin-bottom: -2px;
+}
+
+.tabs-nav ul li button {
+    border: none;
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    height: 42px;
+    text-decoration: none;
+    width: 240px;
+    border-bottom: 2px solid $black10;
+    background-color: transparent;
+    color: $black100;
+    border-radius: 0;
+
+    &:hover {
+        border-color: $pink10;
+    }
+
+    &.active-tab {
+        font-weight: bold;
+        border-color: $pink100;
+
+        &:hover {
+            border-color: $pink100;
+        }
+    }
+
+    @media screen and (max-width: 37.5rem) {
+        width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+.content-tabs-wrapper {
+    background-color: $grey-hover;
+    padding-top: 2rem;
+
+    .content-tab {
+        display: none;
+        width: 100%;
+
+        @include Layout;
+    }
+
+    .active-content-tab {
+        display: block;
+        min-height: 100vh;
+
+        p {
+            max-width: 40rem;
+            font-weight: normal;
+            font-size: 1rem; //16px
+            line-height: 1.5rem; //24px
+            color: $black100;
+            margin-top: .25rem;
+            margin-bottom: 1rem;
+        }
+    }
+}
+
+//Description text margin left fix.
+.swagger-ui .markdown p,
+.swagger-ui .markdown pre,
+.swagger-ui .renderedMarkdown p,
+.swagger-ui .renderedMarkdown pre {
+    margin-left: 0;
+}
+
+//Max-width of inputfields
+.swagger-ui .parameters-col_description input[type=text] {
+    max-width: 560px;
+}
+
+//Exexute button background/border-color
+.swagger-ui .btn.execute {
+    background-color: $swagger-blue;
+    border-color: $swagger-blue
+}
+
+//Download button
+.swagger-ui .download-contents {
+    background-color: $black100;
+    border: 2px solid $white;
+    right: 2rem;
+}
+
+//Copy to clipboard button
+.swagger-ui .copy-to-clipboard {
+    background-color: $black100;
+    border: 2px solid $white;
+    right: 7.5rem;
+
+    button {
+        padding: .4rem 0.9rem;
+    }
+}
+
+//Copy clipboard CRUL
+.swagger-ui .curl-command .copy-to-clipboard {
+    bottom: 5px;
+    height: 28px;
+    right: 10px;
+    width: 32px;
+}
+
+.swagger-ui .curl-command .copy-to-clipboard button {
+    height: 22px;
+}
+
+
+//Mobile swagger adjustments
+@media screen and (max-width: 42.49999rem) {
+    .opblock-summary-description {
+        display: none;
+    }
+
+    //Accordion arrow inside
+    .swagger-ui svg:not(:root) {
+        margin-left: auto;
+        min-width: 20px;
+    }
+
+    //Title of accordion inside
+    .swagger-ui .opblock .opblock-summary-path {
+        max-width: 65%;
+    }
+}
+
+//Acces and Api-keys tab
+.content-tab {
+    .entryscape {
+        a {
+            color: $black100;
+            text-decoration: underline;
+            word-break: break-word;
+        }
+
+        a:hover {
+            background-color: $pink10;
+            color: $black100;
+        }
+
+        .popover {
+            left: 1rem !important;
+        }
+
+        .rdforms {
+            .rdformsRow {
+                display: flex;
+                flex-direction: column;
+                padding-top: 0;
+                margin-bottom: 1rem;
+
+                &.cardgroup {
+                    display: flex;
+                    flex-direction: column;
+
+                    .rdformsRow {
+                        .rdformsLabel {
+                            display: none;
+                        }
+                    }
+                }
+
+                .rdformsFields {
+                    .rdformsGroup {
+                        padding: 0 !important;
+                        border: none;
+                        margin: 0 !important;
+
+                        .rdformsRow {
+                            padding-left: 0;
+                        }
+                    }
+
+                    .rdformsRepeatedValue {
+                        border-top: none !important;
+                    }
+                }
+
+                .rdformsLabel {
+                    margin-bottom: .25rem;
+                    font-weight: bold;
+                    font-size: 1.125rem; //18px
+                    line-height: 1.6875rem; //27px
+                    letter-spacing: -0.01em;
+                    padding: 0;
+                    border: none;
+                    width: max-content !important;
+                }
+
+                .rdformsFields {
+                    .rdformsField {
+                        margin-left: 0;
+                        padding-left: 0;
+
+                        .rdformsLanguage {
+                            display: none;
+                        }
+
+                        .rdformsUrl {
+                            font-weight: normal;
+                            font-size: 1rem; //16px
+                            line-height: 1.5rem; //24px
+                            color: $black100;
+                            text-decoration: underline;
+
+                            &:hover {
+                                background-color: $pink10;
+                            }
+
+                            &:focus {
+                                outline: $focus-style;
+                                outline-offset: $focus-offset;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .compact .rdformsRow.rdformsTopLevel .rdformsRow {
+        margin-bottom: 0;
+    }
+}
+
+.content-tab-text {
+    display: flex;
+    flex-direction: column;
+
+    h2,
+    p {
+        margin: 0;
+    }
+
+    a:hover {
+        background-color: $pink10;
+    }
+}
+
+.highlight-block {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: $green10;
+    width: auto;
+    max-width: 40rem;
+
+    a {
+        word-break: break-word;
+    }
+}

@@ -18,6 +18,8 @@ export class Settings_Test extends EnvSettings {
 
   ENTRYSCAPE_SITEMAP_JSON_URL="https://admin.dataportal.se/sitemap.json";
 
+  API_DETECTION_PATH = "https://admin.dataportal.se/detectedapis.json";
+
   CONTENTBACKEND_SITEURL="*test.dataportal.se";
 
   CONTENTBACKEND_GRAPHAPI="https://digg-test-graphproxy.azurewebsites.net";

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const FilterIcon: React.FC = () => (
+export const InfoIcon: React.FC = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
@@ -11,8 +11,10 @@ export const FilterIcon: React.FC = () => (
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    className="feather feather-filter"
+    className="feather feather-info"
   >
-    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="12" y1="16" x2="12" y2="12"></line>
+    <line x1="12" y1="8" x2="12.01" y2="8"></line>
   </svg>
 );

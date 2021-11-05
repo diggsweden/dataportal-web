@@ -27,15 +27,13 @@ $white:#FFFFFF;
 
 $bg-color:#E4E4E4;
 
-$green-hover: #657C54;
-
-$pink-hover: #B25F53;
-
-$black-hover:#5A5856;
-
-$focus-color:#695F59;
-
 $dark-orange: #C98545;
+
+$green-hover: #657C54;
+$pink-hover: #B25F53;
+$black-hover:#5A5856;
+$grey-hover: #FAFAFA;
+$focus-color:#695F59;
 
 // Focus
 $focus-style: 3px dotted #2B2A29;
@@ -45,7 +43,6 @@ $focus-offset:3px;
 $page-width: 72rem;
 
 // Spaces
-//px/rem
 $space-8: 0.5rem;
 $space-16: 1rem;
 $space-24: 1.5rem;
@@ -54,3 +51,15 @@ $space-48: 3rem;
 $space-64: 4rem;
 $space-96: 6rem;
 $space-114: 9rem;
+
+
+@mixin Layout {
+    max-width: 72rem;
+    margin: auto;
+
+    @media screen and (max-width: 74rem) {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        max-width: none;
+    }
+}
