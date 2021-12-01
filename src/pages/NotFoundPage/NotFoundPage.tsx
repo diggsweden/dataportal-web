@@ -3,12 +3,18 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { RouterContext } from '../../../shared/RouterContext';
 import { PageMetadata } from '../PageMetadata';
 import i18n from 'i18n';
+import { __RouterContext } from 'react-router';
 
 export const NotFoundPage: React.FC<RouteComponentProps<any, RouterContext>> =
-  ({ staticContext }) => {
+  ({ staticContext, location }) => {
     if (staticContext) {
       staticContext.statusCode = 404;
     }
+
+    if(location.pathname && location.pathname.includes("/en/"))
+      i18n.changeLanguage("en");  
+    else
+      i18n.changeLanguage("sv");  
 
     return (
       <>

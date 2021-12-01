@@ -666,7 +666,10 @@ export const ConceptPage: React.FC<PageProps> = ({ env, match }) => {
             <div className="detailpage__wrapper">
               {/* Left column */}
               <div className="detailpage__wrapper--leftcol content">
+<<<<<<< HEAD
                 <span className="text-7-bold beta_badge--xl">BETA</span>
+=======
+>>>>>>> prod
                 <h1 className="text-2 terminology_header">
                   <span>{entry.title}</span>
                 </h1>

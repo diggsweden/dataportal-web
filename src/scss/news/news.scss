@@ -139,8 +139,8 @@
         li {
             display: flex;
             flex-direction: column;
-            padding-top: $space-8;
-            padding-bottom: $space-16;
+            padding-top: $space-16;
+            padding-bottom: $space-24;
             border-bottom: 0.125rem dotted $black10;
 
             &:first-of-type {

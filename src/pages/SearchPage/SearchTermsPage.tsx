@@ -141,7 +141,10 @@ export const SearchTermsPage: React.FC<SearchProps> = ({ location, env }) => {
                 <h1 className="text-2 search-header">
                   {i18n.t('common|search-concept')}
                 </h1>
+<<<<<<< HEAD
                 <span className="text-7-bold beta_badge--lg">BETA</span>
+=======
+>>>>>>> prod
               </div>
 
               <SearchInput

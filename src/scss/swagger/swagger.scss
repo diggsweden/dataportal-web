@@ -278,6 +278,16 @@ $authorize-btn-green: #258659;
     }
 }
 
+<<<<<<< HEAD
+=======
+//hide "try it out" function on deprecated methods
+.swagger-ui .opblock-deprecated {
+    .try-out {
+        display:none;
+    }
+}
+
+>>>>>>> prod
 //Swagger accordions head
 .swagger-ui .opblock-tag {
     background-color: $black10;

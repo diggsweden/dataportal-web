@@ -231,10 +231,12 @@ export const SpecificationPage: React.FC<PageProps> = ({
             <div className="detailpage__wrapper">
               {/* Left column */}
               <div className="detailpage__wrapper--leftcol content">
+<<<<<<< HEAD
                 <span className="text-7-bold beta_badge--xl">BETA</span>
 
+=======
+>>>>>>> prod
                 <h1 className="text-2">{entry.title}</h1>
-
                 <script
                   type="text/x-entryscape-handlebar"
                   data-entryscape="true"

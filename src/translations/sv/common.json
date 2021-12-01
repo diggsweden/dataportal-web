@@ -30,6 +30,15 @@
   "home-text" : "Hem",
   "cookies" : "om_kakor",
   "skiptocontent" : "Hoppa till innehåll",
+<<<<<<< HEAD
   "exploreapi" : "Utforska API"
+=======
+  "exploreapi" : "Utforska API",
+  "top-image": "Vy över Stockholm",
+  "illustration-1":"Illustration av kommunikation mellan dator och mobil",
+  "illustration-2":"Illustration av ett hus",
+  "illustration-3":"Illustration av dator som tar emot data"
+
+>>>>>>> prod
 }
 
