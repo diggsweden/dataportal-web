@@ -10,12 +10,12 @@ import { Link } from 'react-router-dom';
 import { clearLocalStorage } from '../../utilities';
 import { DetailedList } from '../../assets/DetailedList';
 import { CompactList } from '../../assets/CompactList';
-import { compact } from 'lodash';
 
 interface SearchResultsProps {
   search: SearchContextData;
   searchType: SearchType;
   showTip?: boolean;
+  showSorting: boolean;
 }
 
 const searchFocus = () => {
@@ -60,12 +60,43 @@ const SortingOptions: React.FC<{
 }> = ({ search, setCompact, isCompact }) => {
   return (
     <div className="sorting-options">
+      <div className="search-sort">
+        <span className="sorting-heading text-6-bold">{i18n.t('pages|search|sort')}</span>
+
+        <select
+          className="text-6"
+          id=""
+          name={i18n.t('pages|search|numberofhits')}
+          onChange={(event) => {
+            console.log(event.target.value, "blabla")
+            event.preventDefault();
+            clearCurrentScrollPos();
+            search
+              .set({
+                page: 0,
+                sortOrder: parseInt(event.target.value),
+
+              })
+              .then(() => search.doSearch());
+          }}
+        >
+          <option aria-selected={search.request.sortOrder == SearchSortOrder.score_desc} value={SearchSortOrder.score_desc}>
+            {i18n.t('pages|search|relevance')}
+          </option>
+
+          <option aria-selected={search.request.sortOrder == SearchSortOrder.modified_desc} value={SearchSortOrder.modified_desc}>
+            {i18n.t('pages|search|date')}
+          </option>
+        </select>
+      </div>
+
       <div className="search-hits">
-        <label htmlFor="hits" className="text-6-bold">
+        <label className="sorting-heading text-6-bold" htmlFor="hits">
           {i18n.t('pages|search|numberofhits')}
         </label>
 
         <select
+          className="text-6"
           id="hits"
           name={i18n.t('pages|search|numberofhits')}
           onChange={(event) => {
@@ -79,92 +110,55 @@ const SortingOptions: React.FC<{
           }}
         >
           <option aria-selected={search.request.take == 20} value="20">
-            20
+          {i18n.t('pages|search|numberofhits-20')}
           </option>
           <option aria-selected={search.request.take == 50} value="50">
-            50
+          {i18n.t('pages|search|numberofhits-50')}
           </option>
           <option aria-selected={search.request.take == 100} value="100">
-            100
+          {i18n.t('pages|search|numberofhits-100')}
           </option>
         </select>
       </div>
 
+      {/* //Show compact och detailed list view. */}
       <div className="listview-options">
-        <span className="text-6-bold">{i18n.t('pages|search|list-view')}:</span>
-        <button
-          aria-label={
-            isCompact
-              ? `${i18n.t('pages|search|detailed-list-active')}`
-              : `${i18n.t('pages|search|detailed-list')}`
-          }
-          className={isCompact  ? 'active' : ''}
-          onClick={() => {
-            clearCurrentScrollPos();            
-            search.set({compact:false}).then(() => {search.setStateToLocation();setCompact(true);});            
-          }}
-        >
-          <DetailedList />
-        </button>
-        <button
-          aria-label={
-            isCompact 
-              ? `${i18n.t('pages|search|compact-list')}`
-              : `${i18n.t('pages|search|compact-list-active')}`
-          }
-          className={isCompact  ? ' ' : 'active'}
-          onClick={() => {            
-            clearCurrentScrollPos();
-            search.set({compact:true}).then(() => {search.setStateToLocation();setCompact(false);});            
-          }}
-        >
-          <CompactList />
-        </button>
-      </div>
+        <span className="sorting-heading text-6-bold">{i18n.t('pages|search|list-view')}</span>
+        {isCompact ? (
+          <button
+            aria-label={
+              isCompact
+                ? `${i18n.t('pages|search|compact-list')}`
+                : `${i18n.t('pages|search|compact-list-active')}`
+            }
+            className={isCompact ? 'text-6 list-view_btn' : 'text-6 list-view_btn active'}
+            onClick={() => {
+              clearCurrentScrollPos();
+              search.set({ compact: true }).then(() => { search.setStateToLocation(); setCompact(false); });
+            }}
+          >
 
-      <div className="search-sort">
-        <span className="text-6-bold"> {i18n.t('pages|search|sort')}</span>
-        <button
-          onClick={(event) => {
-            event.preventDefault();
-            clearCurrentScrollPos();
-            search
-              .set({
-                page: 0,
-                sortOrder: SearchSortOrder.score_desc,
-              })
-              .then(() => search.doSearch());
-          }}
-          className={
-            search.request.sortOrder &&
-            search.request.sortOrder == SearchSortOrder.score_desc
-              ? 'text-7 sort-active'
-              : 'text-7 '
-          }
-        >
-          {i18n.t('pages|search|relevance')}
-        </button>
-
-        <button
-          onClick={(event) => {
-            event.preventDefault();
-            clearCurrentScrollPos();
-            search
-              .set({
-                page: 0,
-                sortOrder: SearchSortOrder.modified_desc,
-              })
-              .then(() => search.doSearch());
-          }}
-          className={
-            search.request.sortOrder &&
-            search.request.sortOrder == SearchSortOrder.modified_desc
-              ? 'text-7 sort-active'
-              : 'text-7 '
-          }
-        >
-          {i18n.t('pages|search|date')}
-        </button>
+            {i18n.t('pages|search|compact-list')}
+            <CompactList />
+          </button>
+        ) : (
+          <button
+            aria-label={
+              isCompact
+                ? `${i18n.t('pages|search|detailed-list-active')}`
+                : `${i18n.t('pages|search|detailed-list')}`
+            }
+            className={isCompact ? 'text-6 list-view_btn active' : 'text-6 list-view_btn'}
+            onClick={() => {
+              clearCurrentScrollPos();
+              search.set({ compact: false }).then(() => { search.setStateToLocation(); setCompact(true); });
+            }}
+          >
+            {i18n.t('pages|search|detailed-list')}
+            <DetailedList />
+          </button>
+        )
+        }
       </div>
     </div>
   );
@@ -174,10 +168,12 @@ const SortingOptions: React.FC<{
  * @param {SearchContextData} { search } the context of the SearchProvider
  * @param {SearchType} { searchType } typ of search, data | begrepp | specifikation
  * @returns a list of links
+ * @param {boolean} showSorting disable or enable filters
  */
 export const SearchResults: React.FC<SearchResultsProps> = ({
   search,
   searchType,
+  showSorting,
 }) => {
   const { trackEvent } = useMatomo();
 
@@ -197,13 +193,13 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 
   const [isCompact, setCompact] = useState(true);
 
-  useEffect(() => {    
-    clearLocalStorage('ScrollposY_', `ScrollposY_${searchKey}`);    
+  useEffect(() => {
+    clearLocalStorage('ScrollposY_', `ScrollposY_${searchKey}`);
 
   }, [searchKey]);
 
-  useEffect(() => {        
-    if(search.request.compact && search.request.compact == true)
+  useEffect(() => {
+    if (search.request.compact && search.request.compact == true)
       setCompact(false)
     else
       setCompact(true);
@@ -227,11 +223,15 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
           </h2>
 
           {searchType == 'data' && (
-            <SortingOptions
-              setCompact={setCompact}
-              isCompact={isCompact}
-              search={search}
-            />
+            console.log(showSorting, "show sorting"),
+
+            <div className={showSorting ? "active sorting-options-wrapper" : "sorting-options-wrapper"}>
+              <SortingOptions
+                setCompact={setCompact}
+                isCompact={isCompact}
+                search={search}
+              />
+            </div>
           )}
         </div>
 
@@ -241,7 +241,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
               {search.result.hits &&
                 search.result.hits.map((hit, index) => (
                   <li className="search-result-list-item" key={index}>
-                    {isCompact  ? (
+                    {isCompact ? (
                       <span className="result-theme text-6">
                         <Truncate lines={1}>
                           {hit.metadata &&
@@ -268,9 +268,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                         </span>
                       )}
                     <Link
-                      to={`${hit.url}#ref=${
-                        window ? window.location.search : ''
-                      }`}
+                      to={`${hit.url}#ref=${window ? window.location.search : ''
+                        }`}
                       onClick={() => {
                         saveCurrentScrollPos();
                         trackSearchHitClick(hit.url || '');
@@ -281,7 +280,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                       </h3>
                     </Link>
 
-                    
+
                     {isCompact ? (
                       <p lang={hit.descriptionLang} className="text-6">
                         {hit.description}

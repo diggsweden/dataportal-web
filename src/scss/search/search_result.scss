@@ -1,5 +1,7 @@
 //Style for searchresults
-@import 'scss/general/variables.scss';
+@import "scss/general/variables.scss";
+
+$media-sm: 37.5rem;
 
 .search-result {
     .search-result-head {
@@ -9,33 +11,82 @@
         margin-top: $space-8;
         margin-bottom: $space-8;
 
+        //Hide and show sorting options depending on showfilter button.
+        //showFiler in //SearchFilters.tsx
+        @media screen and (max-width: $media-sm) {
+            .sorting-options-wrapper {
+                display: none;
+
+                &.active {
+                    display: block;
+                }
+            }
+        }
+
         //Sorting
         .sorting-options {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
 
+            //Column in mobile
+            @media screen and (max-width: $media-sm) {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            //Hide sorting-heading labels/spans in desktop
+            @media screen and (min-width: $media-sm) {
+                .sorting-heading {
+                    position: absolute;
+                    width: 1px;
+                    height: 1px;
+                    padding: 0;
+                    margin: -1px;
+                    overflow: hidden;
+                    clip: rect(0, 0, 0, 0);
+                    border: 0;
+                }
+            }
+
             //View number of hits
             .search-hits {
-                margin-right: $space-24;
                 display: flex;
-                align-items: center;
                 flex-wrap: nowrap;
 
                 select {
-                    border: 2px solid $green25;
-                    border-radius: 2px;
-                    height: 32px;
-                    background-color: $green25;
                     color: $black100;
-                    padding-left: 4px;
-                    padding-right: 4px;
+                    text-decoration: underline;
                     margin-left: $space-8;
-                    transition: ease-in-out .1s;
                     cursor: pointer;
+                    border: none;
+                    text-align: right;
+                    background-color: $white;
+
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+                    background-repeat: no-repeat;
+                    background-position-x: 100%;
+                    background-position-y: 10px;
+                    padding-left: 0.25rem;
+                    padding-right: 1.5rem;
+                    height: 2.75rem;
+                    outline-offset: -3px !important;
+
+                    @media screen and (max-width: 850px) {
+                        padding-left: 0;
+                        margin-left: 0;
+                        text-align: left;
+                    }
 
                     &:hover {
-                        border-color: $green50;
+                        text-decoration: none;
+                    }
+
+                    option:hover {
+                        background: #ff9500 -webkit-linear-gradient(bottom, #ff9500 0%, #ff9500 100%);
+                        color: #fff;
                     }
                 }
             }
@@ -44,7 +95,6 @@
             //Relevace, last modified
             .search-sort {
                 display: flex;
-                align-items: center;
                 flex-wrap: nowrap;
                 justify-content: flex-end;
 
@@ -64,8 +114,8 @@
                     border-color: $green25;
                     background-color: $white;
                     color: $black100;
-                    transition: border-color ease .1s;
-                    transition: background-color ease .1s;
+                    transition: border-color ease 0.1s;
+                    transition: background-color ease 0.1s;
 
                     &:hover {
                         border-color: $green50;
@@ -76,13 +126,50 @@
                     }
 
                     &:first-of-type {
-                        margin-right: .5rem;
+                        margin-right: 0.5rem;
                     }
                 }
 
                 //Style for sorting results, after relevance or date
                 .sort-active {
                     background-color: $green25;
+                }
+
+                select {
+                    color: $black100;
+                    text-decoration: underline;
+                    margin-left: $space-8;
+                    cursor: pointer;
+                    border: none;
+                    text-align: right;
+                    background-color: $white;
+
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+                    background-repeat: no-repeat;
+                    background-position-x: 100%;
+                    background-position-y: 10px;
+                    padding-left: 0.25rem;
+                    padding-right: 1.5rem;
+                    padding-right: 1.5rem;
+                    height: 2.75rem;
+                    outline-offset: -3px !important;
+
+                    @media screen and (max-width: 850px) {
+                        padding-left: 0;
+                        margin-left: 0;
+                        text-align: left;
+                    }
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+
+                    option:hover {
+                        background: #ff9500 -webkit-linear-gradient(bottom, #ff9500 0%, #ff9500 100%);
+                        color: #fff;
+                    }
                 }
             }
         }
@@ -122,7 +209,7 @@
 
                 &:hover,
                 &:focus {
-                    transition: ease-in-out .2s;
+                    transition: ease-in-out 0.2s;
                 }
 
                 .result-theme {
@@ -340,87 +427,79 @@
 
 // Loading dots
 .loading:after {
-    content: '.';
+    content: ".";
     animation: dots 1s steps(5, end) infinite;
 }
 
 @keyframes dots {
-
     0%,
     20% {
         color: rgba(0, 0, 0, 0);
-        text-shadow:
-            .25em 0 0 rgba(0, 0, 0, 0),
-            .5em 0 0 rgba(0, 0, 0, 0);
+        text-shadow: 0.25em 0 0 rgba(0, 0, 0, 0), 0.5em 0 0 rgba(0, 0, 0, 0);
     }
 
     40% {
         color: black;
-        text-shadow:
-            .25em 0 0 rgba(0, 0, 0, 0),
-            .5em 0 0 rgba(0, 0, 0, 0);
+        text-shadow: 0.25em 0 0 rgba(0, 0, 0, 0), 0.5em 0 0 rgba(0, 0, 0, 0);
     }
 
     60% {
-        text-shadow:
-            .25em 0 0 black,
-            .5em 0 0 rgba(0, 0, 0, 0);
+        text-shadow: 0.25em 0 0 black, 0.5em 0 0 rgba(0, 0, 0, 0);
     }
 
     80%,
     100% {
-        text-shadow:
-            .25em 0 0 black,
-            .5em 0 0 black;
+        text-shadow: 0.25em 0 0 black, 0.5em 0 0 black;
     }
 }
-
-
 
 //view-options detaild or compact
 
 .listview-options {
     display: flex;
     align-items: center;
-    margin-right: 1.5rem;
 
     @media screen and (max-width: 750px) {
         margin-bottom: 1.5rem;
     }
 
-    button {
-        padding: 0;
-        height: 2rem;
-        width: 2rem;
-        border-color: $green25;
-        background-color: $white;
-        transition: background-color ease .1s;
-        transition: border-color ease .1s;
+    .list-view_btn {
+        text-decoration: underline;
+        border: none;
+        color: $black100;
+        outline-offset: -3px !important;
+
+        @media screen and (max-width: 850px) {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        svg {
+            margin-left: $space-8;
+        }
 
         &:hover {
-            border-color: $green50;
-        }
-
-        &.active {
-            background-color: $green25;
-        }
-
-        &:first-of-type {
-            margin-left: .5rem;
-            margin-right: .5rem;
+            text-decoration: none;
         }
     }
 }
 
 @media screen and (max-width: 786px) {
-
     .search-hits,
     .listview-options,
     .search-sort {
-        margin-bottom: 1.5rem;
+        margin-bottom: $space-8;
     }
 }
 
+@media screen and (max-width: $media-sm) {
+    .search-hits,
+    .listview-options,
+    .search-sort {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
 
 //organisation & format row
 .search-result-list-item .org-format {
@@ -446,7 +525,7 @@
             &::before {
                 top: 2px;
                 position: relative;
-                content: '|';
+                content: "|";
                 margin-left: 1rem;
                 color: $black-hover;
             }
@@ -468,3 +547,4 @@
         align-items: flex-start;
     }
 }
+ 

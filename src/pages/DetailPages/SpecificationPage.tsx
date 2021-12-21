@@ -145,7 +145,7 @@ export const SpecificationPage: React.FC<PageProps> = ({
                 rowhead:'<span class="specification__resource--header text-4">{{text}}</span>' + 
                   '<span class="specification__resource--type text-5">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
                   '<div class="specification__resource--description text-5 esbDescription">{{ text content="\${skos:definition}" }}</div>' +
-                  '<a target="_blank" class="specification__resource--downloadlink text-5" href="{{resourceURI}}">${i18n.t(
+                  '<a target="_blank" class="specification__resource--downloadlink download_url text-5" href="{{resourceURI}}">${i18n.t(
                     'pages|specification_page|download'
                   )} {{prop "prof:hasRole" class="type" render="label"}}</a>',
               },
@@ -231,10 +231,7 @@ export const SpecificationPage: React.FC<PageProps> = ({
             <div className="detailpage__wrapper">
               {/* Left column */}
               <div className="detailpage__wrapper--leftcol content">
-                <span className="text-7-bold beta_badge--xl">BETA</span>
-
                 <h1 className="text-2">{entry.title}</h1>
-
                 <script
                   type="text/x-entryscape-handlebar"
                   data-entryscape="true"

@@ -1,16 +1,15 @@
-@import 'scss/general/variables.scss';
-
+@import "scss/general/variables.scss";
 
 .highlight {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: $space-96;
-    margin-bottom: $space-96;
+    margin-top: $space-64;
+    margin-bottom: $space-64;
 
     @media screen and (max-width: 40.625rem) {
-        margin-top: $space-24;
-        margin-bottom: $space-24;
+        margin-top: $space-64;
+        margin-bottom: $space-32;
     }
 
     .highlight__illustraitons {
@@ -18,6 +17,8 @@
             margin-left: $space-16;
             margin-right: $space-16;
             margin-bottom: $space-24;
+            max-width: 160px;
+            height: auto;
 
             @media screen and (max-width: 53.125rem) {
                 &:nth-last-of-type(2) {
@@ -26,6 +27,7 @@
             }
 
             @media screen and (max-width: 36.563rem) {
+                max-width: 200px;
                 &:nth-last-of-type(1) {
                     display: none;
                 }
@@ -40,7 +42,6 @@
         h2 {
             @media screen and (min-width: 40.625rem) {
                 text-align: center;
-
             }
         }
 

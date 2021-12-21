@@ -1,0 +1,68 @@
+@import "scss/general/variables.scss";
+
+.devportalblock {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: $space-64;
+    padding-bottom: $space-64 * 3;
+
+    //Hide in english
+    &.en {
+        display: none;
+    }
+
+    @media screen and (max-width: 40.625rem) {
+        flex-wrap: wrap-reverse;
+        justify-content: center;
+        padding-top: 0;
+        padding-bottom: $space-96;
+    }
+
+    @media screen and (max-width: 40.625rem) {
+        .devportalblock-left-col,
+        .devportalblock-right-col {
+            width: 100%;
+        }
+
+        .devportalblock-left-col {
+            margin-right: 0;
+        }
+
+        .devportalblock-right-col {
+            margin-bottom: $space-16;
+
+            svg {
+                max-width: 200px;
+            }
+        }
+    }
+}
+
+.devportalblock-left-col {
+    width: 66.66666%;
+    margin-right: $space-16;
+}
+.devportalblock-right-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.devportalblock-left-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    h2 {
+        margin-top: 0;
+    }
+
+    p {
+        max-width: 750px;
+        margin-top: 0;
+        margin-bottom: $space-24;
+    }
+}

@@ -3,8 +3,7 @@
 
 // Style for search categories on startpage
 .categoriesnav__wrapper {
-    background-color: $black100;
-    margin-bottom: $space-64;
+    background-color: $green25;
 
     @media screen and (max-width: 650px) {
     display: none;
@@ -18,10 +17,10 @@
         padding: 0rem;
         margin: auto;
         margin-top: $space-32;
-        margin-bottom: $space-64;
+        margin-bottom: $space-64 + $space-24;
 
         h2 {
-            color: $white;
+            color: $black100;
             margin-top: $space-32;
         }
 
@@ -47,7 +46,7 @@
                 }
 
                 a {
-                    color: $white;
+                    color: $black100;
                     font-size: 1.25rem;
                     line-height: 2rem;
 
@@ -59,7 +58,6 @@
                     &:focus {
                         outline: $focus-style;
                         outline-offset: 4px;
-                        outline-color: $white !important;
                     }
 
                     @media screen and (max-width: 37.5rem) {

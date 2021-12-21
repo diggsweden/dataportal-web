@@ -56,9 +56,6 @@ export class SearchBlock extends React.Component<SearchBlockProps> {
           <div className="search__box">
             <div
               className="search__box--link"
-              // onClick={(e) => {
-              //   window.location.href = `/${i18n.languages[0]}/datasets?p=1&q=&f=`;
-              // }}
             >
               <Link
                 className="text-5-bold"
@@ -74,19 +71,15 @@ export class SearchBlock extends React.Component<SearchBlockProps> {
 
             <div
               className="search__box--link"
-              // onClick={(e) => {
-              //   window.location.href = `/${i18n.languages[0]}/concepts?p=1&q=&f=`;
-              // }}
             >
               <span className="row">
                 <Link
                   className="text-5-bold"
-                  aria-label="Sök efter begrepp"
+                  aria-label={i18n.t('pages|search|concepts')}
                   to={`/${i18n.languages[0]}/concepts?p=1&q=&f=`}
                 >
                   {i18n.t('pages|search|concepts')}{' '}
                 </Link>
-                <span className="beta_badge text-7-bold"> {i18n.t('common|beta')}</span>
               </span>
 
               <span className="text-6">
@@ -96,19 +89,15 @@ export class SearchBlock extends React.Component<SearchBlockProps> {
 
             <div
               className="search__box--link"
-              // onClick={(e) => {
-              //   window.location.href = `/${i18n.languages[0]}/specifications?p=1&q=&f=`;
-              // }}
             >
               <span className="row">
                 <Link
                   className="text-5-bold"
-                  aria-label="Sök efter specifikationer"
+                  aria-label={i18n.t('pages|search|specifications')}
                   to={`/${i18n.languages[0]}/specifications?p=1&q=&f=`}
                 >
                   {i18n.t('pages|search|specifications')}{' '}
                 </Link>
-                <span className="beta_badge text-7-bold"> {i18n.t('common|beta')}</span>
               </span>
 
               <span className="text-6">

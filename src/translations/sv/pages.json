@@ -52,9 +52,13 @@
     "organization" : "Organisationer",
     "relevance" : "Relevans",
     "date" : "Senast ändrad",
-    "sort" : "Sortera:",
+    "sort" : "Sortera",
     "nohits" : "Inga träffar",
-    "numberofhits" : "Antal träffar:",
+    "numberofhits" : "Antal träffar",
+    "numberofhits-20" : "20 träffar",
+    "numberofhits-50" : "50 träffar",
+    "numberofhits-100" : "100 träffar",
+
     "filtersearch" : "Sök inom filter",
     "search-tips" : "Söktips",
     "search-tips-search-head" : "Vidga sökning med asterisk (*)",
@@ -75,10 +79,10 @@
     "list-view" : "Listvy",
     "more-filters" : "Visa fler filter",
     "less-filters" : "Visa färre filter",
-    "detailed-list": "Detaljerad listvy",
-    "detailed-list-active": "Detaljerad listvy aktiv",
-    "compact-list": "Kompakt listvy",
-    "compact-list-active": "Kompakt listvy aktiv"
+    "detailed-list": "Detaljerad lista",
+    "detailed-list-active": "Detaljerad lista aktiv",
+    "compact-list": "Kompakt lista",
+    "compact-list-active": "Kompakt lista aktiv"
   },
   "datasets" : {
     "search-datasets" : "Sök",

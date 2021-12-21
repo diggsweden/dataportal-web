@@ -12,6 +12,8 @@ import { StaticBreadcrumb } from 'components/Breadcrumb';
 import SearchFilters from './SearchFilters';
 import SearchInput from './SearchInput';
 import SearchResults from './SearchResults';
+import { FilterIcon } from '../../assets/FilterIcon';
+import { CloseIcon2 } from '../../assets/CloseIcon';
 
 interface SearchProps extends PageProps {
   activeLink?: string;
@@ -141,7 +143,6 @@ export const SearchTermsPage: React.FC<SearchProps> = ({ location, env }) => {
                 <h1 className="text-2 search-header">
                   {i18n.t('common|search-concept')}
                 </h1>
-                <span className="text-7-bold beta_badge--lg">BETA</span>
               </div>
 
               <SearchInput
@@ -156,9 +157,14 @@ export const SearchTermsPage: React.FC<SearchProps> = ({ location, env }) => {
                   className={showFilter ? 'filter-active' : ''}
                   onClick={() => setShowFilter(!showFilter)}
                 >
-                  {showFilter
-                    ? `${i18n.t('common|hide-filter')}`
-                    : `${i18n.t('common|show-filter')}`}
+
+                  {i18n.t('common|filter')}
+                  {showFilter ?
+                    <CloseIcon2 />
+                    :
+                    <FilterIcon />
+                  }
+
                 </button>
               </div>
 
@@ -168,10 +174,11 @@ export const SearchTermsPage: React.FC<SearchProps> = ({ location, env }) => {
                 searchType="begrepp"
                 query={query}
               />
-
               <noscript>{i18n.t('common|search-datasets')}</noscript>
-
-              <SearchResults search={search} searchType="begrepp" />
+              <SearchResults
+                showSorting={showFilter}
+                search={search}
+                searchType="begrepp" />
             </div>
           </div>
         )}

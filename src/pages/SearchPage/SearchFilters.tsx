@@ -12,6 +12,8 @@ import { SearchFacetValue } from '../../components/Search/Search';
 import i18n from '../../i18n';
 import { ESRdfType, ESType } from 'components/Search/EntryScape';
 import { FilterIcon } from '../../assets/FilterIcon';
+import { CloseIcon2 } from '../../assets/CloseIcon';
+
 
 interface SearchFilterProps {
   showFilter: boolean;
@@ -45,8 +47,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
 }) => {
 
   const clearCurrentScrollPos = () => {
-    if(typeof localStorage != "undefined" && typeof location != "undefined")
-    {      
+    if (typeof localStorage != "undefined" && typeof location != "undefined") {
       localStorage.setItem(`ScrollposY_${location.search}`, "0")
     }
   }
@@ -58,7 +59,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
         className="filter-search__input"
         value={filter[filterKey] || ''}
         onChange={(e) => (
-          clearCurrentScrollPos(),fetchMore(), setFilter({ ...filter, [filterKey]: e.target.value })
+          clearCurrentScrollPos(), fetchMore(), setFilter({ ...filter, [filterKey]: e.target.value })
         )}
       />
       <i className="filter-search__icon">
@@ -73,15 +74,14 @@ const MarkAll: React.FC<MarkAllProps> = ({ search, toggleKey, title }) => {
   return (
     <div className="filter-checkall">
       <Button
-        className={`filter-btn ${
-          search.facetSelected(toggleKey, '*') && 'selected'
-        }`}
+        className={`filter-btn ${search.facetSelected(toggleKey, '*') && 'selected'
+          }`}
         onClick={async () => {
           await search.set({
             facetValues: search.request.facetValues
               ? search.request.facetValues.filter(
-                  (f) => f.facet != toggleKey || f.facetType == ESType.wildcard
-                )
+                (f) => f.facet != toggleKey || f.facetType == ESType.wildcard
+              )
               : [],
           });
 
@@ -131,8 +131,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
   const [isOpen, setOpen] = useState(true);
 
   const clearCurrentScrollPos = () => {
-    if(typeof localStorage != "undefined" && typeof location != "undefined")
-    {      
+    if (typeof localStorage != "undefined" && typeof location != "undefined") {
       localStorage.setItem(`ScrollposY_${location.search}`, "0")
     }
   }
@@ -140,9 +139,8 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
   return (
     <>
       <div
-        className={`search-filter-box ${showFilter && 'show-filter'} ${
-          isOpen && 'compact-filters'
-        }`}
+        className={`search-filter-box ${showFilter && 'show-filter'} ${isOpen && 'compact-filters'
+          }`}
       >
         <div className="search-filter-row">
           {search.allFacets &&
@@ -152,13 +150,13 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
               const show = (value && value.show) || 20;
               const facetValues = inputFilter[key]
                 ? value?.facetValues.filter((v) =>
-                    v.title
-                      ?.toLowerCase()
-                      .includes(inputFilter[key].toLowerCase())
-                  )
+                  v.title
+                    ?.toLowerCase()
+                    .includes(inputFilter[key].toLowerCase())
+                )
                 : value?.facetValues.slice(0, show);
               return (
-                
+
                 <Box key={'box' + value.title} className="search-filter">
                   <SearchFilter title={value.title}>
                     <div className="search-filter-list">
@@ -187,10 +185,9 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                         (facetValue: SearchFacetValue, index: number) => (
                           <Button
                             key={index}
-                            className={`filter-btn ${
-                              search.facetSelected(key, facetValue.resource) &&
+                            className={`filter-btn ${search.facetSelected(key, facetValue.resource) &&
                               'selected'
-                            }`}
+                              }`}
                             onClick={() => {
                               clearCurrentScrollPos();
                               search.toggleFacet(facetValue).then(async () => {
@@ -322,17 +319,21 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
       </div>
 
       {searchType == 'data' && (
-      <div className="search-toolbar">
-        <button
-          className={isOpen ? 'more-filters-btn' : 'more-filters-btn active'}
-          onClick={() => setOpen(!isOpen)}
-        >
-          {isOpen
-            ? `${i18n.t('pages|search|more-filters')}`
-            : `${i18n.t('pages|search|less-filters')}`}
-          <FilterIcon />
-        </button>
-      </div>
+        <div className="search-toolbar">
+          <button
+            className={isOpen ? 'more-filters-btn' : 'more-filters-btn active'}
+            onClick={() => setOpen(!isOpen)}
+          >
+            {isOpen
+              ? `${i18n.t('pages|search|more-filters')}`
+              : `${i18n.t('pages|search|less-filters')}`
+            }
+            {isOpen
+              ? <FilterIcon />
+              : <CloseIcon2 />
+            }
+          </button>
+        </div>
       )}
 
       <div className="selected-filters">
@@ -357,11 +358,10 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
           )}
       </div>
       <div
-        className={`clear-filters ${
-          search.request?.facetValues &&
+        className={`clear-filters ${search.request?.facetValues &&
           search.request.facetValues.length >= 2 &&
           'show'
-        }`}
+          }`}
       >
         <button
           onClick={() => {

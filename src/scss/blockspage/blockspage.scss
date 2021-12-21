@@ -1,4 +1,4 @@
-@import 'scss/general/variables.scss';
+@import "scss/general/variables.scss";
 
 .detailpage {
   width: 100%;
@@ -82,7 +82,7 @@
                         margin-bottom: $space-16;
 
                         &::after {
-                          content: 'Geografiskt område';
+                          content: "Geografiskt område";
                         }
 
                         label,
@@ -121,7 +121,6 @@
             }
 
             .rdformsFields {
-
               .rdformsField,
               .rdformsRepeatedValue {
                 border: none;
@@ -239,27 +238,27 @@
                 text-decoration: none;
               }
 
-              &[aria-expanded='false'] {
+              &[aria-expanded="false"] {
                 &::before {
-                  content: 'Visa mer';
+                  content: "Visa mer";
                 }
               }
 
-              &[aria-expanded='true'] {
+              &[aria-expanded="true"] {
                 &::before {
-                  content: 'Visa mindre';
+                  content: "Visa mindre";
                 }
               }
 
               span {
-                font-family: 'Font Awesome 5 Free' !important;
+                font-family: "Font Awesome 5 Free" !important;
                 font-size: 1rem;
                 margin-top: 0.125rem;
                 margin-left: 0.25rem;
               }
 
               &:hover {
-                filter: brightness(.98);
+                filter: brightness(0.98);
                 transition: 0ms;
               }
 
@@ -347,7 +346,6 @@
               flex-direction: column;
 
               .rdformsFields {
-
                 .rdformsGroup,
                 .rdforms,
                 .rdformsPresenter {
@@ -395,20 +393,20 @@
                 color: $black100;
                 text-decoration: none;
                 height: 2.75rem;
-                padding-top: .5rem;
-                padding-bottom: .5rem;
-                padding-left: .6rem;
-                padding-right: .6rem;
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+                padding-left: 0.6rem;
+                padding-right: 0.6rem;
                 border-radius: 2px;
                 background-color: $green10;
 
                 &:hover {
-                  filter: brightness(.98);
+                  filter: brightness(0.98);
                 }
 
                 &:after {
                   content: url(../../assets/file_download_icon.svg);
-                  margin-left: .5rem;
+                  margin-left: 0.5rem;
                   margin-bottom: -5px;
                 }
               }
@@ -609,7 +607,7 @@
                       margin-right: $space-8;
 
                       &::after {
-                        content: ':';
+                        content: ":";
                       }
                     }
                   }
@@ -656,7 +654,6 @@
         margin-top: $space-32;
 
         .rdforms {
-
           .rdformsRow,
           .rdformsTopLevel,
           .notCompact {
@@ -681,16 +678,16 @@
       margin-left: 1rem;
       background-color: $orange10;
       width: fit-content;
-      padding: .5rem .6rem;
+      padding: 0.5rem 0.6rem;
       margin-left: 0px;
 
       &:hover {
-        filter: brightness(.98);
+        filter: brightness(0.98);
       }
 
       &:after {
         content: url(../../assets/tools.svg);
-        margin-left: .5rem;
+        margin-left: 0.5rem;
         display: inline-block;
       }
     }
@@ -733,10 +730,10 @@
                 color: $black100;
                 background-color: $pink10;
                 min-height: 2.75rem;
-                padding-top: .5rem;
-                padding-bottom: .5rem;
-                padding-left: .6rem;
-                padding-right: .6rem;
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+                padding-left: 0.6rem;
+                padding-right: 0.6rem;
                 border-radius: 2px;
 
                 @media screen and (max-width: 26.375rem) {
@@ -750,12 +747,12 @@
                   background-color: $orange10 !important;
 
                   &:hover {
-                    filter: brightness(.98);
+                    filter: brightness(0.98);
                   }
 
                   &:after {
                     content: url(../../assets/tools.svg);
-                    margin-left: .5rem;
+                    margin-left: 0.5rem;
                     display: inline-block;
                   }
                 }
@@ -813,7 +810,7 @@
               text-decoration: none;
 
               &:hover {
-                filter: brightness(.98);
+                filter: brightness(0.98);
               }
 
               &.download_url {
@@ -821,7 +818,7 @@
 
                 &:after {
                   content: url(../../assets/file_download_icon.svg);
-                  margin-left: .5rem;
+                  margin-left: 0.5rem;
                   margin-bottom: -5px;
                 }
               }
@@ -829,7 +826,7 @@
               &.access_url {
                 &:after {
                   content: url(../../assets/external_link_icon.svg);
-                  margin-left: .5rem;
+                  margin-left: 0.5rem;
                   margin-bottom: -5px;
                 }
               }
@@ -860,7 +857,7 @@
       margin-bottom: $space-16;
 
       i {
-        font-family: Font Awesome\5 Free !important;
+        font-family: Font awesome\5 Free !important;
         padding-right: 0.5rem;
         font-size: 1rem;
       }
@@ -875,15 +872,15 @@
 html:lang(en) {
   .esbRowControl {
     button {
-      &[aria-expanded='false'] {
+      &[aria-expanded="false"] {
         &::before {
-          content: 'View more' !important;
+          content: "View more" !important;
         }
       }
 
-      &[aria-expanded='true'] {
+      &[aria-expanded="true"] {
         &::before {
-          content: 'View less' !important;
+          content: "View less" !important;
         }
       }
     }
@@ -935,7 +932,6 @@ html:lang(en) {
   }
 
   span {
-
     .entryscape,
     .btn {
       padding: 0rem;
@@ -1272,17 +1268,34 @@ html:lang(en) {
               }
 
               .specification__resource--downloadlink {
-                text-decoration: underline;
+                display: flex;
+                align-items: center;
                 color: $black100;
-                width: fit-content;
-                text-transform: lowercase;
+                margin: 0rem;
+                margin-left: 0px !important;
+                text-decoration: none;
+                width: max-content;
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+                padding-left: 0.6rem;
+                padding-right: 0.6rem;
 
                 &::first-letter {
                   text-transform: uppercase;
                 }
 
                 &:hover {
-                  background-color: $pink10;
+                  filter: brightness(0.98);
+                }
+
+                &.download_url {
+                  background-color: $green10;
+
+                  &:after {
+                    content: url(../../assets/file_download_icon.svg);
+                    margin-left: 0.5rem;
+                    margin-bottom: -5px;
+                  }
                 }
               }
             }
@@ -1479,7 +1492,7 @@ html:lang(en) {
     }
 
     i {
-      font-family: 'Font Awesome 5 Free' !important;
+      font-family: "Font Awesome 5 Free" !important;
       margin-right: $space-8;
       color: $black-hover;
       border-radius: 100px;
@@ -1514,7 +1527,7 @@ html:lang(en) {
     }
 
     i {
-      font-family: 'Font Awesome 5 Free' !important;
+      font-family: "Font Awesome 5 Free" !important;
       margin-right: $space-8;
       color: $black-hover;
       border-radius: 100px;
@@ -1547,7 +1560,7 @@ html:lang(en) {
     }
 
     i {
-      font-family: 'Font Awesome 5 Brands' !important;
+      font-family: "Font Awesome 5 Brands" !important;
       margin-right: $space-8;
       color: $black-hover;
       font-size: 32px;
@@ -1586,7 +1599,7 @@ html:lang(en) {
     }
 
     .fa-coins::before {
-      font-family: 'Font Awesome 5 Free' !important;
+      font-family: "Font Awesome 5 Free" !important;
     }
   }
 }

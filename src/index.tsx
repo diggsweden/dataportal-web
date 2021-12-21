@@ -28,6 +28,7 @@ import 'scss/search/search_result.scss';
 import 'scss/startpage/startpage_categories.scss';
 import 'scss/startpage/startpage_search.scss';
 import 'scss/startpage/startpage_general.scss';
+import 'scss/startpage/devportal_block.scss';
 import 'scss/blockspage/blockspage.scss';
 import 'scss/search/search_head.scss';
 import 'scss/highlight/highlight.scss';
@@ -36,8 +37,6 @@ import 'scss/project/projectlist.scss';
 import 'scss/project/project.scss';
 import 'scss/breadcrumb/breadcrumb.scss';
 import 'scss/cookiebanner/cookiebanner.scss';
-
-
 import 'scss/redirectpage/redirectpage.scss';
 import fetch from 'node-fetch';
 import { I18nextProvider } from 'react-i18next';

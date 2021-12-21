@@ -16,6 +16,9 @@ import { Link } from 'react-router-dom';
 import { SearchInput } from './SearchInput';
 import { SearchResults } from './SearchResults';
 import { InfoIcon } from '../../assets/InfoIcon';
+import { FilterIcon } from '../../assets/FilterIcon';
+import { CloseIcon2 } from '../../assets/CloseIcon';
+
 interface SearchProps extends PageProps {
   activeLink?: string;
 }
@@ -225,12 +228,18 @@ export const SearchPage: React.FC<SearchProps> = ({ location, env }) => {
 
               <div className="mobile-filters">
                 <button
+                  aria-label={showFilter
+                    ? i18n.t('common|hide-filter')
+                    : i18n.t('common|show-filter')}
                   className={showFilter ? 'filter-active' : ''}
                   onClick={() => setShowFilter(!showFilter)}
                 >
-                  {showFilter
-                    ? i18n.t('common|hide-filter')
-                    : i18n.t('common|show-filter')}
+                  {i18n.t('common|filter')}
+                  {showFilter ?
+                    <CloseIcon2 />
+                    :
+                    <FilterIcon />
+                  }
                 </button>
               </div>
 
@@ -240,10 +249,10 @@ export const SearchPage: React.FC<SearchProps> = ({ location, env }) => {
                 search={search}
                 query={query}
               />
-
               <noscript>{i18n.t('common|no-js-text')}</noscript>
-
-              <SearchResults search={search} searchType="data" />
+              <SearchResults
+              showSorting={showFilter}
+              search={search} searchType="data" />
             </div>
           </div>
         )}

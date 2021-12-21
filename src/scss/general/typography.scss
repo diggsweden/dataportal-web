@@ -1,5 +1,5 @@
 // Typografi
-@import 'scss/general/variables.scss';
+@import "scss/general/variables.scss";
 
 * {
   font-family: "Ubuntu", sans-serif !important;
@@ -39,7 +39,7 @@
 
 .text-4 {
   font-weight: bold;
-  font-size:1.25rem; //20px
+  font-size: 1.25rem; //20px
   line-height: 1.75rem; //28px
   letter-spacing: -0.01em;
   color: $black100;
@@ -47,7 +47,7 @@
 
 .text-4-link {
   font-weight: bold;
-  font-size:1.25rem; //20px
+  font-size: 1.25rem; //20px
   line-height: 1.75rem; //28px
   letter-spacing: -0.01em;
   text-decoration-line: underline;
@@ -81,6 +81,10 @@
   text-decoration-line: underline;
   color: $black100;
 
+  &:hover {
+    text-decoration: none;
+  }
+
   &:focus {
     outline: $focus-style;
     outline-offset: $focus-offset;
@@ -109,6 +113,10 @@
   text-decoration-line: underline;
   color: $black100;
 
+  &:hover {
+    text-decoration: none;
+  }
+
   &:focus {
     outline: $focus-style;
     outline-offset: $focus-offset;
@@ -117,15 +125,25 @@
 
 .text-7 {
   font-weight: normal;
-  font-size:0.875rem; //14px
+  font-size: 0.875rem; //14px
   line-height: 1.25rem; //20px
   color: $black100;
 }
 
 .text-7-bold {
   font-weight: bold;
-  font-size:0.875rem; //14px
+  font-size: 0.875rem; //14px
   line-height: 1.25rem; //20px
   color: $black100;
 }
 
+.external-link-icon {
+  position: relative;
+  &:after {
+    position: absolute;
+    margin: auto;
+    content: url(../../assets/external_link_icon.svg);
+    margin-top: 0.25rem;
+    margin-left: 0.25rem;
+  }
+}

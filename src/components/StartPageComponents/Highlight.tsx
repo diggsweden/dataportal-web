@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import i18n from '../../i18n';
-import { TopImage } from 'assets/TopImage';
 import { Illustration_1 } from 'assets/Illustration_1';
 import { Illustration_2 } from 'assets/Illustration_2';
 import { Illustration_3 } from 'assets/Illustration_3';

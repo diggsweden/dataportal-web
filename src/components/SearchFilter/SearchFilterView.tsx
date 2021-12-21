@@ -31,7 +31,8 @@ export const SearchFilterView: React.FC<SearchFilterViewProps> = ({
   <>
     <Box bgColor="cardBg">
       <SearchFilterButton
-        className="text-6 "
+        // className="text-6 "
+        className={open ? "text-6 open" : "text-6"}
         onClick={onClick}
         textAlign="left"
         accessiblityHasPopup={true}
@@ -53,14 +54,13 @@ export const SearchFilterView: React.FC<SearchFilterViewProps> = ({
           </Text>
 
           <Box >
-              <ArrowDropIcon
-                className="drop-icon"
-                rotation={open ? -180 : 0}
-                width={[20, 25]}
-                color="#5A6751"
-              />
+            <ArrowDropIcon
+              rotation={open ? -180 : 0}
+              width={[20, 25]}
+              color="#5A6751"
+            />
           </Box>
-          
+
         </Box>
       </SearchFilterButton>
     </Box>

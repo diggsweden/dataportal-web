@@ -16,6 +16,7 @@
   "to-top" : "To the top",
   "show-filter" : "Show filter",
   "hide-filter" : "Hide filter",
+  "filter" : "Filters",
   "loading" : "Loading",
   "load-more" : "Load more",
   "clear-filters" : "Clear filters",
@@ -32,5 +33,9 @@
   "home-text" : "Home",
   "cookies" : "cookies",
   "skiptocontent" : "Skip to content",
-  "exploreapi" : "Explore API"
+  "exploreapi" : "Explore API",
+  "top-image": "View of Stockholm",
+  "illustration-1":"Illustration av kommunikation mellan dator och mobil",
+  "illustration-2":"Illustration av ett hus",
+  "illustration-3":"Illustration av dator som tar emot data"
 }

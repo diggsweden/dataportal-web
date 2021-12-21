@@ -8,10 +8,12 @@ import { Statistic } from '../../components/Statistic';
 import { PageProps } from 'pages/PageProps';
 import { StatisticNumbers } from '../../components/StatisticNumbers';
 import { StatisticGraph } from '../../components/StatisticGraph';
+
 import {
   CategoriesNav,
   Highlight,
   SearchBlock,
+  DevportalBlock,
 } from '../../components/StartPageComponents';
 import { ArticleBlock } from 'components/Articles';
 
@@ -35,8 +37,9 @@ export const StartPage: React.FC<PageProps> = ({ env }) => {
       />
       <SearchBlock env={env} />
       <Highlight env={env} />
-      <CategoriesNav env={env} />
       <ArticleBlock env={env} />
+      <DevportalBlock env={env} />
+      <CategoriesNav env={env} />
 
       <div className="statistic">
         <div className="statistic-header">

@@ -1,23 +1,11 @@
 import {
   Box,
-  colorPalette,
   Container,
-  Divider,
-  FacebookIcon,
-  Heading,
-  LinkedinIcon,
   Logo,
-  styled,
   Text,
-  themes,
-  TwitterIcon,
-  YoutubeIcon,
 } from '@digg/design-system';
-import { ThemeProvider } from 'emotion-theming';
 import React from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import { EventEffect } from '../EventEffect';
-import { ScrollToTop } from '../ScrollToTop';
 import { SettingsContext } from '../SettingsProvider';
 import i18n from 'i18n';
 
