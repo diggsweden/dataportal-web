@@ -1,14 +1,10 @@
 import {
-  Box,
-  ArrowIcon,
   SearchIcon,
-  Accordion,
-  Container,
   colorPalette,
 } from '@digg/design-system';
 import React, { Component } from 'react';
 import i18n from '../../i18n';
-import { TopImage } from 'assets/TopImage';
+import { TopImageStartpage } from 'assets/TopImageStartpage';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { Link } from 'react-router-dom';
 
@@ -22,7 +18,7 @@ export class SearchBlock extends React.Component<SearchBlockProps> {
   render() {
     return (
       <div className="main-search-container">
-        <TopImage></TopImage>
+        <TopImageStartpage/>
         <div className="startpage-top">
           <div className="startpage-search">
             <h1 className="text-1">

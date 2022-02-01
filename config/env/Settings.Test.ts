@@ -26,6 +26,8 @@ export class Settings_Test extends EnvSettings {
 
   CANONICAL_URL = "https://digg-test-dataportal.azurewebsites.net";
 
+  DCAT_BUNDLE_PATH = "https://dataportal.azureedge.net/cdn/dcatse-bundle-2022-02-20.json";
+
   MATOMO_SITEID = 5;
 
   envName = 'test';

@@ -26,6 +26,8 @@ export class Settings_Prod extends EnvSettings {
 
   CANONICAL_URL = "https://www.dataportal.se";
 
+  DCAT_BUNDLE_PATH = "https://dataportal.azureedge.net/cdn/dcatse-bundle-2022-02-20.json";
+
   MATOMO_SITEID = 4;
 
   envName = 'prod';

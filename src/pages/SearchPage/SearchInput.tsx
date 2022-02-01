@@ -4,7 +4,7 @@ import { SearchContextData } from '../../components/Search';
 import i18n from '../../i18n';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { SearchType } from './SearchFilters';
-import { Loader } from 'components/Loader';
+import { LoadingAnimation } from 'components/LoadingAnimation';
 
 interface SearchInputProps {
     search: SearchContextData;
@@ -84,7 +84,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({ search, searchType, qu
                             width={[25]}
                         />
                     </button>
-                    {search.loadingFacets && <Loader />}
+                    {search.loadingFacets && <LoadingAnimation />}
                 </div>
             </form>
         </div>

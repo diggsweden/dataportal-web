@@ -1,11 +1,5 @@
 import React from 'react';
-import 'scss/loader/loader.scss';
 import i18n from 'i18n';
-
-// const options = [
-//   { value: }
-// ]
-
 
 //Loader icon, used on serchpage and datasetpage
 export const NumberOfHits: React.SFC = () => (

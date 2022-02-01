@@ -1,4 +1,3 @@
-import { LoadingPage } from 'pages/LoadingPage';
 import React, { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet';
 

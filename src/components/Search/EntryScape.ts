@@ -4,6 +4,7 @@ import { request } from 'express';
 const lucene = require('lucene');
 import { slugify } from 'utilities/urlHelpers'
 import {getLocalizedValue, getEntryLang} from 'utilities/entrystoreUtil'
+import { DCATData, listChoices } from 'utilities/dcatUtils';
 //const tokenize = require('edge-ngrams')()
 
 //unfortunate hack to get a entrystore class instance, script is inserted in head
@@ -81,7 +82,7 @@ export class EntryScape {
    * 
    * @param metaFacets 
    */
-  getFacets(metaFacets:ESFacetField[],take:number) : Promise<{ [key: string]: SearchFacet; }> {
+  getFacets(metaFacets:ESFacetField[],take:number,dcat?:DCATData | undefined) : Promise<{ [key: string]: SearchFacet; }> {
     return new Promise<{ [key: string]: SearchFacet; }>(resolve => {     
 
       let literalFacets:{ [key: string]: SearchFacet; } = {};    
@@ -89,8 +90,20 @@ export class EntryScape {
       let returnFacets:{ [key: string]: SearchFacet; } = {};      
       let resources:string[] = [];            
 
-      metaFacets.forEach((f:ESFacetField) => {     
-        
+      metaFacets.forEach(async (f:ESFacetField) => {                                   
+
+        //check for facetspecification set in UI
+        var facetSpec = 
+        this.facetSpecification? this.facetSpecification.facets
+          ?.find(spec => spec.resource == f.predicate) : null;  
+
+        //filters returned facet values
+        let valueswhitelist:string[] | undefined = undefined;
+
+        //if UI requested to filter facet values, to only show values that exists in DCAT metadata spec.
+        if(facetSpec && facetSpec.dcatProperty && dcat && dcat.templates && facetSpec.dcatFilterEnabled)
+          valueswhitelist = await listChoices(facetSpec!.dcatProperty, dcat!);
+
         //literal types, add to response directly         
         if(f.type == ESType.literal || f.type == ESType.literal_s || f.type == ESType.wildcard)
         {               
@@ -100,62 +113,68 @@ export class EntryScape {
             show: 25,
             predicate: f.predicate,            
             title: i18next.t('resource|'+f.predicate),
-            count: f.valueCount
-          };
+            count: f.valueCount,
+            indexOrder: facetSpec && facetSpec.indexOrder? facetSpec.indexOrder : 0
+          };                                                  
           
-          f.values.splice(0,take).forEach((fvalue:ESFacetFieldValue) => {      
-            
-            var newValue:SearchFacetValue = 
-            {              
-              count:fvalue.count,
-              title:fvalue.name.trim(),
-              resource: fvalue.name.trim(),
-              facet:f.predicate,              
-              facetType:f.type,
-              facetValueString: '',
-              related:f.name.startsWith('related.')              
-            };
+          f.values.splice(0,take).forEach((fvalue:ESFacetFieldValue) => {                                            
 
-            newValue.facetValueString = `${f.predicate}||${newValue.resource}||${newValue.related}||${f.type}||${literalFacets[f.predicate].title}||${newValue.title}`;
-            
-            (literalFacets[f.predicate].facetValues as SearchFacetValue[]).push(newValue);
-          });  
-          
+            if(!valueswhitelist || (valueswhitelist && valueswhitelist.some(w => w.includes(fvalue.name.trim()) && fvalue.name)))
+            {              
+              var newValue:SearchFacetValue = 
+              {              
+                count:fvalue.count,
+                title:fvalue.name.trim(),
+                resource: fvalue.name.trim(),
+                facet:f.predicate,              
+                facetType:f.type,
+                facetValueString: '',
+                related:f.name.startsWith('related.')              
+              };              
+
+              newValue.facetValueString = `${f.predicate}||${newValue.resource}||${newValue.related}||${f.type}||${literalFacets[f.predicate].title}||${newValue.title}`;
+              
+              (literalFacets[f.predicate].facetValues as SearchFacetValue[]).push(newValue);
+            }
+          });            
+
           returnFacets[f.predicate] = literalFacets[f.predicate];
         }
         
         //uri types, concat resourceURIs for fetching from backend
         if(f.type == ESType.uri)              
-        {                    
+        {                                   
           uriFacets[f.predicate] = {
             name: f.name,
             facetValues:[],
             show: 25,
             predicate: f.predicate, 
             title: i18next.t('resource|'+f.predicate),   
-            count: f.valueCount         
-          };
-          
+            count: f.valueCount,
+            indexOrder: facetSpec && facetSpec.indexOrder? facetSpec.indexOrder : 0         
+          };                  
+
           f.values.splice(0,take).forEach((fvalue:ESFacetFieldValue) => {
-            if(!resources.includes(fvalue.name))
-            {
-              resources.push(fvalue.name);
+            if(!valueswhitelist || (valueswhitelist && valueswhitelist.some(w => w.includes(fvalue.name.trim()) && fvalue.name)))            
+              if(!resources.includes(fvalue.name))
+              {
+                resources.push(fvalue.name);
 
-              var newValue:SearchFacetValue = 
-              {                
-                count:fvalue.count,
-                title:i18next.t('resource|'+fvalue.name),
-                resource: fvalue.name,
-                facet:f.predicate,
-                facetType:f.type,
-                facetValueString: '',
-                related:f.name.startsWith('related.')                
-              };
+                var newValue:SearchFacetValue = 
+                {                
+                  count:fvalue.count,
+                  title:i18next.t('resource|'+fvalue.name),
+                  resource: fvalue.name,
+                  facet:f.predicate,
+                  facetType:f.type,
+                  facetValueString: '',
+                  related:f.name.startsWith('related.')                
+                };
 
-              newValue.facetValueString = `${f.predicate}||${newValue.resource}||${newValue.related}||${f.type}||${uriFacets[f.predicate].title}||${newValue.title}`;
+                newValue.facetValueString = `${f.predicate}||${newValue.resource}||${newValue.related}||${f.type}||${uriFacets[f.predicate].title}||${newValue.title}`;
 
-              (uriFacets[f.predicate].facetValues as SearchFacetValue[]).push(newValue);
-            }
+                (uriFacets[f.predicate].facetValues as SearchFacetValue[]).push(newValue);
+              }
           });
                    
           returnFacets[f.predicate] = uriFacets[f.predicate];
@@ -266,34 +285,85 @@ export class EntryScape {
   /**
    * Get metadata values from EntryScape entry
    * @param es EntryScape entry 
+   * @param dcat DCAT metadata object 
    */
-  getMetaValues(es:any) : {[key:string]: string[]} {
-    let values:{[key:string]: string[]} = {};
-    
-    if(es)
-    {         
-      let metadata = es.getMetadata();
+  async getMetaValues(es:any, dcat?:DCATData | undefined) : Promise<{[key:string]: string[]}> {
+    return new Promise<{[key:string]: string[]}>(async resolve => {
+      let values:{[key:string]: string[]} = {};
+      
+      if(es)
+      {         
+        let metadata = es.getMetadata();          
 
-      values['organisation_literal'] = metadata
-        .find(null, "http://www.w3.org/ns/dcat#keyword")        
-        .filter((f:any) => f.getLanguage() == undefined)
-        .map((f:any) => { return f.getValue()} );      
+        values['organisation_literal'] = metadata
+          .find(null, "http://www.w3.org/ns/dcat#keyword")        
+          .filter((f:any) => f.getLanguage() == undefined)
+          .map((f:any) => { return f.getValue()} );                  
 
-      values['theme_literal'] = metadata.find(null, "http://www.w3.org/ns/dcat#theme")
-        .map((f:any) => {
-          return i18next.t('resource|' + f.getValue())
-        });      
-      values['format_literal'] = metadata.find(null, "http://purl.org/dc/terms/format").map((f:any) => {return f.getValue()} );      
+        // ***** THEMES
+        //get UI specification for themes
+        var themeFacetSpec = 
+          this.facetSpecification? this.facetSpecification.facets
+            ?.find(spec => spec.resource == "http://www.w3.org/ns/dcat#theme") : null;        
+        
+        //check facetspec if only DCAT themes should be returned
+        if(themeFacetSpec && themeFacetSpec.dcatFilterEnabled && themeFacetSpec.dcatProperty)
+        {
+          var whitelist = await listChoices("dcat:theme", dcat!);
+          values['theme_literal'] = [];
+          let entries = metadata.find(null, "http://www.w3.org/ns/dcat#theme");
 
-      values['inScheme_resource'] = metadata.find(null, "http://www.w3.org/2004/02/skos/core#inScheme").map((f:any) => {return f.getValue()} );            
+          entries
+            .forEach((f:any) => {
+              let resource = f.getValue();
+              if(whitelist.some(w => w == resource))
+                values['theme_literal'].push(i18next.t('resource|' + resource))              
+            }); 
+        }
+        else {
+          values['theme_literal'] = metadata.find(null, "http://www.w3.org/ns/dcat#theme")
+            .map((f:any) => {
+              return i18next.t('resource|' + f.getValue())
+            }); 
+        }           
 
-      values['modified'] = metadata.find(null, "http://purl.org/dc/terms/modified").map((f:any) => {return f.getValue()} );      
+        // ****** FORMATS
+        //get UI specification for formats
+        var formatFacetSpec = 
+          this.facetSpecification? this.facetSpecification.facets
+            ?.find(spec => spec.resource == "http://purl.org/dc/terms/format") : null;        
+        
+        //check facetspec if only DCAT formats should be returned
+        if(formatFacetSpec && formatFacetSpec.dcatFilterEnabled && formatFacetSpec.dcatProperty)
+        {
+          var whitelist = await listChoices("dcterms:format", dcat!);
+          values['format_literal'] = [];
+          let entries = metadata.find(null, "http://purl.org/dc/terms/format");
 
-      //theme needs to be translated
-      //if(values['theme_literal'])
-        //values['theme_literal'] = i18next.t('facetvalues|'+values['theme_literal']);
-    }    
-    return values;
+          entries
+            .forEach((f:any) => {
+              let resource = f.getValue();
+              if(whitelist.some(w => w == resource))
+                values['format_literal'].push(i18next.t('resource|' + resource))              
+            }); 
+        }
+        else {
+          values['format_literal'] = metadata.find(null, "http://purl.org/dc/terms/format")
+            .map((f:any) => {
+              return i18next.t('resource|' + f.getValue())
+            }); 
+        } 
+        
+        values['inScheme_resource'] = metadata.find(null, "http://www.w3.org/2004/02/skos/core#inScheme").map((f:any) => {return f.getValue()} );            
+
+        values['modified'] = metadata.find(null, "http://purl.org/dc/terms/modified").map((f:any) => {return f.getValue()} );      
+
+        //theme needs to be translated
+        //if(values['theme_literal'])
+          //values['theme_literal'] = i18next.t('facetvalues|'+values['theme_literal']);
+      }    
+      resolve(values);
+    });
   }
 
 
@@ -363,7 +433,7 @@ export class EntryScape {
    * 
    * @returns {Promise<SearchResult>}
    */
-  solrSearch(request:SearchRequest) : Promise<SearchResult> {
+  solrSearch(request:SearchRequest, dcat?:DCATData | undefined) : Promise<SearchResult> {
     return new Promise<SearchResult>(resolve => {
 
       let hits: SearchHit[] = [];      
@@ -524,11 +594,11 @@ export class EntryScape {
             };
 
             //construct SearchHit-array
-            children.forEach((child:any) => {      
+            children.forEach(async (child:any) => {      
               
               let metaData = child.getMetadata();
               let context = child.getContext();                          
-              let rdfType = metaData.findFirstValue(child.getResourceURI(), "http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+              let rdfType = metaData.findFirstValue(child.getResourceURI(), "http://www.w3.org/1999/02/22-rdf-syntax-ns#type");              
               
               hitSpecification = this.hitSpecifications[rdfType] || { titleResource:"dcterms:title", path: "/datasets/", descriptionResource: "dcterms:description" }              
               
@@ -537,13 +607,11 @@ export class EntryScape {
                 title: getLocalizedValue(metaData,hitSpecification.titleResource || "dcterms:title",lang),
                 description: getLocalizedValue(metaData,hitSpecification.descriptionResource || "dcterms:description",lang),
                 esEntry: child,
-                metadata: this.getMetaValues(child),
+                metadata: await this.getMetaValues(child, dcat),
                 url:'',
 
                 titleLang: getEntryLang(metaData,hitSpecification.titleResource || "dcterms:title",lang),
-                descriptionLang: getEntryLang(metaData,hitSpecification.descriptionResource || "dcterms:description",lang),
-
-                
+                descriptionLang: getEntryLang(metaData,hitSpecification.descriptionResource || "dcterms:description",lang),                
               };
               
 

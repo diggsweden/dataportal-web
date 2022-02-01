@@ -19,7 +19,6 @@ export const ProjectListPage: React.FC<PageProps> = ({ env }) =>
       robotsFollow={true}
       robotsIndex={true}
       lang={i18n.languages[0]}
-    // canonicalUrl={`${this.props.env.CANONICAL_URL}/${i18n.languages[0]}/${i18n.t('routes|projects|path')}/`}
 
     />
     <StaticBreadcrumb env={env} staticPaths={[
@@ -29,7 +28,7 @@ export const ProjectListPage: React.FC<PageProps> = ({ env }) =>
       }
     ]} />
     <div className="projectlistpage__img">
-      <TopImageInspo></TopImageInspo>
+      <TopImageInspo/>
     </div>
     <div className="main-container">
       <div className="content">

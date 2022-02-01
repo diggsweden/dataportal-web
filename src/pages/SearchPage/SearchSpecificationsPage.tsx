@@ -12,8 +12,8 @@ import { StaticBreadcrumb } from 'components/Breadcrumb';
 import SearchFilters from './SearchFilters';
 import SearchInput from './SearchInput';
 import SearchResults from './SearchResults';
-import { FilterIcon } from '../../assets/FilterIcon';
-import { CloseIcon2 } from '../../assets/CloseIcon';
+import { FilterIcon } from '../../assets/Icon_FilterIcon';
+import { CloseIcon2 } from '../../assets/Icon_Close';
 interface SearchProps extends PageProps {
   activeLink?: string;
 }
@@ -88,10 +88,18 @@ export const SearchSpecificationsPage: React.FC<SearchProps> = ({ env }) => {
       }}
       facetSpecification={{
         facets: [
-          { resource: 'http://www.w3.org/ns/dcat#theme', type: ESType.uri },
+          { 
+            resource: 'http://www.w3.org/ns/dcat#theme', 
+            type: ESType.uri,
+            dcatProperty: "dcat:theme",
+            dcatType: "choice",
+            dcatFilterEnabled: true,
+            indexOrder: 0
+          },
           {
             resource: 'http://purl.org/dc/terms/publisher',
             type: ESType.uri,
+            indexOrder: 1
           },
         ],
       }}

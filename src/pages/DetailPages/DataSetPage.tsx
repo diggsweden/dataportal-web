@@ -11,12 +11,9 @@ import {
 import { PageProps } from '../PageProps';
 import ShowMoreText from 'react-show-more-text';
 import { StaticBreadcrumb } from 'components/Breadcrumb';
-import SwaggerUI from 'swagger-ui-react';
 // import "swagger-ui-react/swagger-ui.css"
 import 'scss/swagger/swagger.scss';
 import { ApiIndexContext, ApiIndexProvider } from 'components/ApiExploring';
-import { json } from 'express';
-import { Helmet } from 'react-helmet';
 
 export const DataSetPage: React.FC<PageProps> = ({ env, location, match }) => {
   let postscribe: any;

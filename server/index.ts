@@ -196,7 +196,7 @@ app.use('/sitemap.xml', getSitemap);
 
 //Robots, security, sitemap and google site verification
 app.get(
-  ['/apiDetections.json', '/robots.txt', '/security.txt', '/google*.html', '/favicon.ico'],
+  ['/apiDetections.json','/dcatse_bundle_2022-02-20.json', '/robots.txt', '/security.txt', '/google*.html', '/favicon.ico'],
   async (req, res) => {
     let reqPath = req.path;
     switch (req.path) {
@@ -209,8 +209,11 @@ app.get(
       case '/favicon.ico':
         reqPath = '/dist/client/js/favicon.ico';
         break;
-      case '/apiDetections.json':
+      case '/apiDetections.json':        
         reqPath = '/dist/client/js/apiDetections.json';
+        break;
+      case '/dcatse_bundle_2022-02-20.json':
+        reqPath = '/dist/client/js/dcatse_bundle_2022-02-20.json';
         break;
     }
     res.sendFile(path.join(cwd, reqPath));

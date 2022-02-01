@@ -5,6 +5,8 @@ import { encode, decode } from 'qss';
 import { json } from 'body-parser';
 import { assertValidExecutionArguments } from 'graphql/execution/execute';
 import { types } from '@babel/core';
+import { EnvSettings } from '../../../config/env/EnvSettings';
+import { DCATData, fetchDCATMeta } from 'utilities/dcatUtils';
 
 /**
  * Props for search provider
@@ -39,6 +41,7 @@ export interface SearchContextData {
   loadingHits: boolean;
   loadingFacets: boolean;
   fetchAllFacetsOnMount: boolean,
+  dcatmeta?: DCATData,
   allFacets: { [facet: string]: SearchFacet; };
 }
 
@@ -65,6 +68,7 @@ export const defaultSettings:SearchContextData = {
   loadingHits: false,
   loadingFacets: false,
   fetchAllFacetsOnMount: true,
+  dcatmeta: undefined,
   allFacets: {}
 }
 
@@ -161,11 +165,13 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
    * Fetches first batch of facets and store in state (if fetchAllFacetsOnMount = true)
    * handles browser history (back/forward) 
    */
-  componentDidMount() {        
+  async componentDidMount() {        
     let reactThis = this;
 
     if(hasWindow)
     { 
+      await this.fetchDCATMeta();
+
       this.addScripts();
 
       //handles back/forward button, we need to make a new search when the URL has changed
@@ -202,6 +208,19 @@ export class SearchProvider extends React.Component<SearchProviderProps, SearchC
       });
     });      
   };
+
+  fetchDCATMeta = async ():Promise<void>=> {
+
+    let dcatmeta = await fetchDCATMeta('/dcatse_bundle_2022-02-20.json');
+
+    if(dcatmeta && dcatmeta.templates && dcatmeta.templates.length > 0)
+    {
+        this.setState({
+          ...this.state,
+          dcatmeta: dcatmeta
+        })
+    } 
+};
 
   /**
    * For each selected group of facets - make a search WITHOUT that group of facets selected. 
@@ -561,7 +580,7 @@ fetchAllFacets = () => {
       }).then((res) => {        
         if(res.esFacets)
         {                                  
-          entryScape.getFacets(res.esFacets,30).then((r) => {           
+          entryScape.getFacets(res.esFacets,30,this.state.dcatmeta).then((r) => {           
             if(r)
             {                                    
               this.setState({
@@ -946,7 +965,7 @@ searchInFacets = (query:string, facetkey:string) => {
         this.setStateToLocation();    
         
       let entryScape = new EntryScape(this.props.entryscapeUrl || 'https://admin.dataportal.se/store', this.props.facetSpecification,this.props.hitSpecifications);
-      entryScape.solrSearch(this.state.request).then((res) => {
+      entryScape.solrSearch(this.state.request, this.state.dcatmeta).then((res) => {
               
         let hits:SearchHit[] = res.hits || [];
               
@@ -976,7 +995,7 @@ searchInFacets = (query:string, facetkey:string) => {
           //fetch metafacets
           if(res.esFacets)
           {                                
-            entryScape.getFacets(res.esFacets,this.state.request.takeFacets || 5)
+            entryScape.getFacets(res.esFacets,this.state.request.takeFacets || 5,this.state.dcatmeta)
             .then((res) => {    
                                            
               this.setState({

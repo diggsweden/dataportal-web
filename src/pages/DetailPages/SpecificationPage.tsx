@@ -10,7 +10,6 @@ import {
 import { PageProps } from '../PageProps';
 import { StaticBreadcrumb } from 'components/Breadcrumb';
 
-
 export const SpecificationPage: React.FC<PageProps> = ({
   env,
   location,

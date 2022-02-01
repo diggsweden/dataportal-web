@@ -28,4 +28,6 @@ export abstract class EnvSettings {
   abstract MATOMO_SITEID: number;
 
   abstract envName: string;
+
+  abstract DCAT_BUNDLE_PATH: string;
 }

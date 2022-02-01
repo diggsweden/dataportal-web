@@ -6,7 +6,7 @@ import {
   CloseIcon,
 } from '@digg/design-system';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { DataportalLogo } from '../../assets/Logo';
 import { SandboxLogo } from '../../assets/LogoSandbox';
 import { EventEffect } from '../EventEffect';
@@ -23,11 +23,10 @@ const InnerBox = styled(Box)`
 `;
 
 interface HeaderProps {
-  activeLink?: string;
   env: EnvSettings;
 }
 
-export const Header: React.FC<HeaderProps> = ({ env, activeLink }) => {
+export const Header: React.FC<HeaderProps> = ({ env }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [focusTrap, setFocusTrap] = useState(false);
   const setFocusOnMenuButton = () => {
@@ -45,6 +44,8 @@ export const Header: React.FC<HeaderProps> = ({ env, activeLink }) => {
     setFocusTrap(false);
     document.body.setAttribute('style', ``);
   };
+
+  const location = useLocation();
 
   return (
     <>
@@ -109,34 +110,30 @@ export const Header: React.FC<HeaderProps> = ({ env, activeLink }) => {
                     'header-links' + (showMenu ? '--active text-5' : '')
                   }
                 >
-                  <Link
+                  <NavLink
+                    activeClassName="active"
                     onClick={closeMenu}
                     className={
-                      'header-link ' +
-                      (activeLink == 'search' ||
-                      activeLink == 'terms' ||
-                      activeLink == 'specifications'
-                        ? 'active'
-                        : '')
+                      'header-link '
                     }
                     to={`/${i18n.languages[0]}/${i18n.t(
                       'routes|datasets|path'
                     )}?q=&f=`}
                   >
                     {i18n.t('common|search-data')}
-                  </Link>
+                  </NavLink>
 
                   {i18n.language.toLowerCase() === 'sv' || i18n.language.toLowerCase() === 'sv-se' ? (
-                    <Link
+                    <NavLink
+                      activeClassName="active"
                       onClick={closeMenu}
                       to={`/${i18n.languages[0]}/${i18n.t('routes|news|path')}`}
                       className={
-                        'header-link ' +
-                        (activeLink == 'artiklar' ? 'active' : '')
+                        'header-link'
                       }
                     >
                       {i18n.t('pages|articles|articles')}
-                    </Link>
+                    </NavLink>
                   ) : (
                     ''
                   )}
@@ -157,20 +154,17 @@ export const Header: React.FC<HeaderProps> = ({ env, activeLink }) => {
                               //connectedContent set
                               if (m && m.data && m.data.connectedContent) {
                                 return (
-                                  <Link
+                                  <NavLink
+                                    activeClassName="active"
                                     onClick={closeMenu}
                                     key={i}
                                     className={
-                                      'header-link ' +
-                                      (activeLink == 'Om oss' ||
-                                      activeLink == 'About us'
-                                        ? 'active'
-                                        : '')
+                                      'header-link ' 
                                     }
                                     to={`/${i18n.languages[0]}${m.data.urlsegment}`}
                                   >
                                     {m.data.title}
-                                  </Link>
+                                  </NavLink>
                                 );
                               }
                               //externalurl set

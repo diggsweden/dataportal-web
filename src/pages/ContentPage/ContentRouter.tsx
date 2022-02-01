@@ -1,4 +1,3 @@
-import { Box, Accordion } from '@digg/design-system';
 import React from 'react';
 import 'url-search-params-polyfill';
 import { __RouterContext } from 'react-router';
@@ -8,7 +7,7 @@ import { useQuery } from '@apollo/client';
 import { LoadingPage } from 'pages/LoadingPage';
 import { ContentPage } from './ContentPage';
 import { NotFoundPage } from 'pages/NotFoundPage';
-import { StaticBreadcrumb, StaticPath } from '../../components/Breadcrumb';
+import { StaticPath } from '../../components/Breadcrumb';
 
 interface ContentPageProps extends PageProps{
   lang:string;

@@ -26,6 +26,8 @@ export class Settings_Sandbox extends EnvSettings {
 
   CANONICAL_URL = "https://www-sandbox.dataportal.se";
 
+  DCAT_BUNDLE_PATH = "https://dataportal.azureedge.net/cdn/dcatse-bundle-2022-02-20.json";
+
   MATOMO_SITEID = -1;
 
   envName = 'sandbox';

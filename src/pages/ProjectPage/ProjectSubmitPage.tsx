@@ -6,7 +6,6 @@ import i18n from 'i18n';
 import { PageProps } from '../PageProps';
 import { TopImageTellUs } from 'assets/TopImageTellUS';
 
-
 export const ProjectSubmitPage: React.FC<PageProps> = () =>
   <div className="project__submitpage project__page">
     <PageMetadata

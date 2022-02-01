@@ -12,8 +12,8 @@ import { StaticBreadcrumb } from 'components/Breadcrumb';
 import SearchFilters from './SearchFilters';
 import SearchInput from './SearchInput';
 import SearchResults from './SearchResults';
-import { FilterIcon } from '../../assets/FilterIcon';
-import { CloseIcon2 } from '../../assets/CloseIcon';
+import { FilterIcon } from '../../assets/Icon_FilterIcon';
+import { CloseIcon2 } from '../../assets/Icon_Close';
 
 interface SearchProps extends PageProps {
   activeLink?: string;
@@ -95,6 +95,7 @@ export const SearchTermsPage: React.FC<SearchProps> = ({ location, env }) => {
           {
             resource: 'http://www.w3.org/2004/02/skos/core#inScheme',
             type: ESType.uri,
+            indexOrder: 0
           },
         ],
       }}

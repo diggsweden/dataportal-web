@@ -78,17 +78,6 @@ header {
 
         &:not(:last-of-type) {
             margin-right: $space-32;
-
-            // @media screen and (max-width: 650px) {
-            //     margin-left: $space-24;
-            //     transition: .1s;
-
-            // }
-
-            // @media screen and (max-width: 385px) {
-            //     margin-left: $space-16;
-            //     transition: .1s;
-            // }
         }
 
         &:hover {
@@ -100,10 +89,11 @@ header {
             outline-offset: $focus-offset;
         }
 
-        &.active {
-            text-decoration: none;
-            border-bottom: 2px solid $pink100;
-        }
+        //Style for active NavLink
+        // &.active {
+        //     text-decoration: none;
+        //     border-bottom: 2px solid $pink100;
+        // }
     }
 
     //Hide in /en

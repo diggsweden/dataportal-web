@@ -1,10 +1,10 @@
 import React from 'react';
-import 'scss/loader/loader.scss';
+import 'scss/loadinganimation/loadinganimation.scss';
 
-//Loader icon, used on serchpage and datasetpage
-export const Loader: React.SFC = () => (
-    <div className="loader">
-      <div className="dataloader">
+//LoadingAnimation
+export const LoadingAnimation: React.SFC = () => (
+    <div className="loading-animation">
+      <div className="loading-animation_cubes">
         <div></div>
         <div></div>
         <div></div>

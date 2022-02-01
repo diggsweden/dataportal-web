@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import i18n from '../../i18n';
-import { TopImage } from 'assets/TopImage';
 import { EnvSettings } from '../../../config/env/EnvSettings';
 import { useQuery } from '@apollo/client';
 import { gql } from 'apollo-boost';
-import ChopLines from 'chop-lines';
 let moment = require('moment');
 import { decode } from 'qss';
-import { Helmet } from 'react-helmet'
 import { StaticBreadcrumb } from 'components/Breadcrumb';
 import { slugify } from 'utilities/urlHelpers';
 import { PageMetadata } from 'pages/PageMetadata';
@@ -124,11 +121,7 @@ export const ArticleItem : React.FC<ArticleItemProps> = (props) => {
                   __html: articleItem.bodyHTML,
                 }}
               ></div>                          
-            </>  
-            // : !loading &&
-            // <>
-            //   <h1 className="text-1">Den artikeln finns inte längre kvar.</h1>
-            // </>
+            </>
           }
         </div>                                                    
           </div>

@@ -1,4 +1,3 @@
-import { Box } from '@digg/design-system';
 import React from 'react';
 import 'url-search-params-polyfill';
 import { __RouterContext } from 'react-router';

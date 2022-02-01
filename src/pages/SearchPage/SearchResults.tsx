@@ -8,8 +8,8 @@ import Truncate from 'react-truncate';
 import { FileFormatBadge } from '../../components/FileFormatBadge';
 import { Link } from 'react-router-dom';
 import { clearLocalStorage } from '../../utilities';
-import { DetailedList } from '../../assets/DetailedList';
-import { CompactList } from '../../assets/CompactList';
+import { DetailedList } from '../../assets/Icon_DetailedList';
+import { CompactList } from '../../assets/Icon_CompactList';
 
 interface SearchResultsProps {
   search: SearchContextData;
@@ -67,8 +67,7 @@ const SortingOptions: React.FC<{
           className="text-6"
           id=""
           name={i18n.t('pages|search|numberofhits')}
-          onChange={(event) => {
-            console.log(event.target.value, "blabla")
+          onChange={(event) => {            
             event.preventDefault();
             clearCurrentScrollPos();
             search
@@ -222,9 +221,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
               `${search.result.count} ${i18n.t('pages|search|dataset-hits')}`}
           </h2>
 
-          {searchType == 'data' && (
-            console.log(showSorting, "show sorting"),
-
+          {searchType == 'data' && (            
             <div className={showSorting ? "active sorting-options-wrapper" : "sorting-options-wrapper"}>
               <SortingOptions
                 setCompact={setCompact}

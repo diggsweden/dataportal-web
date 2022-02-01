@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SearchFilter } from '../../components/SearchFilter';
 import { SearchContextData } from '../../components/Search';
 import {
@@ -11,9 +11,8 @@ import {
 import { SearchFacetValue } from '../../components/Search/Search';
 import i18n from '../../i18n';
 import { ESRdfType, ESType } from 'components/Search/EntryScape';
-import { FilterIcon } from '../../assets/FilterIcon';
-import { CloseIcon2 } from '../../assets/CloseIcon';
-
+import { FilterIcon } from '../../assets/Icon_FilterIcon';
+import { CloseIcon2 } from '../../assets/Icon_Close';
 
 interface SearchFilterProps {
   showFilter: boolean;
@@ -144,7 +143,9 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
       >
         <div className="search-filter-row">
           {search.allFacets &&
-            Object.entries(search.allFacets).map(([key, value]) => {
+            Object.entries(search.allFacets)
+            .sort((a,b) => (a[1].indexOrder > b[1].indexOrder)? 1 : -1)
+            .map(([key, value]) => {
               const isLicense = false; // Removed for now. key.includes('license');
               const shouldFetchMore = value.show <= value.count;
               const show = (value && value.show) || 20;

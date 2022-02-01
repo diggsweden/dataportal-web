@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { styled, AccordionViewProps } from '@digg/design-system';
+import { styled } from '@digg/design-system';
 import { colorPalette } from '@digg/design-system';
 import { Box } from '@digg/design-system';
 import { Button } from '@digg/design-system';
-import { CloseIcon, ArrowDropIcon } from '@digg/design-system';
+import { ArrowDropIcon } from '@digg/design-system';
 import { Text } from '@digg/design-system';
 
 const SearchFilterButton = styled(Button)`

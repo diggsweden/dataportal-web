@@ -13,6 +13,7 @@
 
     img {
         object-fit: cover;
+        height: 36.25rem;
 
         @media screen and (max-width: 40.625rem) {
             display: none;

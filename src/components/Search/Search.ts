@@ -22,8 +22,12 @@ export interface FacetSpecification
 export interface FacetSpecificationItem
 {
   resource: string;
+  indexOrder: number;
   type:ESType;  
   related?: boolean;
+  dcatProperty?: string;
+  dcatType?: string;
+  dcatFilterEnabled?: boolean;
 }
 
 export interface SearchResult {
@@ -49,12 +53,13 @@ export interface SearchHit {
 
 export interface SearchFacet {
   name?: string,    
-  title: string,
+  title: string,  
   predicate: string,
   show: number,
   facetValues: SearchFacetValue[]
   lastFetched?:number;
   count: number;
+  indexOrder: number;
 }
 
 export interface SearchFacetValue {  

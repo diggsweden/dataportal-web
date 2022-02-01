@@ -1,12 +1,7 @@
 import React from 'react';
 import i18n from 'i18next';
-import { PageProps } from '../../pages/PageProps';
-import { ProgressPlugin } from 'webpack';
 import { EnvSettings } from '../../../config/env/EnvSettings';
-import { useQuery } from '@apollo/client';
-import { gql } from 'apollo-boost';
 import { Link } from 'react-router-dom';
-let moment = require('moment');
 
 export interface StaticPath{
   path: string,

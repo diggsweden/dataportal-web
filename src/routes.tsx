@@ -54,10 +54,14 @@ export const Routes = () => {
               <Route path={['/statistik', '/sv/statistik', '/en/statistic', '/en/statistics']} exact render={(props)=><StatisticPage  env={env} {...props}/>} />
               
               {/* dataset, concepts, specifications */}
-              <Route path={['/datasets', '/en/datasets', '/sv/datasets']} exact render={(props)=><SearchPage env={env} {...props} />} />
+              <Route path={['/datasets', '/en/datasets', '/sv/datasets']} exact render={(props)=>
+                <SearchPage env={env} {...props} />} 
+              />
               
               {/* dataservice */}
-              <Route path={['/dataservice', '/en/dataservice', '/sv/dataservice']} exact render={(props)=><SearchPage env={env} {...props} />} />
+              <Route path={['/dataservice', '/en/dataservice', '/sv/dataservice']} exact render={(props)=>
+                <SearchPage env={env} {...props} />} 
+              />
 
               <Route path={['/specifications', '/sv/specifications', '/en/specifications']} exact render={(props)=><SearchSpecificationsPage env={env} {...props} />} />
               <Route path={['/concepts', '/sv/concepts', '/en/concepts']} exact render={(props)=><SearchTermsPage env={env} {...props} />} />                

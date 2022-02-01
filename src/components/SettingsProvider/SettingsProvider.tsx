@@ -4,10 +4,7 @@ import { SettingsUtil } from "../../../config/env/SettingsUtil";
 import { useQuery } from '@apollo/client';
 import i18n from '../../i18n';
 import { gql } from 'apollo-boost';
-import { object } from 'yup';
-import { Footer } from 'components/Footer';
 import { MenuItem, createNavigationTree } from 'utilities/treeUtils'
-import { LoadingPage } from 'pages/LoadingPage';
 
 export interface SettingsProviderProps{
   applicationUrl: string;

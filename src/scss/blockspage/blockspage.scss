@@ -233,6 +233,8 @@
               font-weight: normal;
               font-size: 1.125rem; //18px
               line-height: 1.6875rem; //27px
+              box-shadow: none;
+              transition: width 2s;
 
               &:hover {
                 text-decoration: none;
@@ -254,7 +256,7 @@
                 font-family: "Font Awesome 5 Free" !important;
                 font-size: 1rem;
                 margin-top: 0.125rem;
-                margin-left: 0.25rem;
+                margin-left: 0.5rem;
               }
 
               &:hover {
@@ -405,8 +407,8 @@
                 }
 
                 &:after {
-                  content: url(../../assets/file_download_icon.svg);
-                  margin-left: 0.5rem;
+                  content: url(../../assets/icon_DownloadFile.svg);
+                  margin-left: .5rem;
                   margin-bottom: -5px;
                 }
               }
@@ -686,8 +688,8 @@
       }
 
       &:after {
-        content: url(../../assets/tools.svg);
-        margin-left: 0.5rem;
+        content: url(../../assets/icon_Tools.svg);
+        margin-left: .5rem;
         display: inline-block;
       }
     }
@@ -751,8 +753,8 @@
                   }
 
                   &:after {
-                    content: url(../../assets/tools.svg);
-                    margin-left: 0.5rem;
+                    content: url(../../assets/icon_Tools.svg);
+                    margin-left: .5rem;
                     display: inline-block;
                   }
                 }
@@ -817,16 +819,16 @@
                 background-color: $green10;
 
                 &:after {
-                  content: url(../../assets/file_download_icon.svg);
-                  margin-left: 0.5rem;
+                  content: url(../../assets/icon_DownloadFile.svg);
+                  margin-left: .5rem;
                   margin-bottom: -5px;
                 }
               }
 
               &.access_url {
                 &:after {
-                  content: url(../../assets/external_link_icon.svg);
-                  margin-left: 0.5rem;
+                  content: url(../../assets/icon_ExternalLink.svg);
+                  margin-left: .5rem;
                   margin-bottom: -5px;
                 }
               }
@@ -1292,7 +1294,7 @@ html:lang(en) {
                   background-color: $green10;
 
                   &:after {
-                    content: url(../../assets/file_download_icon.svg);
+                    content: url(../../assets/icon_DownloadFile.svg);
                     margin-left: 0.5rem;
                     margin-bottom: -5px;
                   }
@@ -1332,7 +1334,7 @@ html:lang(en) {
   white-space: nowrap;
 
   &:hover {
-    background-color: $green25;
+    filter: brightness(.98);
   }
 }
 

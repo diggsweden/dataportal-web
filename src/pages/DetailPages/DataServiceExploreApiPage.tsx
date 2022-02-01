@@ -9,7 +9,6 @@ import {
   EntrystoreContext,
 } from '../../components/EntrystoreProvider';
 import { PageProps } from '../PageProps';
-import ShowMoreText from 'react-show-more-text';
 import { StaticBreadcrumb } from 'components/Breadcrumb';
 import {
   ApiExplorer,

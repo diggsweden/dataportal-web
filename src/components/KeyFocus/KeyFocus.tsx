@@ -1,12 +1,11 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-//Removes class "no-focus-outline" for keyboard navigation..
+//Only shows css-focus on input element on keyboard navigation.
+//Removes css-focus on mouse click.
 
 export interface keyFocusProps extends RouteComponentProps<any>{} 
-
 class keyFocusComponent extends React.PureComponent<keyFocusProps> {
-
     componentDidMount(){
         document.body.addEventListener('keyup', function(e) {          
             if(e.which === 9){              
@@ -20,7 +19,6 @@ class keyFocusComponent extends React.PureComponent<keyFocusProps> {
           document.documentElement.classList.add('no-focus-outline')
         });          
     }
-
     render(){
       return <></>
     }

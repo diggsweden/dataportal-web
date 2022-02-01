@@ -11,7 +11,6 @@ import {
 import { PageProps } from '../PageProps';
 import { StaticBreadcrumb } from 'components/Breadcrumb';
 import { ApiIndexContext } from 'components/ApiExploring';
-import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
 export const DataServicePage: React.FC<PageProps> = ({ env, match }) => {
