@@ -31,7 +31,7 @@ export const ApiExplorer: React.FC<ApiExplorerProps> = (props) => {
   }
 
   return (
-    <div>      
+    <div lang='en'>      
       {apiIndexContext.findDetection(props.contextId,props.entryId) 
         && (<SwaggerUI url={getAPiDetectionUrl()} />)}      
     </div>

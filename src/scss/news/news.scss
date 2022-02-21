@@ -1,4 +1,4 @@
-@import 'scss/general/variables.scss';
+@import "scss/general/variables.scss";
 
 // Compact newslist component startpage
 .news-compact {
@@ -26,7 +26,6 @@
             list-style: none;
             padding: 0rem;
             margin: 0rem 0rem $space-16 0rem;
-
 
             @media screen and (max-width: 50rem) {
                 flex-wrap: wrap;
@@ -85,7 +84,7 @@
                     margin-top: 0rem;
                     margin-bottom: 0rem;
                     padding-bottom: $space-8;
-                    hyphens: auto
+                    hyphens: auto;
                 }
 
                 @media screen and (max-width: 50rem) {
@@ -115,7 +114,6 @@
         }
     }
 
-
     @media screen and (max-width: 50rem) {
         flex-direction: column;
 
@@ -127,7 +125,7 @@
 
 // NewsListPage
 .news-list {
-    ul {
+    ul:not(.pagination-wrapper) {
         list-style: none;
         padding: 0px;
         margin: 0rem;
@@ -236,5 +234,45 @@
     ul,
     ol {
         margin-bottom: $space-24;
+    }
+}
+
+.currentpage-tracker {
+    display: flex;
+    justify-content: center;
+    margin-top: $space-24;
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0;
+    margin-top: $space-24;
+}
+
+.pagination-wrapper li:not(.previous, .next) {
+    display: none;
+}
+
+.pagination-wrapper li {
+    display: flex;
+    align-items: center;
+    margin-left: $space-8;
+    margin-right: $space-8;
+    margin-bottom: $space-16;
+    a {
+        min-width: 7.188rem;
+    }
+}
+
+.pagination-wrapper li {
+    &.disabled a {
+        color: #d6d9d3;
+        border-color: #d6d9d3;
+        background-color: #ffffff;
+        cursor: default;
     }
 }

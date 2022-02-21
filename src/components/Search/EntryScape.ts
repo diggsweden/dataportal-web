@@ -587,20 +587,20 @@ export class EntryScape {
               var metaFacets = searchList.getFacets();             
             }                  
                         
-            let hitSpecification:HitSpecification = {
-              descriptionResource: "blaa",
-              path: "hmm",
-              titleResource: "blaa"
-            };
-
             //construct SearchHit-array
             children.forEach(async (child:any) => {      
-              
+
+              let hitSpecification:HitSpecification = {
+                descriptionResource: "blaa",
+                path: "hmm",
+                titleResource: "blaa"
+              };
+
               let metaData = child.getMetadata();
               let context = child.getContext();                          
               let rdfType = metaData.findFirstValue(child.getResourceURI(), "http://www.w3.org/1999/02/22-rdf-syntax-ns#type");              
               
-              hitSpecification = this.hitSpecifications[rdfType] || { titleResource:"dcterms:title", path: "/datasets/", descriptionResource: "dcterms:description" }              
+              hitSpecification = this.hitSpecifications[rdfType] || { titleResource:"dcterms:title", path: "/datasets/", descriptionResource: "dcterms:description" }  
               
               let hit = {
                 entryId: child.getId(),
@@ -614,15 +614,16 @@ export class EntryScape {
                 descriptionLang: getEntryLang(metaData,hitSpecification.descriptionResource || "dcterms:description",lang),                
               };
               
-
-              if(hitSpecification.pathResolver)
+              if(hitSpecification.pathResolver){
                 hit.url = hitSpecification.pathResolver(child);
-              else
+              }
+                else{
                 hit.url = `${hitSpecification.path || 'datamangd'}${context.getId()}_${hit.entryId}/${slugify(hit.title)}`;
-
+              }
+                
               hit.description = hit.description && hit.description.length > 250? `${(hit.description + '').substr(0,250)}...` : hit.description;            
 
-              hits.push(hit);         
+              hits.push(hit);    
             });            
 
             resolve({            

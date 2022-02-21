@@ -1,33 +1,33 @@
-@import '/node_modules/swagger-ui-react/swagger-ui.css';
-@import 'scss/general/variables.scss';
+@import "/node_modules/swagger-ui-react/swagger-ui.css";
+@import "scss/general/variables.scss";
 
 //Swagger colors
-$swagger-green:#258659;
-$swagger-green-bg:rgba(73, 204, 144, .3);
+$swagger-green: #258659;
+$swagger-green-bg: rgba(73, 204, 144, 0.3);
 
-$swagger-blue:#0173E4;
-$swagger-blue-bg:rgba(97, 175, 254, .3);
+$swagger-blue: #0173e4;
+$swagger-blue-bg: rgba(97, 175, 254, 0.3);
 
-$swagger-orange:#A86629;
-$swagger-orange-bg:rgba(252, 161, 48, .3);
+$swagger-orange: #a86629;
+$swagger-orange-bg: rgba(252, 161, 48, 0.3);
 
-$swagger-grey:#989898;
-$swagger-grey-bg:#ebebeb;
+$swagger-grey: #989898;
+$swagger-grey-bg: #ebebeb;
 
-$swagger-red:#ED0707;
-$swagger-red-bg:rgba(249, 62, 62, .2);
+$swagger-red: #dd0709;
+$swagger-red-bg: rgba(249, 62, 62, 0.15);
 
-$swagger-turquoise:#12827B;
-$swagger-turquoise-bg: #E3EEED;
+$swagger-turquoise: #12827b;
+$swagger-turquoise-bg: #e3eeed;
 
-$swagger-required-red:#CC0000;
+$swagger-required-red: #b10000;
 
 $authorize-btn-green: #258659;
 
 //Accordion badge in mobile
 @mixin accordion-badge_sm {
     @media screen and (max-width: 42.49999rem) {
-        padding: .95rem .6rem;
+        padding: 0.95rem 0.6rem;
         min-width: max-content;
     }
 }
@@ -36,7 +36,7 @@ $authorize-btn-green: #258659;
 @mixin accordion-head_sm {
     @media screen and (max-width: 42.49999rem) {
         padding: 0;
-        padding-right: .5rem;
+        padding-right: 0.5rem;
     }
 }
 
@@ -44,12 +44,17 @@ $authorize-btn-green: #258659;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    word-break: break-all;
+}
+
+.api-publisher{
+    word-break: break-all;
 }
 
 .api-title .entryscape span::before {
     content: "-";
-    margin-left: .5rem;
-    margin-right: .5rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 
     &:empty {
         display: none;
@@ -96,7 +101,13 @@ $authorize-btn-green: #258659;
     height: max-content;
 }
 
-.swagger-ui .arrow{
+//Try it out - Cancel button
+.swagger-ui .btn.cancel {
+    border-color: $swagger-red;
+    color: $swagger-red;
+}
+
+.swagger-ui .arrow {
     min-width: 20px;
 }
 
@@ -115,7 +126,7 @@ $authorize-btn-green: #258659;
             font-size: 1.125rem; //18px
             line-height: 1.6875rem; //27px
             letter-spacing: -0.01em;
-            margin-bottom: .5rem;
+            margin-bottom: 0.5rem;
 
             small {
                 display: none;
@@ -124,6 +135,14 @@ $authorize-btn-green: #258659;
     }
 }
 
+.model-example {
+    div{
+        &:focus-visible{
+            outline: $focus-style;
+            outline-offset: $focus-offset;
+        }
+    }
+}
 
 .swagger-ui .no-margin {
     overflow: auto;
@@ -139,9 +158,8 @@ $authorize-btn-green: #258659;
     font-size: 1rem; //16px
     line-height: 1.5rem; //24px
     color: $black100;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
 }
-
 
 //Hide baseurl
 .swagger-ui .info .base-url {
@@ -171,7 +189,7 @@ $authorize-btn-green: #258659;
     }
 
     &:hover {
-        filter: brightness(.95);
+        filter: brightness(0.95);
         box-shadow: none;
     }
 }
@@ -191,7 +209,7 @@ $authorize-btn-green: #258659;
     margin: 0;
     padding: 0;
     position: relative;
-    margin-left: .25rem;
+    margin-left: 0.25rem;
 
     pre {
         color: $black100;
@@ -243,7 +261,7 @@ $authorize-btn-green: #258659;
 
 //Scheme container//dropdown//label
 .schemes-title {
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
 }
 
 //Scheme container//dropdown
@@ -251,12 +269,12 @@ $authorize-btn-green: #258659;
     border: none;
     border-radius: 2px;
     background-color: $black10;
-    padding-top: .5rem;
-    padding-bottom: .5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     box-shadow: none;
 
     &:hover {
-        filter: brightness(.98);
+        filter: brightness(0.98);
     }
 }
 
@@ -264,14 +282,14 @@ $authorize-btn-green: #258659;
 .swagger-ui .scheme-container {
     background-color: transparent;
     box-shadow: none;
-    padding-top: .5rem;
-    padding-bottom: .5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
 //Swagger accordions
 .swagger-ui .opblock {
     border-radius: 2px;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
 
     button {
         border-radius: 2px;
@@ -281,7 +299,7 @@ $authorize-btn-green: #258659;
 //hide "try it out" function on deprecated methods
 .swagger-ui .opblock-deprecated {
     .try-out {
-        display:none;
+        display: none;
     }
 }
 
@@ -295,7 +313,7 @@ $authorize-btn-green: #258659;
 
     &:hover {
         background-color: $black10;
-        filter: brightness(.98);
+        filter: brightness(0.98);
     }
 }
 
@@ -406,7 +424,6 @@ $authorize-btn-green: #258659;
     @include accordion-head_sm;
 }
 
-
 //Accordion background red
 .swagger-ui .opblock.opblock-delete {
     background: $swagger-red-bg;
@@ -434,7 +451,6 @@ $authorize-btn-green: #258659;
 .swagger-ui .opblock.opblock-deprecated .opblock-summary-method {
     background-color: $black-hover;
 }
-
 
 //Color of required // depricated
 .swagger-ui .parameter__name.required:after,
@@ -464,7 +480,7 @@ $authorize-btn-green: #258659;
 }
 
 //Checkboxes inside dialog
-.swagger-ui .checkbox input[type=checkbox] {
+.swagger-ui .checkbox input[type="checkbox"] {
     display: block;
     position: absolute;
     left: -10000px;
@@ -475,14 +491,14 @@ $authorize-btn-green: #258659;
 }
 
 .swagger-ui {
-    input[type=checkbox]:focus+label {
-        outline: 3px dotted #2B2A29;
+    input[type="checkbox"]:focus + label {
+        outline: 3px dotted #2b2a29;
         outline-offset: 3px;
         width: max-content;
     }
 }
 
-.no-focus-outline .swagger-ui input[type=checkbox]:focus+label {
+.no-focus-outline .swagger-ui input[type="checkbox"]:focus + label {
     outline: none !important;
 }
 
@@ -529,12 +545,11 @@ $authorize-btn-green: #258659;
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
     border-radius: 2px;
 }
 
 //Models--//--
-
 
 //Code plate//
 .swagger-ui .opblock-body pre.microlight {
@@ -544,7 +559,7 @@ $authorize-btn-green: #258659;
 }
 
 //Code color//
-.swagger-ui .highlight-code>.microlight code,
+.swagger-ui .highlight-code > .microlight code,
 .swagger-ui .opblock-body pre.microlight code {
     color: $black100;
     filter: brightness(0.5);
@@ -558,7 +573,6 @@ $authorize-btn-green: #258659;
 .swagger-ui .model .property {
     color: $black-hover;
 }
-
 
 .tabs-nav {
     border-bottom: 2px solid $black10;
@@ -629,7 +643,7 @@ $authorize-btn-green: #258659;
             font-size: 1rem; //16px
             line-height: 1.5rem; //24px
             color: $black100;
-            margin-top: .25rem;
+            margin-top: 0.25rem;
             margin-bottom: 1rem;
         }
     }
@@ -644,14 +658,14 @@ $authorize-btn-green: #258659;
 }
 
 //Max-width of inputfields
-.swagger-ui .parameters-col_description input[type=text] {
+.swagger-ui .parameters-col_description input[type="text"] {
     max-width: 560px;
 }
 
 //Exexute button background/border-color
 .swagger-ui .btn.execute {
     background-color: $swagger-blue;
-    border-color: $swagger-blue
+    border-color: $swagger-blue;
 }
 
 //Download button
@@ -668,7 +682,7 @@ $authorize-btn-green: #258659;
     right: 7.5rem;
 
     button {
-        padding: .4rem 0.9rem;
+        padding: 0.4rem 0.9rem;
     }
 }
 
@@ -683,7 +697,6 @@ $authorize-btn-green: #258659;
 .swagger-ui .curl-command .copy-to-clipboard button {
     height: 22px;
 }
-
 
 //Mobile swagger adjustments
 @media screen and (max-width: 42.49999rem) {
@@ -756,7 +769,7 @@ $authorize-btn-green: #258659;
                 }
 
                 .rdformsLabel {
-                    margin-bottom: .25rem;
+                    margin-bottom: 0.25rem;
                     font-weight: bold;
                     font-size: 1.125rem; //18px
                     line-height: 1.6875rem; //27px

@@ -1,9 +1,10 @@
-@import 'scss/general/variables.scss';
+@import "scss/general/variables.scss";
+
+$mobile-breakpoint: 55.056rem; //880.9px
 
 header {
     border-bottom: 1px solid $black10;
     position: relative;
-
 }
 
 .dataportal-logo {
@@ -20,34 +21,32 @@ header {
     justify-content: space-between;
     flex-wrap: wrap;
     align-items: center;
-    transition: padding .25s ease;
+    transition: padding 0.25s ease;
 
-    @media screen and (max-width: 650px) {
+    @media screen and (max-width: $mobile-breakpoint) {
         padding-top: $space-16;
         padding-bottom: $space-16;
     }
 
     svg {
         width: 18.75rem;
-        transition: .5s;
+        transition: 0.5s;
 
         @media screen and (max-width: 28.75rem) {
             width: 13.75rem;
-            transition: .2s;
+            transition: 0.2s;
         }
 
         @media screen and (max-width: 20.75rem) {
             width: 12rem;
-            transition: .2s;
+            transition: 0.2s;
         }
     }
 
-    @media screen and (max-width: 55rem) {
+    @media screen and (max-width: $mobile-breakpoint) {
         z-index: 4000;
     }
 }
-
-
 
 .header-links {
     display: flex;
@@ -55,9 +54,13 @@ header {
     flex-wrap: nowrap;
     display: block;
 
-    @media screen and (max-width: 55rem) {
+    @media screen and (max-width: $mobile-breakpoint) {
         display: none;
         flex-wrap: wrap;
+    }
+
+    @media screen and (min-width: $mobile-breakpoint) {
+        position: relative;
     }
 
     .header-link {
@@ -73,11 +76,11 @@ header {
         @media screen and (max-width: 650px) {
             font-size: 16px;
             margin-top: $space-24;
-            transition: .1s;
+            transition: 0.1s;
         }
 
-        &:not(:last-of-type) {
-            margin-right: $space-32;
+        &:not(:first-of-type) {
+            margin-left: $space-32;
         }
 
         &:hover {
@@ -89,11 +92,11 @@ header {
             outline-offset: $focus-offset;
         }
 
-        //Style for active NavLink
-        // &.active {
-        //     text-decoration: none;
-        //     border-bottom: 2px solid $pink100;
-        // }
+        // Style for active NavLink
+        &.active {
+            text-decoration: none;
+            border-bottom: 2px solid $pink50;
+        }
     }
 
     //Hide in /en
@@ -101,8 +104,17 @@ header {
         display: none;
     }
 
-    .header-link--lang {
-        color: $black-hover;
+    @media screen and (min-width: $mobile-breakpoint) {
+        .header-link--lang {
+            position: absolute;
+            top: -2.75rem;
+            right: 0;
+            font-size: 14px;
+            color: #4f4f4f;
+            border-bottom: 1px solid #4f4f4f;
+            padding-bottom: 0;
+            margin-top: 0.5rem;
+        }
     }
 }
 
@@ -127,7 +139,7 @@ header {
     width: 100%;
     min-height: 200px;
 
-    @media screen and (min-width: 55rem) {
+    @media screen and (min-width: $mobile-breakpoint) {
         display: none;
     }
 }
@@ -144,8 +156,7 @@ header {
     flex-direction: column;
     overflow-y: scroll;
 
-
-    @media screen and (min-width: 55rem) {
+    @media screen and (min-width: $mobile-breakpoint) {
         display: none;
     }
 
@@ -160,7 +171,7 @@ header {
 
         &:hover {
             border-left: 5px solid $pink25;
-            transition: .1s;
+            transition: 0.1s;
         }
 
         &:focus {
@@ -181,7 +192,6 @@ header {
     }
 }
 
-
 //Mobile nav menu button
 
 .menu-wrapper {
@@ -198,7 +208,6 @@ header {
     }
 
     @media screen and (max-width: 28.75rem) {
-
         .menu-icon,
         .close-icon {
             svg {
@@ -211,7 +220,7 @@ header {
         }
     }
 
-    @media screen and (min-width: 55rem) {
+    @media screen and (min-width: $mobile-breakpoint) {
         display: none;
     }
 
@@ -229,7 +238,6 @@ header {
 .nav-btn--open {
     display: none;
 }
-
 
 .menu {
     display: none;
@@ -261,11 +269,10 @@ header {
 }
 
 .close-menu-btn {
-    @media screen and (min-width: 55rem) {
+    @media screen and (min-width: $mobile-breakpoint) {
         display: none;
     }
 }
-
 
 //Beta information banner
 .beta-banner {

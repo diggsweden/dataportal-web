@@ -160,13 +160,13 @@ app.use(function forceLiveDomain(req, res, next) {
       host === 'www.oppnadata.se' ||
       host === 'vidareutnyttjande.se')
   ) {
-    return res.redirect(301, 'https://www.dataportal.se/oppnadata');
+    return res.redirect(301, 'https://www.dataportal.se/');
   }
   if (
     !origUrl.includes('/.well-known/acme-challenge/') &&
     host === 'oppnadata.local:3003'
   ) {
-    return res.redirect(301, 'http://localhost:3003/oppnadata');
+    return res.redirect(301, 'http://localhost:3003/');
   }
   return next();
 });

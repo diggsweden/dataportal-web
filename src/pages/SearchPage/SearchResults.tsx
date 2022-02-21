@@ -67,7 +67,7 @@ const SortingOptions: React.FC<{
           className="text-6"
           id=""
           name={i18n.t('pages|search|numberofhits')}
-          onChange={(event) => {            
+          onChange={(event) => {
             event.preventDefault();
             clearCurrentScrollPos();
             search
@@ -109,13 +109,13 @@ const SortingOptions: React.FC<{
           }}
         >
           <option aria-selected={search.request.take == 20} value="20">
-          {i18n.t('pages|search|numberofhits-20')}
+            {i18n.t('pages|search|numberofhits-20')}
           </option>
           <option aria-selected={search.request.take == 50} value="50">
-          {i18n.t('pages|search|numberofhits-50')}
+            {i18n.t('pages|search|numberofhits-50')}
           </option>
           <option aria-selected={search.request.take == 100} value="100">
-          {i18n.t('pages|search|numberofhits-100')}
+            {i18n.t('pages|search|numberofhits-100')}
           </option>
         </select>
       </div>
@@ -221,7 +221,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
               `${search.result.count} ${i18n.t('pages|search|dataset-hits')}`}
           </h2>
 
-          {searchType == 'data' && (            
+          {searchType == 'data' && (
             <div className={showSorting ? "active sorting-options-wrapper" : "sorting-options-wrapper"}>
               <SortingOptions
                 setCompact={setCompact}
@@ -366,7 +366,12 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
               </button>
             )}
           </div>
-
+          <div className='row justify-center current-page'>
+            <span className='text-6'>
+              {i18n.t('pages|search|page')} {(search.request.page || 0) + 1}{' '}
+              {i18n.t('common|of')} {search.result.pages}
+            </span>
+          </div>
           <div className="prev-next-page">
             <button
               disabled={(search.request.page || 0) === 0}
@@ -387,10 +392,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
             >
               {i18n.t('pages|search|prev-page')}
             </button>
-            <span>
-              {i18n.t('pages|search|page')} {(search.request.page || 0) + 1}{' '}
-              {i18n.t('common|of')} {search.result.pages}
-            </span>
             <button
               className=""
               disabled={

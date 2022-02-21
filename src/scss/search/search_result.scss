@@ -189,7 +189,7 @@ $media-sm: 37.5rem;
 
         li {
             &:last-of-type {
-                margin-bottom: $space-32;
+                margin-bottom: $space-24;
             }
 
             &.search-result-list-item {
@@ -383,6 +383,7 @@ $media-sm: 37.5rem;
 
     .first-page {
         margin-left: 0px;
+        margin-top: $space-32 + $space-16;
         position: absolute;
     }
 
@@ -393,6 +394,12 @@ $media-sm: 37.5rem;
         align-items: center;
         margin: auto;
         flex-wrap: wrap;
+        margin-top: $space-24;
+
+        button{
+            margin-left: $space-8;
+            margin-right: $space-8;
+        }
     }
 
     span {
@@ -404,17 +411,12 @@ $media-sm: 37.5rem;
 @media screen and (max-width: 660px) {
     .pagination {
         .first-page {
-            top: 160px;
-            margin: auto;
-            position: absolute;
+            display: none;
         }
 
         .prev-next-page {
-            flex-direction: column;
-            align-items: baseline;
-
-            span {
-                margin-top: $space-16;
+            min-width: 0;
+            button{
                 margin-bottom: $space-16;
             }
         }

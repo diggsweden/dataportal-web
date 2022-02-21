@@ -50,7 +50,8 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
   return (
     <>
       <header>
-        <InnerBox paddingY={0} paddingX={2}>
+        <div className='main-container'>
+        <InnerBox>
           <Container>
             <FocusTrap active={focusTrap}>
               <Box className="header-box">
@@ -198,6 +199,7 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
             </FocusTrap>
           </Container>
         </InnerBox>
+        </div>
       </header>
     </>
   );

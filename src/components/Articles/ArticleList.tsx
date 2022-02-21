@@ -6,6 +6,7 @@ import { gql } from 'apollo-boost';
 import { slugify } from 'utilities/urlHelpers';
 import { Link } from 'react-router-dom';
 import Truncate from 'react-truncate';
+import ReactPaginate from 'react-paginate'
 let moment = require('moment');
 
 export interface ArticleListProps {
@@ -36,8 +37,39 @@ export const ArticleList: React.FC<ArticleListProps> = ({ env }) => {
     }
   }, [!loading && data]);
 
+  const [articlesNumber, setPageNumber] = useState(0);
+  const articlesPerPage = 10;
+  const articlesVisited = articlesNumber * articlesPerPage;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const displayArticles = articleList
+    .slice(articlesVisited, articlesVisited + articlesPerPage);
+
+  const pageCount = Math.ceil(articleList.length / articlesPerPage);
+
+  const newsFocus = () => {
+    let content = document.querySelector('#newsList');
+    if (!content) return;
+  
+    const focusable = content.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+  
+    const first = focusable[0];
+  
+    if (first) {
+      first.focus();
+    }
+  };
+
+  const changePage = ({ selected }: { selected: any }) => {
+    let currentPage = selected + 1;
+    setPageNumber(selected);
+    setCurrentPage(selected + 1);
+  };
+
   return (
-    <div className="news-list">
+    <div className="news-list" id='newsList'>
       <ul>
         {loading && (
           <span className="text-5 loading">{i18n.t('common|loading')}</span>
@@ -48,7 +80,7 @@ export const ArticleList: React.FC<ArticleListProps> = ({ env }) => {
           </span>
         )}
         {!loading &&
-          articleList.map((n, index) => {
+          displayArticles.map((n, index) => {
             return (
               <li key={index}>
                 <span className="text-6">
@@ -57,20 +89,41 @@ export const ArticleList: React.FC<ArticleListProps> = ({ env }) => {
                 <Link
                   className="text-4"
                   onClick={() => console.log('hello')}
-                  to={`/${i18n.languages[0]}/${i18n.t('routes|news|path')}/${
-                    n.id
-                  }/${slugify(n.heading)}`}
+                  to={`/${i18n.languages[0]}/${i18n.t('routes|news|path')}/${n.id
+                    }/${slugify(n.heading)}`}
                 >
                   {n.heading}
                 </Link>
 
-                <p className="text-5">
+                <p className="text-6">
                   <Truncate lines={2}>{n.preambleHTML}</Truncate>
                 </p>
               </li>
             );
           })}
       </ul>
+      {/* Show pagination only when there is more than one page */}
+      {(pageCount > 1) && (
+        <div className='currentpage-tracker'>
+          <span className='text-6'>
+          {i18n.t('pages|search|page')} {currentPage} {i18n.t('common|of')} {pageCount}
+          </span>
+        </div>
+      )}
+      {(pageCount > 1) && (
+        <ReactPaginate
+          previousLabel="Föregående"
+          nextLabel="Nästa"
+          onClick={newsFocus}
+          pageCount={pageCount}
+          onPageChange={changePage}
+          containerClassName="pagination-wrapper"
+          previousLinkClassName="pagination-prev_btn default-button"
+          previousAriaLabel="Föregående sida"
+          nextLinkClassName="pagination-nex_btn default-button"
+          nextAriaLabel="Nästa sida"
+        />
+      )}
     </div>
   );
 };
