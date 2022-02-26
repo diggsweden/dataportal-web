@@ -134,7 +134,7 @@
     "performant-array-to-tree": "^1.7.1",
     "postcss": "8.2.13",
     "postcss-modules-extract-imports": "3.0.0",
-    "prismjs": "1.25.0",
+    "prismjs": "1.27.0",
     "qss": "^2.0.3",
     "react": "^16.10.2",
     "react-debounce-input": "^3.2.3",
