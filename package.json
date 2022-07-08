@@ -125,7 +125,7 @@
     "memory-cache": "^0.2.0",
     "mini-css-extract-plugin": "^0.8.0",
     "minimist": "1.2.3",
-    "moment": "^2.25.3",
+    "moment": "^2.29.4",
     "nanoid": "3.1.31",
     "node-fetch": "2.6.7",
     "node-notifier": "8.0.1",
