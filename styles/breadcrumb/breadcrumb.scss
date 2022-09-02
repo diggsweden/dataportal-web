@@ -1,0 +1,95 @@
+@import '~@digg/design-system/lib/sass/variables.scss';
+
+.breadcrumb {
+  margin-bottom: $space-4;
+  width: 100%;
+
+  .breadcrumb__list {
+    width: calc(100% - 2rem);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    word-break: keep-all;
+    list-style: none;
+    padding: 0px;
+    max-width: 72rem;
+    margin: auto;
+    padding-top: $space-2;
+    padding-bottom: 0.625rem;
+
+    .breadcrumb__list--item {
+      padding-top: $space-2;
+      padding-bottom: $space-2;
+      &:not(:last-of-type) {
+        display: flex;
+        &:empty::after {
+          content: '. . .';
+        }
+      }
+
+      a {
+        text-decoration: underline;
+        color: $clr-gray900;
+
+        span {
+          border: none;
+        }
+
+        @media screen and (max-width: $media-sm) {
+          display: inline;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 25vmin;
+        }
+
+        &::first-letter {
+          text-transform: uppercase;
+        }
+
+        &:hover {
+          text-decoration: none;
+          cursor: pointer;
+        }
+      }
+
+      .breadcrumb-slash {
+        margin-inline: 0.5em !important;
+      }
+
+      &:nth-of-type(3) {
+        a {
+          max-width: 30vmin;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          @media screen and (max-width: $media-sm) {
+            max-width: 15vmin;
+          }
+        }
+      }
+
+      &:last-of-type {
+        text-decoration: none;
+        margin-right: 0;
+
+        max-width: 38vmin;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        span {
+          margin-left: 4px;
+        }
+        @media screen and (min-width: $media-sm) {
+          max-width: 45vmin;
+        }
+
+        &:empty::after {
+          content: '. . .';
+        }
+      }
+    }
+  }
+}

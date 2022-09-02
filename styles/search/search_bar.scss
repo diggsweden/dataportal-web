@@ -1,0 +1,95 @@
+//Style for searchbar
+@import '~@digg/design-system/lib/sass/variables';
+
+@media screen and (max-width: $media-sm) {
+  .search-header {
+    font-size: 1.5rem; //24px
+    margin-bottom: 0rem;
+  }
+}
+
+.search-header-wrapper {
+  justify-content: space-between;
+  max-width: 40.3rem;
+}
+
+.search-header {
+  margin-top: 0rem;
+}
+
+.search-box {
+  display: flex;
+  flex-wrap: nowrap;
+  height: $space-12;
+  margin-bottom: $space-4;
+  align-items: center;
+
+  .search-label {
+    display: none;
+  }
+
+  input {
+    height: 100%;
+    min-height: $space-12;
+    min-width: 12.5rem;
+    max-width: 37rem;
+    width: 100%;
+    border: 0.125rem solid $clr-gray900;
+    border-right: none;
+    padding-left: 0.75rem;
+    border-top-left-radius: 0.125rem;
+    border-bottom-left-radius: 0.125rem;
+
+    &:hover {
+      border-color: $clr-gray700;
+    }
+
+    &::placeholder {
+      color: $clr-gray700;
+    }
+
+    &:focus {
+      border-color: $clr-gray900;
+
+      &::placeholder {
+        color: $clr-gray300;
+        transition: color 0.1s;
+      }
+
+      &::-ms-input-placeholder {
+        color: $clr-gray300;
+      }
+
+      &:-ms-input-placeholder {
+        color: $clr-gray300;
+      }
+    }
+  }
+
+  button {
+    margin-right: $space-4;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    min-height: $space-12;
+    width: $space-12;
+    min-width: 3.125rem;
+    background-color: $clr-gray900;
+    color: $clr-white;
+    border: none;
+    border-top-left-radius: 0rem;
+    border-bottom-left-radius: 0rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $clr-gray700;
+      color: $clr-white;
+    }
+
+    &:focus {
+      @include focusStyle;
+    }
+  }
+}

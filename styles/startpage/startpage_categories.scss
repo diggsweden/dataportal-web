@@ -1,0 +1,65 @@
+@import '~@digg/design-system/lib/sass/variables';
+
+// Style for search categories on startpage
+.categoriesnav__wrapper {
+  background-color: $clr-green300;
+
+  @media screen and (max-width: $media-sm) {
+    display: none;
+  }
+
+  .startpage-categories {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 980px;
+    padding: 0rem;
+    margin: auto;
+    margin-top: $space-8;
+    margin-bottom: $space-16 + $space-6;
+
+    h2 {
+      color: $clr-gray900;
+      margin-top: $space-8;
+    }
+
+    ul {
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      list-style-type: none;
+      padding: 0rem;
+      margin: 0rem;
+
+      li {
+        margin-bottom: $space-4;
+        margin-left: 10px;
+
+        &:not(:last-of-type) {
+          a {
+            margin-right: 10px;
+            &:after {
+              content: ',';
+            }
+          }
+        }
+
+        a {
+          color: $clr-gray900;
+          font-size: 1.25rem;
+          line-height: 2rem;
+          text-decoration: underline;
+
+          &:hover {
+            transition: 0.2s;
+            text-decoration: none;
+          }
+
+          &:focus {
+            @include focusStyle;
+          }
+        }
+      }
+    }
+  }
+}

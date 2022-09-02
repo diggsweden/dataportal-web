@@ -1,0 +1,282 @@
+@import '~@digg/design-system/lib/sass/variables';
+
+//Statistic containers
+.statistic {
+  background-color: $clr-brown100;
+  display: flex;
+  flex-direction: column;
+  padding-top: $space-12;
+  padding-left: $space-4;
+  padding-right: $space-4;
+  padding-bottom: 8.75rem; //140p.top-list ol lix
+  margin-bottom: -10rem;
+
+  h2 {
+    color: $clr-gray900;
+  }
+}
+
+.statistic-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-self: center;
+  max-width: 72rem;
+  width: 100%;
+}
+
+.statistic-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-self: center;
+  max-width: 72rem;
+  width: 100%;
+
+  @media screen and (max-width: $media-md) {
+    flex-direction: column;
+  }
+
+  //Graph
+  .statistic-div {
+    width: 100%;
+
+    @media screen and (min-width: $media-md) {
+      width: 79%;
+    }
+
+    a {
+      margin-top: $space-4;
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    .graphbox {
+      position: relative;
+      display: flex;
+      background-color: $clr-white;
+      padding: $space-8;
+      padding-left: $space-4;
+      padding-right: $space-2;
+      margin-bottom: $space-4;
+
+      .graph-text {
+        position: absolute;
+        bottom: $space-8;
+        right: 40px;
+      }
+
+      .rv-xy-plot__axis__tick {
+        text {
+          font-size: 0.875rem;
+        }
+      }
+
+      .rv-xy-plot__axis__tick__line,
+      .rv-xy-plot__axis__line {
+        display: none;
+      }
+    }
+
+    .rv-xy-plot__axis--horizontal {
+      .rv-xy-plot__axis__tick:nth-of-type(even),
+      .rv-xy-plot__axis__tick:nth-of-type(odd) {
+        display: none;
+      }
+      .rv-xy-plot__axis__tick:first-of-type,
+      .rv-xy-plot__axis__tick:last-of-type {
+        display: block;
+      }
+
+      @media screen and (min-width: $media-md) {
+        .rv-xy-plot__axis__tick:nth-of-type(odd) {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+//Portal number pixels
+.numbers {
+  width: 100%;
+  margin-left: 0px;
+  margin-top: $space-6;
+
+  @media screen and (min-width: $media-md) {
+    width: 21%;
+    margin-left: $space-6;
+    margin-top: 0;
+  }
+
+  .statistic-numbers {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 235px;
+      background-color: $clr-white;
+
+      .text-2xl {
+        color: $clr-green700;
+      }
+
+      &:last-of-type {
+        margin-top: $space-6;
+
+        .text-2xl {
+          color: $clr-orange800;
+        }
+      }
+    }
+  }
+}
+
+// Statistic component - toplist
+.toplist {
+  display: flex;
+  justify-content: center;
+  margin-top: $space-6;
+
+  .statistic-toplist {
+    display: flex;
+    justify-content: center;
+    max-width: 72rem;
+    width: 100%;
+
+    @media screen and (max-width: $media-sm) {
+      flex-direction: column;
+    }
+
+    .toplist-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      width: 50%;
+
+      @media screen and (max-width: $media-sm) {
+        width: 100%;
+        margin-bottom: $space-8;
+        h2 {
+          word-break: break-all;
+        }
+      }
+
+      &:first-of-type {
+        margin-right: $space-6;
+      }
+
+      .top-list {
+        background-color: $clr-white;
+        padding: $space-4;
+        padding-bottom: $space-6;
+        width: 100%;
+
+        ol {
+          counter-reset: section;
+          margin: 0px;
+
+          li {
+            padding-top: $space-2;
+            padding-bottom: $space-2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-left: -40px;
+
+            @include wordBreak;
+
+            &:first-of-type {
+              padding-top: 0px;
+            }
+
+            &:last-of-type {
+              padding-bottom: 0px;
+            }
+
+            &::before {
+              counter-increment: section;
+              content: counters(section, '.') '.';
+            }
+
+            a,
+            span {
+              margin-left: $space-2;
+              width: 90%;
+            }
+
+            a {
+              text-decoration: underline;
+              &:hover {
+                text-decoration: none;
+              }
+            }
+
+            .list-value {
+              width: 10%;
+              margin-left: $space-2;
+              text-align: end;
+              width: fit-content;
+
+              text-decoration: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//Toplist on statistic page
+.statistic-page {
+  .toplist {
+    margin: 0px;
+
+    .statistic-toplist {
+      flex-direction: column;
+
+      .toplist-wrapper {
+        margin: 0px;
+        width: 100%;
+        margin-top: $space-4;
+        margin-bottom: $space-4;
+
+        h2 {
+          padding: $space-4;
+          padding-top: $space-2;
+          padding-bottom: $space-2;
+          background-color: $clr-green300;
+          margin: 0px;
+          font-weight: normal;
+        }
+
+        .top-list {
+          border: 2px solid $clr-green300;
+          padding: $space-4;
+          padding-bottom: $space-6;
+        }
+
+        ol {
+          list-style-type: none;
+        }
+
+        li {
+          border-bottom: 2px dotted $clr-green300;
+
+          &:last-of-type {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+  }
+}

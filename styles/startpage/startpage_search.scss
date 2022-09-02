@@ -1,0 +1,203 @@
+// Style for search and image on startpage
+@import 'styles/general/variables.scss';
+@import '~@digg/design-system/lib/sass/variables';
+
+.main-search-container {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 36.25rem;
+
+  @media screen and (max-width: $media-sm) {
+    position: static;
+    height: auto;
+  }
+
+  #TopImageStart-container {
+    height: 100%;
+    @media screen and (max-width: $media-sm) {
+      display: none;
+    }
+  }
+
+  & img {
+    object-fit: cover;
+    height: 36.25rem;
+
+    @media screen and (max-width: $media-sm) {
+      display: none;
+    }
+  }
+}
+
+.startpage-top {
+  position: absolute;
+  top: 2%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: $space-8;
+  margin-bottom: $space-4;
+
+  @media screen and (min-width: $media-sm) {
+    padding-bottom: 9.375rem;
+    margin-bottom: $space-16;
+  }
+
+  @media screen and (max-width: $media-sm) {
+    position: static;
+    background-image: none;
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+  }
+
+  @media screen and (max-width: $media-sm) {
+    flex-direction: column;
+  }
+
+  .startpage-search {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: calc(100% - 2rem);
+
+    h1 {
+      margin: 0.67em 0;
+      font-size: 3rem;
+      text-align: center;
+
+      @media screen and (max-width: $media-sm) {
+        font-size: 2.375rem;
+      }
+    }
+
+    .startpage-form {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 4px;
+
+      input {
+        max-width: 36.875rem;
+        width: 100%;
+        background-color: $clr-white;
+        border: none;
+        padding-left: $space-4;
+        font-size: 1.25rem;
+
+        &::placeholder {
+          color: $clr-gray500;
+        }
+
+        &:focus {
+          z-index: 1;
+        }
+
+        &:hover {
+          transition: color 0.1s;
+          border-color: $clr-gray700;
+        }
+
+        &:focus {
+          transition: color 3s ease-in;
+          border-color: $clr-gray700;
+
+          &::placeholder {
+            color: $clr-gray300;
+          }
+
+          &::-ms-input-placeholder {
+            color: $clr-gray300;
+          }
+
+          &:-ms-input-placeholder {
+            color: $clr-gray300;
+          }
+        }
+
+        @media screen and (max-width: $media-sm) {
+          background-color: $clr-gray900;
+          color: $clr-white;
+
+          &::placeholder {
+            color: $clr-gray300;
+          }
+
+          &:focus {
+            &::placeholder {
+              color: $clr-gray500;
+            }
+          }
+        }
+      }
+
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 3.75rem;
+        min-width: 3.75rem;
+        padding: 0px;
+        background-color: $clr-gray900;
+        border: none;
+        border-radius: 0px;
+
+        &:hover,
+        &:focus {
+          transition: background-color 0.2s;
+          background-color: $clr-gray700;
+          z-index: 1;
+        }
+
+        @media screen and (max-width: $media-sm) {
+          background-color: $clr-green700;
+
+          svg {
+            fill: $clr-white;
+          }
+        }
+      }
+    }
+  }
+
+  .search__box {
+    display: flex;
+    flex-direction: column;
+    max-width: 40.625rem;
+    width: calc(100% - 2rem);
+
+    .search__box--link {
+      display: flex;
+      flex-direction: column;
+      background-color: $clr-brown200;
+      padding-left: $space-4;
+      padding-right: $space-4;
+      padding-top: $space-2;
+      padding-bottom: $space-2;
+      width: 100%;
+
+      &:first-of-type {
+        padding-top: $space-4;
+      }
+
+      &:last-of-type {
+        padding-bottom: 1.25rem;
+      }
+
+      a {
+        width: fit-content;
+        text-decoration: underline;
+
+        @include wordBreak;
+
+        &:hover {
+          text-decoration: none;
+          color: $clr-gray900;
+        }
+      }
+    }
+  }
+}

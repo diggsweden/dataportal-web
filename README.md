@@ -1,34 +1,108 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Sveriges dataportal webbklient
 
-## Getting Started
+![node-current](https://img.shields.io/badge/node-16.13.2-green)
+![npm-current](https://img.shields.io/badge/npm-8.1.2-green)
+![nextjs-current](https://img.shields.io/badge/nextjs-12.1.6-green)
 
-First, run the development server:
+Här finns källkoden för dataportalens webbklient
+[https://www.dataportal.se](https://www.dataportal.se)
 
-```bash
-npm run dev
-# or
+## EntryScape
+
+Den svenska dataportalen är starkt integrerad med produktsviten EntryScape från MetaSolutions AB, [https://entryscape.com/sv/](https://entryscape.com/sv/).
+EntryScape Registry är en lösning för att hantera ett register över datakataloger och relaterad information.
+
+## Content backend
+
+Utvecklarportalen hämtar innehåll via Apollo Gateway. Sätts via env.
+
+## Environment
+
+Skapa en .env.local
+
+```sh
+LOGSTASH_MODE=tcp
+LOGSTASH_HOST=localhost
+LOGSTASH_PORT=5000
+LOGGING_LEVELS=warn,error,info
+LOGFILE_PATH=/app/dataportal.log
+PORT=3000
+HOST=http://localhost:$PORT
+APOLLO_URL=http://localhost:1301 #server apollo client
+REACT_APP_APOLLO_URL=http://localhost:1301 #browser apollo client
+IMAGE_DOMAIN=localhost
+REACT_APP_MEDIA_BASE_URL=http://localhost:1337
+REACT_APP_RUNTIME_ENV=dev
+HTTP_PROXY=http://proxy.digg.se:8080
+HTTP_PROXY_USER=secretuser
+HTTP_PROXY_PASS=secretpass
+
+HEALTHCHECK_SECRET=123
+```
+
+## Utveckling
+
+```sh
+yarn
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Gå till [http://localhost:3000](http://localhost:3000) i din webbläsare.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Lokal server
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+För att testa applikationen kör följande:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```sh
+yarn
+yarn build
+yarn start
+```
 
-## Learn More
+Besök [http://localhost:3000](http://localhost:3000) i din webbläsare.
 
-To learn more about Next.js, take a look at the following resources:
+## Produktionsbygge
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Bygg för produktion genom att köra följande:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```sh
+yarn build
+```
 
-## Deploy on Vercel
+Detta kommer generera applikationen som statiska filer under .next-mappen.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Docker
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```sh
+#bygg image
+docker build . -t nextjs-dataportal
+
+#skapa container
+docker run -p 3002:3002 -e PORT=3002 -e HOST=http://localhost:3002 -e REACT_APP_APOLLO_URL=http://localhost:1400 -e REACT_APP_RUNTIME_ENV=prod -e IMAGE_DOMAIN=host.docker.internal -e REACT_APP_MEDIA_BASE_URL="http://host.docker.internal:1400/assets/dataportal" --add-host=host.docker.internal:host-gateway nextjs-dataportal
+```
+
+## Health check
+
+NextJs svarar på [http://localhost:1300/api/healthcheck?secret=[HEALTHCHECK_SECRET från env]](http://localhost:1300/api/healthcheck?secret=)
+Cacheas inte, gör en request till contentbackend med startsidans fråga.
+
+```sh
+{"status":"fail"}
+```
+
+```sh
+{"status":"pass"}
+```
+
+## Stack
+
+- [Nextjs](https://nextjs.org/) JS framework
+- [TypeScript](https://www.typescriptlang.org/) typad JS
+- [React](https://reactjs.org/) för UI
+- [Emotion](https://emotion.sh) för styling
+- [Apollo Client](https://www.apollographql.com/docs/react/) för datahämtning
+
+## Noteringar
+
+Projektet har ett beroende till Diggs designsystemspaket `@digg/design-system`.
+I skrivande stund är källkoden till detta paket inte publicerad på Github eller NPM.

@@ -1,0 +1,113 @@
+@use 'styles/general/typography';
+@import 'styles/general/variables.scss';
+@import '~@digg/design-system/lib/sass/variables.scss';
+
+.content {
+  max-width: 40rem; //640px //40rem //40em
+
+  h1 {
+    margin-top: $space-2;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    word-break: break-word;
+  }
+
+  .date_published {
+    display: block;
+    margin-bottom: $space-1;
+  }
+
+  .preamble {
+    margin-top: 0px;
+    margin-bottom: 3rem;
+
+    a {
+      color: $clr-gray900;
+
+      &:focus {
+        @include focusStyle;
+      }
+    }
+
+    a[target='_blank']:after {
+      content: '\f08e';
+      margin-left: 5px;
+      font-family: 'FontAwesome' !important;
+      font-size: 0.8em;
+    }
+  }
+
+  .main-text {
+    margin-bottom: $space-6;
+    margin-top: 0px;
+
+    a {
+      color: $clr-gray900;
+
+      &:hover {
+        background-color: $clr-pink200;
+      }
+
+      &:focus {
+        @include focusStyle;
+      }
+    }
+
+    a[target='_blank']:after {
+      content: '\f08e';
+      margin-left: 5px;
+      font-family: 'FontAwesome' !important;
+      font-size: 0.8em;
+      display: inline-block;
+    }
+
+    li {
+      margin-bottom: $space-2;
+    }
+  }
+
+  blockquote {
+    padding: $space-6;
+    padding-top: $space-6;
+    border-left: 0.125rem solid $clr-green500;
+    background-color: $clr-green200;
+    margin-left: 0rem;
+    margin-right: 0rem;
+    line-height: 2rem !important; //32px
+    letter-spacing: -0.02em;
+    color: $clr-gray900;
+    margin-top: $space-2;
+    margin-bottom: $space-2;
+
+    p,
+    span,
+    a {
+      margin-bottom: $space-2;
+      font-weight: normal;
+      font-size: 1.125rem; //18px
+      line-height: 1.6875rem; //27px
+      color: $clr-gray900;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+      line-height: 2rem !important; //32px
+    }
+    h2,
+    h3,
+    h4 {
+      margin: 0rem;
+      margin-bottom: $space-1;
+      font-weight: bold;
+      font-size: 1.25rem; //20px
+      line-height: 1.75rem; //28px
+      letter-spacing: -0.01em;
+      color: $clr-gray900;
+    }
+  }
+}

@@ -1,0 +1,1706 @@
+@import 'styles/general/variables.scss';
+// @import 'styles/general/typography.scss';
+@import '~@digg/design-system/lib/sass/variables.scss';
+
+.detailpage {
+  width: 100%;
+
+  .detailpage__wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 64px;
+    flex-direction: column;
+
+    [data-toggle='popover']:focus {
+      @include focusStyle;
+    }
+
+    @include Layout;
+
+    //Window 800px
+    @media screen and (min-width: $media-sm) {
+      flex-direction: row;
+    }
+
+    .detailpage__wrapper--leftcol {
+      width: 100%;
+      max-width: 40rem;
+
+      //Window 800px
+      @media screen and (min-width: $media-sm) {
+        margin-right: $space-2;
+      }
+
+      h1 {
+        margin-top: 0rem;
+        margin-bottom: $space-4;
+
+        &::first-letter {
+          text-transform: capitalize;
+        }
+      }
+
+      .description {
+        word-break: break-word;
+        margin-bottom: $space-12;
+
+        @media screen and (min-width: $media-sm) {
+          margin-bottom: $space-8;
+        }
+      }
+
+      .escoList {
+        .alert {
+          width: fit-content;
+          border-radius: 0rem;
+          border: none;
+          color: $clr-white;
+          background-color: $clr-brown800;
+        }
+      }
+
+      .dataset__map {
+        margin-bottom: $space-12;
+
+        .rdforms {
+          .rdformsRow {
+            margin: 0rem;
+            width: 100%;
+
+            .rdformsFields {
+              .rdformsGroup {
+                margin: 0rem;
+                padding: 0rem;
+
+                .rdformsRow {
+                  padding: 0rem;
+
+                  .rdformsFields {
+                    .rdformsField {
+                      padding: 0rem;
+
+                      .escoPosition {
+                        font-weight: bold;
+                        font-size: 1.5rem; //24px
+                        line-height: 2rem; //32px
+                        letter-spacing: -0.02em;
+                        color: $clr-gray900;
+
+                        margin-bottom: $space-4;
+
+                        &::after {
+                          content: 'Geografiskt område';
+                        }
+
+                        label,
+                        span {
+                          display: none;
+                        }
+                      }
+
+                      .escoMap {
+                        height: 23.75rem;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      //Access to dataservice
+      .dataservice__access {
+        margin-bottom: $space-8;
+
+        .rdforms {
+          .rdformsRow {
+            display: flex;
+            flex-direction: column;
+
+            .rdformsLabel {
+              font-weight: bold;
+              font-size: 1.25rem; //20px
+              line-height: 1.75rem; //28px
+              letter-spacing: -0.01em;
+              color: $clr-gray900;
+            }
+
+            .rdformsFields {
+              .rdformsField,
+              .rdformsRepeatedValue {
+                border: none;
+                padding: 0rem;
+                margin: 0rem;
+                margin-top: $space-2;
+
+                a {
+                  font-weight: normal;
+                  font-size: 1.125rem; //18px
+                  line-height: 1.6875rem; //27px
+                  text-decoration-line: underline;
+                  color: $clr-gray900;
+
+                  &:hover {
+                    background-color: $clr-pink200;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .esbRow {
+        box-shadow: none;
+        border: 2px solid $clr-green300;
+        margin-top: $space-4;
+        padding-top: 0;
+
+        .esbRowHead {
+          position: relative;
+          justify-content: space-between;
+          padding: $space-4;
+          padding-bottom: 1.25rem;
+          max-height: none;
+          flex-direction: column;
+
+          //Window 374px
+          @media screen and (min-width: $media-sm) {
+            flex-direction: row;
+          }
+
+          .esbRowMain {
+            padding: 0rem;
+
+            .distribution_links {
+              display: flex;
+              flex-wrap: wrap;
+              flex-direction: column;
+
+              //Window 448px
+              @media screen and (min-width: $media-sm) {
+                flex-direction: row;
+              }
+            }
+          }
+
+          .esbRowControl {
+            display: flex;
+            width: fit-content;
+            margin-top: $space-4;
+            align-items: flex-start;
+            justify-content: flex-start;
+
+            @media screen and (min-width: $media-sm) {
+              justify-content: flex-end;
+              align-self: flex-end;
+              margin: 0rem;
+            }
+
+            button {
+              display: flex;
+              margin: 0rem;
+              min-width: max-content;
+              height: 2.75rem;
+              background-color: $clr-white;
+              text-decoration: none;
+              color: $clr-gray700;
+              fill: $clr-gray700;
+              font-weight: normal;
+              font-size: 1.125rem; //18px
+              line-height: 1.6875rem; //27px
+              box-shadow: none;
+              transition: width 2s;
+              border: 2px solid $clr-green300 !important;
+              font-size: 0.98rem;
+
+              &:hover {
+                text-decoration: none;
+              }
+
+              &[aria-expanded='false'] {
+                &::before {
+                  content: 'Visa mer';
+                }
+              }
+
+              &[aria-expanded='true'] {
+                &::before {
+                  content: 'Visa mindre';
+                }
+              }
+
+              span {
+                margin-top: 0.125rem;
+                margin-left: 0.5rem;
+                margin-right: $space-2;
+                width: 14px;
+                height: 16px;
+                text-align: center;
+                &:before {
+                  content: url('/icons/icon_arrow-down.svg');
+                }
+              }
+
+              &:hover {
+                filter: brightness(0.98);
+                transition: 0ms;
+              }
+
+              &:focus {
+                border: none;
+              }
+
+              @media screen and (min-width: $media-sm) {
+                font-size: 1.125rem; //18px
+                border: none !important;
+              }
+            }
+          }
+        }
+      }
+
+      //  Distrubutionslista
+      .entryList {
+        .esbRowExpand {
+          background-color: $clr-white;
+          padding: $space-4;
+          padding-top: 0rem;
+          padding-bottom: $space-6;
+
+          .distribution_files_header {
+            font-weight: bold;
+            font-size: 1rem; //16px
+            line-height: 1.5rem; //24px
+            letter-spacing: -0.01em;
+            color: $clr-gray900;
+            margin-bottom: 0rem;
+            margin-top: 1rem;
+          }
+
+          .text-6 {
+            font-weight: normal;
+            font-size: 1rem; //16px
+            line-height: 1.5rem; //24px
+            color: $clr-gray900;
+          }
+
+          .rdforms {
+            .rdformsRow {
+              display: flex;
+              flex-direction: column;
+              padding: 0rem;
+              margin: 0rem;
+
+              &:not(:first-of-type) {
+                margin-top: $space-4;
+              }
+
+              .rdformsLabel {
+                font-weight: bold;
+                padding: 0rem;
+                margin: 0rem;
+                width: 100% !important;
+                margin-bottom: $space-2;
+                border: none;
+              }
+
+              .rdformsFields {
+                .rdformsField {
+                  margin: 0rem;
+                  padding: 0rem;
+
+                  .rdformsUrl {
+                    text-decoration: underline;
+                  }
+
+                  .rdformsUrl:hover {
+                    color: $clr-gray900;
+                    background-color: $clr-pink200;
+                  }
+
+                  .rdformsLanguage {
+                    display: none;
+                  }
+                }
+              }
+            }
+
+            .cardgroup {
+              display: flex !important;
+              flex-direction: column;
+
+              .rdformsFields {
+                .rdformsGroup,
+                .rdforms,
+                .rdformsPresenter {
+                  margin: 0rem !important;
+                  padding: 0rem !important;
+                  background-color: transparent;
+                  border: none;
+
+                  .rdformsRow {
+                    padding: 0rem;
+
+                    .rdformsLabel {
+                      font-weight: normal;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          .entryList {
+            margin-bottom: $space-4;
+
+            .distribution__extended-list {
+              border: none;
+              margin: 0rem;
+
+              .esbRowHead {
+                padding: 0rem;
+                padding-bottom: $space-2;
+                padding-top: $space-4;
+
+                .esbRowAlignPrimary {
+                  word-break: break-all;
+                }
+              }
+
+              //Download links when multiple files / extended-list
+              a {
+                display: flex;
+                align-items: center;
+                font-weight: normal;
+                font-size: 1.125rem; //18px
+                line-height: 1.6875rem; //27px
+                color: $clr-gray900;
+                text-decoration: none;
+                height: 2.75rem;
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+                padding-left: 0.6rem;
+                padding-right: 0.6rem;
+                border-radius: 2px;
+                background-color: $clr-green200;
+
+                &:hover {
+                  filter: brightness(0.98);
+                }
+
+                &:after {
+                  content: url('/icons/icon_DownloadFile.svg');
+                  margin-left: 0.5rem;
+                  margin-bottom: -5px;
+                }
+              }
+            }
+          }
+
+          .api_readmore {
+            display: block;
+            margin-top: $space-4;
+            color: $clr-gray900;
+            text-decoration: underline;
+            width: fit-content !important;
+
+            &:hover {
+              background-color: $clr-pink200;
+            }
+          }
+
+          hr {
+            margin-top: $space-6;
+            margin-bottom: $space-6;
+            border-top: 2px dotted $clr-green300;
+          }
+
+          .rdformsRepeatedValue {
+            margin-top: $space-2 !important;
+            border: none;
+          }
+        }
+      }
+
+      // distribution accordions
+      .distribution {
+        display: flex;
+        flex-direction: column;
+
+        .distribution_row {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+
+          .distribution_format {
+            margin-right: $space-6;
+            margin-bottom: $space-2;
+            text-transform: uppercase;
+
+            &:empty {
+              display: none;
+            }
+          }
+        }
+
+        .distribution_licens {
+          margin-bottom: $space-2;
+          color: $clr-brown800;
+
+          &:empty {
+            display: none;
+          }
+        }
+
+        .distribution_title {
+          margin-right: $space-2;
+          margin-bottom: $space-2;
+
+          &:empty {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .detailpage__wrapper--rightcol {
+      width: 100%;
+      max-width: 40rem;
+      display: flex;
+      flex-direction: column;
+
+      // Window 800px
+      @media screen and (min-width: $media-sm) {
+        max-width: 26rem;
+      }
+
+      .detailpage__wrapper--rightcol-info {
+        border: 2px solid $clr-green300;
+        margin-bottom: $space-4;
+        padding-bottom: 1rem;
+
+        // Window 800px
+        @media screen and (min-width: $media-sm) {
+          margin-bottom: $space-8;
+        }
+
+        h2 {
+          background-color: $clr-green300;
+          padding-left: $space-4;
+          padding-right: $space-4;
+          padding-top: $space-2;
+          padding-bottom: $space-2;
+          margin: 0rem;
+          margin-left: -1px;
+          margin-top: -1px !important;
+        }
+
+        h3 {
+          @include text-base;
+        }
+
+        .blocks-row {
+          display: flex;
+          flex-direction: column;
+          padding-left: $space-4;
+          padding-right: $space-4;
+          padding-top: $space-4;
+
+          span {
+            margin-bottom: $space-2;
+          }
+        }
+
+        .entryscape {
+          .rdforms {
+            display: flex;
+            flex-direction: column;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+
+            .rdformsRow {
+              display: flex;
+              flex-direction: column;
+              padding-left: $space-4;
+              padding-right: $space-4;
+              padding-top: 0;
+              padding-bottom: 0;
+              margin-bottom: $space-4;
+
+              .rdformsLabel {
+                width: fit-content !important;
+                font-weight: bold;
+                padding-top: 0rem;
+                margin-bottom: 0.25rem;
+                border: none;
+              }
+
+              .rdformsFields {
+                .rdformsField {
+                  margin-left: 0rem;
+                  padding: 0rem;
+
+                  .rdformsUrl {
+                    text-decoration: underline;
+                  }
+
+                  .rdformsUrl:hover {
+                    color: $clr-gray900;
+                    background-color: $clr-pink200;
+                  }
+
+                  .rdformsLanguage {
+                    display: none;
+                  }
+
+                  div {
+                    word-break: break-word;
+                    hyphens: auto;
+                  }
+                }
+
+                .rdformsRepeatedValue {
+                  margin-top: 0.25rem;
+                  border: none;
+                }
+
+                .rdformsGroup {
+                  padding: 0rem;
+                  margin: 0rem;
+
+                  .rdformsRow {
+                    padding: 0rem;
+                    margin: 0rem;
+
+                    .rdformsLabel {
+                      font-weight: normal;
+                      border: none;
+                    }
+                  }
+                }
+              }
+            }
+
+            .cardgroup {
+              .rdformsFields {
+                .rdformsGroup {
+                  background-color: transparent;
+                  border: none;
+
+                  .rdformsRow {
+                    display: flex;
+                    flex-direction: row;
+
+                    .rdformsLabel {
+                      margin-right: $space-2;
+
+                      &::after {
+                        content: ':';
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .entryscape {
+          .terminology__label {
+            display: block;
+            margin-top: $space-4;
+            margin-bottom: 0.25rem;
+            padding-left: $space-4;
+            padding-right: $space-4;
+          }
+
+          .terminilogy__download-wrapper {
+            display: flex;
+            flex-direction: column;
+
+            h3 {
+              font-size: 1rem;
+              line-height: 1.5rem;
+            }
+          }
+
+          .terminology__label {
+            font-weight: bold;
+          }
+        }
+
+        .terminology {
+          display: block;
+          margin-top: $space-4;
+          margin-bottom: 0.25rem;
+          padding-left: $space-4;
+          padding-right: $space-4;
+          font-weight: bold;
+          font-size: 1rem; //16px
+          line-height: 1.5rem; //24px
+          letter-spacing: -0.01em;
+          color: $clr-gray900;
+        }
+      }
+
+      .dataset__map--title {
+        margin-top: $space-2;
+
+        .rdforms {
+          .rdformsRow,
+          .rdformsTopLevel,
+          .notCompact {
+            width: 100% !important;
+            padding: 0rem;
+            margin: 0rem;
+
+            .rdformsLabel {
+              width: 100%;
+            }
+
+            .rdformsFields {
+              display: none !important;
+            }
+          }
+        }
+      }
+    }
+
+    .dataservice-explore-api-link {
+      display: block;
+      margin-left: 1rem;
+      background-color: $clr-orange200;
+      width: fit-content;
+      padding: 0.5rem 0.6rem;
+      margin-left: 0px;
+
+      &:hover {
+        filter: brightness(0.98);
+      }
+
+      &:after {
+        content: url('/icons/icon_tools.svg');
+        margin-left: 0.5rem;
+        display: inline-block;
+      }
+    }
+
+    //List with distributions
+    .distribution__list {
+      margin-bottom: $space-12;
+
+      @media screen and (min-width: $media-sm) {
+        margin-bottom: $space-2;
+      }
+
+      .esbRowMain {
+        font-weight: normal;
+        font-size: 1.125rem; //18px
+        line-height: 1.6875rem; //27px
+        color: $clr-gray900;
+
+        .esbRowAlign {
+          flex-direction: column;
+          align-items: flex-start;
+          padding-right: 0;
+          min-height: 5rem;
+
+          @media screen and (min-width: $media-sm) {
+            padding-right: $space-2;
+          }
+
+          .distribution_link-row {
+            display: flex;
+            flex-direction: row-reverse;
+
+            a {
+              @include Underline;
+            }
+
+            span {
+              a {
+                display: block;
+                font-weight: normal;
+                font-size: 0.98rem;
+                line-height: 1.6875rem; //27px
+                color: $clr-gray900;
+                background-color: $clr-pink200;
+                min-height: 2.75rem;
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+                padding-left: 0.6rem;
+                padding-right: 0.6rem;
+                border-radius: 2px;
+
+                @media screen and (min-width: $media-sm) {
+                  font-size: 1.125rem; //18px
+                }
+
+                &.explore-api-link {
+                  display: flex;
+                  align-items: center;
+                  margin-left: 1rem;
+                  background-color: $clr-orange200 !important;
+
+                  &:hover {
+                    filter: brightness(0.98);
+                  }
+
+                  &:after {
+                    content: url('/icons/icon_tools.svg');
+                    margin-left: 0.5rem;
+                    display: inline-block;
+                  }
+                }
+              }
+            }
+          }
+
+          .esbBadge {
+            padding: 0rem;
+            background-color: transparent;
+            font-weight: bold;
+            display: block;
+            margin-bottom: $space-2;
+          }
+
+          .resourceLabel {
+            margin-bottom: $space-2;
+          }
+
+          .esbRowAlignOther {
+            margin-bottom: $space-2;
+            text-transform: uppercase;
+
+            &:empty {
+              display: none;
+            }
+          }
+
+          .esbRowAlignPrimary {
+            margin-bottom: $space-4;
+          }
+
+          .esbRowAlignSecondary {
+            a {
+              background-color: transparent;
+              border: none;
+              font-weight: normal;
+              font-size: 1.125rem; //18px
+              line-height: 1.6875rem; //27px
+              text-decoration-line: underline;
+              color: $clr-gray900;
+
+              &:focus {
+                @include focusStyle;
+              }
+            }
+
+            .distribution__link {
+              display: flex;
+              align-items: center;
+              color: $clr-gray900;
+              margin: 0rem;
+              margin-left: 0px !important;
+
+              &:hover {
+                filter: brightness(0.98);
+                text-decoration: none;
+              }
+
+              &.download_url {
+                background-color: $clr-green200;
+
+                &:after {
+                  content: url('/icons/icon_DownloadFile.svg');
+                  margin-left: 0.5rem;
+                  margin-bottom: -5px;
+                }
+              }
+
+              &.access_url {
+                &:after {
+                  content: url('/icons/icon_ExternalLink.svg');
+                  margin-left: 0.5rem;
+                  margin-bottom: -5px;
+                }
+              }
+            }
+          }
+
+          .distribution_api-flag {
+            position: absolute;
+            color: $clr-gray700;
+            top: 1rem;
+            right: 1rem;
+
+            i {
+              --size: 0.95rem;
+              &::after {
+                background-image: url('/icons/icon_cog.svg');
+                background-size: var(--size) var(--size);
+                display: inline-block;
+                width: var(--size);
+                height: var(--size);
+                margin-right: 0.25rem;
+                margin-bottom: -1px;
+                content: '';
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .api-flag {
+      display: block;
+      color: $clr-orange600;
+      margin-bottom: $space-4;
+
+      i {
+        font-family: Font awesome\5 Free !important;
+        padding-right: 0.5rem;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .detailpage__wrapper--fullwith {
+    @include Layout;
+  }
+}
+
+html:lang(en) {
+  .esbRowControl {
+    button {
+      &[aria-expanded='false'] {
+        &::before {
+          content: 'View more' !important;
+        }
+      }
+
+      &[aria-expanded='true'] {
+        &::before {
+          content: 'View less' !important;
+        }
+      }
+    }
+  }
+}
+
+.entryscape {
+  .download__rdf--link {
+    display: block;
+    width: fit-content;
+    margin-bottom: $space-2;
+    text-decoration: underline;
+    color: $clr-gray900;
+
+    &:hover {
+      color: $clr-gray900;
+      background-color: $clr-pink200;
+    }
+  }
+}
+
+//Conceptpage /Terminology
+
+.terminology_header::first-letter {
+  text-transform: uppercase;
+}
+
+.terminology-group {
+  .entryscape {
+    display: block;
+
+    &:last-of-type {
+      margin-bottom: $space-6;
+    }
+
+    &:empty {
+      display: none;
+    }
+
+    h2 {
+      margin-top: 0rem;
+      margin-bottom: $space-2;
+      font-weight: bold;
+      font-size: 1.125rem; //18px
+      line-height: 1.6875rem; //27px
+      letter-spacing: -0.01em;
+      color: $clr-gray900;
+    }
+  }
+
+  span {
+    .entryscape,
+    .btn {
+      padding: 0rem;
+      border: none;
+    }
+
+    .related-concept {
+      color: $clr-gray900;
+      text-decoration: underline;
+
+      &:hover {
+        color: $clr-gray900;
+        background-color: $clr-pink200;
+      }
+    }
+  }
+}
+
+.entryscape {
+  .terminology__path {
+    color: $clr-gray900;
+    text-decoration: underline;
+    margin-left: $space-4;
+    margin-right: $space-4;
+
+    &:hover {
+      color: $clr-gray900;
+      background-color: $clr-pink200;
+    }
+  }
+}
+
+.terminology__download-links {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: $space-4;
+  padding-right: $space-4;
+
+  .terminology__download-link {
+    margin-right: $space-4;
+    color: $clr-gray900;
+    text-decoration: underline;
+
+    &:hover {
+      color: $clr-gray900;
+      background-color: $clr-pink200;
+    }
+  }
+}
+
+.terminology-group {
+  span {
+    .entryscape {
+      display: block;
+      text-decoration: underline;
+      width: fit-content;
+      margin-top: $space-2;
+
+      h2 {
+        margin-top: 0rem !important;
+      }
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+
+      a {
+        color: $clr-gray900;
+
+        &:hover {
+          color: $clr-gray900;
+          background-color: $clr-pink200;
+        }
+      }
+
+      .entryListRow {
+        font-weight: normal;
+        font-size: 1.125rem; //18px
+        line-height: 1.6875rem; //27px
+        color: $clr-gray900;
+
+        &:hover {
+          color: $clr-gray900;
+          background-color: $clr-pink200;
+        }
+      }
+    }
+  }
+
+  .mycolumn {
+    .terminology-group--list {
+      .entryscape {
+        .escoList {
+          .entryList {
+            display: flex;
+
+            .esbRow {
+              margin: 0rem;
+              margin-right: $space-2;
+              border: none;
+
+              .esbRowHead,
+              .esbRowLink {
+                display: block;
+                padding: 0rem;
+                height: fit-content;
+                width: fit-content;
+                min-height: 0rem;
+                text-decoration: underline;
+
+                &::first-letter {
+                  text-transform: uppercase;
+                }
+
+                &:hover {
+                  color: $clr-gray900;
+                  background-color: $clr-pink200;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//Terminologi pagination
+
+.terminology-group {
+  .entryPagination {
+    padding-bottom: $space-4;
+
+    .pagination {
+      margin: 0rem;
+      margin-top: $space-6;
+      justify-content: flex-start !important;
+
+      .page-item {
+        margin-right: $space-2;
+
+        .page-text {
+          margin: 0rem;
+        }
+
+        button {
+          min-width: $space-12;
+          border: 0.125rem solid $clr-green700;
+          border-radius: 0.125rem;
+
+          &:hover {
+            background-color: $clr-white;
+            filter: brightness(0.98);
+          }
+
+          &:focus {
+            box-shadow: none;
+          }
+
+          i {
+            font-family: 'Font Awesome 5 Brands' !important;
+            color: $clr-green700;
+          }
+        }
+      }
+
+      .disabled {
+        button {
+          border: 0.125rem solid $clr-green300;
+
+          i {
+            color: $clr-green300;
+          }
+        }
+      }
+    }
+  }
+}
+
+//Number of concepts in terminologi
+
+.terminologi-size {
+  margin-top: $space-12;
+
+  h2 {
+    font-weight: bold !important;
+    font-size: 1.25rem !important;
+    line-height: 1.75rem; //28px
+    letter-spacing: -0.01em;
+    color: $clr-gray900;
+  }
+}
+
+.terminology-numbers {
+  padding-left: $space-4;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.conceptsearch {
+  display: none;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+
+  .concept-detail {
+    margin-top: $space-2;
+    margin-bottom: $space-6;
+    font-weight: normal;
+    font-size: 1.125rem; //18px
+    line-height: 1.6875rem; //27px
+    color: $clr-gray900;
+
+    &:empty {
+      margin: 0rem;
+    }
+  }
+}
+
+.terminology__top-concepts {
+  .toplist-header {
+    display: block;
+    margin-bottom: $space-2;
+    font-weight: bold;
+    font-size: 1.25rem; //20px
+    line-height: 1.75rem; //28px
+    letter-spacing: -0.01em;
+    color: $clr-gray900;
+  }
+
+  .entryList {
+    margin-bottom: $space-2;
+
+    .entryscape {
+      .entryListRow {
+        text-decoration: underline;
+        font-weight: normal;
+        font-size: 1.125rem; //18px
+        line-height: 1.6875rem; //27px
+        color: $clr-gray900;
+        margin-top: $space-2;
+        display: block;
+        width: max-content;
+
+        &:hover {
+          background-color: $clr-pink200;
+        }
+      }
+    }
+  }
+
+  .entryPagination {
+    .pagination {
+      margin: 0rem;
+      margin-top: $space-6;
+      justify-content: flex-start !important;
+
+      .page-item {
+        margin-right: $space-2;
+
+        button {
+          min-width: $space-12;
+          border: 0.125rem solid $clr-green700;
+          border-radius: 0.125rem;
+
+          &:hover {
+            background-color: $clr-white;
+            filter: brightness(0.98);
+          }
+
+          &:focus {
+            box-shadow: none;
+          }
+
+          i {
+            width: 100%;
+            color: $clr-green700;
+            display: grid;
+            place-items: center;
+
+            &.fa-angle-right,
+            &.fa-angle-left,
+            &.fa-angle-double-right,
+            &.fa-angle-double-left {
+              &:before {
+                content: '';
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                -webkit-mask-size: cover;
+                mask-size: cover;
+                background-color: $clr-green700;
+              }
+            }
+
+            &.fa-angle-right {
+              &:before {
+                -webkit-mask: URL('/icons/icon_angle-right.svg') no-repeat 50% 50%;
+                mask: url('/icons/icon_angle-right.svg') no-repeat 50% 50%;
+              }
+            }
+            &.fa-angle-double-right {
+              &:before {
+                -webkit-mask: URL('/icons/icon_angles-right.svg') no-repeat 50% 50%;
+                mask: url('/icons/icon_angles-right.svg') no-repeat 50% 50%;
+              }
+            }
+            &.fa-angle-left {
+              &:before {
+                -webkit-mask: URL('/icons/icon_angle-left.svg') no-repeat 50% 50%;
+                mask: url('/icons/icon_angle-left.svg') no-repeat 50% 50%;
+              }
+            }
+            &.fa-angle-double-left {
+              &:before {
+                -webkit-mask: URL('/icons/icon_angles-left.svg') no-repeat 50% 50%;
+                mask: url('/icons/icon_angles-left.svg') no-repeat 50% 50%;
+              }
+            }
+          }
+        }
+      }
+
+      .disabled {
+        button {
+          border: 0.125rem solid $clr-green300;
+
+          i {
+            color: $clr-green300;
+            &.fa-angle-right,
+            &.fa-angle-left,
+            &.fa-angle-double-right,
+            &.fa-angle-double-left {
+              &:before {
+                background-color: $clr-green300;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//Specificationpage
+
+.specification__resource {
+  margin-bottom: $space-12;
+
+  .specification__resource--body {
+    span {
+      .entryList {
+        .esbRow {
+          .esbRowHead {
+            .esbRowMain {
+              display: flex;
+              flex-direction: column;
+
+              .specification__resource--header,
+              .specification__resource--type {
+                margin-bottom: $space-2;
+
+                &:empty {
+                  margin-bottom: 0rem;
+                }
+
+                &::first-letter {
+                  text-transform: uppercase;
+                }
+              }
+
+              .specification__resource--description {
+                span {
+                  margin-bottom: $space-2;
+
+                  &:empty {
+                    margin-bottom: 0rem;
+                  }
+                }
+              }
+
+              .specification__resource--downloadlink {
+                display: flex;
+                align-items: center;
+                color: $clr-gray900;
+                margin: 0rem;
+                margin-left: 0px !important;
+                text-decoration: none;
+                width: max-content;
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+                padding-left: 0.6rem;
+                padding-right: 0.6rem;
+
+                &::first-letter {
+                  text-transform: uppercase;
+                }
+
+                &:hover {
+                  filter: brightness(0.98);
+                }
+
+                &.download_url {
+                  background-color: $clr-green200;
+
+                  &:after {
+                    content: url('/icons/icon_DownloadFile.svg');
+                    margin-left: 0.5rem;
+                    margin-bottom: -5px;
+                  }
+                }
+              }
+            }
+
+            .esbRowControl {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//Hide before blocks renders-ish
+.hbbr {
+  animation: cssAnimation 0s 0.5s forwards;
+  visibility: hidden;
+}
+
+@keyframes cssAnimation {
+  to {
+    visibility: visible;
+  }
+}
+
+//View more text link
+.view-more-text-link {
+  background-color: $clr-green200;
+  border-radius: 0.125rem;
+  padding: 0.25rem;
+  word-break: keep-all;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    filter: brightness(0.98);
+  }
+}
+
+.entryscape {
+  .concept_hierarchy--header {
+    font-weight: bold !important;
+  }
+}
+
+.detailpage__wrapper--fullwith {
+  .concept-hierarchy-header {
+    h2 {
+      display: block;
+      font-weight: bold;
+      font-size: 1.125rem; //18px
+      line-height: 1.6875rem; //27px
+      letter-spacing: -0.01em;
+      color: $clr-gray900;
+      margin-bottom: $space-4;
+    }
+  }
+
+  .entryscape {
+    .concept_hierarchy {
+      position: relative;
+      margin-bottom: $space-12;
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+      padding-top: $space-8;
+      padding-bottom: $space-8;
+      border: 0.125rem solid $clr-gray300;
+      max-width: 100%;
+      max-height: 37.5rem;
+      overflow: auto;
+
+      .esbHierarchy__node rect {
+        stroke: $clr-gray300;
+        fill: $clr-gray300;
+        stroke-width: 0.125rem;
+      }
+
+      .esbHierarchy__rootNode rect {
+        stroke: $clr-orange400;
+        fill: $clr-orange400;
+      }
+
+      .esbHierarchy__expandableNode rect {
+        stroke: $clr-green500;
+        fill: $clr-green500;
+      }
+    }
+  }
+}
+
+.terminology-group {
+  .entryPagination {
+    .pagination {
+      margin: 0rem;
+      margin-top: $space-6;
+      justify-content: flex-start !important;
+
+      .page-item {
+        margin-right: $space-2;
+
+        .page-text {
+          margin: 0rem;
+        }
+
+        button {
+          min-width: $space-12;
+          border: 0.125rem solid $clr-green700;
+          border-radius: 0.125rem;
+
+          &:hover {
+            background-color: $clr-white;
+            filter: brightness(0.98);
+          }
+
+          &:focus {
+            box-shadow: none;
+          }
+
+          i {
+            font-family: 'Font Awesome 5 Brands' !important;
+            color: $clr-green700;
+          }
+        }
+      }
+
+      .disabled {
+        button {
+          border: 0.125rem solid $clr-green300;
+
+          i {
+            color: $clr-green300;
+          }
+        }
+      }
+    }
+  }
+}
+
+//Contact publisher
+
+.contact__publisher {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: $clr-green200;
+  padding: $space-4;
+  padding-bottom: $space-6;
+  margin-bottom: $space-12;
+
+  h3 {
+    margin-top: 0 !important;
+    margin-bottom: $space-2;
+  }
+
+  p {
+    margin: 0rem;
+  }
+
+  a:hover {
+    background-color: $clr-pink200;
+  }
+}
+
+//Indicators
+.indicators {
+  flex-wrap: wrap;
+
+  div {
+    margin-right: $space-2;
+  }
+}
+
+.accessRightsIndicator {
+  width: fit-content;
+  margin-bottom: $space-4;
+
+  &:empty {
+    display: none;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    color: $clr-gray900;
+    padding: 0rem;
+
+    span {
+      display: block;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+
+    i {
+      margin-right: $space-2;
+      color: $clr-gray700;
+      border-radius: 100px;
+      border: 3px solid $clr-gray700;
+      padding: 4px;
+      height: 32px;
+      width: 32px;
+      text-align: center;
+      &.fa-lock-open {
+        &:before {
+          content: url('/icons/icon_lock-open.svg');
+        }
+      }
+    }
+  }
+}
+
+.architectureIndicator {
+  width: fit-content;
+  margin-bottom: $space-4;
+
+  &:empty {
+    display: none;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    color: $clr-gray900;
+
+    span {
+      display: block;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+
+    i {
+      margin-right: $space-2;
+      color: $clr-gray700;
+      border-radius: 100px;
+      border: 3px solid $clr-gray700;
+      padding: 4px;
+      height: 32px;
+      width: 32px;
+      text-align: center;
+      &.fa-wrench {
+        &:before {
+          content: url('/icons/icon_wrench.svg');
+        }
+      }
+      &.fa-redo {
+        &:before {
+          content: url('/icons/icon_arrow-rotate-right.svg');
+        }
+      }
+    }
+  }
+}
+
+.licenseIndicator {
+  width: fit-content;
+  margin-bottom: $space-4;
+
+  &:empty {
+    display: none;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    color: $clr-gray900;
+    padding: 0rem;
+
+    span {
+      display: block;
+      text-transform: capitalize;
+    }
+
+    i {
+      margin-right: $space-2;
+      width: 31px;
+      height: 32px;
+      text-align: center;
+      &.fa-creative-commons:before {
+        content: url('/icons/icon_creative-commons.svg');
+      }
+    }
+  }
+}
+
+.costIndicator {
+  width: fit-content;
+  margin-bottom: $space-4;
+
+  &:empty {
+    display: none;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    color: $clr-gray900;
+    padding: 0rem;
+
+    span {
+      display: block;
+      text-transform: capitalize;
+    }
+
+    i {
+      margin-right: $space-2;
+      color: $clr-gray700;
+      border-radius: 100px;
+      border: 3px solid $clr-gray700;
+      padding: 5px;
+      height: 32px;
+      width: 32px;
+      text-align: center;
+    }
+
+    .fa-coins::before {
+      font-family: 'Font Awesome 5 Free' !important;
+    }
+  }
+}
+
+//Hemvist concept page
+.hemvist {
+  display: flex;
+  flex-direction: column;
+  margin-top: $space-6;
+
+  span {
+    margin-top: 0rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-size: 1.125rem;
+    line-height: 1.6875rem;
+    letter-spacing: -0.01em;
+  }
+
+  a {
+    color: $clr-gray900 !important;
+    width: fit-content;
+    text-decoration: underline !important;
+    word-break: break-all;
+
+    &:hover {
+      background-color: $clr-pink200;
+    }
+  }
+
+  .rdformsLabel {
+    @include wordBreak;
+  }
+}

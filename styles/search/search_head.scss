@@ -1,0 +1,61 @@
+@import '~@digg/design-system/lib/sass/variables';
+//Css for searchhead.
+
+.search-head {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: $space-6;
+
+  div {
+    border-bottom: 2px solid $clr-gray300;
+  }
+
+  @media screen and (max-width: $media-sm) {
+    margin-top: $space-2;
+
+    div {
+      a {
+        min-width: 50px !important;
+        padding-left: $space-2;
+        padding-right: $space-2;
+      }
+      margin-bottom: $space-2;
+    }
+  }
+
+  .active {
+    font-weight: bold;
+    border-bottom: 2px solid $clr-pink600;
+
+    &:hover {
+      border-color: $clr-pink600;
+    }
+  }
+
+  div {
+    display: flex;
+    justify-content: center;
+
+    &:last-of-type {
+      a {
+        margin-right: 0px;
+        min-width: 155px;
+      }
+    }
+
+    a {
+      text-decoration: none;
+      //   border-bottom: 2px solid $clr-gray300;
+      margin-bottom: -2px;
+      padding-bottom: 2px;
+      min-width: 149px;
+      text-align: center;
+
+      &:hover {
+        transition: border-color 0.2s ease-in-out;
+        color: $clr-gray900;
+        border-color: $clr-pink200;
+      }
+    }
+  }
+}

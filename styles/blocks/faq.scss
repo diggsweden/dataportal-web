@@ -1,0 +1,10 @@
+.faqblock {
+  .dataportal--accordion {
+    &:not(:last-of-type) {
+      button,
+      dd {
+        border-bottom: none;
+      }
+    }
+  }
+}

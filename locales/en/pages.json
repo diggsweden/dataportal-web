@@ -1,0 +1,215 @@
+{
+  "startpage": {
+    "search_placeholder": "Search",
+    "seo_description": "Sweden's national data portal for finding, exploring and using data from the public and private sectors",
+    "seo_title": "The Swedish dataportal",
+    "search_title_1": "Search and explore data from Sweden",
+    "search_title_2": "data from Sweden",
+    "explore_datasets": "Explore datasets and APIs",
+    "explore_concepts": "Explore concepts and terminologies",
+    "explore_specs": "Explore specifications of information and data models",
+    "coming_soon": "Coming soon",
+    "search_datasets_format": "Search datasets in the {{category}} category",
+    "datasets_by_category": "Data by categories",
+    "social_meta_title": "The Swedish dataportal",
+    "social_meta_description": "Sweden's national data portal for finding, exploring and using data from the public and private sectors"
+  },
+  "statistic": {
+    "statistic-header": "Statistics of the data portal",
+    "dataset-numbers": "Data per month",
+    "statistic-numbers": "Statistics at a glance",
+    "top-organizations": "organizations",
+    "top-categories": "categories",
+    "top": "Top",
+    "statistic-link": "Description of statistics",
+    "graph-screenreader": "The following information is also avaliable in text. Follow the link Description of statistics",
+    "statistic-page-text": "Statistics visualized on the startpage is here available in text. The statistics shows the amount of data on Sweden´s dataportal per month, top 5 organizations and categories.",
+    "statistic-page-header": "Statistics",
+    "statistic-page-numberofdatasets": "The amount of data on Sweden´s dataportal today: ",
+    "statistic-page-seotitle": "Statistics - Sveriges dataportal",
+    "statistic-page-link": "statistics",
+    "social_meta_title": "Statistics of the data portal",
+    "social_meta_description": "The following information is also avaliable in text."
+  },
+  "highlight": {
+    "highlight-header": "Sweden's data portal for increased innovation",
+    "highlight-text": "Data is a national resource for the development of society, industry and the public sector. It is a path to transparency, innovation and growth that benefits the entire society created by citizens, businesses and the government bodies together.",
+    "highlight-text2": "Sweden’s data portal is a hub that coordinates and makes available data for re-use provided by public, private and civil society organisations. The portal only contains information about the datasets. Data is retrieved or requested via links to the organization responsible for it."
+  },
+  "search": {
+    "search": "Search data",
+    "dataset-hits": "results ",
+    "concept-hits": "results",
+    "specification-hits": "results",
+    "next-page": "Next",
+    "prev-page": "Previous",
+    "first-page": "First",
+    "page": "Page",
+    "of": "of",
+    "datasets": "Data & APIs",
+    "concepts": "Concepts",
+    "specifications": "Specifications",
+    "organization": "Organizations",
+    "relevance": "Relevance",
+    "date": "Last modified",
+    "sort": "Order by",
+    "nohits": "No hits",
+    "numberofhits": "Number of hits",
+    "numberofhits-20": "20 hits",
+    "numberofhits-50": "50 hits",
+    "numberofhits-100": "100 hits",
+    "filtersearch": "Search within filter",
+    "search-tips": "Search tips",
+    "search-tips-search-head": "Expand search with asterisk (*)",
+    "search-tips-search-txt": "A search can be expanded by adding an asterisk (*) at the end of the search word. This allows the search to include different endings of the current search word.",
+    "search-tips-filter-head": "Filtering",
+    "search-tips-filter-txt": "Searching with different filters (e.g. categories and licenses) creates an AND between the filters. Searching with several options within a filter (e.g. several different formats) creates an OR between the options.",
+    "search-tips-searchfilter-head": "Search within filters",
+    "search-tips-searchfilter-txt": "Within the filters for category, organization and format, it is possible to perform a search, e.g. it is possible to search for a special authority or municipality within the filter for organization.",
+    "search-tips-sort-head": "Sorting",
+    "search-tips-sort-txt1": "When sorting the search result by",
+    "search-tips-sort-txt2": "Relevance",
+    "search-tips-sort-txt3": ", the search term is matched by heading. When sorting by",
+    "search-tips-sort-txt4": "Last modified",
+    "search-tips-sort-txt5": ", the most recently updated metadata (information about the data) is displayed first. The fact that the metadata is updated does to mean that the actual data is updated.",
+    "search-tips-license-head": "Licenses",
+    "search-tips-license-txt": "Licenses are rules for how data may be used, read more about",
+    "search-tips-license-link": "licenses",
+    "list-view": "List view",
+    "more-filters": "View more filters",
+    "less-filters": "View less filters",
+    "detailed-list": "Detailed list",
+    "detailed-list-active": "Detailed list aktiv",
+    "compact-list": "Compact list",
+    "compact-list-active": "Compact list"
+  },
+  "datasets": {
+    "search-datasets": "Search",
+    "datasets": "datasets",
+    "social_meta_title": "Search datasets",
+    "social_meta_description": "Datasets on Sweden's data portal"
+  },
+  "concepts": {
+    "search-concept": "Search",
+    "concepts": "concepts",
+    "social_meta_title": "Search concepts",
+    "social_meta_description": "Concepts on Sweden's data portal"
+  },
+  "specifications": {
+    "search-specifications": "Search",
+    "specifications": "specifications",
+    "social_meta_title": "Search specifications",
+    "social_meta_description": "Specifications on Sweden's data portal"
+  },
+  "notfoundpage": {
+    "heading": "404 - Page not found",
+    "body": "The page you requested could not be found. Hopefully one of these links can help you find the information.",
+    "startpage": "Home page",
+    "search-data": "Search data"
+  },
+  "datasetpage": {
+    "explore-api": "Explore API",
+    "about-dataset": "About dataset",
+    "download-dataset": "Access data",
+    "catalog": "Catalog",
+    "use-data": "Use data",
+    "download_link_adress": "Access URL",
+    "download_link": "Download data",
+    "several_links": "The data has several links for download",
+    "several_links_header": "The data resource consists of the following files",
+    "no_title": "No title given",
+    "no_data": "This data set has no data resources",
+    "read_about_api": "Read more about API",
+    "fileformat": "other file format",
+    "rdf": "Download metadata as RDF",
+    "view_more": "View more",
+    "view_less": "View less",
+    "contact-publisher": "Do you have questions or comments?",
+    "contact-publisher-text": "Contact the publishing organization for questions, comments and requests regarding the information on this page. ",
+    "contact-publisher-text2": "You can also go to the data portal "
+  },
+  "dataservicepage": {
+    "api": "About API"
+  },
+  "articles": {
+    "news": "news",
+    "articles": "News",
+    "view-all": "View all news",
+    "social_meta_title": "News - The Swedish dataportal",
+    "social_meta_description": "News on The Swedish dataportal"
+  },
+  "redirect": {
+    "pagenotfound_header": "Oops, the page could not be found!",
+    "pagenotfound-label": "The Swedish dataportal",
+    "pagenotfound-text": "This may be because oppnadata.se moved to dataportal.se September 23, 2020. Hopefully these links can help you find what you were looking for.",
+    "pagenotfound-link": "Home page",
+    "pagenotfound-link2": "Search data"
+  },
+  "concept_page": {
+    "superior_concept": "Superior concept",
+    "no_superior_concept": "No superior concepts",
+
+    "subordinate_concepts": "Subordinate concepts",
+    "no_subordinate_concepts": "No subordinate concepts",
+
+    "related_concepts": "Related concepts",
+    "no_related_concepts": "No related concepts",
+
+    "visualization_concepts": "Visualization of subordinate concepts",
+    "terminology_concept": "Terminology",
+    "download_concept": "Download",
+
+    "number_of_concepts": "Number of concepts in terminology",
+    "first_level_concepts": "Concepts in the first level of terminology",
+
+    "preferred_term": "Preferred term",
+    "alternativ_term": "Alternative term",
+    "hidden_term": "Hidden term",
+
+    "example": "Example",
+
+    "historical_note": "Historical note",
+
+    "editorial_note": "Editorial note",
+
+    "note": "Note",
+
+    "exact_match": "Has exact match",
+
+    "close_match": "Has close match",
+
+    "related_match": "Has related match",
+
+    "superior_match": "Has superior match",
+
+    "subordinate_match": "Has subordinate match",
+
+    "about_concept": "About concept",
+
+    "about_terminology": "About terminology",
+
+    "concept_adress": "Address for concept",
+
+    "term_adress": "Address for terminology"
+  },
+  "specification_page": {
+    "about_specification": "About specification",
+    "resource_specification": "Resource",
+    "scheme_download": "Download schema",
+    "guidance_download": "Download guidance",
+    "specification_download": "Download specification",
+    "download": "Download"
+  },
+  "explore-api-page": {
+    "explore-api": "Explore API",
+    "belongs-to-dataset": "Refers to dataset",
+    "access-to-api": "Access to API",
+    "access-to-api-txt": "The data portal provides both APIs that are fully open and those that require an API key.",
+    "open-apis": "Open APIs",
+    "open-apis-txt": "If the API is open you are able to directly make API calls and explore the data.",
+    "api-key": "APIs that require an API key",
+    "api-key-txt": "There are APIs that need to be unlocked with an API key to enable you to make calls and explore the amount of data. To get access to an API key you need to contact the publisher. ",
+    "contact-publisher": "Contact to publisher",
+    "api-contract": "API Contract"
+  }
+}

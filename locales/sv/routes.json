@@ -1,0 +1,62 @@
+{
+  "about": {
+    "path": "om-webbplatsen",
+    "title": "Om webbplatsen"
+  },
+  "accessibility": {
+    "path": "om-webbplatsen/tillganglighet",
+    "title": "Tillgänglighet"
+  },
+  "register-data": {
+    "path": "registrera-data",
+    "title": "Registrera data"
+  },
+  "projects": {
+    "path": "inspiration",
+    "title": "Inspiration"
+  },
+  "projectsubmit": {
+    "path": "tipsaoss",
+    "title": "Tipsa oss"
+  },
+  "datasets": {
+    "path": "datasets",
+    "title": "Sök data & API:er"
+  },
+  "specifications": {
+    "path": "specifications",
+    "title": "Sök specifikationer"
+  },
+  "concepts": {
+    "path": "concepts",
+    "title": "Sök begrepp"
+  },
+  "dataservices": {
+    "path": "dataservice",
+    "title": "api"
+  },
+  "news": {
+    "path": "nyheter",
+    "title": "Nyheter"
+  },
+  "nyhet": {
+    "path": "nyhets-artikel",
+    "title": "nyhets-artikel"
+  },
+  "start": {
+    "path": "",
+    "title": "Sveriges dataportal"
+  },
+  "statistics": {
+    "path": "statistik",
+    "title": "Statistik"
+  },
+  "about-us": {
+    "path": "om-oss#sa_har_far_du_anvanda_data",
+    "title": "om-oss"
+  },
+  "api_explore": {
+    "path": "apiexplore",
+    "title": "Utforska API"
+  }
+}

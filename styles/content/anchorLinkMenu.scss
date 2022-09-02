@@ -1,0 +1,10 @@
+@import '~@digg/design-system/lib/sass/variables';
+.anchorlink_wrapper {
+  @media screen and (min-width: $media-lg) {
+    position: absolute;
+    left: 0;
+    top: -52px;
+    height: 100%;
+    margin-left: 684px;
+  }
+}

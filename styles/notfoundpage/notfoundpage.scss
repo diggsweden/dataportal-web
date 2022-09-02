@@ -1,0 +1,28 @@
+@import '~@digg/design-system/lib/sass/space';
+
+.notfoundpage {
+  margin-top: 2.25rem;
+  .notfoundpage__content {
+    display: flex;
+    flex-direction: column;
+
+    ul {
+      padding-left: 0px;
+      margin: 0px;
+      margin-top: $space-4;
+      list-style: none;
+
+      li {
+        margin-top: $space-2;
+        margin-bottom: $space-4;
+
+        a {
+          text-decoration: underline;
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
+    }
+  }
+}

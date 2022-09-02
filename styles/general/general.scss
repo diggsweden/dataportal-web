@@ -1,0 +1,107 @@
+//General styles for wrapping container etc.
+@import '~@digg/design-system/lib/sass/variables';
+
+//Background-color for root
+//Max-width for content
+#__next {
+  background-color: $clr-gray200;
+  #top {
+    max-width: 80rem;
+    margin: auto;
+  }
+}
+
+h1 {
+  &:focus {
+    outline: none;
+  }
+}
+
+//For screenreaders
+.screen-reader {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.beta_badge--xl {
+  display: block;
+  color: $clr-white !important;
+  padding: 0.03rem 0.2rem;
+  background-color: $clr-brown800;
+  border-radius: 3px;
+  margin-bottom: $space-2;
+  width: max-content;
+}
+
+//Remove focus before tabbing..
+.no-focus-outline a:focus,
+.no-focus-outline button:focus,
+.no-focus-outline input:focus,
+.no-focus-outline input[type='radio']:focus,
+.no-focus-outline textarea:focus,
+.no-focus-outline select:focus {
+  outline: none !important;
+}
+
+//Focus for most elements
+html a:focus,
+html button:focus,
+html input:focus,
+html input[type='radio']:focus,
+html textarea:focus,
+html select:focus {
+  @include focusStyle;
+  transition: outline-offset 0s !important;
+}
+
+mark {
+  background-color: #e0e1e6;
+}
+
+.btn-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.125rem;
+  min-height: 3rem;
+  width: fit-content;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  text-decoration: none;
+
+  border: 0.125rem solid $clr-green700;
+
+  &:hover {
+    border-color: $clr-green600;
+  }
+}
+
+.btn-link--light {
+  border: 0.125rem solid $clr-white;
+  color: $clr-white;
+
+  &:hover {
+    background-color: $clr-white;
+    border-color: $clr-white;
+    color: $clr-gray900 !important;
+  }
+}
+
+.btn-link--dark {
+  border: 0.125rem solid $clr-gray900;
+
+  &:hover {
+    background-color: $clr-gray900;
+    border-color: $clr-gray900;
+    color: $clr-white !important;
+  }
+}

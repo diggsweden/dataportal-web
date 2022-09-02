@@ -1,0 +1,60 @@
+// Typografi
+@import '~@digg/design-system/lib/sass/typography.scss';
+
+* {
+  font-family: 'Ubuntu', sans-serif !important;
+}
+.text-3xl {
+  @include text-3xl;
+}
+.text-2xl {
+  @include text-2xl;
+}
+.text-xl {
+  @include text-xl;
+}
+.text-lg {
+  @include text-lg;
+}
+.text-md {
+  @include text-md;
+}
+.text-base {
+  @include text-base;
+}
+.text-sm {
+  @include text-sm;
+}
+.text-xs {
+  @include text-xs;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.link {
+  text-decoration-line: underline;
+}
+
+.external-link-icon {
+  position: relative;
+  &:after {
+    position: absolute;
+    margin: auto;
+    margin-top: 0.25rem;
+    margin-left: 0.25rem;
+  }
+}

@@ -1,0 +1,131 @@
+@import '~@digg/design-system/lib/sass/variables.scss';
+
+footer {
+  margin-top: 10rem;
+
+  svg {
+    filter: brightness(10);
+  }
+}
+
+.footer {
+  background-color: $clr-gray900;
+  padding-top: $space-2;
+  padding-bottom: $space-16;
+
+  .footer-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 3rem;
+
+    .digg__ {
+      > div {
+        max-width: 90vw;
+      }
+      span {
+        color: $clr-gray900;
+
+        &:first-of-type {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+.footer__links {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: $space-6;
+
+  @media screen and (max-width: $media-sm) {
+    flex-direction: column;
+  }
+
+  span {
+    border: none;
+  }
+  span,
+  a {
+    color: $clr-white;
+    &::after {
+      background-color: $clr-white !important;
+    }
+  }
+
+  a {
+    margin-right: $space-6;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+
+    text-decoration: underline;
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:focus {
+      @include focusStyle;
+      outline-color: $clr-white !important;
+    }
+  }
+
+  .external-link::after {
+    margin-left: 0.5rem;
+    vertical-align: sub;
+  }
+
+  .external-link[href^='mailto:']::after {
+    content: none;
+    background-image: none;
+  }
+
+  .footer__links-nav {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: $space-12;
+    width: 100%;
+
+    // Fixes column layout if the footer links are not in a list.
+    .footer__column {
+      display: flex;
+      flex-direction: column;
+      & > div {
+        display: flex;
+        flex-direction: column;
+      }
+      a,
+      span {
+        font-size: 1rem !important;
+      }
+    }
+
+    .footer__links-nav--heading {
+      margin-bottom: $space-4;
+      color: $clr-white;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0rem;
+      padding-left: 0;
+      margin-bottom: $space-4;
+
+      @media screen and (min-width: $media-sm) {
+        &:not(:last-of-type) {
+          margin-right: $space-12;
+        }
+      }
+
+      li {
+        margin-bottom: $space-4;
+      }
+    }
+
+    @media screen and (max-width: $media-sm) {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+}

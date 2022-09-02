@@ -1,0 +1,62 @@
+{
+  "about": {
+    "path": "about-this-website",
+    "title": "About this website"
+  },
+  "accessibility": {
+    "path": "about-this-website/accessibility",
+    "title": "Accessibility"
+  },
+  "register-data": {
+    "path": "register-data",
+    "title": "Register data"
+  },
+  "projects": {
+    "path": "inspiration",
+    "title": "Inspiration"
+  },
+  "projectsubmit": {
+    "path": "tipsaoss",
+    "title": "Tipsa oss"
+  },
+  "datasets": {
+    "path": "datasets",
+    "title": "Search data & APIs"
+  },
+  "specifications": {
+    "path": "specifications",
+    "title": "Search specifications"
+  },
+  "concepts": {
+    "path": "concepts",
+    "title": "Search concepts"
+  },
+  "dataservices": {
+    "path": "dataservice",
+    "title": "api"
+  },
+  "news": {
+    "path": "news",
+    "title": "News"
+  },
+  "news-article": {
+    "path": "news-article",
+    "title": "news-article"
+  },
+  "start": {
+    "path": "",
+    "title": "The Swedish dataportal"
+  },
+  "statistics": {
+    "path": "statistics",
+    "title": "Statistics"
+  },
+  "about-us": {
+    "path": "about-us#how_you_may_use_the_data_on_the_portal",
+    "title": "about-us"
+  },
+  "api_explore": {
+    "path": "apiexplore",
+    "title": "Explore API"
+  }
+}
