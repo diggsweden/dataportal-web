@@ -70,6 +70,11 @@ import absoluteUrl from 'next-absolute-url';
 import { Settings_Sandbox } from '../env/Settings.Sandbox';
 import useTranslation from 'next-translate/useTranslation';
 import { css } from '@emotion/react';
+import {
+  Containers_dataportal_Digg_Containers,
+  Containers_dataportal_Digg_Containers_breadcrumb,
+} from '../graphql/__generated__/Containers';
+import { HeroBlock as IHeroBlock } from '../graphql/__generated__/HeroBlock';
 
 const GetCookiesAccepted = () => {
   try {
@@ -125,7 +130,8 @@ function Dataportal({
   const [settingsState, setSettings] = useState(diggSettings);
   const previousPath = usePrevious(asPath);
   const { lang, t } = useTranslation('common');
-  const { breadcrumb, heading, seo, blocks, name } = pageProps;
+  const { breadcrumb, heading, seo, blocks, name } =
+    pageProps as Containers_dataportal_Digg_Containers;
   const { title, description, image, robotsFollow, robotsIndex } = (seo as SeoData) || {};
   const strapiImageUrl = image?.url;
   const imageUrl = strapiImageUrl
@@ -133,7 +139,8 @@ function Dataportal({
     : '/images/svdp-favicon-150.png';
   const dataportalSettings = extractSettings(settingsState);
   const heroBlock =
-    blocks && blocks.find((block: any) => block.__typename === 'dataportal_Digg_HeroBlock');
+    blocks &&
+    (blocks.find((block: any) => block.__typename === 'dataportal_Digg_HeroBlock') as IHeroBlock);
   const isDraft = asPath?.substring(0, 7) === '/drafts';
   const allowSEO = env.envName == 'prod' && !isDraft ? true : false;
   //eslint-disable-next-line
@@ -149,13 +156,13 @@ function Dataportal({
         setMatomoActivated(false);
       }
     }
-
+    document.documentElement.classList.add('no-focus-outline');
     document.body.addEventListener('keyup', keyUp);
-    document.body.addEventListener('click', click);
+    document.body.addEventListener('mousedown', click);
 
     return () => {
       document.body.removeEventListener('keyup', keyUp);
-      document.body.removeEventListener('click', click);
+      document.body.removeEventListener('mousedown', click);
     };
   }, []);
 
@@ -163,7 +170,7 @@ function Dataportal({
     if (breadcrumb && breadcrumb.length > 0) {
       setBreadcrumb({
         name: heading || name.replace(/{en:|}/g, ''),
-        crumbs: breadcrumb,
+        crumbs: breadcrumb as unknown[] as Breadcrumb[],
       });
     }
   }, [breadcrumb, heading]);
@@ -345,7 +352,7 @@ function Dataportal({
                   rel="mask-icon"
                   href="/images/safari-pinned-tab.svg"
                   color="black"
-                />                
+                />
               </Head>
               <div id="scriptsPlaceholder" />
               <div

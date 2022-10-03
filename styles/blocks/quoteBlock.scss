@@ -1,0 +1,22 @@
+.quoteblock {
+  display: flex;
+  padding: $space-8 $space-6;
+  border-left: 0.125rem solid $clr-green500;
+  color: $clr-gray900;
+  margin-top: $space-4;
+  margin-bottom: $space-8;
+  .icon {
+    margin-right: $space-4;
+  }
+  blockquote {
+    margin: 0 !important;
+  }
+  p {
+    &:first-of-type {
+      margin-top: 0;
+    }
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+}

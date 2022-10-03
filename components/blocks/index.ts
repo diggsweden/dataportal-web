@@ -5,4 +5,5 @@ export * from './HeroBlock';
 export * from './LinksBlock';
 export * from './MediaBlock';
 export * from './PuffBlock';
+export * from './QuoteBlock';
 export * from './TextBlock';

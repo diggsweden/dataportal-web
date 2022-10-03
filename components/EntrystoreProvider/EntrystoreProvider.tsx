@@ -1,4 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 import React, { createContext, useEffect, useState } from 'react';
 import { EnvSettings } from '../../env/EnvSettings';
 import { SettingsUtil } from '../../env/SettingsUtil';
@@ -59,6 +60,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
 }) => {
   const [state, setState] = useState(defaultESEntry);
   const { lang: nextLang } = useTranslation('common');
+  const router = useRouter();
 
   const addScripts = (callback: Function) => {
     if (typeof window !== 'undefined' && (window as any).postscribe) {
@@ -176,125 +178,140 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
       if (defaultESEntry.env) {
         defaultESEntry.entrystore = new EntryStore.EntryStore(`https://${entrystoreUrl}/store`);
         var util = new EntryStore.EntryStoreUtil(defaultESEntry.entrystore);
-        let es = defaultESEntry.entrystore;
+        const es = defaultESEntry.entrystore;
 
         //we have entryUri
         if (entryUri) {
-          util.getEntryByResourceURI(entryUri).then(async (entry: any) => {
-            defaultESEntry.entry = entry;
+          util
+            .getEntryByResourceURI(entryUri)
+            .then(async (entry: any) => {
+              defaultESEntry.entry = entry;
 
-            const graph = entry.getMetadata();
-            const resourceURI = entry.getResourceURI();
-            const valuePromises: Promise<string>[] = [];
+              const graph = entry.getMetadata();
+              const resourceURI = entry.getResourceURI();
+              const valuePromises: Promise<string>[] = [];
 
-            //the getLocalizedValue function might fetch from network, so start all IO with promises
-            valuePromises.push(
-              getLocalizedValue(graph, 'dcterms:title', nextLang, es, { resourceURI })
-            );
-            valuePromises.push(
-              getLocalizedValue(
-                graph,
-                'http://www.w3.org/2004/02/skos/core#prefLabel',
-                nextLang,
-                es
-              )
-            );
-            valuePromises.push(getLocalizedValue(graph, 'dcterms:description', nextLang, es));
-            if (fetchMore) {
-              valuePromises.push(getLocalizedValue(graph, 'dcterms:publisher', nextLang, es));
+              //the getLocalizedValue function might fetch from network, so start all IO with promises
               valuePromises.push(
-                getLocalizedValue(graph, 'dcat:contactPoint', nextLang, es, {
-                  uriTypeName: 'http://www.w3.org/2006/vcard/ns#fn',
-                })
+                getLocalizedValue(graph, 'dcterms:title', nextLang, es, { resourceURI })
               );
               valuePromises.push(
-                getLocalizedValue(graph, 'dcat:contactPoint', nextLang, es, {
-                  uriTypeName: 'http://www.w3.org/2006/vcard/ns#hasEmail',
-                })
+                getLocalizedValue(
+                  graph,
+                  'http://www.w3.org/2004/02/skos/core#prefLabel',
+                  nextLang,
+                  es
+                )
               );
-            }
-            //wait for all values to be fetched
-            let results = await Promise.all(valuePromises);
-
-            if (results && results.length > 0) {
-              defaultESEntry.title = results[0] || results[1];
-              defaultESEntry.description = results[2];
+              valuePromises.push(getLocalizedValue(graph, 'dcterms:description', nextLang, es));
               if (fetchMore) {
-                defaultESEntry.publisher = results[3];
-                if (results[4] || results[5]) {
-                  defaultESEntry.contact = {
-                    name: results[4],
-                    email: parseEmail(results[5]),
-                  };
+                valuePromises.push(getLocalizedValue(graph, 'dcterms:publisher', nextLang, es));
+                valuePromises.push(
+                  getLocalizedValue(graph, 'dcat:contactPoint', nextLang, es, {
+                    uriTypeName: 'http://www.w3.org/2006/vcard/ns#fn',
+                  })
+                );
+                valuePromises.push(
+                  getLocalizedValue(graph, 'dcat:contactPoint', nextLang, es, {
+                    uriTypeName: 'http://www.w3.org/2006/vcard/ns#hasEmail',
+                  })
+                );
+              }
+              //wait for all values to be fetched
+              let results = await Promise.all(valuePromises);
+
+              if (results && results.length > 0) {
+                defaultESEntry.title = results[0] || results[1];
+                defaultESEntry.description = results[2];
+                if (fetchMore) {
+                  defaultESEntry.publisher = results[3];
+                  if (results[4] || results[5]) {
+                    defaultESEntry.contact = {
+                      name: results[4],
+                      email: parseEmail(results[5]),
+                    };
+                  }
                 }
               }
-            }
 
-            setState({
-              ...defaultESEntry,
+              setState({
+                ...defaultESEntry,
+              });
+            })
+            .catch((err: any) => {
+              console.error(err);
+              router.push('/404');
             });
-          });
         }
         //we have contextID and entryId,
         else if (cid && eid) {
           let entryURI = '';
           entryURI = es.getEntryURI(cid, eid);
-
           //fetch entry from entryscape https://entrystore.org/js/stable/doc/
-          es.getEntry(entryURI).then(async (entry: any) => {
-            defaultESEntry.entry = entry;
+          es.getEntry(entryURI)
+            .then(async (entry: any) => {
+              defaultESEntry.entry = entry;
+              if (!entry) return;
 
-            const graph = entry.getMetadata();
-            const resourceURI = entry.getResourceURI();
-            const valuePromises: Promise<string>[] = [];
+              const graph = entry.getMetadata();
+              const resourceURI = entry.getResourceURI();
+              const valuePromises: Promise<string>[] = [];
 
-            //the getLocalizedValue function might fetch from network, so start all IO with promises
-            valuePromises.push(
-              getLocalizedValue(graph, 'dcterms:title', nextLang, es, { resourceURI })
-            );
-            valuePromises.push(
-              getLocalizedValue(
-                graph,
-                'http://www.w3.org/2004/02/skos/core#prefLabel',
-                nextLang,
-                es
-              )
-            );
-            valuePromises.push(getLocalizedValue(graph, 'dcterms:description', nextLang, es));
-            if (fetchMore) {
-              valuePromises.push(getLocalizedValue(graph, 'dcterms:publisher', nextLang, es));
+              //the getLocalizedValue function might fetch from network, so start all IO with promises
               valuePromises.push(
-                getLocalizedValue(graph, 'dcat:contactPoint', nextLang, es, {
-                  uriTypeName: 'http://www.w3.org/2006/vcard/ns#fn',
-                })
+                getLocalizedValue(graph, 'dcterms:title', nextLang, es, { resourceURI })
               );
               valuePromises.push(
-                getLocalizedValue(graph, 'dcat:contactPoint', nextLang, es, {
-                  uriTypeName: 'http://www.w3.org/2006/vcard/ns#hasEmail',
-                })
+                getLocalizedValue(
+                  graph,
+                  'http://www.w3.org/2004/02/skos/core#prefLabel',
+                  nextLang,
+                  es
+                )
               );
-            }
-            //wait for all values to be fetched
-            let results = await Promise.all(valuePromises);
-
-            if (results && results.length > 0) {
-              defaultESEntry.title = results[0] || results[1];
-              defaultESEntry.description = results[2];
+              valuePromises.push(getLocalizedValue(graph, 'dcterms:description', nextLang, es));
               if (fetchMore) {
-                defaultESEntry.publisher = results[3];
-                if (results[4] || results[5]) {
-                  defaultESEntry.contact = {
-                    name: results[4],
-                    email: parseEmail(results[5]),
-                  };
+                valuePromises.push(getLocalizedValue(graph, 'dcterms:publisher', nextLang, es));
+                valuePromises.push(
+                  getLocalizedValue(graph, 'dcat:contactPoint', nextLang, es, {
+                    uriTypeName: 'http://www.w3.org/2006/vcard/ns#fn',
+                  })
+                );
+                valuePromises.push(
+                  getLocalizedValue(graph, 'dcat:contactPoint', nextLang, es, {
+                    uriTypeName: 'http://www.w3.org/2006/vcard/ns#hasEmail',
+                  })
+                );
+              }
+              //wait for all values to be fetched
+              let results = await Promise.all(valuePromises);
+
+              if (results && results.length > 0) {
+                defaultESEntry.title = results[0] || results[1];
+                defaultESEntry.description = results[2];
+                if (fetchMore) {
+                  defaultESEntry.publisher = results[3];
+                  if (results[4] || results[5]) {
+                    defaultESEntry.contact = {
+                      name: results[4],
+                      email: parseEmail(results[5]),
+                    };
+                  }
                 }
               }
-            }
 
-            setState({
-              ...defaultESEntry,
+              setState({
+                ...defaultESEntry,
+              });
+            })
+            .catch((error: any) => {
+              console.error({ error });
+              if (error.message === 'Failed fetching entry. Error: Connection issue') {
+                router.push('/404');
+              }
             });
-          });
+        } else {
+          router.push('/404');
         }
       }
     });

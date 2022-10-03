@@ -6,7 +6,7 @@ import rehypeRaw from 'rehype-raw';
 import Image from 'next/image';
 import Link from 'next/link';
 import { isExternalLink, isMailLink } from '../../utilities';
-import { ExternalLink } from '..';
+import { ExternalLink, QuoteBlock } from '..';
 import { checkLang } from '../../utilities/checkLang';
 
 const generateHeadings = (options?: HeadingOption[]) => {
@@ -108,6 +108,7 @@ export const renderMarkdown = (markdown: string, options?: Options) => {
           ...headings,
           a: (props) => renderLink(props),
           img: (props) => renderImage(props),
+          blockquote: ({ children }) => <QuoteBlock>{children}</QuoteBlock>,
         }}
       >
         {markdown}

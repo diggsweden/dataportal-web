@@ -1,4 +1,3 @@
-import { AppInitialProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { ApiIndexProvider, EntrystoreProvider, SettingsContext } from '../../../../components';
@@ -7,7 +6,7 @@ import { useScript } from '../../../../hooks/useScript';
 
 export default function DataSet() {
   const { env } = useContext(SettingsContext);
-   
+
   const router = useRouter() || {};
   // const { dataSet } = router?.query;
   const ids =

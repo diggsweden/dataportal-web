@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { SettingsContext } from '../../components';
@@ -33,3 +34,18 @@ export default function Concept() {
     <></>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res, params }) => {
+  const concept = (params?.concept as string[]) || [];
+  const scheme = concept[0];
+
+  if (scheme != 'http' && scheme != 'https') {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
