@@ -147,13 +147,13 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
         {heading || category?.name || t('pages|publications$title')}
       </Heading>
       <div className="content">
-      {/* <Button
-        onClick={() => {
-          setGridView(!gridView);
-        }}
-      >
-        {gridView ? t('pages|search$list-view') :   t('pages|search$grid-view')}
-      </Button> */}
+        {/* <Button
+          onClick={() => {
+            setGridView(!gridView);
+          }}
+        >
+          {gridView ? t('pages|search$list-view') : t('pages|search$grid-view')}
+        </Button> */}
         {!gridView ? (
           <div
             className="article-list"
@@ -204,10 +204,13 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
             {renderPagination()}
           </div>
         ) : (
-          <>
+          <div
+            className="article-list"
+            id="articles"
+          >
             {renderGrid()}
             {renderPagination()}
-          </>
+          </div>
         )}
       </div>
     </Container>

@@ -48,6 +48,22 @@
     display: flex;
     justify-content: center;
     margin-top: $space-4;
+
+    button{
+      border-radius: 0;
+    }
+
+    div {
+      &:first-child > button {
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+      }
+
+      &:last-child > button {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+    }
   }
 
   .publication-top-bar{
@@ -56,19 +72,20 @@
   }
 }
 
-.article-list.grid{
+.article-list .articleblock{
   ul:not(.pagination-wrapper) {
     list-style: none;
     padding: 0px;
     margin: 0rem;
+    margin-top: $space-4;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: $space-4;
+    grid-auto-columns: auto;
+    grid-gap: $space-2;
 
     li {
       display: flex;
       flex-direction: column;
-      border: 1px solid $clr-gray800;
+      border: 1px solid transparent;
       padding: 1rem;
 
       span {
