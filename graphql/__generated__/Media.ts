@@ -14,7 +14,11 @@ export interface Media_media_dataportal_Digg_Image {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -26,7 +30,11 @@ export interface Media_media_dataportal_Digg_Video {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export interface Media_media_dataportal_Digg_File {
@@ -36,7 +44,11 @@ export interface Media_media_dataportal_Digg_File {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export type Media_media = Media_media_dataportal_Digg_Image | Media_media_dataportal_Digg_Video | Media_media_dataportal_Digg_File;

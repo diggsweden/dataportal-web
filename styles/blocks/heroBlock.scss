@@ -1,9 +1,13 @@
 @import '/styles/general/variables.scss';
 
 .hero {
+  .hero--image {
+    position: relative;
+    height: 400px;
+    width: 100%;
+  }
   // ? container
-  > div {
-    background-color: transparent;
+  .content {
     color: white;
     margin-bottom: $space-2;
 
@@ -34,7 +38,7 @@
   }
 
   h1 {
-    margin-top: $space-10 !important;
+    margin-top: $space-8;
     margin-bottom: 0;
   }
   &.darkTheme {

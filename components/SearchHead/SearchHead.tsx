@@ -14,24 +14,35 @@ export const SearchHeader: React.FC<SearchHeaderProps> = () => {
   return (
     <div className="search-head">
       <div>
-        <Link href={`${lang}/datasets?q=&f=`}>
-          <a className={`text-md ${pathname == '/datasets' ? 'active' : ''} `}>
-            {t('search$datasets')}
-          </a>
+        <Link
+          href={`${lang}/search?q=&f=`}
+          className={`text-md ${pathname == '/search' ? 'active' : ''} `}
+        >
+          {t('search$content')}
         </Link>
       </div>
       <div>
-        <Link href={`${lang}/concepts?q=&f=`}>
-          <a className={`text-md ${pathname == '/concepts' ? 'active' : ''} `}>
-            {t('search$concepts')}
-          </a>
+        <Link
+          href={`${lang}/datasets?q=&f=`}
+          className={`text-md ${pathname == '/datasets' ? 'active' : ''} `}
+        >
+          {t('search$datasets')}
         </Link>
       </div>
       <div>
-        <Link href={`${lang}/specifications?q=&f=`}>
-          <a className={`text-md ${pathname == '/specifications' ? 'active' : ''} `}>
-            {t('search$specifications')}
-          </a>
+        <Link
+          href={`${lang}/concepts?q=&f=`}
+          className={`text-md ${pathname == '/concepts' ? 'active' : ''} `}
+        >
+          {t('search$concepts')}
+        </Link>
+      </div>
+      <div>
+        <Link
+          href={`${lang}/specifications?q=&f=`}
+          className={`text-md ${pathname == '/specifications' ? 'active' : ''} `}
+        >
+          {t('search$specifications')}
         </Link>
       </div>
     </div>

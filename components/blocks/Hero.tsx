@@ -1,27 +1,26 @@
 import React from 'react';
 import Image from 'next/image';
 import { Hero as IHero, Hero_media } from '../../graphql/__generated__/Hero';
-import { imageLoader } from './Media';
-import env from '@beam-australia/react-env';
 import { checkLang } from '../../utilities/checkLang';
 import { renderMarkdown } from '../Renderers';
 import { Heading, Container } from '@digg/design-system';
+import { handleUrl, handleLoader } from './Media';
 
 const renderMedia = (media: Hero_media) => {
-  const { url, alt, mime } = media;
+  const { alt, mime } = media;
+  const url = handleUrl(media);
+
   switch (media.__typename) {
     case 'dataportal_Digg_Image':
-      const width = media?.width || '';
-      const height = media?.height || '';
+      const width = media?.width || 1440;
       return (
         <div>
           <Image
-            loader={() => imageLoader((env('MEDIA_BASE_URL') || '') + url, width as number)}
-            src={(env('MEDIA_BASE_URL') || '') + url}
-            width={width}
-            height={height}
+            {...handleLoader(media)}
+            style={{ width: '100%' }}
+            src={url}
+            fill
             alt={alt || ''}
-            layout="responsive"
             priority={true}
           />
         </div>
@@ -30,7 +29,7 @@ const renderMedia = (media: Hero_media) => {
       return (
         <video controls>
           <source
-            src={`${env('MEDIA_BASE_URL') || ''}${url}`}
+            src={`${url}`}
             type={mime}
           />
         </video>
@@ -41,7 +40,7 @@ const renderMedia = (media: Hero_media) => {
 export const Hero: React.FC<IHero> = ({ media, heading, heroText }) => {
   return (
     <div className={`hero`}>
-      {renderMedia(media)}
+      <div className="hero--image">{renderMedia(media)}</div>
       {(heading || heroText) && (
         <Container>
           {heading && (

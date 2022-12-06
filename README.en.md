@@ -2,7 +2,7 @@
 
 ![node-current](https://img.shields.io/badge/node-16.13.2-green)
 ![npm-current](https://img.shields.io/badge/npm-8.1.2-green)
-![nextjs-current](https://img.shields.io/badge/nextjs-12.13.0-green)
+![nextjs-current](https://img.shields.io/badge/nextjs-12.1.6-green)
 
 This is the main repository for the dataportal.se web client.
 [https://www.dataportal.se](https://www.dataportal.se)
@@ -29,14 +29,14 @@ LOGGING_LEVELS=warn,error,info
 LOGFILE_PATH=/app/dataportal.log
 PORT=3000
 HOST=http://localhost:$PORT
-APOLLO_URL=http://localhost:1301 #server apollo client
-REACT_APP_APOLLO_URL=http://localhost:1301 #browser apollo client
+APOLLO_URL=http://localhost:1301
 IMAGE_DOMAIN=localhost
 REACT_APP_MEDIA_BASE_URL=http://localhost:1337
 REACT_APP_RUNTIME_ENV=dev
-HTTP_PROXY=http://proxy.digg.se:8080
+HTTP_PROXY=https://proxy.digg.se:8080
 HTTP_PROXY_USER=secretuser
 HTTP_PROXY_PASS=secretpass
+
 HEALTHCHECK_SECRET=123
 ```
 
@@ -68,3 +68,7 @@ Visit [http://localhost:3003](http://localhost:3003) in your browser.
 - [React](https://reactjs.org/) for UI
 - [Emotion](https://emotion.sh) for styling
 - [Apollo Client](https://www.apollographql.com/docs/react/) for federerated content
+
+## Noteringar
+
+This project depends on the `@digg/design-system` package. As of this writing the source code for this package is not published on Github or NPM.

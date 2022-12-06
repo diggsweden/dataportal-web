@@ -53,13 +53,13 @@ interface SearchResult {
 }
 
 interface SearchHit {
-  entryId: string;
+  entryId?: string;
   title: string;
   url?: string;
   description?: string;
   info?: { [facet: string]: string[] };
   metadata?: { [facet: string]: string[] };
-  esEntry: any;
+  esEntry?: any;
   titleLang?: string;
   descriptionLang?: string;
 }

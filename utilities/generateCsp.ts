@@ -41,14 +41,27 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     { prodOnly: true }
   );
   add('font-src', `'self' https://static.entryscape.com https://static.cdn.entryscape.com`);
+  add(
+    'script-src',
+    `'self' ${
+      nonce ? `'nonce-${nonce}'` : ''
+    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se https://dataportal.azureedge.net *.entryscape.com *.dataportal.se`,
+    { prodOnly: true }
+  );
+  add('font-src', `'self' data: https://static.entryscape.com https://static.cdn.entryscape.com`);
   add('base-uri', `'self'`);
   add('prefetch-src', `'self'`);
   add('manifest-src', `'self'`);
   add('form-action', `'self'`);
-  add('img-src', `'self' ${process.env.IMAGE_DOMAIN || ''} data: *`);
-  add('media-src', `'self' ${process.env.IMAGE_DOMAIN || ''} https: data:`);
-  add('style-src', `'self' 'unsafe-inline' `);
-  add('style-src-elem', `'self' 'unsafe-inline'`);
+  add(
+    'img-src',
+    `'self' ${
+      process.env.IMAGE_DOMAIN || ''
+    } https://diggdrstoragetest.blob.core.windows.net/ data: *`
+  );
+  add('media-src', `'self' ${process.env.IMAGE_DOMAIN || ''} https: data: blob:`);
+  add('style-src', `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`);
+  add('style-src-elem', `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`);
   add('style-src-attr', `'self' 'unsafe-inline'`);
   add('connect-src', `'self' https://*`);
 

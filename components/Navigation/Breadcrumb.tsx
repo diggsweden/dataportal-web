@@ -25,7 +25,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ crumbs, name }) => {
                   href={`${crumb.link.link}`}
                   locale={lang}
                 >
-                  <a>{checkLang(capitalizeFirstLetter(crumb.name))}</a>
+                  {checkLang(capitalizeFirstLetter(crumb.name))}
                 </Link>
                 {index !== crumbs.length && (
                   <span

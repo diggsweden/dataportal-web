@@ -65,41 +65,35 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
               <Link
                 locale={lang}
                 href={`/`}
+                className={`header-link start-link-text ${pathname === `/` ? 'active' : ''}`}
               >
-                <a className={`header-link start-link-text ${pathname === `/` ? 'active' : ''}`}>
-                  {t('common|logo')}
-                </a>
+                {t('common|logo')}
               </Link>
             </div>
             <nav>
               <div className="header-links text-base">
-                <Link href={`/data`}>
-                  <a
-                    className={`header-link ${pathname?.split('/')[1] === `data` ? 'active' : ''}`}
-                  >
-                    {t('pages|startpage$data-api-header')}
-                  </a>
+                <Link
+                  href={`/data`}
+                  className={`header-link ${pathname?.split('/')[1] === `data` ? 'active' : ''}`}
+                >
+                  {t('pages|startpage$data-api-header')}
                 </Link>
 
                 {!isEn && (
                   <>
-                    <Link href={`/oppen-kallkod`}>
-                      <a
-                        className={`header-link ${
-                          pathname?.split('/')[1] === `oppen-kallkod` ? 'active' : ''
-                        }`}
-                      >
-                        {t('pages|startpage$open-source-header')}
-                      </a>
+                    <Link
+                      href={`/oppen-kallkod`}
+                      className={`header-link ${
+                        pathname?.split('/')[1] === `oppen-kallkod` ? 'active' : ''
+                      }`}
+                    >
+                      {t('pages|startpage$open-source-header')}
                     </Link>
-                    <Link href={`/ai`}>
-                      <a
-                        className={`header-link ${
-                          pathname?.split('/')[1] === `ai` ? 'active' : ''
-                        }`}
-                      >
-                        {t('pages|startpage$public-ai-header')}
-                      </a>
+                    <Link
+                      href={`/ai`}
+                      className={`header-link ${pathname?.split('/')[1] === `ai` ? 'active' : ''}`}
+                    >
+                      {t('pages|startpage$public-ai-header')}
                     </Link>
                   </>
                 )}
@@ -196,60 +190,51 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                         href={`/faq`}
                         key={'faq-link'}
                         locale={lang}
+                        onClick={closeMenu}
+                        className={`${pathname === '/faq' ? ' active' : ''}`}
                       >
-                        <a
-                          onClick={closeMenu}
-                          className={`${pathname === '/faq' ? ' active' : ''}`}
-                        >
-                          <div className="search-link">
-                            <QuestionCircleIcon
-                              color={colorPalette.gray500}
-                              width={16}
-                              className="search-link--icon"
-                            />
-                            <span className="right-bar-item">FAQ</span>
-                          </div>
-                        </a>
+                        <div className="search-link">
+                          <QuestionCircleIcon
+                            color={colorPalette.gray500}
+                            width={16}
+                            className="search-link--icon"
+                          />
+                          <span className="right-bar-item">FAQ</span>
+                        </div>
                       </Link>
                     )}
 
                     <Link
                       href={`https://community.dataportal.se/`}
                       key={'community-link'}
+                      onClick={closeMenu}
+                      lang="en"
                     >
-                      <a
-                        onClick={closeMenu}
-                        lang="en"
-                      >
-                        <div className="search-link">
-                          <ChatIcon
-                            color={colorPalette.gray500}
-                            width={20}
-                            className="search-link--icon"
-                          />
-                          <span className="right-bar-item">Community</span>
-                        </div>
-                      </a>
+                      <div className="search-link">
+                        <ChatIcon
+                          color={colorPalette.gray500}
+                          width={20}
+                          className="search-link--icon"
+                        />
+                        <span className="right-bar-item">Community</span>
+                      </div>
                     </Link>
                     {showLangLink && (
                       <Link
                         href={`/${t('common|change-lang')}`}
                         key={'lang-link'}
                         locale={`${t('common|change-lang')}`}
+                        onClick={closeMenu}
+                        lang={lang === 'sv' ? 'en' : 'sv'}
                       >
-                        <a
-                          onClick={closeMenu}
-                          lang={lang === 'sv' ? 'en' : 'sv'}
-                        >
-                          <div className="search-link">
-                            <GlobeIcon
-                              color={colorPalette.gray500}
-                              width={20}
-                              className="search-link--icon"
-                            />
-                            <span className="right-bar-item">{t('common|lang-linktext')}</span>
-                          </div>
-                        </a>
+                        <div className="search-link">
+                          <GlobeIcon
+                            color={colorPalette.gray500}
+                            width={20}
+                            className="search-link--icon"
+                          />
+                          <span className="right-bar-item">{t('common|lang-linktext')}</span>
+                        </div>
                       </Link>
                     )}
                   </>
@@ -261,17 +246,14 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                     <Link
                       href={`/data`}
                       key={'data-link'}
+                      onClick={closeMenu}
+                      lang={lang}
                     >
-                      <a
-                        onClick={closeMenu}
-                        lang={lang}
-                      >
-                        <div>
-                          <span className="header__mobile-menu_link text-xl font-light">
-                            {t('pages|startpage$data-api-header')}
-                          </span>
-                        </div>
-                      </a>
+                      <div>
+                        <span className="header__mobile-menu_link text-xl font-light">
+                          {t('pages|startpage$data-api-header')}
+                        </span>
+                      </div>
                     </Link>
 
                     {!isEn && (
@@ -279,33 +261,27 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                         <Link
                           href={`/oppen-kallkod`}
                           key={'oppen-kallkod-link'}
+                          onClick={closeMenu}
+                          lang={lang}
                         >
-                          <a
-                            onClick={closeMenu}
-                            lang={lang}
-                          >
-                            <div>
-                              <span className="header__mobile-menu_link text-xl font-light">
-                                {t('pages|startpage$open-source-header')}
-                              </span>
-                            </div>
-                          </a>
+                          <div>
+                            <span className="header__mobile-menu_link text-xl font-light">
+                              {t('pages|startpage$open-source-header')}
+                            </span>
+                          </div>
                         </Link>
 
                         <Link
                           href={`/ai`}
                           key={'offentlig-ai-link'}
+                          onClick={closeMenu}
+                          lang={lang}
                         >
-                          <a
-                            onClick={closeMenu}
-                            lang={lang}
-                          >
-                            <div>
-                              <span className="header__mobile-menu_link text-xl font-light">
-                                {t('pages|startpage$public-ai-header')}
-                              </span>
-                            </div>
-                          </a>
+                          <div>
+                            <span className="header__mobile-menu_link text-xl font-light">
+                              {t('pages|startpage$public-ai-header')}
+                            </span>
+                          </div>
                         </Link>
                       </>
                     )}
@@ -316,61 +292,52 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                         href={`/faq`}
                         key={'faq-link'}
                         locale={lang}
+                        onClick={closeMenu}
+                        className={`${pathname === '/faq' ? ' active' : ''}`}
                       >
-                        <a
-                          onClick={closeMenu}
-                          className={`${pathname === '/faq' ? ' active' : ''}`}
-                        >
-                          <div className='header__bottom-links--link'>
-                            <QuestionCircleIcon
-                              color={colorPalette.gray500}
-                              width={16}
-                              className="search-link--icon"
-                            />
-                            <span>FAQ</span>
-                          </div>
-                        </a>
+                        <div className="header__bottom-links--link">
+                          <QuestionCircleIcon
+                            color={colorPalette.gray500}
+                            width={16}
+                            className="search-link--icon"
+                          />
+                          <span>FAQ</span>
+                        </div>
                       </Link>
 
                       <Link
                         href={`https://community.dataportal.se/`}
                         key={'community-link'}
+                        onClick={closeMenu}
+                        lang="en"
                       >
-                        <a
-                          onClick={closeMenu}
-                          lang="en"
-                        >
-                          <div className='header__bottom-links--link'>
-                            <ChatIcon
-                              color={colorPalette.gray500}
-                              width={20}
-                              className="search-link--icon"
-                            />
-                            <span>Community</span>
-                          </div>
-                        </a>
+                        <div className="header__bottom-links--link">
+                          <ChatIcon
+                            color={colorPalette.gray500}
+                            width={20}
+                            className="search-link--icon"
+                          />
+                          <span>Community</span>
+                        </div>
                       </Link>
 
                       {showLangLink && (
-                      <Link
-                        href={`/${t('common|change-lang')}`}
-                        key={'lang-link'}
-                        locale={t('common|change-lang')}
-                      >
-                        <a onClick={closeMenu}>
-                        <div className='header__bottom-links--link'>
-                          <GlobeIcon
+                        <Link
+                          href={`/${t('common|change-lang')}`}
+                          key={'lang-link'}
+                          locale={t('common|change-lang')}
+                          onClick={closeMenu}
+                        >
+                          <div className="header__bottom-links--link">
+                            <GlobeIcon
                               color={colorPalette.gray500}
                               width={20}
                               className="search-link--icon"
                             />
-                            <span>
-                              {t('common|lang-linktext')}
-                            </span>
+                            <span>{t('common|lang-linktext')}</span>
                           </div>
-                        </a>
-                      </Link>
-                    )}
+                        </Link>
+                      )}
                     </div>
                   </div>
                 )}

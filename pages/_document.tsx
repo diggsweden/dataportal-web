@@ -80,13 +80,13 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head nonce={SettingsUtil.getCurrent().nonce}>          
-          <link 
+        <Head nonce={SettingsUtil.getCurrent().nonce}>
+          <script
             nonce={SettingsUtil.getCurrent().nonce}
-            rel="preload" 
-            href="/__ENV.js"
-            as="script"            
-          />   
+            type="text/javascript"
+            src="/__ENV.js"
+            async
+          />
           <link
             rel="preload"
             href="/fonts/Ubuntu/Ubuntu-Regular.woff2"
@@ -115,22 +115,20 @@ class MyDocument extends Document {
             type="font/woff"
             crossOrigin="anonymous"
           />
-          <link 
-            rel="preconnect" 
+          <link
+            rel="preconnect"
             href="https://editera.dataportal.se"
             crossOrigin="anonymous"
-          />    
-          <link 
-            rel="preconnect" 
+          />
+          <link
+            rel="preconnect"
             href="https://admin.dataportal.se"
             crossOrigin="anonymous"
-          />    
-          <script
-            nonce={SettingsUtil.getCurrent().nonce}
-            type="text/javascript"
-            src="/__ENV.js"
-            async
-          />                
+          />
+          <link
+            rel="stylesheet"
+            href="https://cdn.screen9.com/players/amber-player.css"
+          />
         </Head>
         <body>
           <Main />

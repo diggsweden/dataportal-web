@@ -27,7 +27,7 @@ interface FilterSearchProps {
 }
 
 type InputFilter = { [key: string]: string };
-export type SearchType = 'data' | 'begrepp' | 'specifikationer';
+export type SearchType = 'data' | 'begrepp' | 'specifikationer' | 'content';
 
 const FilterSearch: React.FC<FilterSearchProps> = ({ filterKey, filter, setFilter, fetchMore }) => {
   const { t } = useTranslation('pages');

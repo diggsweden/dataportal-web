@@ -5,8 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { checkLang } from '../../utilities/checkLang';
-import { imageLoader } from './Media';
-import env from '@beam-australia/react-env';
 import { MediaType_dataportal_Digg_Image } from '../../graphql/__generated__/MediaType';
 import {
   Publication_dataportal_Digg_Publications,
@@ -14,7 +12,9 @@ import {
 } from '../../graphql/__generated__/Publication';
 import { findPublicationTypeTag } from '../pages/Articles';
 import { Link as DiggLink } from '../../graphql/__generated__/Link';
+import { handleUrl } from './Media';
 import placeholderimg from '../../public/images/noimage.svg';
+import { responsive } from '../../styles/image';
 import NoSsr from '../NoSsr/NoSsr';
 
 type Article = {
@@ -112,10 +112,8 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
           articles.map((article, index) => {
             const { type, image, theme, date, title, description, tags } = article;
             const url = getUrl(article);
-            const imageUrl = image?.url || '';
-            const width = image?.width || '';
-            const classes = `${type}${theme ? ` ${theme}` : ''}`;            
-
+            const imageUrl = image && handleUrl(image);
+            const classes = `${type}${theme ? ` ${theme}` : ''}`;
             return (
               <li
                 key={index}
@@ -125,39 +123,34 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
                 {image ? (
                   <div className="news-img">
                     <Image
-                      loader={() =>
-                        imageLoader((env('MEDIA_BASE_URL') || '') + imageUrl, width as number)
-                      }
-                      src={(env('MEDIA_BASE_URL') || '') + imageUrl}
-                      width={width || ''}
+                      src={imageUrl || ''}
                       alt={image?.alt || ''}
-                      layout="fill"
-                      objectFit="cover"
+                      sizes="100%"
+                      fill
                     />
                   </div>
                 ) : (
                   <div className="news-img">
                     <Image
-                      objectFit="cover"
-                      layout="fill"
-                      height={'230px'}
-                      width={'100%'}
+                      style={responsive}
                       src={placeholderimg}
                       alt="placeholder image"
                     />
                   </div>
-                )} 
+                )}
                 <span className="news-text">
                   <span className="news-top-info text-sm">
-                    {tags && <span>{findPublicationTypeTag(tags)?.value}</span>}            
-                    <NoSsr>{date && <span>{getFormattedDate(date)}</span>}</NoSsr> 
+                    {tags && <span>{findPublicationTypeTag(tags)?.value}</span>}
+                    <NoSsr>{date && <span>{getFormattedDate(date)}</span>}</NoSsr>
                   </span>
                   <Link
                     href={url}
                     locale={lang}
+                    className="text-lg font-bold link"
                   >
-                    <a className="text-lg font-bold link">{checkLang(title)}</a>
-                  </Link>                
+                    <Heading level={3} className='article-heading'><a className="text-lg font-bold link">{checkLang(title)}</a></Heading>
+                  </Link>
+                  {/* <p className="text-md truncate-4">{checkLang(description)}</p> */}
                 </span>
               </li>
             );
@@ -167,8 +160,9 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
         <Link
           href={showMoreLink.slug}
           locale={lang}
+          className="text-md link"
         >
-          <a className="text-md link">{showMoreLink.title || showMoreLink.slug}</a>
+          {showMoreLink.title || showMoreLink.slug}
         </Link>
       )}
     </div>

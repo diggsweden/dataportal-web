@@ -2,11 +2,10 @@ import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { css, space, Heading, Container, SearchField } from '@digg/design-system';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Containers_dataportal_Digg_Containers } from '../../graphql/__generated__/Containers';
 import { MainContainerStyle } from '../../styles/general/emotion';
 import { checkLang } from '../../utilities';
-import { imageLoader } from '../blocks';
 import { Puffs, IPuff } from '../Navigation';
 import { Publication_dataportal_Digg_Publications as IPublication } from '../../graphql/__generated__/Publication';
 import useTranslation from 'next-translate/useTranslation';
@@ -15,6 +14,8 @@ import { CategoriesNav } from '../StartPageComponents';
 import { handleDomain } from '../../utilities/domain';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import { handleUrl } from '../blocks';
+import { responsive } from '../../styles/image';
 
 export interface DomainProps extends Containers_dataportal_Digg_Containers {
   domain?: DiggDomain;
@@ -44,13 +45,10 @@ const DynamicArticleBlock = dynamic(() => import('../blocks/Article').then((c) =
 export const DomainPage: React.FC<DomainProps> = (props) => {
   const { domain, areas } = props || {};
   const { content, puffs, publications, heading, preamble, image } = handleDomain(props);
-  const loader =
-    image && (image as any).url?.blurDataURL
-      ? () => (image as any).url.src
-      : () => imageLoader(image?.url || '', (image?.width as number) || 600);
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation('pages');
+  const src = useMemo(() => image && handleUrl(image), [image]);
 
   useEffect(() => {
     trackPageView({ documentTitle: 'OpenSource' });
@@ -96,13 +94,15 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               </div>
             </div>
             <span className="domain-page__top-image">
-              <Image
-                loader={loader}
-                width={image?.width || 600}
-                height={image?.height || 400}
-                src={image?.url || ''}
-                alt={image?.alt || ''}
-              />
+              {src && (
+                <Image
+                  src={src}
+                  style={responsive}
+                  width={image?.width || 300}
+                  height={image?.height || 200}
+                  alt={image?.alt || ''}
+                />
+              )}
             </span>
           </div>
 
@@ -126,8 +126,11 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                 >
                   {t('pages|startpage$current-news')}
                 </Heading>
-                <Link href={`/aktuellt`}>
-                  <a className="text-base">{t('pages|publications$view-all')}</a>
+                <Link
+                  href={`/aktuellt`}
+                  className="text-base"
+                >
+                  {t('pages|publications$view-all')}
                 </Link>
               </div>
               <DynamicArticleBlock articles={publications} />
@@ -143,7 +146,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           <div className={'fullWidth'}>
             {/* todo: this width? */}
             {content && (
-              <div className="domain-page__textblock">
+              <div className="content">
                 <ContentArea blocks={content} />
               </div>
             )}
@@ -179,7 +182,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                   locale={lang}
                   className="statistic-link"
                 >
-                  <a className="text-md">{t('pages|statistic$statistic-link')}</a>
+                  {t('pages|statistic$statistic-link')}
                 </Link>
               </div>
 

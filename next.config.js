@@ -27,8 +27,8 @@ const baseHeaders = [
   },
   {
     key: 'Access-Control-Allow-Origin',
-    value: 'https://www.dataportal.se'
-  }
+    value: 'https://www.dataportal.se',
+  },
 ];
 
 const csp = [
@@ -54,13 +54,13 @@ module.exports = nextTranslate({
     };
 
     return config;
-  },  
+  },
   productionBrowserSourceMaps: true,
-  env: {    
+  env: {
     REVALIDATE_INTERVAL: process.env.REVALIDATE_INTERVAL,
   },
   images: {
-    domains: [process.env.IMAGE_DOMAIN || 'localhost'],
+    domains: [process.env.IMAGE_DOMAIN || 'localhost', 'bcdn.screen9.com'],
   },
   async headers() {
     return [

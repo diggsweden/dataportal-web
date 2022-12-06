@@ -29,7 +29,7 @@ export const Links: React.FC<{ basepath?: string | undefined; links: RelatedCont
                 <ExternalLink
                   href={l?.slug}
                   passHref
-                  className='text-md font-normal'
+                  className="text-md font-normal"
                 >
                   {checkLang(l?.title || l?.slug)}
                 </ExternalLink>
@@ -37,8 +37,9 @@ export const Links: React.FC<{ basepath?: string | undefined; links: RelatedCont
                 <Link
                   href={`${basepath || ''}${l?.slug}`}
                   passHref
+                  className="text-md font-normal"
                 >
-                  <a className="text-md font-normal">{checkLang(l?.title || l?.slug)}</a>
+                  {checkLang(l?.title || l?.slug)}
                 </Link>
               )}
             </span>

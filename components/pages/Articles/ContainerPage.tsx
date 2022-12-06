@@ -4,7 +4,7 @@ import {
   Containers_dataportal_Digg_Containers as IContainer,
   Containers_dataportal_Digg_Containers_blocks,
 } from '../../../graphql/__generated__/Containers';
-import { Module_blocks } from '../../../graphql/__generated__/Module';
+import { Module_dataportal_Digg_Module_blocks as Module_blocks } from '../../../graphql/__generated__/Module';
 import { isIE } from '../../../utilities';
 import { AnchorLinkMenu, Heading, SearchField, space } from '@digg/design-system';
 import { checkLang } from '../../../utilities/checkLang';

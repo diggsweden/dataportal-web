@@ -1,7 +1,9 @@
 FROM node:16-alpine as base
 WORKDIR /base
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn/releases ./.yarn/releases
+COPY .yarn/plugins ./.yarn/plugins
+RUN yarn install
 
 FROM node:16-alpine as builder
 WORKDIR /build
@@ -19,6 +21,7 @@ COPY --from=builder /build/i18n.js ./
 COPY --from=builder /build/public ./public
 COPY --from=builder /build/.next ./.next
 COPY --from=builder /build/node_modules ./node_modules
+COPY --from=builder /build/.yarn ./yarn
 COPY --from=builder /build/package.json ./package.json
 COPY --from=builder /build/locales ./locales
 
@@ -33,7 +36,7 @@ ENTRYPOINT ["entrypoint.sh"]
 
 #OpenShift specific
 RUN chgrp -R 0 /app && \
-chmod -R g=u /app
+    chmod -R g=u /app
 USER 1001
 
 CMD ["yarn","start"]

@@ -291,20 +291,19 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                           )}
                         </span>
                       )}
-                    <Link href={`${hit.url}#ref=${window ? window.location.search : ''}`}>
-                      <a
-                        onClick={() => {
-                          saveCurrentScrollPos();
-                          trackSearchHitClick(hit.url || '');
-                        }}
+                    <Link
+                      href={`${hit.url}#ref=${window ? window.location.search : ''}`}
+                      onClick={() => {
+                        saveCurrentScrollPos();
+                        trackSearchHitClick(hit.url || '');
+                      }}
+                    >
+                      <p
+                        className="text-lg link heading-link"
+                        lang={hit.titleLang}
                       >
-                        <p
-                          className='text-lg link heading-link'
-                          lang={hit.titleLang}                          
-                        >
-                          {hit.title}
-                        </p>
-                      </a>
+                        {hit.title}
+                      </p>
                     </Link>
 
                     {isCompact && hit.descriptionLang ? (
@@ -373,31 +372,29 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 
       {(search.result.pages || 0) > 1 && (
         <div className="pagination">
-          
-
           <div className="prev-next-page">
-          <div className="first-page">
-            {(search.request.page || 0) > 1 && (
-              <Button
-                inline
-                onClick={() => {
-                  clearCurrentScrollPos();
-                  search
-                    .set({
-                      page: 0,
-                    })
-                    .then(() => search.doSearch());
-                  window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth',
-                  });
-                  searchFocus();
-                }}
-              >
-                {t('pages|search$first-page')}
-              </Button>
-            )}
-          </div>
+            <div className="first-page">
+              {(search.request.page || 0) > 1 && (
+                <Button
+                  inline
+                  onClick={() => {
+                    clearCurrentScrollPos();
+                    search
+                      .set({
+                        page: 0,
+                      })
+                      .then(() => search.doSearch());
+                    window.scrollTo({
+                      top: 0,
+                      behavior: 'smooth',
+                    });
+                    searchFocus();
+                  }}
+                >
+                  {t('pages|search$first-page')}
+                </Button>
+              )}
+            </div>
             <Button
               disabled={(search.request.page || 0) === 0}
               inline

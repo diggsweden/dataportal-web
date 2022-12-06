@@ -1,12 +1,12 @@
-import env from '@beam-australia/react-env';
 import { Heading, css, Container } from '@digg/design-system';
 import Image from 'next/image';
 import React from 'react';
-import { imageLoader, ContentArea, ArticleBlock } from '../..';
+import { ContentArea, ArticleBlock, handleUrl } from '../..';
 import { Containers_dataportal_Digg_Containers_blocks } from '../../../graphql/__generated__/Containers';
-import { Module_blocks } from '../../../graphql/__generated__/Module';
+import { Module_dataportal_Digg_Module_blocks as Module_blocks } from '../../../graphql/__generated__/Module';
 import { Publication_dataportal_Digg_Publications_tags } from '../../../graphql/__generated__/Publication';
 import { MainContainerStyle } from '../../../styles/general/emotion';
+import { responsive } from '../../../styles/image';
 import { PublicationResponse, checkLang } from '../../../utilities';
 
 const whitelistedTagsSV = ['Goda exempel', 'Event', 'Nyhet'];
@@ -36,30 +36,34 @@ export const Publication: React.FC<PublicationResponse> = ({
   blocks,
   related,
 }) => {
-  const { url, alt, width } = image || {};
+  const { alt, width, height } = image || {};
   return (
     <Container cssProp={MainContainerStyle}>
-      {image && (
-        <Image
-          loader={() => imageLoader((env('MEDIA_BASE_URL') || '') + url, width as number)}
-          src={(env('MEDIA_BASE_URL') || '') + url}
-          width={width || 1440}
-          height={400}
-          alt={alt || ''}
-          layout="responsive"
-        />
-      )}
       <div
         css={css`
           position: relative;
-          `}
-      >        
-        <div className={'content'}>   
-          {heading && 
-          <Heading size={"3xl"} weight={'light'} color={'pinkPop'}>
-            {checkLang(heading)}
-          </Heading>}       
+        `}
+      >
+        <div className={'content'}>
+          {heading && (
+            <Heading
+              size={'3xl'}
+              weight={'light'}
+              color={'pinkPop'}
+            >
+              {checkLang(heading)}
+            </Heading>
+          )}
           <p className="preamble text-lg">{checkLang(preamble)}</p>
+          {image && (
+            <Image
+              src={handleUrl(image)}
+              style={responsive}
+              width={width || 900}
+              height={height || 600}
+              alt={alt || ''}
+            />
+          )}
           {blocks && blocks.length > 0 && (
             <ContentArea
               blocks={
@@ -70,7 +74,7 @@ export const Publication: React.FC<PublicationResponse> = ({
         </div>
       </div>
       {related && related.length > 0 && (
-        <div className='related-content'>
+        <div className="related-content">
           <Heading level={2}>
             Fler {tags && getRelatedHeading(findPublicationTypeTag(tags as any[])?.value || '')}
           </Heading>

@@ -61,6 +61,7 @@
     "dataset-hits": "results ",
     "concept-hits": "results",
     "specification-hits": "results",
+    "content-hits": "results",
     "next-page": "Next",
     "prev-page": "Previous",
     "first-page": "First",
@@ -69,6 +70,7 @@
     "datasets": "Data & APIs",
     "concepts": "Concepts",
     "specifications": "Specifications",
+    "content": "Content",
     "organization": "Organizations",
     "relevance": "Relevance",
     "date": "Last modified",
@@ -101,8 +103,7 @@
     "detailed-list": "Detailed list",
     "detailed-list-active": "Detailed list aktiv",
     "compact-list": "Compact list",
-    "compact-list-active": "Compact list",
-    "grid-view": "Grid view"
+    "compact-list-active": "Compact list"
   },
   "datasets": {
     "search-datasets": "Search",
@@ -121,6 +122,12 @@
     "specifications": "specifications",
     "social_meta_title": "Search specifications",
     "social_meta_description": "Specifications on Sweden's data portal"
+  },
+  "content": {
+    "search-content": "Search",
+    "content": "Content",
+    "social_meta_title": "Search content",
+    "social_meta_description": "Content on Sweden's data portal"
   },
   "notfoundpage": {
     "heading": "404 - Page not found",

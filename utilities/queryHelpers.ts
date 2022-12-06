@@ -1,7 +1,10 @@
 import { IPuff } from '../components';
-import { client, CONTAINER_MULTI_QUERY, RELATED_CONTAINER_QUERY } from '../graphql';
+import { browserclient, client, CONTAINER_MULTI_QUERY, RELATED_CONTAINER_QUERY } from '../graphql';
 import { DOMAIN_AGGREGATE_QUERY, ROOT_AGGREGATE_QUERY } from '../graphql/aggregateQuery';
+import { FORM_QUERY } from '../graphql/formQuery';
+import { MODULE_QUERY } from '../graphql/moduleQuery';
 import { PUBLICATION_QUERY } from '../graphql/publicationQuery';
+import { SEARCH_QUERY } from '../graphql/searchQuery';
 import {
   Containers_dataportal_Digg_Containers,
   Containers_dataportal_Digg_Containers_categories,
@@ -11,7 +14,13 @@ import {
   DomainAggregateVariables,
   DomainAggregate_rootContainer,
 } from '../graphql/__generated__/DomainAggregate';
+import { Form, FormVariables, Form_dataportal_Digg_Form } from '../graphql/__generated__/Form';
 import { dataportal_ContainerState } from '../graphql/__generated__/globalTypes';
+import {
+  Module,
+  ModuleVariables,
+  Module_dataportal_Digg_Module,
+} from '../graphql/__generated__/Module';
 import {
   MultiContainers,
   MultiContainersVariables,
@@ -33,6 +42,7 @@ import {
   RootAggregate_examples,
   RootAggregate_news,
 } from '../graphql/__generated__/RootAggregate';
+import { SearchVariables } from '../graphql/__generated__/Search';
 import { SeoData } from '../graphql/__generated__/SeoData';
 import { populatePuffs } from './areasAndThemesHelper';
 
@@ -187,6 +197,19 @@ export interface RootAggregateResponse extends RootAggregate_container {
   news?: RootAggregate_news;
   example?: RootAggregate_examples;
   event?: RootAggregate_events;
+}
+
+export interface FormResponse extends Form_dataportal_Digg_Form {
+  type: 'Form';
+}
+
+export interface ModuleResponse extends Module_dataportal_Digg_Module {
+  type: 'Module';
+}
+
+export interface ContentSearchResponse {
+  entries: Publication_dataportal_Digg_Publications | Containers_dataportal_Digg_Containers | null;
+  nrOfHits: number;
 }
 
 export interface QueryOptions {
@@ -589,6 +612,104 @@ export const getRootAggregate = async (
         type: 'RootAggregate',
       } as RootAggregateResponse,
       revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60'),
+    };
+  }
+};
+
+/**
+ * Query GraphQL Search index
+ *
+ * @param {string} query
+ * @param {string} locale
+ * @returns nextjs staticprops
+ */
+export const querySearch = async (
+  query: string,
+  locale: string,
+  limit: number,
+  offset: number,
+  clientQuery: boolean
+) => {
+  try {
+    let cl = clientQuery ? browserclient : client;
+
+    const searchResult = await cl.query<
+      Containers_dataportal_Digg_Containers | Publication_dataportal_Digg_Publications,
+      SearchVariables
+    >({
+      query: SEARCH_QUERY,
+      variables: {
+        filter: {
+          highlightPreText: '**',
+          highlightPostText: '**',
+          highlightsLength: 10,
+          getHighlights: true,
+          query: query,
+          limit: limit || 10,
+          offset: offset || 0,
+          locale,
+        },
+      },
+      fetchPolicy: 'no-cache',
+    });
+
+    const result = searchResult && searchResult.data ? searchResult.data : undefined;
+
+    if (searchResult && searchResult.error) {
+      console.error(searchResult.error);
+    }
+
+    return result;
+  } catch (error: any) {
+    logGqlErrors(error);
+    return notFound;
+  }
+};
+
+export const getForm = async (identifier: string, locale?: string) => {
+  const revalidate = true;
+  try {
+    const { data } = await client.query<Form, FormVariables>({
+      query: FORM_QUERY,
+      variables: { identifier, locale },
+      fetchPolicy: 'no-cache',
+    });
+
+    const form = data.dataportal_Digg_Form;
+
+    return {
+      props: { ...form, type: 'Form' } as FormResponse,
+      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+    };
+  } catch (error: any) {
+    logGqlErrors(error);
+    return {
+      props: { type: 'Form' } as FormResponse,
+      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+    };
+  }
+};
+
+export const getModule = async (identifier: string, locale?: string) => {
+  const revalidate = true;
+  try {
+    const { data } = await client.query<Module, ModuleVariables>({
+      query: MODULE_QUERY,
+      variables: { identifier, locale },
+      fetchPolicy: 'no-cache',
+    });
+
+    const module = data.dataportal_Digg_Module;
+
+    return {
+      props: { ...module, type: 'Module' } as ModuleResponse,
+      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+    };
+  } catch (error: any) {
+    logGqlErrors(error);
+    return {
+      props: { type: 'Module' } as ModuleResponse,
+      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
     };
   }
 };

@@ -14,7 +14,11 @@ export interface SeoData_image {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }

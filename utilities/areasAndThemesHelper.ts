@@ -1,8 +1,7 @@
 import { IPuff } from '../components';
 import { Category } from '../graphql/__generated__/Category';
-import { DomainAggregate_domain_taxonomies as Taxonomy } from '../graphql/__generated__/DomainAggregate';
 
-const areasColors: ColorGroupOverride = {  
+const areasColors: ColorGroupOverride = {
   accent: 'pinkPop', //Color for puff title
   background: 'gray800',
 };

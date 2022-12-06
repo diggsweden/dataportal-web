@@ -14,6 +14,7 @@ import data from '../public/images/illu-data.png';
 import kallkod from '../public/images/illu-kallkod.png';
 import { StaticImageData } from 'next/image';
 import { Translate } from 'next-translate';
+import { handleUrl } from '../components';
 
 interface ParsedProps {
   content: Block[];
@@ -72,6 +73,7 @@ const fallback = (domain: DiggDomain | undefined): ParsedProps => {
     ext: '.png',
     width: img.width,
     height: img.height,
+    screen9: { id: '' }, // just add dummy data to make ts happy
   });
 
   switch (domain) {
@@ -123,7 +125,7 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
   const image: Image | undefined = props.image
     ? {
         ...(props.image as Image),
-        url: `${env('MEDIA_BASE_URL') || ''}${props.image?.url}`,
+        url: `${handleUrl(props.image)}`,
       }
     : undefined;
 

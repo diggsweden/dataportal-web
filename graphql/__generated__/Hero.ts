@@ -19,7 +19,11 @@ export interface Hero_media_dataportal_Digg_Image {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -31,7 +35,11 @@ export interface Hero_media_dataportal_Digg_Video {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export interface Hero_media_dataportal_Digg_File {
@@ -41,7 +49,11 @@ export interface Hero_media_dataportal_Digg_File {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export type Hero_media = Hero_media_dataportal_Digg_Image | Hero_media_dataportal_Digg_Video | Hero_media_dataportal_Digg_File;

@@ -303,10 +303,8 @@ export const DataServicePage: React.FC<{
               <Link
                 href={`/${t('routes|dataservices$path')}/${cid}_${eid}/${name}/apiexplore/${eid}`}
                 locale={lang}
-              >
-                <a className="dataservice-explore-api-link entryscape text-md link"></a>
-                Utforska API
-              </Link>
+                className="dataservice-explore-api-link entryscape text-md link">
+                Utforska API</Link>
               <br />
             </span>
           )}

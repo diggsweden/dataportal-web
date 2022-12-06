@@ -2,7 +2,7 @@
 
 ![node-current](https://img.shields.io/badge/node-16.13.2-green)
 ![npm-current](https://img.shields.io/badge/npm-8.1.2-green)
-![nextjs-current](https://img.shields.io/badge/nextjs-12.13.0-green)
+![nextjs-current](https://img.shields.io/badge/nextjs-12.1.6-green)
 
 Här finns källkoden för dataportalens webbklient
 [https://www.dataportal.se](https://www.dataportal.se)
@@ -36,6 +36,7 @@ REACT_APP_RUNTIME_ENV=dev
 HTTP_PROXY=http://proxy.digg.se:8080
 HTTP_PROXY_USER=secretuser
 HTTP_PROXY_PASS=secretpass
+
 HEALTHCHECK_SECRET=123
 ```
 
@@ -100,3 +101,8 @@ Cacheas inte, gör en request till contentbackend med startsidans fråga.
 - [React](https://reactjs.org/) för UI
 - [Emotion](https://emotion.sh) för styling
 - [Apollo Client](https://www.apollographql.com/docs/react/) för datahämtning
+
+## Noteringar
+
+Projektet har ett beroende till Diggs designsystemspaket `@digg/design-system`.
+I skrivande stund är källkoden till detta paket inte publicerad på Github eller NPM.

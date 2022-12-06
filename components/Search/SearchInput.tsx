@@ -30,6 +30,8 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 
   const getLabel = () => {
     switch (searchType) {
+      case 'content':
+        return t('pages|datasets$search-content');
       case 'data':
         return t('pages|datasets$search-datasets');
       case 'begrepp':

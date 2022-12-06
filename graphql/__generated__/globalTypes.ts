@@ -46,6 +46,17 @@ export interface dataportal_QueryDomainArgs {
   slug?: string | null;
 }
 
+export interface dataportal_QuerySearchArgs {
+  limit?: number | null;
+  offset?: number | null;
+  query?: string | null;
+  locale?: string | null;
+  getHighlights?: boolean | null;
+  highlightsLength?: number | null;
+  highlightPreText?: string | null;
+  highlightPostText?: string | null;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

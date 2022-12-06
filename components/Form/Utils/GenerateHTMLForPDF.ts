@@ -64,61 +64,45 @@ export const GenerateHTML = (
     .map((page) => {
       return page
         .map((field) => {
-          switch (field.Type) {
-            case 'Text':
-              if (field.Value.length > 0) {
+          switch (field.__typename) {
+            case 'dataportal_Digg_FormText':
+              if (field.value.length > 0) {
                 return `
                         <div class="form-group">
-                            <p><strong>${field.Header}</strong></p>
-                            <p>${field.Value}</p>
+                            <p><strong>${field.title}</strong></p>
+                            <p>${field.value}</p>
                         </div>
                         `;
               }
               return `<div class="form-group">
-                                <p><strong>${field.Header}</strong></p>
+                                <p><strong>${field.title}</strong></p>
                                 <p>Inget svar</p>
                             </div>`;
-            case 'TextArea':
-              if (field.Value.length > 0) {
+            case 'dataportal_Digg_FormTextArea':
+              if (field.value.length > 0) {
                 return `
                         <div class="form-group">
-                            <p><strong>${field.Header}</strong></p>
-                            <p>${field.Value}</p>
+                            <p><strong>${field.title}</strong></p>
+                            <p>${field.value}</p>
                         </div>
                         `;
               }
               return `<div class="form-group">
-                                <p><strong>${field.Header}</strong></p>
+                                <p><strong>${field.title}</strong></p>
                                 <p>Inget svar</p>
                             </div>`;
-            case 'TextChoice':
-              if (field.Choice === 'Yes') {
-                return `
-                        <div class="form-group">
-                            <p><strong>${field.Header}</strong></p>
-                            <p><strong>Ja ${field.Value ? '-' : ''} </strong>  ${field.Value}</p>
-                        </div>
-                        `;
-              }
-              else if (field.Choice === 'No') {
-                return `
-                        <div class="form-group">
-                            <p><strong>${field.Header}</strong></p>
-                            <p><strong>Nej ${field.Value ? '-' : ''} </strong>  ${field.Value}</p>
-                        </div>
-                        `;
-              }
+            case 'dataportal_Digg_FormRadio':
               return `<div class="form-group">
-                                <p><strong>${field.Header}</strong></p>
-                                <p>Inget svar.</p>
+                                <p><strong>${field.title}</strong></p>
+                                <p><strong>${field.selected.label}</strong> ${field.value.length > 0 ? `- ${field.value}` : ''}</p>
                             </div>`;
-            case 'Description':
-              return `<h${field.TopHeading ? 2 : 3}>${field.Header}</h${
-                field.Description.length === 1 ? 2 : 3
+            case 'dataportal_Digg_FormDescription':
+              return `<h${field.TopHeading ? 2 : 3}>${field.title}</h${
+                field.text.length === 1 ? 2 : 3
               }>`;
 
-            case 'PageBreak':
-              return `<h1>${field.Title}</h1>`;
+            case 'dataportal_Digg_FormPageBreak':
+              return `<h1>${field.title}</h1>`;
           }
         })
         .join('');

@@ -54,6 +54,7 @@ import {
   BreadcrumbProps,
   LocalStore,
   Hero,
+  handleUrl,
 } from '../components';
 import { defaultSettings } from '../components/SettingsProvider/SettingsProvider';
 import {
@@ -79,6 +80,7 @@ import { Settings_Sandbox } from '../env/Settings.Sandbox';
 import useTranslation from 'next-translate/useTranslation';
 import { css } from '@emotion/react';
 import { Hero as IHero } from '../graphql/__generated__/Hero';
+import { MediaBase } from '../graphql/__generated__/MediaBase';
 
 const GetCookiesAccepted = () => {
   try {
@@ -123,10 +125,7 @@ function Dataportal({ Component, pageProps, host }: DataportalenProps) {
   const { t } = useTranslation('common');
   const { seo, blocks } = resolvePage(pageProps as DataportalPageProps) || {};
   const { title, description, image, robotsFollow, robotsIndex } = (seo as SeoData) || {};
-  const strapiImageUrl = image?.url;
-  const imageUrl = strapiImageUrl
-    ? `${reactenv('MEDIA_BASE_URL') || ''}${strapiImageUrl}`
-    : '/images/svdp-favicon-150.png';
+  const imageUrl = image?.url ? handleUrl(image) : '/images/svdp-favicon-150.png';
   const hero = blocks?.find((block) => block.__typename === 'dataportal_Digg_Hero') as IHero;
   const isDraft = asPath?.substring(0, 7) === '/drafts';
   const allowSEO = env.envName == 'prod' && !isDraft ? true : false;
@@ -303,7 +302,6 @@ function Dataportal({ Component, pageProps, host }: DataportalenProps) {
                   color="black"
                 />
               </Head>
-              <CookieBanner />
               <div id="scriptsPlaceholder" />
               <div
                 id="top"
@@ -315,6 +313,7 @@ function Dataportal({ Component, pageProps, host }: DataportalenProps) {
                   contain: paint;
                 `}
               >
+                <CookieBanner />
                 <SkipToContent text={t('skiptocontent')} />
                 <Header
                   menu={undefined}

@@ -1,149 +1,241 @@
-import { Button, css, Heading } from '@digg/design-system';
+import { css, Heading } from '@digg/design-system';
 import React from 'react';
-import FormTypes, { EventType }  from '../FormTypes';
-import { DiggRadio, DiggRadioLabel, DiggRadioWrapper, DiggTextWithLink, FormTextArea, Text } from '../Styles/FormStyles';
+import FormTypes from '../FormTypes';
+import {
+  DiggPopover,
+  DiggRadio,
+  DiggRadioLabel,
+  DiggRadioWrapper,
+  DiggTextWithLink,
+  FormTextArea,
+  Text,
+} from '../Styles/FormStyles';
+
+const PopOver = (popoverText: string) => {
+  return (
+    <DiggPopover className="text-md">
+      <div
+        aria-haspopup="true"
+        onClick={(e) => {
+          if (e.currentTarget.classList.contains('open')) {
+            e.currentTarget.classList.remove('open');
+            e.currentTarget.setAttribute('aria-haspopup', 'false');
+          } else {
+            e.currentTarget.classList.add('open');
+            e.currentTarget.setAttribute('aria-haspopup', 'true');
+          }
+        }}
+        css={css`
+          p {
+            margin-top: 2rem !important;
+          }
+        `}
+      >
+        <p
+          className="text-sm"
+          dangerouslySetInnerHTML={{ __html: popoverText }}
+        ></p>
+      </div>
+    </DiggPopover>
+  );
+};
+
+const AddLabel = (number: number, Type: string, ID: number, title: string) => {
+  return (
+    <>
+      <span
+        css={css`
+          position: relative;
+          display: flex;
+          flex-direction: row;
+          margin-bottom: 0;
+        `}
+        className="text-md"
+      >
+        {`${number}. `}
+        <div
+          css={css`
+            display: flex;
+            align-items: flex-start;
+
+            label {
+              margin-right: 1rem;
+            }
+          `}
+        >
+          <label
+            className="text-md"
+            htmlFor={`${Type}${ID}`}
+            dangerouslySetInnerHTML={{ __html: title }}
+          ></label>
+        </div>
+      </span>
+    </>
+  );
+};
+
+const RenderDivider = () => {
+  return (
+    <div
+      css={css`
+        border-top: 1px solid #757575;
+        margin-bottom: 2rem;
+      `}
+    ></div>
+  );
+};
 
 interface Props {
-  UpdateFormDataArray: (
-    e: EventType,
-    data: FormTypes,
-    pageIndex: number
-  ) => void;
+  UpdateFormDataArray: (e: React.ChangeEvent<any>, data: FormTypes, pageIndex: number) => void;
   formDataArray: Array<FormTypes>;
   pageIndex: number;
 }
 
 const FormItem = (
   item: FormTypes,
-  UpdateFormDataArray: (
-    e: EventType,
-    data: FormTypes,
-    pageIndex: number
-  ) => void,
+  UpdateFormDataArray: (e: React.ChangeEvent<any>, data: FormTypes, pageIndex: number) => void,
   pageIndex: number
 ) => {
-  const { ID, Type } = item;
+  const { ID, __typename: Type } = item;
 
   switch (Type) {
-    case 'Text':
+    case 'dataportal_Digg_FormText':
       return (
         <>
-          <label
-            className="text-base"
-            htmlFor={`${Type}${ID}`}
-          >
-            {item.Header}
-          </label>
+          {AddLabel(item.number, Type, ID, item.title)}
+          {item.info !== null && PopOver(item.info)}
           <Text
             id={`${Type}${ID}`}
             placeholder="Fyll i ditt svar"
             name={`${Type}${ID}`}
-            value={item.Value}
+            value={item.value}
+            className="text-md"
             onChange={(e) => {
               UpdateFormDataArray(e, item, pageIndex);
             }}
           />
+          {RenderDivider()}
         </>
       );
-    case 'TextArea':
+    case 'dataportal_Digg_FormTextArea':
       return (
         <>
-          <label
-            className="text-base"
-            htmlFor={`${Type}${ID}`}
-            dangerouslySetInnerHTML={{ __html: item.Header }}
-          >
-          </label>
+          {AddLabel(item.number, Type, ID, item.title)}
+          {item.info !== null && PopOver(item.info)}
           <FormTextArea
             name={`${Type}${ID}`}
             id={`${Type}${ID}`}
             placeholder="Fyll i ditt svar"
-            value={item.Value}
+            value={item.value}
+            className="text-md"
             onChange={(e) => {
               UpdateFormDataArray(e, item, pageIndex);
             }}
           />
+          {RenderDivider()}
         </>
       );
-    case 'TextChoice':
+    case 'dataportal_Digg_FormRadio':
       return (
         <>
-        <fieldset>
-        <legend
-            className="text-base" 
-          >
-            {item.Header}
-          </legend>
+          <fieldset>
+            <span
+              css={css`
+                display: flex;
+                flex-direction: row;
+                margin-bottom: 0;
+              `}
+              className="text-md"
+            >
+              {`${item.number}. `} <legend className="text-md">{item.title}</legend>
+            </span>
 
-          <DiggRadioWrapper>
-            <DiggRadioLabel>            
-              <DiggRadio
-                type="radio"
-                name={`${Type}${ID}`}
-                checked={item.Choice === 'Yes'}
-                onChange={() => UpdateFormDataArray('Yes', item, pageIndex)}
-              /> 
-              <span className="text-base">Ja</span>             
-            </DiggRadioLabel>
-            <DiggRadioLabel>            
-              <DiggRadio
-                type="radio"
-                name={`${Type}${ID}`}
-                checked={item.Choice === 'No'}
-                onChange={() => UpdateFormDataArray('No', item, pageIndex)}
-              />    
-              <span className="text-base">Nej</span>          
-            </DiggRadioLabel>
-            <DiggRadioLabel>            
-              <DiggRadio
-                type="radio"
-                name={`${Type}${ID}`}
-                checked={item.Choice === 'NA'}
-                onChange={() => UpdateFormDataArray('NA', item, pageIndex)}
-              />    
-              <span className="text-base">Inget svar</span>          
-            </DiggRadioLabel>
-          </DiggRadioWrapper>
-        </fieldset>         
+            {item.info !== null && <div css={css`
+              margin-bottom: 1rem;
+            `}>{PopOver(item.info)}</div>}
 
-          {item.Choice === 'Yes' && (
+            <DiggRadioWrapper
+              aria-expanded={
+                item.selected !== item.choices[item.choices.length - 1] &&
+                item.selected.popup &&
+                item.selected.popup.length > 0
+                  ? 'true'
+                  : false
+              }
+            >
+              {item.choices.map((choice) => {
+                return (
+                  <DiggRadioLabel key={choice.ID}>
+                    <DiggRadio
+                      type="radio"
+                      name={`${Type}${ID}`}
+                      checked={item.selected.ID === choice.ID}
+                      value={choice.label}
+                      onChange={(e) => {
+                        UpdateFormDataArray(e, choice, pageIndex);
+                      }}
+                    />
+                    <span>{choice.label}</span>
+                  </DiggRadioLabel>
+                );
+              })}
+            </DiggRadioWrapper>
+          </fieldset>
+
+          {item.selected.popup &&
+          item.selected.popup.length > 0 &&
+          item.selected !== item.choices[item.choices.length - 1] ? (
             <>
-              <label htmlFor={`${Type}${ID}`}>{item.YesText && <DiggTextWithLink className='text-base' dangerouslySetInnerHTML={{__html: item.YesText}}></DiggTextWithLink>}</label>
+              <label
+                className="popup-label"
+                htmlFor={`${Type}${ID}`}
+              >
+                {item.selected.popup && (
+                  <DiggTextWithLink
+                    css={css`
+                      margin-bottom: 0;
+                    `}
+                    className="text-md"
+                    dangerouslySetInnerHTML={{ __html: item.selected.popup }}
+                  ></DiggTextWithLink>
+                )}
+              </label>
+
               <FormTextArea
                 id={`${Type}${ID}`}
                 name={`${Type}${ID}`}
                 placeholder="Fyll i ditt svar"
-                value={item.Value}
+                value={item.value}
+                className="text-md"
                 onChange={(e) => {
                   UpdateFormDataArray(e, item, pageIndex);
                 }}
               />
             </>
+          ) : (
+            <span
+              css={css`
+                margin-bottom: 3rem;
+              `}
+            />
           )}
-
-          {item.Choice === 'No' && item.NoText && item.NoText.length > 0 ? (
-            <>
-              <label htmlFor={`${Type}${ID}`}>{item.NoText && <DiggTextWithLink className='text-base' dangerouslySetInnerHTML={{__html: item.NoText}}></DiggTextWithLink>}</label>
-              {/* If "No" should also need an answer, we can juse uncomment this. If SOME questions need an answer on "NO" then we need an extra check. */}
-              <FormTextArea
-                id={`${Type}${ID}`}
-                name={`${Type}${ID}`}
-                placeholder="Fyll i ditt svar"
-                value={item.Value}
-                onChange={(e) => {
-                  UpdateFormDataArray(e, item, pageIndex);
-                }}
-              />
-            </>
-          ) : 
-          (<span css={css`margin-bottom: 1rem;`}/>)}
+          {RenderDivider()}
         </>
       );
-    case 'Description':
+    case 'dataportal_Digg_FormDescription':
       return (
         <>
-          <Heading level={item.TopHeading ? 2 : 3}>{item.Header}</Heading>
-          {item.Description.length > 1 && <p>{item.Description}</p>}
+          <Heading level={item.TopHeading === true ? 2 : 3}>{item.title}</Heading>
+          {item.text.length > 1 && (
+            <p
+              css={css`
+                margin-top: 0;
+                margin-bottom: 3rem;
+              `}
+            >
+              {item.text}
+            </p>
+          )}
         </>
       );
   }
@@ -153,9 +245,11 @@ const FormPage = ({ formDataArray, UpdateFormDataArray, pageIndex }: Props) => {
   return (
     <>
       {formDataArray.map((item) => {
-        return <React.Fragment key={`item-${item.ID}`}>
+        return (
+          <React.Fragment key={`item-${item.ID}`}>
             {FormItem(item, UpdateFormDataArray, pageIndex)}
-          </React.Fragment>;
+          </React.Fragment>
+        );
       })}
     </>
   );

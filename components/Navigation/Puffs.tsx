@@ -16,7 +16,7 @@ const styles = (puff: IPuff) => css`
   .puff-heading {
     @media screen and (min-width: ${theme.breakpoints[1]}) {
       ${space({ mb: puff.description ? 2 : 0 })};
-    }    
+    }
     a {
       color: ${colorPalette[puff.colors?.accent || 'pinkPop']};
     }
@@ -32,11 +32,17 @@ export const Puffs: React.FC<{ basepath?: string | undefined; links: IPuff[] }> 
   return (
     <ul className="text-md font-bold puffblock">
       {links.map((puff, index) => {
-        if (puff.slug === '') {return null;}
+        if (puff.slug === '') {
+          return null;
+        }
 
         const Icon = puff.icon && GetIcon(puff.icon);
-        const isDataSet = ['datasets?q=&f=', 'concepts?q=&f=', 'specifications?q=&f='].some((page) => {return puff.slug.includes(page)});
-        const linkPath = `${(basepath && !isDataSet) ? basepath : ''}${puff?.slug}`;
+        const isDataSet = ['datasets?q=&f=', 'concepts?q=&f=', 'specifications?q=&f='].some(
+          (page) => {
+            return puff.slug.includes(page);
+          }
+        );
+        const linkPath = `${basepath && !isDataSet ? basepath : ''}${puff?.slug}`;
 
         return (
           <li
@@ -55,9 +61,9 @@ export const Puffs: React.FC<{ basepath?: string | undefined; links: IPuff[] }> 
             <span className="puff-heading">
               <Link
                 href={linkPath}
-                passHref
+                className="text-md"
               >
-                <a className="text-md">{checkLang(puff?.title || puff?.slug)}</a>
+                {checkLang(puff?.title || puff?.slug)}
               </Link>
               <ArrowIcon
                 width={24}

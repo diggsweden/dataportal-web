@@ -2,6 +2,8 @@ import { BlockData } from '../graphql/__generated__/BlockData';
 import { SeoData } from '../graphql/__generated__/SeoData';
 import {
   DomainAggregateResponse,
+  FormResponse,
+  ModuleResponse,
   MultiContainerResponse,
   PublicationListResponse,
   PublicationResponse,
@@ -13,7 +15,9 @@ export type DataportalPageProps =
   | PublicationListResponse
   | PublicationResponse
   | DomainAggregateResponse
-  | RootAggregateResponse;
+  | RootAggregateResponse
+  | FormResponse
+  | ModuleResponse;
 
 type ResolvedPage = {
   blocks?: BlockData[];
@@ -37,6 +41,10 @@ export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
     case 'Publication':
       return { blocks: props.blocks, seo: props.seo };
     case 'PublicationList':
+      return {};
+    case 'Form':
+      return {};
+    case 'Module':
       return {};
     default:
       return {};

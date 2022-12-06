@@ -71,7 +71,7 @@ const styles = css`
     }
   }
 
-  .navigation{
+  .navigation {
     .navigation--item {
       ${space({ py: 4, px: 4 })}
     }

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { isExternalLink, isMailLink } from '../../utilities';
 import { ExternalLink, Quote } from '..';
 import { checkLang } from '../../utilities/checkLang';
+import { responsive } from '../../styles/image';
 
 const generateHeadings = (options?: HeadingOption[]) => {
   const levels: HeadingLevel[] = [1, 2, 3, 4, 5, 6];
@@ -30,6 +31,7 @@ const renderImage = (props: any) => {
     <Image
       src={`${props.src}`}
       alt={props.alt}
+      style={responsive}
       width={600}
       height={400}
     />
@@ -49,10 +51,9 @@ const renderLink = ({ href, children }: any) => {
     <Link
       href={href}
       passHref
+      className="markdown--link"
     >
-      <a className="markdown--link">
-        <span>{children}</span>
-      </a>
+      <span>{children}</span>
     </Link>
   );
 };

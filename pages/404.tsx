@@ -19,16 +19,18 @@ const NotFound: React.FC = () => {
             <Link
               href={`/`}
               locale={lang}
+              className="text-lg"
             >
-              <a className="text-lg">{t('notfoundpage$startpage')}</a>
+              {t('notfoundpage$startpage')}
             </Link>
           </li>
           <li>
             <Link
               href={`/datasets?p=1&q=&s=2&t=20&f=&rt=dataset%24esterms_IndependentDataService%24esterms_ServedByDataService&c=false`}
               locale={lang}
+              className="text-lg"
             >
-              <a className="text-lg">{t('notfoundpage$search-data')}</a>
+              {t('notfoundpage$search-data')}
             </Link>
           </li>
         </ul>
