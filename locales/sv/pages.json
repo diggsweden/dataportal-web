@@ -27,7 +27,7 @@
   "data": {
     "heading": "Data för ökad innovationskraft",
     "preamble": "Data är en strategisk resurs för samhällets utveckling. Det är en väg till transparens, innovation och tillväxt som skapas av medborgarna, näringslivet, akademin och myndigheter tillsammans. Här kan du utforska data och API:er, begrepp och terminologier samt specifikationer (informations- och datamodeller)",
-    "data-areas_text": "Dataområden"
+    "data-areas_text": "Datadelningsinitiativ"
   },
   "os": {
     "heading": "Öppen källkod",
@@ -102,7 +102,8 @@
     "detailed-list": "Detaljerad lista",
     "detailed-list-active": "Detaljerad lista aktiv",
     "compact-list": "Kompakt lista",
-    "compact-list-active": "Kompakt lista aktiv"
+    "compact-list-active": "Kompakt lista aktiv",
+    "grid-view": "Rutnät"
   },
   "datasets": {
     "search-datasets": "Sök",
