@@ -148,12 +148,12 @@ export const Footer: React.FC = () => {
                       return (
                         <span key={index}>
                           {type === dataportal_LinkType.INTERNAL ? (
-                            <Link href={slug}>
+                            <Link href={`/${slug}`}>
                               <a className="text-md">{l?.title}</a>
                             </Link>
                           ) : (
                             <ExternalLink
-                              href={slug}
+                              href={`/${slug}`}
                               isMail={isMail}
                               className="text-md"
                             >
