@@ -58,12 +58,16 @@ const SortingOptions: React.FC<{
   return (
     <div className="sorting-options">
       <div className="search-sort">
-        <span className="sorting-heading text-base font-bold">{t('pages|search$sort')}</span>
-
+        <label
+          className="sorting-heading text-base font-bold"
+          htmlFor="sort"
+        >
+          {t('pages|search$sort')}
+        </label>
         <select
           className="text-base"
-          id=""
-          name={t('pages|search$numberofhits')}
+          id="sort"
+          name={t('pages|search$sort')}
           onChange={(event) => {
             event.preventDefault();
             clearCurrentScrollPos();
@@ -287,19 +291,19 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                           )}
                         </span>
                       )}
-                    <Link href={`/${lang}${hit.url}#ref=${window ? window.location.search : ''}`}>
+                    <Link href={`${hit.url}#ref=${window ? window.location.search : ''}`}>
                       <a
                         onClick={() => {
                           saveCurrentScrollPos();
                           trackSearchHitClick(hit.url || '');
                         }}
                       >
-                        <Heading
-                          level={3}
-                          lang={hit.titleLang}
+                        <p
+                          className='text-lg link heading-link'
+                          lang={hit.titleLang}                          
                         >
                           {hit.title}
-                        </Heading>
+                        </p>
                       </a>
                     </Link>
 
@@ -369,6 +373,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 
       {(search.result.pages || 0) > 1 && (
         <div className="pagination">
+          
+
+          <div className="prev-next-page">
           <div className="first-page">
             {(search.request.page || 0) > 1 && (
               <Button
@@ -391,8 +398,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
               </Button>
             )}
           </div>
-
-          <div className="prev-next-page">
             <Button
               disabled={(search.request.page || 0) === 0}
               inline

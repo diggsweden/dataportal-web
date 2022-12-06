@@ -2,7 +2,6 @@ import useTranslation from 'next-translate/useTranslation';
 import React, { useContext, useEffect } from 'react';
 import { SettingsContext } from '../../components';
 import { EntrystoreContext } from '../EntrystoreProvider';
-import { linkBase } from '../../utilities';
 import { initBreadcrumb } from '../../pages/_app';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { useRouter } from 'next/router';
@@ -40,18 +39,6 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({ curi
   }, []);
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: entry.title,
-        crumbs: [
-          { name: 'start', link: { ...linkBase, link: '/' } },
-          {
-            name: t('routes|concepts$title'),
-            link: { ...linkBase, link: `/${t('routes|concepts$path')}?q=&f=` },
-          },
-        ],
-      });
-
     trackPageView({ documentTitle: entry.title });
   }, [pathname, entry.title]);
 
@@ -88,27 +75,27 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({ curi
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalconcepts/") > -1)
               if(isTerm)
-                return "/${lang}/externalterminology/" + path;
+                return "/externalterminology/" + path;
               else
-                return "/${lang}/externalconcepts/" + path;
+                return "/externalconcepts/" + path;
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/concepts/") > -1)
             {
               var entryPath = resourceUri.replace("https://dataportal.se/concepts","");
 
               if(isTerm)
-                return "/${lang}/terminology" + entryPath;
+                return "/terminology" + entryPath;
               else
-                return "/${lang}/concepts" + entryPath;
+                return "/concepts" + entryPath;
             }
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalterminology/") > -1)                            
-              return "/${lang}/externalconcepts/" + path;
+              return "/externalconcepts/" + path;
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/terminology/") > -1)    
             {
               var entryPath = resourceUri.replace("https://dataportal.se/concepts","");            
-               return "/${lang}/concepts" + entryPath;
+               return "/concepts" + entryPath;
             }
 
             return resourceUri;
@@ -628,7 +615,10 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({ curi
       <div className="detailpage__wrapper">
         {/* Left column */}
         <div className="detailpage__wrapper--leftcol content">
-          <Heading className="terminology_header">
+          <Heading  
+            size={"3xl"}
+            weight="light"
+            className="terminology_header">
             <span>{entry.title}</span>
           </Heading>
 

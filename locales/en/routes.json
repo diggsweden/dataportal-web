@@ -1,7 +1,7 @@
 {
-  "about": {
+  "about-website": {
     "path": "about-this-website",
-    "title": "About this website"
+    "title": "About website"
   },
   "accessibility": {
     "path": "about-this-website/accessibility",
@@ -35,25 +35,33 @@
     "path": "dataservice",
     "title": "api"
   },
+  "publications": {
+    "path": "aktuellt",
+    "title": "Aktuellt"
+  },
+  "inspiration": {
+    "path": "inspiration",
+    "title": "Inspiration"
+  },
+  "events": {
+    "path": "events",
+    "title": "Events"
+  },
   "news": {
     "path": "news",
     "title": "News"
   },
-  "news-article": {
-    "path": "news-article",
-    "title": "news-article"
-  },
   "start": {
     "path": "",
-    "title": "The Swedish dataportal"
+    "title": "Sveriges Dataportal"
   },
   "statistics": {
-    "path": "statistics",
+    "path": "statistik",
     "title": "Statistics"
   },
   "about-us": {
-    "path": "about-us#how_you_may_use_the_data_on_the_portal",
-    "title": "about-us"
+    "path": "about-us",
+    "title": "About us"
   },
   "api_explore": {
     "path": "apiexplore",

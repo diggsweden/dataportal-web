@@ -3,10 +3,15 @@
 
 //Background-color for root
 //Max-width for content
+
 #__next {
-  background-color: $clr-gray200;
+  background-color: black;
+
+  ::selection {
+    background-color: $clr-pinkPop;
+    color: $clr-gray900;
+  }
   #top {
-    max-width: 80rem;
     margin: auto;
   }
 }
@@ -59,12 +64,12 @@ html input:focus,
 html input[type='radio']:focus,
 html textarea:focus,
 html select:focus {
-  @include focusStyle;
+  @include focusStyleLight;
   transition: outline-offset 0s !important;
 }
 
 mark {
-  background-color: #e0e1e6;
+  background-color:  $clr-pinkPop;
 }
 
 .btn-link {
@@ -92,7 +97,7 @@ mark {
   &:hover {
     background-color: $clr-white;
     border-color: $clr-white;
-    color: $clr-gray900 !important;
+    color: $clr-white !important;
   }
 }
 

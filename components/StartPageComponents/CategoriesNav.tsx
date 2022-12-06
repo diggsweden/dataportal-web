@@ -2,14 +2,12 @@ import { Heading, Container } from '@digg/design-system';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import React from 'react';
-import { MainContainerStyle } from '../../styles/general/emotion';
-import { SearchDatasetsPagePath } from '../../utilities/urlHelpers';
+import { SearchDatasetsPagePath } from '../../utilities';
 
 export const CategoriesNav: React.FC = () => {
   const { t, lang } = useTranslation();
   return (
-    <div className="categoriesnav__wrapper">
-      <Container cssProp={MainContainerStyle}>
+    <div className="categoriesnav__wrapper text-base">
         <div className="startpage-categories">
           <Heading
             level={2}
@@ -235,7 +233,6 @@ export const CategoriesNav: React.FC = () => {
             </li>
           </ul>
         </div>
-      </Container>
     </div>
   );
 };

@@ -1,41 +1,41 @@
 import { gql } from '@apollo/client';
-import { BLOCK_FRAGMENT, LINK_FRAGMENT, SEO_FRAGMENT, SHARED_CONTENT_FRAGMENT } from './fragments';
+import { BLOCK_FRAGMENT, CONTAINER_FRAGMENT, SEO_FRAGMENT, MODULE_FRAGMENT } from './fragments';
 
 export const CONTAINER_QUERY = gql`
   query Containers($filter: dataportal_QueryContainerArgs) {
     dataportal_Digg_Containers(filter: $filter) {
-      name
-      locale
-      updatedAt
-      heading
-      preamble
-      slug
-      order
-      uiHints
-      breadcrumb {
-        name
-        link {
-          link
-          linktype
-        }
-      }
-      blocks {
-        ...BlockData
-        ... on dataportal_Digg_SharedContentContainer {
-          __typename
-          id
-          contents {
-            ...SharedContentData
-          }
-        }
-      }
-      seo {
-        ...SeoData
-      }
+      ...ContainerData
     }
   }
-  ${LINK_FRAGMENT}
+  ${CONTAINER_FRAGMENT}
   ${BLOCK_FRAGMENT}
   ${SEO_FRAGMENT}
-  ${SHARED_CONTENT_FRAGMENT}
+  ${MODULE_FRAGMENT}
+`;
+
+export const RELATED_CONTAINER_QUERY = gql`
+  query Related($filter: dataportal_QueryContainerArgs) {
+    containers: dataportal_Digg_Containers(filter: $filter) {
+      name
+      slug
+    }
+  }
+`;
+
+export const CONTAINER_MULTI_QUERY = gql`
+  query MultiContainers(
+    $category: dataportal_QueryContainerArgs
+    $container: dataportal_QueryContainerArgs
+  ) {
+    category: dataportal_Digg_Containers(filter: $category) {
+      ...ContainerData
+    }
+    container: dataportal_Digg_Containers(filter: $container) {
+      ...ContainerData
+    }
+  }
+  ${CONTAINER_FRAGMENT}
+  ${BLOCK_FRAGMENT}
+  ${SEO_FRAGMENT}
+  ${MODULE_FRAGMENT}
 `;

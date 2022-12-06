@@ -11,44 +11,60 @@ import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
-import { SettingsContext } from '../..';
-import { News_dataportal_Digg_News as News } from '../../../graphql/__generated__/News';
-import { initBreadcrumb } from '../../../pages/_app';
+import React, { useEffect, useState } from 'react';
+import { Publication_dataportal_Digg_Publications as Publication } from '../../../graphql/__generated__/Publication';
+import { Containers_dataportal_Digg_Containers as IContainer } from '../../../graphql/__generated__/Containers';
 import { MainContainerStyle } from '../../../styles/general/emotion';
-import { makeBreadcrumbsFromPath, slugify } from '../../../utilities';
 import { checkLang } from '../../../utilities/checkLang';
+import { PublicationListResponse } from '../../../utilities';
+import NoSsr from '../../NoSsr/NoSsr';
 
-const sortByDate = (a: News, b: News) =>
-  (new Date(b.publishedAt) as any) - (new Date(a.publishedAt) as any);
+const isPublication = (article: Publication | IContainer): article is Publication => {
+  return article?.__typename === 'dataportal_Digg_Publication' ? true : false;
+};
 
-export const ArticleListPage: React.FC<{ newsList: News[] }> = ({ newsList }) => {
+const sortArticles = (a: Publication | IContainer, b: Publication | IContainer) => {
+  if (isPublication(a) && isPublication(b)) {
+    return (new Date(b.publishedAt) as any) - (new Date(a.publishedAt) as any);
+  } else {
+    return (new Date(b.updatedAt) as any) - (new Date(a.updatedAt) as any);
+  }
+};
+
+export const ArticleListPage: React.FC<PublicationListResponse> = ({
+  articles,
+  category,
+  domain,
+  seo,
+  basePath,
+  heading,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [articlesNumber, setPageNumber] = useState(0);
-  const { t, lang } = useTranslation('pages');
+  const { t, lang } = useTranslation();
   const { pathname, push, query } = useRouter() || {};
-  const { setBreadcrumb } = useContext(SettingsContext);
   const { trackPageView } = useMatomo();
+  const { title, description } = seo || {};
 
   const articlesPerPage = 10;
   const articlesVisited = articlesNumber * articlesPerPage;
-  const displayArticles = newsList
-    .sort(sortByDate)
+  const displayarticles = articles
+    .sort(sortArticles)
     .slice(articlesVisited, articlesVisited + articlesPerPage);
-  const pageCount = Math.ceil(newsList.length / articlesPerPage);
+  const pageCount = Math.ceil(articles.length / articlesPerPage);
+  const metaTitle =
+    title ||
+    (category
+      ? `${category.name} - Sveriges dataportal`
+      : `${t('pages|publications$social_meta_title')}`);
+  const domainSlug = domain ? `/${domain}` : '';
+  const categorySlug = category ? `/${category.slug}` : '';
 
   const changePage = (selected: number) => {
     setPageNumber(selected);
     setCurrentPage(selected);
     push(`?page=${selected}`);
   };
-
-  useEffect(() => {
-    setBreadcrumb && setBreadcrumb(makeBreadcrumbsFromPath(pathname, t('articles$articles')));
-    return () => {
-      setBreadcrumb && setBreadcrumb(initBreadcrumb);
-    };
-  }, []);
 
   useEffect(() => {
     skipToContent();
@@ -70,39 +86,71 @@ export const ArticleListPage: React.FC<{ newsList: News[] }> = ({ newsList }) =>
   return (
     <Container cssProp={MainContainerStyle}>
       <Head>
-        <title>{`${t('articles$articles')} - Sveriges Dataportal`}</title>
+        <title>{metaTitle}</title>
         <meta
           property="og:title"
-          content={`${t('articles$articles')} - Sveriges Dataportal`}
+          content={metaTitle}
         />
         <meta
           name="twitter:title"
-          content={`${t('articles$articles')} - Sveriges Dataportal`}
+          content={metaTitle}
         />
+        {description && (
+          <>
+            <meta
+              name="description"
+              content={description}
+            />
+            <meta
+              name="og:description"
+              content={description}
+            />
+            <meta
+              name="twitter:description"
+              content={description}
+            />
+          </>
+        )}
       </Head>
-      <Heading size="2xl">{t('articles$articles')}</Heading>
+      <Heading
+        size="3xl"
+        weight="light"
+        color="pinkPop"
+      >
+        {heading || category?.name || t('pages|publications$title')}
+      </Heading>
       <div className="content">
         <div
-          className="news-list"
-          id="newsList"
+          className="article-list"
+          id="articles"
         >
           <ul>
-            {newsList.length === 0 && (
-              <span className="loading-msg">Det finns inga nyheter att visa för tillfället.</span>
+            {articles.length === 0 && (
+              <span className="loading-msg">{t('pages|listpage$no-articles')}</span>
             )}
-            {displayArticles.map((n, index) => {
+            {displayarticles.map((article, index) => {
+              const isPub = isPublication(article);
+              const { slug, heading, preamble } = article;
               return (
                 <li key={index}>
-                  <span className="text-base">{getFormattedDate(n.publishedAt)}</span>
+                  <NoSsr>
+                  {isPub && (
+                    <span className="text-base">{getFormattedDate(article.publishedAt)}</span>
+                  )}
+                  </NoSsr>
                   <Link
                     locale={lang}
-                    href={`/${lang}/${t('routes|news$path')}/${n.id}/${slugify(n.heading || '_')}`}
+                    href={
+                      isPub
+                        ? `${basePath || '/' + t('routes|publications$path')}${slug}`
+                        : `${domainSlug}${categorySlug}${slug}`
+                    }
                     passHref
                   >
-                    <a className="text-lg link">{checkLang(n.heading)}</a>
+                    <a className="text-lg link heading-link">{checkLang(heading)}</a>
                   </Link>
 
-                  <p className="text-base truncate-2">{checkLang(n.preamble)}</p>
+                  <p className="text-base truncate-2">{checkLang(preamble)}</p>
                 </li>
               );
             })}
@@ -116,9 +164,9 @@ export const ArticleListPage: React.FC<{ newsList: News[] }> = ({ newsList }) =>
             </div>
           )}
           {pageCount > 1 && (
-            <div className="news-list--pagination">
+            <div className="article-list--pagination ">
               <Pagination
-                totalResults={newsList.length}
+                totalResults={articles.length}
                 resultsPerPage={articlesPerPage}
                 currentPage={currentPage}
                 onPageChanged={changePage}

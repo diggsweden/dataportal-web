@@ -1,2 +1,2 @@
 export * from './ContentArea';
-export * from './SharedContent';
+export * from './Modules';

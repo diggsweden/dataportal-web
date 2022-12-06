@@ -15,10 +15,7 @@ import { decode } from 'qss';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
-import { CloseIcon, FilterIcon } from '../Icons';
 import { useScript } from '../../hooks/useScript';
-import { makeBreadcrumbsFromPath } from '../../utilities';
-import { initBreadcrumb } from '../../pages/_app';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import Head from 'next/head';
 import { MainContainerStyle } from '../../styles/general/emotion';
@@ -71,10 +68,7 @@ export const SearchPage: React.FC<SearchProps> = () => {
       if (querytext) setQuery(decodeURIComponent(querytext.replace(/\+/g, '%20')));
       //***
     }
-    setBreadcrumb && setBreadcrumb(makeBreadcrumbsFromPath(asPath, t('routes|datasets$title')));
-    return () => {
-      setBreadcrumb && setBreadcrumb(initBreadcrumb);
-    };
+
   }, []);
 
   useEffect(() => {
@@ -177,7 +171,7 @@ export const SearchPage: React.FC<SearchProps> = () => {
                 <SearchHeader activeLink={'search'} />
 
                 <div className="row search-header-wrapper">
-                  <Heading className="search-header">{t('common|search-dataapi')}</Heading>
+                  <Heading color={"pinkPop"} weight={"light"} size={"3xl"} className="search-header">{t('common|search-dataapi')}</Heading>
 
                   <button
                     aria-expanded={showTip ? true : false}
@@ -199,33 +193,33 @@ export const SearchPage: React.FC<SearchProps> = () => {
 
                 <div className={'search-tip__modal' + (showTip ? ' show-tip' : '')}>
                   <div className="search-tip__modal-wrapper">
-                    <span className="text-7-bold">{t('pages|search$search-tips-search-head')}</span>
-                    <span className="text-7">{t('pages|search$search-tips-search-txt')}</span>
-                    <span className="text-7-bold">{t('pages|search$search-tips-filter-head')}</span>
-                    <span className="text-7">{t('pages|search$search-tips-filter-txt')}</span>
-                    <span className="text-7-bold">
+                    <div className="text-bold text-lg">{t('pages|search$search-tips-search-head')}</div>
+                    <span className="text-base">{t('pages|search$search-tips-search-txt')}</span>
+                    <div className="text-bold text-lg">{t('pages|search$search-tips-filter-head')}</div>
+                    <span className="text-base">{t('pages|search$search-tips-filter-txt')}</span>
+                    <div className="text-bold text-lg">
                       {t('pages|search$search-tips-searchfilter-head')}
-                    </span>
-                    <span className="text-7">{t('pages|search$search-tips-searchfilter-txt')}</span>
-                    <span className="text-7-bold"> {t('pages|search$search-tips-sort-head')} </span>
-                    <span className="text-7">
+                    </div>
+                    <span className="text-base">{t('pages|search$search-tips-searchfilter-txt')}</span>
+                    <div className="text-bold text-lg"> {t('pages|search$search-tips-sort-head')} </div>
+                    <span className="text-base">
                       {t('pages|search$search-tips-sort-txt1')}
                       {t('pages|search$search-tips-sort-txt2')}
                       {t('pages|search$search-tips-sort-txt3')}
                       {t('pages|search$search-tips-sort-txt4')}
                       {t('pages|search$search-tips-sort-txt5')}
                     </span>
-                    <span className="text-7-bold">
+                    <span className="text-bold text-lg">
                       {' '}
                       {t('pages|search$search-tips-license-head')}{' '}
                     </span>
-                    <span className="text-7">
+                    <span className="text-base">
                       {t('pages|search$search-tips-license-txt')}{' '}
                       <Link
-                        href={`/${lang}${t('routes|about-us$path')}`}
+                        href={`${t('routes|about-us$path')}`}
                         locale={lang}
                       >
-                        <a className="text-7">{t('pages|search$search-tips-license-link')}</a>
+                        <a className="text-base">{t('pages|search$search-tips-license-link')}</a>
                       </Link>
                       .
                     </span>

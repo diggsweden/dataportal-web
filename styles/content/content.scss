@@ -3,7 +3,8 @@
 @import '~@digg/design-system/lib/sass/variables.scss';
 
 .content {
-  max-width: 40rem; //640px //40rem //40em
+  max-width: 46.063rem; //737px //46rem
+  margin-top: 4rem;
 
   h1 {
     margin-top: $space-2;
@@ -17,6 +18,23 @@
     word-break: break-word;
   }
 
+  p,
+  span,
+  li{
+    word-break: break-word;
+  }
+
+  p{
+    margin-top: 0;
+  }
+
+  pre > code {
+    word-break: break-word;
+    display: inline-block;
+    max-width: 100%;
+    white-space: normal;
+  }
+
   .date_published {
     display: block;
     margin-bottom: $space-1;
@@ -27,10 +45,10 @@
     margin-bottom: 3rem;
 
     a {
-      color: $clr-gray900;
+      color: $clr-white;
 
       &:focus {
-        @include focusStyle;
+        @include focusStyleLight;
       }
     }
 
@@ -42,22 +60,25 @@
     }
   }
 
+  .container--related-search {
+    margin-bottom: $space-12;
+  }
+
   .main-text {
     margin-bottom: $space-6;
     margin-top: 0px;
 
     a {
-      color: $clr-gray900;
+      color: $clr-white;
 
       &:hover {
-        background-color: $clr-pink200;
+        background-color: transparent;
       }
 
       &:focus {
-        @include focusStyle;
+        @include focusStyleLight;
       }
     }
-
     a[target='_blank']:after {
       content: '\f08e';
       margin-left: 5px;
@@ -75,21 +96,20 @@
     padding: $space-6;
     padding-top: $space-6;
     padding-bottom: $space-6;
-    border-left: 0.125rem solid $clr-green500;
-    background-color: $clr-green200;
+    border-left: 0.125rem solid $clr-pinkPop;
     margin-left: 0rem;
     margin-right: 0rem;
     font-weight: 400;
     font-size: 1.5rem; //24px
     line-height: 2rem; //32px
     letter-spacing: -0.02em;
-    color: $clr-gray900;
+    color: $clr-white;
     margin-top: $space-4;
     margin-bottom: $space-8;
 
     p,
     span {
-      margin: 0rem;
+      margin: 0rem;      
     }
   }
 }

@@ -1,12 +1,11 @@
-import React from 'react';
-import { Heading, HeadingLevel, styled } from '@digg/design-system';
+import { colorPalette, Heading, HeadingLevel, styled } from '@digg/design-system';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import Image from 'next/image';
 import Link from 'next/link';
 import { isExternalLink, isMailLink } from '../../utilities';
-import { ExternalLink, QuoteBlock } from '..';
+import { ExternalLink, Quote } from '..';
 import { checkLang } from '../../utilities/checkLang';
 
 const generateHeadings = (options?: HeadingOption[]) => {
@@ -42,12 +41,13 @@ const renderLink = ({ href, children }: any) => {
     <ExternalLink
       isMail={isMailLink(href || '')}
       href={href || ''}
+      className="markdown--link"
     >
       {children}
     </ExternalLink>
   ) : (
     <Link
-      href={href || ''}
+      href={href}
       passHref
     >
       <a className="markdown--link">
@@ -66,15 +66,20 @@ const Markdown = styled.div`
   code {
     font-size: 16px;
     line-height: 24px;
-    margin-bottom: 1.125rem;
     @media screen and (min-width: 37.5em) {
       font-size: 18px;
       line-height: 27px;
     }
   }
   .markdown--link {
-    margin-bottom: 1.125rem;
+    color: ${colorPalette.white};
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
+
   img {
     width: 100%;
   }
@@ -108,7 +113,7 @@ export const renderMarkdown = (markdown: string, options?: Options) => {
           ...headings,
           a: (props) => renderLink(props),
           img: (props) => renderImage(props),
-          blockquote: ({ children }) => <QuoteBlock>{children}</QuoteBlock>,
+          blockquote: ({ children }) => <Quote>{children}</Quote>,
         }}
       >
         {markdown}

@@ -11,12 +11,9 @@ import {
   SettingsContext,
   SearchContext,
 } from '..';
-import { FilterIcon, CloseIcon } from '../Icons';
 import useTranslation from 'next-translate/useTranslation';
 import { useScript } from '../../hooks/useScript';
-import { makeBreadcrumbsFromPath } from '../../utilities';
-import router, { useRouter } from 'next/router';
-import { initBreadcrumb } from '../../pages/_app';
+import { useRouter } from 'next/router';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import Head from 'next/head';
 import { Container, Heading } from '@digg/design-system';
@@ -61,10 +58,6 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
       //Scroll to top on pagination click.
       // window.scrollTo(0, 0);
     }
-    setBreadcrumb && setBreadcrumb(makeBreadcrumbsFromPath(asPath, t('routes|concepts$title')));
-    return () => {
-      setBreadcrumb && setBreadcrumb(initBreadcrumb);
-    };
   }, []);
 
   useEffect(() => {
@@ -147,7 +140,7 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
                   <SearchHeader activeLink={'terms'} />
 
                   <div className="row">
-                    <Heading className="search-header">{t('search-concept')}</Heading>
+                    <Heading size={"3xl"} color='pinkPop' weight='light' className="search-header">{t('search-concept')}</Heading>
                   </div>
 
                   <SearchInput

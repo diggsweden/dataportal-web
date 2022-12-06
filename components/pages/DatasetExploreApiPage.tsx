@@ -1,20 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import {  ApiExplorerProps, EntrystoreContext, ExternalLink } from '../../components';
+import { ApiExplorerProps, EntrystoreContext, ExternalLink } from '../../components';
 import useTranslation from 'next-translate/useTranslation';
 import { SettingsContext } from '../SettingsProvider';
 import { useRouter } from 'next/router';
-import { initBreadcrumb } from '../../pages/_app';
-import { linkBase } from '../../utilities';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import Head from 'next/head';
 import { Heading } from '@digg/design-system';
 
-const ApiExplorer = dynamic(() =>
-  import('../../components/ApiExploring/').then(
-    (c) => c.ApiExplorer,
-    (e) => e as React.FC<ApiExplorerProps>
-  ), {ssr: false}
+const ApiExplorer = dynamic(
+  () =>
+    import('../../components/ApiExploring/').then(
+      (c) => c.ApiExplorer,
+      (e) => e as React.FC<ApiExplorerProps>
+    ),
+  { ssr: false }
 );
 
 export const DataSetExploreApiPage: React.FC<{
@@ -57,31 +57,6 @@ export const DataSetExploreApiPage: React.FC<{
   }, []);
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: t('routes|api_explore$title'),
-        crumbs: [
-          { name: 'start', link: { ...linkBase, link: '/' } },
-          {
-            name: t('routes|datasets$title'),
-            link: { ...linkBase, link: `/${t('routes|datasets$path')}?q=&f=` },
-          },
-          {
-            name: (entry.title as string) || '',
-            link: {
-              ...linkBase,
-              link: `/${t('routes|datasets$path')}/${query.dataSet}/${query.name}`,
-            },
-          },
-        ],
-      });
-
-    return () => {
-      setBreadcrumb && setBreadcrumb(initBreadcrumb);
-    };
-  }, [entry]);
-
-  useEffect(() => {
     addScriptsDistribution();
   }, []);
 
@@ -109,7 +84,7 @@ export const DataSetExploreApiPage: React.FC<{
             page_language: '${lang}',
             entry: '${apieid}', 
             context: '${cid}',
-            clicks: {"dataservice-link":"/${lang}/dataservice/\${context}_\${entry}/"},
+            clicks: {"dataservice-link":"/dataservice/\${context}_\${entry}/"},
             namespaces:{
               esterms: 'http://entryscape.com/terms/',
               peu: 'http://publications.europa.eu/resource/authority/'
@@ -249,13 +224,12 @@ export const DataSetExploreApiPage: React.FC<{
       </Head>
       <div className="detailpage__wrapper detailpage__wrapper--apiexplore">
         <div className="detailpage__wrapper-topinfo">
-          {/* Beta badge */}
-          <span className="text-7-bold beta_badge--xl">BETA</span>
-
           {/* Title */}
           <Heading
-            size="xl"
+            weight='light'
+            size="3xl"
             className="api-title"
+            color='pinkPop'
           >
             {t('pages|explore-api-page$explore-api')}{' '}
             <script
@@ -274,7 +248,7 @@ export const DataSetExploreApiPage: React.FC<{
           <span className="text-md api-publisher">{entry.publisher}</span>
 
           {/* Indicators */}
-          <div className="row indicators">
+          <div className="row indicators indicators__swagger">
             <div
               data-entryscape="accessRightsIndicator"
               className="accessRightsIndicator"

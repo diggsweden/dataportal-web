@@ -1,5 +1,4 @@
-import {
-  colorPalette,
+import {  
   CookieBanner as DiggCookieBanner,
   CookieSetting,
   NecessaryCookies,
@@ -18,7 +17,6 @@ const StyledA = styled.a`
 
   &:hover {
     text-decoration: none;
-    background-color: ${colorPalette.pink200};
   }
 `;
 
@@ -56,7 +54,7 @@ export const CookieBanner: React.FC = () => {
       saveBtnTextClosed={t('cookie-btn-closed')}
       settingsBtnText={t('cookie-btn-settings')}
     >
-      {cookieInformation}
+      {t(cookieInformation)}
 
       {/** Todo - fix better row break */}
       <p></p>

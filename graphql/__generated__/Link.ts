@@ -11,8 +11,8 @@ import { dataportal_LinkType } from "./globalTypes";
 
 export interface Link {
   __typename: "dataportal_Digg_Link";
+  slug: string;
   title: string | null;
-  link: string;
-  linktype: dataportal_LinkType;
   description: string | null;
+  linktype: dataportal_LinkType;
 }

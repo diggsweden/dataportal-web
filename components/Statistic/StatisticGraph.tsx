@@ -1,5 +1,4 @@
 import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
 import React, { useState, useEffect, useContext } from 'react';
 import { SettingsContext } from '..';
 import {
@@ -68,14 +67,14 @@ export const StatisticGraph: React.FC = () => {
 
   return (
     <div className="statistic-div">
-      <span className="screen-reader">{t('pages|statistic$statistic-screenreader')}</span>
+      <span className="screen-reader">{t('pages|statistic$graph-screenreader')}</span>
 
       <div className="graphbox">
         {/* @ts-ignore */}
         <FlexibleXYPlot
           xType="ordinal"
           height={430}
-          color="#889787"
+          className="graph-vertical-bar"
           margin={{
             bottom: 64,
             left: 70,
@@ -84,32 +83,18 @@ export const StatisticGraph: React.FC = () => {
         >
           <XAxis
             height={0}
-            tickSizeOuter={0}            
-            style={{
-              text: { fill: '#2B2A29', color:'#2B2A29', fontWeight: 500 },
-            }}
+            tickSizeOuter={0}
           />
-          <YAxis
-            width={64}
-            style={{
-              text: { fill: '#2B2A29', color:'#2B2A29', fontWeight: 500 },
-            }}
-          />
+          <YAxis width={64} />
           {/* @ts-ignore */}
           <BarSeries
             className="vertical-bar-series-example"
             data={stats.x}
-            barWidth={0.85}                        
+            barWidth={0.75}
           />
         </FlexibleXYPlot>
         <span className="graph-text text-md">{t('pages|statistic$dataset-numbers')}</span>
       </div>
-      <Link
-        href={`/${lang}/${t('routes|statistics$path')}`}
-        locale={lang}
-      >
-        <a className="text-md">{t('pages|statistic$statistic-link')}</a>
-      </Link>
     </div>
   );
 };

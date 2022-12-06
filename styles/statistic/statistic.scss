@@ -12,7 +12,7 @@
   margin-bottom: -10rem;
 
   h2 {
-    color: $clr-gray900;
+    color: $clr-white;
   }
 }
 
@@ -30,7 +30,6 @@
   flex-direction: row;
   justify-content: flex-start;
   align-self: center;
-  max-width: 72rem;
   width: 100%;
 
   @media screen and (max-width: $media-md) {
@@ -48,6 +47,7 @@
     a {
       margin-top: $space-4;
       text-decoration: underline;
+      color: white;
 
       &:hover {
         text-decoration: none;
@@ -57,17 +57,23 @@
     .graphbox {
       position: relative;
       display: flex;
-      background-color: $clr-white;
+      background-color: $clr-gray800;
       padding: $space-8;
       padding-left: $space-4;
       padding-right: $space-2;
       margin-bottom: $space-4;
 
+      //Vertical graph bars
+      .graph-vertical-bar rect{
+        stroke: $clr-pinkPop !important;
+        fill: $clr-pinkPop !important;
+      }
+
       .graph-text {
         position: absolute;
         bottom: $space-8;
         right: 40px;
-      }
+      }    
 
       .rv-xy-plot__axis__tick {
         text {
@@ -75,9 +81,16 @@
         }
       }
 
+      .rv-xy-plot__axis__tick__text{
+        fill: $clr-white;
+        color: $clr-white;
+        font-weight: 500;
+      }
+
       .rv-xy-plot__axis__tick__line,
       .rv-xy-plot__axis__line {
         display: none;
+
       }
     }
 
@@ -124,18 +137,15 @@
       align-items: center;
       width: 100%;
       height: 235px;
-      background-color: $clr-white;
+      background-color: $clr-gray800;
 
       .text-2xl {
-        color: $clr-green700;
+        color: $clr-pinkPop;
+        margin: 0;
       }
 
       &:last-of-type {
         margin-top: $space-6;
-
-        .text-2xl {
-          color: $clr-orange800;
-        }
       }
     }
   }
@@ -146,11 +156,11 @@
   display: flex;
   justify-content: center;
   margin-top: $space-6;
+  margin-bottom: $space-12;
 
   .statistic-toplist {
     display: flex;
     justify-content: center;
-    max-width: 72rem;
     width: 100%;
 
     @media screen and (max-width: $media-sm) {
@@ -167,31 +177,34 @@
         width: 100%;
         margin-bottom: $space-8;
         h2 {
-          word-break: break-all;
+          word-break: break-word;
         }
       }
 
       &:first-of-type {
         margin-right: $space-6;
-      }
+      }    
 
       .top-list {
-        background-color: $clr-white;
+        background-color: $clr-gray800;
         padding: $space-4;
-        padding-bottom: $space-6;
+        padding-bottom: $space-4;
         width: 100%;
-
+        
         ol {
           counter-reset: section;
           margin: 0px;
-
+          
           li {
             padding-top: $space-2;
             padding-bottom: $space-2;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-left: -40px;
+            border-bottom: 1px solid $clr-gray700;
+
+            &:last-of-type {
+              border-bottom: none;
+            }
 
             @include wordBreak;
 
@@ -206,12 +219,12 @@
             &::before {
               counter-increment: section;
               content: counters(section, '.') '.';
+              min-width: 2rem;
             }
 
             a,
             span {
-              margin-left: $space-2;
-              width: 90%;
+              width: 100%;              
             }
 
             a {
@@ -222,11 +235,12 @@
             }
 
             .list-value {
-              width: 10%;
               margin-left: $space-2;
               text-align: end;
+              width: -moz-fit-content;
               width: fit-content;
-
+              color: $clr-pinkPop;
+              min-width: 3rem;
               text-decoration: none;
             }
           }
@@ -253,28 +267,18 @@
         h2 {
           padding: $space-4;
           padding-top: $space-2;
-          padding-bottom: $space-2;
-          background-color: $clr-green300;
+          padding-bottom: $space-2;          
           margin: 0px;
           font-weight: normal;
         }
 
         .top-list {
-          border: 2px solid $clr-green300;
           padding: $space-4;
-          padding-bottom: $space-6;
+          padding-bottom: $space-4;
         }
 
         ol {
           list-style-type: none;
-        }
-
-        li {
-          border-bottom: 2px dotted $clr-green300;
-
-          &:last-of-type {
-            border-bottom: none;
-          }
         }
       }
     }

@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps } from 'next/types';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { SettingsContext } from '../../components';

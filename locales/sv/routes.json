@@ -1,5 +1,5 @@
 {
-  "about": {
+  "about-website": {
     "path": "om-webbplatsen",
     "title": "Om webbplatsen"
   },
@@ -35,13 +35,21 @@
     "path": "dataservice",
     "title": "api"
   },
+  "publications": {
+    "path": "aktuellt",
+    "title": "Nyheter"
+  },
+  "inspiration": {
+    "path": "inspiration",
+    "title": "Inspiration"
+  },
+  "events": {
+    "path": "event",
+    "title": "Events"
+  },
   "news": {
     "path": "nyheter",
     "title": "Nyheter"
-  },
-  "nyhet": {
-    "path": "nyhets-artikel",
-    "title": "nyhets-artikel"
   },
   "start": {
     "path": "",
@@ -52,8 +60,8 @@
     "title": "Statistik"
   },
   "about-us": {
-    "path": "om-oss#sa_har_far_du_anvanda_data",
-    "title": "om-oss"
+    "path": "om-oss",
+    "title": "Om oss"
   },
   "api_explore": {
     "path": "apiexplore",

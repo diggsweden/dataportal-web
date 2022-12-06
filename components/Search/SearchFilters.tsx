@@ -110,6 +110,23 @@ const MarkAll: React.FC<MarkAllProps> = ({ search, toggleKey, title }) => {
   );
 };
 
+const FindFilters = (
+  categoryFilters: SearchFacetValue[],
+  checkedFilters: SearchFacetValue[] | undefined
+) => {
+  if (!checkedFilters) return '';
+
+  const allTitles = categoryFilters.map((item) => item.title);
+  const checkedTitles = checkedFilters.map((item) => item.title);
+  const union = allTitles.filter((x) => checkedTitles.includes(x));
+
+  if (union.length > 0) {
+    return ' (' + union.length + ')';
+  }
+
+  return '';
+};
+
 /**
  * Controls for filtering searchhits
  *
@@ -138,7 +155,6 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
 
   return (
     <>
-      <p className="search-filter--text">{t('common|filter-text')}</p>
       <div className="mobile-filters">
         <button
           aria-label={showFilter ? t('common|hide-filter') : t('common|show-filter')}
@@ -173,7 +189,11 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                     key={'box' + value.title}
                     className="search-filter"
                   >
-                    <SearchFilter title={value.title}>
+                    <SearchFilter
+                      title={
+                        value.title + FindFilters(value.facetValues, search.request.facetValues)
+                      }
+                    >
                       <div className="search-filter-list">
                         {searchType == 'data' && ( //only render on searchpage
                           <>
@@ -194,47 +214,50 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                           </>
                         )}
 
-                        {facetValues.map((facetValue: SearchFacetValue, index: number) => (
-                          <Button
-                            key={index}
-                            className={`filter-btn ${
-                              search.facetSelected(key, facetValue.resource) && 'selected'
-                            }`}
-                            onClick={() => {
-                              clearCurrentScrollPos();
-                              search.toggleFacet(facetValue).then(async () => {
-                                if (search.facetSelected(key, '*')) {
-                                  let wildcardFacet: SearchFacetValue = {
-                                    count: -1,
-                                    facet: key,
-                                    facetType: ESType.wildcard,
-                                    related: false,
-                                    facetValueString: '',
-                                    resource: '*',
-                                    title: t(`filters|allchecktext$${key}`),
-                                  };
-                                  await search.toggleFacet(wildcardFacet);
-                                }
-
-                                search.doSearch(false, true, false).then(() => {
-                                  if (search.facetSelected(key, facetValue.resource)) {
-                                    search.sortAllFacets(key);
-                                  } else {
-                                    search.sortAllFacets();
+                        {facetValues.map((facetValue: SearchFacetValue, index: number) => {
+                          const selected = search.facetSelected(key, facetValue.resource);
+                          return (
+                            <Button
+                              secondary={true}
+                              aria-pressed={selected}
+                              key={index}
+                              className={`filter-btn ${selected && 'selected'}`}
+                              onClick={() => {
+                                clearCurrentScrollPos();
+                                search.toggleFacet(facetValue).then(async () => {
+                                  if (search.facetSelected(key, '*')) {
+                                    let wildcardFacet: SearchFacetValue = {
+                                      count: -1,
+                                      facet: key,
+                                      facetType: ESType.wildcard,
+                                      related: false,
+                                      facetValueString: '',
+                                      resource: '*',
+                                      title: t(`filters|allchecktext$${key}`),
+                                    };
+                                    await search.toggleFacet(wildcardFacet);
                                   }
+
+                                  search.doSearch(false, true, false).then(() => {
+                                    if (selected) {
+                                      search.sortAllFacets(key);
+                                    } else {
+                                      search.sortAllFacets();
+                                    }
+                                  });
                                 });
-                              });
-                            }}
-                          >
-                            {facetValue.title || facetValue.resource} ({facetValue.count}){' '}
-                            {search.facetSelected(key, facetValue.resource)}
-                            <span
-                              className={
-                                search.facetSelected(key, '*') ? 'check-disabled check' : 'check'
-                              }
-                            ></span>
-                          </Button>
-                        ))}
+                              }}
+                            >
+                              {facetValue.title || facetValue.resource} ({facetValue.count}){' '}
+                              {selected}
+                              <span
+                                className={
+                                  search.facetSelected(key, '*') ? 'check-disabled check' : 'check'
+                                }
+                              ></span>
+                            </Button>
+                          );
+                        })}
 
                         {value.facetValues.length > value.show && (
                           <Button

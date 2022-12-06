@@ -1,4 +1,4 @@
-import env from "@beam-australia/react-env";
+import env from '@beam-australia/react-env';
 
 interface Options {
   prodOnly?: boolean;
@@ -33,24 +33,25 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   add('default-src', `'self'`, { prodOnly: true });
   add('manifest-src', `'self'`, { prodOnly: true });
   add('object-src', `'none'`, { prodOnly: true });
-  add('script-src', `'self' ${nonce? `'nonce-${nonce}'` : ''} 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se https://dataportal.azureedge.net *.entryscape.com *.dataportal.se`, { prodOnly: true });  
+  add(
+    'script-src',
+    `'self' ${
+      nonce ? `'nonce-${nonce}'` : ''
+    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se https://dataportal.azureedge.net *.entryscape.com *.dataportal.se`,
+    { prodOnly: true }
+  );
   add('font-src', `'self' https://static.entryscape.com https://static.cdn.entryscape.com`);
   add('base-uri', `'self'`);
   add('prefetch-src', `'self'`);
   add('manifest-src', `'self'`);
   add('form-action', `'self'`);
-  add(
-    'img-src',
-    `'self'${` ${
-      env('MEDIA_BASE_URL') || ''
-    }`} https://diggdrstoragetest.blob.core.windows.net/ data: *`
-  );
-  add('media-src', `'self'${` ${env('MEDIA_BASE_URL') || ''}`} https: data:`);
+  add('img-src', `'self' ${process.env.IMAGE_DOMAIN || ''} data: *`);
+  add('media-src', `'self' ${process.env.IMAGE_DOMAIN || ''} https: data:`);
   add('style-src', `'self' 'unsafe-inline' `);
   add('style-src-elem', `'self' 'unsafe-inline'`);
   add('style-src-attr', `'self' 'unsafe-inline'`);
-  add('connect-src', `'self' https://*`);  
- 
+  add('connect-src', `'self' https://*`);
+
   // return the object in a formatted value (this won't work on IE11 without a polyfill!)
   return Object.entries(policy)
     .map(([key, value]) => `${key} ${value.join(' ')}`)

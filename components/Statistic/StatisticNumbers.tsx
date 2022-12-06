@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '..';
 import { EnvSettings } from '../../env';
 import { StatisticDataPresentation } from './StatisticDataPresentation';

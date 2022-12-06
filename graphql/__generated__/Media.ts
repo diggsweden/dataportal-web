@@ -7,12 +7,43 @@
 // GraphQL fragment: Media
 // ====================================================
 
-export interface Media {
-  __typename: "dataportal_Digg_Image" | "dataportal_Digg_Video" | "dataportal_Digg_File";
+export interface Media_media_dataportal_Digg_Image {
+  __typename: "dataportal_Digg_Image";
   url: string;
   alt: string | null;
   name: string | null;
   description: string | null;
   mime: string;
   ext: string;
+  width: number | null;
+  height: number | null;
+}
+
+export interface Media_media_dataportal_Digg_Video {
+  __typename: "dataportal_Digg_Video";
+  url: string;
+  alt: string | null;
+  name: string | null;
+  description: string | null;
+  mime: string;
+  ext: string;
+}
+
+export interface Media_media_dataportal_Digg_File {
+  __typename: "dataportal_Digg_File";
+  url: string;
+  alt: string | null;
+  name: string | null;
+  description: string | null;
+  mime: string;
+  ext: string;
+}
+
+export type Media_media = Media_media_dataportal_Digg_Image | Media_media_dataportal_Digg_Video | Media_media_dataportal_Digg_File;
+
+export interface Media {
+  __typename: "dataportal_Digg_Media";
+  heading: string | null;
+  description: string | null;
+  media: Media_media;
 }

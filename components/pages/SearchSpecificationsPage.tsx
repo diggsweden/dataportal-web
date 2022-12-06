@@ -14,8 +14,6 @@ import {
 import useTranslation from 'next-translate/useTranslation';
 import { useScript } from '../../hooks/useScript';
 import { useRouter } from 'next/router';
-import { initBreadcrumb } from '../../pages/_app';
-import { makeBreadcrumbsFromPath } from '../../utilities';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import Head from 'next/head';
 import { Heading, Container } from '@digg/design-system';
@@ -57,11 +55,6 @@ export const SearchSpecificationsPage: React.FC<SearchProps> = () => {
 
       //***
     }
-    setBreadcrumb &&
-      setBreadcrumb(makeBreadcrumbsFromPath(asPath, t('routes|specifications$title')));
-    return () => {
-      setBreadcrumb && setBreadcrumb(initBreadcrumb);
-    };
   }, []);
 
   useEffect(() => {
@@ -158,7 +151,9 @@ export const SearchSpecificationsPage: React.FC<SearchProps> = () => {
 
                   <div className="row">
                     <Heading
-                      level={2}
+                      color={"pinkPop"} 
+                      weight={"light"} 
+                      size={"3xl"}
                       className="search-header"
                     >
                       {t('search-specs')}

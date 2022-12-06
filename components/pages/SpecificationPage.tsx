@@ -2,12 +2,10 @@ import useTranslation from 'next-translate/useTranslation';
 import React, { useContext, useEffect } from 'react';
 import { SettingsContext } from '..';
 import { EntrystoreContext } from '../../components/EntrystoreProvider';
-import { linkBase } from '../../utilities';
-import { initBreadcrumb } from '../../pages/_app';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { css, Heading, space } from '@digg/design-system';
+import { Heading } from '@digg/design-system';
 
 export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
@@ -34,24 +32,7 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
         window.location.reload();
       };
     }
-
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: title,
-        crumbs: [
-          { name: 'start', link: { ...linkBase, link: '/' } },
-          {
-            name: t('routes|specifications$title'),
-            link: { ...linkBase, link: `/${t('routes|specifications$path')}?q=&f=` },
-          },
-        ],
-      });
-
     addScripts();
-
-    return () => {
-      setBreadcrumb && setBreadcrumb(initBreadcrumb);
-    };
   }, []);
 
   useEffect(() => {
@@ -193,7 +174,12 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
       <div className="detailpage__wrapper">
         {/* Left column */}
         <div className="detailpage__wrapper--leftcol content">
-          <Heading>{title}</Heading>
+          <Heading
+            size={'3xl'}
+            weight="light"
+          >
+            {title}
+          </Heading>
           <script
             type="text/x-entryscape-handlebar"
             data-entryscape="true"

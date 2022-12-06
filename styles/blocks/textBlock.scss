@@ -1,26 +1,69 @@
 @import '~@digg/design-system/lib/sass/colors.scss';
 
-figure.table {
-  margin: 0;
-
+table {
+  padding-bottom: $space-2; //push down scrollbar slightly
   display: block;
-  overflow-x: auto;
+  overflow-x: scroll;
   white-space: nowrap;
-  table {
-    width: 100%;
-    min-width: 40rem;
-    border-collapse: collapse;
-  }
-  th {
-    background: $clr-gray100;
+  width: 100%;
+  min-width: 100%;
+  border-collapse: collapse;
+
+  caption {
     font-weight: bold;
-    border: 1px solid $clr-gray300;
+    padding-bottom: $space-1;
+    text-align: left;
+  }
+
+  th {
+    background: $clr-gray800;
+    font-weight: bold;
+    border: 1px solid $clr-gray600;
     text-align: start;
   }
+
   td,
   th {
     font-size: 0.925rem;
-    padding: 2rem 0.5rem;
-    border: 1px solid $clr-gray300;
+    padding: $space-4 $space-2;
+    border: 1px solid $clr-gray600;
   }
+
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 0.5rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: $clr-gray600;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $clr-pinkPop;
+  }
+
+  //Scrol for firefox
+  scrollbar-color: $clr-pinkPop $clr-gray600;
+  scrollbar-width: auto;
+  scrollbar-corner {
+    background: $clr-gray600;
+  }
+}
+
+.content .main-text table {
+  p{
+    font-size: 0.925rem;
+  }
+
+  ul,
+  ol{
+    font-size: 0.925rem;
+
+    li{
+      margin-bottom: 0;
+    }
+  }
+}
+
+.content figure {
+    margin: 0;
 }

@@ -21,6 +21,13 @@ export enum dataportal_LinkType {
   INTERNAL = "INTERNAL",
 }
 
+export interface dataportal_QueryCategoryArgs {
+  limit?: number | null;
+  locale?: string | null;
+  slug?: string | null;
+  taxonomy?: string | null;
+}
+
 export interface dataportal_QueryContainerArgs {
   limit?: number | null;
   id?: number | null;
@@ -28,6 +35,15 @@ export interface dataportal_QueryContainerArgs {
   locale?: string | null;
   previewSecret?: string | null;
   state?: dataportal_ContainerState | null;
+  domains?: string[] | null;
+  categories?: string[] | null;
+  tags?: string[] | null;
+}
+
+export interface dataportal_QueryDomainArgs {
+  limit?: number | null;
+  locale?: string | null;
+  slug?: string | null;
 }
 
 //==============================================================

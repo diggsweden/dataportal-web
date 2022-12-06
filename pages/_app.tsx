@@ -1,6 +1,8 @@
+import '../styles/articles/articles.scss';
 import '../styles/general/variables.scss';
 import '../styles/general/typography.scss';
 import '../styles/general/general.scss';
+import '../styles/general/prism.scss';
 import '../styles/general/utils.scss';
 import '../styles/header/header.scss';
 import '../styles/footer/footer.scss';
@@ -10,10 +12,10 @@ import '../styles/search/search_filter.scss';
 import '../styles/search/search_result.scss';
 import '../styles/search/search_head.scss';
 import '../styles/blocks/blocks.scss';
+import '../styles/startpage/domainpage.scss';
 import '../styles/startpage/devportal_block.scss';
 import '../styles/startpage/startpage_categories.scss';
 import '../styles/startpage/startpage_search.scss';
-import '../styles/news/news.scss';
 import '../styles/swagger/swagger.scss';
 import '../styles/content/content.scss';
 import '../styles/content/contentgrid.scss';
@@ -23,6 +25,7 @@ import '../styles/highlight/highlight.scss';
 import '../styles/statistic/statistic.scss';
 import '../styles/notfoundpage/notfoundpage.scss';
 import '../node_modules/react-vis/dist/style.css';
+import '../components/Form/ProgressComponent/FormProgress.scss';
 
 //Only for importing fonts
 import '../styles/global.css';
@@ -49,20 +52,25 @@ import {
   CookieBanner,
   Breadcrumb,
   BreadcrumbProps,
-  extractSettings,
   LocalStore,
-  HeroBlock,
+  Hero,
 } from '../components';
 import { defaultSettings } from '../components/SettingsProvider/SettingsProvider';
-import { click, keyUp, onNextFrame, usePrevious } from '../utilities';
+import {
+  click,
+  DataportalPageProps,
+  dataportalTheme,
+  generateRandomKey,
+  keyUp,
+  onNextFrame,
+  resolvePage,
+  usePrevious,
+} from '../utilities';
 import { EnvSettings, SettingsUtil } from '../env';
 import Head from 'next/head';
-import { client, browserclient, getSharedProps } from '../graphql';
+import { client } from '../graphql/client';
 import App from 'next/app';
 import generateCSP from '../utilities/generateCsp';
-import { Footer_dataportal_Digg_Footer } from '../graphql/__generated__/Footer';
-import { MainMenu_dataportal_Digg_Menu } from '../graphql/__generated__/MainMenu';
-import { Settings_dataportal_Digg_Settings } from '../graphql/__generated__/Settings';
 import { SeoData } from '../graphql/__generated__/SeoData';
 import { useRouter } from 'next/router';
 import reactenv from '@beam-australia/react-env';
@@ -70,11 +78,7 @@ import absoluteUrl from 'next-absolute-url';
 import { Settings_Sandbox } from '../env/Settings.Sandbox';
 import useTranslation from 'next-translate/useTranslation';
 import { css } from '@emotion/react';
-import {
-  Containers_dataportal_Digg_Containers,
-  Containers_dataportal_Digg_Containers_breadcrumb,
-} from '../graphql/__generated__/Containers';
-import { HeroBlock as IHeroBlock } from '../graphql/__generated__/HeroBlock';
+import { Hero as IHero } from '../graphql/__generated__/Hero';
 
 const GetCookiesAccepted = () => {
   try {
@@ -86,9 +90,6 @@ const GetCookiesAccepted = () => {
 };
 
 interface DataportalenProps extends AppProps {
-  menu: MainMenu_dataportal_Digg_Menu;
-  footer: Footer_dataportal_Digg_Footer;
-  settings: Settings_dataportal_Digg_Settings;
   host: string;
   nonce: string;
 }
@@ -110,14 +111,7 @@ const onHash = (pathWithHash: string) => {
   onNextFrame(() => skipToElement(hash));
 };
 
-function Dataportal({
-  Component,
-  pageProps,
-  menu,
-  footer,
-  settings: diggSettings,
-  host,
-}: DataportalenProps) {
+function Dataportal({ Component, pageProps, host }: DataportalenProps) {
   //let env = SettingsUtil.create();
   const { locale, asPath } = useRouter() || {};
 
@@ -125,26 +119,20 @@ function Dataportal({
   const [env, setEnv] = useState<EnvSettings>(SettingsUtil.create());
   const [matomoActivated, setMatomoActivated] = useState<boolean>(true);
   const [breadcrumbState, setBreadcrumb] = useState<BreadcrumbProps>(initBreadcrumb);
-  const [menuState, setMenu] = useState(menu);
-  const [footerState, setFooter] = useState(footer);
-  const [settingsState, setSettings] = useState(diggSettings);
   const previousPath = usePrevious(asPath);
-  const { lang, t } = useTranslation('common');
-  const { breadcrumb, heading, seo, blocks, name } =
-    pageProps as Containers_dataportal_Digg_Containers;
+  const { t } = useTranslation('common');
+  const { seo, blocks } = resolvePage(pageProps as DataportalPageProps) || {};
   const { title, description, image, robotsFollow, robotsIndex } = (seo as SeoData) || {};
   const strapiImageUrl = image?.url;
   const imageUrl = strapiImageUrl
     ? `${reactenv('MEDIA_BASE_URL') || ''}${strapiImageUrl}`
     : '/images/svdp-favicon-150.png';
-  const dataportalSettings = extractSettings(settingsState);
-  const heroBlock =
-    blocks &&
-    (blocks.find((block: any) => block.__typename === 'dataportal_Digg_HeroBlock') as IHeroBlock);
+  const hero = blocks?.find((block) => block.__typename === 'dataportal_Digg_Hero') as IHero;
   const isDraft = asPath?.substring(0, 7) === '/drafts';
   const allowSEO = env.envName == 'prod' && !isDraft ? true : false;
+  const appRenderKey = generateRandomKey(16);
   //eslint-disable-next-line
-  // console.log({ menu, footer, diggSettings, breadcrumbState, heading, heroBlock });
+  // console.log({ seo, blocks });
   useEffect(() => {
     if (typeof window !== 'undefined') {
       let clienthost = window?.location?.host || '';
@@ -167,15 +155,6 @@ function Dataportal({
   }, []);
 
   useEffect(() => {
-    if (breadcrumb && breadcrumb.length > 0) {
-      setBreadcrumb({
-        name: heading || name.replace(/{en:|}/g, ''),
-        crumbs: breadcrumb as unknown[] as Breadcrumb[],
-      });
-    }
-  }, [breadcrumb, heading]);
-
-  useEffect(() => {
     if (previousPath) {
       asPath.includes('#')
         ? onHash(asPath)
@@ -185,36 +164,10 @@ function Dataportal({
     }
   }, [asPath]);
 
-  useEffect(() => {
-    menu && setMenu(menu);
-    footer && setFooter(footer);
-    diggSettings && setSettings(diggSettings);
-  }, [menu, footer, diggSettings]);
-
-  // ? Fetch sharedProps when there is no serverside cache
-  useEffect(() => {
-    // Define async function
-    const fetchSharedProps = async () => {
-      const {
-        menu: clientFetchedMenu,
-        footer: clientFetchedFooter,
-        settings: clientFetchedSettings,
-      } = await getSharedProps(browserclient, lang);
-      clientFetchedMenu && setMenu(clientFetchedMenu);
-      clientFetchedFooter && setFooter(clientFetchedFooter);
-      clientFetchedSettings && setSettings(clientFetchedSettings);
-    };
-
-    // * Only fetch if we have a configured browser apollo client and something is missing
-    if (reactenv('APOLLO_URL') && (!menu || !footer || !diggSettings)) {
-      fetchSharedProps();
-    }
-  }, []);
-
   return (
     <ApolloProvider client={client}>
-      <SettingsProvider value={{ ...dataportalSettings, env, setBreadcrumb }}>
-        <ThemeProvider theme={theme}>
+      <SettingsProvider value={{ ...defaultSettings, env, setBreadcrumb, appRenderKey }}>
+        <ThemeProvider theme={dataportalTheme}>
           <LocalStoreProvider>
             <TrackingProvider initalActivation={GetCookiesAccepted() && matomoActivated}>
               <Head>
@@ -227,14 +180,14 @@ function Dataportal({
                   content={generateCSP({ nonce: env.nonce })}
                 />
                 {/* SEO */}
-                <title>{title ? `${title} - Sveriges Dataportal` : 'Sveriges dataportal'}</title>
+                <title>{title ? `${title} - Sveriges Dataportal` : 'Sveriges Dataportal'}</title>
                 <meta
                   property="og:title"
-                  content={title ? `${title} - Sveriges Dataportal` : 'Sveriges dataportal'}
+                  content={title ? `${title} - Sveriges Dataportal` : 'Sveriges Dataportal'}
                 />
                 <meta
                   name="twitter:title"
-                  content={title ? `${title} - Sveriges Dataportal` : 'Sveriges dataportal'}
+                  content={title ? `${title} - Sveriges Dataportal` : 'Sveriges Dataportal'}
                 />
                 <meta
                   name="description"
@@ -276,7 +229,7 @@ function Dataportal({
                 />
                 <meta
                   name="og:site_name"
-                  content={dataportalSettings.siteName || defaultSettings.siteName}
+                  content={defaultSettings.siteName}
                 />
                 <meta
                   name="language"
@@ -297,7 +250,7 @@ function Dataportal({
                 />
                 <meta
                   name="theme-color"
-                  content={theme.primary}
+                  content={theme.primary || '#171A21'}
                 />
                 <link
                   rel="apple-touch-icon"
@@ -306,10 +259,6 @@ function Dataportal({
                 <meta
                   name="apple-mobile-web-app-status-bar"
                   content={theme.primary}
-                />
-                <meta
-                  name="theme-color"
-                  content="#171A21"
                 />
                 <link
                   rel="icon"
@@ -361,13 +310,14 @@ function Dataportal({
                   display: flex;
                   flex-direction: column;
                   min-height: 100vh;
-                  background-color: white;
+                  background-color: ${colorPalette.gray900};
+                  contain: paint;
                 `}
               >
                 <CookieBanner />
                 <SkipToContent text={t('skiptocontent')} />
                 <Header
-                  menu={menuState}
+                  menu={undefined}
                   env={env}
                 />
                 <noscript>
@@ -388,7 +338,7 @@ function Dataportal({
                         text-align: center;
                       `}
                     >
-                      {dataportalSettings.noScriptContent}
+                      {defaultSettings.noScriptContent}
                     </span>
                   </div>
                 </noscript>
@@ -400,11 +350,11 @@ function Dataportal({
                     `}
                     className="main"
                   >
-                    {heroBlock && <HeroBlock {...heroBlock} />}
+                    {hero && <Hero {...hero} />}
                     <Component {...pageProps} />
                   </main>
                 </ErrorBoundary>
-                <Footer columns={footerState?.columns || []} />
+                <Footer />
               </div>
             </TrackingProvider>
           </LocalStoreProvider>
@@ -417,11 +367,9 @@ function Dataportal({
 Dataportal.getInitialProps = async (appContext: AppContext) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
-  const { menu, footer, settings } = await getSharedProps(client, appContext.router.locale || 'sv');
-
   const host = absoluteUrl(appContext.ctx.req)?.host;
 
-  return { ...appProps, menu, footer, settings, host };
+  return { ...appProps, host };
 };
 
 export default Dataportal;

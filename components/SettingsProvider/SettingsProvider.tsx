@@ -1,16 +1,16 @@
 import React from 'react';
 import { EnvSettings, SettingsUtil } from '../../env';
-import { Settings_dataportal_Digg_Settings } from '../../graphql/__generated__/Settings';
-import { BreadcrumbProps } from '../Breadcrumb';
+import { BreadcrumbProps } from '../Navigation';
 
 interface SettingsContext extends DataportalSettings {
   env: EnvSettings;
   setBreadcrumb?: React.Dispatch<React.SetStateAction<BreadcrumbProps>>;
+  appRenderKey: string;
 }
 
-export const extractSettings = (
-  diggSettings: Settings_dataportal_Digg_Settings
-): DataportalSettings => {
+export const extractSettings = (diggSettings: {
+  items: { key: string; value: string }[];
+}): DataportalSettings => {
   return {
     siteName:
       diggSettings?.items?.find((s) => s?.key === 'sitename')?.value || defaultSettings.siteName,
@@ -22,7 +22,7 @@ export const extractSettings = (
       diggSettings?.items?.find((s) => s?.key === 'cookieInformation')?.value || '',
     cookieMoreInfoLink:
       diggSettings?.items?.find((s) => s?.key === 'cookieMoreInfoLink')?.value || '',
-    matomoSiteId: diggSettings?.items?.find((s) => s?.key === 'matomoSiteId')?.value || '',    
+    matomoSiteId: diggSettings?.items?.find((s) => s?.key === 'matomoSiteId')?.value || '',
   };
 };
 
@@ -32,9 +32,10 @@ export const defaultSettings: SettingsContext = {
   pageNotFoundHeading: '',
   pageNotFoundText: '',
   noScriptContent: '',
-  cookieInformation: '',
-  cookieMoreInfoLink: '',
-  matomoSiteId: '-1',  
+  cookieInformation: 'cookie-text',
+  cookieMoreInfoLink: '/om-webbplatsen/om-kakor',
+  matomoSiteId: '-1',
+  appRenderKey: '',
 };
 
 export const SettingsContext = React.createContext<SettingsContext>(defaultSettings);

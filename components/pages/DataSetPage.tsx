@@ -4,8 +4,6 @@ import ShowMoreText from 'react-show-more-text';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import { SettingsContext } from '../SettingsProvider';
-import { initBreadcrumb } from '../../pages/_app';
-import { linkBase } from '../../utilities';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import Head from 'next/head';
 import { Heading } from '@digg/design-system';
@@ -42,7 +40,7 @@ export const DataSetPage: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     setBreadcrumb &&
       setBreadcrumb({
         name: entry.title,
@@ -58,7 +56,7 @@ export const DataSetPage: React.FC = () => {
     return () => {
       setBreadcrumb && setBreadcrumb(initBreadcrumb);
     };
-  }, [entry]);
+  }, [entry]); */
 
   useEffect(() => {
     if (postscribe) {
@@ -85,9 +83,9 @@ export const DataSetPage: React.FC = () => {
 
           function getApiExploreUrl(entryid,apientryid)
           {
-            return '/${lang}/${t(
-            'routes|datasets$path'
-          )}/${cid}_'+entryid+'/${name}/apiexplore/'+apientryid;
+            return '/${t(
+              'routes|datasets$path'
+            )}/${cid}_'+entryid+'/${name}/apiexplore/'+apientryid;
           }          
           
           window.__entryscape_config = [{
@@ -389,10 +387,15 @@ export const DataSetPage: React.FC = () => {
         />
       </Head>
       <div className="detailpage__wrapper">
-        {/* Left column */}
-        <div className="detailpage__wrapper--leftcol">
+        <div className="detailpage__header">
           {/* Title */}
-          <Heading>{entry.title}</Heading>
+          <Heading
+            weight="light"
+            size={'3xl'}
+            color="pinkPop"
+          >
+            {entry.title}
+          </Heading>
 
           {/* Publisher */}
           <script
@@ -430,7 +433,7 @@ export const DataSetPage: React.FC = () => {
           </div>
 
           {/* Description */}
-          <div className="description">
+          <div className="description">          
             <ShowMoreText
               lines={8}
               more={t('pages|datasetpage$view_more')}
@@ -443,114 +446,120 @@ export const DataSetPage: React.FC = () => {
             </ShowMoreText>
           </div>
 
-          {/* Use data - header */}
-          <Heading
-            level={2}
-            className="hbbr"
-          >
-            {t('pages|datasetpage$use-data')}
-          </Heading>
+                            {/* Left column */}
+                            <div className="detailpage__wrapper--leftcol">
+            {/* Use data - header */}
+            <Heading
+              level={2}
+              className="hbbr"
+            >
+              {t('pages|datasetpage$use-data')}
+            </Heading>
 
-          {/* Distribution list */}
-          <div
-            className="distribution__list"
-            data-entryscape="distributionListCustom"
-            data-entryscape-registry="true"
-          ></div>
+            {/* Distribution list */}
+            <div
+              className="distribution__list"
+              data-entryscape="distributionListCustom"
+              data-entryscape-registry="true"
+            ></div>
 
-          {/* Dataset map */}
-          <div
-            className="dataset__map"
-            data-entryscape="view"
-            data-entryscape-rdformsid="dcat:dcterms:spatial_bb_da"
-            data-entryscape-label="false"
-          ></div>
+            {/* Dataset map */}
+            <div
+              className="dataset__map"
+              data-entryscape="view"
+              data-entryscape-rdformsid="dcat:dcterms:spatial_bb_da"
+              data-entryscape-label="false"
+            ></div>
 
-          {/* Questions  or comments */}
-          <div className="contact__publisher hbbr">
-            <Heading level={3}>{t('pages|datasetpage$contact-publisher')}</Heading>
-            <p className="text-md">
-              {t('pages|datasetpage$contact-publisher-text')}
-              {t('pages|datasetpage$contact-publisher-text2')}{' '}
-              <a
-                className="text-md link"
-                href="https://community.dataportal.se/"
-                lang="en"
-              >
-                community
-              </a>
-              .
-            </p>
+            {/* Questions  or comments */}
+            <div className="contact__publisher hbbr">
+              <Heading level={3}>{t('pages|datasetpage$contact-publisher')}</Heading>
+              <p className="">
+                {t('pages|datasetpage$contact-publisher-text')}
+                {t('pages|datasetpage$contact-publisher-text2')}{' '}
+                <a
+                  className="text-md link"
+                  href="https://community.dataportal.se/"
+                  lang="en"
+                >
+                  community
+                </a>
+                .
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Right column */}
-        <div className="detailpage__wrapper--rightcol hbbr">
-          {/* About dataset - wrapper  */}
-          <div className="detailpage__wrapper--rightcol-info text-base">
-            <Heading
-              level={2}
-              size="md"
-            >
-              {t('pages|datasetpage$about-dataset')}
-            </Heading>
+          {/* Right column */}
+          <div className="detailpage__wrapper--rightcol hbbr">
+            {/* About dataset - wrapper  */}
+            <div className="detailpage__wrapper--rightcol-info text-base">
+              <Heading
+                level={2}
+              >
+                {t('pages|datasetpage$about-dataset')}
+              </Heading>
 
-            {/* About dataset */}
-            <script
-              type="text/x-entryscape-handlebar"
-              data-entryscape="true"
-              data-entryscape-component="template"
-              dangerouslySetInnerHTML={{
-                __html: `
+              {/* About dataset */}
+              <script
+                type="text/x-entryscape-handlebar"
+                data-entryscape="true"
+                data-entryscape-component="template"
+                dangerouslySetInnerHTML={{
+                  __html: `
                                     <div class="viewMetadata">
                                       {{viewMetadata 
                                       template="dcat:Dataset" 
                                       filterpredicates="dcterms:title,dcterms:description,dcterms:publisher,dcat:bbox,dcterms:spatial,dcterms:provenance"}}
                                     </div>
                                   `,
-              }}
-            ></script>
-          </div>
+                }}
+              ></script>
+            </div>
 
-          {/* Catalog informaton wrapper */}
-          <div className="detailpage__wrapper--rightcol-info text-base">
-            <Heading
-              level={2}
-              size={'md'}
-            >
-              {t('pages|datasetpage$catalog')}
-            </Heading>
+            {/* Catalog informaton wrapper */}
+            <div className="detailpage__wrapper--rightcol-info text-base">
+              <Heading
+                level={2}
+                size={'md'}
+              >
+                {t('pages|datasetpage$catalog')}
+              </Heading>
 
-            {/* Catalog */}
-            <script
-              type="text/x-entryscape-handlebar"
-              data-entryscape="true"
-              data-entryscape-block="template"
-              dangerouslySetInnerHTML={{
-                __html: `{{viewMetadata 
+              {/* Catalog */}
+              <script
+                type="text/x-entryscape-handlebar"
+                data-entryscape="true"
+                data-entryscape-block="template"
+                dangerouslySetInnerHTML={{
+                  __html: `{{viewMetadata 
                                     relationinverse="dcat:dataset" 
                                     onecol=true 
                                     template="dcat:OnlyCatalog"                               
                                     filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi"
                                     }}`,
-              }}
-            ></script>
-          </div>
+                }}
+              ></script>
+            </div>
 
-          {/* Download RDF */}
-          <script
-            className="download__rdf"
-            type="text/x-entryscape-handlebar"
-            data-entryscape="true"
-            data-entryscape-block="template"
-            dangerouslySetInnerHTML={{
-              __html: `
+            {/* Download RDF */}
+            <script
+              className="download__rdf"
+              type="text/x-entryscape-handlebar"
+              data-entryscape="true"
+              data-entryscape-block="template"
+              dangerouslySetInnerHTML={{
+                __html: `
                               <a class="download__rdf--link matomo_download text-md link" target="_blank" href="{{metadataURI}}?recursive=dcat">${t(
                                 'pages|datasetpage$rdf'
                               )}</a>
                               `,
-            }}
-          ></script>
+              }}
+            ></script>
+          </div>
+
+
+        <div className="detailpage__columns">
         </div>
       </div>
     </div>

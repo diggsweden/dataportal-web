@@ -31,6 +31,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 *.log
+.hintrc
 
 # local env files
 .env
@@ -46,3 +47,12 @@ yarn-error.log*
 *.tsbuildinfo
 
 __ENV.js
+
+# yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

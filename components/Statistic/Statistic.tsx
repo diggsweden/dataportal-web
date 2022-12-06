@@ -119,7 +119,7 @@ export const Statistic: React.FC = () => {
             level={2}
             size="lg"
           >
-            {t('statistic$top')} {stats.topItemsToShow} {t('statistic$top-organizations')}
+            {t('statistic$top-organizations')}
           </Heading>
 
           <div className="top-list">
@@ -133,7 +133,7 @@ export const Statistic: React.FC = () => {
                     key={'org-' + index}
                     listText={stats.labels && stats.labels[index]}
                     listNumber={item}
-                    listUrl={`/${lang}/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${
+                    listUrl={`/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${
                       stats.values && encodeURIComponent(stats.values[index])
                     }%7C%7Cfalse%7C%7Curi%7C%7COrganisationer%7C%7C${
                       stats.labels && stats.labels[index]
@@ -150,7 +150,7 @@ export const Statistic: React.FC = () => {
             level={2}
             size="lg"
           >
-            {t('statistic$top')} {stats.topItemsToShow} {t('statistic$top-categories')}
+            {t('statistic$top-categories')}
           </Heading>
 
           <div className="top-list">
@@ -162,7 +162,7 @@ export const Statistic: React.FC = () => {
                       key={'cat-' + index}
                       listText={stats.labelsTheme && stats.labelsTheme[index]}
                       listNumber={item}
-                      listUrl={`/${lang}/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7C${
+                      listUrl={`/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7C${
                         stats.valuesTheme && encodeURIComponent(stats.valuesTheme[index])
                       }%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7C${
                         stats.labelsTheme && stats.labelsTheme[index]

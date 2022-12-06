@@ -18,7 +18,7 @@ export const SearchBlock: React.FC = () => {
           <form
             className="startpage-form"
             method="GET"
-            action={`/${lang}/datasets`}
+            action={`/datasets`}
           >
             <label
               className="screen-reader"
@@ -76,7 +76,7 @@ export const SearchBlock: React.FC = () => {
             <span className="row">
               <Link
                 aria-label={t('search$specifications')}
-                href={`/${lang}/specifications?p=1&q=&f=`}
+                href={`/specifications?p=1&q=&f=`}
                 locale={lang}
               >
                 <a className="text-md font-bold">{t('search$specifications')} </a>

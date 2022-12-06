@@ -1,97 +1,63 @@
 @import '~@digg/design-system/lib/sass/variables';
 
-.linkblock {
-  list-style: none;
-  padding: 0rem;
-  margin-top: $space-12;
-  margin-bottom: $space-12;
+.puffblock {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  padding-bottom: $space-4;
+
+  @media screen and (min-width: $media-md) {
+    flex-direction: row;
+  }
 
   li {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: $space-4;
-    padding-right: $space-2;
+    flex-direction: column;  
     transition: 0.1s;
+    max-height: fit-content;   
+    width: 100%;      
+    padding: $space-6;
+    justify-content: flex-start;
+    
+    &:not(:last-child) {
+      margin-bottom: $space-6;
 
-    &:nth-of-type(1) {
-      background-color: $clr-orange400;
+      @media screen and (min-width: $media-md){
+        margin-bottom: 0;
+        margin-right: $space-6;
+      }
     }
 
-    &:nth-of-type(2) {
-      background-color: $clr-orange200;
-    }
+    .puff-heading{
+      display: flex;
+      justify-content: space-between;
 
-    &:nth-of-type(3) {
-      background-color: $clr-orange300;
-    }
+      span{
+        align-self: flex-start;
+      } 
 
-    &:nth-of-type(4) {
-      background-color: $clr-orange200;
-    }
+      a{
+        margin-bottom: 0;
+        text-decoration: underline;
+      text-decoration-color: $clr-pinkPop;
+      }
+    }    
 
-    &:nth-of-type(5) {
-      background-color: $clr-orange400;
-    }
+    .puff-body{           
+      visibility: hidden;
+      margin: 0;
+      height: 0;
+      max-height: 10rem;   
+      overflow: hidden;      
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3; // max nb lines to show
+      -webkit-box-orient: vertical;
 
-    &:nth-of-type(6) {
-      background-color: $clr-orange300;
-    }
-
-    &:nth-of-type(7) {
-      background-color: $clr-orange200;
-    }
-
-    &:nth-of-type(8) {
-      background-color: $clr-orange400;
-    }
-
-    &:nth-of-type(9) {
-      background-color: $clr-orange200;
-    }
-
-    &:nth-of-type(10) {
-      background-color: $clr-orange300;
-    }
-
-    &:nth-of-type(11) {
-      background-color: $clr-orange400;
-    }
-
-    &:nth-of-type(12) {
-      background-color: $clr-orange200;
-    }
-
-    &:nth-of-type(13) {
-      background-color: $clr-orange300;
-    }
-
-    &:nth-of-type(14) {
-      background-color: $clr-orange200;
-    }
-
-    &:nth-of-type(15) {
-      background-color: $clr-orange400;
-    }
-
-    &:nth-of-type(16) {
-      background-color: $clr-orange300;
-    }
-
-    &:nth-of-type(17) {
-      background-color: $clr-orange200;
-    }
-
-    &:nth-of-type(18) {
-      background-color: $clr-orange300;
-    }
-
-    &:nth-of-type(19) {
-      background-color: $clr-orange400;
-    }
-
-    &:nth-of-type(20) {
-      background-color: $clr-orange200;
+      @media screen and (min-width: $media-md) {
+        visibility: visible;
+        height: 100%;
+      }     
     }
 
     @media screen and (min-width: $media-sm) {
@@ -99,28 +65,98 @@
       padding-right: $space-4;
     }
 
-    &:hover {
+    .theme-svg{
+      visibility: hidden;
+      height: 0;
+    }
+
+    @media screen and (min-width: $media-md) {
+      max-width: 33%;
+      .theme-svg{
+        visibility: visible;
+        height: fit-content;
+        padding-bottom: 1rem;
+      }
+      &:not(:last-child) {
+        margin-right: $space-6;
+      }
+    }
+
+    &:hover{
       cursor: pointer;
       filter: brightness(98%);
+
+      a{
+        color: $clr-white;
+        text-decoration: none;
+      }
+      svg{
+        fill: $clr-white;
+      }
     }
 
     a {
       display: block;
-      color: $clr-gray900;
       text-decoration: none;
-      padding-right: $space-4;
       word-break: break-word;
       -webkit-hyphens: auto;
       -ms-hyphens: auto;
       hyphens: auto;
+      transition: color 0.1s ease-in-out;
+      align-self: center; 
+
+      &::first-letter{
+        text-transform: uppercase;
+      }
+    }
+    svg{
+      transition: fill 0.1s ease-in-out;
+    }
+    span {
+      border-bottom: none;      
+    }
+  }
+}
+
+.linkblock{
+  padding: 0;  
+
+  li{
+    display: flex;    
+    margin-bottom: $space-2;
+    
+    list-style-type: none;    
+    &:before {
+      content: "";
+      display: inline-block;
+      width: 1.625rem;
+      min-width: 1.625rem;
+      height: 1.625rem;
+      min-height: 1.625rem;
+      margin-right: $space-3;
+      background-color: $clr-pinkPop;
     }
 
-    span {
-      height: 1.5rem;
-      border-bottom: none;
+    //Fix so that the before element does not get squished when the text is too long in mobile
+    span{
+      max-width: 85%;      
+      @media screen and (min-width: $media-md) {
+        max-width: 100%;
+      }
 
-      svg {
-        width: fit-content;
+      &::first-letter{
+        text-transform: uppercase;
+      }
+    }
+
+    a{
+      color: $clr-white;
+      text-decoration: underline;       
+
+      transition: 0.1s;
+      &:hover{
+        color: $clr-white;
+        text-decoration: none;
       }
     }
   }

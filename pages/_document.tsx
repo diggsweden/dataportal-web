@@ -3,9 +3,8 @@ import { GlobalStyles } from '../styles/GlobalStyles';
 import { ApolloProvider } from '@apollo/client';
 import { TrackingProvider, LocalStoreProvider, SettingsProvider } from '../components';
 import { defaultSettings } from '../components/SettingsProvider/SettingsProvider';
-import { client } from '../graphql';
+import { client } from '../graphql/client';
 import {
-  theme,
   ThemeProvider,
   CacheProvider,
   createCache,
@@ -14,14 +13,15 @@ import {
 import { SettingsUtil } from '../env';
 import { renderToString } from 'react-dom/server';
 import absoluteUrl from 'next-absolute-url';
+import { dataportalTheme } from '../utilities';
 
 // @ts-ignore
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage;
 
-    const key = 'css';    
-    const cache = createCache({ key: key, nonce: SettingsUtil.getCurrent().nonce});
+    const key = 'css';
+    const cache = createCache({ key: key, nonce: SettingsUtil.getCurrent().nonce });
     const { extractCritical } = createEmotionServer(cache);
 
     let styles = '';
@@ -37,11 +37,11 @@ class MyDocument extends Document {
             const frontend = (
               <ApolloProvider client={client}>
                 <SettingsProvider value={{ ...defaultSettings, env }}>
-                  <ThemeProvider theme={theme}>
+                  <ThemeProvider theme={dataportalTheme}>
                     <LocalStoreProvider>
                       <TrackingProvider initalActivation={false}>
                         <CacheProvider value={cache}>
-                          <GlobalStyles theme={theme} />
+                          <GlobalStyles theme={dataportalTheme} />
                           <App {...props} />
                         </CacheProvider>
                       </TrackingProvider>
@@ -71,7 +71,7 @@ class MyDocument extends Document {
             nonce={SettingsUtil.getCurrent().nonce}
             data-emotion={`${key} ${emotionIds.join(' ')}`}
             dangerouslySetInnerHTML={{ __html: styles }}
-          ></style>          
+          ></style>
         </>
       ),
     };
@@ -85,6 +85,7 @@ class MyDocument extends Document {
             nonce={SettingsUtil.getCurrent().nonce}
             type="text/javascript"
             src="/__ENV.js"
+            async
           />
           <link
             rel="preload"
@@ -114,10 +115,20 @@ class MyDocument extends Document {
             type="font/woff"
             crossOrigin="anonymous"
           />
+          <link 
+            rel="preconnect" 
+            href="https://editera.dataportal.se"
+            crossOrigin="anonymous"
+          />    
+          <link 
+            rel="preconnect" 
+            href="https://admin.dataportal.se"
+            crossOrigin="anonymous"
+          />                    
         </Head>
         <body>
-          <Main />          
-          <NextScript nonce={SettingsUtil.getCurrent().nonce} />          
+          <Main />
+          <NextScript nonce={SettingsUtil.getCurrent().nonce} />
         </body>
       </Html>
     );

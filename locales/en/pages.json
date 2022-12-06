@@ -1,28 +1,48 @@
 {
   "startpage": {
+    "heading": "Sveriges Dataportal",
+    "preamble": "Sveriges Dataportal is for those of you who have data to share, for those of you who already are involved in data driven development and innovation, as well as for those of you who have just begun to think about how the combined power of our data can move society forward.",
     "search_placeholder": "Search",
     "seo_description": "Sweden's national data portal for finding, exploring and using data from the public and private sectors",
-    "seo_title": "The Swedish dataportal",
+    "seo_title": "Sveriges Dataportal",
     "search_title_1": "Search and explore data from Sweden",
-    "search_title_2": "data from Sweden",
     "explore_datasets": "Explore datasets and APIs",
     "explore_concepts": "Explore concepts and terminologies",
     "explore_specs": "Explore specifications of information and data models",
-    "coming_soon": "Coming soon",
     "search_datasets_format": "Search datasets in the {{category}} category",
     "datasets_by_category": "Data by categories",
-    "social_meta_title": "The Swedish dataportal",
-    "social_meta_description": "Sweden's national data portal for finding, exploring and using data from the public and private sectors"
+    "social_meta_title": "Sveriges Dataportal",
+    "social_meta_description": "Sveriges Dataportal for finding, exploring and using data from the public and private sectors",
+    "data-api-header": "Data & APIs",
+    "open-source-header": "Open Source",
+    "public-ai-header": "Public AI",
+    "current-news": "Publications"
+  },
+  "ai": {
+    "heading": "",
+    "preamble": "",
+    "model": "",
+    "model_description": ""
+  },
+  "data": {
+    "heading": "Data & APIs",
+    "preamble": "Data is a national resource for the development of society, industry and the public sector. It is a path to transparency, innovation and growth that benefits the entire society created by citizens, businesses and the government bodies together.",
+    "data-areas_text": "Data areas"
+  },
+  "os": {
+    "heading": "Open Source",
+    "preamble": "Open source significantly increases the pace of innovation as actors can co-develop, adapt and build on existing solutions."
+  },
+  "listpage": {
+    "no-articles": "No articles to show at the moment"
   },
   "statistic": {
     "statistic-header": "Statistics of the data portal",
     "dataset-numbers": "Data per month",
     "statistic-numbers": "Statistics at a glance",
-    "top-organizations": "organizations",
-    "top-categories": "categories",
-    "top": "Top",
+    "top-organizations": "Organizations with the most datasets",
+    "top-categories": "Categories with the most datasets",
     "statistic-link": "Description of statistics",
-    "graph-screenreader": "The following information is also avaliable in text. Follow the link Description of statistics",
     "statistic-page-text": "Statistics visualized on the startpage is here available in text. The statistics shows the amount of data on Sweden´s dataportal per month, top 5 organizations and categories.",
     "statistic-page-header": "Statistics",
     "statistic-page-numberofdatasets": "The amount of data on Sweden´s dataportal today: ",
@@ -131,16 +151,16 @@
   "dataservicepage": {
     "api": "About API"
   },
-  "articles": {
-    "news": "news",
-    "articles": "News",
-    "view-all": "View all news",
-    "social_meta_title": "News - The Swedish dataportal",
-    "social_meta_description": "News on The Swedish dataportal"
+  "publications": {
+    "text": "publications",
+    "title": "Latest topics",
+    "view-all": "View all publications",
+    "social_meta_title": "Publications - Sveriges Dataportal",
+    "social_meta_description": "Publications on Sveriges Dataportal"
   },
   "redirect": {
     "pagenotfound_header": "Oops, the page could not be found!",
-    "pagenotfound-label": "The Swedish dataportal",
+    "pagenotfound-label": "Sveriges Dataportal",
     "pagenotfound-text": "This may be because oppnadata.se moved to dataportal.se September 23, 2020. Hopefully these links can help you find what you were looking for.",
     "pagenotfound-link": "Home page",
     "pagenotfound-link2": "Search data"

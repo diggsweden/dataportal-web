@@ -1,9 +1,20 @@
+@import '../general/variables.scss';
+@import '~@digg/design-system/lib/sass/variables';
+
 .faqblock {
   .dataportal--accordion {
     &:not(:last-of-type) {
       button,
       dd {
         border-bottom: none;
+      }
+    }
+
+    dt{
+      button{
+        &:focus {
+          @include focusStyleLight;
+        }
       }
     }
   }

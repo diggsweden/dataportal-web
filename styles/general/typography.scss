@@ -1,32 +1,74 @@
 // Typografi
 @import '~@digg/design-system/lib/sass/typography.scss';
+@import '~@digg/design-system/lib/sass/colors.scss';
+@import '~@digg/design-system/lib/sass/variables.scss';
 
 * {
   font-family: 'Ubuntu', sans-serif !important;
 }
 .text-3xl {
-  @include text-3xl;
+  @include text-2xl;
+  @media screen and (min-width: $media-sm) {
+    @include text-3xl;
+  }
+
+  margin-top: 4rem;
+  margin-bottom: 1rem;
 }
 .text-2xl {
-  @include text-2xl;
+  @include text-xl;
+
+  @media screen and (min-width: $media-sm) {
+    @include text-2xl;
+  }
+
+  margin-top: 4rem;
+  margin-bottom: 1rem;
 }
 .text-xl {
-  @include text-xl;
+  @include text-lg;
+  @media screen and (min-width: $media-sm) {
+    @include text-xl;
+  }
+
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 .text-lg {
-  @include text-lg;
+  @include text-md;
+  @media screen and (min-width: $media-sm) {
+    @include text-lg;
+  }
+
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 .text-md {
-  @include text-md;
+  @include text-base;
+  @media screen and (min-width: $media-sm) {
+    @include text-md;
+  }
+
+  margin-bottom: 1rem;
 }
 .text-base {
-  @include text-base;
+  @include text-sm;
+  @media screen and (min-width: $media-sm) {
+    @include text-base;
+  }
+
+  margin-bottom: 1rem;
 }
 .text-sm {
-  @include text-sm;
+  @include text-xs;
+  @media screen and (min-width: $media-sm) {
+    @include text-sm;
+  }
+  margin-bottom: 0.5rem;
 }
 .text-xs {
   @include text-xs;
+  margin-bottom: 0.25rem;
 }
 
 .font-light {
@@ -46,7 +88,11 @@
 }
 
 .link {
-  text-decoration-line: underline;
+  text-decoration-line: underline;  
+}
+
+.heading-link{
+  color: $clr-pinkPop;
 }
 
 .external-link-icon {

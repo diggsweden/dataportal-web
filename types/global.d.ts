@@ -93,3 +93,5 @@ type CSPDirective =
   | 'require-trusted-types-for'
   | 'trusted-types'
   | 'upgrade-insecure-requests';
+
+type DiggDomain = 'ai' | 'data' | 'oppen-kallkod' | 'open-source';

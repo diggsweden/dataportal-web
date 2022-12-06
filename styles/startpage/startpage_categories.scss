@@ -2,24 +2,12 @@
 
 // Style for search categories on startpage
 .categoriesnav__wrapper {
-  background-color: $clr-green300;
-
-  @media screen and (max-width: $media-sm) {
-    display: none;
-  }
-
   .startpage-categories {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    max-width: 980px;
-    padding: 0rem;
-    margin: auto;
-    margin-top: $space-8;
-    margin-bottom: $space-16 + $space-6;
 
     h2 {
-      color: $clr-gray900;
+      color: $clr-white;
       margin-top: $space-8;
     }
 
@@ -29,34 +17,32 @@
       flex-wrap: wrap;
       list-style-type: none;
       padding: 0rem;
-      margin: 0rem;
 
       li {
-        margin-bottom: $space-4;
-        margin-left: 10px;
+        margin-bottom: $space-2;
+        background-color: $clr-gray800;
+        border-radius: $space-16;
+        padding: $space-2 $space-4;
+        margin-right: $space-2;
+        pointer-events: none;
+        transition: all 0.15s ease-in-out;
 
-        &:not(:last-of-type) {
-          a {
-            margin-right: 10px;
-            &:after {
-              content: ',';
-            }
-          }
+        &:hover {
+          background-color: $clr-gray700;
         }
-
         a {
-          color: $clr-gray900;
-          font-size: 1.25rem;
-          line-height: 2rem;
-          text-decoration: underline;
+          color: $clr-white;
+          pointer-events: auto;
+
+          text-decoration: underline transparent;
+          transition: text-decoration-color 150ms;
 
           &:hover {
-            transition: 0.2s;
-            text-decoration: none;
+            text-decoration-color: $clr-white;
           }
 
           &:focus {
-            @include focusStyle;
+            @include focusStyleLight;
           }
         }
       }

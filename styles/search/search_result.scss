@@ -1,6 +1,41 @@
 //Style for searchresults
 @import '~@digg/design-system/lib/sass/variables';
 
+@mixin select-dropdown {
+  color: $clr-white;
+  margin-left: 0;
+  cursor: pointer;
+  border: none;
+  text-align: left;
+  background-color: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  background-position-y: 10px;
+  padding-left: 0;
+  height: 2.75rem;
+  outline-offset: -3px !important;
+  border: 1px solid $clr-pinkPop;
+  border-radius: 2px;
+  margin-right: $space-2;
+  padding-left: $space-2;
+
+  option {
+    color: $clr-gray900;
+  }
+  
+  &:hover {
+    text-decoration: none;
+  }
+
+  option:hover {
+    background: #ff9500 -webkit-linear-gradient(bottom, #ff9500 0%, #ff9500 100%);
+    color: #fff;
+  }
+}
+
 .search-result {
   .search-result-head {
     display: flex;
@@ -54,39 +89,8 @@
         flex-wrap: nowrap;
 
         select {
-          color: $clr-gray900;
-          text-decoration: underline;
-          margin-left: 0;
-          cursor: pointer;
-          border: none;
-          background-color: $clr-white;
-          text-align: left;
-
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
-          background-repeat: no-repeat;
-          background-position-x: 100%;
-          background-position-y: 10px;
-          padding-left: 0;
-          padding-right: 1.5rem;
-          height: 2.75rem;
-          outline-offset: -3px !important;
-
-          @media screen and (min-width: media-md) {
-            padding-left: 0.25rem;
-            margin-left: $space-2;
-            text-align: right;
-          }
-
-          &:hover {
-            text-decoration: none;
-          }
-
-          option:hover {
-            background: #ff9500 -webkit-linear-gradient(bottom, #ff9500 0%, #ff9500 100%);
-            color: #fff;
-          }
+          @include select-dropdown();
+          min-width: 120px;
         }
       }
 
@@ -106,13 +110,12 @@
           padding-left: 12px;
           padding-right: 12px;
           min-width: 0px;
-          background-color: $clr-brown200;
           height: 32px;
           min-width: 50px;
           border-radius: 2px;
           border-color: $clr-green300;
           background-color: $clr-white;
-          color: $clr-gray900;
+          color: $clr-white;
           transition: border-color ease 0.1s;
           transition: background-color ease 0.1s;
 
@@ -135,40 +138,7 @@
         }
 
         select {
-          color: $clr-gray900;
-          text-decoration: underline;
-          margin-left: 0;
-          cursor: pointer;
-          border: none;
-          text-align: left;
-          background-color: $clr-white;
-
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
-          background-repeat: no-repeat;
-          background-position-x: 100%;
-          background-position-y: 10px;
-          padding-left: 0;
-          padding-right: 1.5rem;
-          padding-right: 1.5rem;
-          height: 2.75rem;
-          outline-offset: -3px !important;
-
-          @media screen and (min-width: $media-md) {
-            padding-left: 0.25rem;
-            margin-left: $space-2;
-            text-align: right;
-          }
-
-          &:hover {
-            text-decoration: none;
-          }
-
-          option:hover {
-            background: #ff9500 -webkit-linear-gradient(bottom, #ff9500 0%, #ff9500 100%);
-            color: #fff;
-          }
+          @include select-dropdown();
         }
       }
     }
@@ -196,14 +166,10 @@
         width: 100%;
         padding-top: $space-4;
         padding-bottom: $space-6;
-        background-color: $clr-white;
-        color: $clr-gray900;
+        background-color: transparent;
+        color: $clr-white;
         text-decoration: none;
-        border-bottom: 2px dotted $clr-gray300;
-
-        &:first-of-type {
-          border-top: 2px dotted $clr-gray300;
-        }
+        border-bottom: 1px solid $clr-gray800;
 
         &:hover,
         &:focus {
@@ -212,6 +178,7 @@
 
         .result-theme {
           margin-bottom: 0px;
+          color: $clr-gray500;
 
           &:empty {
             margin-top: -8px;
@@ -228,19 +195,20 @@
           margin-top: $space-2;
           text-decoration: none;
           max-width: 850px;
+          width: -moz-fit-content;
           width: fit-content;
+
+          &::first-letter {
+            text-transform: uppercase;
+          }
 
           h3 {
             //resets the default spacings for headings
             margin-top: 0 !important;
             margin-bottom: 0 !important;
-
             text-decoration: underline;
             word-break: break-word;
-
-            &::first-letter {
-              text-transform: uppercase;
-            }
+            color: $clr-pinkPop;            
 
             &:hover {
               text-decoration: none;
@@ -270,6 +238,10 @@
           margin-bottom: $space-2;
           line-height: $space-6;
           word-break: break-word;
+
+          &:hover {
+            text-decoration: none;
+          }
         }
 
         //Searchresult organisation
@@ -305,36 +277,49 @@
           }
 
           //Colors for format badges
+          .format{
+            border-color: $clr-gray500;
+            color: $clr-gray500;
+          }
+          
           .bc-1 {
-            border-color: $clr-gray300;
+            border-color: $clr-gray500;
+            color: $clr-gray500;
           }
 
           .bc-2 {
-            border-color: $clr-gray300;
+            border-color: $clr-gray500;
+            color: $clr-gray500;
           }
 
           .bc-3 {
-            border-color: $clr-gray300;
+            border-color: $clr-gray500;
+            color: $clr-gray500;
           }
 
           .bc-4 {
-            border-color: $clr-gray300;
+            border-color: $clr-gray500;
+            color: $clr-gray500;
           }
 
           .bc-5 {
-            border-color: $clr-gray300;
+            border-color: $clr-gray500;
+            color: $clr-gray500;
           }
 
           .bc-6 {
-            border-color: $clr-gray300;
+            border-color: $clr-gray500;
+            color: $clr-gray500;
           }
 
           .bc-7 {
-            border-color: $clr-gray300;
+            border-color: $clr-gray500;
+            color: $clr-gray500;
           }
 
           .bc-8 {
-            border-color: $clr-gray300;
+            border-color: $clr-gray500;
+            color: $clr-gray500;
           }
         }
       }
@@ -372,26 +357,14 @@
   width: 100%;
   position: relative;
 
-  button {
-    min-width: 115px;
-
-    &:disabled {
-      color: $clr-green300;
-      border-color: $clr-green300;
-      background-color: $clr-white;
-      cursor: default;
-    }
-  }
-
   .first-page {
     margin-left: 0px;
-    position: absolute;
+    margin-right: 1rem;
   }
 
   .prev-next-page {
     min-width: 300px;
     display: flex;
-    justify-content: center;
     align-items: center;
     margin: auto;
     flex-wrap: wrap;
@@ -470,7 +443,7 @@
     background-color: unset;
     cursor: pointer;
     border: none;
-    color: $clr-gray900;
+    color: $clr-white;
     outline-offset: -3px !important;
     padding-left: 0;
     padding-right: 0;
@@ -482,6 +455,9 @@
 
     svg {
       margin-left: $space-2;
+      rect {
+        fill: $clr-pinkPop;
+      }
     }
 
     &:hover {

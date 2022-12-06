@@ -2,12 +2,14 @@
 //Css for searchhead.
 
 .search-head {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  width: 100%;
   flex-wrap: wrap;
-  margin-bottom: $space-6;
+  margin-top: $space-12;
 
-  div {
-    border-bottom: 2px solid $clr-gray300;
+  @media screen and (min-width: $media-md) {
+   width: fit-content;
   }
 
   @media screen and (max-width: $media-sm) {
@@ -25,7 +27,8 @@
 
   .active {
     font-weight: bold;
-    border-bottom: 2px solid $clr-pink600;
+    margin-bottom: -1px;
+    border-bottom: 3px solid $clr-pinkPop;
 
     &:hover {
       border-color: $clr-pink600;
@@ -34,26 +37,21 @@
 
   div {
     display: flex;
-    justify-content: center;
-
-    &:last-of-type {
-      a {
-        margin-right: 0px;
-        min-width: 155px;
-      }
-    }
+    justify-content: center;  
+    border-bottom: 1px solid $clr-gray600;
 
     a {
       text-decoration: none;
       //   border-bottom: 2px solid $clr-gray300;
       margin-bottom: -2px;
       padding-bottom: 2px;
-      min-width: 149px;
       text-align: center;
+      color: $clr-white;
+      min-width: 149px;
 
       &:hover {
         transition: border-color 0.2s ease-in-out;
-        color: $clr-gray900;
+        color: $clr-white;
         border-color: $clr-pink200;
       }
     }

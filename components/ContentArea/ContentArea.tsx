@@ -1,17 +1,17 @@
 import { Heading } from '@digg/design-system';
-import React, { useContext } from 'react';
-import { LinksBlock as ILinksBlock } from '../../graphql/__generated__/LinksBlock';
-import { SharedContentData_blocks } from '../../graphql/__generated__/SharedContentData';
+import React from 'react';
 import {
-  Start_dataportal_Digg_Start_blocks,
-  Start_dataportal_Digg_Start_blocks_dataportal_Digg_FaqBlock as FAQ,
-  Start_dataportal_Digg_Start_blocks_dataportal_Digg_SharedContentContainer,
-} from '../../graphql/__generated__/Start';
-import { FaqBlock, GroupBlock, LinksBlock, MediaBlock, PuffBlock, TextBlock } from '../blocks';
-import SharedContent from './SharedContent';
+  Containers_dataportal_Digg_Containers_blocks,
+  Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList,
+  Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Faq as FAQ,
+} from '../../graphql/__generated__/Containers';
+import { RelatedContent as IRelatedContent } from '../../graphql/__generated__/RelatedContent';
+import { Module_blocks } from '../../graphql/__generated__/Module';
+import { Faq, RelatedContent, Media, Text } from '../blocks';
+import Modules from './Modules';
 
 interface ContentAreaProps {
-  blocks: (Start_dataportal_Digg_Start_blocks | SharedContentData_blocks | null)[];
+  blocks: (Containers_dataportal_Digg_Containers_blocks | Module_blocks | null)[];
 }
 
 /**
@@ -21,17 +21,17 @@ interface ContentAreaProps {
  * @returns FaqBlocks wrapped in <dl> element
  */
 const handleFaqs = (
-  blocks: (Start_dataportal_Digg_Start_blocks | SharedContentData_blocks | null)[],
+  blocks: (Containers_dataportal_Digg_Containers_blocks | Module_blocks | null)[],
   pos: number
 ) => {
   // skip rendering if previous block was FAQ
   // because then in should already be rendered
   const previousBlock = blocks[pos - 1];
-  if (previousBlock?.__typename === 'dataportal_Digg_FaqBlock') return;
+  if (previousBlock?.__typename === 'dataportal_Digg_Faq') return;
 
   let i = 0;
   // count the number of FAQs to render from the given position
-  while (blocks[pos + i]?.__typename === 'dataportal_Digg_FaqBlock' || i > 500) {
+  while (blocks[pos + i]?.__typename === 'dataportal_Digg_Faq' || i > 500) {
     i++;
   }
 
@@ -44,7 +44,7 @@ const handleFaqs = (
       key={`content-${pos}-${faqGroup[0].id}`}
     >
       {faqGroup.map((faq) => (
-        <FaqBlock
+        <Faq
           {...faq}
           key={faq?.id}
         />
@@ -59,55 +59,41 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ blocks }) => {
       {blocks?.map((block, index) => {
         const { id } = block || {};
         switch (block?.__typename) {
-          case 'dataportal_Digg_PuffBlock':
+          case 'dataportal_Digg_Text':
             return (
-              <PuffBlock
+              <Text
                 {...block}
                 key={id}
               />
             );
-          case 'dataportal_Digg_TextBlock':
+          case 'dataportal_Digg_Media':
             return (
-              <TextBlock
+              <Media
                 {...block}
                 key={id}
               />
             );
-          case 'dataportal_Digg_MediaBlock':
-            return (
-              <MediaBlock
-                {...block}
-                key={id}
-              />
-            );
-          case 'dataportal_Digg_FaqBlock':
+          case 'dataportal_Digg_Faq':
             return handleFaqs(blocks, index);
-          case 'dataportal_Digg_GroupBlock':
-            return (
-              <GroupBlock
-                {...block}
-                key={id}
-              />
-            );
           // ? we handle HeroBlock in _app.tsx
-          case 'dataportal_Digg_HeroBlock':
+          case 'dataportal_Digg_Hero':
             return;
-          case 'dataportal_Digg_LinksBlock':
+          case 'dataportal_Digg_RelatedContent':
             return (
-              <LinksBlock
-                {...(block as ILinksBlock)}
+              <RelatedContent
+                {...(block as IRelatedContent)}
                 key={id}
               />
             );
-          case 'dataportal_Digg_SharedContentContainer':
+          case 'dataportal_Digg_ModuleList':
             const typedBlock =
-              block as Start_dataportal_Digg_Start_blocks_dataportal_Digg_SharedContentContainer;
+              block as Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList;
             return (
-              typedBlock.contents &&
-              typedBlock.contents.map((content) => (
-                <SharedContent
-                  {...content}
-                  key={content.identifier}
+              typedBlock.modules &&
+              typedBlock.modules.map((module) => (
+                <Modules
+                  {...module}
+                  key={module.identifier}
                 />
               ))
             );

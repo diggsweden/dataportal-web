@@ -15,6 +15,8 @@ export interface SeoData_image {
   description: string | null;
   mime: string;
   ext: string;
+  width: number | null;
+  height: number | null;
 }
 
 export interface SeoData {

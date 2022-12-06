@@ -1,92 +1,205 @@
 @import '~@digg/design-system/lib/sass/variables';
 
 header {
-  border-bottom: 1px solid $clr-gray300;
-  position: relative;
+  border-bottom: 1px solid $clr-gray600;
+  background-color: transparent;
+  margin-top: calc($space-4 + $space-1);
+  z-index: 10;
+
+  .header-wrapper {
+    max-width: 82rem;
+    margin: 0 auto;
+  }
+
+  .header__mobile-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: calc(100vh - 5.875rem);
+    margin-top: $space-8;
+
+    a {
+      margin-bottom: $space-8;
+      transform: scale(1);
+      transition: all 0.1s ease-in-out;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    .header__mobile-menu_link {
+      color: $clr-pinkPop;
+    }
+
+    .link-btn {
+      display: flex;
+      justify-content: center;
+      background-color: $clr-gray800;
+    }
+  }
 }
 
 .dataportal-logo {
   svg {
     max-width: 90vw;
+    margin-left: $space-4;
   }
   &:focus {
-    @include focusStyle;
+    @include focusStyleLight;
+  }
+}
+
+.main-bar {
+  transition: padding 0.25s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: auto;
+  justify-content: flex-start;
+
+  .main-bar__right-menu {
+    button {
+      padding-right: 0 !important;
+    }
+  }
+}
+
+.open-close-link {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  justify-items: auto;
+  z-index: 999999999;
+
+  &:hover {
+    cursor: pointer;
   }
 }
 
 .header-box {
-  padding-top: $space-4;
-  padding-bottom: $space-4;
+  max-width: calc(100% - 2rem);
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
-  align-items: center;
   transition: padding 0.25s ease;
   z-index: 1000;
-
-  @media screen and (min-width: $media-sm) {
-    padding-top: $space-6;
-    padding-bottom: $space-6;
-  }
+  margin: auto;
 
   svg {
-    width: 12rem;
-
     @media screen and (min-width: $media-sm) {
       width: 18.75rem;
+    }
+  }
+
+  .right-bar-item {
+    display: none;
+
+    @media screen and (min-width: $media-lg) {
+      display: block;
+    }
+  }
+}
+
+.start-link {
+  font-size: 18px;
+  padding-bottom: $space-4;
+  transition: all 0.25s ease;
+
+  @media screen and (min-width: $media-xl) {
+    padding-right: $space-12;
+  }
+
+  a {
+    color: $clr-white;
+    text-decoration: none;
+  }
+
+  .start-link-text {
+    font-size: 1rem;
+    margin-right: 1rem;
+
+    @media screen and (min-width: $media-sm) {
+      font-size: 1.25rem;
+    }
+
+    @media screen and (min-width: $media-xl) {
+      margin-right: 0rem;
     }
   }
 }
 
 .header-links {
   display: none;
-  align-items: center;
   flex-wrap: wrap;
   position: relative;
 
-  @media screen and (min-width: $media-md) {
+  &.text-base {
+    margin: 0;
+  }
+
+  @media screen and (min-width: $media-lg) {
     display: flex;
     flex-wrap: nowrap;
   }
 
-  .header-link {
-    font-family: Ubuntu !important;
-    color: $clr-gray900;
-    font-size: 16px;
-    margin-top: $space-6;
-    padding-bottom: 2px;
-    text-decoration: none;
+  .search-link {
+    display: flex;
+    align-items: center;
     border-bottom: 2px solid transparent;
-    word-break: keep-all;
-    margin-left: $space-8;
+    height: 1.5rem;
+    transition: all 0.25s ease;
+    color: white;
 
-    &:hover {
-      border-color: $clr-pink200;
+    @media screen and (min-width: $media-lg) {
+      margin-left: $space-8;
     }
 
-    &:focus {
-      @include focusStyle;
+    &:hover {
+      border-color: $clr-pinkPop;
+    }
+
+    .search-link--icon {
+      margin-right: $space-2;
+    }
+  }
+
+  .header-link {
+    font-family: Ubuntu !important;
+    color: white;
+    margin-top: $space-6;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    padding-bottom: $space-4;
+    margin-bottom: -1px; //To make border intersect with parent border
+    word-break: keep-all;
+    margin-left: $space-4;
+    margin-right: $space-4;
+    transition: all 0.25s ease;
+
+    &:hover {
+      border-color: $clr-pinkPop;
     }
 
     //Style for active NavLink
     &.active {
       text-decoration: none;
-      border-bottom: 2px solid $clr-pink600;
+      border-bottom: 3px solid $clr-pinkPop;
     }
 
     @media screen and (min-width: $media-sm) {
-      font-size: 18px;
       margin-top: 0;
     }
 
     @media screen and (min-width: $media-md) {
       &.header-link--top {
         position: absolute;
-        top: -2.75rem;
-        right: 0;
+        top: 2.5rem;
+        right: -12px;
         font-size: 14px;
-        color: #4f4f4f;
-        border-bottom: 1px solid #4f4f4f;
+        color: white;
+        border-bottom: 1px solid $clr-gray600;
         padding-bottom: 0;
         margin-top: 0.5rem;
 
@@ -100,12 +213,12 @@ header {
 
 .menu-bg {
   position: absolute;
-  top: 5.875rem;
+  top: 3.6rem;
   left: 0;
   height: 110vh;
   width: 100%;
   z-index: 3800;
-  background-color: $clr-gray200;
+  background-color: $clr-gray900;
   display: none;
 }
 
@@ -123,18 +236,40 @@ header {
   }
 }
 
+.header__bottom-links {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: calc(100% - 2rem);
+
+  &--link {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-right: $space-2;
+    margin-left: $space-2;
+
+    .search-link--icon {
+      margin-right: $space-2;
+      svg {
+        visibility: visible;
+        height: 20px;
+        width: 20px;
+      }
+    }
+  }
+}
+
 .header-links--active {
   z-index: 4000;
   position: absolute;
-  height: 100vh;
-  top: 5.875rem;
+  top: 4rem;
   left: 0;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
+  overflow-y: auto;
 
-  @media screen and (min-width: $media-md) {
+  @media screen and (min-width: $media-lg) {
     display: none;
   }
 
@@ -142,7 +277,7 @@ header {
     width: 100%;
     padding: $space-4;
     background-color: $clr-white;
-    color: $clr-gray900;
+    color: $clr-white;
     margin-bottom: 2px;
     text-decoration: none;
     border-left: 0px solid $clr-pink600;
@@ -176,5 +311,11 @@ header {
     &:hover {
       border-color: $clr-pink600;
     }
+  }
+
+  svg {
+    visibility: hidden;
+    height: 0;
+    width: 0;
   }
 }

@@ -1,40 +1,60 @@
 {
   "startpage": {
+    "heading": "Sveriges Dataportal för ökad innovationskraft",
+    "preamble": "Dataportalen är till för er som har data, för er som redan använder och utvecklar kring data, såväl som för er som precis har börjat fundera på hur den samlade kraften i vår data kan förflytta samhället framåt.",
     "search_placeholder": "Sök",
     "seo_description": "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor",
-    "seo_title": "Sveriges dataportal",
+    "seo_title": "Sveriges Dataportal",
     "search_title_1": "Sök och utforska data i Sverige",
-    "search_title_2": "data i Sverige",
     "explore_datasets": "Utforska data och API:er",
     "explore_concepts": "Utforska begrepp och terminologier",
     "explore_specs": "Utforska specifikationer av informations- och datamodeller",
-    "coming_soon": "Kommer snart",
     "search_datasets_format": "Sök datamängder inom kategorin {{category}}",
     "datasets_by_category": "Data efter kategorier",
-    "social_meta_title": "Sveriges dataportal",
-    "social_meta_description": "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor"
+    "social_meta_title": "Sveriges Dataportal",
+    "social_meta_description": "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor",
+    "data-api-header": "Data och API:er",
+    "open-source-header": "Öppen källkod",
+    "public-ai-header": "Offentlig AI",
+    "current-news": "Aktuellt"
+  },
+  "ai": {
+    "heading": "Offentlig AI",
+    "preamble": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sed massa sagittis, bibendum justo et, lacinia libero. Pellentesque non magna consectetur, ornare erat at, cursus nibh. Vestibulum gravida ultricies sagittis.",
+    "model": "Förtroendemodellen",
+    "model_description": "Lorem ipsum dolor sit amet"
+  },
+  "data": {
+    "heading": "Data för ökad innovationskraft",
+    "preamble": "Data är en strategisk resurs för samhällets utveckling. Det är en väg till transparens, innovation och tillväxt som skapas av medborgarna, näringslivet, akademin och myndigheter tillsammans. Här kan du utforska data och API:er, begrepp och terminologier samt specifikationer (informations- och datamodeller)",
+    "data-areas_text": "Dataområden"
+  },
+  "os": {
+    "heading": "Öppen källkod",
+    "preamble": "Öppen Källkod (även kallad open source och öppen programvara) ökar betydligt innovationstakten då aktörer kan samutveckla, anpassa och bygga vidare på befintliga lösningar."
+  },
+  "listpage": {
+    "no-articles": "Det finns inga artiklar att visa för tillfället."
   },
   "statistic": {
     "statistic-header": "Statistik på dataportalen",
     "dataset-numbers": "Data per månad",
     "statistic-numbers": "Portalen i siffror",
-    "top-organizations": "organisationer",
-    "top-categories": "kategorier",
-    "top": "Topp",
+    "top-organizations": "Organisationer med flest datamängder",
+    "top-categories": "Kategorier med flest datamängder",
     "statistic-link": "Beskrivning av statistik",
-    "graph-screenreader": "Grafen nedan finns även presenterad i text. Följ länken Beskrivning av statistik",
-    "statistic-page-text": "Statistiken som visualiseras på startsidan presenteras här i textform.  Statistiken visar mängden data på Sveriges dataportal per månad, topp 5 gällande datamängder för organisationer och kategorier.",
+    "statistic-page-text": "Statistiken som visualiseras på startsidan presenteras här i textform.  Statistiken visar mängden data på Sveriges Dataportal per månad, topp 5 gällande datamängder för organisationer och kategorier.",
     "statistic-page-header": "Statistik",
     "statistic-page-numberofdatasets": "Antal data på dataportalen idag: ",
-    "statistic-page-seotitle": "Statistik - Sveriges dataportal",
+    "statistic-page-seotitle": "Statistik - Sveriges Dataportal",
     "statistic-page-link": "statistik",
     "social_meta_title": "Statistik på dataportalen",
     "social_meta_description": "Statistiken som visualiseras på startsidan presenteras här i textform"
   },
   "highlight": {
-    "highlight-header": "Sveriges dataportal för ökad innovationskraft",
+    "highlight-header": "Sveriges Dataportal för ökad innovationskraft",
     "highlight-text": "Data är en nationell resurs för samhällets, näringslivets och den offentliga sektorns utveckling. Det är en väg till transparens, innovation och tillväxt som gynnar hela samhället som skapas av medborgarna, näringslivet och myndigheter tillsammans.",
-    "highlight-text2": "Sveriges dataportal är ett nav som samordnar och tillgängliggör data som tillhandahålls av offentliga, privata och civilsamhällsorganisationer. Här finns enbart informationen om datamängderna. Själva datamängderna hämtas eller efterfrågas via länkar för åtkomst hos den organisation som ansvarar för den."
+    "highlight-text2": "Sveriges Dataportal är ett nav som samordnar och tillgängliggör data som tillhandahålls av offentliga, privata och civilsamhällsorganisationer. Här finns enbart informationen om datamängderna. Själva datamängderna hämtas eller efterfrågas via länkar för åtkomst hos den organisation som ansvarar för den."
   },
   "search": {
     "search": "Sök data",
@@ -88,19 +108,19 @@
     "search-datasets": "Sök",
     "datasets": "datamängder",
     "social_meta_title": "Sök data & API:er",
-    "social_meta_description": "Data & API:er på Sveriges dataportal"
+    "social_meta_description": "Data & API:er på Sveriges Dataportal"
   },
   "concepts": {
     "search-concept": "Sök",
     "concepts": "begrepp",
     "social_meta_title": "Sök begrepp",
-    "social_meta_description": "Begrepp på Sveriges dataportal"
+    "social_meta_description": "Begrepp på Sveriges Dataportal"
   },
   "specifications": {
     "search-specifications": "Sök",
     "specifications": "specifikationer",
     "social_meta_title": "Sök specifikationer",
-    "social_meta_description": "Specifikationer på Sveriges dataportal"
+    "social_meta_description": "Specifikationer på Sveriges Dataportal"
   },
   "notfoundpage": {
     "heading": "404 - Sidan hittades inte",
@@ -132,17 +152,17 @@
   "dataservicepage": {
     "api": "Om API"
   },
-  "articles": {
-    "news": "nyheter",
-    "articles": "Nyheter",
-    "view-all": "Visa alla nyheter",
-    "social_meta_title": "Nyheter - Sveriges dataportal",
-    "social_meta_description": "Nyheter på Sveriges dataportal"
+  "publications": {
+    "text": "publikationer",
+    "title": "Aktuellt",
+    "view-all": "Visa alla publikationer",
+    "social_meta_title": "Publikationer - Sveriges Dataportal",
+    "social_meta_description": "Publikationer på Sveriges Dataportal"
   },
   "redirect": {
     "pagenotfound_header": "Oj, sidan kan inte hittas!",
     "pagenotfound-text": "Det kan bero på att oppnadata.se flyttade till dataportal.se den 23 september 2020. Förhoppningsvis kan de här länkarna hjälpa dig att hitta det du söker.",
-    "pagenotfound-label": "Sveriges dataportal",
+    "pagenotfound-label": "Sveriges Dataportal",
     "pagenotfound-link": "Startsidan",
     "pagenotfound-link2": "Sök data"
   },

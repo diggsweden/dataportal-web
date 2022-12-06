@@ -4,22 +4,22 @@
 
 //Swagger colors
 $swagger-green: #258659;
-$swagger-green-bg: rgba(73, 204, 144, 0.3);
+$swagger-green-bg: #258659;
 
 $swagger-blue: #0173e4;
-$swagger-blue-bg: rgba(97, 175, 254, 0.3);
+$swagger-blue-bg: #0173e4;
 
 $swagger-orange: #a86629;
-$swagger-orange-bg: rgba(252, 161, 48, 0.3);
+$swagger-orange-bg: #a86629;
 
 $swagger-grey: #989898;
-$swagger-grey-bg: #ebebeb;
+$swagger-grey-bg: #989898;
 
 $swagger-red: #ed0707;
-$swagger-red-bg: rgba(249, 62, 62, 0.2);
+$swagger-red-bg: #ed0707;
 
 $swagger-turquoise: #12827b;
-$swagger-turquoise-bg: #e3eeed;
+$swagger-turquoise-bg: #12827b;
 
 $swagger-required-red: #cc0000;
 
@@ -28,8 +28,9 @@ $authorize-btn-green: #258659;
 //Accordion badge in mobile
 @mixin accordion-badge_sm {
   @media screen and (max-width: $media-sm) {
-    padding: 0.95rem 0.6rem;
-    min-width: max-content;
+    min-width: 5.625rem;
+    height: 44px;
+    border-radius: 0;
   }
 }
 
@@ -38,6 +39,23 @@ $authorize-btn-green: #258659;
   @media screen and (max-width: $media-sm) {
     padding: 0;
     padding-right: 0.5rem;
+  }
+}
+
+@mixin section-header($divider-color) {
+  .opblock-section-header {   
+    position: relative;
+      &::after{
+        background: $divider-color;
+        height: 2px;
+        width: 97%;
+        top: 3.5rem;
+        left: 0;
+        right: 0;
+        margin: auto;
+        content: "";
+        position: absolute;
+    }
   }
 }
 
@@ -57,6 +75,9 @@ $authorize-btn-green: #258659;
   }
 }
 
+.api-publisher{
+  margin-bottom: $space-6;
+}
 .api-publisher::first-letter {
   text-transform: capitalize;
 }
@@ -68,7 +89,6 @@ $authorize-btn-green: #258659;
     padding-left: 0 !important;
     padding-right: 0 !important;
     max-width: none !important;
-    margin-bottom: -10rem !important;
 
     .detailpage__wrapper-topinfo {
       @include Layout;
@@ -97,6 +117,7 @@ $authorize-btn-green: #258659;
 
 .swagger-ui .arrow {
   min-width: 20px;
+  fill: white;
 }
 
 //Swagger h2
@@ -109,7 +130,7 @@ $authorize-btn-green: #258659;
 
   .info {
     h2.title {
-      color: $clr-gray900;
+      color: $clr-white;
       font-weight: bold;
       font-size: 1.125rem; //18px
       line-height: 1.6875rem; //27px
@@ -129,6 +150,41 @@ $authorize-btn-green: #258659;
   }
 }
 
+//Styling fix for swagger spinner
+.swagger-ui{
+  .loading-container{    
+    .loading{
+      -webkit-animation: rotation 0 linear infinite, opacity 0;
+      animation: rotation 0 linear infinite, opacity 0;
+
+      &::after{
+        content: "Loading";
+        color: $clr-white;
+        -webkit-animation: dots 0;
+        animation: dots 0;
+      }
+
+      &::before{
+        border-top-color: white;
+      }
+    }
+  }
+}
+
+.nostyle{
+  color: white !important;
+}
+
+.swagger-ui .opblock-summary-control{
+  &:focus{
+    @include focusStyleLight;
+  }
+}
+
+.opblock-summary-description{
+  color: white !important;
+}
+
 .swagger-ui .no-margin {
   overflow: auto;
 }
@@ -142,13 +198,23 @@ $authorize-btn-green: #258659;
   font-weight: normal;
   font-size: 1rem; //16px
   line-height: 1.5rem; //24px
-  color: $clr-gray900;
+  color: $clr-white;
   margin-bottom: 0.5rem;
   text-decoration: none;
 }
 
 .swagger-ui .info .title small pre {
   border-radius: 2px;
+}
+
+.swagger-ui .info .title{
+  h4{
+    color: $clr-white;
+  }
+
+  .errors-wrapper{
+    color: $clr-white;
+  }
 }
 
 //Remove transition for safari
@@ -158,15 +224,15 @@ $authorize-btn-green: #258659;
 
 //Authorize btn
 .swagger-ui .btn.authorize {
-  background-color: $authorize-btn-green;
-  border-color: $authorize-btn-green;
-  color: white;
+  background-color: $clr-pinkPop;
+  border-color: $clr-pinkPop;
+  color: $clr-gray900;
   padding-left: 1rem;
   padding-right: 1rem;
   margin-right: 0;
 
   svg {
-    fill: white;
+    fill: $clr-gray900;
   }
 
   &:hover {
@@ -183,7 +249,7 @@ $authorize-btn-green: #258659;
 
 .swagger-ui .info .title small {
   background: transparent;
-  color: $clr-gray900;
+  color: $clr-white;
   border-radius: 57px;
   display: inline-block;
   font-size: 10px;
@@ -193,12 +259,12 @@ $authorize-btn-green: #258659;
   margin-left: 0.25rem;
 
   pre {
-    color: $clr-gray900;
+    color: $clr-white;
   }
 }
 
 .swagger-ui .info a {
-  color: $clr-gray900;
+  color: $clr-white;
   text-decoration: underline;
   word-break: break-all;
   font-weight: normal;
@@ -206,25 +272,28 @@ $authorize-btn-green: #258659;
   line-height: 1.5rem; //24px
 
   &:hover {
-    background-color: $clr-pink200;
-    color: $clr-gray900;
+    text-decoration: none;
   }
 }
 
 //Section in swagger head
 .swagger-ui .info hgroup.main {
-  margin: 0;
+  margin: 0;  
 }
 
 //Swagger wrapper
 .swagger-ui .wrapper {
   padding: 0;
+
+  a > span{
+    border-color: white;
+  }
 }
 
 //Unlocked
 .swagger-ui .authorization__btn.unlocked {
   opacity: 1;
-  fill: $clr-gray900;
+  fill: $clr-white;
   padding-right: 0;
   padding-left: 0;
   margin-left: 10px;
@@ -286,8 +355,8 @@ $authorize-btn-green: #258659;
 
 //Swagger accordions head
 .swagger-ui .opblock-tag {
-  background-color: $clr-gray300;
-  color: $clr-gray900;
+  background-color: $clr-gray800;
+  color: $clr-white;
   border-bottom: 0;
   border-radius: 2px;
   padding-right: 1rem;
@@ -317,13 +386,20 @@ $authorize-btn-green: #258659;
 
 //Accordion background green
 .swagger-ui .opblock.opblock-post {
-  border: none;
-  background: $swagger-green-bg;
+  border: 2px solid $swagger-green-bg;
+  background-color: transparent;
+  @include section-header($swagger-green);
 }
 
 //Accordion badge green
 .swagger-ui .opblock.opblock-post .opblock-summary-method {
   background: $swagger-green;
+  height: 50px;
+  @include text-md;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @include accordion-badge_sm;
 }
@@ -336,14 +412,21 @@ $authorize-btn-green: #258659;
 
 //Accordion background orange
 .swagger-ui .opblock.opblock-put {
-  border: none;
-  background: $swagger-orange-bg;
+  border: 2px solid $swagger-orange-bg;
+  background-color: transparent;
+  @include section-header($swagger-orange);
 }
 
 //Accordion badge orange
 .swagger-ui .opblock.opblock-put .opblock-summary-method {
   background: $swagger-orange;
-
+  height: 50px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  @include text-md;
   @include accordion-badge_sm;
 }
 
@@ -354,15 +437,22 @@ $authorize-btn-green: #258659;
 
 //Accordion badge blue
 .swagger-ui .opblock.opblock-get .opblock-summary-method {
-  background: $swagger-blue;
-
+  background: $swagger-blue;  
+  height: 50px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  @include text-md;
   @include accordion-badge_sm;
 }
 
 //Accordion background blue
 .swagger-ui .opblock.opblock-get {
-  background: $swagger-blue-bg;
-  border: none;
+  border: 2px solid $swagger-blue-bg;
+  background-color: transparent;
+  @include section-header($swagger-blue);  
 }
 
 .swagger-ui .opblock.opblock-get .opblock-summary {
@@ -374,14 +464,20 @@ $authorize-btn-green: #258659;
 //Accordion badge grey
 .swagger-ui .opblock.opblock-deprecated .opblock-summary-method {
   background: $swagger-grey;
-
+  height: 50px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  @include text-md;
   @include accordion-badge_sm;
 }
 
 //Accordion background grey
 .swagger-ui .opblock.opblock-deprecated .opblock-summary {
   border: none;
-  background: $swagger-grey-bg;
+  background: none;
 
   @include accordion-head_sm;
 }
@@ -389,14 +485,21 @@ $authorize-btn-green: #258659;
 //Accordion turquoise badge
 .swagger-ui .opblock.opblock-patch .opblock-summary-method {
   background: $swagger-turquoise;
-
+  height: 50px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  @include text-md;
   @include accordion-badge_sm;
 }
 
 //Accordion turquoise background
 .swagger-ui .opblock.opblock-patch {
-  background: $swagger-turquoise-bg;
-  border: none;
+  border: 2px solid $swagger-turquoise-bg;
+  background-color: transparent;
+  @include section-header($swagger-turquoise);
 }
 
 .swagger-ui .opblock.opblock-patch .opblock-summary {
@@ -407,14 +510,21 @@ $authorize-btn-green: #258659;
 
 //Accordion background red
 .swagger-ui .opblock.opblock-delete {
-  background: $swagger-red-bg;
-  border: none;
+  border: 2px solid $swagger-red-bg;
+  background-color: transparent;
+  @include section-header($swagger-red);
 }
 
 //Accordion badge red
 .swagger-ui .opblock.opblock-delete .opblock-summary-method {
   background: $swagger-red;
-
+  height: 50px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  @include text-md;
   @include accordion-badge_sm;
 }
 
@@ -431,6 +541,12 @@ $authorize-btn-green: #258659;
 
 .swagger-ui .opblock.opblock-deprecated .opblock-summary-method {
   background-color: $clr-gray700;
+}
+
+.swagger-ui .opblock.opblock-deprecated {
+  border: 2px solid $clr-gray700;
+  background-color: transparent;
+  @include section-header($clr-gray700);
 }
 
 //Color of required // depricated
@@ -458,7 +574,60 @@ $authorize-btn-green: #258659;
 //OpBlock-section-header
 .swagger-ui .opblock .opblock-section-header {
   box-shadow: none;
+  background-color: $clr-gray900;  
+  
+  h4{
+    color: $clr-white;
+    border: none;
+    
+    span:after {
+      display: none;
+    }
+  }
 }
+
+//Swagger drop-down
+.swagger-ui table {
+  tbody tr td:first-of-type div{
+    color: $clr-white;
+  }
+
+  thead tr td, thead tr th{
+    color: $clr-white;
+    border: none;
+  }
+
+  .response-col_status{
+    color: $clr-white;
+  } 
+}
+
+.btn.try-out__btn{
+  border-color: $clr-pinkPop;
+  color: $clr-pinkPop;
+  @include text-base;
+}
+
+.swagger-ui{
+  .tab li button.tablinks {
+    color: $clr-white;
+  }
+
+  .response-control-examples__title, .response-control-media-type__title{
+    color: $clr-white;
+  }
+
+  .response-col_links{
+    color: $clr-white;
+  }
+
+  .opblock-description-wrapper, .opblock-external-docs-wrapper, .opblock-title_normal{
+    color: $swagger-required-red;
+  }
+}
+
+
+
 
 //Checkboxes inside dialog
 .swagger-ui .checkbox input[type='checkbox'] {
@@ -473,18 +642,31 @@ $authorize-btn-green: #258659;
 
 .swagger-ui {
   input[type='checkbox']:focus + label {
-    @include focusStyle;
+    @include focusStyleLight;
     width: max-content;
   }
   [data-name='examplePanel']:focus,
   [data-name='modelPanel']:focus {
-    @include focusStyle;
+    @include focusStyleLight;
   }
 }
 
 .no-focus-outline .swagger-ui input[type='checkbox']:focus + label {
   outline: none !important;
 }
+
+//Show copy button
+.swagger-ui .opblock .opblock-summary .view-line-link {
+  width: 30px;
+  border: none;
+}
+
+//background color of get/post/put/delete etc.
+.swagger-ui .opblock-summary{
+  background-color: $clr-gray900;
+}
+
+
 
 //--//
 
@@ -559,7 +741,7 @@ $authorize-btn-green: #258659;
 }
 
 .tabs-nav {
-  border-bottom: 2px solid $clr-gray300;
+  border-bottom: 1px solid $clr-gray600;
 }
 
 //Tabs navigation ul
@@ -572,42 +754,45 @@ $authorize-btn-green: #258659;
   @include Layout;
 }
 
-.tabs-nav ul li button {
-  border: none;
-  display: block;
-  text-align: center;
-  cursor: pointer;
-  height: 2.625rem;
-  text-decoration: none;
-  width: 240px;
-  border-bottom: 2px solid $clr-gray300;
-  background-color: transparent;
-  color: $clr-gray900;
-  border-radius: 0;
-  margin-bottom: -2px;
+.tabs-nav ul li {
+  display: flex;
+  flex-direction: row;
+  min-width: 149px;
 
-  &:hover {
-    border-color: $clr-pink200;
-  }
-
-  &.active-tab {
-    font-weight: bold;
-    border-color: $clr-pink600;
+  button {
+    border: none;
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    height: 2.625rem;
+    text-decoration: none;
+    margin-right: $space-8;
+    border-bottom: 2px solid transparent;
+    background-color: transparent;
+    color: $clr-white;
+    margin-bottom: -1px;
+    
+    transition:  0.1s ease;
 
     &:hover {
-      border-color: $clr-pink600;
+      border-color: $clr-pinkPop;
     }
-  }
 
-  @media screen and (max-width: $media-sm) {
-    width: 100%;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    &.active-tab {
+      font-weight: bold;
+      border-color: $clr-pinkPop;
+    }
+
+    @media screen and (max-width: $media-sm) {
+      width: 100%;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
   }
 }
 
 .content-tabs-wrapper {
-  background-color: $clr-gray100;
+  background-color: $clr-gray900;
   padding-top: 2rem;
 
   .content-tab {
@@ -625,7 +810,7 @@ $authorize-btn-green: #258659;
       font-weight: normal;
       font-size: 1rem; //16px
       line-height: 1.5rem; //24px
-      color: $clr-gray900;
+      color: $clr-white;
       margin-top: 0.25rem;
       margin-bottom: 1rem;
     }
@@ -706,11 +891,12 @@ $authorize-btn-green: #258659;
       color: $clr-gray900;
       text-decoration: underline;
       word-break: break-word;
+      text-decoration: underline;
     }
 
     a:hover {
-      background-color: $clr-pink200;
-      color: $clr-gray900;
+      color: $clr-pinkPop;
+
     }
 
     .popover {
@@ -760,6 +946,7 @@ $authorize-btn-green: #258659;
           padding: 0;
           border: none;
           width: max-content !important;
+          color: $clr-white;
         }
 
         .rdformsFields {
@@ -775,15 +962,15 @@ $authorize-btn-green: #258659;
               font-weight: normal;
               font-size: 1rem; //16px
               line-height: 1.5rem; //24px
-              color: $clr-gray900;
+              color: $clr-white;
               text-decoration: underline;
 
               &:hover {
-                background-color: $clr-pink200;
+                text-decoration: none;
               }
 
               &:focus {
-                @include focusStyle;
+                @include focusStyleLight;
               }
             }
           }
@@ -805,21 +992,21 @@ $authorize-btn-green: #258659;
   p {
     margin: 0;
   }
-
-  a:hover {
-    background-color: $clr-pink200;
-  }
 }
 
 .highlight-block {
   margin-top: 1rem;
   margin-bottom: 2rem;
   padding: 1rem;
-  background-color: $clr-green200;
+  background-color: $clr-gray800;
   width: auto;
   max-width: 40rem;
 
   a {
     word-break: break-word;
+  }
+
+  a::after{
+    filter: brightness(5);
   }
 }

@@ -1,32 +1,29 @@
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { Heading, Container } from '@digg/design-system';
 import useTranslation from 'next-translate/useTranslation';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect } from 'react';
-import {
-  Statistic,
-  StatisticGraphNumbers,
-  StatisticNumbersDatasets,
-} from '../../components/Statistic';
-import { initBreadcrumb } from '../../pages/_app';
+import React from 'react';
 import { MainContainerStyle } from '../../styles/general/emotion';
-import { makeBreadcrumbsFromPath } from '../../utilities';
-import { SettingsContext } from '../SettingsProvider';
+
+
+const DynamicStatisticGraphNumbers = dynamic(() => import('../Statistic/StatisticGraphNumbers').then(c => c.StatisticGraphNumbers), {
+  ssr: false,
+});
+
+const DynamicStatisticNumbersDatasets = dynamic(() => import('../Statistic/StatisticNumbersDatasets').then(c => c.StatisticNumbersDatasets), {
+  ssr: false,
+});
+
+const DynamicStatistic = dynamic(() => import('../Statistic/Statistic'), {
+  ssr: false,
+});
 
 export const StatisticPage: React.FC = () => {
   const { t } = useTranslation('pages');
   const { asPath } = useRouter() || {};
   const { trackPageView } = useMatomo();
-  const { setBreadcrumb } = useContext(SettingsContext);
-
-  useEffect(() => {
-    trackPageView({ documentTitle: t('statistic$statistic-page-header') });
-    setBreadcrumb && setBreadcrumb(makeBreadcrumbsFromPath(asPath, t('routes|statistics$title')));
-    return () => {
-      setBreadcrumb && setBreadcrumb(initBreadcrumb);
-    };
-  }, [asPath]);
 
   return (
     <>
@@ -45,11 +42,11 @@ export const StatisticPage: React.FC = () => {
         <Heading size={'2xl'}>{t('statistic$statistic-page-header')} </Heading>
         <div className="content statistic-page">
           <p className="main-text text-md">{t('statistic$statistic-page-text')}</p>
-          <StatisticGraphNumbers />
+          <DynamicStatisticGraphNumbers />
           <p className="main-text text-md">
-            {t('statistic$statistic-page-numberofdatasets')} <StatisticNumbersDatasets />
+            {t('statistic$statistic-page-numberofdatasets')} <DynamicStatisticNumbersDatasets />
           </p>
-          <Statistic />
+          <DynamicStatistic />
         </div>
       </Container>
     </>

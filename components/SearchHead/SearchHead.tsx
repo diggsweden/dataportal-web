@@ -15,21 +15,21 @@ export const SearchHeader: React.FC<SearchHeaderProps> = () => {
     <div className="search-head">
       <div>
         <Link href={`${lang}/datasets?q=&f=`}>
-          <a className={`text-base ${pathname == '/datasets' ? 'active' : ''} `}>
+          <a className={`text-md ${pathname == '/datasets' ? 'active' : ''} `}>
             {t('search$datasets')}
           </a>
         </Link>
       </div>
       <div>
         <Link href={`${lang}/concepts?q=&f=`}>
-          <a className={`text-base ${pathname == '/concepts' ? 'active' : ''} `}>
+          <a className={`text-md ${pathname == '/concepts' ? 'active' : ''} `}>
             {t('search$concepts')}
           </a>
         </Link>
       </div>
       <div>
         <Link href={`${lang}/specifications?q=&f=`}>
-          <a className={`text-base ${pathname == '/specifications' ? 'active' : ''} `}>
+          <a className={`text-md ${pathname == '/specifications' ? 'active' : ''} `}>
             {t('search$specifications')}
           </a>
         </Link>

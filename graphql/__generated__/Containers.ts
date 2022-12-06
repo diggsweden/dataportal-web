@@ -9,43 +9,63 @@ import { dataportal_QueryContainerArgs, dataportal_LinkType } from "./globalType
 // GraphQL query operation: Containers
 // ====================================================
 
-export interface Containers_dataportal_Digg_Containers_breadcrumb_link {
-  __typename: "dataportal_Digg_Link";
-  link: string;
-  linktype: dataportal_LinkType;
+export interface Containers_dataportal_Digg_Containers_image {
+  __typename: "dataportal_Digg_Image";
+  url: string;
+  alt: string | null;
+  name: string | null;
+  description: string | null;
+  mime: string;
+  ext: string;
+  width: number | null;
+  height: number | null;
 }
 
-export interface Containers_dataportal_Digg_Containers_breadcrumb {
-  __typename: "dataportal_Digg_Breadrumb";
+export interface Containers_dataportal_Digg_Containers_domains {
+  __typename: "dataportal_Digg_Domain";
   name: string;
-  link: Containers_dataportal_Digg_Containers_breadcrumb_link;
+  slug: string;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_TextBlock_text {
+export interface Containers_dataportal_Digg_Containers_categories {
+  __typename: "dataportal_Digg_Category";
+  name: string;
+  /**
+   * A unique identifier for this category
+   */
+  slug: string;
+}
+
+export interface Containers_dataportal_Digg_Containers_tags {
+  __typename: "dataportal_Digg_Tag";
+  value: string;
+}
+
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Text_text {
   __typename: "dataportal_Digg_RichText";
   markdown: string | null;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_TextBlock {
-  __typename: "dataportal_Digg_TextBlock";
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Text {
+  __typename: "dataportal_Digg_Text";
   id: string;
   heading: string | null;
-  text: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_TextBlock_text;
+  text: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Text_text;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_FaqBlock_answer {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Faq_answer {
   __typename: "dataportal_Digg_RichText";
   markdown: string | null;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_FaqBlock {
-  __typename: "dataportal_Digg_FaqBlock";
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Faq {
+  __typename: "dataportal_Digg_Faq";
   id: string;
   question: string;
-  answer: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_FaqBlock_answer;
+  answer: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Faq_answer;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_MediaBlock_media_dataportal_Digg_Image {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Media_media_dataportal_Digg_Image {
   __typename: "dataportal_Digg_Image";
   url: string;
   alt: string | null;
@@ -57,7 +77,7 @@ export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Me
   height: number | null;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_MediaBlock_media_dataportal_Digg_Video {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Media_media_dataportal_Digg_Video {
   __typename: "dataportal_Digg_Video";
   url: string;
   alt: string | null;
@@ -67,7 +87,7 @@ export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Me
   ext: string;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_MediaBlock_media_dataportal_Digg_File {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Media_media_dataportal_Digg_File {
   __typename: "dataportal_Digg_File";
   url: string;
   alt: string | null;
@@ -77,54 +97,22 @@ export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Me
   ext: string;
 }
 
-export type Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_MediaBlock_media = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_MediaBlock_media_dataportal_Digg_Image | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_MediaBlock_media_dataportal_Digg_Video | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_MediaBlock_media_dataportal_Digg_File;
+export type Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Media_media = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Media_media_dataportal_Digg_Image | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Media_media_dataportal_Digg_Video | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Media_media_dataportal_Digg_File;
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_MediaBlock {
-  __typename: "dataportal_Digg_MediaBlock";
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Media {
+  __typename: "dataportal_Digg_Media";
   id: string;
   heading: string | null;
   description: string | null;
-  media: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_MediaBlock_media;
+  media: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Media_media;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_GroupBlock_body {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Hero_heroText {
   __typename: "dataportal_Digg_RichText";
   markdown: string | null;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_FaqBlock {
-  __typename: "dataportal_Digg_FaqBlock" | "dataportal_Digg_GroupBlock" | "dataportal_Digg_HeroBlock" | "dataportal_Digg_MediaBlock" | "dataportal_Digg_PuffBlock" | "dataportal_Digg_LinksBlock" | "dataportal_Digg_SharedContentContainer";
-  id: string;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_TextBlock_text {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_TextBlock {
-  __typename: "dataportal_Digg_TextBlock";
-  id: string;
-  heading: string | null;
-  text: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_TextBlock_text;
-}
-
-export type Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_GroupBlock_blocks = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_FaqBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_TextBlock;
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_GroupBlock {
-  __typename: "dataportal_Digg_GroupBlock";
-  id: string;
-  heading: string | null;
-  body: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_GroupBlock_body | null;
-  blocks: (Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_GroupBlock_blocks | null)[];
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_HeroBlock_heroText {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_HeroBlock_media_dataportal_Digg_Image {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image {
   __typename: "dataportal_Digg_Image";
   url: string;
   alt: string | null;
@@ -136,7 +124,7 @@ export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_He
   height: number | null;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_HeroBlock_media_dataportal_Digg_Video {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video {
   __typename: "dataportal_Digg_Video";
   url: string;
   alt: string | null;
@@ -146,7 +134,7 @@ export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_He
   ext: string;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_HeroBlock_media_dataportal_Digg_File {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File {
   __typename: "dataportal_Digg_File";
   url: string;
   alt: string | null;
@@ -156,118 +144,60 @@ export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_He
   ext: string;
 }
 
-export type Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_HeroBlock_media = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_HeroBlock_media_dataportal_Digg_Image | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_HeroBlock_media_dataportal_Digg_Video | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_HeroBlock_media_dataportal_Digg_File;
+export type Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Hero_media = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File;
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_HeroBlock {
-  __typename: "dataportal_Digg_HeroBlock";
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Hero {
+  __typename: "dataportal_Digg_Hero";
   id: string;
   heading: string | null;
-  heroText: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_HeroBlock_heroText | null;
-  media: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_HeroBlock_media;
-  /**
-   * Parameters that effects how the ui should be rendererd
-   */
-  uiHints: (string | null)[];
+  heroText: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Hero_heroText | null;
+  media: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Hero_media;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_PuffBlock_puffs_link {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_RelatedContent_links {
   __typename: "dataportal_Digg_Link";
-  title: string | null;
-  link: string;
-  linktype: dataportal_LinkType;
-  description: string | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_PuffBlock_puffs_container_image {
-  __typename: "dataportal_Digg_Image";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-  width: number | null;
-  height: number | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_PuffBlock_puffs_container {
-  __typename: "dataportal_Digg_ContainerMeta";
-  id: string;
-  /**
-   * two-letter lang
-   */
-  locale: string;
-  updatedAt: any;
-  createdAt: any;
   slug: string;
-  title: string;
-  description: string;
-  image: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_PuffBlock_puffs_container_image | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_PuffBlock_puffs {
-  __typename: "dataportal_Digg_Puff";
-  heading: string | null;
-  description: string | null;
-  link: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_PuffBlock_puffs_link | null;
-  theme: string | null;
-  type: string;
-  buttonText: string | null;
-  container: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_PuffBlock_puffs_container | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_PuffBlock {
-  __typename: "dataportal_Digg_PuffBlock";
-  id: string;
-  heading: string | null;
-  description: string | null;
-  puffs: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_PuffBlock_puffs[] | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_LinksBlock_links {
-  __typename: "dataportal_Digg_Link";
   title: string | null;
-  link: string;
-  linktype: dataportal_LinkType;
   description: string | null;
+  linktype: dataportal_LinkType;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_LinksBlock {
-  __typename: "dataportal_Digg_LinksBlock";
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_RelatedContent {
+  __typename: "dataportal_Digg_RelatedContent";
   id: string;
-  links: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_LinksBlock_links[] | null;
+  links: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_RelatedContent_links[];
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_SharedContentContainer {
-  __typename: "dataportal_Digg_SharedContentContainer";
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList {
+  __typename: "dataportal_Digg_ModuleList";
   id: string;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_TextBlock_text {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Text_text {
   __typename: "dataportal_Digg_RichText";
   markdown: string | null;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_TextBlock {
-  __typename: "dataportal_Digg_TextBlock";
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Text {
+  __typename: "dataportal_Digg_Text";
   id: string;
   heading: string | null;
-  text: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_TextBlock_text;
+  text: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Text_text;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_FaqBlock_answer {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Faq_answer {
   __typename: "dataportal_Digg_RichText";
   markdown: string | null;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_FaqBlock {
-  __typename: "dataportal_Digg_FaqBlock";
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Faq {
+  __typename: "dataportal_Digg_Faq";
   id: string;
   question: string;
-  answer: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_FaqBlock_answer;
+  answer: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Faq_answer;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_MediaBlock_media_dataportal_Digg_Image {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_Image {
   __typename: "dataportal_Digg_Image";
   url: string;
   alt: string | null;
@@ -279,7 +209,7 @@ export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Sh
   height: number | null;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_MediaBlock_media_dataportal_Digg_Video {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_Video {
   __typename: "dataportal_Digg_Video";
   url: string;
   alt: string | null;
@@ -289,7 +219,7 @@ export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Sh
   ext: string;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_MediaBlock_media_dataportal_Digg_File {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_File {
   __typename: "dataportal_Digg_File";
   url: string;
   alt: string | null;
@@ -299,54 +229,22 @@ export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Sh
   ext: string;
 }
 
-export type Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_MediaBlock_media = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_MediaBlock_media_dataportal_Digg_Image | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_MediaBlock_media_dataportal_Digg_Video | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_MediaBlock_media_dataportal_Digg_File;
+export type Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_Image | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_Video | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_File;
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_MediaBlock {
-  __typename: "dataportal_Digg_MediaBlock";
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media {
+  __typename: "dataportal_Digg_Media";
   id: string;
   heading: string | null;
   description: string | null;
-  media: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_MediaBlock_media;
+  media: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_GroupBlock_body {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_heroText {
   __typename: "dataportal_Digg_RichText";
   markdown: string | null;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_FaqBlock {
-  __typename: "dataportal_Digg_FaqBlock" | "dataportal_Digg_GroupBlock" | "dataportal_Digg_HeroBlock" | "dataportal_Digg_MediaBlock" | "dataportal_Digg_PuffBlock" | "dataportal_Digg_LinksBlock" | "dataportal_Digg_SharedContentContainer";
-  id: string;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_TextBlock_text {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_TextBlock {
-  __typename: "dataportal_Digg_TextBlock";
-  id: string;
-  heading: string | null;
-  text: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_TextBlock_text;
-}
-
-export type Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_GroupBlock_blocks = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_FaqBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_TextBlock;
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_GroupBlock {
-  __typename: "dataportal_Digg_GroupBlock";
-  id: string;
-  heading: string | null;
-  body: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_GroupBlock_body | null;
-  blocks: (Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_GroupBlock_blocks | null)[];
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_HeroBlock_heroText {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_HeroBlock_media_dataportal_Digg_Image {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image {
   __typename: "dataportal_Digg_Image";
   url: string;
   alt: string | null;
@@ -358,7 +256,7 @@ export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Sh
   height: number | null;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_HeroBlock_media_dataportal_Digg_Video {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video {
   __typename: "dataportal_Digg_Video";
   url: string;
   alt: string | null;
@@ -368,7 +266,7 @@ export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Sh
   ext: string;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_HeroBlock_media_dataportal_Digg_File {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File {
   __typename: "dataportal_Digg_File";
   url: string;
   alt: string | null;
@@ -378,103 +276,45 @@ export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Sh
   ext: string;
 }
 
-export type Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_HeroBlock_media = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_HeroBlock_media_dataportal_Digg_Image | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_HeroBlock_media_dataportal_Digg_Video | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_HeroBlock_media_dataportal_Digg_File;
+export type Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File;
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_HeroBlock {
-  __typename: "dataportal_Digg_HeroBlock";
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero {
+  __typename: "dataportal_Digg_Hero";
   id: string;
   heading: string | null;
-  heroText: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_HeroBlock_heroText | null;
-  media: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_HeroBlock_media;
-  /**
-   * Parameters that effects how the ui should be rendererd
-   */
-  uiHints: (string | null)[];
+  heroText: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_heroText | null;
+  media: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_PuffBlock_puffs_link {
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent_links {
   __typename: "dataportal_Digg_Link";
-  title: string | null;
-  link: string;
-  linktype: dataportal_LinkType;
-  description: string | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_PuffBlock_puffs_container_image {
-  __typename: "dataportal_Digg_Image";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-  width: number | null;
-  height: number | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_PuffBlock_puffs_container {
-  __typename: "dataportal_Digg_ContainerMeta";
-  id: string;
-  /**
-   * two-letter lang
-   */
-  locale: string;
-  updatedAt: any;
-  createdAt: any;
   slug: string;
-  title: string;
-  description: string;
-  image: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_PuffBlock_puffs_container_image | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_PuffBlock_puffs {
-  __typename: "dataportal_Digg_Puff";
-  heading: string | null;
-  description: string | null;
-  link: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_PuffBlock_puffs_link | null;
-  theme: string | null;
-  type: string;
-  buttonText: string | null;
-  container: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_PuffBlock_puffs_container | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_PuffBlock {
-  __typename: "dataportal_Digg_PuffBlock";
-  id: string;
-  heading: string | null;
-  description: string | null;
-  puffs: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_PuffBlock_puffs[] | null;
-}
-
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_LinksBlock_links {
-  __typename: "dataportal_Digg_Link";
   title: string | null;
-  link: string;
-  linktype: dataportal_LinkType;
   description: string | null;
+  linktype: dataportal_LinkType;
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_LinksBlock {
-  __typename: "dataportal_Digg_LinksBlock";
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent {
+  __typename: "dataportal_Digg_RelatedContent";
   id: string;
-  links: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_LinksBlock_links[] | null;
+  links: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent_links[];
 }
 
-export type Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_SharedContentContainer | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_TextBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_FaqBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_MediaBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_GroupBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_HeroBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_PuffBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks_dataportal_Digg_LinksBlock;
+export type Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Text | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Faq | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent;
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents {
-  __typename: "dataportal_Digg_SharedContent";
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules {
+  __typename: "dataportal_Digg_Module";
   identifier: string;
-  blocks: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents_blocks[] | null;
+  blocks: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules_blocks[];
 }
 
-export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer {
-  __typename: "dataportal_Digg_SharedContentContainer";
+export interface Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList {
+  __typename: "dataportal_Digg_ModuleList";
   id: string;
-  contents: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer_contents[] | null;
+  modules: Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList_modules[];
 }
 
-export type Containers_dataportal_Digg_Containers_blocks = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_TextBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_FaqBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_MediaBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_GroupBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_HeroBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_PuffBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_LinksBlock | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_SharedContentContainer;
+export type Containers_dataportal_Digg_Containers_blocks = Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Text | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Faq | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Media | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Hero | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_RelatedContent | Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_ModuleList;
 
 export interface Containers_dataportal_Digg_Containers_seo_image {
   __typename: "dataportal_Digg_Image";
@@ -484,6 +324,8 @@ export interface Containers_dataportal_Digg_Containers_seo_image {
   description: string | null;
   mime: string;
   ext: string;
+  width: number | null;
+  height: number | null;
 }
 
 export interface Containers_dataportal_Digg_Containers_seo {
@@ -504,22 +346,22 @@ export interface Containers_dataportal_Digg_Containers_seo {
 
 export interface Containers_dataportal_Digg_Containers {
   __typename: "dataportal_Digg_Container";
+  id: string;
   name: string;
   /**
    * two-letter lang
    */
   locale: string;
-  updatedAt: any;
   heading: string | null;
   preamble: string | null;
+  image: Containers_dataportal_Digg_Containers_image | null;
+  updatedAt: any;
+  createdAt: any;
   slug: string;
-  order: number;
-  /**
-   * Parameters that effects how the ui should be rendererd
-   */
-  uiHints: (string | null)[];
-  breadcrumb: (Containers_dataportal_Digg_Containers_breadcrumb | null)[];
-  blocks: (Containers_dataportal_Digg_Containers_blocks | null)[];
+  domains: Containers_dataportal_Digg_Containers_domains[];
+  categories: Containers_dataportal_Digg_Containers_categories[];
+  tags: Containers_dataportal_Digg_Containers_tags[];
+  blocks: Containers_dataportal_Digg_Containers_blocks[];
   seo: Containers_dataportal_Digg_Containers_seo | null;
 }
 

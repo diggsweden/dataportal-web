@@ -1,17 +1,24 @@
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps } from 'next/types';
 import { client, CONTAINER_QUERY } from '../graphql';
-import { NEWS_QUERY } from '../graphql/newsQuery';
+import { PUBLICATION_QUERY } from '../graphql/publicationQuery';
 import {
   Containers,
   ContainersVariables,
   Containers_dataportal_Digg_Containers,
 } from '../graphql/__generated__/Containers';
-import { News, NewsVariables, News_dataportal_Digg_News } from '../graphql/__generated__/News';
+import {
+  Publication,
+  PublicationVariables,
+  Publication_dataportal_Digg_Publications,
+} from '../graphql/__generated__/Publication';
 import { SettingsUtil } from '../env';
-import { HttpsProxyAgent } from "https-proxy-agent";
-import nodeFetch from "node-fetch";
-import fetchEnhanced from "fetch-enhanced";
+import { HttpsProxyAgent } from 'https-proxy-agent';
+import nodeFetch from 'node-fetch';
+import fetchEnhanced from 'fetch-enhanced';
 import url from 'url';
+import { Category } from '../graphql/__generated__/Category';
+import { Categories, CategoriesVariables } from '../graphql/__generated__/Categories';
+import { CATEGORY_QUERY } from '../graphql/domainQuery';
 const proxyfetch = fetchEnhanced(nodeFetch);
 
 const env = SettingsUtil.create();
@@ -27,12 +34,12 @@ const Sitemap = () => {
 
 /**
  * @param container
- * @returns true if container is dataportal_Digg_News
+ * @returns true if container is dataportal_Digg_Publication
  */
-const isNews = (
-  container: Containers_dataportal_Digg_Containers | News_dataportal_Digg_News | null
-): container is News_dataportal_Digg_News => {
-  return container?.__typename === 'dataportal_Digg_News';
+const isPublication = (
+  container: Containers_dataportal_Digg_Containers | Publication_dataportal_Digg_Publications | null
+): container is Publication_dataportal_Digg_Publications => {
+  return container?.__typename === 'dataportal_Digg_Publication';
 };
 
 /**
@@ -40,56 +47,55 @@ const isNews = (
  * @param c
  * @returns a correctly formatted slug
  */
-const slug = (c: Containers_dataportal_Digg_Containers | News_dataportal_Digg_News | null) => {
+const slug = (
+  c: Containers_dataportal_Digg_Containers | Publication_dataportal_Digg_Publications | null
+) => {
   const slug = c?.locale === 'sv' ? c?.slug : `/${c?.locale}${c?.slug}`;
-  if (isNews(c)) {
-    return `/nyheter/${c.id}${slug}`;
+  if (isPublication(c)) {
+    return `/aktuellt${slug}`;
   } else {
-    return slug;
+    const domain = c?.domains && c.domains[0];
+    if (domain && `/${domain.slug}` === slug) return slug;
+    const domainSlug = c?.domains && c.domains.length > 0 ? '/' + c.domains[0].slug : '';
+    return domainSlug + slug;
   }
 };
 
 /**
  * Fetch all datasets from MetaSolutions sitemap of all resources
- * @returns array of sitemap-object 
+ * @returns array of sitemap-object
  */
-const getDatasets = async () => {  
-
+const getDatasets = async () => {
   //check for proxy config
   const proxy_url = process.env.HTTP_PROXY || '';
   const proxy_user = process.env.HTTP_PROXY_USER;
   const proxy_pass = process.env.HTTP_PROXY_PASS;
-  
-  if(proxy_url && proxy_url.length > 0)
-    {        
-      let proxy_uri = url.parse(proxy_url)
 
-      //add auth to proxy if set in env
-      if(proxy_user && proxy_pass)
-      {        
-        proxy_uri.auth = `${proxy_user}:${proxy_pass}`        
-      }
+  if (proxy_url && proxy_url.length > 0) {
+    let proxy_uri = url.parse(proxy_url);
 
-      let proxy = new HttpsProxyAgent(proxy_uri);             
-
-      const response = await proxyfetch(env.ENTRYSCAPE_SITEMAP_JSON_URL,
-        { 
-          agent: proxy         
-        })            
-
-      if (response.ok && response.status === 200) {        
-        const data = await response.json();
-        return data;
-      } else {
-        console.log('proxy fetch error');
-        console.log(response);
-        return [];
-      }
+    //add auth to proxy if set in env
+    if (proxy_user && proxy_pass) {
+      proxy_uri.auth = `${proxy_user}:${proxy_pass}`;
     }
-    else
-    {    
+
+    let proxy = new HttpsProxyAgent(proxy_uri);
+
+    const response = await proxyfetch(env.ENTRYSCAPE_SITEMAP_JSON_URL, {
+      agent: proxy,
+    });
+
+    if (response.ok && response.status === 200) {
+      const data = await response.json();
+      return data;
+    } else {
+      console.log('proxy fetch error');
+      console.log(response);
+      return [];
+    }
+  } else {
     const response = await fetch(env.ENTRYSCAPE_SITEMAP_JSON_URL);
-      
+
     if (response.ok && response.status === 200) {
       const data = await response.json();
       return data;
@@ -97,21 +103,22 @@ const getDatasets = async () => {
       return [];
     }
   }
-}
+};
 
 /**
  * Generates a sitemap based on backend data
  * @returns a sitemap in xml format
  */
-export const getServerSideProps: GetServerSideProps = async ({ req, res, locales, resolvedUrl }) => {
-
+export const getServerSideProps: GetServerSideProps = async ({ res, locales }) => {
   const datasets: any[] = await getDatasets();
 
   const allContainers: (
     | Containers_dataportal_Digg_Containers
-    | News_dataportal_Digg_News
+    | Publication_dataportal_Digg_Publications
     | null
   )[] = [];
+
+  const allCategories: Category[] = [];
   locales &&
     (await Promise.all(
       // Get all containers in all locales
@@ -122,43 +129,59 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, locales
           variables: { filter: { locale, limit: 9999 } },
         });
 
-        const newsResult = await client.query<News, NewsVariables>({
-          query: NEWS_QUERY,
+        const PublicationResult = await client.query<Publication, PublicationVariables>({
+          query: PUBLICATION_QUERY,
+          variables: { filter: { locale, limit: 9999 } },
+        });
+
+        const categoryResult = await client.query<Categories, CategoriesVariables>({
+          query: CATEGORY_QUERY,
           variables: { filter: { locale, limit: 9999 } },
         });
 
         const containers = containerResult?.data?.dataportal_Digg_Containers;
-        const news = newsResult?.data?.dataportal_Digg_News;
+        const Publication = PublicationResult?.data?.dataportal_Digg_Publications;
+        const categories = categoryResult.data.categories;
 
         if (containerResult?.error) {
           console.error(containerResult?.error);
         }
-        if (newsResult?.error) {
-          console.error(newsResult.error);
+        if (PublicationResult?.error) {
+          console.error(PublicationResult.error);
         }
 
         containers && allContainers.push(...containers);
-        news && allContainers.push(...news);
+        Publication && allContainers.push(...Publication);
+        categories && allCategories.push(...categories);
       })
-    ));  
+    ));
 
   const staticPaths = [
     '',
     '/datasets?p=1&amp;q=&amp;s=2&amp;t=20&amp;f=&amp;rt=dataset%24esterms_IndependentDataService%24esterms_ServedByDataService&amp;c=false',
     '/concepts?p=1&amp;q=&amp;s=2&amp;t=20&amp;f=&amp;rt=term&amp;c=false',
     '/specifications?p=1&amp;q=&amp;s=2&amp;t=20&amp;f=&amp;rt=spec_standard%24spec_profile&amp;c=false',
-    '/nyheter',
+    '/aktuellt',
     '/statistik',
-    '/en/statistic',
-    '/tipsaoss',
-    '/en/submitproject',
+    '/en/statistics',
+    '/ai/inspiration',
+    '/ai/nyheter',
+    '/ai/event',
+    '/data/inspiration',
+    '/data/nyheter',
+    '/data/event',
+    '/oppen-kallkod/inspiration',
+    '/oppen-kallkod/nyheter',
+    '/oppen-kallkod/event',
   ];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    ${Array.isArray(staticPaths) && staticPaths
-      .map((path) => {
-        return `
+    ${
+      Array.isArray(staticPaths) &&
+      staticPaths
+        .map((path) => {
+          return `
         <url>
             <loc>${env.CANONICAL_URL}${path}</loc>
             <lastmod>${new Date().toISOString()}</lastmod>
@@ -166,11 +189,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, locales
             <priority>1.0</priority>
         </url>
     `;
-      })
-      .join('')}
-    ${Array.isArray(allContainers) && allContainers
-      .map((c) => {
-        return `
+        })
+        .join('')
+    }
+    ${
+      Array.isArray(allContainers) &&
+      allContainers
+        .map((c) => {
+          return `
         <url>
             <loc>${env.CANONICAL_URL}${slug(c)}</loc>
             <lastmod>${c?.updatedAt}</lastmod>
@@ -178,11 +204,31 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, locales
             <priority>1.0</priority>
         </url>
     `;
-      })
-      .join('')}
-    ${Array.isArray(datasets) && datasets
-      .map((d) => {
-        return `
+        })
+        .join('')
+    }
+    ${
+      Array.isArray(allCategories) &&
+      allCategories
+        .filter((cat) => !allContainers.some((c) => c?.slug === `/${cat.slug}`)) // ? ignore categories that has corresponding container
+        .map((c) => {
+          const slug = c.locale === 'sv' ? `/${c.slug}` : `/${c.locale}/${c.slug}`;
+          return `
+        <url>
+            <loc>${env.CANONICAL_URL}${slug}</loc>
+            <lastmod>${c?.updatedAt}</lastmod>
+            <changefreq>monthly</changefreq>
+            <priority>1.0</priority>
+        </url>
+    `;
+        })
+        .join('')
+    }
+    ${
+      Array.isArray(datasets) &&
+      datasets
+        .map((d) => {
+          return `
         <url>
             <loc>${env.CANONICAL_URL}/datasets/${d.cid}_${d.eid}</loc>
             <lastmod>${d.modified}</lastmod>
@@ -190,8 +236,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, locales
             <priority>1.0</priority>
         </url>
     `;
-      })
-      .join('')}
+        })
+        .join('')
+    }
     </urlset>
   `;
 

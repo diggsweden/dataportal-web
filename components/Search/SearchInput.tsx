@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { colorPalette, SearchIcon, Spinner } from '@digg/design-system';
+import { Spinner, SearchField } from '@digg/design-system';
 import { SearchContextData } from '.';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { SearchType } from './SearchFilters';
@@ -78,9 +78,10 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           >
             {getLabel()}
           </label>
-          <input
+          <SearchField
             autoFocus
             id="search-field"
+            submitLabel={t('common|search')}
             autoComplete="off"
             name="q"
             type="text"
@@ -91,17 +92,8 @@ export const SearchInput: React.FC<SearchInputProps> = ({
               setQuery(e.target.value);
             }}
             key={search.request.query ? 'loaded' : 'not loaded'}
-          ></input>
-          <button
-            type="submit"
-            aria-label={t('common|search')}
-          >
-            <SearchIcon
-              color={colorPalette.white}
-              width={[25]}
-            />
-          </button>
-          {search.loadingFacets && <Spinner />}
+          />
+          {search.loadingFacets && <Spinner className={'spinner'} />}
         </div>
       </form>
     </div>

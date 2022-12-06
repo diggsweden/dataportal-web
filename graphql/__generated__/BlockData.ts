@@ -9,36 +9,36 @@ import { dataportal_LinkType } from "./globalTypes";
 // GraphQL fragment: BlockData
 // ====================================================
 
-export interface BlockData_dataportal_Digg_SharedContentContainer {
-  __typename: "dataportal_Digg_SharedContentContainer";
+export interface BlockData_dataportal_Digg_ModuleList {
+  __typename: "dataportal_Digg_ModuleList";
   id: string;
 }
 
-export interface BlockData_dataportal_Digg_TextBlock_text {
+export interface BlockData_dataportal_Digg_Text_text {
   __typename: "dataportal_Digg_RichText";
   markdown: string | null;
 }
 
-export interface BlockData_dataportal_Digg_TextBlock {
-  __typename: "dataportal_Digg_TextBlock";
+export interface BlockData_dataportal_Digg_Text {
+  __typename: "dataportal_Digg_Text";
   id: string;
   heading: string | null;
-  text: BlockData_dataportal_Digg_TextBlock_text;
+  text: BlockData_dataportal_Digg_Text_text;
 }
 
-export interface BlockData_dataportal_Digg_FaqBlock_answer {
+export interface BlockData_dataportal_Digg_Faq_answer {
   __typename: "dataportal_Digg_RichText";
   markdown: string | null;
 }
 
-export interface BlockData_dataportal_Digg_FaqBlock {
-  __typename: "dataportal_Digg_FaqBlock";
+export interface BlockData_dataportal_Digg_Faq {
+  __typename: "dataportal_Digg_Faq";
   id: string;
   question: string;
-  answer: BlockData_dataportal_Digg_FaqBlock_answer;
+  answer: BlockData_dataportal_Digg_Faq_answer;
 }
 
-export interface BlockData_dataportal_Digg_MediaBlock_media_dataportal_Digg_Image {
+export interface BlockData_dataportal_Digg_Media_media_dataportal_Digg_Image {
   __typename: "dataportal_Digg_Image";
   url: string;
   alt: string | null;
@@ -50,7 +50,7 @@ export interface BlockData_dataportal_Digg_MediaBlock_media_dataportal_Digg_Imag
   height: number | null;
 }
 
-export interface BlockData_dataportal_Digg_MediaBlock_media_dataportal_Digg_Video {
+export interface BlockData_dataportal_Digg_Media_media_dataportal_Digg_Video {
   __typename: "dataportal_Digg_Video";
   url: string;
   alt: string | null;
@@ -60,7 +60,7 @@ export interface BlockData_dataportal_Digg_MediaBlock_media_dataportal_Digg_Vide
   ext: string;
 }
 
-export interface BlockData_dataportal_Digg_MediaBlock_media_dataportal_Digg_File {
+export interface BlockData_dataportal_Digg_Media_media_dataportal_Digg_File {
   __typename: "dataportal_Digg_File";
   url: string;
   alt: string | null;
@@ -70,54 +70,22 @@ export interface BlockData_dataportal_Digg_MediaBlock_media_dataportal_Digg_File
   ext: string;
 }
 
-export type BlockData_dataportal_Digg_MediaBlock_media = BlockData_dataportal_Digg_MediaBlock_media_dataportal_Digg_Image | BlockData_dataportal_Digg_MediaBlock_media_dataportal_Digg_Video | BlockData_dataportal_Digg_MediaBlock_media_dataportal_Digg_File;
+export type BlockData_dataportal_Digg_Media_media = BlockData_dataportal_Digg_Media_media_dataportal_Digg_Image | BlockData_dataportal_Digg_Media_media_dataportal_Digg_Video | BlockData_dataportal_Digg_Media_media_dataportal_Digg_File;
 
-export interface BlockData_dataportal_Digg_MediaBlock {
-  __typename: "dataportal_Digg_MediaBlock";
+export interface BlockData_dataportal_Digg_Media {
+  __typename: "dataportal_Digg_Media";
   id: string;
   heading: string | null;
   description: string | null;
-  media: BlockData_dataportal_Digg_MediaBlock_media;
+  media: BlockData_dataportal_Digg_Media_media;
 }
 
-export interface BlockData_dataportal_Digg_GroupBlock_body {
+export interface BlockData_dataportal_Digg_Hero_heroText {
   __typename: "dataportal_Digg_RichText";
   markdown: string | null;
 }
 
-export interface BlockData_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_FaqBlock {
-  __typename: "dataportal_Digg_FaqBlock" | "dataportal_Digg_GroupBlock" | "dataportal_Digg_HeroBlock" | "dataportal_Digg_MediaBlock" | "dataportal_Digg_PuffBlock" | "dataportal_Digg_LinksBlock" | "dataportal_Digg_SharedContentContainer";
-  id: string;
-}
-
-export interface BlockData_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_TextBlock_text {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface BlockData_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_TextBlock {
-  __typename: "dataportal_Digg_TextBlock";
-  id: string;
-  heading: string | null;
-  text: BlockData_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_TextBlock_text;
-}
-
-export type BlockData_dataportal_Digg_GroupBlock_blocks = BlockData_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_FaqBlock | BlockData_dataportal_Digg_GroupBlock_blocks_dataportal_Digg_TextBlock;
-
-export interface BlockData_dataportal_Digg_GroupBlock {
-  __typename: "dataportal_Digg_GroupBlock";
-  id: string;
-  heading: string | null;
-  body: BlockData_dataportal_Digg_GroupBlock_body | null;
-  blocks: (BlockData_dataportal_Digg_GroupBlock_blocks | null)[];
-}
-
-export interface BlockData_dataportal_Digg_HeroBlock_heroText {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface BlockData_dataportal_Digg_HeroBlock_media_dataportal_Digg_Image {
+export interface BlockData_dataportal_Digg_Hero_media_dataportal_Digg_Image {
   __typename: "dataportal_Digg_Image";
   url: string;
   alt: string | null;
@@ -129,7 +97,7 @@ export interface BlockData_dataportal_Digg_HeroBlock_media_dataportal_Digg_Image
   height: number | null;
 }
 
-export interface BlockData_dataportal_Digg_HeroBlock_media_dataportal_Digg_Video {
+export interface BlockData_dataportal_Digg_Hero_media_dataportal_Digg_Video {
   __typename: "dataportal_Digg_Video";
   url: string;
   alt: string | null;
@@ -139,7 +107,7 @@ export interface BlockData_dataportal_Digg_HeroBlock_media_dataportal_Digg_Video
   ext: string;
 }
 
-export interface BlockData_dataportal_Digg_HeroBlock_media_dataportal_Digg_File {
+export interface BlockData_dataportal_Digg_Hero_media_dataportal_Digg_File {
   __typename: "dataportal_Digg_File";
   url: string;
   alt: string | null;
@@ -149,86 +117,28 @@ export interface BlockData_dataportal_Digg_HeroBlock_media_dataportal_Digg_File 
   ext: string;
 }
 
-export type BlockData_dataportal_Digg_HeroBlock_media = BlockData_dataportal_Digg_HeroBlock_media_dataportal_Digg_Image | BlockData_dataportal_Digg_HeroBlock_media_dataportal_Digg_Video | BlockData_dataportal_Digg_HeroBlock_media_dataportal_Digg_File;
+export type BlockData_dataportal_Digg_Hero_media = BlockData_dataportal_Digg_Hero_media_dataportal_Digg_Image | BlockData_dataportal_Digg_Hero_media_dataportal_Digg_Video | BlockData_dataportal_Digg_Hero_media_dataportal_Digg_File;
 
-export interface BlockData_dataportal_Digg_HeroBlock {
-  __typename: "dataportal_Digg_HeroBlock";
+export interface BlockData_dataportal_Digg_Hero {
+  __typename: "dataportal_Digg_Hero";
   id: string;
   heading: string | null;
-  heroText: BlockData_dataportal_Digg_HeroBlock_heroText | null;
-  media: BlockData_dataportal_Digg_HeroBlock_media;
-  /**
-   * Parameters that effects how the ui should be rendererd
-   */
-  uiHints: (string | null)[];
+  heroText: BlockData_dataportal_Digg_Hero_heroText | null;
+  media: BlockData_dataportal_Digg_Hero_media;
 }
 
-export interface BlockData_dataportal_Digg_PuffBlock_puffs_link {
+export interface BlockData_dataportal_Digg_RelatedContent_links {
   __typename: "dataportal_Digg_Link";
-  title: string | null;
-  link: string;
-  linktype: dataportal_LinkType;
-  description: string | null;
-}
-
-export interface BlockData_dataportal_Digg_PuffBlock_puffs_container_image {
-  __typename: "dataportal_Digg_Image";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-  width: number | null;
-  height: number | null;
-}
-
-export interface BlockData_dataportal_Digg_PuffBlock_puffs_container {
-  __typename: "dataportal_Digg_ContainerMeta";
-  id: string;
-  /**
-   * two-letter lang
-   */
-  locale: string;
-  updatedAt: any;
-  createdAt: any;
   slug: string;
-  title: string;
-  description: string;
-  image: BlockData_dataportal_Digg_PuffBlock_puffs_container_image | null;
-}
-
-export interface BlockData_dataportal_Digg_PuffBlock_puffs {
-  __typename: "dataportal_Digg_Puff";
-  heading: string | null;
-  description: string | null;
-  link: BlockData_dataportal_Digg_PuffBlock_puffs_link | null;
-  theme: string | null;
-  type: string;
-  buttonText: string | null;
-  container: BlockData_dataportal_Digg_PuffBlock_puffs_container | null;
-}
-
-export interface BlockData_dataportal_Digg_PuffBlock {
-  __typename: "dataportal_Digg_PuffBlock";
-  id: string;
-  heading: string | null;
-  description: string | null;
-  puffs: BlockData_dataportal_Digg_PuffBlock_puffs[] | null;
-}
-
-export interface BlockData_dataportal_Digg_LinksBlock_links {
-  __typename: "dataportal_Digg_Link";
   title: string | null;
-  link: string;
-  linktype: dataportal_LinkType;
   description: string | null;
+  linktype: dataportal_LinkType;
 }
 
-export interface BlockData_dataportal_Digg_LinksBlock {
-  __typename: "dataportal_Digg_LinksBlock";
+export interface BlockData_dataportal_Digg_RelatedContent {
+  __typename: "dataportal_Digg_RelatedContent";
   id: string;
-  links: BlockData_dataportal_Digg_LinksBlock_links[] | null;
+  links: BlockData_dataportal_Digg_RelatedContent_links[];
 }
 
-export type BlockData = BlockData_dataportal_Digg_SharedContentContainer | BlockData_dataportal_Digg_TextBlock | BlockData_dataportal_Digg_FaqBlock | BlockData_dataportal_Digg_MediaBlock | BlockData_dataportal_Digg_GroupBlock | BlockData_dataportal_Digg_HeroBlock | BlockData_dataportal_Digg_PuffBlock | BlockData_dataportal_Digg_LinksBlock;
+export type BlockData = BlockData_dataportal_Digg_ModuleList | BlockData_dataportal_Digg_Text | BlockData_dataportal_Digg_Faq | BlockData_dataportal_Digg_Media | BlockData_dataportal_Digg_Hero | BlockData_dataportal_Digg_RelatedContent;

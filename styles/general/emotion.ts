@@ -1,8 +1,10 @@
-import { css, space } from '@digg/design-system';
+import { css, space, theme } from '@digg/design-system';
 
 export const MainContainerStyle = css`
-  ${space({ px: [4, 4, 4, 4, 0] })}
-  h1:first-of-type {
-    margin-top: 0;
-  }
+  background-color: transparent;
+  color: white;
+  max-width: calc(100% - 2rem);
+  margin: auto;
+
+  ${space({ pb: 16})};
 `;

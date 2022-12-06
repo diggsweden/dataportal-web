@@ -1,8 +1,7 @@
 @import '~@digg/design-system/lib/sass/variables.scss';
 
 footer {
-  margin-top: 10rem;
-
+  z-index: 10;
   svg {
     filter: brightness(10);
   }
@@ -10,13 +9,14 @@ footer {
 
 .footer {
   background-color: $clr-gray900;
-  padding-top: $space-2;
-  padding-bottom: $space-16;
+  border-top: 1px solid $clr-gray600;
+  color: $clr-white;
 
   .footer-main {
     display: flex;
     flex-direction: column;
     min-height: 3rem;
+    padding-bottom: $space-8;
 
     .digg__ {
       > div {
@@ -29,6 +29,54 @@ footer {
           font-weight: bold;
         }
       }
+    }
+  }
+
+  .footer__mobile-bar {
+    height: auto;
+    border-bottom: 1px solid $clr-gray600;
+    display: flex;
+    justify-content: center;
+
+    .footer__mobile-links {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: calc(100% - 2rem);
+      a {
+        padding-right: $space-8;
+        color: $clr-white;
+        &:last-of-type {
+          padding: 0;
+        }
+      }
+    }
+
+    .footer__search-link {
+      display: flex;
+      flex-direction: row;
+      padding: $space-6 0;
+      border: none;
+
+      svg {
+        margin-right: $space-2;
+        opacity: 0.5;
+      }
+
+      &:hover {
+        color: $clr-pinkPop;
+        svg {
+          filter: brightness(1);
+          opacity: 1;
+          path {
+            fill: $clr-pinkPop;
+          }
+        }
+      }
+    }
+
+    @media screen and (min-width: $media-md) {
+      display: none;
     }
   }
 }
@@ -65,8 +113,7 @@ footer {
     }
 
     &:focus {
-      @include focusStyle;
-      outline-color: $clr-white !important;
+      @include focusStyleLight;
     }
   }
 
@@ -82,7 +129,8 @@ footer {
 
   .footer__links-nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
+    flex-direction: row-reverse;
     flex-wrap: wrap;
     gap: $space-12;
     width: 100%;
@@ -98,6 +146,13 @@ footer {
       a,
       span {
         font-size: 1rem !important;
+      }
+
+      &:not(:last-child) {
+        margin-right: 0;
+        @media screen and (min-width: $media-sm) {
+          margin-right: 25%;
+        }
       }
     }
 
@@ -126,6 +181,35 @@ footer {
     @media screen and (max-width: $media-sm) {
       flex-direction: column;
       gap: 0;
+    }
+  }
+  //todo: Refactor this into "footer__links-nav"  if we choose to go with v2 of the footer
+  .footer__links-nav-v2 {
+    @media screen and (max-width: $media-sm) {
+      display: flex;
+      flex-direction: column;
+
+      div {
+        display: flex;
+        flex-direction: column;
+
+        &:nth-child(n + 2) {
+          span {
+            background-color: $clr-gray900;
+            margin-bottom: $space-2;
+
+            padding: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  .footer__links-nav:last-child {
+    margin-right: 0;
+
+    @media screen and (min-width: $media-lg) {
+      margin-right: 25%;
     }
   }
 }

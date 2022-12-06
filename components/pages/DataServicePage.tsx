@@ -4,8 +4,6 @@ import React, { useContext, useEffect } from 'react';
 import { ApiIndexContext, EntrystoreContext, SettingsContext } from '../../components';
 import Link from 'next/link';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
-import { linkBase } from '../../utilities';
-import { initBreadcrumb } from '../../pages/_app';
 import Head from 'next/head';
 import { Heading } from '@digg/design-system';
 
@@ -42,20 +40,7 @@ export const DataServicePage: React.FC<{
         window.location.reload();
       };
     }
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: entry.title || '',
-        crumbs: [
-          { name: 'start', link: { ...linkBase, link: '/' } },
-          {
-            name: t('routes|datasets$title'),
-            link: { ...linkBase, link: `/${t('routes|datasets$path')}?q=&f=` },
-          },
-        ],
-      });
-    return () => {
-      setBreadcrumb && setBreadcrumb(initBreadcrumb);
-    };
+
   }, [entry.title]);
 
   useEffect(() => {
@@ -83,9 +68,9 @@ export const DataServicePage: React.FC<{
 
           function getApiExploreUrl(entryid,apientryid)
           {
-            return '/${lang}/${t(
-            'routes|dataservices$path'
-          )}/${cid}_'+entryid+'/${name}/apiexplore/'+apientryid
+            return '/${t(
+              'routes|dataservices$path'
+            )}/${cid}_'+entryid+'/${name}/apiexplore/'+apientryid
           }
 
           window.__entryscape_config = [{
@@ -246,10 +231,10 @@ export const DataServicePage: React.FC<{
           content={`${entry.title} - Sveriges dataportal`}
         />
       </Head>
-      <div className="detailpage__wrapper">
+      <div className="detailpage__wrapper dataservices">
         {/* Left column */}
         <div className="detailpage__wrapper--leftcol content">
-          <Heading>{entry.title}</Heading>
+          <Heading weight='light' size={"3xl"} >{entry.title}</Heading>
 
           {/* Publisher */}
           <script
@@ -316,9 +301,7 @@ export const DataServicePage: React.FC<{
           {findDetection(cid, eid) && (
             <span className="esbRowAlignSecondary">
               <Link
-                href={`/${lang}/${t(
-                  'routes|dataservices$path'
-                )}/${cid}_${eid}/${name}/apiexplore/${eid}`}
+                href={`/${t('routes|dataservices$path')}/${cid}_${eid}/${name}/apiexplore/${eid}`}
                 locale={lang}
               >
                 <a className="dataservice-explore-api-link entryscape text-md link"></a>
@@ -330,11 +313,11 @@ export const DataServicePage: React.FC<{
 
           <div className="contact__publisher hbbr">
             <Heading level={3}>{t('pages|datasetpage$contact-publisher')}</Heading>
-            <p className="text-md">
+            <p>
               {t('pages|datasetpage$contact-publisher-text')}
               {t('pages|datasetpage$contact-publisher-text2')}{' '}
               <a
-                className="text-md link"
+                className="link"
                 href="https://community.dataportal.se/"
                 lang="en"
               >
@@ -349,8 +332,10 @@ export const DataServicePage: React.FC<{
         <div className="detailpage__wrapper--rightcol hbbr">
           <div className="detailpage__wrapper--rightcol-info text-base">
             <Heading
+              color='pinkPop'
               level={2}
-              size={'md'}
+              size={'xl'}
+              weight='light'
             >
               {t('pages|dataservicepage$api')}
             </Heading>
