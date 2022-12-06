@@ -80,13 +80,13 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head nonce={SettingsUtil.getCurrent().nonce}>
-          <script
+        <Head nonce={SettingsUtil.getCurrent().nonce}>          
+          <link 
             nonce={SettingsUtil.getCurrent().nonce}
-            type="text/javascript"
-            src="/__ENV.js"
-            async
-          />
+            rel="preload" 
+            href="/__ENV.js"
+            as="script"            
+          />   
           <link
             rel="preload"
             href="/fonts/Ubuntu/Ubuntu-Regular.woff2"
@@ -124,7 +124,13 @@ class MyDocument extends Document {
             rel="preconnect" 
             href="https://admin.dataportal.se"
             crossOrigin="anonymous"
-          />                    
+          />    
+          <script
+            nonce={SettingsUtil.getCurrent().nonce}
+            type="text/javascript"
+            src="/__ENV.js"
+            async
+          />                
         </Head>
         <body>
           <Main />
