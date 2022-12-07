@@ -16,7 +16,7 @@ export const imageLoader = (src: string, width: number, quality?: number) => {
 const renderMedia = (media: MediaBlock_media, mediaDescription?: string) => {
   const { url, alt, description, mime } = media;
   switch (media.__typename) {
-    case 'dataportal_Digg_Image':
+    case 'dataportal_v1_Digg_Image':
       const width = media?.width || '';
       const height = media?.height || '';
       return (
@@ -36,7 +36,7 @@ const renderMedia = (media: MediaBlock_media, mediaDescription?: string) => {
           )}
         </figure>
       );
-    case 'dataportal_Digg_Video':
+    case 'dataportal_v1_Digg_Video':
       return (
         <figure role={'group'}>
           <video controls>
@@ -53,7 +53,7 @@ const renderMedia = (media: MediaBlock_media, mediaDescription?: string) => {
         </figure>
       );
 
-    case 'dataportal_Digg_File':
+    case 'dataportal_v1_Digg_File':
       return <FileLink link={url}>{description || url}</FileLink>;
   }
 };

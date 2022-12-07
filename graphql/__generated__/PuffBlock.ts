@@ -10,7 +10,7 @@ import { dataportal_LinkType } from "./globalTypes";
 // ====================================================
 
 export interface PuffBlock_puffs_link {
-  __typename: "dataportal_Digg_Link";
+  __typename: "dataportal_v1_Digg_Link";
   title: string | null;
   link: string;
   linktype: dataportal_LinkType;
@@ -18,7 +18,7 @@ export interface PuffBlock_puffs_link {
 }
 
 export interface PuffBlock_puffs_container_image {
-  __typename: "dataportal_Digg_Image";
+  __typename: "dataportal_v1_Digg_Image";
   url: string;
   alt: string | null;
   name: string | null;
@@ -30,7 +30,7 @@ export interface PuffBlock_puffs_container_image {
 }
 
 export interface PuffBlock_puffs_container {
-  __typename: "dataportal_Digg_ContainerMeta";
+  __typename: "dataportal_v1_Digg_ContainerMeta";
   id: string;
   /**
    * two-letter lang
@@ -45,7 +45,7 @@ export interface PuffBlock_puffs_container {
 }
 
 export interface PuffBlock_puffs {
-  __typename: "dataportal_Digg_Puff";
+  __typename: "dataportal_v1_Digg_Puff";
   heading: string | null;
   description: string | null;
   link: PuffBlock_puffs_link | null;
@@ -56,7 +56,7 @@ export interface PuffBlock_puffs {
 }
 
 export interface PuffBlock {
-  __typename: "dataportal_Digg_PuffBlock";
+  __typename: "dataportal_v1_Digg_PuffBlock";
   heading: string | null;
   description: string | null;
   puffs: PuffBlock_puffs[] | null;

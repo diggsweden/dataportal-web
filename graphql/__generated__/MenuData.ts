@@ -10,7 +10,7 @@ import { dataportal_LinkType } from "./globalTypes";
 // ====================================================
 
 export interface MenuData_link {
-  __typename: "dataportal_Digg_Link";
+  __typename: "dataportal_v1_Digg_Link";
   title: string | null;
   link: string;
   linktype: dataportal_LinkType;
@@ -18,7 +18,7 @@ export interface MenuData_link {
 }
 
 export interface MenuData {
-  __typename: "dataportal_Digg_MenuList";
+  __typename: "dataportal_v1_Digg_MenuList";
   link: MenuData_link | null;
   order: number;
 }

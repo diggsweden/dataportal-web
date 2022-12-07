@@ -13,13 +13,13 @@ import Link from 'next/link';
 import { DataportalLogo } from '../';
 import FocusTrap from 'focus-trap-react';
 import useTranslation from 'next-translate/useTranslation';
-import { MainMenu_dataportal_Digg_Menu } from '../../graphql/__generated__/MainMenu';
+import { MainMenu_dataportal_v1_Digg_Menu } from '../../graphql/__generated__/MainMenu';
 import { useRouter } from 'next/router';
 import { checkLang } from '../../utilities/checkLang';
 import { EnvSettings } from '../../env/EnvSettings';
 
 type HeaderProps = {
-  menu: MainMenu_dataportal_Digg_Menu;
+  menu: MainMenu_dataportal_v1_Digg_Menu;
   env: EnvSettings;
 };
 

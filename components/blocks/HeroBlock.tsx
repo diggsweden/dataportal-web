@@ -11,7 +11,7 @@ import { MainContainerStyle } from '../../styles/general/emotion';
 const renderMedia = (media: HeroBlock_media) => {
   const { url, alt, mime } = media;
   switch (media.__typename) {
-    case 'dataportal_Digg_Image':
+    case 'dataportal_v1_Digg_Image':
       const width = media?.width || '';
       const height = media?.height || '';
       return (
@@ -25,7 +25,7 @@ const renderMedia = (media: HeroBlock_media) => {
           priority={true}
         />
       );
-    case 'dataportal_Digg_Video':
+    case 'dataportal_v1_Digg_Video':
       return (
         <video controls>
           <source

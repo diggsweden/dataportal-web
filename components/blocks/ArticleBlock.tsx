@@ -4,13 +4,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { News_dataportal_Digg_News } from '../../graphql/__generated__/News';
+import { News_dataportal_v1_Digg_News } from '../../graphql/__generated__/News';
 import { slugify } from '../../utilities';
 import { checkLang } from '../../utilities/checkLang';
 import { imageLoader } from './MediaBlock';
 import env from '@beam-australia/react-env';
 import { PuffBlock_puffs } from '../../graphql/__generated__/PuffBlock';
-import { MediaType_dataportal_Digg_Image } from '../../graphql/__generated__/MediaType';
+import { MediaType_dataportal_v1_Digg_Image } from '../../graphql/__generated__/MediaType';
 import { Link as DiggLink } from '../../graphql/__generated__/Link';
 import { MainContainerStyle } from '../../styles/general/emotion';
 
@@ -23,24 +23,24 @@ type Article = {
   title: string;
   description: string;
   slug: string;
-  image?: MediaType_dataportal_Digg_Image;
+  image?: MediaType_dataportal_v1_Digg_Image;
   buttonText?: string;
 };
 export interface ArticleBlockProps {
-  articles: News_dataportal_Digg_News[] | PuffBlock_puffs[];
+  articles: News_dataportal_v1_Digg_News[] | PuffBlock_puffs[];
   showMoreLink?: DiggLink;
   heading?: string;
   theme?: string;
 }
 
 const isNews = (
-  article: News_dataportal_Digg_News | PuffBlock_puffs
-): article is News_dataportal_Digg_News => {
+  article: News_dataportal_v1_Digg_News | PuffBlock_puffs
+): article is News_dataportal_v1_Digg_News => {
   return (article as any).id ? true : false;
 };
 
 const makeArticles = (
-  unknownArticles: News_dataportal_Digg_News[] | PuffBlock_puffs[],
+  unknownArticles: News_dataportal_v1_Digg_News[] | PuffBlock_puffs[],
   theme?: string
 ): Article[] => {
   return unknownArticles
@@ -76,7 +76,7 @@ const makeArticles = (
 
 /**
  * Block for rendering newslist-items, in blockformat.
- * @param {News_dataportal_Digg_News} articles array of news fetched from apollo gateway
+ * @param {News_dataportal_v1_Digg_News} articles array of news fetched from apollo gateway
  */
 export const ArticleBlock: React.FC<ArticleBlockProps> = ({
   articles: unknownArticles,

@@ -82,7 +82,7 @@
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IEntity",
+        "name": "dataportal_v1_Digg_IEntity",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -157,77 +157,77 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_ContainerMeta",
+            "name": "dataportal_v1_Digg_ContainerMeta",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_TextBlock",
+            "name": "dataportal_v1_Digg_TextBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_FaqBlock",
+            "name": "dataportal_v1_Digg_FaqBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_GroupBlock",
+            "name": "dataportal_v1_Digg_GroupBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_HeroBlock",
+            "name": "dataportal_v1_Digg_HeroBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_MediaBlock",
+            "name": "dataportal_v1_Digg_MediaBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_PuffBlock",
+            "name": "dataportal_v1_Digg_PuffBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_LinksBlock",
+            "name": "dataportal_v1_Digg_LinksBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_SharedContent",
+            "name": "dataportal_v1_Digg_SharedContent",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_SharedContentContainer",
+            "name": "dataportal_v1_Digg_SharedContentContainer",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Container",
+            "name": "dataportal_v1_Digg_Container",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_News",
+            "name": "dataportal_v1_Digg_News",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_MenuList",
+            "name": "dataportal_v1_Digg_MenuList",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Start",
+            "name": "dataportal_v1_Digg_Start",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Footer",
+            "name": "dataportal_v1_Digg_Footer",
             "ofType": null
           }
         ]
@@ -245,7 +245,7 @@
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IContent",
+        "name": "dataportal_v1_Digg_IContent",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -340,74 +340,74 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_TextBlock",
+            "name": "dataportal_v1_Digg_TextBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_FaqBlock",
+            "name": "dataportal_v1_Digg_FaqBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_GroupBlock",
+            "name": "dataportal_v1_Digg_GroupBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_HeroBlock",
+            "name": "dataportal_v1_Digg_HeroBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_MediaBlock",
+            "name": "dataportal_v1_Digg_MediaBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_PuffBlock",
+            "name": "dataportal_v1_Digg_PuffBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_LinksBlock",
+            "name": "dataportal_v1_Digg_LinksBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_SharedContentContainer",
+            "name": "dataportal_v1_Digg_SharedContentContainer",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Container",
+            "name": "dataportal_v1_Digg_Container",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_News",
+            "name": "dataportal_v1_Digg_News",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_MenuList",
+            "name": "dataportal_v1_Digg_MenuList",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Start",
+            "name": "dataportal_v1_Digg_Start",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Footer",
+            "name": "dataportal_v1_Digg_Footer",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_ICollection",
+        "name": "dataportal_v1_Digg_ICollection",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -518,57 +518,57 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_TextBlock",
+            "name": "dataportal_v1_Digg_TextBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_FaqBlock",
+            "name": "dataportal_v1_Digg_FaqBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_GroupBlock",
+            "name": "dataportal_v1_Digg_GroupBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_HeroBlock",
+            "name": "dataportal_v1_Digg_HeroBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_MediaBlock",
+            "name": "dataportal_v1_Digg_MediaBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_PuffBlock",
+            "name": "dataportal_v1_Digg_PuffBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_LinksBlock",
+            "name": "dataportal_v1_Digg_LinksBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_SharedContentContainer",
+            "name": "dataportal_v1_Digg_SharedContentContainer",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Container",
+            "name": "dataportal_v1_Digg_Container",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_News",
+            "name": "dataportal_v1_Digg_News",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_MenuList",
+            "name": "dataportal_v1_Digg_MenuList",
             "ofType": null
           }
         ]
@@ -586,7 +586,7 @@
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IContainerBase",
+        "name": "dataportal_v1_Digg_IContainerBase",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -636,7 +636,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_SEO",
+              "name": "dataportal_v1_Digg_SEO",
               "ofType": null
             },
             "isDeprecated": false,
@@ -654,7 +654,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INTERFACE",
-                  "name": "dataportal_Digg_IBlock",
+                  "name": "dataportal_v1_Digg_IBlock",
                   "ofType": null
                 }
               }
@@ -669,24 +669,24 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Container",
+            "name": "dataportal_v1_Digg_Container",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_News",
+            "name": "dataportal_v1_Digg_News",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Start",
+            "name": "dataportal_v1_Digg_Start",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IStart",
+        "name": "dataportal_v1_Digg_IStart",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -820,7 +820,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_SEO",
+              "name": "dataportal_v1_Digg_SEO",
               "ofType": null
             },
             "isDeprecated": false,
@@ -838,7 +838,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INTERFACE",
-                  "name": "dataportal_Digg_IBlock",
+                  "name": "dataportal_v1_Digg_IBlock",
                   "ofType": null
                 }
               }
@@ -852,7 +852,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_Image",
+              "name": "dataportal_v1_Digg_Image",
               "ofType": null
             },
             "isDeprecated": false,
@@ -865,14 +865,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Start",
+            "name": "dataportal_v1_Digg_Start",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IFooter",
+        "name": "dataportal_v1_Digg_IFooter",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -966,7 +966,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_Image",
+              "name": "dataportal_v1_Digg_Image",
               "ofType": null
             },
             "isDeprecated": false,
@@ -984,7 +984,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "dataportal_Digg_Column",
+                  "name": "dataportal_v1_Digg_Column",
                   "ofType": null
                 }
               }
@@ -999,14 +999,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Footer",
+            "name": "dataportal_v1_Digg_Footer",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IContainer",
+        "name": "dataportal_v1_Digg_IContainer",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -1156,7 +1156,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_SEO",
+              "name": "dataportal_v1_Digg_SEO",
               "ofType": null
             },
             "isDeprecated": false,
@@ -1174,7 +1174,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INTERFACE",
-                  "name": "dataportal_Digg_IBlock",
+                  "name": "dataportal_v1_Digg_IBlock",
                   "ofType": null
                 }
               }
@@ -1210,7 +1210,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "dataportal_Digg_Breadrumb",
+                  "name": "dataportal_v1_Digg_Breadrumb",
                   "ofType": null
                 }
               }
@@ -1225,19 +1225,19 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Container",
+            "name": "dataportal_v1_Digg_Container",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_News",
+            "name": "dataportal_v1_Digg_News",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_INews",
+        "name": "dataportal_v1_Digg_INews",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -1387,7 +1387,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_SEO",
+              "name": "dataportal_v1_Digg_SEO",
               "ofType": null
             },
             "isDeprecated": false,
@@ -1405,7 +1405,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INTERFACE",
-                  "name": "dataportal_Digg_IBlock",
+                  "name": "dataportal_v1_Digg_IBlock",
                   "ofType": null
                 }
               }
@@ -1441,7 +1441,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "dataportal_Digg_Breadrumb",
+                  "name": "dataportal_v1_Digg_Breadrumb",
                   "ofType": null
                 }
               }
@@ -1471,7 +1471,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_Image",
+              "name": "dataportal_v1_Digg_Image",
               "ofType": null
             },
             "isDeprecated": false,
@@ -1484,14 +1484,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_News",
+            "name": "dataportal_v1_Digg_News",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IBlock",
+        "name": "dataportal_v1_Digg_IBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -1602,49 +1602,49 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_TextBlock",
+            "name": "dataportal_v1_Digg_TextBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_FaqBlock",
+            "name": "dataportal_v1_Digg_FaqBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_GroupBlock",
+            "name": "dataportal_v1_Digg_GroupBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_HeroBlock",
+            "name": "dataportal_v1_Digg_HeroBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_MediaBlock",
+            "name": "dataportal_v1_Digg_MediaBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_PuffBlock",
+            "name": "dataportal_v1_Digg_PuffBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_LinksBlock",
+            "name": "dataportal_v1_Digg_LinksBlock",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_SharedContentContainer",
+            "name": "dataportal_v1_Digg_SharedContentContainer",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_ITextBlock",
+        "name": "dataportal_v1_Digg_ITextBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -1769,7 +1769,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "dataportal_Digg_RichText",
+                "name": "dataportal_v1_Digg_RichText",
                 "ofType": null
               }
             },
@@ -1783,14 +1783,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_TextBlock",
+            "name": "dataportal_v1_Digg_TextBlock",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IGroupBlock",
+        "name": "dataportal_v1_Digg_IGroupBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -1912,7 +1912,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_RichText",
+              "name": "dataportal_v1_Digg_RichText",
               "ofType": null
             },
             "isDeprecated": false,
@@ -1930,7 +1930,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INTERFACE",
-                  "name": "dataportal_Digg_IBlock",
+                  "name": "dataportal_v1_Digg_IBlock",
                   "ofType": null
                 }
               }
@@ -1945,14 +1945,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_GroupBlock",
+            "name": "dataportal_v1_Digg_GroupBlock",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IFaqBlock",
+        "name": "dataportal_v1_Digg_IFaqBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -2081,7 +2081,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "dataportal_Digg_RichText",
+                "name": "dataportal_v1_Digg_RichText",
                 "ofType": null
               }
             },
@@ -2095,14 +2095,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_FaqBlock",
+            "name": "dataportal_v1_Digg_FaqBlock",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IHeroBlock",
+        "name": "dataportal_v1_Digg_IHeroBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -2224,7 +2224,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_RichText",
+              "name": "dataportal_v1_Digg_RichText",
               "ofType": null
             },
             "isDeprecated": false,
@@ -2239,7 +2239,7 @@
               "name": null,
               "ofType": {
                 "kind": "UNION",
-                "name": "dataportal_Digg_MediaType",
+                "name": "dataportal_v1_Digg_MediaType",
                 "ofType": null
               }
             },
@@ -2253,14 +2253,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_HeroBlock",
+            "name": "dataportal_v1_Digg_HeroBlock",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IMediaBlock",
+        "name": "dataportal_v1_Digg_IMediaBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -2397,7 +2397,7 @@
               "name": null,
               "ofType": {
                 "kind": "UNION",
-                "name": "dataportal_Digg_MediaType",
+                "name": "dataportal_v1_Digg_MediaType",
                 "ofType": null
               }
             },
@@ -2411,14 +2411,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_MediaBlock",
+            "name": "dataportal_v1_Digg_MediaBlock",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IPuffBlock",
+        "name": "dataportal_v1_Digg_IPuffBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -2558,7 +2558,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "dataportal_Digg_Puff",
+                  "name": "dataportal_v1_Digg_Puff",
                   "ofType": null
                 }
               }
@@ -2573,14 +2573,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_PuffBlock",
+            "name": "dataportal_v1_Digg_PuffBlock",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_ILinksBlock",
+        "name": "dataportal_v1_Digg_ILinksBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -2696,7 +2696,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "dataportal_Digg_Link",
+                  "name": "dataportal_v1_Digg_Link",
                   "ofType": null
                 }
               }
@@ -2711,14 +2711,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_LinksBlock",
+            "name": "dataportal_v1_Digg_LinksBlock",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_ISharedContent",
+        "name": "dataportal_v1_Digg_ISharedContent",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -2814,7 +2814,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INTERFACE",
-                  "name": "dataportal_Digg_IBlock",
+                  "name": "dataportal_v1_Digg_IBlock",
                   "ofType": null
                 }
               }
@@ -2829,14 +2829,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_SharedContent",
+            "name": "dataportal_v1_Digg_SharedContent",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_ISharedContentContainer",
+        "name": "dataportal_v1_Digg_ISharedContentContainer",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -2952,7 +2952,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INTERFACE",
-                  "name": "dataportal_Digg_ISharedContent",
+                  "name": "dataportal_v1_Digg_ISharedContent",
                   "ofType": null
                 }
               }
@@ -2967,14 +2967,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_SharedContentContainer",
+            "name": "dataportal_v1_Digg_SharedContentContainer",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_ISettings",
+        "name": "dataportal_v1_Digg_ISettings",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -2987,7 +2987,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "dataportal_Digg_KeyVal",
+                "name": "dataportal_v1_Digg_KeyVal",
                 "ofType": null
               }
             },
@@ -3001,14 +3001,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_SettingsList",
+            "name": "dataportal_v1_Digg_SettingsList",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IMenu",
+        "name": "dataportal_v1_Digg_IMenu",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -3130,7 +3130,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_Link",
+              "name": "dataportal_v1_Digg_Link",
               "ofType": null
             },
             "isDeprecated": false,
@@ -3145,7 +3145,7 @@
               "name": null,
               "ofType": {
                 "kind": "INTERFACE",
-                "name": "dataportal_Digg_IMenu",
+                "name": "dataportal_v1_Digg_IMenu",
                 "ofType": null
               }
             },
@@ -3159,14 +3159,14 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_MenuList",
+            "name": "dataportal_v1_Digg_MenuList",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INTERFACE",
-        "name": "dataportal_Digg_IMedia",
+        "name": "dataportal_v1_Digg_IMedia",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -3261,24 +3261,24 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Image",
+            "name": "dataportal_v1_Digg_Image",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Video",
+            "name": "dataportal_v1_Digg_Video",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_File",
+            "name": "dataportal_v1_Digg_File",
             "ofType": null
           }
         ]
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "dataportal_QueryContainerArgs",
+        "name": "dataportal_v1_QueryContainerArgs",
         "description": null,
         "specifiedByUrl": null,
         "fields": null,
@@ -3348,7 +3348,7 @@
             "description": null,
             "type": {
               "kind": "ENUM",
-              "name": "dataportal_ContainerState",
+              "name": "dataportal_v1_ContainerState",
               "ofType": null
             },
             "defaultValue": null,
@@ -3362,7 +3362,7 @@
       },
       {
         "kind": "ENUM",
-        "name": "dataportal_ContainerState",
+        "name": "dataportal_v1_ContainerState",
         "description": "The publicationstate of a container, either preview or live",
         "specifiedByUrl": null,
         "fields": null,
@@ -3386,7 +3386,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_Breadrumb",
+        "name": "dataportal_v1_Digg_Breadrumb",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -3415,7 +3415,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "dataportal_Digg_Link",
+                "name": "dataportal_v1_Digg_Link",
                 "ofType": null
               }
             },
@@ -3430,7 +3430,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_Image",
+        "name": "dataportal_v1_Digg_Image",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -3547,7 +3547,7 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IMedia",
+            "name": "dataportal_v1_Digg_IMedia",
             "ofType": null
           }
         ],
@@ -3556,7 +3556,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_Video",
+        "name": "dataportal_v1_Digg_Video",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -3649,7 +3649,7 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IMedia",
+            "name": "dataportal_v1_Digg_IMedia",
             "ofType": null
           }
         ],
@@ -3658,7 +3658,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_File",
+        "name": "dataportal_v1_Digg_File",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -3751,7 +3751,7 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IMedia",
+            "name": "dataportal_v1_Digg_IMedia",
             "ofType": null
           }
         ],
@@ -3760,7 +3760,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_RichText",
+        "name": "dataportal_v1_Digg_RichText",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -3820,7 +3820,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_Link",
+        "name": "dataportal_v1_Digg_Link",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -3918,7 +3918,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_KeyVal",
+        "name": "dataportal_v1_Digg_KeyVal",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -3962,7 +3962,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_SEO",
+        "name": "dataportal_v1_Digg_SEO",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -4008,7 +4008,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_Image",
+              "name": "dataportal_v1_Digg_Image",
               "ofType": null
             },
             "isDeprecated": false,
@@ -4057,7 +4057,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_Column",
+        "name": "dataportal_v1_Digg_Column",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -4082,7 +4082,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "dataportal_Digg_RichText",
+                "name": "dataportal_v1_Digg_RichText",
                 "ofType": null
               }
             },
@@ -4097,7 +4097,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_Puff",
+        "name": "dataportal_v1_Digg_Puff",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -4131,7 +4131,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_Link",
+              "name": "dataportal_v1_Digg_Link",
               "ofType": null
             },
             "isDeprecated": false,
@@ -4183,7 +4183,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_ContainerMeta",
+              "name": "dataportal_v1_Digg_ContainerMeta",
               "ofType": null
             },
             "isDeprecated": false,
@@ -4197,7 +4197,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_ContainerMeta",
+        "name": "dataportal_v1_Digg_ContainerMeta",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -4303,7 +4303,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_Image",
+              "name": "dataportal_v1_Digg_Image",
               "ofType": null
             },
             "isDeprecated": false,
@@ -4330,7 +4330,7 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           }
         ],
@@ -4339,7 +4339,7 @@
       },
       {
         "kind": "UNION",
-        "name": "dataportal_Digg_MediaType",
+        "name": "dataportal_v1_Digg_MediaType",
         "description": "A mediatype of image, video or file",
         "specifiedByUrl": null,
         "fields": null,
@@ -4349,24 +4349,24 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Image",
+            "name": "dataportal_v1_Digg_Image",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_Video",
+            "name": "dataportal_v1_Digg_Video",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "dataportal_Digg_File",
+            "name": "dataportal_v1_Digg_File",
             "ofType": null
           }
         ]
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_TextBlock",
+        "name": "dataportal_v1_Digg_TextBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -4491,7 +4491,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "dataportal_Digg_RichText",
+                "name": "dataportal_v1_Digg_RichText",
                 "ofType": null
               }
             },
@@ -4503,27 +4503,27 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ITextBlock",
+            "name": "dataportal_v1_Digg_ITextBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IBlock",
+            "name": "dataportal_v1_Digg_IBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ICollection",
+            "name": "dataportal_v1_Digg_ICollection",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContent",
+            "name": "dataportal_v1_Digg_IContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           }
         ],
@@ -4532,7 +4532,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_FaqBlock",
+        "name": "dataportal_v1_Digg_FaqBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -4661,7 +4661,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "dataportal_Digg_RichText",
+                "name": "dataportal_v1_Digg_RichText",
                 "ofType": null
               }
             },
@@ -4673,27 +4673,27 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IFaqBlock",
+            "name": "dataportal_v1_Digg_IFaqBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IBlock",
+            "name": "dataportal_v1_Digg_IBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ICollection",
+            "name": "dataportal_v1_Digg_ICollection",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContent",
+            "name": "dataportal_v1_Digg_IContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           }
         ],
@@ -4702,7 +4702,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_GroupBlock",
+        "name": "dataportal_v1_Digg_GroupBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -4824,7 +4824,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_RichText",
+              "name": "dataportal_v1_Digg_RichText",
               "ofType": null
             },
             "isDeprecated": false,
@@ -4842,7 +4842,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INTERFACE",
-                  "name": "dataportal_Digg_IBlock",
+                  "name": "dataportal_v1_Digg_IBlock",
                   "ofType": null
                 }
               }
@@ -4855,27 +4855,27 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IGroupBlock",
+            "name": "dataportal_v1_Digg_IGroupBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IBlock",
+            "name": "dataportal_v1_Digg_IBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ICollection",
+            "name": "dataportal_v1_Digg_ICollection",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContent",
+            "name": "dataportal_v1_Digg_IContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           }
         ],
@@ -4884,7 +4884,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_HeroBlock",
+        "name": "dataportal_v1_Digg_HeroBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -5006,7 +5006,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_RichText",
+              "name": "dataportal_v1_Digg_RichText",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5021,7 +5021,7 @@
               "name": null,
               "ofType": {
                 "kind": "UNION",
-                "name": "dataportal_Digg_MediaType",
+                "name": "dataportal_v1_Digg_MediaType",
                 "ofType": null
               }
             },
@@ -5033,27 +5033,27 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IHeroBlock",
+            "name": "dataportal_v1_Digg_IHeroBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IBlock",
+            "name": "dataportal_v1_Digg_IBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ICollection",
+            "name": "dataportal_v1_Digg_ICollection",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContent",
+            "name": "dataportal_v1_Digg_IContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           }
         ],
@@ -5062,7 +5062,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_MediaBlock",
+        "name": "dataportal_v1_Digg_MediaBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -5199,7 +5199,7 @@
               "name": null,
               "ofType": {
                 "kind": "UNION",
-                "name": "dataportal_Digg_MediaType",
+                "name": "dataportal_v1_Digg_MediaType",
                 "ofType": null
               }
             },
@@ -5211,27 +5211,27 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IMediaBlock",
+            "name": "dataportal_v1_Digg_IMediaBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IBlock",
+            "name": "dataportal_v1_Digg_IBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ICollection",
+            "name": "dataportal_v1_Digg_ICollection",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContent",
+            "name": "dataportal_v1_Digg_IContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           }
         ],
@@ -5240,7 +5240,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_PuffBlock",
+        "name": "dataportal_v1_Digg_PuffBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -5380,7 +5380,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "dataportal_Digg_Puff",
+                  "name": "dataportal_v1_Digg_Puff",
                   "ofType": null
                 }
               }
@@ -5393,27 +5393,27 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IPuffBlock",
+            "name": "dataportal_v1_Digg_IPuffBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IBlock",
+            "name": "dataportal_v1_Digg_IBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ICollection",
+            "name": "dataportal_v1_Digg_ICollection",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContent",
+            "name": "dataportal_v1_Digg_IContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           }
         ],
@@ -5422,7 +5422,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_LinksBlock",
+        "name": "dataportal_v1_Digg_LinksBlock",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -5538,7 +5538,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "dataportal_Digg_Link",
+                  "name": "dataportal_v1_Digg_Link",
                   "ofType": null
                 }
               }
@@ -5551,27 +5551,27 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ILinksBlock",
+            "name": "dataportal_v1_Digg_ILinksBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IBlock",
+            "name": "dataportal_v1_Digg_IBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ICollection",
+            "name": "dataportal_v1_Digg_ICollection",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContent",
+            "name": "dataportal_v1_Digg_IContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           }
         ],
@@ -5580,7 +5580,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_SharedContent",
+        "name": "dataportal_v1_Digg_SharedContent",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -5676,7 +5676,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INTERFACE",
-                  "name": "dataportal_Digg_IBlock",
+                  "name": "dataportal_v1_Digg_IBlock",
                   "ofType": null
                 }
               }
@@ -5689,12 +5689,12 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ISharedContent",
+            "name": "dataportal_v1_Digg_ISharedContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           }
         ],
@@ -5703,7 +5703,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_SharedContentContainer",
+        "name": "dataportal_v1_Digg_SharedContentContainer",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -5819,7 +5819,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INTERFACE",
-                  "name": "dataportal_Digg_ISharedContent",
+                  "name": "dataportal_v1_Digg_ISharedContent",
                   "ofType": null
                 }
               }
@@ -5832,27 +5832,27 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ISharedContentContainer",
+            "name": "dataportal_v1_Digg_ISharedContentContainer",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IBlock",
+            "name": "dataportal_v1_Digg_IBlock",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ICollection",
+            "name": "dataportal_v1_Digg_ICollection",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContent",
+            "name": "dataportal_v1_Digg_IContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           }
         ],
@@ -5861,7 +5861,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_Container",
+        "name": "dataportal_v1_Digg_Container",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -6011,7 +6011,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_SEO",
+              "name": "dataportal_v1_Digg_SEO",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6029,7 +6029,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INTERFACE",
-                  "name": "dataportal_Digg_IBlock",
+                  "name": "dataportal_v1_Digg_IBlock",
                   "ofType": null
                 }
               }
@@ -6065,7 +6065,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "dataportal_Digg_Breadrumb",
+                  "name": "dataportal_v1_Digg_Breadrumb",
                   "ofType": null
                 }
               }
@@ -6078,27 +6078,27 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContainer",
+            "name": "dataportal_v1_Digg_IContainer",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ICollection",
+            "name": "dataportal_v1_Digg_ICollection",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContent",
+            "name": "dataportal_v1_Digg_IContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContainerBase",
+            "name": "dataportal_v1_Digg_IContainerBase",
             "ofType": null
           }
         ],
@@ -6107,7 +6107,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_News",
+        "name": "dataportal_v1_Digg_News",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -6257,7 +6257,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_SEO",
+              "name": "dataportal_v1_Digg_SEO",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6275,7 +6275,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INTERFACE",
-                  "name": "dataportal_Digg_IBlock",
+                  "name": "dataportal_v1_Digg_IBlock",
                   "ofType": null
                 }
               }
@@ -6311,7 +6311,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "dataportal_Digg_Breadrumb",
+                  "name": "dataportal_v1_Digg_Breadrumb",
                   "ofType": null
                 }
               }
@@ -6341,7 +6341,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_Image",
+              "name": "dataportal_v1_Digg_Image",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6352,32 +6352,32 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_INews",
+            "name": "dataportal_v1_Digg_INews",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContainer",
+            "name": "dataportal_v1_Digg_IContainer",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ICollection",
+            "name": "dataportal_v1_Digg_ICollection",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContent",
+            "name": "dataportal_v1_Digg_IContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContainerBase",
+            "name": "dataportal_v1_Digg_IContainerBase",
             "ofType": null
           }
         ],
@@ -6386,7 +6386,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_MenuList",
+        "name": "dataportal_v1_Digg_MenuList",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -6508,7 +6508,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_Link",
+              "name": "dataportal_v1_Digg_Link",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6523,7 +6523,7 @@
               "name": null,
               "ofType": {
                 "kind": "INTERFACE",
-                "name": "dataportal_Digg_IMenu",
+                "name": "dataportal_v1_Digg_IMenu",
                 "ofType": null
               }
             },
@@ -6535,22 +6535,22 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IMenu",
+            "name": "dataportal_v1_Digg_IMenu",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ICollection",
+            "name": "dataportal_v1_Digg_ICollection",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContent",
+            "name": "dataportal_v1_Digg_IContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           }
         ],
@@ -6559,7 +6559,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_SettingsList",
+        "name": "dataportal_v1_Digg_SettingsList",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -6572,7 +6572,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "dataportal_Digg_KeyVal",
+                "name": "dataportal_v1_Digg_KeyVal",
                 "ofType": null
               }
             },
@@ -6584,7 +6584,7 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_ISettings",
+            "name": "dataportal_v1_Digg_ISettings",
             "ofType": null
           }
         ],
@@ -6593,7 +6593,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_Start",
+        "name": "dataportal_v1_Digg_Start",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -6727,7 +6727,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_SEO",
+              "name": "dataportal_v1_Digg_SEO",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6745,7 +6745,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INTERFACE",
-                  "name": "dataportal_Digg_IBlock",
+                  "name": "dataportal_v1_Digg_IBlock",
                   "ofType": null
                 }
               }
@@ -6759,7 +6759,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_Image",
+              "name": "dataportal_v1_Digg_Image",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6770,22 +6770,22 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IStart",
+            "name": "dataportal_v1_Digg_IStart",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContent",
+            "name": "dataportal_v1_Digg_IContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContainerBase",
+            "name": "dataportal_v1_Digg_IContainerBase",
             "ofType": null
           }
         ],
@@ -6794,7 +6794,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "dataportal_Digg_Footer",
+        "name": "dataportal_v1_Digg_Footer",
         "description": null,
         "specifiedByUrl": null,
         "fields": [
@@ -6888,7 +6888,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_Image",
+              "name": "dataportal_v1_Digg_Image",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6906,7 +6906,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "dataportal_Digg_Column",
+                  "name": "dataportal_v1_Digg_Column",
                   "ofType": null
                 }
               }
@@ -6919,17 +6919,17 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IFooter",
+            "name": "dataportal_v1_Digg_IFooter",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IContent",
+            "name": "dataportal_v1_Digg_IContent",
             "ofType": null
           },
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IEntity",
+            "name": "dataportal_v1_Digg_IEntity",
             "ofType": null
           }
         ],
@@ -6943,7 +6943,7 @@
         "specifiedByUrl": null,
         "fields": [
           {
-            "name": "dataportal_Digg_Containers",
+            "name": "dataportal_v1_Digg_Containers",
             "description": null,
             "args": [
               {
@@ -6951,7 +6951,7 @@
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "dataportal_QueryContainerArgs",
+                  "name": "dataportal_v1_QueryContainerArgs",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -6967,7 +6967,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "dataportal_Digg_Container",
+                  "name": "dataportal_v1_Digg_Container",
                   "ofType": null
                 }
               }
@@ -6976,7 +6976,7 @@
             "deprecationReason": null
           },
           {
-            "name": "dataportal_Digg_News",
+            "name": "dataportal_v1_Digg_News",
             "description": null,
             "args": [
               {
@@ -6984,7 +6984,7 @@
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "dataportal_QueryContainerArgs",
+                  "name": "dataportal_v1_QueryContainerArgs",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -7000,7 +7000,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "dataportal_Digg_News",
+                  "name": "dataportal_v1_Digg_News",
                   "ofType": null
                 }
               }
@@ -7009,7 +7009,7 @@
             "deprecationReason": null
           },
           {
-            "name": "dataportal_Digg_Menu",
+            "name": "dataportal_v1_Digg_Menu",
             "description": null,
             "args": [
               {
@@ -7027,14 +7027,14 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_MenuList",
+              "name": "dataportal_v1_Digg_MenuList",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "dataportal_Digg_Settings",
+            "name": "dataportal_v1_Digg_Settings",
             "description": null,
             "args": [
               {
@@ -7052,14 +7052,14 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_SettingsList",
+              "name": "dataportal_v1_Digg_SettingsList",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "dataportal_Digg_Start",
+            "name": "dataportal_v1_Digg_Start",
             "description": null,
             "args": [
               {
@@ -7077,14 +7077,14 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_Start",
+              "name": "dataportal_v1_Digg_Start",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "dataportal_Digg_Footer",
+            "name": "dataportal_v1_Digg_Footer",
             "description": null,
             "args": [
               {
@@ -7102,7 +7102,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "dataportal_Digg_Footer",
+              "name": "dataportal_v1_Digg_Footer",
               "ofType": null
             },
             "isDeprecated": false,

@@ -1,11 +1,11 @@
 import { Container, css, DiggLogo, Heading, space } from '@digg/design-system';
 import useTranslation from 'next-translate/useTranslation';
 import React from 'react';
-import { Footer_dataportal_Digg_Footer_columns } from '../../graphql/__generated__/Footer';
+import { Footer_dataportal_v1_Digg_Footer_columns } from '../../graphql/__generated__/Footer';
 import { renderMarkdown } from '../Renderers';
 
 export interface FooterProps {
-  columns: (Footer_dataportal_Digg_Footer_columns | null)[];
+  columns: (Footer_dataportal_v1_Digg_Footer_columns | null)[];
 }
 
 export const Footer: React.FC<FooterProps> = ({ columns }) => {

@@ -13,7 +13,7 @@ export async function getStaticProps({ params, locale }: any) {
     fetchPolicy: 'no-cache',
   });
 
-  const newsList = result && result.data ? result.data.dataportal_Digg_News : [];
+  const newsList = result && result.data ? result.data.dataportal_v1_Digg_News : [];
 
   if (result && result.error) {
     console.error(result.error);

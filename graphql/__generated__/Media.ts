@@ -8,7 +8,7 @@
 // ====================================================
 
 export interface Media {
-  __typename: "dataportal_Digg_Image" | "dataportal_Digg_Video" | "dataportal_Digg_File";
+  __typename: "dataportal_v1_Digg_Image" | "dataportal_v1_Digg_Video" | "dataportal_v1_Digg_File";
   url: string;
   alt: string | null;
   name: string | null;

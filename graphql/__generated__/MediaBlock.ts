@@ -7,8 +7,8 @@
 // GraphQL fragment: MediaBlock
 // ====================================================
 
-export interface MediaBlock_media_dataportal_Digg_Image {
-  __typename: "dataportal_Digg_Image";
+export interface MediaBlock_media_dataportal_v1_Digg_Image {
+  __typename: "dataportal_v1_Digg_Image";
   url: string;
   alt: string | null;
   name: string | null;
@@ -19,8 +19,8 @@ export interface MediaBlock_media_dataportal_Digg_Image {
   height: number | null;
 }
 
-export interface MediaBlock_media_dataportal_Digg_Video {
-  __typename: "dataportal_Digg_Video";
+export interface MediaBlock_media_dataportal_v1_Digg_Video {
+  __typename: "dataportal_v1_Digg_Video";
   url: string;
   alt: string | null;
   name: string | null;
@@ -29,8 +29,8 @@ export interface MediaBlock_media_dataportal_Digg_Video {
   ext: string;
 }
 
-export interface MediaBlock_media_dataportal_Digg_File {
-  __typename: "dataportal_Digg_File";
+export interface MediaBlock_media_dataportal_v1_Digg_File {
+  __typename: "dataportal_v1_Digg_File";
   url: string;
   alt: string | null;
   name: string | null;
@@ -39,10 +39,10 @@ export interface MediaBlock_media_dataportal_Digg_File {
   ext: string;
 }
 
-export type MediaBlock_media = MediaBlock_media_dataportal_Digg_Image | MediaBlock_media_dataportal_Digg_Video | MediaBlock_media_dataportal_Digg_File;
+export type MediaBlock_media = MediaBlock_media_dataportal_v1_Digg_Image | MediaBlock_media_dataportal_v1_Digg_Video | MediaBlock_media_dataportal_v1_Digg_File;
 
 export interface MediaBlock {
-  __typename: "dataportal_Digg_MediaBlock";
+  __typename: "dataportal_v1_Digg_MediaBlock";
   heading: string | null;
   description: string | null;
   media: MediaBlock_media;

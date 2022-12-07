@@ -3,7 +3,7 @@ import { SEO_FRAGMENT, BLOCK_FRAGMENT, SHARED_CONTENT_FRAGMENT, IMAGE_FRAGMENT }
 
 export const START_QUERY = gql`
   query Start($locale: String) {
-    dataportal_Digg_Start(locale: $locale) {
+    dataportal_v1_Digg_Start(locale: $locale) {
       heading
       preamble
       image {
@@ -12,7 +12,7 @@ export const START_QUERY = gql`
       uiHints
       blocks {
         ...BlockData
-        ... on dataportal_Digg_SharedContentContainer {
+        ... on dataportal_v1_Digg_SharedContentContainer {
           __typename
           id
           contents {
