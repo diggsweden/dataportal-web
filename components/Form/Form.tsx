@@ -8,7 +8,7 @@ import { DiggConfirmModal, DiggProgressbar, FormBackButton, FormNavButtons, Form
 import { Form_dataportal_Digg_Form as IForm } from '../../graphql/__generated__/Form';
 import Link from 'next/link';
 import { MainContainerStyle } from '../../styles/general/emotion';
-import { ContainerNavigation } from '../Navigation';
+import { FormDropdownNavigation } from '../Navigation/FormDropdownNavigation';
 
 const GenerateFile = (
   e: React.MouseEvent<HTMLButtonElement>,
@@ -179,7 +179,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     }
 
     //Split the data into pages
-    var checkTopHeading = false;
+    var checkTopHeading = true;
     data.forEach((item, i) => {
       //If first element is a description, we don't want to add it to our data array
       if (i === 0 && item.__typename === 'dataportal_Digg_FormDescription') {
@@ -327,7 +327,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
         )}
         {page !== 0 && formSteps.length > 1 && (
           <>
-            {formSteps.length < 3 ? (
+            {formSteps.length < 5 ? (
               <FormProgress
                 formSteps={[...formSteps, 'Generera PDF']}
                 curPage={page}
@@ -335,10 +335,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
               />
             ) : (
               <>
-                {/* //TODO: Create a general form navigation with the same styling */}
-                <ContainerNavigation
-                  related={[{name: 'Hejsan', slug: '', __typename:'dataportal_Digg_Container'}]}
-                />
+                <FormDropdownNavigation pageNames={[...formSteps, 'Generera PDF']} setPage={setPage} />
                 <DiggProgressbar
                   page={page}
                   totPages={formSteps.length}
