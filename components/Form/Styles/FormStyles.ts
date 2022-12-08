@@ -347,3 +347,55 @@ export const DiggProgressbar = styled('span')<{ page: number; totPages: number }
     z-index: 100;
   }
 `;
+
+export const DiggConfirmModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: block;
+  
+  contain: paint;
+
+
+  &.hide{
+    display: none;
+  }
+  
+  .modal-content{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: ${colorPalette.gray900};
+    border: 1px solid ${colorPalette.pinkPop};
+    padding: 2rem;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+  }
+
+  .modal-buttons{
+    display: flex;
+    justify-content: center;
+
+    button{
+      color: white;
+      background-color: transparent;
+      border: 1px solid ${colorPalette.pinkPop};
+      outline: none;
+      cursor: pointer;
+      padding: 1rem;
+
+      &:hover{
+        border-color: ${colorPalette.white};
+      }
+    }
+  }
+`;

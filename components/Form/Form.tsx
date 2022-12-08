@@ -4,11 +4,11 @@ import { FormPage } from './FormPages';
 import { ArrowIcon, Button, Container, css, Heading } from '@digg/design-system';
 import FormTypes from './FormTypes';
 import FormProgress from './ProgressComponent/FormProgress';
-import { DiggProgressbar, FormBackButton, FormNavButtons, FormWrapper } from './Styles/FormStyles';
+import { DiggConfirmModal, DiggProgressbar, FormBackButton, FormNavButtons, FormWrapper } from './Styles/FormStyles';
 import { Form_dataportal_Digg_Form as IForm } from '../../graphql/__generated__/Form';
 import Link from 'next/link';
 import { MainContainerStyle } from '../../styles/general/emotion';
-import { ContainerNavigation } from '../Navigation';
+import { FormDropdownNavigation } from '../Navigation/FormDropdownNavigation';
 
 const GenerateFile = (
   e: React.MouseEvent<HTMLButtonElement>,
@@ -77,6 +77,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const scrollRef = React.useRef<HTMLSpanElement>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const modalRef = React.useRef<HTMLDivElement>(null);
   const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>([]);
   const [formSteps, setFormSteps] = useState<string[]>([]); //The title of the different pages
   const [showFirstPage, setShowFirstPage] = useState<boolean>(true);
@@ -178,7 +179,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     }
 
     //Split the data into pages
-    var checkTopHeading = false;
+    var checkTopHeading = true;
     data.forEach((item, i) => {
       //If first element is a description, we don't want to add it to our data array
       if (i === 0 && item.__typename === 'dataportal_Digg_FormDescription') {
@@ -326,7 +327,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
         )}
         {page !== 0 && formSteps.length > 1 && (
           <>
-            {formSteps.length < 3 ? (
+            {formSteps.length < 5 ? (
               <FormProgress
                 formSteps={[...formSteps, 'Generera PDF']}
                 curPage={page}
@@ -334,10 +335,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
               />
             ) : (
               <>
-                {/* //TODO: Create a general form navigation with the same styling */}
-                <ContainerNavigation
-                  related={[{name: 'Hejsan', slug: '', __typename:'dataportal_Digg_Container'}]}
-                />
+                <FormDropdownNavigation pageNames={[...formSteps, 'Generera PDF']} setPage={setPage} />
                 <DiggProgressbar
                   page={page}
                   totPages={formSteps.length}
@@ -414,10 +412,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
                       >
                         <span>
                           Nästa avsnitt
-                          <ArrowIcon
-                            className="nav-icon"
-                            width={'18px'}
-                          />
+                          <ArrowIcon className="nav-icon" width={"18px"} />
                         </span>
                       </Button>
                       <span>
@@ -438,7 +433,11 @@ export const Form: React.FC<IForm> = ({ elements }) => {
                           title="Ladda upp JSON"
                           ref={fileInputRef}
                           onChange={(e) => {
-                            ImportFromJsonFile(e, formDataArray, setFormDataArray);
+                            ImportFromJsonFile(
+                              e,
+                              formDataArray,
+                              setFormDataArray
+                            );
                           }}
                           css={css`
                             display: none;
@@ -457,7 +456,13 @@ export const Form: React.FC<IForm> = ({ elements }) => {
                         </Button>
                         <Button
                           onClick={(e) => {
-                            ClearForm(e);
+                            e.preventDefault();
+                            modalRef.current?.classList.remove("hide");
+                            modalRef.current?.scrollIntoView({
+                              behavior: 'auto',
+                              block: 'center',
+                              inline: 'center'
+                          });
                           }}
                           css={css`
                             font-weight: 500;
@@ -465,6 +470,29 @@ export const Form: React.FC<IForm> = ({ elements }) => {
                         >
                           Rensa alla svar
                         </Button>
+                        <DiggConfirmModal ref={modalRef} className="hide">
+                          <div className="modal-content">
+                            <p>Är du säker?</p>
+                            <div className="modal-buttons">
+                              <button
+                                onClick={(e) => {
+                                  ClearForm(e);
+                                  modalRef.current?.classList.add("hide");
+                                }}
+                              >
+                                Ja
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  modalRef.current?.classList.add("hide");
+                                }}
+                              >
+                                Nej
+                              </button>
+                            </div>
+                          </div>
+                        </DiggConfirmModal>
                       </span>
                     </FormNavButtons>
                   </>

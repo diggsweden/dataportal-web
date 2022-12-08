@@ -147,19 +147,26 @@ const FormItem = (
               `}
               className="text-md"
             >
-              {`${item.number}. `} <legend className="text-md">{item.title}</legend>
+              {`${item.number}. `}{" "}
+              <legend className="text-md">{item.title}</legend>
             </span>
 
-            {item.info !== null && <div css={css`
-              margin-bottom: 1rem;
-            `}>{PopOver(item.info)}</div>}
+            {item.info !== null && (
+              <div
+                css={css`
+                  margin-bottom: 1rem;
+                `}
+              >
+                {PopOver(item.info)}
+              </div>
+            )}
 
             <DiggRadioWrapper
               aria-expanded={
                 item.selected !== item.choices[item.choices.length - 1] &&
                 item.selected.popup &&
                 item.selected.popup.length > 0
-                  ? 'true'
+                  ? "true"
                   : false
               }
             >
@@ -182,14 +189,9 @@ const FormItem = (
             </DiggRadioWrapper>
           </fieldset>
 
-          {item.selected.popup &&
-          item.selected.popup.length > 0 &&
-          item.selected !== item.choices[item.choices.length - 1] ? (
+          {item.selected.popup && item.selected.popup.length > 0 ? (
             <>
-              <label
-                className="popup-label"
-                htmlFor={`${Type}${ID}`}
-              >
+              <label className="popup-label" htmlFor={`${Type}${ID}`}>
                 {item.selected.popup && (
                   <DiggTextWithLink
                     css={css`
