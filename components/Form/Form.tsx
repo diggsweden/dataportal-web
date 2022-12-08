@@ -132,7 +132,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
   };
 
   const SetupPages = (data: FormTypes[]) => {
-    if (data == null) {
+    if (data === null) {
       return;
     }
 

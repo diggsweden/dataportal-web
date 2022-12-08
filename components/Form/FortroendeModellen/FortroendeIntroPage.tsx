@@ -24,7 +24,7 @@ export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({ b
       </FormWrapper>
       <FormNavButtons className="start-buttons">
         <Button
-          onClick={() => router.push(pathname + '/infor-utveckling')}
+          onClick={(e) => (e.metaKey || e.ctrlKey) ? window.open(pathname + '/infor-utveckling', '_blank') :  router.push(pathname + '/infor-utveckling')}
           primary
         >
            <span>
@@ -36,7 +36,7 @@ export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({ b
           </span>
        </Button>
         <Button
-          onClick={() => router.push(pathname + '/fortroende')}
+          onClick={(e) => (e.metaKey || e.ctrlKey) ? window.open(pathname + '/fortroende', '_blank') :  router.push(pathname + '/fortroende')}
           primary
         >
           <span>
@@ -48,7 +48,7 @@ export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({ b
           </span>
         </Button>
         <Button
-          onClick={() => router.push(pathname + '/uppfoljning')}
+          onClick={(e) => (e.metaKey || e.ctrlKey) ? window.open(pathname + '/uppfoljning', '_blank') :  router.push(pathname + '/uppfoljning')}
           primary
         >
           <span>

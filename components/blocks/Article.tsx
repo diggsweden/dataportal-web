@@ -93,8 +93,8 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
     return type === 'publication' ? publicationUrl : containerUrl;
   }
 
-  function handleClick(url: string) {
-    router.push(url);
+  function handleClick(e: React.MouseEvent<HTMLLIElement, MouseEvent>, url: string) {
+    (e.ctrlKey || e.metaKey) ? window.open(url, '_blank') : router.push(url);
   }
 
   return (
@@ -117,7 +117,7 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
             return (
               <li
                 key={index}
-                onClick={() => handleClick(url)}
+                onClick={(e) => handleClick(e, url)}
                 className={`${classes}`}
               >
                 {image ? (

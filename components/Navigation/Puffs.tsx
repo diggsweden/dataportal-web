@@ -47,31 +47,29 @@ export const Puffs: React.FC<{ basepath?: string | undefined; links: IPuff[] }> 
         return (
           <li
             key={index}
-            onClick={() => router.push(linkPath)}
+            onClick={(e) => {
+              (e.metaKey || e.ctrlKey) ? window.open(linkPath, '_blank') :  router.push(linkPath);
+            }}
             css={styles(puff)}
           >
             {Icon && (
               <span className="theme-svg">
-                <Icon
-                  width={64}
-                  color={colorPalette['white']}
-                ></Icon>
+                <Icon width={64} color={colorPalette["white"]}></Icon>
               </span>
             )}
             <span className="puff-heading">
-              <Link
-                href={linkPath}
-                className="text-md"
-              >
+              <Link href={linkPath} className="text-md">
                 {checkLang(puff?.title || puff?.slug)}
               </Link>
               <ArrowIcon
                 width={24}
-                color={colorPalette[puff.colors?.accent || 'pinkPop']}
+                color={colorPalette[puff.colors?.accent || "pinkPop"]}
               />
             </span>
             {puff?.description && (
-              <p className="puff-body text-base font-normal">{checkLang(puff?.description)}</p>
+              <p className="puff-body text-base font-normal">
+                {checkLang(puff?.description)}
+              </p>
             )}
           </li>
         );
