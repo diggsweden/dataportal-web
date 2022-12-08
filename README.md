@@ -2,7 +2,7 @@
 
 ![node-current](https://img.shields.io/badge/node-16.13.2-green)
 ![npm-current](https://img.shields.io/badge/npm-8.1.2-green)
-![nextjs-current](https://img.shields.io/badge/nextjs-12.1.6-green)
+![nextjs-current](https://img.shields.io/badge/nextjs-13.0.2-green)
 
 Här finns källkoden för dataportalens webbklient
 [https://www.dataportal.se](https://www.dataportal.se)
@@ -36,6 +36,7 @@ REACT_APP_RUNTIME_ENV=dev
 HTTP_PROXY=http://proxy.digg.se:8080
 HTTP_PROXY_USER=secretuser
 HTTP_PROXY_PASS=secretpass
+REACT_APP_SCREEN9_API_TOKEN=secret
 
 HEALTHCHECK_SECRET=123
 ```
@@ -75,10 +76,10 @@ Detta kommer generera applikationen som statiska filer under .next-mappen.
 
 ```sh
 #bygg image
-docker build . -t nextjs-dataportal
+docker build . -t dataportal-web
 
 #skapa container
-docker run -p 3002:3002 -e PORT=3002 -e HOST=http://localhost:3002 -e REACT_APP_APOLLO_URL=http://localhost:1400 -e REACT_APP_RUNTIME_ENV=prod -e IMAGE_DOMAIN=host.docker.internal -e REACT_APP_MEDIA_BASE_URL="http://host.docker.internal:1400/assets/dataportal" --add-host=host.docker.internal:host-gateway nextjs-dataportal
+docker run -p 3000:3000 -e PORT=3000 -e HOST=http://localhost:3000 -e REACT_APP_APOLLO_URL=http://localhost:1400 -e REACT_APP_RUNTIME_ENV=prod -e IMAGE_DOMAIN=host.docker.internal -e REACT_APP_MEDIA_BASE_URL="http://host.docker.internal:1400/assets/dataportal" --add-host=host.docker.internal:host-gateway dataportal-web
 ```
 
 ## Health check
@@ -104,5 +105,9 @@ Cacheas inte, gör en request till contentbackend med startsidans fråga.
 
 ## Noteringar
 
-Projektet har ett beroende till Diggs designsystemspaket `@digg/design-system`.
-I skrivande stund är källkoden till detta paket inte publicerad på Github eller NPM.
+### Komponentbibliotek
+Projektet har ett beroende till [Diggs komponentbibliotek](https://github.com/DIGGSweden/react-component-library).
+Detta paket finns publicerat på NPM under [`@digg/design-system`](https://www.npmjs.com/package/@digg/design-system)
+
+### Videos
+Visning av videofilmer görs via videospelaren [screen9](https://screen9.com/). För att kunna visa filmer krävs ett konto hos screen9 och en API-nyckel.
