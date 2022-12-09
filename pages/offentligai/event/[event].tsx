@@ -3,8 +3,8 @@ import { Publication } from '../../../components/pages/Articles';
 import { getPublication } from '../../../utilities';
 
 export const getStaticProps = async ({ params, locale }: any) => {
-  const slug = ('/' + params?.news) as string;
-  return await getPublication(slug, locale || 'sv', { domain: 'ai', revalidate: true });
+  const slug = ('/' + params?.event) as string;
+  return await getPublication(slug, locale || 'sv', { domain: 'offentligai', revalidate: true });
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

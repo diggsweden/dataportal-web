@@ -92,10 +92,10 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                         {t('pages|startpage$open-source-header')}
                       </a>
                     </Link>
-                    <Link href={`/ai`}>
+                    <Link href={`/offentligai`}>
                       <a
                         className={`header-link ${
-                          pathname?.split('/')[1] === `ai` ? 'active' : ''
+                          pathname?.split('/')[1] === `offentligai` ? 'active' : ''
                         }`}
                       >
                         {t('pages|startpage$public-ai-header')}
@@ -293,7 +293,7 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                         </Link>
 
                         <Link
-                          href={`/ai`}
+                          href={`/offentligai`}
                           key={'offentlig-ai-link'}
                         >
                           <a
@@ -321,7 +321,7 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                           onClick={closeMenu}
                           className={`${pathname === '/faq' ? ' active' : ''}`}
                         >
-                          <div className='header__bottom-links--link'>
+                          <div className="header__bottom-links--link">
                             <QuestionCircleIcon
                               color={colorPalette.gray500}
                               width={16}
@@ -340,7 +340,7 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                           onClick={closeMenu}
                           lang="en"
                         >
-                          <div className='header__bottom-links--link'>
+                          <div className="header__bottom-links--link">
                             <ChatIcon
                               color={colorPalette.gray500}
                               width={20}
@@ -352,25 +352,23 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                       </Link>
 
                       {showLangLink && (
-                      <Link
-                        href={`/${t('common|change-lang')}`}
-                        key={'lang-link'}
-                        locale={t('common|change-lang')}
-                      >
-                        <a onClick={closeMenu}>
-                        <div className='header__bottom-links--link'>
-                          <GlobeIcon
-                              color={colorPalette.gray500}
-                              width={20}
-                              className="search-link--icon"
-                            />
-                            <span>
-                              {t('common|lang-linktext')}
-                            </span>
-                          </div>
-                        </a>
-                      </Link>
-                    )}
+                        <Link
+                          href={`/${t('common|change-lang')}`}
+                          key={'lang-link'}
+                          locale={t('common|change-lang')}
+                        >
+                          <a onClick={closeMenu}>
+                            <div className="header__bottom-links--link">
+                              <GlobeIcon
+                                color={colorPalette.gray500}
+                                width={20}
+                                className="search-link--icon"
+                              />
+                              <span>{t('common|lang-linktext')}</span>
+                            </div>
+                          </a>
+                        </Link>
+                      )}
                     </div>
                   </div>
                 )}

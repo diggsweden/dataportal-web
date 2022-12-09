@@ -3,7 +3,7 @@ import { getMultiContainer } from '../../utilities';
 import { Page } from '../[...containerSlug]';
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   const slugs = params?.aiSlug as Array<string>;
-  return (await getMultiContainer(slugs, locale || 'sv', 'ai')) as any;
+  return (await getMultiContainer(slugs, locale || 'sv', 'offentligai')) as any;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

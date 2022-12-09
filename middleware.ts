@@ -22,7 +22,7 @@ export function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
   if (basicAuth) {
-    const aiScopePath = '/ai/fortroendemodellen';
+    const aiScopePath = '/offentligai/fortroendemodellen';
     const aiScope = url.pathname.startsWith(aiScopePath);
     const authValue = basicAuth.split(' ')[1];
     const [user, pwd] = atob(authValue).split(':');
@@ -36,7 +36,7 @@ export function middleware(req: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    // ? only for user with restricted ai-scope
+    // ? only for user with restricted offentligai-scope
     if (aiScope) {
       if (hasRootAccess || hasAIAccess) {
         return NextResponse.next();
