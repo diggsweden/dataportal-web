@@ -50,7 +50,29 @@ const ImportFromJsonFile = (e: React.ChangeEvent<HTMLInputElement>, formData: Fo
 
     const importedData: FormTypes[][]= JSON.parse(text as string);
     let matchingForm = true;
-    formData.every((page, pageIndex) => {
+    
+    //combine imported data with current form data, use current form data if the imported data is missing a question
+    let newArr: FormTypes[][] = [];
+    formData.forEach((page, pageIndex) => {
+      let newPage: FormTypes[] = [];
+      page.forEach((field, fieldIndex) => {
+        let importedField = importedData[pageIndex]?.[fieldIndex];
+        if(importedField){
+          newPage.push(importedField);
+          if('value' in field){
+            let foundField = importedData[pageIndex].find((item) => 'value' in item && item.title === field.title);
+            if(!foundField) {
+              newPage.push(field);
+            }
+          }
+        }
+      });
+      newArr.push(newPage);
+    });
+
+    setFormDataArray(newArr);
+
+    /* formData.every((page, pageIndex) => {
       page.every((field, fieldIndex) => {
         let importedField = importedData[pageIndex][fieldIndex];
 
@@ -67,11 +89,10 @@ const ImportFromJsonFile = (e: React.ChangeEvent<HTMLInputElement>, formData: Fo
   
     if(matchingForm){
       setFormDataArray(importedData);
-    }
+    } */
   };
   reader.readAsText(file);
 };
-
 export const Form: React.FC<IForm> = ({ elements }) => {
   const [page, setPage] = useState<number>(0);
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
@@ -458,11 +479,14 @@ export const Form: React.FC<IForm> = ({ elements }) => {
                           onClick={(e) => {
                             e.preventDefault();
                             modalRef.current?.classList.remove("hide");
-                            modalRef.current?.scrollIntoView({
-                              behavior: 'auto',
-                              block: 'center',
-                              inline: 'center'
-                          });
+                            setTimeout(() => {
+                              modalRef.current?.scrollIntoView({
+                                behavior: 'auto',
+                                block: 'center',
+                                inline: 'center'
+                            });
+                            }, 25);
+                            
                           }}
                           css={css`
                             font-weight: 500;
