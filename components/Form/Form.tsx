@@ -242,7 +242,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
               />
             ) : (
               <>
-                <FormDropdownNavigation pageNames={[...formSteps, 'Generera PDF']} setPage={setPage} />
+                <FormDropdownNavigation pageNames={[...formSteps, 'Generera PDF']} setPage={setPage} forceUpdate={page - 1} />
                 <DiggProgressbar
                   page={page}
                   totPages={formSteps.length}
