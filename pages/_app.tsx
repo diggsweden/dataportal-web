@@ -53,7 +53,7 @@ import {
   Breadcrumb,
   BreadcrumbProps,
   LocalStore,
-  Hero,
+  imageLoader,
 } from '../components';
 import { defaultSettings } from '../components/SettingsProvider/SettingsProvider';
 import {
@@ -78,7 +78,9 @@ import absoluteUrl from 'next-absolute-url';
 import { Settings_Sandbox } from '../env/Settings.Sandbox';
 import useTranslation from 'next-translate/useTranslation';
 import { css } from '@emotion/react';
-import { Hero as IHero } from '../graphql/__generated__/Hero';
+import Image from 'next/image';
+import env from '@beam-australia/react-env';
+const renv = env;
 
 const GetCookiesAccepted = () => {
   try {
@@ -121,18 +123,18 @@ function Dataportal({ Component, pageProps, host }: DataportalenProps) {
   const [breadcrumbState, setBreadcrumb] = useState<BreadcrumbProps>(initBreadcrumb);
   const previousPath = usePrevious(asPath);
   const { t } = useTranslation('common');
-  const { seo, blocks } = resolvePage(pageProps as DataportalPageProps) || {};
+  const { seo, heroImage } = resolvePage(pageProps as DataportalPageProps) || {};
   const { title, description, image, robotsFollow, robotsIndex } = (seo as SeoData) || {};
   const strapiImageUrl = image?.url;
   const imageUrl = strapiImageUrl
     ? `${reactenv('MEDIA_BASE_URL') || ''}${strapiImageUrl}`
     : '/images/svdp-favicon-150.png';
-  const hero = blocks?.find((block) => block.__typename === 'dataportal_Digg_Hero') as IHero;
   const isDraft = asPath?.substring(0, 7) === '/drafts';
   const allowSEO = env.envName == 'prod' && !isDraft ? true : false;
   const appRenderKey = generateRandomKey(16);
   //eslint-disable-next-line
   // console.log({ seo, blocks });
+  
   useEffect(() => {
     if (typeof window !== 'undefined') {
       let clienthost = window?.location?.host || '';
@@ -350,7 +352,33 @@ function Dataportal({ Component, pageProps, host }: DataportalenProps) {
                     `}
                     className="main"
                   >
-                    {hero && <Hero {...hero} />}
+                    {heroImage?.url ? (
+                      <div className="hero">
+                        <Image
+                          loader={() =>
+                            imageLoader(
+                              (renv('MEDIA_BASE_URL') || '') + heroImage?.url,
+                              heroImage?.width as number
+                            )
+                          }
+                          src={(renv('MEDIA_BASE_URL') || '') + heroImage?.url}
+                          width={heroImage?.width || 1440}
+                          height={heroImage?.height || 400}
+                          alt={heroImage?.alt || ''}
+                          layout="responsive"
+                          priority={true}
+                        />
+                      </div>
+                    ) : (
+                      (pageProps as DataportalPageProps).type === 'MultiContainer' ||
+                      ((pageProps as DataportalPageProps).type === 'Publication' && (
+                        <div
+                          css={css`
+                            margin-top: 2rem; //Add margin to compensate for lack of hero image
+                          `}
+                        />
+                      ))
+                    )}
                     <Component {...pageProps} />
                   </main>
                 </ErrorBoundary>

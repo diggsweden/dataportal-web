@@ -143,7 +143,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           <div className={'fullWidth'}>
             {/* todo: this width? */}
             {content && (
-              <div className="domain-page__textblock">
+              <div className="content">
                 <ContentArea blocks={content} />
               </div>
             )}

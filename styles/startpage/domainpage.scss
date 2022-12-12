@@ -95,17 +95,6 @@
     }
   }
 
-  .domain-page__textblock {
-    max-width: 100%;
-    @media screen and (min-width: $media-lg) {
-      max-width: 46.063rem; //737px;
-    }
-
-    p{
-      margin-top: 0;
-    }
-  }
-
   .domain-page__show_more--link {
     display: flex;
     align-items: flex-end;

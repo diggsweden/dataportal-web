@@ -48,6 +48,22 @@
     display: flex;
     justify-content: center;
     margin-top: $space-4;
+
+    button{
+      border-radius: 0;
+    }
+
+    div {
+      &:first-child > button {
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+      }
+
+      &:last-child > button {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+    }
   }
 
   .publication-top-bar{

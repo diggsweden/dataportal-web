@@ -1,8 +1,6 @@
-import env from '@beam-australia/react-env';
 import { Heading, css, Container } from '@digg/design-system';
-import Image from 'next/image';
 import React from 'react';
-import { imageLoader, ContentArea, ArticleBlock } from '../..';
+import { ContentArea, ArticleBlock } from '../..';
 import { Containers_dataportal_Digg_Containers_blocks } from '../../../graphql/__generated__/Containers';
 import { Module_blocks } from '../../../graphql/__generated__/Module';
 import { Publication_dataportal_Digg_Publications_tags } from '../../../graphql/__generated__/Publication';
@@ -31,30 +29,19 @@ const getRelatedHeading = (tag: string) => {
 export const Publication: React.FC<PublicationResponse> = ({
   heading,
   preamble,
-  image,
   tags,
   blocks,
   related,
 }) => {
-  const { url, alt, width } = image || {};
   return (
     <Container cssProp={MainContainerStyle}>
-      {image && (
-        <Image
-          loader={() => imageLoader((env('MEDIA_BASE_URL') || '') + url, width as number)}
-          src={(env('MEDIA_BASE_URL') || '') + url}
-          width={width || 1440}
-          height={400}
-          alt={alt || ''}
-          layout="responsive"
-        />
-      )}
       <div
         css={css`
           position: relative;
+          margin-top: 2rem;
           `}
       >        
-        <div className={'content'}>   
+        <div className={'content '}>   
           {heading && 
           <Heading size={"3xl"} weight={'light'} color={'pinkPop'}>
             {checkLang(heading)}

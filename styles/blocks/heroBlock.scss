@@ -1,99 +1,17 @@
 @import '/styles/general/variables.scss';
 
 .hero {
-  // ? container
-  > div {
+  span {
     background-color: transparent;
-    color: white;
-    margin-bottom: $space-2;
+    //These values are what NextJS Image uses for the img size
+    min-height: 400px;
+    max-height: 500px;
+    max-width: 1920px;
+    margin: auto !important; //has to be important otherwise it gets overwritten by nextjs (only needed if we have a max-width and want to center the image)
 
-    span {
-      background-color: transparent;
-      //These values are what NextJS Image uses for the img size
-      min-height: 400px;
-      max-height: 500px;
-      max-width: 1920px;
-      margin: auto !important; //has to be important otherwise it gets overwritten by nextjs (only needed if we have a max-width and want to center the image)
-
-      img {
-        object-fit: cover;
-        object-position: center;
-      }
+    img {
+      object-fit: cover;
+      object-position: center;
     }
-  }
-
-  div + div {
-    max-width: 80rem;
-    margin: auto;
-    justify-content: flex-start;
-    width: calc(100% - 2rem);
-
-    div{
-      max-width: 46.063rem;
-    }
-  }
-
-  h1 {
-    margin-top: $space-10 !important;
-    margin-bottom: 0;
-  }
-  &.darkTheme {
-    background-color: $clr-black;
-  }
-  &.grayTheme {
-    background-color: $clr-gray800;
-  }
-  &.greenTheme {
-    background-color: $clr-green800;
-  }
-  &.lightGreenTheme {
-    background-color: $clr-green300;
-    h1,
-    h2,
-    h3,
-    p,
-    span {
-      color: $clr-gray900;
-    }
-  }
-  &.orangeTheme {
-    background-color: $clr-orange800;
-  }
-  &.lightOrangeTheme {
-    background-color: $clr-orange300;
-    h1,
-    h2,
-    h3,
-    p,
-    span {
-      color: $clr-gray900;
-    }
-  }
-  &.pinkTheme {
-    background-color: $clr-pink800;
-  }
-  &.lightPinkTheme {
-    background-color: $clr-pink300;
-    h1,
-    h2,
-    h3,
-    p,
-    span {
-      color: $clr-gray900;
-    }
-  }
-  .hero--content {
-    margin-top: $space-6;
-    .text-lg {
-      p {
-        margin-top: 0;
-        font-size: 1.25rem;
-        line-height: 1.75rem;
-        letter-spacing: -0.01em;
-      }
-    }
-  }
-  img {
-    background-color: $clr-white;
   }
 }
