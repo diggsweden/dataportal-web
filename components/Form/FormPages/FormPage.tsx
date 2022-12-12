@@ -52,7 +52,7 @@ const AddLabel = (number: number, Type: string, ID: number, title: string) => {
         `}
         className="text-md"
       >
-        {`${number}. `}
+        {`${number === -1 ? 'Old:' : number + '.'} `}
         <div
           css={css`
             display: flex;
@@ -147,7 +147,7 @@ const FormItem = (
               `}
               className="text-md"
             >
-              {`${item.number}. `}{" "}
+              {`${item.number === -1 ? 'Old:' : item.number + '.'} `}
               <legend className="text-md">{item.title}</legend>
             </span>
 

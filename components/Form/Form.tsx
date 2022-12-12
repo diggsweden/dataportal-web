@@ -9,90 +9,8 @@ import { Form_dataportal_Digg_Form as IForm } from '../../graphql/__generated__/
 import Link from 'next/link';
 import { MainContainerStyle } from '../../styles/general/emotion';
 import { FormDropdownNavigation } from '../Navigation/FormDropdownNavigation';
+import { GenerateJsonFile, GeneratePDF, GetLocalstorageData, ImportFromJsonFile } from './Utils/formUtils';
 
-const GenerateFile = (
-  e: React.MouseEvent<HTMLButtonElement>,
-  iframeRef: React.RefObject<HTMLIFrameElement>,
-  formDataArray: FormTypes[][]
-) => {
-  e.preventDefault();
-  //Generate the PDF html data and set the iframe
-  let docToPrint = GenerateHTML(formDataArray);
-  iframeRef?.current?.setAttribute('srcDoc', docToPrint);
-
-  //For some reason we can't access .print unless we add a slight delay
-  setTimeout(() => {
-    iframeRef.current?.contentWindow?.print();
-  }, 20);
-};
-
-const GenerateJsonFile = (formDataArray: FormTypes[][]) => {
-  const json = JSON.stringify(formDataArray);
-  const blob = new Blob([json], { type: 'application/json' });
-  const href = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = href;
-  const date = new Date().toLocaleDateString();
-  link.download = `Fortroendemodellen${date}.json`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
-
-const ImportFromJsonFile = (e: React.ChangeEvent<HTMLInputElement>, formData: FormTypes[][], setFormDataArray: React.Dispatch<React.SetStateAction<FormTypes[][]>>) => {
-  if(e.target.files === null){return;}
-
-  const file = e.target.files[0];
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const text = e.target?.result;
-    if (!text) {return};
-
-    const importedData: FormTypes[][]= JSON.parse(text as string);
-    let matchingForm = true;
-    
-    //combine imported data with current form data, use current form data if the imported data is missing a question
-    let newArr: FormTypes[][] = [];
-    formData.forEach((page, pageIndex) => {
-      let newPage: FormTypes[] = [];
-      page.forEach((field, fieldIndex) => {
-        let importedField = importedData[pageIndex]?.[fieldIndex];
-        if(importedField){
-          newPage.push(importedField);
-          if('value' in field){
-            let foundField = importedData[pageIndex].find((item) => 'value' in item && item.title === field.title);
-            if(!foundField) {
-              newPage.push(field);
-            }
-          }
-        }
-      });
-      newArr.push(newPage);
-    });
-
-    setFormDataArray(newArr);
-
-    /* formData.every((page, pageIndex) => {
-      page.every((field, fieldIndex) => {
-        let importedField = importedData[pageIndex][fieldIndex];
-
-        if((field.__typename !== importedField?.__typename) || ('title' in field && 'title' in importedField && field.title !== importedField.title)){
-          alert('The imported file does not match the current form');
-          matchingForm = false;
-          return false;
-        }
-      });
-      if(!matchingForm){
-        return false;
-      }
-    });
-  
-    if(matchingForm){
-      setFormDataArray(importedData);
-    } */
-  };
-  reader.readAsText(file);
-};
 export const Form: React.FC<IForm> = ({ elements }) => {
   const [page, setPage] = useState<number>(0);
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
@@ -117,41 +35,9 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     });
 
     SetupPages(elements as FormTypes[]);
-    GetLocalstorageData();
+    GetLocalstorageData(setFormDataArray, elements);
   }, []);
-
-  const GetLocalstorageData = () => {
-    const localData = localStorage.getItem('formData');
-    if (localData) {
-      let data: FormTypes[][] = JSON.parse(localData);
-      let tmpArr = data.map((item) => {
-        item.forEach((data) => {
-          if ('choices' in data) {
-            data.selected = data.selected;
-          }
-        });
-        return item;
-      });
-
-      //todo: Should we do a deeper check to see if the questions are the same?
-      //Use localstorage data if they contain the same amount of questions
-      if (tmpArr.length > 0) {
-        let tmpArr2 = tmpArr.reduce((page, item) => page.concat(item), []);
-
-        let elementsLength = elements.length;
-        if ((elements as FormTypes[])[0].__typename === 'dataportal_Digg_FormDescription') {
-          elementsLength--;
-        }
-
-        if (tmpArr2.length === elementsLength) {
-          setFormDataArray(tmpArr);
-        } else {
-          localStorage.removeItem('formData');
-        }
-      }
-    }
-  };
-
+ 
   const SetupPages = (data: FormTypes[]) => {
     if (data == null) {
       return;
@@ -529,7 +415,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
             <>
               <Button
                 primary
-                onClick={(e) => GenerateFile(e, iframeRef, formDataArray)}
+                onClick={(e) => GeneratePDF(e, iframeRef, formDataArray)}
                 type="submit"
                 className="text-base font-medium"
                 css={css`
