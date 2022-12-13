@@ -85,7 +85,11 @@ class MyDocument extends Document {
             nonce={SettingsUtil.getCurrent().nonce}
             type="text/javascript"
             src="/__ENV.js"
-            async
+          />
+          <link
+            href="https://cdn.screen9.com/players/amber-player.css"
+            rel="stylesheet"
+            type='text/css'
           />
           <link
             rel="preload"
@@ -124,10 +128,6 @@ class MyDocument extends Document {
             rel="preconnect"
             href="https://admin.dataportal.se"
             crossOrigin="anonymous"
-          />
-          <link
-            rel="stylesheet"
-            href="https://cdn.screen9.com/players/amber-player.css"
           />
         </Head>
         <body>
