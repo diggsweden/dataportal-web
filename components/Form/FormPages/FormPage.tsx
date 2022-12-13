@@ -27,7 +27,7 @@ const PopOver = (popoverText: string) => {
         }}
         css={css`
           p {
-            margin-top: 2rem !important;
+            margin-top: 2rem;
           }
         `}
       >

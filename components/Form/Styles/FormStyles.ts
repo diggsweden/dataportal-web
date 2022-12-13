@@ -326,6 +326,7 @@ export const DiggProgressbar = styled('span')<{ page: number; totPages: number }
   justify-content: center;
   align-items: center;
   margin-top: 1rem;
+  margin-bottom: 2rem;
 
   width: 100%;
   height: 15px;

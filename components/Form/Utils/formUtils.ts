@@ -139,3 +139,17 @@ export const ImportFromJsonFile = (e: React.ChangeEvent<HTMLInputElement>, formD
       }
     }
   };
+
+  export const handleScroll = (scrollRef: React.RefObject<HTMLSpanElement>) => {
+    if (scrollRef.current?.offsetTop === undefined || window.pageYOffset === undefined) {
+      return;
+    }
+    if (
+      window.pageYOffset > scrollRef.current.offsetTop - 300 ||
+      window.pageYOffset < scrollRef.current.offsetTop - 300
+    ) {
+      if (scrollRef.current != null) {
+        scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
