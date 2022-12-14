@@ -10,6 +10,7 @@ import { MainContainerStyle } from '../../styles/general/emotion';
 import Link from 'next/link';
 import { Search_dataportal_Digg_Search_hits } from '../../graphql/__generated__/Search';
 import { encode, decode } from 'qss';
+import { getSearchHit } from '../../utilities/searchHelpers';
 
 interface SearchProps {
   activeLink?: string;
@@ -46,26 +47,10 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
         true
       )) as any;
 
-      // console.log('test');
-      // console.log(result);
-
       let hits: SearchHit[] =
           result?.dataportal_Digg_Search?.hits
           ? result.dataportal_Digg_Search?.hits.map((r: Search_dataportal_Digg_Search_hits) => {
-              return {
-                url: `/${r.hit?.slug}`,
-                title: r.hit?.heading ?? r.hit?.name,
-                description: r.highlights
-                  ?.map((c) => {
-                    return c?.value;
-                  })
-                  .join(' '),
-                descriptionLang: r.highlights
-                  ?.map((c) => {
-                    return c?.value;
-                  })
-                  .join(' '),
-              } as SearchHit;
+              return getSearchHit(r,t)
             })
           : [];
 

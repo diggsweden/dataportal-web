@@ -1,3 +1,4 @@
+import { Translate } from "next-translate";
 import { BlockData, BlockData_dataportal_Digg_Text, BlockData_dataportal_Digg_Text_text } from "../graphql/__generated__/BlockData";
 import { Containers_dataportal_Digg_Containers } from "../graphql/__generated__/Containers";
 import { Publication_dataportal_Digg_Publications } from "../graphql/__generated__/Publication";
@@ -8,22 +9,44 @@ import { Search_dataportal_Digg_Search, Search_dataportal_Digg_Search_hits } fro
  * @param hit 
  * @returns 
  */
-export const getSearchHit = (hit:Search_dataportal_Digg_Search_hits):SearchHit | null =>
-{
-    if(hit && hit.hit)
-        switch(hit.hit.__typename)    
+export const getSearchHit = (r:Search_dataportal_Digg_Search_hits, t:Translate):SearchHit | null =>
+{  
+    if(r && r.hit)
+    {
+        switch(r.hit.__typename)    
         {
             case "dataportal_Digg_Container":                
-                return {            
-                    url: `/${hit.hit.slug}`,
-                    title: hit.hit.heading ?? hit.hit.name ?? "-",
-                }
+                return {
+                    url: `/${r.hit.slug}`,
+                    title: r.hit?.heading ?? r.hit?.name,
+                    description: r.highlights
+                    ?.map((c) => {
+                        return c?.value;
+                    })
+                    .join(' '),
+                    descriptionLang: r.highlights
+                    ?.map((c) => {
+                        return c?.value;
+                    })
+                    .join(' '),
+                } as SearchHit;
             case "dataportal_Digg_Publication":                
-                return {            
-                    url: `/${hit.hit.slug}`,
-                    title: hit.hit.heading ?? hit.hit.name ?? "-",                    
-                }
+                return {
+                    url: `/${t('routes|publications$path')}/${r.hit.slug}`,
+                    title: r.hit?.heading ?? r.hit?.name,
+                    description: r.highlights
+                    ?.map((c) => {
+                        return c?.value;
+                    })
+                    .join(' '),
+                    descriptionLang: r.highlights
+                    ?.map((c) => {
+                        return c?.value;
+                    })
+                    .join(' '),
+                } as SearchHit;
         }
+    }
     return null;
 }
 
