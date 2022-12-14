@@ -214,7 +214,6 @@ export const Form: React.FC<IForm> = ({ elements }) => {
                 />
               </>
             )}
-
             <span ref={scrollRef}></span>
           </>
         )}

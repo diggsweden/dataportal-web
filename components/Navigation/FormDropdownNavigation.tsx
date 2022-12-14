@@ -135,7 +135,7 @@ export const FormDropdownNavigation: React.FC<ContainerDpDwnProps> = ({
         }}
       >
         <span className="button--content">
-          <span>Gå till</span>
+          <span>{curActive === '' ? 'Gå till' : curActive}</span>
           <ArrowBreadcrumbIcon
             width={18}
             rotation={expanded ? -90 : 90}
