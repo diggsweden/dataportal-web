@@ -1,8 +1,6 @@
 import { Translate } from "next-translate";
-import { BlockData, BlockData_dataportal_Digg_Text, BlockData_dataportal_Digg_Text_text } from "../graphql/__generated__/BlockData";
-import { Containers_dataportal_Digg_Containers } from "../graphql/__generated__/Containers";
-import { Publication_dataportal_Digg_Publications } from "../graphql/__generated__/Publication";
-import { Search_dataportal_Digg_Search, Search_dataportal_Digg_Search_hits } from "../graphql/__generated__/Search";
+import { BlockData, BlockData_dataportal_Digg_Text } from "../graphql/__generated__/BlockData";
+import { Search_dataportal_Digg_Search_hits } from "../graphql/__generated__/Search";
 
 /**
  * Parse Search_dataportal_Digg_Search  
