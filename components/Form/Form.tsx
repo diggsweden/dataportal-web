@@ -36,10 +36,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
   }, []);
  
   const SetupPages = (data: FormTypes[]) => {
-    if (data == null) {
-      return;
-    }
-
+    if (data == null) {return;}
     let currentPage: Array<FormTypes> = [];
     let pageArray: Array<Array<FormTypes>> = [];
     setFormSteps([]);
@@ -51,9 +48,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     var checkTopHeading = true;
     data.forEach((item, i) => {
       //If first element is a description, we don't want to add it to our data array
-      if (i === 0 && item.__typename === 'dataportal_Digg_FormDescription') {
-        return;
-      }
+      if (i === 0 && item.__typename === 'dataportal_Digg_FormDescription') {return;}
 
       if (item.__typename === 'dataportal_Digg_FormPageBreak') {
         setFormSteps((prev) => [...prev, item.title]);
@@ -108,6 +103,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     }
   };
 
+  //Set default values on fields in an item
   const setupItem = (item: FormTypes) => {
     if (
       item.__typename === "dataportal_Digg_FormText" ||

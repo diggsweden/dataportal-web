@@ -270,6 +270,7 @@ export const DiggRadioLabel = styled.label`
 `;
 
 export const DiggTextWithLink = styled.p`
+    margin-bottom: 0;
   a{
     text-decoration: underline;
 
@@ -307,6 +308,10 @@ export const DiggPopover = styled.span`
 
     &:hover{
       cursor: pointer;
+    }
+
+    p{
+      margin-top: 2rem;
     }
   }
 
