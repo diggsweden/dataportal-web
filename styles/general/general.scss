@@ -110,3 +110,16 @@ mark {
     color: $clr-white !important;
   }
 }
+
+.media {
+    figure[role=group]{
+        .video-js{
+            :before {
+                font-family: AmberJS !important;
+            }
+        }  
+        .vjs-settings-button .vjs-menu-item-content {
+            word-break: keep-all;
+        }
+    }
+}

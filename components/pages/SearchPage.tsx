@@ -167,7 +167,7 @@ export const SearchPage: React.FC<SearchProps> = () => {
           <SearchContext.Consumer>
             {(search) => (
               <div className="wpb_wrapper">
-                <SearchHeader activeLink={'search'} />
+                <SearchHeader activeLink={'search'} query={query}/>
 
                 <div className="row search-header-wrapper">
                   <Heading

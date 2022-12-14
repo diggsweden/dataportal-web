@@ -147,7 +147,7 @@ export const SearchSpecificationsPage: React.FC<SearchProps> = () => {
             {(search) => (
               <div className="wpb_wrapper">
                 <Container cssProp={MainContainerStyle}>
-                  <SearchHeader activeLink={'specifications'} />
+                  <SearchHeader activeLink={'specifications'} query={query} />
 
                   <div className="row">
                     <Heading

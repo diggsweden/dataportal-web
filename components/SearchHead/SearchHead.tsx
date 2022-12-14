@@ -5,17 +5,18 @@ import React from 'react';
 
 interface SearchHeaderProps {
   activeLink?: string;
+  query?: string;
 }
 
 //Navigation between data & Api:s, concepts, specifications.
-export const SearchHeader: React.FC<SearchHeaderProps> = () => {
+export const SearchHeader: React.FC<SearchHeaderProps> = ({query}) => {
   const { t, lang } = useTranslation('pages');
   const { pathname } = useRouter() || {};
   return (
     <div className="search-head">
       <div>
         <Link
-          href={`${lang}/search?q=&f=`}
+          href={`${lang}/search?q=${query ? query : ''}&f=`}
           className={`text-md ${pathname == '/search' ? 'active' : ''} `}
         >
           {t('search$content')}
@@ -23,7 +24,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = () => {
       </div>
       <div>
         <Link
-          href={`${lang}/datasets?q=&f=`}
+          href={`${lang}/datasets?q=${query ? query : ''}&f=`}
           className={`text-md ${pathname == '/datasets' ? 'active' : ''} `}
         >
           {t('search$datasets')}
@@ -31,7 +32,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = () => {
       </div>
       <div>
         <Link
-          href={`${lang}/concepts?q=&f=`}
+          href={`${lang}/concepts?q=${query ? query : ''}&f=`}
           className={`text-md ${pathname == '/concepts' ? 'active' : ''} `}
         >
           {t('search$concepts')}
@@ -39,7 +40,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = () => {
       </div>
       <div>
         <Link
-          href={`${lang}/specifications?q=&f=`}
+          href={`${lang}/specifications?q=${query ? query : ''}&f=`}
           className={`text-md ${pathname == '/specifications' ? 'active' : ''} `}
         >
           {t('search$specifications')}
