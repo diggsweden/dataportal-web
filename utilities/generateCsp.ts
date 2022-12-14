@@ -63,7 +63,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   add('style-src', `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`);
   add('style-src-elem', `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`);
   add('style-src-attr', `'self' 'unsafe-inline'`);
-  add('connect-src', `'self' https://*`);
+  add('connect-src', `'self' https://* http://localhost:1300/`);
 
   // return the object in a formatted value (this won't work on IE11 without a polyfill!)
   return Object.entries(policy)

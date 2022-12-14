@@ -34,7 +34,7 @@ export const Page: React.FC<MultiContainerResponse> = ({
     );
   }
 
-  router.push('/404');
+  router.replace('/404');
   return null;
 };
 

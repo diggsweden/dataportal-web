@@ -46,8 +46,11 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
         true
       )) as any;
 
+      // console.log('test');
+      // console.log(result);
+
       let hits: SearchHit[] =
-        result?.dataportal_Digg_Search?.hits || []
+          result?.dataportal_Digg_Search?.hits
           ? result.dataportal_Digg_Search?.hits.map((r: Search_dataportal_Digg_Search_hits) => {
               return {
                 url: `/${r.hit?.slug}`,
@@ -69,7 +72,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
       setSearchResult({
         ...searchResult,
         hits: hits,
-        count: result.dataportal_Digg_Search?.totalNrOfHits || 0,
+        count: result?.dataportal_Digg_Search?.totalNrOfHits || 0,
       });
 
       setLoading(false);
