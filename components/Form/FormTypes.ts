@@ -6,7 +6,7 @@ import {
   Form_dataportal_Digg_Form_elements_dataportal_Digg_FormText,
 } from '../../graphql/__generated__/Form';
 
-interface DefaultProps {
+export interface DefaultProps {
   value: string;
   number: number;
 }

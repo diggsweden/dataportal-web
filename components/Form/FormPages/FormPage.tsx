@@ -1,6 +1,6 @@
-import { css, Heading } from '@digg/design-system';
-import React from 'react';
-import FormTypes from '../FormTypes';
+import { Heading } from "@digg/design-system";
+import React from "react";
+import FormTypes from "../FormTypes";
 import {
   DiggPopover,
   DiggRadio,
@@ -9,7 +9,7 @@ import {
   DiggTextWithLink,
   FormTextArea,
   Text,
-} from '../Styles/FormStyles';
+} from "../Styles/FormStyles";
 
 const PopOver = (popoverText: string) => {
   return (
@@ -17,19 +17,14 @@ const PopOver = (popoverText: string) => {
       <div
         aria-haspopup="true"
         onClick={(e) => {
-          if (e.currentTarget.classList.contains('open')) {
-            e.currentTarget.classList.remove('open');
-            e.currentTarget.setAttribute('aria-haspopup', 'false');
+          if (e.currentTarget.classList.contains("open")) {
+            e.currentTarget.classList.remove("open");
+            e.currentTarget.setAttribute("aria-haspopup", "false");
           } else {
-            e.currentTarget.classList.add('open');
-            e.currentTarget.setAttribute('aria-haspopup', 'true');
+            e.currentTarget.classList.add("open");
+            e.currentTarget.setAttribute("aria-haspopup", "true");
           }
         }}
-        css={css`
-          p {
-            margin-top: 2rem !important;
-          }
-        `}
       >
         <p
           className="text-sm"
@@ -43,26 +38,9 @@ const PopOver = (popoverText: string) => {
 const AddLabel = (number: number, Type: string, ID: number, title: string) => {
   return (
     <>
-      <span
-        css={css`
-          position: relative;
-          display: flex;
-          flex-direction: row;
-          margin-bottom: 0;
-        `}
-        className="text-md"
-      >
-        {`${number}. `}
-        <div
-          css={css`
-            display: flex;
-            align-items: flex-start;
-
-            label {
-              margin-right: 1rem;
-            }
-          `}
-        >
+      <span className="text-md form-label-wrapper">
+        {`${number === -1 ? "Old:" : number + "."} `}
+        <div className="label-body">
           <label
             className="text-md"
             htmlFor={`${Type}${ID}`}
@@ -75,31 +53,32 @@ const AddLabel = (number: number, Type: string, ID: number, title: string) => {
 };
 
 const RenderDivider = () => {
-  return (
-    <div
-      css={css`
-        border-top: 1px solid #757575;
-        margin-bottom: 2rem;
-      `}
-    ></div>
-  );
+  return <div className="form-divider"></div>;
 };
 
 interface Props {
-  UpdateFormDataArray: (e: React.ChangeEvent<any>, data: FormTypes, pageIndex: number) => void;
+  UpdateFormDataArray: (
+    e: React.ChangeEvent<any>,
+    data: FormTypes,
+    pageIndex: number
+  ) => void;
   formDataArray: Array<FormTypes>;
   pageIndex: number;
 }
 
 const FormItem = (
   item: FormTypes,
-  UpdateFormDataArray: (e: React.ChangeEvent<any>, data: FormTypes, pageIndex: number) => void,
+  UpdateFormDataArray: (
+    e: React.ChangeEvent<any>,
+    data: FormTypes,
+    pageIndex: number
+  ) => void,
   pageIndex: number
 ) => {
   const { ID, __typename: Type } = item;
 
   switch (Type) {
-    case 'dataportal_Digg_FormText':
+    case "dataportal_Digg_FormText":
       return (
         <>
           {AddLabel(item.number, Type, ID, item.title)}
@@ -117,7 +96,7 @@ const FormItem = (
           {RenderDivider()}
         </>
       );
-    case 'dataportal_Digg_FormTextArea':
+    case "dataportal_Digg_FormTextArea":
       return (
         <>
           {AddLabel(item.number, Type, ID, item.title)}
@@ -135,30 +114,17 @@ const FormItem = (
           {RenderDivider()}
         </>
       );
-    case 'dataportal_Digg_FormRadio':
+    case "dataportal_Digg_FormRadio":
       return (
         <>
           <fieldset>
-            <span
-              css={css`
-                display: flex;
-                flex-direction: row;
-                margin-bottom: 0;
-              `}
-              className="text-md"
-            >
-              {`${item.number}. `}{" "}
+            <span className="text-md form-radio__heading">
+              {`${item.number === -1 ? "Old:" : item.number + "."} `}
               <legend className="text-md">{item.title}</legend>
             </span>
 
             {item.info !== null && (
-              <div
-                css={css`
-                  margin-bottom: 1rem;
-                `}
-              >
-                {PopOver(item.info)}
-              </div>
+              <div className="form-radio__popover">{PopOver(item.info)}</div>
             )}
 
             <DiggRadioWrapper
@@ -194,9 +160,6 @@ const FormItem = (
               <label className="popup-label" htmlFor={`${Type}${ID}`}>
                 {item.selected.popup && (
                   <DiggTextWithLink
-                    css={css`
-                      margin-bottom: 0;
-                    `}
                     className="text-md"
                     dangerouslySetInnerHTML={{ __html: item.selected.popup }}
                   ></DiggTextWithLink>
@@ -215,28 +178,19 @@ const FormItem = (
               />
             </>
           ) : (
-            <span
-              css={css`
-                margin-bottom: 3rem;
-              `}
-            />
+            <span className="form-radio__mb" />
           )}
           {RenderDivider()}
         </>
       );
-    case 'dataportal_Digg_FormDescription':
+    case "dataportal_Digg_FormDescription":
       return (
         <>
-          <Heading level={item.TopHeading === true ? 2 : 3}>{item.title}</Heading>
+          <Heading level={item.TopHeading === true ? 2 : 3}>
+            {item.title}
+          </Heading>
           {item.text.length > 1 && (
-            <p
-              css={css`
-                margin-top: 0;
-                margin-bottom: 3rem;
-              `}
-            >
-              {item.text}
-            </p>
+            <p className="form-description__text">{item.text}</p>
           )}
         </>
       );

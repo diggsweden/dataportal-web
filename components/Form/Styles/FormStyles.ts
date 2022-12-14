@@ -270,6 +270,7 @@ export const DiggRadioLabel = styled.label`
 `;
 
 export const DiggTextWithLink = styled.p`
+    margin-bottom: 0;
   a{
     text-decoration: underline;
 
@@ -308,6 +309,10 @@ export const DiggPopover = styled.span`
     &:hover{
       cursor: pointer;
     }
+
+    p{
+      margin-top: 2rem;
+    }
   }
 
   .open {
@@ -326,10 +331,12 @@ export const DiggProgressbar = styled('span')<{ page: number; totPages: number }
   justify-content: center;
   align-items: center;
   margin-top: 1rem;
+  margin-bottom: 2rem;
 
   width: 100%;
   height: 15px;
   background-color: ${colorPalette.gray800};
+  color: ${(p) => p.page/(p.totPages + 1) > 0.5 ? colorPalette.black : colorPalette.white};
 
   &::before {
     content: '';

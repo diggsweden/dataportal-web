@@ -23,6 +23,7 @@ import '../styles/content/anchorLinkMenu.scss';
 import '../styles/blockspage/blockspage.scss';
 import '../styles/highlight/highlight.scss';
 import '../styles/statistic/statistic.scss';
+import '../styles/form/form_pages.scss';
 import '../styles/notfoundpage/notfoundpage.scss';
 import '../node_modules/react-vis/dist/style.css';
 import '../components/Form/ProgressComponent/FormProgress.scss';

@@ -1,4 +1,5 @@
 import { ArrowBreadcrumbIcon, Button, colorPalette, css, space } from '@digg/design-system';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useClickoutside } from '../../hooks/useClickoutside';
@@ -7,6 +8,7 @@ interface ContainerDpDwnProps {
   pageNames: string[];
   setPage: React.Dispatch<React.SetStateAction<number>>;
   className?: string;
+  forceUpdate?: number;
 }
 
 const styles = css`
@@ -86,7 +88,8 @@ const buttonColors: ColorGroupOverride = {
 export const FormDropdownNavigation: React.FC<ContainerDpDwnProps> = ({
   pageNames,
   className,
-  setPage
+  setPage,
+  forceUpdate
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [curActive, setCurActive] = useState('');
@@ -95,7 +98,10 @@ export const FormDropdownNavigation: React.FC<ContainerDpDwnProps> = ({
   useEffect(() => {
     setCurActive(pageNames[0]);
   }, [])
-  
+
+  useEffect(() => {
+    forceUpdate && setCurActive(pageNames[forceUpdate]);
+  }, [forceUpdate])
 
   const handleClick = (e: React.MouseEvent<HTMLLIElement>, pageName: string) => {
     e.preventDefault();
@@ -150,7 +156,7 @@ export const FormDropdownNavigation: React.FC<ContainerDpDwnProps> = ({
                   onClick={(e) => handleClick(e, name)}
                   key={name}
                 >
-                  <span>{name}</span>
+                  <Link href={''}>{name}</Link>
                 </li>
               );
             })}
