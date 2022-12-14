@@ -16,7 +16,7 @@ const PopOver = (popoverText: string) => {
     <DiggPopover className="text-md">
       <div
         aria-haspopup="true"
-        onClick={(e) => {
+        onMouseDown={(e) => {
           if (e.currentTarget.classList.contains("open")) {
             e.currentTarget.classList.remove("open");
             e.currentTarget.setAttribute("aria-haspopup", "false");
@@ -26,7 +26,9 @@ const PopOver = (popoverText: string) => {
           }
         }}
       >
+        <span className="show-more"></span>
         <p
+        onMouseDown={(e) => {e.stopPropagation()}}
           className="text-sm"
           dangerouslySetInnerHTML={{ __html: popoverText }}
         ></p>

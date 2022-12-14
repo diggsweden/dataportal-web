@@ -292,26 +292,32 @@ export const DiggPopover = styled.span`
     overflow: hidden;
     height: 24px;
 
-    &:before {
-      position: absolute;
-      content: 'Visa mer information';
-      text-decoration: underline;
-      font-size: 14px;
-      font-weight: 400;
-      top: 0;
-      left: 0;
+    .show-more {
+      &:before {
+        position: absolute;
+        content: "Visa mer information";
+        text-decoration: underline;
+        font-size: 14px;
+        font-weight: 400;
+        top: 0;
+        left: 0;
+      }
+
+      &:hover::before {
+        cursor: pointer;
+        text-decoration: none;
+      }
     }
 
-    &:hover::before {
-      text-decoration: none;
-    }
-
-    &:hover{
-      cursor: pointer;
-    }
-
-    p{
+    p {
       margin-top: 2rem;
+    }
+  }
+
+  a {
+    text-decoration: underline;
+    &:hover {
+      text-decoration: none;
     }
   }
 
@@ -319,8 +325,10 @@ export const DiggPopover = styled.span`
     height: auto;
     width: 100%;
 
-    &:before {
-      content: 'Stäng mer information';
+    .show-more {
+      &:before {
+        content: "Stäng mer information";
+      }
     }
   }
 `;
