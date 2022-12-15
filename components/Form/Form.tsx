@@ -22,9 +22,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
   let questionNumber = 1; //Used for visual numberings (can't use ID since we don't want headings/pagebreaks to be numbered)
 
   useEffect(() => {
-    if (elements === undefined) {
-      return;
-    }
+    if (elements === undefined || elements.length === 0) { return; }
 
     (elements as FormTypes[]).forEach((element, index) => {
       element.ID = index; //Make sure each element has a unique ID
@@ -35,9 +33,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
   }, []);
 
   const SetupPages = (data: FormTypes[]) => {
-    if (data == null) {
-      return;
-    }
+    if (data == null) { return; }
     let currentPage: Array<FormTypes> = [];
     let pageArray: Array<Array<FormTypes>> = [];
     setFormSteps([]);
@@ -49,9 +45,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     var checkTopHeading = true;
     data.forEach((item, i) => {
       //If first element is a description, we don't want to add it to our data array
-      if (i === 0 && item.__typename === "dataportal_Digg_FormDescription") {
-        return;
-      }
+      if (i === 0 && item.__typename === "dataportal_Digg_FormDescription") { return; }
 
       if (item.__typename === "dataportal_Digg_FormPageBreak") {
         setFormSteps((prev) => [...prev, item.title]);
@@ -78,7 +72,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     }
     setFormDataArray(pageArray);
   };
-
+  
   const initializeFields = (data: FormTypes[]) => {
     //Make sure that nessecary fields exists and have default values
     data.forEach((item) => {
@@ -167,142 +161,151 @@ export const Form: React.FC<IForm> = ({ elements }) => {
   };
 
   return (
-    <Container cssProp={MainContainerStyle}>
-      {page > (showFirstPage ? 0 : 1) && (
-        <FormBackButton
-          onClick={() => {
-            setPage(page - 1);
-            if (page - 1 === 0) {
-              window.scrollTo(0, 0);
-            } else {
-              handleScroll(scrollRef);
-            }
-          }}
-        >
-          <span className="back-button">
-            <ArrowIcon color={"white"} width={"18px"} />
-            <span className="text-base font-medium back-text">
-              Föregående avsnitt
-            </span>
-          </span>
-        </FormBackButton>
-      )}
-
-      <FormWrapper>
-        {page === (showFirstPage ? 0 : 1) && (
-          <Link href={"/ai/fortroendemodellen"}>
-            <FormBackButton>
+    <>
+      {formDataArray[0] && (
+        <Container cssProp={MainContainerStyle}>
+          {page > (showFirstPage ? 0 : 1) && (
+            <FormBackButton
+              onClick={() => {
+                setPage(page - 1);
+                if (page - 1 === 0) {
+                  window.scrollTo(0, 0);
+                } else {
+                  handleScroll(scrollRef);
+                }
+              }}
+            >
               <span className="back-button">
                 <ArrowIcon color={"white"} width={"18px"} />
                 <span className="text-base font-medium back-text">
-                  Tillbaka
+                  Föregående avsnitt
                 </span>
               </span>
             </FormBackButton>
-          </Link>
-        )}
-
-        {/* Show the correct progress-bar */}
-        {page !== 0 && formSteps.length > 1 && (
-          <>
-            {formSteps.length < 5 ? (
-              <FormProgress
-                formSteps={[...formSteps, "Generera PDF"]}
-                curPage={page}
-                clickCallback={setPage}
-              />
-            ) : (
-              <>
-                <FormDropdownNavigation
-                  pageNames={[...formSteps, "Generera PDF"]}
-                  setPage={setPage}
-                  forceUpdate={page - 1}
-                />
-                <DiggProgressbar
-                  page={page}
-                  totPages={formSteps.length}
-                  data-page={page}
-                  data-totalpages={formSteps.length + 1}
-                />
-              </>
-            )}
-            <span ref={scrollRef}></span>
-          </>
-        )}
-
-        <>
-          {page === 0 && (
-            <>
-              {/* If first element in form is description, render the text here */}
-              {formIntroText.title.length > 0 && (
-                <>
-                  <Heading
-                    level={1}
-                    color="pinkPop"
-                    size={"3xl"}
-                    weight={"light"}
-                    css={css`
-                      margin-top: 1rem;
-                    `}
-                  >
-                    {formIntroText.title}
-                  </Heading>
-                  <div
-                    className="text-md"
-                    dangerouslySetInnerHTML={{ __html: formIntroText.text }}
-                  ></div>
-                </>
-              )}
-
-              <Button
-                primary
-                onClick={() => {
-                  setPage(page + 1);
-                  handleScroll(scrollRef);
-                }}
-                css={css`
-                  margin: 3rem 0;
-                  width: 13rem;
-                `}
-                className="text-base"
-              >
-                Starta utvärdering
-              </Button>
-            </>
           )}
 
-          {formDataArray.map((data: FormTypes[], index) => {
-            index++; //Start at page 1 since page 0 is the intro page
-            return (
-              <React.Fragment key={`page${index}`}>
-                {page === index && (
-                  <>
-                    <FormPage
-                      UpdateFormDataArray={UpdateFormDataArray}
-                      formDataArray={data}
-                      pageIndex={index}
-                    />
+          <FormWrapper>
+            {page === (showFirstPage ? 0 : 1) && (
+              <Link
+                href={"/ai/fortroendemodellen"}
+                css={css`
+                  width: fit-content;
+                `}
+              >
+                <FormBackButton>
+                  <span className="back-button">
+                    <ArrowIcon color={"white"} width={"18px"} />
+                    <span className="text-base font-medium back-text">
+                      Tillbaka
+                    </span>
+                  </span>
+                </FormBackButton>
+              </Link>
+            )}
 
-                    <FormBottomNav
-                      key={`nav${index}`}
-                      setFormDataArray={setFormDataArray}
-                      formDataArray={formDataArray}
+            {/* Show the correct progress-bar */}
+            {page !== 0 && formSteps.length > 1 && (
+              <>
+                {formSteps.length < 5 ? (
+                  <FormProgress
+                    formSteps={[...formSteps, "Generera PDF"]}
+                    curPage={page}
+                    clickCallback={setPage}
+                  />
+                ) : (
+                  <>
+                    <FormDropdownNavigation
+                      pageNames={[...formSteps, "Generera PDF"]}
                       setPage={setPage}
+                      forceUpdate={page - 1}
+                    />
+                    <DiggProgressbar
                       page={page}
-                      scrollRef={scrollRef}
+                      totPages={formSteps.length}
+                      data-page={page}
+                      data-totalpages={formSteps.length + 1}
                     />
                   </>
                 )}
-              </React.Fragment>
-            );
-          })}
+                <span ref={scrollRef}></span>
+              </>
+            )}
 
-          {page === formDataArray.length + 1 && (
-            <FormGeneratePDF formDataArray={formDataArray} />
-          )}
-        </>
-      </FormWrapper>
-    </Container>
+            <>
+              {page === 0 && (
+                <>
+                  {/* If first element in form is description, render the text here */}
+                  {formIntroText.title.length > 0 && (
+                    <>
+                      <Heading
+                        level={1}
+                        color="pinkPop"
+                        size={"3xl"}
+                        weight={"light"}
+                        css={css`
+                          margin-top: 1rem;
+                        `}
+                      >
+                        {formIntroText.title}
+                      </Heading>
+                      <div
+                        className="text-md"
+                        dangerouslySetInnerHTML={{ __html: formIntroText.text }}
+                      ></div>
+                    </>
+                  )}
+
+                  <Button
+                    primary
+                    onClick={() => {
+                      setPage(page + 1);
+                      handleScroll(scrollRef);
+                    }}
+                    css={css`
+                      margin: 3rem 0;
+                      width: 13rem;
+                    `}
+                    className="text-base"
+                  >
+                    Starta utvärdering
+                  </Button>
+                </>
+              )}
+
+              {formDataArray.map((data: FormTypes[], index) => {
+                index++; //Start at page 1 since page 0 is the intro page
+                return (
+                  <React.Fragment key={`page${index}`}>
+                    {page === index && (
+                      <>
+                        <FormPage
+                          UpdateFormDataArray={UpdateFormDataArray}
+                          formDataArray={data}
+                          pageIndex={index}
+                        />
+
+                        <FormBottomNav
+                          key={`nav${index}`}
+                          setFormDataArray={setFormDataArray}
+                          formDataArray={formDataArray}
+                          setPage={setPage}
+                          page={page}
+                          scrollRef={scrollRef}
+                        />
+                      </>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+
+              {page === formDataArray.length + 1 && (
+                <FormGeneratePDF formDataArray={formDataArray} />
+              )}
+            </>
+          </FormWrapper>
+        </Container>
+      )}
+    </>
   );
 };
 

@@ -291,8 +291,10 @@ export const DiggPopover = styled.span`
     position: relative;
     overflow: hidden;
     height: 24px;
+    width: 9rem;
 
     .show-more {
+      width: 10rem;
       &:before {
         position: absolute;
         content: "Visa mer information";
@@ -311,6 +313,7 @@ export const DiggPopover = styled.span`
 
     p {
       margin-top: 2rem;
+      display: none;
     }
   }
 
@@ -324,6 +327,10 @@ export const DiggPopover = styled.span`
   .open {
     height: auto;
     width: 100%;
+
+    p{
+      display: block;
+    }
 
     .show-more {
       &:before {
