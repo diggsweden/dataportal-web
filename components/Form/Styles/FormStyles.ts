@@ -398,7 +398,8 @@ export const DiggConfirmModal = styled.div`
 
   .modal-buttons{
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+
 
     button{
       color: white;

@@ -1,31 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { FormPage } from './FormPages';
-import { ArrowIcon, Button, Container, css, Heading } from '@digg/design-system';
-import FormTypes from './FormTypes';
-import FormProgress from './ProgressComponent/FormProgress';
-import { DiggProgressbar, FormBackButton, FormWrapper } from './Styles/FormStyles';
-import { Form_dataportal_Digg_Form as IForm } from '../../graphql/__generated__/Form';
-import Link from 'next/link';
-import { MainContainerStyle } from '../../styles/general/emotion';
-import { FormDropdownNavigation } from '../Navigation/FormDropdownNavigation';
-import { GeneratePDF, GetLocalstorageData, handleScroll } from './Utils/formUtils';
-import FormBottomNav from './FormPages/FormBottomNav';
+import React, { useEffect, useState } from "react";
+import { FormPage } from "./FormPages";
+import { ArrowIcon, Button, Container, css, Heading, } from "@digg/design-system";
+import FormTypes from "./FormTypes";
+import FormProgress from "./ProgressComponent/FormProgress";
+import { DiggProgressbar, FormBackButton, FormWrapper, } from "./Styles/FormStyles";
+import { Form_dataportal_Digg_Form as IForm } from "../../graphql/__generated__/Form";
+import Link from "next/link";
+import { MainContainerStyle } from "../../styles/general/emotion";
+import { FormDropdownNavigation } from "../Navigation/FormDropdownNavigation";
+import { GetLocalstorageData, handleScroll } from "./Utils/formUtils";
+import FormBottomNav from "./FormPages/FormBottomNav";
+import FormGeneratePDF from "./FormPages/FormGeneratePDF";
 
 export const Form: React.FC<IForm> = ({ elements }) => {
   const [page, setPage] = useState<number>(0);
-  const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const scrollRef = React.useRef<HTMLSpanElement>(null);
   const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>([]);
   const [formSteps, setFormSteps] = useState<string[]>([]); //The title of the different pages
   const [showFirstPage, setShowFirstPage] = useState<boolean>(true);
-  const [formIntroText, setFormIntroText] = useState<{ title: string; text: string }>({
-    title: '',
-    text: '',
-  });
+  const [formIntroText, setFormIntroText] = useState<{ title: string; text: string; }>({ title: "", text: "", });
   let questionNumber = 1; //Used for visual numberings (can't use ID since we don't want headings/pagebreaks to be numbered)
 
   useEffect(() => {
-    if (elements === undefined) {return;}
+    if (elements === undefined) {
+      return;
+    }
 
     (elements as FormTypes[]).forEach((element, index) => {
       element.ID = index; //Make sure each element has a unique ID
@@ -34,9 +33,11 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     SetupPages(elements as FormTypes[]);
     GetLocalstorageData(setFormDataArray, elements);
   }, []);
- 
+
   const SetupPages = (data: FormTypes[]) => {
-    if (data == null) {return;}
+    if (data == null) {
+      return;
+    }
     let currentPage: Array<FormTypes> = [];
     let pageArray: Array<Array<FormTypes>> = [];
     setFormSteps([]);
@@ -48,9 +49,11 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     var checkTopHeading = true;
     data.forEach((item, i) => {
       //If first element is a description, we don't want to add it to our data array
-      if (i === 0 && item.__typename === 'dataportal_Digg_FormDescription') {return;}
+      if (i === 0 && item.__typename === "dataportal_Digg_FormDescription") {
+        return;
+      }
 
-      if (item.__typename === 'dataportal_Digg_FormPageBreak') {
+      if (item.__typename === "dataportal_Digg_FormPageBreak") {
         setFormSteps((prev) => [...prev, item.title]);
         if (currentPage.length > 1) {
           pageArray.push(currentPage);
@@ -59,7 +62,10 @@ export const Form: React.FC<IForm> = ({ elements }) => {
         }
         currentPage.push(item);
       } else {
-        if (checkTopHeading && item.__typename === 'dataportal_Digg_FormDescription') {
+        if (
+          checkTopHeading &&
+          item.__typename === "dataportal_Digg_FormDescription"
+        ) {
           item.TopHeading = true;
         }
         checkTopHeading = false;
@@ -114,7 +120,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
       item.number = questionNumber;
       questionNumber++;
     }
-  }
+  };
 
   //Set correct starting page depending if any pagebreak exists or not.
   useEffect(() => {
@@ -134,8 +140,12 @@ export const Form: React.FC<IForm> = ({ elements }) => {
 
     if (data.__typename === "dataportal_Digg_FormChoice") {
       setFormDataArray((prev) => {
-        //Find the index of the correct object by finding the choice with the same ID as the data
-        let objIndex = prev[pageIndex].findIndex( (obj) => "choices" in obj && obj.choices.some((choice) => choice.ID === data.ID));
+        //Find the index of the correct object by finding the choice with the same ID as the data (only for radio buttons)
+        let objIndex = prev[pageIndex].findIndex(
+          (obj) =>
+            "choices" in obj &&
+            obj.choices.some((choice) => choice.ID === data.ID)
+        );
         let foundObj = prev[pageIndex][objIndex];
         if (foundObj && "choices" in foundObj) {
           foundObj.selected = data;
@@ -191,6 +201,8 @@ export const Form: React.FC<IForm> = ({ elements }) => {
             </FormBackButton>
           </Link>
         )}
+
+        {/* Show the correct progress-bar */}
         {page !== 0 && formSteps.length > 1 && (
           <>
             {formSteps.length < 5 ? (
@@ -286,33 +298,10 @@ export const Form: React.FC<IForm> = ({ elements }) => {
           })}
 
           {page === formDataArray.length + 1 && (
-            <>
-              <Button
-                primary
-                onClick={(e) => GeneratePDF(e, iframeRef, formDataArray)}
-                type="submit"
-                className="text-base font-medium"
-                css={css`
-                  margin: 3rem 0;
-                `}
-              >
-                Generate PDF
-              </Button>
-            </>
+            <FormGeneratePDF formDataArray={formDataArray} />
           )}
         </>
       </FormWrapper>
-
-      {/* Hidden iframe used only for printing */}
-      <iframe
-        ref={iframeRef}
-        title="frame"
-        id="printFrame"
-        srcDoc="<div>Empty</div>"
-        css={css`
-          display: none;
-        `}
-      ></iframe>
     </Container>
   );
 };
