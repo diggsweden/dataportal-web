@@ -118,7 +118,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
 
   //Set correct starting page depending if any pagebreak exists or not.
   useEffect(() => {
-    if (!showFirstPage && formSteps.length > 0) {
+    if (!showFirstPage) {
       setPage(1);
     } else {
       setPage(0);
@@ -164,7 +164,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     <>
       {formDataArray[0] && (
         <Container cssProp={MainContainerStyle}>
-          {page > (showFirstPage ? 0 : 1) && (
+          {page >  0 && showFirstPage && (
             <FormBackButton
               onClick={() => {
                 setPage(page - 1);
@@ -185,7 +185,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
           )}
 
           <FormWrapper>
-            {page === (showFirstPage ? 0 : 1) && (
+            {page === 0 && showFirstPage && (
               <Link
                 href={"/ai/fortroendemodellen"}
                 css={css`
