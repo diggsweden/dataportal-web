@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FormPage } from "./FormPages";
+import { FormPage, FormBottomNav, FormGeneratePDF } from "./FormPages";
 import { ArrowIcon, Button, Container, css, Heading, } from "@digg/design-system";
 import FormTypes from "./FormTypes";
 import FormProgress from "./ProgressComponent/FormProgress";
@@ -9,8 +9,6 @@ import Link from "next/link";
 import { MainContainerStyle } from "../../styles/general/emotion";
 import { FormDropdownNavigation } from "../Navigation/FormDropdownNavigation";
 import { GetLocalstorageData, handleScroll } from "./Utils/formUtils";
-import FormBottomNav from "./FormPages/FormBottomNav";
-import FormGeneratePDF from "./FormPages/FormGeneratePDF";
 
 export const Form: React.FC<IForm> = ({ elements }) => {
   const [page, setPage] = useState<number>(0);
@@ -127,32 +125,32 @@ export const Form: React.FC<IForm> = ({ elements }) => {
 
   const UpdateFormDataArray = (
     e: React.ChangeEvent<any>,
-    data: FormTypes,
+    fieldToUpdate: FormTypes,
     pageIndex: number
   ) => {
     pageIndex = pageIndex - 1; //Page index starts at 1 since we hardcode the first page.
 
-    if (data.__typename === "dataportal_Digg_FormChoice") {
+    if (fieldToUpdate.__typename === "dataportal_Digg_FormChoice") {
       setFormDataArray((prev) => {
         //Find the index of the correct object by finding the choice with the same ID as the data (only for radio buttons)
-        let objIndex = prev[pageIndex].findIndex(
-          (obj) =>
-            "choices" in obj &&
-            obj.choices.some((choice) => choice.ID === data.ID)
+        let itemIndex = prev[pageIndex].findIndex(
+          (item) =>
+            "choices" in item &&
+            item.choices.some((choice) => choice.ID === fieldToUpdate.ID)
         );
-        let foundObj = prev[pageIndex][objIndex];
+        let foundObj = prev[pageIndex][itemIndex];
         if (foundObj && "choices" in foundObj) {
-          foundObj.selected = data;
+          foundObj.selected = fieldToUpdate;
         }
         return [...prev];
       });
     } else {
       setFormDataArray((prev) => {
-        let objIndex = prev[pageIndex].findIndex((obj) => obj.ID === data.ID);
-        let foundObj = prev[pageIndex][objIndex];
+        let itemIndex = prev[pageIndex].findIndex((item) => item.ID === fieldToUpdate.ID);
+        let foundObj = prev[pageIndex][itemIndex];
         if ("value" in foundObj) {
           foundObj.value = e.target.value;
-          prev[pageIndex][objIndex] = foundObj;
+          prev[pageIndex][itemIndex] = foundObj;
         }
         return [...prev];
       });
