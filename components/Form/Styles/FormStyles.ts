@@ -146,22 +146,6 @@ export const FormNavButtons = styled.div`
       margin-left: 0;
       margin-top: 1rem;
     }
-    a:active {
-      translate: none;
-    }
-    button > a > span {
-      color: black;
-      text-decoration: none;
-      border: none;
-
-      &:hover {
-        color: black;
-
-        svg {
-          fill: black;
-        }
-      }
-    }
   }
 `;
 
