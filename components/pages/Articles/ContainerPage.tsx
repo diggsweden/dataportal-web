@@ -87,6 +87,21 @@ const styles = css`
   ${space({ mb: 16 })};
 `;
 
+export const highlightCode = () => {
+  highlightCodeBlock();
+
+  // Adds lang attribute to codeBlocks
+  const codeWrappers = Array.prototype.slice.call(
+    document.getElementsByClassName("code-toolbar")
+  );
+  codeWrappers.map((codeWrapper) => codeWrapper.setAttribute("lang", "en"));
+
+  // Adds line numbers to codeBlocks
+  const pres = Array.prototype.slice.call(document.getElementsByTagName("pre"));
+  pres.map((pre) => pre.classList.add("line-numbers"));
+};
+
+
 export const ContainerPage: React.FC<ContainerPageProps> = ({
   heading,
   preamble,
@@ -120,17 +135,8 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   }, [menuItems, asPath, appRenderKey]);
 
   useEffect(() => {
-    highlightCodeBlock();
-
-    // Adds lang attribute to codeBlocks
-    const codeWrappers = Array.prototype.slice.call(
-      document.getElementsByClassName('code-toolbar')
-    );
-    codeWrappers.map((codeWrapper) => codeWrapper.setAttribute('lang', 'en'));
-
-    // Adds line numbers to codeBlocks
-    const pres = Array.prototype.slice.call(document.getElementsByTagName('pre'));
-    pres.map((pre) => pre.classList.add('line-numbers'));
+    //Highlights code using prismjs
+    highlightCode();
 
     // Matomo tracking
     trackPageView({ documentTitle: name });

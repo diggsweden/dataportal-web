@@ -4,12 +4,13 @@ import { Module_dataportal_Digg_Module } from '../../../graphql/__generated__/Mo
 import { ContentArea } from '../../ContentArea';
 import { Heading, Container, css } from '@digg/design-system';
 import { FormWrapper } from '../Styles/FormStyles';
-import { highlightCodeBlock } from '../../pages/Articles';
+import { highlightCode, highlightCodeBlock } from '../../pages/Articles';
 
 export const FortroendeEndPage: React.FC<Module_dataportal_Digg_Module> = ({ blocks }) => {
   useEffect(() => {
-    highlightCodeBlock();
-  }, [])
+    //Highlight code blocks using prismjs
+    highlightCode();
+  }, []);
   
   return (
     <Container cssProp={MainContainerStyle}>
