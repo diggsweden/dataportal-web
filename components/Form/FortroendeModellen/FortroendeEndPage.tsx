@@ -4,7 +4,7 @@ import { Module_dataportal_Digg_Module } from '../../../graphql/__generated__/Mo
 import { ContentArea } from '../../ContentArea';
 import { Heading, Container, css } from '@digg/design-system';
 import { FormWrapper } from '../Styles/FormStyles';
-import { highlightCode, highlightCodeBlock } from '../../pages/Articles';
+import { highlightCode } from '../../pages/Articles';
 
 export const FortroendeEndPage: React.FC<Module_dataportal_Digg_Module> = ({ blocks }) => {
   useEffect(() => {
@@ -14,7 +14,7 @@ export const FortroendeEndPage: React.FC<Module_dataportal_Digg_Module> = ({ blo
   
   return (
     <Container cssProp={MainContainerStyle}>
-      <FormWrapper>
+{      <FormWrapper>
         <Heading color="pinkPop" size={"3xl"} weight={"light"}>
           Tack för att du tog dig tid att fylla i formuläret!
         </Heading>
@@ -29,7 +29,7 @@ export const FortroendeEndPage: React.FC<Module_dataportal_Digg_Module> = ({ blo
           margin-top: 2rem;
         `}>
           <a
-            href="https://dataportalen.se"
+            href="https://dataportal.se"
             target="_blank"
             data-wpel-link="external"
             rel="external noopener noreferrer"
@@ -41,7 +41,7 @@ export const FortroendeEndPage: React.FC<Module_dataportal_Digg_Module> = ({ blo
             />
           </a>
         </div>
-      </FormWrapper>
+      </FormWrapper>}
     </Container>
   );
 };
