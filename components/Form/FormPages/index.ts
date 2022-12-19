@@ -1,3 +1,5 @@
 import FormPage from './FormPage'; 
+import FormGeneratePDF from './FormGeneratePDF';
+import FormBottomNav from './FormBottomNav';
 
-export { FormPage };
+export { FormPage, FormGeneratePDF, FormBottomNav };

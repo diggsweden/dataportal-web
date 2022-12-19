@@ -89,57 +89,62 @@ export const FormGeneratePDFButton = styled.button`
 //Wrapper for buttons
 export const FormNavButtons = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   margin-bottom: 3rem;
 
-  span{
-    display: flex;    
+  @media screen and (min-width: ${theme.breakpoints[0]}) {
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+
+    button {
+      flex-direction: row;
+      max-width: 12rem;
+    }
+  }
+
+  span {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     font-weight: 500;
 
-    .nav-icon{
+    @media screen and (min-width: ${theme.breakpoints[0]}) {
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      button {
+        margin-left: 0.5rem;
+        max-width: 12rem;
+      }
+    }
+
+    .nav-icon {
       padding: 0;
       margin: 0;
       margin-left: 0.5rem;
     }
   }
 
-  button{
+  button {
     width: fit-content;
-    max-width: 13rem;
+    margin-top: 0.5rem;
+    width: 100%;
 
-    &:first-of-type{
-      margin-right: 0.5rem;
-    }
-    &:last-of-type{
-      margin-left: 0.5rem;
+    span{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
     }
   }
 
-  &.start-buttons{
+  &.start-buttons {
     flex-direction: column;
 
-    button{
+    button {
       margin-left: 0;
       margin-top: 1rem;
-    }
-    a:active{
-      translate: none;
-    }
-    button > a > span {
-      color: black;
-      text-decoration: none;
-      border: none;
-
-      &:hover{
-        color: black;
-
-        svg{
-          fill: black;
-        }
-      }
     }
   }
 `;
@@ -291,27 +296,36 @@ export const DiggPopover = styled.span`
     position: relative;
     overflow: hidden;
     height: 24px;
+    width: 9rem;
 
-    &:before {
-      position: absolute;
-      content: 'Visa mer information';
-      text-decoration: underline;
-      font-size: 14px;
-      font-weight: 400;
-      top: 0;
-      left: 0;
+    .show-more {
+      width: 10rem;
+      &:before {
+        position: absolute;
+        content: "Visa mer information";
+        text-decoration: underline;
+        font-size: 14px;
+        font-weight: 400;
+        top: 0;
+        left: 0;
+      }
+
+      &:hover::before {
+        cursor: pointer;
+        text-decoration: none;
+      }
     }
 
-    &:hover::before {
-      text-decoration: none;
-    }
-
-    &:hover{
-      cursor: pointer;
-    }
-
-    p{
+    p {
       margin-top: 2rem;
+      display: none;
+    }
+  }
+
+  a {
+    text-decoration: underline;
+    &:hover {
+      text-decoration: none;
     }
   }
 
@@ -319,8 +333,14 @@ export const DiggPopover = styled.span`
     height: auto;
     width: 100%;
 
-    &:before {
-      content: 'Stäng mer information';
+    p{
+      display: block;
+    }
+
+    .show-more {
+      &:before {
+        content: "Stäng mer information";
+      }
     }
   }
 `;
@@ -390,7 +410,8 @@ export const DiggConfirmModal = styled.div`
 
   .modal-buttons{
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+
 
     button{
       color: white;
