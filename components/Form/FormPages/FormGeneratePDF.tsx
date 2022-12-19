@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { DiggConfirmModal } from '../Styles/FormStyles';
 import { GeneratePDF } from '../Utils/formUtils';
 import FormTypes from '../FormTypes';
+import useTranslation from 'next-translate/useTranslation';
 
 type Props = {
     formDataArray: FormTypes[][];
@@ -13,6 +14,7 @@ const FormGeneratePDF: React.FC<Props> = ({formDataArray}) => {
     const router = useRouter();
     const iframeRef = React.useRef<HTMLIFrameElement>(null);
     const finishedModalRef = React.useRef<HTMLDivElement>(null);
+    const {t} = useTranslation();
 
   return (
     <>
@@ -30,11 +32,11 @@ const FormGeneratePDF: React.FC<Props> = ({formDataArray}) => {
           margin: 3rem 0;
         `}
       >
-        Generate PDF
+        {t('pages|form$generate-pdf-text')}
       </Button>
       <DiggConfirmModal ref={finishedModalRef} className="hide">
         <div className="modal-content">
-          <p>Vill du gå vidare?</p>
+          <p>{t('pages|form$form-continue-text')}</p>
           <div className="modal-buttons">
             <button
               onClick={(e) => {
@@ -43,7 +45,7 @@ const FormGeneratePDF: React.FC<Props> = ({formDataArray}) => {
                 router.push("/ai/fortroendemodellen/success");
               }}
             >
-              Ja
+              {t('common|yes')}
             </button>
             <button
               onClick={(e) => {
@@ -51,7 +53,7 @@ const FormGeneratePDF: React.FC<Props> = ({formDataArray}) => {
                 finishedModalRef.current?.classList.add("hide");
               }}
             >
-              Nej
+              {t('common|no')}
             </button>
           </div>
         </div>

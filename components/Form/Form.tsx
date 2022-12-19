@@ -9,8 +9,14 @@ import Link from "next/link";
 import { MainContainerStyle } from "../../styles/general/emotion";
 import { FormDropdownNavigation } from "../Navigation/FormDropdownNavigation";
 import { GetLocalstorageData, handleScroll } from "./Utils/formUtils";
+import useTranslation from "next-translate/useTranslation";
+import { useMatomo } from "@datapunt/matomo-tracker-react";
+import { useRouter } from "next/router";
 
 export const Form: React.FC<IForm> = ({ elements }) => {
+  const { trackPageView } = useMatomo();
+  const {t} = useTranslation();
+  const {pathname} = useRouter() || {};
   const [page, setPage] = useState<number>(0);
   const scrollRef = React.useRef<HTMLSpanElement>(null);
   const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>([]);
@@ -19,6 +25,10 @@ export const Form: React.FC<IForm> = ({ elements }) => {
   const [formIntroText, setFormIntroText] = useState<{ title: string; text: string; }>({ title: "", text: "", });
   let questionNumber = 1; //Used for visual numberings (can't use ID since we don't want headings/pagebreaks to be numbered)
 
+  useEffect(() => {
+    trackPageView({ documentTitle: 'Fortroendemodellen' });
+  }, [pathname]);
+  
   useEffect(() => {
     if (elements === undefined || elements.length === 0) { return; }
 
@@ -176,7 +186,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
               <span className="back-button">
                 <ArrowIcon color={"white"} width={"18px"} />
                 <span className="text-base font-medium back-text">
-                  Föregående avsnitt
+                {t('pages|form$previous-section-text')}
                 </span>
               </span>
             </FormBackButton>
@@ -194,7 +204,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
                   <span className="back-button">
                     <ArrowIcon color={"white"} width={"18px"} />
                     <span className="text-base font-medium back-text">
-                      Tillbaka
+                    {t('pages|form$go-back-text')}
                     </span>
                   </span>
                 </FormBackButton>
@@ -206,14 +216,14 @@ export const Form: React.FC<IForm> = ({ elements }) => {
               <>
                 {formSteps.length < 5 ? (
                   <FormProgress
-                    formSteps={[...formSteps, "Generera PDF"]}
+                    formSteps={[...formSteps, t('pages|form$generate-pdf-text')]}
                     curPage={page}
                     clickCallback={setPage}
                   />
                 ) : (
                   <>
                     <FormDropdownNavigation
-                      pageNames={[...formSteps, "Generera PDF"]}
+                      pageNames={[...formSteps, t('pages|form$generate-pdf-text')]}
                       setPage={setPage}
                       forceUpdate={page - 1}
                     />
@@ -265,7 +275,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
                     `}
                     className="text-base"
                   >
-                    Starta utvärdering
+                    {t('pages|form$start-evaluation-text')}
                   </Button>
                 </>
               )}

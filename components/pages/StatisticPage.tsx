@@ -4,7 +4,7 @@ import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MainContainerStyle } from '../../styles/general/emotion';
 
 
@@ -22,8 +22,12 @@ const DynamicStatistic = dynamic(() => import('../Statistic/Statistic'), {
 
 export const StatisticPage: React.FC = () => {
   const { t } = useTranslation('pages');
-  const { asPath } = useRouter() || {};
+  const { asPath, pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
+
+  useEffect(() => {
+    trackPageView({ documentTitle: 'Statistik' });
+  }, [pathname]);
 
   return (
     <>

@@ -81,7 +81,6 @@ import { Settings_Sandbox } from '../env/Settings.Sandbox';
 import useTranslation from 'next-translate/useTranslation';
 import { css } from '@emotion/react';
 import { Hero as IHero } from '../graphql/__generated__/Hero';
-import { MediaBase } from '../graphql/__generated__/MediaBase';
 
 const GetCookiesAccepted = () => {
   try {
@@ -166,7 +165,7 @@ function Dataportal({ Component, pageProps, host }: DataportalenProps) {
 
   return (
     <ApolloProvider client={client}>
-      <SettingsProvider value={{ ...defaultSettings, env, setBreadcrumb, appRenderKey }}>
+      <SettingsProvider value={{ ...defaultSettings, env, setBreadcrumb, appRenderKey, matomoSiteId: reactenv('MATOMO_SITE_ID')}}>
         <ThemeProvider theme={dataportalTheme}>
           <LocalStoreProvider>
             <TrackingProvider initalActivation={GetCookiesAccepted() && matomoActivated}>

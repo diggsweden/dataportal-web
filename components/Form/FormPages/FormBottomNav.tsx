@@ -1,4 +1,5 @@
 import { Button, ArrowIcon, css } from "@digg/design-system";
+import useTranslation from "next-translate/useTranslation";
 import React from "react";
 import FormTypes from "../FormTypes";
 import { FormNavButtons, DiggConfirmModal } from "../Styles/FormStyles";
@@ -25,6 +26,7 @@ const FormBottomNav: React.FC<Props> = ({
 }) => {
   const modalRef = React.useRef<HTMLDivElement>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const {t} = useTranslation();
 
   const clearForm = () => {
     //Clear the "Value" field on all objects that has the Value field.
@@ -56,7 +58,7 @@ const FormBottomNav: React.FC<Props> = ({
           }}
         >
           <span>
-            Nästa avsnitt
+          {t('pages|form$next-section-text')}
             <ArrowIcon className="nav-icon" width={"18px"} />
           </span>
         </Button>
@@ -70,7 +72,7 @@ const FormBottomNav: React.FC<Props> = ({
               GenerateJsonFile(formDataArray);
             }}
           >
-            Spara
+            {t('pages|form$save-form')}
           </Button>
           <input
             type="file"
@@ -93,7 +95,7 @@ const FormBottomNav: React.FC<Props> = ({
               fileInputRef.current?.click();
             }}
           >
-            Ladda upp JSON-fil
+            {t('pages|form$upload-json-file')}
           </Button>
           <Button
             onClick={(e) => {
@@ -111,11 +113,11 @@ const FormBottomNav: React.FC<Props> = ({
               font-weight: 500;
             `}
           >
-            Rensa alla svar
+            {t('pages|form$clear-all-text')}
           </Button>
           <DiggConfirmModal ref={modalRef} className="hide">
             <div className="modal-content">
-              <p>Är du säker?</p>
+              <p>{t('pages|form$clear-confirm-text')}</p>
               <div className="modal-buttons">
                 <button
                   onClick={(e) => {
@@ -124,7 +126,7 @@ const FormBottomNav: React.FC<Props> = ({
                     modalRef.current?.classList.add("hide");
                   }}
                 >
-                  Ja
+                  {t('common|yes')}
                 </button>
                 <button
                   onClick={(e) => {
@@ -132,7 +134,7 @@ const FormBottomNav: React.FC<Props> = ({
                     modalRef.current?.classList.add("hide");
                   }}
                 >
-                  Nej
+                  {t('common|no')}
                 </button>
               </div>
             </div>

@@ -24,7 +24,7 @@ export const TrackingProvider: React.FC<ITrackingContextProps> = ({
   const [activate, setActivation] = useState(initalActivation);
   const { matomoSiteId } = useContext(SettingsContext);
   return (
-    <TrackingContext.Provider value={{ activateMatomo: activate, setActivation }}>
+    <TrackingContext.Provider value={{ activateMatomo: activate, setActivation  }}>
       {activate && matomoSiteId ? (
         // @ts-ignore
         <MatomoProvider

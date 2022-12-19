@@ -239,5 +239,18 @@
     "api-key-txt": "There are APIs that need to be unlocked with an API key to enable you to make calls and explore the amount of data. To get access to an API key you need to contact the publisher. ",
     "contact-publisher": "Contact to publisher",
     "api-contract": "API Contract"
+  },
+  "form":{
+    "placeholder-text": "Enter your answer here",
+    "clear-all-text": "Clear form",
+    "clear-confirm-text": "Are you sure you want to clear the form?",
+    "upload-json-file": "Upload JSON-file",
+    "next-section-text": "Next section",
+    "previous-section-text": "Previous section",
+    "save-form": "Save",
+    "generate-pdf-text" : "Generate PDF",
+    "form-continue-text": "Do you wish to continue to the next step?",
+    "start-evaluation-text": "Start evaluation",
+    "go-back-text": "Back"
   }
 }
