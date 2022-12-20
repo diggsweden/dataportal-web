@@ -1,4 +1,6 @@
 import { Heading } from "@digg/design-system";
+import { Translate } from "next-translate";
+import useTranslation from "next-translate/useTranslation";
 import React from "react";
 import FormTypes from "../FormTypes";
 import {
@@ -16,7 +18,8 @@ const PopOver = (popoverText: string) => {
     <DiggPopover className="text-md">
       <div
         aria-haspopup="true"
-        onClick={(e) => {
+        tabIndex={0}
+        onMouseDown={(e) => {
           if (e.currentTarget.classList.contains("open")) {
             e.currentTarget.classList.remove("open");
             e.currentTarget.setAttribute("aria-haspopup", "false");
@@ -25,8 +28,22 @@ const PopOver = (popoverText: string) => {
             e.currentTarget.setAttribute("aria-haspopup", "true");
           }
         }}
+        onKeyDown={(e) => {
+          if (e.key === " ") {
+            e.preventDefault();
+            if (e.currentTarget.classList.contains("open")) {
+              e.currentTarget.classList.remove("open");
+              e.currentTarget.setAttribute("aria-haspopup", "false");
+            } else {
+              e.currentTarget.classList.add("open");
+              e.currentTarget.setAttribute("aria-haspopup", "true");
+            }
+          }
+        }}
       >
+        <span className="show-more"></span>
         <p
+          onMouseDown={(e) => {e.stopPropagation()}}
           className="text-sm"
           dangerouslySetInnerHTML={{ __html: popoverText }}
         ></p>
@@ -73,7 +90,8 @@ const FormItem = (
     data: FormTypes,
     pageIndex: number
   ) => void,
-  pageIndex: number
+  pageIndex: number,
+  t: Translate,
 ) => {
   const { ID, __typename: Type } = item;
 
@@ -85,7 +103,7 @@ const FormItem = (
           {item.info !== null && PopOver(item.info)}
           <Text
             id={`${Type}${ID}`}
-            placeholder="Fyll i ditt svar"
+            placeholder={t("form$placeholder-text")}
             name={`${Type}${ID}`}
             value={item.value}
             className="text-md"
@@ -104,7 +122,7 @@ const FormItem = (
           <FormTextArea
             name={`${Type}${ID}`}
             id={`${Type}${ID}`}
-            placeholder="Fyll i ditt svar"
+            placeholder={t("form$placeholder-text")}
             value={item.value}
             className="text-md"
             onChange={(e) => {
@@ -169,7 +187,7 @@ const FormItem = (
               <FormTextArea
                 id={`${Type}${ID}`}
                 name={`${Type}${ID}`}
-                placeholder="Fyll i ditt svar"
+                placeholder={t("form$placeholder-text")}
                 value={item.value}
                 className="text-md"
                 onChange={(e) => {
@@ -198,12 +216,13 @@ const FormItem = (
 };
 
 const FormPage = ({ formDataArray, UpdateFormDataArray, pageIndex }: Props) => {
+  const {t} = useTranslation('pages');
   return (
     <>
       {formDataArray.map((item) => {
         return (
           <React.Fragment key={`item-${item.ID}`}>
-            {FormItem(item, UpdateFormDataArray, pageIndex)}
+            {FormItem(item, UpdateFormDataArray, pageIndex, t)}
           </React.Fragment>
         );
       })}

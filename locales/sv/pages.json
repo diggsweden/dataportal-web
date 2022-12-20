@@ -242,5 +242,18 @@
     "api-key-txt": "Vissa API:er måste låsas upp med en API-nyckel för att möjliggöra att kunna göra anrop och utforska datamängden. För att få tillgång till en API-nyckel behöver utgivaren kontaktas.",
     "contact-publisher": "Kontakt till utgivare",
     "api-contract": "API-kontrakt"
+  },
+  "form":{
+    "placeholder-text": "Fyll i ditt svar",
+    "clear-all-text": "Rensa alla svar",
+    "clear-confirm-text": "Är du säker?",
+    "upload-json-file": "Ladda upp JSON-fil",
+    "next-section-text": "Nästa avsnitt",
+    "previous-section-text": "Föregående avsnitt",
+    "save-form": "Spara",
+    "generate-pdf-text" : "Generera PDF",
+    "form-continue-text": "Vill du gå vidare?",
+    "start-evaluation-text": "Starta utvärdering",
+    "go-back-text": "Tillbaka"
   }
 }

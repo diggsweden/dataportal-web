@@ -142,6 +142,10 @@ header {
   @media screen and (min-width: $media-lg) {
     display: flex;
     flex-wrap: nowrap;
+
+    a{
+      margin-left: $space-8;
+    }
   }
 
   .search-link {
@@ -152,9 +156,6 @@ header {
     transition: all 0.25s ease;
     color: white;
 
-    @media screen and (min-width: $media-lg) {
-      margin-left: $space-8;
-    }
 
     &:hover {
       border-color: $clr-pinkPop;

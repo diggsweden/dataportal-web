@@ -57,7 +57,7 @@ export const dataportalTheme: DiggTheme = {
       },
       hoverColors: {
         accent: colorPalette.gray900,
-        border: colorPalette.white,
+        border: 'transparent',
         background: colorPalette.white,
         font: colorPalette.gray900,
       },
