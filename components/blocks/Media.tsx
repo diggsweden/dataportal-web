@@ -8,6 +8,8 @@ import env from '@beam-australia/react-env';
 import { MediaBase } from '../../graphql/__generated__/MediaBase';
 import { Image as ImageInterface } from '../../graphql/__generated__/Image';
 import { responsive } from '../../styles/image';
+import { isExternal } from 'util/types';
+import { isExternalLink } from '../../utilities/checkers';
 
 export const handleLoader = ({ url, width, screen9 }: ImageInterface, quality?: number) => {
   if (screen9) return {};
@@ -19,7 +21,10 @@ export const handleLoader = ({ url, width, screen9 }: ImageInterface, quality?: 
 export const handleUrl = ({ screen9, url }: MediaBase) => {
   if (screen9) {
     return url;
-  }
+  }  
+
+  if(isExternalLink(url))
+    return url;
 
   return (env('MEDIA_BASE_URL') || '') + url;
 };
