@@ -1,4 +1,5 @@
 import { ArrowBreadcrumbIcon, Button, colorPalette, css, space } from '@digg/design-system';
+import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -94,6 +95,7 @@ export const FormDropdownNavigation: React.FC<ContainerDpDwnProps> = ({
   const [expanded, setExpanded] = useState(false);
   const [curActive, setCurActive] = useState('');
   const ref = useClickoutside(() => setExpanded(false));
+  const {t} = useTranslation('common');
   
   useEffect(() => {
     setCurActive(pageNames[0]);
@@ -135,7 +137,7 @@ export const FormDropdownNavigation: React.FC<ContainerDpDwnProps> = ({
         }}
       >
         <span className="button--content">
-          <span>{curActive === '' ? 'Gå till' : curActive}</span>
+          <span>{curActive === '' ? t('go-to') : curActive}</span>
           <ArrowBreadcrumbIcon
             width={18}
             rotation={expanded ? -90 : 90}

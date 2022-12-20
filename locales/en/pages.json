@@ -103,7 +103,8 @@
     "detailed-list": "Detailed list",
     "detailed-list-active": "Detailed list aktiv",
     "compact-list": "Compact list",
-    "compact-list-active": "Compact list"
+    "compact-list-active": "Compact list",
+    "pagination-next-txt": "Next"
   },
   "datasets": {
     "search-datasets": "Search",

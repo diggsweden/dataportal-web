@@ -22,6 +22,7 @@ export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({ b
         </Heading>
         <ContentArea blocks={blocks} />
       </FormWrapper>
+      
       <FormNavButtons className="start-buttons">
         <Button
           onClick={(e) => (e.metaKey || e.ctrlKey) ? window.open(pathname + '/infor-utveckling', '_blank') :  router.push(pathname + '/infor-utveckling')}

@@ -1,4 +1,5 @@
 import { ArrowBreadcrumbIcon, Button, colorPalette, css, space } from '@digg/design-system';
+import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -92,6 +93,7 @@ export const ContainerNavigation: React.FC<ContainerDpDwnProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
   const ref = useClickoutside(() => setExpanded(false));
+  const {t} = useTranslation('common');
   const { push, asPath } = useRouter() || {};
 
   const handleClick = (url: string) => {
@@ -121,7 +123,7 @@ export const ContainerNavigation: React.FC<ContainerDpDwnProps> = ({
         onClick={() => setExpanded(!expanded)}
       >
         <span className="button--content">
-          <span>Gå till</span>
+          <span>{t('go-to')}</span>
           <ArrowBreadcrumbIcon
             width={18}
             rotation={expanded ? -90 : 90}

@@ -104,7 +104,8 @@
     "detailed-list": "Detaljerad lista",
     "detailed-list-active": "Detaljerad lista aktiv",
     "compact-list": "Kompakt lista",
-    "compact-list-active": "Kompakt lista aktiv"
+    "compact-list-active": "Kompakt lista aktiv",
+    "pagination-next-txt": "Nästa"
   },
   "datasets": {
     "search-datasets": "Sök",

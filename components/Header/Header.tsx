@@ -134,7 +134,7 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                         color: white;
                       `}
                     >
-                      Stäng
+                      {t('common|close')}
                     </span>
                   </span>
                 ) : (
@@ -149,7 +149,7 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                         color: white;
                       `}
                     >
-                      Meny
+                      {t('common|menu')}
                     </span>
                   </span>
                 )}

@@ -174,7 +174,7 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
                 resultsPerPage={articlesPerPage}
                 currentPage={currentPage}
                 onPageChanged={changePage}
-                nextButtonText="Nästa"
+                nextButtonText={t('pages|search$pagination-next-txt')}
               />
             </div>
           )}
