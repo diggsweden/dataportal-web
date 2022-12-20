@@ -39,7 +39,7 @@ const DynamicStatistic = dynamic(() => import('../Statistic/Statistic'), {
 });
 
 const DynamicArticleBlock = dynamic(() => import('../blocks/Article').then((c) => c.ArticleBlock), {
-  ssr: true,
+  ssr: false,
 });
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
@@ -94,14 +94,14 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               </div>
             </div>
             <span className="domain-page__top-image">
-              {src && (
-                <Image
-                  src={src}
-                  style={responsive}
-                  width={image?.width || 300}
-                  height={image?.height || 200}
-                  alt={image?.alt || ''}
-                />
+              {src && (                
+                  <Image
+                    src={src}
+                    style={responsive}
+                    width={image?.width || 300}
+                    height={image?.height || 200}
+                    alt={image?.alt || ''}
+                  />                
               )}
             </span>
           </div>
@@ -132,8 +132,8 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                 >
                   {t('pages|publications$view-all')}
                 </Link>
-              </div>
-              <DynamicArticleBlock articles={publications} />
+              </div>              
+              <DynamicArticleBlock articles={publications} />              
             </>
           )}
 
