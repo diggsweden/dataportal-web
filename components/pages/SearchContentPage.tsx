@@ -1,16 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { SearchHeader, SettingsContext, FileFormatBadge } from '..';
-import useTranslation from 'next-translate/useTranslation';
-import { querySearch } from '../../utilities';
-import router, { useRouter } from 'next/router';
-import { useMatomo } from '@datapunt/matomo-tracker-react';
-import Head from 'next/head';
-import { Button, Container, Heading, SearchField } from '@digg/design-system';
-import { MainContainerStyle } from '../../styles/general/emotion';
-import Link from 'next/link';
-import { Search_dataportal_Digg_Search_hits } from '../../graphql/__generated__/Search';
-import { encode, decode } from 'qss';
-import { getSearchHit } from '../../utilities/searchHelpers';
+import React, { useContext, useEffect, useState } from "react";
+import { SearchHeader, SettingsContext, FileFormatBadge } from "..";
+import useTranslation from "next-translate/useTranslation";
+import { querySearch } from "../../utilities";
+import router, { useRouter } from "next/router";
+import { useMatomo } from "@datapunt/matomo-tracker-react";
+import Head from "next/head";
+import { Button, Container, Heading, SearchField } from "@digg/design-system";
+import { MainContainerStyle } from "../../styles/general/emotion";
+import Link from "next/link";
+import { Search_dataportal_Digg_Search_hits } from "../../graphql/__generated__/Search";
+import { encode, decode } from "qss";
+import { getSearchHit } from "../../utilities/searchHelpers";
 
 interface SearchProps {
   activeLink?: string;
@@ -18,9 +18,9 @@ interface SearchProps {
 
 export const SearchContentPage: React.FC<SearchProps> = () => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
-  const { t, lang } = useTranslation('common');
-  const [query, setQuery] = useState('');
-  const [trackedQuery, setTrackedQuery] = useState('');
+  const { t, lang } = useTranslation("common");
+  const [query, setQuery] = useState("");
+  const [trackedQuery, setTrackedQuery] = useState("");
   const { trackEvent } = useMatomo();
   const { pathname, asPath } = useRouter() || {};
   const { trackPageView } = useMatomo();
@@ -29,9 +29,11 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
   const [searchRequest, setSearchRequest] = useState<SearchRequest>();
   const [loading, setLoading] = useState(false);
   const PER_PAGE = 10;
-  const searchKey = typeof location != 'undefined' ? location.search : 'server';
+  const searchKey = typeof location != "undefined" ? location.search : "server";
   const posY =
-    typeof localStorage != 'undefined' ? localStorage.getItem(`ScrollposY_${searchKey}`) : '0';
+    typeof localStorage != "undefined"
+      ? localStorage.getItem(`ScrollposY_${searchKey}`)
+      : "0";
 
   const doSearch = () =>
     new Promise<void>(async (resolve) => {
@@ -40,19 +42,22 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
       setStateToLocation();
 
       const result = (await querySearch(
-        query.length > 0 ? query : '',
+        query.length > 0 ? query : "",
         lang,
         PER_PAGE,
-        searchRequest?.page && searchRequest?.page > 1 ? (searchRequest?.page - 1) * PER_PAGE : 0,
+        searchRequest?.page && searchRequest?.page > 1
+          ? (searchRequest?.page - 1) * PER_PAGE
+          : 0,
         true
       )) as any;
 
-      let hits: SearchHit[] =
-          result?.dataportal_Digg_Search?.hits
-          ? result.dataportal_Digg_Search?.hits.map((r: Search_dataportal_Digg_Search_hits) => {
-              return getSearchHit(r,t)
-            })
-          : [];
+      let hits: SearchHit[] = result?.dataportal_Digg_Search?.hits
+        ? result.dataportal_Digg_Search?.hits.map(
+            (r: Search_dataportal_Digg_Search_hits) => {
+              return getSearchHit(r, t);
+            }
+          )
+        : [];
 
       setSearchResult({
         ...searchResult,
@@ -66,8 +71,8 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
     });
 
   const clearCurrentScrollPos = () => {
-    if (typeof localStorage != 'undefined' && typeof location != 'undefined') {
-      localStorage.setItem(`ScrollposY_${location.search}`, '0');
+    if (typeof localStorage != "undefined" && typeof location != "undefined") {
+      localStorage.setItem(`ScrollposY_${location.search}`, "0");
     }
   };
 
@@ -75,22 +80,22 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
    * Save current request state to Location
    */
   const setStateToLocation = () => {
-    if (typeof window != 'undefined' && history) {
-      let query = searchRequest?.query ? searchRequest?.query : '';
+    if (typeof window != "undefined" && history) {
+      let query = searchRequest?.query ? searchRequest?.query : "";
 
-      let page = searchRequest?.page ? searchRequest?.page : '1';
+      let page = searchRequest?.page ? searchRequest?.page : "1";
 
       let newurl =
         window.location.protocol +
-        '//' +
+        "//" +
         window.location.host +
         window.location.pathname +
-        '?' +
+        "?" +
         encode({
           p: page,
           q: query,
         });
-      window.history.pushState({ path: newurl }, '', newurl);
+      window.history.pushState({ path: newurl }, "", newurl);
     }
   };
 
@@ -103,15 +108,16 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
     return new Promise<Boolean>((resolve) => {
       let fetchResults = false;
 
-      if (typeof window != 'undefined' && history && window.location.search) {
+      if (typeof window != "undefined" && history && window.location.search) {
         var qs = decode(window.location.search.substring(1)) as any;
 
-        let querytext = qs.q && qs.q.toString().length > 0 ? qs.q.toString() : '';
+        let querytext =
+          qs.q && qs.q.toString().length > 0 ? qs.q.toString() : "";
         let page = qs.p && qs.p.toString().length > 0 ? qs.p.toString() : null;
 
         setSearchRequest({
           ...searchRequest,
-          query: decodeURIComponent(querytext.replace(/\+/g, '%20')),
+          query: decodeURIComponent(querytext.replace(/\+/g, "%20")),
           page: page ?? 1,
         });
 
@@ -121,7 +127,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
   };
 
   const searchFocus = () => {
-    let content = document.querySelector('#search-result');
+    let content = document.querySelector("#search-result");
     if (!content) return;
 
     const focusable = content.querySelectorAll<HTMLElement>(
@@ -136,8 +142,11 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
   };
 
   const saveCurrentScrollPos = () => {
-    if (typeof localStorage != 'undefined' && typeof location != 'undefined') {
-      localStorage.setItem(`ScrollposY_${location.search}`, JSON.stringify(window.scrollY));
+    if (typeof localStorage != "undefined" && typeof location != "undefined") {
+      localStorage.setItem(
+        `ScrollposY_${location.search}`,
+        JSON.stringify(window.scrollY)
+      );
     }
   };
 
@@ -152,7 +161,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
   const highlightWords = (text: string) => {
     if (!text) return;
 
-    const highlightedText = text.split('**').map((text, index) => {
+    const highlightedText = text.split("**").map((text, index) => {
       if (index % 2 === 1) {
         return `<span class="search-result-list__highlight">${text}</span>`;
       } else {
@@ -160,15 +169,21 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
       }
     });
 
-    return <span dangerouslySetInnerHTML={{ __html: highlightedText.join('') }} />;
+    return (
+      <span dangerouslySetInnerHTML={{ __html: highlightedText.join("") }} />
+    );
   };
 
   useEffect(() => {
-    setTrackedQuery(query || '');
-    if (query && trackedQuery !== query && searchResult?.count === 0 ? true : false) {
+    setTrackedQuery(query || "");
+    if (
+      query && trackedQuery !== query && searchResult?.count === 0
+        ? true
+        : false
+    ) {
       trackEvent({
         category: `Sökord utan resultat - Typ: Content`,
-        action: query || '',
+        action: query || "",
         name: `Content: Inga sökträffar`,
       });
     }
@@ -176,11 +191,12 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
 
   useEffect(() => {
     //needed for handling back/forward buttons and changing state for input correctly
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       //handles back/forward button
-      window.addEventListener('popstate', () => {
+      window.addEventListener("popstate", () => {
         var qs = decode(window.location.search.substring(1)) as any;
-        let querytext = qs.q && qs.q.toString().length > 0 ? qs.q.toString() : '';
+        let querytext =
+          qs.q && qs.q.toString().length > 0 ? qs.q.toString() : "";
 
         if (querytext) setQuery(querytext);
 
@@ -190,9 +206,10 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
 
       //*** makes sure querytext is set from location to input, on page reloads
       var qs = decode(window.location.search.substring(1)) as any;
-      let querytext = qs.q && qs.q.toString().length > 0 ? qs.q.toString() : '';
+      let querytext = qs.q && qs.q.toString().length > 0 ? qs.q.toString() : "";
 
-      if (querytext) setQuery(decodeURIComponent(querytext.replace(/\+/g, '%20')));
+      if (querytext)
+        setQuery(decodeURIComponent(querytext.replace(/\+/g, "%20")));
       parseLocationToState();
       //***
     }
@@ -200,7 +217,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
 
   useEffect(() => {
     const count = searchResult?.count || -1;
-    count > 0 && posY && posY != '0' && window.scrollTo(0, parseInt(posY, 10));
+    count > 0 && posY && posY != "0" && window.scrollTo(0, parseInt(posY, 10));
   });
 
   useEffect(() => {
@@ -208,34 +225,34 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
   }, [searchRequest]);
 
   useEffect(() => {
-    trackPageView({ documentTitle: t('routes|search$title') });
+    trackPageView({ documentTitle: t("routes|search$title") });
   }, [pathname]);
 
   return (
     <>
       <Head>
-        <title>{`${t('common|search-content')} - Sveriges dataportal`}</title>
+        <title>{`${t("common|search-content")} - Sveriges dataportal`}</title>
         <meta
           property="og:title"
-          content={`${t('common|search-content')} - Sveriges dataportal`}
+          content={`${t("common|search-content")} - Sveriges dataportal`}
         />
         <meta
           name="twitter:title"
-          content={`${t('common|search-content')} - Sveriges dataportal`}
+          content={`${t("common|search-content")} - Sveriges dataportal`}
         />
       </Head>
       <div className="wpb_wrapper">
         <Container cssProp={MainContainerStyle}>
-          <SearchHeader activeLink={'content'} query={query} />
+          <SearchHeader activeLink={"content"} query={query} />
 
           <div className="row">
             <Heading
               className="search-header"
-              size={'3xl'}
+              size={"3xl"}
               weight="light"
               color="pinkPop"
             >
-              {t('common|search-content')}
+              {t("common|search-content")}
             </Heading>
           </div>
 
@@ -252,59 +269,49 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
               }}
             >
               <div className="search-box">
-                <label
-                  className="screen-reader"
-                  htmlFor="search-field"
-                >
+                <label className="screen-reader" htmlFor="search-field">
                   Content
                 </label>
                 <SearchField
                   autoFocus
                   id="search-field"
-                  submitLabel={t('common|search')}
+                  submitLabel={t("common|search")}
                   autoComplete="off"
                   name="q"
                   type="text"
-                  placeholder={t('pages|content$search-content')}
-                  value={query || ''}
+                  placeholder={t("pages|content$search-content")}
+                  value={query || ""}
                   onChange={(e) => {
                     clearCurrentScrollPos();
                     setQuery(e.target.value);
                   }}
-                  key={searchRequest?.query ? 'loaded' : 'not loaded'}
+                  key={searchRequest?.query ? "loaded" : "not loaded"}
                 />
               </div>
             </form>
           </div>
 
-          <div
-            id="search-result"
-            className="search-result"
-          >
+          <div id="search-result" className="search-result">
             <div className="search-result-head">
-              <Heading
-                level={2}
-                size="md"
-                className="search-result-header"
-              >
-                {loading && <span>{t('common|loading')}</span>}
+              <Heading level={2} size="md" className="search-result-header">
+                {loading && <span>{t("common|loading")}</span>}
                 {!loading &&
                   searchResult &&
                   (searchResult.count || 0) >= 0 &&
-                  `${searchResult.count} ${t('pages|search$content-hits')}`}
+                  `${searchResult.count} ${t("pages|search$content-hits")}`}
               </Heading>
 
               {/* {searchType == 'data' && (
-        <div
-          className={showSorting ? 'active sorting-options-wrapper' : 'sorting-options-wrapper'}
-        >
-          <SortingOptions
-            setCompact={setCompact}
-            isCompact={isCompact}
-            search={search}
-          />
-        </div>
-      )} */}
+      <div
+        className={showSorting ? 'active sorting-options-wrapper' : 'sorting-options-wrapper'}
+      >
+        <SortingOptions
+          setCompact={setCompact}
+          isCompact={isCompact}
+          search={search}
+        />
+      </div>
+    )} */}
             </div>
 
             {searchResult && (
@@ -312,15 +319,14 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
                 <ul className="search-result-list">
                   {searchResult.hits &&
                     searchResult.hits.map((hit: SearchHit, index: number) => (
-                      <li
-                        className="search-result-list-item"
-                        key={index}
-                      >
+                      <li className="search-result-list-item" key={index}>
                         <Link
-                          href={`${hit.url}#ref=${window ? window.location.search : ''}`}
+                          href={`${hit.url}#ref=${
+                            window ? window.location.search : ""
+                          }`}
                           onClick={() => {
                             saveCurrentScrollPos();
-                            trackSearchHitClick(hit.url || '');
+                            trackSearchHitClick(hit.url || "");
                           }}
                         >
                           <p
@@ -345,27 +351,27 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
           {searchResult?.count && searchResult.count > PER_PAGE && (
             <div className="pagination">
               {/* <div className="first-page">
-        {(searchRequest?.page || 0) > 1 && (
-          <Button
-            inline
-            onClick={() => {
-              clearCurrentScrollPos();
-              setSearchRequest
-                ({
-                  page: 0,
-                });
-                doSearch();
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
+      {(searchRequest?.page || 0) > 1 && (
+        <Button
+          inline
+          onClick={() => {
+            clearCurrentScrollPos();
+            setSearchRequest
+              ({
+                page: 0,
               });
-              searchFocus();
-            }}
-          >
-            {t('pages|search$first-page')}
-          </Button>
-        )}
-      </div> */}
+              doSearch();
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth',
+            });
+            searchFocus();
+          }}
+        >
+          {t('pages|search$first-page')}
+        </Button>
+      )}
+    </div> */}
 
               <div className="prev-next-page">
                 {/* Prev page */}
@@ -383,7 +389,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
                     });
                     window.scrollTo({
                       top: 0,
-                      behavior: 'smooth',
+                      behavior: "smooth",
                     });
                     searchFocus();
                     // setSearchRequest({
@@ -392,17 +398,22 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
                     // });
                   }}
                 >
-                  {t('pages|search$prev-page')}
+                  {t("pages|search$prev-page")}
                 </Button>
 
                 <span>
-                  {t('pages|search$page')} {searchRequest?.page ?? 1} {t('common|of')}{' '}
-                  {searchResult?.count && Math.ceil(searchResult.count / PER_PAGE)}
+                  {t("pages|search$page")} {searchRequest?.page ?? 1}{" "}
+                  {t("common|of")}{" "}
+                  {searchResult?.count &&
+                    Math.ceil(searchResult.count / PER_PAGE)}
                 </span>
 
                 {/* Next page */}
                 <Button
-                  disabled={(searchRequest?.page ?? 1) >= Math.ceil(searchResult?.count / PER_PAGE)}
+                  disabled={
+                    (searchRequest?.page ?? 1) >=
+                    Math.ceil(searchResult?.count / PER_PAGE)
+                  }
                   inline
                   onClick={() => {
                     clearCurrentScrollPos();
@@ -412,12 +423,12 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
                     });
                     window.scrollTo({
                       top: 0,
-                      behavior: 'smooth',
+                      behavior: "smooth",
                     });
                     searchFocus();
                   }}
                 >
-                  {t('pages|search$next-page')}
+                  {t("pages|search$next-page")}
                 </Button>
               </div>
             </div>

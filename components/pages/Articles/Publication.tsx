@@ -51,15 +51,6 @@ export const Publication: React.FC<PublicationResponse> = ({
             </Heading>
           )}
           <p className="preamble text-lg">{checkLang(preamble)}</p>
-          {image && (
-            <Image
-              src={handleUrl(image)}
-              style={responsive}
-              width={width || 900}
-              height={height || 600}
-              alt={alt || ""}
-            />
-          )}
           {blocks && blocks.length > 0 && (
             <ContentArea
               blocks={

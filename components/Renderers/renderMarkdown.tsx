@@ -1,13 +1,18 @@
-import { colorPalette, Heading, HeadingLevel, styled } from '@digg/design-system';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeRaw from 'rehype-raw';
-import Image from 'next/image';
-import Link from 'next/link';
-import { isExternalLink, isMailLink } from '../../utilities';
-import { ExternalLink, Quote } from '..';
-import { checkLang } from '../../utilities/checkLang';
-import { responsive } from '../../styles/image';
+import {
+  colorPalette,
+  Heading,
+  HeadingLevel,
+  styled,
+} from "@digg/design-system";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import Image from "next/image";
+import Link from "next/link";
+import { isExternalLink, isMailLink } from "../../utilities";
+import { ExternalLink, Quote } from "..";
+import { checkLang } from "../../utilities/checkLang";
+import { responsive } from "../../styles/image";
 
 const generateHeadings = (options?: HeadingOption[]) => {
   const levels: HeadingLevel[] = [1, 2, 3, 4, 5, 6];
@@ -39,20 +44,16 @@ const renderImage = (props: any) => {
 };
 
 const renderLink = ({ href, children }: any) => {
-  return isExternalLink(href || '') ? (
+  return isExternalLink(href || "") ? (
     <ExternalLink
-      isMail={isMailLink(href || '')}
-      href={href || ''}
+      isMail={isMailLink(href || "")}
+      href={href || ""}
       className="markdown--link"
     >
       {children}
     </ExternalLink>
   ) : (
-    <Link
-      href={href}
-      passHref
-      className="markdown--link"
-    >
+    <Link href={href} passHref className="markdown--link">
       <span>{children}</span>
     </Link>
   );

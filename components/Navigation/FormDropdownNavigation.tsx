@@ -1,9 +1,15 @@
-import { ArrowBreadcrumbIcon, Button, colorPalette, css, space } from '@digg/design-system';
-import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { useClickoutside } from '../../hooks/useClickoutside';
+import {
+  ArrowBreadcrumbIcon,
+  Button,
+  colorPalette,
+  css,
+  space,
+} from "@digg/design-system";
+import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useClickoutside } from "../../hooks/useClickoutside";
 
 interface ContainerDpDwnProps {
   pageNames: string[];
@@ -80,32 +86,35 @@ const styles = css`
 `;
 
 const buttonColors: ColorGroupOverride = {
-  accent: 'white',
-  background: 'gray800',
-  border: 'gray800',
-  font: 'white',
+  accent: "white",
+  background: "gray800",
+  border: "gray800",
+  font: "white",
 };
 
 export const FormDropdownNavigation: React.FC<ContainerDpDwnProps> = ({
   pageNames,
   className,
   setPage,
-  forceUpdate
+  forceUpdate,
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const [curActive, setCurActive] = useState('');
+  const [curActive, setCurActive] = useState("");
   const ref = useClickoutside(() => setExpanded(false));
-  const {t} = useTranslation('common');
-  
+  const { t } = useTranslation("common");
+
   useEffect(() => {
     setCurActive(pageNames[0]);
-  }, [])
+  }, []);
 
   useEffect(() => {
     forceUpdate && setCurActive(pageNames[forceUpdate]);
-  }, [forceUpdate])
+  }, [forceUpdate]);
 
-  const handleClick = (e: React.MouseEvent<HTMLLIElement>, pageName: string) => {
+  const handleClick = (
+    e: React.MouseEvent<HTMLLIElement>,
+    pageName: string
+  ) => {
     e.preventDefault();
     setCurActive(pageName);
     setExpanded(false);
@@ -117,11 +126,7 @@ export const FormDropdownNavigation: React.FC<ContainerDpDwnProps> = ({
   };
 
   return (
-    <div
-      css={styles}
-      ref={ref}
-      className={className || ''}
-    >
+    <div css={styles} ref={ref} className={className || ""}>
       <Button
         className="mw px height"
         aria-haspopup={true}
@@ -133,11 +138,11 @@ export const FormDropdownNavigation: React.FC<ContainerDpDwnProps> = ({
         }}
         onClick={(e) => {
           e.preventDefault();
-          setExpanded(!expanded)
+          setExpanded(!expanded);
         }}
       >
         <span className="button--content">
-          <span>{curActive === '' ? t('go-to') : curActive}</span>
+          <span>{curActive === "" ? t("go-to") : curActive}</span>
           <ArrowBreadcrumbIcon
             width={18}
             rotation={expanded ? -90 : 90}
@@ -146,19 +151,18 @@ export const FormDropdownNavigation: React.FC<ContainerDpDwnProps> = ({
         </span>
       </Button>
       {expanded && (
-        <nav
-          className="mw navigation"
-          aria-label="kategori"
-        >
+        <nav className="mw navigation" aria-label="kategori">
           <ul>
             {pageNames.map((name) => {
               return (
                 <li
-                  className={`navigation--item px height${isActive(name) ? ' active' : ''}`}
+                  className={`navigation--item px height${
+                    isActive(name) ? " active" : ""
+                  }`}
                   onClick={(e) => handleClick(e, name)}
                   key={name}
                 >
-                  <Link href={''}>{name}</Link>
+                  <Link href={""}>{name}</Link>
                 </li>
               );
             })}

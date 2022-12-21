@@ -1,24 +1,24 @@
-import { getFormattedDate, Heading } from '@digg/design-system';
-import useTranslation from 'next-translate/useTranslation';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React from 'react';
-import { checkLang } from '../../utilities/checkLang';
-import { MediaType_dataportal_Digg_Image } from '../../graphql/__generated__/MediaType';
+import { getFormattedDate, Heading } from "@digg/design-system";
+import useTranslation from "next-translate/useTranslation";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
+import { checkLang } from "../../utilities/checkLang";
+import { MediaType_dataportal_Digg_Image } from "../../graphql/__generated__/MediaType";
 import {
   Publication_dataportal_Digg_Publications,
   Publication_dataportal_Digg_Publications_tags,
-} from '../../graphql/__generated__/Publication';
-import { findPublicationTypeTag } from '../pages/Articles';
-import { Link as DiggLink } from '../../graphql/__generated__/Link';
-import { handleUrl } from './Media';
-import placeholderimg from '../../public/images/noimage.svg';
-import { responsive } from '../../styles/image';
-import NoSsr from '../NoSsr/NoSsr';
+} from "../../graphql/__generated__/Publication";
+import { findPublicationTypeTag } from "../pages/Articles";
+import { Link as DiggLink } from "../../graphql/__generated__/Link";
+import { handleUrl } from "./Media";
+import placeholderimg from "../../public/images/noimage.svg";
+import { responsive } from "../../styles/image";
+import NoSsr from "../NoSsr/NoSsr";
 
 type Article = {
-  type: 'publication' | 'container';
+  type: "publication" | "container";
   id?: string;
   date?: string;
   theme?: string;
@@ -38,7 +38,7 @@ export interface ArticleBlockProps {
 const isPublication = (
   article: Publication_dataportal_Digg_Publications | DiggLink
 ): article is Publication_dataportal_Digg_Publications => {
-  return article.__typename === 'dataportal_Digg_Publication' ? true : false;
+  return article.__typename === "dataportal_Digg_Publication" ? true : false;
 };
 
 const makeArticles = (
@@ -49,7 +49,7 @@ const makeArticles = (
     ? unknownArticles.map((article) => {
         if (isPublication(article)) {
           return {
-            type: 'publication',
+            type: "publication",
             id: article.id,
             theme,
             date: article.publishedAt,
@@ -61,7 +61,7 @@ const makeArticles = (
           } as Article;
         } else {
           return {
-            type: 'container',
+            type: "container",
             theme: theme,
             title: article.title,
             description: article.description,
@@ -90,30 +90,31 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
     const { slug, type } = article;
     const publicationUrl = `/aktuellt${slug}`;
     const containerUrl = `${slug}`;
-    return type === 'publication' ? publicationUrl : containerUrl;
+    return type === "publication" ? publicationUrl : containerUrl;
   }
 
-  function handleClick(e: React.MouseEvent<HTMLLIElement, MouseEvent>, url: string) {
-    (e.ctrlKey || e.metaKey) ? window.open(url, '_blank') : router.push(url);
+  function handleClick(
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    url: string
+  ) {
+    e.ctrlKey || e.metaKey ? window.open(url, "_blank") : router.push(url);
   }
 
   return (
-    <div className={'articleblock'}>
+    <div className={"articleblock"}>
       {heading && (
-        <Heading
-          level={2}
-          size="lg"
-        >
+        <Heading level={2} size="lg">
           {heading}
         </Heading>
       )}
       <ul>
         {articles &&
           articles.map((article, index) => {
-            const { type, image, theme, date, title, description, tags } = article;
+            const { type, image, theme, date, title, description, tags } =
+              article;
             const url = getUrl(article);
             const imageUrl = image && handleUrl(image);
-            const classes = `${type}${theme ? ` ${theme}` : ''}`;
+            const classes = `${type}${theme ? ` ${theme}` : ""}`;
             return (
               <li
                 key={index}
@@ -123,8 +124,8 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
                 {image ? (
                   <div className="news-img">
                     <Image
-                      src={imageUrl || ''}
-                      alt={image?.alt || ''}
+                      src={imageUrl || ""}
+                      alt={image?.alt || ""}
                       sizes="100%"
                       fill
                     />
@@ -141,14 +142,21 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
                 <span className="news-text">
                   <span className="news-top-info text-sm">
                     {tags && <span>{findPublicationTypeTag(tags)?.value}</span>}
-                    <NoSsr>{date && <span>{getFormattedDate(date)}</span>}</NoSsr>
+                    <NoSsr>
+                      {date && <span>{getFormattedDate(date)}</span>}
+                    </NoSsr>
                   </span>
                   <Link
                     href={url}
                     locale={lang}
                     className="text-lg font-bold link"
                   >
-                    <Heading level={3} className='article-heading'><a className="text-lg font-bold link">{checkLang(title)}</a></Heading>
+                    <Heading
+                      level={3}
+                      className="article-heading text-lg font-bold link"
+                    >
+                      {checkLang(title)}
+                    </Heading>
                   </Link>
                   {/* <p className="text-md truncate-4">{checkLang(description)}</p> */}
                 </span>
@@ -157,11 +165,7 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
           })}
       </ul>
       {showMoreLink && (
-        <Link
-          href={showMoreLink.slug}
-          locale={lang}
-          className="text-md link"
-        >
+        <Link href={showMoreLink.slug} locale={lang} className="text-md link">
           {showMoreLink.title || showMoreLink.slug}
         </Link>
       )}

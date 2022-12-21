@@ -7,13 +7,13 @@ import {
   QuestionCircleIcon,
   ChatIcon,
   GlobeIcon,
-} from '@digg/design-system';
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import FocusTrap from 'focus-trap-react';
-import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
-import { EnvSettings } from '../../env/EnvSettings';
+} from "@digg/design-system";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import FocusTrap from "focus-trap-react";
+import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
+import { EnvSettings } from "../../env/EnvSettings";
 
 type HeaderProps = {
   menu: any;
@@ -27,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
   const [focusTrap, setFocusTrap] = useState(false);
   const { t, lang } = useTranslation();
   const { pathname } = useRouter() || {};
-  const isEn = lang === 'en';
+  const isEn = lang === "en";
 
   const handleMenuState = (e: UIEvent) => {
     const screenWidth = (e as any).currentTarget.innerWidth;
@@ -39,20 +39,20 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
   const openMenu = () => {
     setShowMenu(true);
     setFocusTrap(true);
-    document.body.setAttribute('style', `position:fixed;width:100%`);
+    document.body.setAttribute("style", `position:fixed;width:100%`);
   };
 
   const closeMenu = () => {
     setShowMenu(false);
     setFocusTrap(false);
-    document.body.setAttribute('style', ``);
+    document.body.setAttribute("style", ``);
   };
 
   useEffect(() => {
-    window.addEventListener('resize', handleMenuState);
+    window.addEventListener("resize", handleMenuState);
 
     return () => {
-      window.removeEventListener('resize', handleMenuState);
+      window.removeEventListener("resize", handleMenuState);
     };
   }, [showMenu]);
 
@@ -65,18 +65,22 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
               <Link
                 locale={lang}
                 href={`/`}
-                className={`header-link start-link-text ${pathname === `/` ? 'active' : ''}`}
+                className={`header-link start-link-text ${
+                  pathname === `/` ? "active" : ""
+                }`}
               >
-                {t('common|logo')}
+                {t("common|logo")}
               </Link>
             </div>
             <nav>
               <div className="header-links text-base">
                 <Link
                   href={`/data`}
-                  className={`header-link ${pathname?.split('/')[1] === `data` ? 'active' : ''}`}
+                  className={`header-link ${
+                    pathname?.split("/")[1] === `data` ? "active" : ""
+                  }`}
                 >
-                  {t('pages|startpage$data-api-header')}
+                  {t("pages|startpage$data-api-header")}
                 </Link>
 
                 {!isEn && (
@@ -84,19 +88,22 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                     <Link
                       href={`/oppen-kallkod`}
                       className={`header-link ${
-                        pathname?.split('/')[1] === `oppen-kallkod` ? 'active' : ''
+                        pathname?.split("/")[1] === `oppen-kallkod`
+                          ? "active"
+                          : ""
                       }`}
                     >
-                      {t('pages|startpage$open-source-header')}
+                      {t("pages|startpage$open-source-header")}
                     </Link>
-                    <Link href={`/offentligai`}>
-                      <a
-                        className={`header-link ${
-                          pathname?.split('/')[1] === `offentligai` ? 'active' : ''
-                        }`}
-                      >
-                        {t('pages|startpage$public-ai-header')}
-                      </a>
+                    <Link
+                      href={`/offentligai`}
+                      className={`header-link ${
+                        pathname?.split("/")[1] === `offentligai`
+                          ? "active"
+                          : ""
+                      }`}
+                    >
+                      {t("pages|startpage$public-ai-header")}
                     </Link>
                   </>
                 )}
@@ -112,7 +119,7 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
             >
               <button
                 css={css`
-                  ${responsiveProp('display', ['flex', 'flex', 'flex', 'none'])}
+                  ${responsiveProp("display", ["flex", "flex", "flex", "none"])}
                   justify-content: space-around;
                   align-items: center;
                   gap: 0.75rem;
@@ -122,7 +129,9 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                   padding-right: 0;
                 `}
                 type="button"
-                aria-label={showMenu ? t('common|close_menu') : t('common|menu')}
+                aria-label={
+                  showMenu ? t("common|close_menu") : t("common|menu")
+                }
                 onClick={showMenu ? closeMenu : openMenu}
               >
                 {showMenu ? (
@@ -137,7 +146,7 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                         color: white;
                       `}
                     >
-                      {t('common|close')}
+                      {t("common|close")}
                     </span>
                   </span>
                 ) : (
@@ -152,13 +161,19 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                         color: white;
                       `}
                     >
-                      {t('common|menu')}
+                      {t("common|menu")}
                     </span>
                   </span>
                 )}
               </button>
-              <div className={'menu-bg' + (showMenu ? ' menu-bg--active' : '')}></div>
-              <nav className={'header-links' + (showMenu ? '--active text-md' : '')}>
+              <div
+                className={"menu-bg" + (showMenu ? " menu-bg--active" : "")}
+              ></div>
+              <nav
+                className={
+                  "header-links" + (showMenu ? "--active text-md" : "")
+                }
+              >
                 {!showMenu && (
                   <>
                     {/* Search data hidden in MVP */}
@@ -191,10 +206,10 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                     {!isEn && (
                       <Link
                         href={`/faq`}
-                        key={'faq-link'}
+                        key={"faq-link"}
                         locale={lang}
                         onClick={closeMenu}
-                        className={`${pathname === '/faq' ? ' active' : ''}`}
+                        className={`${pathname === "/faq" ? " active" : ""}`}
                       >
                         <div className="search-link">
                           <QuestionCircleIcon
@@ -209,7 +224,7 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
 
                     <Link
                       href={`https://community.dataportal.se/`}
-                      key={'community-link'}
+                      key={"community-link"}
                       onClick={closeMenu}
                       lang="en"
                     >
@@ -224,11 +239,11 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                     </Link>
                     {showLangLink && (
                       <Link
-                        href={`/${t('common|change-lang')}`}
-                        key={'lang-link'}
-                        locale={`${t('common|change-lang')}`}
+                        href={`/${t("common|change-lang")}`}
+                        key={"lang-link"}
+                        locale={`${t("common|change-lang")}`}
                         onClick={closeMenu}
-                        lang={lang === 'sv' ? 'en' : 'sv'}
+                        lang={lang === "sv" ? "en" : "sv"}
                       >
                         <div className="search-link">
                           <GlobeIcon
@@ -236,7 +251,9 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                             width={20}
                             className="search-link--icon"
                           />
-                          <span className="right-bar-item">{t('common|lang-linktext')}</span>
+                          <span className="right-bar-item">
+                            {t("common|lang-linktext")}
+                          </span>
                         </div>
                       </Link>
                     )}
@@ -248,13 +265,13 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                   <div className="header__mobile-menu">
                     <Link
                       href={`/data`}
-                      key={'data-link'}
+                      key={"data-link"}
                       onClick={closeMenu}
                       lang={lang}
                     >
                       <div>
                         <span className="header__mobile-menu_link text-xl font-light">
-                          {t('pages|startpage$data-api-header')}
+                          {t("pages|startpage$data-api-header")}
                         </span>
                       </div>
                     </Link>
@@ -263,26 +280,26 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                       <>
                         <Link
                           href={`/oppen-kallkod`}
-                          key={'oppen-kallkod-link'}
+                          key={"oppen-kallkod-link"}
                           onClick={closeMenu}
                           lang={lang}
                         >
                           <div>
                             <span className="header__mobile-menu_link text-xl font-light">
-                              {t('pages|startpage$open-source-header')}
+                              {t("pages|startpage$open-source-header")}
                             </span>
                           </div>
                         </Link>
 
                         <Link
                           href={`/offentligai`}
-                          key={'offentlig-ai-link'}
+                          key={"offentlig-ai-link"}
                           onClick={closeMenu}
                           lang={lang}
                         >
                           <div>
                             <span className="header__mobile-menu_link text-xl font-light">
-                              {t('pages|startpage$public-ai-header')}
+                              {t("pages|startpage$public-ai-header")}
                             </span>
                           </div>
                         </Link>
@@ -293,10 +310,10 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                     <div className="header__bottom-links">
                       <Link
                         href={`/faq`}
-                        key={'faq-link'}
+                        key={"faq-link"}
                         locale={lang}
                         onClick={closeMenu}
-                        className={`${pathname === '/faq' ? ' active' : ''}`}
+                        className={`${pathname === "/faq" ? " active" : ""}`}
                       >
                         <div className="header__bottom-links--link">
                           <QuestionCircleIcon
@@ -310,30 +327,25 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
 
                       <Link
                         href={`https://community.dataportal.se/`}
-                        key={'community-link'}
+                        key={"community-link"}
                         onClick={closeMenu}
                         lang="en"
                       >
-                        <a
-                          onClick={closeMenu}
-                          lang="en"
-                        >
-                          <div className='header__bottom-links--link'>
-                            <ChatIcon
-                              color={colorPalette.gray500}
-                              width={20}
-                              className="search-link--icon"
-                            />
-                            <span>Community</span>
-                          </div>
-                        </a>
+                        <div className="header__bottom-links--link">
+                          <ChatIcon
+                            color={colorPalette.gray500}
+                            width={20}
+                            className="search-link--icon"
+                          />
+                          <span>Community</span>
+                        </div>
                       </Link>
 
                       {showLangLink && (
                         <Link
-                          href={`/${t('common|change-lang')}`}
-                          key={'lang-link'}
-                          locale={t('common|change-lang')}
+                          href={`/${t("common|change-lang")}`}
+                          key={"lang-link"}
+                          locale={t("common|change-lang")}
                           onClick={closeMenu}
                         >
                           <div className="header__bottom-links--link">
@@ -342,7 +354,7 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                               width={20}
                               className="search-link--icon"
                             />
-                            <span>{t('common|lang-linktext')}</span>
+                            <span>{t("common|lang-linktext")}</span>
                           </div>
                         </Link>
                       )}

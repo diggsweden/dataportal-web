@@ -1,44 +1,46 @@
-import { Container, css, DiggLogo, Heading, space } from '@digg/design-system';
-import { Translate } from 'next-translate';
-import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
-import React from 'react';
-import { dataportal_LinkType } from '../../graphql/__generated__/globalTypes';
-import { ExternalLink, IPuff } from '../Navigation';
+import { Container, css, DiggLogo, Heading, space } from "@digg/design-system";
+import { Translate } from "next-translate";
+import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
+import React from "react";
+import { dataportal_LinkType } from "../../graphql/__generated__/globalTypes";
+import { ExternalLink, IPuff } from "../Navigation";
 
 /* export interface FooterProps {
   columns: { title: string; links: IPuff[] | DiggLink[] }[];
 } */
 
-const columns = (t: Translate): { title: string; links: IPuff[] | DiggLink[] }[] => [
+const columns = (
+  t: Translate
+): { title: string; links: IPuff[] | DiggLink[] }[] => [
   {
-    title: 'Dataportal',
+    title: "Dataportal",
     links: [
       {
-        __typename: 'dataportal_Digg_Link',
-        title: t('routes|about-us$title') || '',
-        link: t('routes|about-us$path'),
+        __typename: "dataportal_Digg_Link",
+        title: t("routes|about-us$title") || "",
+        link: t("routes|about-us$path"),
         linktype: dataportal_LinkType.INTERNAL,
         description: null,
       },
       {
-        __typename: 'dataportal_Digg_Link',
-        title: t('routes|about-website$title') || '',
-        link: t('routes|about-website$path'),
+        __typename: "dataportal_Digg_Link",
+        title: t("routes|about-website$title") || "",
+        link: t("routes|about-website$path"),
         linktype: dataportal_LinkType.INTERNAL,
         description: null,
       },
       {
-        __typename: 'dataportal_Digg_Link',
-        title: t('routes|statistics$title') || '',
-        link: t('routes|statistics$path'),
+        __typename: "dataportal_Digg_Link",
+        title: t("routes|statistics$title") || "",
+        link: t("routes|statistics$path"),
         linktype: dataportal_LinkType.INTERNAL,
         description: null,
       },
       {
-        __typename: 'dataportal_Digg_Link',
-        title: 'info@digg.se',
-        link: 'mailto:info@digg.se',
+        __typename: "dataportal_Digg_Link",
+        title: "info@digg.se",
+        link: "mailto:info@digg.se",
         linktype: dataportal_LinkType.EXTERNAL,
         description: null,
       },
@@ -55,20 +57,16 @@ const columns = (t: Translate): { title: string; links: IPuff[] | DiggLink[] }[]
 ];
 
 const IsDIGGLink = (link: IPuff | DiggLink): link is DiggLink => {
-  return (link as DiggLink).__typename === 'dataportal_Digg_Link';
+  return (link as DiggLink).__typename === "dataportal_Digg_Link";
 };
 
 export const Footer: React.FC = () => {
-  const { t, lang } = useTranslation('common');
+  const { t, lang } = useTranslation("common");
   return (
     <footer className="footer">
       <div className="footer__mobile-bar">
         <span className="footer__mobile-links">
-          <Link
-            href={`/${lang}/faq`}
-            key={'faq-link'}
-            locale={lang}
-          >
+          <Link href={`/${lang}/faq`} key={"faq-link"} locale={lang}>
             <span className="footer__search-link">
               <svg
                 width="16"
@@ -87,7 +85,7 @@ export const Footer: React.FC = () => {
 
           <Link
             href={`https://community.dataportal.se/`}
-            key={'community-link'}
+            key={"community-link"}
             lang="en"
           >
             <span className="footer__search-link">
@@ -118,26 +116,24 @@ export const Footer: React.FC = () => {
             <div className="footer__links-nav footer__links-nav-v2">
               {columns(t)?.map((col, index) => (
                 <div key={col.title + index} className="footer__column">
-
-                  <ul
-                    key={col.title + index}
-                  >
+                  <ul key={col.title + index}>
                     {col.links.map((l, index) => {
                       const { slug, type, isMail } = IsDIGGLink(l)
-                        ? { slug: l.link, type: l.linktype, isMail: l.title === 'info@digg.se' }
+                        ? {
+                            slug: l.link,
+                            type: l.linktype,
+                            isMail: l.title === "info@digg.se",
+                          }
                         : {
                             slug: l.slug,
                             type: dataportal_LinkType.INTERNAL,
-                            isMail: l.title === 'info@digg.se',
+                            isMail: l.title === "info@digg.se",
                           };
 
                       return (
                         <li key={index}>
                           {type === dataportal_LinkType.INTERNAL ? (
-                            <Link
-                              href={slug}
-                              className="text-md"
-                            >
+                            <Link href={slug} className="text-md">
                               {l?.title}
                             </Link>
                           ) : (
@@ -159,7 +155,7 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="digg__">
-            <p className="text-sm">{t('common|digg-managed_text')}</p>
+            <p className="text-sm">{t("common|digg-managed_text")}</p>
             <div
               css={css`
                 width: 15rem;
@@ -167,7 +163,7 @@ export const Footer: React.FC = () => {
               `}
             >
               <DiggLogo
-                title={t('common|digg-logo_text')}
+                title={t("common|digg-logo_text")}
                 id="footer"
                 mode="wide"
                 width={30 * 16}

@@ -1,10 +1,16 @@
-import { ArrowBreadcrumbIcon, Button, colorPalette, css, space } from '@digg/design-system';
-import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { Related_containers } from '../../graphql/__generated__/Related';
-import { useClickoutside } from '../../hooks/useClickoutside';
+import {
+  ArrowBreadcrumbIcon,
+  Button,
+  colorPalette,
+  css,
+  space,
+} from "@digg/design-system";
+import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { Related_containers } from "../../graphql/__generated__/Related";
+import { useClickoutside } from "../../hooks/useClickoutside";
 
 interface ContainerDpDwnProps {
   related: Related_containers[];
@@ -80,10 +86,10 @@ const styles = css`
 `;
 
 const buttonColors: ColorGroupOverride = {
-  accent: 'white',
-  background: 'gray800',
-  border: 'gray800',
-  font: 'white',
+  accent: "white",
+  background: "gray800",
+  border: "gray800",
+  font: "white",
 };
 
 export const ContainerNavigation: React.FC<ContainerDpDwnProps> = ({
@@ -93,7 +99,7 @@ export const ContainerNavigation: React.FC<ContainerDpDwnProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
   const ref = useClickoutside(() => setExpanded(false));
-  const {t} = useTranslation('common');
+  const { t } = useTranslation("common");
   const { push, asPath } = useRouter() || {};
 
   const handleClick = (url: string) => {
@@ -106,11 +112,7 @@ export const ContainerNavigation: React.FC<ContainerDpDwnProps> = ({
   };
 
   return (
-    <div
-      css={styles}
-      ref={ref}
-      className={className || ''}
-    >
+    <div css={styles} ref={ref} className={className || ""}>
       <Button
         className="mw px height"
         aria-haspopup={true}
@@ -123,7 +125,7 @@ export const ContainerNavigation: React.FC<ContainerDpDwnProps> = ({
         onClick={() => setExpanded(!expanded)}
       >
         <span className="button--content">
-          <span>{t('go-to')}</span>
+          <span>{t("go-to")}</span>
           <ArrowBreadcrumbIcon
             width={18}
             rotation={expanded ? -90 : 90}
@@ -132,16 +134,15 @@ export const ContainerNavigation: React.FC<ContainerDpDwnProps> = ({
         </span>
       </Button>
       {expanded && (
-        <nav
-          className="mw navigation"
-          aria-label="kategori"
-        >
+        <nav className="mw navigation" aria-label="kategori">
           <ul>
             {related.map(({ name, slug }) => {
-              const url = `${domain ? '/' + domain : ''}${slug}`;
+              const url = `${domain ? "/" + domain : ""}${slug}`;
               return (
                 <li
-                  className={`navigation--item px height${isActive(url) ? ' active' : ''}`}
+                  className={`navigation--item px height${
+                    isActive(url) ? " active" : ""
+                  }`}
                   onClick={() => handleClick(url)}
                   key={slug}
                 >

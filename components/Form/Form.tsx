@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { FormPage, FormBottomNav, FormGeneratePDF } from "./FormPages";
-import { ArrowIcon, Button, Container, css, Heading, } from "@digg/design-system";
+import {
+  ArrowIcon,
+  Button,
+  Container,
+  css,
+  Heading,
+} from "@digg/design-system";
 import FormTypes from "./FormTypes";
 import FormProgress from "./ProgressComponent/FormProgress";
-import { DiggProgressbar, FormBackButton, FormWrapper, } from "./Styles/FormStyles";
+import {
+  DiggProgressbar,
+  FormBackButton,
+  FormWrapper,
+} from "./Styles/FormStyles";
 import { Form_dataportal_Digg_Form as IForm } from "../../graphql/__generated__/Form";
 import Link from "next/link";
 import { MainContainerStyle } from "../../styles/general/emotion";
@@ -15,22 +25,29 @@ import { useRouter } from "next/router";
 
 export const Form: React.FC<IForm> = ({ elements }) => {
   const { trackPageView } = useMatomo();
-  const {t} = useTranslation();
-  const {pathname} = useRouter() || {};
+  const { t } = useTranslation();
+  const { pathname } = useRouter() || {};
   const [page, setPage] = useState<number>(0);
   const scrollRef = React.useRef<HTMLSpanElement>(null);
-  const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>([]);
+  const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>(
+    []
+  );
   const [formSteps, setFormSteps] = useState<string[]>([]); //The title of the different pages
   const [showFirstPage, setShowFirstPage] = useState<boolean>(true);
-  const [formIntroText, setFormIntroText] = useState<{ title: string; text: string; }>({ title: "", text: "", });
+  const [formIntroText, setFormIntroText] = useState<{
+    title: string;
+    text: string;
+  }>({ title: "", text: "" });
   let questionNumber = 1; //Used for visual numberings (can't use ID since we don't want headings/pagebreaks to be numbered)
 
   useEffect(() => {
-    trackPageView({ documentTitle: 'Fortroendemodellen' });
+    trackPageView({ documentTitle: "Fortroendemodellen" });
   }, [pathname]);
-  
+
   useEffect(() => {
-    if (elements === undefined || elements.length === 0) { return; }
+    if (elements === undefined || elements.length === 0) {
+      return;
+    }
 
     (elements as FormTypes[]).forEach((element, index) => {
       element.ID = index; //Make sure each element has a unique ID
@@ -41,7 +58,9 @@ export const Form: React.FC<IForm> = ({ elements }) => {
   }, []);
 
   const SetupPages = (data: FormTypes[]) => {
-    if (data == null) { return; }
+    if (data == null) {
+      return;
+    }
     let currentPage: Array<FormTypes> = [];
     let pageArray: Array<Array<FormTypes>> = [];
     setFormSteps([]);
@@ -53,7 +72,9 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     var checkTopHeading = true;
     data.forEach((item, i) => {
       //If first element is a description, we don't want to add it to our data array
-      if (i === 0 && item.__typename === "dataportal_Digg_FormDescription") { return; }
+      if (i === 0 && item.__typename === "dataportal_Digg_FormDescription") {
+        return;
+      }
 
       if (item.__typename === "dataportal_Digg_FormPageBreak") {
         setFormSteps((prev) => [...prev, item.title]);
@@ -80,7 +101,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     }
     setFormDataArray(pageArray);
   };
-  
+
   const initializeFields = (data: FormTypes[]) => {
     //Make sure that nessecary fields exists and have default values
     data.forEach((item) => {
@@ -156,7 +177,9 @@ export const Form: React.FC<IForm> = ({ elements }) => {
       });
     } else {
       setFormDataArray((prev) => {
-        let itemIndex = prev[pageIndex].findIndex((item) => item.ID === fieldToUpdate.ID);
+        let itemIndex = prev[pageIndex].findIndex(
+          (item) => item.ID === fieldToUpdate.ID
+        );
         let foundObj = prev[pageIndex][itemIndex];
         if ("value" in foundObj) {
           foundObj.value = e.target.value;
@@ -172,7 +195,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     <>
       {formDataArray[0] && (
         <Container cssProp={MainContainerStyle}>
-          {page >  0 && showFirstPage && (
+          {page > 0 && showFirstPage && (
             <FormBackButton
               onClick={() => {
                 setPage(page - 1);
@@ -186,7 +209,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
               <span className="back-button">
                 <ArrowIcon color={"white"} width={"18px"} />
                 <span className="text-base font-medium back-text">
-                {t('pages|form$previous-section-text')}
+                  {t("pages|form$previous-section-text")}
                 </span>
               </span>
             </FormBackButton>
@@ -204,7 +227,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
                   <span className="back-button">
                     <ArrowIcon color={"white"} width={"18px"} />
                     <span className="text-base font-medium back-text">
-                    {t('pages|form$go-back-text')}
+                      {t("pages|form$go-back-text")}
                     </span>
                   </span>
                 </FormBackButton>
@@ -216,14 +239,20 @@ export const Form: React.FC<IForm> = ({ elements }) => {
               <>
                 {formSteps.length < 5 ? (
                   <FormProgress
-                    formSteps={[...formSteps, t('pages|form$generate-pdf-text')]}
+                    formSteps={[
+                      ...formSteps,
+                      t("pages|form$generate-pdf-text"),
+                    ]}
                     curPage={page}
                     clickCallback={setPage}
                   />
                 ) : (
                   <>
                     <FormDropdownNavigation
-                      pageNames={[...formSteps, t('pages|form$generate-pdf-text')]}
+                      pageNames={[
+                        ...formSteps,
+                        t("pages|form$generate-pdf-text"),
+                      ]}
                       setPage={setPage}
                       forceUpdate={page - 1}
                     />
@@ -275,7 +304,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
                     `}
                     className="text-base"
                   >
-                    {t('pages|form$start-evaluation-text')}
+                    {t("pages|form$start-evaluation-text")}
                   </Button>
                 </>
               )}

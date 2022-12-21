@@ -1,16 +1,19 @@
-import { css } from '@digg/design-system';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { RelatedContent, RelatedContent_links } from '../../graphql/__generated__/RelatedContent';
-import { isExternalLink } from '../../utilities';
-import { checkLang } from '../../utilities/checkLang';
-import ExternalLink from './ExternalLink';
+import { css } from "@digg/design-system";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import {
+  RelatedContent,
+  RelatedContent_links,
+} from "../../graphql/__generated__/RelatedContent";
+import { isExternalLink } from "../../utilities";
+import { checkLang } from "../../utilities/checkLang";
+import ExternalLink from "./ExternalLink";
 
 // Todo - remove any
-export const Links: React.FC<{ basepath?: string | undefined; links: RelatedContent_links[] }> = ({
-  basepath,
-  links,
-}) => {
+export const Links: React.FC<{
+  basepath?: string | undefined;
+  links: RelatedContent_links[];
+}> = ({ basepath, links }) => {
   const router = useRouter();
   return (
     <ul className="text-md font-bold linkblock">
@@ -22,10 +25,10 @@ export const Links: React.FC<{ basepath?: string | undefined; links: RelatedCont
               }
             `}
             key={index}
-            onClick={() => router.push(`${basepath || ''}${l?.slug}`)}
+            onClick={() => router.push(`${basepath || ""}${l?.slug}`)}
           >
             <span>
-              {l.linktype === 'EXTERNAL' ? (
+              {l.linktype === "EXTERNAL" ? (
                 <ExternalLink
                   href={l?.slug}
                   passHref
@@ -35,7 +38,7 @@ export const Links: React.FC<{ basepath?: string | undefined; links: RelatedCont
                 </ExternalLink>
               ) : (
                 <Link
-                  href={`${basepath || ''}${l?.slug}`}
+                  href={`${basepath || ""}${l?.slug}`}
                   passHref
                   className="text-md font-normal"
                 >

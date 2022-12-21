@@ -33,7 +33,7 @@ class MyDocument extends Document {
       originalRenderPage({
         // Useful for wrapping the whole react tree
         enhanceApp: (App) =>
-          function callback(props) {
+          (function callback(props) {
             const frontend = (
               <ApolloProvider client={client}>
                 <SettingsProvider value={{ ...defaultSettings, env }}>
@@ -54,7 +54,7 @@ class MyDocument extends Document {
             styles = css;
             emotionIds = ids;
             return frontend;
-          },
+          }),
         // Useful for wrapping in a per-page basis
         enhanceComponent: (Component) => Component,
       });

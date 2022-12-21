@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import React from 'react';
+import Link from "next/link";
+import React from "react";
 
 interface StatisticListItemProps {
   listText?: any;
@@ -14,13 +14,12 @@ export class StatisticListItem extends React.Component<StatisticListItemProps> {
   render() {
     return (
       <li>
-        <Link
-          href={this.props.listUrl || '#'}
-          className="text-md font-normal"
-        >
+        <Link href={this.props.listUrl || "#"} className="text-md font-normal">
           {this.props.listText}
         </Link>
-        <span className="list-value text-md font-bold">{this.props.listNumber}</span>
+        <span className="list-value text-md font-bold">
+          {this.props.listNumber}
+        </span>
       </li>
     );
   }
