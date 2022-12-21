@@ -170,10 +170,15 @@ export interface Module_dataportal_Digg_Module_blocks_dataportal_Digg_FormBlock_
   title: string;
 }
 
+export interface Module_dataportal_Digg_Module_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
 export interface Module_dataportal_Digg_Module_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
   __typename: "dataportal_Digg_FormDescription";
   title: string;
-  text: string;
+  text: Module_dataportal_Digg_Module_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
 }
 
 export interface Module_dataportal_Digg_Module_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {

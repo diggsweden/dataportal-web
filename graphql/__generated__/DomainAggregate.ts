@@ -236,10 +236,15 @@ export interface DomainAggregate_rootContainer_blocks_dataportal_Digg_FormBlock_
   title: string;
 }
 
+export interface DomainAggregate_rootContainer_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
 export interface DomainAggregate_rootContainer_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
   __typename: "dataportal_Digg_FormDescription";
   title: string;
-  text: string;
+  text: DomainAggregate_rootContainer_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
 }
 
 export interface DomainAggregate_rootContainer_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {
@@ -484,10 +489,15 @@ export interface DomainAggregate_rootContainer_blocks_dataportal_Digg_ModuleList
   title: string;
 }
 
+export interface DomainAggregate_rootContainer_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
 export interface DomainAggregate_rootContainer_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
   __typename: "dataportal_Digg_FormDescription";
   title: string;
-  text: string;
+  text: DomainAggregate_rootContainer_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
 }
 
 export interface DomainAggregate_rootContainer_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {

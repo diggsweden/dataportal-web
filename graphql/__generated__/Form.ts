@@ -12,10 +12,15 @@ export interface Form_dataportal_Digg_Form_elements_dataportal_Digg_FormPageBrea
   title: string;
 }
 
+export interface Form_dataportal_Digg_Form_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
 export interface Form_dataportal_Digg_Form_elements_dataportal_Digg_FormDescription {
   __typename: "dataportal_Digg_FormDescription";
   title: string;
-  text: string;
+  text: Form_dataportal_Digg_Form_elements_dataportal_Digg_FormDescription_text;
 }
 
 export interface Form_dataportal_Digg_Form_elements_dataportal_Digg_FormText {

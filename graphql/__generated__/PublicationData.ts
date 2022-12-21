@@ -201,10 +201,15 @@ export interface PublicationData_blocks_dataportal_Digg_FormBlock_elements_datap
   title: string;
 }
 
+export interface PublicationData_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
 export interface PublicationData_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
   __typename: "dataportal_Digg_FormDescription";
   title: string;
-  text: string;
+  text: PublicationData_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
 }
 
 export interface PublicationData_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {
@@ -449,10 +454,15 @@ export interface PublicationData_blocks_dataportal_Digg_ModuleList_modules_block
   title: string;
 }
 
+export interface PublicationData_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
 export interface PublicationData_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
   __typename: "dataportal_Digg_FormDescription";
   title: string;
-  text: string;
+  text: PublicationData_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
 }
 
 export interface PublicationData_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {

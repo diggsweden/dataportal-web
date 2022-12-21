@@ -4301,8 +4301,8 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "OBJECT",
+                "name": "dataportal_Digg_RichText",
                 "ofType": null
               }
             },

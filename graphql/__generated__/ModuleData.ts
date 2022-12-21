@@ -170,10 +170,15 @@ export interface ModuleData_blocks_dataportal_Digg_FormBlock_elements_dataportal
   title: string;
 }
 
+export interface ModuleData_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
 export interface ModuleData_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
   __typename: "dataportal_Digg_FormDescription";
   title: string;
-  text: string;
+  text: ModuleData_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
 }
 
 export interface ModuleData_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {

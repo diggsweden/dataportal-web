@@ -5,7 +5,6 @@ import { Containers_dataportal_Digg_Containers_blocks } from "../../../graphql/_
 import { Module_dataportal_Digg_Module_blocks as Module_blocks } from "../../../graphql/__generated__/Module";
 import { Publication_dataportal_Digg_Publications_tags } from "../../../graphql/__generated__/Publication";
 import { MainContainerStyle } from "../../../styles/general/emotion";
-import { responsive } from "../../../styles/image";
 import { PublicationResponse, checkLang } from "../../../utilities";
 
 const whitelistedTagsSV = ["Goda exempel", "Event", "Nyhet"];

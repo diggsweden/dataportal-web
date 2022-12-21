@@ -125,7 +125,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
       setShowFirstPage(true);
       setFormIntroText({
         title: data[0].title,
-        text: data[0].text,
+        text: data[0].text.markdown || '',
       });
     } else {
       setShowFirstPage(false);

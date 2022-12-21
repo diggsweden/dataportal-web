@@ -2,6 +2,7 @@ import { Heading } from "@digg/design-system";
 import { Translate } from "next-translate";
 import useTranslation from "next-translate/useTranslation";
 import React from "react";
+import { renderMarkdown } from "../../Renderers";
 import FormTypes from "../FormTypes";
 import {
   DiggPopover,
@@ -207,8 +208,8 @@ const FormItem = (
           <Heading level={item.TopHeading === true ? 2 : 3}>
             {item.title}
           </Heading>
-          {item.text.length > 1 && (
-            <p className="form-description__text">{item.text}</p>
+          {item.text.markdown?.length || 0 > 1 && (
+            <p className="form-description__text">{renderMarkdown(item.text.markdown || '')}</p>
           )}
         </>
       );

@@ -90,7 +90,9 @@ export const FORM_ELEMENT_FRAGMENT = gql`
     title
 
     ... on dataportal_Digg_FormDescription {
-      text
+      text {
+        markdown
+      }
     }
 
     ... on dataportal_Digg_IFormInput {
