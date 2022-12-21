@@ -25,8 +25,8 @@ const getQuery = async (slug: string, locale: string, secret: string, isPublicat
         secret,
         revalidate: false,
       });
-    case '/ai':
-      return await getDomainAggregate('ai', locale, {
+    case '/offentligai':
+      return await getDomainAggregate('offentligai', locale, {
         state: dataportal_ContainerState.preview,
         secret,
         revalidate: false,

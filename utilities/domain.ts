@@ -38,19 +38,19 @@ const dataPuffs = (t: Translate): RelatedContent => ({
       ...populate,
       title: t('search$datasets'),
       slug: '/datasets?q=&f=',
-      description: t('startpage$explore_datasets')
+      description: t('startpage$explore_datasets'),
     },
     {
       ...populate,
       title: t('search$concepts'),
       slug: '/concepts?q=&f=',
-      description: t('startpage$explore_concepts')
+      description: t('startpage$explore_concepts'),
     },
     {
       ...populate,
       title: t('search$specifications'),
       slug: '/specifications?q=&f=',
-      description: t('startpage$explore_specs')
+      description: t('startpage$explore_specs'),
     },
   ],
 });
@@ -77,7 +77,7 @@ const fallback = (domain: DiggDomain | undefined): ParsedProps => {
   });
 
   switch (domain) {
-    case 'ai':
+    case 'offentligai':
       return {
         ...emptyProps,
         heading: t('ai$heading'),
@@ -138,7 +138,7 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
   };
 
   switch (domain) {
-    case 'ai':
+    case 'offentligai':
       const aiStrapiPuffs = blocks[0]?.__typename === 'dataportal_Digg_RelatedContent' && blocks[0];
       const aiPuffs: RelatedContent = aiStrapiPuffs
         ? {

@@ -94,4 +94,4 @@ type CSPDirective =
   | 'trusted-types'
   | 'upgrade-insecure-requests';
 
-type DiggDomain = 'ai' | 'data' | 'oppen-kallkod' | 'open-source';
+type DiggDomain = 'offentligai' | 'data' | 'oppen-kallkod' | 'open-source';

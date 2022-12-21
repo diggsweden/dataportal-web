@@ -120,65 +120,72 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
         {heading || category?.name || t('pages|publications$title')}
       </Heading>
       <div className="content">
-        <div
-          className="article-list"
-          id="articles"
+        {/* <Button
+          onClick={() => {
+            setGridView(!gridView);
+          }}
         >
-          <ul>
-            {articles.length === 0 && (
-              <span className="loading-msg">{t('pages|listpage$no-articles')}</span>
-            )}
-            {displayarticles.map((article, index) => {
-              const isPub = isPublication(article);
-              const { slug, heading, preamble } = article;
-              return (
-                <li key={index}>
-                  <NoSsr>
-                    {isPub && (
-                      <span className="text-base">{getFormattedDate(article.publishedAt)}</span>
-                    )}
-                  </NoSsr>
-                  <Link
-                    locale={lang}
-                    href={
-                      isPub
-                        ? `${basePath || '/' + t('routes|publications$path')}${slug}`
-                        : `${domainSlug}${categorySlug}${slug}`
-                    }
-                    className="text-lg link heading-link"
-                  >
-                    <Heading
-                      level={2}
+          {gridView ? t('pages|search$list-view') : t('pages|search$grid-view')}
+        </Button> */}
+        {!gridView ? (
+          <div
+            className="article-list"
+            id="articles"
+          >
+            <ul>
+              {articles.length === 0 && (
+                <span className="loading-msg">{t('pages|listpage$no-articles')}</span>
+              )}
+              {displayarticles.map((article, index) => {
+                const isPub = isPublication(article);
+                const { slug, heading, preamble, tags } = article;
+                return (
+                  <li key={index}>
+                    <NoSsr>
+                      {isPub && (
+                        <span className="publication-top-bar">
+                          <span className="text-base">{getFormattedDate(article.publishedAt)}</span>
+                          {tags[0].value && <span className="text-base">{tags[0].value}</span>}
+                        </span>
+                      )}
+                    </NoSsr>
+                    <Link
+                      locale={lang}
+                      href={
+                        isPub
+                          ? `${basePath || '/' + t('routes|publications$path')}${slug}`
+                          : `${domainSlug}${categorySlug}${slug}`
+                      }
+                      passHref
                     >
                       <a className="text-lg link heading-link">{checkLang(heading)}</a>
                     </Heading>
                   </Link>
 
-                  <p className="text-base truncate-2">{checkLang(preamble)}</p>
-                </li>
-              );
-            })}
-          </ul>
-          {/* Show pagination only when there is more than one page */}
-          {pageCount > 1 && (
-            <div className="currentpage-tracker">
-              <span className="text-base">
-                {t('pages|search$page')} {currentPage} {t('common|of')} {pageCount}
-              </span>
-            </div>
-          )}
-          {pageCount > 1 && (
-            <div className="article-list--pagination ">
-              <Pagination
-                totalResults={articles.length}
-                resultsPerPage={articlesPerPage}
-                currentPage={currentPage}
-                onPageChanged={changePage}
-                nextButtonText={t('pages|search$pagination-next-txt')}
-              />
-            </div>
-          )}
-        </div>
+                    <p className="text-base truncate-2">{checkLang(preamble)}</p>
+                  </li>
+                );
+              })}
+            </ul>
+            {/* Show pagination only when there is more than one page */}
+            {pageCount > 1 && (
+              <div className="currentpage-tracker">
+                <span className="text-base">
+                  {t('pages|search$page')} {currentPage} {t('common|of')} {pageCount}
+                </span>
+              </div>
+            )}
+            {renderPagination()}
+          </div>
+        ) : (
+          <div
+            className="article-list"
+            id="articles"
+          >
+            {renderGrid()}
+            {renderPagination()}
+          </div>
+        )}
       </div>
     </Container>
   );

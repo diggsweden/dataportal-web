@@ -1,4 +1,5 @@
 import { BlockData } from '../graphql/__generated__/BlockData';
+import { Publication_dataportal_Digg_Publications_image } from '../graphql/__generated__/Publication';
 import { SeoData } from '../graphql/__generated__/SeoData';
 import {
   DomainAggregateResponse,
@@ -20,7 +21,7 @@ export type DataportalPageProps =
   | ModuleResponse;
 
 type ResolvedPage = {
-  blocks?: BlockData[];
+  heroImage?: Publication_dataportal_Digg_Publications_image | null;
   seo?: SeoData | null;
 };
 
@@ -33,13 +34,13 @@ type ResolvedPage = {
 export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
   switch (props.type) {
     case 'RootAggregate':
-      return { blocks: props.blocks, seo: props.seo };
+      return { seo: props.seo };
     case 'DomainAggregate':
-      return { blocks: props.blocks, seo: props.seo };
+      return { seo: props.seo };
     case 'MultiContainer':
-      return { blocks: props.container?.blocks, seo: props.container?.seo };
+      return { seo: props.container?.seo, heroImage: props.container?.image };
     case 'Publication':
-      return { blocks: props.blocks, seo: props.seo };
+      return { seo: props.seo, heroImage: props.image };
     case 'PublicationList':
       return {};
     case 'Form':

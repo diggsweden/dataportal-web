@@ -59,6 +59,38 @@
       }
     }
   }
+
+    button{
+      border-radius: 0;
+    }
+
+.article-list .articleblock{
+  ul:not(.pagination-wrapper) {
+    list-style: none;
+    padding: 0px;
+    margin: 0rem;
+    margin-top: $space-4;
+    display: grid;
+    grid-auto-columns: auto;
+    grid-gap: $space-2;
+
+    li {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid transparent;
+      padding: 1rem;
+
+      span {
+        color: $clr-gray500;
+        margin-bottom: 0;
+      }
+
+      &:last-child > button {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+    }
+  }
 }
 
 // NewsPage

@@ -89,11 +89,14 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                     >
                       {t('pages|startpage$open-source-header')}
                     </Link>
-                    <Link
-                      href={`/ai`}
-                      className={`header-link ${pathname?.split('/')[1] === `ai` ? 'active' : ''}`}
-                    >
-                      {t('pages|startpage$public-ai-header')}
+                    <Link href={`/offentligai`}>
+                      <a
+                        className={`header-link ${
+                          pathname?.split('/')[1] === `offentligai` ? 'active' : ''
+                        }`}
+                      >
+                        {t('pages|startpage$public-ai-header')}
+                      </a>
                     </Link>
                   </>
                 )}
@@ -272,7 +275,7 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                         </Link>
 
                         <Link
-                          href={`/ai`}
+                          href={`/offentligai`}
                           key={'offentlig-ai-link'}
                           onClick={closeMenu}
                           lang={lang}
@@ -311,14 +314,19 @@ export const Header: React.FC<HeaderProps> = ({ env }) => {
                         onClick={closeMenu}
                         lang="en"
                       >
-                        <div className="header__bottom-links--link">
-                          <ChatIcon
-                            color={colorPalette.gray500}
-                            width={20}
-                            className="search-link--icon"
-                          />
-                          <span>Community</span>
-                        </div>
+                        <a
+                          onClick={closeMenu}
+                          lang="en"
+                        >
+                          <div className='header__bottom-links--link'>
+                            <ChatIcon
+                              color={colorPalette.gray500}
+                              width={20}
+                              className="search-link--icon"
+                            />
+                            <span>Community</span>
+                          </div>
+                        </a>
                       </Link>
 
                       {showLangLink && (
