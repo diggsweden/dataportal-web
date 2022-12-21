@@ -218,7 +218,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
           <FormWrapper>
             {page === 0 && showFirstPage && (
               <Link
-                href={"/ai/fortroendemodellen"}
+                href={"/offentligai/fortroendemodellen"}
                 css={css`
                   width: fit-content;
                 `}

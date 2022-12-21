@@ -42,7 +42,7 @@ const FormGeneratePDF: React.FC<Props> = ({formDataArray}) => {
               onClick={(e) => {
                 e.preventDefault();
                 finishedModalRef.current?.classList.add("hide");
-                router.push("/ai/fortroendemodellen/success");
+                router.push("/offentligai/fortroendemodellen/success");
               }}
             >
               {t('common|yes')}
