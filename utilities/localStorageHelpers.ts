@@ -1,16 +1,18 @@
-export const clearLocalStorage = (prefix: string, skip?: string) => {
-  const arr: Array<string | null> = []; // Array to hold the keys
-  const pfLength = prefix.length;
-  // Iterate over localStorage and insert the keys that meet the condition into arr
-  for (var i = 0; i < localStorage.length; i++) {
+/**
+ * Clears all items in local storage that have a key that begins with the specified prefix.
+ *
+ * @param prefix - The prefix to use for filtering the items to clear.
+ * @param skip - An optional key to skip when clearing items.
+ */
+export function clearLocalStorage(prefix: string, skip?: string): void {
+  const keysToClear: string[] = [];
+
+  for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    if (key?.substring(0, pfLength) == prefix && key !== skip) {
-      arr.push(key);
+    if (key?.startsWith(prefix) && key !== skip) {
+      keysToClear.push(key);
     }
   }
 
-  // Iterate over arr and remove the items by key
-  arr.forEach((key) => {
-    key && localStorage.removeItem(key);
-  });
-};
+  keysToClear.forEach((key) => localStorage.removeItem(key));
+}
