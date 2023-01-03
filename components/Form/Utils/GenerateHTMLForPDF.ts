@@ -69,34 +69,37 @@ export const GenerateHTML = (
               if (field.value.length > 0) {
                 return `
                         <div class="form-group">
-                            <p><strong>${field.title}</strong></p>
+                            <p><strong>${field.number}. ${field.title}</strong></p>
                             <p>${field.value}</p>
                         </div>
                         `;
               }
               return `<div class="form-group">
-                                <p><strong>${field.title}</strong></p>
+                                <p><strong>${field.number}. ${field.title}</strong></p>
                                 <p>Inget svar</p>
                             </div>`;
-            case 'dataportal_Digg_FormTextArea':
+            
+                            case 'dataportal_Digg_FormTextArea':
               if (field.value.length > 0) {
                 return `
                         <div class="form-group">
-                            <p><strong>${field.title}</strong></p>
+                            <p><strong>${field.number}. ${field.title}</strong></p>
                             <p>${field.value}</p>
                         </div>
                         `;
               }
               return `<div class="form-group">
-                                <p><strong>${field.title}</strong></p>
+                                <p><strong>${field.number}. ${field.title}</strong></p>
                                 <p>Inget svar</p>
                             </div>`;
-            case 'dataportal_Digg_FormRadio':
+            
+                            case 'dataportal_Digg_FormRadio':
               return `<div class="form-group">
-                                <p><strong>${field.title}</strong></p>
+                                <p><strong>${field.number}. ${field.title}</strong></p>
                                 <p><strong>${field.selected.label}</strong> ${field.value.length > 0 ? `- ${field.value}` : ''}</p>
                             </div>`;
-            case 'dataportal_Digg_FormDescription':
+            
+                            case 'dataportal_Digg_FormDescription':
               return `<h${field.TopHeading ? 2 : 3}>${field.title}</h${
                 field.text.markdown?.length === 1 ? 2 : 3
               }>`;

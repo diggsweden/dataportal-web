@@ -9,12 +9,8 @@ import {
 } from "@digg/design-system";
 import FormTypes from "./FormTypes";
 import FormProgress from "./ProgressComponent/FormProgress";
-import {
-  DiggProgressbar,
-  FormBackButton,
-  FormWrapper,
-} from "./Styles/FormStyles";
-import { Form_dataportal_Digg_Form as IForm } from "../../graphql/__generated__/Form";
+import { DiggProgressbar, FormBackButton, FormWrapper, } from "./Styles/FormStyles";
+import { Form_dataportal_Digg_Form as IForm, Form_dataportal_Digg_Form_elements } from "../../graphql/__generated__/Form";
 import Link from "next/link";
 import { MainContainerStyle } from "../../styles/general/emotion";
 import { FormDropdownNavigation } from "../Navigation/FormDropdownNavigation";
@@ -22,11 +18,17 @@ import { GetLocalstorageData, handleScroll } from "./Utils/formUtils";
 import useTranslation from "next-translate/useTranslation";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
+import { Module_dataportal_Digg_Module_blocks } from "../../graphql/__generated__/Module";
 
-export const Form: React.FC<IForm> = ({ elements }) => {
+type Props = IForm & {
+  elements: Form_dataportal_Digg_Form_elements[];
+  module?: Module_dataportal_Digg_Module_blocks[] | null;
+};
+
+export const Form: React.FC<Props> = ({elements, module}) => {
   const { trackPageView } = useMatomo();
-  const { t } = useTranslation();
-  const { pathname } = useRouter() || {};
+  const {t} = useTranslation();
+  const {pathname, asPath} = useRouter() || {};
   const [page, setPage] = useState<number>(0);
   const scrollRef = React.useRef<HTMLSpanElement>(null);
   const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>(
@@ -54,7 +56,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
     });
 
     SetupPages(elements as FormTypes[]);
-    GetLocalstorageData(setFormDataArray, elements);
+    GetLocalstorageData(setFormDataArray, elements, asPath);
   }, []);
 
   const SetupPages = (data: FormTypes[]) => {
@@ -147,12 +149,17 @@ export const Form: React.FC<IForm> = ({ elements }) => {
 
   //Set correct starting page depending if any pagebreak exists or not.
   useEffect(() => {
-    if (!showFirstPage) {
+    const pageLastVisit = localStorage.getItem(`${asPath}Page`);
+    if (!showFirstPage && pageLastVisit === null) {
       setPage(1);
     } else {
-      setPage(0);
+      setPage(pageLastVisit ? parseInt(pageLastVisit) : 0);
     }
   }, [showFirstPage]);
+
+  useEffect(() => {
+    localStorage.setItem(`${asPath}Page`, page.toString());
+  }, [page]);
 
   const UpdateFormDataArray = (
     e: React.ChangeEvent<any>,
@@ -188,7 +195,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
         return [...prev];
       });
     }
-    localStorage.setItem("formData", JSON.stringify(formDataArray));
+    localStorage.setItem(`${asPath}Data`, JSON.stringify(formDataArray));
   };
 
   return (
@@ -336,7 +343,7 @@ export const Form: React.FC<IForm> = ({ elements }) => {
               })}
 
               {page === formDataArray.length + 1 && (
-                <FormGeneratePDF formDataArray={formDataArray} />
+                <FormGeneratePDF formDataArray={formDataArray} blocks={module ? module : null}/>
               )}
             </>
           </FormWrapper>

@@ -108,8 +108,8 @@ export const ImportFromJsonFile = (e: React.ChangeEvent<HTMLInputElement>, formD
   };
 
 
-  export const GetLocalstorageData = (setFormDataArray: React.Dispatch<React.SetStateAction<FormTypes[][]>>, elements: Form_dataportal_Digg_Form_elements[]) => {
-    const localData = localStorage.getItem('formData');
+  export const GetLocalstorageData = (setFormDataArray: React.Dispatch<React.SetStateAction<FormTypes[][]>>, elements: Form_dataportal_Digg_Form_elements[], path: string) => {
+    const localData = localStorage.getItem(`${path}Data`);
     if (localData) {
       let data: FormTypes[][] = JSON.parse(localData);
       let tmpArr = data.map((item) => {

@@ -5,19 +5,22 @@ import { DiggConfirmModal } from '../Styles/FormStyles';
 import { GeneratePDF } from '../Utils/formUtils';
 import FormTypes from '../FormTypes';
 import useTranslation from 'next-translate/useTranslation';
+import { Module_dataportal_Digg_Module_blocks } from '../../../graphql/__generated__/Module';
+import { ContentArea } from '../../ContentArea';
 
 type Props = {
     formDataArray: FormTypes[][];
+    blocks: Module_dataportal_Digg_Module_blocks[] | null;
   };
 
-const FormGeneratePDF: React.FC<Props> = ({formDataArray}) => {
+const FormGeneratePDF: React.FC<Props> = ({formDataArray, blocks}) => {
     const router = useRouter();
     const iframeRef = React.useRef<HTMLIFrameElement>(null);
     const finishedModalRef = React.useRef<HTMLDivElement>(null);
     const {t} = useTranslation();
-
   return (
     <>
+      <>{blocks && <ContentArea blocks={blocks}/>}</>
       <Button
         primary
         onClick={(e) => {
@@ -30,6 +33,7 @@ const FormGeneratePDF: React.FC<Props> = ({formDataArray}) => {
         className="text-base font-medium"
         css={css`
           margin: 3rem 0;
+          width: fit-content;
         `}
       >
         {t('pages|form$generate-pdf-text')}
