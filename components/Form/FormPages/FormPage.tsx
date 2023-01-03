@@ -208,7 +208,7 @@ const FormItem = (
           <Heading level={item.TopHeading === true ? 2 : 3}>
             {item.title}
           </Heading>
-          {item.text.markdown?.length || 0 > 1 && (
+          {item.text.markdown?.length && item.text.markdown?.length > 1 && (
             <p className="form-description__text">{renderMarkdown(item.text.markdown || '')}</p>
           )}
         </>
