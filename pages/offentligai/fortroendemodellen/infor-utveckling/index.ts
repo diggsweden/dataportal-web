@@ -7,7 +7,7 @@ export async function getStaticProps({ locale }: any) {
   const [form, module] = await Promise.all([p1, p2]);
   return {
     props: {
-      elements: form.props.elements,
+      elements: form.props.elements || null,
       module: module?.props?.blocks || null,
     },
   };

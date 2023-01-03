@@ -47,7 +47,7 @@ export const Form: React.FC<Props> = ({elements, module}) => {
   }, [pathname]);
 
   useEffect(() => {
-    if (elements === undefined || elements.length === 0) {
+    if (elements === null || elements.length === 0) {
       return;
     }
 

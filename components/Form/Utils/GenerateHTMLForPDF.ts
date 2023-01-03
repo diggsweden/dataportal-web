@@ -100,9 +100,7 @@ export const GenerateHTML = (
                             </div>`;
             
                             case 'dataportal_Digg_FormDescription':
-              return `<h${field.TopHeading ? 2 : 3}>${field.title}</h${
-                field.text.markdown?.length === 1 ? 2 : 3
-              }>`;
+              return `<h${field.TopHeading ? 2 : 3}>${field.title}</h${field.TopHeading ? 2 : 3}>`;
 
             case 'dataportal_Digg_FormPageBreak':
               return `<h1>${field.title}</h1>`;
