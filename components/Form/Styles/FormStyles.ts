@@ -377,41 +377,42 @@ export const DiggProgressbar = styled('span')<{ page: number; totPages: number }
 
 export const DiggConfirmModal = styled.div`
   position: fixed;
+  display: block;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  display: block;
-  
   contain: paint;
-
 
   &.hide{
     display: none;
   }
   
   .modal-content{
-    position: absolute;
+    position: sticky;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-5%,0);
     background-color: ${colorPalette.gray900};
     border: 1px solid ${colorPalette.pinkPop};
     padding: 2rem;
     width: 100%;
-    max-width: 300px;
+    max-width: 90%;
     text-align: center;
+
+    @media screen and (min-width: 500px){
+      transform: translate(-150px, -50%);
+      width: 300px;
+    }
   }
 
   .modal-buttons{
     display: flex;
     justify-content: space-evenly;
-
 
     button{
       color: white;
@@ -420,6 +421,8 @@ export const DiggConfirmModal = styled.div`
       outline: none;
       cursor: pointer;
       padding: 1rem;
+      width: 30%;
+      max-width: 100px;
 
       &:hover{
         border-color: ${colorPalette.white};

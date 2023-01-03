@@ -101,13 +101,6 @@ const FormBottomNav: React.FC<Props> = ({
             onClick={(e) => {
               e.preventDefault();
               modalRef.current?.classList.remove("hide");
-              setTimeout(() => {
-                modalRef.current?.scrollIntoView({
-                  behavior: "auto",
-                  block: "center",
-                  inline: "center",
-                });
-              }, 25);
             }}
             css={css`
               font-weight: 500;
