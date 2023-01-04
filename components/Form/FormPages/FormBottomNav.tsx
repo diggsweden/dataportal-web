@@ -108,6 +108,7 @@ const FormBottomNav: React.FC<Props> = ({
           >
             {t('pages|form$clear-all-text')}
           </Button>
+          
           <DiggConfirmModal ref={modalRef} className="hide">
             <div className="modal-content">
               <p>{t('pages|form$clear-confirm-text')}</p>

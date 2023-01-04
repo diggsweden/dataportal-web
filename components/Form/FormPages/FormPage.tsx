@@ -1,4 +1,4 @@
-import { Heading } from "@digg/design-system";
+import { ArrowDropIcon, Heading } from "@digg/design-system";
 import { Translate } from "next-translate";
 import useTranslation from "next-translate/useTranslation";
 import React from "react";
@@ -42,7 +42,7 @@ const PopOver = (popoverText: string) => {
           }
         }}
       >
-        <span className="show-more"></span>
+        <span className="show-more"><ArrowDropIcon color={'white'} /></span>
         <p
           onMouseDown={(e) => {e.stopPropagation()}}
           className="text-sm"
@@ -167,7 +167,7 @@ const FormItem = (
                         UpdateFormDataArray(e, choice, pageIndex);
                       }}
                     />
-                    <span>{choice.label}</span>
+                    <span>{choice.label}{choice.popup ? ' ->' : ''}</span>
                   </DiggRadioLabel>
                 );
               })}

@@ -99,7 +99,7 @@ export const FormNavButtons = styled.div`
 
     button {
       flex-direction: row;
-      max-width: 12rem;
+      max-width: 15rem;
     }
   }
 
@@ -135,7 +135,7 @@ export const FormNavButtons = styled.div`
     span{
       display: flex;
       flex-direction: row;
-      justify-content: center;
+      justify-content: space-between;
     }
   }
 
@@ -295,19 +295,23 @@ export const DiggPopover = styled.span`
   div {
     position: relative;
     overflow: hidden;
-    height: 24px;
-    width: 9rem;
 
     .show-more {
-      width: 10rem;
-      &:before {
-        position: absolute;
+      display: flex;
+
+      > span {
+        display: inline-block;
+        cursor: pointer;
+        height: 26px;
+        width: 26px;
+        bottom: 1px;
+      }
+
+      &::before {
+        position: relative;
         content: "Visa mer information";
-        text-decoration: underline;
         font-size: 14px;
         font-weight: 400;
-        top: 0;
-        left: 0;
       }
 
       &:hover::before {
@@ -317,7 +321,6 @@ export const DiggPopover = styled.span`
     }
 
     p {
-      margin-top: 2rem;
       display: none;
     }
   }
@@ -338,7 +341,12 @@ export const DiggPopover = styled.span`
     }
 
     .show-more {
-      &:before {
+      > span {
+        transform: rotate(180deg);
+        cursor: pointer;
+        bottom: 0px;
+      }
+      &::before {
         content: "Stäng mer information";
       }
     }
