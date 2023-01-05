@@ -91,7 +91,6 @@ export const FormNavButtons = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: 3rem;
 
   @media screen and (min-width: ${theme.breakpoints[0]}) {
     flex-direction: row;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MainContainerStyle } from "../../../styles/general/emotion";
 import { Module_dataportal_Digg_Module } from "../../../graphql/__generated__/Module";
 import { ContentArea } from "../../ContentArea";
@@ -8,15 +8,29 @@ import { highlightCode } from "../../pages/Articles";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 
+
+
 export const FortroendeEndPage: React.FC<Module_dataportal_Digg_Module> = ({
   blocks,
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const [heading, setHeading] = useState<string | null>(null);
+
+  const getHeading = () => {
+    if (blocks[0].__typename === "dataportal_Digg_Text") {
+      let str = blocks[0].heading;
+      blocks[0].heading = null;
+      return str;
+    } else {
+      return null;
+    }
+  };
 
   useEffect(() => {
     //Highlight code blocks using prismjs
     highlightCode();
+    setHeading(getHeading());
   }, []);
 
   return (
@@ -36,9 +50,18 @@ export const FortroendeEndPage: React.FC<Module_dataportal_Digg_Module> = ({
           </span>
         </FormBackButton>
 
-        <Heading color="pinkPop" size={"3xl"} weight={"light"}>
-          Tack för att du tog dig tid att fylla i formuläret!
-        </Heading>
+        {heading &&(
+          <Heading
+            color="pinkPop"
+            size={"3xl"}
+            weight={"light"}
+            css={css`
+              margin-top: 0;
+            `}
+          >
+            {heading}
+          </Heading>
+        )}
 
         <ContentArea blocks={blocks} />
 
