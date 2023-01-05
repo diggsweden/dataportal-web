@@ -11,8 +11,8 @@ export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({
 }) => {
   const { pathname } = useRouter() || {};
   const router = useRouter();
-  const intro = blocks.slice(0,1);
-  const extraInfo = blocks.slice(1,2);
+  const intro = blocks.slice(0, 1);
+  const extraInfo = blocks.slice(1);
 
   return (
     <Container cssProp={MainContainerStyle}>
@@ -21,49 +21,51 @@ export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({
           Förtroendemodellen
         </Heading>
         {intro && <ContentArea blocks={intro} />}
+      </FormWrapper>
 
-        <FormNavButtons className="start-buttons">
-          <Button
-            onClick={(e) =>
-              e.metaKey || e.ctrlKey
-                ? window.open(pathname + "/infor-utveckling", "_blank")
-                : router.push(pathname + "/infor-utveckling")
-            }
-            primary
-          >
-            <span>
-              Inför utveckling
-              <ArrowIcon className="nav-icon" width={"18px"} />
-            </span>
-          </Button>
-          <Button
-            onClick={(e) =>
-              e.metaKey || e.ctrlKey
-                ? window.open(pathname + "/fortroende", "_blank")
-                : router.push(pathname + "/fortroende")
-            }
-            primary
-          >
-            <span>
-              Förtroendemodellen
-              <ArrowIcon className="nav-icon" width={"18px"} />
-            </span>
-          </Button>
-          <Button
-            onClick={(e) =>
-              e.metaKey || e.ctrlKey
-                ? window.open(pathname + "/uppfoljning", "_blank")
-                : router.push(pathname + "/uppfoljning")
-            }
-            primary
-          >
-            <span>
-              Uppföljning
-              <ArrowIcon className="nav-icon" width={"18px"} />
-            </span>
-          </Button>
-        </FormNavButtons>
-        {extraInfo && <ContentArea blocks={blocks.slice(1,2)} />}
+      <FormNavButtons className="start-buttons">
+        <Button
+          onClick={(e) =>
+            e.metaKey || e.ctrlKey
+              ? window.open(pathname + "/infor-utveckling", "_blank")
+              : router.push(pathname + "/infor-utveckling")
+          }
+          primary
+        >
+          <span>
+            Inför utveckling
+            <ArrowIcon className="nav-icon" width={"18px"} />
+          </span>
+        </Button>
+        <Button
+          onClick={(e) =>
+            e.metaKey || e.ctrlKey
+              ? window.open(pathname + "/fortroende", "_blank")
+              : router.push(pathname + "/fortroende")
+          }
+          primary
+        >
+          <span>
+            Förtroendemodellen
+            <ArrowIcon className="nav-icon" width={"18px"} />
+          </span>
+        </Button>
+        <Button
+          onClick={(e) =>
+            e.metaKey || e.ctrlKey
+              ? window.open(pathname + "/uppfoljning", "_blank")
+              : router.push(pathname + "/uppfoljning")
+          }
+          primary
+        >
+          <span>
+            Uppföljning
+            <ArrowIcon className="nav-icon" width={"18px"} />
+          </span>
+        </Button>
+      </FormNavButtons>
+      <FormWrapper>
+        {extraInfo && <ContentArea blocks={blocks.slice(1, 2)} />}
       </FormWrapper>
     </Container>
   );
