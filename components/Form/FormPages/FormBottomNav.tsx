@@ -1,5 +1,6 @@
 import { Button, ArrowIcon, css } from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
 import React from "react";
 import FormTypes from "../FormTypes";
 import { FormNavButtons, DiggConfirmModal } from "../Styles/FormStyles";
@@ -27,6 +28,7 @@ const FormBottomNav: React.FC<Props> = ({
   const modalRef = React.useRef<HTMLDivElement>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const {t} = useTranslation();
+  const { asPath } = useRouter();
 
   const clearForm = () => {
     //Clear the "Value" field on all objects that has the Value field.
@@ -44,7 +46,7 @@ const FormBottomNav: React.FC<Props> = ({
     });
 
     setFormDataArray(tmpArr);
-    localStorage.removeItem("formData");
+    localStorage.removeItem(`${asPath}Data`);
   };
 
   return (

@@ -1,8 +1,6 @@
-import FormTypes from '../FormTypes';
+import FormTypes from "../FormTypes";
 
-export const GenerateHTML = (
-  formData: (FormTypes)[][]
-) => {
+export const GenerateHTML = (formData: FormTypes[][]) => {
   const pageHead = `
 <head>
     <style>
@@ -20,7 +18,9 @@ export const GenerateHTML = (
             }
         }
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Ubuntu,Helvetica Neue,sans-serif;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
         }
         table {
             border-collapse: collapse;
@@ -53,6 +53,14 @@ export const GenerateHTML = (
         .answer{
             margin-bottom: 3rem;
         }
+
+        a{
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 1rem;
+
+        }
     </style>
 </head>
 <div>
@@ -60,55 +68,69 @@ export const GenerateHTML = (
 </div>
 `;
 
-  const html = formData
-    .map((page) => {
-      return page
-        .map((field) => {
-          switch (field.__typename) {
-            case 'dataportal_Digg_FormText':
-              if (field.value.length > 0) {
-                return `
+  const html =
+    /* Adds image to the top-right of the pdf */
+    `
+    <a href="https://dataportal.se" target="_blank" rel="external noopener noreferrer">
+    <img width="200px"
+        src="https://diggdrstoragetest.blob.core.windows.net/strapi-dataportal2-beta/assets/illu_start_2_0_d48c342ac2.svg"
+        alt="Förtroendemodellen logo badge" />
+    </a>
+  ` +
+    formData
+      .map((page) => {
+        return page
+          .map((field) => {
+            switch (field.__typename) {
+              case "dataportal_Digg_FormText":
+                if (field.value.length > 0) {
+                  return `
                         <div class="form-group">
                             <p><strong>${field.number}. ${field.title}</strong></p>
                             <p>${field.value}</p>
                         </div>
                         `;
-              }
-              return `<div class="form-group">
+                }
+                return `<div class="form-group">
                                 <p><strong>${field.number}. ${field.title}</strong></p>
                                 <p>Inget svar</p>
                             </div>`;
-            
-                            case 'dataportal_Digg_FormTextArea':
-              if (field.value.length > 0) {
-                return `
-                        <div class="form-group">
-                            <p><strong>${field.number}. ${field.title}</strong></p>
-                            <p>${field.value}</p>
-                        </div>
-                        `;
-              }
-              return `<div class="form-group">
-                                <p><strong>${field.number}. ${field.title}</strong></p>
-                                <p>Inget svar</p>
-                            </div>`;
-            
-                            case 'dataportal_Digg_FormRadio':
-              return `<div class="form-group">
-                                <p><strong>${field.number}. ${field.title}</strong></p>
-                                <p><strong>${field.selected.label}</strong> ${field.value.length > 0 ? `- ${field.value}` : ''}</p>
-                            </div>`;
-            
-                            case 'dataportal_Digg_FormDescription':
-              return `<h${field.TopHeading ? 2 : 3}>${field.title}</h${field.TopHeading ? 2 : 3}>`;
 
-            case 'dataportal_Digg_FormPageBreak':
-              return `<h1>${field.title}</h1>`;
-          }
-        })
-        .join('');
-    })
-    .join(`<div style='page-break-after:always; width:100%; height:100%'></div>`); //If each section should be on a new page.
+              case "dataportal_Digg_FormTextArea":
+                if (field.value.length > 0) {
+                  return `
+                        <div class="form-group">
+                            <p><strong>${field.number}. ${field.title}</strong></p>
+                            <p>${field.value}</p>
+                        </div>
+                        `;
+                }
+                return `<div class="form-group">
+                                <p><strong>${field.number}. ${field.title}</strong></p>
+                                <p>Inget svar</p>
+                            </div>`;
+
+              case "dataportal_Digg_FormRadio":
+                return `<div class="form-group">
+                                <p><strong>${field.number}. ${field.title}</strong></p>
+                                <p><strong><i>Val: </i>${field.selected.label}</strong></p>
+                                <p>${field.value}</p>
+                            </div>`;
+
+              case "dataportal_Digg_FormDescription":
+                return `<h${field.TopHeading ? 2 : 3}>${field.title}</h${
+                  field.TopHeading ? 2 : 3
+                }>`;
+
+              case "dataportal_Digg_FormPageBreak":
+                return `<h1>${field.title}</h1>`;
+            }
+          })
+          .join("");
+      })
+      .join(
+        `<div style='page-break-after:always; width:100%; height:100%'></div>`
+      ); //If each section should be on a new page.
 
   return pageHead + html;
 };
