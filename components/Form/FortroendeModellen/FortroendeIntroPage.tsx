@@ -1,66 +1,70 @@
-import React from 'react';
-import { ArrowIcon, Button, Container, Heading } from '@digg/design-system';
-import { FormNavButtons, FormWrapper } from '../Styles/FormStyles';
-import { useRouter } from 'next/router';
-import { MainContainerStyle } from '../../../styles/general/emotion';
-import { Module_dataportal_Digg_Module } from '../../../graphql/__generated__/Module';
-import { ContentArea } from '../../ContentArea';
+import React from "react";
+import { ArrowIcon, Button, Container, Heading } from "@digg/design-system";
+import { FormNavButtons, FormWrapper } from "../Styles/FormStyles";
+import { useRouter } from "next/router";
+import { MainContainerStyle } from "../../../styles/general/emotion";
+import { Module_dataportal_Digg_Module } from "../../../graphql/__generated__/Module";
+import { ContentArea } from "../../ContentArea";
 
-export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({ blocks }) => {
+export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({
+  blocks
+}) => {
   const { pathname } = useRouter() || {};
   const router = useRouter();
-  
+  const intro = blocks.slice(0,1);
+  const extraInfo = blocks.slice(1,2);
+
   return (
     <Container cssProp={MainContainerStyle}>
       <FormWrapper>
-        <Heading
-          color="pinkPop"
-          size={'3xl'}
-          weight={'light'}
-        >
+        <Heading color="pinkPop" size={"3xl"} weight={"light"}>
           Förtroendemodellen
         </Heading>
-        <ContentArea blocks={blocks} />
+        {intro && <ContentArea blocks={intro} />}
+
+        <FormNavButtons className="start-buttons">
+          <Button
+            onClick={(e) =>
+              e.metaKey || e.ctrlKey
+                ? window.open(pathname + "/infor-utveckling", "_blank")
+                : router.push(pathname + "/infor-utveckling")
+            }
+            primary
+          >
+            <span>
+              Inför utveckling
+              <ArrowIcon className="nav-icon" width={"18px"} />
+            </span>
+          </Button>
+          <Button
+            onClick={(e) =>
+              e.metaKey || e.ctrlKey
+                ? window.open(pathname + "/fortroende", "_blank")
+                : router.push(pathname + "/fortroende")
+            }
+            primary
+          >
+            <span>
+              Förtroendemodellen
+              <ArrowIcon className="nav-icon" width={"18px"} />
+            </span>
+          </Button>
+          <Button
+            onClick={(e) =>
+              e.metaKey || e.ctrlKey
+                ? window.open(pathname + "/uppfoljning", "_blank")
+                : router.push(pathname + "/uppfoljning")
+            }
+            primary
+          >
+            <span>
+              Uppföljning
+              <ArrowIcon className="nav-icon" width={"18px"} />
+            </span>
+          </Button>
+        </FormNavButtons>
+        {extraInfo && <ContentArea blocks={blocks.slice(1,2)} />}
       </FormWrapper>
-      
-      <FormNavButtons className="start-buttons">
-        <Button
-          onClick={(e) => (e.metaKey || e.ctrlKey) ? window.open(pathname + '/infor-utveckling', '_blank') :  router.push(pathname + '/infor-utveckling')}
-          primary
-        >
-           <span>
-            Inför utveckling
-            <ArrowIcon
-              className="nav-icon"
-              width={'18px'}
-            />
-          </span>
-       </Button>
-        <Button
-          onClick={(e) => (e.metaKey || e.ctrlKey) ? window.open(pathname + '/fortroende', '_blank') :  router.push(pathname + '/fortroende')}
-          primary
-        >
-          <span>
-            Förtroendemodellen
-            <ArrowIcon
-              className="nav-icon"
-              width={'18px'}
-            />
-          </span>
-        </Button>
-        <Button
-          onClick={(e) => (e.metaKey || e.ctrlKey) ? window.open(pathname + '/uppfoljning', '_blank') :  router.push(pathname + '/uppfoljning')}
-          primary
-        >
-          <span>
-            Uppföljning
-            <ArrowIcon
-              className="nav-icon"
-              width={'18px'}
-            />
-          </span>
-        </Button>
-      </FormNavButtons>
     </Container>
   );
 };
