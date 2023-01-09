@@ -25,9 +25,10 @@ const FormBottomNav: React.FC<Props> = ({
   setFormDataArray,
   scrollRef,
 }) => {
-  const modalRef = React.useRef<HTMLDivElement>(null);
+  const clearModalRef = React.useRef<HTMLDivElement>(null);
+  const saveModalRef = React.useRef<HTMLDivElement>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const { asPath } = useRouter();
 
   const clearForm = () => {
@@ -51,7 +52,7 @@ const FormBottomNav: React.FC<Props> = ({
 
   return (
     <>
-      <FormNavButtons>
+      <FormNavButtons className="text-md">
         <Button
           primary
           onClick={() => {
@@ -60,21 +61,18 @@ const FormBottomNav: React.FC<Props> = ({
           }}
         >
           <span>
-          {t('pages|form$next-section-text')}
+            {t("pages|form$next-section-text")}
             <ArrowIcon className="nav-icon" width={"18px"} />
           </span>
         </Button>
         <span>
           <Button
-            css={css`
-              font-weight: 500;
-            `}
             onClick={(e) => {
               e.preventDefault();
-              GenerateJsonFile(formDataArray);
+              saveModalRef.current?.classList.remove("hide");
             }}
           >
-            {t('pages|form$save-form')}
+            {t("pages|form$save-form")}
           </Button>
           <input
             type="file"
@@ -88,49 +86,81 @@ const FormBottomNav: React.FC<Props> = ({
               display: none;
             `}
           />
+
           <Button
-            css={css`
-              font-weight: 500;
-            `}
             onClick={(e) => {
               e.preventDefault();
               fileInputRef.current?.click();
             }}
           >
-            {t('pages|form$upload-json-file')}
+            {t("pages|form$upload-json-file")}
           </Button>
+
           <Button
             onClick={(e) => {
               e.preventDefault();
-              modalRef.current?.classList.remove("hide");
+              clearModalRef.current?.classList.remove("hide");
             }}
-            css={css`
-              font-weight: 500;
-            `}
           >
-            {t('pages|form$clear-all-text')}
+            {t("pages|form$clear-all-text")}
           </Button>
-          
-          <DiggConfirmModal ref={modalRef} className="hide">
+
+          <DiggConfirmModal
+            ref={clearModalRef}
+            className="hide"
+            onClick={(e) => {
+              if (e.currentTarget != e.target) return;
+              clearModalRef.current?.classList.add("hide");
+            }}
+          >
             <div className="modal-content">
-              <p>{t('pages|form$clear-confirm-text')}</p>
+              <p>{t("pages|form$clear-confirm-text")}</p>
               <div className="modal-buttons">
                 <button
                   onClick={(e) => {
                     e.preventDefault();
                     clearForm();
-                    modalRef.current?.classList.add("hide");
+                    clearModalRef.current?.classList.add("hide");
                   }}
                 >
-                  {t('common|yes')}
+                  {t("common|yes")}
                 </button>
                 <button
                   onClick={(e) => {
                     e.preventDefault();
-                    modalRef.current?.classList.add("hide");
+                    clearModalRef.current?.classList.add("hide");
                   }}
                 >
-                  {t('common|no')}
+                  {t("common|no")}
+                </button>
+              </div>
+            </div>
+          </DiggConfirmModal>
+
+          <DiggConfirmModal
+            ref={saveModalRef}
+            className="hide"
+            onClick={(e) => {
+              if (e.currentTarget != e.target) return;
+              saveModalRef.current?.classList.add("hide");
+            }}
+          >
+            <div className="modal-content save-modal">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
+                dapibus rhoncus odio. Praesent et auctor lacus. Fusce tristique
+                dolor vel interdum porttitor. Cras convallis justo nec faucibus
+                finibus.
+              </p>
+              <div className="modal-buttons">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    GenerateJsonFile(formDataArray);
+                    saveModalRef.current?.classList.add("hide");
+                  }}
+                >
+                  Ok
                 </button>
               </div>
             </div>
