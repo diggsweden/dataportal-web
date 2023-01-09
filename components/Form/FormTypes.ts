@@ -24,6 +24,7 @@ interface TextArea
   ID: number;
   __typename: 'dataportal_Digg_FormTextArea';
   title: string;
+  images: [{[key: string]: number}];
 }
 
 interface FormRadio

@@ -120,7 +120,8 @@ export const GenerateHTML = (formData: FormTypes[][]) => {
               case "dataportal_Digg_FormDescription":
                 return `<h${field.TopHeading ? 2 : 3}>${field.title}</h${
                   field.TopHeading ? 2 : 3
-                }>`;
+                }>
+                ${field.text.markdown}`;
 
               case "dataportal_Digg_FormPageBreak":
                 return `<h1>${field.title}</h1>`;

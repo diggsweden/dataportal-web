@@ -129,6 +129,31 @@ const FormItem = (
             onChange={(e) => {
               UpdateFormDataArray(e, item, pageIndex);
             }}
+            
+            onDrop={(e) => {
+              e.preventDefault();
+              const curTarget = e.currentTarget;
+              const file = e.dataTransfer.files[0];
+              const reader = new FileReader();
+              reader.readAsDataURL(file);
+
+              reader.onload = () => {
+                const base64 = reader.result;
+                if (typeof base64 === "string" && base64.includes("image")) {
+                  const curVal = curTarget.value;
+                  curTarget.value += `[${file.name}]((${base64}))`;
+                  UpdateFormDataArray(e, item, pageIndex);
+
+                  setTimeout(() => { 
+                    curTarget.value = curVal + `[${file.name}]`;
+                  }, 5);
+                }
+              };
+            }}
+
+            onDragOver={(e) => {
+              e.preventDefault();
+            }}
           />
           {RenderDivider()}
         </>

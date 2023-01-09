@@ -189,6 +189,13 @@ export const Form: React.FC<Props> = ({elements, module}) => {
         );
         let foundObj = prev[pageIndex][itemIndex];
         if ("value" in foundObj) {
+          //If the field is an image field, we need to extract the image data and add it to the images array.
+          if(e.target.value.includes('data:image') && "images" in foundObj){
+            let imageString = e.target.value.match(/\[(.*?)\]/)[1];
+            let dataString = e.target.value.match(/\(\((.*?)\)/)[1];
+            foundObj.images.push({[imageString]: dataString});
+          }
+          
           foundObj.value = e.target.value;
           prev[pageIndex][itemIndex] = foundObj;
         }
