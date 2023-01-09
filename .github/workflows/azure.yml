@@ -45,6 +45,10 @@ jobs:
         run: |
           echo "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
 
+      - name: Print file to remove
+        run: |
+          echo "File to remove before build: ${{ github.event.inputs.delete_file }}"
+
       - name: use buildx
         uses: docker/setup-buildx-action@v1
 
@@ -56,5 +60,5 @@ jobs:
           cache-to: type=gha,mode=max
           file: ./Dockerfile
           push: true
-          build-arg: delete_file="${{ github.event.inputs.delete_file }}"
+          build-arg: delete_file=${{ github.event.inputs.delete_file }}
           tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal-v2:latest,${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal-v2:${{ steps.package-version.outputs.current-version}}-b.${{ github.run_number }},${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal-v2:${{ github.sha }},${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal-v2:branch-${{ steps.extract_branch.outputs.branch }}
