@@ -18,13 +18,13 @@ interface FormText
   __typename: 'dataportal_Digg_FormText';
 }
 
-interface TextArea
+export interface TextArea
   extends Form_dataportal_Digg_Form_elements_dataportal_Digg_FormText,
     DefaultProps {
   ID: number;
   __typename: 'dataportal_Digg_FormTextArea';
   title: string;
-  images: [{[key: string]: number}];
+  images: {[key: string]: string};
 }
 
 interface FormRadio

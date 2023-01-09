@@ -141,11 +141,17 @@ const FormItem = (
                 const base64 = reader.result;
                 if (typeof base64 === "string" && base64.includes("image")) {
                   const curVal = curTarget.value;
-                  curTarget.value += `[${file.name}]((${base64}))`;
+
+                  const start = curTarget.selectionStart;
+                  const end = curTarget.selectionEnd;
+                  const newVal = curVal.substring(0, start) + `[[${file.name}]]((${base64}))` + curVal.substring(end);
+
+                  curTarget.value = newVal;
                   UpdateFormDataArray(e, item, pageIndex);
 
                   setTimeout(() => { 
-                    curTarget.value = curVal + `[${file.name}]`;
+                    curTarget.value = curVal.substring(0, start) + `[${file.name}]` + curVal.substring(end);
+                    UpdateFormDataArray(e, item, pageIndex);
                   }, 5);
                 }
               };
@@ -192,7 +198,7 @@ const FormItem = (
                         UpdateFormDataArray(e, choice, pageIndex);
                       }}
                     />
-                    <span>{choice.label}{choice.popup ? ' ->' : ''}</span>
+                    <span>{choice.label}{choice.popup ? '*' : ''}</span>
                   </DiggRadioLabel>
                 );
               })}

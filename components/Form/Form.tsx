@@ -189,21 +189,30 @@ export const Form: React.FC<Props> = ({elements, module}) => {
         );
         let foundObj = prev[pageIndex][itemIndex];
         if ("value" in foundObj) {
-          //If the field is an image field, we need to extract the image data and add it to the images array.
-          if(e.target.value.includes('data:image') && "images" in foundObj){
-            let imageString = e.target.value.match(/\[(.*?)\]/)[1];
-            let dataString = e.target.value.match(/\(\((.*?)\)/)[1];
-            foundObj.images.push({[imageString]: dataString});
-          }
-          
+          checkForImage(foundObj, e); 
           foundObj.value = e.target.value;
           prev[pageIndex][itemIndex] = foundObj;
         }
         return [...prev];
       });
     }
-    localStorage.setItem(`${asPath}Data`, JSON.stringify(formDataArray));
+    setTimeout(() => {
+      localStorage.setItem(`${asPath}Data`, JSON.stringify(formDataArray));
+    }, 100);
   };
+
+  function checkForImage(foundObj: FormTypes, e: React.ChangeEvent<any>) {
+    if (foundObj.__typename === "dataportal_Digg_FormTextArea" && e.target.value.includes("data:image")) {
+      if (foundObj.images === undefined) {
+        foundObj.images = {};
+      }
+
+      let imageString = e.target.value.match(/\[\[(.*?)\]\]/)[1];
+      let dataString = e.target.value.match(/\(\((.*?)\)/)[1];
+      
+      foundObj.images[imageString] = dataString;
+    }
+  }
 
   return (
     <>
