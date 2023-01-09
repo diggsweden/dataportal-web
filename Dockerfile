@@ -7,8 +7,10 @@ RUN yarn install
 
 FROM node:16-alpine as builder
 WORKDIR /build
+ARG delete_file
 COPY . .
 COPY --from=base /base ./
+RUN if [[ -z "$delete_file" ]] ; then echo "No files removed" ; else rm "./$delete_file"  ; fi
 RUN yarn build
 
 FROM node:16-alpine as production
