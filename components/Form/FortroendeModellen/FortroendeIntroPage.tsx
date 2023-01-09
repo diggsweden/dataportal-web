@@ -9,8 +9,8 @@ import { ContentArea } from "../../ContentArea";
 export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({
   blocks
 }) => {
-  const { pathname } = useRouter() || {};
-  const router = useRouter();
+  const { pathname, push } = useRouter() || {};
+  if(!blocks) return null;
   const intro = blocks.slice(0, 1);
   const extraInfo = blocks.slice(1);
 
@@ -28,7 +28,7 @@ export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({
           onClick={(e) =>
             e.metaKey || e.ctrlKey
               ? window.open(pathname + "/infor-utveckling", "_blank")
-              : router.push(pathname + "/infor-utveckling")
+              : push(pathname + "/infor-utveckling")
           }
           primary
         >
@@ -41,7 +41,7 @@ export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({
           onClick={(e) =>
             e.metaKey || e.ctrlKey
               ? window.open(pathname + "/fortroende", "_blank")
-              : router.push(pathname + "/fortroende")
+              : push(pathname + "/fortroende")
           }
           primary
         >
@@ -54,7 +54,7 @@ export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({
           onClick={(e) =>
             e.metaKey || e.ctrlKey
               ? window.open(pathname + "/uppfoljning", "_blank")
-              : router.push(pathname + "/uppfoljning")
+              : push(pathname + "/uppfoljning")
           }
           primary
         >
