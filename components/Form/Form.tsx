@@ -31,15 +31,10 @@ export const Form: React.FC<Props> = ({elements, module}) => {
   const {pathname, asPath} = useRouter() || {};
   const [page, setPage] = useState<number>(0);
   const scrollRef = React.useRef<HTMLSpanElement>(null);
-  const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>(
-    []
-  );
+  const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>([]);
   const [formSteps, setFormSteps] = useState<string[]>([]); //The title of the different pages
   const [showFirstPage, setShowFirstPage] = useState<boolean>(true);
-  const [formIntroText, setFormIntroText] = useState<{
-    title: string;
-    text: string;
-  }>({ title: "", text: "" });
+  const [formIntroText, setFormIntroText] = useState<{ title: string; text: string; }>({ title: "", text: "" });
   let questionNumber = 1; //Used for visual numberings (can't use ID since we don't want headings/pagebreaks to be numbered)
 
   useEffect(() => {
@@ -164,7 +159,8 @@ export const Form: React.FC<Props> = ({elements, module}) => {
   const UpdateFormDataArray = (
     e: React.ChangeEvent<any>,
     fieldToUpdate: FormTypes,
-    pageIndex: number
+    pageIndex: number,
+    imgData: { fileName: string; base64: string; } | null = null
   ) => {
     pageIndex = pageIndex - 1; //Page index starts at 1 since we hardcode the first page.
 
@@ -189,7 +185,7 @@ export const Form: React.FC<Props> = ({elements, module}) => {
         );
         let foundObj = prev[pageIndex][itemIndex];
         if ("value" in foundObj) {
-          checkForImage(foundObj, e); 
+          if(imgData){checkForImage(foundObj, imgData)}; 
           foundObj.value = e.target.value;
           prev[pageIndex][itemIndex] = foundObj;
         }
@@ -201,16 +197,12 @@ export const Form: React.FC<Props> = ({elements, module}) => {
     }, 100);
   };
 
-  function checkForImage(foundObj: FormTypes, e: React.ChangeEvent<any>) {
-    if (foundObj.__typename === "dataportal_Digg_FormTextArea" && e.target.value.includes("data:image")) {
+  function checkForImage(foundObj: FormTypes, isImg: { fileName: string; base64: string; }) {
+    if (foundObj.__typename === "dataportal_Digg_FormTextArea" && isImg.base64.includes("data:image")) {
       if (foundObj.images === undefined) {
         foundObj.images = {};
       }
-
-      let imageString = e.target.value.match(/\[\[(.*?)\]\]/)[1];
-      let dataString = e.target.value.match(/\(\((.*?)\)/)[1];
-      
-      foundObj.images[imageString] = dataString;
+      foundObj.images[isImg.fileName] = isImg.base64;
     }
   }
 

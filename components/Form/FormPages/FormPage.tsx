@@ -89,7 +89,8 @@ const FormItem = (
   UpdateFormDataArray: (
     e: React.ChangeEvent<any>,
     data: FormTypes,
-    pageIndex: number
+    pageIndex: number,
+    imgData?: { fileName: string; base64: string; } | null
   ) => void,
   pageIndex: number,
   t: Translate,
@@ -141,18 +142,9 @@ const FormItem = (
                 const base64 = reader.result;
                 if (typeof base64 === "string" && base64.includes("image")) {
                   const curVal = curTarget.value;
-
-                  const start = curTarget.selectionStart;
-                  const end = curTarget.selectionEnd;
-                  const newVal = curVal.substring(0, start) + `[[${file.name}]]((${base64}))` + curVal.substring(end);
-
+                  const newVal = curVal.substring(0, curTarget.selectionStart) + `[${file.name}]` + curVal.substring(curTarget.selectionEnd);
                   curTarget.value = newVal;
-                  UpdateFormDataArray(e, item, pageIndex);
-
-                  setTimeout(() => { 
-                    curTarget.value = curVal.substring(0, start) + `[${file.name}]` + curVal.substring(end);
-                    UpdateFormDataArray(e, item, pageIndex);
-                  }, 5);
+                  UpdateFormDataArray(e, item, pageIndex, {fileName: file.name, base64});
                 }
               };
             }}
