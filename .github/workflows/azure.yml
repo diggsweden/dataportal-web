@@ -60,5 +60,5 @@ jobs:
           cache-to: type=gha,mode=max
           file: ./Dockerfile
           push: true
-          build-arg: delete_file=${{ github.event.inputs.delete_file }}
+          build-args: delete_file=${{ github.event.inputs.delete_file }}
           tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal-v2:latest,${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal-v2:${{ steps.package-version.outputs.current-version}}-b.${{ github.run_number }},${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal-v2:${{ github.sha }},${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal-v2:branch-${{ steps.extract_branch.outputs.branch }}
