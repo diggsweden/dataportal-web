@@ -692,6 +692,13 @@ export const getForm = async (identifier: string, locale?: string) => {
 
 export const getModule = async (identifier: string, locale?: string) => {
   const revalidate = true;
+
+  const emptyModule: Module_dataportal_Digg_Module = {
+    __typename: "dataportal_Digg_Module",
+    blocks: [],
+    identifier: "",
+  };
+
   try {
     const { data } = await client.query<Module, ModuleVariables>({
       query: MODULE_QUERY,
@@ -699,16 +706,16 @@ export const getModule = async (identifier: string, locale?: string) => {
       fetchPolicy: 'no-cache',
     });
 
-    const module = data.dataportal_Digg_Module;
+    const mod = data.dataportal_Digg_Module;
 
     return {
-      props: { ...module, type: 'Module' } as ModuleResponse,
+      props: { ...mod, type: 'Module' } as ModuleResponse,
       ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
     };
   } catch (error: any) {
     logGqlErrors(error);
     return {
-      props: { type: 'Module' } as ModuleResponse,
+      props: { ...emptyModule, type: 'Module' } as ModuleResponse,
       ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
     };
   }

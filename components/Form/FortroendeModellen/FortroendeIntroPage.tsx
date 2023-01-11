@@ -10,10 +10,9 @@ export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({
   blocks
 }) => {
   const { pathname, push } = useRouter() || {};
-  if(!blocks) return null;
   const intro = blocks.slice(0, 1);
   const extraInfo = blocks.slice(1);
-
+  
   return (
     <Container cssProp={MainContainerStyle}>
       <FormWrapper>
