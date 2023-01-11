@@ -415,6 +415,10 @@ export const DiggConfirmModal = styled.div`
       transform: translate(-150px, -50%);
       width: 300px;
     }
+
+    &.save-modal{
+      width: 500px;
+    }
   }
 
   .modal-buttons{

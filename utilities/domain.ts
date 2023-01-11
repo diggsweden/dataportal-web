@@ -145,24 +145,24 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
             ...aiStrapiPuffs,
             links: [
               ...aiStrapiPuffs.links,
-              // {
-              //   ...populate,
-              //   title: t('ai$model'),
-              //   slug: '/fortroendemodellen',
-              //   description: t('ai$model_description'),
-              // },
+              {
+                ...populate,
+                title: t('ai$model'),
+                slug: '/fortroendemodellen',
+                description: t('ai$model_description'),
+              },
             ],
           }
         : {
             id: 'ai-puffs',
             __typename: 'dataportal_Digg_RelatedContent',
             links: [
-              // {
-              //   ...populate,
-              //   title: t('ai$model'),
-              //   slug: '/fortroendemodellen',
-              //   description: t('ai$model_description'),
-              // },
+              {
+                ...populate,
+                title: t('ai$model'),
+                slug: '/fortroendemodellen',
+                description: t('ai$model_description'),
+              },
             ],
           };
       const aiContent = aiStrapiPuffs ? blocks.slice(1) : blocks;

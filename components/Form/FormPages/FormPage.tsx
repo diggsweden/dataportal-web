@@ -89,7 +89,8 @@ const FormItem = (
   UpdateFormDataArray: (
     e: React.ChangeEvent<any>,
     data: FormTypes,
-    pageIndex: number
+    pageIndex: number,
+    imgData?: { fileName: string; base64: string; } | null
   ) => void,
   pageIndex: number,
   t: Translate,
@@ -129,6 +130,28 @@ const FormItem = (
             onChange={(e) => {
               UpdateFormDataArray(e, item, pageIndex);
             }}
+            
+            onDrop={(e) => {
+              e.preventDefault();
+              const curTarget = e.currentTarget;
+              const file = e.dataTransfer.files[0];
+              const reader = new FileReader();
+              reader.readAsDataURL(file);
+
+              reader.onload = () => {
+                const base64 = reader.result;
+                if (typeof base64 === "string" && base64.includes("image")) {
+                  const curVal = curTarget.value;
+                  const newVal = curVal.substring(0, curTarget.selectionStart) + `[${file.name}]` + curVal.substring(curTarget.selectionEnd);
+                  curTarget.value = newVal;
+                  UpdateFormDataArray(e, item, pageIndex, {fileName: file.name, base64});
+                }
+              };
+            }}
+
+            onDragOver={(e) => {
+              e.preventDefault();
+            }}
           />
           {RenderDivider()}
         </>
@@ -167,7 +190,7 @@ const FormItem = (
                         UpdateFormDataArray(e, choice, pageIndex);
                       }}
                     />
-                    <span>{choice.label}{choice.popup ? ' ->' : ''}</span>
+                    <span>{choice.label}{choice.popup ? '*' : ''}</span>
                   </DiggRadioLabel>
                 );
               })}
