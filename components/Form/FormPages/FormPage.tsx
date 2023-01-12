@@ -228,7 +228,7 @@ const FormItem = (
     case "dataportal_Digg_FormDescription":
       return (
         <>
-          <Heading level={item.TopHeading === true ? 2 : 3}>
+          <Heading level={item.TopHeading === true ? 2 : 3} className="form-heading">
             {item.title}
           </Heading>
           {item.text.markdown?.length && item.text.markdown?.length > 1 && (

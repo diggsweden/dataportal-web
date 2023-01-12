@@ -93,14 +93,34 @@ export const GenerateHTML = (formData: FormTypes[][]) => {
           margin-bottom: 1rem;
         }
 
+        .form-group{
+          margin-top: 1.5rem;
+        }
+
         .content{
             margin: 0;
         }
 
+        h1{
+            font-size: 2.5rem;
+        }
+        h2{
+            font-size: 2rem;
+        }
+        h3{
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        h4{
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
     </style>
 </head>
-<div>
+<div class="content text-md">
         <h1>Förtroendemodellen</h1>
+        <p>Detta dokument genererades ${new Date().toLocaleDateString()}</p>
 </div>
 `;
 
@@ -149,18 +169,18 @@ export const GenerateHTML = (formData: FormTypes[][]) => {
               case "dataportal_Digg_FormRadio":
                 return `<div class="form-group">
                                 <p><strong>${field.number}. ${field.title}</strong></p>
-                                <p><strong><i>Val: </i>${field.selected.label}</strong></p>
+                                <p><strong><i>Val: ${field.selected.label}</i></strong></p>
                                 <p>${field.value}</p>
                             </div>`;
 
               case "dataportal_Digg_FormDescription":
-                return `<h${field.TopHeading ? 2 : 3}>${field.title}</h${
-                  field.TopHeading ? 2 : 3
+                return `<h${field.TopHeading ? 3 : 4}>${field.title}</h${
+                  field.TopHeading ? 3 : 4
                 }>
                 ${field.text.markdown}`;
 
               case "dataportal_Digg_FormPageBreak":
-                return `<h1>${field.title}</h1>`;
+                return `<h2>${field.title}</h2>`;
             }
           })
           .join("");
