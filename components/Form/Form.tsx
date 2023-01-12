@@ -145,7 +145,7 @@ export const Form: React.FC<Props> = ({elements, module}) => {
   //Set correct starting page depending if any pagebreak exists or not.
   useEffect(() => {
     const pageLastVisit = localStorage.getItem(`${asPath}Page`);
-    if (!showFirstPage && pageLastVisit === null) {
+    if (!showFirstPage) {
       setPage(1);
     } else {
       setPage(pageLastVisit ? parseInt(pageLastVisit) : 0);
@@ -210,7 +210,7 @@ export const Form: React.FC<Props> = ({elements, module}) => {
     <>
       {formDataArray[0] && (
         <Container cssProp={MainContainerStyle}>
-          {page > 0 && showFirstPage && (
+          {page > (showFirstPage ? 0 : 1) && (
             <FormBackButton
               onClick={() => {
                 setPage(page - 1);
@@ -231,7 +231,7 @@ export const Form: React.FC<Props> = ({elements, module}) => {
           )}
 
           <FormWrapper>
-            {page === 0 && showFirstPage && (
+            {page === (showFirstPage ? 0 : 1) && (
               <Link
                 href={"/offentligai/fortroendemodellen"}
                 css={css`
@@ -250,7 +250,7 @@ export const Form: React.FC<Props> = ({elements, module}) => {
             )}
 
             {/* Show the correct progress-bar */}
-            {page !== 0 && formSteps.length > 1 && (
+            {page !== 0 && formSteps.length > 0 && (
               <>
                 {formSteps.length < 5 ? (
                   <FormProgress
