@@ -49,6 +49,12 @@
     margin-top: 2rem;
 }
 
-.form-heading{
-    margin-top:0;
+.form-heading {
+    & > * {
+        margin-top: 0;
+    }
+    h1{
+        
+        font-size: 2rem;
+    }
 }

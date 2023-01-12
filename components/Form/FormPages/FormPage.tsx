@@ -228,11 +228,16 @@ const FormItem = (
     case "dataportal_Digg_FormDescription":
       return (
         <>
-          <Heading level={item.TopHeading === true ? 2 : 3} className="form-heading">
-            {item.title}
-          </Heading>
+          <span className="form-heading">
+            <Heading level={item.TopHeading === true ? 1 : 2}>
+              {item.title}
+            </Heading>
+          </span>
+
           {item.text.markdown?.length && item.text.markdown?.length > 1 && (
-            <p className="form-description__text">{renderMarkdown(item.text.markdown || '')}</p>
+            <p className="form-description__text">
+              {renderMarkdown(item.text.markdown || "")}
+            </p>
           )}
         </>
       );
