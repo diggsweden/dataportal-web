@@ -358,7 +358,6 @@ function Dataportal({ Component, pageProps, host }: DataportalenProps) {
                           width={heroImage?.width || 1440}
                           height={heroImage?.height || 400}
                           alt={heroImage?.alt || ""}
-                          layout="responsive"
                           priority={true}
                         />
                       </div>

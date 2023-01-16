@@ -1,1 +1,1 @@
-export const responsive = { width: '100%', height: 'auto' };
+export const responsive = { maxWidth: '100%', height: 'auto' };

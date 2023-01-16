@@ -234,7 +234,7 @@ const FormItem = (
             </Heading>
           </span>
 
-          {item.text.markdown?.length && item.text.markdown?.length > 1 && (
+          {item.text.markdown?.length && item.text.markdown?.length > 9 && (
             <p className="form-description__text">
               {renderMarkdown(item.text.markdown || "")}
             </p>

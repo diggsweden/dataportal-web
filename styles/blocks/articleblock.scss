@@ -94,6 +94,10 @@
       .news-img {
         position: relative;
 
+        img{
+          object-fit: cover;
+        }
+
         &::before {
           content: "";
           display: block;

@@ -48,7 +48,6 @@ const renderMedia = (media: Media_media, mediaDescription?: string) => {
             width={width || 600}
             height={height || 400}
             alt={alt || ''}
-            layout="responsive"
           />
           {mediaDescription && (
             <figcaption>
