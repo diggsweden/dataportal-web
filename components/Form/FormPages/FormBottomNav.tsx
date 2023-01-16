@@ -119,19 +119,19 @@ const FormBottomNav: React.FC<Props> = ({
                 <button
                   onClick={(e) => {
                     e.preventDefault();
+                    clearModalRef.current?.classList.add("hide");
+                  }}
+                >
+                  {t("common|no")}
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
                     clearForm();
                     clearModalRef.current?.classList.add("hide");
                   }}
                 >
                   {t("common|yes")}
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    clearModalRef.current?.classList.add("hide");
-                  }}
-                >
-                  {t("common|no")}
                 </button>
               </div>
             </div>
@@ -147,12 +147,23 @@ const FormBottomNav: React.FC<Props> = ({
           >
             <div className="modal-content save-modal">
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-                dapibus rhoncus odio. Praesent et auctor lacus. Fusce tristique
-                dolor vel interdum porttitor. Cras convallis justo nec faucibus
-                finibus.
+                När du klickar på OK så kommer en JSON-fil att genereras och
+                laddas ner.
+                <br />
+                <br />
+                För att fortsätta redigera formuläret i framtiden så klickar du
+                på &quot;Ladda upp JSON-fil&quot; och väljer den nedladdade
+                JSON-filen.
               </p>
               <div className="modal-buttons">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    saveModalRef.current?.classList.add("hide");
+                  }}
+                >
+                  Avbryt
+                </button>
                 <button
                   onClick={(e) => {
                     e.preventDefault();

@@ -383,7 +383,7 @@ export const DiggProgressbar = styled('span')<{ page: number; totPages: number }
 `;
 
 export const DiggConfirmModal = styled.div`
-  position: fixed;
+  position: absolute;
   display: block;
   top: 0;
   left: 0;
@@ -401,23 +401,24 @@ export const DiggConfirmModal = styled.div`
   
   .modal-content{
     position: sticky;
-    top: 50%;
-    left: 50%;
-    transform: translate(-5%,0);
+    margin: auto;
+    top: 30%;
     background-color: ${colorPalette.gray900};
     border: 1px solid ${colorPalette.pinkPop};
     padding: 2rem;
-    width: 100%;
     max-width: 90%;
     text-align: center;
+    width: 100%;
 
     @media screen and (min-width: 500px){
-      transform: translate(-150px, -50%);
       width: 300px;
     }
 
     &.save-modal{
       width: 500px;
+      button{
+        width: 100%;
+      }
     }
   }
 

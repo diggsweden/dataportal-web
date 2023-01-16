@@ -25,9 +25,17 @@ const FormGeneratePDF: React.FC<Props> = ({formDataArray, blocks}) => {
         primary
         onClick={(e) => {
           GeneratePDF(e, iframeRef, formDataArray);
-          setTimeout(() => {
-            finishedModalRef.current?.classList.remove("hide");
-          }, 500);
+
+          const url = router.asPath;
+          const urlArray = url.split("/");
+          const curPath = urlArray[urlArray.length - 1];
+          const pathsToIgnore = ["uppfoljning", "infor-utveckling"];
+          //Only show the modal that redirects to the success page for 'fortroendemodellen' not for 'uppfoljning' or 'infor-utveckling'
+          if (!pathsToIgnore.some((path) => curPath.includes(path))) {
+            setTimeout(() => {
+              finishedModalRef.current?.classList.remove("hide");
+            }, 500);
+          }
         }}
         type="submit"
         className="text-base font-medium"
