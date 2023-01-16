@@ -84,8 +84,9 @@ export const GenerateHTML = (formData: FormTypes[][]) => {
             position: absolute;
             top: 0;
             right: 0;
-            margin: 1rem;
-        }
+            margin: 1cm;
+            margin-top: 1.6cm;
+          }
 
         img{
           max-width: 100%;

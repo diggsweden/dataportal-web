@@ -1,7 +1,7 @@
 import { ArrowDropIcon, Heading } from "@digg/design-system";
 import { Translate } from "next-translate";
 import useTranslation from "next-translate/useTranslation";
-import React from "react";
+import React, { useCallback } from "react";
 import { renderMarkdown } from "../../Renderers";
 import FormTypes from "../FormTypes";
 import {
@@ -14,7 +14,7 @@ import {
   Text,
 } from "../Styles/FormStyles";
 
-const PopOver = (popoverText: string) => {
+const popOver = (popoverText: string) => {
   return (
     <DiggPopover className="text-md">
       <div
@@ -53,7 +53,7 @@ const PopOver = (popoverText: string) => {
   );
 };
 
-const AddLabel = (number: number, Type: string, ID: number, title: string) => {
+const addLabel = (number: number, Type: string, ID: number, title: string) => {
   return (
     <>
       <span className="text-md form-label-wrapper">
@@ -70,7 +70,7 @@ const AddLabel = (number: number, Type: string, ID: number, title: string) => {
   );
 };
 
-const RenderDivider = () => {
+const renderDivider = () => {
   return <div className="form-divider"></div>;
 };
 
@@ -97,12 +97,30 @@ const FormItem = (
 ) => {
   const { ID, __typename: Type } = item;
 
+  const handleImageDrop = useCallback((e: React.DragEvent<HTMLTextAreaElement>) => {
+    e.preventDefault();
+    const curTarget = e.currentTarget;
+    const file = e.dataTransfer.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+  
+    reader.onload = () => {
+      const base64 = reader.result;
+      if (typeof base64 === "string" && base64.includes("image")) {
+        const curVal = curTarget.value;
+        const newVal = curVal.substring(0, curTarget.selectionStart) + `[${file.name}]` + curVal.substring(curTarget.selectionEnd);
+        curTarget.value = newVal;
+        UpdateFormDataArray(e, item, pageIndex, {fileName: file.name, base64});
+      }
+    };
+  }, []);
+
   switch (Type) {
     case "dataportal_Digg_FormText":
       return (
         <>
-          {AddLabel(item.number, Type, ID, item.title)}
-          {item.info !== null && PopOver(item.info)}
+          {addLabel(item.number, Type, ID, item.title)}
+          {item.info !== null && popOver(item.info)}
           <Text
             id={`${Type}${ID}`}
             placeholder={t("form$placeholder-text")}
@@ -113,14 +131,14 @@ const FormItem = (
               UpdateFormDataArray(e, item, pageIndex);
             }}
           />
-          {RenderDivider()}
+          {renderDivider()}
         </>
       );
     case "dataportal_Digg_FormTextArea":
       return (
         <>
-          {AddLabel(item.number, Type, ID, item.title)}
-          {item.info !== null && PopOver(item.info)}
+          {addLabel(item.number, Type, ID, item.title)}
+          {item.info !== null && popOver(item.info)}
           <FormTextArea
             name={`${Type}${ID}`}
             id={`${Type}${ID}`}
@@ -130,30 +148,14 @@ const FormItem = (
             onChange={(e) => {
               UpdateFormDataArray(e, item, pageIndex);
             }}
-            
             onDrop={(e) => {
-              e.preventDefault();
-              const curTarget = e.currentTarget;
-              const file = e.dataTransfer.files[0];
-              const reader = new FileReader();
-              reader.readAsDataURL(file);
-
-              reader.onload = () => {
-                const base64 = reader.result;
-                if (typeof base64 === "string" && base64.includes("image")) {
-                  const curVal = curTarget.value;
-                  const newVal = curVal.substring(0, curTarget.selectionStart) + `[${file.name}]` + curVal.substring(curTarget.selectionEnd);
-                  curTarget.value = newVal;
-                  UpdateFormDataArray(e, item, pageIndex, {fileName: file.name, base64});
-                }
-              };
+              handleImageDrop(e);
             }}
-
             onDragOver={(e) => {
               e.preventDefault();
             }}
           />
-          {RenderDivider()}
+          {renderDivider()}
         </>
       );
     case "dataportal_Digg_FormRadio":
@@ -166,7 +168,7 @@ const FormItem = (
             </span>
 
             {item.info !== null && (
-              <div className="form-radio__popover">{PopOver(item.info)}</div>
+              <div className="form-radio__popover">{popOver(item.info)}</div>
             )}
 
             <DiggRadioWrapper
@@ -222,7 +224,7 @@ const FormItem = (
           ) : (
             <span className="form-radio__mb" />
           )}
-          {RenderDivider()}
+          {renderDivider()}
         </>
       );
     case "dataportal_Digg_FormDescription":
