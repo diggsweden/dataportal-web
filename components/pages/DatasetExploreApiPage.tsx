@@ -1,16 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import { ApiExplorerProps, EntrystoreContext, ExternalLink } from '../../components';
-import useTranslation from 'next-translate/useTranslation';
-import { SettingsContext } from '../SettingsProvider';
-import { useRouter } from 'next/router';
-import { useMatomo } from '@datapunt/matomo-tracker-react';
-import Head from 'next/head';
-import { Heading } from '@digg/design-system';
+import React, { useContext, useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import {
+  ApiExplorerProps,
+  EntrystoreContext,
+  ExternalLink,
+} from "../../components";
+import useTranslation from "next-translate/useTranslation";
+import { SettingsContext } from "../SettingsProvider";
+import { useRouter } from "next/router";
+import { useMatomo } from "@datapunt/matomo-tracker-react";
+import Head from "next/head";
+import { Heading } from "@digg/design-system";
 
 const ApiExplorer = dynamic(
   () =>
-    import('../../components/ApiExploring/').then(
+    import("../../components/ApiExploring/").then(
       (c) => c.ApiExplorer,
       (e) => e as React.FC<ApiExplorerProps>
     ),
@@ -21,18 +25,17 @@ export const DataSetExploreApiPage: React.FC<{
   dataSet: string | string[] | undefined;
   apieid: string | string[] | undefined;
 }> = ({ dataSet, apieid }) => {
-  const { pathname, query } = useRouter() || {};
-  const ids = (typeof dataSet === 'string' && dataSet.split('_')) || [];
+  const { pathname } = useRouter() || {};
+  const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];
   const eid = ids[1];
   const { t, lang } = useTranslation();
-  const { env, setBreadcrumb } = useContext(SettingsContext);
+  const { env } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
 
   const [toggleTabs, setToggleTabs] = useState(1);
   const { trackPageView } = useMatomo();
   let postscribe: any;
-  let referredSearch: string = `/${t('routes|datasets$path')}/?q=`;
 
   //Toggle between tabs
   const toggleTab = (index: any) => {
@@ -45,14 +48,16 @@ export const DataSetExploreApiPage: React.FC<{
    */
   useEffect(() => {
     //we need to reload the page when using the back/forward buttons to a blocks rendered page
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       //check if refering search params is set to hash
-      if (window.location && window.location.hash && window.location.hash.includes('ref=?'))
-        referredSearch = `/${t('routes|datasets$path')}/?${window.location.hash.split('ref=?')[1]}`;
-
-      window.onpopstate = (e: any) => {
-        window.location.reload();
-      };
+      if (
+        window.location &&
+        window.location.hash &&
+        window.location.hash.includes("ref=?")
+      )
+        window.onpopstate = () => {
+          window.location.reload();
+        };
     }
   }, []);
 
@@ -61,21 +66,25 @@ export const DataSetExploreApiPage: React.FC<{
   }, []);
 
   useEffect(() => {
-    trackPageView({ documentTitle: `${t('routes|api_explore$title')} - ${apieid}` });
+    trackPageView({
+      documentTitle: `${t("routes|api_explore$title")} - ${apieid}`,
+    });
   }, [pathname]);
 
   const addScriptsDistribution = () => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       postscribe = (window as any).postscribe;
 
       if (apieid && cid) {
         postscribe(
-          '#scriptsPlaceholder',
+          "#scriptsPlaceholder",
           ` 
           <script>
           var __entryscape_plugin_config = {
             entrystore_base: 'https:\/\/${
-              env.ENTRYSCAPE_DATASETS_PATH ? env.ENTRYSCAPE_DATASETS_PATH : 'admin.dataportal.se'
+              env.ENTRYSCAPE_DATASETS_PATH
+                ? env.ENTRYSCAPE_DATASETS_PATH
+                : "admin.dataportal.se"
             }\/store'          
           };
           window.__entryscape_config = [{
@@ -120,7 +129,7 @@ export const DataSetExploreApiPage: React.FC<{
                   shp: ['application/x-shapefile', 'application/x-shp'],
                   xls: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', '.xlsx', '.xls'],
                   ods: ['application/vnd.oasis.opendocument.spreadsheet'],
-                  '${t('pages|datasetpage$fileformat')}': null,
+                  '${t("pages|datasetpage$fileformat")}': null,
                 },
               },
             ],
@@ -197,9 +206,13 @@ export const DataSetExploreApiPage: React.FC<{
           </script>              
 
           <script src="${
-            lang == 'sv' ? env.ENTRYSCAPE_OPENDATA_SV_URL : env.ENTRYSCAPE_OPENDATA_EN_URL
+            lang == "sv"
+              ? env.ENTRYSCAPE_OPENDATA_SV_URL
+              : env.ENTRYSCAPE_OPENDATA_EN_URL
           }"></script>
-          <script src="${env.ENTRYSCAPE_BLOCKS_URL}"></script>                       
+          <script src="${
+            env.ENTRYSCAPE_BLOCKS_URL
+          }"></script>                       
           `,
           {
             done: function () {},
@@ -226,12 +239,12 @@ export const DataSetExploreApiPage: React.FC<{
         <div className="detailpage__wrapper-topinfo">
           {/* Title */}
           <Heading
-            weight='light'
+            weight="light"
             size="3xl"
             className="api-title"
-            color='pinkPop'
+            color="pinkPop"
           >
-            {t('pages|explore-api-page$explore-api')}{' '}
+            {t("pages|explore-api-page$explore-api")}{" "}
             <script
               type="text/x-entryscape-handlebar"
               data-entryscape="true"
@@ -278,7 +291,7 @@ export const DataSetExploreApiPage: React.FC<{
 
           {/* Refers to dataset - heading*/}
           <span className="text-md font-bold">
-            {t('pages|explore-api-page$belongs-to-dataset')}
+            {t("pages|explore-api-page$belongs-to-dataset")}
           </span>
 
           {/* Refers to dataset - datset */}
@@ -290,15 +303,17 @@ export const DataSetExploreApiPage: React.FC<{
           <ul>
             <li>
               <button
-                className={toggleTabs === 1 ? 'active-tab text-base' : 'text-base'}
+                className={
+                  toggleTabs === 1 ? "active-tab text-base" : "text-base"
+                }
                 onClick={() => toggleTab(1)}
               >
-                {t('pages|explore-api-page$api-contract')}
+                {t("pages|explore-api-page$api-contract")}
               </button>
             </li>
             <li>
               <button
-                className={toggleTabs === 2 ? 'active-tab' : ''}
+                className={toggleTabs === 2 ? "active-tab" : ""}
                 onClick={() => toggleTab(2)}
               >
                 Information
@@ -312,34 +327,46 @@ export const DataSetExploreApiPage: React.FC<{
           {/* Tab 1 - Swagger*/}
           <div
             id="content-tab-1"
-            className={toggleTabs === 1 ? 'content-tab active-content-tab' : 'content-tab'}
+            className={
+              toggleTabs === 1
+                ? "content-tab active-content-tab"
+                : "content-tab"
+            }
           >
-            <ApiExplorer
-              env={env}
-              contextId={cid}
-              entryId={apieid as string}
-            />
+            <ApiExplorer env={env} contextId={cid} entryId={apieid as string} />
           </div>
 
           {/* Tab 2 - Information */}
           <div
             id="content-tab-2"
-            className={toggleTabs === 2 ? 'active-content-tab content-tab' : 'content-tab'}
+            className={
+              toggleTabs === 2
+                ? "active-content-tab content-tab"
+                : "content-tab"
+            }
           >
             <div data-entryscape="view"></div>
 
             <div className="content-tab-text">
               <div className="highlight-block">
-                <Heading level={2}>{t('pages|explore-api-page$access-to-api')}</Heading>
-                <p>{t('pages|explore-api-page$access-to-api-txt')}</p>
-                <Heading level={2}>{t('pages|explore-api-page$open-apis')}</Heading>
-                <p>{t('pages|explore-api-page$open-apis-txt')}</p>
-                <Heading level={2}>{t('pages|explore-api-page$api-key')}</Heading>
-                <p>{t('pages|explore-api-page$api-key-txt')}</p>
+                <Heading level={2}>
+                  {t("pages|explore-api-page$access-to-api")}
+                </Heading>
+                <p>{t("pages|explore-api-page$access-to-api-txt")}</p>
+                <Heading level={2}>
+                  {t("pages|explore-api-page$open-apis")}
+                </Heading>
+                <p>{t("pages|explore-api-page$open-apis-txt")}</p>
+                <Heading level={2}>
+                  {t("pages|explore-api-page$api-key")}
+                </Heading>
+                <p>{t("pages|explore-api-page$api-key-txt")}</p>
 
                 {entry.contact && (
                   <>
-                    <Heading level={2}>{t('pages|explore-api-page$contact-publisher')}</Heading>
+                    <Heading level={2}>
+                      {t("pages|explore-api-page$contact-publisher")}
+                    </Heading>
                     <p>
                       <ExternalLink
                         isMail={true}

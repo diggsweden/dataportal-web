@@ -22,7 +22,7 @@ type HeaderProps = {
 
 const showLangLink = true;
 
-export const Header: React.FC<HeaderProps> = ({ env }) => {
+export const Header: React.FC<HeaderProps> = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [focusTrap, setFocusTrap] = useState(false);
   const { t, lang } = useTranslation();

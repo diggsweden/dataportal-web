@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { SearchHeader, SettingsContext, FileFormatBadge } from "..";
+import React, { useEffect, useState } from "react";
+import { SearchHeader } from "..";
 import useTranslation from "next-translate/useTranslation";
 import { querySearch } from "../../utilities";
 import router, { useRouter } from "next/router";
@@ -17,12 +17,11 @@ interface SearchProps {
 }
 
 export const SearchContentPage: React.FC<SearchProps> = () => {
-  const { env, setBreadcrumb } = useContext(SettingsContext);
   const { t, lang } = useTranslation("common");
   const [query, setQuery] = useState("");
   const [trackedQuery, setTrackedQuery] = useState("");
   const { trackEvent } = useMatomo();
-  const { pathname, asPath } = useRouter() || {};
+  const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
 
   const [searchResult, setSearchResult] = useState<SearchResult>();
@@ -106,8 +105,6 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
    */
   const parseLocationToState = () => {
     return new Promise<Boolean>((resolve) => {
-      let fetchResults = false;
-
       if (typeof window != "undefined" && history && window.location.search) {
         var qs = decode(window.location.search.substring(1)) as any;
 
@@ -300,18 +297,6 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
                   (searchResult.count || 0) >= 0 &&
                   `${searchResult.count} ${t("pages|search$content-hits")}`}
               </Heading>
-
-              {/* {searchType == 'data' && (
-      <div
-        className={showSorting ? 'active sorting-options-wrapper' : 'sorting-options-wrapper'}
-      >
-        <SortingOptions
-          setCompact={setCompact}
-          isCompact={isCompact}
-          search={search}
-        />
-      </div>
-    )} */}
             </div>
 
             {searchResult && (
@@ -350,29 +335,6 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
 
           {searchResult?.count && searchResult.count > PER_PAGE && (
             <div className="pagination">
-              {/* <div className="first-page">
-      {(searchRequest?.page || 0) > 1 && (
-        <Button
-          inline
-          onClick={() => {
-            clearCurrentScrollPos();
-            setSearchRequest
-              ({
-                page: 0,
-              });
-              doSearch();
-            window.scrollTo({
-              top: 0,
-              behavior: 'smooth',
-            });
-            searchFocus();
-          }}
-        >
-          {t('pages|search$first-page')}
-        </Button>
-      )}
-    </div> */}
-
               <div className="prev-next-page">
                 {/* Prev page */}
                 <Button
@@ -392,10 +354,6 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
                       behavior: "smooth",
                     });
                     searchFocus();
-                    // setSearchRequest({
-                    //   ...searchRequest,
-                    //   page: searchRequest?.page? searchRequest?.page -1 : 1
-                    // });
                   }}
                 >
                   {t("pages|search$prev-page")}

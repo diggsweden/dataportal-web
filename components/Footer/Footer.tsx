@@ -1,14 +1,10 @@
-import { Container, css, DiggLogo, Heading, space } from "@digg/design-system";
+import { Container, css, DiggLogo, space } from "@digg/design-system";
 import { Translate } from "next-translate";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import React from "react";
 import { dataportal_LinkType } from "../../graphql/__generated__/globalTypes";
 import { ExternalLink, IPuff } from "../Navigation";
-
-/* export interface FooterProps {
-  columns: { title: string; links: IPuff[] | DiggLink[] }[];
-} */
 
 const columns = (
   t: Translate
@@ -46,14 +42,6 @@ const columns = (
       },
     ],
   },
-  /* {
-    title: 'Dataområden',
-    links: [...areas],
-  },
-  {
-    title: 'Teman',
-    links: [...themes],
-  }, */
 ];
 
 const IsDIGGLink = (link: IPuff | DiggLink): link is DiggLink => {

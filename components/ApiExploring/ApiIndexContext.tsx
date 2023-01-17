@@ -1,15 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 export interface ApiIndexProviderProps {
   apiIndexFileUrl: string;
   children?: React.ReactNode;
 }
 
+/* eslint-disable no-unused-vars */
 export interface ApiIndex {
   list: (contextid: string, entryid: string) => ApiIndexItem[] | undefined;
-  findDetection: (contextid: string, entryid: string) => ApiSpecDetection | undefined;
+  findDetection: (
+    contextid: string,
+    entryid: string
+  ) => ApiSpecDetection | undefined;
   loading: boolean;
 }
+/* eslint-enable no-unused-vars */
 
 export interface ApiIndexItem {
   contextId: string;
@@ -26,10 +31,10 @@ export interface ApiSpecDetection {
 }
 
 const defaultApiData: ApiIndex = {
-  list: (contextid, entryid) => {
+  list: () => {
     return undefined;
   },
-  findDetection: (contextid, entryid) => {
+  findDetection: () => {
     return undefined;
   },
   loading: false,
@@ -44,12 +49,15 @@ export const ApiIndexProvider: React.FC<ApiIndexProviderProps> = ({
   const [detections, setDetections] = useState<ApiIndexItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const listByContainer = (contextid: string, containerEntryId: string): ApiIndexItem[] => {
+  const listByContainer = (
+    contextid: string,
+    containerEntryId: string
+  ): ApiIndexItem[] => {
     let result: ApiIndexItem[] = [];
 
     if (contextid && containerEntryId && detections && detections.length > 0) {
       //any detections in sent in context
-      var tmp = detections.filter((d, i) => {
+      var tmp = detections.filter((d) => {
         return d.contextId == contextid && d.entryId == containerEntryId;
       });
       if (tmp && tmp.length > 0)
@@ -63,12 +71,15 @@ export const ApiIndexProvider: React.FC<ApiIndexProviderProps> = ({
     return [];
   };
 
-  const findFirstMatch = (contextid: string, entryid: string): ApiSpecDetection | undefined => {
+  const findFirstMatch = (
+    contextid: string,
+    entryid: string
+  ): ApiSpecDetection | undefined => {
     let result: ApiSpecDetection | undefined = undefined;
 
     if (contextid && entryid && detections && detections.length > 0) {
       //any detections in sent in context
-      var tmp = detections.filter((d, i) => {
+      var tmp = detections.filter((d) => {
         return d.contextId === contextid;
       });
       if (tmp && tmp.length > 0)
@@ -125,13 +136,18 @@ export const ApiIndexProvider: React.FC<ApiIndexProviderProps> = ({
         if (l.detections && l.detections.length > 0)
           l.detections.forEach((det) => {
             var tmp = `'${l.contextId}_${det.entryId}'`;
-            if (!result.includes(tmp) && det.allowOrigin != null) result.push(tmp);
+            if (!result.includes(tmp) && det.allowOrigin != null)
+              result.push(tmp);
           });
       });
 
-    const parsedResult = result.join(',').replace(/\'/g, '').split(',');
+    const parsedResult = result.join(",").replace(/\'/g, "").split(",");
     (window as any).__es_has_apis = parsedResult;
   };
 
-  return <ApiIndexContext.Provider value={defaultApiData}>{children}</ApiIndexContext.Provider>;
+  return (
+    <ApiIndexContext.Provider value={defaultApiData}>
+      {children}
+    </ApiIndexContext.Provider>
+  );
 };

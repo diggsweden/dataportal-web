@@ -83,7 +83,7 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
   theme,
 }) => {
   const router = useRouter();
-  const { t, lang } = useTranslation();
+  const { lang } = useTranslation();
   const articles = makeArticles(unknownArticles, theme);
 
   function getUrl(article: Article) {
@@ -110,8 +110,7 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
       <ul>
         {articles &&
           articles.map((article, index) => {
-            const { type, image, theme, date, title, description, tags } =
-              article;
+            const { type, image, theme, date, title, tags } = article;
             const url = getUrl(article);
             const imageUrl = image && handleUrl(image);
             const classes = `${type}${theme ? ` ${theme}` : ""}`;
@@ -158,7 +157,6 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
                       {checkLang(title)}
                     </Heading>
                   </Link>
-                  {/* <p className="text-md truncate-4">{checkLang(description)}</p> */}
                 </span>
               </li>
             );

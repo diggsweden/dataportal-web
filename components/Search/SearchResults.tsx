@@ -199,7 +199,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   showSorting,
 }) => {
   const { trackEvent } = useMatomo();
-  const { t, lang } = useTranslation();
+  const { t } = useTranslation();
 
   const searchKey = typeof location != "undefined" ? location.search : "server";
   const posY =

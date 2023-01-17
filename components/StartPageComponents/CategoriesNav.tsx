@@ -1,4 +1,4 @@
-import { Heading, Container } from "@digg/design-system";
+import { Heading } from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import React from "react";

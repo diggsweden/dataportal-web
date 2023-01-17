@@ -1,17 +1,16 @@
-import useTranslation from 'next-translate/useTranslation';
-import React, { useContext, useEffect } from 'react';
-import { SettingsContext } from '..';
-import { EntrystoreContext } from '../../components/EntrystoreProvider';
-import { useMatomo } from '@datapunt/matomo-tracker-react';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import { Heading } from '@digg/design-system';
+import useTranslation from "next-translate/useTranslation";
+import React, { useContext, useEffect } from "react";
+import { SettingsContext } from "..";
+import { EntrystoreContext } from "../../components/EntrystoreProvider";
+import { useMatomo } from "@datapunt/matomo-tracker-react";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import { Heading } from "@digg/design-system";
 
 export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
-  const { env, setBreadcrumb } = useContext(SettingsContext);
+  const { env } = useContext(SettingsContext);
   const { title } = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
-  let referredSearch: string = `/${t('routes|specifications$path')}/?q=`;
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
 
@@ -21,16 +20,16 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
    */
   useEffect(() => {
     //we need to reload the page when using the back/forward buttons to a blocks rendered page
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       //check if reffereing search params is set to hash
-      if (window.location && window.location.hash && window.location.hash.includes('ref=?'))
-        referredSearch = `/${t('routes|specifications$path')}/?${
-          window.location.hash.split('ref=?')[1]
-        }`;
-
-      window.onpopstate = (e: any) => {
-        window.location.reload();
-      };
+      if (
+        window.location &&
+        window.location.hash &&
+        window.location.hash.includes("ref=?")
+      )
+        window.onpopstate = () => {
+          window.location.reload();
+        };
     }
     addScripts();
   }, []);
@@ -40,18 +39,20 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
   }, [pathname]);
 
   const addScripts = () => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const postscribe = (window as any).postscribe;
 
       if (curi) {
         postscribe(
-          '#scriptsPlaceholder',
+          "#scriptsPlaceholder",
 
           `
           <script>
             var __entryscape_plugin_config = {
               entrystore_base: 'https:\/\/${
-                env.ENTRYSCAPE_SPECS_PATH ? env.ENTRYSCAPE_SPECS_PATH : 'editera.dataportal.se'
+                env.ENTRYSCAPE_SPECS_PATH
+                  ? env.ENTRYSCAPE_SPECS_PATH
+                  : "editera.dataportal.se"
               }\/store'            
             };
           </script>
@@ -68,7 +69,9 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
               }              
             ],
             entrystore: 'https://${
-              env.ENTRYSCAPE_SPECS_PATH ? env.ENTRYSCAPE_SPECS_PATH : 'editera.dataportal.se'
+              env.ENTRYSCAPE_SPECS_PATH
+                ? env.ENTRYSCAPE_SPECS_PATH
+                : "editera.dataportal.se"
             }/store',
             clicks: {
               specification: 'details.html',
@@ -82,10 +85,14 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
               bundles: [
                 'dcat',
                 'https://${
-                  env.ENTRYSCAPE_SPECS_PATH ? env.ENTRYSCAPE_SPECS_PATH : 'editera.dataportal.se'
+                  env.ENTRYSCAPE_SPECS_PATH
+                    ? env.ENTRYSCAPE_SPECS_PATH
+                    : "editera.dataportal.se"
                 }/theme/templates/adms.json',
                 'https://${
-                  env.ENTRYSCAPE_SPECS_PATH ? env.ENTRYSCAPE_SPECS_PATH : 'editera.dataportal.se'
+                  env.ENTRYSCAPE_SPECS_PATH
+                    ? env.ENTRYSCAPE_SPECS_PATH
+                    : "editera.dataportal.se"
                 }/theme/templates/prof.json',
               ],
             },
@@ -131,7 +138,7 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
                   '<span class="specification__resource--type text-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
                   '<div class="specification__resource--description text-md esbDescription">{{ text content="\${skos:definition}" }}</div>' +
                   '<a target="_blank" class="specification__resource--downloadlink download_url text-md" href="{{resourceURI}}">${t(
-                    'pages|specification_page$download'
+                    "pages|specification_page$download"
                   )} {{prop "prof:hasRole" class="type" render="label"}}</a>',
               },
               {
@@ -146,9 +153,13 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
           </script>
 
           <script src="${
-            lang == 'sv' ? env.ENTRYSCAPE_OPENDATA_SV_URL : env.ENTRYSCAPE_OPENDATA_EN_URL
+            lang == "sv"
+              ? env.ENTRYSCAPE_OPENDATA_SV_URL
+              : env.ENTRYSCAPE_OPENDATA_EN_URL
           }"></script>
-          <script src="${env.ENTRYSCAPE_BLOCKS_URL}"></script>                      
+          <script src="${
+            env.ENTRYSCAPE_BLOCKS_URL
+          }"></script>                      
           `,
           {
             done: function () {},
@@ -161,23 +172,14 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
   return (
     <div className="detailpage">
       <Head>
-        <title>{title ? `${title} - Sveriges dataportal` : 'test'}</title>
-        <meta
-          property="og:title"
-          content={`${title} - Sveriges dataportal`}
-        />
-        <meta
-          name="twitter:title"
-          content={`${title} - Sveriges dataportal`}
-        />
+        <title>{title ? `${title} - Sveriges dataportal` : "test"}</title>
+        <meta property="og:title" content={`${title} - Sveriges dataportal`} />
+        <meta name="twitter:title" content={`${title} - Sveriges dataportal`} />
       </Head>
       <div className="detailpage__wrapper">
         {/* Left column */}
         <div className="detailpage__wrapper--leftcol content">
-          <Heading
-            size={'3xl'}
-            weight="light"
-          >
+          <Heading size={"3xl"} weight="light">
             {title}
           </Heading>
           <script
@@ -200,7 +202,9 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
             ></span>
           </p>
 
-          <Heading level={2}>{t('pages|specification_page$resource_specification')}</Heading>
+          <Heading level={2}>
+            {t("pages|specification_page$resource_specification")}
+          </Heading>
           <div
             className="specification__resource"
             data-entryscape="resourceDescriptors2"
@@ -208,10 +212,12 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
           ></div>
 
           <div className="contact__publisher hbbr">
-            <Heading level={3}>{t('pages|datasetpage$contact-publisher')}</Heading>
+            <Heading level={3}>
+              {t("pages|datasetpage$contact-publisher")}
+            </Heading>
             <p className="text-md">
-              {t('pages|datasetpage$contact-publisher-text')}
-              {t('pages|datasetpage$contact-publisher-text2')}{' '}
+              {t("pages|datasetpage$contact-publisher-text")}
+              {t("pages|datasetpage$contact-publisher-text2")}{" "}
               <a
                 className="text-md link"
                 href="https://community.dataportal.se/"
@@ -227,11 +233,8 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
         {/* Right column */}
         <div className="detailpage__wrapper--rightcol hbbr">
           <div className="detailpage__wrapper--rightcol-info text-base">
-            <Heading
-              level={2}
-              size="md"
-            >
-              {t('pages|specification_page$about_specification')}
+            <Heading level={2} size="md">
+              {t("pages|specification_page$about_specification")}
             </Heading>
 
             <div

@@ -8,7 +8,6 @@ import env from '@beam-australia/react-env';
 import { MediaBase } from '../../graphql/__generated__/MediaBase';
 import { Image as ImageInterface } from '../../graphql/__generated__/Image';
 import { responsive } from '../../styles/image';
-import { isExternal } from 'util/types';
 import { isExternalLink } from '../../utilities/checkers';
 
 export const handleLoader = ({ url, width, screen9 }: ImageInterface, quality?: number) => {
@@ -30,7 +29,7 @@ export const handleUrl = ({ screen9, url }: MediaBase) => {
 };
 
 const renderMedia = (media: Media_media, mediaDescription?: string) => {
-  const { alt, description, mime } = media;
+  const { alt, description } = media;
   const url = handleUrl(media);
   switch (media.__typename) {
     case 'dataportal_Digg_Image':

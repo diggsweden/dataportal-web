@@ -75,7 +75,6 @@ import generateCSP from "../utilities/generateCsp";
 import { SeoData } from "../graphql/__generated__/SeoData";
 import { useRouter } from "next/router";
 import reactenv from "@beam-australia/react-env";
-import absoluteUrl from "next-absolute-url";
 import { Settings_Sandbox } from "../env/Settings.Sandbox";
 import useTranslation from "next-translate/useTranslation";
 import { css } from "@emotion/react";
@@ -93,7 +92,6 @@ const GetCookiesAccepted = () => {
 };
 
 interface DataportalenProps extends AppProps {
-  host: string;
   nonce: string;
 }
 
@@ -114,7 +112,7 @@ const onHash = (pathWithHash: string) => {
   onNextFrame(() => skipToElement(hash));
 };
 
-function Dataportal({ Component, pageProps, host }: DataportalenProps) {
+function Dataportal({ Component, pageProps }: DataportalenProps) {
   //let env = SettingsUtil.create();
   const { locale, asPath } = useRouter() || {};
 
@@ -389,9 +387,8 @@ function Dataportal({ Component, pageProps, host }: DataportalenProps) {
 Dataportal.getInitialProps = async (appContext: AppContext) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
-  const host = absoluteUrl(appContext.ctx.req)?.host;
 
-  return { ...appProps, host };
+  return { ...appProps };
 };
 
 export default Dataportal;

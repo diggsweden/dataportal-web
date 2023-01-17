@@ -11,7 +11,7 @@ import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Publication_dataportal_Digg_Publications as Publication } from "../../../graphql/__generated__/Publication";
 import { Containers_dataportal_Digg_Containers as IContainer } from "../../../graphql/__generated__/Containers";
 import { MainContainerStyle } from "../../../styles/general/emotion";
@@ -47,7 +47,7 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [articlesNumber, setPageNumber] = useState(0);
-  const [gridView, setGridView] = useState(false);
+  const [gridView] = useState(false);
   const { t, lang } = useTranslation();
   const { pathname, push, query } = useRouter() || {};
   const { trackPageView } = useMatomo();

@@ -42,9 +42,13 @@ const popOver = (popoverText: string) => {
           }
         }}
       >
-        <span className="show-more"><ArrowDropIcon color={'white'} /></span>
+        <span className="show-more">
+          <ArrowDropIcon color={"white"} />
+        </span>
         <p
-          onMouseDown={(e) => {e.stopPropagation()}}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+          }}
           className="text-sm"
           dangerouslySetInnerHTML={{ __html: popoverText }}
         ></p>
@@ -74,6 +78,7 @@ const renderDivider = () => {
   return <div className="form-divider"></div>;
 };
 
+/* eslint-disable no-unused-vars */
 interface Props {
   UpdateFormDataArray: (
     e: React.ChangeEvent<any>,
@@ -83,37 +88,49 @@ interface Props {
   formDataArray: Array<FormTypes>;
   pageIndex: number;
 }
+/* eslint-enable no-unused-vars */
 
 const FormItem = (
   item: FormTypes,
   UpdateFormDataArray: (
+    /* eslint-disable no-unused-vars */
     e: React.ChangeEvent<any>,
     data: FormTypes,
     pageIndex: number,
-    imgData?: { fileName: string; base64: string; } | null
+    imgData?: { fileName: string; base64: string } | null
+    /* eslint-enable no-unused-vars */
   ) => void,
   pageIndex: number,
-  t: Translate,
+  t: Translate
 ) => {
   const { ID, __typename: Type } = item;
 
-  const handleImageDrop = useCallback((e: React.DragEvent<HTMLTextAreaElement>) => {
-    e.preventDefault();
-    const curTarget = e.currentTarget;
-    const file = e.dataTransfer.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-  
-    reader.onload = () => {
-      const base64 = reader.result;
-      if (typeof base64 === "string" && base64.includes("image")) {
-        const curVal = curTarget.value;
-        const newVal = curVal.substring(0, curTarget.selectionStart) + `[${file.name}]` + curVal.substring(curTarget.selectionEnd);
-        curTarget.value = newVal;
-        UpdateFormDataArray(e, item, pageIndex, {fileName: file.name, base64});
-      }
-    };
-  }, []);
+  const handleImageDrop = useCallback(
+    (e: React.DragEvent<HTMLTextAreaElement>) => {
+      e.preventDefault();
+      const curTarget = e.currentTarget;
+      const file = e.dataTransfer.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        const base64 = reader.result;
+        if (typeof base64 === "string" && base64.includes("image")) {
+          const curVal = curTarget.value;
+          const newVal =
+            curVal.substring(0, curTarget.selectionStart) +
+            `[${file.name}]` +
+            curVal.substring(curTarget.selectionEnd);
+          curTarget.value = newVal;
+          UpdateFormDataArray(e, item, pageIndex, {
+            fileName: file.name,
+            base64,
+          });
+        }
+      };
+    },
+    []
+  );
 
   switch (Type) {
     case "dataportal_Digg_FormText":
@@ -192,7 +209,10 @@ const FormItem = (
                         UpdateFormDataArray(e, choice, pageIndex);
                       }}
                     />
-                    <span>{choice.label}{choice.popup ? '*' : ''}</span>
+                    <span>
+                      {choice.label}
+                      {choice.popup ? "*" : ""}
+                    </span>
                   </DiggRadioLabel>
                 );
               })}
@@ -247,7 +267,7 @@ const FormItem = (
 };
 
 const FormPage = ({ formDataArray, UpdateFormDataArray, pageIndex }: Props) => {
-  const {t} = useTranslation('pages');
+  const { t } = useTranslation("pages");
   return (
     <>
       {formDataArray.map((item) => {

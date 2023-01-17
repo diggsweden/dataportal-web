@@ -16,6 +16,7 @@ import { responsive } from "../../styles/image";
 
 const generateHeadings = (options?: HeadingOption[]) => {
   const levels: HeadingLevel[] = [1, 2, 3, 4, 5, 6];
+  // eslint-disable-next-line no-unused-vars
   let headings: { [key: string]: (props: any) => any } = {};
   levels.map((level) => {
     const option = options?.find((opt) => opt.oldLevel === level);

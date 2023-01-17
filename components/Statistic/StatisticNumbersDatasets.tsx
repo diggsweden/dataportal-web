@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { SettingsContext } from '..';
+import { useContext, useEffect, useState } from "react";
+import { SettingsContext } from "..";
 // import { isIE } from 'react-device-detect';
 
 export const StatisticNumbersDatasets = () => {
@@ -9,11 +9,11 @@ export const StatisticNumbersDatasets = () => {
   });
 
   useEffect(() => {
-    if (typeof fetch !== 'undefined') {
+    if (typeof fetch !== "undefined") {
       fetch(
         env.ENTRYSCAPE_ORG_STATS_URL
           ? env.ENTRYSCAPE_ORG_STATS_URL
-          : 'https://admin.dataportal.se/charts/orgData.json'
+          : "https://admin.dataportal.se/charts/orgData.json"
       )
         .then((response) => response.json())
         .then((data) => {

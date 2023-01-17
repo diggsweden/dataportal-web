@@ -1,13 +1,13 @@
-import useTranslation from 'next-translate/useTranslation';
-import React, { useState, useEffect, useContext } from 'react';
-import { SettingsContext } from '..';
+import useTranslation from "next-translate/useTranslation";
+import React, { useState, useEffect, useContext } from "react";
+import { SettingsContext } from "..";
 import {
   XAxis,
   YAxis,
   FlexibleXYPlot,
   VerticalBarSeriesCanvas,
   VerticalBarSeries,
-} from 'react-vis';
+} from "react-vis";
 
 interface StatisticGraphState {
   useCanvas?: boolean;
@@ -21,7 +21,7 @@ interface StatisticGraphState {
 export const StatisticGraph: React.FC = () => {
   const { env } = useContext(SettingsContext);
 
-  const { t, lang } = useTranslation();
+  const { t } = useTranslation();
   const [stats, setStats] = useState<StatisticGraphState>({
     useCanvas: false,
     x: [],
@@ -32,11 +32,11 @@ export const StatisticGraph: React.FC = () => {
   });
 
   useEffect(() => {
-    if (typeof fetch !== 'undefined') {
+    if (typeof fetch !== "undefined") {
       fetch(
         env.ENTRYSCAPE_HISTORY_STATS_URL
           ? env.ENTRYSCAPE_HISTORY_STATS_URL
-          : 'https://admin.dataportal.se/stats/historyData.json'
+          : "https://admin.dataportal.se/stats/historyData.json"
       )
         .then((response) => response.json())
         .then((data) => {
@@ -67,7 +67,9 @@ export const StatisticGraph: React.FC = () => {
 
   return (
     <div className="statistic-div">
-      <span className="screen-reader">{t('pages|statistic$graph-screenreader')}</span>
+      <span className="screen-reader">
+        {t("pages|statistic$graph-screenreader")}
+      </span>
 
       <div className="graphbox">
         {/* @ts-ignore */}
@@ -81,10 +83,7 @@ export const StatisticGraph: React.FC = () => {
             right: 15,
           }}
         >
-          <XAxis
-            height={0}
-            tickSizeOuter={0}
-          />
+          <XAxis height={0} tickSizeOuter={0} />
           <YAxis width={64} />
           {/* @ts-ignore */}
           <BarSeries
@@ -93,7 +92,9 @@ export const StatisticGraph: React.FC = () => {
             barWidth={0.75}
           />
         </FlexibleXYPlot>
-        <span className="graph-text text-md">{t('pages|statistic$dataset-numbers')}</span>
+        <span className="graph-text text-md">
+          {t("pages|statistic$dataset-numbers")}
+        </span>
       </div>
     </div>
   );

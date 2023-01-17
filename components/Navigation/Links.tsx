@@ -1,11 +1,7 @@
 import { css } from "@digg/design-system";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import {
-  RelatedContent,
-  RelatedContent_links,
-} from "../../graphql/__generated__/RelatedContent";
-import { isExternalLink } from "../../utilities";
+import { RelatedContent_links } from "../../graphql/__generated__/RelatedContent";
 import { checkLang } from "../../utilities/checkLang";
 import ExternalLink from "./ExternalLink";
 

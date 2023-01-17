@@ -1,11 +1,15 @@
-import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
-import React, { useContext, useEffect } from 'react';
-import { ApiIndexContext, EntrystoreContext, SettingsContext } from '../../components';
-import Link from 'next/link';
-import { useMatomo } from '@datapunt/matomo-tracker-react';
-import Head from 'next/head';
-import { Heading } from '@digg/design-system';
+import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
+import React, { useContext, useEffect } from "react";
+import {
+  ApiIndexContext,
+  EntrystoreContext,
+  SettingsContext,
+} from "../../components";
+import Link from "next/link";
+import { useMatomo } from "@datapunt/matomo-tracker-react";
+import Head from "next/head";
+import { Heading } from "@digg/design-system";
 
 export const DataServicePage: React.FC<{
   dataSet: string | string[] | undefined;
@@ -13,15 +17,14 @@ export const DataServicePage: React.FC<{
 }> = ({ dataSet, name }) => {
   const { lang, t } = useTranslation();
   const { findDetection } = useContext(ApiIndexContext);
-  const { env, setBreadcrumb } = useContext(SettingsContext);
+  const { env } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { asPath } = useRouter() || {};
   const { trackPageView } = useMatomo();
-  const ids = (typeof dataSet === 'string' && dataSet.split('_')) || [];
+  const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];
   const eid = ids[1];
   let postscribe: any;
-  let referredSearch: string = `${lang}/${t('routes|datasets$path')}/?q=`;
 
   /**
    * Async load scripts requiered for EntryScape blocks,
@@ -29,18 +32,17 @@ export const DataServicePage: React.FC<{
    */
   useEffect(() => {
     //we need to reload the page when using the back/forward buttons to a blocks rendered page
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       //check if reffereing search params is set to hash
-      if (window.location && window.location.hash && window.location.hash.includes('ref=?'))
-        referredSearch = `${lang}/${t('routes|datasets$path')}/?${
-          window.location.hash.split('ref=?')[1]
-        }`;
-
-      window.onpopstate = (e: any) => {
-        window.location.reload();
-      };
+      if (
+        window.location &&
+        window.location.hash &&
+        window.location.hash.includes("ref=?")
+      )
+        window.onpopstate = () => {
+          window.location.reload();
+        };
     }
-
   }, [entry.title]);
 
   useEffect(() => {
@@ -52,24 +54,26 @@ export const DataServicePage: React.FC<{
   }, [asPath]);
 
   const addScripts = () => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       postscribe = (window as any).postscribe;
 
       if (eid && cid) {
         postscribe(
-          '#scriptsPlaceholder',
+          "#scriptsPlaceholder",
           ` 
           <script>
           var __entryscape_plugin_config = {
             entrystore_base: 'https:\/\/${
-              env.ENTRYSCAPE_DATASETS_PATH ? env.ENTRYSCAPE_DATASETS_PATH : 'admin.dataportal.se'
+              env.ENTRYSCAPE_DATASETS_PATH
+                ? env.ENTRYSCAPE_DATASETS_PATH
+                : "admin.dataportal.se"
             }\/store'          
           };
 
           function getApiExploreUrl(entryid,apientryid)
           {
             return '/${t(
-              'routes|dataservices$path'
+              "routes|dataservices$path"
             )}/${cid}_'+entryid+'/${name}/apiexplore/'+apientryid
           }
 
@@ -206,9 +210,13 @@ export const DataServicePage: React.FC<{
           </script>              
 
           <script src="${
-            lang == 'sv' ? env.ENTRYSCAPE_OPENDATA_SV_URL : env.ENTRYSCAPE_OPENDATA_EN_URL
+            lang == "sv"
+              ? env.ENTRYSCAPE_OPENDATA_SV_URL
+              : env.ENTRYSCAPE_OPENDATA_EN_URL
           }"></script>
-          <script src="${env.ENTRYSCAPE_BLOCKS_URL}"></script>                       
+          <script src="${
+            env.ENTRYSCAPE_BLOCKS_URL
+          }"></script>                       
           `,
           {
             done: function () {},
@@ -234,7 +242,9 @@ export const DataServicePage: React.FC<{
       <div className="detailpage__wrapper dataservices">
         {/* Left column */}
         <div className="detailpage__wrapper--leftcol content">
-          <Heading weight='light' size={"3xl"} >{entry.title}</Heading>
+          <Heading weight="light" size={"3xl"}>
+            {entry.title}
+          </Heading>
 
           {/* Publisher */}
           <script
@@ -301,19 +311,25 @@ export const DataServicePage: React.FC<{
           {findDetection(cid, eid) && (
             <span className="esbRowAlignSecondary">
               <Link
-                href={`/${t('routes|dataservices$path')}/${cid}_${eid}/${name}/apiexplore/${eid}`}
+                href={`/${t(
+                  "routes|dataservices$path"
+                )}/${cid}_${eid}/${name}/apiexplore/${eid}`}
                 locale={lang}
-                className="dataservice-explore-api-link entryscape text-md link">
-                Utforska API</Link>
+                className="dataservice-explore-api-link entryscape text-md link"
+              >
+                Utforska API
+              </Link>
               <br />
             </span>
           )}
 
           <div className="contact__publisher hbbr">
-            <Heading level={3}>{t('pages|datasetpage$contact-publisher')}</Heading>
+            <Heading level={3}>
+              {t("pages|datasetpage$contact-publisher")}
+            </Heading>
             <p>
-              {t('pages|datasetpage$contact-publisher-text')}
-              {t('pages|datasetpage$contact-publisher-text2')}{' '}
+              {t("pages|datasetpage$contact-publisher-text")}
+              {t("pages|datasetpage$contact-publisher-text2")}{" "}
               <a
                 className="link"
                 href="https://community.dataportal.se/"
@@ -329,13 +345,8 @@ export const DataServicePage: React.FC<{
         {/* Right column */}
         <div className="detailpage__wrapper--rightcol hbbr">
           <div className="detailpage__wrapper--rightcol-info text-base">
-            <Heading
-              color='pinkPop'
-              level={2}
-              size={'xl'}
-              weight='light'
-            >
-              {t('pages|dataservicepage$api')}
+            <Heading color="pinkPop" level={2} size={"xl"} weight="light">
+              {t("pages|dataservicepage$api")}
             </Heading>
 
             <script

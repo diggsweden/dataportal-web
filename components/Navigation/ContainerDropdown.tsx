@@ -8,7 +8,7 @@ import {
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Related_containers } from "../../graphql/__generated__/Related";
 import { useClickoutside } from "../../hooks/useClickoutside";
 

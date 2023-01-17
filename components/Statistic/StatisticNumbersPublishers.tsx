@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { SettingsContext } from '..';
+import { useContext, useEffect, useState } from "react";
+import { SettingsContext } from "..";
 // import { isIE } from 'react-device-detect';
 // import '../../../node_modules/react-vis/dist/style.css';
 
@@ -10,11 +10,11 @@ export const StatisticNumbersPublishers = () => {
   });
 
   useEffect(() => {
-    if (typeof fetch !== 'undefined') {
+    if (typeof fetch !== "undefined") {
       fetch(
         env.ENTRYSCAPE_ORG_STATS_URL
           ? env.ENTRYSCAPE_ORG_STATS_URL
-          : 'https://admin.dataportal.se/charts/orgData.json'
+          : "https://admin.dataportal.se/charts/orgData.json"
       )
         .then((response) => response.json())
         .then((data) => {

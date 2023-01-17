@@ -24,15 +24,17 @@ interface SearchProps {
   activeLink?: string;
 }
 
+/* eslint-disable no-unused-vars */
 export enum SearchSortOrder {
   score_desc = 2,
   modified_asc = 4,
   modified_desc = 8,
 }
+/* eslint-enable no-unused-vars */
 
 export const SearchPage: React.FC<SearchProps> = () => {
-  const { env, setBreadcrumb } = useContext(SettingsContext);
-  const { pathname, asPath, query: routerQuery } = useRouter() || {};
+  const { env } = useContext(SettingsContext);
+  const { pathname, query: routerQuery } = useRouter() || {};
   const { t, lang } = useTranslation();
   const [query, setQuery] = useState("");
   const [showFilter, setShowFilter] = useState(false);
