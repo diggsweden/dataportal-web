@@ -34,7 +34,8 @@
     "preamble": "Öppen källkod - även kallad open source och öppen programvara - ökar betydligt innovationstakten då aktörer kan samutveckla, anpassa och bygga vidare på befintliga lösningar."
   },
   "listpage": {
-    "no-articles": "Det finns inga artiklar att visa för tillfället."
+    "no-articles": "Det finns inga artiklar att visa för tillfället.",
+    "fallback-tag": "Nyhet"
   },
   "statistic": {
     "statistic-header": "Statistik på dataportalen",

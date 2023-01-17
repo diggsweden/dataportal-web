@@ -34,7 +34,8 @@
     "preamble": "Open source significantly increases the pace of innovation as actors can co-develop, adapt and build on existing solutions."
   },
   "listpage": {
-    "no-articles": "No articles to show at the moment"
+    "no-articles": "No articles to show at the moment",
+    "fallback-tag": "News"
   },
   "statistic": {
     "statistic-header": "Statistics of the data portal",

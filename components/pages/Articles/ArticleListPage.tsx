@@ -167,9 +167,9 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
                           <span className="text-base">
                             {getFormattedDate(article.publishedAt)}
                           </span>
-                          {tags[0].value && (
+                          {tags[0]?.value ? (
                             <span className="text-base">{tags[0].value}</span>
-                          )}
+                          ): <span className="text-base">{t("pages|listpage$fallback-tag")}</span>}
                         </span>
                       )}
                     </NoSsr>
@@ -184,9 +184,9 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
                       }
                       passHref
                     >
-                      <a className="text-lg link heading-link">
+                      <span className="text-lg link heading-link">
                         {checkLang(heading)}
-                      </a>
+                      </span>
                     </Link>
 
                     <p className="text-base truncate-2">

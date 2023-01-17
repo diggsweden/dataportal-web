@@ -16,10 +16,11 @@
 
       border-bottom: 1px solid $clr-gray800;
 
-      span {
-        color: $clr-gray500;
-        margin-bottom: 0;
-      }
+      span{
+        &.heading-link{
+          margin-top: 0;
+        }
+      } 
 
       a {
         margin-top: $space-2;
