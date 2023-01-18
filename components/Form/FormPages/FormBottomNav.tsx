@@ -151,9 +151,7 @@ const FormBottomNav: React.FC<Props> = ({
                 laddas ner.
                 <br />
                 <br />
-                För att fortsätta redigera formuläret i framtiden så klickar du
-                på &quot;Ladda upp JSON-fil&quot; och väljer den nedladdade
-                JSON-filen.
+                Läs i Guiden till förtroendemoellen på förstasidan om hur du använder JSON-filen.
               </p>
               <div className="modal-buttons">
                 <button

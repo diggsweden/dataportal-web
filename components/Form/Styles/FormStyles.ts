@@ -419,6 +419,14 @@ export const DiggConfirmModal = styled.div`
       button{
         width: 100%;
       }
+
+      a{
+        text-decoration: underline;
+
+        &:hover{
+          text-decoration: none;
+        }
+      }
     }
   }
 

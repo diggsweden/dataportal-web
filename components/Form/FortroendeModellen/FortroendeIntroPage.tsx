@@ -39,13 +39,13 @@ export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({
         <Button
           onClick={(e) =>
             e.metaKey || e.ctrlKey
-              ? window.open(pathname + "/fortroende", "_blank")
-              : push(pathname + "/fortroende")
+              ? window.open(pathname + "/utveckling", "_blank")
+              : push(pathname + "/utveckling")
           }
           primary
         >
           <span>
-            Förtroendemodellen
+            Utveckling
             <ArrowIcon className="nav-icon" width={"18px"} />
           </span>
         </Button>

@@ -1,5 +1,5 @@
 import { getForm, getModule } from "../../../../utilities";
-import Form from "../fortroende";
+import Form from "../utveckling";
 
 export async function getStaticProps({ locale }: any) {
   const p1 = await getForm('uppfoljning', locale);
