@@ -441,7 +441,6 @@ export const DiggConfirmModal = styled.div`
       outline: none;
       cursor: pointer;
       padding: 1rem;
-      width: 30%;
       max-width: 100px;
 
       &:hover{

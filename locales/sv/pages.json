@@ -249,7 +249,7 @@
   "form":{
     "placeholder-text": "Fyll i ditt svar",
     "clear-all-text": "Rensa alla svar",
-    "clear-confirm-text": "Är du säker?",
+    "clear-confirm-text": "Är du säker på att du vill rensa alla svar?",
     "upload-json-file": "Ladda upp JSON-fil",
     "next-section-text": "Nästa avsnitt",
     "previous-section-text": "Föregående avsnitt",

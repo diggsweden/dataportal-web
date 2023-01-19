@@ -122,7 +122,7 @@ const FormBottomNav: React.FC<Props> = ({
                     clearModalRef.current?.classList.add("hide");
                   }}
                 >
-                  {t("common|no")}
+                  Avbryt
                 </button>
                 <button
                   onClick={(e) => {
@@ -131,7 +131,7 @@ const FormBottomNav: React.FC<Props> = ({
                     clearModalRef.current?.classList.add("hide");
                   }}
                 >
-                  {t("common|yes")}
+                  Ja
                 </button>
               </div>
             </div>

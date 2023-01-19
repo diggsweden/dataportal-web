@@ -20,7 +20,7 @@ const FormGeneratePDF: React.FC<Props> = ({formDataArray, blocks}) => {
     const {t} = useTranslation();
   return (
     <>
-      <>{blocks && <ContentArea blocks={blocks}/>}</>
+      <>{blocks && <div className='generate-pdf-block'><ContentArea blocks={blocks}/></div>}</>
       <Button
         primary
         onClick={(e) => {
