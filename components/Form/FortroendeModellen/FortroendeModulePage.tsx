@@ -16,7 +16,7 @@ export const FortroendeModulePage: React.FC<Module_dataportal_Digg_Module> = ({
   const [heading, setHeading] = useState<string | null>(null);
 
   const getHeading = () => {
-    if (blocks[0].__typename === "dataportal_Digg_Text") {
+    if (blocks[0]?.__typename === "dataportal_Digg_Text") {
       let str = blocks[0].heading;
       blocks[0].heading = null;
       return str;
