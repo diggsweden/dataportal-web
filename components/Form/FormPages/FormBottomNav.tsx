@@ -65,7 +65,9 @@ const FormBottomNav: React.FC<Props> = ({
             <ArrowIcon className="nav-icon" width={"18px"} />
           </span>
         </Button>
-        <span>
+      </FormNavButtons>
+      <FormNavButtons className="text-md">
+      <span>
           <Button
             onClick={(e) => {
               e.preventDefault();

@@ -107,15 +107,16 @@ export const FormNavButtons = styled.div`
     flex-direction: column;
     justify-content: space-between;
     font-weight: 500;
+    gap: 0.5rem;
 
     @media screen and (min-width: ${theme.breakpoints[0]}) {
       flex-direction: row;
       justify-content: flex-start;
       align-items: flex-start;
+      gap: 1rem;
 
       button {
-        margin-left: 0.5rem;
-        max-width: 12rem;
+        max-width: fit-content;
       }
     }
 
@@ -433,6 +434,7 @@ export const DiggConfirmModal = styled.div`
   .modal-buttons{
     display: flex;
     justify-content: space-evenly;
+    gap: 1rem;
 
     button{
       color: white;
@@ -442,6 +444,7 @@ export const DiggConfirmModal = styled.div`
       cursor: pointer;
       padding: 1rem;
       max-width: 100px;
+      width: 100%;
 
       &:hover{
         border-color: ${colorPalette.white};
