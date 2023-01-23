@@ -45,7 +45,7 @@ export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({
           primary
         >
           <span>
-            Utveckling
+            Utveckling och drift
             <ArrowIcon className="nav-icon" width={"18px"} />
           </span>
         </Button>

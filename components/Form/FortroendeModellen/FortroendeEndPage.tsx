@@ -89,7 +89,7 @@ export const FortroendeEndPage: React.FC<Module_dataportal_Digg_Module> = ({
               width="200"
               height={"200"}
               src={imageUrl ? imageUrl : fortroendeLogo}
-              alt="Fortroendemodellen logo badge"
+              alt="Förtroendemodellen logo badge"
             />
           </a>
         </div>

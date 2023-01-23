@@ -29,7 +29,7 @@ export const Form: React.FC<Props> = ({elements, module}) => {
   const { trackPageView } = useMatomo();
   const {t} = useTranslation();
   const {pathname, asPath} = useRouter() || {};
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(-1);
   const scrollRef = React.useRef<HTMLSpanElement>(null);
   const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>([]);
   const [formSteps, setFormSteps] = useState<string[]>([]); //The title of the different pages
@@ -146,13 +146,14 @@ export const Form: React.FC<Props> = ({elements, module}) => {
   useEffect(() => {
     const pageLastVisit = localStorage.getItem(`${asPath}Page`);
     if (!showFirstPage) {
-      setPage(1);
+      setPage(pageLastVisit ? parseInt(pageLastVisit) : 1);
     } else {
       setPage(pageLastVisit ? parseInt(pageLastVisit) : 0);
     }
   }, [showFirstPage]);
 
   useEffect(() => {
+    if(page === -1) return;
     localStorage.setItem(`${asPath}Page`, page.toString());
   }, [page]);
 
