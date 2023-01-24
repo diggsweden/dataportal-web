@@ -64,7 +64,6 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation("pages");
-  const url = useMemo(() => image && handleUrl(image), [image])
 
   useEffect(() => {
     trackPageView({ documentTitle: "OpenSource" });
@@ -105,10 +104,10 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               </div>
             </div>
             <span className="domain-page__top-image">
-              {url && image && (
+              {image && (
                 <Image
                   {...handleLoader(image)}
-                  src={url}
+                  src={image.url}
                   style={responsive}
                   width={image?.width || 300}
                   height={image?.height || 200}
