@@ -1,15 +1,26 @@
 @import "/styles/general/variables.scss";
 
 .hero {
-  max-height: 600px;
   max-width: 1920px;
-  margin: auto;
+  max-height: 400px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: max-content;
+
+  @media screen and (min-width: $media-md) {
+    max-height: 500px;
+  }
 
   img{
-    width: 100%;
-    height: auto;
     min-height: 200px;
+    max-height: 400px;
     object-fit: cover;
+
+    @media screen and (min-width: $media-md) {
+      max-height: 600px;
+    }
   }
 
   span {
