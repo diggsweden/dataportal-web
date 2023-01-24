@@ -20,7 +20,6 @@ import { CategoriesNav } from "../StartPageComponents";
 import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { handleLoader } from "../blocks";
 import { responsive } from "../../styles/image";
 
 export interface DomainProps extends Containers_dataportal_Digg_Containers {
@@ -106,7 +105,6 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             <span className="domain-page__top-image">
               {image && (
                 <Image
-                  {...handleLoader(image)}
                   src={image.url}
                   style={responsive}
                   width={image?.width || 300}

@@ -9,19 +9,8 @@ import { Heading } from "@digg/design-system";
 import { Video } from "../Video";
 import env from "@beam-australia/react-env";
 import { MediaBase } from "../../graphql/__generated__/MediaBase";
-import { Image as ImageInterface } from "../../graphql/__generated__/Image";
 import { responsive } from "../../styles/image";
 import { isExternalLink } from "../../utilities/checkers";
-
-export const handleLoader = (
-  { url, width, screen9 }: ImageInterface,
-  quality?: number
-) => {
-  if (screen9 || isExternalLink(url)) return {};
-
-  const src = (env("MEDIA_BASE_URL") || "") + url;
-  return { loader: () => `${src}?w=${width}&q=${quality || 75}` };
-};
 
 export const handleUrl = ({ screen9, url }: MediaBase) => {
   const isClientUrl = (url as any)?.src?.startsWith("/_next/static/media");
@@ -45,7 +34,6 @@ const renderMedia = (media: Media_media, mediaDescription?: string) => {
       return (
         <figure>
           <Image
-            {...handleLoader(media)}
             style={responsive}
             src={url}
             width={width || 600}

@@ -61,12 +61,7 @@ module.exports = nextTranslate({
   },
   images: {
     domains: [process.env.IMAGE_DOMAIN || "localhost", "bcdn.screen9.com"],
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "https://diggdrstoragetest.blob.core.windows.net/*",
-      },
-    ],
+    unoptimized: true,
   },
   async headers() {
     return [
