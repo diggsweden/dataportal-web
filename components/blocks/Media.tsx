@@ -24,7 +24,8 @@ export const handleLoader = (
 };
 
 export const handleUrl = ({ screen9, url }: MediaBase) => {
-  if (screen9 || isExternalLink(url)) {
+  const isClientUrl = (url as any)?.src?.startsWith("/_next/static/media");
+  if (screen9 || isExternalLink(url) || isClientUrl) {
     return url;
   }
 
