@@ -120,6 +120,10 @@
 
 .linkblock{
   padding: 0;  
+  
+  &.text-md {
+    margin-bottom: 3rem;
+  }
 
   li{
     display: flex;    

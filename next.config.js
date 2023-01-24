@@ -1,39 +1,39 @@
-const nextTranslate = require('next-translate');
+const nextTranslate = require("next-translate");
 
 const baseHeaders = [
   {
-    key: 'Strict-Transport-Security',
-    value: 'max-age=63072000; includeSubDomains; preload',
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
   },
   {
-    key: 'X-Frame-Options',
-    value: 'DENY',
+    key: "X-Frame-Options",
+    value: "DENY",
   },
   {
-    key: 'X-XSS-Protection',
-    value: '1; mode=block',
+    key: "X-XSS-Protection",
+    value: "1; mode=block",
   },
   {
-    key: 'X-Content-Type-Options',
-    value: 'nosniff',
+    key: "X-Content-Type-Options",
+    value: "nosniff",
   },
   {
-    key: 'Referrer-Policy',
-    value: 'origin-when-cross-origin',
+    key: "Referrer-Policy",
+    value: "origin-when-cross-origin",
   },
   {
-    key: 'Permissions-Policy',
-    value: 'camera=(), battery=(), geolocation=(), microphone=()',
+    key: "Permissions-Policy",
+    value: "camera=(), battery=(), geolocation=(), microphone=()",
   },
   {
-    key: 'Access-Control-Allow-Origin',
-    value: 'https://www.dataportal.se',
+    key: "Access-Control-Allow-Origin",
+    value: "https://www.dataportal.se",
   },
 ];
 
 const csp = [
   {
-    key: 'Content-Security-Policy',
+    key: "Content-Security-Policy",
     value: `frame-ancestors 'none';`,
   },
 ];
@@ -66,11 +66,11 @@ module.exports = nextTranslate({
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [...baseHeaders, ...csp],
       },
       {
-        source: '/',
+        source: "/",
         headers: [...baseHeaders, ...csp],
       },
     ];

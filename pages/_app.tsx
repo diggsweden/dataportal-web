@@ -54,7 +54,6 @@ import {
   Breadcrumb,
   BreadcrumbProps,
   LocalStore,
-  handleLoader,
 } from "../components";
 import { defaultSettings } from "../components/SettingsProvider/SettingsProvider";
 import {
@@ -351,7 +350,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                     {heroImage?.url ? (
                       <div className="hero">
                         <Image
-                          {...handleLoader(heroImage)}
                           src={(renv("MEDIA_BASE_URL") || "") + heroImage?.url}
                           width={heroImage?.width || 1440}
                           height={heroImage?.height || 400}

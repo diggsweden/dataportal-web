@@ -4,7 +4,7 @@ import { Hero as IHero, Hero_media } from "../../graphql/__generated__/Hero";
 import { checkLang } from "../../utilities/checkLang";
 import { renderMarkdown } from "../Renderers";
 import { Heading, Container } from "@digg/design-system";
-import { handleUrl, handleLoader } from "./Media";
+import { handleUrl } from "./Media";
 
 const renderMedia = (media: Hero_media) => {
   const { alt, mime } = media;
@@ -15,7 +15,6 @@ const renderMedia = (media: Hero_media) => {
       return (
         <div>
           <Image
-            {...handleLoader(media)}
             style={{ width: "100%" }}
             src={url}
             fill
