@@ -8,7 +8,7 @@ import {
 } from "@digg/design-system";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Containers_dataportal_Digg_Containers } from "../../graphql/__generated__/Containers";
 import { MainContainerStyle } from "../../styles/general/emotion";
 import { checkLang } from "../../utilities";
@@ -64,7 +64,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation("pages");
-  const url = image && handleUrl(image)
+  const url = useMemo(() => image && handleUrl(image), [image])
 
   useEffect(() => {
     trackPageView({ documentTitle: "OpenSource" });
@@ -105,10 +105,10 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               </div>
             </div>
             <span className="domain-page__top-image">
-              {image && (
+              {url && image && (
                 <Image
                   {...handleLoader(image)}
-                  src={url || ""}
+                  src={url}
                   style={responsive}
                   width={image?.width || 300}
                   height={image?.height || 200}
