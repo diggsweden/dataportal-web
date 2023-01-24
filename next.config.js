@@ -61,6 +61,7 @@ module.exports = nextTranslate({
   },
   images: {
     domains: [process.env.IMAGE_DOMAIN || 'localhost', 'bcdn.screen9.com'],
+    unoptimized: true,
   },
   async headers() {
     return [
