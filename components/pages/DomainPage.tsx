@@ -8,7 +8,7 @@ import {
 } from "@digg/design-system";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { Containers_dataportal_Digg_Containers } from "../../graphql/__generated__/Containers";
 import { MainContainerStyle } from "../../styles/general/emotion";
 import { checkLang } from "../../utilities";
@@ -20,7 +20,7 @@ import { CategoriesNav } from "../StartPageComponents";
 import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { handleLoader, handleUrl } from "../blocks";
+import { handleLoader } from "../blocks";
 import { responsive } from "../../styles/image";
 
 export interface DomainProps extends Containers_dataportal_Digg_Containers {
