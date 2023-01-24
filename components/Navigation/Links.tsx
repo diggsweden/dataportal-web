@@ -12,7 +12,7 @@ export const Links: React.FC<{
 }> = ({ basepath, links }) => {
   const router = useRouter();
   return (
-    <ul className="text-md font-bold linkblock">
+    <ul className="linkblock text-md font-bold">
       {links.map((l, index) => {
         return (
           <li
