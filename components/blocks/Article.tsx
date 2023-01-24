@@ -12,7 +12,7 @@ import {
 } from "../../graphql/__generated__/Publication";
 import { findPublicationTypeTag } from "../pages/Articles";
 import { Link as DiggLink } from "../../graphql/__generated__/Link";
-import { handleUrl } from "./Media";
+import { handleLoader, handleUrl } from "./Media";
 import placeholderimg from "../../public/images/noimage.svg";
 import { responsive } from "../../styles/image";
 import NoSsr from "../NoSsr/NoSsr";
@@ -123,6 +123,7 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
                 {image ? (
                   <div className="news-img">
                     <Image
+                      {...handleLoader(image)}
                       src={imageUrl || ""}
                       alt={image?.alt || ""}
                       sizes="100%"
