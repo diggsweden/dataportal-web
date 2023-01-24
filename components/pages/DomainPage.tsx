@@ -20,7 +20,7 @@ import { CategoriesNav } from "../StartPageComponents";
 import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { handleLoader } from "../blocks";
+import { handleLoader, handleUrl } from "../blocks";
 import { responsive } from "../../styles/image";
 
 export interface DomainProps extends Containers_dataportal_Digg_Containers {
@@ -64,6 +64,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation("pages");
+  const url = image && handleUrl(image)
 
   useEffect(() => {
     trackPageView({ documentTitle: "OpenSource" });
@@ -107,7 +108,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               {image && (
                 <Image
                   {...handleLoader(image)}
-                  src={image.url}
+                  src={url || ""}
                   style={responsive}
                   width={image?.width || 300}
                   height={image?.height || 200}
