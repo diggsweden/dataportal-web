@@ -1,9 +1,23 @@
 @import '~@digg/design-system/lib/sass/variables';
-.anchorlink_wrapper { 
+
+.anchorlink_wrapper {
   @media screen and (min-width: $media-lg) {
     position: absolute;
     right: 0;
     height: 100%;
     top: -0.2rem;
+  }
+
+  .anchorLink.active {
+    font-weight: bold;
+  }
+
+  .anchorLink {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .anchorLink span {
+    border-bottom: none;
   }
 }
