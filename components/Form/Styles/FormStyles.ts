@@ -91,6 +91,7 @@ export const FormNavButtons = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 1rem;
 
   @media screen and (min-width: ${theme.breakpoints[0]}) {
     flex-direction: row;
@@ -129,7 +130,6 @@ export const FormNavButtons = styled.div`
 
   button {
     width: fit-content;
-    margin-top: 0.5rem;
     width: 100%;
 
     span{
@@ -358,7 +358,7 @@ export const DiggProgressbar = styled('span')<{ page: number; totPages: number }
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 2rem;
   margin-bottom: 2rem;
 
   width: 100%;

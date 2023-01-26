@@ -52,7 +52,7 @@ const FormBottomNav: React.FC<Props> = ({
 
   return (
     <>
-      <FormNavButtons className="text-md">
+      <FormNavButtons>
         <Button
           primary
           onClick={() => {
@@ -66,7 +66,7 @@ const FormBottomNav: React.FC<Props> = ({
           </span>
         </Button>
       </FormNavButtons>
-      <FormNavButtons className="text-md">
+      <FormNavButtons>
       <span>
           <Button
             onClick={(e) => {
