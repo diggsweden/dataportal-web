@@ -1,4 +1,4 @@
-import { styled, colorPalette, theme } from "@digg/design-system";
+import { styled, colorPalette, theme, css } from "@digg/design-system";
 
 export const TempContainer = styled.div`
   background: #212121;
@@ -353,7 +353,10 @@ export const DiggPopover = styled.span`
   }
 `;
 
-export const DiggProgressbar = styled('span')<{ page: number; totPages: number }>`
+export const DiggProgressbar = styled("span")<{
+  page: number;
+  totPages: number;
+}>`
   position: relative;
   display: flex;
   justify-content: center;
@@ -364,10 +367,11 @@ export const DiggProgressbar = styled('span')<{ page: number; totPages: number }
   width: 100%;
   height: 15px;
   background-color: ${colorPalette.gray800};
-  color: ${(p) => p.page/(p.totPages + 1) > 0.5 ? colorPalette.black : colorPalette.white};
+  color: ${(p) =>
+    p.page / (p.totPages + 1) > 0.5 ? colorPalette.black : colorPalette.white};
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -377,9 +381,39 @@ export const DiggProgressbar = styled('span')<{ page: number; totPages: number }
   }
 
   &::after {
-    content: '${(p) => p.page} / ${(p) => (p.totPages + 1)}';
+    content: "${(p) => p.page} / ${(p) => p.totPages + 1}";
     font-size: 12px;
     z-index: 100;
+
+    ${(p) =>
+      (p.totPages + 1) * 0.5 === p.page &&
+      css`
+        background: linear-gradient(
+          to right,
+          ${colorPalette.black} 50%,
+          ${colorPalette.white} 50%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+      `}
+      
+      /* background: linear-gradient(to right, ${(p) =>
+      (p.totPages + 1) * 0.5 === p.page
+        ? colorPalette.black
+        : (p) =>
+            (p.totPages + 1) * 0.5 > p.page
+              ? colorPalette.white
+              : colorPalette.black} 50%, ${(p) =>
+      (p.totPages + 1) * 0.5 === p.page
+        ? colorPalette.white
+        : (p) =>
+            (p.totPages + 1) * 0.5 > p.page
+              ? colorPalette.white
+              : colorPalette.black} 50%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent; */
   }
 `;
 
