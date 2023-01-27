@@ -397,23 +397,6 @@ export const DiggProgressbar = styled("span")<{
         -webkit-background-clip: text;
         color: transparent;
       `}
-      
-      /* background: linear-gradient(to right, ${(p) =>
-      (p.totPages + 1) * 0.5 === p.page
-        ? colorPalette.black
-        : (p) =>
-            (p.totPages + 1) * 0.5 > p.page
-              ? colorPalette.white
-              : colorPalette.black} 50%, ${(p) =>
-      (p.totPages + 1) * 0.5 === p.page
-        ? colorPalette.white
-        : (p) =>
-            (p.totPages + 1) * 0.5 > p.page
-              ? colorPalette.white
-              : colorPalette.black} 50%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent; */
   }
 `;
 
