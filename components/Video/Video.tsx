@@ -23,6 +23,12 @@ export const Video: React.FC<VideoProps> = ({ screen9 }) => {
     return () => {
       if (player) {
         player.dispose();
+        const script = document.querySelector(
+          'script[src="https://cdn.screen9.com/players/amber-player.js"]'
+        );
+        if (script) {
+          script.remove();
+        }
       }
     }
   }, [status]);
