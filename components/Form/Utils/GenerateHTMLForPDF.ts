@@ -129,7 +129,7 @@ export const GenerateHTML = (formData: FormTypes[][]) => {
   const html =
     /* Adds image to the top-right of the pdf */
     `<div class="content text-md">
-    <a href="https://dataportal.se" target="_blank" rel="external noopener noreferrer">
+    <a href="https://offentligai.se" target="_blank" rel="external noopener noreferrer">
     <img width="200px"
         src="${fortroendeImg.src}"
         alt="Förtroendemodellen logo badge" />
