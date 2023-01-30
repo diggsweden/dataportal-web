@@ -1,4 +1,5 @@
 import FormTypes, { TextArea } from "../FormTypes";
+import fortroendeImg from "../../../public/images/förtroendemodell-logo.svg";
 
 const renderTextAndImages = (field: TextArea) => {
   if (field.images && Object.keys(field.images).length > 0) {
@@ -128,9 +129,9 @@ export const GenerateHTML = (formData: FormTypes[][]) => {
   const html =
     /* Adds image to the top-right of the pdf */
     `<div class="content text-md">
-    <a href="https://dataportal.se" target="_blank" rel="external noopener noreferrer">
+    <a href="https://offentligai.se" target="_blank" rel="external noopener noreferrer">
     <img width="200px"
-        src="https://diggdrstoragetest.blob.core.windows.net/strapi-dataportal2-beta/assets/illu_start_2_0_d48c342ac2.svg"
+        src="${fortroendeImg.src}"
         alt="Förtroendemodellen logo badge" />
     </a>
   ` +

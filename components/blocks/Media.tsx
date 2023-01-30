@@ -76,3 +76,4 @@ export const Media: React.FC<IMedia> = ({ heading, description, media }) => {
     </div>
   );
 };
+

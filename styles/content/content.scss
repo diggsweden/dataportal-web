@@ -107,8 +107,12 @@
     line-height: 2rem; //32px
     letter-spacing: -0.02em;
     color: $clr-white;
-    margin-top: $space-4;
+    margin-top: $space-8;
     margin-bottom: $space-8;
+
+    h2:first-child {
+      margin-top: 0;
+    }
 
     p,
     span {

@@ -1,10 +1,15 @@
 .quoteblock {
   display: flex;
-  padding: $space-8 $space-6;
+  padding: $space-6 $space-6;
   border-left: 0.125rem solid $clr-pinkPop;
   color: $clr-white;
-  margin-top: $space-4;
+  margin-top: $space-8;
   margin-bottom: $space-8;
+
+  h2:first-child {
+    margin-top: 0;
+  }
+
   .icon {
     margin-right: $space-4;
   }

@@ -1,4 +1,4 @@
-import { styled, colorPalette, theme } from "@digg/design-system";
+import { styled, colorPalette, theme, css } from "@digg/design-system";
 
 export const TempContainer = styled.div`
   background: #212121;
@@ -91,6 +91,7 @@ export const FormNavButtons = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 1rem;
 
   @media screen and (min-width: ${theme.breakpoints[0]}) {
     flex-direction: row;
@@ -129,7 +130,6 @@ export const FormNavButtons = styled.div`
 
   button {
     width: fit-content;
-    margin-top: 0.5rem;
     width: 100%;
 
     span{
@@ -353,21 +353,25 @@ export const DiggPopover = styled.span`
   }
 `;
 
-export const DiggProgressbar = styled('span')<{ page: number; totPages: number }>`
+export const DiggProgressbar = styled("span")<{
+  page: number;
+  totPages: number;
+}>`
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 2rem;
   margin-bottom: 2rem;
 
   width: 100%;
   height: 15px;
   background-color: ${colorPalette.gray800};
-  color: ${(p) => p.page/(p.totPages + 1) > 0.5 ? colorPalette.black : colorPalette.white};
+  color: ${(p) =>
+    p.page / (p.totPages + 1) > 0.5 ? colorPalette.black : colorPalette.white};
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -377,9 +381,22 @@ export const DiggProgressbar = styled('span')<{ page: number; totPages: number }
   }
 
   &::after {
-    content: '${(p) => p.page} / ${(p) => (p.totPages + 1)}';
+    content: "${(p) => p.page} / ${(p) => p.totPages + 1}";
     font-size: 12px;
     z-index: 100;
+
+    ${(p) =>
+      (p.totPages + 1) * 0.5 === p.page &&
+      css`
+        background: linear-gradient(
+          to right,
+          ${colorPalette.black} 50%,
+          ${colorPalette.white} 50%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+      `}
   }
 `;
 

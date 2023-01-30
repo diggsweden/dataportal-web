@@ -230,7 +230,7 @@ export const Form: React.FC<Props> = ({elements, module}) => {
               </span>
             </FormBackButton>
           )}
-
+          <span ref={scrollRef}></span>
           <FormWrapper>
             {page === (showFirstPage ? 0 : 1) && (
               <Link
@@ -280,7 +280,6 @@ export const Form: React.FC<Props> = ({elements, module}) => {
                     />
                   </>
                 )}
-                <span ref={scrollRef}></span>
               </>
             )}
 
