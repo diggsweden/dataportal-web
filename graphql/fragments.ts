@@ -180,18 +180,6 @@ export const MEDIA_FRAGMENT = gql`
   }
 `;
 
-export const HERO_FRAGMENT = gql`
-  fragment Hero on dataportal_Digg_Hero {
-    heading
-    heroText: text {
-      markdown
-    }
-    media {
-      ...MediaType
-    }
-  }
-`;
-
 export const TEXT_FRAGMENT = gql`
   fragment Text on dataportal_Digg_Text {
     heading
@@ -260,10 +248,6 @@ export const BLOCK_FRAGMENT = gql`
       ...Media
     }
 
-    ... on dataportal_Digg_Hero {
-      ...Hero
-    }
-
     ... on dataportal_Digg_RelatedContent {
       ...RelatedContent
     }
@@ -274,7 +258,6 @@ export const BLOCK_FRAGMENT = gql`
   }
   ${LINK_FRAGMENT}
   ${FAQ_FRAGMENT}
-  ${HERO_FRAGMENT}
   ${TEXT_FRAGMENT}
   ${RELATED_CONTENT_FRAGMENT}
   ${MEDIA_FRAGMENT}

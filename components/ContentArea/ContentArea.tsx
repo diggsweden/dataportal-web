@@ -75,9 +75,6 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ blocks }) => {
             );
           case 'dataportal_Digg_Faq':
             return handleFaqs(blocks, index);
-          // ? we handle HeroBlock in _app.tsx
-          case 'dataportal_Digg_Hero':
-            return;
           case 'dataportal_Digg_RelatedContent':
             return (
               <RelatedContent
