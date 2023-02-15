@@ -537,6 +537,35 @@
         }
 
         .entryscape {
+          .view_metadata_group, .keyword {
+            .rdforms {
+              padding: 0;
+            }
+          }
+          .keyword {
+            .rdformsLabel {
+              &:hover {
+                cursor: unset;
+                text-decoration: unset;
+              }
+            }
+          }
+          .eachprop__ellipsis, .eachprop__restseparator {
+            display: none;
+          }
+          .eachprop__expandbutton, .eachprop__unexpandbutton {
+            @include text-sm;
+            margin: 0;
+            color: black;
+            background-color: #f49383;
+            height: auto;
+            max-height: 32px;
+            padding: 0.125rem;
+            border: none;
+            border-radius: 2px;
+            min-width: 30px;
+            text-align: left;
+          }
           .rdforms {
             display: flex;
             flex-direction: column;
