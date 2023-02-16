@@ -7,6 +7,7 @@ import { SettingsContext } from "../SettingsProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import { Heading } from "@digg/design-system";
+import { accessrigthsIndicator, architechtureIndicator, exploreApiLink, licenseIndicator, periodicityIndicator } from "../../utilities";
 
 const filterCatalogProperties = [
   "dcat:keyword",
@@ -147,6 +148,11 @@ export const DataSetPage: React.FC = () => {
             ],
 
             blocks: [
+              ${accessrigthsIndicator},
+              ${periodicityIndicator},
+              ${licenseIndicator},
+              ${architechtureIndicator},
+              ${exploreApiLink(cid, eid, t)},
               {
                 block: 'formatBadge',
                 extends: 'template',
@@ -216,16 +222,6 @@ export const DataSetPage: React.FC = () => {
                   )}"}}'          
               },
               {
-                block: 'architectureIndicator',
-                extends: 'template',
-                template: '{{#ifprop "dcterms:type"}}' +
-                  '<span class="esbIndicator" title="TjÃ¤nstens arkitekturstil">' +
-                  '<span class="material-icons-outlined">build_circle</span>' +
-                  '<i class="fas fa-wrench"></i>' +
-                  '<span class="esbIndicatorLabel">{{#eachprop "dcterms:type"}}{{label}}{{separator}}{{/eachprop}}</span></span>' +
-                  '{{/ifprop}}',
-              },
-              {
                 block: 'costIndicator',
                 extends: 'template',
                 template: '{{#ifprop "schema:offers"}}<span class="esbIndicator" title="Avgift">' +
@@ -234,84 +230,10 @@ export const DataSetPage: React.FC = () => {
                   '{{/ifprop}}',
               },
               {
-                block: 'accessRightsIndicator',
-                extends: 'template',
-                template: '{{#ifprop "dcterms:accessRights"}}' +
-                  '{{#eachprop "dcterms:accessRights"}}<span class="esbIndicator" title="{{description}}">' +
-                  '{{#ifprop "dcterms:accessRights" uri="peu:access-right/PUBLIC"}}' +
-                  '<i class="fas fa-lock-open"></i>{{/ifprop}}' +
-                  '{{#ifprop "dcterms:accessRights" uri="peu:access-right/NON_PUBLIC"}}' +
-                  '<i class="fas fa-key"></i>{{/ifprop}}' +
-                  '{{#ifprop "dcterms:accessRights" uri="peu:access-right/RESTRICTED"}}' +
-                  '<i class="fas fa-lock"></i>{{/ifprop}}' +
-                  '<span class="esbIndicatorLabel">{{label}}</span>{{/eachprop}}' +
-                  '</span>{{/ifprop}}',
-              },
-              {
-                block: 'periodicityIndicator',
-                extends: 'template',
-                template: '{{#eachprop "dcterms:accrualPeriodicity"}}<span class="esbIndicator" title="Uppdateringsfrekvens">' +
-                  '<i class="fas fa-redo"></i>' +
-                  '<span class="">{{label}}</span></span>{{/eachprop}}',
-              },
-              {
-                block: 'licenseIndicatorCustom',
-                loadEntry: true,
-                run: function(node, data, items, entry) {
-                  var v = entry.getMetadata().findFirstValue(null, 'dcterms:license');
-                  if (v?.indexOf("http://creativecommons.org/") === 0) {
-                    var variant;
-                    if (v === "http://creativecommons.org/publicdomain/zero/1.0/") {
-                      variant = "Creative Commons";
-                    } else if (v?.indexOf("http://creativecommons.org/licenses/") === 0) {
-                      variant = "Creative commons";
-                    } else {
-                      return; // Unknown cc version.
-                    }
-                    node.innerHTML = '<span class="esbIndicator" title="Licens från Creative Commons">' +
-                      '<i class="license-icon fab fa-creative-commons"></i>' +
-                      '<span class="esbIndicatorLabel">' + variant.toLowerCase() + '</span></span>';
-                  }
-                },
-              },
-              {
                 block: 'costIndicator2',
                 extends: 'template',
                 template: '{{#ifprop "schema:offers"}}<span class="esbIndicator" title="Avgift"><i class="fas fa-coins"></i>' +
                   '<span class="esbIndicatorLabel">Avgift</span></span>{{/ifprop}}',
-              },
-              {
-                block: 'exploreApiLinkRun',                     
-                run: function(node,a2,a3,entry) {                                        
-                  if(node && node.firstElementChild)
-                  { 
-                    var showExploreApi = false;                   
-                    var entryId = entry.getId();
-                    var contextId = '${cid}';
-
-                    if(window.__es_has_apis)
-                      for(var a in window.__es_has_apis)
-                      {
-                        if(window.__es_has_apis[a] === contextId + '_' + entryId)
-                          showExploreApi = true;                    
-                      }
-                    
-                    if(showExploreApi)
-                    {
-                      var el = document.createElement('a');                    
-                      node.firstElementChild.appendChild(el);
-                      el.innerHTML = '${t("pages|datasetpage$explore-api")}'
-                      el.setAttribute('href', getApiExploreUrl('${eid}',entryId))
-                      el.setAttribute('class', 'explore-api-link entryscape text-md link') 
-                    }
-                  }
-                },
-                loadEntry:true
-              },
-              {
-                block: 'exploreapilink',
-                extends: 'template',
-                template: '{{exploreApiLinkRun}}' 
               },
               {
                 block: 'distributionListCustom',
@@ -450,7 +372,7 @@ export const DataSetPage: React.FC = () => {
               className="architectureIndicator"
             />
             <div
-              data-entryscape="licenseIndicatorCustom"
+              data-entryscape="licenseIndicator"
               className="licenseIndicator"
             />
 
