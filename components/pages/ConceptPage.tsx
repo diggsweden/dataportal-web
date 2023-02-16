@@ -16,7 +16,6 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({ curi
   const { lang, t } = useTranslation();
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
-  let referredSearch: string = `/${t('routes|concepts$path')}/?q=`;
 
   /**
    * Async load scripts requiered for EntryScape blocks,
@@ -25,10 +24,6 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({ curi
   useEffect(() => {
     //we need to reload the page when using the back/forward buttons to a blocks rendered page
     if (typeof window !== 'undefined') {
-      //check if reffereing search params is set to hash
-      if (window.location && window.location.hash && window.location.hash.includes('ref=?'))
-        referredSearch = `/${t('routes|concepts$path')}/?${window.location.hash.split('ref=?')[1]}`;
-
       window.onpopstate = (e: any) => {
         window.location.reload();
       };
@@ -637,153 +632,148 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({ curi
               data-entryscape="text"
               data-entryscape-fallback=""
               data-entryscape-content="${skos:definition}"
-            ></span>
-
-            <span
-              data-entryscape="hemvist"
-              className="entryscape hemvist"
-            ></span>
+            />
 
             <span
               data-entryscape="text"
               data-entryscape-fallback=""
               data-entryscape-content="${dcterms:description}"
-            ></span>
+            />
           </p>
 
           <div className="column">
-            <span data-entryscape="alt-Label"></span>
+            <span data-entryscape="alt-Label" />
             <span
               className="concept-detail"
               data-entryscape="text"
               data-entryscape-fallback=""
               data-entryscape-content="${skos:altLabel}"
-            ></span>
+            />
 
-            <span data-entryscape="example-Label"></span>
+            <span data-entryscape="example-Label" />
             <span
               className="concept-detail"
               data-entryscape="text"
               data-entryscape-fallback=""
               data-entryscape-content="${skos:example}"
-            ></span>
+            />
           </div>
 
           <div className="terminology-group">
-            <span data-entryscape="broader"></span>
+            <span data-entryscape="broader" />
           </div>
 
           <div className="terminology-group">
-            <span data-entryscape="narrower"></span>
+            <span data-entryscape="narrower" />
           </div>
 
           <div className="terminology-group">
             <span
               data-entryscape="related"
               data-entryscape-click=""
-            ></span>
+            />
           </div>
 
           <div className="column">
-            <span data-entryscape="history-Label"></span>
+            <span data-entryscape="history-Label" />
             <span
               className="concept-detail"
               data-entryscape="text"
               data-entryscape-fallback=""
               data-entryscape-content="${skos:historyNote}"
-            ></span>
+            />
 
-            <span data-entryscape="editorial-Label"></span>
+            <span data-entryscape="editorial-Label" />
             <span
               className="concept-detail"
               data-entryscape="text"
               data-entryscape-fallback=""
               data-entryscape-content="${skos:editorialNote}"
-            ></span>
+            />
 
-            <span data-entryscape="note-Label"></span>
+            <span data-entryscape="note-Label" />
             <span
               className="concept-detail"
               data-entryscape="text"
               data-entryscape-fallback=""
               data-entryscape-content="${skos:note}"
-            ></span>
+            />
 
             <span
               className="terminology__top-concepts text-base"
               data-entryscape="alt-term"
-            ></span>
+            />
           </div>
 
           <span
             className="terminology__top-concepts text-base"
             data-entryscape="toppbegrepp"
-          ></span>
+          />
         </div>
 
         {/* Right column */}
         <div className="detailpage__wrapper--rightcol hbbr">
           <div className="detailpage__wrapper--rightcol-info text-base">
             <Heading level={2}>
-              <span data-entryscape="term-head"></span>
-              <span data-entryscape="concept-head"></span>
+              <span data-entryscape="term-head" />
+              <span data-entryscape="concept-head" />
             </Heading>
+            <span
+              data-entryscape="hemvist"
+              className="hemvist"
+            />
             <span
               className="text-base terminology"
               data-entryscape="terminology"
-            ></span>
+            />
             <span
               className="terminology__path text-base"
               data-entryscape="terminologyButton"
-            ></span>
+            />
             <script
               type="text/x-entryscape-handlebar"
               data-entryscape="true"
               data-entryscape-component="template"
               dangerouslySetInnerHTML={{
                 __html: `
-                                    <div class="terminilogy__download-wrapper">
-                                    <h3 class="terminology__label text-base font-bold">
-                                    ${t('pages|concept_page$download_concept')}
-                                    </h3>
-      
-                                  <div class="terminology__download-links text-base">
-                                    <a
-                                      class="terminology__download-link"
-                                      href="{{ metadataURI}}"
-                                      target="_blank"
-                                    >
-                                      RDF/XML
-                                    </a>
-      
-                                    <a
-                                      class="terminology__download-link"
-                                      href="{{ metadataURI }}?format=text/turtle"
-                                      target="_blank"
-                                    >
-                                      TURTLE
-                                    </a>
-      
-                                    <a
-                                      class="terminology__download-link"
-                                      href="{{ metadataURI }}?format=text/n-triples"
-                                      target="_blank"
-                                    >
-                                      N-TRIPLES
-                                    </a>
-      
-                                    <a
-                                      class="terminology__download-link"
-                                      href="{{ metadataURI }}?format=application/ld+json"
-                                      target="_blank"
-                                    >
-                                      JSON-LD
-                                    </a>
-                                  </div>
-                                  </div>
-                                  `,
+                          <div class="terminilogy__download-wrapper">
+                          <h3 class="terminology__label text-base font-bold">
+                          ${t('pages|concept_page$download_concept')}
+                          </h3>
+                        <div class="terminology__download-links text-base">
+                          <a
+                            class="terminology__download-link"
+                            href="{{ metadataURI}}"
+                            target="_blank"
+                          >
+                            RDF/XML
+                          </a>
+                          <a
+                            class="terminology__download-link"
+                            href="{{ metadataURI }}?format=text/turtle"
+                            target="_blank"
+                          >
+                            TURTLE
+                          </a>
+                          <a
+                            class="terminology__download-link"
+                            href="{{ metadataURI }}?format=text/n-triples"
+                            target="_blank"
+                          >
+                            N-TRIPLES
+                          </a>
+                          <a
+                            class="terminology__download-link"
+                            href="{{ metadataURI }}?format=application/ld+json"
+                            target="_blank"
+                          >
+                            JSON-LD
+                          </a>
+                        </div>
+                        </div>
+                      `,
               }}
-            ></script>
+            />
           </div>
         </div>
       </div>
@@ -791,12 +781,12 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({ curi
         <span
           data-entryscape="concept-hierarchy-header"
           className="concept-hierarchy-header"
-        ></span>
+        />
 
         <div
           data-entryscape="concept-hierarchy"
           data-entryscape-scale="1.7"
-        ></div>
+        />
       </div>
     </div>
   );

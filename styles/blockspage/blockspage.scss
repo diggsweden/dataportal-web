@@ -1711,14 +1711,11 @@ html:lang(en) {
   display: flex;
   flex-direction: column;
   margin-top: $space-6;
+  margin-left: 1rem;
+  margin-right: 1rem;
 
   span {
-    margin-top: 0rem;
-    margin-bottom: 0.5rem;
     font-weight: bold;
-    font-size: 1.125rem;
-    line-height: 1.6875rem;
-    letter-spacing: -0.01em;
   }
 
   a {
