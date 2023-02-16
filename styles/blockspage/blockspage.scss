@@ -17,6 +17,15 @@
 
     @include Layout;
 
+    h1 {
+      margin-top: 0rem;
+      margin-bottom: $space-4;
+
+      &::first-letter {
+        text-transform: capitalize;
+      }
+    }
+
     //Window 800px
     @media screen and (min-width: $media-sm) {
       flex-direction: row;
@@ -29,15 +38,6 @@
       //Window 800px
       @media screen and (min-width: $media-sm) {
         margin-right: $space-2;
-      }
-
-      h1 {
-        margin-top: 0rem;
-        margin-bottom: $space-4;
-
-        &::first-letter {
-          text-transform: capitalize;
-        }
       }
 
       .description {

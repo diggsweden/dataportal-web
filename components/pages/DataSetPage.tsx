@@ -354,7 +354,7 @@ export const DataSetPage: React.FC = () => {
       <div className="detailpage__wrapper">
         <div className="detailpage__header">
           {/* Title */}
-          <Heading weight="light" size={"3xl"} color="pinkPop">
+          <Heading>
             {entry.title}
           </Heading>
 
