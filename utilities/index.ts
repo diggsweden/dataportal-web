@@ -2,6 +2,7 @@ export * from './checkers';
 export * from './containerHelper';
 export * from './dcatUtils';
 export * from './detectBrowser';
+export * from './entryscape_blocks';
 export * from './entrystoreUtil';
 export * from './keyFocus';
 export * from './keyGenerator';
