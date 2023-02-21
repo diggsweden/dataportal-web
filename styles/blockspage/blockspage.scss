@@ -1733,3 +1733,11 @@ html:lang(en) {
     @include wordBreak;
   }
 }
+
+.hemvist__specification {
+  font-weight: bold;
+
+  a {
+    font-weight: normal;
+  }
+}

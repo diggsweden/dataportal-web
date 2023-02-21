@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import React, { useContext, useEffect } from 'react';
 import { SettingsContext } from '..';
 import { EntrystoreContext } from '../../components/EntrystoreProvider';
-import { linkBase } from '../../utilities';
+import { hemvist, linkBase } from '../../utilities';
 import { initBreadcrumb } from '../../pages/_app';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { useRouter } from 'next/router';
@@ -126,6 +126,7 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
               }],
 
             blocks: [
+              ${hemvist(t)},
               {
                 block: 'specificationSearch',
                 extends: 'searchList',
@@ -247,6 +248,11 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
             >
               {t('pages|specification_page$about_specification')}
             </Heading>
+
+            <span
+              data-entryscape="hemvist"
+              className="text-base hemvist hemvist__specification"
+            />
 
             <div
               className="specificationDetails"
