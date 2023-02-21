@@ -1,7 +1,7 @@
 on: 
   workflow_dispatch
 
-name: Azure - dataportal build/push image
+name: Azure v1 - dataportal build/push image
 
 jobs:
     build-and-deploy:
