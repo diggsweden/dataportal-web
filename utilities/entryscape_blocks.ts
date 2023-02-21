@@ -101,3 +101,26 @@ export const exploreApiLink = (cid: string, eid: string, t: Translate) => `
   }
 `;
 
+export const hemvist = (t: Translate) => `
+  {
+    block: 'hemvist',
+    loadEntry: true,
+    run: function(node, data, items, entry) {
+      
+      var resourceURI = entry.getResourceURI();
+      var linkTitle = '${t("pages|concept_page$concept_adress")}';
+      if(window.location.pathname.indexOf("/terminology/") > -1 || window.location.pathname.indexOf("/externalterminology/") > -1)
+        linkTitle = '${t("pages|concept_page$term_adress")}';
+      if(window.location.pathname.indexOf("/specifications/") > -1)
+        linkTitle = '${t("pages|specification_page$address")}';
+      
+      if (resourceURI.indexOf('https://dataportal.se/') === 0) {
+        node.innerHTML=linkTitle + ': <a href='+resourceURI+'>'+resourceURI+'</a>';
+      }
+      else
+      {
+        node.innerHTML='<span class="">'+linkTitle+'</span> <a href='+resourceURI+'>'+resourceURI+'</a>';
+      } 
+    }
+  }
+`;

@@ -2,7 +2,7 @@ import useTranslation from 'next-translate/useTranslation';
 import React, { useContext, useEffect } from 'react';
 import { SettingsContext } from '../../components';
 import { EntrystoreContext } from '../EntrystoreProvider';
-import { linkBase } from '../../utilities';
+import { hemvist, linkBase } from '../../utilities';
 import { initBreadcrumb } from '../../pages/_app';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { useRouter } from 'next/router';
@@ -188,6 +188,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({ curi
                 limit: 10,
               }],
             blocks: [
+              ${hemvist(t)},
               {
                 block: 'terminologyButtonOLD',
                 extends: 'link',
@@ -354,28 +355,6 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({ curi
                 },
                 loadEntry:true
               },
-
-              {
-                block: 'hemvist',
-                loadEntry: true,
-                run: function(node, data, items, entry) {
-                  
-                  var resourceURI = entry.getResourceURI();
-                  var linkTitle = '${t('pages|concept_page$concept_adress')}';
-
-                  if(window.location.pathname.indexOf("/terminology/") > -1 || window.location.pathname.indexOf("/externalterminology/") > -1)
-                    linkTitle = '${t('pages|concept_page$term_adress')}';
-                  
-                  if (resourceURI.indexOf('https://dataportal.se/') === 0) {
-                    node.innerHTML=linkTitle + ': <a href='+resourceURI+'>'+resourceURI+'</a>';
-                  }
-                  else
-                  {
-                    node.innerHTML='<span class="">'+linkTitle+'</span> <a href='+resourceURI+'>'+resourceURI+'</a>';
-                  } 
-                }
-              },
-              
               {
                 block: 'conceptSearchInTemplate',
                 extends: 'searchList',
