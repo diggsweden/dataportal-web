@@ -6,6 +6,7 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { Heading } from "@digg/design-system";
+import { hemvist } from "../../utilities";
 
 export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
   const { env } = useContext(SettingsContext);
@@ -114,6 +115,7 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
               }],
 
             blocks: [
+              ${hemvist(t)},
               {
                 block: 'specificationSearch',
                 extends: 'searchList',
@@ -170,7 +172,7 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
   };
 
   return (
-    <div className="detailpage">
+    <div className="detailpage specification">
       <Head>
         <title>{title ? `${title} - Sveriges dataportal` : "test"}</title>
         <meta property="og:title" content={`${title} - Sveriges dataportal`} />
@@ -231,11 +233,16 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
         </div>
 
         {/* Right column */}
-        <div className="detailpage__wrapper--rightcol hbbr">
+        <div className="detailpage__wrapper--rightcol specification__about hbbr">
           <div className="detailpage__wrapper--rightcol-info text-base">
             <Heading level={2} size="md">
               {t("pages|specification_page$about_specification")}
             </Heading>
+
+            <span
+              data-entryscape="hemvist"
+              className="text-base hemvist hemvist__specification"
+            />
 
             <div
               className="specificationDetails"
