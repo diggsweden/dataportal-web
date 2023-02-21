@@ -6,6 +6,10 @@
   width: 100%;
   color: white;
 
+  h1 {
+    margin-top: 3rem;
+  }
+
   .detailpage__wrapper {
     display: flex;
     margin: 0 64px;
@@ -537,6 +541,35 @@
         }
 
         .entryscape {
+          .view_metadata_group, .keyword {
+            .rdforms {
+              padding: 0;
+            }
+          }
+          .keyword {
+            .rdformsLabel {
+              &:hover {
+                cursor: unset;
+                text-decoration: unset;
+              }
+            }
+          }
+          .eachprop__ellipsis, .eachprop__restseparator {
+            display: none;
+          }
+          .eachprop__expandbutton, .eachprop__unexpandbutton {
+            @include text-sm;
+            margin: 0;
+            color: black;
+            background-color: #f49383;
+            height: auto;
+            max-height: 32px;
+            padding: 0.125rem;
+            border: none;
+            border-radius: 2px;
+            min-width: 30px;
+            text-align: left;
+          }
           .rdforms {
             display: flex;
             flex-direction: column;
@@ -661,6 +694,10 @@
           line-height: 1.5rem; //24px
           letter-spacing: -0.01em;
           color: $clr-white;
+
+          h3 {
+            font-weight: bold;
+          }
         }
       }
 
@@ -1311,6 +1348,12 @@ html:lang(en) {
 
 //Specificationpage
 
+.specification__about {
+  .rdforms {
+    padding-top: 0 !important;
+  }
+}
+
 .specification__resource {
   margin-bottom: $space-12;
 
@@ -1713,15 +1756,11 @@ html:lang(en) {
 .hemvist {
   display: flex;
   flex-direction: column;
-  margin-top: $space-6;
  
   span {
     margin-top: 0rem;
     margin-bottom: 0.5rem;
     font-weight: bold;
-    font-size: 1.125rem;
-    line-height: 1.6875rem;
-    letter-spacing: -0.01em;
   }
 
   a {
@@ -1738,5 +1777,13 @@ html:lang(en) {
 
   .rdformsLabel {
     @include wordBreak;
+  }
+}
+
+.hemvist__specification {
+  font-weight: bold;
+
+  a {
+    font-weight: normal;
   }
 }

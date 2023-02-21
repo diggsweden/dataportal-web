@@ -154,6 +154,7 @@
     "rdf": "Download metadata as RDF",
     "view_more": "View more",
     "view_less": "View less",
+    "keyword": "Keywords",
     "contact-publisher": "Do you have questions or comments?",
     "contact-publisher-text": "Contact the publishing organization for questions, comments and requests regarding the information on this page. ",
     "contact-publisher-text2": "You can also go to the data portal "
@@ -223,6 +224,7 @@
     "term_adress": "Address for terminology"
   },
   "specification_page": {
+    "address": "Adress för specifikation",
     "about_specification": "About specification",
     "resource_specification": "Resource",
     "scheme_download": "Download schema",
