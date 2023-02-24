@@ -106,6 +106,7 @@ export const GeneratePDF = (
   }, 20);
 };
 
+//Generate and download a json file with the form data
 export const GenerateJsonFile = (formDataArray: FormTypes[][]) => {
   const json = JSON.stringify(formDataArray);
   const blob = new Blob([json], { type: "application/json" });
