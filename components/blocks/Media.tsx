@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   Media as IMedia,
   Media_media,
@@ -9,37 +8,28 @@ import { Heading } from "@digg/design-system";
 import { Video } from "../Video";
 import env from "@beam-australia/react-env";
 import { MediaBase } from "../../graphql/__generated__/MediaBase";
-import { responsive } from "../../styles/image";
 import { isExternalLink } from "../../utilities/checkers";
+import { CustomImage } from "../Image";
 
 export const handleUrl = ({ screen9, url }: MediaBase) => {
-  const isClientUrl = (url as any)?.src?.startsWith("/_next/static/media");
-  if (screen9 || isExternalLink(url) || isClientUrl) {
+  if (screen9 || isExternalLink(url)) {
     return url;
   }
 
-  return (env("MEDIA_BASE_URL") || "") + url;
+  return (env("MEDIA_BASE_URL") || "") + `${url}`;
 };
 
 const renderMedia = (media: Media_media, mediaDescription?: string) => {
-  const { alt, description } = media;
+  const { description } = media;
   const url = handleUrl(media);
   switch (media.__typename) {
     case "dataportal_Digg_Image":
       if (!url || url === "") {
         return null;
       }
-      const width = media?.width || "";
-      const height = media?.height || "";
       return (
         <figure>
-          <Image
-            style={responsive}
-            src={url}
-            width={width || 600}
-            height={height || 400}
-            alt={alt || ""}
-          />
+          <CustomImage image={media} style="responsive" />
           {mediaDescription && (
             <figcaption>
               <p className="media-description">{checkLang(mediaDescription)}</p>
@@ -76,4 +66,3 @@ export const Media: React.FC<IMedia> = ({ heading, description, media }) => {
     </div>
   );
 };
-
