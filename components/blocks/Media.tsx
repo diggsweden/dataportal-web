@@ -29,7 +29,7 @@ const renderMedia = (media: Media_media, mediaDescription?: string) => {
       }
       return (
         <figure>
-          <CustomImage image={media} style="responsive" />
+          <CustomImage image={media} style="responsive" sizes={{mobile: "100vw", tablet: "100vw", desktop: "50vw"}} />
           {mediaDescription && (
             <figcaption>
               <p className="media-description">{checkLang(mediaDescription)}</p>

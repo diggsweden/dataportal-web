@@ -102,7 +102,11 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             </div>
             <span className="domain-page__top-image">
               {image && (
-                <CustomImage image={image} style="responsive" sizes={{mobile: "0px", tablet: "0px", desktop: "30vw"}} />
+                <CustomImage
+                  image={image}
+                  style="responsive"
+                  sizes={{ mobile: "0px", tablet: "0px", desktop: "25vw" }}
+                />
               )}
             </span>
           </div>

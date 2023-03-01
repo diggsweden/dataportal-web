@@ -4,11 +4,18 @@ import { Image as ImageInterface } from "../../graphql/__generated__/Image";
 import { isExternalLink } from "../../utilities";
 import Image from "next/image";
 
-type Devices = "mobile" | "tablet" | "desktop";
 interface ImageSizes {
   mobile: string;
   tablet: string;
   desktop: string;
+}
+
+type Device = keyof ImageSizes;
+
+interface ResponsiveSizes {
+  mobile: number;
+  tablet: number;
+  desktop: number;
 }
 
 interface CustomImageProps {
@@ -20,7 +27,12 @@ interface CustomImageProps {
 const imageWidths = [
   16, 32, 48, 64, 96, 128, 256, 384, 640, 768, 1024, 1280, 1536, 1640, 1920,
 ];
-const responsiveSizes = [0, 640, 1024];
+
+const responsiveSizes: ResponsiveSizes = {
+  mobile: 639,
+  tablet: 1023,
+  desktop: 1024,
+};
 
 const isNextStatic = (url: any) => typeof url != "string";
 
@@ -52,8 +64,10 @@ export const CustomImage: React.FC<CustomImageProps> = ({
     sizes &&
     Object.keys(sizes)
       .map(
-        (key, i) =>
-          `(min-width:${responsiveSizes[i]}px) ${sizes[key as Devices]}`
+        (key) =>
+          `(${(key as Device) === "desktop" ? "min" : "max"}-width:${
+            responsiveSizes[key as Device]
+          }px) ${sizes[key as Device]}`
       )
       .join(", ");
 
