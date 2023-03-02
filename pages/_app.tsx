@@ -25,6 +25,7 @@ import "../styles/highlight/highlight.scss";
 import "../styles/statistic/statistic.scss";
 import "../styles/form/form_pages.scss";
 import "../styles/notfoundpage/notfoundpage.scss";
+import "../styles/general/image.scss";
 import "../node_modules/react-vis/dist/style.css";
 import "../components/Form/ProgressComponent/FormProgress.scss";
 
@@ -54,6 +55,7 @@ import {
   Breadcrumb,
   BreadcrumbProps,
   LocalStore,
+  CustomImage,
 } from "../components";
 import { defaultSettings } from "../components/SettingsProvider/SettingsProvider";
 import {
@@ -77,9 +79,6 @@ import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "../env/Settings.Sandbox";
 import useTranslation from "next-translate/useTranslation";
 import { css } from "@emotion/react";
-import Image from "next/image";
-import env from "@beam-australia/react-env";
-const renv = env;
 
 const GetCookiesAccepted = () => {
   try {
@@ -349,13 +348,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   >
                     {heroImage?.url ? (
                       <div className="hero">
-                        <Image
-                          src={(renv("MEDIA_BASE_URL") || "") + heroImage?.url}
-                          width={heroImage?.width || 1440}
-                          height={heroImage?.height || 400}
-                          alt={heroImage?.alt || ""}
-                          priority={true}
-                        />
+                        <CustomImage image={heroImage} />
                       </div>
                     ) : (
                       (pageProps as DataportalPageProps).type ===

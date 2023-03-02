@@ -6,7 +6,6 @@ import {
   Container,
   SearchField,
 } from "@digg/design-system";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { Containers_dataportal_Digg_Containers } from "../../graphql/__generated__/Containers";
@@ -20,7 +19,7 @@ import { CategoriesNav } from "../StartPageComponents";
 import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { responsive } from "../../styles/image";
+import { CustomImage } from "../Image";
 
 export interface DomainProps extends Containers_dataportal_Digg_Containers {
   domain?: DiggDomain;
@@ -63,7 +62,6 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation("pages");
-
   useEffect(() => {
     trackPageView({ documentTitle: "OpenSource" });
   }, [pathname]);
@@ -104,12 +102,10 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             </div>
             <span className="domain-page__top-image">
               {image && (
-                <Image
-                  src={image.url}
-                  style={responsive}
-                  width={image?.width || 300}
-                  height={image?.height || 200}
-                  alt={image?.alt || ""}
+                <CustomImage
+                  image={image}
+                  style="responsive"
+                  sizes={{ mobile: "0px", tablet: "0px", desktop: "25vw" }}
                 />
               )}
             </span>

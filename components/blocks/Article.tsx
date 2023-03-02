@@ -12,10 +12,10 @@ import {
 } from "../../graphql/__generated__/Publication";
 import { findPublicationTypeTag } from "../pages/Articles";
 import { Link as DiggLink } from "../../graphql/__generated__/Link";
-import { handleUrl } from "./Media";
 import placeholderimg from "../../public/images/noimage.svg";
-import { responsive } from "../../styles/image";
 import NoSsr from "../NoSsr/NoSsr";
+import { CustomImage } from "../Image";
+import { responsive } from "../../styles/image";
 
 type Article = {
   type: "publication" | "container";
@@ -112,7 +112,6 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
           articles.map((article, index) => {
             const { type, image, theme, date, title, tags } = article;
             const url = getUrl(article);
-            const imageUrl = image && handleUrl(image);
             const classes = `${type}${theme ? ` ${theme}` : ""}`;
             return (
               <li
@@ -122,16 +121,12 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
               >
                 {image ? (
                   <div className="news-img">
-                    <Image
-                      src={imageUrl || ""}
-                      alt={image?.alt || ""}
-                      sizes="100%"
-                      fill
-                    />
+                    <CustomImage image={image} style="fill" sizes={{mobile: "100vw", tablet: "50vw", desktop: "30vw"}} />
                   </div>
                 ) : (
                   <div className="news-img">
                     <Image
+                      loader={(p) => `${p.src}?w=${p.width}&q=${p.quality}`}
                       style={responsive}
                       src={placeholderimg}
                       alt="placeholder image"
