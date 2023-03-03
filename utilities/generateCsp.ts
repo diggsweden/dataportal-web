@@ -43,15 +43,12 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     { prodOnly: true }
   );
   add(
-    "font-src",
-    `'self' https://static.entryscape.com https://static.cdn.entryscape.com`
+    "script-src-attr",
+    `'unsafe-hashes' 'sha256-dYUMUtU0sGsXCiI6XuVhMNdPUHRSW7RGVl5bz5LjpAI=' 'sha256-VBX8ceLcK+xMdfMO8F4EoCjmT8IQqXqmpv70AnAzpAc='`
   );
   add(
-    "script-src",
-    `'self' ${
-      nonce ? `'nonce-${nonce}'` : ""
-    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se https://dataportal.azureedge.net *.entryscape.com *.dataportal.se`,
-    { prodOnly: true }
+    "font-src",
+    `'self' https://static.entryscape.com https://static.cdn.entryscape.com`
   );
   add(
     "font-src",
