@@ -28,13 +28,6 @@ const columns = (
       },
       {
         __typename: "dataportal_Digg_Link",
-        title: t("routes|statistics$title") || "",
-        link: t("routes|statistics$path"),
-        linktype: dataportal_LinkType.INTERNAL,
-        description: null,
-      },
-      {
-        __typename: "dataportal_Digg_Link",
         title: "info@digg.se",
         link: "mailto:info@digg.se",
         linktype: dataportal_LinkType.EXTERNAL,
