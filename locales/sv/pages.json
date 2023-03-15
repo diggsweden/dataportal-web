@@ -228,6 +228,7 @@
     "term_adress": "Adress för terminologi"
   },
   "specification_page": {
+    "address": "Adress för specifikation",
     "about_specification": "Om specifikation",
     "resource_specification": "Resurs",
     "scheme_download": "Ladda ner schema",

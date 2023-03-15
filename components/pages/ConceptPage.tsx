@@ -7,6 +7,7 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { Heading } from "@digg/design-system";
+import { hemvist } from "../../utilities";
 
 export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
   curi,
@@ -188,6 +189,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                 limit: 10,
               }],
             blocks: [
+              ${hemvist(t)},
               {
                 block: 'terminologyButtonOLD',
                 extends: 'link',
@@ -354,28 +356,6 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                 },
                 loadEntry:true
               },
-
-              {
-                block: 'hemvist',
-                loadEntry: true,
-                run: function(node, data, items, entry) {
-                  
-                  var resourceURI = entry.getResourceURI();
-                  var linkTitle = '${t("pages|concept_page$concept_adress")}';
-
-                  if(window.location.pathname.indexOf("/terminology/") > -1 || window.location.pathname.indexOf("/externalterminology/") > -1)
-                    linkTitle = '${t("pages|concept_page$term_adress")}';
-                  
-                  if (resourceURI.indexOf('https://dataportal.se/') === 0) {
-                    node.innerHTML=linkTitle + ': <a href='+resourceURI+'>'+resourceURI+'</a>';
-                  }
-                  else
-                  {
-                    node.innerHTML='<span class="">'+linkTitle+'</span> <a href='+resourceURI+'>'+resourceURI+'</a>';
-                  } 
-                }
-              },
-              
               {
                 block: 'conceptSearchInTemplate',
                 extends: 'searchList',

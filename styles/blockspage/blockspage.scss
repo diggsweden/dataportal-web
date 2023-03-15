@@ -1348,6 +1348,12 @@ html:lang(en) {
 
 //Specificationpage
 
+.specification__about {
+  .rdforms {
+    padding-top: 0 !important;
+  }
+}
+
 .specification__resource {
   margin-bottom: $space-12;
 
@@ -1771,5 +1777,13 @@ html:lang(en) {
 
   .rdformsLabel {
     @include wordBreak;
+  }
+}
+
+.hemvist__specification {
+  font-weight: bold;
+
+  a {
+    font-weight: normal;
   }
 }
