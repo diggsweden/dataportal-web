@@ -10,6 +10,10 @@
   height: max-content;
   margin: auto;
 
+  picture{
+    width: 100%;
+  }
+
   @media screen and (min-width: $media-md) {
     max-height: 400px;
   }
