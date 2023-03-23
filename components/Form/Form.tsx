@@ -9,8 +9,15 @@ import {
 } from "@digg/design-system";
 import FormTypes from "./FormTypes";
 import FormProgress from "./ProgressComponent/FormProgress";
-import { DiggProgressbar, FormBackButton, FormWrapper, } from "./Styles/FormStyles";
-import { Form_dataportal_Digg_Form as IForm, Form_dataportal_Digg_Form_elements } from "../../graphql/__generated__/Form";
+import {
+  DiggProgressbar,
+  FormBackButton,
+  FormWrapper,
+} from "./Styles/FormStyles";
+import {
+  Form_dataportal_Digg_Form as IForm,
+  Form_dataportal_Digg_Form_elements,
+} from "../../graphql/__generated__/Form";
 import Link from "next/link";
 import { MainContainerStyle } from "../../styles/general/emotion";
 import { FormDropdownNavigation } from "../Navigation/FormDropdownNavigation";
@@ -25,16 +32,21 @@ type Props = IForm & {
   module?: Module_dataportal_Digg_Module_blocks[] | null;
 };
 
-export const Form: React.FC<Props> = ({elements, module}) => {
+export const Form: React.FC<Props> = ({ elements, module }) => {
   const { trackPageView } = useMatomo();
-  const {t} = useTranslation();
-  const {pathname, asPath} = useRouter() || {};
+  const { t } = useTranslation();
+  const { pathname, asPath } = useRouter() || {};
   const [page, setPage] = useState<number>(-1);
   const scrollRef = React.useRef<HTMLSpanElement>(null);
-  const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>([]);
+  const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>(
+    []
+  );
   const [formSteps, setFormSteps] = useState<string[]>([]); //The title of the different pages
   const [showFirstPage, setShowFirstPage] = useState<boolean>(true);
-  const [formIntroText, setFormIntroText] = useState<{ title: string; text: string; }>({ title: "", text: "" });
+  const [formIntroText, setFormIntroText] = useState<{
+    title: string;
+    text: string;
+  }>({ title: "", text: "" });
   let questionNumber = 1; //Used for visual numberings (can't use ID since we don't want headings/pagebreaks to be numbered)
 
   useEffect(() => {
@@ -122,7 +134,7 @@ export const Form: React.FC<Props> = ({elements, module}) => {
       setShowFirstPage(true);
       setFormIntroText({
         title: data[0].title,
-        text: data[0].text.markdown || '',
+        text: data[0].text.markdown || "",
       });
     } else {
       setShowFirstPage(false);
@@ -153,15 +165,16 @@ export const Form: React.FC<Props> = ({elements, module}) => {
   }, [showFirstPage]);
 
   useEffect(() => {
-    if(page === -1) return;
+    if (page === -1) return;
     localStorage.setItem(`${asPath}Page`, page.toString());
   }, [page]);
 
+  //Update the fields when data is changed in the form. Handles all types of fields.
   const UpdateFormDataArray = (
     e: React.ChangeEvent<any>,
     fieldToUpdate: FormTypes,
     pageIndex: number,
-    imgData: { fileName: string; base64: string; } | null = null
+    imgData: { fileName: string; base64: string } | null = null
   ) => {
     pageIndex = pageIndex - 1; //Page index starts at 1 since we hardcode the first page.
 
@@ -186,7 +199,9 @@ export const Form: React.FC<Props> = ({elements, module}) => {
         );
         let foundObj = prev[pageIndex][itemIndex];
         if ("value" in foundObj) {
-          if(imgData){checkForImage(foundObj, imgData)}; 
+          if (imgData) {
+            checkForImage(foundObj, imgData);
+          }
           foundObj.value = e.target.value;
           prev[pageIndex][itemIndex] = foundObj;
         }
@@ -198,8 +213,15 @@ export const Form: React.FC<Props> = ({elements, module}) => {
     }, 100);
   };
 
-  function checkForImage(foundObj: FormTypes, isImg: { fileName: string; base64: string; }) {
-    if (foundObj.__typename === "dataportal_Digg_FormTextArea" && isImg.base64.includes("data:image")) {
+  //Check if an image has been added to the textarea, and if so add it to the images object.
+  function checkForImage(
+    foundObj: FormTypes,
+    isImg: { fileName: string; base64: string }
+  ) {
+    if (
+      foundObj.__typename === "dataportal_Digg_FormTextArea" &&
+      isImg.base64.includes("data:image")
+    ) {
       if (foundObj.images === undefined) {
         foundObj.images = {};
       }
@@ -351,7 +373,10 @@ export const Form: React.FC<Props> = ({elements, module}) => {
               })}
 
               {page === formDataArray.length + 1 && (
-                <FormGeneratePDF formDataArray={formDataArray} blocks={module ? module : null}/>
+                <FormGeneratePDF
+                  formDataArray={formDataArray}
+                  blocks={module ? module : null}
+                />
               )}
             </>
           </FormWrapper>

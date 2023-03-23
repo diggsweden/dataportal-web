@@ -3,7 +3,7 @@ import { styled, colorPalette, theme, css } from "@digg/design-system";
 export const TempContainer = styled.div`
   background: #212121;
   color: white;
-  
+
   max-width: calc(100% - 2rem);
   margin: auto;
 `;
@@ -15,29 +15,29 @@ export const FormWrapper = styled.form`
   color: white;
 
   transition: all 0.2s ease-in-out;
-  
-  @media screen and (min-width: 1024px) {       
+
+  @media screen and (min-width: 1024px) {
     max-width: 46.063rem; //737 px
   }
 
   label {
     margin-bottom: 1rem;
-    &:first-of-type{
+    &:first-of-type {
       margin-top: 0;
     }
 
-    a{
+    a {
       text-decoration: underline;
 
-      &:hover{
+      &:hover {
         text-decoration: none;
       }
     }
   }
 
-  legend{
+  legend {
     margin-bottom: 1rem;
-    &:first-of-type{
+    &:first-of-type {
       margin-top: 0;
     }
   }
@@ -52,20 +52,20 @@ export const FormBackButton = styled.button`
   padding-left: 0;
   margin-top: 3rem;
   margin-bottom: 1rem;
-  
-  .back-button{
-    display: flex;    
+
+  .back-button {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
 
-  .back-text{
+  .back-text {
     margin: 0;
     margin-left: 0.5rem;
   }
 
-  svg{
+  svg {
     transform: rotate(180deg);
   }
 `;
@@ -132,7 +132,7 @@ export const FormNavButtons = styled.div`
     width: fit-content;
     width: 100%;
 
-    span{
+    span {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -151,7 +151,7 @@ export const FormNavButtons = styled.div`
 
 //Form text input
 export const FormTextArea = styled.textarea`
-  background-color: transparent;  
+  background-color: transparent;
   color: white;
   margin-bottom: 2rem;
 
@@ -220,7 +220,7 @@ export const DiggRadio = styled.input`
   border-radius: 50%;
   outline: none;
   cursor: pointer;
-  transition: all 0.12s ease-in-out;  
+  transition: all 0.12s ease-in-out;
   border: ${colorPalette.pinkPop} solid 1px;
 
   /* &:checked {
@@ -237,7 +237,7 @@ export const DiggRadio = styled.input`
     height: 14px;
     width: 14px;
     border-radius: 50%;
-    background-color: ${colorPalette.pinkPop}; 
+    background-color: ${colorPalette.pinkPop};
   }
 
   &:focus {
@@ -249,45 +249,45 @@ export const DiggRadio = styled.input`
   }
 `;
 
-export const DiggRadioWrapper = styled.div`  
+export const DiggRadioWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  label{
+  label {
     padding: 0;
     margin: 0;
     margin-right: 1rem;
 
     input,
-    span{
+    span {
       margin-bottom: 0.5rem;
     }
   }
 `;
 
-export const DiggRadioLabel = styled.label` 
+export const DiggRadioLabel = styled.label`
   margin-top: 10px;
   font-weight: 400;
   display: flex;
-  align-items: center;  
+  align-items: center;
   cursor: pointer;
   align-items: stretch;
 `;
 
 export const DiggTextWithLink = styled.p`
-    margin-bottom: 0;
-  a{
+  margin-bottom: 0;
+  a {
     text-decoration: underline;
 
-    &:hover{
+    &:hover {
       text-decoration: none;
-    }    
+    }
   }
 
-  ul{
-      padding-left: 1rem;
-      margin-top: 0;
-    }
+  ul {
+    padding-left: 1rem;
+    margin-top: 0;
+  }
 `;
 
 export const DiggPopover = styled.span`
@@ -336,7 +336,7 @@ export const DiggPopover = styled.span`
     height: auto;
     width: 100%;
 
-    p{
+    p {
       display: block;
     }
 
@@ -413,11 +413,11 @@ export const DiggConfirmModal = styled.div`
   z-index: 1000;
   contain: paint;
 
-  &.hide{
+  &.hide {
     display: none;
   }
-  
-  .modal-content{
+
+  .modal-content {
     position: sticky;
     margin: auto;
     top: 30%;
@@ -428,32 +428,32 @@ export const DiggConfirmModal = styled.div`
     text-align: center;
     width: 100%;
 
-    @media screen and (min-width: 500px){
+    @media screen and (min-width: 500px) {
       width: 300px;
     }
 
-    &.save-modal{
+    &.save-modal {
       width: 500px;
-      button{
+      button {
         width: 100%;
       }
 
-      a{
+      a {
         text-decoration: underline;
 
-        &:hover{
+        &:hover {
           text-decoration: none;
         }
       }
     }
   }
 
-  .modal-buttons{
+  .modal-buttons {
     display: flex;
     justify-content: space-evenly;
     gap: 1rem;
 
-    button{
+    button {
       color: white;
       background-color: transparent;
       border: 1px solid ${colorPalette.pinkPop};
@@ -463,7 +463,7 @@ export const DiggConfirmModal = styled.div`
       max-width: 100px;
       width: 100%;
 
-      &:hover{
+      &:hover {
         border-color: ${colorPalette.white};
       }
     }

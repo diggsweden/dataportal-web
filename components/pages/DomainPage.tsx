@@ -93,6 +93,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                     <SearchField
                       id="start-search"
                       name="q"
+                      autoComplete="off"
                       placeholder={t("startpage$search_placeholder")}
                       submitLabel="screen-reader"
                     />
