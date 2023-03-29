@@ -16,14 +16,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({ query }) => {
     <div className="search-head">
       <div>
         <Link
-          href={`${lang}/search?q=${query ? query : ""}&f=`}
-          className={`text-md ${pathname == "/search" ? "active" : ""} `}
-        >
-          {t("search$content")}
-        </Link>
-      </div>
-      <div>
-        <Link
           href={`${lang}/datasets?q=${query ? query : ""}&f=`}
           className={`text-md ${pathname == "/datasets" ? "active" : ""} `}
         >
