@@ -72,7 +72,7 @@
     "datasets": "Data & API:er",
     "concepts": "Begrepp",
     "specifications": "Specifikationer",
-    "content": "Innehåll",
+    "content": "Innehåll på webbplatsen",
     "organization": "Organisationer",
     "relevance": "Relevans",
     "date": "Senast ändrad",
@@ -110,25 +110,25 @@
     "pagination-next-txt": "Nästa"
   },
   "datasets": {
-    "search-datasets": "Sök",
+    "search": "Sök",
     "datasets": "datamängder",
     "social_meta_title": "Sök data & API:er",
     "social_meta_description": "Data & API:er på Sveriges Dataportal"
   },
   "concepts": {
-    "search-concept": "Sök",
+    "search": "Sök",
     "concepts": "begrepp",
     "social_meta_title": "Sök begrepp",
     "social_meta_description": "Begrepp på Sveriges Dataportal"
   },
   "specifications": {
-    "search-specifications": "Sök",
+    "search": "Sök",
     "specifications": "specifikationer",
     "social_meta_title": "Sök specifikationer",
     "social_meta_description": "Specifikationer på Sveriges Dataportal"
   },
   "content": {
-    "search-content": "Sök",
+    "search": "Sök",
     "content": "Innehåll",
     "social_meta_title": "Sök innehåll",
     "social_meta_description": "Innehåll på Sveriges dataportal"

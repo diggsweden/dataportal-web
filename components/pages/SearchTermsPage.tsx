@@ -156,7 +156,7 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
 
                   <SearchInput
                     search={search}
-                    searchType="begrepp"
+                    searchMode="concepts"
                     query={query}
                     setQuery={setQuery}
                   />
@@ -164,7 +164,7 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
                   <SearchFilters
                     showFilter={showFilter}
                     search={search}
-                    searchType="begrepp"
+                    searchMode="concepts"
                     query={query}
                     setShowFilter={setShowFilter}
                   />
@@ -172,7 +172,7 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
                   <SearchResults
                     showSorting={showFilter}
                     search={search}
-                    searchType="begrepp"
+                    searchMode="concepts"
                   />
                 </Container>
               </div>

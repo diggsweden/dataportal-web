@@ -255,14 +255,14 @@ export const SearchPage: React.FC<SearchProps> = () => {
 
                 <SearchInput
                   search={search}
-                  searchType={"data"}
+                  searchMode={"datasets"}
                   query={query}
                   setQuery={setQuery}
                 />
 
                 <SearchFilters
                   showFilter={showFilter}
-                  searchType="data"
+                  searchMode="datasets"
                   search={search}
                   query={query}
                   setShowFilter={setShowFilter}
@@ -271,7 +271,7 @@ export const SearchPage: React.FC<SearchProps> = () => {
                 <SearchResults
                   showSorting={showFilter}
                   search={search}
-                  searchType="data"
+                  searchMode="datasets"
                 />
               </div>
             )}

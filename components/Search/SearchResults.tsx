@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SearchContextData } from ".";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import { SearchType } from "./SearchFilters";
+import { SearchMode } from "./SearchFilters";
 import { FileFormatBadge } from "../FileFormatBadge";
 import { clearLocalStorage } from "../../utilities";
 import { DetailedList, CompactList } from "../Icons";
@@ -12,7 +12,7 @@ import { Button, Heading } from "@digg/design-system";
 
 interface SearchResultsProps {
   search: SearchContextData;
-  searchType: SearchType;
+  searchMode: SearchMode;
   showTip?: boolean;
   showSorting: boolean;
 }
@@ -189,13 +189,13 @@ const SortingOptions: React.FC<{
 
 /**
  * @param {SearchContextData} { search } the context of the SearchProvider
- * @param {SearchType} { searchType } typ of search, data | begrepp | specifikation
+ * @param {SearchMode} { searchMode } typ of search, data | begrepp | specifikation
  * @returns a list of links
  * @param {boolean} showSorting disable or enable filters
  */
 export const SearchResults: React.FC<SearchResultsProps> = ({
   search,
-  searchType,
+  searchMode,
   showSorting,
 }) => {
   const { trackEvent } = useMatomo();
@@ -210,8 +210,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   const trackSearchHitClick = (url: string) => {
     trackEvent({
       category: `Sidor från en webbplatssökning`,
-      name: `${searchType}: Webbplatssökning`,
-      action: `Url: ${url}, sökfras: ${search.request.query}, typ: ${searchType}`,
+      name: `${searchMode}: Webbplatssökning`,
+      action: `Url: ${url}, sökfras: ${search.request.query}, typ: ${searchMode}`,
     });
   };
 
@@ -244,7 +244,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
               `${search.result.count} ${t("pages|search$dataset-hits")}`}
           </Heading>
 
-          {searchType == "data" && (
+          {searchMode == "datasets" && (
             <div
               className={
                 showSorting

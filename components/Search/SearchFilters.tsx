@@ -12,7 +12,7 @@ import useTranslation from "next-translate/useTranslation";
 interface SearchFilterProps {
   showFilter: boolean;
   search: SearchContextData;
-  searchType: SearchType;
+  searchMode: SearchMode;
   query: string;
   setShowFilter: React.Dispatch<React.SetStateAction<boolean>>;
   showTip?: boolean;
@@ -32,7 +32,7 @@ interface FilterSearchProps {
 }
 
 type InputFilter = { [key: string]: string };
-export type SearchType = "data" | "begrepp" | "specifikationer" | "content";
+export type SearchMode = "content" | "datasets" | "concepts" | "specifications";
 
 const FilterSearch: React.FC<FilterSearchProps> = ({
   filterKey,
@@ -138,14 +138,14 @@ const FindFilters = (
  *
  * @param {boolean} showFilter disable or enable filters
  * @param {SearchContextData} search context for handling searchstate
- * @param {SearchType} searchType
+ * @param {SearchMode} searchMode
  * @param {string} query
  * @returns JSX-elements of selects and checkboxes
  */
 export const SearchFilters: React.FC<SearchFilterProps> = ({
   showFilter,
   search,
-  searchType,
+  searchMode,
   query,
   setShowFilter,
 }) => {
@@ -206,7 +206,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                       }
                     >
                       <div className="search-filter-list">
-                        {searchType == "data" && ( //only render on searchpage
+                        {searchMode == "datasets" && ( //only render on searchpage
                           <>
                             {isLicense ? (
                               <MarkAll
@@ -312,7 +312,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
               })}
         </div>
 
-        {searchType == "data" && (
+        {searchMode == "datasets" && (
           <div className="checkbox__wrapper">
             <input
               id="api_only"
@@ -370,7 +370,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
         )}
       </div>
 
-      {searchType == "data" && (
+      {searchMode == "datasets" && (
         <div className="search-toolbar">
           <button
             className={isOpen ? "more-filters-btn" : "more-filters-btn active"}

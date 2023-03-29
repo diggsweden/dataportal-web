@@ -228,14 +228,14 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
   return (
     <>
       <Head>
-        <title>{`${t("common|search-content")} - Sveriges dataportal`}</title>
+        <title>{`${t("common|search")} - Sveriges dataportal`}</title>
         <meta
           property="og:title"
-          content={`${t("common|search-content")} - Sveriges dataportal`}
+          content={`${t("common|search")} - Sveriges dataportal`}
         />
         <meta
           name="twitter:title"
-          content={`${t("common|search-content")} - Sveriges dataportal`}
+          content={`${t("common|search")} - Sveriges dataportal`}
         />
       </Head>
       <div className="wpb_wrapper">
@@ -249,7 +249,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
               weight="light"
               color="pinkPop"
             >
-              {t("common|search-content")}
+              {t("common|search")}
             </Heading>
           </div>
 
@@ -276,7 +276,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
                   autoComplete="off"
                   name="q"
                   type="text"
-                  placeholder={t("pages|content$search-content")}
+                  placeholder={t("pages|content$search")}
                   value={query || ""}
                   onChange={(e) => {
                     clearCurrentScrollPos();

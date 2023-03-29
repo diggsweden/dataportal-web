@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Spinner, SearchField } from "@digg/design-system";
 import { SearchContextData } from ".";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import { SearchType } from "./SearchFilters";
+import { SearchMode } from "./SearchFilters";
 import useTranslation from "next-translate/useTranslation";
 
 interface SearchInputProps {
   search: SearchContextData;
-  searchType: SearchType;
+  searchMode: SearchMode;
   query: string;
   // eslint-disable-next-line no-unused-vars
   setQuery: (value: string) => void;
@@ -21,7 +21,7 @@ interface SearchInputProps {
  */
 export const SearchInput: React.FC<SearchInputProps> = ({
   search,
-  searchType,
+  searchMode,
   query,
   setQuery,
 }) => {
@@ -29,18 +29,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   const { trackEvent } = useMatomo();
   const { t } = useTranslation();
 
-  const getLabel = () => {
-    switch (searchType) {
-      case "content":
-        return t("pages|datasets$search-content");
-      case "data":
-        return t("pages|datasets$search-datasets");
-      case "begrepp":
-        return t("pages|concepts$search-concept");
-      case "specifikationer":
-        return t("pages|specifications$search-specifications");
-    }
-  };
+  const placeholder = t(`pages|${searchMode}$search`);
 
   const clearCurrentScrollPos = () => {
     if (typeof localStorage != "undefined" && typeof location != "undefined") {
@@ -56,9 +45,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         : false
     ) {
       trackEvent({
-        category: `Sökord utan resultat - Typ: ${searchType}`,
+        category: `Sökord utan resultat - Typ: ${searchMode}`,
         action: query || "",
-        name: `${searchType}: Inga sökträffar`,
+        name: `${searchMode}: Inga sökträffar`,
       });
     }
   }, [search.result]);
@@ -72,7 +61,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           search
             .set({
               page: 0,
-              query: searchType == "data" ? query : query ? query : "*",
+              query: searchMode == "datasets" ? query : query ? query : "*",
               fetchFacets: true,
             })
             .then(() => search.doSearch());
@@ -80,7 +69,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
       >
         <div className="search-box">
           <label className="screen-reader" htmlFor="search-field">
-            {getLabel()}
+            {placeholder}
           </label>
           <SearchField
             autoFocus
@@ -89,7 +78,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
             autoComplete="off"
             name="q"
             type="text"
-            placeholder={getLabel()}
+            placeholder={placeholder}
             value={query || ""}
             onChange={(e) => {
               clearCurrentScrollPos();
