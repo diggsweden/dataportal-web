@@ -249,9 +249,14 @@ export const DiggRadio = styled.input`
   }
 `;
 
-export const DiggRadioWrapper = styled.div`
+interface RadioProps {
+  direction: "row" | "column";
+}
+
+export const DiggRadioWrapper = styled.div<RadioProps>`
   display: flex;
-  flex-direction: column;
+  color: white;
+  flex-direction: ${({ direction }) => direction};
 
   label {
     padding: 0;
@@ -269,9 +274,8 @@ export const DiggRadioLabel = styled.label`
   margin-top: 10px;
   font-weight: 400;
   display: flex;
-  align-items: center;
   cursor: pointer;
-  align-items: stretch;
+  align-items: center;
 `;
 
 export const DiggTextWithLink = styled.p`
