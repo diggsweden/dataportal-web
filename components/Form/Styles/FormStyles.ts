@@ -250,7 +250,7 @@ export const DiggRadio = styled.input`
 `;
 
 interface RadioProps {
-  direction: "row" | "column";
+  direction: FlexDirection;
 }
 
 export const DiggRadioWrapper = styled.div<RadioProps>`
