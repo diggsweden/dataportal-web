@@ -56,3 +56,6 @@ __ENV.js
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+#meilisearch
+**/data.ms
