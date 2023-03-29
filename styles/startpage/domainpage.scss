@@ -105,7 +105,7 @@
     min-height: 175vh;
     position: absolute;
     width: 100%;
-    top: -4rem;
+    top: -21rem;
     background: radial-gradient(209.41deg, rgba(160, 91, 81, 0.65) 0%, rgba(33, 33, 33, 0.6) 500px);
     z-index: -10;
 
@@ -123,6 +123,7 @@
         ); //Center
 
     @media screen and (min-width: $media-lg) {
+    top: -18rem;
       background: radial-gradient(
           circle at 90vw 10%,
           rgba(160, 91, 81, 0.408) 0%,

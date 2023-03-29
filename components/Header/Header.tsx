@@ -7,13 +7,15 @@ import {
   QuestionCircleIcon,
   ChatIcon,
   GlobeIcon,
+  SearchIcon,
 } from "@digg/design-system";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import FocusTrap from "focus-trap-react";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { EnvSettings } from "../../env/EnvSettings";
+import { GlobalSearch } from "../Search";
 
 type HeaderProps = {
   menu: any;
@@ -22,17 +24,72 @@ type HeaderProps = {
 
 const showLangLink = true;
 
+interface SearchButtonProps {
+  toggle: () => void;
+  show: boolean;
+  pathname: string;
+  styles?: any;
+  iconColor?: DiggColor;
+}
+
+const SearchButton: React.FC<SearchButtonProps> = ({
+  toggle,
+  show,
+  pathname,
+  styles,
+  iconColor,
+}) => {
+  const { t } = useTranslation("common");
+  return (
+    <button
+      key={"search-toggle"}
+      onClick={toggle}
+      className={`search-link search-toggle${
+        pathname === "/search" ? " active" : ""
+      }`}
+      css={styles}
+    >
+      {show ? (
+        <CloseIcon
+          color={colorPalette[iconColor || "gray500"]}
+          width={20}
+          className="search-link--icon"
+        />
+      ) : (
+        <SearchIcon
+          color={colorPalette[iconColor || "gray500"]}
+          width={20}
+          className="search-link--icon"
+        />
+      )}
+      <span>{show ? t("close_search") : t("search")}</span>
+    </button>
+  );
+};
+
 export const Header: React.FC<HeaderProps> = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
   const [focusTrap, setFocusTrap] = useState(false);
+  const [searchFlexDirection, setDirection] = useState<FlexDirection>("column");
   const { t, lang } = useTranslation();
   const { pathname } = useRouter() || {};
+  const searchRef = useRef<HTMLInputElement>(null);
   const isEn = lang === "en";
 
   const handleMenuState = (e: UIEvent) => {
     const screenWidth = (e as any).currentTarget.innerWidth;
     if (screenWidth > 880) {
       showMenu && closeMenu();
+    }
+    handleDirection(screenWidth);
+  };
+
+  const handleDirection = (screenWidth: number) => {
+    if (screenWidth < 1024) {
+      searchFlexDirection === "row" && setDirection("column");
+    } else {
+      searchFlexDirection === "column" && test("row");
     }
   };
 
@@ -48,17 +105,33 @@ export const Header: React.FC<HeaderProps> = () => {
     document.body.setAttribute("style", ``);
   };
 
+  const toggleSearch = () => {
+    setShowSearch(!showSearch);
+  };
+
+  const test = (direction: FlexDirection) => {
+    setDirection(direction);
+  };
+
+  useEffect(() => {
+    showSearch ? searchRef.current?.focus() : searchRef.current?.blur();
+  }, [showSearch]);
+
   useEffect(() => {
     window.addEventListener("resize", handleMenuState);
 
     return () => {
       window.removeEventListener("resize", handleMenuState);
     };
-  }, [showMenu]);
+  }, [showMenu, searchFlexDirection]);
+
+  useEffect(() => {
+    handleDirection(window.innerWidth);
+  }, []);
 
   return (
     <header>
-      <div className="header-wrapper">
+      <div className={`header-wrapper${showSearch ? " show-search" : ""}`}>
         <div className="header-box">
           <div className="main-bar">
             <div className="start-link">
@@ -117,6 +190,15 @@ export const Header: React.FC<HeaderProps> = () => {
               aria-modal={showMenu}
               className="main-bar__right-menu"
             >
+              <SearchButton
+                styles={css`
+                  ${responsiveProp("display", ["flex", "flex", "flex", "none"])}
+                `}
+                toggle={toggleSearch}
+                show={showSearch}
+                pathname={pathname}
+                iconColor="white"
+              />
               <button
                 css={css`
                   ${responsiveProp("display", ["flex", "flex", "flex", "none"])}
@@ -176,32 +258,11 @@ export const Header: React.FC<HeaderProps> = () => {
               >
                 {!showMenu && (
                   <>
-                    {/* Search data hidden in MVP */}
-                    {/* <Link
-                      href={`/datasets?q=&f=`}
-                      key={'search-data-link'}
-                      locale={lang}
-                    >
-                      <a
-                        onClick={closeMenu}
-                        className={`${pathname === '/datasets' ? ' active' : ''}`}
-                      >
-                        <div className="search-link ">
-                          <svg
-                            width="16"
-                            height="16"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M15.7529 14.7188L11.5654 10.5312C12.4717 9.42188 12.9717 8.025 12.9717 6.5C12.9717 2.90937 10.0614 0 6.47167 0C2.88198 0 -0.000213623 2.91031 -0.000213623 6.5C-0.000213623 10.0897 2.90979 13 6.47167 13C7.99636 13 9.39511 12.4716 10.5029 11.5925L14.6904 15.78C14.8654 15.9281 15.0592 16 15.2498 16C15.4404 16 15.6335 15.9268 15.7801 15.7803C16.0717 15.4875 16.0717 15.0125 15.7529 14.7188ZM1.49979 6.5C1.49979 3.74312 3.74292 1.5 6.49979 1.5C9.25667 1.5 11.4998 3.74312 11.4998 6.5C11.4998 9.25688 9.25667 11.5 6.49979 11.5C3.74292 11.5 1.49979 9.25625 1.49979 6.5Z"
-                              fill="#949494"
-                            />
-                          </svg>
-                          <span className="right-bar-item">{t('common|search-data')}</span>
-                        </div>
-                      </a>
-                    </Link> */}
+                    <SearchButton
+                      toggle={toggleSearch}
+                      show={showSearch}
+                      pathname={pathname}
+                    />
 
                     {!isEn && (
                       <Link
@@ -366,6 +427,13 @@ export const Header: React.FC<HeaderProps> = () => {
           </FocusTrap>
         </div>
       </div>
+      <GlobalSearch
+        ref={searchRef}
+        hidden={!showSearch}
+        className={`global-search${showSearch ? " visible" : ""}`}
+        onSearch={() => setShowSearch(false)}
+        radioDirection={searchFlexDirection}
+      />
     </header>
   );
 };
