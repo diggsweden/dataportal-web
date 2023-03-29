@@ -18,7 +18,7 @@
     "@apollo/client": "^3.6.9",
     "@beam-australia/react-env": "^3.1.1",
     "@datapunt/matomo-tracker-react": "^0.5.1",
-    "@digg/design-system": "^4.3.0",
+    "@digg/design-system": "^4.3.1",
     "@types/node-fetch": "^2.6.2",
     "@types/swagger-ui-react": "^4.11.0",
     "fetch-enhanced": "^8.1.1",

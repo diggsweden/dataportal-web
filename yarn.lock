@@ -2052,9 +2052,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@digg/design-system@npm:^4.3.0":
-  version: 4.3.0
-  resolution: "@digg/design-system@npm:4.3.0"
+"@digg/design-system@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "@digg/design-system@npm:4.3.1"
   dependencies:
     "@emotion/react": ^11.10.4
     "@emotion/server": ^11.10.0
@@ -2066,7 +2066,7 @@ __metadata:
   peerDependencies:
     react: ^18.1.0
     react-dom: ^18.1.0
-  checksum: 5425159a798561fd082f2218d8b685890ef488d6e4e104bf1c633d18ffe8ffd36c991c84e3628029fdb07e2ad67e917d356174265b588632e7e9f3a3c84f0f44
+  checksum: c9ddba7f82994ec130014072c7497eff568012f06648ac3a60f09f6ee0527ad44680fa87d6bf2f57a6dddd6eac0a4d8c038d0d37d2ce35a90c931e4ed6c4424b
   languageName: node
   linkType: hard
 
@@ -6891,7 +6891,7 @@ __metadata:
     "@apollo/client": ^3.6.9
     "@beam-australia/react-env": ^3.1.1
     "@datapunt/matomo-tracker-react": ^0.5.1
-    "@digg/design-system": ^4.3.0
+    "@digg/design-system": ^4.3.1
     "@emotion/babel-preset-css-prop": ^11.10.0
     "@types/graphql": ^14.5.0
     "@types/node": 18.7.16
