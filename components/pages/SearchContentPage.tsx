@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { SearchHeader } from "..";
 import useTranslation from "next-translate/useTranslation";
 import { querySearch } from "../../utilities";
 import router, { useRouter } from "next/router";
@@ -240,8 +239,6 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
       </Head>
       <div className="wpb_wrapper">
         <Container cssProp={MainContainerStyle}>
-          <SearchHeader activeLink={"content"} query={query} />
-
           <div className="row">
             <Heading
               className="search-header"
@@ -249,7 +246,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
               weight="light"
               color="pinkPop"
             >
-              {t("common|search")}
+              {t("common|search-content")}
             </Heading>
           </div>
 
