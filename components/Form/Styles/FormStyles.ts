@@ -249,14 +249,10 @@ export const DiggRadio = styled.input`
   }
 `;
 
-interface RadioProps {
-  direction: FlexDirection;
-}
-
-export const DiggRadioWrapper = styled.div<RadioProps>`
+export const DiggRadioWrapper = styled.div`
   display: flex;
   color: white;
-  flex-direction: ${({ direction }) => direction};
+  flex-direction: column;
 
   label {
     padding: 0;

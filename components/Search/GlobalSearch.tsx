@@ -20,11 +20,10 @@ interface GlobalSearchProps {
   className?: string;
   onSearch?: () => void;
   hidden?: boolean;
-  radioDirection?: FlexDirection;
 }
 
 export const GlobalSearch = forwardRef<HTMLInputElement, GlobalSearchProps>(
-  ({ className, onSearch, hidden, radioDirection }, ref) => {
+  ({ className, onSearch, hidden }, ref) => {
     const { t } = useTranslation();
     const router = useRouter();
     const [query, setQuery] = useState("");
@@ -48,7 +47,6 @@ export const GlobalSearch = forwardRef<HTMLInputElement, GlobalSearchProps>(
           </label>
           <SearchField
             ref={ref}
-            autoFocus
             id="search-field"
             submitLabel={t("common|search")}
             autoComplete="off"
@@ -63,7 +61,7 @@ export const GlobalSearch = forwardRef<HTMLInputElement, GlobalSearchProps>(
           />
           <fieldset>
             <legend className="screen-reader">Search modes: </legend>
-            <DiggRadioWrapper direction={radioDirection || "column"}>
+            <DiggRadioWrapper className="radio_wrapper">
               {searchModes.map((mode) => {
                 const text = t(`pages|search\$${mode}`);
                 return (

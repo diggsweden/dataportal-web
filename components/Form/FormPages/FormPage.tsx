@@ -189,7 +189,6 @@ const FormItem = (
             )}
 
             <DiggRadioWrapper
-              direction="column"
               aria-expanded={
                 item.selected !== item.choices[item.choices.length - 1] &&
                 item.selected.popup &&

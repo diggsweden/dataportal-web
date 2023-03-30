@@ -24,7 +24,7 @@ header {
       padding: 1.25rem 0;
 
       &.show-search {
-        padding-bottom: 170px;
+        padding-bottom: 182px;
       }
     }
   }
@@ -366,6 +366,14 @@ header {
   &.visible {
     transition: opacity 0.1s ease-in;
     opacity: 1;
+  }
+
+  .radio_wrapper {
+    flex-direction: column;
+
+    @media screen and (min-width: $media-lg) {
+      flex-direction: row;
+    }
   }
 
   form {
