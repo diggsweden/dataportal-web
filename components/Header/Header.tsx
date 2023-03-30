@@ -16,6 +16,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { EnvSettings } from "../../env/EnvSettings";
 import { GlobalSearch } from "../Search";
+import { usePrevious } from "../../utilities";
 
 type HeaderProps = {
   menu: any;
@@ -68,28 +69,20 @@ const SearchButton: React.FC<SearchButtonProps> = ({
 };
 
 export const Header: React.FC<HeaderProps> = () => {
-  const [showMenu, setShowMenu] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
-  const [focusTrap, setFocusTrap] = useState(false);
-  const [searchFlexDirection, setDirection] = useState<FlexDirection>("column");
-  const { t, lang } = useTranslation();
   const { pathname } = useRouter() || {};
+  const [showMenu, setShowMenu] = useState(false);
+  const [showSearch, setShowSearch] = useState(pathname === "/");
+  const [focusTrap, setFocusTrap] = useState(false);
+  const { t, lang } = useTranslation();
   const searchRef = useRef<HTMLInputElement>(null);
   const isEn = lang === "en";
+  const previousPathname = usePrevious(pathname);
+  const isFirstLoad = previousPathname === undefined;
 
   const handleMenuState = (e: UIEvent) => {
     const screenWidth = (e as any).currentTarget.innerWidth;
     if (screenWidth > 880) {
       showMenu && closeMenu();
-    }
-    handleDirection(screenWidth);
-  };
-
-  const handleDirection = (screenWidth: number) => {
-    if (screenWidth < 1024) {
-      searchFlexDirection === "row" && setDirection("column");
-    } else {
-      searchFlexDirection === "column" && test("row");
     }
   };
 
@@ -109,13 +102,14 @@ export const Header: React.FC<HeaderProps> = () => {
     setShowSearch(!showSearch);
   };
 
-  const test = (direction: FlexDirection) => {
-    setDirection(direction);
-  };
+  useEffect(() => {
+    const handleFocus = () => !isFirstLoad && searchRef.current?.focus();
+    showSearch ? handleFocus() : searchRef.current?.blur();
+  }, [showSearch]);
 
   useEffect(() => {
-    showSearch ? searchRef.current?.focus() : searchRef.current?.blur();
-  }, [showSearch]);
+    !isFirstLoad && setShowSearch(pathname === "/");
+  }, [pathname]);
 
   useEffect(() => {
     window.addEventListener("resize", handleMenuState);
@@ -123,11 +117,7 @@ export const Header: React.FC<HeaderProps> = () => {
     return () => {
       window.removeEventListener("resize", handleMenuState);
     };
-  }, [showMenu, searchFlexDirection]);
-
-  useEffect(() => {
-    handleDirection(window.innerWidth);
-  }, []);
+  }, [showMenu]);
 
   return (
     <header>
@@ -432,7 +422,6 @@ export const Header: React.FC<HeaderProps> = () => {
         hidden={!showSearch}
         className={`global-search${showSearch ? " visible" : ""}`}
         onSearch={() => setShowSearch(false)}
-        radioDirection={searchFlexDirection}
       />
     </header>
   );
