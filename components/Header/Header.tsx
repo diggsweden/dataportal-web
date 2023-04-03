@@ -88,6 +88,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
   const openMenu = () => {
     setShowMenu(true);
+    setShowSearch(false);
     setFocusTrap(true);
     document.body.setAttribute("style", `position:fixed;width:100%`);
   };
@@ -99,6 +100,7 @@ export const Header: React.FC<HeaderProps> = () => {
   };
 
   const toggleSearch = () => {
+    setShowMenu(false);
     setShowSearch(!showSearch);
   };
 
