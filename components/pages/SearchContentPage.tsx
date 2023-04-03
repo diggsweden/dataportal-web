@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { querySearch } from "../../utilities";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import { Button, Container, Heading, SearchField } from "@digg/design-system";
 import { MainContainerStyle } from "../../styles/general/emotion";
 import Link from "next/link";
 import { Search_dataportal_Digg_Search_hits } from "../../graphql/__generated__/Search";
-import { encode, decode } from "qss";
 import { getSearchHit } from "../../utilities/searchHelpers";
 
 interface SearchProps {
@@ -16,11 +15,11 @@ interface SearchProps {
 }
 
 export const SearchContentPage: React.FC<SearchProps> = () => {
+  const { pathname, query: routerQuery } = useRouter() || {};
   const { t, lang } = useTranslation("common");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(routerQuery?.q as string || "");
   const [trackedQuery, setTrackedQuery] = useState("");
   const { trackEvent } = useMatomo();
-  const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
 
   const [searchResult, setSearchResult] = useState<SearchResult>();
@@ -37,8 +36,6 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
     new Promise<void>(async (resolve) => {
       setLoading(true);
 
-      setStateToLocation();
-
       const result = (await querySearch(
         query.length > 0 ? query : "",
         lang,
@@ -49,7 +46,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
         true
       )) as any;
 
-      let hits: SearchHit[] = result?.dataportal_Digg_Search?.hits
+      const hits: SearchHit[] = result?.dataportal_Digg_Search?.hits
         ? result.dataportal_Digg_Search?.hits.map(
             (r: Search_dataportal_Digg_Search_hits) => {
               return getSearchHit(r, t);
@@ -59,7 +56,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
 
       setSearchResult({
         ...searchResult,
-        hits: hits,
+        hits,
         count: result?.dataportal_Digg_Search?.totalNrOfHits || 0,
       });
 
@@ -72,54 +69,6 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
     if (typeof localStorage != "undefined" && typeof location != "undefined") {
       localStorage.setItem(`ScrollposY_${location.search}`, "0");
     }
-  };
-
-  /**
-   * Save current request state to Location
-   */
-  const setStateToLocation = () => {
-    if (typeof window != "undefined" && history) {
-      let query = searchRequest?.query ? searchRequest?.query : "";
-
-      let page = searchRequest?.page ? searchRequest?.page : "1";
-
-      let newurl =
-        window.location.protocol +
-        "//" +
-        window.location.host +
-        window.location.pathname +
-        "?" +
-        encode({
-          p: page,
-          q: query,
-        });
-      window.history.pushState({ path: newurl }, "", newurl);
-    }
-  };
-
-  /**
-   * parse values in location to state
-   *
-   * Returns true if any values was parsed
-   */
-  const parseLocationToState = () => {
-    return new Promise<Boolean>((resolve) => {
-      if (typeof window != "undefined" && history && window.location.search) {
-        var qs = decode(window.location.search.substring(1)) as any;
-
-        let querytext =
-          qs.q && qs.q.toString().length > 0 ? qs.q.toString() : "";
-        let page = qs.p && qs.p.toString().length > 0 ? qs.p.toString() : null;
-
-        setSearchRequest({
-          ...searchRequest,
-          query: decodeURIComponent(querytext.replace(/\+/g, "%20")),
-          page: page ?? 1,
-        });
-
-        resolve(true);
-      } else resolve(false);
-    });
   };
 
   const searchFocus = () => {
@@ -184,32 +133,6 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
       });
     }
   }, [searchResult]);
-
-  useEffect(() => {
-    //needed for handling back/forward buttons and changing state for input correctly
-    if (typeof window !== "undefined") {
-      //handles back/forward button
-      window.addEventListener("popstate", () => {
-        var qs = decode(window.location.search.substring(1)) as any;
-        let querytext =
-          qs.q && qs.q.toString().length > 0 ? qs.q.toString() : "";
-
-        if (querytext) setQuery(querytext);
-
-        router.push(window.location.pathname + window.location.search);
-        parseLocationToState();
-      });
-
-      //*** makes sure querytext is set from location to input, on page reloads
-      var qs = decode(window.location.search.substring(1)) as any;
-      let querytext = qs.q && qs.q.toString().length > 0 ? qs.q.toString() : "";
-
-      if (querytext)
-        setQuery(decodeURIComponent(querytext.replace(/\+/g, "%20")));
-      parseLocationToState();
-      //***
-    }
-  }, []);
 
   useEffect(() => {
     const count = searchResult?.count || -1;
