@@ -24,9 +24,10 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
   const { trackPageView } = useMatomo();
 
   const [searchResult, setSearchResult] = useState<SearchResult>();
-  const [searchRequest, setSearchRequest] = useState<SearchRequest>(
-    routerQuery?.p ? { page: parseInt(routerQuery.p as string) } : {}
-  );
+  const [searchRequest, setSearchRequest] = useState<SearchRequest>({
+    page: parseInt(routerQuery?.p as string),
+    query: routerQuery?.q as string,
+  });
   const [loading, setLoading] = useState(false);
   const PER_PAGE = 10;
   const searchKey = typeof location != "undefined" ? location.search : "server";
@@ -35,38 +36,35 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
       ? localStorage.getItem(`ScrollposY_${searchKey}`)
       : "0";
 
-  const doSearch = () =>
-    new Promise<void>(async (resolve) => {
-      setLoading(true);
+  const doSearch = async () => {
+    setLoading(true);
 
-      const result = (await querySearch(
-        query.length > 0 ? query : "",
-        lang,
-        PER_PAGE,
-        searchRequest?.page && searchRequest?.page > 1
-          ? (searchRequest?.page - 1) * PER_PAGE
-          : 0,
-        true
-      )) as any;
+    const result = (await querySearch(
+      searchRequest.query || "",
+      lang,
+      PER_PAGE,
+      searchRequest?.page && searchRequest?.page > 1
+        ? (searchRequest?.page - 1) * PER_PAGE
+        : 0,
+      true
+    )) as any;
 
-      const hits: SearchHit[] = result?.dataportal_Digg_Search?.hits
-        ? result.dataportal_Digg_Search?.hits.map(
-            (r: Search_dataportal_Digg_Search_hits) => {
-              return getSearchHit(r, t);
-            }
-          )
-        : [];
+    const hits: SearchHit[] = result?.dataportal_Digg_Search?.hits
+      ? result.dataportal_Digg_Search?.hits.map(
+          (r: Search_dataportal_Digg_Search_hits) => {
+            return getSearchHit(r, t);
+          }
+        )
+      : [];
 
-      setSearchResult({
-        ...searchResult,
-        hits,
-        count: result?.dataportal_Digg_Search?.totalNrOfHits || 0,
-      });
-
-      setLoading(false);
-
-      resolve();
+    setSearchResult({
+      ...searchResult,
+      hits,
+      count: result?.dataportal_Digg_Search?.totalNrOfHits || 0,
     });
+
+    setLoading(false);
+  };
 
   const clearCurrentScrollPos = () => {
     if (typeof localStorage != "undefined" && typeof location != "undefined") {
@@ -130,10 +128,6 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
     router.query.p = page.toString();
     router.push(router);
     clearCurrentScrollPos();
-    setSearchRequest({
-      ...searchRequest,
-      page,
-    });
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -170,15 +164,18 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
   }, [pathname]);
 
   useEffect(() => {
-    if(!routerQuery.p) {
+    if (!routerQuery.p) {
       routerQuery.p = "1";
       router.push(router);
-    };
+    }
+    const q = (routerQuery.q as string) || "";
+    setQuery(q);
     setSearchRequest({
       ...searchRequest,
       page: parseInt(routerQuery.p as string),
+      query: q,
     });
-  }, [routerQuery?.p]);
+  }, [routerQuery]);
 
   return (
     <>
@@ -211,6 +208,9 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
               onSubmit={(event) => {
                 clearCurrentScrollPos();
                 event.preventDefault();
+                routerQuery.q = query;
+                routerQuery.p = "1";
+                router.push(router);
                 setSearchRequest({
                   ...searchRequest,
                   query: query,
