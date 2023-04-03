@@ -25,18 +25,24 @@ interface GlobalSearchProps {
 export const GlobalSearch = forwardRef<HTMLInputElement, GlobalSearchProps>(
   ({ className, onSearch, hidden }, ref) => {
     const { t } = useTranslation();
-    const router = useRouter();
+    const router = useRouter() || {};
     const [query, setQuery] = useState("");
     const [searchMode, setSearchMode] = useState<SearchMode>("datasets");
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      const targetPath =
+        searchMode === "content" ? `/search` : `/${searchMode}`;
       onSearch && onSearch();
-      const route =
-        searchMode === "content"
-          ? `/search?q=${query}`
-          : `/${searchMode}?q=${query}&f=`;
-      router.push(route);
+      const pathAndQuery = `${targetPath}?p=1&q=${query}&f=`;
+
+      if (router.pathname === targetPath) {
+        router.push(pathAndQuery).then(() => {
+          router.reload();
+        });
+      } else {
+        router.push(pathAndQuery);
+      }
     };
 
     return (
