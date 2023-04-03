@@ -15,15 +15,18 @@ interface SearchProps {
 }
 
 export const SearchContentPage: React.FC<SearchProps> = () => {
-  const { pathname, query: routerQuery } = useRouter() || {};
+  const router = useRouter() || {};
+  const { pathname, query: routerQuery } = router || {};
   const { t, lang } = useTranslation("common");
-  const [query, setQuery] = useState(routerQuery?.q as string || "");
+  const [query, setQuery] = useState((routerQuery?.q as string) || "");
   const [trackedQuery, setTrackedQuery] = useState("");
   const { trackEvent } = useMatomo();
   const { trackPageView } = useMatomo();
 
   const [searchResult, setSearchResult] = useState<SearchResult>();
-  const [searchRequest, setSearchRequest] = useState<SearchRequest>();
+  const [searchRequest, setSearchRequest] = useState<SearchRequest>(
+    routerQuery?.p ? { page: parseInt(routerQuery.p as string) } : {}
+  );
   const [loading, setLoading] = useState(false);
   const PER_PAGE = 10;
   const searchKey = typeof location != "undefined" ? location.search : "server";
@@ -119,6 +122,25 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
     );
   };
 
+  const handlePagination = (action: "increment" | "decrement") => {
+    if (!searchRequest.page) return;
+    const decrement = searchRequest.page > 1 ? +searchRequest.page - 1 : 1;
+    const increment = +(searchRequest?.page ?? 1) + 1;
+    const page = action === "increment" ? increment : decrement;
+    router.query.p = page.toString();
+    router.push(router);
+    clearCurrentScrollPos();
+    setSearchRequest({
+      ...searchRequest,
+      page,
+    });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    searchFocus();
+  };
+
   useEffect(() => {
     setTrackedQuery(query || "");
     if (
@@ -146,6 +168,17 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
   useEffect(() => {
     trackPageView({ documentTitle: t("routes|search$title") });
   }, [pathname]);
+
+  useEffect(() => {
+    if(!routerQuery.p) {
+      routerQuery.p = "1";
+      router.push(router);
+    };
+    setSearchRequest({
+      ...searchRequest,
+      page: parseInt(routerQuery.p as string),
+    });
+  }, [routerQuery?.p]);
 
   return (
     <>
@@ -260,21 +293,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
                 <Button
                   disabled={searchRequest?.page === 1}
                   inline
-                  onClick={() => {
-                    clearCurrentScrollPos();
-                    setSearchRequest({
-                      ...searchRequest,
-                      page:
-                        searchRequest?.page && searchRequest?.page > 1
-                          ? +searchRequest?.page - 1
-                          : 1,
-                    });
-                    window.scrollTo({
-                      top: 0,
-                      behavior: "smooth",
-                    });
-                    searchFocus();
-                  }}
+                  onClick={() => handlePagination("decrement")}
                 >
                   {t("pages|search$prev-page")}
                 </Button>
@@ -293,18 +312,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
                     Math.ceil(searchResult?.count / PER_PAGE)
                   }
                   inline
-                  onClick={() => {
-                    clearCurrentScrollPos();
-                    setSearchRequest({
-                      ...searchRequest,
-                      page: +(searchRequest?.page ?? 1) + 1,
-                    });
-                    window.scrollTo({
-                      top: 0,
-                      behavior: "smooth",
-                    });
-                    searchFocus();
-                  }}
+                  onClick={() => handlePagination("increment")}
                 >
                   {t("pages|search$next-page")}
                 </Button>
