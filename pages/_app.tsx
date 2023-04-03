@@ -301,6 +301,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 />
               </Head>
               <div id="scriptsPlaceholder" />
+              <CookieBanner />
               <div
                 id="top"
                 css={css`
@@ -311,7 +312,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   contain: paint;
                 `}
               >
-                <CookieBanner />
                 <SkipToContent text={t("skiptocontent")} />
                 <Header menu={undefined} env={env} />
                 <noscript>
