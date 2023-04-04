@@ -4,7 +4,7 @@ import {
   colorPalette,
   css,
   responsiveProp,
-  QuestionCircleIcon,
+  InfoCircleIcon,
   ChatIcon,
   GlobeIcon,
   SearchIcon,
@@ -265,12 +265,14 @@ export const Header: React.FC<HeaderProps> = () => {
                         className={`${pathname === "/faq" ? " active" : ""}`}
                       >
                         <div className="search-link">
-                          <QuestionCircleIcon
+                          <InfoCircleIcon
                             color={colorPalette.gray500}
                             width={16}
                             className="search-link--icon"
                           />
-                          <span className="right-bar-item">FAQ</span>
+                          <span className="right-bar-item">
+                            {t("common|about")}
+                          </span>
                         </div>
                       </Link>
                     )}
@@ -369,12 +371,12 @@ export const Header: React.FC<HeaderProps> = () => {
                         className={`${pathname === "/faq" ? " active" : ""}`}
                       >
                         <div className="header__bottom-links--link">
-                          <QuestionCircleIcon
+                          <InfoCircleIcon
                             color={colorPalette.gray500}
                             width={16}
                             className="search-link--icon"
                           />
-                          <span>FAQ</span>
+                          <span>{t("common|about")}</span>
                         </div>
                       </Link>
 
