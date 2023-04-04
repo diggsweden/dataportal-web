@@ -14,13 +14,6 @@ const columns = (
     links: [
       {
         __typename: "dataportal_Digg_Link",
-        title: t("routes|about-us$title") || "",
-        link: t("routes|about-us$path"),
-        linktype: dataportal_LinkType.INTERNAL,
-        description: null,
-      },
-      {
-        __typename: "dataportal_Digg_Link",
         title: t("routes|about-website$title") || "",
         link: t("routes|about-website$path"),
         linktype: dataportal_LinkType.INTERNAL,
