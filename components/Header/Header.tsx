@@ -258,7 +258,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
                     {!isEn && (
                       <Link
-                        href={`/faq`}
+                        href={t("routes|about-us$path")}
                         key={"faq-link"}
                         locale={lang}
                         onClick={closeMenu}
@@ -364,7 +364,7 @@ export const Header: React.FC<HeaderProps> = () => {
                     {/* FAQ/Community/Lang mobile menu */}
                     <div className="header__bottom-links">
                       <Link
-                        href={`/faq`}
+                        href={t("routes|about-us$path")}
                         key={"faq-link"}
                         locale={lang}
                         onClick={closeMenu}
