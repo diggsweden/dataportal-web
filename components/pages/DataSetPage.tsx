@@ -293,18 +293,20 @@ export const DataSetPage: React.FC = () => {
               {
                 block: 'keyword',
                 extends: 'template',
-                template: '<div class="rdforms">' +
-                    '<div class="rdformsRow rdformsTopLevel">' +
-                      '<div class="rdformsLabel">' +
-                        '${t("pages|datasetpage$keyword")}' +
-                      '</div>' +
-                      '<div class="rdformsFields">' +
-                        '{{#eachprop "dcat:keyword" limit=4 expandbutton="${t("pages|datasetpage$view_more")}" unexpandbutton="${t("pages|datasetpage$view_less")}"}}' +
-                          '<div title="{{value}}" class="rdformsOrigin rdformsOrigin_A rdformsField rdformsSingleline" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
-                        '{{/eachprop}}' +
+                template:'{{#ifprop "dcat:keyword"}}' + 
+                    '<div class="rdforms">' +
+                      '<div class="rdformsRow rdformsTopLevel">' +
+                        '<div class="rdformsLabel">' +
+                          '${t("pages|datasetpage$keyword")}' +
+                        '</div>' +
+                        '<div class="rdformsFields">' +
+                          '{{#eachprop "dcat:keyword" limit=4 expandbutton="${t("pages|datasetpage$view_more")}" unexpandbutton="${t("pages|datasetpage$view_less")}"}}' +
+                            '<div title="{{value}}" class="rdformsOrigin rdformsOrigin_A rdformsField rdformsSingleline" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
+                          '{{/eachprop}}' +
+                        '</div>' +
                       '</div>' +
                     '</div>' +
-                  '</div>',
+                  '{{/ifprop}}',
               },
               {
                 block: 'aboutDataset',
