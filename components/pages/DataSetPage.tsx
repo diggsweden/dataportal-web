@@ -352,7 +352,7 @@ export const DataSetPage: React.FC = () => {
         />
       </Head>
       <div className="detailpage__wrapper">
-        <div className="detailpage__header">
+        <div className="detailpage__header detailpage__wrapper--leftcol">
           {/* Title */}
           <Heading>
             {entry.title}
