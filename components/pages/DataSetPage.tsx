@@ -5,37 +5,44 @@ import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import { SettingsContext } from '../SettingsProvider';
 import { initBreadcrumb } from '../../pages/_app';
-import { accessrigthsIndicator, architechtureIndicator, exploreApiLink, licenseIndicator, linkBase, periodicityIndicator } from '../../utilities';
+import {
+  accessrigthsIndicator,
+  architechtureIndicator,
+  exploreApiLink,
+  licenseIndicator,
+  linkBase,
+  periodicityIndicator,
+} from '../../utilities';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import Head from 'next/head';
 import { Heading } from '@digg/design-system';
 // import "swagger-ui-react/swagger-ui.css"
 
 const filterCatalogProperties = [
-  "dcat:keyword",
-  "dcterms:title",
-  "dcterms:description",
-  "dcterms:publisher",
-  "dcat:bbox",
-  "dcterms:spatial",
-  "dcterms:provenance",
+  'dcat:keyword',
+  'dcterms:title',
+  'dcterms:description',
+  'dcterms:publisher',
+  'dcat:bbox',
+  'dcterms:spatial',
+  'dcterms:provenance',
 ];
 
 const filterAllExceptContactAndLandingPage = [
   ...filterCatalogProperties,
-  "dcat:theme",
-  "dcterms:identifier",
-  "dcterms:language",
-  "dcterms:modified",
-  "dcterms:temporal",
-  "dcterms:accrualPeriodicity",
-  "dcterms:accessRights",
+  'dcat:theme',
+  'dcterms:identifier',
+  'dcterms:language',
+  'dcterms:modified',
+  'dcterms:temporal',
+  'dcterms:accrualPeriodicity',
+  'dcterms:accessRights',
 ];
 
 const filterContactAndLandingPage = [
   ...filterCatalogProperties,
-  "dcat:contactPoint",
-  "dcat:landingPage",
+  'dcat:contactPoint',
+  'dcat:landingPage',
 ];
 
 export const DataSetPage: React.FC = () => {
@@ -60,10 +67,9 @@ export const DataSetPage: React.FC = () => {
     if (hasWindow) {
       //check if reffereing search params is set to hash
       if (window.location && window.location.hash && window.location.hash.includes('ref=?'))
-
-      window.onpopstate = (e: any) => {
-        window.location.reload();
-      };
+        window.onpopstate = (e: any) => {
+          window.location.reload();
+        };
     }
   }, []);
 
@@ -191,17 +197,17 @@ export const DataSetPage: React.FC = () => {
                 extends: 'template',
                 template: '{{#ifprop "dcat:downloadURL"}}' +
                   '{{#ifprop "dcat:downloadURL" min="2"}}${t(
-                    "pages|datasetpage$several_links"
+                    'pages|datasetpage$several_links'
                   )}{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" min="2" invert="true"}}' +
                   '<a href="{{prop "dcat:downloadURL"}}" class="text-md matomo_download distribution__link download_url" target="_blank">${t(
-                    "pages|datasetpage$download_link"
+                    'pages|datasetpage$download_link'
                   )}</a>' +
                   '{{/ifprop}}' +
                   '{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" invert="true"}}' +
                   '<a href="{{prop "dcat:accessURL"}}" class="text-md distribution__link access_url" target="_blank">' +
-                  '${t("pages|datasetpage$download_link_adress")}' +
+                  '${t('pages|datasetpage$download_link_adress')}' +
                   '{{/ifprop}}',
               },
               {
@@ -219,9 +225,7 @@ export const DataSetPage: React.FC = () => {
                   '<span class="esbRowAlign"><span class="esbRowAlignPrimary text-base">{{labelish}}</span>' +
                   '<span class="esbRowAlignSecondary text-base"><a href="{{value}}"' +
                   ' class="text-base" target="_blank">' +
-                  '${t(
-                    "pages|datasetpage$download_link"
-                  )}</a></span></span></div></div></div>' +
+                  '${t('pages|datasetpage$download_link')}</a></span></span></div></div></div>' +
                   '{{/eachprop}}' +
                   '</div></div>' +
                   '{{/unless}}',
@@ -233,7 +237,7 @@ export const DataSetPage: React.FC = () => {
                 template: '<hr>' +
                   '{{view rdformsid="dcat:endpointDescription,dcat:dcterms:type_ds"}}' +
                   '{{link class="api_readmore text-md link" namedclick="dataservice-link" content="${t(
-                    "pages|datasetpage$read_about_api"
+                    'pages|datasetpage$read_about_api'
                   )}"}}'          
               },
               {
@@ -261,7 +265,7 @@ export const DataSetPage: React.FC = () => {
                 hl: 2,
                 listbody: '<div class="formats">{{body}}</div>',
                 listplaceholder: '<div class="alert alert-info" role="alert">${t(
-                  "pages|datasetpage$no_data"
+                  'pages|datasetpage$no_data'
                 )}</div>',
                 rowhead:
                   '<span class="esbRowAlign">' +
@@ -270,7 +274,7 @@ export const DataSetPage: React.FC = () => {
                     '<span class="distribution_api-flag text-md"><i class="icon-cog--before"></i>API</span>' +
                   '{{/ifprop}}' +                  
                   '<span class="esbRowAlignPrimary">{{text fallback="<span class=\\\'distributionNoName\\\'>${t(
-                    "pages|datasetpage$no_title"
+                    'pages|datasetpage$no_title'
                   )}</span>"}}</span>' +                  
                   '<div class="distribution_link-row">' +
                   
@@ -282,7 +286,7 @@ export const DataSetPage: React.FC = () => {
 
                   '{{#ifprop "dcat:downloadURL" min="2"}}' +
                   '<h{{hinc}} class="distribution_files_header">${t(
-                    "pages|datasetpage$several_links_header"
+                    'pages|datasetpage$several_links_header'
                   )}</h{{hinc}}>' +
                   '{{fileList2 directlabel="inherit:registry"}}' +
                   '{{/ifprop}}' +
@@ -297,10 +301,12 @@ export const DataSetPage: React.FC = () => {
                     '<div class="rdforms">' +
                       '<div class="rdformsRow rdformsTopLevel">' +
                         '<div class="rdformsLabel">' +
-                          '${t("pages|datasetpage$keyword")}' +
+                          '${t('pages|datasetpage$keyword')}' +
                         '</div>' +
                         '<div class="rdformsFields">' +
-                          '{{#eachprop "dcat:keyword" limit=4 expandbutton="${t("pages|datasetpage$view_more")}" unexpandbutton="${t("pages|datasetpage$view_less")}"}}' +
+                          '{{#eachprop "dcat:keyword" limit=4 expandbutton="${t(
+                            'pages|datasetpage$view_more'
+                          )}" unexpandbutton="${t('pages|datasetpage$view_less')}"}}' +
                             '<div title="{{value}}" class="rdformsOrigin rdformsOrigin_A rdformsField rdformsSingleline" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
                           '{{/eachprop}}' +
                         '</div>' +
@@ -313,13 +319,17 @@ export const DataSetPage: React.FC = () => {
                 extends: 'template',
                 template: '<div class="about_dataset">' +
                             '<div class="view_metadata_group">' +
-                              '{{viewMetadata template="dcat:Dataset" filterpredicates="${filterAllExceptContactAndLandingPage.join(",")}"}}' +
+                              '{{viewMetadata template="dcat:Dataset" filterpredicates="${filterAllExceptContactAndLandingPage.join(
+                                ','
+                              )}"}}' +
                             '</div>' +
                             '<div class="keyword">' +
                               '{{keyword}}' +
                             '</div>' +
                             '<div class="view_metadata_group">' +
-                              '{{viewMetadata template="dcat:Dataset" filterpredicates="${filterContactAndLandingPage.join(",")}"}}' +
+                              '{{viewMetadata template="dcat:Dataset" filterpredicates="${filterContactAndLandingPage.join(
+                                ','
+                              )}"}}' +
                             '</div>' +
                           '</div>',
               },
@@ -356,9 +366,7 @@ export const DataSetPage: React.FC = () => {
       <div className="detailpage__wrapper">
         <div className="detailpage__header detailpage__wrapper--leftcol">
           {/* Title */}
-          <Heading>
-            {entry.title}
-          </Heading>
+          <Heading>{entry.title}</Heading>
 
           {/* Publisher */}
           <script
@@ -399,8 +407,8 @@ export const DataSetPage: React.FC = () => {
           <div className="description">
             <ShowMoreText
               lines={8}
-              more={t("pages|datasetpage$view_more")}
-              less={t("pages|datasetpage$view_less")}
+              more={t('pages|datasetpage$view_more')}
+              less={t('pages|datasetpage$view_less')}
               className="text-md"
               anchorClass="text-md view-more-text-link"
               expanded={false}
@@ -412,8 +420,11 @@ export const DataSetPage: React.FC = () => {
           {/* Left column */}
           <div className="detailpage__wrapper--leftcol">
             {/* Use data - header */}
-            <Heading level={2} className="hbbr">
-              {t("pages|datasetpage$use-data")}
+            <Heading
+              level={2}
+              className="hbbr"
+            >
+              {t('pages|datasetpage$use-data')}
             </Heading>
 
             {/* Distribution list */}
@@ -433,12 +444,10 @@ export const DataSetPage: React.FC = () => {
 
             {/* Questions  or comments */}
             <div className="contact__publisher hbbr">
-              <Heading level={3}>
-                {t("pages|datasetpage$contact-publisher")}
-              </Heading>
+              <Heading level={3}>{t('pages|datasetpage$contact-publisher')}</Heading>
               <p className="">
-                {t("pages|datasetpage$contact-publisher-text")}
-                {t("pages|datasetpage$contact-publisher-text2")}{" "}
+                {t('pages|datasetpage$contact-publisher-text')}
+                {t('pages|datasetpage$contact-publisher-text2')}{' '}
                 <a
                   className="text-md link"
                   href="https://community.dataportal.se/"
@@ -456,10 +465,13 @@ export const DataSetPage: React.FC = () => {
         <div className="detailpage__wrapper--rightcol hbbr">
           {/* About dataset - wrapper  */}
           <div className="detailpage__wrapper--rightcol-info text-base">
-            <Heading level={2}>{t("pages|datasetpage$about-dataset")}</Heading>
+            <Heading level={2}>{t('pages|datasetpage$about-dataset')}</Heading>
 
             {/* About dataset */}
-            <div data-entryscape-dialog data-entryscape-rdformsid="dcat:contactPoint" />
+            <div
+              data-entryscape-dialog
+              data-entryscape-rdformsid="dcat:contactPoint"
+            />
             <div
               data-entryscape="aboutDataset"
               className="aboutDataset"
@@ -468,8 +480,11 @@ export const DataSetPage: React.FC = () => {
 
           {/* Catalog informaton wrapper */}
           <div className="detailpage__wrapper--rightcol-info text-base">
-            <Heading level={2} size={"md"}>
-              {t("pages|datasetpage$catalog")}
+            <Heading
+              level={2}
+              size={'md'}
+            >
+              {t('pages|datasetpage$catalog')}
             </Heading>
 
             {/* Catalog */}
@@ -499,7 +514,7 @@ export const DataSetPage: React.FC = () => {
             dangerouslySetInnerHTML={{
               __html: `
                       <a class="download__rdf--link matomo_download text-md link" target="_blank" href="{{metadataURI}}?recursive=dcat">${t(
-                        "pages|datasetpage$rdf"
+                        'pages|datasetpage$rdf'
                       )}</a>
                       `,
             }}
