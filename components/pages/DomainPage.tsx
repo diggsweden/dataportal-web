@@ -1,20 +1,25 @@
-import { useMatomo } from '@datapunt/matomo-tracker-react';
-import { css, space, Heading, Container, SearchField } from '@digg/design-system';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { Containers_dataportal_Digg_Containers } from '../../graphql/__generated__/Containers';
-import { MainContainerStyle } from '../../styles/general/emotion';
-import { checkLang } from '../../utilities';
-import { imageLoader } from '../blocks';
-import { Puffs, IPuff } from '../Navigation';
-import { Publication_dataportal_Digg_Publications as IPublication } from '../../graphql/__generated__/Publication';
-import useTranslation from 'next-translate/useTranslation';
-import { ContentArea } from '../ContentArea';
-import { CategoriesNav } from '../StartPageComponents';
-import { handleDomain } from '../../utilities/domain';
-import Link from 'next/link';
-import dynamic from 'next/dynamic';
+import { useMatomo } from "@datapunt/matomo-tracker-react";
+import {
+  css,
+  space,
+  Heading,
+  Container,
+  SearchField,
+} from "@digg/design-system";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { Containers_dataportal_Digg_Containers } from "../../graphql/__generated__/Containers";
+import { MainContainerStyle } from "../../styles/general/emotion";
+import { checkLang } from "../../utilities";
+import { Puffs, IPuff } from "../Navigation";
+import { Publication_dataportal_Digg_Publications as IPublication } from "../../graphql/__generated__/Publication";
+import useTranslation from "next-translate/useTranslation";
+import { ContentArea } from "../ContentArea";
+import { CategoriesNav } from "../StartPageComponents";
+import { handleDomain } from "../../utilities/domain";
+import Link from "next/link";
+import dynamic from "next/dynamic";
+import { CustomImage } from "../Image";
 
 export interface DomainProps extends Containers_dataportal_Digg_Containers {
   domain?: DiggDomain;
@@ -25,35 +30,40 @@ export interface DomainProps extends Containers_dataportal_Digg_Containers {
   themes?: IPuff[];
 }
 
-const DynamicStatisticGraph = dynamic(() => import('../Statistic/StatisticGraph'), {
+const DynamicStatisticGraph = dynamic(
+  () => import("../Statistic/StatisticGraph"),
+  {
+    ssr: false,
+  }
+);
+
+const DynamicStatisticNumbers = dynamic(
+  () => import("../Statistic/StatisticNumbers"),
+  {
+    ssr: false,
+  }
+);
+
+const DynamicStatistic = dynamic(() => import("../Statistic/Statistic"), {
   ssr: false,
 });
 
-const DynamicStatisticNumbers = dynamic(() => import('../Statistic/StatisticNumbers'), {
-  ssr: false,
-});
-
-const DynamicStatistic = dynamic(() => import('../Statistic/Statistic'), {
-  ssr: false,
-});
-
-const DynamicArticleBlock = dynamic(() => import('../blocks/Article').then((c) => c.ArticleBlock), {
-  ssr: true,
-});
+const DynamicArticleBlock = dynamic(
+  () => import("../blocks/Article").then((c) => c.ArticleBlock),
+  {
+    ssr: false,
+  }
+);
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
   const { domain, areas } = props || {};
-  const { content, puffs, publications, heading, preamble, image } = handleDomain(props);
-  const loader =
-    image && (image as any).url?.blurDataURL
-      ? () => (image as any).url.src
-      : () => imageLoader(image?.url || '', (image?.width as number) || 600);
+  const { content, puffs, publications, heading, preamble, image } =
+    handleDomain(props);
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
-  const { t, lang } = useTranslation('pages');
-
+  const { t, lang } = useTranslation("pages");
   useEffect(() => {
-    trackPageView({ documentTitle: 'OpenSource' });
+    trackPageView({ documentTitle: "OpenSource" });
   }, [pathname]);
 
   return (
@@ -63,32 +73,28 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           <div className="domain-page__header">
             <div className="domain-page__header-heading">
               {heading && (
-                <Heading
-                  size={'3xl'}
-                  color={'pinkPop'}
-                  weight={'light'}
-                >
+                <Heading size={"3xl"} color={"pinkPop"} weight={"light"}>
                   {checkLang(heading)}
                 </Heading>
               )}
               <div>
-                <p className="preamble text-md domain-page__preamble">{checkLang(preamble)}</p>
-                {domain === 'data' && (
+                <p className="preamble text-md domain-page__preamble">
+                  {checkLang(preamble)}
+                </p>
+                {domain === "data" && (
                   <form
                     className="datapage-form"
                     method="GET"
                     action={`/${lang}/datasets`}
                   >
-                    <label
-                      className="screen-reader"
-                      htmlFor="start-search"
-                    >
-                      {t('startpage$search_placeholder')}
+                    <label className="screen-reader" htmlFor="start-search">
+                      {t("startpage$search_placeholder")}
                     </label>
                     <SearchField
                       id="start-search"
                       name="q"
-                      placeholder={t('startpage$search_placeholder')}
+                      autoComplete="off"
+                      placeholder={t("startpage$search_placeholder")}
                       submitLabel="screen-reader"
                     />
                   </form>
@@ -96,20 +102,20 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               </div>
             </div>
             <span className="domain-page__top-image">
-              <Image
-                loader={loader}
-                width={image?.width || 600}
-                height={image?.height || 400}
-                src={image?.url || ''}
-                alt={image?.alt || ''}
-              />
+              {image && (
+                <CustomImage
+                  image={image}
+                  style="responsive"
+                  sizes={{ mobile: "0px", tablet: "0px", desktop: "25vw" }}
+                />
+              )}
             </span>
           </div>
 
           {puffs && (
             <Puffs
               links={puffs.links as IPuff[]}
-              basepath={domain ? '/' + domain : undefined}
+              basepath={domain ? "/" + domain : undefined}
             />
           )}
 
@@ -124,10 +130,10 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                     ${space({ pt: 4 })}
                   `}
                 >
-                  {t('pages|startpage$current-news')}
+                  {t("pages|startpage$current-news")}
                 </Heading>
-                <Link href={`/aktuellt`}>
-                  <a className="text-base">{t('pages|publications$view-all')}</a>
+                <Link href={`/aktuellt`} className="text-base">
+                  {t("pages|publications$view-all")}
                 </Link>
               </div>
               <DynamicArticleBlock articles={publications} />
@@ -140,7 +146,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             </div>
           )} */}
 
-          <div className={'fullWidth'}>
+          <div className={"fullWidth"}>
             {/* todo: this width? */}
             {content && (
               <div className="content">
@@ -149,16 +155,12 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             )}
           </div>
 
-          {domain === 'data' && <CategoriesNav />}
+          {domain === "data" && <CategoriesNav />}
 
-          {areas && domain === 'data' && (
+          {areas && domain === "data" && (
             <div className="domain-page__link-block domain-page__theme-block">
-              <Heading
-                level={2}
-                size="xl"
-                color="white"
-              >
-                {t('pages|data$data-areas_text')}
+              <Heading level={2} size="xl" color="white">
+                {t("pages|data$data-areas_text")}
               </Heading>
               <Puffs links={areas} />
             </div>
@@ -167,19 +169,16 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           {!domain && (
             <div className="domain-page__statistics">
               <div className="domain-page__show_more--link">
-                <Heading
-                  level={2}
-                  size="xl"
-                  color="white"
-                >
-                  {t('pages|statistic$statistic-numbers')}
+                <Heading level={2} size="xl" color="white">
+                  {t("pages|statistic$statistic-numbers")}
                 </Heading>
                 <Link
-                  href={`/${t('routes|statistics$path')}`}
+                  href={`/${t("routes|statistics$path")}`}
                   locale={lang}
                   className="statistic-link"
+                  legacyBehavior
                 >
-                  <a className="text-md">{t('pages|statistic$statistic-link')}</a>
+                  {t("pages|statistic$statistic-link")}
                 </Link>
               </div>
 

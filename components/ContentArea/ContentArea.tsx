@@ -1,4 +1,4 @@
-import { Heading } from '@digg/design-system';
+import { css, Heading } from '@digg/design-system';
 import React from 'react';
 import {
   Containers_dataportal_Digg_Containers_blocks,
@@ -6,8 +6,8 @@ import {
   Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_Faq as FAQ,
 } from '../../graphql/__generated__/Containers';
 import { RelatedContent as IRelatedContent } from '../../graphql/__generated__/RelatedContent';
-import { Module_blocks } from '../../graphql/__generated__/Module';
-import { Faq, RelatedContent, Media, Text } from '../blocks';
+import { Module_dataportal_Digg_Module_blocks as Module_blocks } from '../../graphql/__generated__/Module';
+import { Faq, RelatedContent, Media, Text, Form } from '../blocks';
 import Modules from './Modules';
 
 interface ContentAreaProps {
@@ -75,9 +75,6 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ blocks }) => {
             );
           case 'dataportal_Digg_Faq':
             return handleFaqs(blocks, index);
-          // ? we handle HeroBlock in _app.tsx
-          case 'dataportal_Digg_Hero':
-            return;
           case 'dataportal_Digg_RelatedContent':
             return (
               <RelatedContent
@@ -97,6 +94,16 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ blocks }) => {
                 />
               ))
             );
+          case 'dataportal_Digg_FormBlock':
+            return (
+              <Form
+                key={block.id}
+                elements={block.elements}
+                id={block.id}
+                identifier={block.id}
+                __typename="dataportal_Digg_Form"
+              />
+            );
           default:
             return (
               <div key={id}>
@@ -104,9 +111,15 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ blocks }) => {
                   level={2}
                   lang="en"
                 >
-                  {block} Not found
+                  <>{(block as any)?.__typename} Not found</>
                 </Heading>
-                <pre style={{ overflowX: 'auto' }}>{JSON.stringify(block, null, 2)}</pre>
+                <pre
+                  css={css`
+                    overflow: auto;
+                  `}
+                >
+                  {JSON.stringify(block, null, 2)}
+                </pre>
               </div>
             );
         }

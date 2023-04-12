@@ -1,14 +1,36 @@
-@import '/styles/general/variables.scss';
+@import "/styles/general/variables.scss";
 
 .hero {
+  max-width: 1920px;
+  max-height: 200px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: max-content;
+  margin: auto;
+
+  picture{
+    width: 100%;
+  }
+
+  @media screen and (min-width: $media-md) {
+    max-height: 400px;
+  }
+
+  img{
+    width: 100%;
+    min-height: 200px;
+    max-height: 200px;
+    object-fit: cover;
+
+    @media screen and (min-width: $media-md) {
+      max-height: 400px;
+    }
+  }
+
   span {
     background-color: transparent;
-    //These values are what NextJS Image uses for the img size
-    min-height: 400px;
-    max-height: 500px;
-    max-width: 1920px;
-    margin: auto !important; //has to be important otherwise it gets overwritten by nextjs (only needed if we have a max-width and want to center the image)
-
     img {
       object-fit: cover;
       object-position: center;

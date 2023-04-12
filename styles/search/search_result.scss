@@ -334,8 +334,22 @@
           margin-bottom: 0px;
         }
       }
+
+      .no-underline .search-result-list__highlight{
+        text-decoration: none;
+        padding-bottom: 0;
+      }
     }
   }
+}
+
+.search-result-list__highlight{
+  background-color: $clr-pinkPop;
+  text-decoration: underline;
+  text-decoration-color: black;
+  
+  color: black;
+  padding-bottom: 0.1rem;
 }
 
 // Formats in searchresult

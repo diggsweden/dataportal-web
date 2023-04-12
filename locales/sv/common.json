@@ -1,5 +1,6 @@
 {
   "accessibility-report": "Tillgänglighetsredogörelse",
+  "about": "Om portalen",
   "beta": "BETA",
   "beta-text1": "Sveriges dataportal utvecklas löpande. Skicka gärna dina ",
   "beta-link-text": "synpunkter",
@@ -21,6 +22,7 @@
   "clear-filters": "Rensa filter",
   "close": "Stäng",
   "close_menu": "Stäng menyn",
+  "close_search": "Stäng sök",
   "digg-logo_text": "DIGG - Myndigheten för digital förvaltning",
   "email_link": "Öppnar epost",
   "external_link": "Leder till extern webbplats",
@@ -47,6 +49,7 @@
   "search-dataapi": "Sök data & API:er",
   "search-concept": "Sök begrepp",
   "search-specs": "Sök specifikationer",
+  "search-content": "Sök innehåll",
   "show-filter": "Visa filter",
   "skiptocontent": "Hoppa till innehåll",
   "to-top": "Till toppen",
@@ -57,5 +60,9 @@
   "portal-numbers": "Portalen i siffror",
   "dataportal": "Dataportalen",
   "digg-managed_text": "Webbplatsen förvaltas av DIGG – Myndigheten för digital förvaltning",
-  "data-areas": "Dataområden"
+  "data-areas": "Datadelningsinitiativ",
+  "yes": "Ja",
+  "no": "Nej",
+  "go-to": "Gå till",
+  "open": "Öppna"
 }

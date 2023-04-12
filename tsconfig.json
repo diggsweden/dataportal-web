@@ -15,7 +15,7 @@
     "jsx": "preserve",
     "incremental": true,
     "jsxImportSource": "@emotion/react",
-    "noUnusedLocals": false
+    "noUnusedLocals": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

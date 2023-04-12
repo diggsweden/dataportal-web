@@ -1,7 +1,7 @@
-import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
-import { capitalizeFirstLetter } from '../../utilities';
-import { checkLang } from '../../utilities/checkLang';
+import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
+import { capitalizeFirstLetter } from "../../utilities";
+import { checkLang } from "../../utilities/checkLang";
 
 export interface BreadcrumbProps {
   name: string;
@@ -17,21 +17,12 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ crumbs, name }) => {
         <ol className="breadcrumb__list">
           {crumbs.map((crumb, index) => {
             return (
-              <li
-                key={index}
-                className="breadcrumb__list--item text-xs"
-              >
-                <Link
-                  href={`${crumb.link.link}`}
-                  locale={lang}
-                >
-                  <a>{checkLang(capitalizeFirstLetter(crumb.name))}</a>
+              <li key={index} className="breadcrumb__list--item text-xs">
+                <Link href={`${crumb.link.link}`} locale={lang}>
+                  {checkLang(capitalizeFirstLetter(crumb.name))}
                 </Link>
                 {index !== crumbs.length && (
-                  <span
-                    aria-hidden={true}
-                    className="breadcrumb-slash"
-                  >
+                  <span aria-hidden={true} className="breadcrumb-slash">
                     /
                   </span>
                 )}
@@ -39,7 +30,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ crumbs, name }) => {
             );
           })}
           <li
-            key={'inactive-breadcrumb'}
+            key={"inactive-breadcrumb"}
             className="breadcrumb__list--item text-xs"
           >
             {checkLang(name)}

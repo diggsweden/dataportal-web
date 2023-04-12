@@ -1,5 +1,6 @@
 import { css, fontSize, ArrowDropIcon, space, Button, colorPalette } from '@digg/design-system';
 import FocusTrap from 'focus-trap-react';
+import useTranslation from 'next-translate/useTranslation';
 import { useEffect, useState } from 'react';
 import { useClickoutside } from '../../hooks/useClickoutside';
 
@@ -32,6 +33,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({ title, defaultValue,
   const [open, setOpen] = useState(false);
   const [trapFocus, setTrapFocus] = useState(false);
   const ref = useClickoutside(() => handleOpen(false));
+  const {t} = useTranslation('common');
 
   const handleOpen = (value: boolean) => {
     setOpen(value);
@@ -71,7 +73,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({ title, defaultValue,
                 margin-bottom: 0;
               `}
             >
-              {title || 'Öppna'}
+              {title || t('open')}
             </span>
 
             <div>

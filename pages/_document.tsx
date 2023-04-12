@@ -1,32 +1,43 @@
-import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document';
-import { GlobalStyles } from '../styles/GlobalStyles';
-import { ApolloProvider } from '@apollo/client';
-import { TrackingProvider, LocalStoreProvider, SettingsProvider } from '../components';
-import { defaultSettings } from '../components/SettingsProvider/SettingsProvider';
-import { client } from '../graphql/client';
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext,
+} from "next/document";
+import { GlobalStyles } from "../styles/GlobalStyles";
+import { ApolloProvider } from "@apollo/client";
+import {
+  TrackingProvider,
+  LocalStoreProvider,
+  SettingsProvider,
+} from "../components";
+import { defaultSettings } from "../components/SettingsProvider/SettingsProvider";
+import { client } from "../graphql/client";
 import {
   ThemeProvider,
   CacheProvider,
   createCache,
   createEmotionServer,
-} from '@digg/design-system';
-import { SettingsUtil } from '../env';
-import { renderToString } from 'react-dom/server';
-import absoluteUrl from 'next-absolute-url';
-import { dataportalTheme } from '../utilities';
+} from "@digg/design-system";
+import { SettingsUtil } from "../env";
+import { renderToString } from "react-dom/server";
+import { dataportalTheme } from "../utilities";
 
 // @ts-ignore
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage;
 
-    const key = 'css';
-    const cache = createCache({ key: key, nonce: SettingsUtil.getCurrent().nonce });
+    const key = "css";
+    const cache = createCache({
+      key: key,
+      nonce: SettingsUtil.getCurrent().nonce,
+    });
     const { extractCritical } = createEmotionServer(cache);
 
-    let styles = '';
+    let styles = "";
     let emotionIds: string[] = [];
-    const host = absoluteUrl(ctx.req)?.host;
     const env = SettingsUtil.create();
     // Run the React rendering logic synchronously
     ctx.renderPage = () =>
@@ -69,7 +80,7 @@ class MyDocument extends Document {
           {initialProps.styles}
           <style
             nonce={SettingsUtil.getCurrent().nonce}
-            data-emotion={`${key} ${emotionIds.join(' ')}`}
+            data-emotion={`${key} ${emotionIds.join(" ")}`}
             dangerouslySetInnerHTML={{ __html: styles }}
           ></style>
         </>
@@ -80,13 +91,17 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head nonce={SettingsUtil.getCurrent().nonce}>          
-          <link 
+        <Head nonce={SettingsUtil.getCurrent().nonce}>
+          <script
             nonce={SettingsUtil.getCurrent().nonce}
-            rel="preload" 
-            href="/__ENV.js"
-            as="script"            
-          />   
+            type="text/javascript"
+            src="/__ENV.js"
+          />
+          <link
+            href="https://cdn.screen9.com/players/amber-player.css"
+            rel="stylesheet"
+            type="text/css"
+          />
           <link
             rel="preload"
             href="/fonts/Ubuntu/Ubuntu-Regular.woff2"
@@ -115,22 +130,16 @@ class MyDocument extends Document {
             type="font/woff"
             crossOrigin="anonymous"
           />
-          <link 
-            rel="preconnect" 
+          <link
+            rel="preconnect"
             href="https://editera.dataportal.se"
             crossOrigin="anonymous"
-          />    
-          <link 
-            rel="preconnect" 
+          />
+          <link
+            rel="preconnect"
             href="https://admin.dataportal.se"
             crossOrigin="anonymous"
-          />    
-          <script
-            nonce={SettingsUtil.getCurrent().nonce}
-            type="text/javascript"
-            src="/__ENV.js"
-            async
-          />                
+          />
         </Head>
         <body>
           <Main />

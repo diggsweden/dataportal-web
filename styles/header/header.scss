@@ -1,14 +1,32 @@
-@import '~@digg/design-system/lib/sass/variables';
+@import "~@digg/design-system/lib/sass/variables";
 
 header {
   border-bottom: 1px solid $clr-gray600;
   background-color: transparent;
-  margin-top: calc($space-4 + $space-1);
+  // margin-top: calc($space-4 + $space-1);
   z-index: 10;
+  position: relative;
 
   .header-wrapper {
+    position: relative;
     max-width: 82rem;
     margin: 0 auto;
+    padding: 1rem 0;
+    z-index: 5;
+    transition: padding 0.1s;
+
+    &.show-search {
+      padding-bottom: 272px;
+      z-index: 0;
+    }
+
+    @media screen and (min-width: $media-lg) {
+      padding: 1.25rem 0;
+
+      &.show-search {
+        padding-bottom: 182px;
+      }
+    }
   }
 
   .header__mobile-menu {
@@ -58,12 +76,10 @@ header {
   height: 100%;
   width: auto;
   justify-content: flex-start;
+}
 
-  .main-bar__right-menu {
-    button {
-      padding-right: 0 !important;
-    }
-  }
+.main-bar__right-menu {
+  display: flex;
 }
 
 .open-close-link {
@@ -104,7 +120,7 @@ header {
 
 .start-link {
   font-size: 18px;
-  padding-bottom: $space-4;
+  // padding-bottom: $space-4;
   transition: all 0.25s ease;
 
   @media screen and (min-width: $media-xl) {
@@ -135,6 +151,11 @@ header {
   flex-wrap: wrap;
   position: relative;
 
+  .header-link {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
   &.text-base {
     margin: 0;
   }
@@ -142,6 +163,10 @@ header {
   @media screen and (min-width: $media-lg) {
     display: flex;
     flex-wrap: nowrap;
+
+    a {
+      margin-left: $space-8;
+    }
   }
 
   .search-link {
@@ -151,10 +176,6 @@ header {
     height: 1.5rem;
     transition: all 0.25s ease;
     color: white;
-
-    @media screen and (min-width: $media-lg) {
-      margin-left: $space-8;
-    }
 
     &:hover {
       border-color: $clr-pinkPop;
@@ -278,7 +299,7 @@ header {
     padding: $space-4;
     background-color: $clr-white;
     color: $clr-white;
-    margin-bottom: 2px;
+    // margin-bottom: 2px;
     text-decoration: none;
     border-left: 0px solid $clr-pink600;
 
@@ -317,5 +338,50 @@ header {
     visibility: hidden;
     height: 0;
     width: 0;
+  }
+}
+
+.search-toggle {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.global-search {
+  opacity: 0;
+  padding: $space-6;
+  position: absolute;
+  width: 100vw;
+  z-index: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%);
+  background-color: $clr-gray900;
+  border-top: 1px solid $clr-gray600;
+  transition: unset;
+
+  &.visible {
+    transition: opacity 0.1s ease-in;
+    opacity: 1;
+  }
+
+  .radio_wrapper {
+    flex-direction: column;
+
+    @media screen and (min-width: $media-lg) {
+      flex-direction: row;
+    }
+  }
+
+  form {
+    margin: auto;
+    max-width: 700px;
+  }
+
+  fieldset {
+    margin-top: $space-4;
   }
 }

@@ -3,7 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Link, { LinkProps } from 'next/link';
 import { onlyText } from 'react-children-utilities';
 
-const ExtLink = styled.a<{ isMail?: boolean }>`
+const ExtLink = styled(Link)<{ isMail?: boolean }>`
   //Sets the size of the icon (1.125rem = 18px)
   --size: 1.125rem;
 
@@ -35,18 +35,14 @@ export const ExternalLink: React.FC<ExternalLinkProps> = (props) => {
   const { t } = useTranslation('common');
   const text = onlyText(props.children);
   return (
-    <Link
+    <ExtLink
       {...props}
-      passHref={true}
+      isMail={props.isMail}
+      className={props.className}
+      aria-label={`${text} - ${t(props.isMail ? 'email_link' : 'external_link')}`}
     >
-      <ExtLink
-        isMail={props.isMail}
-        className={props.className}
-        aria-label={`${text} - ${t(props.isMail ? 'email_link' : 'external_link')}`}
-      >
-        <span>{props.children}</span>
-      </ExtLink>
-    </Link>
+      <span>{props.children}</span>
+    </ExtLink>
   );
 };
 

@@ -1,161 +1,281 @@
-import { Button, css, Heading } from '@digg/design-system';
-import React from 'react';
-import FormTypes, { EventType }  from '../FormTypes';
-import { DiggRadio, DiggRadioLabel, DiggRadioWrapper, DiggTextWithLink, FormTextArea, Text } from '../Styles/FormStyles';
+import { ArrowDropIcon, Heading } from "@digg/design-system";
+import { Translate } from "next-translate";
+import useTranslation from "next-translate/useTranslation";
+import React, { useCallback } from "react";
+import { renderMarkdown } from "../../Renderers";
+import FormTypes from "../FormTypes";
+import {
+  DiggPopover,
+  DiggRadio,
+  DiggRadioLabel,
+  DiggRadioWrapper,
+  DiggTextWithLink,
+  FormTextArea,
+  Text,
+} from "../Styles/FormStyles";
 
+const popOver = (popoverText: string) => {
+  return (
+    <DiggPopover className="text-md">
+      <div
+        aria-haspopup="true"
+        tabIndex={0}
+        onMouseDown={(e) => {
+          if (e.currentTarget.classList.contains("open")) {
+            e.currentTarget.classList.remove("open");
+            e.currentTarget.setAttribute("aria-haspopup", "false");
+          } else {
+            e.currentTarget.classList.add("open");
+            e.currentTarget.setAttribute("aria-haspopup", "true");
+          }
+        }}
+        onKeyDown={(e) => {
+          if (e.key === " ") {
+            e.preventDefault();
+            if (e.currentTarget.classList.contains("open")) {
+              e.currentTarget.classList.remove("open");
+              e.currentTarget.setAttribute("aria-haspopup", "false");
+            } else {
+              e.currentTarget.classList.add("open");
+              e.currentTarget.setAttribute("aria-haspopup", "true");
+            }
+          }
+        }}
+      >
+        <span className="show-more">
+          <ArrowDropIcon color={"white"} />
+        </span>
+        <p
+          onMouseDown={(e) => {
+            e.stopPropagation();
+          }}
+          className="text-sm"
+          dangerouslySetInnerHTML={{ __html: popoverText }}
+        ></p>
+      </div>
+    </DiggPopover>
+  );
+};
+
+const addLabel = (number: number, Type: string, ID: number, title: string) => {
+  return (
+    <>
+      <span className="text-md form-label-wrapper">
+        {`${number === -1 ? "Old:" : number + "."} `}
+        <div className="label-body">
+          <label
+            className="text-md"
+            htmlFor={`${Type}${ID}`}
+            dangerouslySetInnerHTML={{ __html: title }}
+          ></label>
+        </div>
+      </span>
+    </>
+  );
+};
+
+const renderDivider = () => {
+  return <div className="form-divider"></div>;
+};
+
+/* eslint-disable no-unused-vars */
 interface Props {
   UpdateFormDataArray: (
-    e: EventType,
+    e: React.ChangeEvent<any>,
     data: FormTypes,
     pageIndex: number
   ) => void;
   formDataArray: Array<FormTypes>;
   pageIndex: number;
 }
+/* eslint-enable no-unused-vars */
 
 const FormItem = (
   item: FormTypes,
   UpdateFormDataArray: (
-    e: EventType,
+    /* eslint-disable no-unused-vars */
+    e: React.ChangeEvent<any>,
     data: FormTypes,
-    pageIndex: number
+    pageIndex: number,
+    imgData?: { fileName: string; base64: string } | null
+    /* eslint-enable no-unused-vars */
   ) => void,
-  pageIndex: number
+  pageIndex: number,
+  t: Translate
 ) => {
-  const { ID, Type } = item;
+  const { ID, __typename: Type } = item;
+
+  const handleImageDrop = useCallback(
+    (e: React.DragEvent<HTMLTextAreaElement>) => {
+      e.preventDefault();
+      const curTarget = e.currentTarget;
+      const file = e.dataTransfer.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        const base64 = reader.result;
+        if (typeof base64 === "string" && base64.includes("image")) {
+          const curVal = curTarget.value;
+          const newVal =
+            curVal.substring(0, curTarget.selectionStart) +
+            `[${file.name}]` +
+            curVal.substring(curTarget.selectionEnd);
+          curTarget.value = newVal;
+          UpdateFormDataArray(e, item, pageIndex, {
+            fileName: file.name,
+            base64,
+          });
+        }
+      };
+    },
+    []
+  );
 
   switch (Type) {
-    case 'Text':
+    case "dataportal_Digg_FormText":
       return (
         <>
-          <label
-            className="text-base"
-            htmlFor={`${Type}${ID}`}
-          >
-            {item.Header}
-          </label>
+          {addLabel(item.number, Type, ID, item.title)}
+          {item.info !== null && popOver(item.info)}
           <Text
             id={`${Type}${ID}`}
-            placeholder="Fyll i ditt svar"
+            placeholder={t("form$placeholder-text")}
             name={`${Type}${ID}`}
-            value={item.Value}
+            value={item.value}
+            className="text-md"
             onChange={(e) => {
               UpdateFormDataArray(e, item, pageIndex);
             }}
           />
+          {renderDivider()}
         </>
       );
-    case 'TextArea':
+    case "dataportal_Digg_FormTextArea":
       return (
         <>
-          <label
-            className="text-base"
-            htmlFor={`${Type}${ID}`}
-            dangerouslySetInnerHTML={{ __html: item.Header }}
-          >
-          </label>
+          {addLabel(item.number, Type, ID, item.title)}
+          {item.info !== null && popOver(item.info)}
           <FormTextArea
             name={`${Type}${ID}`}
             id={`${Type}${ID}`}
-            placeholder="Fyll i ditt svar"
-            value={item.Value}
+            placeholder={t("form$placeholder-text")}
+            value={item.value}
+            className="text-md"
             onChange={(e) => {
               UpdateFormDataArray(e, item, pageIndex);
             }}
+            onDrop={(e) => {
+              handleImageDrop(e);
+            }}
+            onDragOver={(e) => {
+              e.preventDefault();
+            }}
           />
+          {renderDivider()}
         </>
       );
-    case 'TextChoice':
+    case "dataportal_Digg_FormRadio":
       return (
         <>
-        <fieldset>
-        <legend
-            className="text-base" 
-          >
-            {item.Header}
-          </legend>
+          <fieldset>
+            <span className="text-md form-radio__heading">
+              {`${item.number === -1 ? "Old:" : item.number + "."} `}
+              <legend className="text-md">{item.title}</legend>
+            </span>
 
-          <DiggRadioWrapper>
-            <DiggRadioLabel>            
-              <DiggRadio
-                type="radio"
-                name={`${Type}${ID}`}
-                checked={item.Choice === 'Yes'}
-                onChange={() => UpdateFormDataArray('Yes', item, pageIndex)}
-              /> 
-              <span className="text-base">Ja</span>             
-            </DiggRadioLabel>
-            <DiggRadioLabel>            
-              <DiggRadio
-                type="radio"
-                name={`${Type}${ID}`}
-                checked={item.Choice === 'No'}
-                onChange={() => UpdateFormDataArray('No', item, pageIndex)}
-              />    
-              <span className="text-base">Nej</span>          
-            </DiggRadioLabel>
-            <DiggRadioLabel>            
-              <DiggRadio
-                type="radio"
-                name={`${Type}${ID}`}
-                checked={item.Choice === 'NA'}
-                onChange={() => UpdateFormDataArray('NA', item, pageIndex)}
-              />    
-              <span className="text-base">Inget svar</span>          
-            </DiggRadioLabel>
-          </DiggRadioWrapper>
-        </fieldset>         
+            {item.info !== null && (
+              <div className="form-radio__popover">{popOver(item.info)}</div>
+            )}
 
-          {item.Choice === 'Yes' && (
+            <DiggRadioWrapper
+              aria-expanded={
+                item.selected !== item.choices[item.choices.length - 1] &&
+                item.selected.popup &&
+                item.selected.popup.length > 0
+                  ? "true"
+                  : false
+              }
+            >
+              {item.choices.map((choice) => {
+                return (
+                  <DiggRadioLabel key={choice.ID}>
+                    <DiggRadio
+                      type="radio"
+                      name={`${Type}${ID}`}
+                      checked={item.selected.ID === choice.ID}
+                      value={choice.label}
+                      onChange={(e) => {
+                        UpdateFormDataArray(e, choice, pageIndex);
+                      }}
+                    />
+                    <span>
+                      {choice.label}
+                      {choice.popup ? "*" : ""}
+                    </span>
+                  </DiggRadioLabel>
+                );
+              })}
+            </DiggRadioWrapper>
+          </fieldset>
+
+          {item.selected.popup && item.selected.popup.length > 0 ? (
             <>
-              <label htmlFor={`${Type}${ID}`}>{item.YesText && <DiggTextWithLink className='text-base' dangerouslySetInnerHTML={{__html: item.YesText}}></DiggTextWithLink>}</label>
+              <label className="popup-label" htmlFor={`${Type}${ID}`}>
+                {item.selected.popup && (
+                  <DiggTextWithLink
+                    className="text-md"
+                    dangerouslySetInnerHTML={{ __html: item.selected.popup }}
+                  ></DiggTextWithLink>
+                )}
+              </label>
+
               <FormTextArea
                 id={`${Type}${ID}`}
                 name={`${Type}${ID}`}
-                placeholder="Fyll i ditt svar"
-                value={item.Value}
+                placeholder={t("form$placeholder-text")}
+                value={item.value}
+                className="text-md"
                 onChange={(e) => {
                   UpdateFormDataArray(e, item, pageIndex);
                 }}
               />
             </>
+          ) : (
+            <span className="form-radio__mb" />
           )}
-
-          {item.Choice === 'No' && item.NoText && item.NoText.length > 0 ? (
-            <>
-              <label htmlFor={`${Type}${ID}`}>{item.NoText && <DiggTextWithLink className='text-base' dangerouslySetInnerHTML={{__html: item.NoText}}></DiggTextWithLink>}</label>
-              {/* If "No" should also need an answer, we can juse uncomment this. If SOME questions need an answer on "NO" then we need an extra check. */}
-              <FormTextArea
-                id={`${Type}${ID}`}
-                name={`${Type}${ID}`}
-                placeholder="Fyll i ditt svar"
-                value={item.Value}
-                onChange={(e) => {
-                  UpdateFormDataArray(e, item, pageIndex);
-                }}
-              />
-            </>
-          ) : 
-          (<span css={css`margin-bottom: 1rem;`}/>)}
+          {renderDivider()}
         </>
       );
-    case 'Description':
+    case "dataportal_Digg_FormDescription":
       return (
         <>
-          <Heading level={item.TopHeading ? 2 : 3}>{item.Header}</Heading>
-          {item.Description.length > 1 && <p>{item.Description}</p>}
+          <span className="form-heading">
+            <Heading level={item.TopHeading === true ? 1 : 2}>
+              {item.title}
+            </Heading>
+          </span>
+
+          {item.text.markdown?.length && item.text.markdown?.length > 9 && (
+            <p className="form-description__text">
+              {renderMarkdown(item.text.markdown || "")}
+            </p>
+          )}
         </>
       );
   }
 };
 
 const FormPage = ({ formDataArray, UpdateFormDataArray, pageIndex }: Props) => {
+  const { t } = useTranslation("pages");
   return (
     <>
       {formDataArray.map((item) => {
-        return <React.Fragment key={`item-${item.ID}`}>
-            {FormItem(item, UpdateFormDataArray, pageIndex)}
-          </React.Fragment>;
+        return (
+          <React.Fragment key={`item-${item.ID}`}>
+            {FormItem(item, UpdateFormDataArray, pageIndex, t)}
+          </React.Fragment>
+        );
       })}
     </>
   );

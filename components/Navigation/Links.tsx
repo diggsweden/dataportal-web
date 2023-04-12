@@ -1,19 +1,18 @@
-import { css } from '@digg/design-system';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { RelatedContent, RelatedContent_links } from '../../graphql/__generated__/RelatedContent';
-import { isExternalLink } from '../../utilities';
-import { checkLang } from '../../utilities/checkLang';
-import ExternalLink from './ExternalLink';
+import { css } from "@digg/design-system";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { RelatedContent_links } from "../../graphql/__generated__/RelatedContent";
+import { checkLang } from "../../utilities/checkLang";
+import ExternalLink from "./ExternalLink";
 
 // Todo - remove any
-export const Links: React.FC<{ basepath?: string | undefined; links: RelatedContent_links[] }> = ({
-  basepath,
-  links,
-}) => {
+export const Links: React.FC<{
+  basepath?: string | undefined;
+  links: RelatedContent_links[];
+}> = ({ basepath, links }) => {
   const router = useRouter();
   return (
-    <ul className="text-md font-bold linkblock">
+    <ul className="linkblock text-md font-bold">
       {links.map((l, index) => {
         return (
           <li
@@ -22,23 +21,24 @@ export const Links: React.FC<{ basepath?: string | undefined; links: RelatedCont
               }
             `}
             key={index}
-            onClick={() => router.push(`${basepath || ''}${l?.slug}`)}
+            onClick={() => router.push(`${basepath || ""}${l?.slug}`)}
           >
             <span>
-              {l.linktype === 'EXTERNAL' ? (
+              {l.linktype === "EXTERNAL" ? (
                 <ExternalLink
                   href={l?.slug}
                   passHref
-                  className='text-md font-normal'
+                  className="text-md font-normal"
                 >
                   {checkLang(l?.title || l?.slug)}
                 </ExternalLink>
               ) : (
                 <Link
-                  href={`${basepath || ''}${l?.slug}`}
+                  href={`${basepath || ""}${l?.slug}`}
                   passHref
+                  className="text-md font-normal"
                 >
-                  <a className="text-md font-normal">{checkLang(l?.title || l?.slug)}</a>
+                  {checkLang(l?.title || l?.slug)}
                 </Link>
               )}
             </span>

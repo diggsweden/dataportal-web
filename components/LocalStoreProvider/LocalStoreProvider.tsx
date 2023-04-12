@@ -1,15 +1,17 @@
-import { CookieSetting } from '@digg/design-system';
-import React, { useEffect } from 'react';
-import { useStateCallback } from '../../hooks/useStateCallback';
+import { CookieSetting } from "@digg/design-system";
+import React, { useEffect } from "react";
+import { useStateCallback } from "../../hooks/useStateCallback";
 
 export interface LocalStore {
   cookieSettings: CookieSetting | undefined;
 }
 
+/* eslint-disable no-unused-vars */
 export interface LocalStoreContextData {
   set: (settings: Partial<LocalStore>) => void;
   store: LocalStore;
 }
+/* eslint-enable no-unused-vars */
 
 const defaultSettings: LocalStoreContextData = {
   set: () => {},
@@ -18,14 +20,17 @@ const defaultSettings: LocalStoreContextData = {
   },
 };
 
-export const LocalStoreContext = React.createContext<LocalStoreContextData>(defaultSettings);
+export const LocalStoreContext =
+  React.createContext<LocalStoreContextData>(defaultSettings);
 
 export interface LocalStoreProviderState {
   store: LocalStore;
 }
 
-export const LocalStoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const storeName = 'digg-store';
+export const LocalStoreProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const storeName = "digg-store";
   const [store, setStore] = useStateCallback(defaultSettings.store);
 
   const loadData = () => {
@@ -60,5 +65,9 @@ export const LocalStoreProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   }, []);
   /* eslint-enable */
 
-  return <LocalStoreContext.Provider value={data}>{children}</LocalStoreContext.Provider>;
+  return (
+    <LocalStoreContext.Provider value={data}>
+      {children}
+    </LocalStoreContext.Provider>
+  );
 };

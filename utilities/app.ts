@@ -1,20 +1,23 @@
-import { BlockData } from '../graphql/__generated__/BlockData';
-import { Publication_dataportal_Digg_Publications_image } from '../graphql/__generated__/Publication';
-import { SeoData } from '../graphql/__generated__/SeoData';
+import { Publication_dataportal_Digg_Publications_image } from "../graphql/__generated__/Publication";
+import { SeoData } from "../graphql/__generated__/SeoData";
 import {
   DomainAggregateResponse,
+  FormResponse,
+  ModuleResponse,
   MultiContainerResponse,
   PublicationListResponse,
   PublicationResponse,
   RootAggregateResponse,
-} from './queryHelpers';
+} from "./queryHelpers";
 
 export type DataportalPageProps =
   | MultiContainerResponse
   | PublicationListResponse
   | PublicationResponse
   | DomainAggregateResponse
-  | RootAggregateResponse;
+  | RootAggregateResponse
+  | FormResponse
+  | ModuleResponse;
 
 type ResolvedPage = {
   heroImage?: Publication_dataportal_Digg_Publications_image | null;
@@ -29,15 +32,19 @@ type ResolvedPage = {
  */
 export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
   switch (props.type) {
-    case 'RootAggregate':
+    case "RootAggregate":
       return { seo: props.seo };
-    case 'DomainAggregate':
+    case "DomainAggregate":
       return { seo: props.seo };
-    case 'MultiContainer':
+    case "MultiContainer":
       return { seo: props.container?.seo, heroImage: props.container?.image };
-    case 'Publication':
+    case "Publication":
       return { seo: props.seo, heroImage: props.image };
-    case 'PublicationList':
+    case "PublicationList":
+      return {};
+    case "Form":
+      return {};
+    case "Module":
       return {};
     default:
       return {};
@@ -45,10 +52,10 @@ export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
 };
 
 export const populateSeo: SeoData = {
-  __typename: 'dataportal_Digg_SEO',
-  lang: 'sv',
-  title: '',
-  description: '',
+  __typename: "dataportal_Digg_SEO",
+  lang: "sv",
+  title: "",
+  description: "",
   image: null,
   robotsFollow: true,
   robotsIndex: true,

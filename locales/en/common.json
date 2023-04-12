@@ -1,5 +1,6 @@
 {
   "accessibility-report": "Accessibility report",
+  "about": "About",
   "beta": "BETA",
   "beta-text1": "We are constantly developing Sveriges dataportal. Please send your ",
   "beta-link-text": "opinions",
@@ -8,6 +9,7 @@
   "clear-filters": "Clear filters",
   "close": "Close",
   "close_menu": "Close menu",
+  "close_search": "Close search",
   "contact": "Contact",
   "cookies": "cookies",
   "cookie-text": "We use cookies on Sweden's data portal to improve your experience of the website. By continuing to browse, you agree that we use cookies.",
@@ -47,6 +49,7 @@
   "search-dataapi": "Search data & APIs",
   "search-concept": "Search concepts",
   "search-specs": "Search specifications",
+  "search-content": "Search content",
   "show-filter": "Show filter",
   "soon": "COMING SOON",
   "seo-title": "Sveriges Dataportal",
@@ -54,5 +57,9 @@
   "to-top": "To the top",
   "top-image": "View of Stockholm",
   "digg-managed_text": "DIGG is managed by the Swedish Agency for Digital Government",
-  "data-areas": "Data areas"
+  "data-areas": "Data areas",
+  "yes": "Yes",
+  "no": "No",
+  "go-to": "Navigate to",
+  "open": "Open"
 }

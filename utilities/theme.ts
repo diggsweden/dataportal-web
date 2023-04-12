@@ -1,10 +1,9 @@
-import { colorPalette, theme } from '@digg/design-system';
+import { colorPalette, theme } from "@digg/design-system";
 
 const focusStyle = {
-  outline: '3px dotted ' + colorPalette.white,
-  offset: '3px !important',
+  outline: "3px dotted " + colorPalette.white,
+  offset: "3px !important",
 };
-const borderColor = theme.border;
 export const dataportalTheme: DiggTheme = {
   ...theme,
   anchorlinkMenu: {
@@ -57,7 +56,7 @@ export const dataportalTheme: DiggTheme = {
       },
       hoverColors: {
         accent: colorPalette.gray900,
-        border: colorPalette.white,
+        border: "transparent",
         background: colorPalette.white,
         font: colorPalette.gray900,
       },
@@ -112,21 +111,21 @@ export const dataportalTheme: DiggTheme = {
   },
   searchField: {
     normalColors: {
-      accent: 'rgba(149, 96, 87, 1)',
-      border: 'rgba(244, 147, 131, 0.10)',
-      background: 'rgba(244, 147, 131, 0.10)',
+      accent: "rgba(149, 96, 87, 1)",
+      border: "rgba(244, 147, 131, 0.10)",
+      background: "rgba(244, 147, 131, 0.10)",
       font: colorPalette.white,
     },
     activeColors: {
       accent: colorPalette.gray900,
       border: colorPalette.pinkPop,
-      background: 'rgba(244, 147, 131, 0.12)',
+      background: "rgba(244, 147, 131, 0.12)",
       font: colorPalette.white,
     },
     hoverColors: {
       accent: colorPalette.gray900,
       border: colorPalette.pink700,
-      background: 'rgba(244, 147, 131, 0.12)',
+      background: "rgba(244, 147, 131, 0.12)",
       font: colorPalette.white,
     },
     disabledColors: {
@@ -150,7 +149,7 @@ export const dataportalTheme: DiggTheme = {
   accordion: {
     normalColors: {
       accent: colorPalette.green700,
-      background: 'transparent',
+      background: "transparent",
       font: colorPalette.white,
       border: colorPalette.gray600,
     },

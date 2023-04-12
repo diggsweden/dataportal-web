@@ -1,15 +1,22 @@
-import { colorPalette, Heading, HeadingLevel, styled } from '@digg/design-system';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeRaw from 'rehype-raw';
-import Image from 'next/image';
-import Link from 'next/link';
-import { isExternalLink, isMailLink } from '../../utilities';
-import { ExternalLink, Quote } from '..';
-import { checkLang } from '../../utilities/checkLang';
+import {
+  colorPalette,
+  Heading,
+  HeadingLevel,
+  styled,
+} from "@digg/design-system";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import Image from "next/image";
+import Link from "next/link";
+import { isExternalLink, isMailLink } from "../../utilities";
+import { ExternalLink, Quote } from "..";
+import { checkLang } from "../../utilities/checkLang";
+import { responsive } from "../../styles/image";
 
 const generateHeadings = (options?: HeadingOption[]) => {
   const levels: HeadingLevel[] = [1, 2, 3, 4, 5, 6];
+  // eslint-disable-next-line no-unused-vars
   let headings: { [key: string]: (props: any) => any } = {};
   levels.map((level) => {
     const option = options?.find((opt) => opt.oldLevel === level);
@@ -30,6 +37,7 @@ const renderImage = (props: any) => {
     <Image
       src={`${props.src}`}
       alt={props.alt}
+      style={responsive}
       width={600}
       height={400}
     />
@@ -37,22 +45,17 @@ const renderImage = (props: any) => {
 };
 
 const renderLink = ({ href, children }: any) => {
-  return isExternalLink(href || '') ? (
+  return isExternalLink(href || "") ? (
     <ExternalLink
-      isMail={isMailLink(href || '')}
-      href={href || ''}
+      isMail={isMailLink(href || "")}
+      href={href || ""}
       className="markdown--link"
     >
       {children}
     </ExternalLink>
   ) : (
-    <Link
-      href={href}
-      passHref
-    >
-      <a className="markdown--link">
-        <span>{children}</span>
-      </a>
+    <Link href={href} passHref className="markdown--link">
+      <span>{children}</span>
     </Link>
   );
 };

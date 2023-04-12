@@ -20,9 +20,10 @@
   },
   "ai": {
     "heading": "Offentlig AI",
-    "preamble": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sed massa sagittis, bibendum justo et, lacinia libero. Pellentesque non magna consectetur, ornare erat at, cursus nibh. Vestibulum gravida ultricies sagittis.",
+    "preamble": "AI i praktiken – ett konkret stöd till offentlig sektor.",
     "model": "Förtroendemodellen",
-    "model_description": "Lorem ipsum dolor sit amet"
+    "model_description": "Självutvärderingsverktyg för att bidra till transparens om AI-system",
+    "inspiration_description": "Goda exempel från offentlig förvaltning"
   },
   "data": {
     "heading": "Data för ökad innovationskraft",
@@ -31,10 +32,11 @@
   },
   "os": {
     "heading": "Öppen källkod",
-    "preamble": "Öppen Källkod (även kallad open source och öppen programvara) ökar betydligt innovationstakten då aktörer kan samutveckla, anpassa och bygga vidare på befintliga lösningar."
+    "preamble": "Öppen källkod - även kallad open source och öppen programvara - ökar betydligt innovationstakten då aktörer kan samutveckla, anpassa och bygga vidare på befintliga lösningar."
   },
   "listpage": {
-    "no-articles": "Det finns inga artiklar att visa för tillfället."
+    "no-articles": "Det finns inga artiklar att visa för tillfället.",
+    "fallback-tag": "Nyhet"
   },
   "statistic": {
     "statistic-header": "Statistik på dataportalen",
@@ -61,6 +63,7 @@
     "dataset-hits": "träffar",
     "concept-hits": "träffar",
     "specification-hits": "träffar",
+    "content-hits": "träffar",
     "next-page": "Nästa",
     "prev-page": "Föregående",
     "first-page": "Första",
@@ -69,6 +72,7 @@
     "datasets": "Data & API:er",
     "concepts": "Begrepp",
     "specifications": "Specifikationer",
+    "content": "Innehåll på webbplatsen",
     "organization": "Organisationer",
     "relevance": "Relevans",
     "date": "Senast ändrad",
@@ -103,25 +107,31 @@
     "detailed-list-active": "Detaljerad lista aktiv",
     "compact-list": "Kompakt lista",
     "compact-list-active": "Kompakt lista aktiv",
-    "grid-view": "Rutnät"
+    "pagination-next-txt": "Nästa"
   },
   "datasets": {
-    "search-datasets": "Sök",
+    "search": "Sök",
     "datasets": "datamängder",
     "social_meta_title": "Sök data & API:er",
     "social_meta_description": "Data & API:er på Sveriges Dataportal"
   },
   "concepts": {
-    "search-concept": "Sök",
+    "search": "Sök",
     "concepts": "begrepp",
     "social_meta_title": "Sök begrepp",
     "social_meta_description": "Begrepp på Sveriges Dataportal"
   },
   "specifications": {
-    "search-specifications": "Sök",
+    "search": "Sök",
     "specifications": "specifikationer",
     "social_meta_title": "Sök specifikationer",
     "social_meta_description": "Specifikationer på Sveriges Dataportal"
+  },
+  "content": {
+    "search": "Sök",
+    "content": "Innehåll",
+    "social_meta_title": "Sök innehåll",
+    "social_meta_description": "Innehåll på Sveriges dataportal"
   },
   "notfoundpage": {
     "heading": "404 - Sidan hittades inte",
@@ -146,6 +156,7 @@
     "rdf": "Ladda ner metadata som RDF",
     "view_more": "Visa mer",
     "view_less": "Visa mindre",
+    "keyword": "Nyckelord",
     "contact-publisher": "Har du frågor eller synpunkter?",
     "contact-publisher-text": "Kontakta publicerande organisation för frågor, synpunkter och önskemål kring informationen på den här sidan. ",
     "contact-publisher-text2": "Du kan även vända dig till dataportalens "
@@ -217,6 +228,7 @@
     "term_adress": "Adress för terminologi"
   },
   "specification_page": {
+    "address": "Adress för specifikation",
     "about_specification": "Om specifikation",
     "resource_specification": "Resurs",
     "scheme_download": "Ladda ner schema",
@@ -235,5 +247,18 @@
     "api-key-txt": "Vissa API:er måste låsas upp med en API-nyckel för att möjliggöra att kunna göra anrop och utforska datamängden. För att få tillgång till en API-nyckel behöver utgivaren kontaktas.",
     "contact-publisher": "Kontakt till utgivare",
     "api-contract": "API-kontrakt"
+  },
+  "form":{
+    "placeholder-text": "Fyll i ditt svar",
+    "clear-all-text": "Rensa alla svar",
+    "clear-confirm-text": "Är du säker på att du vill rensa alla svar?",
+    "upload-json-file": "Ladda upp sparade svar",
+    "next-section-text": "Nästa avsnitt",
+    "previous-section-text": "Föregående avsnitt",
+    "save-form": "Spara era svar på din dator",
+    "generate-pdf-text" : "Generera PDF",
+    "form-continue-text": "Vill du gå vidare?",
+    "start-evaluation-text": "Starta utvärdering",
+    "go-back-text": "Tillbaka"
   }
 }

@@ -64,6 +64,8 @@ const render = (props: DataportalPageProps) => {
       return <PublicationPage {...props} />;
     case 'PublicationList':
       return <ArticleListPage {...props} />;
+    default:
+      return null;
   }
 };
 

@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
-import { ESRdfType, ESType, SearchContextData, SearchFilter } from '..';
-import { Button, CloseIcon, colorPalette, SearchIcon } from '@digg/design-system';
-import { FilterIcon, CloseIcon as CloseIcon2 } from '../Icons';
-import useTranslation from 'next-translate/useTranslation';
+import React, { useState } from "react";
+import { ESRdfType, ESType, SearchContextData, SearchFilter } from "..";
+import {
+  Button,
+  CloseIcon,
+  colorPalette,
+  SearchIcon,
+} from "@digg/design-system";
+import { FilterIcon, CloseIcon as CloseIcon2 } from "../Icons";
+import useTranslation from "next-translate/useTranslation";
 
 interface SearchFilterProps {
   showFilter: boolean;
   search: SearchContextData;
-  searchType: SearchType;
+  searchMode: SearchMode;
   query: string;
   setShowFilter: React.Dispatch<React.SetStateAction<boolean>>;
   showTip?: boolean;
@@ -27,31 +32,33 @@ interface FilterSearchProps {
 }
 
 type InputFilter = { [key: string]: string };
-export type SearchType = 'data' | 'begrepp' | 'specifikationer';
+export type SearchMode = "content" | "datasets" | "concepts" | "specifications";
 
-const FilterSearch: React.FC<FilterSearchProps> = ({ filterKey, filter, setFilter, fetchMore }) => {
-  const { t } = useTranslation('pages');
+const FilterSearch: React.FC<FilterSearchProps> = ({
+  filterKey,
+  filter,
+  setFilter,
+  fetchMore,
+}) => {
+  const { t } = useTranslation("pages");
 
   const clearCurrentScrollPos = () => {
-    if (typeof localStorage != 'undefined' && typeof location != 'undefined') {
-      localStorage.setItem(`ScrollposY_${location.search}`, '0');
+    if (typeof localStorage != "undefined" && typeof location != "undefined") {
+      localStorage.setItem(`ScrollposY_${location.search}`, "0");
     }
   };
 
   return (
     <div className="filter-search">
-      <label
-        htmlFor={filterKey}
-        className="hidden"
-      >
-        {t('search$filtersearch')}
+      <label htmlFor={filterKey} className="hidden">
+        {t("search$filtersearch")}
       </label>
       <input
         id={filterKey}
         name={filterKey}
-        placeholder={t('search$filtersearch')}
+        placeholder={t("search$filtersearch")}
         className="filter-search__input"
-        value={filter[filterKey] || ''}
+        value={filter[filterKey] || ""}
         onChange={(e) => (
           clearCurrentScrollPos(),
           fetchMore(),
@@ -59,11 +66,8 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ filterKey, filter, setFilte
         )}
       />
       <i className="filter-search__icon">
-        {' '}
-        <SearchIcon
-          color={colorPalette.gray700}
-          width={[25]}
-        />
+        {" "}
+        <SearchIcon color={colorPalette.gray700} width={[25]} />
       </i>
     </div>
   );
@@ -73,7 +77,9 @@ const MarkAll: React.FC<MarkAllProps> = ({ search, toggleKey, title }) => {
   return (
     <div className="filter-checkall">
       <Button
-        className={`filter-btn ${search.facetSelected(toggleKey, '*') && 'selected'}`}
+        className={`filter-btn ${
+          search.facetSelected(toggleKey, "*") && "selected"
+        }`}
         onClick={async () => {
           await search.set({
             facetValues: search.request.facetValues
@@ -88,22 +94,22 @@ const MarkAll: React.FC<MarkAllProps> = ({ search, toggleKey, title }) => {
             facet: toggleKey,
             facetType: ESType.wildcard,
             related: false,
-            facetValueString: '',
-            resource: '*',
+            facetValueString: "",
+            resource: "*",
             title: title,
           };
           wildcardFacet.facetValueString = `${toggleKey}||${wildcardFacet.resource}||${wildcardFacet.related}||${wildcardFacet.facetType}||${toggleKey}||${wildcardFacet.title}`;
           await search.toggleFacet(wildcardFacet);
           await search.doSearch(false, true, false);
 
-          if (search.facetSelected(toggleKey, '*')) {
+          if (search.facetSelected(toggleKey, "*")) {
             search.sortAllFacets(toggleKey);
           } else {
             search.sortAllFacets();
           }
         }}
       >
-        {title} {search.facetSelected(toggleKey, '*')}
+        {title} {search.facetSelected(toggleKey, "*")}
         <span className="check"></span>
       </Button>
     </div>
@@ -114,17 +120,17 @@ const FindFilters = (
   categoryFilters: SearchFacetValue[],
   checkedFilters: SearchFacetValue[] | undefined
 ) => {
-  if (!checkedFilters) return '';
+  if (!checkedFilters) return "";
 
   const allTitles = categoryFilters.map((item) => item.title);
   const checkedTitles = checkedFilters.map((item) => item.title);
   const union = allTitles.filter((x) => checkedTitles.includes(x));
 
   if (union.length > 0) {
-    return ' (' + union.length + ')';
+    return " (" + union.length + ")";
   }
 
-  return '';
+  return "";
 };
 
 /**
@@ -132,14 +138,14 @@ const FindFilters = (
  *
  * @param {boolean} showFilter disable or enable filters
  * @param {SearchContextData} search context for handling searchstate
- * @param {SearchType} searchType
+ * @param {SearchMode} searchMode
  * @param {string} query
  * @returns JSX-elements of selects and checkboxes
  */
 export const SearchFilters: React.FC<SearchFilterProps> = ({
   showFilter,
   search,
-  searchType,
+  searchMode,
   query,
   setShowFilter,
 }) => {
@@ -148,8 +154,8 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
   const [isOpen, setOpen] = useState(true);
 
   const clearCurrentScrollPos = () => {
-    if (typeof localStorage != 'undefined' && typeof location != 'undefined') {
-      localStorage.setItem(`ScrollposY_${location.search}`, '0');
+    if (typeof localStorage != "undefined" && typeof location != "undefined") {
+      localStorage.setItem(`ScrollposY_${location.search}`, "0");
     }
   };
 
@@ -157,18 +163,20 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
     <>
       <div className="mobile-filters">
         <button
-          aria-label={showFilter ? t('common|hide-filter') : t('common|show-filter')}
-          className={showFilter ? 'filter-active' : ''}
+          aria-label={
+            showFilter ? t("common|hide-filter") : t("common|show-filter")
+          }
+          className={showFilter ? "filter-active" : ""}
           onClick={() => setShowFilter(!showFilter)}
         >
-          {t('common|filter')}
+          {t("common|filter")}
           {showFilter ? <CloseIcon2 /> : <FilterIcon />}
         </button>
       </div>
 
       <div
-        className={`search-filter-box ${showFilter && 'show-filter'} ${
-          isOpen && 'compact-filters'
+        className={`search-filter-box ${showFilter && "show-filter"} ${
+          isOpen && "compact-filters"
         }`}
       >
         <div className="search-filter-row">
@@ -181,21 +189,24 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                 const show = (value && value.show) || 20;
                 const facetValues = inputFilter[key]
                   ? value?.facetValues.filter((v) =>
-                      v.title?.toLowerCase().includes(inputFilter[key].toLowerCase())
+                      v.title
+                        ?.toLowerCase()
+                        .includes(inputFilter[key].toLowerCase())
                     )
                   : value?.facetValues.slice(0, show);
                 return (
-                  <div
-                    key={'box' + value.title}
-                    className="search-filter"
-                  >
+                  <div key={"box" + value.title} className="search-filter">
                     <SearchFilter
                       title={
-                        value.title + FindFilters(value.facetValues, search.request.facetValues)
+                        value.title +
+                        FindFilters(
+                          value.facetValues,
+                          search.request.facetValues
+                        )
                       }
                     >
                       <div className="search-filter-list">
-                        {searchType == 'data' && ( //only render on searchpage
+                        {searchMode == "datasets" && ( //only render on searchpage
                           <>
                             {isLicense ? (
                               <MarkAll
@@ -208,56 +219,73 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                                 filterKey={key}
                                 filter={inputFilter}
                                 setFilter={setInputFilter}
-                                fetchMore={() => shouldFetchMore && search.fetchMoreFacets(key)}
+                                fetchMore={() =>
+                                  shouldFetchMore && search.fetchMoreFacets(key)
+                                }
                               />
                             )}
                           </>
                         )}
 
-                        {facetValues.map((facetValue: SearchFacetValue, index: number) => {
-                          const selected = search.facetSelected(key, facetValue.resource);
-                          return (
-                            <Button
-                              secondary={true}
-                              aria-pressed={selected}
-                              key={index}
-                              className={`filter-btn ${selected && 'selected'}`}
-                              onClick={() => {
-                                clearCurrentScrollPos();
-                                search.toggleFacet(facetValue).then(async () => {
-                                  if (search.facetSelected(key, '*')) {
-                                    let wildcardFacet: SearchFacetValue = {
-                                      count: -1,
-                                      facet: key,
-                                      facetType: ESType.wildcard,
-                                      related: false,
-                                      facetValueString: '',
-                                      resource: '*',
-                                      title: t(`filters|allchecktext$${key}`),
-                                    };
-                                    await search.toggleFacet(wildcardFacet);
-                                  }
+                        {facetValues.map(
+                          (facetValue: SearchFacetValue, index: number) => {
+                            const selected = search.facetSelected(
+                              key,
+                              facetValue.resource
+                            );
+                            return (
+                              <Button
+                                secondary={true}
+                                aria-pressed={selected}
+                                key={index}
+                                className={`filter-btn ${
+                                  selected && "selected"
+                                }`}
+                                onClick={() => {
+                                  clearCurrentScrollPos();
+                                  search
+                                    .toggleFacet(facetValue)
+                                    .then(async () => {
+                                      if (search.facetSelected(key, "*")) {
+                                        let wildcardFacet: SearchFacetValue = {
+                                          count: -1,
+                                          facet: key,
+                                          facetType: ESType.wildcard,
+                                          related: false,
+                                          facetValueString: "",
+                                          resource: "*",
+                                          title: t(
+                                            `filters|allchecktext$${key}`
+                                          ),
+                                        };
+                                        await search.toggleFacet(wildcardFacet);
+                                      }
 
-                                  search.doSearch(false, true, false).then(() => {
-                                    if (selected) {
-                                      search.sortAllFacets(key);
-                                    } else {
-                                      search.sortAllFacets();
-                                    }
-                                  });
-                                });
-                              }}
-                            >
-                              {facetValue.title || facetValue.resource} ({facetValue.count}){' '}
-                              {selected}
-                              <span
-                                className={
-                                  search.facetSelected(key, '*') ? 'check-disabled check' : 'check'
-                                }
-                              ></span>
-                            </Button>
-                          );
-                        })}
+                                      search
+                                        .doSearch(false, true, false)
+                                        .then(() => {
+                                          if (selected) {
+                                            search.sortAllFacets(key);
+                                          } else {
+                                            search.sortAllFacets();
+                                          }
+                                        });
+                                    });
+                                }}
+                              >
+                                {facetValue.title || facetValue.resource} (
+                                {facetValue.count}) {selected}
+                                <span
+                                  className={
+                                    search.facetSelected(key, "*")
+                                      ? "check-disabled check"
+                                      : "check"
+                                  }
+                                ></span>
+                              </Button>
+                            );
+                          }
+                        )}
 
                         {value.facetValues.length > value.show && (
                           <Button
@@ -267,13 +295,15 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                             }}
                           >
                             {search.loadingFacets
-                              ? `${t('common|loading')}...`
-                              : `${t('common|load-more')}...`}
+                              ? `${t("common|loading")}...`
+                              : `${t("common|load-more")}...`}
                           </Button>
                         )}
 
                         {facetValues.length == 0 && (
-                          <div className="no-filter-hits show">{t('pages|search$nohits')}</div>
+                          <div className="no-filter-hits show">
+                            {t("pages|search$nohits")}
+                          </div>
                         )}
                       </div>
                     </SearchFilter>
@@ -282,7 +312,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
               })}
         </div>
 
-        {searchType == 'data' && (
+        {searchMode == "datasets" && (
           <div className="checkbox__wrapper">
             <input
               id="api_only"
@@ -297,7 +327,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                 ) &&
                 !search.request.esRdfTypes?.some((t) => t == ESRdfType.dataset)
               }
-              onChange={(event) => {
+              onChange={() => {
                 clearCurrentScrollPos();
                 if (
                   search.request.esRdfTypes?.some(
@@ -306,7 +336,9 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                   search.request.esRdfTypes?.some(
                     (t) => t == ESRdfType.esterms_IndependentDataService
                   ) &&
-                  !search.request.esRdfTypes?.some((t) => t == ESRdfType.dataset)
+                  !search.request.esRdfTypes?.some(
+                    (t) => t == ESRdfType.dataset
+                  )
                 ) {
                   search
                     .set({
@@ -331,23 +363,22 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                 }
               }}
             ></input>
-            <label
-              className="text-base"
-              htmlFor="api_only"
-            >
+            <label className="text-base" htmlFor="api_only">
               API
             </label>
           </div>
         )}
       </div>
 
-      {searchType == 'data' && (
+      {searchMode == "datasets" && (
         <div className="search-toolbar">
           <button
-            className={isOpen ? 'more-filters-btn' : 'more-filters-btn active'}
+            className={isOpen ? "more-filters-btn" : "more-filters-btn active"}
             onClick={() => setOpen(!isOpen)}
           >
-            {isOpen ? `${t('pages|search$more-filters')}` : `${t('pages|search$less-filters')}`}
+            {isOpen
+              ? `${t("pages|search$more-filters")}`
+              : `${t("pages|search$less-filters")}`}
             {isOpen ? <FilterIcon /> : <CloseIcon2 />}
           </button>
         </div>
@@ -368,14 +399,17 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                   });
                 }}
               >
-                {facetValue.title || facetValue.resource} <CloseIcon width={[15]} />
+                {facetValue.title || facetValue.resource}{" "}
+                <CloseIcon width={[15]} />
               </button>
             )
           )}
       </div>
       <div
         className={`clear-filters ${
-          search.request?.facetValues && search.request.facetValues.length >= 2 && 'show'
+          search.request?.facetValues &&
+          search.request.facetValues.length >= 2 &&
+          "show"
         }`}
       >
         <button
@@ -384,7 +418,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
             search.set({ facetValues: [] }).then(() => search.doSearch());
           }}
         >
-          {t('common|clear-filters')} ({search.request?.facetValues?.length})
+          {t("common|clear-filters")} ({search.request?.facetValues?.length})
         </button>
       </div>
     </>

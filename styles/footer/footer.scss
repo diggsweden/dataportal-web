@@ -17,6 +17,7 @@ footer {
     flex-direction: column;
     min-height: 3rem;
     padding-bottom: $space-8;
+    padding-top: $space-8;
 
     .digg__ {
       > div {
@@ -85,7 +86,6 @@ footer {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin-bottom: $space-6;
 
   @media screen and (max-width: $media-sm) {
     flex-direction: column;
@@ -174,7 +174,7 @@ footer {
       }
 
       li {
-        margin-bottom: $space-4;
+        margin-bottom: $space-1;
       }
     }
 

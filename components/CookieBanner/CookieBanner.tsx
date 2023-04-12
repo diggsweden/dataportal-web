@@ -1,4 +1,4 @@
-import {  
+import {
   CookieBanner as DiggCookieBanner,
   CookieSetting,
   NecessaryCookies,
@@ -10,7 +10,7 @@ import React, { useContext, useEffect } from 'react';
 import { LocalStoreContext, SettingsContext } from '..';
 import { TrackingContext } from '../TrackingProvider';
 
-const StyledA = styled.a`
+const StyledLink = styled(Link)`
   margin-left: 0.25rem;
   text-decoration: underline;
   cursor: pointer;
@@ -58,12 +58,13 @@ export const CookieBanner: React.FC = () => {
 
       {/** Todo - fix better row break */}
       <p></p>
-      <Link
+      <StyledLink
         href={cookieMoreInfoLink || '/'}
         passHref
+        className="text-md"
       >
-        <StyledA className="text-md">{t('cookie-link')}</StyledA>
-      </Link>
+        {t('cookie-link')}
+      </StyledLink>
     </DiggCookieBanner>
   ) : (
     <></>

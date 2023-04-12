@@ -1,11 +1,9 @@
-import { Accordion, fontSize, space, css } from '@digg/design-system';
-import { useRouter } from 'next/router';
-import React from 'react';
-import { Faq as IFaq } from '../../graphql/__generated__/Faq';
-import { renderMarkdown } from '../Renderers';
+import { Accordion, fontSize, space, css } from "@digg/design-system";
+import React from "react";
+import { Faq as IFaq } from "../../graphql/__generated__/Faq";
+import { renderMarkdown } from "../Renderers";
 
 export const Faq: React.FC<IFaq> = ({ question, answer }) => {
-  const { asPath } = useRouter() || {};
   return (
     <Accordion
       className="dataportal--accordion"
@@ -15,11 +13,11 @@ export const Faq: React.FC<IFaq> = ({ question, answer }) => {
     >
       <div
         css={css`
-          ${fontSize(['base', 'md'])};
+          ${fontSize(["base", "md"])};
           ${space({ pb: 2 })};
         `}
       >
-        {renderMarkdown(answer?.markdown || '')}
+        {renderMarkdown(answer?.markdown || "")}
       </div>
     </Accordion>
   );

@@ -1,43 +1,53 @@
- type FormText = {
-  ID: number;
-  Type: 'Text';
-  Value: string;
-  Header: string;
-};
+import {
+  Form_dataportal_Digg_Form_elements_dataportal_Digg_FormRadio,
+  Form_dataportal_Digg_Form_elements_dataportal_Digg_FormDescription,
+  Form_dataportal_Digg_Form_elements_dataportal_Digg_FormRadio_choices,
+  Form_dataportal_Digg_Form_elements_dataportal_Digg_FormPageBreak,
+  Form_dataportal_Digg_Form_elements_dataportal_Digg_FormText,
+} from '../../graphql/__generated__/Form';
 
- type TextArea = {
-  ID: number;
-  Type: 'TextArea';
-  Value: string;
-  Header: string;
-};
+export interface DefaultProps {
+  value: string;
+  number: number;
+}
 
- type TextChoice = {
+interface FormText
+  extends Form_dataportal_Digg_Form_elements_dataportal_Digg_FormText,
+    DefaultProps {
   ID: number;
-  Type: 'TextChoice';
-  Value: string;
-  Header: string;
-  Choice: RadioChoice;
-  YesText?: string;
-  NoText?: string;
-};
+  __typename: 'dataportal_Digg_FormText';
+}
 
- type Description = {
+export interface TextArea
+  extends Form_dataportal_Digg_Form_elements_dataportal_Digg_FormText,
+    DefaultProps {
   ID: number;
-  Type: 'Description';
-  Header: string;
-  Description: string;
+  __typename: 'dataportal_Digg_FormTextArea';
+  title: string;
+  images: {[key: string]: string};
+}
+
+interface FormRadio
+  extends Form_dataportal_Digg_Form_elements_dataportal_Digg_FormRadio,
+    DefaultProps {
+  ID: number;
+  selected: FormChoice;
+  choices: FormChoice[];
+}
+
+interface Description extends Form_dataportal_Digg_Form_elements_dataportal_Digg_FormDescription {
+  ID: number;
   TopHeading?: boolean;
-};
+}
 
- type PageBreak = {
+interface PageBreak extends Form_dataportal_Digg_Form_elements_dataportal_Digg_FormPageBreak {
   ID: number;
-  Type: 'PageBreak';
-  Title: string;
-};
+  __typename: 'dataportal_Digg_FormPageBreak';
+}
 
-export type EventType = React.ChangeEvent<any> | RadioChoice;
-type RadioChoice = 'Yes' | 'No' | 'NA';
+interface FormChoice extends Form_dataportal_Digg_Form_elements_dataportal_Digg_FormRadio_choices {
+  ID: number;
+}
 
-type FormTypes = FormText | TextArea | TextChoice | Description | PageBreak;
+type FormTypes = FormText | TextArea | FormRadio | Description | PageBreak | FormChoice;
 export default FormTypes;

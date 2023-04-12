@@ -1,41 +1,43 @@
-import { styled, colorPalette, theme } from "@digg/design-system";
+import { styled, colorPalette, theme, css } from "@digg/design-system";
 
 export const TempContainer = styled.div`
   background: #212121;
   color: white;
-  
+
+  max-width: calc(100% - 2rem);
+  margin: auto;
 `;
 
 export const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
   max-width: 100%;
+  color: white;
 
   transition: all 0.2s ease-in-out;
-  
-  min-height: 1000px;
-  @media screen and (min-width: 1024px) {       
+
+  @media screen and (min-width: 1024px) {
     max-width: 46.063rem; //737 px
   }
 
   label {
     margin-bottom: 1rem;
-    &:first-of-type{
+    &:first-of-type {
       margin-top: 0;
     }
 
-    a{
+    a {
       text-decoration: underline;
 
-      &:hover{
+      &:hover {
         text-decoration: none;
       }
     }
   }
 
-  legend{
+  legend {
     margin-bottom: 1rem;
-    &:first-of-type{
+    &:first-of-type {
       margin-top: 0;
     }
   }
@@ -48,19 +50,22 @@ export const FormBackButton = styled.button`
   background-color: transparent;
   cursor: pointer;
   padding-left: 0;
-  
-  span{
-    display: flex;    
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+
+  .back-button {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
 
-  p{
+  .back-text {
+    margin: 0;
     margin-left: 0.5rem;
   }
 
-  svg{
+  svg {
     transform: rotate(180deg);
   }
 `;
@@ -84,46 +89,79 @@ export const FormGeneratePDFButton = styled.button`
 //Wrapper for buttons
 export const FormNavButtons = styled.div`
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 3rem;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 1rem;
 
-  span{
-    display: flex;    
+  @media screen and (min-width: ${theme.breakpoints[0]}) {
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
 
-    p{
-      padding: 0;
-      margin: 0;
-      margin-right: 0.5rem;
+    button {
+      flex-direction: row;
+      max-width: 15rem;
     }
   }
 
-  button{
-    width: fit-content;
-    max-width: 13rem;
+  span {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-weight: 500;
+    gap: 0.5rem;
 
-    &:first-of-type{
-      margin-right: 0.5rem;
+    @media screen and (min-width: ${theme.breakpoints[0]}) {
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 1rem;
+
+      button {
+        max-width: fit-content;
+      }
     }
-    &:last-of-type{
+
+    .nav-icon {
+      padding: 0;
+      margin: 0;
       margin-left: 0.5rem;
+    }
+  }
+
+  button {
+    width: fit-content;
+    width: 100%;
+
+    span {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  &.start-buttons {
+    flex-direction: column;
+
+    button {
+      margin-left: 0;
+      margin-top: 1rem;
     }
   }
 `;
 
 //Form text input
 export const FormTextArea = styled.textarea`
-  background-color: transparent;  
+  background-color: transparent;
   color: white;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 
   border-radius: 2px;
   border: 1px solid ${colorPalette.pinkPop};
   min-height: 7rem;
   height: 5rem;
   padding: 0.5rem;
+  line-height: 1.3;
+  font-weight: 400;
 
   &::placeholder {
     color: ${colorPalette.gray500};
@@ -132,7 +170,7 @@ export const FormTextArea = styled.textarea`
   &:focus {
     border: 2px solid ${colorPalette.pinkPop};
     margin: -1px;
-    margin-bottom: calc(3rem + 1px);
+    margin-bottom: calc(2rem + 1px);
   }
 `;
 
@@ -142,7 +180,7 @@ export const Text = styled.input`
   padding: 0.5rem;
   border-radius: 2px;
   border: 1px solid ${colorPalette.pinkPop};
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 
   &::placeholder {
     color: ${colorPalette.gray500};
@@ -151,7 +189,7 @@ export const Text = styled.input`
   &:focus {
     border: 2px solid ${colorPalette.pinkPop};
     margin: -1px;
-    margin-bottom: calc(3rem - 1px);
+    margin-bottom: calc(2rem - 1px);
   }
 `;
 
@@ -182,8 +220,8 @@ export const DiggRadio = styled.input`
   border-radius: 50%;
   outline: none;
   cursor: pointer;
-  transition: all 0.12s ease-in-out;  
-  border: ${colorPalette.pinkPop} solid 1px;  
+  transition: all 0.12s ease-in-out;
+  border: ${colorPalette.pinkPop} solid 1px;
 
   /* &:checked {
     background-color: #d87a00;    
@@ -199,7 +237,7 @@ export const DiggRadio = styled.input`
     height: 14px;
     width: 14px;
     border-radius: 50%;
-    background-color: ${colorPalette.pinkPop}; 
+    background-color: ${colorPalette.pinkPop};
   }
 
   &:focus {
@@ -211,38 +249,223 @@ export const DiggRadio = styled.input`
   }
 `;
 
-export const DiggRadioWrapper = styled.div`  
+export const DiggRadioWrapper = styled.div`
   display: flex;
+  color: white;
   flex-direction: column;
 
-  label{
+  label {
     padding: 0;
     margin: 0;
     margin-right: 1rem;
+
+    input,
+    span {
+      margin-bottom: 0.5rem;
+    }
   }
 `;
 
-export const DiggRadioLabel = styled.label` 
+export const DiggRadioLabel = styled.label`
   margin-top: 10px;
-  font-size: 1rem;
-  font-weight: 100;
+  font-weight: 400;
   display: flex;
-  align-items: center;  
   cursor: pointer;
-  align-items: stretch;
+  align-items: center;
 `;
 
 export const DiggTextWithLink = styled.p`
-  a{
+  margin-bottom: 0;
+  a {
     text-decoration: underline;
 
-    &:hover{
+    &:hover {
       text-decoration: none;
-    }    
+    }
   }
 
-  ul{
-      padding-left: 1rem;
-      margin-top: 0;
+  ul {
+    padding-left: 1rem;
+    margin-top: 0;
+  }
+`;
+
+export const DiggPopover = styled.span`
+  display: inline;
+  div {
+    position: relative;
+    overflow: hidden;
+
+    .show-more {
+      display: flex;
+
+      > span {
+        display: inline-block;
+        cursor: pointer;
+        height: 26px;
+        width: 26px;
+        bottom: 1px;
+      }
+
+      &::before {
+        position: relative;
+        content: "Visa mer information";
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      &:hover::before {
+        cursor: pointer;
+        text-decoration: none;
+      }
     }
+
+    p {
+      display: none;
+    }
+  }
+
+  a {
+    text-decoration: underline;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .open {
+    height: auto;
+    width: 100%;
+
+    p {
+      display: block;
+    }
+
+    .show-more {
+      > span {
+        transform: rotate(180deg);
+        cursor: pointer;
+        bottom: 0px;
+      }
+      &::before {
+        content: "Stäng mer information";
+      }
+    }
+  }
+`;
+
+export const DiggProgressbar = styled("span")<{
+  page: number;
+  totPages: number;
+}>`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+
+  width: 100%;
+  height: 15px;
+  background-color: ${colorPalette.gray800};
+  color: ${(p) =>
+    p.page / (p.totPages + 1) > 0.5 ? colorPalette.black : colorPalette.white};
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc((${(p) => p.page}) / (${(p) => p.totPages + 1}) * 100%);
+    height: 15px;
+    background-color: ${colorPalette.pinkPop};
+  }
+
+  &::after {
+    content: "${(p) => p.page} / ${(p) => p.totPages + 1}";
+    font-size: 12px;
+    z-index: 100;
+
+    ${(p) =>
+      (p.totPages + 1) * 0.5 === p.page &&
+      css`
+        background: linear-gradient(
+          to right,
+          ${colorPalette.black} 50%,
+          ${colorPalette.white} 50%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+      `}
+  }
+`;
+
+export const DiggConfirmModal = styled.div`
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  contain: paint;
+
+  &.hide {
+    display: none;
+  }
+
+  .modal-content {
+    position: sticky;
+    margin: auto;
+    top: 30%;
+    background-color: ${colorPalette.gray900};
+    border: 1px solid ${colorPalette.pinkPop};
+    padding: 2rem;
+    max-width: 90%;
+    text-align: center;
+    width: 100%;
+
+    @media screen and (min-width: 500px) {
+      width: 300px;
+    }
+
+    &.save-modal {
+      width: 500px;
+      button {
+        width: 100%;
+      }
+
+      a {
+        text-decoration: underline;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  .modal-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1rem;
+
+    button {
+      color: white;
+      background-color: transparent;
+      border: 1px solid ${colorPalette.pinkPop};
+      outline: none;
+      cursor: pointer;
+      padding: 1rem;
+      max-width: 100px;
+      width: 100%;
+
+      &:hover {
+        border-color: ${colorPalette.white};
+      }
+    }
+  }
 `;

@@ -88,11 +88,23 @@
 }
 
 .link {
-  text-decoration-line: underline;  
+  text-decoration-line: underline;
+
+  &:hover {
+    text-decoration: none;
+
+    .search-result-list__highlight{
+      text-decoration: none;
+    }
+  }
 }
 
 .heading-link{
   color: $clr-pinkPop;
+}
+
+.article-heading{
+  margin: 0;
 }
 
 .external-link-icon {

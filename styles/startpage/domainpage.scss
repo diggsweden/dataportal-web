@@ -45,48 +45,29 @@
     }
   }
 
-    .domain-page__link-block {
-      ul {
-        &.puffblock {
-          flex-direction: column;
-
-          .theme-svg{
-            display: none;
-            height: 0;
-          }
-  
-          li {
-            min-width: 100%;
-            margin-bottom: 1rem;
-          }
-          @media screen and (min-width: $media-lg) {
-            flex-direction: row;
-            li {
-              min-width: auto;
-            }
-            .theme-svg{
-              display: block;
-              height: auto;
-            }
-          }
-        }
+  .domain-page__link-block {
+    visibility: hidden;
+    height: 0;
+    margin-top: $space-16;
+    svg {
+      height: 0;
+    }
+    li {
+      height: 0;
+    }
+    @media screen and (min-width: $media-lg) {
+      visibility: visible;
+      height: auto;
+      svg {
+        height: $space-14;
       }
-  
-      @media screen and (min-width: $media-lg) {
-        visibility: visible;
+      li {
         height: auto;
-  
-        svg {
-          height: $space-14;
-        }
-  
-        li {
-          height: auto;
-          min-height: 4.625rem;
-          display: flex;
-        }
+        min-height: 4.625rem;
+        display: flex;
       }
     }
+  }
 
   .domain-page__theme-block {
     margin-bottom: 1rem;
@@ -124,7 +105,7 @@
     min-height: 175vh;
     position: absolute;
     width: 100%;
-    top: -4rem;
+    top: -21rem;
     background: radial-gradient(209.41deg, rgba(160, 91, 81, 0.65) 0%, rgba(33, 33, 33, 0.6) 500px);
     z-index: -10;
 
@@ -142,6 +123,7 @@
         ); //Center
 
     @media screen and (min-width: $media-lg) {
+    top: -18rem;
       background: radial-gradient(
           circle at 90vw 10%,
           rgba(160, 91, 81, 0.408) 0%,

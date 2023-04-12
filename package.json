@@ -1,9 +1,9 @@
 {
   "name": "dataportal-web",
-  "version": "4.0.3",
+  "version": "4.4.0-beta",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "react-env --env local -- next dev",
     "build": "next build",
     "start": "react-env --env local -- next start",
     "check-types": "tsc --noemit",
@@ -18,7 +18,7 @@
     "@apollo/client": "^3.6.9",
     "@beam-australia/react-env": "^3.1.1",
     "@datapunt/matomo-tracker-react": "^0.5.1",
-    "@digg/design-system": "^4.3.0",
+    "@digg/design-system": "^4.3.2",
     "@types/node-fetch": "^2.6.2",
     "@types/swagger-ui-react": "^4.11.0",
     "fetch-enhanced": "^8.1.1",
@@ -26,7 +26,8 @@
     "graphql": "16.4.0",
     "https-proxy-agent": "^5.0.1",
     "lucene": "^2.1.1",
-    "next": "12.3.0",
+    "meilisearch": "^0.27.0",
+    "next": "13.0.2",
     "next-absolute-url": "^1.2.2",
     "next-translate": "^1.5.0",
     "node-fetch": "^3.2.10",
@@ -49,13 +50,13 @@
     "@types/graphql": "^14.5.0",
     "@types/node": "18.7.16",
     "@types/prismjs": "^1.26.0",
-    "@types/react": "18.0.18",
-    "@types/react-dom": "^18.0.6",
+    "@types/react": "18.0.25",
+    "@types/react-dom": "^18.0.8",
     "@types/react-truncate": "^2.3.4",
     "@types/react-vis": "^1.11.11",
     "apollo": "^2.34.0",
     "eslint": "8.23.0",
-    "eslint-config-next": "12.3.0",
+    "eslint-config-next": "13.0.2",
     "sass": "^1.56.1",
     "typescript": "4.8.3"
   },
@@ -63,15 +64,5 @@
     "npm": ">=8.1.2",
     "node": ">=16.13.2"
   },
-  "resolutions": {
-    "**/**/@braintree/sanitize-url": ">=6.0.0",
-    "**/**/ansi-regex": "^5.0.1",
-    "**/**/minimist": "^1.2.6",
-    "**/**/moment": "^2.29.4",
-    "**/**/nth-check": "^2.0.1",
-    "**/**/parse-path": "^5.0.0",
-    "**/**/parse-url": ">=8.1.0",
-    "**/**/prismjs": "^1.28.0",
-    "**/**/shelljs": "^0.8.5"
-  }
+  "packageManager": "yarn@3.2.4"
 }

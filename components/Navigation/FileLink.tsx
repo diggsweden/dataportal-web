@@ -1,5 +1,4 @@
 import { css, PdfIcon, styled } from '@digg/design-system';
-import env from '@beam-australia/react-env';
 
 interface FileLinkProps {
   link: string;
@@ -18,7 +17,7 @@ export const FileLink: React.FC<FileLinkProps> = ({ children, link }) => {
         align-items: center;
       `}
     >
-      <Link href={`${env('MEDIA_BASE_URL') || ''}${link}`}>{children}</Link>
+      <Link href={`${link}`}>{children}</Link>
       <PdfIcon width={24} />
     </div>
   );

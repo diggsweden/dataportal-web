@@ -16,7 +16,11 @@ export interface RootAggregate_container_image {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -72,7 +76,11 @@ export interface RootAggregate_container_blocks_dataportal_Digg_Media_media_data
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -84,7 +92,11 @@ export interface RootAggregate_container_blocks_dataportal_Digg_Media_media_data
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export interface RootAggregate_container_blocks_dataportal_Digg_Media_media_dataportal_Digg_File {
@@ -94,7 +106,11 @@ export interface RootAggregate_container_blocks_dataportal_Digg_Media_media_data
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export type RootAggregate_container_blocks_dataportal_Digg_Media_media = RootAggregate_container_blocks_dataportal_Digg_Media_media_dataportal_Digg_Image | RootAggregate_container_blocks_dataportal_Digg_Media_media_dataportal_Digg_Video | RootAggregate_container_blocks_dataportal_Digg_Media_media_dataportal_Digg_File;
@@ -105,53 +121,6 @@ export interface RootAggregate_container_blocks_dataportal_Digg_Media {
   heading: string | null;
   description: string | null;
   media: RootAggregate_container_blocks_dataportal_Digg_Media_media;
-}
-
-export interface RootAggregate_container_blocks_dataportal_Digg_Hero_heroText {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface RootAggregate_container_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image {
-  __typename: "dataportal_Digg_Image";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-  width: number | null;
-  height: number | null;
-}
-
-export interface RootAggregate_container_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video {
-  __typename: "dataportal_Digg_Video";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export interface RootAggregate_container_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File {
-  __typename: "dataportal_Digg_File";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export type RootAggregate_container_blocks_dataportal_Digg_Hero_media = RootAggregate_container_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image | RootAggregate_container_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video | RootAggregate_container_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File;
-
-export interface RootAggregate_container_blocks_dataportal_Digg_Hero {
-  __typename: "dataportal_Digg_Hero";
-  id: string;
-  heading: string | null;
-  heroText: RootAggregate_container_blocks_dataportal_Digg_Hero_heroText | null;
-  media: RootAggregate_container_blocks_dataportal_Digg_Hero_media;
 }
 
 export interface RootAggregate_container_blocks_dataportal_Digg_RelatedContent_links {
@@ -166,6 +135,103 @@ export interface RootAggregate_container_blocks_dataportal_Digg_RelatedContent {
   __typename: "dataportal_Digg_RelatedContent";
   id: string;
   links: RootAggregate_container_blocks_dataportal_Digg_RelatedContent_links[];
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak {
+  __typename: "dataportal_Digg_FormPageBreak";
+  title: string;
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
+  __typename: "dataportal_Digg_FormDescription";
+  title: string;
+  text: RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {
+  __typename: "dataportal_Digg_FormText" | "dataportal_Digg_FormTextArea";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio {
+  __typename: "dataportal_Digg_FormRadio";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices[];
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox {
+  __typename: "dataportal_Digg_FormCheckbox";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices[];
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown {
+  __typename: "dataportal_Digg_FormDropdown";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  items: string[];
+}
+
+export type RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements = RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak | RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription | RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText | RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio | RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox | RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown;
+
+export interface RootAggregate_container_blocks_dataportal_Digg_FormBlock {
+  __typename: "dataportal_Digg_FormBlock";
+  id: string;
+  elements: RootAggregate_container_blocks_dataportal_Digg_FormBlock_elements[];
 }
 
 export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList {
@@ -204,7 +270,11 @@ export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modul
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -216,7 +286,11 @@ export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modul
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_File {
@@ -226,7 +300,11 @@ export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modul
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export type RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media = RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_Image | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_Video | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_File;
@@ -237,53 +315,6 @@ export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modul
   heading: string | null;
   description: string | null;
   media: RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media;
-}
-
-export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_heroText {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image {
-  __typename: "dataportal_Digg_Image";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-  width: number | null;
-  height: number | null;
-}
-
-export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video {
-  __typename: "dataportal_Digg_Video";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File {
-  __typename: "dataportal_Digg_File";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export type RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media = RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File;
-
-export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero {
-  __typename: "dataportal_Digg_Hero";
-  id: string;
-  heading: string | null;
-  heroText: RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_heroText | null;
-  media: RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media;
 }
 
 export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent_links {
@@ -300,7 +331,104 @@ export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modul
   links: RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent_links[];
 }
 
-export type RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks = RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Text | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Faq | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent;
+export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak {
+  __typename: "dataportal_Digg_FormPageBreak";
+  title: string;
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
+  __typename: "dataportal_Digg_FormDescription";
+  title: string;
+  text: RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {
+  __typename: "dataportal_Digg_FormText" | "dataportal_Digg_FormTextArea";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio {
+  __typename: "dataportal_Digg_FormRadio";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices[];
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox {
+  __typename: "dataportal_Digg_FormCheckbox";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices[];
+}
+
+export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown {
+  __typename: "dataportal_Digg_FormDropdown";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  items: string[];
+}
+
+export type RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements = RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown;
+
+export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock {
+  __typename: "dataportal_Digg_FormBlock";
+  id: string;
+  elements: RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements[];
+}
+
+export type RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks = RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Text | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Faq | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent | RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock;
 
 export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules {
   __typename: "dataportal_Digg_Module";
@@ -314,7 +442,7 @@ export interface RootAggregate_container_blocks_dataportal_Digg_ModuleList {
   modules: RootAggregate_container_blocks_dataportal_Digg_ModuleList_modules[];
 }
 
-export type RootAggregate_container_blocks = RootAggregate_container_blocks_dataportal_Digg_Text | RootAggregate_container_blocks_dataportal_Digg_Faq | RootAggregate_container_blocks_dataportal_Digg_Media | RootAggregate_container_blocks_dataportal_Digg_Hero | RootAggregate_container_blocks_dataportal_Digg_RelatedContent | RootAggregate_container_blocks_dataportal_Digg_ModuleList;
+export type RootAggregate_container_blocks = RootAggregate_container_blocks_dataportal_Digg_Text | RootAggregate_container_blocks_dataportal_Digg_Faq | RootAggregate_container_blocks_dataportal_Digg_Media | RootAggregate_container_blocks_dataportal_Digg_RelatedContent | RootAggregate_container_blocks_dataportal_Digg_FormBlock | RootAggregate_container_blocks_dataportal_Digg_ModuleList;
 
 export interface RootAggregate_container_seo_image {
   __typename: "dataportal_Digg_Image";
@@ -323,7 +451,11 @@ export interface RootAggregate_container_seo_image {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -372,7 +504,11 @@ export interface RootAggregate_news_image {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -428,7 +564,11 @@ export interface RootAggregate_news_blocks_dataportal_Digg_Media_media_dataporta
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -440,7 +580,11 @@ export interface RootAggregate_news_blocks_dataportal_Digg_Media_media_dataporta
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export interface RootAggregate_news_blocks_dataportal_Digg_Media_media_dataportal_Digg_File {
@@ -450,7 +594,11 @@ export interface RootAggregate_news_blocks_dataportal_Digg_Media_media_dataporta
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export type RootAggregate_news_blocks_dataportal_Digg_Media_media = RootAggregate_news_blocks_dataportal_Digg_Media_media_dataportal_Digg_Image | RootAggregate_news_blocks_dataportal_Digg_Media_media_dataportal_Digg_Video | RootAggregate_news_blocks_dataportal_Digg_Media_media_dataportal_Digg_File;
@@ -461,53 +609,6 @@ export interface RootAggregate_news_blocks_dataportal_Digg_Media {
   heading: string | null;
   description: string | null;
   media: RootAggregate_news_blocks_dataportal_Digg_Media_media;
-}
-
-export interface RootAggregate_news_blocks_dataportal_Digg_Hero_heroText {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface RootAggregate_news_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image {
-  __typename: "dataportal_Digg_Image";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-  width: number | null;
-  height: number | null;
-}
-
-export interface RootAggregate_news_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video {
-  __typename: "dataportal_Digg_Video";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export interface RootAggregate_news_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File {
-  __typename: "dataportal_Digg_File";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export type RootAggregate_news_blocks_dataportal_Digg_Hero_media = RootAggregate_news_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image | RootAggregate_news_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video | RootAggregate_news_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File;
-
-export interface RootAggregate_news_blocks_dataportal_Digg_Hero {
-  __typename: "dataportal_Digg_Hero";
-  id: string;
-  heading: string | null;
-  heroText: RootAggregate_news_blocks_dataportal_Digg_Hero_heroText | null;
-  media: RootAggregate_news_blocks_dataportal_Digg_Hero_media;
 }
 
 export interface RootAggregate_news_blocks_dataportal_Digg_RelatedContent_links {
@@ -522,6 +623,103 @@ export interface RootAggregate_news_blocks_dataportal_Digg_RelatedContent {
   __typename: "dataportal_Digg_RelatedContent";
   id: string;
   links: RootAggregate_news_blocks_dataportal_Digg_RelatedContent_links[];
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak {
+  __typename: "dataportal_Digg_FormPageBreak";
+  title: string;
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
+  __typename: "dataportal_Digg_FormDescription";
+  title: string;
+  text: RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {
+  __typename: "dataportal_Digg_FormText" | "dataportal_Digg_FormTextArea";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio {
+  __typename: "dataportal_Digg_FormRadio";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices[];
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox {
+  __typename: "dataportal_Digg_FormCheckbox";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices[];
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown {
+  __typename: "dataportal_Digg_FormDropdown";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  items: string[];
+}
+
+export type RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements = RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak | RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription | RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText | RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio | RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox | RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown;
+
+export interface RootAggregate_news_blocks_dataportal_Digg_FormBlock {
+  __typename: "dataportal_Digg_FormBlock";
+  id: string;
+  elements: RootAggregate_news_blocks_dataportal_Digg_FormBlock_elements[];
 }
 
 export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList {
@@ -560,7 +758,11 @@ export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_bl
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -572,7 +774,11 @@ export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_bl
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_File {
@@ -582,7 +788,11 @@ export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_bl
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export type RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media = RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_Image | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_Video | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_File;
@@ -593,53 +803,6 @@ export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_bl
   heading: string | null;
   description: string | null;
   media: RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media;
-}
-
-export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_heroText {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image {
-  __typename: "dataportal_Digg_Image";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-  width: number | null;
-  height: number | null;
-}
-
-export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video {
-  __typename: "dataportal_Digg_Video";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File {
-  __typename: "dataportal_Digg_File";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export type RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media = RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File;
-
-export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero {
-  __typename: "dataportal_Digg_Hero";
-  id: string;
-  heading: string | null;
-  heroText: RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_heroText | null;
-  media: RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media;
 }
 
 export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent_links {
@@ -656,7 +819,104 @@ export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_bl
   links: RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent_links[];
 }
 
-export type RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks = RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Text | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Faq | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent;
+export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak {
+  __typename: "dataportal_Digg_FormPageBreak";
+  title: string;
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
+  __typename: "dataportal_Digg_FormDescription";
+  title: string;
+  text: RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {
+  __typename: "dataportal_Digg_FormText" | "dataportal_Digg_FormTextArea";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio {
+  __typename: "dataportal_Digg_FormRadio";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices[];
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox {
+  __typename: "dataportal_Digg_FormCheckbox";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices[];
+}
+
+export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown {
+  __typename: "dataportal_Digg_FormDropdown";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  items: string[];
+}
+
+export type RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements = RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown;
+
+export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock {
+  __typename: "dataportal_Digg_FormBlock";
+  id: string;
+  elements: RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements[];
+}
+
+export type RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks = RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Text | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Faq | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent | RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock;
 
 export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules {
   __typename: "dataportal_Digg_Module";
@@ -670,7 +930,7 @@ export interface RootAggregate_news_blocks_dataportal_Digg_ModuleList {
   modules: RootAggregate_news_blocks_dataportal_Digg_ModuleList_modules[];
 }
 
-export type RootAggregate_news_blocks = RootAggregate_news_blocks_dataportal_Digg_Text | RootAggregate_news_blocks_dataportal_Digg_Faq | RootAggregate_news_blocks_dataportal_Digg_Media | RootAggregate_news_blocks_dataportal_Digg_Hero | RootAggregate_news_blocks_dataportal_Digg_RelatedContent | RootAggregate_news_blocks_dataportal_Digg_ModuleList;
+export type RootAggregate_news_blocks = RootAggregate_news_blocks_dataportal_Digg_Text | RootAggregate_news_blocks_dataportal_Digg_Faq | RootAggregate_news_blocks_dataportal_Digg_Media | RootAggregate_news_blocks_dataportal_Digg_RelatedContent | RootAggregate_news_blocks_dataportal_Digg_FormBlock | RootAggregate_news_blocks_dataportal_Digg_ModuleList;
 
 export interface RootAggregate_news_seo_image {
   __typename: "dataportal_Digg_Image";
@@ -679,7 +939,11 @@ export interface RootAggregate_news_seo_image {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -731,7 +995,11 @@ export interface RootAggregate_examples_image {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -787,7 +1055,11 @@ export interface RootAggregate_examples_blocks_dataportal_Digg_Media_media_datap
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -799,7 +1071,11 @@ export interface RootAggregate_examples_blocks_dataportal_Digg_Media_media_datap
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export interface RootAggregate_examples_blocks_dataportal_Digg_Media_media_dataportal_Digg_File {
@@ -809,7 +1085,11 @@ export interface RootAggregate_examples_blocks_dataportal_Digg_Media_media_datap
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export type RootAggregate_examples_blocks_dataportal_Digg_Media_media = RootAggregate_examples_blocks_dataportal_Digg_Media_media_dataportal_Digg_Image | RootAggregate_examples_blocks_dataportal_Digg_Media_media_dataportal_Digg_Video | RootAggregate_examples_blocks_dataportal_Digg_Media_media_dataportal_Digg_File;
@@ -820,53 +1100,6 @@ export interface RootAggregate_examples_blocks_dataportal_Digg_Media {
   heading: string | null;
   description: string | null;
   media: RootAggregate_examples_blocks_dataportal_Digg_Media_media;
-}
-
-export interface RootAggregate_examples_blocks_dataportal_Digg_Hero_heroText {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface RootAggregate_examples_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image {
-  __typename: "dataportal_Digg_Image";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-  width: number | null;
-  height: number | null;
-}
-
-export interface RootAggregate_examples_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video {
-  __typename: "dataportal_Digg_Video";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export interface RootAggregate_examples_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File {
-  __typename: "dataportal_Digg_File";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export type RootAggregate_examples_blocks_dataportal_Digg_Hero_media = RootAggregate_examples_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image | RootAggregate_examples_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video | RootAggregate_examples_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File;
-
-export interface RootAggregate_examples_blocks_dataportal_Digg_Hero {
-  __typename: "dataportal_Digg_Hero";
-  id: string;
-  heading: string | null;
-  heroText: RootAggregate_examples_blocks_dataportal_Digg_Hero_heroText | null;
-  media: RootAggregate_examples_blocks_dataportal_Digg_Hero_media;
 }
 
 export interface RootAggregate_examples_blocks_dataportal_Digg_RelatedContent_links {
@@ -881,6 +1114,103 @@ export interface RootAggregate_examples_blocks_dataportal_Digg_RelatedContent {
   __typename: "dataportal_Digg_RelatedContent";
   id: string;
   links: RootAggregate_examples_blocks_dataportal_Digg_RelatedContent_links[];
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak {
+  __typename: "dataportal_Digg_FormPageBreak";
+  title: string;
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
+  __typename: "dataportal_Digg_FormDescription";
+  title: string;
+  text: RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {
+  __typename: "dataportal_Digg_FormText" | "dataportal_Digg_FormTextArea";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio {
+  __typename: "dataportal_Digg_FormRadio";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices[];
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox {
+  __typename: "dataportal_Digg_FormCheckbox";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices[];
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown {
+  __typename: "dataportal_Digg_FormDropdown";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  items: string[];
+}
+
+export type RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements = RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak | RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription | RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText | RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio | RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox | RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown;
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_FormBlock {
+  __typename: "dataportal_Digg_FormBlock";
+  id: string;
+  elements: RootAggregate_examples_blocks_dataportal_Digg_FormBlock_elements[];
 }
 
 export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList {
@@ -919,7 +1249,11 @@ export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_module
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -931,7 +1265,11 @@ export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_module
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_File {
@@ -941,7 +1279,11 @@ export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_module
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export type RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media = RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_Image | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_Video | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_File;
@@ -952,53 +1294,6 @@ export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_module
   heading: string | null;
   description: string | null;
   media: RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media;
-}
-
-export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_heroText {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image {
-  __typename: "dataportal_Digg_Image";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-  width: number | null;
-  height: number | null;
-}
-
-export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video {
-  __typename: "dataportal_Digg_Video";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File {
-  __typename: "dataportal_Digg_File";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export type RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media = RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File;
-
-export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero {
-  __typename: "dataportal_Digg_Hero";
-  id: string;
-  heading: string | null;
-  heroText: RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_heroText | null;
-  media: RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media;
 }
 
 export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent_links {
@@ -1015,7 +1310,104 @@ export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_module
   links: RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent_links[];
 }
 
-export type RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks = RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Text | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Faq | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent;
+export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak {
+  __typename: "dataportal_Digg_FormPageBreak";
+  title: string;
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
+  __typename: "dataportal_Digg_FormDescription";
+  title: string;
+  text: RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {
+  __typename: "dataportal_Digg_FormText" | "dataportal_Digg_FormTextArea";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio {
+  __typename: "dataportal_Digg_FormRadio";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices[];
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox {
+  __typename: "dataportal_Digg_FormCheckbox";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices[];
+}
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown {
+  __typename: "dataportal_Digg_FormDropdown";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  items: string[];
+}
+
+export type RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements = RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown;
+
+export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock {
+  __typename: "dataportal_Digg_FormBlock";
+  id: string;
+  elements: RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements[];
+}
+
+export type RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks = RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Text | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Faq | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent | RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock;
 
 export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules {
   __typename: "dataportal_Digg_Module";
@@ -1029,7 +1421,7 @@ export interface RootAggregate_examples_blocks_dataportal_Digg_ModuleList {
   modules: RootAggregate_examples_blocks_dataportal_Digg_ModuleList_modules[];
 }
 
-export type RootAggregate_examples_blocks = RootAggregate_examples_blocks_dataportal_Digg_Text | RootAggregate_examples_blocks_dataportal_Digg_Faq | RootAggregate_examples_blocks_dataportal_Digg_Media | RootAggregate_examples_blocks_dataportal_Digg_Hero | RootAggregate_examples_blocks_dataportal_Digg_RelatedContent | RootAggregate_examples_blocks_dataportal_Digg_ModuleList;
+export type RootAggregate_examples_blocks = RootAggregate_examples_blocks_dataportal_Digg_Text | RootAggregate_examples_blocks_dataportal_Digg_Faq | RootAggregate_examples_blocks_dataportal_Digg_Media | RootAggregate_examples_blocks_dataportal_Digg_RelatedContent | RootAggregate_examples_blocks_dataportal_Digg_FormBlock | RootAggregate_examples_blocks_dataportal_Digg_ModuleList;
 
 export interface RootAggregate_examples_seo_image {
   __typename: "dataportal_Digg_Image";
@@ -1038,7 +1430,11 @@ export interface RootAggregate_examples_seo_image {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -1090,7 +1486,11 @@ export interface RootAggregate_events_image {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -1146,7 +1546,11 @@ export interface RootAggregate_events_blocks_dataportal_Digg_Media_media_datapor
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -1158,7 +1562,11 @@ export interface RootAggregate_events_blocks_dataportal_Digg_Media_media_datapor
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export interface RootAggregate_events_blocks_dataportal_Digg_Media_media_dataportal_Digg_File {
@@ -1168,7 +1576,11 @@ export interface RootAggregate_events_blocks_dataportal_Digg_Media_media_datapor
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export type RootAggregate_events_blocks_dataportal_Digg_Media_media = RootAggregate_events_blocks_dataportal_Digg_Media_media_dataportal_Digg_Image | RootAggregate_events_blocks_dataportal_Digg_Media_media_dataportal_Digg_Video | RootAggregate_events_blocks_dataportal_Digg_Media_media_dataportal_Digg_File;
@@ -1179,53 +1591,6 @@ export interface RootAggregate_events_blocks_dataportal_Digg_Media {
   heading: string | null;
   description: string | null;
   media: RootAggregate_events_blocks_dataportal_Digg_Media_media;
-}
-
-export interface RootAggregate_events_blocks_dataportal_Digg_Hero_heroText {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface RootAggregate_events_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image {
-  __typename: "dataportal_Digg_Image";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-  width: number | null;
-  height: number | null;
-}
-
-export interface RootAggregate_events_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video {
-  __typename: "dataportal_Digg_Video";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export interface RootAggregate_events_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File {
-  __typename: "dataportal_Digg_File";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export type RootAggregate_events_blocks_dataportal_Digg_Hero_media = RootAggregate_events_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image | RootAggregate_events_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video | RootAggregate_events_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File;
-
-export interface RootAggregate_events_blocks_dataportal_Digg_Hero {
-  __typename: "dataportal_Digg_Hero";
-  id: string;
-  heading: string | null;
-  heroText: RootAggregate_events_blocks_dataportal_Digg_Hero_heroText | null;
-  media: RootAggregate_events_blocks_dataportal_Digg_Hero_media;
 }
 
 export interface RootAggregate_events_blocks_dataportal_Digg_RelatedContent_links {
@@ -1240,6 +1605,103 @@ export interface RootAggregate_events_blocks_dataportal_Digg_RelatedContent {
   __typename: "dataportal_Digg_RelatedContent";
   id: string;
   links: RootAggregate_events_blocks_dataportal_Digg_RelatedContent_links[];
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak {
+  __typename: "dataportal_Digg_FormPageBreak";
+  title: string;
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
+  __typename: "dataportal_Digg_FormDescription";
+  title: string;
+  text: RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {
+  __typename: "dataportal_Digg_FormText" | "dataportal_Digg_FormTextArea";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio {
+  __typename: "dataportal_Digg_FormRadio";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices[];
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox {
+  __typename: "dataportal_Digg_FormCheckbox";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices[];
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown {
+  __typename: "dataportal_Digg_FormDropdown";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  items: string[];
+}
+
+export type RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements = RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak | RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription | RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText | RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio | RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox | RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown;
+
+export interface RootAggregate_events_blocks_dataportal_Digg_FormBlock {
+  __typename: "dataportal_Digg_FormBlock";
+  id: string;
+  elements: RootAggregate_events_blocks_dataportal_Digg_FormBlock_elements[];
 }
 
 export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList {
@@ -1278,7 +1740,11 @@ export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
@@ -1290,7 +1756,11 @@ export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_File {
@@ -1300,7 +1770,11 @@ export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
 }
 
 export type RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media = RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_Image | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_Video | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media_dataportal_Digg_File;
@@ -1311,53 +1785,6 @@ export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_
   heading: string | null;
   description: string | null;
   media: RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media_media;
-}
-
-export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_heroText {
-  __typename: "dataportal_Digg_RichText";
-  markdown: string | null;
-}
-
-export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image {
-  __typename: "dataportal_Digg_Image";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-  width: number | null;
-  height: number | null;
-}
-
-export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video {
-  __typename: "dataportal_Digg_Video";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File {
-  __typename: "dataportal_Digg_File";
-  url: string;
-  alt: string | null;
-  name: string | null;
-  description: string | null;
-  mime: string;
-  ext: string;
-}
-
-export type RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media = RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Image | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_Video | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media_dataportal_Digg_File;
-
-export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero {
-  __typename: "dataportal_Digg_Hero";
-  id: string;
-  heading: string | null;
-  heroText: RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_heroText | null;
-  media: RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero_media;
 }
 
 export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent_links {
@@ -1374,7 +1801,104 @@ export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_
   links: RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent_links[];
 }
 
-export type RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks = RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Text | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Faq | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Hero | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent;
+export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak {
+  __typename: "dataportal_Digg_FormPageBreak";
+  title: string;
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text {
+  __typename: "dataportal_Digg_RichText";
+  markdown: string | null;
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription {
+  __typename: "dataportal_Digg_FormDescription";
+  title: string;
+  text: RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription_text;
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText {
+  __typename: "dataportal_Digg_FormText" | "dataportal_Digg_FormTextArea";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio {
+  __typename: "dataportal_Digg_FormRadio";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio_choices[];
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices {
+  __typename: "dataportal_Digg_FormChoice";
+  /**
+   * Text corresponding to if the choice is active
+   */
+  popup: string | null;
+  label: string;
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox {
+  __typename: "dataportal_Digg_FormCheckbox";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  choices: RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox_choices[];
+}
+
+export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown {
+  __typename: "dataportal_Digg_FormDropdown";
+  title: string;
+  /**
+   * Info about the specific input field
+   */
+  info: string | null;
+  /**
+   * If the specific input field should be required or not
+   */
+  required: boolean;
+  items: string[];
+}
+
+export type RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements = RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormPageBreak | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDescription | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormText | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormRadio | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormCheckbox | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements_dataportal_Digg_FormDropdown;
+
+export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock {
+  __typename: "dataportal_Digg_FormBlock";
+  id: string;
+  elements: RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock_elements[];
+}
+
+export type RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks = RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_ModuleList | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Text | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Faq | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_Media | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_RelatedContent | RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules_blocks_dataportal_Digg_FormBlock;
 
 export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules {
   __typename: "dataportal_Digg_Module";
@@ -1388,7 +1912,7 @@ export interface RootAggregate_events_blocks_dataportal_Digg_ModuleList {
   modules: RootAggregate_events_blocks_dataportal_Digg_ModuleList_modules[];
 }
 
-export type RootAggregate_events_blocks = RootAggregate_events_blocks_dataportal_Digg_Text | RootAggregate_events_blocks_dataportal_Digg_Faq | RootAggregate_events_blocks_dataportal_Digg_Media | RootAggregate_events_blocks_dataportal_Digg_Hero | RootAggregate_events_blocks_dataportal_Digg_RelatedContent | RootAggregate_events_blocks_dataportal_Digg_ModuleList;
+export type RootAggregate_events_blocks = RootAggregate_events_blocks_dataportal_Digg_Text | RootAggregate_events_blocks_dataportal_Digg_Faq | RootAggregate_events_blocks_dataportal_Digg_Media | RootAggregate_events_blocks_dataportal_Digg_RelatedContent | RootAggregate_events_blocks_dataportal_Digg_FormBlock | RootAggregate_events_blocks_dataportal_Digg_ModuleList;
 
 export interface RootAggregate_events_seo_image {
   __typename: "dataportal_Digg_Image";
@@ -1397,7 +1921,11 @@ export interface RootAggregate_events_seo_image {
   name: string | null;
   description: string | null;
   mime: string;
-  ext: string;
+  ext: string | null;
+  /**
+   * Data from screen9 media
+   */
+  screen9: any | null;
   width: number | null;
   height: number | null;
 }
