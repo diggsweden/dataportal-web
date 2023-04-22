@@ -1,28 +1,45 @@
 import useTranslation from 'next-translate/useTranslation';
-import { makeHeightFlexible } from 'react-vis';
 import { BreadcrumbProps } from '../components';
+import { specialCharMap } from './specialCharMap';
 
 /**
- * Make @param str URL-friendly
- * @param str eg "detta är en rubrik - 1"
+ * Converts a string to a URL-friendly slug.
+ *
+ * Replaces spaces with dashes, replaces special characters with their
+ * replacements, replaces & with 'and', removes all non-word characters, replaces
+ * multiple dashes with a single dash, and trims dashes from the start and end
+ * of the string.
+ *
+ * @param {string} str - The string to convert to a slug
+ * @returns {string} The resulting slug
  */
+
 export const slugify = (str: string) => {
-  const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';
-  const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------';
-  const p = new RegExp(a.split('').join('|'), 'g');
+  if (!str) {
+    return '';
+  }
 
-  if (!str) return '';
+  let result = str.toLowerCase();
 
-  return str
-    .toString()
-    .toLowerCase()
-    .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
-    .replace(/&/g, '-and-') // Replace & with 'and'
-    .replace(/[^\w\-]+/g, '') // Remove all non-word characters
-    .replace(/\-\-+/g, '-') // Replace multiple - with single -
-    .replace(/^-+/, '') // Trim - from start of text
-    .replace(/-+$/, ''); // Trim - from end of text
+  // Replace spaces with -
+  result = result.replace(/\s+/g, '-');
+
+  // Replace special characters
+  result = result.replace(/[^\w\s]/g, (char) => specialCharMap[char] || char);
+
+  // Replace & with 'and'
+  result = result.replace(/&/g, '-and-');
+
+  // Remove all non-word characters
+  result = result.replace(/[^\w\-]+/g, '');
+
+  // Replace multiple - with single -
+  result = result.replace(/\-\-+/g, '-');
+
+  // Trim - from start and end of text
+  result = result.replace(/^-+/, '').replace(/-+$/, '');
+
+  return result;
 };
 
 /**
