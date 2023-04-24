@@ -1,5 +1,5 @@
 //General styles for wrapping container etc.
-@import '~@digg/design-system/lib/sass/variables';
+@import "~@digg/design-system/lib/sass/variables";
 
 //Background-color for root
 //Max-width for content
@@ -51,7 +51,7 @@ h1 {
 .no-focus-outline a:focus,
 .no-focus-outline button:focus,
 .no-focus-outline input:focus,
-.no-focus-outline input[type='radio']:focus,
+.no-focus-outline input[type="radio"]:focus,
 .no-focus-outline textarea:focus,
 .no-focus-outline select:focus {
   outline: none !important;
@@ -61,7 +61,7 @@ h1 {
 html a:focus,
 html button:focus,
 html input:focus,
-html input[type='radio']:focus,
+html input[type="radio"]:focus,
 html textarea:focus,
 html select:focus {
   @include focusStyleLight;
@@ -69,7 +69,7 @@ html select:focus {
 }
 
 mark {
-  background-color:  $clr-pinkPop;
+  background-color: $clr-pinkPop;
 }
 
 .btn-link {
@@ -112,14 +112,19 @@ mark {
 }
 
 .media {
-    figure[role=group]{
-        .video-js{
-            :before {
-                font-family: AmberJS !important;
-            }
-        }  
-        .vjs-settings-button .vjs-menu-item-content {
-            word-break: keep-all;
-        }
+  figure[role="group"] {
+    .video-js {
+      :before {
+        font-family: AmberJS !important;
+      }
     }
+    .vjs-settings-button .vjs-menu-item-content {
+      word-break: keep-all;
+    }
+  }
+}
+
+.border {
+  border: 1px solid $clr-gray500;
+  padding: 1.5rem 2rem;
 }
