@@ -46,7 +46,7 @@ export const SearchDatasetsPagePath = (lang: string, resourceType: string, resou
 
 // Used to satisfy typescript condition for DiggLink
 export const linkBase: DiggLink = {
-  __typename: 'dataportal_Digg_Link',
+  __typename: 'dataportal_v1_Digg_Link',
   linktype: 'INTERNAL',
   link: '',
   title: '',

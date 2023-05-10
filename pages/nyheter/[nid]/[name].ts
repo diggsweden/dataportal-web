@@ -14,7 +14,7 @@ export async function getStaticProps({ params, locale }: any) {
     fetchPolicy: 'no-cache',
   });
 
-  const news = result && result.data ? result.data.dataportal_Digg_News[0] : {};
+  const news = result && result.data ? result.data.dataportal_v1_Digg_News[0] : {};
   const revalidate = parseInt(process.env.REVALIDATE_INTERVAL || '60');
 
   if (result && result.error) {
@@ -48,7 +48,7 @@ export async function getStaticPaths({ locales }: { locales: string[] }) {
   //       variables: { filter: { locale } },
   //     });
 
-  //     const containers = result?.data?.dataportal_Digg_News;
+  //     const containers = result?.data?.dataportal_v1_Digg_News;
 
   //     if (result?.error) {
   //       console.error(result?.error);

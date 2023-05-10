@@ -8,12 +8,12 @@
 // ====================================================
 
 export interface TextBlock_text {
-  __typename: "dataportal_Digg_RichText";
+  __typename: "dataportal_v1_Digg_RichText";
   markdown: string | null;
 }
 
 export interface TextBlock {
-  __typename: "dataportal_Digg_TextBlock";
+  __typename: "dataportal_v1_Digg_TextBlock";
   heading: string | null;
   text: TextBlock_text;
 }

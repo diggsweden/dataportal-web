@@ -1,6 +1,6 @@
 import React from 'react';
 import { EnvSettings, SettingsUtil } from '../../env';
-import { Settings_dataportal_Digg_Settings } from '../../graphql/__generated__/Settings';
+import { Settings_dataportal_v1_Digg_Settings } from '../../graphql/__generated__/Settings';
 import { BreadcrumbProps } from '../Breadcrumb';
 
 interface SettingsContext extends DataportalSettings {
@@ -9,7 +9,7 @@ interface SettingsContext extends DataportalSettings {
 }
 
 export const extractSettings = (
-  diggSettings: Settings_dataportal_Digg_Settings
+  diggSettings: Settings_dataportal_v1_Digg_Settings
 ): DataportalSettings => {
   return {
     siteName:

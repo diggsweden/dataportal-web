@@ -3,15 +3,15 @@ import React, { useContext } from 'react';
 import { LinksBlock as ILinksBlock } from '../../graphql/__generated__/LinksBlock';
 import { SharedContentData_blocks } from '../../graphql/__generated__/SharedContentData';
 import {
-  Start_dataportal_Digg_Start_blocks,
-  Start_dataportal_Digg_Start_blocks_dataportal_Digg_FaqBlock as FAQ,
-  Start_dataportal_Digg_Start_blocks_dataportal_Digg_SharedContentContainer,
+  Start_dataportal_v1_Digg_Start_blocks,
+  Start_dataportal_v1_Digg_Start_blocks_dataportal_v1_Digg_FaqBlock as FAQ,
+  Start_dataportal_v1_Digg_Start_blocks_dataportal_v1_Digg_SharedContentContainer,
 } from '../../graphql/__generated__/Start';
 import { FaqBlock, GroupBlock, LinksBlock, MediaBlock, PuffBlock, TextBlock } from '../blocks';
 import SharedContent from './SharedContent';
 
 interface ContentAreaProps {
-  blocks: (Start_dataportal_Digg_Start_blocks | SharedContentData_blocks | null)[];
+  blocks: (Start_dataportal_v1_Digg_Start_blocks | SharedContentData_blocks | null)[];
 }
 
 /**
@@ -21,17 +21,17 @@ interface ContentAreaProps {
  * @returns FaqBlocks wrapped in <dl> element
  */
 const handleFaqs = (
-  blocks: (Start_dataportal_Digg_Start_blocks | SharedContentData_blocks | null)[],
+  blocks: (Start_dataportal_v1_Digg_Start_blocks | SharedContentData_blocks | null)[],
   pos: number
 ) => {
   // skip rendering if previous block was FAQ
   // because then in should already be rendered
   const previousBlock = blocks[pos - 1];
-  if (previousBlock?.__typename === 'dataportal_Digg_FaqBlock') return;
+  if (previousBlock?.__typename === 'dataportal_v1_Digg_FaqBlock') return;
 
   let i = 0;
   // count the number of FAQs to render from the given position
-  while (blocks[pos + i]?.__typename === 'dataportal_Digg_FaqBlock' || i > 500) {
+  while (blocks[pos + i]?.__typename === 'dataportal_v1_Digg_FaqBlock' || i > 500) {
     i++;
   }
 
@@ -59,30 +59,30 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ blocks }) => {
       {blocks?.map((block, index) => {
         const { id } = block || {};
         switch (block?.__typename) {
-          case 'dataportal_Digg_PuffBlock':
+          case 'dataportal_v1_Digg_PuffBlock':
             return (
               <PuffBlock
                 {...block}
                 key={id}
               />
             );
-          case 'dataportal_Digg_TextBlock':
+          case 'dataportal_v1_Digg_TextBlock':
             return (
               <TextBlock
                 {...block}
                 key={id}
               />
             );
-          case 'dataportal_Digg_MediaBlock':
+          case 'dataportal_v1_Digg_MediaBlock':
             return (
               <MediaBlock
                 {...block}
                 key={id}
               />
             );
-          case 'dataportal_Digg_FaqBlock':
+          case 'dataportal_v1_Digg_FaqBlock':
             return handleFaqs(blocks, index);
-          case 'dataportal_Digg_GroupBlock':
+          case 'dataportal_v1_Digg_GroupBlock':
             return (
               <GroupBlock
                 {...block}
@@ -90,18 +90,18 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ blocks }) => {
               />
             );
           // ? we handle HeroBlock in _app.tsx
-          case 'dataportal_Digg_HeroBlock':
+          case 'dataportal_v1_Digg_HeroBlock':
             return;
-          case 'dataportal_Digg_LinksBlock':
+          case 'dataportal_v1_Digg_LinksBlock':
             return (
               <LinksBlock
                 {...(block as ILinksBlock)}
                 key={id}
               />
             );
-          case 'dataportal_Digg_SharedContentContainer':
+          case 'dataportal_v1_Digg_SharedContentContainer':
             const typedBlock =
-              block as Start_dataportal_Digg_Start_blocks_dataportal_Digg_SharedContentContainer;
+              block as Start_dataportal_v1_Digg_Start_blocks_dataportal_v1_Digg_SharedContentContainer;
             return (
               typedBlock.contents &&
               typedBlock.contents.map((content) => (

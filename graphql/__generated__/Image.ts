@@ -8,7 +8,7 @@
 // ====================================================
 
 export interface Image {
-  __typename: "dataportal_Digg_Image";
+  __typename: "dataportal_v1_Digg_Image";
   url: string;
   alt: string | null;
   name: string | null;

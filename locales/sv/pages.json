@@ -125,6 +125,7 @@
     "rdf": "Ladda ner metadata som RDF",
     "view_more": "Visa mer",
     "view_less": "Visa mindre",
+    "keyword": "Nyckelord",
     "contact-publisher": "Har du frågor eller synpunkter?",
     "contact-publisher-text": "Kontakta publicerande organisation för frågor, synpunkter och önskemål kring informationen på den här sidan. ",
     "contact-publisher-text2": "Du kan även vända dig till dataportalens "
@@ -196,6 +197,7 @@
     "term_adress": "Adress för terminologi"
   },
   "specification_page": {
+    "address": "Adress för specifikation",
     "about_specification": "Om specifikation",
     "resource_specification": "Resurs",
     "scheme_download": "Ladda ner schema",

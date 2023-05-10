@@ -20,7 +20,7 @@ type DiggStrapiTheme =
   | 'lightPinkTheme';
 
 type DiggLink = {
-  __typename: 'dataportal_Digg_Link';
+  __typename: 'dataportal_v1_Digg_Link';
   title: string | null;
   link: string;
   linktype: dataportal_LinkType;

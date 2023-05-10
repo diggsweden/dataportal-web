@@ -52,7 +52,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     fetchPolicy: 'no-cache',
   });
 
-  const settings = result && result.data ? result.data.dataportal_Digg_Settings : undefined;
+  const settings = result && result.data ? result.data.dataportal_v1_Digg_Settings : undefined;
 
   if (result && result.error) {
     console.error(result.error);

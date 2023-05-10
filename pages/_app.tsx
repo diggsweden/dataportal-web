@@ -60,9 +60,9 @@ import Head from 'next/head';
 import { client, browserclient, getSharedProps } from '../graphql';
 import App from 'next/app';
 import generateCSP from '../utilities/generateCsp';
-import { Footer_dataportal_Digg_Footer } from '../graphql/__generated__/Footer';
-import { MainMenu_dataportal_Digg_Menu } from '../graphql/__generated__/MainMenu';
-import { Settings_dataportal_Digg_Settings } from '../graphql/__generated__/Settings';
+import { Footer_dataportal_v1_Digg_Footer } from '../graphql/__generated__/Footer';
+import { MainMenu_dataportal_v1_Digg_Menu } from '../graphql/__generated__/MainMenu';
+import { Settings_dataportal_v1_Digg_Settings } from '../graphql/__generated__/Settings';
 import { SeoData } from '../graphql/__generated__/SeoData';
 import { useRouter } from 'next/router';
 import reactenv from '@beam-australia/react-env';
@@ -71,8 +71,8 @@ import { Settings_Sandbox } from '../env/Settings.Sandbox';
 import useTranslation from 'next-translate/useTranslation';
 import { css } from '@emotion/react';
 import {
-  Containers_dataportal_Digg_Containers,
-  Containers_dataportal_Digg_Containers_breadcrumb,
+  Containers_dataportal_v1_Digg_Containers,
+  Containers_dataportal_v1_Digg_Containers_breadcrumb,
 } from '../graphql/__generated__/Containers';
 import { HeroBlock as IHeroBlock } from '../graphql/__generated__/HeroBlock';
 
@@ -86,9 +86,9 @@ const GetCookiesAccepted = () => {
 };
 
 interface DataportalenProps extends AppProps {
-  menu: MainMenu_dataportal_Digg_Menu;
-  footer: Footer_dataportal_Digg_Footer;
-  settings: Settings_dataportal_Digg_Settings;
+  menu: MainMenu_dataportal_v1_Digg_Menu;
+  footer: Footer_dataportal_v1_Digg_Footer;
+  settings: Settings_dataportal_v1_Digg_Settings;
   host: string;
   nonce: string;
 }
@@ -131,7 +131,7 @@ function Dataportal({
   const previousPath = usePrevious(asPath);
   const { lang, t } = useTranslation('common');
   const { breadcrumb, heading, seo, blocks, name } =
-    pageProps as Containers_dataportal_Digg_Containers;
+    pageProps as Containers_dataportal_v1_Digg_Containers;
   const { title, description, image, robotsFollow, robotsIndex } = (seo as SeoData) || {};
   const strapiImageUrl = image?.url;
   const imageUrl = strapiImageUrl
@@ -140,7 +140,7 @@ function Dataportal({
   const dataportalSettings = extractSettings(settingsState);
   const heroBlock =
     blocks &&
-    (blocks.find((block: any) => block.__typename === 'dataportal_Digg_HeroBlock') as IHeroBlock);
+    (blocks.find((block: any) => block.__typename === 'dataportal_v1_Digg_HeroBlock') as IHeroBlock);
   const isDraft = asPath?.substring(0, 7) === '/drafts';
   const allowSEO = env.envName == 'prod' && !isDraft ? true : false;
   //eslint-disable-next-line

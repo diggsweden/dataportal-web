@@ -2,8 +2,8 @@ import { gql } from '@apollo/client';
 import { BLOCK_FRAGMENT, LINK_FRAGMENT, SEO_FRAGMENT, SHARED_CONTENT_FRAGMENT } from './fragments';
 
 export const CONTAINER_QUERY = gql`
-  query Containers($filter: dataportal_QueryContainerArgs) {
-    dataportal_Digg_Containers(filter: $filter) {
+  query Containers($filter: dataportal_v1_QueryContainerArgs) {
+    dataportal_v1_Digg_Containers(filter: $filter) {
       name
       locale
       updatedAt
@@ -21,7 +21,7 @@ export const CONTAINER_QUERY = gql`
       }
       blocks {
         ...BlockData
-        ... on dataportal_Digg_SharedContentContainer {
+        ... on dataportal_v1_Digg_SharedContentContainer {
           __typename
           id
           contents {

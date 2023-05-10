@@ -4,7 +4,7 @@ import { gql } from '@apollo/client';
 
 // Interface
 export const MEDIA_FRAGMENT = gql`
-  fragment Media on dataportal_Digg_IMedia {
+  fragment Media on dataportal_v1_Digg_IMedia {
     __typename
     url
     alt
@@ -17,7 +17,7 @@ export const MEDIA_FRAGMENT = gql`
 
 // Type
 export const IMAGE_FRAGMENT = gql`
-  fragment Image on dataportal_Digg_Image {
+  fragment Image on dataportal_v1_Digg_Image {
     ...Media
     width
     height
@@ -25,7 +25,7 @@ export const IMAGE_FRAGMENT = gql`
 `;
 
 export const CONTAINER_META_FRAGMENT = gql`
-  fragment ContainerMetaData on dataportal_Digg_ContainerMeta {
+  fragment ContainerMetaData on dataportal_v1_Digg_ContainerMeta {
     id
     locale
     updatedAt
@@ -41,16 +41,16 @@ export const CONTAINER_META_FRAGMENT = gql`
 
 // Union
 export const MEDIA_TYPE_FRAGMENT = gql`
-  fragment MediaType on dataportal_Digg_MediaType {
-    ... on dataportal_Digg_Image {
+  fragment MediaType on dataportal_v1_Digg_MediaType {
+    ... on dataportal_v1_Digg_Image {
       ...Image
     }
 
-    ... on dataportal_Digg_Video {
+    ... on dataportal_v1_Digg_Video {
       ...Media
     }
 
-    ... on dataportal_Digg_File {
+    ... on dataportal_v1_Digg_File {
       ...Media
     }
   }
@@ -59,7 +59,7 @@ export const MEDIA_TYPE_FRAGMENT = gql`
 
 /* #region Components */
 export const LINK_FRAGMENT = gql`
-  fragment Link on dataportal_Digg_Link {
+  fragment Link on dataportal_v1_Digg_Link {
     title
     link
     linktype
@@ -71,7 +71,7 @@ export const LINK_FRAGMENT = gql`
 /* #region Blocks */
 
 export const FAQ_BLOCK_FRAGMENT = gql`
-  fragment FaqBlock on dataportal_Digg_IFaqBlock {
+  fragment FaqBlock on dataportal_v1_Digg_IFaqBlock {
     question
     answer {
       markdown
@@ -80,7 +80,7 @@ export const FAQ_BLOCK_FRAGMENT = gql`
 `;
 
 export const MEDIA_BLOCK_FRAGMENT = gql`
-  fragment MediaBlock on dataportal_Digg_IMediaBlock {
+  fragment MediaBlock on dataportal_v1_Digg_IMediaBlock {
     heading
     description
     media {
@@ -90,7 +90,7 @@ export const MEDIA_BLOCK_FRAGMENT = gql`
 `;
 
 export const GROUP_BLOCK_FRAGMENT = gql`
-  fragment GroupBlock on dataportal_Digg_IGroupBlock {
+  fragment GroupBlock on dataportal_v1_Digg_IGroupBlock {
     heading
     body {
       markdown
@@ -103,7 +103,7 @@ export const GROUP_BLOCK_FRAGMENT = gql`
 `;
 
 export const HERO_BLOCK_FRAGMENT = gql`
-  fragment HeroBlock on dataportal_Digg_IHeroBlock {
+  fragment HeroBlock on dataportal_v1_Digg_IHeroBlock {
     heading
     heroText: text {
       markdown
@@ -116,7 +116,7 @@ export const HERO_BLOCK_FRAGMENT = gql`
 `;
 
 export const TEXT_BLOCK_FRAGMENT = gql`
-  fragment TextBlock on dataportal_Digg_ITextBlock {
+  fragment TextBlock on dataportal_v1_Digg_ITextBlock {
     heading
     text: body {
       markdown
@@ -125,7 +125,7 @@ export const TEXT_BLOCK_FRAGMENT = gql`
 `;
 
 export const PUFF_BLOCK_FRAGMENT = gql`
-  fragment PuffBlock on dataportal_Digg_IPuffBlock {
+  fragment PuffBlock on dataportal_v1_Digg_IPuffBlock {
     heading
     description
     puffs {
@@ -145,7 +145,7 @@ export const PUFF_BLOCK_FRAGMENT = gql`
 `;
 
 export const LINKS_BLOCK_FRAGMENT = gql`
-  fragment LinksBlock on dataportal_Digg_ILinksBlock {
+  fragment LinksBlock on dataportal_v1_Digg_ILinksBlock {
     links {
       title
       link
@@ -156,7 +156,7 @@ export const LINKS_BLOCK_FRAGMENT = gql`
 `;
 
 export const SHARED_CONTENT_FRAGMENT = gql`
-  fragment SharedContentData on dataportal_Digg_SharedContent {
+  fragment SharedContentData on dataportal_v1_Digg_SharedContent {
     identifier
     blocks {
       ...BlockData
@@ -167,7 +167,7 @@ export const SHARED_CONTENT_FRAGMENT = gql`
 
 /* #region Collections */
 export const SEO_FRAGMENT = gql`
-  fragment SeoData on dataportal_Digg_SEO {
+  fragment SeoData on dataportal_v1_Digg_SEO {
     title
     description
     image {
@@ -181,35 +181,35 @@ export const SEO_FRAGMENT = gql`
 /* #endregion */
 
 export const BLOCK_FRAGMENT = gql`
-  fragment BlockData on dataportal_Digg_IBlock {
+  fragment BlockData on dataportal_v1_Digg_IBlock {
     __typename
     id
 
-    ... on dataportal_Digg_TextBlock {
+    ... on dataportal_v1_Digg_TextBlock {
       ...TextBlock
     }
 
-    ... on dataportal_Digg_FaqBlock {
+    ... on dataportal_v1_Digg_FaqBlock {
       ...FaqBlock
     }
 
-    ... on dataportal_Digg_MediaBlock {
+    ... on dataportal_v1_Digg_MediaBlock {
       ...MediaBlock
     }
 
-    ... on dataportal_Digg_GroupBlock {
+    ... on dataportal_v1_Digg_GroupBlock {
       ...GroupBlock
     }
 
-    ... on dataportal_Digg_HeroBlock {
+    ... on dataportal_v1_Digg_HeroBlock {
       ...HeroBlock
     }
 
-    ... on dataportal_Digg_PuffBlock {
+    ... on dataportal_v1_Digg_PuffBlock {
       ...PuffBlock
     }
 
-    ... on dataportal_Digg_LinksBlock {
+    ... on dataportal_v1_Digg_LinksBlock {
       ...LinksBlock
     }
   }

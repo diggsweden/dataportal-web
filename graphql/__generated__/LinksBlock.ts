@@ -10,7 +10,7 @@ import { dataportal_LinkType } from "./globalTypes";
 // ====================================================
 
 export interface LinksBlock_links {
-  __typename: "dataportal_Digg_Link";
+  __typename: "dataportal_v1_Digg_Link";
   title: string | null;
   link: string;
   linktype: dataportal_LinkType;
@@ -18,6 +18,6 @@ export interface LinksBlock_links {
 }
 
 export interface LinksBlock {
-  __typename: "dataportal_Digg_LinksBlock";
+  __typename: "dataportal_v1_Digg_LinksBlock";
   links: LinksBlock_links[] | null;
 }

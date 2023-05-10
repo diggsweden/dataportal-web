@@ -5,20 +5,20 @@ import { NEWS_QUERY } from '../../graphql/newsQuery';
 import {
   Containers,
   ContainersVariables,
-  Containers_dataportal_Digg_Containers,
+  Containers_dataportal_v1_Digg_Containers,
 } from '../../graphql/__generated__/Containers';
-import { dataportal_ContainerState } from '../../graphql/__generated__/globalTypes';
-import { News, NewsVariables, News_dataportal_Digg_News } from '../../graphql/__generated__/News';
+import { dataportal_v1_ContainerState } from '../../graphql/__generated__/globalTypes';
+import { News, NewsVariables, News_dataportal_v1_Digg_News } from '../../graphql/__generated__/News';
 import ArticlePage from '../news/[nid]';
 import { Page } from '../[...containerSlug]';
 
 const isContainer = (
-  unknown: News_dataportal_Digg_News | Containers_dataportal_Digg_Containers
-): unknown is Containers_dataportal_Digg_Containers => {
-  return unknown.__typename === 'dataportal_Digg_Container';
+  unknown: News_dataportal_v1_Digg_News | Containers_dataportal_v1_Digg_Containers
+): unknown is Containers_dataportal_v1_Digg_Containers => {
+  return unknown.__typename === 'dataportal_v1_Digg_Container';
 };
 
-const Draft: React.FC<News_dataportal_Digg_News | Containers_dataportal_Digg_Containers> = (page) =>
+const Draft: React.FC<News_dataportal_v1_Digg_News | Containers_dataportal_v1_Digg_Containers> = (page) =>
   isContainer(page) ? <Page {...page} /> : <ArticlePage {...page} />;
 
 export const getServerSideProps: GetServerSideProps = async ({ query, locale }) => {
@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, locale }) 
         limit: 1,
         locale,
         previewSecret: secret,
-        state: dataportal_ContainerState.preview,
+        state: dataportal_v1_ContainerState.preview,
       },
     },
     fetchPolicy: 'no-cache',
@@ -42,8 +42,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query, locale }) 
 
   const getPage = (data: Containers | News) =>
     isNews
-      ? (data as News).dataportal_Digg_News[0]
-      : (data as Containers).dataportal_Digg_Containers[0];
+      ? (data as News).dataportal_v1_Digg_News[0]
+      : (data as Containers).dataportal_v1_Digg_Containers[0];
 
   const page = result && result.data ? getPage(result.data) : undefined;
 

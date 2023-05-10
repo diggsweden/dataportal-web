@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export const MENU_QUERY = gql`
   query MainMenu($locale: String) {
-    dataportal_Digg_Menu(locale: $locale) {
+    dataportal_v1_Digg_Menu(locale: $locale) {
       title
       uiHints
       locale
@@ -18,7 +18,7 @@ export const MENU_QUERY = gql`
     }
   }
 
-  fragment MenuData on dataportal_Digg_IMenu {
+  fragment MenuData on dataportal_v1_Digg_IMenu {
     link {
       title
       link

@@ -4,9 +4,9 @@ import { NEWS_QUERY } from '../graphql/newsQuery';
 import {
   Containers,
   ContainersVariables,
-  Containers_dataportal_Digg_Containers,
+  Containers_dataportal_v1_Digg_Containers,
 } from '../graphql/__generated__/Containers';
-import { News, NewsVariables, News_dataportal_Digg_News } from '../graphql/__generated__/News';
+import { News, NewsVariables, News_dataportal_v1_Digg_News } from '../graphql/__generated__/News';
 import { SettingsUtil } from '../env';
 import { HttpsProxyAgent } from "https-proxy-agent";
 import nodeFetch from "node-fetch";
@@ -27,12 +27,12 @@ const Sitemap = () => {
 
 /**
  * @param container
- * @returns true if container is dataportal_Digg_News
+ * @returns true if container is dataportal_v1_Digg_News
  */
 const isNews = (
-  container: Containers_dataportal_Digg_Containers | News_dataportal_Digg_News | null
-): container is News_dataportal_Digg_News => {
-  return container?.__typename === 'dataportal_Digg_News';
+  container: Containers_dataportal_v1_Digg_Containers | News_dataportal_v1_Digg_News | null
+): container is News_dataportal_v1_Digg_News => {
+  return container?.__typename === 'dataportal_v1_Digg_News';
 };
 
 /**
@@ -40,7 +40,7 @@ const isNews = (
  * @param c
  * @returns a correctly formatted slug
  */
-const slug = (c: Containers_dataportal_Digg_Containers | News_dataportal_Digg_News | null) => {
+const slug = (c: Containers_dataportal_v1_Digg_Containers | News_dataportal_v1_Digg_News | null) => {
   const slug = c?.locale === 'sv' ? c?.slug : `/${c?.locale}${c?.slug}`;
   if (isNews(c)) {
     return `/nyheter/${c.id}${slug}`;
@@ -108,8 +108,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, locales
   const datasets: any[] = await getDatasets();
 
   const allContainers: (
-    | Containers_dataportal_Digg_Containers
-    | News_dataportal_Digg_News
+    | Containers_dataportal_v1_Digg_Containers
+    | News_dataportal_v1_Digg_News
     | null
   )[] = [];
   locales &&
@@ -127,8 +127,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, locales
           variables: { filter: { locale, limit: 9999 } },
         });
 
-        const containers = containerResult?.data?.dataportal_Digg_Containers;
-        const news = newsResult?.data?.dataportal_Digg_News;
+        const containers = containerResult?.data?.dataportal_v1_Digg_Containers;
+        const news = newsResult?.data?.dataportal_v1_Digg_News;
 
         if (containerResult?.error) {
           console.error(containerResult?.error);

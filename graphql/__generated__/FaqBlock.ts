@@ -8,12 +8,12 @@
 // ====================================================
 
 export interface FaqBlock_answer {
-  __typename: "dataportal_Digg_RichText";
+  __typename: "dataportal_v1_Digg_RichText";
   markdown: string | null;
 }
 
 export interface FaqBlock {
-  __typename: "dataportal_Digg_FaqBlock";
+  __typename: "dataportal_v1_Digg_FaqBlock";
   question: string;
   answer: FaqBlock_answer;
 }

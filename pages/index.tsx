@@ -12,7 +12,7 @@ import {
 } from '../components';
 import { client } from '../graphql';
 import { NEWS_QUERY } from '../graphql/newsQuery';
-import { News, NewsVariables, News_dataportal_Digg_News } from '../graphql/__generated__/News';
+import { News, NewsVariables, News_dataportal_v1_Digg_News } from '../graphql/__generated__/News';
 import { initBreadcrumb } from './_app';
 import dynamic from 'next/dynamic';
 import { linkBase } from '../utilities';
@@ -25,7 +25,7 @@ const StatisticGraph = dynamic(() => import('../components/Statistic/StatisticGr
 const Statistic = dynamic(() => import('../components/Statistic/Statistic'));
 
 interface HomeProps {
-  articles: News_dataportal_Digg_News[];
+  articles: News_dataportal_v1_Digg_News[];
 }
 
 const Home: React.FC<HomeProps> = ({ articles }) => {
@@ -96,7 +96,7 @@ export async function getStaticProps({ params, locale }: any) {
     fetchPolicy: 'no-cache',
   });
 
-  const articles = result && result.data ? result.data.dataportal_Digg_News : [];
+  const articles = result && result.data ? result.data.dataportal_v1_Digg_News : [];
 
   if (result && result.error) {
     console.error(result.error);

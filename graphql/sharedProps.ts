@@ -19,7 +19,7 @@ const getMenu = async (client: ApolloClient<NormalizedCacheObject>, locale: stri
     return undefined;
   }
 
-  return result?.data?.dataportal_Digg_Menu;
+  return result?.data?.dataportal_v1_Digg_Menu;
 };
 
 const getFooter = async (client: ApolloClient<NormalizedCacheObject>, locale: string) => {
@@ -35,7 +35,7 @@ const getFooter = async (client: ApolloClient<NormalizedCacheObject>, locale: st
     return null;
   }
 
-  return result?.data?.dataportal_Digg_Footer;
+  return result?.data?.dataportal_v1_Digg_Footer;
 };
 
 const getSettings = async (client: ApolloClient<NormalizedCacheObject>, locale: string) => {
@@ -51,7 +51,7 @@ const getSettings = async (client: ApolloClient<NormalizedCacheObject>, locale: 
     return undefined;
   }
 
-  return result?.data?.dataportal_Digg_Settings;
+  return result?.data?.dataportal_v1_Digg_Settings;
 };
 
 export const getSharedProps = async (

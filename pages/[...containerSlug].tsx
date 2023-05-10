@@ -4,10 +4,10 @@ import { ContentArea } from '../components';
 import {
   Containers,
   ContainersVariables,
-  Containers_dataportal_Digg_Containers,
+  Containers_dataportal_v1_Digg_Containers,
 } from '../graphql/__generated__/Containers';
 import { SharedContentData_blocks } from '../graphql/__generated__/SharedContentData';
-import { Start_dataportal_Digg_Start_blocks } from '../graphql/__generated__/Start';
+import { Start_dataportal_v1_Digg_Start_blocks } from '../graphql/__generated__/Start';
 import { isIE } from '../utilities';
 import { AnchorLinkMenu, Heading } from '@digg/design-system';
 import { checkLang } from '../utilities/checkLang';
@@ -50,7 +50,7 @@ const getLinks = () => {
   return menuItems;
 };
 
-export const Page: React.FC<Containers_dataportal_Digg_Containers> = ({
+export const Page: React.FC<Containers_dataportal_v1_Digg_Containers> = ({
   heading,
   preamble,
   uiHints,
@@ -108,7 +108,7 @@ export const Page: React.FC<Containers_dataportal_Digg_Containers> = ({
           {blocks && blocks.length > 0 && (
             <ContentArea
               blocks={
-                blocks as (Start_dataportal_Digg_Start_blocks | SharedContentData_blocks | null)[]
+                blocks as (Start_dataportal_v1_Digg_Start_blocks | SharedContentData_blocks | null)[]
               }
             />
           )}
@@ -129,7 +129,7 @@ export async function getStaticProps({ params, locale }: any) {
     fetchPolicy: 'no-cache',
   });
 
-  const page = result && result.data ? result.data.dataportal_Digg_Containers[0] : undefined;
+  const page = result && result.data ? result.data.dataportal_v1_Digg_Containers[0] : undefined;
 
   if (result && result.error) {
     console.error(result.error);
@@ -162,7 +162,7 @@ export async function getStaticPaths({ locales }: { locales: string[] }) {
   //       variables: { filter: { locale } },
   //     });
 
-  //     const containers = result?.data?.dataportal_Digg_Containers;
+  //     const containers = result?.data?.dataportal_v1_Digg_Containers;
 
   //     if (result?.error) {
   //       console.error(result?.error);

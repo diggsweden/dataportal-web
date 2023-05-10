@@ -7,8 +7,8 @@
 // GraphQL fragment: MediaType
 // ====================================================
 
-export interface MediaType_dataportal_Digg_Image {
-  __typename: "dataportal_Digg_Image";
+export interface MediaType_dataportal_v1_Digg_Image {
+  __typename: "dataportal_v1_Digg_Image";
   url: string;
   alt: string | null;
   name: string | null;
@@ -19,8 +19,8 @@ export interface MediaType_dataportal_Digg_Image {
   height: number | null;
 }
 
-export interface MediaType_dataportal_Digg_Video {
-  __typename: "dataportal_Digg_Video";
+export interface MediaType_dataportal_v1_Digg_Video {
+  __typename: "dataportal_v1_Digg_Video";
   url: string;
   alt: string | null;
   name: string | null;
@@ -29,8 +29,8 @@ export interface MediaType_dataportal_Digg_Video {
   ext: string;
 }
 
-export interface MediaType_dataportal_Digg_File {
-  __typename: "dataportal_Digg_File";
+export interface MediaType_dataportal_v1_Digg_File {
+  __typename: "dataportal_v1_Digg_File";
   url: string;
   alt: string | null;
   name: string | null;
@@ -39,4 +39,4 @@ export interface MediaType_dataportal_Digg_File {
   ext: string;
 }
 
-export type MediaType = MediaType_dataportal_Digg_Image | MediaType_dataportal_Digg_Video | MediaType_dataportal_Digg_File;
+export type MediaType = MediaType_dataportal_v1_Digg_Image | MediaType_dataportal_v1_Digg_Video | MediaType_dataportal_v1_Digg_File;

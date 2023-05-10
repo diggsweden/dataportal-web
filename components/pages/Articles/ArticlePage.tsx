@@ -5,14 +5,14 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect } from 'react';
 import { ContentArea, imageLoader, SettingsContext } from '../..';
-import { News_dataportal_Digg_News } from '../../../graphql/__generated__/News';
+import { News_dataportal_v1_Digg_News } from '../../../graphql/__generated__/News';
 import { initBreadcrumb } from '../../../pages/_app';
 import { linkBase } from '../../../utilities';
 import { checkLang } from '../../../utilities/checkLang';
 import env from '@beam-australia/react-env';
 import { MainContainerStyle } from '../../../styles/general/emotion';
 
-export const ArticlePage: React.FC<News_dataportal_Digg_News> = ({
+export const ArticlePage: React.FC<News_dataportal_v1_Digg_News> = ({
   heading,
   preamble,
   publishedAt,

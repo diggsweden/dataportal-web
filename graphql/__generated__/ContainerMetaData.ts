@@ -8,7 +8,7 @@
 // ====================================================
 
 export interface ContainerMetaData_image {
-  __typename: "dataportal_Digg_Image";
+  __typename: "dataportal_v1_Digg_Image";
   url: string;
   alt: string | null;
   name: string | null;
@@ -20,7 +20,7 @@ export interface ContainerMetaData_image {
 }
 
 export interface ContainerMetaData {
-  __typename: "dataportal_Digg_ContainerMeta";
+  __typename: "dataportal_v1_Digg_ContainerMeta";
   id: string;
   /**
    * two-letter lang

@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../..';
-import { News_dataportal_Digg_News as News } from '../../../graphql/__generated__/News';
+import { News_dataportal_v1_Digg_News as News } from '../../../graphql/__generated__/News';
 import { initBreadcrumb } from '../../../pages/_app';
 import { MainContainerStyle } from '../../../styles/general/emotion';
 import { makeBreadcrumbsFromPath, slugify } from '../../../utilities';

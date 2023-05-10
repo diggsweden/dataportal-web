@@ -5,11 +5,45 @@ import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import { SettingsContext } from '../SettingsProvider';
 import { initBreadcrumb } from '../../pages/_app';
-import { linkBase } from '../../utilities';
+import {
+  accessrigthsIndicator,
+  architechtureIndicator,
+  exploreApiLink,
+  licenseIndicator,
+  linkBase,
+  periodicityIndicator,
+} from '../../utilities';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import Head from 'next/head';
 import { Heading } from '@digg/design-system';
 // import "swagger-ui-react/swagger-ui.css"
+
+const filterCatalogProperties = [
+  'dcat:keyword',
+  'dcterms:title',
+  'dcterms:description',
+  'dcterms:publisher',
+  'dcat:bbox',
+  'dcterms:spatial',
+  'dcterms:provenance',
+];
+
+const filterAllExceptContactAndLandingPage = [
+  ...filterCatalogProperties,
+  'dcat:theme',
+  'dcterms:identifier',
+  'dcterms:language',
+  'dcterms:modified',
+  'dcterms:temporal',
+  'dcterms:accrualPeriodicity',
+  'dcterms:accessRights',
+];
+
+const filterContactAndLandingPage = [
+  ...filterCatalogProperties,
+  'dcat:contactPoint',
+  'dcat:landingPage',
+];
 
 export const DataSetPage: React.FC = () => {
   const { pathname, query } = useRouter() || {};
@@ -21,7 +55,6 @@ export const DataSetPage: React.FC = () => {
   const ids = (typeof dataSet === 'string' && dataSet.split('_')) || [];
   const cid = ids[0];
   const eid = ids[1];
-  let referredSearch: string = `/${t('routes|datasets$path')}/?q=`;
   const hasWindow = typeof window !== 'undefined';
   const postscribe = hasWindow && (window as any).postscribe;
 
@@ -34,11 +67,9 @@ export const DataSetPage: React.FC = () => {
     if (hasWindow) {
       //check if reffereing search params is set to hash
       if (window.location && window.location.hash && window.location.hash.includes('ref=?'))
-        referredSearch = `/${t('routes|datasets$path')}/?${window.location.hash.split('ref=?')[1]}`;
-
-      window.onpopstate = (e: any) => {
-        window.location.reload();
-      };
+        window.onpopstate = (e: any) => {
+          window.location.reload();
+        };
     }
   }, []);
 
@@ -138,6 +169,11 @@ export const DataSetPage: React.FC = () => {
             ],
 
             blocks: [
+              ${accessrigthsIndicator},
+              ${periodicityIndicator},
+              ${licenseIndicator},
+              ${architechtureIndicator},
+              ${exploreApiLink(cid, eid, t)},
               {
                 block: 'formatBadge',
                 extends: 'template',
@@ -195,17 +231,6 @@ export const DataSetPage: React.FC = () => {
                   '{{/unless}}',
               },
               {
-                block: 'fileListEntries2',
-                extends: 'list',
-                relation: 'dcat:downloadURL',
-                rowhead: '<span class="esbRowAlign">' +
-                  '<span class="esbRowAlignPrimary esbRowEllipsis resourceLabel">{{text fallback="{{resourceURI}}"}}</span>' +
-                  '<span class="esbRowAlignSecondary">' +
-                  '<a href="{{resourceURI}}" class="" role="button" target="_blank">' +
-                  'Ladda ner data</a>' +
-                  '</span></span>',
-              },
-              {
                 block: 'accessServiceCustom',
                 extends: 'template',
                 relation: 'dcat:accessService',
@@ -216,22 +241,6 @@ export const DataSetPage: React.FC = () => {
                   )}"}}'          
               },
               {
-                block: 'aboutDataset',
-                extends: 'template',
-                relation: 'dcat:Dataset',
-                template: '{{viewMetadata rdformsid="dcat:Dataset"}}'          
-              },
-              {
-                block: 'architectureIndicator',
-                extends: 'template',
-                template: '{{#ifprop "dcterms:type"}}' +
-                  '<span class="esbIndicator" title="TjÃ¤nstens arkitekturstil">' +
-                  '<span class="material-icons-outlined">build_circle</span>' +
-                  '<i class="fas fa-wrench"></i>' +
-                  '<span class="esbIndicatorLabel">{{#eachprop "dcterms:type"}}{{label}}{{separator}}{{/eachprop}}</span></span>' +
-                  '{{/ifprop}}',
-              },
-              {
                 block: 'costIndicator',
                 extends: 'template',
                 template: '{{#ifprop "schema:offers"}}<span class="esbIndicator" title="Avgift">' +
@@ -240,84 +249,10 @@ export const DataSetPage: React.FC = () => {
                   '{{/ifprop}}',
               },
               {
-                block: 'accessRightsIndicator',
-                extends: 'template',
-                template: '{{#ifprop "dcterms:accessRights"}}' +
-                  '{{#eachprop "dcterms:accessRights"}}<span class="esbIndicator" title="{{description}}">' +
-                  '{{#ifprop "dcterms:accessRights" uri="peu:access-right/PUBLIC"}}' +
-                  '<i class="fas fa-lock-open"></i>{{/ifprop}}' +
-                  '{{#ifprop "dcterms:accessRights" uri="peu:access-right/NON_PUBLIC"}}' +
-                  '<i class="fas fa-key"></i>{{/ifprop}}' +
-                  '{{#ifprop "dcterms:accessRights" uri="peu:access-right/RESTRICTED"}}' +
-                  '<i class="fas fa-lock"></i>{{/ifprop}}' +
-                  '<span class="esbIndicatorLabel">{{label}}</span>{{/eachprop}}' +
-                  '</span>{{/ifprop}}',
-              },
-              {
-                block: 'periodicityIndicator',
-                extends: 'template',
-                template: '{{#eachprop "dcterms:accrualPeriodicity"}}<span class="esbIndicator" title="Uppdateringsfrekvens">' +
-                  '<i class="fas fa-redo"></i>' +
-                  '<span class="">{{label}}</span></span>{{/eachprop}}',
-              },
-              {
-                block: 'licenseIndicatorCustom',
-                loadEntry: true,
-                run: function(node, data, items, entry) {
-                  var v = entry.getMetadata().findFirstValue(null, 'dcterms:license');
-                  if (v.indexOf("http://creativecommons.org/") === 0) {
-                    var variant;
-                    if (v === "http://creativecommons.org/publicdomain/zero/1.0/") {
-                      variant = "Creative Commons";
-                    } else if (v.indexOf("http://creativecommons.org/licenses/") === 0) {
-                      variant = "Creative commons";
-                    } else {
-                      return; // Unknown cc version.
-                    }
-                    node.innerHTML = '<span class="esbIndicator" title="Licens från Creative Commons">' +
-                      '<i class="license-icon fab fa-creative-commons"></i>' +
-                      '<span class="esbIndicatorLabel">' + variant.toLowerCase() + '</span></span>';
-                  }
-                },
-              },
-              {
                 block: 'costIndicator2',
                 extends: 'template',
                 template: '{{#ifprop "schema:offers"}}<span class="esbIndicator" title="Avgift"><i class="fas fa-coins"></i>' +
                   '<span class="esbIndicatorLabel">Avgift</span></span>{{/ifprop}}',
-              },
-              {
-                block: 'exploreApiLinkRun',                     
-                run: function(node,a2,a3,entry) {                                        
-                  if(node && node.firstElementChild)
-                  { 
-                    var showExploreApi = false;                   
-                    var entryId = entry.getId();
-                    var contextId = '${cid}';
-
-                    if(window.__es_has_apis)
-                      for(var a in window.__es_has_apis)
-                      {
-                        if(window.__es_has_apis[a] === contextId + '_' + entryId)
-                          showExploreApi = true;                    
-                      }
-                    
-                    if(showExploreApi)
-                    {
-                      var el = document.createElement('a');                    
-                      node.firstElementChild.appendChild(el);
-                      el.innerHTML = '${t('pages|datasetpage$explore-api')}'
-                      el.setAttribute('href', getApiExploreUrl('${eid}',entryId))
-                      el.setAttribute('class', 'explore-api-link entryscape text-md link') 
-                    }
-                  }
-                },
-                loadEntry:true
-              },
-              {
-                block: 'exploreApiLink',
-                extends: 'template',
-                template: '{{exploreApiLinkRun}}' 
               },
               {
                 block: 'distributionListCustom',
@@ -358,7 +293,47 @@ export const DataSetPage: React.FC = () => {
                   '{{/ifprop}}' +
                   '{{view rdformsid="dcat:Distribution" filterpredicates="dcat:downloadURL,dcterms:title,dcat:accessService"}}' +
                   '{{#ifprop "dcat:accessService"}}{{accessServiceCustom}}{{/ifprop}}',
-              },]
+              },
+              {
+                block: 'keyword',
+                extends: 'template',
+                template:'{{#ifprop "dcat:keyword"}}' + 
+                    '<div class="rdforms">' +
+                      '<div class="rdformsRow rdformsTopLevel">' +
+                        '<div class="rdformsLabel">' +
+                          '${t('pages|datasetpage$keyword')}' +
+                        '</div>' +
+                        '<div class="rdformsFields">' +
+                          '{{#eachprop "dcat:keyword" limit=4 expandbutton="${t(
+                            'pages|datasetpage$view_more'
+                          )}" unexpandbutton="${t('pages|datasetpage$view_less')}"}}' +
+                            '<div title="{{value}}" class="rdformsOrigin rdformsOrigin_A rdformsField rdformsSingleline" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
+                          '{{/eachprop}}' +
+                        '</div>' +
+                      '</div>' +
+                    '</div>' +
+                  '{{/ifprop}}',
+              },
+              {
+                block: 'aboutDataset',
+                extends: 'template',
+                template: '<div class="about_dataset">' +
+                            '<div class="view_metadata_group">' +
+                              '{{viewMetadata template="dcat:Dataset" filterpredicates="${filterAllExceptContactAndLandingPage.join(
+                                ','
+                              )}"}}' +
+                            '</div>' +
+                            '<div class="keyword">' +
+                              '{{keyword}}' +
+                            '</div>' +
+                            '<div class="view_metadata_group">' +
+                              '{{viewMetadata template="dcat:Dataset" filterpredicates="${filterContactAndLandingPage.join(
+                                ','
+                              )}"}}' +
+                            '</div>' +
+                          '</div>',
+              },
+            ]
           }]
           </script>              
 
@@ -389,8 +364,7 @@ export const DataSetPage: React.FC = () => {
         />
       </Head>
       <div className="detailpage__wrapper">
-        {/* Left column */}
-        <div className="detailpage__wrapper--leftcol">
+        <div className="detailpage__header detailpage__wrapper--leftcol">
           {/* Title */}
           <Heading>{entry.title}</Heading>
 
@@ -406,27 +380,27 @@ export const DataSetPage: React.FC = () => {
                                 <p>
                                 `,
             }}
-          ></script>
+          />
 
           {/* Indicators */}
           <div className="row indicators">
             <div
               data-entryscape="accessRightsIndicator"
               className="accessRightsIndicator"
-            ></div>
+            />
             <div
               data-entryscape="periodicityIndicator"
               className="architectureIndicator"
-            ></div>
+            />
             <div
-              data-entryscape="licenseIndicatorCustom"
+              data-entryscape="licenseIndicator"
               className="licenseIndicator"
-            ></div>
+            />
 
             <div
               data-entryscape="costIndicator2"
               className="costIndicator"
-            ></div>
+            />
           </div>
 
           {/* Description */}
@@ -443,44 +417,47 @@ export const DataSetPage: React.FC = () => {
             </ShowMoreText>
           </div>
 
-          {/* Use data - header */}
-          <Heading
-            level={2}
-            className="hbbr"
-          >
-            {t('pages|datasetpage$use-data')}
-          </Heading>
+          {/* Left column */}
+          <div className="detailpage__wrapper--leftcol">
+            {/* Use data - header */}
+            <Heading
+              level={2}
+              className="hbbr"
+            >
+              {t('pages|datasetpage$use-data')}
+            </Heading>
 
-          {/* Distribution list */}
-          <div
-            className="distribution__list"
-            data-entryscape="distributionListCustom"
-            data-entryscape-registry="true"
-          ></div>
+            {/* Distribution list */}
+            <div
+              className="distribution__list"
+              data-entryscape="distributionListCustom"
+              data-entryscape-registry="true"
+            ></div>
 
-          {/* Dataset map */}
-          <div
-            className="dataset__map"
-            data-entryscape="view"
-            data-entryscape-rdformsid="dcat:dcterms:spatial_bb_da"
-            data-entryscape-label="false"
-          ></div>
+            {/* Dataset map */}
+            <div
+              className="dataset__map"
+              data-entryscape="view"
+              data-entryscape-rdformsid="dcat:dcterms:spatial_bb_da"
+              data-entryscape-label="false"
+            ></div>
 
-          {/* Questions  or comments */}
-          <div className="contact__publisher hbbr">
-            <Heading level={3}>{t('pages|datasetpage$contact-publisher')}</Heading>
-            <p className="text-md">
-              {t('pages|datasetpage$contact-publisher-text')}
-              {t('pages|datasetpage$contact-publisher-text2')}{' '}
-              <a
-                className="text-md link"
-                href="https://community.dataportal.se/"
-                lang="en"
-              >
-                community
-              </a>
-              .
-            </p>
+            {/* Questions  or comments */}
+            <div className="contact__publisher hbbr">
+              <Heading level={3}>{t('pages|datasetpage$contact-publisher')}</Heading>
+              <p className="">
+                {t('pages|datasetpage$contact-publisher-text')}
+                {t('pages|datasetpage$contact-publisher-text2')}{' '}
+                <a
+                  className="text-md link"
+                  href="https://community.dataportal.se/"
+                  lang="en"
+                >
+                  community
+                </a>
+                .
+              </p>
+            </div>
           </div>
         </div>
 
@@ -488,28 +465,17 @@ export const DataSetPage: React.FC = () => {
         <div className="detailpage__wrapper--rightcol hbbr">
           {/* About dataset - wrapper  */}
           <div className="detailpage__wrapper--rightcol-info text-base">
-            <Heading
-              level={2}
-              size="md"
-            >
-              {t('pages|datasetpage$about-dataset')}
-            </Heading>
+            <Heading level={2}>{t('pages|datasetpage$about-dataset')}</Heading>
 
             {/* About dataset */}
-            <script
-              type="text/x-entryscape-handlebar"
-              data-entryscape="true"
-              data-entryscape-component="template"
-              dangerouslySetInnerHTML={{
-                __html: `
-                                    <div class="viewMetadata">
-                                      {{viewMetadata 
-                                      template="dcat:Dataset" 
-                                      filterpredicates="dcterms:title,dcterms:description,dcterms:publisher,dcat:bbox,dcterms:spatial,dcterms:provenance"}}
-                                    </div>
-                                  `,
-              }}
-            ></script>
+            <div
+              data-entryscape-dialog
+              data-entryscape-rdformsid="dcat:contactPoint"
+            />
+            <div
+              data-entryscape="aboutDataset"
+              className="aboutDataset"
+            />
           </div>
 
           {/* Catalog informaton wrapper */}
@@ -527,12 +493,14 @@ export const DataSetPage: React.FC = () => {
               data-entryscape="true"
               data-entryscape-block="template"
               dangerouslySetInnerHTML={{
-                __html: `{{viewMetadata 
-                                    relationinverse="dcat:dataset" 
-                                    onecol=true 
-                                    template="dcat:OnlyCatalog"                               
-                                    filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi"
-                                    }}`,
+                __html: `
+                          {{viewMetadata 
+                          relationinverse="dcat:dataset" 
+                          onecol=true 
+                          template="dcat:OnlyCatalog"                               
+                          filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi"
+                          }}
+                        `,
               }}
             ></script>
           </div>
@@ -545,13 +513,15 @@ export const DataSetPage: React.FC = () => {
             data-entryscape-block="template"
             dangerouslySetInnerHTML={{
               __html: `
-                              <a class="download__rdf--link matomo_download text-md link" target="_blank" href="{{metadataURI}}?recursive=dcat">${t(
-                                'pages|datasetpage$rdf'
-                              )}</a>
-                              `,
+                      <a class="download__rdf--link matomo_download text-md link" target="_blank" href="{{metadataURI}}?recursive=dcat">${t(
+                        'pages|datasetpage$rdf'
+                      )}</a>
+                      `,
             }}
           ></script>
         </div>
+
+        <div className="detailpage__columns"></div>
       </div>
     </div>
   );
