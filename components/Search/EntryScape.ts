@@ -679,7 +679,12 @@ export class EntryScape {
               titleResource: "blaa",
             };
 
-            const metaData = child.getMetadata();
+            var metaData = child.getMetadata();
+
+            //add support for CachedExternalMetadata
+            if(child._cachedExternalMetadata)
+              metaData = child.getCachedExternalMetadata();  
+
             const resourceURI = child.getResourceURI();
             const context = child.getContext();
             const rdfType = metaData.findFirstValue(

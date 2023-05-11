@@ -67,7 +67,12 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
                 regex:new RegExp('(\/*\/specifications\/)(.+)'),
                 uri:'https://dataportal.se/specifications/${curi}',
                 page_language: '${lang}'
-              }              
+              },              
+              {
+                regex:new RegExp('(\/*\/www-sandbox.specifications\/)(.+)'),
+                uri:'https://www-sandbox.dataportal.se/specifications/${curi}',
+                page_language: '${lang}'
+              }                
             ],
             entrystore: 'https://${
               env.ENTRYSCAPE_SPECS_PATH
