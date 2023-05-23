@@ -1,33 +1,19 @@
-<<<<<<< HEAD
 on:
   workflow_dispatch:
 
 name: Azure - dataportal v2 build/push image
-=======
-on: workflow_dispatch
-
-name: Azure - dataportal build/push image
->>>>>>> origin/3.1.2
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: test
     steps:
-<<<<<<< HEAD
-      - name: "Login via Azure CLI"
-=======
       - name: 'Login via Azure CLI'
->>>>>>> origin/3.1.2
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-<<<<<<< HEAD
-      - name: "Checkout GitHub Action"
-=======
       - name: 'Checkout GitHub Action'
->>>>>>> origin/3.1.2
         uses: actions/checkout@master
 
       - name: Extract branch name
@@ -35,11 +21,7 @@ jobs:
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
 
-<<<<<<< HEAD
-      - name: "Docker login"
-=======
       - name: 'Docker login'
->>>>>>> origin/3.1.2
         uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
@@ -52,34 +34,21 @@ jobs:
 
       - name: Print docker version tag
         run: |
-<<<<<<< HEAD
           echo "${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal-v2:${{ steps.package-version.outputs.current-version}}-b.${{ github.run_number }}"
-=======
-          echo "${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal:${{ steps.package-version.outputs.current-version}}-b.${{ github.run_number }}"
->>>>>>> origin/3.1.2
 
       - name: Print commits url
         run: |
           echo "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
 
-<<<<<<< HEAD
       - name: use buildx
         uses: docker/setup-buildx-action@v1
 
-=======
->>>>>>> origin/3.1.2
       - name: build_publish_image
         uses: docker/build-push-action@v2
         with:
           context: .
-<<<<<<< HEAD
           cache-from: type=gha
           cache-to: type=gha,mode=max
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal-v2:latest,${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal-v2:${{ steps.package-version.outputs.current-version}}-b.${{ github.run_number }},${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal-v2:${{ github.sha }},${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal-v2:branch-${{ steps.extract_branch.outputs.branch }}
-=======
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal:latest,${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal:${{ steps.package-version.outputs.current-version}}-b.${{ github.run_number }},${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal:${{ github.sha }},${{ secrets.REGISTRY_LOGIN_SERVER }}/digg-dataportal:branch-${{ steps.extract_branch.outputs.branch }}
->>>>>>> origin/3.1.2
