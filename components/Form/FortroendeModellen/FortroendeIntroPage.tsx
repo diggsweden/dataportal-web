@@ -64,7 +64,7 @@ export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({
         </Button>
       </FormNavButtons>
       <FormWrapper>
-        {extraInfo && <ContentArea blocks={blocks.slice(1, 2)} />}
+        {extraInfo && <ContentArea blocks={extraInfo} />}
       </FormWrapper>
     </Container>
   );
