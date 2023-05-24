@@ -1,6 +1,6 @@
 {
   "name": "dataportal-web",
-  "version": "4.4.4-beta",
+  "version": "4.4.5-beta",
   "private": true,
   "scripts": {
     "dev": "react-env --env local -- next dev",
