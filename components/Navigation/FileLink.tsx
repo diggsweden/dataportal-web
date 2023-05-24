@@ -18,7 +18,7 @@ export const FileLink: React.FC<FileLinkProps> = ({ children, link }) => {
       `}
     >
       <Link href={`${link}`}>{children}</Link>
-      <PdfIcon width={24} />
+      <PdfIcon width={24} color="white" />
     </div>
   );
 };
