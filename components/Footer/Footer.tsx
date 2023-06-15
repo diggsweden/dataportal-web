@@ -5,6 +5,8 @@ import Link from "next/link";
 import React from "react";
 import { dataportal_LinkType } from "../../graphql/__generated__/globalTypes";
 import { ExternalLink, IPuff } from "../Navigation";
+import Image from "next/image";
+import euLogo from "../../public/images/eu.png";
 
 const columns = (
   t: Translate
@@ -130,18 +132,16 @@ export const Footer: React.FC = () => {
 
           <div className="digg__">
             <p className="text-sm">{t("common|digg-managed_text")}</p>
-            <div
-              css={css`
-                width: 15rem;
-                ${space({ mr: 4 })};
-              `}
-            >
-              <DiggLogo
-                title={t("common|digg-logo_text")}
-                id="footer"
-                mode="wide"
-                width={30 * 16}
-              />
+            <div className="footer__logos">
+              <div className="footer__logos-digg">
+                <DiggLogo
+                  title={t("common|digg-logo_text")}
+                  id="footer"
+                  mode="wide"
+                  width={30 * 16}
+                />
+              </div>
+              <Image src={euLogo} alt="" width={200} />
             </div>
           </div>
         </div>

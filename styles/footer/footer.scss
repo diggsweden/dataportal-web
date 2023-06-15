@@ -213,3 +213,19 @@ footer {
     }
   }
 }
+
+.footer__logos {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+
+  .footer__logos-digg {
+    width: 15rem;
+    margin-right: $space-4;
+  }
+
+  @media screen and (min-width: $media-sm) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
