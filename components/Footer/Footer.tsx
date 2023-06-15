@@ -1,4 +1,4 @@
-import { Container, css, DiggLogo, space } from "@digg/design-system";
+import { Container, css, DiggLogo } from "@digg/design-system";
 import { Translate } from "next-translate";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
