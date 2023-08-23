@@ -15,7 +15,7 @@
 Start by create an ```env.local``` file. Use the ```env.local.example``` as template.
 (Environment variables and tokens in env.local.example that has placeholder value of "secret" is not available here and needs to be fetched from BitWarden).
 
-### Run application in development mode.
+### Run application in development mode
 Starts the application in development mode with hot-code reloading, error reporting, and more. See [Nextjs Development](https://nextjs.org/docs/app/api-reference/next-cli#development) for more information.
 Run:
 ```sh 
@@ -24,7 +24,7 @@ yarn dev
 ```
 Visit [http://localhost:3000](http://localhost:3000) in the browser.
 
-### Run application in production mode.
+### Run application in production mode
 Builds the application for production usage. See [Nextjs production build](https://nextjs.org/docs/app/api-reference/next-cli#build) for more info.
 And Start the Next.js production server. See [Nextjs start production](https://nextjs.org/docs/app/api-reference/next-cli#production) for more info.
 Run:
@@ -35,8 +35,7 @@ yarn start
 ```
 Visit [http://localhost:3000](http://localhost:3000) in the browser.
 
-### Start application with Docker.
-
+### Start application with Docker
 ```sh
 #build image
 docker build . -t dataportal-web
@@ -45,10 +44,9 @@ docker build . -t dataportal-web
 docker run -p 3000:3000 -e PORT=3000 -e HOST=http://localhost:3000 -e REACT_APP_APOLLO_URL=http://localhost:1400 -e REACT_APP_RUNTIME_ENV=prod -e IMAGE_DOMAIN=host.docker.internal -e REACT_APP_MEDIA_BASE_URL="http://host.docker.internal:1400/assets/dataportal" --add-host=host.docker.internal:host-gateway dataportal-web
 ```
 
-### Health check.
-
-NextJs svarar på [http://localhost:1300/api/healthcheck?secret=[HEALTHCHECK_SECRET från env]](http://localhost:1300/api/healthcheck?secret=)
-Cacheas inte, gör en request till contentbackend med startsidans fråga.
+### Health check
+NextJs answers on [http://localhost:1300/api/healthcheck?secret=[HEALTHCHECK_SECRET from env]](http://localhost:1300/api/healthcheck?secret=)
+No cache, Do a request to content backend with startpage query.
 
 ```sh
 {"status":"fail"}
@@ -57,7 +55,6 @@ Cacheas inte, gör en request till contentbackend med startsidans fråga.
 ```sh
 {"status":"pass"}
 ```
-
 
 ## Notes
 

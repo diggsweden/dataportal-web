@@ -45,6 +45,19 @@ docker build . -t dataportal-web
 docker run -p 3000:3000 -e PORT=3000 -e HOST=http://localhost:3000 -e REACT_APP_APOLLO_URL=http://localhost:1400 -e REACT_APP_RUNTIME_ENV=prod -e IMAGE_DOMAIN=host.docker.internal -e REACT_APP_MEDIA_BASE_URL="http://host.docker.internal:1400/assets/dataportal" --add-host=host.docker.internal:host-gateway dataportal-web
 ```
 
+### Health check.
+
+NextJs svarar på [http://localhost:1300/api/healthcheck?secret=[HEALTHCHECK_SECRET från env]](http://localhost:1300/api/healthcheck?secret=)
+Cacheas inte, gör en request till contentbackend med startsidans fråga.
+
+```sh
+{"status":"fail"}
+```
+
+```sh
+{"status":"pass"}
+```
+
 ## Notes
 
 ### EntryScape
