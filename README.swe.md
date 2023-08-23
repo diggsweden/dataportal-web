@@ -57,11 +57,11 @@ Cacheas inte, gör en request till contentbackend med startsidans fråga.
 ## Notes
 
 ### Stack
-- [Nextjs](https://nextjs.org/) JS framework
-- [TypeScript](https://www.typescriptlang.org/) typad JS
-- [React](https://reactjs.org/) för UI
-- [Emotion](https://emotion.sh) för styling
-- [Apollo Client](https://www.apollographql.com/docs/react/) för datahämtning
+- [![Nextjs](https://badgen.net/badge/Nextjs/JS%20framework/blue)](https://nextjs.org/)
+- [![TypeScript](https://badgen.net/badge/TypeScript/Typad%20Js/blue)](https://www.typescriptlang.org/)
+- [![React](https://badgen.net/badge/React/För%20UI/blue)](https://reactjs.org/)
+- [![Emotion](https://badgen.net/badge/Emotion/För%20styling/blue)](https://emotion.sh)
+- [![Apollo Client](https://badgen.net/badge/Apollo%20Client/För%20datahämtning/blue)](https://www.apollographql.com/docs/react/)
 
 ### EntryScape
 Den svenska dataportalen är starkt integrerad med produktsviten EntryScape från MetaSolutions AB, [https://entryscape.com/sv/](https://entryscape.com/sv/).

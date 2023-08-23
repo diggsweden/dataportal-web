@@ -56,11 +56,12 @@ No cache, Do a request to content backend with startpage query.
 ## Notes
 
 ### Stack
-- [Nextjs](https://nextjs.org/) JS framework
-- [TypeScript](https://www.typescriptlang.org/) for static types
-- [React](https://reactjs.org/) for UI
-- [Emotion](https://emotion.sh) for styling
-- [Apollo Client](https://www.apollographql.com/docs/react/) for federerated content
+- [![Nextjs](https://badgen.net/badge/Nextjs/JS%20framework/blue)](https://nextjs.org/) 
+- [![TypeScript](https://badgen.net/badge/TypeScript/For%20static%20types/blue)](https://www.typescriptlang.org/)
+- [![React](https://badgen.net/badge/React/For%20UI/blue)](https://reactjs.org/)
+- [![Emotion](https://badgen.net/badge/Emotion/For%20styling/blue)](https://emotion.sh)
+- [![Apollo Client](https://badgen.net/badge/Apollo%20Client/For%20federated%20content/blue)](https://www.apollographql.com/docs/react/)
+
 
 ### EntryScape
 The Swedish data portal is tightly integrated with the EntryScape product suite from MetaSolutions AB, https://entryscape.com/en/.
