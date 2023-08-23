@@ -1,5 +1,6 @@
 ![Swedish data portal](https://www.dataportal.se/images/svdp-favicon-64.png) 
 # The Swedish data portal web client – [dataportal.se](https://www.dataportal.se)
+Sweden´s national data portal gathers and shares data for re-use to make it easier for users to find and explore it across sectors and domains.The portal only contains information about datasets, i.e. metadata. The actual datasets are retrieved via links for download or requested by the respective organization responsible for their own datasets. The Agency for Digital Government (DIGG) is responsible for Sweden's national data portal.
 
 ## Requirements
 ![node-current](https://img.shields.io/badge/node-16.13.2-green)
@@ -30,7 +31,8 @@ yarn start
 ```
 Visit [http://localhost:3000](http://localhost:3000) in the browser.
 
-### Start application with Docker
+### Run application with Docker
+Run the following to start the application with docker.
 ```sh
 #build image
 docker build . -t dataportal-web

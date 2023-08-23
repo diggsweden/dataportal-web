@@ -1,6 +1,6 @@
 ![Sveriges dataportal](https://www.dataportal.se/images/svdp-favicon-64.png)
 # Sveriges dataportal webbklient – [dataportal.se](https://www.dataportal.se)
-
+På Sveriges dataportal synliggörs data från en rad olika typer av organisationer och sektorer. Här finns enbart information om datamängder, dvs. metadata. Data hämtas i sin tur via länkar för nedladdning eller efterfrågas hos respektive organisation som ansvarar för sina egna datamängder.
 ## Versionskrav
 ![node-current](https://img.shields.io/badge/node-16.13.2-green)
 ![npm-current](https://img.shields.io/badge/npm-8.1.2-green)
