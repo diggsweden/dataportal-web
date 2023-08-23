@@ -1,5 +1,5 @@
 ![Swedish data portal](https://www.dataportal.se/images/svdp-favicon-64.png) 
-# The Swedish data portal web Client – [dataportal.se](https://www.dataportal.se)
+# The Swedish data portal web client – [dataportal.se](https://www.dataportal.se)
 
 ## Stack
 ![node-current](https://img.shields.io/badge/node-16.13.2-green)
@@ -12,8 +12,8 @@
 - [Apollo Client](https://www.apollographql.com/docs/react/) for federerated content
 
 ## Development
-Start by create an ```env.local``` file. Use the ```env.local.example``` as template.
-(Environment variables and tokens in env.local.example that has placeholder value of "secret" is not available here and needs to be fetched from BitWarden).
+Start by creating an ```env.local``` file. Use the ```env.local.example``` as template.
+(Environment variables and tokens in env.local.example that has placeholder value of "secret" is not available here and needs to be changed to a valid value).
 
 ### Run application in development mode
 Starts the application in development mode with hot-code reloading, error reporting, and more. See [Nextjs Development](https://nextjs.org/docs/app/api-reference/next-cli#development) for more information.
