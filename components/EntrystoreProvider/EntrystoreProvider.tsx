@@ -70,7 +70,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         '#scriptsPlaceholder',
         ` 
         <script 
-         src="https://dataportal.azureedge.net/cdn/entrystore_2021-03-18.js" 
+         src="https://entrystore.org/js/stable/entrystore.js" 
          crossorigin="anonymous"></script>        
         `,
         {
