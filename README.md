@@ -1,15 +1,10 @@
 ![Swedish data portal](https://www.dataportal.se/images/svdp-favicon-64.png) 
 # The Swedish data portal web client – [dataportal.se](https://www.dataportal.se)
 
-## Stack
+## Requirements
 ![node-current](https://img.shields.io/badge/node-16.13.2-green)
 ![npm-current](https://img.shields.io/badge/npm-8.1.2-green)
 ![nextjs-current](https://img.shields.io/badge/nextjs-13.0.2-green)
-- [Nextjs](https://nextjs.org/) JS framework
-- [TypeScript](https://www.typescriptlang.org/) for static types
-- [React](https://reactjs.org/) for UI
-- [Emotion](https://emotion.sh) for styling
-- [Apollo Client](https://www.apollographql.com/docs/react/) for federerated content
 
 ## Development
 Start by creating an ```env.local``` file. Use the ```env.local.example``` as template.
@@ -57,6 +52,13 @@ No cache, Do a request to content backend with startpage query.
 ```
 
 ## Notes
+
+### Stack
+- [Nextjs](https://nextjs.org/) JS framework
+- [TypeScript](https://www.typescriptlang.org/) for static types
+- [React](https://reactjs.org/) for UI
+- [Emotion](https://emotion.sh) for styling
+- [Apollo Client](https://www.apollographql.com/docs/react/) for federerated content
 
 ### EntryScape
 The Swedish data portal is tightly integrated with the EntryScape product suite from MetaSolutions AB, https://entryscape.com/en/.

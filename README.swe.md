@@ -1,15 +1,11 @@
 ![Sveriges dataportal](https://www.dataportal.se/images/svdp-favicon-64.png)
 # Sveriges dataportal webbklient – [dataportal.se](https://www.dataportal.se)
 
-## Stack
+## Versionskrav
 ![node-current](https://img.shields.io/badge/node-16.13.2-green)
 ![npm-current](https://img.shields.io/badge/npm-8.1.2-green)
 ![nextjs-current](https://img.shields.io/badge/nextjs-13.0.2-green)
-- [Nextjs](https://nextjs.org/) JS framework
-- [TypeScript](https://www.typescriptlang.org/) typad JS
-- [React](https://reactjs.org/) för UI
-- [Emotion](https://emotion.sh) för styling
-- [Apollo Client](https://www.apollographql.com/docs/react/) för datahämtning
+
 
 ## Utveckling.
 Börja med att skapa en ```env.local``` fil. Använd ```env.local.example``` som mall.
@@ -59,6 +55,13 @@ Cacheas inte, gör en request till contentbackend med startsidans fråga.
 ```
 
 ## Notes
+
+### Stack
+- [Nextjs](https://nextjs.org/) JS framework
+- [TypeScript](https://www.typescriptlang.org/) typad JS
+- [React](https://reactjs.org/) för UI
+- [Emotion](https://emotion.sh) för styling
+- [Apollo Client](https://www.apollographql.com/docs/react/) för datahämtning
 
 ### EntryScape
 Den svenska dataportalen är starkt integrerad med produktsviten EntryScape från MetaSolutions AB, [https://entryscape.com/sv/](https://entryscape.com/sv/).
