@@ -14,7 +14,7 @@ export default function ExploreApiPage() {
   const cid = ids[0];
   const eid = ids[1];
   const postscribeStatus = useScript(
-    'https://dataportal.azureedge.net/cdn/postscribe.min.js',
+    '/postscribe.min.js',
     'sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM',
     'anonymous'
   );
