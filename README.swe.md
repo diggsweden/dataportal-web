@@ -6,6 +6,11 @@ På Sveriges dataportal synliggörs data från en rad olika typer av organisatio
 ![npm-current](https://img.shields.io/badge/npm-8.1.2-green)
 ![nextjs-current](https://img.shields.io/badge/nextjs-13.0.2-green)
 
+## EntryScape
+[<img alt="Entryscape logotype" src="https://entryscape.com/wp-content/uploads/2023/01/Entryscape-by-Metasolutions-w385px-Retina-2.png" width="191" height="42">](https://entryscape.com/sv)
+
+Den svenska dataportalen är starkt integrerad med produktsviten EntryScape från MetaSolutions AB, [https://entryscape.com/sv/](https://entryscape.com/sv/).
+EntryScape Registry är en lösning för att hantera ett register över datakataloger och relaterad information.
 
 ## Utveckling.
 Börja med att skapa en ```env.local``` fil. Använd ```env.local.example``` som mall.
@@ -62,12 +67,6 @@ Cacheas inte, gör en request till contentbackend med startsidans fråga.
 - [![React](https://badgen.net/badge/React/För%20UI/blue)](https://reactjs.org/)
 - [![Emotion](https://badgen.net/badge/Emotion/För%20styling/blue)](https://emotion.sh)
 - [![Apollo Client](https://badgen.net/badge/Apollo%20Client/För%20datahämtning/blue)](https://www.apollographql.com/docs/react/)
-
-### EntryScape
-[<img alt="Entryscape logotype" src="https://entryscape.com/wp-content/uploads/2023/01/Entryscape-by-Metasolutions-w385px-Retina-2.png" width="191" height="42">](https://entryscape.com/sv)
-
-Den svenska dataportalen är starkt integrerad med produktsviten EntryScape från MetaSolutions AB, [https://entryscape.com/sv/](https://entryscape.com/sv/).
-EntryScape Registry är en lösning för att hantera ett register över datakataloger och relaterad information.
 
 ### Innehålls-backend.
 Utvecklarportalen hämtar innehåll via Apollo Gateway. Sätts via env.

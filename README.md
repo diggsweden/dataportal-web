@@ -2,6 +2,13 @@
 # The Swedish data portal web client – [dataportal.se](https://www.dataportal.se)
 Sweden´s national data portal gathers and shares data for re-use to make it easier for users to find and explore it across sectors and domains.The portal only contains information about datasets, i.e. metadata. The actual datasets are retrieved via links for download or requested by the respective organization responsible for their own datasets. The Agency for Digital Government (DIGG) is responsible for Sweden's national data portal.
 
+
+## Entryscape
+[<img alt="Entryscape logotype" src="https://entryscape.com/wp-content/uploads/2023/01/Entryscape-by-Metasolutions-w385px-Retina-2.png" width="191" height="42">](https://entryscape.com/en)
+
+The Swedish data portal is tightly integrated with the EntryScape product suite from MetaSolutions AB.
+EntryScape Registry is a solution for managing a registry of data catalogs and related information
+
 ## Requirements
 ![node-current](https://img.shields.io/badge/node-16.13.2-green)
 ![npm-current](https://img.shields.io/badge/npm-8.1.2-green)
@@ -61,14 +68,6 @@ No cache, Do a request to content backend with startpage query.
 - [![React](https://badgen.net/badge/React/For%20UI/blue)](https://reactjs.org/)
 - [![Emotion](https://badgen.net/badge/Emotion/For%20styling/blue)](https://emotion.sh)
 - [![Apollo Client](https://badgen.net/badge/Apollo%20Client/For%20federated%20content/blue)](https://www.apollographql.com/docs/react/)
-
-
-### Entryscape
-[<img alt="Entryscape logotype" src="https://entryscape.com/wp-content/uploads/2023/01/Entryscape-by-Metasolutions-w385px-Retina-2.png" width="191" height="42">](https://entryscape.com/en)
-
-The Swedish data portal is tightly integrated with the EntryScape product suite from MetaSolutions AB.
-EntryScape Registry is a solution for managing a registry of data catalogs and related information
-
 
 
 ### Content backend
