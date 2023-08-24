@@ -63,9 +63,13 @@ No cache, Do a request to content backend with startpage query.
 - [![Apollo Client](https://badgen.net/badge/Apollo%20Client/For%20federated%20content/blue)](https://www.apollographql.com/docs/react/)
 
 
-### EntryScape
-The Swedish data portal is tightly integrated with the EntryScape product suite from MetaSolutions AB, https://entryscape.com/en/.
-EntryScape Registry is a solution for managing a registry of data catalogs and related information.
+### Entryscape
+[![Entryscape logotype](https://entryscape.com/wp-content/uploads/2023/01/Entryscape-by-Metasolutions-w385px-Retina-2-200x44.webp)](https://entryscape.com/en/)
+
+The Swedish data portal is tightly integrated with the EntryScape product suite from MetaSolutions AB.
+EntryScape Registry is a solution for managing a registry of data catalogs and related information
+
+
 
 ### Content backend
 The Swedish Dataportal consumes news and content via a GraphQL proxy. The content is
@@ -76,5 +80,7 @@ The project has a dependency to [Digg component library](https://github.com/DIGG
 The package is published via NMP under [`@digg/design-system`](https://www.npmjs.com/package/@digg/design-system)
 
 ### Videos
+[<img alt="Screen9 logotype" src="https://screen9.com/wp-content/uploads/Screen9-logo-Black-CMYK.svg" width="150" height="30">](https://screen9.com/)
+
 Display of video is done via [screen9](https://screen9.com/). To be able to display videos an account from screen9 is needed and an API key. ¨
 The key for this frontend application has read access only to DIGG screen9 account.

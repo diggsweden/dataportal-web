@@ -64,6 +64,8 @@ Cacheas inte, gör en request till contentbackend med startsidans fråga.
 - [![Apollo Client](https://badgen.net/badge/Apollo%20Client/För%20datahämtning/blue)](https://www.apollographql.com/docs/react/)
 
 ### EntryScape
+![Entryscape logotype](https://entryscape.com/wp-content/uploads/2023/01/Entryscape-by-Metasolutions-w385px-Retina-2-200x44.webp)
+
 Den svenska dataportalen är starkt integrerad med produktsviten EntryScape från MetaSolutions AB, [https://entryscape.com/sv/](https://entryscape.com/sv/).
 EntryScape Registry är en lösning för att hantera ett register över datakataloger och relaterad information.
 
@@ -75,4 +77,6 @@ Projektet har ett beroende till [Diggs komponentbibliotek](https://github.com/DI
 Detta paket finns publicerat på NPM under [`@digg/design-system`](https://www.npmjs.com/package/@digg/design-system)
 
 ### Videos
+[<img alt="Screen9 logotype" src="https://screen9.com/wp-content/uploads/Screen9-logo-Black-CMYK.svg" width="150" height="30">](https://screen9.com/)
+
 Visning av videofilmer görs via videospelaren [screen9](https://screen9.com/). För att kunna visa filmer krävs ett konto hos screen9 och en API-nyckel.
