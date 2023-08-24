@@ -64,7 +64,7 @@ No cache, Do a request to content backend with startpage query.
 
 
 ### Entryscape
-[![Entryscape logotype](https://entryscape.com/wp-content/uploads/2023/01/Entryscape-by-Metasolutions-w385px-Retina-2-200x44.webp)](https://entryscape.com/en/)
+[<img alt="Entryscape logotype" src="https://entryscape.com/wp-content/uploads/2023/01/Entryscape-by-Metasolutions-w385px-Retina-2.png" width="191" height="42">](https://entryscape.com/en)
 
 The Swedish data portal is tightly integrated with the EntryScape product suite from MetaSolutions AB.
 EntryScape Registry is a solution for managing a registry of data catalogs and related information

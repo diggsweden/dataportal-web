@@ -64,7 +64,7 @@ Cacheas inte, gör en request till contentbackend med startsidans fråga.
 - [![Apollo Client](https://badgen.net/badge/Apollo%20Client/För%20datahämtning/blue)](https://www.apollographql.com/docs/react/)
 
 ### EntryScape
-![Entryscape logotype](https://entryscape.com/wp-content/uploads/2023/01/Entryscape-by-Metasolutions-w385px-Retina-2-200x44.webp)
+[<img alt="Entryscape logotype" src="https://entryscape.com/wp-content/uploads/2023/01/Entryscape-by-Metasolutions-w385px-Retina-2.png" width="191" height="42">](https://entryscape.com/sv)
 
 Den svenska dataportalen är starkt integrerad med produktsviten EntryScape från MetaSolutions AB, [https://entryscape.com/sv/](https://entryscape.com/sv/).
 EntryScape Registry är en lösning för att hantera ett register över datakataloger och relaterad information.
