@@ -81,5 +81,5 @@ The package is published via NMP under [`@digg/design-system`](https://www.npmjs
 ### Videos
 [<img alt="Screen9 logotype" src="https://screen9.com/wp-content/uploads/Screen9-logo-Black-CMYK.svg" width="150" height="30">](https://screen9.com/)
 
-Display of video is done via [screen9](https://screen9.com/). To be able to display videos an account from screen9 is needed and an API key. ¨
+Display of video is done via [screen9](https://screen9.com/). To be able to display videos an account from screen9 is needed and an API key.
 The key for this frontend application has read access only to DIGG screen9 account.
