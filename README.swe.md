@@ -13,8 +13,8 @@ Den svenska dataportalen är starkt integrerad med produktsviten EntryScape frå
 EntryScape Registry är en lösning för att hantera ett register över datakataloger och relaterad information.
 
 ## Utveckling.
-Börja med att skapa en ```env.local``` fil. Använd ```env.local.example``` som mall.
-(Env-variabler och tokens i env.local.example som har en värdet "secret" är inte tillgängliga här och behöver bytas ut mot ett giltigt värde).
+Börja med att skapa en ```.env.local``` fil. Använd ```.env.local.example``` som mall.
+(Env-variabler och tokens i .env.local.example som har en värdet "secret" är inte tillgängliga här och behöver bytas ut mot ett giltigt värde).
 
 ### Kör applikationen i utvecklingsläge.
 Starta applikationen i utvecklingsläge med "hot-code"-omladdning, felrapportering m.m. Se: [Nextjs Development](https://nextjs.org/docs/app/api-reference/next-cli#development) för mer information.

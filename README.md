@@ -15,8 +15,8 @@ EntryScape Registry is a solution for managing a registry of data catalogs and r
 ![nextjs-current](https://img.shields.io/badge/nextjs-13.0.2-green)
 
 ## Development
-Start by creating an ```env.local``` file. Use the ```env.local.example``` as template.
-(Environment variables and tokens in env.local.example that has placeholder value of "secret" is not available here and needs to be changed to a valid value).
+Start by creating an ```.env.local``` file. Use the ```.env.local.example``` as template.
+(Environment variables and tokens in .env.local.example that has placeholder value of "secret" is not available here and needs to be changed to a valid value).
 
 ### Run application in development mode
 Starts the application in development mode with hot-code reloading, error reporting, and more. See [Nextjs Development](https://nextjs.org/docs/app/api-reference/next-cli#development) for more information.
