@@ -129,7 +129,7 @@ class SearchProvider extends React.Component<
         "#scriptsPlaceholder",
         ` 
         <script
-         src="https://dataportal.azureedge.net/cdn/entrystore_2021-03-18.js" 
+         src="/entrystore_2021-03-18.js"
          crossorigin="anonymous"></script>
         `,
         {
