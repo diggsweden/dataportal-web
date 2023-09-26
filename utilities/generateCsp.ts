@@ -37,7 +37,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     'script-src',
     `'self' ${
       nonce ? `'nonce-${nonce}'` : ''
-    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se https://dataportal.azureedge.net *.entryscape.com *.dataportal.se`,
+    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se *.entryscape.com *.dataportal.se`,
     { prodOnly: true }
   );
   add(

@@ -41,7 +41,7 @@ export const SearchPage: React.FC<SearchProps> = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [showTip, setShowTip] = useState(false);
   const postscribeStatus = useScript(
-    'https://dataportal.azureedge.net/cdn/postscribe.min.js',
+    '/postscribe.min.js',
     'sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM',
     'anonymous'
   );
