@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { EntrystoreContext } from '..';
-import ShowMoreText from 'react-show-more-text';
+import ShowMore from 'react-show-more';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import { SettingsContext } from '../SettingsProvider';
@@ -404,17 +404,16 @@ export const DataSetPage: React.FC = () => {
           </div>
 
           {/* Description */}
-          <div className="description">
-            <ShowMoreText
+          <div className="description text-md">
+            <ShowMore
               lines={8}
               more={t('pages|datasetpage$view_more')}
               less={t('pages|datasetpage$view_less')}
-              className="text-md"
               anchorClass="text-md view-more-text-link"
               expanded={false}
             >
               <span className="text-md">{entry.description}</span>
-            </ShowMoreText>
+            </ShowMore>
           </div>
 
           {/* Left column */}
