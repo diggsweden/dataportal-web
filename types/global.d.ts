@@ -57,7 +57,7 @@ declare module 'react-truncate' {
   export default content;
 }
 
-declare module 'react-show-more-text';
+declare module 'react-show-more';
 
 declare module 'fetch-enhanced';
 
