@@ -1,6 +1,6 @@
 # Sveriges dataportal webbklient
 
-![node-current](https://img.shields.io/badge/node-16.13.2-green)
+![node-current](https://img.shields.io/badge/node-18.18.0-green)
 ![npm-current](https://img.shields.io/badge/npm-8.1.2-green)
 ![nextjs-current](https://img.shields.io/badge/nextjs-12.1.6-green)
 
@@ -72,6 +72,8 @@ yarn build
 Detta kommer generera applikationen som statiska filer under .next-mappen.
 
 ## Docker
+Docker version running is [node:18-alpine](https://hub.docker.com/layers/library/node/18-alpine/images/sha256-28630a8b97ae8336d77b6dae5705bea816bdc1d6383901bb4495c521929a4091?context=explore)
+
 
 ```sh
 #bygg image
