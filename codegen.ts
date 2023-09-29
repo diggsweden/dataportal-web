@@ -6,8 +6,8 @@ const config: CodegenConfig = {
   schema: process.env.APOLLO_URL,
   documents: ["./graphql/*.ts"],
   generates: {
-    "./graphql/__generated__/types.ts": {
-      plugins: ["typescript"],
+    "graphql/__generated__/types.ts": {
+      plugins: ['typescript'],
       config: {
         nonOptionalTypename: true,
         skipTypeNameForRoot: true,
@@ -15,8 +15,21 @@ const config: CodegenConfig = {
         arrayInputCoercion: false,
       }
     },
-    "./graphql/schema.json": {
-      plugins: ["introspection"]
+    'graphql/': {
+      preset: 'near-operation-file',
+      presetConfig: {
+        extension: '.generated.tsx',
+        baseTypesPath: 'types.ts',
+        folder: '__generated__'
+      },
+      plugins: ['typescript-operations'],
+      config: { withHooks: true },
+    },
+    "graphql/schema.json": {
+      plugins: ["introspection"],
+      config: {
+        schemaDescription: true
+      }
     },
   }
 };
