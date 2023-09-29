@@ -9,17 +9,14 @@ const config: CodegenConfig = {
     "graphql/__generated__/types.ts": {
       plugins: ['typescript'],
       config: {
-        nonOptionalTypename: true,
-        skipTypeNameForRoot: true,
-        declarationKind: 'interface',
-        arrayInputCoercion: false,
+        constEnums: true
       }
     },
     'graphql/': {
       preset: 'near-operation-file',
       presetConfig: {
         extension: '.generated.tsx',
-        baseTypesPath: 'types.ts',
+        baseTypesPath: '__generated__/types.ts',
         folder: '__generated__'
       },
       plugins: ['typescript-operations'],
