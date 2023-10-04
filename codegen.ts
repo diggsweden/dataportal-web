@@ -9,18 +9,32 @@ const config: CodegenConfig = {
     "graphql/__generated__/types.ts": {
       plugins: ['typescript'],
       config: {
-        constEnums: true
+        avoidOptionals: {
+          field: true,
+        },
+        nonOptionalTypename: true,
+        declarationKind: 'interface',
+        onlyOperationTypes: true,
       }
     },
-    'graphql/': {
-      preset: 'near-operation-file',
-      presetConfig: {
-        extension: '.generated.tsx',
-        baseTypesPath: '__generated__/types.ts',
-        folder: '__generated__'
-      },
+    'graphql/__generated__/operations.ts': {
+      preset: 'import-types',
       plugins: ['typescript-operations'],
-      config: { withHooks: true },
+      presetConfig: {
+        typesPath: './types'
+      },
+      config: {
+        avoidOptionals: {
+          field: true,
+        },
+        nonOptionalTypename: true,
+        skipTypeNameForRoot: true,
+        declarationKind: 'interface',
+        arrayInputCoercion: false,
+        onlyOperationTypes: true,
+        // omitOperationSuffix: true,
+        exportFragmentSpreadSubTypes: true,
+      }
     },
     "graphql/schema.json": {
       plugins: ["introspection"],

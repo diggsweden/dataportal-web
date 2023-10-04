@@ -12,10 +12,10 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { Publication_dataportal_Digg_Publications as Publication } from "../../../graphql/__generated__/Publication";
-import { Containers_dataportal_Digg_Containers as IContainer } from "../../../graphql/__generated__/Containers";
+import { PublicationDataFragment as Publication } from "../../../graphql/__generated__/operations";
+import { ContainerDataFragment as IContainer } from "../../../graphql/__generated__/operations";
 import { MainContainerStyle } from "../../../styles/general/emotion";
-import { checkLang } from "../../../utilities/checkLang";
+import { checkLang } from "../../../utilities";
 import { PublicationListResponse } from "../../../utilities";
 import NoSsr from "../../NoSsr/NoSsr";
 import { ArticleBlock } from "../../blocks";
@@ -23,7 +23,7 @@ import { ArticleBlock } from "../../blocks";
 const isPublication = (
   article: Publication | IContainer
 ): article is Publication => {
-  return article?.__typename === "dataportal_Digg_Publication" ? true : false;
+  return article?.__typename === "dataportal_Digg_Publication";
 };
 
 const sortArticles = (
@@ -55,7 +55,7 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
 
   const articlesPerPage = 10;
   const articlesVisited = articlesNumber * articlesPerPage;
-  const displayarticles = articles
+  const displayArticles = articles
     .sort(sortArticles)
     .slice(articlesVisited, articlesVisited + articlesPerPage);
   const pageCount = Math.ceil(articles.length / articlesPerPage);
@@ -91,11 +91,11 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
   }, [query]);
 
   const renderGrid = () => {
-    if (displayarticles.length > articlesPerPage) {
+    if (displayArticles.length > articlesPerPage) {
       return (
         <ArticleBlock
           articles={
-            displayarticles.slice(
+            displayArticles.slice(
               articlesPerPage * currentPage - 1,
               articlesPerPage * currentPage
             ) as Publication[]
@@ -103,7 +103,7 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
         />
       );
     } else {
-      return <ArticleBlock articles={displayarticles as Publication[]} />;
+      return <ArticleBlock articles={displayArticles as Publication[]} />;
     }
   };
 
@@ -156,7 +156,7 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
                   {t("pages|listpage$no-articles")}
                 </span>
               )}
-              {displayarticles.map((article, index) => {
+              {displayArticles.map((article, index) => {
                 const isPub = isPublication(article);
                 const { slug, heading, preamble, tags } = article;
                 return (

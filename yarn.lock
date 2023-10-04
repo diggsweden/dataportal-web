@@ -3080,6 +3080,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@graphql-codegen/import-types-preset@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@graphql-codegen/import-types-preset@npm:3.0.0"
+  dependencies:
+    "@graphql-codegen/add": ^3.2.1
+    "@graphql-codegen/plugin-helpers": ^3.0.0
+    "@graphql-codegen/visitor-plugin-common": 2.13.1
+    tslib: ~2.6.0
+  peerDependencies:
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+  checksum: 1f4d45d5e940fca12a063f032a0d555f89fd337144be5c1d12316caccd295549366250a8dce23b5fc5534948319460e972b001d84490d9786373080f466c3eb0
+  languageName: node
+  linkType: hard
+
 "@graphql-codegen/introspection@npm:4.0.0":
   version: 4.0.0
   resolution: "@graphql-codegen/introspection@npm:4.0.0"
@@ -8667,6 +8681,7 @@ __metadata:
     "@graphql-codegen/cli": 5.0.0
     "@graphql-codegen/client-preset": ^4.1.0
     "@graphql-codegen/fragment-matcher": ^5.0.0
+    "@graphql-codegen/import-types-preset": ^3.0.0
     "@graphql-codegen/introspection": 4.0.0
     "@graphql-codegen/near-operation-file-preset": ^3.0.0
     "@graphql-codegen/typescript": ^4.0.1

@@ -4,14 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { checkLang } from "../../utilities/checkLang";
-import { MediaType_dataportal_Digg_Image } from "../../graphql/__generated__/MediaType";
+import { checkLang } from "../../utilities";
+import { MediaTypeFragment } from "../../graphql/__generated__/operations";
 import {
-  Publication_dataportal_Digg_Publications,
-  Publication_dataportal_Digg_Publications_tags,
-} from "../../graphql/__generated__/Publication";
+  PublicationDataFragment,
+} from "../../graphql/__generated__/operations";
 import { findPublicationTypeTag } from "../pages/Articles";
-import { Link as DiggLink } from "../../graphql/__generated__/Link";
+import { LinkFragment as DiggLink } from "../../graphql/__generated__/operations";
 import placeholderimg from "../../public/images/noimage.svg";
 import NoSsr from "../NoSsr/NoSsr";
 import { CustomImage } from "../Image";
@@ -25,24 +24,24 @@ type Article = {
   title: string;
   description: string;
   slug: string;
-  image?: MediaType_dataportal_Digg_Image;
-  tags?: Publication_dataportal_Digg_Publications_tags[];
+  image?: MediaTypeFragment;
+  tags?: PublicationDataFragment["tags"];
 };
 export interface ArticleBlockProps {
-  articles: Publication_dataportal_Digg_Publications[] | DiggLink[];
+  articles: PublicationDataFragment[] | DiggLink[];
   showMoreLink?: DiggLink;
   heading?: string;
   theme?: string;
 }
 
 const isPublication = (
-  article: Publication_dataportal_Digg_Publications | DiggLink
-): article is Publication_dataportal_Digg_Publications => {
-  return article.__typename === "dataportal_Digg_Publication" ? true : false;
+  article: PublicationDataFragment | DiggLink
+): article is PublicationDataFragment => {
+  return article.__typename === "dataportal_Digg_Publication";
 };
 
 const makeArticles = (
-  unknownArticles: Publication_dataportal_Digg_Publications[] | DiggLink[],
+  unknownArticles: PublicationDataFragment[] | DiggLink[],
   theme?: string
 ): Article[] => {
   return unknownArticles

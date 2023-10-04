@@ -34,8 +34,7 @@ export const CONTAINER_FRAGMENT = gql`
       slug
     }
     categories {
-      name
-      slug
+      ...Category
     }
     tags {
       value
@@ -43,15 +42,21 @@ export const CONTAINER_FRAGMENT = gql`
     blocks {
       ...BlockData
       ... on dataportal_Digg_ModuleList {
-        __typename
-        id
-        modules {
-          ...ModuleData
-        }
+        ...ModuleListData
       }
     }
     seo {
       ...SeoData
+    }
+  }
+`;
+
+export const MODULE_LIST_DATA = gql`
+  fragment ModuleListData on dataportal_Digg_ModuleList {
+    __typename
+    id
+    modules {
+      ...ModuleData
     }
   }
 `;
@@ -255,6 +260,7 @@ export const BLOCK_FRAGMENT = gql`
     ... on dataportal_Digg_FormBlock {
       ...FormBlock
     }
+    
   }
   ${LINK_FRAGMENT}
   ${FAQ_FRAGMENT}

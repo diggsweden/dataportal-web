@@ -1,18 +1,14 @@
 import { Heading, css, Container } from "@digg/design-system";
 import React from "react";
 import { ContentArea, ArticleBlock } from "../..";
-import { Containers_dataportal_Digg_Containers_blocks } from "../../../graphql/__generated__/Containers";
-import { Module_dataportal_Digg_Module_blocks as Module_blocks } from "../../../graphql/__generated__/Module";
-import { Publication_dataportal_Digg_Publications_tags } from "../../../graphql/__generated__/Publication";
 import { MainContainerStyle } from "../../../styles/general/emotion";
 import { PublicationResponse, checkLang } from "../../../utilities";
 
 const whitelistedTagsSV = ["Goda exempel", "Event", "Nyhet"];
 export const findPublicationTypeTag = (
-  tags: Publication_dataportal_Digg_Publications_tags[]
+  tags: PublicationResponse["tags"]
 ) => {
-  const tag = tags.find((tag) => whitelistedTagsSV.includes(tag.value));
-  return tag;
+  return tags.find((tag) => whitelistedTagsSV.includes(tag.value));
 };
 
 const getRelatedHeading = (tag: string) => {
@@ -53,11 +49,7 @@ export const Publication: React.FC<PublicationResponse> = ({
           {blocks && blocks.length > 0 && (
             <ContentArea
               blocks={
-                blocks as (
-                  | Containers_dataportal_Digg_Containers_blocks
-                  | Module_blocks
-                  | null
-                )[]
+                blocks
               }
             />
           )}
@@ -69,7 +61,7 @@ export const Publication: React.FC<PublicationResponse> = ({
             Fler{" "}
             {tags &&
               getRelatedHeading(
-                findPublicationTypeTag(tags as any[])?.value || ""
+                findPublicationTypeTag(tags)?.value || ""
               )}
           </Heading>
           <ArticleBlock articles={related} />

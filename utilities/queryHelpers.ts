@@ -22,17 +22,15 @@ import {
   Module_dataportal_Digg_Module,
 } from '../graphql/__generated__/Module';
 import {
-  MultiContainers,
-  MultiContainersVariables,
-  MultiContainers_category,
-  MultiContainers_category_categories,
-  MultiContainers_container,
-} from '../graphql/__generated__/MultiContainers';
+  MultiContainersQuery,
+  MultiContainersQueryVariables,
+  CategoryFragment, ContainerData_Dataportal_Digg_Container_Fragment,
+} from '../graphql/__generated__/operations';
 import {
-  Publication,
-  PublicationVariables,
-  Publication_dataportal_Digg_Publications,
-} from '../graphql/__generated__/Publication';
+  PublicationQuery,
+  PublicationQueryVariables,
+  PublicationDataFragment,
+} from '../graphql/__generated__/operations';
 import { Related, RelatedVariables, Related_containers } from '../graphql/__generated__/Related';
 import {
   RootAggregate,
@@ -43,8 +41,9 @@ import {
   RootAggregate_news,
 } from '../graphql/__generated__/RootAggregate';
 import { SearchVariables } from '../graphql/__generated__/Search';
-import { SeoData } from '../graphql/__generated__/SeoData';
+import { SeoDataFragment } from '../graphql/__generated__/operations';
 import { populatePuffs } from './areasAndThemesHelper';
+import {MultiContainersVariables} from "../graphql/old_codegen/MultiContainers";
 
 /**
  * ? Better comments: https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
@@ -81,7 +80,7 @@ export const containerArgsFromSlugs = (
   domain?: DiggDomain,
   state?: dataportal_ContainerState,
   secret?: string
-): MultiContainersVariables => {
+): MultiContainersQueryVariables => {
   const defaultVars = {
     category: {
       ...(domain ? { domains: [domain] } : {}),
@@ -161,24 +160,24 @@ const getRelatedContainers = async (
 /* #region types */
 export interface MultiContainerResponse {
   type: 'MultiContainer';
-  category?: MultiContainers_category_categories;
-  container?: MultiContainers_container;
+  category?: MultiContainersQuery["category"];
+  container?: MultiContainersQuery["container"];
   related?: Related_containers[];
-  categoryContainers?: MultiContainers_category[];
+  categoryContainers?: CategoryFragment;
   domain?: DiggDomain;
 }
 
-export interface PublicationResponse extends Publication_dataportal_Digg_Publications {
+export interface PublicationResponse extends PublicationDataFragment {
   type: 'Publication';
-  related?: Publication_dataportal_Digg_Publications[];
+  related?: PublicationDataFragment[];
 }
 
 export interface PublicationListResponse {
   type: 'PublicationList';
-  articles: Publication_dataportal_Digg_Publications[] | MultiContainers_category[];
-  category?: MultiContainers_category_categories;
+  articles: PublicationDataFragment[] | ContainerData_Dataportal_Digg_Container_Fragment[];
+  category?: CategoryFragment;
   domain?: DiggDomain;
-  seo?: SeoData;
+  seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
 }
