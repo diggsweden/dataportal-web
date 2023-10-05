@@ -1,49 +1,44 @@
-import { IPuff } from '../components';
-import { browserclient, client, CONTAINER_MULTI_QUERY, RELATED_CONTAINER_QUERY } from '../graphql';
-import { DOMAIN_AGGREGATE_QUERY, ROOT_AGGREGATE_QUERY } from '../graphql/aggregateQuery';
-import { FORM_QUERY } from '../graphql/formQuery';
-import { MODULE_QUERY } from '../graphql/moduleQuery';
-import { PUBLICATION_QUERY } from '../graphql/publicationQuery';
-import { SEARCH_QUERY } from '../graphql/searchQuery';
+import { IPuff } from "../components";
 import {
-  Containers_dataportal_Digg_Containers,
-  Containers_dataportal_Digg_Containers_categories,
-} from '../graphql/__generated__/Containers';
+  browserclient,
+  client,
+  CONTAINER_MULTI_QUERY,
+  RELATED_CONTAINER_QUERY,
+} from "../graphql";
 import {
-  DomainAggregate,
-  DomainAggregateVariables,
-  DomainAggregate_rootContainer,
-} from '../graphql/__generated__/DomainAggregate';
-import { Form, FormVariables, Form_dataportal_Digg_Form } from '../graphql/__generated__/Form';
-import { dataportal_ContainerState } from '../graphql/__generated__/globalTypes';
+  DOMAIN_AGGREGATE_QUERY,
+  ROOT_AGGREGATE_QUERY,
+} from "../graphql/aggregateQuery";
+import { FORM_QUERY } from "../graphql/formQuery";
+import { MODULE_QUERY } from "../graphql/moduleQuery";
+import { PUBLICATION_QUERY } from "../graphql/publicationQuery";
+import { SEARCH_QUERY } from "../graphql/searchQuery";
+import { Dataportal_ContainerState } from "../graphql/__generated__/types";
 import {
-  Module,
-  ModuleVariables,
-  Module_dataportal_Digg_Module,
-} from '../graphql/__generated__/Module';
-import {
+  CategoryFragment,
+  ContainerData_Dataportal_Digg_Container_Fragment,
+  DomainAggregateQuery,
+  DomainAggregateQueryVariables,
+  FormDataFragment,
+  FormQuery,
+  FormQueryVariables,
+  ModuleDataFragment,
+  ModuleQuery,
+  ModuleQueryVariables,
   MultiContainersQuery,
   MultiContainersQueryVariables,
-  CategoryFragment, ContainerData_Dataportal_Digg_Container_Fragment,
-} from '../graphql/__generated__/operations';
-import {
+  PublicationDataFragment,
   PublicationQuery,
   PublicationQueryVariables,
-  PublicationDataFragment,
-} from '../graphql/__generated__/operations';
-import { Related, RelatedVariables, Related_containers } from '../graphql/__generated__/Related';
-import {
-  RootAggregate,
-  RootAggregateVariables,
-  RootAggregate_container,
-  RootAggregate_events,
-  RootAggregate_examples,
-  RootAggregate_news,
-} from '../graphql/__generated__/RootAggregate';
-import { SearchVariables } from '../graphql/__generated__/Search';
-import { SeoDataFragment } from '../graphql/__generated__/operations';
-import { populatePuffs } from './areasAndThemesHelper';
-import {MultiContainersVariables} from "../graphql/old_codegen/MultiContainers";
+  RelatedContainerFragment,
+  RelatedQuery,
+  RelatedQueryVariables,
+  RootAggregateQuery,
+  RootAggregateQueryVariables,
+  SearchQueryVariables,
+  SeoDataFragment,
+} from "../graphql/__generated__/operations";
+import { populatePuffs } from "./areasAndThemesHelper";
 
 /**
  * ? Better comments: https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
@@ -53,19 +48,21 @@ import {MultiContainersVariables} from "../graphql/old_codegen/MultiContainers";
 /* #region private */
 const notFound = (revalidate: boolean) => ({
   notFound: true,
-  ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+  ...(revalidate
+    ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+    : {}),
 });
 
 const logGqlErrors = (error: any) => {
   const { networkError, graphQLErrors, clientErrors } = error || {};
   if (networkError?.result?.errors) {
-    console.error('networkError', error.networkError.result.errors);
+    console.error("networkError", error.networkError.result.errors);
   }
   if (graphQLErrors?.length > 0) {
-    console.error('graphqlError', error.graphQLErrors);
+    console.error("graphqlError", error.graphQLErrors);
   }
   if (clientErrors?.length > 0) {
-    console.error('clientError', error.clientErrors);
+    console.error("clientError", error.clientErrors);
   }
 };
 
@@ -78,8 +75,8 @@ export const containerArgsFromSlugs = (
   slugs: string[],
   locale: string,
   domain?: DiggDomain,
-  state?: dataportal_ContainerState,
-  secret?: string
+  state?: Dataportal_ContainerState,
+  secret?: string,
 ): MultiContainersQueryVariables => {
   const defaultVars = {
     category: {
@@ -89,7 +86,7 @@ export const containerArgsFromSlugs = (
     },
     container: {
       ...(domain ? { domains: [domain] } : {}),
-      slug: `/${slugs.join('/')}`,
+      slug: `/${slugs.join("/")}`,
       locale,
       ...(secret ? { previewSecret: secret } : {}),
       ...(state ? { state } : {}),
@@ -127,14 +124,14 @@ const hasIdendicalSibling = (slugs: string[], domain?: DiggDomain) => {
 };
 
 const getRelatedContainers = async (
-  categories: Containers_dataportal_Digg_Containers_categories[],
+  categories: CategoryFragment[],
   locale: string,
-  domain?: DiggDomain
+  domain?: DiggDomain,
 ) => {
   const relatedCategories = categories.map((c) => c.slug);
 
   if (categories.length > 0) {
-    const result = await client.query<Related, RelatedVariables>({
+    const result = await client.query<RelatedQuery, RelatedQueryVariables>({
       query: RELATED_CONTAINER_QUERY,
       variables: {
         filter: {
@@ -144,7 +141,7 @@ const getRelatedContainers = async (
           limit: 50,
         },
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: "no-cache",
     });
 
     if (result.error || result.errors) return null;
@@ -159,66 +156,75 @@ const getRelatedContainers = async (
 
 /* #region types */
 export interface MultiContainerResponse {
-  type: 'MultiContainer';
-  category?: MultiContainersQuery["category"];
-  container?: MultiContainersQuery["container"];
-  related?: Related_containers[];
-  categoryContainers?: CategoryFragment;
+  type: "MultiContainer";
+  category?: ContainerData_Dataportal_Digg_Container_Fragment;
+  container?: ContainerData_Dataportal_Digg_Container_Fragment;
+  related?: RelatedContainerFragment[];
+  categoryContainers?:
+    | PublicationDataFragment[]
+    | ContainerData_Dataportal_Digg_Container_Fragment[];
   domain?: DiggDomain;
 }
 
 export interface PublicationResponse extends PublicationDataFragment {
-  type: 'Publication';
+  type: "Publication";
   related?: PublicationDataFragment[];
 }
 
 export interface PublicationListResponse {
-  type: 'PublicationList';
-  articles: PublicationDataFragment[] | ContainerData_Dataportal_Digg_Container_Fragment[];
-  category?: CategoryFragment;
+  type: "PublicationList";
+  articles:
+    | PublicationDataFragment[]
+    | ContainerData_Dataportal_Digg_Container_Fragment[];
+  category?: ContainerData_Dataportal_Digg_Container_Fragment;
   domain?: DiggDomain;
   seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
 }
 
-export interface DomainAggregateResponse extends DomainAggregate_rootContainer {
-  type: 'DomainAggregate';
+export interface DomainAggregateResponse
+  extends ContainerData_Dataportal_Digg_Container_Fragment {
+  type: "DomainAggregate";
   areas?: IPuff[];
   themes?: IPuff[];
   domain: DiggDomain;
 }
 
-export interface RootAggregateResponse extends RootAggregate_container {
-  type: 'RootAggregate';
+export interface RootAggregateResponse
+  extends ContainerData_Dataportal_Digg_Container_Fragment {
+  type: "RootAggregate";
   areas?: IPuff[];
   themes?: IPuff[];
-  news?: RootAggregate_news;
-  example?: RootAggregate_examples;
-  event?: RootAggregate_events;
+  news?: PublicationDataFragment;
+  examples?: PublicationDataFragment;
+  events?: PublicationDataFragment;
 }
 
-export interface FormResponse extends Form_dataportal_Digg_Form {
-  type: 'Form';
+export interface FormResponse extends FormDataFragment {
+  type: "Form";
 }
 
-export interface ModuleResponse extends Module_dataportal_Digg_Module {
-  type: 'Module';
+export interface ModuleResponse extends ModuleDataFragment {
+  type: "Module";
 }
 
 export interface ContentSearchResponse {
-  entries: Publication_dataportal_Digg_Publications | Containers_dataportal_Digg_Containers | null;
+  entries:
+    | PublicationDataFragment
+    | ContainerData_Dataportal_Digg_Container_Fragment
+    | null;
   nrOfHits: number;
 }
 
 export interface QueryOptions {
-  state?: dataportal_ContainerState;
+  state?: Dataportal_ContainerState;
   secret?: string;
   revalidate: boolean;
 }
 
 export interface PublicationListOptions {
-  seo?: SeoData;
+  seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
 }
@@ -227,6 +233,7 @@ export interface PublicationQueryOptions extends QueryOptions {
   domain?: DiggDomain;
   tags?: string[];
 }
+
 /* #endregion */
 
 /**
@@ -234,11 +241,13 @@ export interface PublicationQueryOptions extends QueryOptions {
  * @param {Array<Containers_dataportal_Digg_Containers>} containers
  * @returns {Array<String[]>} An array with stringarrays based on all containerslugs
  */
-export const extractSlugs = (containers: (Containers_dataportal_Digg_Containers | null)[]) => {
+export const extractSlugs = (
+  containers: (ContainerData_Dataportal_Digg_Container_Fragment | null)[],
+) => {
   const slugsArray: Array<string[]> = [];
   containers.map((page) => {
-    const slugs = page?.slug?.split('/') || [];
-    slugs.length > 0 && slugs[0] === '' && slugs.shift();
+    const slugs = page?.slug?.split("/") || [];
+    slugs.length > 0 && slugs[0] === "" && slugs.shift();
     slugsArray.push(slugs);
   });
 
@@ -253,26 +262,29 @@ export const getMultiContainer = async (
   slugs: string[],
   locale: string,
   domain?: DiggDomain,
-  opts: QueryOptions = { revalidate: true }
+  opts: QueryOptions = { revalidate: true },
 ) => {
   const { state, secret, revalidate } = opts;
   if (hasIdendicalSibling(slugs, domain)) {
     console.warn(
-      `Cannot have identicall slugs after another: '${domain ? `/${domain}/` : ''}${slugs.join(
-        '/'
-      )}'`
+      `Cannot have identicall slugs after another: '${
+        domain ? `/${domain}/` : ""
+      }${slugs.join("/")}'`,
     );
     return notFound(revalidate);
   }
 
-  const slug = '/' + slugs.join('/');
+  const slug = "/" + slugs.join("/");
 
   try {
     // Get external data from the file system, API, DB, etc.
-    const { error, errors, data } = await client.query<MultiContainers, MultiContainersVariables>({
+    const { error, errors, data } = await client.query<
+      MultiContainersQuery,
+      MultiContainersQueryVariables
+    >({
       query: CONTAINER_MULTI_QUERY,
       variables: containerArgsFromSlugs(slugs, locale, domain, state, secret),
-      fetchPolicy: 'no-cache',
+      fetchPolicy: "no-cache",
     });
 
     if (error || errors) {
@@ -281,7 +293,9 @@ export const getMultiContainer = async (
 
     const container = data.container[0] || null;
     const categoryContainers = data.category;
-    const category = categoryContainers[0]?.categories?.find((c) => c?.slug === slugs[0]) || null;
+    const category =
+      categoryContainers[0]?.categories?.find((c) => c?.slug === slugs[0]) ||
+      null;
     const related = container
       ? await getRelatedContainers(container.categories, locale, domain)
       : null;
@@ -295,14 +309,16 @@ export const getMultiContainer = async (
     //  passed to the `Page` component
     return {
       props: {
-        type: 'MultiContainer',
+        type: "MultiContainer",
         container,
         related,
         category,
         categoryContainers,
         domain: domain || null,
-      } as MultiContainerResponse,
-      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+      },
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
     };
   } catch (error: any) {
     logGqlErrors(error);
@@ -322,25 +338,28 @@ export const getPublicationsList = async (
   domains: DiggDomain[],
   tags: string[],
   locale: string,
-  opts?: PublicationListOptions
+  opts?: PublicationListOptions,
 ) => {
   // If nextjs should check for changes on the server
   const revalidate = true;
   const { seo, basePath, heading } = opts || {};
 
   try {
-    const { data, error } = await client.query<Publication, PublicationVariables>({
+    const { data, error } = await client.query<
+      PublicationQuery,
+      PublicationQueryVariables
+    >({
       query: PUBLICATION_QUERY,
       variables: {
         filter: {
           locale,
-          state: dataportal_ContainerState.live,
+          state: Dataportal_ContainerState.Live,
           tags,
           domains,
           limit: 1000,
         },
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: "no-cache",
     });
 
     const publications = data?.dataportal_Digg_Publications;
@@ -352,34 +371,38 @@ export const getPublicationsList = async (
     if (!publications) {
       console.warn(
         `No publications found${
-          domains.length > 0 ? ` in domain(s) ${domains.join(',')}` : ''
-        } with tags: '${tags.join(',')}'`
+          domains.length > 0 ? ` in domain(s) ${domains.join(",")}` : ""
+        } with tags: '${tags.join(",")}'`,
       );
     }
 
     return {
       props: {
-        type: 'PublicationList',
+        type: "PublicationList",
         articles: Array.isArray(publications) ? publications : [],
         domain: domains[0] || null,
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
       } as PublicationListResponse,
-      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
     };
   } catch (error: any) {
     logGqlErrors(error);
     return {
       props: {
-        type: 'PublicationList',
+        type: "PublicationList",
         articles: [],
         domain: domains[0] || null,
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
       } as PublicationListResponse,
-      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
     };
   }
 };
@@ -394,11 +417,14 @@ export const getPublicationsList = async (
 export const getPublication = async (
   slug: string,
   locale: string,
-  opts: PublicationQueryOptions = { revalidate: true }
+  opts: PublicationQueryOptions = { revalidate: true },
 ) => {
   const { state, secret, revalidate, domain, tags } = opts;
   try {
-    const mainPublicationResult = await client.query<Publication, PublicationVariables>({
+    const mainPublicationResult = await client.query<
+      PublicationQuery,
+      PublicationQueryVariables
+    >({
       query: PUBLICATION_QUERY,
       variables: {
         filter: {
@@ -411,7 +437,7 @@ export const getPublication = async (
           ...(state ? { state } : {}),
         },
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: "no-cache",
     });
 
     const publication =
@@ -428,28 +454,33 @@ export const getPublication = async (
       return notFound(revalidate);
     }
 
-    const domains = publication.domains?.map((dom) => dom?.slug || '');
-    const relatedTags = publication.tags?.map((tag) => tag?.value || '');
+    const domains = publication.domains.map((dom) => dom?.slug || "");
+    const relatedTags = publication.tags.map((tag) => tag?.value || "");
     // console.log({ domains, tags });
 
-    const relatedPublicationResult = await client.query<Publication, PublicationVariables>({
+    const relatedPublicationResult = await client.query<
+      PublicationQuery,
+      PublicationQueryVariables
+    >({
       query: PUBLICATION_QUERY,
       variables: { filter: { limit: 4, locale, domains, tags: relatedTags } },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: "no-cache",
     });
 
     // console.log(relatedPublicationResult.data.dataportal_Digg_Publications);
 
     return {
       props: {
-        type: 'Publication',
+        type: "Publication",
         ...publication,
         related:
           relatedPublicationResult?.data?.dataportal_Digg_Publications.filter(
-            (pub) => pub?.id !== publication.id
+            (pub) => pub?.id !== publication.id,
           ) || [],
       } as PublicationResponse,
-      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
     };
   } catch (error: any) {
     logGqlErrors(error);
@@ -466,7 +497,7 @@ export const getPublication = async (
 export const getDomainAggregate = async (
   domainSlug: string,
   locale: string,
-  opts: QueryOptions = { revalidate: true }
+  opts: QueryOptions = { revalidate: true },
 ) => {
   const { state, secret, revalidate } = opts;
   const sharedVariables = {
@@ -474,25 +505,29 @@ export const getDomainAggregate = async (
     locale,
   };
   try {
-    const result = await client.query<DomainAggregate, DomainAggregateVariables>({
+    const result = await client.query<
+      DomainAggregateQuery,
+      DomainAggregateQueryVariables
+    >({
       query: DOMAIN_AGGREGATE_QUERY,
       variables: {
-        domain: { ...sharedVariables, slug: domainSlug || '' },
+        domain: { ...sharedVariables, slug: domainSlug || "" },
         root: {
           ...sharedVariables,
           ...(secret ? { previewSecret: secret } : {}),
-          state: state || dataportal_ContainerState.live,
-          slug: '/' + (domainSlug || ''),
+          state: state || Dataportal_ContainerState.Live,
+          slug: "/" + (domainSlug || ""),
         },
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: "no-cache",
     });
 
     if (result && result.error) {
       console.error(result.error);
     }
 
-    const container = result && result.data ? result.data.rootContainer[0] : undefined;
+    const container =
+      result && result.data ? result.data.rootContainer[0] : undefined;
 
     if (!container) {
       console.warn(`No container found with slug: '${domainSlug}'`);
@@ -500,56 +535,64 @@ export const getDomainAggregate = async (
 
     const domain = result.data.domain[0];
 
-    const areaTaxonomy = domain.taxonomies.find((t) => t.slug === 'dataomraden') || null;
-    const themeTaxonomy = domain.taxonomies.find((t) => t.slug === 'teman') || null;
-    const areas = areaTaxonomy ? populatePuffs(areaTaxonomy.categories, 'dataomraden') : null;
-    const themes = themeTaxonomy ? populatePuffs(themeTaxonomy.categories, 'teman') : null;
+    const areaTaxonomy =
+      domain.taxonomies.find((t) => t.slug === "dataomraden") || null;
+    const themeTaxonomy =
+      domain.taxonomies.find((t) => t.slug === "teman") || null;
+    const areas = areaTaxonomy
+      ? populatePuffs(areaTaxonomy.categories, "dataomraden")
+      : null;
+    const themes = themeTaxonomy
+      ? populatePuffs(themeTaxonomy.categories, "teman")
+      : null;
 
     // The value of the `props` key will be
     //  passed to the `Page` component
     return {
       props: {
         ...container,
-        type: 'DomainAggregate',
+        type: "DomainAggregate",
         areas,
         themes,
         domain: domainSlug,
       } as DomainAggregateResponse,
-      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
     };
   } catch (error: any) {
     logGqlErrors(error);
     return {
       props: {
-        type: 'DomainAggregate',
+        type: "DomainAggregate",
         domain: domainSlug,
       } as DomainAggregateResponse,
-      revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60'),
+      revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60"),
     };
   }
 };
 
 export const getRootAggregate = async (
   locale: string,
-  opts: QueryOptions = { revalidate: true }
+  opts: QueryOptions = { revalidate: true },
 ) => {
   const { state, secret, revalidate } = opts;
   // todo - add localization to translate files
   const getLocalizedVariables = (locale: string) => {
     const swedishVars = {
-      newsTag: ['Nyhet'],
-      examplesTag: ['Goda exempel'],
-      eventsTag: ['Event'],
+      newsTag: ["Nyhet"],
+      examplesTag: ["Goda exempel"],
+      eventsTag: ["Event"],
     };
 
     switch (locale) {
-      case 'sv':
+      case "sv":
         return swedishVars;
-      case 'en':
+      case "en":
         return {
-          newsTag: ['News'],
-          examplesTag: ['Good examples'],
-          eventsTag: ['Event'],
+          newsTag: ["News"],
+          examplesTag: ["Good examples"],
+          eventsTag: ["Event"],
         };
       default:
         return swedishVars;
@@ -559,19 +602,22 @@ export const getRootAggregate = async (
   const { newsTag, examplesTag, eventsTag } = getLocalizedVariables(locale);
 
   try {
-    const { data, error } = await client.query<RootAggregate, RootAggregateVariables>({
+    const { data, error } = await client.query<
+      RootAggregateQuery,
+      RootAggregateQueryVariables
+    >({
       query: ROOT_AGGREGATE_QUERY,
       variables: {
         locale,
         newsTag,
         examplesTag,
         eventsTag,
-        areaSlug: 'dataomraden', // todo - translate
-        themeSlug: 'teman', // todo - translate
-        state: state || dataportal_ContainerState.live,
+        areaSlug: "dataomraden", // todo - translate
+        themeSlug: "teman", // todo - translate
+        state: state || Dataportal_ContainerState.Live,
         ...(secret ? { previewSecret: secret } : {}),
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: "no-cache",
     });
 
     if (error) {
@@ -587,30 +633,32 @@ export const getRootAggregate = async (
     const news = data.news[0] || null;
     const example = data.examples[0] || null;
     const event = data.events[0] || null;
-    const areas = data.areas ? populatePuffs(data.areas, 'dataomraden') : null;
-    const themes = data.themes ? populatePuffs(data.themes, 'teman') : null;
+    const areas = data.areas ? populatePuffs(data.areas, "dataomraden") : null;
+    const themes = data.themes ? populatePuffs(data.themes, "teman") : null;
 
     // The value of the `props` key will be
     //  passed to the `Page` component
     return {
       props: {
         ...container,
-        type: 'RootAggregate',
+        type: "RootAggregate",
         news,
         example,
         event,
         areas,
         themes,
-      } as RootAggregateResponse,
-      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+      },
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
     };
   } catch (error: any) {
     logGqlErrors(error);
     return {
       props: {
-        type: 'RootAggregate',
+        type: "RootAggregate",
       } as RootAggregateResponse,
-      revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60'),
+      revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60"),
     };
   }
 };
@@ -627,20 +675,21 @@ export const querySearch = async (
   locale: string,
   limit: number,
   offset: number,
-  clientQuery: boolean
+  clientQuery: boolean,
 ) => {
   try {
     let cl = clientQuery ? browserclient : client;
 
     const searchResult = await cl.query<
-      Containers_dataportal_Digg_Containers | Publication_dataportal_Digg_Publications,
-      SearchVariables
+      | ContainerData_Dataportal_Digg_Container_Fragment
+      | PublicationDataFragment,
+      SearchQueryVariables
     >({
       query: SEARCH_QUERY,
       variables: {
         filter: {
-          highlightPreText: '**',
-          highlightPostText: '**',
+          highlightPreText: "**",
+          highlightPostText: "**",
           highlightsLength: 10,
           getHighlights: true,
           query: query,
@@ -649,10 +698,11 @@ export const querySearch = async (
           locale,
         },
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: "no-cache",
     });
 
-    const result = searchResult && searchResult.data ? searchResult.data : undefined;
+    const result =
+      searchResult && searchResult.data ? searchResult.data : undefined;
 
     if (searchResult && searchResult.error) {
       console.error(searchResult.error);
@@ -668,23 +718,27 @@ export const querySearch = async (
 export const getForm = async (identifier: string, locale?: string) => {
   const revalidate = true;
   try {
-    const { data } = await client.query<Form, FormVariables>({
+    const { data } = await client.query<FormQuery, FormQueryVariables>({
       query: FORM_QUERY,
       variables: { identifier, locale },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: "no-cache",
     });
 
     const form = data.dataportal_Digg_Form;
 
     return {
-      props: { ...form, type: 'Form' } as FormResponse,
-      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+      props: { ...form, type: "Form" } as FormResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
     };
   } catch (error: any) {
     logGqlErrors(error);
     return {
-      props: { type: 'Form' } as FormResponse,
-      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+      props: { type: "Form" } as FormResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
     };
   }
 };
@@ -692,30 +746,34 @@ export const getForm = async (identifier: string, locale?: string) => {
 export const getModule = async (identifier: string, locale?: string) => {
   const revalidate = true;
 
-  const emptyModule: Module_dataportal_Digg_Module = {
+  const emptyModule: ModuleDataFragment = {
     __typename: "dataportal_Digg_Module",
     blocks: [],
     identifier: "",
   };
 
   try {
-    const { data } = await client.query<Module, ModuleVariables>({
+    const { data } = await client.query<ModuleQuery, ModuleQueryVariables>({
       query: MODULE_QUERY,
       variables: { identifier, locale },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: "no-cache",
     });
 
     const mod = data.dataportal_Digg_Module;
 
     return {
-      props: { ...mod, type: 'Module' } as ModuleResponse,
-      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+      props: { ...mod, type: "Module" } as ModuleResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
     };
   } catch (error: any) {
     logGqlErrors(error);
     return {
-      props: { ...emptyModule, type: 'Module' } as ModuleResponse,
-      ...(revalidate ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || '60') } : {}),
+      props: { ...emptyModule, type: "Module" } as ModuleResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
     };
   }
 };

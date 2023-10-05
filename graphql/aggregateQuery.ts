@@ -1,15 +1,18 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 import {
   BLOCK_FRAGMENT,
+  CATEGORY_FRAGMENT,
   CONTAINER_FRAGMENT,
+  MODULE_FRAGMENT,
   PUBLICATION_FRAGMENT,
   SEO_FRAGMENT,
-  MODULE_FRAGMENT,
-  CATEGORY_FRAGMENT,
-} from './fragments';
+} from "./fragments";
 
 export const DOMAIN_AGGREGATE_QUERY = gql`
-  query DomainAggregate($domain: dataportal_QueryDomainArgs, $root: dataportal_QueryContainerArgs) {
+  query DomainAggregate(
+    $domain: dataportal_QueryDomainArgs
+    $root: dataportal_QueryContainerArgs
+  ) {
     domain: dataportal_Digg_Domains(filter: $domain) {
       id
       name

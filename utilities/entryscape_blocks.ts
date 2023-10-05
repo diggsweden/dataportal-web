@@ -17,7 +17,7 @@ export const accessrigthsIndicator = `
   }
 `;
 
-export const architechtureIndicator =  `
+export const architechtureIndicator = `
   {
     block: 'architectureIndicator',
     extends: 'template',

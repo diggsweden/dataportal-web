@@ -1,3 +1,3 @@
-import { SearchSpecificationsPage } from '../../components/pages/SearchSpecificationsPage';
+import { SearchSpecificationsPage } from "../../components/pages/SearchSpecificationsPage";
 
 export default SearchSpecificationsPage;

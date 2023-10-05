@@ -1,13 +1,11 @@
-import { Heading, css, Container } from "@digg/design-system";
+import { Container, css, Heading } from "@digg/design-system";
 import React from "react";
-import { ContentArea, ArticleBlock } from "../..";
+import { ArticleBlock, ContentArea } from "../..";
 import { MainContainerStyle } from "../../../styles/general/emotion";
-import { PublicationResponse, checkLang } from "../../../utilities";
+import { checkLang, PublicationResponse } from "../../../utilities";
 
 const whitelistedTagsSV = ["Goda exempel", "Event", "Nyhet"];
-export const findPublicationTypeTag = (
-  tags: PublicationResponse["tags"]
-) => {
+export const findPublicationTypeTag = (tags: PublicationResponse["tags"]) => {
   return tags.find((tag) => whitelistedTagsSV.includes(tag.value));
 };
 
@@ -46,13 +44,7 @@ export const Publication: React.FC<PublicationResponse> = ({
             </Heading>
           )}
           <p className="preamble text-lg">{checkLang(preamble)}</p>
-          {blocks && blocks.length > 0 && (
-            <ContentArea
-              blocks={
-                blocks
-              }
-            />
-          )}
+          {blocks && blocks.length > 0 && <ContentArea blocks={blocks} />}
         </div>
       </div>
       {related && related.length > 0 && (
@@ -60,9 +52,7 @@ export const Publication: React.FC<PublicationResponse> = ({
           <Heading level={2}>
             Fler{" "}
             {tags &&
-              getRelatedHeading(
-                findPublicationTypeTag(tags)?.value || ""
-              )}
+              getRelatedHeading(findPublicationTypeTag(tags)?.value || "")}
           </Heading>
           <ArticleBlock articles={related} />
         </div>

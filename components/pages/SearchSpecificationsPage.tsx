@@ -2,21 +2,21 @@ import React, { useContext, useEffect, useState } from "react";
 import { decode } from "qss";
 import SearchProvider from "../Search/SearchProvider";
 import {
-  SearchHeader,
-  SearchFilters,
-  SearchInput,
-  SearchResults,
   ESRdfType,
   ESType,
-  SettingsContext,
   SearchContext,
+  SearchFilters,
+  SearchHeader,
+  SearchInput,
+  SearchResults,
+  SettingsContext,
 } from "..";
 import useTranslation from "next-translate/useTranslation";
 import { useScript } from "../../hooks/useScript";
 import { useRouter } from "next/router";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
-import { Heading, Container } from "@digg/design-system";
+import { Container, Heading } from "@digg/design-system";
 import { MainContainerStyle } from "../../styles/general/emotion";
 
 interface SearchProps {
@@ -31,7 +31,7 @@ export const SearchSpecificationsPage: React.FC<SearchProps> = () => {
   const postscribeStatus = useScript(
     "/postscribe.min.js",
     "sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM",
-    "anonymous"
+    "anonymous",
   );
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();

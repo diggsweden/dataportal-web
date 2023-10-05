@@ -3,16 +3,16 @@ import { ArrowIcon, Button, Container, Heading } from "@digg/design-system";
 import { FormNavButtons, FormWrapper } from "../Styles/FormStyles";
 import { useRouter } from "next/router";
 import { MainContainerStyle } from "../../../styles/general/emotion";
-import { Module_dataportal_Digg_Module } from "../../../graphql/__generated__/Module";
+import { ModuleDataFragment } from "../../../graphql/__generated__/operations";
 import { ContentArea } from "../../ContentArea";
 
-export const FortroendeIntroPage: React.FC<Module_dataportal_Digg_Module> = ({
-  blocks
+export const FortroendeIntroPage: React.FC<ModuleDataFragment> = ({
+  blocks,
 }) => {
   const { pathname, push } = useRouter() || {};
   const intro = blocks.slice(0, 1);
   const extraInfo = blocks.slice(1);
-  
+
   return (
     <Container cssProp={MainContainerStyle}>
       <FormWrapper>

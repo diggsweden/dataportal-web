@@ -2,26 +2,23 @@ import { GetServerSideProps } from "next/types";
 import { client, CONTAINER_QUERY } from "../graphql";
 import { PUBLICATION_QUERY } from "../graphql/publicationQuery";
 import {
-  Containers,
-  ContainersVariables,
-  Containers_dataportal_Digg_Containers,
-} from "../graphql/__generated__/Containers";
-import {
-  Publication,
-  PublicationVariables,
-  Publication_dataportal_Digg_Publications,
-} from "../graphql/__generated__/Publication";
+  CategoriesQuery,
+  CategoriesQueryVariables,
+  CategoryFragment,
+  ContainerData_Dataportal_Digg_Container_Fragment,
+  ContainersQuery,
+  ContainersQueryVariables,
+  PublicationDataFragment,
+  PublicationQuery,
+  PublicationQueryVariables,
+} from "../graphql/__generated__/operations";
 import { SettingsUtil } from "../env";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import nodeFetch from "node-fetch";
 import fetchEnhanced from "fetch-enhanced";
 import url from "url";
-import { Category } from "../graphql/__generated__/Category";
-import {
-  Categories,
-  CategoriesVariables,
-} from "../graphql/__generated__/Categories";
 import { CATEGORY_QUERY } from "../graphql/domainQuery";
+
 const proxyfetch = fetchEnhanced(nodeFetch);
 
 const env = SettingsUtil.create();
@@ -41,10 +38,10 @@ const Sitemap = () => {
  */
 const isPublication = (
   container:
-    | Containers_dataportal_Digg_Containers
-    | Publication_dataportal_Digg_Publications
-    | null
-): container is Publication_dataportal_Digg_Publications => {
+    | ContainerData_Dataportal_Digg_Container_Fragment
+    | PublicationDataFragment
+    | null,
+): container is PublicationDataFragment => {
   return container?.__typename === "dataportal_Digg_Publication";
 };
 
@@ -55,9 +52,9 @@ const isPublication = (
  */
 const slug = (
   c:
-    | Containers_dataportal_Digg_Containers
-    | Publication_dataportal_Digg_Publications
-    | null
+    | ContainerData_Dataportal_Digg_Container_Fragment
+    | PublicationDataFragment
+    | null,
 ) => {
   const slug = c?.locale === "sv" ? c?.slug : `/${c?.locale}${c?.slug}`;
   if (isPublication(c)) {
@@ -125,36 +122,36 @@ export const getServerSideProps: GetServerSideProps = async ({
   const datasets: any[] = await getDatasets();
 
   const allContainers: (
-    | Containers_dataportal_Digg_Containers
-    | Publication_dataportal_Digg_Publications
+    | ContainerData_Dataportal_Digg_Container_Fragment
+    | PublicationDataFragment
     | null
   )[] = [];
 
-  const allCategories: Category[] = [];
+  const allCategories: CategoryFragment[] = [];
   locales &&
     (await Promise.all(
       // Get all containers in all locales
       locales.map(async (locale) => {
         // Get external data from the file system, API, DB, etc.
         const containerResult = await client.query<
-          Containers,
-          ContainersVariables
+          ContainersQuery,
+          ContainersQueryVariables
         >({
           query: CONTAINER_QUERY,
           variables: { filter: { locale, limit: 9999 } },
         });
 
         const PublicationResult = await client.query<
-          Publication,
-          PublicationVariables
+          PublicationQuery,
+          PublicationQueryVariables
         >({
           query: PUBLICATION_QUERY,
           variables: { filter: { locale, limit: 9999 } },
         });
 
         const categoryResult = await client.query<
-          Categories,
-          CategoriesVariables
+          CategoriesQuery,
+          CategoriesQueryVariables
         >({
           query: CATEGORY_QUERY,
           variables: { filter: { locale, limit: 9999 } },
@@ -175,7 +172,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         containers && allContainers.push(...containers);
         Publication && allContainers.push(...Publication);
         categories && allCategories.push(...categories);
-      })
+      }),
     ));
 
   const staticPaths = [
@@ -267,7 +264,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   res.setHeader(
     "Cache-Control",
-    "public, s-maxage=10, stale-while-revalidate=59"
+    "public, s-maxage=10, stale-while-revalidate=59",
   );
   res.setHeader("Content-Type", "text/xml");
   res.write(sitemap);

@@ -5,10 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { checkLang } from "../../utilities";
-import { MediaTypeFragment } from "../../graphql/__generated__/operations";
-import {
-  PublicationDataFragment,
-} from "../../graphql/__generated__/operations";
+import { ImageFragment } from "../../graphql/__generated__/operations";
+import { PublicationDataFragment } from "../../graphql/__generated__/operations";
 import { findPublicationTypeTag } from "../pages/Articles";
 import { LinkFragment as DiggLink } from "../../graphql/__generated__/operations";
 import placeholderimg from "../../public/images/noimage.svg";
@@ -24,9 +22,10 @@ type Article = {
   title: string;
   description: string;
   slug: string;
-  image?: MediaTypeFragment;
+  image?: ImageFragment;
   tags?: PublicationDataFragment["tags"];
 };
+
 export interface ArticleBlockProps {
   articles: PublicationDataFragment[] | DiggLink[];
   showMoreLink?: DiggLink;
@@ -35,14 +34,14 @@ export interface ArticleBlockProps {
 }
 
 const isPublication = (
-  article: PublicationDataFragment | DiggLink
+  article: PublicationDataFragment | DiggLink,
 ): article is PublicationDataFragment => {
   return article.__typename === "dataportal_Digg_Publication";
 };
 
 const makeArticles = (
   unknownArticles: PublicationDataFragment[] | DiggLink[],
-  theme?: string
+  theme?: string,
 ): Article[] => {
   return unknownArticles
     ? unknownArticles.map((article) => {
@@ -94,7 +93,7 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
 
   function handleClick(
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
-    url: string
+    url: string,
   ) {
     e.ctrlKey || e.metaKey ? window.open(url, "_blank") : router.push(url);
   }
@@ -120,7 +119,15 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
               >
                 {image ? (
                   <div className="news-img">
-                    <CustomImage image={image} style="fill" sizes={{mobile: "100vw", tablet: "50vw", desktop: "30vw"}} />
+                    <CustomImage
+                      image={image}
+                      style="fill"
+                      sizes={{
+                        mobile: "100vw",
+                        tablet: "50vw",
+                        desktop: "30vw",
+                      }}
+                    />
                   </div>
                 ) : (
                   <div className="news-img">

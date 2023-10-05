@@ -1,5 +1,4 @@
-
-import type { CodegenConfig } from '@graphql-codegen/cli';
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   overwrite: true,
@@ -7,21 +6,41 @@ const config: CodegenConfig = {
   documents: ["./graphql/*.ts"],
   generates: {
     "graphql/__generated__/types.ts": {
-      plugins: ['typescript'],
+      plugins: [
+        {
+          add: {
+            content:
+              "/** THIS FILE IS AUTO-GENERATED **/\n" +
+              "/** DO NOT EDIT **/\n" +
+              "/* eslint-disable */",
+          },
+        },
+        "typescript",
+      ],
       config: {
         avoidOptionals: {
           field: true,
         },
         nonOptionalTypename: true,
-        declarationKind: 'interface',
+        declarationKind: "interface",
         onlyOperationTypes: true,
-      }
+      },
     },
-    'graphql/__generated__/operations.ts': {
-      preset: 'import-types',
-      plugins: ['typescript-operations'],
+    "graphql/__generated__/operations.ts": {
+      preset: "import-types",
+      plugins: [
+        {
+          add: {
+            content:
+              "/** THIS FILE IS AUTO-GENERATED **/\n" +
+              "/** DO NOT EDIT **/\n" +
+              "/* eslint-disable */",
+          },
+        },
+        "typescript-operations",
+      ],
       presetConfig: {
-        typesPath: './types'
+        typesPath: "./types",
       },
       config: {
         avoidOptionals: {
@@ -29,20 +48,20 @@ const config: CodegenConfig = {
         },
         nonOptionalTypename: true,
         skipTypeNameForRoot: true,
-        declarationKind: 'interface',
+        declarationKind: "interface",
         arrayInputCoercion: false,
         onlyOperationTypes: true,
         // omitOperationSuffix: true,
         exportFragmentSpreadSubTypes: true,
-      }
+      },
     },
     "graphql/schema.json": {
       plugins: ["introspection"],
       config: {
-        schemaDescription: true
-      }
+        schemaDescription: true,
+      },
     },
-  }
+  },
 };
 
 export default config;

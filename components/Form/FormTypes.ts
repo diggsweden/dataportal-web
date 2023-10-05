@@ -1,10 +1,11 @@
 import {
-  Form_dataportal_Digg_Form_elements_dataportal_Digg_FormRadio,
-  Form_dataportal_Digg_Form_elements_dataportal_Digg_FormDescription,
-  Form_dataportal_Digg_Form_elements_dataportal_Digg_FormRadio_choices,
-  Form_dataportal_Digg_Form_elements_dataportal_Digg_FormPageBreak,
-  Form_dataportal_Digg_Form_elements_dataportal_Digg_FormText,
-} from '../../graphql/__generated__/Form';
+  FormElement_Dataportal_Digg_FormRadio_Fragment,
+  FormElement_Dataportal_Digg_FormDescription_Fragment,
+  ChoiceFragment,
+  FormElement_Dataportal_Digg_FormPageBreak_Fragment,
+  FormElement_Dataportal_Digg_FormText_Fragment,
+  FormElement_Dataportal_Digg_FormTextArea_Fragment,
+} from "../../graphql/__generated__/operations";
 
 export interface DefaultProps {
   value: string;
@@ -12,42 +13,49 @@ export interface DefaultProps {
 }
 
 interface FormText
-  extends Form_dataportal_Digg_Form_elements_dataportal_Digg_FormText,
+  extends FormElement_Dataportal_Digg_FormText_Fragment,
     DefaultProps {
   ID: number;
-  __typename: 'dataportal_Digg_FormText';
+  __typename: "dataportal_Digg_FormText";
 }
 
 export interface TextArea
-  extends Form_dataportal_Digg_Form_elements_dataportal_Digg_FormText,
+  extends FormElement_Dataportal_Digg_FormTextArea_Fragment,
     DefaultProps {
   ID: number;
-  __typename: 'dataportal_Digg_FormTextArea';
+  __typename: "dataportal_Digg_FormTextArea";
   title: string;
-  images: {[key: string]: string};
+  images: { [key: string]: string };
 }
 
 interface FormRadio
-  extends Form_dataportal_Digg_Form_elements_dataportal_Digg_FormRadio,
+  extends FormElement_Dataportal_Digg_FormRadio_Fragment,
     DefaultProps {
   ID: number;
   selected: FormChoice;
   choices: FormChoice[];
 }
 
-interface Description extends Form_dataportal_Digg_Form_elements_dataportal_Digg_FormDescription {
+interface Description
+  extends FormElement_Dataportal_Digg_FormDescription_Fragment {
   ID: number;
   TopHeading?: boolean;
 }
 
-interface PageBreak extends Form_dataportal_Digg_Form_elements_dataportal_Digg_FormPageBreak {
+interface PageBreak extends FormElement_Dataportal_Digg_FormPageBreak_Fragment {
   ID: number;
-  __typename: 'dataportal_Digg_FormPageBreak';
+  __typename: "dataportal_Digg_FormPageBreak";
 }
 
-interface FormChoice extends Form_dataportal_Digg_Form_elements_dataportal_Digg_FormRadio_choices {
+interface FormChoice extends ChoiceFragment {
   ID: number;
 }
 
-type FormTypes = FormText | TextArea | FormRadio | Description | PageBreak | FormChoice;
+type FormTypes =
+  | FormText
+  | TextArea
+  | FormRadio
+  | Description
+  | PageBreak
+  | FormChoice;
 export default FormTypes;

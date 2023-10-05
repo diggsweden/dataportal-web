@@ -21,14 +21,14 @@ import NoSsr from "../../NoSsr/NoSsr";
 import { ArticleBlock } from "../../blocks";
 
 const isPublication = (
-  article: Publication | IContainer
+  article: Publication | IContainer,
 ): article is Publication => {
   return article?.__typename === "dataportal_Digg_Publication";
 };
 
 const sortArticles = (
   a: Publication | IContainer,
-  b: Publication | IContainer
+  b: Publication | IContainer,
 ) => {
   if (isPublication(a) && isPublication(b)) {
     return (new Date(b.publishedAt) as any) - (new Date(a.publishedAt) as any);
@@ -97,7 +97,7 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
           articles={
             displayArticles.slice(
               articlesPerPage * currentPage - 1,
-              articlesPerPage * currentPage
+              articlesPerPage * currentPage,
             ) as Publication[]
           }
         />
@@ -169,7 +169,11 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
                           </span>
                           {tags[0]?.value ? (
                             <span className="text-base">{tags[0].value}</span>
-                          ): <span className="text-base">{t("pages|listpage$fallback-tag")}</span>}
+                          ) : (
+                            <span className="text-base">
+                              {t("pages|listpage$fallback-tag")}
+                            </span>
+                          )}
                         </span>
                       )}
                     </NoSsr>

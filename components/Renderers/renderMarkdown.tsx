@@ -74,6 +74,7 @@ const Markdown = styled.div`
       line-height: 27px;
     }
   }
+
   .markdown--link {
     color: ${colorPalette.white};
     text-decoration: underline;
@@ -86,6 +87,7 @@ const Markdown = styled.div`
   img {
     width: 100%;
   }
+
   ul {
     margin-top: 0;
   }
@@ -96,6 +98,7 @@ type HeadingOption = {
   newLevel?: HeadingLevel;
   size?: keyof Typography;
 };
+
 export interface Options {
   headings?: HeadingOption[];
 }

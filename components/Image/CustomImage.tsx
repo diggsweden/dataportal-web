@@ -1,6 +1,6 @@
 import env from "@beam-australia/react-env";
 import React from "react";
-import { Image as ImageInterface } from "../../graphql/__generated__/Image";
+import { ImageFragment as ImageInterface } from "../../graphql/__generated__/operations";
 import { isExternalLink } from "../../utilities";
 import Image from "next/image";
 
@@ -67,7 +67,7 @@ export const CustomImage: React.FC<CustomImageProps> = ({
         (key) =>
           `(${(key as Device) === "desktop" ? "min" : "max"}-width:${
             responsiveSizes[key as Device]
-          }px) ${sizes[key as Device]}`
+          }px) ${sizes[key as Device]}`,
       )
       .join(", ");
 
