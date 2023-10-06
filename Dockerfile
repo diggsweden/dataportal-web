@@ -5,7 +5,7 @@ COPY .yarn/releases ./.yarn/releases
 COPY .yarn/plugins ./.yarn/plugins
 RUN yarn install
 
-FROM node:16-alpine as builder
+FROM node:18-alpine as builder
 WORKDIR /build
 ARG delete_file
 COPY . .
