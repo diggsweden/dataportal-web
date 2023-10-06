@@ -1,5 +1,5 @@
 import { Translate } from "next-translate";
-import { Search_dataportal_Digg_Search_hits } from "../graphql/__generated__/Search";
+import { SearchHitFragment } from "../graphql/__generated__/operations";
 
 /**
  * Parse Search_dataportal_Digg_Search
@@ -7,8 +7,8 @@ import { Search_dataportal_Digg_Search_hits } from "../graphql/__generated__/Sea
  * @returns
  */
 export const getSearchHit = (
-  r: Search_dataportal_Digg_Search_hits,
-  t: Translate
+  r: SearchHitFragment,
+  t: Translate,
 ): SearchHit | null => {
   if (r && r.hit) {
     switch (r.hit.__typename) {

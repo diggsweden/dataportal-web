@@ -1,17 +1,14 @@
-import {
-  Media as IMedia,
-  Media_media,
-} from "../../graphql/__generated__/Media";
+import { MediaFragment as IMedia } from "../../graphql/__generated__/operations";
 import { FileLink } from "../Navigation";
-import { checkLang } from "../../utilities/checkLang";
+import { checkLang } from "../../utilities";
 import { Heading } from "@digg/design-system";
 import { Video } from "../Video";
 import env from "@beam-australia/react-env";
-import { MediaBase } from "../../graphql/__generated__/MediaBase";
-import { isExternalLink } from "../../utilities/checkers";
+import { MediaBaseFragment } from "../../graphql/__generated__/operations";
+import { isExternalLink } from "../../utilities";
 import { CustomImage } from "../Image";
 
-export const handleUrl = ({ screen9, url, __typename }: MediaBase) => {
+export const handleUrl = ({ screen9, url, __typename }: MediaBaseFragment) => {
   const documentBaseUrl = env("DOCUMENT_BASE_URL");
   const mediaBaseUrl = env("MEDIA_BASE_URL");
 
@@ -24,7 +21,7 @@ export const handleUrl = ({ screen9, url, __typename }: MediaBase) => {
   return (mediaBaseUrl || "") + `${url}`;
 };
 
-const renderMedia = (media: Media_media, mediaDescription?: string) => {
+const renderMedia = (media: IMedia["media"], mediaDescription?: string) => {
   const { description } = media;
   const url = handleUrl(media);
   switch (media.__typename) {

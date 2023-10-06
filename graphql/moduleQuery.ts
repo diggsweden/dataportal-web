@@ -1,5 +1,5 @@
-import { gql } from '@apollo/client';
-import { BLOCK_FRAGMENT, MODULE_FRAGMENT } from './fragments';
+import { gql } from "@apollo/client";
+import { BLOCK_FRAGMENT, MODULE_FRAGMENT } from "./fragments";
 
 export const MODULE_QUERY = gql`
   query Module($identifier: String!, $locale: String) {

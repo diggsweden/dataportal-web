@@ -1,12 +1,12 @@
 import useTranslation from "next-translate/useTranslation";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "..";
 import {
+  FlexibleXYPlot,
+  VerticalBarSeries,
+  VerticalBarSeriesCanvas,
   XAxis,
   YAxis,
-  FlexibleXYPlot,
-  VerticalBarSeriesCanvas,
-  VerticalBarSeries,
 } from "react-vis";
 
 interface StatisticGraphState {
@@ -36,7 +36,7 @@ export const StatisticGraph: React.FC = () => {
       fetch(
         env.ENTRYSCAPE_HISTORY_STATS_URL
           ? env.ENTRYSCAPE_HISTORY_STATS_URL
-          : "https://admin.dataportal.se/stats/historyData.json"
+          : "https://admin.dataportal.se/stats/historyData.json",
       )
         .then((response) => response.json())
         .then((data) => {

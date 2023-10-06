@@ -1,1 +1,1 @@
-export * from './ReactPortal';
+export * from "./ReactPortal";

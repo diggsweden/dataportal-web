@@ -11,6 +11,7 @@ export interface LocalStoreContextData {
   set: (settings: Partial<LocalStore>) => void;
   store: LocalStore;
 }
+
 /* eslint-enable no-unused-vars */
 
 const defaultSettings: LocalStoreContextData = {
@@ -50,7 +51,7 @@ export const LocalStoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const set = (partialStore: Partial<LocalStore>) => {
     setStore({ ...store, ...partialStore }, (s: LocalStore) =>
-      localStorage.setItem(storeName, JSON.stringify(s))
+      localStorage.setItem(storeName, JSON.stringify(s)),
     );
   };
 

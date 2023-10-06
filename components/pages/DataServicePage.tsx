@@ -10,7 +10,13 @@ import Link from "next/link";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import { Heading } from "@digg/design-system";
-import { accessrigthsIndicator, architechtureIndicator, exploreApiLink, licenseIndicator, periodicityIndicator } from "../../utilities";
+import {
+  accessrigthsIndicator,
+  architechtureIndicator,
+  exploreApiLink,
+  licenseIndicator,
+  periodicityIndicator,
+} from "../../utilities";
 
 export const DataServicePage: React.FC<{
   dataSet: string | string[] | undefined;
@@ -29,7 +35,7 @@ export const DataServicePage: React.FC<{
 
   /**
    * Async load scripts requiered for EntryScape blocks,
-   * or else blocks wont have access to DOM
+   * or else blocks won't have access to DOM
    */
   useEffect(() => {
     //we need to reload the page when using the back/forward buttons to a blocks rendered page
@@ -74,7 +80,7 @@ export const DataServicePage: React.FC<{
           function getApiExploreUrl(entryid,apientryid)
           {
             return '/${t(
-              "routes|dataservices$path"
+              "routes|dataservices$path",
             )}/${cid}_'+entryid+'/${name}/apiexplore/'+apientryid
           }
 
@@ -141,7 +147,7 @@ export const DataServicePage: React.FC<{
           `,
           {
             done: function () {},
-          }
+          },
         );
       }
     }
@@ -233,7 +239,7 @@ export const DataServicePage: React.FC<{
             <span className="esbRowAlignSecondary">
               <Link
                 href={`/${t(
-                  "routes|dataservices$path"
+                  "routes|dataservices$path",
                 )}/${cid}_${eid}/${name}/apiexplore/${eid}`}
                 locale={lang}
                 className="dataservice-explore-api-link entryscape text-md link"

@@ -1,9 +1,10 @@
-import { Heading } from '@digg/design-system';
-import useTranslation from 'next-translate/useTranslation';
-import React, { useContext, useEffect, useState } from 'react';
+import { Heading } from "@digg/design-system";
+import useTranslation from "next-translate/useTranslation";
+import React, { useContext, useEffect, useState } from "react";
 // import 'scss/statistic/statistic.scss';
-import { SettingsContext } from '..';
-import { StatisticListItemHistory } from './';
+import { SettingsContext } from "..";
+import { StatisticListItemHistory } from "./";
+
 // import { isIE } from 'react-device-detect';
 
 interface StatisticState {
@@ -20,7 +21,7 @@ interface StatisticState {
 
 export const StatisticGraphNumbers: React.FC = () => {
   const { env } = useContext(SettingsContext);
-  const { t } = useTranslation('pages');
+  const { t } = useTranslation("pages");
 
   const [stats, setStats] = useState<StatisticState>({
     x: [],
@@ -33,11 +34,11 @@ export const StatisticGraphNumbers: React.FC = () => {
   });
 
   useEffect(() => {
-    if (typeof fetch !== 'undefined') {
+    if (typeof fetch !== "undefined") {
       fetch(
         env.ENTRYSCAPE_HISTORY_STATS_URL
           ? env.ENTRYSCAPE_HISTORY_STATS_URL
-          : 'https://admin.dataportal.se/stats/historyData.json'
+          : "https://admin.dataportal.se/stats/historyData.json",
       )
         .then((response) => response.json())
         .then((data) => {
@@ -72,24 +73,23 @@ export const StatisticGraphNumbers: React.FC = () => {
         {/* Toplist */}
         <div className="statistic-toplist">
           <div className="toplist-wrapper">
-            <Heading
-              level={2}
-              size="lg"
-            >
-              {t('statistic$dataset-numbers')}
+            <Heading level={2} size="lg">
+              {t("statistic$dataset-numbers")}
             </Heading>
             <div className="top-list">
               <ol className="text-md font-bold">
                 {stats.yList &&
-                  stats.yList.slice(0, stats.topItemsToShow).map((item: any, index: any) => {
-                    return (
-                      <StatisticListItemHistory
-                        key={'cat-' + index}
-                        listText={stats.xList && stats.xList[index]}
-                        listNumber={item}
-                      />
-                    );
-                  })}
+                  stats.yList
+                    .slice(0, stats.topItemsToShow)
+                    .map((item: any, index: any) => {
+                      return (
+                        <StatisticListItemHistory
+                          key={"cat-" + index}
+                          listText={stats.xList && stats.xList[index]}
+                          listNumber={item}
+                        />
+                      );
+                    })}
               </ol>
             </div>
           </div>

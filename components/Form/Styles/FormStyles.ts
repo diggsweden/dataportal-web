@@ -22,6 +22,7 @@ export const FormWrapper = styled.form`
 
   label {
     margin-bottom: 1rem;
+
     &:first-of-type {
       margin-top: 0;
     }
@@ -37,6 +38,7 @@ export const FormWrapper = styled.form`
 
   legend {
     margin-bottom: 1rem;
+
     &:first-of-type {
       margin-top: 0;
     }

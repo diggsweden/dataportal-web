@@ -1,6 +1,6 @@
-import NextErrorComponent, { ErrorProps } from 'next/error';
-import { NextPage } from 'next';
-import serverLogger from '../utilities/logger';
+import NextErrorComponent, { ErrorProps } from "next/error";
+import { NextPage } from "next";
+import serverLogger from "../utilities/logger";
 
 interface AppErrorProps extends ErrorProps {
   err?: Error;
@@ -8,7 +8,7 @@ interface AppErrorProps extends ErrorProps {
 }
 
 /**
- * Server application error page, uses logger instance on server rendering code 
+ * Server application error page, uses logger instance on server rendering code
  */
 const AppError: NextPage<AppErrorProps> = ({
   hasGetInitialPropsRun,
@@ -17,26 +17,27 @@ const AppError: NextPage<AppErrorProps> = ({
 }) => {
   if (!hasGetInitialPropsRun && err) {
     let logger = serverLogger.getInstance();
-    logger.error([err.message,err.stack]) 
+    logger.error([err.message, err.stack]);
   }
 
   return <NextErrorComponent statusCode={statusCode} />;
 };
 
-AppError.getInitialProps = async (ctx) => {   
-  const errorInitialProps: AppErrorProps = await NextErrorComponent.getInitialProps(
-    ctx
-  );
+AppError.getInitialProps = async (ctx) => {
+  const errorInitialProps: AppErrorProps =
+    await NextErrorComponent.getInitialProps(ctx);
   errorInitialProps.hasGetInitialPropsRun = true;
-  if (ctx.err) {    
-    let logger = serverLogger.getInstance();    
-    logger.error([ctx.err.message,ctx.err.stack])   
+  if (ctx.err) {
+    let logger = serverLogger.getInstance();
+    logger.error([ctx.err.message, ctx.err.stack]);
 
     return errorInitialProps;
   }
 
   let logger = serverLogger.getInstance();
-  logger.error(`_error.tsx getInitialProps missing data at path: ${ctx.asPath}`)
+  logger.error(
+    `_error.tsx getInitialProps missing data at path: ${ctx.asPath}`,
+  );
 
   return errorInitialProps;
 };

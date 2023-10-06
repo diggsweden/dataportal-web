@@ -1,1 +1,1 @@
-export * from './SettingsProvider';
+export * from "./SettingsProvider";

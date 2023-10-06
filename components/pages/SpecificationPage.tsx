@@ -140,7 +140,7 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
                   '<span class="specification__resource--type text-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
                   '<div class="specification__resource--description text-md esbDescription">{{ text content="\${skos:definition}" }}</div>' +
                   '<a target="_blank" class="specification__resource--downloadlink download_url text-md" href="{{resourceURI}}">${t(
-                    "pages|specification_page$download"
+                    "pages|specification_page$download",
                   )} {{prop "prof:hasRole" class="type" render="label"}}</a>',
               },
               {
@@ -165,7 +165,7 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
           `,
           {
             done: function () {},
-          }
+          },
         );
       }
     }

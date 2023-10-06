@@ -158,7 +158,9 @@ export const GenerateHTML = (formData: FormTypes[][]) => {
                 if (field.value.length > 0) {
                   return `
                         <div class="form-group">
-                            <p><strong>${field.number}. ${field.title}</strong></p>
+                            <p><strong>${field.number}. ${
+                              field.title
+                            }</strong></p>
                             <p>${renderTextAndImages(field)}</p>
                         </div>
                         `;
@@ -188,8 +190,9 @@ export const GenerateHTML = (formData: FormTypes[][]) => {
           .join("");
       })
       .join(
-        `<div style='page-break-after:always; width:100%; height:100%'></div>` //If each section should be on a new page.
-      ) + '</div>'; 
+        `<div style='page-break-after:always; width:100%; height:100%'></div>`, //If each section should be on a new page.
+      ) +
+    "</div>";
 
   return pageHead + html;
 };

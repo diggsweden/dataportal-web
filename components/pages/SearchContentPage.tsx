@@ -7,7 +7,7 @@ import Head from "next/head";
 import { Button, Container, Heading, SearchField } from "@digg/design-system";
 import { MainContainerStyle } from "../../styles/general/emotion";
 import Link from "next/link";
-import { Search_dataportal_Digg_Search_hits } from "../../graphql/__generated__/Search";
+import { SearchHitFragment } from "../../graphql/__generated__/operations";
 import { getSearchHit } from "../../utilities/searchHelpers";
 
 interface SearchProps {
@@ -46,15 +46,13 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
       searchRequest?.page && searchRequest?.page > 1
         ? (searchRequest?.page - 1) * PER_PAGE
         : 0,
-      true
+      true,
     )) as any;
 
     const hits: SearchHit[] = result?.dataportal_Digg_Search?.hits
-      ? result.dataportal_Digg_Search?.hits.map(
-          (r: Search_dataportal_Digg_Search_hits) => {
-            return getSearchHit(r, t);
-          }
-        )
+      ? result.dataportal_Digg_Search?.hits.map((r: SearchHitFragment) => {
+          return getSearchHit(r, t);
+        })
       : [];
 
     setSearchResult({
@@ -77,7 +75,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
     if (!content) return;
 
     const focusable = content.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
 
     const first = focusable[0];
@@ -91,7 +89,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
     if (typeof localStorage != "undefined" && typeof location != "undefined") {
       localStorage.setItem(
         `ScrollposY_${location.search}`,
-        JSON.stringify(window.scrollY)
+        JSON.stringify(window.scrollY),
       );
     }
   };
@@ -137,11 +135,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
 
   useEffect(() => {
     setTrackedQuery(query || "");
-    if (
-      query && trackedQuery !== query && searchResult?.count === 0
-        ? true
-        : false
-    ) {
+    if (!!(query && trackedQuery !== query && searchResult?.count === 0)) {
       trackEvent({
         category: `Sökord utan resultat - Typ: Content`,
         action: query || "",

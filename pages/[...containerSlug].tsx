@@ -1,7 +1,7 @@
-import { getMultiContainer, MultiContainerResponse } from '../utilities';
-import { GetStaticPaths } from 'next/types';
-import { ArticleListPage, ContainerPage } from '../components/pages/Articles';
-import { useRouter } from 'next/router';
+import { getMultiContainer, MultiContainerResponse } from "../utilities";
+import { GetStaticPaths } from "next/types";
+import { ArticleListPage, ContainerPage } from "../components/pages/Articles";
+import { useRouter } from "next/router";
 
 export const Page: React.FC<MultiContainerResponse> = ({
   container,
@@ -34,7 +34,7 @@ export const Page: React.FC<MultiContainerResponse> = ({
     );
   }
 
-  router.replace('/404');
+  router.replace("/404");
   return null;
 };
 
@@ -47,7 +47,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: 'blocking',
+    fallback: "blocking",
   };
 };
 

@@ -1,12 +1,12 @@
 import {
-  Containers_dataportal_Digg_Containers_blocks as Block,
-  Containers_dataportal_Digg_Containers_blocks_dataportal_Digg_RelatedContent as RelatedContent,
-} from "../graphql/__generated__/Containers";
-import { Publication_dataportal_Digg_Publications as IPublication } from "../graphql/__generated__/Publication";
+  BlockDataFragment as Block,
+  ImageFragment,
+  PublicationDataFragment as IPublication,
+  RelatedContentFragment as RelatedContent,
+} from "../graphql/__generated__/operations";
 import { DomainProps } from "../components/pages/DomainPage";
-import { dataportal_LinkType } from "../graphql/__generated__/globalTypes";
+import { Dataportal_LinkType } from "../graphql/__generated__/types";
 import useTranslation from "next-translate/useTranslation";
-import { Image } from "../graphql/__generated__/Image";
 import start from "../public/images/illu-start.png";
 import ai from "../public/images/illu-ai.png";
 import data from "../public/images/illu-data.png";
@@ -21,12 +21,12 @@ interface ParsedProps {
   publications: IPublication[];
   heading: string | null;
   preamble: string | null;
-  image?: Image;
+  image?: ImageFragment;
 }
 
 const populate: any = {
   __typename: "dataportal_Digg_Link",
-  linktype: dataportal_LinkType.INTERNAL,
+  linktype: Dataportal_LinkType.Internal,
 };
 
 const dataPuffs = (t: Translate): RelatedContent => ({
@@ -66,7 +66,7 @@ const fallback = (domain: DiggDomain | undefined): ParsedProps => {
   };
   const { t } = useTranslation("pages");
 
-  const image = (img: StaticImageData): Image => ({
+  const image = (img: StaticImageData): ImageFragment => ({
     __typename: "dataportal_Digg_Image",
     url: img as any,
     name: null,
@@ -125,9 +125,9 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
   const { domain, news, example, event, blocks, heading, preamble } = props;
   const publications: Array<IPublication> = [];
 
-  const image: Image | undefined = props.image
+  const image: ImageFragment | undefined = props.image
     ? {
-        ...(props.image as Image),
+        ...(props.image as ImageFragment),
         url: `${handleUrl(props.image)}`,
       }
     : undefined;
@@ -152,7 +152,7 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
               ...aiStrapiPuffs.links,
               {
                 ...populate,
-                title: 'Inspiration',
+                title: "Inspiration",
                 slug: "/inspiration",
                 description: t("ai$inspiration_description"),
               },
@@ -170,7 +170,7 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
             links: [
               {
                 ...populate,
-                title: 'Inspiration',
+                title: "Inspiration",
                 slug: "/inspiration",
                 description: t("ai$inspiration_description"),
               },

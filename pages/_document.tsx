@@ -1,24 +1,24 @@
 import Document, {
-  Html,
+  DocumentContext,
   Head,
+  Html,
   Main,
   NextScript,
-  DocumentContext,
 } from "next/document";
 import { GlobalStyles } from "../styles/GlobalStyles";
 import { ApolloProvider } from "@apollo/client";
 import {
-  TrackingProvider,
   LocalStoreProvider,
   SettingsProvider,
+  TrackingProvider,
 } from "../components";
 import { defaultSettings } from "../components/SettingsProvider/SettingsProvider";
 import { client } from "../graphql/client";
 import {
-  ThemeProvider,
   CacheProvider,
   createCache,
   createEmotionServer,
+  ThemeProvider,
 } from "@digg/design-system";
 import { SettingsUtil } from "../env";
 import { renderToString } from "react-dom/server";

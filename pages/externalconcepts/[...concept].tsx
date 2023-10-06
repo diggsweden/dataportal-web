@@ -5,6 +5,7 @@ import { SettingsContext } from "../../components";
 import EntrystoreProvider from "../../components/EntrystoreProvider/EntrystoreProvider";
 import { ConceptPage } from "../../components/pages/ConceptPage";
 import { useScript } from "../../hooks/useScript";
+
 export default function Concept() {
   const { env } = useContext(SettingsContext);
   const { query } = useRouter() || {};
@@ -16,7 +17,7 @@ export default function Concept() {
   const postscribeStatus = useScript(
     "/postscribe.min.js",
     "sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM",
-    "anonymous"
+    "anonymous",
   );
   return postscribeStatus === "ready" && paths.length > 0 ? (
     <EntrystoreProvider
