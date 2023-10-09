@@ -10,7 +10,7 @@ The Swedish data portal is tightly integrated with the EntryScape product suite 
 EntryScape Registry is a solution for managing a registry of data catalogs and related information
 
 ## Requirements
-![node-current](https://img.shields.io/badge/node-18.17.0-green)
+![node-current](https://img.shields.io/badge/node-18.18.0-green)
 ![npm-current](https://img.shields.io/badge/npm-9.8.1-green)
 ![nextjs-current](https://img.shields.io/badge/nextjs-13.0.2-green)
 
