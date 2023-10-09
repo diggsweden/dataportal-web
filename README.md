@@ -10,8 +10,8 @@ The Swedish data portal is tightly integrated with the EntryScape product suite 
 EntryScape Registry is a solution for managing a registry of data catalogs and related information
 
 ## Requirements
-![node-current](https://img.shields.io/badge/node-16.13.2-green)
-![npm-current](https://img.shields.io/badge/npm-8.1.2-green)
+![node-current](https://img.shields.io/badge/node-18.17.0-green)
+![npm-current](https://img.shields.io/badge/npm-9.8.1-green)
 ![nextjs-current](https://img.shields.io/badge/nextjs-13.0.2-green)
 
 ## Development
@@ -24,6 +24,8 @@ Run:
 ```sh 
 yarn
 yarn dev
+# If you are having issues connecting to your localhost port for apollo:
+export NODE_OPTIONS=--dns-result-order=ipv4first
 ```
 Visit [http://localhost:3000](http://localhost:3000) in the browser.
 
