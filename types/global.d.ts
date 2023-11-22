@@ -11,19 +11,19 @@ type MenuItem = {
 };
 
 type DiggStrapiTheme =
-  | 'brownTheme'
-  | 'lightBrownTheme'
-  | 'darkTheme'
-  | 'grayTheme'
-  | 'greenTheme'
-  | 'lightGreenTheme'
-  | 'orangeTheme'
-  | 'lightOrangeTheme'
-  | 'pinkTheme'
-  | 'lightPinkTheme';
+  | "brownTheme"
+  | "lightBrownTheme"
+  | "darkTheme"
+  | "grayTheme"
+  | "greenTheme"
+  | "lightGreenTheme"
+  | "orangeTheme"
+  | "lightOrangeTheme"
+  | "pinkTheme"
+  | "lightPinkTheme";
 
 type DiggLink = {
-  __typename: 'dataportal_Digg_Link';
+  __typename: "dataportal_Digg_Link";
   title: string | null;
   link: string;
   linktype: dataportal_LinkType;
@@ -40,6 +40,21 @@ type Anchorlink = {
   text: string;
 };
 
+interface MenuItem {
+  title: string;
+  icon: any;
+  href?: string;
+  id: number;
+  external?: boolean;
+  children?: MenuItemChild[];
+}
+interface MenuItemChild {
+  title: string;
+  href: string;
+  id: number;
+  external: boolean;
+}
+
 interface DataportalSettings {
   siteName: string;
   pageNotFoundHeading: string;
@@ -50,51 +65,51 @@ interface DataportalSettings {
   matomoSiteId: string;
 }
 
-declare module 'remark-gfm' {
+declare module "remark-gfm" {
   const content: any;
   export default content;
 }
 
-declare module 'react-truncate' {
+declare module "react-truncate" {
   const content: any;
   export default content;
 }
 
-declare module 'react-show-more-text';
+declare module "react-show-more-text";
 
-declare module 'fetch-enhanced';
+declare module "fetch-enhanced";
 
 type CSPDirective =
-  | 'child-src'
-  | 'connect-src'
-  | 'default-src'
-  | 'font-src'
-  | 'frame-src'
-  | 'img-src'
-  | 'manifest-src'
-  | 'media-src'
-  | 'object-src'
-  | 'prefetch-src'
-  | 'script-src'
-  | 'script-src-elem'
-  | 'script-src-attr'
-  | 'style-src'
-  | 'style-src-elem'
-  | 'style-src-attr'
-  | 'worker-src'
-  | 'base-uri'
-  | 'plugin-types'
-  | 'sandbox'
-  | 'form-action'
-  | 'frame-ancestors'
-  | 'navigate-to'
-  | 'report-uri'
-  | 'report-to'
-  | 'block-all-mixed-content'
-  | 'referrer'
-  | 'require-sri-for'
-  | 'require-trusted-types-for'
-  | 'trusted-types'
-  | 'upgrade-insecure-requests';
+  | "child-src"
+  | "connect-src"
+  | "default-src"
+  | "font-src"
+  | "frame-src"
+  | "img-src"
+  | "manifest-src"
+  | "media-src"
+  | "object-src"
+  | "prefetch-src"
+  | "script-src"
+  | "script-src-elem"
+  | "script-src-attr"
+  | "style-src"
+  | "style-src-elem"
+  | "style-src-attr"
+  | "worker-src"
+  | "base-uri"
+  | "plugin-types"
+  | "sandbox"
+  | "form-action"
+  | "frame-ancestors"
+  | "navigate-to"
+  | "report-uri"
+  | "report-to"
+  | "block-all-mixed-content"
+  | "referrer"
+  | "require-sri-for"
+  | "require-trusted-types-for"
+  | "trusted-types"
+  | "upgrade-insecure-requests";
 
-type DiggDomain = 'offentligai' | 'data' | 'oppen-kallkod' | 'open-source';
+type DiggDomain = "offentligai" | "data" | "oppen-kallkod" | "open-source";
