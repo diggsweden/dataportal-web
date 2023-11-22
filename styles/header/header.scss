@@ -95,12 +95,13 @@ header {
   }
 }
 
-.header-box {
-  max-width: calc(100% - 2rem);
+.header-top {
+  // max-width: calc(100% - 2rem);
+  margin: 0 20px !important;
   display: flex;
   justify-content: space-between;
   transition: padding 0.25s ease;
-  z-index: 1000;
+  z-index: 10000;
   margin: auto;
 
   svg {
@@ -118,9 +119,15 @@ header {
   }
 }
 
+.globe-icon {
+  display: block;
+
+  @media screen and (min-width: $media-lg) {
+    display: block;
+  }
+}
 .start-link {
   font-size: 18px;
-  // padding-bottom: $space-4;
   transition: all 0.25s ease;
 
   @media screen and (min-width: $media-xl) {
@@ -135,7 +142,6 @@ header {
   .start-link-text {
     font-size: 1rem;
     margin-right: 1rem;
-
     @media screen and (min-width: $media-sm) {
       font-size: 1.25rem;
     }
@@ -146,18 +152,48 @@ header {
   }
 }
 
+.dataportalen-logo {
+  width: 135px;
+  height: 26px;
+  margin-right: auto;
+  display: none;
+
+  @media screen and (min-width: "600px") {
+    display: block;
+    width: 228px;
+    height: 44px;
+  }
+  @media screen and (min-width: "370px") {
+    display: block;
+  }
+}
+
 .header-links {
   display: none;
   flex-wrap: wrap;
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 
-  .header-link {
+  @media screen and (min-width: $media-lg) {
+    margin: 0 !important;
+    gap: 0px;
+  }
+
+  .main-nav .header-link {
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
+    margin: 0 !important;
+    display: none;
+    @media screen and (min-width: "600px") {
+      display: block;
+    }
   }
 
   &.text-base {
     margin: 0;
+    gap: 20px;
   }
 
   @media screen and (min-width: $media-lg) {
@@ -183,6 +219,10 @@ header {
 
     .search-link--icon {
       margin-right: $space-2;
+    }
+
+    @media screen and (min-width: $media-sm) {
+      display: flex;
     }
   }
 
@@ -277,6 +317,10 @@ header {
         visibility: visible;
         height: 20px;
         width: 20px;
+        @media screen and (min-width: $media-md) {
+          height: 24px;
+          width: 24px;
+        }
       }
     }
   }
@@ -347,7 +391,22 @@ header {
   background: transparent;
   border: none;
   cursor: pointer;
+  height: 28px;
   color: white;
+  gap: 8px;
+  border: 2px solid #f49383;
+  border-radius: 2px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: 0.3s;
+  &:hover {
+    border: 2px solid #ffffff;
+  }
+
+  @media screen and (min-width: $media-sm) {
+    height: 48px;
+    padding: 0 20px;
+  }
 }
 
 .global-search {
@@ -355,13 +414,13 @@ header {
   padding: $space-6;
   position: absolute;
   width: 100vw;
-  z-index: 0;
   bottom: 0;
   left: 50%;
   transform: translate(-50%);
   background-color: $clr-gray900;
   border-top: 1px solid $clr-gray600;
   transition: unset;
+  z-index: -1;
 
   &.visible {
     transition: opacity 0.1s ease-in;
@@ -384,4 +443,39 @@ header {
   fieldset {
     margin-top: $space-4;
   }
+}
+
+.header-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  margin-top: 12px;
+  z-index: 10000;
+  @media screen and (min-width: $media-sm) {
+    margin-top: 20px;
+  }
+
+  .main-nav {
+    display: none;
+    gap: 24px;
+    padding: 0 20px;
+    @media screen and (min-width: "853px") {
+      display: flex;
+      gap: 24px;
+    }
+  }
+}
+
+.header-bottom-box {
+  display: flex;
+}
+
+.searchAndMenu {
+  display: flex;
+  gap: 12px;
+}
+
+.header-bottom-logo {
+  margin-left: 0px !important;
 }
