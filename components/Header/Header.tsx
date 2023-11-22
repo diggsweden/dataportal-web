@@ -1,9 +1,6 @@
 import {
-  MenuIcon,
   CloseIcon,
   colorPalette,
-  css,
-  responsiveProp,
   InfoCircleIcon,
   ChatIcon,
   GlobeIcon,
