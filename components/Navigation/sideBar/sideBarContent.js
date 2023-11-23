@@ -1,96 +1,115 @@
 import home from "./menu-icons/home.svg";
 import data from "./menu-icons/data.svg";
-// import datasamverkan from "./menu-icons/datasamverkan.svg";
+import utbildning from "./menu-icons/utbildning.svg";
 import delaData from "./menu-icons/dela-data.svg";
 import stodVerktyg from "./menu-icons/stod-verktyg.svg";
-// import godaExempel from "./menu-icons/goda-exempel.svg";
+import verktyg from "./menu-icons/verktyg.svg";
 import nyheter from "./menu-icons/nyheter.svg";
 import community from "./menu-icons/community.svg";
 
 export const sideBarConstants = [
   {
-    title: "Hem",
+    title: "home-text",
     icon: home,
-    src: "/",
+    href: "lang-path",
     external: false,
+    id: 1,
   },
   {
-    title: "Data och API:er",
+    title: "search-api",
     icon: data,
-    src: "data",
+    href: "/data",
     external: false,
+    id: 2,
   },
   {
-    title: "Stöd och verktyg",
+    title: "support-tools",
     icon: stodVerktyg,
+    id: 3,
     children: [
       {
-        title: "Stöd och verktyg",
-        src: "stod-och-verktyg",
+        title: "support-tools",
+        href: "/stod-och-verktyg",
         external: false,
+        id: 4,
       },
       {
-        title: "Kom igång att dela din data",
-        src: "dela-data",
+        title: "share-data",
+        href: "/dela-data",
         external: false,
+        id: 5,
+      },
+      {
+        title: "use-data",
+        href: "/anvanda-data",
+        external: false,
+        id: 6,
       },
     ],
   },
   // {
   //   title: "Goda exempel",
   //   icon: godaExempel,
-  //   src: "goda-exempel",
+  //   href: "goda-exempel",
   //   external: false,
   // },
   // {
   //   title: "Datasamverkan",
   //   icon: datasamverkan,
-  //   src: "datasamverkan",
+  //   href: "datasamverkan",
   //   external: false,
   // },
   {
-    title: "Varför dela data",
+    title: "why-share-data",
     icon: delaData,
+    id: 7,
     children: [
       {
-        title: "Nyttor med datadelning",
-        src: "nyttor-med-datadelning",
+        title: "shara-data-benefits",
+        href: "/nyttor-med-datadelning",
         external: false,
+        id: 8,
       },
       {
-        title: "Lagstiftning och styrning",
-        src: "lagstiftning-och-styrning",
+        title: "legislation",
+        href: "/lagstiftning",
         external: false,
+        id: 9,
       },
       {
-        title: "Internationellt",
-        src: "internationellt",
+        title: "governance",
+        href: "/styrning",
         external: false,
+        id: 10,
       },
     ],
   },
   {
-    title: "Verktyg för självutvärdering",
-    icon: nyheter,
-    src: "verktyg-for-sjalvutvardering",
+    title: "self-assessment-tools",
+    icon: verktyg,
+    href: "/verktyg-for-sjalvutvardering",
     external: false,
+    id: 11,
   },
   {
-    title: "Utbildning för chefer och ledare",
-    icon: nyheter,
-    src: "utbildning-for-chefer-och-ledare",
+    title: "training",
+    icon: utbildning,
+    href: "/utbildning-for-chefer-och-ledare",
     external: false,
+    id: 12,
   },
   {
-    title: "Nyheter",
+    title: "news",
     icon: nyheter,
-    src: "nyheter",
+    href: "/nyheter",
     external: false,
+    id: 13,
   },
   {
-    title: "Community",
+    title: "community",
     icon: community,
-    src: "https://community.dataportal.se/",
+    href: "https://community.dataportal.se/",
     external: true,
+    id: 14,
   },
 ];

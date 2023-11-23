@@ -1,4 +1,41 @@
-import React, { useEffect } from "react";
+// import { useEffect, useState } from "react";
+// import { useRouter } from "next/router";
+// import { sideBarConstants } from "./sideBarContent.js";
+// import Image from "next/image";
+// import arrowRight from "./menu-icons/arrowRight.svg";
+// import arrowDown from "./menu-icons/arrowDown.svg";
+// import externalLink from "./menu-icons/external-link.svg";
+// import useTranslation from "next-translate/useTranslation";
+
+// function SideBar({ openSideBar }: any) {
+//   return (
+//     <div className={openSideBar ? "menu" : "menu-out"}>
+//       <ul>
+//         {sideBarConstants.map((menu: any, idx: number) => (
+//           <li key={idx}>
+//             <section>
+//               <div>
+//                 <span>icon</span>
+//                 <span>{menu.title}</span>
+//               </div>
+//               <span>subs or not</span>
+//             </section>
+//             <ul>
+//               {menu.children &&
+//                 menu.children.map((subMenu: any, idx: number) => (
+//                   <li>{subMenu.title}</li>
+//                 ))}
+//             </ul>
+//           </li>
+//         ))}
+//       </ul>
+//     </div>
+//   );
+// }
+
+// export default SideBar;
+
+import { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { sideBarConstants } from "./sideBarContent.js";
