@@ -403,7 +403,7 @@ header {
     border: 2px solid #ffffff;
   }
 
-  @media screen and (min-width: $media-sm) {
+  @media screen and (min-width: 600px) {
     height: 48px;
     padding: 0 20px;
   }
@@ -452,7 +452,7 @@ header {
   padding: 0 16px;
   margin-top: 12px;
   z-index: 10000;
-  @media screen and (min-width: $media-sm) {
+  @media screen and (min-width: "600px") {
     margin-top: 20px;
   }
 
