@@ -19,7 +19,6 @@ import { CategoriesNav } from "../StartPageComponents";
 import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { CustomImage } from "../Image";
 
 export interface DomainProps extends Containers_dataportal_Digg_Containers {
   domain?: DiggDomain;
@@ -57,7 +56,7 @@ const DynamicArticleBlock = dynamic(
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
   const { domain, areas } = props || {};
-  const { content, puffs, publications, heading, preamble, image } =
+  const { content, puffs, publications, heading, preamble } =
     handleDomain(props);
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
@@ -101,15 +100,6 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                 )}
               </div>
             </div>
-            <span className="domain-page__top-image">
-              {image && (
-                <CustomImage
-                  image={image}
-                  style="responsive"
-                  sizes={{ mobile: "0px", tablet: "0px", desktop: "25vw" }}
-                />
-              )}
-            </span>
           </div>
 
           {puffs && (
@@ -139,12 +129,6 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               <DynamicArticleBlock articles={publications} />
             </>
           )}
-
-          {/* {areas && (
-            <div className="domain-page__link-block">
-              <Puffs links={areas} />
-            </div>
-          )} */}
 
           <div className={"fullWidth"}>
             {/* todo: this width? */}
