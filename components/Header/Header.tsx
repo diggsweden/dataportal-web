@@ -248,7 +248,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
                 {t("pages|startpage$data-api-header")}
               </Link>
               <>
-                <Link href={`/stod-verktyg`} className="header-link">
+                <Link href={`/stod-och-verktyg`} className="header-link">
                   {t("common|support-tools")}
                 </Link>
                 <Link href={`/goda-exempel`} className="header-link">
