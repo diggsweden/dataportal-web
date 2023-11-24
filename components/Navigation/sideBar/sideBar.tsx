@@ -68,7 +68,7 @@ function SideBar({ openSideBar }: any) {
       ? router.push("/")
       : menu.href
       ? menu.external
-        ? window.location.assign(menu.href)
+        ? window.open(menu.href, "_blank")
         : router.push(menu.href)
       : null;
     menu.href && !menu.children && setOpenMenuitem(menu.id);

@@ -52,7 +52,7 @@
   "search-specs": "Search specifications",
   "search-content": "Search content",
   "share-data": "Get started with sharing your data",
-  "support-tools": "Support and tools",
+  "support-tools": "Tools and support",
   "show-filter": "Show filter",
   "soon": "COMING SOON",
   "seo-title": "Sveriges Dataportal",
@@ -74,5 +74,6 @@
   "training": "Training for managers and leaders",
   "news": "News",
   "community": "Community",
-  "lang-path": "/en"
+  "lang-path": "/en",
+  "good-examples": "Good examples"
 }
