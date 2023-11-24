@@ -157,7 +157,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
 
           {domain === "data" && <CategoriesNav />}
 
-          {areas && domain === "data" && (
+          {areas && !domain && lang === "sv" && (
             <div className="domain-page__link-block domain-page__theme-block">
               <Heading level={2} size="xl" color="white">
                 {t("pages|data$data-areas_text")}

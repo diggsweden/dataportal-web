@@ -26,7 +26,7 @@ import "../styles/statistic/statistic.scss";
 import "../styles/form/form_pages.scss";
 import "../styles/notfoundpage/notfoundpage.scss";
 import "../styles/general/image.scss";
-import "../styles/Sidebar/sidebar.scss";
+import "../styles/sidebar/sidebar.scss";
 import "../node_modules/react-vis/dist/style.css";
 import "../components/Form/ProgressComponent/FormProgress.scss";
 
