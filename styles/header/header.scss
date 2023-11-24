@@ -460,7 +460,7 @@ header {
     display: none;
     gap: 24px;
     padding: 0 20px;
-    @media screen and (min-width: "853px") {
+    @media screen and (min-width: $media-lg) {
       display: flex;
       gap: 24px;
     }
