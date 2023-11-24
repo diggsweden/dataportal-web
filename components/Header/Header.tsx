@@ -132,7 +132,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
         <div className="header-top">
           <div className="main-bar">
             <div className="start-link">
-              <Link onClick={() => props.setOpenSidebar(false)} href={`/`}>
+              <Link href={"https://digg.se/"} target="_blank">
                 <Image
                   src={diggLogo}
                   width={45}
@@ -182,6 +182,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
 
                     <Link
                       href={`https://community.dataportal.se/`}
+                      target="_blank"
                       key={"community-link"}
                       onClick={closeMenu}
                       lang="en"
@@ -246,29 +247,14 @@ export const Header: React.FC<HeaderProps> = (props) => {
               >
                 {t("pages|startpage$data-api-header")}
               </Link>
-
-              {!isEn && (
-                <>
-                  <Link
-                    href={`/oppen-kallkod`}
-                    className={`header-link ${
-                      pathname?.split("/")[1] === `oppen-kallkod`
-                        ? "active"
-                        : ""
-                    }`}
-                  >
-                    {t("pages|startpage$open-source-header")}
-                  </Link>
-                  <Link
-                    href={`/offentligai`}
-                    className={`header-link ${
-                      pathname?.split("/")[1] === `offentligai` ? "active" : ""
-                    }`}
-                  >
-                    {t("pages|startpage$public-ai-header")}
-                  </Link>
-                </>
-              )}
+              <>
+                <Link href={`/stod-verktyg`} className="header-link">
+                  {t("common|support-tools")}
+                </Link>
+                <Link href={`/goda-exempel`} className="header-link">
+                  {t("common|good-examples")}
+                </Link>
+              </>
             </div>
           </div>
 
