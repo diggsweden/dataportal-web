@@ -1,10 +1,10 @@
 const lucene = require("lucene");
 import {
-  slugify,
-  getLocalizedValue,
-  getEntryLang,
   DCATData,
+  getEntryLang,
+  getLocalizedValue,
   listChoices,
+  slugify,
 } from "../../utilities";
 import { Translate } from "next-translate";
 import { SearchSortOrder } from "../pages/SearchPage";
@@ -73,7 +73,7 @@ export class EntryScape {
     lang: string,
     t: Translate,
     facetSpecification?: FacetSpecification,
-    hitSpecifications?: { [key: string]: HitSpecification }
+    hitSpecifications?: { [key: string]: HitSpecification },
   ) {
     this.entryscapeUrl = entryscapeUrl;
     this.facetSpecification = facetSpecification || {};
@@ -102,7 +102,7 @@ export class EntryScape {
   getFacets(
     metaFacets: ESFacetField[],
     take: number,
-    dcat?: DCATData | undefined
+    dcat?: DCATData | undefined,
   ): Promise<{ [key: string]: SearchFacet }> {
     return new Promise<{ [key: string]: SearchFacet }>((resolve) => {
       let literalFacets: { [key: string]: SearchFacet } = {};
@@ -114,7 +114,7 @@ export class EntryScape {
         //check for facetspecification set in UI
         var facetSpec = this.facetSpecification
           ? this.facetSpecification.facets?.find(
-              (spec) => spec.resource == f.predicate
+              (spec) => spec.resource == f.predicate,
             )
           : null;
 
@@ -153,7 +153,7 @@ export class EntryScape {
               !valueswhitelist ||
               (valueswhitelist &&
                 valueswhitelist.some(
-                  (w) => w.includes(fvalue.name.trim()) && fvalue.name
+                  (w) => w.includes(fvalue.name.trim()) && fvalue.name,
                 ))
             ) {
               var newValue: SearchFacetValue = {
@@ -199,7 +199,7 @@ export class EntryScape {
               !valueswhitelist ||
               (valueswhitelist &&
                 valueswhitelist.some(
-                  (w) => w.includes(fvalue.name.trim()) && fvalue.name
+                  (w) => w.includes(fvalue.name.trim()) && fvalue.name,
                 ))
             )
               if (!resources.includes(fvalue.name)) {
@@ -222,7 +222,7 @@ export class EntryScape {
                 }||${newValue.title}`;
 
                 (uriFacets[f.predicate].facetValues as SearchFacetValue[]).push(
-                  newValue
+                  newValue,
                 );
               }
           });
@@ -239,7 +239,7 @@ export class EntryScape {
             value.facetValues.forEach((f) => {
               if (f && f.title == f.resource) {
                 let entry = res.find(
-                  (entry: any) => entry.getResourceURI() == f.resource
+                  (entry: any) => entry.getResourceURI() == f.resource,
                 );
 
                 if (entry) {
@@ -248,14 +248,14 @@ export class EntryScape {
                   let title = getLocalizedValue(
                     meta,
                     "http://xmlns.com/foaf/0.1/name",
-                    this.lang
+                    this.lang,
                   );
 
                   if (!title)
                     title = getLocalizedValue(
                       meta,
                       "http://purl.org/dc/terms/title",
-                      this.lang
+                      this.lang,
                     );
 
                   f.title = title || f.resource;
@@ -340,7 +340,7 @@ export class EntryScape {
    */
   async getMetaValues(
     es: any,
-    dcat?: DCATData | undefined
+    dcat?: DCATData | undefined,
   ): Promise<{ [key: string]: string[] }> {
     return new Promise<{ [key: string]: string[] }>(async (resolve) => {
       let values: { [key: string]: string[] } = {};
@@ -359,7 +359,7 @@ export class EntryScape {
         //get UI specification for themes
         var themeFacetSpec = this.facetSpecification
           ? this.facetSpecification.facets?.find(
-              (spec) => spec.resource == "http://www.w3.org/ns/dcat#theme"
+              (spec) => spec.resource == "http://www.w3.org/ns/dcat#theme",
             )
           : null;
 
@@ -390,7 +390,7 @@ export class EntryScape {
         //get UI specification for formats
         var formatFacetSpec = this.facetSpecification
           ? this.facetSpecification.facets?.find(
-              (spec) => spec.resource == "http://purl.org/dc/terms/format"
+              (spec) => spec.resource == "http://purl.org/dc/terms/format",
             )
           : null;
 
@@ -497,7 +497,7 @@ export class EntryScape {
    */
   solrSearch(
     request: SearchRequest,
-    dcat?: DCATData | undefined
+    dcat?: DCATData | undefined,
   ): Promise<SearchResult> {
     return new Promise<SearchResult>((resolve) => {
       let hits: SearchHit[] = [];
@@ -521,7 +521,7 @@ export class EntryScape {
             if (fSpec.type == ESType.literal || fSpec.type == ESType.literal_s)
               esQuery.literalFacet(
                 fSpec.resource,
-                fSpec.related ? true : false
+                fSpec.related ? true : false,
               );
             else if (fSpec.type == ESType.uri || fSpec.type == ESType.wildcard)
               esQuery.uriFacet(fSpec.resource, fSpec.related ? true : false);
@@ -534,7 +534,7 @@ export class EntryScape {
         //group by facet type (if many selected within same facet group)
         let groupedFacets = Array.from(request.facetValues).reduce(function (
           acc: { [facet: string]: SearchFacetValue[] },
-          obj: SearchFacetValue
+          obj: SearchFacetValue,
         ) {
           var key = obj.facet;
 
@@ -542,8 +542,7 @@ export class EntryScape {
 
           acc[key].push(obj);
           return acc;
-        },
-        {});
+        }, {});
 
         //iterate groups and add facets within each, will be "OR" between facets in group, and "AND" between groups
         Object.entries(groupedFacets).forEach(([key, fvalue]) => {
@@ -558,7 +557,7 @@ export class EntryScape {
                   }),
                   null,
                   "string",
-                  fvalue[0].related
+                  fvalue[0].related,
                 );
                 break;
               case ESType.uri:
@@ -569,7 +568,7 @@ export class EntryScape {
                     return f.resource;
                   }),
                   null,
-                  fvalue[0].related
+                  fvalue[0].related,
                 );
                 break;
             }
@@ -638,12 +637,12 @@ export class EntryScape {
       if (titleQ)
         queryUrl = queryUrl.replace(
           "&query=",
-          `&query=(title:(${titleQ}))+AND+`
+          `&query=(title:(${titleQ}))+AND+`,
         );
       else
         queryUrl = queryUrl.replace(
           "&query=",
-          `&query=(metadata.object.literal:(${query})+OR+metadata.predicate.literal_t.3f2ae919:(${gramQuery})+OR+metadata.predicate.literal_t.feda1d30:(${gramQuery})+OR+metadata.predicate.literal_t.a6424133:(${gramQuery}))+AND+`
+          `&query=(metadata.object.literal:(${query})+OR+metadata.predicate.literal_t.3f2ae919:(${gramQuery})+OR+metadata.predicate.literal_t.feda1d30:(${gramQuery})+OR+metadata.predicate.literal_t.a6424133:(${gramQuery}))+AND+`,
         );
 
       fetch(queryUrl).then((response) => {
@@ -662,7 +661,7 @@ export class EntryScape {
           let children = EntryStore.factory.extractSearchResults(
             data,
             searchList,
-            es
+            es,
           );
 
           //facets must be retrieved explicitly if requested
@@ -684,7 +683,7 @@ export class EntryScape {
             const context = child.getContext();
             const rdfType = metaData.findFirstValue(
               child.getResourceURI(),
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+              "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
             );
 
             hitSpecification = this.hitSpecifications[rdfType] || {
@@ -699,12 +698,12 @@ export class EntryScape {
                 metaData,
                 hitSpecification.titleResource || "dcterms:title",
                 lang,
-                { resourceURI }
+                { resourceURI },
               ),
               description: getLocalizedValue(
                 metaData,
                 hitSpecification.descriptionResource || "dcterms:description",
-                lang
+                lang,
               ),
               esEntry: child,
               metadata: await this.getMetaValues(child, dcat),
@@ -713,12 +712,12 @@ export class EntryScape {
               titleLang: getEntryLang(
                 metaData,
                 hitSpecification.titleResource || "dcterms:title",
-                lang
+                lang,
               ),
               descriptionLang: getEntryLang(
                 metaData,
                 hitSpecification.descriptionResource || "dcterms:description",
-                lang
+                lang,
               ),
             };
 

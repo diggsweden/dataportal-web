@@ -129,8 +129,7 @@ footer {
 
   .footer__links-nav {
     display: flex;
-    justify-content: start;
-    flex-direction: row-reverse;
+    justify-content: flex-start;
     flex-wrap: wrap;
     gap: $space-12;
     width: 100%;

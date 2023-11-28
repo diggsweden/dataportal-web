@@ -1,10 +1,13 @@
-import { GetStaticPaths } from 'next/types';
-import { Publication } from '../../../components/pages/Articles';
-import { getPublication } from '../../../utilities';
+import { GetStaticPaths } from "next/types";
+import { Publication } from "../../../components/pages/Articles";
+import { getPublication } from "../../../utilities";
 
 export const getStaticProps = async ({ params, locale }: any) => {
-  const slug = ('/' + params?.news) as string;
-  return await getPublication(slug, locale || 'sv', { domain: 'oppen-kallkod', revalidate: true });
+  const slug = ("/" + params?.news) as string;
+  return await getPublication(slug, locale || "sv", {
+    domain: "oppen-kallkod",
+    revalidate: true,
+  });
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -12,7 +15,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: 'blocking',
+    fallback: "blocking",
   };
 };
 

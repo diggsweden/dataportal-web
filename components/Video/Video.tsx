@@ -1,6 +1,6 @@
 import env from "@beam-australia/react-env";
 import React, { useEffect } from "react";
-import { Media_media_dataportal_Digg_Video as IVideo } from "../../graphql/__generated__/Media";
+import { MediaType_Dataportal_Digg_Video_Fragment as IVideo } from "../../graphql/__generated__/operations";
 import { useScript } from "../../hooks/useScript";
 
 interface VideoProps extends IVideo {}
@@ -24,13 +24,13 @@ export const Video: React.FC<VideoProps> = ({ screen9 }) => {
       if (player) {
         player.dispose();
         const script = document.querySelector(
-          'script[src="https://cdn.screen9.com/players/amber-player.js"]'
+          'script[src="https://cdn.screen9.com/players/amber-player.js"]',
         );
         if (script) {
           script.remove();
         }
       }
-    }
+    };
   }, [status]);
 
   return (

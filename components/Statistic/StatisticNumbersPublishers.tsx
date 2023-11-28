@@ -14,7 +14,7 @@ export const StatisticNumbersPublishers = () => {
       fetch(
         env.ENTRYSCAPE_ORG_STATS_URL
           ? env.ENTRYSCAPE_ORG_STATS_URL
-          : "https://admin.dataportal.se/charts/orgData.json"
+          : "https://admin.dataportal.se/charts/orgData.json",
       )
         .then((response) => response.json())
         .then((data) => {

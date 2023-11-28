@@ -1,2 +1,3 @@
-import { StatisticPage } from '../../components/pages/StatisticPage';
+import { StatisticPage } from "../../components/pages/StatisticPage";
+
 export default StatisticPage;

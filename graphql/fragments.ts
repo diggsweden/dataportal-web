@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 /* #region interfaces, unions and types */
 
@@ -13,6 +13,27 @@ export const MEDIA_BASE_FRAGMENT = gql`
     mime
     ext
     screen9
+  }
+`;
+
+export const MODULE_LIST_DATA_FRAGMENT = gql`
+  fragment ModuleListData on dataportal_Digg_ModuleList {
+    __typename
+    id
+    modules {
+      ...ModuleData
+    }
+  }
+`;
+
+export const CATEGORY_FRAGMENT = gql`
+  fragment Category on dataportal_Digg_ICategory {
+    id
+    name
+    slug
+    taxonomy
+    updatedAt
+    locale
   }
 `;
 
@@ -34,8 +55,7 @@ export const CONTAINER_FRAGMENT = gql`
       slug
     }
     categories {
-      name
-      slug
+      ...Category
     }
     tags {
       value
@@ -43,17 +63,15 @@ export const CONTAINER_FRAGMENT = gql`
     blocks {
       ...BlockData
       ... on dataportal_Digg_ModuleList {
-        __typename
-        id
-        modules {
-          ...ModuleData
-        }
+        ...ModuleListData
       }
     }
     seo {
       ...SeoData
     }
   }
+  ${MODULE_LIST_DATA_FRAGMENT}
+  ${CATEGORY_FRAGMENT}
 `;
 
 export const PUBLICATION_FRAGMENT = gql`
@@ -64,17 +82,6 @@ export const PUBLICATION_FRAGMENT = gql`
     endDate
   }
   ${CONTAINER_FRAGMENT}
-`;
-
-export const CATEGORY_FRAGMENT = gql`
-  fragment Category on dataportal_Digg_ICategory {
-    id
-    name
-    slug
-    taxonomy
-    updatedAt
-    locale
-  }
 `;
 
 export const FORM_INPUT_FRAGMENT = gql`
@@ -191,6 +198,7 @@ export const TEXT_FRAGMENT = gql`
 
 export const RELATED_CONTENT_FRAGMENT = gql`
   fragment RelatedContent on dataportal_Digg_RelatedContent {
+    id
     links {
       ...Link
     }

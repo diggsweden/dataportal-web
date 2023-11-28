@@ -1,1 +1,1 @@
-export * from './EntrystoreProvider';
+export * from "./EntrystoreProvider";

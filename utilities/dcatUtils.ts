@@ -1,5 +1,7 @@
 export type DCATData = {
-  templates: [TextTemplate | GroupTemplate | ChoiceTemplate | ExtensionTemplate];
+  templates: [
+    TextTemplate | GroupTemplate | ChoiceTemplate | ExtensionTemplate,
+  ];
 };
 
 export interface TextTemplate {
@@ -44,16 +46,19 @@ export interface ExtensionTemplate {
   id: string;
   extends: string;
   property: string;
-  type: 'extension';
+  type: "extension";
 }
 
-export const listChoices = async (property: string, dcatMeta: DCATData): Promise<string[]> => {
+export const listChoices = async (
+  property: string,
+  dcatMeta: DCATData,
+): Promise<string[]> => {
   return new Promise<string[]>(async (resolve) => {
     let result: string[] = [];
 
     if (property && dcatMeta) {
       let matchingNodes = dcatMeta.templates.filter(
-        (d) => d.type == 'choice' && d.property == property
+        (d) => d.type == "choice" && d.property == property,
       );
 
       if (matchingNodes && matchingNodes.length > 0) {
@@ -69,13 +74,15 @@ export const listChoices = async (property: string, dcatMeta: DCATData): Promise
   });
 };
 
-export const fetchDCATMeta = async (dcatUrl: string): Promise<DCATData | undefined> => {
+export const fetchDCATMeta = async (
+  dcatUrl: string,
+): Promise<DCATData | undefined> => {
   return new Promise<DCATData | undefined>(async (resolve) => {
-    let dcatFileUrl = dcatUrl || '/dcatse_bundle_2022-02-20.json';
+    let dcatFileUrl = dcatUrl || "/dcatse_bundle_2022-02-20.json";
 
     if (dcatFileUrl && dcatFileUrl.length > 0) {
       await fetch(dcatFileUrl, {
-        mode: 'cors',
+        mode: "cors",
       })
         .then((response) => response.json())
         .then((d: DCATData) => {

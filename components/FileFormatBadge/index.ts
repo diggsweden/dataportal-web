@@ -1,1 +1,1 @@
-export * from './FileFormatBadge';
+export * from "./FileFormatBadge";

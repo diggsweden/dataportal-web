@@ -1,3 +1,3 @@
-export * from './ArticleListPage';
-export * from './ContainerPage';
-export * from './Publication';
+export * from "./ArticleListPage";
+export * from "./ContainerPage";
+export * from "./Publication";

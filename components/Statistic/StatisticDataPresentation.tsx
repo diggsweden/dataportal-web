@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface StatisticDataPresentationProps {
   dataText?: string;
@@ -9,11 +9,12 @@ export class StatisticDataPresentation extends React.Component<StatisticDataPres
   constructor(props: StatisticDataPresentationProps) {
     super(props);
   }
+
   render() {
     return (
       <div>
         <span className="text-2xl font-bold">{this.props.dataNumber || 0}</span>
-        <span className="text-md">{this.props.dataText || ''}</span>
+        <span className="text-md">{this.props.dataText || ""}</span>
       </div>
     );
   }

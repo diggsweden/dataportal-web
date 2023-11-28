@@ -1,5 +1,5 @@
-import { Publication_dataportal_Digg_Publications_image } from "../graphql/__generated__/Publication";
-import { SeoData } from "../graphql/__generated__/SeoData";
+import { PublicationDataFragment } from "../graphql/__generated__/operations";
+import { SeoDataFragment } from "../graphql/__generated__/operations";
 import {
   DomainAggregateResponse,
   FormResponse,
@@ -20,8 +20,8 @@ export type DataportalPageProps =
   | ModuleResponse;
 
 type ResolvedPage = {
-  heroImage?: Publication_dataportal_Digg_Publications_image | null;
-  seo?: SeoData | null;
+  heroImage?: PublicationDataFragment["image"] | null;
+  seo?: SeoDataFragment | null;
 };
 
 /**
@@ -51,7 +51,7 @@ export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
   }
 };
 
-export const populateSeo: SeoData = {
+export const populateSeo: SeoDataFragment = {
   __typename: "dataportal_Digg_SEO",
   lang: "sv",
   title: "",

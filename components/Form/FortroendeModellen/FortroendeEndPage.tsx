@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { MainContainerStyle } from "../../../styles/general/emotion";
-import { Module_dataportal_Digg_Module } from "../../../graphql/__generated__/Module";
+import { ModuleDataFragment } from "../../../graphql/__generated__/operations";
 import { ContentArea } from "../../ContentArea";
-import { Heading, Container, css, ArrowIcon } from "@digg/design-system";
+import { ArrowIcon, Container, css, Heading } from "@digg/design-system";
 import { FormBackButton, FormWrapper } from "../Styles/FormStyles";
 import { highlightCode } from "../../pages/Articles";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
-import fortroendeLogo from "../../../public/images/förtroendemodell-logo.svg"
+import fortroendeLogo from "../../../public/images/förtroendemodell-logo.svg";
 import Image from "next/image";
 
-export const FortroendeEndPage: React.FC<Module_dataportal_Digg_Module> = ({
-  blocks,
-}) => {
+export const FortroendeEndPage: React.FC<ModuleDataFragment> = ({ blocks }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const [heading, setHeading] = useState<string | null>(null);
@@ -29,19 +27,24 @@ export const FortroendeEndPage: React.FC<Module_dataportal_Digg_Module> = ({
   };
 
   const getImageUrl = () => {
-    const textToCheck =  blocks[1].__typename === 'dataportal_Digg_Text' ? blocks[1].text.markdown : null;
-    if(textToCheck === null) return;
+    const textToCheck =
+      blocks[1].__typename === "dataportal_Digg_Text"
+        ? blocks[1].text.markdown
+        : null;
+    if (textToCheck === null) return;
 
     const regex = /src="([^"]*)"/g; //Check for src=" "
     const found = textToCheck.match(regex);
-    const imageUrl = found ? found[0].replace('src="', '').replace('"', '') : '';
+    const imageUrl = found
+      ? found[0].replace('src="', "").replace('"', "")
+      : "";
     setImageUrl(imageUrl);
-  }
+  };
 
   useEffect(() => {
     //Highlight code blocks using prismjs
     getImageUrl();
-    
+
     highlightCode();
     setHeading(getHeading());
   }, []);
@@ -63,7 +66,7 @@ export const FortroendeEndPage: React.FC<Module_dataportal_Digg_Module> = ({
           </span>
         </FormBackButton>
 
-        {heading &&(
+        {heading && (
           <Heading
             color="pinkPop"
             size={"3xl"}

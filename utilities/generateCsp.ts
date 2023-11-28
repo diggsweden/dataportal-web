@@ -23,7 +23,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   const add = (
     directive: CSPDirective,
     value: string,
-    options: Options = {}
+    options: Options = {},
   ) => {
     if (options.prodOnly && process.env.NODE_ENV === "development") return;
     /** eslint-disable */
@@ -40,19 +40,19 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     `'self' ${
       nonce ? `'nonce-${nonce}'` : ""
     } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se *.entryscape.com *.dataportal.se`,
-    { prodOnly: true }
+    { prodOnly: true },
   );
   add(
     "script-src-attr",
-    `'unsafe-hashes' 'sha256-dYUMUtU0sGsXCiI6XuVhMNdPUHRSW7RGVl5bz5LjpAI=' 'sha256-VBX8ceLcK+xMdfMO8F4EoCjmT8IQqXqmpv70AnAzpAc='`
+    `'unsafe-hashes' 'sha256-dYUMUtU0sGsXCiI6XuVhMNdPUHRSW7RGVl5bz5LjpAI=' 'sha256-VBX8ceLcK+xMdfMO8F4EoCjmT8IQqXqmpv70AnAzpAc='`,
   );
   add(
     "font-src",
-    `'self' https://static.entryscape.com https://static.cdn.entryscape.com`
+    `'self' https://static.entryscape.com https://static.cdn.entryscape.com`,
   );
   add(
     "font-src",
-    `'self' data: https://static.entryscape.com https://static.cdn.entryscape.com`
+    `'self' data: https://static.entryscape.com https://static.cdn.entryscape.com`,
   );
   add("base-uri", `'self'`);
   add("prefetch-src", `'self'`);
@@ -62,19 +62,19 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "img-src",
     `'self' ${
       process.env.IMAGE_DOMAIN || ""
-    } https://diggdrstoragetest.blob.core.windows.net/ data: *`
+    } https://diggdrstoragetest.blob.core.windows.net/ data: *`,
   );
   add(
     "media-src",
-    `'self' ${process.env.IMAGE_DOMAIN || ""} https: data: blob:`
+    `'self' ${process.env.IMAGE_DOMAIN || ""} https: data: blob:`,
   );
   add(
     "style-src",
-    `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`
+    `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`,
   );
   add(
     "style-src-elem",
-    `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`
+    `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`,
   );
   add("style-src-attr", `'self' 'unsafe-inline'`);
   add("connect-src", `'self' https://* http://localhost:1300/`);
