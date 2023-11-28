@@ -460,7 +460,7 @@ header {
     display: none;
     gap: 24px;
     padding: 0 20px;
-    @media screen and (min-width: $media-lg) {
+    @media screen and (min-width: "1090px") {
       display: flex;
       gap: 24px;
     }
@@ -474,6 +474,9 @@ header {
 .searchAndMenu {
   display: flex;
   gap: 12px;
+  @media screen and (min-width: "600px") {
+    gap: 20px;
+  }
 }
 
 .header-bottom-logo {
