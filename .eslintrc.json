@@ -1,9 +1,11 @@
 {
   "extends": "next/core-web-vitals",
+  "plugins": ["prettier"],
   "rules": {
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "react-hooks/exhaustive-deps": "off",
     "@next/next/no-sync-scripts" : "off",
-    "no-unused-vars": 2
+    "no-unused-vars": 2,
+    "prettier/prettier": "error"
   }
 }

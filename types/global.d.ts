@@ -1,5 +1,4 @@
 /// <reference types="@digg/design-system/lib/emotion-extention" />
-
 type FlexDirection = "column" | "row";
 
 type MenuItem = {

@@ -15,19 +15,19 @@ export const getLocalizedValue = (
   metadataGraph: any,
   prop: any,
   lang: string,
-  options?: { resourceURI?: string }
+  options?: { resourceURI?: string },
 ) => {
-  let val = '';
-  let fallbackLang = 'sv';
+  let val = "";
+  let fallbackLang = "sv";
 
   const stmts = metadataGraph.find(options?.resourceURI, prop);
   if (stmts.length > 0) {
     const obj: any = {};
     for (let s = 0; s < stmts.length; s++) {
-      obj[stmts[s].getLanguage() || ''] = stmts[s].getValue();
+      obj[stmts[s].getLanguage() || ""] = stmts[s].getValue();
     }
 
-    if (typeof obj[lang] != 'undefined') {
+    if (typeof obj[lang] != "undefined") {
       val = obj[lang];
     } else if (obj[fallbackLang] && fallbackLang != lang) {
       val = obj[fallbackLang];
@@ -40,17 +40,17 @@ export const getLocalizedValue = (
 };
 
 export const getEntryLang = (metadataGraph: any, prop: any, lang: string) => {
-  let val = '';
-  let fallbackLang = 'sv';
+  let val = "";
+  let fallbackLang = "sv";
 
   const stmts = metadataGraph.find(null, prop);
   if (stmts.length > 0) {
     const obj: any = {};
     for (let s = 0; s < stmts.length; s++) {
-      obj[stmts[s].getLanguage() || ''] = stmts[s].getValue();
+      obj[stmts[s].getLanguage() || ""] = stmts[s].getValue();
     }
 
-    if (typeof obj[lang] != 'undefined') {
+    if (typeof obj[lang] != "undefined") {
       val = lang;
     } else {
       val = fallbackLang;

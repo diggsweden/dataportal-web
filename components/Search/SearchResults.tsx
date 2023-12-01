@@ -4,7 +4,7 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { SearchMode } from "./SearchFilters";
 import { FileFormatBadge } from "../FileFormatBadge";
 import { clearLocalStorage } from "../../utilities";
-import { DetailedList, CompactList } from "../Icons";
+import { CompactList, DetailedList } from "../Icons";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { SearchSortOrder } from "../pages/SearchPage";
@@ -22,7 +22,7 @@ const searchFocus = () => {
   if (!content) return;
 
   const focusable = content.querySelectorAll<HTMLElement>(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
   );
 
   const first = focusable[0];
@@ -36,7 +36,7 @@ const saveCurrentScrollPos = () => {
   if (typeof localStorage != "undefined" && typeof location != "undefined") {
     localStorage.setItem(
       `ScrollposY_${location.search}`,
-      JSON.stringify(window.scrollY)
+      JSON.stringify(window.scrollY),
     );
   }
 };
@@ -282,12 +282,12 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                       hit.metadata["inScheme_resource"] &&
                       search.getFacetValueTitle(
                         "http://www.w3.org/2004/02/skos/core#inScheme",
-                        hit.metadata["inScheme_resource"][0]
+                        hit.metadata["inScheme_resource"][0],
                       ) && (
                         <span className="result-theme text-base">
                           {search.getFacetValueTitle(
                             "http://www.w3.org/2004/02/skos/core#inScheme",
-                            hit.metadata["inScheme_resource"][0]
+                            hit.metadata["inScheme_resource"][0],
                           )}
                         </span>
                       )}
@@ -332,7 +332,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                                 <p className="text-base file" key={index}>
                                   <FileFormatBadge badgeName={m} />
                                 </p>
-                              )
+                              ),
                             )}
                         </div>
                       </div>
@@ -357,7 +357,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                               <p className="result-format" key={index}>
                                 <FileFormatBadge badgeName={m} />
                               </p>
-                            )
+                            ),
                           )}
                       </div>
                     ) : (

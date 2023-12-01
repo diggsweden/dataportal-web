@@ -1,12 +1,12 @@
-import { Button, ArrowIcon, css } from "@digg/design-system";
+import { ArrowIcon, Button, css } from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import React from "react";
 import FormTypes from "../FormTypes";
-import { FormNavButtons, DiggConfirmModal } from "../Styles/FormStyles";
+import { DiggConfirmModal, FormNavButtons } from "../Styles/FormStyles";
 import {
-  handleScroll,
   GenerateJsonFile,
+  handleScroll,
   ImportFromJsonFile,
 } from "../Utils/formUtils";
 
@@ -67,7 +67,7 @@ const FormBottomNav: React.FC<Props> = ({
         </Button>
       </FormNavButtons>
       <FormNavButtons>
-      <span>
+        <span>
           <Button
             onClick={(e) => {
               e.preventDefault();
@@ -153,7 +153,8 @@ const FormBottomNav: React.FC<Props> = ({
                 laddas ner.
                 <br />
                 <br />
-                Läs i Guiden till förtroendemoellen på förstasidan om hur du använder JSON-filen.
+                Läs i Guiden till förtroendemoellen på förstasidan om hur du
+                använder JSON-filen.
               </p>
               <div className="modal-buttons">
                 <button

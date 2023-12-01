@@ -1,6 +1,6 @@
 import { Accordion, fontSize, space, css } from "@digg/design-system";
 import React from "react";
-import { Faq as IFaq } from "../../graphql/__generated__/Faq";
+import { FaqFragment as IFaq } from "../../graphql/__generated__/operations";
 import { renderMarkdown } from "../Renderers";
 
 export const Faq: React.FC<IFaq> = ({ question, answer }) => {

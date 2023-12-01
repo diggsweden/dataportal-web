@@ -21,12 +21,15 @@ const styles = css`
   position: relative;
 
   z-index: 9999;
+
   .height {
     min-height: 44px;
   }
+
   .mw {
     max-width: 330px;
   }
+
   .px {
     ${space({ px: 4 })}
   }
@@ -72,6 +75,7 @@ const styles = css`
 
   .active {
     background-color: ${colorPalette.pinkPop};
+
     a {
       color: ${colorPalette.gray900};
     }
@@ -112,7 +116,7 @@ export const FormDropdownNavigation: React.FC<ContainerDpDwnProps> = ({
 
   const handleClick = (
     e: React.MouseEvent<HTMLLIElement>,
-    pageName: string
+    pageName: string,
   ) => {
     e.preventDefault();
     setCurActive(pageName);

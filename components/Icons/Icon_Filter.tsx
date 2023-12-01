@@ -1,7 +1,13 @@
-import React from 'react';
+import React from "react";
 
 export const FilterIcon: React.FC = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path
       d="M0.5 12.1667V13.8333H5.5V12.1667H0.5ZM0.5 2.16667V3.83333H8.83333V2.16667H0.5ZM8.83333 15.5V13.8333H15.5V12.1667H8.83333V10.5H7.16667V15.5H8.83333ZM3.83333 5.5V7.16667H0.5V8.83333H3.83333V10.5H5.5V5.5H3.83333ZM15.5 8.83333V7.16667H7.16667V8.83333H15.5ZM10.5 5.5H12.1667V3.83333H15.5V2.16667H12.1667V0.5H10.5V5.5Z"
       fill="#2B2A29"

@@ -1,26 +1,32 @@
-import React from 'react';
-import { Button, css } from '@digg/design-system';
-import { useRouter } from 'next/router';
-import { DiggConfirmModal } from '../Styles/FormStyles';
-import { GeneratePDF } from '../Utils/formUtils';
-import FormTypes from '../FormTypes';
-import useTranslation from 'next-translate/useTranslation';
-import { Module_dataportal_Digg_Module_blocks } from '../../../graphql/__generated__/Module';
-import { ContentArea } from '../../ContentArea';
+import React from "react";
+import { Button, css } from "@digg/design-system";
+import { useRouter } from "next/router";
+import { DiggConfirmModal } from "../Styles/FormStyles";
+import { GeneratePDF } from "../Utils/formUtils";
+import FormTypes from "../FormTypes";
+import useTranslation from "next-translate/useTranslation";
+import { ModuleDataFragment } from "../../../graphql/__generated__/operations";
+import { ContentArea } from "../../ContentArea";
 
 type Props = {
-    formDataArray: FormTypes[][];
-    blocks: Module_dataportal_Digg_Module_blocks[] | null;
-  };
+  formDataArray: FormTypes[][];
+  blocks: ModuleDataFragment["blocks"] | null;
+};
 
-const FormGeneratePDF: React.FC<Props> = ({formDataArray, blocks}) => {
-    const router = useRouter();
-    const iframeRef = React.useRef<HTMLIFrameElement>(null);
-    const finishedModalRef = React.useRef<HTMLDivElement>(null);
-    const {t} = useTranslation();
+const FormGeneratePDF: React.FC<Props> = ({ formDataArray, blocks }) => {
+  const router = useRouter();
+  const iframeRef = React.useRef<HTMLIFrameElement>(null);
+  const finishedModalRef = React.useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
   return (
     <>
-      <>{blocks && <div className='generate-pdf-block'><ContentArea blocks={blocks}/></div>}</>
+      <>
+        {blocks && (
+          <div className="generate-pdf-block">
+            <ContentArea blocks={blocks} />
+          </div>
+        )}
+      </>
       <Button
         primary
         onClick={(e) => {
@@ -44,11 +50,11 @@ const FormGeneratePDF: React.FC<Props> = ({formDataArray, blocks}) => {
           width: fit-content;
         `}
       >
-        {t('pages|form$generate-pdf-text')}
+        {t("pages|form$generate-pdf-text")}
       </Button>
       <DiggConfirmModal ref={finishedModalRef} className="hide">
         <div className="modal-content">
-          <p>{t('pages|form$form-continue-text')}</p>
+          <p>{t("pages|form$form-continue-text")}</p>
           <div className="modal-buttons">
             <button
               onClick={(e) => {
@@ -57,7 +63,7 @@ const FormGeneratePDF: React.FC<Props> = ({formDataArray, blocks}) => {
                 router.push("/offentligai/fortroendemodellen/success");
               }}
             >
-              {t('common|yes')}
+              {t("common|yes")}
             </button>
             <button
               onClick={(e) => {
@@ -65,7 +71,7 @@ const FormGeneratePDF: React.FC<Props> = ({formDataArray, blocks}) => {
                 finishedModalRef.current?.classList.add("hide");
               }}
             >
-              {t('common|no')}
+              {t("common|no")}
             </button>
           </div>
         </div>
@@ -83,7 +89,6 @@ const FormGeneratePDF: React.FC<Props> = ({formDataArray, blocks}) => {
       ></iframe>
     </>
   );
-}
+};
 
-
-export default FormGeneratePDF
+export default FormGeneratePDF;

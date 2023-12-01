@@ -21,10 +21,12 @@ export interface IPuff {
 
 const styles = (puff: IPuff) => css`
   background: ${colorPalette[puff.colors?.background || "gray900"]};
+
   .puff-heading {
     @media screen and (min-width: ${theme.breakpoints[1]}) {
       ${space({ mb: puff.description ? 2 : 0 })};
     }
+
     a {
       color: ${colorPalette[puff.colors?.accent || "pinkPop"]};
     }
@@ -57,9 +59,9 @@ export const Puffs: React.FC<{
         ].some((page) => {
           return puff.slug.includes(page);
         });
-        const linkPath = `${basepath && !isDataSet ? basepath : ""}${
-          puff?.slug
-        }`;
+        const linkPath = `${
+          basepath && !isDataSet ? basepath : ""
+        }${puff?.slug}`;
 
         return (
           <li

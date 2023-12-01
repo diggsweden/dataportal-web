@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 //  Creates format badges with different colors in searchresult..
 
@@ -18,142 +18,137 @@ export class FileFormatBadge extends React.Component<
     let text, className;
 
     switch (this.props.badgeName) {
-      case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-        text = 'spreadsheet';
-        className = 'bc-2';
+      case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+        text = "spreadsheet";
+        className = "bc-2";
         break;
 
-      case 'text/csv':
-        text = 'csv';
-        className = 'bc-1';
+      case "text/csv":
+        text = "csv";
+        className = "bc-1";
         break;
 
-      case 'HTML':
-        text = 'html';
-        className = 'bc-1';
+      case "HTML":
+        text = "html";
+        className = "bc-1";
         break;
 
-      case 'text/html':
-        text = 'html';
-        className = 'bc-1';
+      case "text/html":
+        text = "html";
+        className = "bc-1";
         break;
 
-      case 'application/vnd.ms-excel':
-        text = 'excel';
-        className = 'bc-1';
+      case "application/vnd.ms-excel":
+        text = "excel";
+        className = "bc-1";
         break;
 
-      case 'application/xhtml+xml':
-        text = 'html';
-        className = 'bc-1';
+      case "application/xhtml+xml":
+        text = "html";
+        className = "bc-1";
         break;
 
-      case 'application/json':
-        text = 'json';
-        className = 'bc-6';
+      case "application/json":
+        text = "json";
+        className = "bc-6";
         break;
 
-      case 'application/zip':
-        text = 'zip';
-        className = 'bc-5';
+      case "application/zip":
+        text = "zip";
+        className = "bc-5";
         break;
 
-      case 'application/json+zip':
-        text = 'json / zip';
-        className = 'bc-5';
+      case "application/json+zip":
+        text = "json / zip";
+        className = "bc-5";
         break;
 
-      case 'text/xml':
-        text = 'xml';
-        className = 'bc-3';
+      case "text/xml":
+        text = "xml";
+        className = "bc-3";
         break;
 
-      case 'wms':
-        text = 'wms';
-        className = 'bc-3';
+      case "wms":
+        text = "wms";
+        className = "bc-3";
         break;
 
-      case 'WMS':
-        text = 'wms';
-        className = 'bc-3';
+      case "WMS":
+        text = "wms";
+        className = "bc-3";
         break;
 
-      case 'application/x-shapefile':
-        text = 'shp';
-        className = 'bc-4';
+      case "application/x-shapefile":
+        text = "shp";
+        className = "bc-4";
         break;
 
-      case 'application/rdf+xml':
-        text = 'rdf';
-        className = 'bc-2';
+      case "application/rdf+xml":
+        text = "rdf";
+        className = "bc-2";
         break;
 
-      case 'application/ld+json' && 'application/json-ld':
-        text = 'rdf';
-        className = 'bc-2';
+      case "application/ld+json" && "application/json-ld":
+        text = "rdf";
+        className = "bc-2";
         break;
 
-      case 'application/json-ld':
-        text = 'rdf';
-        className = 'bc-2';
+      case "application/json-ld":
+        text = "rdf";
+        className = "bc-2";
         break;
 
-      case 'GeoJSON (.zip containing .json)':
-        text = 'geojson';
-        className = 'bc-2';
+      case "GeoJSON (.zip containing .json)":
+        text = "geojson";
+        className = "bc-2";
         break;
 
-      case 'application/atom+xml':
-        text = 'atom';
-        className = 'bc-2';
+      case "application/atom+xml":
+        text = "atom";
+        className = "bc-2";
         break;
 
-      case 'application/octet-stream':
-        text = 'octet-stream';
-        className = 'bc-6';
+      case "application/octet-stream":
+        text = "octet-stream";
+        className = "bc-6";
         break;
 
-      case 'application/sparql-query':
-        text = 'sparql-query';
-        className = 'bc-4';
+      case "application/sparql-query":
+        text = "sparql-query";
+        className = "bc-4";
         break;
 
-      case 'application/pdf':
-        text = 'pdf';
-        className = 'bc-8';
+      case "application/pdf":
+        text = "pdf";
+        className = "bc-8";
         break;
 
-      case 'application/xml':
-        text = 'xml';
-        className = 'bc-8';
+      case "application/xml":
+        text = "xml";
+        className = "bc-8";
         break;
 
-      case 'pdf':
-        text = 'pdf';
-        className = 'bc-8';
+      case "pdf":
+        text = "pdf";
+        className = "bc-8";
         break;
 
-        case '.PX - ett standardformat för statistikfiler och används av en stor grupp statistikbyråer.':
-          text = 'PX';
-          className = 'bc-3';
-          break;
+      case ".PX - ett standardformat för statistikfiler och används av en stor grupp statistikbyråer.":
+        text = "PX";
+        className = "bc-3";
+        break;
 
-          case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ':
-            text = 'APPLICATION/XML/SPREADSHEET';
-            className = 'bc-1';
-            break;
-
+      case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ":
+        text = "APPLICATION/XML/SPREADSHEET";
+        className = "bc-1";
+        break;
 
       default:
         text = this.props.badgeName;
-        className = '';
+        className = "";
         break;
     }
 
-    return (
-      <span className={`format ${className}`}>
-        {text}
-      </span>
-    );
+    return <span className={`format ${className}`}>{text}</span>;
   }
 }

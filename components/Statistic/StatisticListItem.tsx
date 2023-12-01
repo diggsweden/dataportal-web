@@ -11,6 +11,7 @@ export class StatisticListItem extends React.Component<StatisticListItemProps> {
   constructor(props: StatisticListItemProps) {
     super(props);
   }
+
   render() {
     return (
       <li>

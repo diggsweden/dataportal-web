@@ -1,32 +1,32 @@
 @import '~@digg/design-system/lib/sass/variables';
 
 .progress-container {
-    background-color: $clr-gray900;
-    display: flex;
-    flex-direction: row;
-    color:white;
-    margin-bottom: 2rem;
+  background-color: $clr-gray900;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  margin-bottom: 2rem;
 
-    .progress-item{                    
-        color: $clr-gray100;
-        border-top: 3px solid $clr-gray600;
-        margin-right: $space-2;
-        width: 7.25rem;   
+  .progress-item {
+    color: $clr-gray100;
+    border-top: 3px solid $clr-gray600;
+    margin-right: $space-2;
+    width: 7.25rem;
 
-        p{
-            word-wrap: break-word; 
-        }
-    } 
-    
-    .active{
-        border-top: 3px solid $clr-pinkPop;
+    p {
+      word-wrap: break-word;
     }
+  }
 
-    .not-current{
-        border-color: hsla(8, 84%, 74%, 0.5); // PinkPop 0.5 opacity
-    }
+  .active {
+    border-top: 3px solid $clr-pinkPop;
+  }
 
-    .clickable{
-        cursor: pointer;
-    }
+  .not-current {
+    border-color: hsla(8, 84%, 74%, 0.5); // PinkPop 0.5 opacity
+  }
+
+  .clickable {
+    cursor: pointer;
+  }
 }

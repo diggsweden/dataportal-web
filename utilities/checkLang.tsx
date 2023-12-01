@@ -1,10 +1,11 @@
-import React from 'react';
+import React from "react";
+
 export interface IHeading {
   lang: string;
   node: React.ReactNode;
 }
 
-const en = '{en:';
+const en = "{en:";
 
 /**
  * Checks if string or part of string is language marked in the format {en:example text}
@@ -21,28 +22,28 @@ export const checkLang = (text: string | null) => {
         const swedishPhraze = text.indexOf(en) != 0 ? true : false;
         arr.push(
           swedishPhraze ? (
-            text.substring(0, text.includes(en) ? text.indexOf(en) : text.length)
+            text.substring(
+              0,
+              text.includes(en) ? text.indexOf(en) : text.length,
+            )
           ) : (
-            <span
-              key={index}
-              lang={'en'}
-            >
-              {text.substring(4, text.indexOf('}'))}
+            <span key={index} lang={"en"}>
+              {text.substring(4, text.indexOf("}"))}
             </span>
-          )
+          ),
         );
         text = text.slice(
           text.includes(en)
-            ? text.indexOf(swedishPhraze ? en : '}') + (swedishPhraze ? 0 : 1)
+            ? text.indexOf(swedishPhraze ? en : "}") + (swedishPhraze ? 0 : 1)
             : text.length,
-          text.length
+          text.length,
         );
         index++;
       }
       return arr;
     };
 
-    const str = text ? text : '';
+    const str = text ? text : "";
     const languageMarked = splitLanguageParts(str).map((subElement) => {
       return subElement;
     });

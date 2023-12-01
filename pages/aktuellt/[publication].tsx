@@ -1,11 +1,11 @@
-'../../styles/general/emotion';
-import { GetStaticPaths, GetStaticProps } from 'next/types';
-import { getPublication } from '../../utilities';
-import { Publication } from '../../components/pages/Articles';
+"../../styles/general/emotion";
+import { GetStaticPaths, GetStaticProps } from "next/types";
+import { getPublication } from "../../utilities";
+import { Publication } from "../../components/pages/Articles";
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
-  const slug = ('/' + params?.publication) as string;
-  return (await getPublication(slug, locale || 'sv')) as any;
+  const slug = ("/" + params?.publication) as string;
+  return (await getPublication(slug, locale || "sv")) as any;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -13,7 +13,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: 'blocking',
+    fallback: "blocking",
   };
 };
 

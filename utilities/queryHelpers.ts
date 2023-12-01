@@ -13,53 +13,31 @@ import { FORM_QUERY } from "../graphql/formQuery";
 import { MODULE_QUERY } from "../graphql/moduleQuery";
 import { PUBLICATION_QUERY } from "../graphql/publicationQuery";
 import { SEARCH_QUERY } from "../graphql/searchQuery";
+import { Dataportal_ContainerState } from "../graphql/__generated__/types";
 import {
-  Containers_dataportal_Digg_Containers,
-  Containers_dataportal_Digg_Containers_categories,
-} from "../graphql/__generated__/Containers";
-import {
-  DomainAggregate,
-  DomainAggregateVariables,
-  DomainAggregate_rootContainer,
-} from "../graphql/__generated__/DomainAggregate";
-import {
-  Form,
-  FormVariables,
-  Form_dataportal_Digg_Form,
-} from "../graphql/__generated__/Form";
-import { dataportal_ContainerState } from "../graphql/__generated__/globalTypes";
-import {
-  Module,
-  ModuleVariables,
-  Module_dataportal_Digg_Module,
-} from "../graphql/__generated__/Module";
-import {
-  MultiContainers,
-  MultiContainersVariables,
-  MultiContainers_category,
-  MultiContainers_category_categories,
-  MultiContainers_container,
-} from "../graphql/__generated__/MultiContainers";
-import {
-  Publication,
-  PublicationVariables,
-  Publication_dataportal_Digg_Publications,
-} from "../graphql/__generated__/Publication";
-import {
-  Related,
-  RelatedVariables,
-  Related_containers,
-} from "../graphql/__generated__/Related";
-import {
-  RootAggregate,
-  RootAggregateVariables,
-  RootAggregate_container,
-  RootAggregate_events,
-  RootAggregate_examples,
-  RootAggregate_news,
-} from "../graphql/__generated__/RootAggregate";
-import { SearchVariables } from "../graphql/__generated__/Search";
-import { SeoData } from "../graphql/__generated__/SeoData";
+  CategoryFragment,
+  ContainerData_Dataportal_Digg_Container_Fragment,
+  DomainAggregateQuery,
+  DomainAggregateQueryVariables,
+  FormDataFragment,
+  FormQuery,
+  FormQueryVariables,
+  ModuleDataFragment,
+  ModuleQuery,
+  ModuleQueryVariables,
+  MultiContainersQuery,
+  MultiContainersQueryVariables,
+  PublicationDataFragment,
+  PublicationQuery,
+  PublicationQueryVariables,
+  RelatedContainerFragment,
+  RelatedQuery,
+  RelatedQueryVariables,
+  RootAggregateQuery,
+  RootAggregateQueryVariables,
+  SearchQueryVariables,
+  SeoDataFragment,
+} from "../graphql/__generated__/operations";
 import { populatePuffs } from "./areasAndThemesHelper";
 
 /**
@@ -97,9 +75,9 @@ export const containerArgsFromSlugs = (
   slugs: string[],
   locale: string,
   domain?: DiggDomain,
-  state?: dataportal_ContainerState,
-  secret?: string
-): MultiContainersVariables => {
+  state?: Dataportal_ContainerState,
+  secret?: string,
+): MultiContainersQueryVariables => {
   const defaultVars = {
     category: {
       ...(domain ? { domains: [domain] } : {}),
@@ -146,14 +124,14 @@ const hasIdendicalSibling = (slugs: string[], domain?: DiggDomain) => {
 };
 
 const getRelatedContainers = async (
-  categories: Containers_dataportal_Digg_Containers_categories[],
+  categories: CategoryFragment[],
   locale: string,
-  domain?: DiggDomain
+  domain?: DiggDomain,
 ) => {
   const relatedCategories = categories.map((c) => c.slug);
 
   if (categories.length > 0) {
-    const result = await client.query<Related, RelatedVariables>({
+    const result = await client.query<RelatedQuery, RelatedQueryVariables>({
       query: RELATED_CONTAINER_QUERY,
       variables: {
         filter: {
@@ -179,71 +157,74 @@ const getRelatedContainers = async (
 /* #region types */
 export interface MultiContainerResponse {
   type: "MultiContainer";
-  category?: MultiContainers_category_categories;
-  container?: MultiContainers_container;
-  related?: Related_containers[];
-  categoryContainers?: MultiContainers_category[];
+  category?: ContainerData_Dataportal_Digg_Container_Fragment;
+  container?: ContainerData_Dataportal_Digg_Container_Fragment;
+  related?: RelatedContainerFragment[];
+  categoryContainers?:
+    | PublicationDataFragment[]
+    | ContainerData_Dataportal_Digg_Container_Fragment[];
   domain?: DiggDomain;
 }
 
-export interface PublicationResponse
-  extends Publication_dataportal_Digg_Publications {
+export interface PublicationResponse extends PublicationDataFragment {
   type: "Publication";
-  related?: Publication_dataportal_Digg_Publications[];
+  related?: PublicationDataFragment[];
 }
 
 export interface PublicationListResponse {
   type: "PublicationList";
   articles:
-    | Publication_dataportal_Digg_Publications[]
-    | MultiContainers_category[];
-  category?: MultiContainers_category_categories;
+    | PublicationDataFragment[]
+    | ContainerData_Dataportal_Digg_Container_Fragment[];
+  category?: ContainerData_Dataportal_Digg_Container_Fragment;
   domain?: DiggDomain;
-  seo?: SeoData;
+  seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
 }
 
-export interface DomainAggregateResponse extends DomainAggregate_rootContainer {
+export interface DomainAggregateResponse
+  extends ContainerData_Dataportal_Digg_Container_Fragment {
   type: "DomainAggregate";
   areas?: IPuff[];
   themes?: IPuff[];
   domain: DiggDomain;
 }
 
-export interface RootAggregateResponse extends RootAggregate_container {
+export interface RootAggregateResponse
+  extends ContainerData_Dataportal_Digg_Container_Fragment {
   type: "RootAggregate";
   areas?: IPuff[];
   themes?: IPuff[];
-  news?: RootAggregate_news;
-  example?: RootAggregate_examples;
-  event?: RootAggregate_events;
+  news?: PublicationDataFragment;
+  examples?: PublicationDataFragment;
+  events?: PublicationDataFragment;
 }
 
-export interface FormResponse extends Form_dataportal_Digg_Form {
+export interface FormResponse extends FormDataFragment {
   type: "Form";
 }
 
-export interface ModuleResponse extends Module_dataportal_Digg_Module {
+export interface ModuleResponse extends ModuleDataFragment {
   type: "Module";
 }
 
 export interface ContentSearchResponse {
   entries:
-    | Publication_dataportal_Digg_Publications
-    | Containers_dataportal_Digg_Containers
+    | PublicationDataFragment
+    | ContainerData_Dataportal_Digg_Container_Fragment
     | null;
   nrOfHits: number;
 }
 
 export interface QueryOptions {
-  state?: dataportal_ContainerState;
+  state?: Dataportal_ContainerState;
   secret?: string;
   revalidate: boolean;
 }
 
 export interface PublicationListOptions {
-  seo?: SeoData;
+  seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
 }
@@ -252,6 +233,7 @@ export interface PublicationQueryOptions extends QueryOptions {
   domain?: DiggDomain;
   tags?: string[];
 }
+
 /* #endregion */
 
 /**
@@ -260,7 +242,7 @@ export interface PublicationQueryOptions extends QueryOptions {
  * @returns {Array<String[]>} An array with stringarrays based on all containerslugs
  */
 export const extractSlugs = (
-  containers: (Containers_dataportal_Digg_Containers | null)[]
+  containers: (ContainerData_Dataportal_Digg_Container_Fragment | null)[],
 ) => {
   const slugsArray: Array<string[]> = [];
   containers.map((page) => {
@@ -280,14 +262,14 @@ export const getMultiContainer = async (
   slugs: string[],
   locale: string,
   domain?: DiggDomain,
-  opts: QueryOptions = { revalidate: true }
+  opts: QueryOptions = { revalidate: true },
 ) => {
   const { state, secret, revalidate } = opts;
   if (hasIdendicalSibling(slugs, domain)) {
     console.warn(
       `Cannot have identicall slugs after another: '${
         domain ? `/${domain}/` : ""
-      }${slugs.join("/")}'`
+      }${slugs.join("/")}'`,
     );
     return notFound(revalidate);
   }
@@ -297,8 +279,8 @@ export const getMultiContainer = async (
   try {
     // Get external data from the file system, API, DB, etc.
     const { error, errors, data } = await client.query<
-      MultiContainers,
-      MultiContainersVariables
+      MultiContainersQuery,
+      MultiContainersQueryVariables
     >({
       query: CONTAINER_MULTI_QUERY,
       variables: containerArgsFromSlugs(slugs, locale, domain, state, secret),
@@ -333,7 +315,7 @@ export const getMultiContainer = async (
         category,
         categoryContainers,
         domain: domain || null,
-      } as MultiContainerResponse,
+      },
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
@@ -356,7 +338,7 @@ export const getPublicationsList = async (
   domains: DiggDomain[],
   tags: string[],
   locale: string,
-  opts?: PublicationListOptions
+  opts?: PublicationListOptions,
 ) => {
   // If nextjs should check for changes on the server
   const revalidate = true;
@@ -364,14 +346,14 @@ export const getPublicationsList = async (
 
   try {
     const { data, error } = await client.query<
-      Publication,
-      PublicationVariables
+      PublicationQuery,
+      PublicationQueryVariables
     >({
       query: PUBLICATION_QUERY,
       variables: {
         filter: {
           locale,
-          state: dataportal_ContainerState.live,
+          state: Dataportal_ContainerState.Live,
           tags: tags,
           domains,
           limit: 1000,
@@ -390,7 +372,7 @@ export const getPublicationsList = async (
       console.warn(
         `No publications found${
           domains.length > 0 ? ` in domain(s) ${domains.join(",")}` : ""
-        } with tags: '${tags.join(",")}'`
+        } with tags: '${tags.join(",")}'`,
       );
     }
 
@@ -435,13 +417,13 @@ export const getPublicationsList = async (
 export const getPublication = async (
   slug: string,
   locale: string,
-  opts: PublicationQueryOptions = { revalidate: true }
+  opts: PublicationQueryOptions = { revalidate: true },
 ) => {
   const { state, secret, revalidate, domain, tags } = opts;
   try {
     const mainPublicationResult = await client.query<
-      Publication,
-      PublicationVariables
+      PublicationQuery,
+      PublicationQueryVariables
     >({
       query: PUBLICATION_QUERY,
       variables: {
@@ -472,13 +454,13 @@ export const getPublication = async (
       return notFound(revalidate);
     }
 
-    const domains = publication.domains?.map((dom) => dom?.slug || "");
-    const relatedTags = publication.tags?.map((tag) => tag?.value || "");
+    const domains = publication.domains.map((dom) => dom?.slug || "");
+    const relatedTags = publication.tags.map((tag) => tag?.value || "");
     // console.log({ domains, tags });
 
     const relatedPublicationResult = await client.query<
-      Publication,
-      PublicationVariables
+      PublicationQuery,
+      PublicationQueryVariables
     >({
       query: PUBLICATION_QUERY,
       variables: { filter: { limit: 4, locale, domains, tags: relatedTags } },
@@ -493,7 +475,7 @@ export const getPublication = async (
         ...publication,
         related:
           relatedPublicationResult?.data?.dataportal_Digg_Publications.filter(
-            (pub) => pub?.id !== publication.id
+            (pub) => pub?.id !== publication.id,
           ) || [],
       } as PublicationResponse,
       ...(revalidate
@@ -515,7 +497,7 @@ export const getPublication = async (
 export const getDomainAggregate = async (
   domainSlug: string,
   locale: string,
-  opts: QueryOptions = { revalidate: true }
+  opts: QueryOptions = { revalidate: true },
 ) => {
   const { state, secret, revalidate } = opts;
   const sharedVariables = {
@@ -524,8 +506,8 @@ export const getDomainAggregate = async (
   };
   try {
     const result = await client.query<
-      DomainAggregate,
-      DomainAggregateVariables
+      DomainAggregateQuery,
+      DomainAggregateQueryVariables
     >({
       query: DOMAIN_AGGREGATE_QUERY,
       variables: {
@@ -533,7 +515,7 @@ export const getDomainAggregate = async (
         root: {
           ...sharedVariables,
           ...(secret ? { previewSecret: secret } : {}),
-          state: state || dataportal_ContainerState.live,
+          state: state || Dataportal_ContainerState.Live,
           slug: "/" + (domainSlug || ""),
         },
       },
@@ -592,7 +574,7 @@ export const getDomainAggregate = async (
 
 export const getRootAggregate = async (
   locale: string,
-  opts: QueryOptions = { revalidate: true }
+  opts: QueryOptions = { revalidate: true },
 ) => {
   const { state, secret, revalidate } = opts;
   // todo - add localization to translate files
@@ -621,8 +603,8 @@ export const getRootAggregate = async (
 
   try {
     const { data, error } = await client.query<
-      RootAggregate,
-      RootAggregateVariables
+      RootAggregateQuery,
+      RootAggregateQueryVariables
     >({
       query: ROOT_AGGREGATE_QUERY,
       variables: {
@@ -632,7 +614,7 @@ export const getRootAggregate = async (
         eventsTag,
         areaSlug: "dataomraden", // todo - translate
         themeSlug: "teman", // todo - translate
-        state: state || dataportal_ContainerState.live,
+        state: state || Dataportal_ContainerState.Live,
         ...(secret ? { previewSecret: secret } : {}),
       },
       fetchPolicy: "no-cache",
@@ -665,7 +647,7 @@ export const getRootAggregate = async (
         event,
         areas,
         themes,
-      } as RootAggregateResponse,
+      },
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
@@ -693,15 +675,15 @@ export const querySearch = async (
   locale: string,
   limit: number,
   offset: number,
-  clientQuery: boolean
+  clientQuery: boolean,
 ) => {
   try {
     let cl = clientQuery ? browserclient : client;
 
     const searchResult = await cl.query<
-      | Containers_dataportal_Digg_Containers
-      | Publication_dataportal_Digg_Publications,
-      SearchVariables
+      | ContainerData_Dataportal_Digg_Container_Fragment
+      | PublicationDataFragment,
+      SearchQueryVariables
     >({
       query: SEARCH_QUERY,
       variables: {
@@ -736,7 +718,7 @@ export const querySearch = async (
 export const getForm = async (identifier: string, locale?: string) => {
   const revalidate = true;
   try {
-    const { data } = await client.query<Form, FormVariables>({
+    const { data } = await client.query<FormQuery, FormQueryVariables>({
       query: FORM_QUERY,
       variables: { identifier, locale },
       fetchPolicy: "no-cache",
@@ -764,14 +746,14 @@ export const getForm = async (identifier: string, locale?: string) => {
 export const getModule = async (identifier: string, locale?: string) => {
   const revalidate = true;
 
-  const emptyModule: Module_dataportal_Digg_Module = {
+  const emptyModule: ModuleDataFragment = {
     __typename: "dataportal_Digg_Module",
     blocks: [],
     identifier: "",
   };
 
   try {
-    const { data } = await client.query<Module, ModuleVariables>({
+    const { data } = await client.query<ModuleQuery, ModuleQueryVariables>({
       query: MODULE_QUERY,
       variables: { identifier, locale },
       fetchPolicy: "no-cache",

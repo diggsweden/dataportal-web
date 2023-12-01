@@ -4,22 +4,17 @@ import {
   ContentArea,
   SettingsContext,
 } from "../../../components";
-import {
-  Containers_dataportal_Digg_Containers as IContainer,
-  Containers_dataportal_Digg_Containers_blocks,
-} from "../../../graphql/__generated__/Containers";
-import { Module_dataportal_Digg_Module_blocks as Module_blocks } from "../../../graphql/__generated__/Module";
+import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "../../../graphql/__generated__/operations";
 import { isIE } from "../../../utilities";
 import { AnchorLinkMenu, Heading, space } from "@digg/design-system";
-import { checkLang } from "../../../utilities/checkLang";
+import { checkLang } from "../../../utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { Container } from "@digg/design-system";
 import { css } from "@digg/design-system";
 import { MainContainerStyle } from "../../../styles/general/emotion";
-import { Related_containers } from "../../../graphql/__generated__/Related";
-import { MultiContainers_category_categories } from "../../../graphql/__generated__/MultiContainers";
+import { RelatedContainerFragment } from "../../../graphql/__generated__/operations";
 
 /**
  * Uses prismjs to style codeblock
@@ -61,7 +56,7 @@ const getLinks = () => {
     document.querySelector(headerScope) || document.createElement("div");
   const hTags = Array.prototype.slice.call(
     cont.querySelectorAll("h2") || document.createElement("div"),
-    0
+    0,
   );
 
   // Set only if there are more than 2 elements
@@ -84,9 +79,9 @@ const getLinks = () => {
 };
 
 interface ContainerPageProps extends IContainer {
-  related?: Related_containers[];
+  related?: RelatedContainerFragment[];
   domain?: DiggDomain;
-  category?: MultiContainers_category_categories;
+  category?: IContainer;
 }
 
 const styles = css`
@@ -99,7 +94,7 @@ export const highlightCode = () => {
 
   // Adds lang attribute to codeBlocks
   const codeWrappers = Array.prototype.slice.call(
-    document.getElementsByClassName("code-toolbar")
+    document.getElementsByClassName("code-toolbar"),
   );
   codeWrappers.map((codeWrapper) => codeWrapper.setAttribute("lang", "en"));
 
@@ -175,17 +170,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 
         <div className={fullWidth ? fullWidth : "content"}>
           <p className="preamble text-lg">{checkLang(preamble)}</p>
-          {blocks && blocks.length > 0 && (
-            <ContentArea
-              blocks={
-                blocks as (
-                  | Containers_dataportal_Digg_Containers_blocks
-                  | Module_blocks
-                  | null
-                )[]
-              }
-            />
-          )}
+          {blocks && blocks.length > 0 && <ContentArea blocks={blocks} />}
         </div>
       </div>
     </Container>
