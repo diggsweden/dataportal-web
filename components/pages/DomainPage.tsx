@@ -108,25 +108,29 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             />
           )}
           {/* I´ll be back for this */}
-          {pathname === `/` && publications.length > 0 && (
+          {pathname === `/` && (
             <>
-              <DynamicArticleBlock
-                articles={news}
-                showMoreLink={{
-                  title: t("pages|news$view-all"),
-                  slug: t("routes|news$path"),
-                }}
-                heading={t("pages|startpage$news")}
-              />
+              {news.length > 0 && (
+                <DynamicArticleBlock
+                  articles={news}
+                  showMoreLink={{
+                    title: t("pages|news$view-all"),
+                    slug: t("routes|news$path"),
+                  }}
+                  heading={t("pages|startpage$news")}
+                />
+              )}
 
-              <DynamicArticleBlock
-                articles={goodExamples}
-                showMoreLink={{
-                  title: t("pages|good-examples$view-all"),
-                  slug: t("routes|good-examples$path"),
-                }}
-                heading={t("pages|startpage$good-examples")}
-              />
+              {goodExamples.length > 0 && (
+                <DynamicArticleBlock
+                  articles={goodExamples}
+                  showMoreLink={{
+                    title: t("pages|good-examples$view-all"),
+                    slug: t("routes|good-examples$path"),
+                  }}
+                  heading={t("pages|startpage$good-examples")}
+                />
+              )}
             </>
           )}
 
