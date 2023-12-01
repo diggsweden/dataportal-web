@@ -1,8 +1,8 @@
 import { usePathname } from "next/navigation";
 import { sideBarContent } from "./sideBarContent.js";
 import Image from "next/image";
-import arrowRight from "./menu-icons/arrowRight.svg";
-import externalLink from "./menu-icons/external-link.svg";
+import arrowRight from "../../../public/icons/arrowRight.svg";
+import externalLink from "../../../public/icons/external-link.svg";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link.js";
 

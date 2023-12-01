@@ -1,13 +1,11 @@
-import home from "./menu-icons/home.svg";
-import data from "./menu-icons/data.svg";
-// import utbildning from "./menu-icons/utbildning.svg";
-import delaData from "./menu-icons/dela-data.svg";
-import stodVerktyg from "./menu-icons/stod-verktyg.svg";
-// import verktyg from "./menu-icons/verktyg.svg";
-import nyheter from "./menu-icons/nyheter.svg";
-import community from "./menu-icons/community.svg";
-import datasamverkan from "./menu-icons/datasamverkan.svg";
-import godaExempel from "./menu-icons/godaExempel.svg";
+import home from "../../../public/icons/home.svg";
+import data from "../../../public/icons/data.svg";
+import delaData from "../../../public/icons/dela-data.svg";
+import stodVerktyg from "../../../public/icons/stod-verktyg.svg";
+import nyheter from "../../../public/icons/nyheter.svg";
+import community from "../../../public/icons/community.svg";
+import datasamverkan from "../../../public/icons/datasamverkan.svg";
+import godaExempel from "../../../public/icons/godaExempel.svg";
 
 export const sideBarContent = [
   {
@@ -99,20 +97,6 @@ export const sideBarContent = [
       },
     ],
   },
-  // {
-  //   title: "self-assessment-tools",
-  //   icon: verktyg,
-  //   href: "/verktyg-for-sjalvutvardering",
-  //   external: false,
-  //   id: 14,
-  // },
-  // {
-  //   title: "training",
-  //   icon: utbildning,
-  //   href: "/utbildning-for-chefer-och-ledare",
-  //   external: false,
-  //   id: 15,
-  // },
   {
     title: "news",
     icon: nyheter,
