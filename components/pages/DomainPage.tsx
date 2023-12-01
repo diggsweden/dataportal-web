@@ -65,6 +65,11 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
     trackPageView({ documentTitle: "OpenSource" });
   }, [pathname]);
 
+  const news = publications.filter((e) => e.tags[0].value === "Nyhet");
+  const goodExamples = publications.filter(
+    (e) => e.tags[0].value === "Goda exempel"
+  );
+
   return (
     <div className="gradient">
       <Container cssProp={MainContainerStyle}>
@@ -109,7 +114,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             />
           )}
 
-          {pathname === `/` && publications.length > 0 && (
+          {pathname === `/` && news.length > 0 && (
             <>
               <div className="domain-page__show_more--link">
                 <Heading
@@ -120,13 +125,37 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                     ${space({ pt: 4 })}
                   `}
                 >
-                  {t("pages|startpage$current-news")}
+                  {t("pages|startpage$news")}
                 </Heading>
-                <Link href={`/aktuellt`} className="text-base">
-                  {t("pages|publications$view-all")}
+                <Link href={`${t("routes|news$path")}`} className="text-base">
+                  {t("pages|news$view-all")}
                 </Link>
               </div>
-              <DynamicArticleBlock articles={publications} />
+              <DynamicArticleBlock articles={news} />
+            </>
+          )}
+
+          {pathname === `/` && goodExamples.length > 0 && (
+            <>
+              <div className="domain-page__show_more--link">
+                <Heading
+                  level={2}
+                  size="xl"
+                  color="white"
+                  css={css`
+                    ${space({ pt: 4 })}
+                  `}
+                >
+                  {t("pages|startpage$good-examples")}
+                </Heading>
+                <Link
+                  href={`${t("routes|good-examples$path")}`}
+                  className="text-base"
+                >
+                  {t("pages|good-examples$view-all")}
+                </Link>
+              </div>
+              <DynamicArticleBlock articles={goodExamples} />
             </>
           )}
 
