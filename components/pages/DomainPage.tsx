@@ -1,11 +1,5 @@
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import {
-  css,
-  space,
-  Heading,
-  Container,
-  SearchField,
-} from "@digg/design-system";
+import { Heading, Container, SearchField } from "@digg/design-system";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { Containers_dataportal_Digg_Containers } from "../../graphql/__generated__/Containers";
@@ -19,7 +13,7 @@ import { CategoriesNav } from "../StartPageComponents";
 import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-
+import { DynamicArticleBlock } from "../blocks/DynamicArticleBlock";
 export interface DomainProps extends Containers_dataportal_Digg_Containers {
   domain?: DiggDomain;
   news?: IPublication;
@@ -47,13 +41,6 @@ const DynamicStatistic = dynamic(() => import("../Statistic/Statistic"), {
   ssr: false,
 });
 
-const DynamicArticleBlock = dynamic(
-  () => import("../blocks/Article").then((c) => c.ArticleBlock),
-  {
-    ssr: false,
-  }
-);
-
 export const DomainPage: React.FC<DomainProps> = (props) => {
   const { domain, areas } = props || {};
   const { content, puffs, publications, heading, preamble } =
@@ -64,11 +51,6 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   useEffect(() => {
     trackPageView({ documentTitle: "OpenSource" });
   }, [pathname]);
-
-  const news = publications.filter((e) => e.tags[0].value === "Nyhet");
-  const goodExamples = publications.filter(
-    (e) => e.tags[0].value === "Goda exempel"
-  );
 
   return (
     <div className="gradient">
@@ -113,49 +95,15 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               basepath={domain ? "/" + domain : undefined}
             />
           )}
-
-          {pathname === `/` && news.length > 0 && (
+          {/* I´ll be back for this */}
+          {pathname === `/` && publications.length > 0 && (
             <>
-              <div className="domain-page__show_more--link">
-                <Heading
-                  level={2}
-                  size="xl"
-                  color="white"
-                  css={css`
-                    ${space({ pt: 4 })}
-                  `}
-                >
-                  {t("pages|startpage$news")}
-                </Heading>
-                <Link href={`${t("routes|news$path")}`} className="text-base">
-                  {t("pages|news$view-all")}
-                </Link>
-              </div>
-              <DynamicArticleBlock articles={news} />
-            </>
-          )}
+              <DynamicArticleBlock publications={publications} tag="Nyhet" />
 
-          {pathname === `/` && goodExamples.length > 0 && (
-            <>
-              <div className="domain-page__show_more--link">
-                <Heading
-                  level={2}
-                  size="xl"
-                  color="white"
-                  css={css`
-                    ${space({ pt: 4 })}
-                  `}
-                >
-                  {t("pages|startpage$good-examples")}
-                </Heading>
-                <Link
-                  href={`${t("routes|good-examples$path")}`}
-                  className="text-base"
-                >
-                  {t("pages|good-examples$view-all")}
-                </Link>
-              </div>
-              <DynamicArticleBlock articles={goodExamples} />
+              <DynamicArticleBlock
+                publications={publications}
+                tag="Goda exempel"
+              />
             </>
           )}
 

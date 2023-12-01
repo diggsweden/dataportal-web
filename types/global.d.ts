@@ -39,22 +39,6 @@ type Anchorlink = {
   id: string;
   text: string;
 };
-
-interface MenuItem {
-  title: string;
-  icon: any;
-  href?: string;
-  id: number;
-  external?: boolean;
-  children?: MenuItemChild[];
-}
-interface MenuItemChild {
-  title: string;
-  href: string;
-  id: number;
-  external: boolean;
-}
-
 interface DataportalSettings {
   siteName: string;
   pageNotFoundHeading: string;

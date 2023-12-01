@@ -6,14 +6,27 @@ import externalLink from "../../../assets/icons/external-link.svg";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link.js";
 
-function SideBar({ openSideBar }: any) {
+interface SidebarItem {
+  title: string;
+  icon?: any;
+  href: string;
+  external: boolean;
+  id: number;
+}
+
+interface SidebarProps {
+  openSideBar: boolean;
+}
+
+const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
   const pathname = usePathname();
   const { t } = useTranslation();
-  const isActive = (path: any) => {
+  const isActive = (path: string) => {
     if (pathname === path || pathname === t(`common|${path}`)) {
       return true;
     } else return false;
   };
+
   return (
     <div className={`menu${openSideBar ? " open" : ""}`}>
       <ul className="menuList">
@@ -72,7 +85,7 @@ function SideBar({ openSideBar }: any) {
                 </summary>
                 ​
                 <ul className="subMenu">
-                  {menu.children.map((subMenu: any, idx: number) => (
+                  {menu.children.map((subMenu: SidebarItem, idx: number) => (
                     <li
                       key={idx}
                       className={`subMenuItem ${
@@ -92,5 +105,5 @@ function SideBar({ openSideBar }: any) {
       </ul>
     </div>
   );
-}
+};
 export default SideBar;
