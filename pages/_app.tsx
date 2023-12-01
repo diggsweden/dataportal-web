@@ -35,28 +35,29 @@ import "../styles/global.css";
 
 import { useEffect, useState } from "react";
 import type { AppContext, AppProps } from "next/app";
+import App from "next/app";
 import {
   colorPalette,
+  ErrorBoundary,
   fontSize,
+  SkipToContent,
+  skipToContent,
+  skipToElement,
   theme,
   ThemeProvider,
-  ErrorBoundary,
-  SkipToContent,
-  skipToElement,
-  skipToContent,
 } from "@digg/design-system";
 import { ApolloProvider } from "@apollo/client";
 import {
-  TrackingProvider,
-  LocalStoreProvider,
-  SettingsProvider,
-  Header,
-  Footer,
-  CookieBanner,
   Breadcrumb,
   BreadcrumbProps,
-  LocalStore,
+  CookieBanner,
   CustomImage,
+  Footer,
+  Header,
+  LocalStore,
+  LocalStoreProvider,
+  SettingsProvider,
+  TrackingProvider,
 } from "../components";
 import { defaultSettings } from "../components/SettingsProvider/SettingsProvider";
 import {
@@ -72,9 +73,8 @@ import {
 import { EnvSettings, SettingsUtil } from "../env";
 import Head from "next/head";
 import { client } from "../graphql/client";
-import App from "next/app";
 import generateCSP from "../utilities/generateCsp";
-import { SeoData } from "../graphql/__generated__/SeoData";
+import { SeoDataFragment } from "../graphql/__generated__/operations";
 import { useRouter } from "next/router";
 import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "../env/Settings.Sandbox";
@@ -127,7 +127,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   const { seo, heroImage } =
     resolvePage(pageProps as DataportalPageProps) || {};
   const { title, description, image, robotsFollow, robotsIndex } =
-    (seo as SeoData) || {};
+    (seo as SeoDataFragment) || {};
   const strapiImageUrl = image?.url;
   const imageUrl = strapiImageUrl
     ? `${reactenv("MEDIA_BASE_URL") || ""}${strapiImageUrl}`

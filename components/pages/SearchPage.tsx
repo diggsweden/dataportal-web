@@ -30,6 +30,7 @@ export enum SearchSortOrder {
   modified_asc = 4,
   modified_desc = 8,
 }
+
 /* eslint-enable no-unused-vars */
 
 export const SearchPage: React.FC<SearchProps> = () => {
@@ -42,7 +43,7 @@ export const SearchPage: React.FC<SearchProps> = () => {
   const postscribeStatus = useScript(
     "/postscribe.min.js",
     "sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM",
-    "anonymous"
+    "anonymous",
   );
   const { trackPageView } = useMatomo();
 
@@ -184,7 +185,7 @@ export const SearchPage: React.FC<SearchProps> = () => {
                   </Heading>
 
                   <button
-                    aria-expanded={showTip ? true : false}
+                    aria-expanded={showTip}
                     className={
                       "search-tip__btn text-xs" +
                       (showTip ? " search-tip__btn--active" : "")

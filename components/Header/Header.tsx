@@ -1,9 +1,12 @@
 import {
+  ChatIcon,
   CloseIcon,
   colorPalette,
-  InfoCircleIcon,
-  ChatIcon,
+  css,
   GlobeIcon,
+  InfoCircleIcon,
+  MenuIcon,
+  responsiveProp,
   SearchIcon,
 } from "@digg/design-system";
 import hamburger from "../../public/icons/hamburger.svg";

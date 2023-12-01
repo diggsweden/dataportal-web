@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import SearchProvider from "../Search/SearchProvider";
 import { decode } from "qss";
 import {
-  SearchHeader,
-  SearchFilters,
-  SearchInput,
-  SearchResults,
   ESRdfType,
   ESType,
-  SettingsContext,
   SearchContext,
+  SearchFilters,
+  SearchHeader,
+  SearchInput,
+  SearchResults,
+  SettingsContext,
 } from "..";
 import useTranslation from "next-translate/useTranslation";
 import { useScript } from "../../hooks/useScript";
@@ -31,7 +31,7 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
   const postscribeStatus = useScript(
     "/postscribe.min.js",
     "sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM",
-    "anonymous"
+    "anonymous",
   );
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();

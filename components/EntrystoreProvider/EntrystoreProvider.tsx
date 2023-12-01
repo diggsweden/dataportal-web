@@ -1,8 +1,8 @@
-import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
-import React, { createContext, useEffect, useState } from 'react';
-import { EnvSettings } from '../../env/EnvSettings';
-import { SettingsUtil } from '../../env/SettingsUtil';
+import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
+import React, { createContext, useEffect, useState } from "react";
+import { EnvSettings } from "../../env/EnvSettings";
+import { SettingsUtil } from "../../env/SettingsUtil";
 
 //unfortunate hack to get a entrystore class instance, script is inserted in head
 declare var EntryStore: any;
@@ -13,7 +13,7 @@ export interface EntrystoreProviderProps {
   cid?: string;
   children?: React.ReactNode;
   entryUri?: string;
-  entrystoreUrl: string | 'admin.dataportal.se';
+  entrystoreUrl: string | "admin.dataportal.se";
   fetchMore: boolean;
 }
 
@@ -36,9 +36,9 @@ const defaultESEntry: ESEntry = {
   env: SettingsUtil.getDefault(),
   entrystore: {},
   entry: {},
-  title: '',
-  description: '',
-  publisher: '',
+  title: "",
+  description: "",
+  publisher: "",
 };
 
 export const EntrystoreContext = createContext<ESEntry>(defaultESEntry);
@@ -59,15 +59,15 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
   fetchMore,
 }) => {
   const [state, setState] = useState(defaultESEntry);
-  const { lang: nextLang } = useTranslation('common');
+  const { lang: nextLang } = useTranslation("common");
   const router = useRouter();
 
   const addScripts = (callback: Function) => {
-    if (typeof window !== 'undefined' && (window as any).postscribe) {
+    if (typeof window !== "undefined" && (window as any).postscribe) {
       const postscribe = (window as any).postscribe;
 
       postscribe(
-        '#scriptsPlaceholder',
+        "#scriptsPlaceholder",
         ` 
         <script 
          src="/entrystore_2021-03-18.js"
@@ -77,7 +77,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
           done: function () {
             callback();
           },
-        }
+        },
       );
     }
   };
@@ -102,10 +102,12 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
     prop: any,
     lang: string,
     es: any,
-    options: { uriTypeName?: string; resourceURI?: string } = { uriTypeName: 'foaf:name' }
+    options: { uriTypeName?: string; resourceURI?: string } = {
+      uriTypeName: "foaf:name",
+    },
   ) => {
-    let val = '';
-    const fallbackLang = 'en';
+    let val = "";
+    const fallbackLang = "en";
     const { uriTypeName, resourceURI } = options;
 
     const stmts = metadataGraph.find(resourceURI, prop);
@@ -115,24 +117,24 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         let stType = stmts[s].getType();
         let stValue = stmts[s].getValue();
 
-        if (stType && stType == 'uri' && !stValue.includes('mailto:')) {
+        if (stType && stType == "uri" && !stValue.includes("mailto:")) {
           let res = await resourcesSearch([stValue], es);
           if (res && res.length > 0) {
             let meta = res[0].getMetadata();
 
             if (meta)
-              obj[stmts[s].getLanguage() || ''] = getLocalizedValue(
+              obj[stmts[s].getLanguage() || ""] = getLocalizedValue(
                 meta,
-                uriTypeName || 'foaf:name',
+                uriTypeName || "foaf:name",
                 nextLang,
                 es,
-                { resourceURI }
+                { resourceURI },
               );
-          } else obj[stmts[s].getLanguage() || ''] = stValue;
-        } else obj[stmts[s].getLanguage() || ''] = stValue;
+          } else obj[stmts[s].getLanguage() || ""] = stValue;
+        } else obj[stmts[s].getLanguage() || ""] = stValue;
       }
 
-      if (typeof obj[lang] != 'undefined') {
+      if (typeof obj[lang] != "undefined") {
         val = obj[lang];
       } else if (obj[fallbackLang] && fallbackLang != lang) {
         val = obj[fallbackLang];
@@ -165,8 +167,8 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
   };
 
   const parseEmail = (mailStr: string) => {
-    if (mailStr && mailStr.includes('mailto:')) {
-      return mailStr.replace('mailto:', '');
+    if (mailStr && mailStr.includes("mailto:")) {
+      return mailStr.replace("mailto:", "");
     }
 
     return mailStr;
@@ -176,7 +178,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
     addScripts(async () => {
       //if we have an ES url, try to get a active instance of EntryScape
       if (defaultESEntry.env) {
-        defaultESEntry.entrystore = new EntryStore.EntryStore(`https://${entrystoreUrl}/store`);
+        defaultESEntry.entrystore = new EntryStore.EntryStore(
+          `https://${entrystoreUrl}/store`,
+        );
         var util = new EntryStore.EntryStoreUtil(defaultESEntry.entrystore);
         const es = defaultESEntry.entrystore;
 
@@ -193,28 +197,34 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
 
               //the getLocalizedValue function might fetch from network, so start all IO with promises
               valuePromises.push(
-                getLocalizedValue(graph, 'dcterms:title', nextLang, es, { resourceURI })
+                getLocalizedValue(graph, "dcterms:title", nextLang, es, {
+                  resourceURI,
+                }),
               );
               valuePromises.push(
                 getLocalizedValue(
                   graph,
-                  'http://www.w3.org/2004/02/skos/core#prefLabel',
+                  "http://www.w3.org/2004/02/skos/core#prefLabel",
                   nextLang,
-                  es
-                )
+                  es,
+                ),
               );
-              valuePromises.push(getLocalizedValue(graph, 'dcterms:description', nextLang, es));
+              valuePromises.push(
+                getLocalizedValue(graph, "dcterms:description", nextLang, es),
+              );
               if (fetchMore) {
-                valuePromises.push(getLocalizedValue(graph, 'dcterms:publisher', nextLang, es));
                 valuePromises.push(
-                  getLocalizedValue(graph, 'dcat:contactPoint', nextLang, es, {
-                    uriTypeName: 'http://www.w3.org/2006/vcard/ns#fn',
-                  })
+                  getLocalizedValue(graph, "dcterms:publisher", nextLang, es),
                 );
                 valuePromises.push(
-                  getLocalizedValue(graph, 'dcat:contactPoint', nextLang, es, {
-                    uriTypeName: 'http://www.w3.org/2006/vcard/ns#hasEmail',
-                  })
+                  getLocalizedValue(graph, "dcat:contactPoint", nextLang, es, {
+                    uriTypeName: "http://www.w3.org/2006/vcard/ns#fn",
+                  }),
+                );
+                valuePromises.push(
+                  getLocalizedValue(graph, "dcat:contactPoint", nextLang, es, {
+                    uriTypeName: "http://www.w3.org/2006/vcard/ns#hasEmail",
+                  }),
                 );
               }
               //wait for all values to be fetched
@@ -240,12 +250,12 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
             })
             .catch((err: any) => {
               console.error(err);
-              router.push('/404');
+              router.push("/404");
             });
         }
         //we have contextID and entryId,
         else if (cid && eid) {
-          let entryURI = '';
+          let entryURI = "";
           entryURI = es.getEntryURI(cid, eid);
           //fetch entry from entryscape https://entrystore.org/js/stable/doc/
           es.getEntry(entryURI)
@@ -259,28 +269,34 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
 
               //the getLocalizedValue function might fetch from network, so start all IO with promises
               valuePromises.push(
-                getLocalizedValue(graph, 'dcterms:title', nextLang, es, { resourceURI })
+                getLocalizedValue(graph, "dcterms:title", nextLang, es, {
+                  resourceURI,
+                }),
               );
               valuePromises.push(
                 getLocalizedValue(
                   graph,
-                  'http://www.w3.org/2004/02/skos/core#prefLabel',
+                  "http://www.w3.org/2004/02/skos/core#prefLabel",
                   nextLang,
-                  es
-                )
+                  es,
+                ),
               );
-              valuePromises.push(getLocalizedValue(graph, 'dcterms:description', nextLang, es));
+              valuePromises.push(
+                getLocalizedValue(graph, "dcterms:description", nextLang, es),
+              );
               if (fetchMore) {
-                valuePromises.push(getLocalizedValue(graph, 'dcterms:publisher', nextLang, es));
                 valuePromises.push(
-                  getLocalizedValue(graph, 'dcat:contactPoint', nextLang, es, {
-                    uriTypeName: 'http://www.w3.org/2006/vcard/ns#fn',
-                  })
+                  getLocalizedValue(graph, "dcterms:publisher", nextLang, es),
                 );
                 valuePromises.push(
-                  getLocalizedValue(graph, 'dcat:contactPoint', nextLang, es, {
-                    uriTypeName: 'http://www.w3.org/2006/vcard/ns#hasEmail',
-                  })
+                  getLocalizedValue(graph, "dcat:contactPoint", nextLang, es, {
+                    uriTypeName: "http://www.w3.org/2006/vcard/ns#fn",
+                  }),
+                );
+                valuePromises.push(
+                  getLocalizedValue(graph, "dcat:contactPoint", nextLang, es, {
+                    uriTypeName: "http://www.w3.org/2006/vcard/ns#hasEmail",
+                  }),
                 );
               }
               //wait for all values to be fetched
@@ -306,18 +322,25 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
             })
             .catch((error: any) => {
               console.error({ error });
-              if (error.message === 'Failed fetching entry. Error: Connection issue') {
-                router.push('/404');
+              if (
+                error.message ===
+                "Failed fetching entry. Error: Connection issue"
+              ) {
+                router.push("/404");
               }
             });
         } else {
-          router.push('/404');
+          router.push("/404");
         }
       }
     });
   }, []);
 
-  return <EntrystoreContext.Provider value={state}>{children}</EntrystoreContext.Provider>;
+  return (
+    <EntrystoreContext.Provider value={state}>
+      {children}
+    </EntrystoreContext.Provider>
+  );
 };
 
 export default EntrystoreProvider;

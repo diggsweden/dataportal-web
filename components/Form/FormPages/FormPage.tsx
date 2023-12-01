@@ -83,11 +83,12 @@ interface Props {
   UpdateFormDataArray: (
     e: React.ChangeEvent<any>,
     data: FormTypes,
-    pageIndex: number
+    pageIndex: number,
   ) => void;
   formDataArray: Array<FormTypes>;
   pageIndex: number;
 }
+
 /* eslint-enable no-unused-vars */
 
 const FormItem = (
@@ -97,11 +98,11 @@ const FormItem = (
     e: React.ChangeEvent<any>,
     data: FormTypes,
     pageIndex: number,
-    imgData?: { fileName: string; base64: string } | null
+    imgData?: { fileName: string; base64: string } | null,
     /* eslint-enable no-unused-vars */
   ) => void,
   pageIndex: number,
-  t: Translate
+  t: Translate,
 ) => {
   const { ID, __typename: Type } = item;
 
@@ -129,7 +130,7 @@ const FormItem = (
         }
       };
     },
-    []
+    [],
   );
 
   switch (Type) {

@@ -1,14 +1,14 @@
 import { css } from "@digg/design-system";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { RelatedContent_links } from "../../graphql/__generated__/RelatedContent";
-import { checkLang } from "../../utilities/checkLang";
+import { RelatedContentFragment } from "../../graphql/__generated__/operations";
+import { checkLang } from "../../utilities";
 import ExternalLink from "./ExternalLink";
 
 // Todo - remove any
 export const Links: React.FC<{
   basepath?: string | undefined;
-  links: RelatedContent_links[];
+  links: RelatedContentFragment["links"];
 }> = ({ basepath, links }) => {
   const router = useRouter();
   return (

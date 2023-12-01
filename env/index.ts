@@ -1,2 +1,2 @@
-export * from './SettingsUtil';
-export * from './EnvSettings';
+export * from "./SettingsUtil";
+export * from "./EnvSettings";

@@ -229,7 +229,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                 block: 'concept-hierarchy-header',
                 extends: 'template',
                 template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}<h2 className="hbbr text-lg concept_hierarchy--header">${t(
-                  "pages|concept_page$visualization_concepts"
+                  "pages|concept_page$visualization_concepts",
                 )}</h2>{{/ifprop}}'
               },
               {
@@ -241,42 +241,42 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                 block: 'maybeBroaderButton',
                 extends: 'template',
                 template: '{{#ifprop "skos:broader"}}<h2 class="text-lg">${t(
-                  "pages|concept_page$superior_concept"
+                  "pages|concept_page$superior_concept",
                 )}</h2>{{/ifprop}}' +
                   '{{#ifprop "skos:broader"}}{{broaderList}}{{/ifprop}}' +
                   '{{#ifprop "skos:broader" invert="true"}}<h2 class="text-lg">${t(
-                    "pages|concept_page$superior_concept"
+                    "pages|concept_page$superior_concept",
                   )}</h2>{{/ifprop}}' +
                   '{{#ifprop "skos:broader" invert="true"}}<span class="text-md">${t(
-                    "pages|concept_page$no_superior_concept"
+                    "pages|concept_page$no_superior_concept",
                   )}</span>{{/ifprop}}'
               },
               {
                 block: 'maybeNarrowerButton',
                 extends: 'template',
                 template:'{{#ifprop "skos:narrower"}}<h2 class="text-lg">${t(
-                  "pages|concept_page$subordinate_concepts"
+                  "pages|concept_page$subordinate_concepts",
                 )}</h2>{{/ifprop}}' +
                   '{{#ifprop "skos:narrower"}}{{narrowerList}}{{/ifprop}}' +
                   '{{#ifprop "skos:narrower" invert="true"}}<h2 class="text-lg">${t(
-                    "pages|concept_page$subordinate_concepts"
+                    "pages|concept_page$subordinate_concepts",
                   )}</h2>{{/ifprop}}' +
                   '{{#ifprop "skos:narrower" invert="true"}}<span class="text-md">${t(
-                    "pages|concept_page$no_subordinate_concepts"
+                    "pages|concept_page$no_subordinate_concepts",
                   )}</span>{{/ifprop}}'
               },
               {
                 block: 'maybeRelatedButton',
                 extends: 'template',
                 template:'{{#ifprop "skos:related"}}<h2 class="text-lg">${t(
-                  "pages|concept_page$related_concepts"
+                  "pages|concept_page$related_concepts",
                 )}</h2>{{/ifprop}}' +
                   '{{#ifprop "skos:related"}}{{relatedList}}{{/ifprop}}' +
                   '{{#ifprop "skos:related" invert="true"}}<h2 class="text-lg">${t(
-                    "pages|concept_page$related_concepts"
+                    "pages|concept_page$related_concepts",
                   )}</h2>{{/ifprop}}' +
                   '{{#ifprop "skos:related" invert="true"}}<span class="text-md">${t(
-                    "pages|concept_page$no_related_concepts"
+                    "pages|concept_page$no_related_concepts",
                   )}</span>{{/ifprop}}'
               },
               {
@@ -374,7 +374,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                 block: 'overconcept',
                 extends: 'template',
                 template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}<h2>${t(
-                  "pages|concept_page$superior_concepts"
+                  "pages|concept_page$superior_concepts",
                 )}</h2>{{/ifprop}}' +
                 '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}{{broaderButton}}{{/ifprop}}'
               },	  
@@ -382,14 +382,14 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                 block: 'underconcept',
                 extends: 'template',
                 template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}<h2>${t(
-                  "pages|concept_page$subordinate_concepts"
+                  "pages|concept_page$subordinate_concepts",
                 )}</h2>{{/ifprop}}'
               },
               {
                 block: 'underconcept2',
                 extends: 'template',
                 template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}<h2>${t(
-                  "pages|concept_page$subordinate_concepts"
+                  "pages|concept_page$subordinate_concepts",
                 )}</h2>{{/ifprop}}' +
                 '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}{{narrowerButton}}{{/ifprop}}'
               },	 
@@ -397,14 +397,14 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                 block: 'relatedconcept',
                 extends: 'template',
                 template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}<h2>${t(
-                  "pages|concept_page$related_concepts"
+                  "pages|concept_page$related_concepts",
                 )}</h2>{{/ifprop}}'
               },
               {
                 block: 'relatedconcept2',
                 extends: 'template',
                 template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}<h2>${t(
-                  "pages|concept_page$related_concepts"
+                  "pages|concept_page$related_concepts",
                 )}</h2>{{/ifprop}}' +
                 '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}{{relatedButton}}{{/ifprop}}'
               },	 
@@ -412,21 +412,21 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                 block: 'terminology',
                 extends: 'template',
                 template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}<h3>${t(
-                  "pages|concept_page$terminology_concept"
+                  "pages|concept_page$terminology_concept",
                 )}</h3>{{/ifprop}}'
                 },	  
                 {
                   block: 'terminology-numbers',
                   extends: 'template',
                   template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme"}}<span className="terminology__label text-base font-bold">${t(
-                    "pages|concept_page$number_of_concepts"
+                    "pages|concept_page$number_of_concepts",
                   )}</span>{{/ifprop}}'
                   },
                   {
                     block: 'toppbegrepp',
                     extends: 'template',
                     template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme"}}<h2 class="toplist-header  text-lg">${t(
-                      "pages|concept_page$first_level_concepts"
+                      "pages|concept_page$first_level_concepts",
                     )}</h2>{{toppbegreppLista}}{{/ifprop}}'
                   },
                   {
@@ -434,7 +434,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "skos:prefLabel"}}<span>${t(
-                      "pages|concept_page$preferred_term"
+                      "pages|concept_page$preferred_term",
                     )}</span>{{/ifprop}}'
                   },
                   {
@@ -442,7 +442,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "skos:altLabel"}}<span>${t(
-                      "pages|concept_page$alternativ_term"
+                      "pages|concept_page$alternativ_term",
                     )}</span>{{/ifprop}}'
                   },
                   {
@@ -450,7 +450,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "skos:hiddenLabel"}}<span>${t(
-                      "pages|concept_page$hidden_term"
+                      "pages|concept_page$hidden_term",
                     )}</span>{{/ifprop}}'
                   },
                   {
@@ -458,7 +458,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "skos:example"}}<span>${t(
-                      "pages|concept_page$example"
+                      "pages|concept_page$example",
                     )}</span>{{/ifprop}}'
                   },
                   {
@@ -466,7 +466,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "skos:historyNote"}}<span>${t(
-                      "pages|concept_page$historical_note"
+                      "pages|concept_page$historical_note",
                     )}</span>{{/ifprop}}'
                   },
                   {
@@ -474,7 +474,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "skos:editorialNote"}}<span>${t(
-                      "pages|concept_page$editorial_note"
+                      "pages|concept_page$editorial_note",
                     )}</h2>{{/ifprop}}'
                   },
                   {
@@ -482,7 +482,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "skos:note"}}<span>Anmärkning ${t(
-                      "pages|concept_page$note"
+                      "pages|concept_page$note",
                     )}</span>{{/ifprop}}'
                   },
                   {
@@ -490,7 +490,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "skos:exactMatch"}}<span>${t(
-                      "pages|concept_page$exact_match"
+                      "pages|concept_page$exact_match",
                     )}</span>{{/ifprop}}'
                   },
                   {
@@ -498,7 +498,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "skos:closeMatch"}}<span>${t(
-                      "pages|concept_page$close_match"
+                      "pages|concept_page$close_match",
                     )}</span>{{/ifprop}}'
                   },
                   {
@@ -506,7 +506,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "skos:relatedMatch"}}<span>${t(
-                      "pages|concept_page$related_match"
+                      "pages|concept_page$related_match",
                     )}</span>{{/ifprop}}'
                   },
                   {
@@ -514,7 +514,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "skos:broadMatch"}}<span>${t(
-                      "pages|concept_page$superior_match"
+                      "pages|concept_page$superior_match",
                     )}</span>{{/ifprop}}'
                   },
                   {
@@ -522,7 +522,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "skos:narrowMatch"}}<span>${t(
-                      "pages|concept_page$subordinate_match"
+                      "pages|concept_page$subordinate_match",
                     )}</span>{{/ifprop}}'
                   },
                   {
@@ -530,7 +530,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme"}}<span class="text-md font-bold">${t(
-                      "pages|concept_page$about_terminology"
+                      "pages|concept_page$about_terminology",
                     )}</h2>{{/ifprop}}'
                   },
                   {
@@ -538,7 +538,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     class: 'text-md font-bold',
                     extends: 'template',
                     template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}<span class="text-md font-bold">${t(
-                      "pages|concept_page$about_concept"
+                      "pages|concept_page$about_concept",
                     )}</h2>{{/ifprop}}'
                   },
               {
@@ -583,7 +583,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
           `,
           {
             done: function () {},
-          }
+          },
         );
       }
     }
@@ -697,10 +697,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
               <span data-entryscape="term-head" />
               <span data-entryscape="concept-head" />
             </Heading>
-            <span
-              data-entryscape="hemvist"
-              className="text-base hemvist"
-            />
+            <span data-entryscape="hemvist" className="text-base hemvist" />
             <span
               className="text-base terminology"
               data-entryscape="terminology"
@@ -766,10 +763,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
           className="concept-hierarchy-header"
         />
 
-        <div
-          data-entryscape="concept-hierarchy"
-          data-entryscape-scale="1.7"
-        />
+        <div data-entryscape="concept-hierarchy" data-entryscape-scale="1.7" />
       </div>
     </div>
   );

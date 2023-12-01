@@ -3,12 +3,12 @@ import {
   CookieSetting,
   NecessaryCookies,
   styled,
-} from '@digg/design-system';
-import useTranslation from 'next-translate/useTranslation';
-import Link from 'next/link';
-import React, { useContext, useEffect } from 'react';
-import { LocalStoreContext, SettingsContext } from '..';
-import { TrackingContext } from '../TrackingProvider';
+} from "@digg/design-system";
+import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
+import React, { useContext, useEffect } from "react";
+import { LocalStoreContext, SettingsContext } from "..";
+import { TrackingContext } from "../TrackingProvider";
 
 const StyledLink = styled(Link)`
   margin-left: 0.25rem;
@@ -23,7 +23,7 @@ const StyledLink = styled(Link)`
 export const CookieBanner: React.FC = () => {
   const { store, set } = useContext(LocalStoreContext);
   const { setActivation } = useContext(TrackingContext);
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
   const { cookieInformation, cookieMoreInfoLink } = useContext(SettingsContext);
   useEffect(() => {
     store.cookieSettings?.analytic?.accepted && setActivation(true);
@@ -31,39 +31,36 @@ export const CookieBanner: React.FC = () => {
 
   const initialCookieSetting: CookieSetting = {
     analytic: {
-      label: t('cookie-analytic-heading'),
-      description: t('cookie-analytic-description'),
+      label: t("cookie-analytic-heading"),
+      description: t("cookie-analytic-description"),
       accepted: true,
     },
   };
 
   const necessaryCookieText: NecessaryCookies = {
-    heading: t('cookie-necessary-heading'),
-    description: t('cookie-necessary-description'),
+    heading: t("cookie-necessary-heading"),
+    description: t("cookie-necessary-description"),
   };
 
-  return store.cookieSettings && Object.keys(store.cookieSettings).length === 0 ? (
+  return store.cookieSettings &&
+    Object.keys(store.cookieSettings).length === 0 ? (
     <DiggCookieBanner
       onCookiesAccepted={(c) => {
         set({ cookieSettings: c });
       }}
       cookieSetting={initialCookieSetting}
       necessaryCookieText={necessaryCookieText}
-      cookieSettingsHeading={t('cookie-settings-heading')}
-      saveBtnTextOpen={t('cookie-btn-open')}
-      saveBtnTextClosed={t('cookie-btn-closed')}
-      settingsBtnText={t('cookie-btn-settings')}
+      cookieSettingsHeading={t("cookie-settings-heading")}
+      saveBtnTextOpen={t("cookie-btn-open")}
+      saveBtnTextClosed={t("cookie-btn-closed")}
+      settingsBtnText={t("cookie-btn-settings")}
     >
       {t(cookieInformation)}
 
       {/** Todo - fix better row break */}
       <p></p>
-      <StyledLink
-        href={cookieMoreInfoLink || '/'}
-        passHref
-        className="text-md"
-      >
-        {t('cookie-link')}
+      <StyledLink href={cookieMoreInfoLink || "/"} passHref className="text-md">
+        {t("cookie-link")}
       </StyledLink>
     </DiggCookieBanner>
   ) : (

@@ -1,4 +1,4 @@
-import { Heading, Container } from "@digg/design-system";
+import { Container, Heading } from "@digg/design-system";
 import { MeiliSearch } from "meilisearch";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";

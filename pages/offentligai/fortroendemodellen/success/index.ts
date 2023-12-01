@@ -2,7 +2,7 @@ import { FortroendeEndPage } from "../../../../components/Form/FortroendeModelle
 import { getModule } from "../../../../utilities";
 
 export async function getStaticProps({ locale }: any) {
-  return await getModule('fortroende-end-text', locale);
+  return await getModule("fortroende-end-text", locale);
 }
 
 export default FortroendeEndPage;
