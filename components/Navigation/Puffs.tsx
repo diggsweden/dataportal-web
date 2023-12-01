@@ -8,8 +8,9 @@ import {
 } from "@digg/design-system";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { checkLang } from "../../utilities";
-
+import { checkLang } from "../../utilities/checkLang";
+import Image from "next/image";
+import offentligAiIcon from "../../public/icons/offentligAI.svg";
 export interface IPuff {
   title?: string;
   slug: string;
@@ -39,13 +40,18 @@ export const Puffs: React.FC<{
 }> = ({ basepath, links }) => {
   const router = useRouter();
   return (
-    <ul className="text-md font-bold puffblock">
+    <ul
+      className={`text-md font-bold  ${
+        links.length >= 5 ? "initiativPuffs" : "puffblock"
+      }`}
+    >
       {links.map((puff, index) => {
         if (puff.slug === "") {
           return null;
         }
 
         const Icon = puff.icon && GetIcon(puff.icon);
+        const checkIcon = puff.icon && puff.icon === "bookThin"; // change bookThin to "offentligAI"
         const isDataSet = [
           "datasets?q=&f=",
           "concepts?q=&f=",
@@ -69,7 +75,13 @@ export const Puffs: React.FC<{
           >
             {Icon && (
               <span className="theme-svg">
-                <Icon width={64} color={colorPalette["white"]}></Icon>
+                {checkIcon ? (
+                  <div className="image-svg">
+                    <Image src={offentligAiIcon} alt={"offentligAiIcon"} />
+                  </div>
+                ) : (
+                  <Icon width={64} color={colorPalette["white"]}></Icon>
+                )}
               </span>
             )}
             <span className="puff-heading">

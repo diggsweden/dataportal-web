@@ -354,7 +354,7 @@ export const getPublicationsList = async (
         filter: {
           locale,
           state: Dataportal_ContainerState.Live,
-          tags,
+          tags: tags,
           domains,
           limit: 1000,
         },

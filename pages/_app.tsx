@@ -26,6 +26,7 @@ import "../styles/statistic/statistic.scss";
 import "../styles/form/form_pages.scss";
 import "../styles/notfoundpage/notfoundpage.scss";
 import "../styles/general/image.scss";
+import "../styles/sidebar/sidebar.scss";
 import "../node_modules/react-vis/dist/style.css";
 import "../components/Form/ProgressComponent/FormProgress.scss";
 
@@ -79,6 +80,7 @@ import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "../env/Settings.Sandbox";
 import useTranslation from "next-translate/useTranslation";
 import { css } from "@emotion/react";
+import SideBar from "../components/Navigation/sideBar/sideBar";
 
 const GetCookiesAccepted = () => {
   try {
@@ -117,6 +119,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   //*Put shared props into state to persist between pages that doesn't use getStaticProps
   const [env, setEnv] = useState<EnvSettings>(SettingsUtil.create());
   const [matomoActivated, setMatomoActivated] = useState<boolean>(true);
+  const [openSideBar, setOpenSideBar] = useState(false);
   const [breadcrumbState, setBreadcrumb] =
     useState<BreadcrumbProps>(initBreadcrumb);
   const previousPath = usePrevious(asPath);
@@ -145,6 +148,10 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
         //disable matomo
         setMatomoActivated(false);
       }
+
+      window.addEventListener("resize", function () {
+        setOpenSideBar(false);
+      });
     }
     document.documentElement.classList.add("no-focus-outline");
     document.body.addEventListener("keyup", keyUp);
@@ -313,7 +320,12 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 `}
               >
                 <SkipToContent text={t("skiptocontent")} />
-                <Header menu={undefined} env={env} />
+                <Header
+                  menu={undefined}
+                  env={env}
+                  setOpenSidebar={setOpenSideBar}
+                  openSideBar={openSideBar}
+                />
                 <noscript>
                   <div
                     css={css`
@@ -340,12 +352,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   {breadcrumbState.crumbs.length > 0 && (
                     <Breadcrumb {...breadcrumbState} />
                   )}
-                  <main
-                    css={css`
-                      flex: 1 1 auto;
-                    `}
-                    className="main"
-                  >
+                  <main>
                     {heroImage?.url ? (
                       <div className="hero">
                         <CustomImage image={heroImage} />
@@ -366,6 +373,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   </main>
                 </ErrorBoundary>
                 <Footer />
+                <SideBar openSideBar={openSideBar} />
               </div>
             </TrackingProvider>
           </LocalStoreProvider>

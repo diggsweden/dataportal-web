@@ -1,11 +1,5 @@
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import {
-  css,
-  space,
-  Heading,
-  Container,
-  SearchField,
-} from "@digg/design-system";
+import { Heading, Container, SearchField } from "@digg/design-system";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { ContainerData_Dataportal_Digg_Container_Fragment } from "../../graphql/__generated__/operations";
@@ -58,7 +52,7 @@ const DynamicArticleBlock = dynamic(
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
   const { domain, areas } = props || {};
-  const { content, puffs, publications, heading, preamble, image } =
+  const { content, puffs, publications, heading, preamble } =
     handleDomain(props);
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
@@ -66,6 +60,12 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   useEffect(() => {
     trackPageView({ documentTitle: "OpenSource" });
   }, [pathname]);
+
+  //Too be continued
+  const news = publications.filter((e: any) => e.tags[0].value === "Nyhet");
+  const goodExamples = publications.filter(
+    (e: any) => e.tags[0].value === "Goda exempel"
+  );
 
   return (
     <div className="gradient">
@@ -102,15 +102,6 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                 )}
               </div>
             </div>
-            <span className="domain-page__top-image">
-              {image && (
-                <CustomImage
-                  image={image}
-                  style="responsive"
-                  sizes={{ mobile: "0px", tablet: "0px", desktop: "25vw" }}
-                />
-              )}
-            </span>
           </div>
 
           {puffs && (
@@ -119,33 +110,32 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               basepath={domain ? "/" + domain : undefined}
             />
           )}
-
-          {pathname === `/` && publications.length > 0 && (
+          {/* I´ll be back for this */}
+          {pathname === `/` && (
             <>
-              <div className="domain-page__show_more--link">
-                <Heading
-                  level={2}
-                  size="xl"
-                  color="white"
-                  css={css`
-                    ${space({ pt: 4 })}
-                  `}
-                >
-                  {t("pages|startpage$current-news")}
-                </Heading>
-                <Link href={`/aktuellt`} className="text-base">
-                  {t("pages|publications$view-all")}
-                </Link>
-              </div>
-              <DynamicArticleBlock articles={publications} />
+              {news.length > 0 && (
+                <DynamicArticleBlock
+                  articles={news}
+                  showMoreLink={{
+                    title: t("pages|news$view-all"),
+                    slug: t("routes|news$path"),
+                  }}
+                  heading={t("pages|startpage$news")}
+                />
+              )}
+
+              {goodExamples.length > 0 && (
+                <DynamicArticleBlock
+                  articles={goodExamples}
+                  showMoreLink={{
+                    title: t("pages|good-examples$view-all"),
+                    slug: t("routes|good-examples$path"),
+                  }}
+                  heading={t("pages|startpage$good-examples")}
+                />
+              )}
             </>
           )}
-
-          {/* {areas && (
-            <div className="domain-page__link-block">
-              <Puffs links={areas} />
-            </div>
-          )} */}
 
           <div className={"fullWidth"}>
             {/* todo: this width? */}
@@ -158,7 +148,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
 
           {domain === "data" && <CategoriesNav />}
 
-          {areas && domain === "data" && (
+          {areas && !domain && lang === "sv" && (
             <div className="domain-page__link-block domain-page__theme-block">
               <Heading level={2} size="xl" color="white">
                 {t("pages|data$data-areas_text")}
