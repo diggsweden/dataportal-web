@@ -169,7 +169,11 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
                           </span>
                           {tags[0]?.value ? (
                             <span className="text-base">{tags[0].value}</span>
-                          ): <span className="text-base">{t("pages|listpage$fallback-tag")}</span>}
+                          ) : (
+                            <span className="text-base">
+                              {t("pages|listpage$fallback-tag")}
+                            </span>
+                          )}
                         </span>
                       )}
                     </NoSsr>
@@ -177,9 +181,7 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
                       locale={lang}
                       href={
                         isPub
-                          ? `${
-                              basePath || "/" + t("routes|publications$path")
-                            }${slug}`
+                          ? `${basePath || pathname}${slug}`
                           : `${domainSlug}${categorySlug}${slug}`
                       }
                       passHref
