@@ -9,11 +9,11 @@ import community from "./menu-icons/community.svg";
 import datasamverkan from "./menu-icons/datasamverkan.svg";
 import godaExempel from "./menu-icons/godaExempel.svg";
 
-export const sideBarConstants = [
+export const sideBarContent = [
   {
     title: "home-text",
     icon: home,
-    href: "lang-path",
+    href: "/",
     external: false,
     id: 1,
   },
