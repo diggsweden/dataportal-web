@@ -37,7 +37,7 @@
   },
   "publications": {
     "path": "aktuellt",
-    "title": "Nyheter"
+    "title": "Aktuellt"
   },
   "inspiration": {
     "path": "inspiration",
@@ -50,6 +50,10 @@
   "news": {
     "path": "nyheter",
     "title": "Nyheter"
+  },
+  "good-examples": {
+    "path": "goda-exempel",
+    "title": "Goda exempel"
   },
   "start": {
     "path": "",

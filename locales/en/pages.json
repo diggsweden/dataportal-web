@@ -16,7 +16,9 @@
     "data-api-header": "Data & APIs",
     "open-source-header": "Open Source",
     "public-ai-header": "Public AI",
-    "current-news": "Publications"
+    "current-news": "Publications",
+    "news": "News",
+    "good-examples": "Good examples"
   },
   "ai": {
     "heading": "Public AI",
@@ -168,6 +170,13 @@
     "view-all": "View all publications",
     "social_meta_title": "Publications - Sveriges Dataportal",
     "social_meta_description": "Publications on Sveriges Dataportal"
+  },
+  "good-examples": {
+    "text": "good examples",
+    "title": "Latest examples",
+    "view-all": "View all examples",
+    "social_meta_title": "Good examples - Sveriges Dataportal",
+    "social_meta_description": "Good examples on Sveriges Dataportal"
   },
   "redirect": {
     "pagenotfound_header": "Oops, the page could not be found!",

@@ -1,4 +1,180 @@
-@import '~@digg/design-system/lib/sass/variables';
+@import "~@digg/design-system/lib/sass/variables";
+
+.puffblock,
+.initiativPuffs {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  padding-bottom: $space-4;
+
+  @media screen and (min-width: $media-md) {
+    flex-direction: row;
+  }
+
+  li {
+    display: flex;
+    flex-direction: column;
+    transition: 0.1s;
+    max-height: fit-content;
+    width: 100%;
+    padding: $space-6;
+    justify-content: flex-start;
+
+    &:not(:last-child) {
+      @media screen and (min-width: $media-md) {
+        margin-bottom: 0;
+        margin-right: $space-6;
+      }
+    }
+
+    .puff-heading {
+      display: flex;
+      justify-content: space-between;
+
+      span {
+        align-self: flex-start;
+      }
+
+      a {
+        margin-bottom: 0;
+        text-decoration: underline;
+        text-decoration-color: $clr-pinkPop;
+      }
+    }
+
+    .puff-body {
+      visibility: hidden;
+      margin: 0;
+      height: 0;
+      max-height: 10rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3; // max nb lines to show
+      -webkit-box-orient: vertical;
+
+      @media screen and (min-width: $media-md) {
+        visibility: visible;
+        height: 100%;
+      }
+    }
+
+    @media screen and (min-width: $media-sm) {
+      padding: 1.313rem;
+      padding-right: $space-4;
+    }
+
+    @media screen and (min-width: $media-md) {
+      max-width: 33%;
+      .theme-svg {
+        visibility: visible;
+        height: fit-content;
+        padding-bottom: 1rem;
+      }
+      &:not(:last-child) {
+        margin-right: $space-6;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      filter: brightness(98%);
+
+      a {
+        color: $clr-white;
+        text-decoration: none;
+      }
+      svg {
+        fill: $clr-white;
+      }
+    }
+
+    a {
+      display: block;
+      text-decoration: none;
+      word-break: break-word;
+      -webkit-hyphens: auto;
+      -ms-hyphens: auto;
+      hyphens: auto;
+      transition: color 0.1s ease-in-out;
+      align-self: center;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+    svg {
+      transition: fill 0.1s ease-in-out;
+    }
+    span {
+      border-bottom: none;
+    }
+  }
+}
+
+.initiativPuffs {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 10px;
+  padding: 0;
+  padding-bottom: $space-4;
+  @media screen and (min-width: $media-sm) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (min-width: "1024px") {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    transition: 0.1s;
+    max-height: fit-content;
+    width: 100%;
+    padding: $space-6;
+    justify-content: flex-start;
+    max-width: 100%;
+    margin-bottom: 0;
+    @media screen and (min-width: "640px") {
+      flex-direction: column;
+      align-items: start;
+    }
+  }
+
+  .puff-heading {
+    width: 100%;
+  }
+
+  // a {
+  //   margin-right: 10px;
+  //   @media screen and (min-width: "640px") {
+  //     margin-right: 0;
+  //   }
+  // }
+
+  .theme-svg span {
+    width: 34px;
+    @media screen and (min-width: "640px") {
+      width: 50px;
+    }
+    @media screen and (min-width: "800px") {
+      width: 64px;
+    }
+  }
+
+  .image-svg img {
+    width: 34px;
+    @media screen and (min-width: "640px") {
+      width: 50px;
+    }
+    @media screen and (min-width: "800px") {
+      width: 64px;
+    }
+  }
+}
 
 .puffblock {
   display: flex;
@@ -12,43 +188,43 @@
 
   li {
     display: flex;
-    flex-direction: column;  
+    flex-direction: column;
     transition: 0.1s;
-    max-height: fit-content;   
-    width: 100%;      
+    max-height: fit-content;
+    width: 100%;
     padding: $space-6;
     justify-content: flex-start;
-    
+
     &:not(:last-child) {
       margin-bottom: $space-6;
 
-      @media screen and (min-width: $media-md){
+      @media screen and (min-width: $media-md) {
         margin-bottom: 0;
         margin-right: $space-6;
       }
     }
 
-    .puff-heading{
+    .puff-heading {
       display: flex;
       justify-content: space-between;
 
-      span{
+      span {
         align-self: flex-start;
-      } 
+      }
 
-      a{
+      a {
         margin-bottom: 0;
         text-decoration: underline;
-      text-decoration-color: $clr-pinkPop;
+        text-decoration-color: $clr-pinkPop;
       }
-    }    
+    }
 
-    .puff-body{           
+    .puff-body {
       visibility: hidden;
       margin: 0;
       height: 0;
-      max-height: 10rem;   
-      overflow: hidden;      
+      max-height: 10rem;
+      overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
       -webkit-line-clamp: 3; // max nb lines to show
@@ -57,7 +233,7 @@
       @media screen and (min-width: $media-md) {
         visibility: visible;
         height: 100%;
-      }     
+      }
     }
 
     @media screen and (min-width: $media-sm) {
@@ -65,14 +241,14 @@
       padding-right: $space-4;
     }
 
-    .theme-svg{
+    .theme-svg {
       visibility: hidden;
       height: 0;
     }
 
     @media screen and (min-width: $media-md) {
       max-width: 33%;
-      .theme-svg{
+      .theme-svg {
         visibility: visible;
         height: fit-content;
         padding-bottom: 1rem;
@@ -82,15 +258,15 @@
       }
     }
 
-    &:hover{
+    &:hover {
       cursor: pointer;
       filter: brightness(98%);
 
-      a{
+      a {
         color: $clr-white;
         text-decoration: none;
       }
-      svg{
+      svg {
         fill: $clr-white;
       }
     }
@@ -103,33 +279,33 @@
       -ms-hyphens: auto;
       hyphens: auto;
       transition: color 0.1s ease-in-out;
-      align-self: center; 
+      align-self: center;
 
-      &::first-letter{
+      &::first-letter {
         text-transform: uppercase;
       }
     }
-    svg{
+    svg {
       transition: fill 0.1s ease-in-out;
     }
     span {
-      border-bottom: none;      
+      border-bottom: none;
     }
   }
 }
 
-.linkblock{
-  padding: 0;  
-  
+.linkblock {
+  padding: 0;
+
   &.text-md {
     margin-bottom: 3rem;
   }
 
-  li{
-    display: flex;    
+  li {
+    display: flex;
     margin-bottom: $space-2;
-    
-    list-style-type: none;    
+
+    list-style-type: none;
     &:before {
       content: "";
       display: inline-block;
@@ -142,23 +318,23 @@
     }
 
     //Fix so that the before element does not get squished when the text is too long in mobile
-    span{
-      max-width: 85%;      
+    span {
+      max-width: 85%;
       @media screen and (min-width: $media-md) {
         max-width: 100%;
       }
 
-      &::first-letter{
+      &::first-letter {
         text-transform: uppercase;
       }
     }
 
-    a{
+    a {
       color: $clr-white;
-      text-decoration: underline;       
+      text-decoration: underline;
 
       transition: 0.1s;
-      &:hover{
+      &:hover {
         color: $clr-white;
         text-decoration: none;
       }
