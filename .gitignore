@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+#VSCode
+.vscode/
+
 # Logs
 logs
 *.log
@@ -20,7 +23,7 @@ yarn-error.log*
 /out/
 
 # production
-/build
+/build 
 
 # misc
 .DS_Store
