@@ -1,11 +1,11 @@
-import home from "../../../public/icons/home.svg";
-import data from "../../../public/icons/data.svg";
-import delaData from "../../../public/icons/dela-data.svg";
-import stodVerktyg from "../../../public/icons/stod-verktyg.svg";
-import nyheter from "../../../public/icons/nyheter.svg";
-import community from "../../../public/icons/community.svg";
-import datasamverkan from "../../../public/icons/datasamverkan.svg";
-import godaExempel from "../../../public/icons/godaExempel.svg";
+import home from "../../../assets/icons/home.svg";
+import data from "../../../assets/icons/data.svg";
+import delaData from "../../../assets/icons/dela-data.svg";
+import stodVerktyg from "../../../assets/icons/stod-verktyg.svg";
+import nyheter from "../../../assets/icons/nyheter.svg";
+import community from "../../../assets/icons/community.svg";
+import datasamverkan from "../../../assets/icons/datasamverkan.svg";
+import godaExempel from "../../../assets/icons/godaExempel.svg";
 
 export const sideBarContent = [
   {
