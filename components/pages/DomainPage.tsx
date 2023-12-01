@@ -13,7 +13,6 @@ import { CategoriesNav } from "../StartPageComponents";
 import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { DynamicArticleBlock } from "../blocks/DynamicArticleBlock";
 export interface DomainProps extends Containers_dataportal_Digg_Containers {
   domain?: DiggDomain;
   news?: IPublication;
@@ -41,6 +40,13 @@ const DynamicStatistic = dynamic(() => import("../Statistic/Statistic"), {
   ssr: false,
 });
 
+const DynamicArticleBlock = dynamic(
+  () => import("../blocks/Article").then((c) => c.ArticleBlock),
+  {
+    ssr: false,
+  }
+);
+
 export const DomainPage: React.FC<DomainProps> = (props) => {
   const { domain, areas } = props || {};
   const { content, puffs, publications, heading, preamble } =
@@ -51,6 +57,12 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   useEffect(() => {
     trackPageView({ documentTitle: "OpenSource" });
   }, [pathname]);
+
+  //Too be continued
+  const news = publications.filter((e: any) => e.tags[0].value === "Nyhet");
+  const goodExamples = publications.filter(
+    (e: any) => e.tags[0].value === "Goda exempel"
+  );
 
   return (
     <div className="gradient">
@@ -98,11 +110,22 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           {/* I´ll be back for this */}
           {pathname === `/` && publications.length > 0 && (
             <>
-              <DynamicArticleBlock publications={publications} tag="Nyhet" />
+              <DynamicArticleBlock
+                articles={news}
+                showMoreLink={{
+                  title: t("pages|news$view-all"),
+                  slug: t("routes|news$path"),
+                }}
+                heading={t("pages|startpage$news")}
+              />
 
               <DynamicArticleBlock
-                publications={publications}
-                tag="Goda exempel"
+                articles={goodExamples}
+                showMoreLink={{
+                  title: t("pages|good-examples$view-all"),
+                  slug: t("routes|good-examples$path"),
+                }}
+                heading={t("pages|startpage$good-examples")}
               />
             </>
           )}
