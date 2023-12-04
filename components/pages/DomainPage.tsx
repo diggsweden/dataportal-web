@@ -57,15 +57,17 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation("pages");
+  const news = publications.filter((e: any) => cleanTags(e.tags[0].value) === cleanTags("Nyhet"));
+  const goodExamples = publications.filter((e: any) => cleanTags(e.tags[0].value) === cleanTags("Goda exempel"));
+
+  //Too be continued
+  function cleanTags(tag: string): string {
+    return tag.toLowerCase().replace(/\s+/g, '');
+  }
+
   useEffect(() => {
     trackPageView({ documentTitle: "OpenSource" });
   }, [pathname]);
-
-  //Too be continued
-  const news = publications.filter((e: any) => e.tags[0].value === "Nyhet");
-  const goodExamples = publications.filter(
-    (e: any) => e.tags[0].value === "Goda exempel"
-  );
 
   return (
     <div className="gradient">
