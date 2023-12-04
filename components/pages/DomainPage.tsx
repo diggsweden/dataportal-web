@@ -13,7 +13,7 @@ import { CategoriesNav } from "../StartPageComponents";
 import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { CustomImage } from "../Image";
+import { Dataportal_LinkType } from "../../graphql/__generated__/types";
 
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
@@ -29,14 +29,14 @@ const DynamicStatisticGraph = dynamic(
   () => import("../Statistic/StatisticGraph"),
   {
     ssr: false,
-  },
+  }
 );
 
 const DynamicStatisticNumbers = dynamic(
   () => import("../Statistic/StatisticNumbers"),
   {
     ssr: false,
-  },
+  }
 );
 
 const DynamicStatistic = dynamic(() => import("../Statistic/Statistic"), {
@@ -47,7 +47,7 @@ const DynamicArticleBlock = dynamic(
   () => import("../blocks/Article").then((c) => c.ArticleBlock),
   {
     ssr: false,
-  },
+  }
 );
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
@@ -119,6 +119,9 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                   showMoreLink={{
                     title: t("pages|news$view-all"),
                     slug: t("routes|news$path"),
+                    description: null,
+                    __typename: "dataportal_Digg_Link",
+                    linktype: Dataportal_LinkType.External,
                   }}
                   heading={t("pages|startpage$news")}
                 />
@@ -130,6 +133,9 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                   showMoreLink={{
                     title: t("pages|good-examples$view-all"),
                     slug: t("routes|good-examples$path"),
+                    description: null,
+                    __typename: "dataportal_Digg_Link",
+                    linktype: Dataportal_LinkType.External,
                   }}
                   heading={t("pages|startpage$good-examples")}
                 />

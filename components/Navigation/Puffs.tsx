@@ -51,7 +51,7 @@ export const Puffs: React.FC<{
         }
 
         const Icon = puff.icon && GetIcon(puff.icon);
-        const checkIcon = puff.icon && puff.icon === "bookThin"; // change bookThin to "offentligAI"
+        const checkIcon = puff.icon && puff.icon === "offentligAI";
         const isDataSet = [
           "datasets?q=&f=",
           "concepts?q=&f=",
