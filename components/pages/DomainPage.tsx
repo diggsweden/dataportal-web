@@ -57,8 +57,8 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation("pages");
-  const news = publications.filter((e: any) => cleanTags(e.tags[0].value) === cleanTags("Nyhet"));
-  const goodExamples = publications.filter((e: any) => cleanTags(e.tags[0].value) === cleanTags("Goda exempel"));
+  const news = publications.filter((e: any) => cleanTags(e.tags[0].value) === "nyhet");
+  const goodExamples = publications.filter((e: any) => cleanTags(e.tags[0].value) === "godaexempel");
 
   //Too be continued
   function cleanTags(tag: string): string {
