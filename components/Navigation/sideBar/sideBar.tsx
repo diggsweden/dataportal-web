@@ -11,11 +11,7 @@ interface MenuItem {
   title: string;
   icon?: any;
   external?: boolean;
-  children?: {
-    title: string;
-    icon?: any;
-    external: boolean;
-  }[];
+  children?: MenuItem[];
 }
 
 interface SidebarProps {
