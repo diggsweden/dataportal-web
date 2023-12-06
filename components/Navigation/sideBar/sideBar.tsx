@@ -13,6 +13,13 @@ interface SidebarItem {
   external: boolean;
 }
 
+interface SidebarMenu {
+  title: string;
+  icon?: any;
+  external?: boolean;
+  children?: SidebarItem[];
+}
+
 interface SidebarProps {
   openSideBar: boolean;
 }
@@ -38,7 +45,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
   return (
     <div className={`menu${openSideBar ? " open" : ""}`}>
       <ul className="menuList">
-        {menues.map((menu: any, idx: number) => (
+        {menues.map((menu: SidebarMenu, idx: number) => (
           <li key={idx}>
             {menu.children ? (
               <details className="menuDetails">
@@ -79,7 +86,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
             ) : (
               <Link
                 href={t(`routes|${menu.title}$path`)}
-                target={menu.external && "_blank"}
+                target={menu.external ? "_blank" : "_self"}
               >
                 <div
                   className={`menuitem${isActive(
