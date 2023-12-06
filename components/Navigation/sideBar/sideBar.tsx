@@ -21,7 +21,6 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
   const { t } = useTranslation();
 
   const isActive = (path: string) => {
-    console.log(path);
     if (
       pathname === path ||
       (pathname === "/" && path === t(`common|lang-path`))
