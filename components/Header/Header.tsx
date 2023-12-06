@@ -1,5 +1,4 @@
 import {
-  ChatIcon,
   CloseIcon,
   colorPalette,
   GlobeIcon,
