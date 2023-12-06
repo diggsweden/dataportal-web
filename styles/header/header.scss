@@ -219,7 +219,7 @@ header {
 
     .search-link--icon {
       margin-right: $space-2;
-    }
+      filter: invert(50%) brightness(125%) grayscale(100%);    }
 
     @media screen and (min-width: $media-sm) {
       display: flex;

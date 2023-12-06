@@ -2,13 +2,11 @@ import {
   ChatIcon,
   CloseIcon,
   colorPalette,
-  css,
   GlobeIcon,
   InfoCircleIcon,
-  MenuIcon,
-  responsiveProp,
   SearchIcon,
 } from "@digg/design-system";
+import communityIcon from "../../assets/icons/community.svg";
 import hamburger from "../../public/icons/hamburger.svg";
 import diggLogo from "../../public/icons/diggLogo.svg";
 import dataportalenLogo from "../../public/icons/dataportalenLogo.svg";
@@ -21,7 +19,6 @@ import { EnvSettings } from "../../env/EnvSettings";
 import { GlobalSearch } from "../Search";
 import { usePrevious } from "../../utilities";
 import Image from "next/image";
-
 type HeaderProps = {
   menu: any;
   env: EnvSettings;
@@ -191,10 +188,11 @@ export const Header: React.FC<HeaderProps> = (props) => {
                       lang="en"
                     >
                       <div className="search-link">
-                        <ChatIcon
-                          color={colorPalette.gray500}
-                          width={20}
+                        <Image
                           className="search-link--icon"
+                          src={communityIcon}
+                          alt={"community-icon"}
+                          width={20}
                         />
                         <span className="right-bar-item">Community</span>
                       </div>
