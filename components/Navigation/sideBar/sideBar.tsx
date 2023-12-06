@@ -5,6 +5,7 @@ import arrowRight from "../../../assets/icons/arrowRight.svg";
 import externalLink from "../../../assets/icons/external-link.svg";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link.js";
+import { useEffect, useState } from "react";
 
 interface SidebarItem {
   title: string;
@@ -17,6 +18,7 @@ interface SidebarProps {
 }
 
 const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
+  const [menues, setMenues] = useState<any>([]);
   const pathname = usePathname();
   const { t } = useTranslation();
 
@@ -25,14 +27,18 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
       pathname === path ||
       (pathname === "/" && path === t(`common|lang-path`))
     ) {
-      return true;
-    } else return false;
+      return " active";
+    } else return "";
   };
+
+  useEffect(() => {
+    setMenues(sideBarContent);
+  }, []);
 
   return (
     <div className={`menu${openSideBar ? " open" : ""}`}>
       <ul className="menuList">
-        {sideBarContent.map((menu: any, idx: number) => (
+        {menues.map((menu: any, idx: number) => (
           <li key={idx}>
             {menu.children ? (
               <details className="menuDetails">
@@ -59,11 +65,9 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
                   {menu.children.map((subMenu: SidebarItem, idx: number) => (
                     <li
                       key={idx}
-                      className={`subMenuItem ${
-                        isActive(`/${t(`routes|${subMenu.title}$path`)}`)
-                          ? "active"
-                          : ""
-                      }`}
+                      className={`subMenuItem ${isActive(
+                        `/${t(`routes|${subMenu.title}$path`)}`
+                      )}`}
                     >
                       <Link href={`/${t(`routes|${subMenu.title}$path`)}`}>
                         {t(`routes|${subMenu.title}$title`)}
@@ -73,21 +77,17 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
                 </ul>
               </details>
             ) : (
-              <Link href={t(`routes|${menu.title}$path`)} legacyBehavior>
-                <a
-                  className={`menuitem${
-                    isActive(`/${t(`routes|${menu.title}$path`)}`)
-                      ? " active"
-                      : ""
-                  }`}
-                  target={menu.external && "_blank"}
+              <Link
+                href={t(`routes|${menu.title}$path`)}
+                target={menu.external && "_blank"}
+              >
+                <div
+                  className={`menuitem${isActive(
+                    `/${t(`routes|${menu.title}$path`)}`
+                  )}`}
                 >
                   <Image
-                    className={
-                      isActive(`/${t(`routes|${menu.title}$path`)}`)
-                        ? ""
-                        : "svg"
-                    }
+                    className={"svg"}
                     src={menu.icon}
                     height={24}
                     width={24}
@@ -105,7 +105,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
                       priority
                     />
                   )}
-                </a>
+                </div>
               </Link>
             )}
           </li>

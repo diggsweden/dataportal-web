@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import Image from "next/image";
 import euLogo from "../../public/images/eu.png";
-import { footerContent } from "./footerContent"
+import { footerContent } from "./footerContent";
 interface FooterLink {
   title: string;
   icon?: any;
@@ -28,7 +28,7 @@ export const Footer: React.FC = () => {
                 <h2>{t(`common|${footer.title}`)}</h2>
                 <ul>
                   {footer.children.map((link: FooterLink, idx: number) => (
-                    <li>
+                    <li key={idx}>
                       {link.type === "internal" ? (
                         <Link href={t(`routes|${link.title}$path`)}>
                           {t(`routes|${link.title}$title`)}
