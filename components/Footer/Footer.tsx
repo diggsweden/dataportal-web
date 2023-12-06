@@ -7,10 +7,14 @@ import euLogo from "../../public/images/eu.png";
 import { footerContent } from "./footerContent";
 interface FooterLink {
   title: string;
-  icon?: any;
-  href: string;
-  type: "internal" | "external" | "email";
+  children: {
+    title: string;
+    icon?: any;
+    href: string;
+    type: string;
+  }[];
 }
+
 export const Footer: React.FC = () => {
   const { t } = useTranslation();
   return (
@@ -23,11 +27,11 @@ export const Footer: React.FC = () => {
       >
         <div className="footer-main">
           <div className="footer__links">
-            {footerContent.map((footer: any, idx: number) => (
+            {footerContent.map((footer: FooterLink, idx: number) => (
               <div key={idx} className="footer__links__group">
                 <h2>{t(`common|${footer.title}`)}</h2>
                 <ul>
-                  {footer.children.map((link: FooterLink, idx: number) => (
+                  {footer.children.map((link, idx: number) => (
                     <li key={idx}>
                       {link.type === "internal" ? (
                         <Link href={t(`routes|${link.title}$path`)}>

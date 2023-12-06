@@ -7,17 +7,15 @@ import useTranslation from "next-translate/useTranslation";
 import Link from "next/link.js";
 import { useEffect, useState } from "react";
 
-interface SidebarItem {
-  title: string;
-  icon?: any;
-  external: boolean;
-}
-
-interface SidebarMenu {
+interface MenuItem {
   title: string;
   icon?: any;
   external?: boolean;
-  children?: SidebarItem[];
+  children?: {
+    title: string;
+    icon?: any;
+    external: boolean;
+  }[];
 }
 
 interface SidebarProps {
@@ -45,7 +43,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
   return (
     <div className={`menu${openSideBar ? " open" : ""}`}>
       <ul className="menuList">
-        {menues.map((menu: SidebarMenu, idx: number) => (
+        {menues.map((menu: MenuItem, idx: number) => (
           <li key={idx}>
             {menu.children ? (
               <details className="menuDetails">
@@ -69,7 +67,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
                   />
                 </summary>
                 <ul className="subMenu">
-                  {menu.children.map((subMenu: SidebarItem, idx: number) => (
+                  {menu.children.map((subMenu, idx: number) => (
                     <li
                       key={idx}
                       className={`subMenuItem ${isActive(
