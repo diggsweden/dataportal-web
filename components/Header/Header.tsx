@@ -251,11 +251,11 @@ export const Header: React.FC<HeaderProps> = (props) => {
                 <Link href={`/stod-och-verktyg`} className="header-link">
                   {t("common|support-tools")}
                 </Link>
-                <Link href={`/goda-exempel`} className="header-link">
-                  {t("common|good-examples")}
+                <Link href={t("routes|good-examples$path")} className="header-link">
+                  {t("routes|good-examples$title")}
                 </Link>
-                <Link href={`/varfor-dela-data`} className="header-link">
-                  {t("common|why-share-data")}
+                <Link href={t("routes|why-share-data$path")} className="header-link">
+                  {t("routes|why-share-data$title")}
                 </Link>
               </>
             </div>
