@@ -5,13 +5,13 @@ import arrowRight from "../../../assets/icons/arrowRight.svg";
 import externalLink from "../../../assets/icons/external-link.svg";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link.js";
+import { useEffect, useState } from "react";
 
-interface SidebarItem {
+interface MenuItem {
   title: string;
   icon?: any;
-  href: string;
-  external: boolean;
-  id: number;
+  external?: boolean;
+  children?: MenuItem[];
 }
 
 interface SidebarProps {
@@ -19,50 +19,29 @@ interface SidebarProps {
 }
 
 const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
+  const [menues, setMenues] = useState<any>([]);
   const pathname = usePathname();
   const { t } = useTranslation();
+
   const isActive = (path: string) => {
-    if (pathname === path || pathname === t(`common|${path}`)) {
-      return true;
-    } else return false;
+    if (
+      pathname === path ||
+      (pathname === "/" && path === t(`common|lang-path`))
+    ) {
+      return " active";
+    } else return "";
   };
+
+  useEffect(() => {
+    setMenues(sideBarContent);
+  }, []);
 
   return (
     <div className={`menu${openSideBar ? " open" : ""}`}>
       <ul className="menuList">
-        {sideBarContent.map((menu: any, idx: number) => (
+        {menues.map((menu: MenuItem, idx: number) => (
           <li key={idx}>
-            {menu.href ? (
-              <Link
-                href={`${menu.href === "lang-path" ? "/" : menu.href}`}
-                legacyBehavior
-              >
-                <a
-                  className={`menuitem${isActive(menu.href) ? " active" : ""}`}
-                  target={menu.external && "_blank"}
-                >
-                  <Image
-                    className={isActive(menu.href) ? "" : "svg"}
-                    src={menu.icon}
-                    height={24}
-                    width={24}
-                    alt="svg-icon"
-                    priority
-                  />
-                  {t(`common|${menu.title}`)}
-                  {menu.external && (
-                    <Image
-                      className="svg external"
-                      src={externalLink}
-                      height={24}
-                      width={24}
-                      alt="svg-icon"
-                      priority
-                    />
-                  )}
-                </a>
-              </Link>
-            ) : (
+            {menu.children ? (
               <details className="menuDetails">
                 <summary className="menuitem">
                   <Image
@@ -73,7 +52,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
                     alt="svg-icon"
                     priority
                   />
-                  <span>{t(`common|${menu.title}`)}</span>
+                  <span>{t(`routes|${menu.title}$title`)}</span>
                   <Image
                     className="detailsArrow"
                     src={arrowRight}
@@ -83,22 +62,52 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar }) => {
                     priority
                   />
                 </summary>
-                ​
                 <ul className="subMenu">
-                  {menu.children.map((subMenu: SidebarItem, idx: number) => (
+                  {menu.children.map((subMenu, idx: number) => (
                     <li
                       key={idx}
-                      className={`subMenuItem ${
-                        isActive(subMenu.href) ? "active" : ""
-                      }`}
+                      className={`subMenuItem ${isActive(
+                        `/${t(`routes|${subMenu.title}$path`)}`
+                      )}`}
                     >
-                      <Link href={subMenu.href}>
-                        {t(`common|${subMenu.title}`)}
+                      <Link href={`/${t(`routes|${subMenu.title}$path`)}`}>
+                        {t(`routes|${subMenu.title}$title`)}
                       </Link>
                     </li>
                   ))}
                 </ul>
               </details>
+            ) : (
+              <Link
+                href={t(`routes|${menu.title}$path`)}
+                target={menu.external ? "_blank" : "_self"}
+              >
+                <div
+                  className={`menuitem${isActive(
+                    `/${t(`routes|${menu.title}$path`)}`
+                  )}`}
+                >
+                  <Image
+                    className={"svg"}
+                    src={menu.icon}
+                    height={24}
+                    width={24}
+                    alt="svg-icon"
+                    priority
+                  />
+                  {t(`routes|${menu.title}$title`)}
+                  {menu.external && (
+                    <Image
+                      className="svg external"
+                      src={externalLink}
+                      height={24}
+                      width={24}
+                      alt="svg-icon"
+                      priority
+                    />
+                  )}
+                </div>
+              </Link>
             )}
           </li>
         ))}

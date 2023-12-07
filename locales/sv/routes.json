@@ -70,5 +70,53 @@
   "api_explore": {
     "path": "apiexplore",
     "title": "Utforska API"
+  },
+  "search-api": {
+    "path": "data",
+    "title": "Data & API:er"
+  },
+  "contribute": {
+    "path": "var-med-och-bidra",
+    "title": "Var med och bidra"
+  },
+  "data-collaboration": {
+    "path": "datasamverkan",
+    "title": "Datasamverkan"
+  },
+  "shara-data-benefits": {
+    "path": "nyttor-med-datadelning",
+    "title": "Nyttor med datadelning"
+  },
+  "legislation": {
+    "path": "lagstiftning",
+    "title": "Lagstiftning"
+  },
+  "governance": {
+    "path": "styrning",
+    "title": "Styrning"
+  },
+  "use-data": {
+    "path": "anvand-data",
+    "title": "Kom igång med att använda din data"
+  },
+  "share-data": {
+    "path": "dela-data",
+    "title": "Kom igång med att dela din data"
+  },
+  "support-tools": {
+    "path": "stod-och-verktyg",
+    "title": "Stöd och verktyg"
+  },
+  "home-text": {
+    "path": "sv",
+    "title": "Hem"
+  },
+  "why-share-data": {
+    "path": "",
+    "title": "Varför dela data"
+  },
+  "community": {
+    "path": "https://community.dataportal.se/",
+    "title": "Community"
   }
 }
