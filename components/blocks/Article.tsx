@@ -27,7 +27,7 @@ type Article = {
 };
 
 export interface ArticleBlockProps {
-  articles: PublicationDataFragment[] | DiggLink[];
+  articles: PublicationDataFragment[] | DiggLink[] | any;
   showMoreLink?: DiggLink;
   heading?: string;
   theme?: string;

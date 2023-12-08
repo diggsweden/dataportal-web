@@ -53,12 +53,12 @@ export const ROOT_AGGREGATE_QUERY = gql`
       ...ContainerData
     }
     news: dataportal_Digg_Publications(
-      filter: { limit: 1, locale: $locale, state: $state, tags: $newsTag }
+      filter: { limit: 3, locale: $locale, state: $state, tags: $newsTag }
     ) {
       ...PublicationData
     }
     examples: dataportal_Digg_Publications(
-      filter: { limit: 1, locale: $locale, state: $state, tags: $examplesTag }
+      filter: { limit: 3, locale: $locale, state: $state, tags: $examplesTag }
     ) {
       ...PublicationData
     }
