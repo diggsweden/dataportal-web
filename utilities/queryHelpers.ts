@@ -630,8 +630,8 @@ export const getRootAggregate = async (
       console.warn(`No container found with slug: '/'`);
     }
 
-    const news = data.news[0] || null;
-    const example = data.examples[0] || null;
+    const news = data.news || null;
+    const example = data.examples || null;
     const event = data.events[0] || null;
     const areas = data.areas ? populatePuffs(data.areas, "dataomraden") : null;
     const themes = data.themes ? populatePuffs(data.themes, "teman") : null;

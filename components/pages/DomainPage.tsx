@@ -18,8 +18,8 @@ import { Dataportal_LinkType } from "../../graphql/__generated__/types";
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   domain?: DiggDomain;
-  news?: IPublication;
-  example?: IPublication;
+  news?: IPublication[];
+  example?: IPublication[];
   event?: IPublication;
   areas?: IPuff[];
   themes?: IPuff[];
@@ -51,19 +51,11 @@ const DynamicArticleBlock = dynamic(
 );
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
-  const { domain, areas } = props || {};
-  const { content, puffs, publications, heading, preamble } =
-    handleDomain(props);
+  const { domain, areas, news, example } = props || {};
+  const { content, puffs, heading, preamble } = handleDomain(props);
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation("pages");
-  const news = publications.filter((e: any) => cleanTags(e.tags[0].value) === "nyhet");
-  const goodExamples = publications.filter((e: any) => cleanTags(e.tags[0].value) === "godaexempel");
-
-  //Too be continued
-  function cleanTags(tag: string): string {
-    return tag.toLowerCase().replace(/\s+/g, '');
-  }
 
   useEffect(() => {
     trackPageView({ documentTitle: "OpenSource" });
@@ -115,7 +107,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           {/* I´ll be back for this */}
           {pathname === `/` && (
             <>
-              {news.length > 0 && (
+              {news && (
                 <DynamicArticleBlock
                   articles={news}
                   showMoreLink={{
@@ -129,9 +121,9 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                 />
               )}
 
-              {goodExamples.length > 0 && (
+              {example && (
                 <DynamicArticleBlock
-                  articles={goodExamples}
+                  articles={example}
                   showMoreLink={{
                     title: t("pages|good-examples$view-all"),
                     slug: t("routes|good-examples$path"),
