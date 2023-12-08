@@ -44,15 +44,15 @@
     "remark-gfm": "^3.0.1",
     "sass": "^1.54.9",
     "sharp": "^0.32.6",
-    "swagger-ui-react": "4.14.0",
+    "swagger-ui-react": "5.10.3",
     "winston": "^3.8.2"
   },
   "devDependencies": {
     "@emotion/babel-preset-css-prop": "^11.10.0",
     "@types/graphql": "^14.5.0",
     "@types/node": "18.7.16",
-    "@types/react": "18.2.23",
-    "@types/react-dom": "^18.0.6",
+    "@types/react": "18.2.42",
+    "@types/react-dom": "^18.2.17",
     "@types/react-truncate": "^2.3.4",
     "@types/react-vis": "^1.11.11",
     "eslint": "8.23.0",
@@ -61,7 +61,7 @@
   },
   "engines": {
     "npm": ">=8.1.2",
-    "node": ">=16.13.2"
+    "node": "18"
   },
   "resolutions": {
     "**/**/@braintree/sanitize-url": ">=6.0.0",
@@ -75,6 +75,7 @@
     "**/**/shelljs": "^0.8.5",
     "**/**/minimatch": ">=3.0.5",
     "**/**/@babel/traverse": ">=7.23.2",
-    "**/**/sharp": ">=0.32.6"
+    "**/**/sharp": ">=0.32.6",
+    "types-ramda": "0.29.4"
   }
 }
