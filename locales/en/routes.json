@@ -114,9 +114,5 @@
   "why-share-data": {
     "path": "why-share-data",
     "title": "Why share data"
-  },
-  "community": {
-    "path": "https://community.dataportal.se/",
-    "title": "Community"
   }
 }

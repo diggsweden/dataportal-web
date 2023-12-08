@@ -80,7 +80,7 @@ import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "../env/Settings.Sandbox";
 import useTranslation from "next-translate/useTranslation";
 import { css } from "@emotion/react";
-import SideBar from "../components/Navigation/sideBar/sideBar";
+import SideBar from "../components/Navigation/Menu/Menu-SideBar";
 
 const GetCookiesAccepted = () => {
   try {
@@ -373,7 +373,10 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   </main>
                 </ErrorBoundary>
                 <Footer />
-                <SideBar openSideBar={openSideBar} />
+                <SideBar
+                  openSideBar={openSideBar}
+                  setOpenSidebar={setOpenSideBar}
+                />
               </div>
             </TrackingProvider>
           </LocalStoreProvider>

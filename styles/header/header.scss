@@ -174,11 +174,10 @@ header {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: $space-8;
 
   @media screen and (min-width: $media-lg) {
     margin: 0 !important;
-    gap: 0px;
   }
 
   .main-nav .header-link {
@@ -192,6 +191,7 @@ header {
   }
 
   &.text-base {
+    flex-wrap: wrap;
     margin: 0;
     gap: 20px;
   }
@@ -199,10 +199,6 @@ header {
   @media screen and (min-width: $media-lg) {
     display: flex;
     flex-wrap: nowrap;
-
-    a {
-      margin-left: $space-8;
-    }
   }
 
   .search-link {
@@ -219,53 +215,61 @@ header {
 
     .search-link--icon {
       margin-right: $space-2;
-      filter: invert(50%) brightness(125%) grayscale(100%);    }
+      filter: invert(50%) brightness(125%) grayscale(100%);
+    }
 
     @media screen and (min-width: $media-sm) {
       display: flex;
     }
   }
+  .mainNav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding: 0 20px;
+    gap: $space-6;
 
-  .header-link {
-    font-family: Ubuntu !important;
-    color: white;
-    margin-top: $space-6;
-    text-decoration: none;
-    border-bottom: 3px solid transparent;
-    padding-bottom: $space-4;
-    margin-bottom: -1px; //To make border intersect with parent border
-    word-break: keep-all;
-    margin-left: $space-4;
-    margin-right: $space-4;
-    transition: all 0.25s ease;
-
-    &:hover {
-      border-color: $clr-pinkPop;
+    @media screen and (max-width: "1065px") {
+      display: none;
     }
-
-    //Style for active NavLink
-    &.active {
+    .header-link {
+      font-family: Ubuntu !important;
+      color: white;
+      margin-top: $space-6;
       text-decoration: none;
-      border-bottom: 3px solid $clr-pinkPop;
-    }
+      border-bottom: 3px solid transparent;
+      padding-bottom: 2px;
+      white-space: nowrap;
+      transition: all 0.25s ease;
 
-    @media screen and (min-width: $media-sm) {
-      margin-top: 0;
-    }
+      &:hover {
+        border-color: $clr-pinkPop;
+      }
 
-    @media screen and (min-width: $media-md) {
-      &.header-link--top {
-        position: absolute;
-        top: 2.5rem;
-        right: -12px;
-        font-size: 14px;
-        color: white;
-        border-bottom: 1px solid $clr-gray600;
-        padding-bottom: 0;
-        margin-top: 0.5rem;
+      //Style for active NavLink
+      &.active {
+        text-decoration: none;
+        border-bottom: 3px solid $clr-pinkPop;
+      }
 
-        &:hover {
-          border-color: $clr-pink200;
+      @media screen and (min-width: $media-sm) {
+        margin-top: 0;
+      }
+
+      @media screen and (min-width: $media-md) {
+        &.header-link--top {
+          position: absolute;
+          top: 2.5rem;
+          right: -12px;
+          font-size: 14px;
+          color: white;
+          border-bottom: 1px solid $clr-gray600;
+          padding-bottom: 0;
+          margin-top: 0.5rem;
+
+          &:hover {
+            border-color: $clr-pink200;
+          }
         }
       }
     }
@@ -336,29 +340,6 @@ header {
 
   @media screen and (min-width: $media-lg) {
     display: none;
-  }
-
-  .header-link {
-    width: 100%;
-    padding: $space-4;
-    background-color: $clr-white;
-    color: $clr-white;
-    // margin-bottom: 2px;
-    text-decoration: none;
-    border-left: 0px solid $clr-pink600;
-
-    &:hover {
-      border-left: 5px solid $clr-pink300;
-      transition: 0.1s;
-    }
-
-    &:focus {
-      outline-offset: -2px !important;
-    }
-
-    &:first-of-type {
-      margin-top: 2px;
-    }
   }
 
   .link-btn {

@@ -29,14 +29,14 @@ const DynamicStatisticGraph = dynamic(
   () => import("../Statistic/StatisticGraph"),
   {
     ssr: false,
-  }
+  },
 );
 
 const DynamicStatisticNumbers = dynamic(
   () => import("../Statistic/StatisticNumbers"),
   {
     ssr: false,
-  }
+  },
 );
 
 const DynamicStatistic = dynamic(() => import("../Statistic/Statistic"), {
@@ -47,7 +47,7 @@ const DynamicArticleBlock = dynamic(
   () => import("../blocks/Article").then((c) => c.ArticleBlock),
   {
     ssr: false,
-  }
+  },
 );
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
@@ -56,6 +56,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation("pages");
+  const isEn = lang === "en";
 
   useEffect(() => {
     trackPageView({ documentTitle: "OpenSource" });
@@ -105,7 +106,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             />
           )}
           {/* I´ll be back for this */}
-          {pathname === `/` && (
+          {!isEn && pathname === `/` && (
             <>
               {news && (
                 <DynamicArticleBlock

@@ -114,9 +114,5 @@
   "why-share-data": {
     "path": "varfor-dela-data",
     "title": "Varför dela data"
-  },
-  "community": {
-    "path": "https://community.dataportal.se/",
-    "title": "Community"
   }
 }

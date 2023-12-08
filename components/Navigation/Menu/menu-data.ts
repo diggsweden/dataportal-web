@@ -7,80 +7,103 @@ import community from "../../../assets/icons/community.svg";
 import datasamverkan from "../../../assets/icons/datasamverkan.svg";
 import godaExempel from "../../../assets/icons/godaExempel.svg";
 
-export const sideBarContent = [
+interface MenuItem {
+  title: string;
+  inEn: boolean;
+}
+
+interface MenuData {
+  title: string;
+  promoted: boolean;
+  inEn?: boolean;
+  icon?: any;
+  href?: string;
+  children?: MenuItem[];
+}
+
+export const menuData: MenuData[] = [
   {
     title: "home-text",
+    promoted: false,
+    inEn: true,
     icon: home,
-    external: false,
   },
   {
     title: "search-api",
+    promoted: true,
+    inEn: true,
     icon: data,
-    external: false,
   },
   {
     title: "support-tools",
+    promoted: true,
     icon: stodVerktyg,
     children: [
       {
         title: "support-tools",
-        external: false,
+        inEn: true,
       },
       {
         title: "share-data",
-        external: false,
+        inEn: true,
       },
       {
         title: "use-data",
-        external: false,
+        inEn: true,
       },
     ],
   },
   {
     title: "good-examples",
+    promoted: true,
     icon: godaExempel,
     children: [
       {
         title: "good-examples",
-        external: false,
+        inEn: true,
       },
       {
         title: "contribute",
-        external: false,
+        inEn: false,
       },
     ],
   },
   {
     title: "data-collaboration",
+    promoted: false,
+    inEn: false,
     icon: datasamverkan,
-    external: false,
   },
   {
     title: "why-share-data",
+    promoted: true,
     icon: delaData,
     children: [
       {
         title: "shara-data-benefits",
-        external: false,
+        inEn: false,
       },
       {
         title: "legislation",
-        external: false,
+        inEn: false,
       },
       {
         title: "governance",
-        external: false,
+        inEn: false,
       },
     ],
   },
   {
     title: "news",
+    promoted: false,
+    inEn: false,
     icon: nyheter,
-    external: false,
   },
   {
     title: "community",
+    promoted: false,
+    inEn: true,
+    href: "https://community.dataportal.se/",
     icon: community,
-    external: true,
   },
 ];
