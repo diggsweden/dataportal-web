@@ -41,15 +41,15 @@ export const menuData: MenuData[] = [
     children: [
       {
         title: "support-tools",
-        inEn: true,
+        inEn: false,
       },
       {
         title: "share-data",
-        inEn: true,
+        inEn: false,
       },
       {
         title: "use-data",
-        inEn: true,
+        inEn: false,
       },
     ],
   },
@@ -60,7 +60,7 @@ export const menuData: MenuData[] = [
     children: [
       {
         title: "good-examples",
-        inEn: true,
+        inEn: false,
       },
       {
         title: "contribute",

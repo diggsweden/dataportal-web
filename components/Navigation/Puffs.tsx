@@ -15,7 +15,7 @@ export interface IPuff {
   title?: string;
   slug: string;
   description?: string;
-  icon?: DiggIcon;
+  icon?: DiggIcon | any; //any for the offentligai icon
   colors?: ColorGroupOverride;
 }
 
@@ -51,7 +51,7 @@ export const Puffs: React.FC<{
         }
 
         const Icon = puff.icon && GetIcon(puff.icon);
-        const checkIcon = puff.icon && puff.icon === "offentligAI";
+        const checkIcon: any = puff.icon && puff.icon === "offentligai";
         const isDataSet = [
           "datasets?q=&f=",
           "concepts?q=&f=",
@@ -73,7 +73,7 @@ export const Puffs: React.FC<{
             }}
             css={styles(puff)}
           >
-            {Icon && (
+            {Icon || checkIcon ? (
               <span className="theme-svg">
                 {checkIcon ? (
                   <div className="image-svg">
@@ -83,7 +83,7 @@ export const Puffs: React.FC<{
                   <Icon width={64} color={colorPalette["white"]}></Icon>
                 )}
               </span>
-            )}
+            ) : null}
             <span className="puff-heading">
               <Link href={linkPath} className="text-md">
                 {checkLang(puff?.title || puff?.slug)}
