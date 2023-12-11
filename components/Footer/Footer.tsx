@@ -62,7 +62,6 @@ export const Footer: React.FC = () => {
               </div>
             ))}
           </div>
-          ​
           <div className="digg__">
             <p className="text-sm">{t("common|digg-managed_text")}</p>
             <div className="footer__logos">

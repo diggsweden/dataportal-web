@@ -12,12 +12,13 @@ const themesColors: ColorGroupOverride = {
 };
 
 //todo: Get icons from strapi
-let iconInject: DiggIcon[] = [
+let iconInject: any = [
   "bookThin",
   "ehalsodata",
   "elektriskavagar",
   "rymddata",
   "statistik",
+  "offentligai",
 ];
 
 export const populatePuffs = (

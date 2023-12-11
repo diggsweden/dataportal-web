@@ -18,14 +18,13 @@ import { EnvSettings } from "../../env/EnvSettings";
 import { GlobalSearch } from "../Search";
 import { usePrevious } from "../../utilities";
 import Image from "next/image";
+import MenuMain from "../Navigation/Menu/Menu-Main";
 type HeaderProps = {
   menu: any;
   env: EnvSettings;
   setOpenSidebar: Function;
   openSideBar: boolean;
 };
-
-const showLangLink = true;
 
 interface SearchButtonProps {
   toggle: () => void;
@@ -68,7 +67,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
   const [focusTrap, setFocusTrap] = useState(false);
   const { t, lang } = useTranslation();
   const searchRef = useRef<HTMLInputElement>(null);
-  const isEn = lang === "en";
   const previousPathname = usePrevious(pathname);
   const isFirstLoad = previousPathname === undefined;
 
@@ -158,26 +156,24 @@ export const Header: React.FC<HeaderProps> = (props) => {
               >
                 {!showMenu && (
                   <>
-                    {!isEn && (
-                      <Link
-                        href={t("routes|about-us$path")}
-                        key={"faq-link"}
-                        locale={lang}
-                        onClick={closeMenu}
-                        className={`${pathname === "/faq" ? " active" : ""}`}
-                      >
-                        <div className="search-link">
-                          <InfoCircleIcon
-                            color={colorPalette.gray500}
-                            width={16}
-                            className="search-link--icon"
-                          />
-                          <span className="right-bar-item">
-                            {t("common|about")}
-                          </span>
-                        </div>
-                      </Link>
-                    )}
+                    <Link
+                      href={t("routes|about-us$path")}
+                      key={"faq-link"}
+                      locale={lang}
+                      onClick={closeMenu}
+                      className={`${pathname === "/faq" ? " active" : ""}`}
+                    >
+                      <div className="search-link">
+                        <InfoCircleIcon
+                          color={colorPalette.gray500}
+                          width={16}
+                          className="search-link--icon"
+                        />
+                        <span className="right-bar-item">
+                          {t("routes|about-us$title")}
+                        </span>
+                      </div>
+                    </Link>
 
                     <Link
                       href={`https://community.dataportal.se/`}
@@ -196,26 +192,25 @@ export const Header: React.FC<HeaderProps> = (props) => {
                         <span className="right-bar-item">Community</span>
                       </div>
                     </Link>
-                    {showLangLink && (
-                      <Link
-                        href={`/${t("common|change-lang")}`}
-                        key={"lang-link"}
-                        locale={`${t("common|change-lang")}`}
-                        onClick={closeMenu}
-                        lang={lang === "sv" ? "en" : "sv"}
-                      >
-                        <div className="search-link">
-                          <GlobeIcon
-                            color={colorPalette.gray500}
-                            width={20}
-                            className="search-link--icon"
-                          />
-                          <span className="globe-icon">
-                            {t("common|lang-linktext")}
-                          </span>
-                        </div>
-                      </Link>
-                    )}
+
+                    <Link
+                      href={`/${t("common|change-lang")}`}
+                      key={"lang-link"}
+                      locale={`${t("common|change-lang")}`}
+                      onClick={closeMenu}
+                      lang={lang === "sv" ? "en" : "sv"}
+                    >
+                      <div className="search-link">
+                        <GlobeIcon
+                          color={colorPalette.gray500}
+                          width={20}
+                          className="search-link--icon"
+                        />
+                        <span className="globe-icon">
+                          {t("common|lang-linktext")}
+                        </span>
+                      </div>
+                    </Link>
                   </>
                 )}
               </nav>
@@ -238,27 +233,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
                 className="dataportalen-logo"
               />
             </Link>
-            <div className="main-nav">
-              <Link
-                href={`/data`}
-                className={`header-link ${
-                  pathname?.split("/")[1] === `data` ? "active" : ""
-                }`}
-              >
-                {t("pages|startpage$data-api-header")}
-              </Link>
-              <>
-                <Link href={`/stod-och-verktyg`} className="header-link">
-                  {t("common|support-tools")}
-                </Link>
-                <Link href={t("routes|good-examples$path")} className="header-link">
-                  {t("routes|good-examples$title")}
-                </Link>
-                <Link href={t("routes|why-share-data$path")} className="header-link">
-                  {t("routes|why-share-data$title")}
-                </Link>
-              </>
-            </div>
+            <MenuMain setOpenSidebar={props.setOpenSidebar} />
           </div>
 
           <div className="searchAndMenu">
