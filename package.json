@@ -61,7 +61,7 @@
   },
   "engines": {
     "npm": ">=8.1.2",
-    "node": "18"
+    "node": ">=18.18.0"
   },
   "resolutions": {
     "**/**/@braintree/sanitize-url": ">=6.0.0",
