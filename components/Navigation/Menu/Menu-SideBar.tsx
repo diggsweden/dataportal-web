@@ -42,7 +42,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
         .filter(
           (menu) =>
             menu.inEn ||
-            (menu.children && menu.children.some((subMennu) => subMennu.inEn))
+            (menu.children && menu.children.some((subMennu) => subMennu.inEn)),
         )
         .map((menu) => ({
           ...menu,
@@ -108,7 +108,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
                     <li
                       key={idx}
                       className={`subMenuItem ${isActive(
-                        `/${t(`routes|${subMenu.title}$path`)}`
+                        `/${t(`routes|${subMenu.title}$path`)}`,
                       )}`}
                     >
                       <Link
@@ -128,7 +128,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
               >
                 <div
                   className={`menuitem${isActive(
-                    `/${t(`routes|${menu.title}$path`)}`
+                    `/${t(`routes|${menu.title}$path`)}`,
                   )}`}
                 >
                   <Image
