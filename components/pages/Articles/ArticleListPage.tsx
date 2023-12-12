@@ -181,9 +181,7 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
                       locale={lang}
                       href={
                         isPub
-                          ? `${
-                              basePath || "/" + t("routes|publications$path")
-                            }${slug}`
+                          ? `${basePath || pathname}${slug}`
                           : `${domainSlug}${categorySlug}${slug}`
                       }
                       passHref

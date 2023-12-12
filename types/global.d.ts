@@ -38,7 +38,6 @@ type Anchorlink = {
   id: string;
   text: string;
 };
-
 interface DataportalSettings {
   siteName: string;
   pageNotFoundHeading: string;

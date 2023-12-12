@@ -1,0 +1,104 @@
+.menu {
+  background: #202020;
+  z-index: 10000;
+  position: absolute;
+  right: -120%;
+  height: 100%;
+  transition: 0.5s ease-in-out;
+  margin-left: 100%;
+  margin-top: 106px;
+  width: 300px;
+  box-shadow: -20px 0px 50px -12px #00000040;
+  @media screen and (min-width: "600px") {
+    margin-top: 134px;
+  }
+  @media screen and (min-width: "1024px") {
+    margin-top: 144px;
+  }
+
+  &.open {
+    right: 0;
+  }
+
+  & .menuList {
+    color: white;
+    list-style: none;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    padding: 0;
+    margin: 0;
+  }
+
+  & .menuitem {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    list-style: none;
+    gap: 12px;
+    padding: 12px;
+    cursor: pointer;
+
+    span {
+      width: 100%;
+    }
+    &:hover:not(.active) {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  }
+
+  & .active {
+    background-color: #f493831a;
+    font-weight: 500;
+    cursor: default;
+
+    .svg {
+      filter: none;
+    }
+  }
+
+  .svg {
+    filter: invert(50%) brightness(125%) grayscale(100%);
+  }
+
+  .menuDetails[open] .svg {
+    filter: none;
+  }
+  .menuDetails[open] span {
+    font-weight: 500;
+  }
+
+  .menuDetails[open] .detailsArrow {
+    filter: none;
+    transform: rotate(90deg);
+    transition: 0.2s ease-in-out;
+  }
+
+  .detailsArrow,
+  .detailsIcon {
+    filter: invert(50%) brightness(125%) grayscale(100%);
+    transition: 0.2s ease-in-out;
+  }
+
+  .subMenu {
+    padding: 0;
+    margin-bottom: 12px;
+  }
+
+  .subMenuItem {
+    list-style: none;
+    cursor: pointer;
+    padding: 12px 24px 12px 48px;
+
+    &:hover:not(.active) {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  }
+
+  .external {
+    position: absolute;
+    right: 12px;
+  }
+}

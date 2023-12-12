@@ -1,7 +1,6 @@
 import {
   BlockDataFragment as Block,
   ImageFragment,
-  PublicationDataFragment as IPublication,
   RelatedContentFragment as RelatedContent,
 } from "../graphql/__generated__/operations";
 import { DomainProps } from "../components/pages/DomainPage";
@@ -18,7 +17,6 @@ import { handleUrl } from "../components";
 interface ParsedProps {
   content: Block[];
   puffs: false | RelatedContent;
-  publications: IPublication[];
   heading: string | null;
   preamble: string | null;
   image?: ImageFragment;
@@ -64,6 +62,7 @@ const fallback = (domain: DiggDomain | undefined): ParsedProps => {
     puffs: false as false | RelatedContent,
     publications: [],
   };
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { t } = useTranslation("pages");
 
   const image = (img: StaticImageData): ImageFragment => ({
@@ -121,9 +120,11 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
   // Check if we don't have response from server, return fallback
   if (!props.id) return fallback(props.domain);
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { t } = useTranslation("pages");
-  const { domain, news, example, event, blocks, heading, preamble } = props;
-  const publications: Array<IPublication> = [];
+  const { domain, news, example, blocks, heading, preamble } = props;
+  const newsArray = [];
+  const exampleArray = [];
 
   const image: ImageFragment | undefined = props.image
     ? {
@@ -138,7 +139,7 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
       blocks[0]?.__typename === "dataportal_Digg_RelatedContent" && blocks[0];
     const content = puffs ? blocks.slice(1) : blocks;
 
-    return { content, puffs, publications, heading, preamble, image };
+    return { content, puffs, heading, preamble, image };
   };
 
   switch (domain) {
@@ -187,7 +188,6 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
       return {
         content: aiContent,
         puffs: aiPuffs,
-        publications,
         heading,
         preamble,
         image,
@@ -196,13 +196,12 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
       const puffs = dataPuffs(t);
       const content = blocks;
 
-      return { content, puffs, publications, heading, preamble, image };
+      return { content, puffs, heading, preamble, image };
     case "oppen-kallkod":
       return def();
     default:
-      news && publications.push(news);
-      example && publications.push(example);
-      event && publications.push(event);
+      news && newsArray.push(news);
+      example && exampleArray.push(example);
       return def();
   }
 };
