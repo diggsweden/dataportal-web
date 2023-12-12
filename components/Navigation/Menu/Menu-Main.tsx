@@ -1,5 +1,5 @@
 import { usePathname } from "next/navigation";
-import { menuData } from "./menu-data";
+import { mainMenu } from "./menu-data";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link.js";
 import { useEffect, useState } from "react";
@@ -23,23 +23,14 @@ const MenuMain: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
 
-  const isActive = (path: string) => {
-    if (
-      pathname === path ||
-      (pathname === "/" && path === t(`common|lang-path`))
-    ) {
-      return " active";
-    } else return "";
-  };
-
   useEffect(() => {
     let enMenu;
     if (isEn) {
-      enMenu = menuData.filter((menu) => menu.promoted && menu.inEn);
+      enMenu = mainMenu.filter((menu) => menu.promoted && menu.inEn);
 
       setMenues(enMenu);
     } else {
-      enMenu = menuData.filter((menu) => menu.promoted);
+      enMenu = mainMenu.filter((menu) => menu.promoted);
       setMenues(enMenu);
     }
   }, [isEn]);
@@ -50,9 +41,9 @@ const MenuMain: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
         <Link
           key={idx}
           href={t(`routes|${menu.title}$path`)}
-          className={`header-link${isActive(
-            `/${t(`routes|${menu.title}$path`)}`,
-          )}`}
+          className={`header-link${
+            pathname === `/${t(`routes|${menu.title}$path`)}` ? " active" : ""
+          }`}
           onClick={() => setOpenSidebar(false)}
         >
           {t(`routes|${menu.title}$title`)}

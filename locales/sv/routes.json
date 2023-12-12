@@ -114,5 +114,9 @@
   "why-share-data": {
     "path": "varfor-dela-data",
     "title": "Varför dela data"
+  },
+  "language": {
+    "path": "en",
+    "title": "English"
   }
 }

@@ -6,6 +6,9 @@ import nyheter from "../../../assets/icons/nyheter.svg";
 import community from "../../../assets/icons/community.svg";
 import datasamverkan from "../../../assets/icons/datasamverkan.svg";
 import godaExempel from "../../../assets/icons/godaExempel.svg";
+import globe from "../../../assets/icons/globe.svg";
+import externalLink from "../../../assets/icons/external-link.svg";
+import mail from "../../../assets/icons/mail.svg";
 
 interface MenuItem {
   title: string;
@@ -14,14 +17,32 @@ interface MenuItem {
 
 interface MenuData {
   title: string;
-  promoted: boolean;
+  promoted?: boolean;
   inEn?: boolean;
   icon?: any;
   href?: string;
   children?: MenuItem[];
 }
 
-export const menuData: MenuData[] = [
+interface TopMenuData {
+  title: string;
+  icon: any;
+  href?: string;
+}
+
+interface FooterMenuItem {
+  title: string;
+  icon: any;
+  type?: "internal" | "external" | "email";
+  href?: string;
+}
+
+interface FooterMenuData {
+  title: string;
+  children: FooterMenuItem[];
+}
+
+export const mainMenu: MenuData[] = [
   {
     title: "home-text",
     promoted: false,
@@ -105,5 +126,63 @@ export const menuData: MenuData[] = [
     inEn: true,
     href: "https://community.dataportal.se/",
     icon: community,
+  },
+];
+
+export const topMenu: TopMenuData[] = [
+  { title: "about-us", icon: stodVerktyg },
+  {
+    title: "community",
+    href: "https://community.dataportal.se/",
+    icon: community,
+  },
+  { title: "language", icon: globe },
+];
+
+export const footerMenu: FooterMenuData[] = [
+  {
+    title: "dataportal",
+    children: [
+      {
+        title: "about-website",
+        type: "internal",
+        icon: externalLink,
+      },
+      {
+        title: "github",
+        href: "https://github.com/DIGGSweden/dataportal-web",
+        type: "external",
+        icon: externalLink,
+      },
+      {
+        title: "feedback",
+        href: "https://community.dataportal.se/category/4/feedback-p%C3%A5-dataportal-se",
+        type: "external",
+        icon: externalLink,
+      },
+      {
+        title: "info@digg.se",
+        href: "mailto:info@digg.se",
+        type: "email",
+        icon: mail,
+      },
+    ],
+  },
+  {
+    title: "toolbox-share-data",
+    children: [
+      {
+        title: "documentation-services",
+        href: "https://docs.dataportal.se/",
+        type: "external",
+        icon: externalLink,
+      },
+      {
+        title: "guidance-share",
+        href: "https://www.digg.se/utveckling-av-digital-forvaltning/oppna-och-delade-data/offentliga-aktorer",
+        type: "external",
+        icon: externalLink,
+      },
+    ],
   },
 ];

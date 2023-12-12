@@ -28,34 +28,6 @@ header {
       }
     }
   }
-
-  .header__mobile-menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: calc(100vh - 5.875rem);
-    margin-top: $space-8;
-
-    a {
-      margin-bottom: $space-8;
-      transform: scale(1);
-      transition: all 0.1s ease-in-out;
-
-      &:hover {
-        transform: scale(1.1);
-      }
-    }
-
-    .header__mobile-menu_link {
-      color: $clr-pinkPop;
-    }
-
-    .link-btn {
-      display: flex;
-      justify-content: center;
-      background-color: $clr-gray800;
-    }
-  }
 }
 
 .dataportal-logo {
@@ -65,33 +37,6 @@ header {
   }
   &:focus {
     @include focusStyleLight;
-  }
-}
-
-.main-bar {
-  transition: padding 0.25s ease;
-  z-index: 1000;
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  width: auto;
-  justify-content: flex-start;
-}
-
-.main-bar__right-menu {
-  display: flex;
-}
-
-.open-close-link {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  justify-items: auto;
-  z-index: 999999999;
-
-  &:hover {
-    cursor: pointer;
   }
 }
 
@@ -110,44 +55,45 @@ header {
     }
   }
 
-  .right-bar-item {
-    display: none;
+  .top-nav {
+    display: flex;
+    align-items: center;
+    & > ul {
+      display: flex;
+      flex-direction: row;
+      gap: $space-8;
+      list-style: none;
+      margin: 0;
 
-    @media screen and (min-width: $media-lg) {
-      display: block;
-    }
-  }
-}
+      & .top-link {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: $space-2;
+        border-bottom: 2px solid transparent;
+        padding-bottom: 2px;
+        cursor: pointer;
+        &:hover {
+          border-color: $clr-pinkPop;
+          .svg {
+            filter: invert(50%) brightness(175%) grayscale(100%);
+          }
+        }
 
-.globe-icon {
-  display: block;
+        &_text {
+          display: none;
+          @media screen and (min-width: $media-sm) {
+            display: block;
+          }
+        }
 
-  @media screen and (min-width: $media-lg) {
-    display: block;
-  }
-}
-.start-link {
-  font-size: 18px;
-  transition: all 0.25s ease;
-
-  @media screen and (min-width: $media-xl) {
-    padding-right: $space-12;
-  }
-
-  a {
-    color: $clr-white;
-    text-decoration: none;
-  }
-
-  .start-link-text {
-    font-size: 1rem;
-    margin-right: 1rem;
-    @media screen and (min-width: $media-sm) {
-      font-size: 1.25rem;
-    }
-
-    @media screen and (min-width: $media-xl) {
-      margin-right: 0rem;
+        &.active {
+          border-color: $clr-pinkPop;
+        }
+      }
+      .svg {
+        filter: invert(50%) brightness(125%) grayscale(100%);
+      }
     }
   }
 }
@@ -222,6 +168,7 @@ header {
       display: flex;
     }
   }
+
   .mainNav {
     display: flex;
     flex-direction: row;
@@ -229,7 +176,7 @@ header {
     padding: 0 20px;
     gap: $space-6;
 
-    @media screen and (max-width: "1065px") {
+    @media screen and (max-width: $media-lg) {
       display: none;
     }
     .header-link {
@@ -273,96 +220,6 @@ header {
         }
       }
     }
-  }
-}
-
-.menu-bg {
-  position: absolute;
-  top: 3.6rem;
-  left: 0;
-  height: 110vh;
-  width: 100%;
-  z-index: 3800;
-  background-color: $clr-gray900;
-  display: none;
-}
-
-.menu-bg--active {
-  display: block;
-}
-
-.click-outside {
-  height: 100%;
-  width: 100%;
-  min-height: 200px;
-
-  @media screen and (min-width: $media-md) {
-    display: none;
-  }
-}
-
-.header__bottom-links {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-width: calc(100% - 2rem);
-
-  &--link {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-right: $space-2;
-    margin-left: $space-2;
-
-    .search-link--icon {
-      margin-right: $space-2;
-      svg {
-        visibility: visible;
-        height: 20px;
-        width: 20px;
-        @media screen and (min-width: $media-md) {
-          height: 24px;
-          width: 24px;
-        }
-      }
-    }
-  }
-}
-
-.header-links--active {
-  z-index: 4000;
-  position: absolute;
-  top: 4rem;
-  left: 0;
-  width: 100%;
-  overflow-y: auto;
-
-  @media screen and (min-width: $media-lg) {
-    display: none;
-  }
-
-  .link-btn {
-    width: 100%;
-    padding: 1rem;
-    background-color: $clr-gray300;
-    display: flex;
-    justify-content: flex-start;
-    border: none;
-  }
-
-  .active {
-    border-left: 5px solid $clr-pink600;
-
-    &:hover {
-      border-color: $clr-pink600;
-    }
-  }
-
-  svg {
-    visibility: hidden;
-    height: 0;
-    width: 0;
   }
 }
 
