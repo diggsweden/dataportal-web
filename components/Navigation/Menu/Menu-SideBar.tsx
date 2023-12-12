@@ -1,5 +1,5 @@
 import { usePathname } from "next/navigation";
-import { menuData } from "./menu-data";
+import { mainMenu } from "./menu-data";
 import Image from "next/image";
 import arrowRight from "../../../assets/icons/arrowRight.svg";
 import externalLink from "../../../assets/icons/external-link.svg";
@@ -38,7 +38,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
 
   useEffect(() => {
     if (isEn) {
-      const enMenu = menuData
+      const enMenu = mainMenu
         .filter(
           (menu) =>
             menu.inEn ||
@@ -51,7 +51,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
 
       setMenues(enMenu);
     } else {
-      setMenues(menuData);
+      setMenues(mainMenu);
     }
   }, [isEn]);
 

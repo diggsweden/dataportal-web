@@ -84,7 +84,7 @@
     "title": "Data collaboration"
   },
   "shara-data-benefits": {
-    "path": "benefits-with-sharing-data",
+    "path": "shara-data-benefits",
     "title": "Benefits with sharing data"
   },
   "legislation": {
@@ -104,7 +104,7 @@
     "title": "Get started with sharing your data"
   },
   "support-tools": {
-    "path": "tools-and-support",
+    "path": "support-tools",
     "title": "Tools and support"
   },
   "home-text": {
@@ -114,5 +114,9 @@
   "why-share-data": {
     "path": "why-share-data",
     "title": "Why share data"
+  },
+  "language": {
+    "path": "sv",
+    "title": "Svenska"
   }
 }
