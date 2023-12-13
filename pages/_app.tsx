@@ -34,6 +34,7 @@ import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "../env/Settings.Sandbox";
 import useTranslation from "next-translate/useTranslation";
 import SideBar from "../components/Navigation/Menu/Menu-SideBar";
+import "../styles/global.css";
 
 const GetCookiesAccepted = () => {
   try {

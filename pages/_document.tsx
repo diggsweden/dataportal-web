@@ -102,8 +102,9 @@ class MyDocument extends Document {
             href="https://admin.dataportal.se"
             crossOrigin="anonymous"
           />
+          <meta name="theme-color" content="#FBF2F0" />;
         </Head>
-        <body>
+        <body className="font-ubuntu bg-pink-100 text-md text-brown-900">
           <Main />
           <NextScript nonce={SettingsUtil.getCurrent().nonce} />
         </body>
