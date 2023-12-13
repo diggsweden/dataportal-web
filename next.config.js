@@ -1,3 +1,5 @@
+/** @type {import('next').NextConfig} */
+
 const nextTranslate = require("next-translate-plugin");
 const withSvgr = require("next-plugin-svgr");
 
@@ -39,49 +41,47 @@ const csp = [
   },
 ];
 
-module.exports = nextTranslate({
-  webpack: (config) => {
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      fs: false,
-      os: false,
-      https: false,
-      http: false,
-      zlib: false,
-      events: false,
-      net: false,
-      dgram: false,
-      tls: false,
-    };
+const nextConfig = withSvgr(
+  nextTranslate({
+    webpack: (config) => {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        os: false,
+        https: false,
+        http: false,
+        zlib: false,
+        events: false,
+        net: false,
+        dgram: false,
+        tls: false,
+      };
 
-    return config;
-  },
-  productionBrowserSourceMaps: true,
-  env: {
-    REVALIDATE_INTERVAL: process.env.REVALIDATE_INTERVAL,
-  },
-  images: {
-    domains: [process.env.IMAGE_DOMAIN || "localhost", "bcdn.screen9.com"],
-    unoptimized: true,
-    deviceSizes: [640, 768, 1024, 1280, 1536, 1640, 1920],
-    dangerouslyAllowSVG: true,
-  },
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [...baseHeaders, ...csp],
-      },
-      {
-        source: "/",
-        headers: [...baseHeaders, ...csp],
-      },
-    ];
-  },
-});
+      return config;
+    },
+    productionBrowserSourceMaps: true,
+    env: {
+      REVALIDATE_INTERVAL: process.env.REVALIDATE_INTERVAL,
+    },
+    images: {
+      domains: [process.env.IMAGE_DOMAIN || "localhost", "bcdn.screen9.com"],
+      unoptimized: true,
+      deviceSizes: [640, 768, 1024, 1280, 1536, 1640, 1920],
+      dangerouslyAllowSVG: true,
+    },
+    async headers() {
+      return [
+        {
+          source: "/(.*)",
+          headers: [...baseHeaders, ...csp],
+        },
+        {
+          source: "/",
+          headers: [...baseHeaders, ...csp],
+        },
+      ];
+    },
+  }),
+);
 
-module.exports = withSvgr({
-  webpack(config, options) {
-    return config;
-  },
-});
+module.exports = nextConfig;
