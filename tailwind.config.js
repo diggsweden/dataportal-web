@@ -12,10 +12,10 @@ module.exports = {
       lg: "1124px",
     },
     maxWidth: {
-      sm: 140 + 20,
-      md: 580 + 40,
-      lg: 920 + 40,
-      xl: 1160 + 40,
+      sm: 160,
+      md: 620,
+      lg: 960,
+      xl: 1200,
     },
     colors: {
       white: "#FFFFFF",
@@ -67,6 +67,10 @@ module.exports = {
       xl: "40px",
       "2xl": "80px",
     },
+    container: ({ theme }) => ({
+      center: true,
+      padding: theme("spacing.xl"),
+    }),
     borderRadius: {
       sm: "0",
       md: "0",
