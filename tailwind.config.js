@@ -6,6 +6,17 @@ module.exports = {
   ],
   darkMode: "media",
   theme: {
+    screens: {
+      sm: "0px",
+      md: "600px",
+      lg: "1124px",
+    },
+    maxWidth: {
+      sm: 140 + 20,
+      md: 580 + 40,
+      lg: 920 + 40,
+      xl: 1160 + 40,
+    },
     colors: {
       white: "#FFFFFF",
       transparent: "#00000000",
