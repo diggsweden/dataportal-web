@@ -2884,7 +2884,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.0.8":
+"@types/react-dom@npm:^18.2.17":
   version: 18.2.17
   resolution: "@types/react-dom@npm:18.2.17"
   dependencies:
@@ -2905,7 +2905,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-truncate@npm:^2.3.4":
+"@types/react-truncate@npm:^2.3.7":
   version: 2.3.7
   resolution: "@types/react-truncate@npm:2.3.7"
   dependencies:
@@ -2914,7 +2914,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-vis@npm:^1.11.11":
+"@types/react-vis@npm:^1.11.14":
   version: 1.11.14
   resolution: "@types/react-vis@npm:1.11.14"
   dependencies:
@@ -2923,7 +2923,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*":
+"@types/react@npm:*, @types/react@npm:18.2.45":
   version: 18.2.45
   resolution: "@types/react@npm:18.2.45"
   dependencies:
@@ -2931,17 +2931,6 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 40b256bdce67b026348022b4f8616a693afdad88cf493b77f7b4e6c5f4b0e4ba13a6068e690b9b94572920840ff30d501ea3d8518e1f21cc8fb8204d4b140c8a
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:18.0.25":
-  version: 18.0.25
-  resolution: "@types/react@npm:18.0.25"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: 231d658c45abdef044a716b4502774f1585d8336d73b2f5bd68f181acbfc874b7a457686ecd29b415b43ed0922c309bab7e2cf96832d188a3f4f1b02f2af760a
   languageName: node
   linkType: hard
 
@@ -5040,10 +5029,10 @@ __metadata:
     "@types/node": 18.7.16
     "@types/node-fetch": ^2.6.2
     "@types/prismjs": ^1.26.0
-    "@types/react": 18.0.25
-    "@types/react-dom": ^18.0.8
-    "@types/react-truncate": ^2.3.4
-    "@types/react-vis": ^1.11.11
+    "@types/react": 18.2.45
+    "@types/react-dom": ^18.2.17
+    "@types/react-truncate": ^2.3.7
+    "@types/react-vis": ^1.11.14
     "@types/swagger-ui-react": ^4.11.0
     apollo: ^2.34.0
     autoprefixer: ^10.4.16
@@ -5079,7 +5068,7 @@ __metadata:
     sharp: ^0.31.0
     swagger-ui-react: 4.14.0
     tailwindcss: ^3.3.6
-    typescript: 4.8.3
+    typescript: 5.3.3
     winston: ^3.8.2
   languageName: unknown
   linkType: soft
@@ -12765,13 +12754,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.8.3":
-  version: 4.8.3
-  resolution: "typescript@npm:4.8.3"
+"typescript@npm:5.3.3":
+  version: 5.3.3
+  resolution: "typescript@npm:5.3.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 8286a5edcaf3d68e65c451aa1e7150ad1cf53ee0813c07ec35b7abdfdb10f355ecaa13c6a226a694ae7a67785fd7eeebf89f845da0b4f7e4a35561ddc459aba0
+  checksum: 2007ccb6e51bbbf6fde0a78099efe04dc1c3dfbdff04ca3b6a8bc717991862b39fd6126c0c3ebf2d2d98ac5e960bcaa873826bb2bb241f14277034148f41f6a2
   languageName: node
   linkType: hard
 
@@ -12785,13 +12774,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.8.3#~builtin<compat/typescript>":
-  version: 4.8.3
-  resolution: "typescript@patch:typescript@npm%3A4.8.3#~builtin<compat/typescript>::version=4.8.3&hash=3b564f"
+"typescript@patch:typescript@5.3.3#~builtin<compat/typescript>":
+  version: 5.3.3
+  resolution: "typescript@patch:typescript@npm%3A5.3.3#~builtin<compat/typescript>::version=5.3.3&hash=f3b441"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: dfe2ee3b9da1d74b9e06784ae90c20c435db9ad6ab23172911f6cdbfd7ab7213ae3611c4254c5a2c6dc2e89f05a658b95493890bf62d218267033b3d8a2e4dd6
+  checksum: f61375590b3162599f0f0d5b8737877ac0a7bc52761dbb585d67e7b8753a3a4c42d9a554c4cc929f591ffcf3a2b0602f65ae3ce74714fd5652623a816862b610
   languageName: node
   linkType: hard
 
