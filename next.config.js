@@ -1,4 +1,5 @@
 const nextTranslate = require("next-translate-plugin");
+const withSvgr = require("next-plugin-svgr");
 
 const baseHeaders = [
   {
@@ -76,5 +77,11 @@ module.exports = nextTranslate({
         headers: [...baseHeaders, ...csp],
       },
     ];
+  },
+});
+
+module.exports = withSvgr({
+  webpack(config, options) {
+    return config;
   },
 });
