@@ -1,17 +1,12 @@
-import { Container, Heading } from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import React from "react";
-import { MainContainerStyle } from "../styles/general/emotion";
 
 const NotFound: React.FC = () => {
   const { t, lang } = useTranslation("pages");
   return (
-    <Container
-      cssProp={MainContainerStyle}
-      wrapperProps={{ className: "notfoundpage" }}
-    >
-      <Heading>{t("notfoundpage$heading")}</Heading>
+    <div className="container">
+      <h1>{t("notfoundpage$heading")}</h1>
       <div className="content notfoundpage__content">
         <span className="text-md">{t("notfoundpage$body")}</span>
         <ul>
@@ -31,7 +26,7 @@ const NotFound: React.FC = () => {
           </li>
         </ul>
       </div>
-    </Container>
+    </div>
   );
 };
 

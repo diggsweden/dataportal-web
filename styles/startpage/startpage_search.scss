@@ -1,9 +1,0 @@
-// Style for search and image on startpage
-@import 'styles/general/variables.scss';
-@import '~@digg/design-system/lib/sass/variables';
-
-.datapage-form > div:first-of-type{
-  max-width: 43.25rem;
-  margin-top: $space-8;
-  margin-bottom: $space-8;
-}

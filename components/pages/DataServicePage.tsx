@@ -9,7 +9,6 @@ import {
 import Link from "next/link";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
-import { Heading } from "@digg/design-system";
 import {
   accessrigthsIndicator,
   architechtureIndicator,
@@ -169,9 +168,7 @@ export const DataServicePage: React.FC<{
       <div className="detailpage__wrapper dataservices">
         {/* Left column */}
         <div className="detailpage__wrapper--leftcol content">
-          <Heading weight="light" size={"3xl"}>
-            {entry.title}
-          </Heading>
+          <h1>{entry.title}</h1>
 
           {/* Publisher */}
           <script
@@ -251,9 +248,7 @@ export const DataServicePage: React.FC<{
           )}
 
           <div className="contact__publisher hbbr">
-            <Heading level={3}>
-              {t("pages|datasetpage$contact-publisher")}
-            </Heading>
+            <h3>{t("pages|datasetpage$contact-publisher")}</h3>
             <p>
               {t("pages|datasetpage$contact-publisher-text")}
               {t("pages|datasetpage$contact-publisher-text2")}{" "}
@@ -272,9 +267,7 @@ export const DataServicePage: React.FC<{
         {/* Right column */}
         <div className="detailpage__wrapper--rightcol hbbr">
           <div className="detailpage__wrapper--rightcol-info text-base">
-            <Heading color="pinkPop" level={2} size={"xl"} weight="light">
-              {t("pages|dataservicepage$api")}
-            </Heading>
+            <h2>{t("pages|dataservicepage$api")}</h2>
 
             <script
               type="text/x-entryscape-handlebar"

@@ -1,4 +1,3 @@
-import { getFormattedDate, Heading } from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,7 +11,6 @@ import { LinkFragment as DiggLink } from "../../graphql/__generated__/operations
 import placeholderimg from "../../public/images/noimage.svg";
 import NoSsr from "../NoSsr/NoSsr";
 import { CustomImage } from "../Image";
-import { responsive } from "../../styles/image";
 
 type Article = {
   type: "publication" | "container";
@@ -100,11 +98,7 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
 
   return (
     <div className={"articleblock"}>
-      {heading && (
-        <Heading level={2} size="lg">
-          {heading}
-        </Heading>
-      )}
+      {heading && <h2>{heading}</h2>}
       <ul>
         {articles &&
           articles.map((article, index) => {
@@ -133,30 +127,18 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
                   <div className="news-img">
                     <Image
                       loader={(p) => `${p.src}?w=${p.width}&q=${p.quality}`}
-                      style={responsive}
                       src={placeholderimg}
                       alt="placeholder image"
                     />
                   </div>
                 )}
-                <span className="news-text">
-                  <span className="news-top-info text-sm">
+                <span className="">
+                  <span className="">
                     {tags && <span>{findPublicationTypeTag(tags)?.value}</span>}
-                    <NoSsr>
-                      {date && <span>{getFormattedDate(date)}</span>}
-                    </NoSsr>
+                    <NoSsr>{date && <span>{date}</span>}</NoSsr>
                   </span>
-                  <Link
-                    href={url}
-                    locale={lang}
-                    className="text-lg font-bold link"
-                  >
-                    <Heading
-                      level={3}
-                      className="article-heading text-lg font-bold link"
-                    >
-                      {checkLang(title)}
-                    </Heading>
+                  <Link href={url} locale={lang} className="">
+                    <h3 className="">{checkLang(title)}</h3>
                   </Link>
                 </span>
               </li>
@@ -164,7 +146,7 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
           })}
       </ul>
       {showMoreLink && (
-        <Link href={showMoreLink.slug} locale={lang} className="text-md link">
+        <Link href={showMoreLink.slug} locale={lang} className="">
           {showMoreLink.title || showMoreLink.slug}
         </Link>
       )}

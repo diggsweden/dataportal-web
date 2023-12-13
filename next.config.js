@@ -1,4 +1,4 @@
-const nextTranslate = require("next-translate");
+const nextTranslate = require("next-translate-plugin");
 
 const baseHeaders = [
   {
@@ -60,7 +60,7 @@ module.exports = nextTranslate({
     REVALIDATE_INTERVAL: process.env.REVALIDATE_INTERVAL,
   },
   images: {
-    domains: [process.env.IMAGE_DOMAIN || 'localhost', 'bcdn.screen9.com'],
+    domains: [process.env.IMAGE_DOMAIN || "localhost", "bcdn.screen9.com"],
     unoptimized: true,
     deviceSizes: [640, 768, 1024, 1280, 1536, 1640, 1920],
     dangerouslyAllowSVG: true,

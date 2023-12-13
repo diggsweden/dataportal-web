@@ -4,8 +4,6 @@ import { querySearch } from "../../utilities";
 import { useRouter } from "next/router";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
-import { Button, Container, Heading, SearchField } from "@digg/design-system";
-import { MainContainerStyle } from "../../styles/general/emotion";
 import Link from "next/link";
 import { SearchHitFragment } from "../../graphql/__generated__/operations";
 import { getSearchHit } from "../../utilities/searchHelpers";
@@ -185,16 +183,9 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
         />
       </Head>
       <div className="wpb_wrapper">
-        <Container cssProp={MainContainerStyle}>
+        <div className="container">
           <div className="row">
-            <Heading
-              className="search-header"
-              size={"3xl"}
-              weight="light"
-              color="pinkPop"
-            >
-              {t("common|search-content")}
-            </Heading>
+            <h1 className="search-header">{t("common|search-content")}</h1>
           </div>
 
           <div>
@@ -216,10 +207,10 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
                 <label className="screen-reader" htmlFor="search-field">
                   Content
                 </label>
-                <SearchField
+                <input
                   autoFocus
                   id="search-field"
-                  submitLabel={t("common|search")}
+                  // submitLabel={t("common|search")}
                   autoComplete="off"
                   name="q"
                   type="text"
@@ -237,13 +228,13 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
 
           <div id="search-result" className="search-result">
             <div className="search-result-head">
-              <Heading level={2} size="md" className="search-result-header">
+              <h2 className="search-result-header">
                 {loading && <span>{t("common|loading")}</span>}
                 {!loading &&
                   searchResult &&
                   (searchResult.count || 0) >= 0 &&
                   `${searchResult.count} ${t("pages|search$content-hits")}`}
-              </Heading>
+              </h2>
             </div>
 
             {searchResult && (
@@ -284,13 +275,12 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
             <div className="pagination">
               <div className="prev-next-page">
                 {/* Prev page */}
-                <Button
+                <button
                   disabled={searchRequest?.page === 1}
-                  inline
                   onClick={() => handlePagination("decrement")}
                 >
                   {t("pages|search$prev-page")}
-                </Button>
+                </button>
 
                 <span>
                   {t("pages|search$page")} {searchRequest?.page ?? 1}{" "}
@@ -300,20 +290,19 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
                 </span>
 
                 {/* Next page */}
-                <Button
+                <button
                   disabled={
                     (searchRequest?.page ?? 1) >=
                     Math.ceil(searchResult?.count / PER_PAGE)
                   }
-                  inline
                   onClick={() => handlePagination("increment")}
                 >
                   {t("pages|search$next-page")}
-                </Button>
+                </button>
               </div>
             </div>
           )}
-        </Container>
+        </div>
       </div>
     </>
   );

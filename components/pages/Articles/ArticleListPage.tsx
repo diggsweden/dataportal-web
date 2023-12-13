@@ -1,12 +1,4 @@
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import {
-  getFormattedDate,
-  Container,
-  Heading,
-  skipToContent,
-  startFromTop,
-  Pagination,
-} from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import Link from "next/link";
@@ -14,7 +6,6 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { PublicationDataFragment as Publication } from "../../../graphql/__generated__/operations";
 import { ContainerDataFragment as IContainer } from "../../../graphql/__generated__/operations";
-import { MainContainerStyle } from "../../../styles/general/emotion";
 import { checkLang } from "../../../utilities";
 import { PublicationListResponse } from "../../../utilities";
 import NoSsr from "../../NoSsr/NoSsr";
@@ -74,8 +65,8 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
   };
 
   useEffect(() => {
-    skipToContent();
-    startFromTop();
+    // skipToContent();
+    // startFromTop();
   }, [currentPage]);
 
   useEffect(() => {
@@ -111,20 +102,20 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
     return (
       pageCount > 1 && (
         <div className="article-list--pagination ">
-          <Pagination
-            totalResults={articles.length}
-            resultsPerPage={articlesPerPage}
-            currentPage={currentPage}
-            onPageChanged={changePage}
-            nextButtonText="Nästa"
-          />
+          {/*<Pagination*/}
+          {/*  totalResults={articles.length}*/}
+          {/*  resultsPerPage={articlesPerPage}*/}
+          {/*  currentPage={currentPage}*/}
+          {/*  onPageChanged={changePage}*/}
+          {/*  nextButtonText="Nästa"*/}
+          {/*/>*/}
         </div>
       )
     );
   };
 
   return (
-    <Container cssProp={MainContainerStyle}>
+    <div className="container">
       <Head>
         <title>{metaTitle}</title>
         <meta property="og:title" content={metaTitle} />
@@ -137,9 +128,7 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
           </>
         )}
       </Head>
-      <Heading size="3xl" weight="light" color="pinkPop">
-        {heading || category?.name || t("pages|publications$title")}
-      </Heading>
+      <h1>{heading || category?.name || t("pages|publications$title")}</h1>
       <div className="content">
         {/* <Button
           onClick={() => {
@@ -165,7 +154,7 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
                       {isPub && (
                         <span className="publication-top-bar">
                           <span className="text-base">
-                            {getFormattedDate(article.publishedAt)}
+                            {article.publishedAt}
                           </span>
                           {tags[0]?.value ? (
                             <span className="text-base">{tags[0].value}</span>
@@ -216,6 +205,6 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
           </div>
         )}
       </div>
-    </Container>
+    </div>
   );
 };

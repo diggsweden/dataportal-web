@@ -1,37 +1,14 @@
-import {
-  ArrowIcon,
-  colorPalette,
-  css,
-  GetIcon,
-  space,
-  theme,
-} from "@digg/design-system";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { checkLang } from "../../utilities/checkLang";
+import { checkLang } from "../../utilities";
 import Image from "next/image";
 import offentligAiIcon from "../../public/icons/offentligAI.svg";
 export interface IPuff {
   title?: string;
   slug: string;
   description?: string;
-  icon?: DiggIcon | any; //any for the offentligai icon
-  colors?: ColorGroupOverride;
+  icon?: any; //any for the offentligai icon
 }
-
-const styles = (puff: IPuff) => css`
-  background: ${colorPalette[puff.colors?.background || "gray900"]};
-
-  .puff-heading {
-    @media screen and (min-width: ${theme.breakpoints[1]}) {
-      ${space({ mb: puff.description ? 2 : 0 })};
-    }
-
-    a {
-      color: ${colorPalette[puff.colors?.accent || "pinkPop"]};
-    }
-  }
-`;
 
 // Todo - remove any
 export const Puffs: React.FC<{
@@ -50,7 +27,7 @@ export const Puffs: React.FC<{
           return null;
         }
 
-        const Icon = puff.icon && GetIcon(puff.icon);
+        const Icon = puff.icon;
         const checkIcon: any = puff.icon && puff.icon === "offentligai";
         const isDataSet = [
           "datasets?q=&f=",
@@ -71,7 +48,6 @@ export const Puffs: React.FC<{
                 ? window.open(linkPath, "_blank")
                 : router.push(linkPath);
             }}
-            css={styles(puff)}
           >
             {Icon || checkIcon ? (
               <span className="theme-svg">
@@ -80,7 +56,7 @@ export const Puffs: React.FC<{
                     <Image src={offentligAiIcon} alt={"offentligAiIcon"} />
                   </div>
                 ) : (
-                  <Icon width={64} color={colorPalette["white"]}></Icon>
+                  <Icon width={64}></Icon>
                 )}
               </span>
             ) : null}
@@ -88,10 +64,10 @@ export const Puffs: React.FC<{
               <Link href={linkPath} className="text-md">
                 {checkLang(puff?.title || puff?.slug)}
               </Link>
-              <ArrowIcon
-                width={24}
-                color={colorPalette[puff.colors?.accent || "pinkPop"]}
-              />
+              {/*<ArrowIcon*/}
+              {/*  width={24}*/}
+              {/*  color={colorPalette[puff.colors?.accent || "pinkPop"]}*/}
+              {/*/>*/}
             </span>
             {puff?.description && (
               <p className="puff-body text-base font-normal">

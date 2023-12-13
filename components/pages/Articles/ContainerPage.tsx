@@ -6,14 +6,10 @@ import {
 } from "../../../components";
 import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "../../../graphql/__generated__/operations";
 import { isIE } from "../../../utilities";
-import { AnchorLinkMenu, Heading, space } from "@digg/design-system";
 import { checkLang } from "../../../utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { Container } from "@digg/design-system";
-import { css } from "@digg/design-system";
-import { MainContainerStyle } from "../../../styles/general/emotion";
 import { RelatedContainerFragment } from "../../../graphql/__generated__/operations";
 
 /**
@@ -84,11 +80,6 @@ interface ContainerPageProps extends IContainer {
   category?: IContainer;
 }
 
-const styles = css`
-  position: relative;
-  ${space({ mb: 16 })};
-`;
-
 export const highlightCode = () => {
   highlightCodeBlock();
 
@@ -146,24 +137,21 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   }, [asPath]);
 
   return (
-    <Container cssProp={MainContainerStyle}>
+    <div className="container">
       {hasRelatedContent && (
         <ContainerNavigation related={related} domain={domain} />
       )}
-      {heading && (
-        <Heading color="pinkPop" weight="light">
-          {checkLang(heading)}
-        </Heading>
-      )}
-      <div css={styles}>
+      {heading && <h2>{checkLang(heading)}</h2>}
+      <div>
         {!fullWidth && (
           <div className="anchorlink_wrapper">
             {showContentMenu && (
-              <AnchorLinkMenu
-                menuItems={menuItems}
-                menuHeading={t("common|content-menu-heading")}
-                anchorLinkMenuRef={AnchorLinkMenuRef}
-              />
+              // <AnchorLinkMenu
+              //   menuItems={menuItems}
+              //   menuHeading={t("common|content-menu-heading")}
+              //   anchorLinkMenuRef={AnchorLinkMenuRef}
+              // />
+              <div></div>
             )}
           </div>
         )}
@@ -173,6 +161,6 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
           {blocks && blocks.length > 0 && <ContentArea blocks={blocks} />}
         </div>
       </div>
-    </Container>
+    </div>
   );
 };

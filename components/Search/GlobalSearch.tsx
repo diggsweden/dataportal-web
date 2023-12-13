@@ -1,12 +1,6 @@
-import { SearchField } from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { FormEvent, forwardRef, useState } from "react";
-import {
-  DiggRadio,
-  DiggRadioLabel,
-  DiggRadioWrapper,
-} from "../Form/Styles/FormStyles";
 import { SearchMode } from "./SearchFilters";
 
 const searchModes: SearchMode[] = [
@@ -51,10 +45,10 @@ export const GlobalSearch = forwardRef<HTMLInputElement, GlobalSearchProps>(
           <label className="screen-reader" htmlFor="search-field">
             {searchMode}
           </label>
-          <SearchField
+          <input
             ref={ref}
             id="search-field"
-            submitLabel={t("common|search")}
+            // submitLabel={t("common|search")}
             autoComplete="off"
             name="q"
             type="text"
@@ -67,12 +61,12 @@ export const GlobalSearch = forwardRef<HTMLInputElement, GlobalSearchProps>(
           />
           <fieldset>
             <legend className="screen-reader">Search modes:</legend>
-            <DiggRadioWrapper className="radio_wrapper">
+            <div className="radio_wrapper">
               {searchModes.map((mode) => {
                 const text = t(`pages|search\$${mode}`);
                 return (
-                  <DiggRadioLabel key={mode}>
-                    <DiggRadio
+                  <label key={mode}>
+                    <input
                       disabled={hidden}
                       type="radio"
                       name={mode}
@@ -83,10 +77,10 @@ export const GlobalSearch = forwardRef<HTMLInputElement, GlobalSearchProps>(
                       }
                     />
                     <span>{text}</span>
-                  </DiggRadioLabel>
+                  </label>
                 );
               })}
-            </DiggRadioWrapper>
+            </div>
           </fieldset>
         </form>
       </div>

@@ -1,4 +1,3 @@
-import { Heading } from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import React from "react";
@@ -9,9 +8,7 @@ export const CategoriesNav: React.FC = () => {
   return (
     <div className="categoriesnav__wrapper text-base">
       <div className="startpage-categories">
-        <Heading level={2} size="xl">
-          {t("pages|startpage$datasets_by_category")}
-        </Heading>
+        <h2>{t("pages|startpage$datasets_by_category")}</h2>
         <ul>
           <li>
             <Link

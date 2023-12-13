@@ -1,9 +1,7 @@
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import { Heading, Container, SearchField } from "@digg/design-system";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { ContainerData_Dataportal_Digg_Container_Fragment } from "../../graphql/__generated__/operations";
-import { MainContainerStyle } from "../../styles/general/emotion";
 import { checkLang } from "../../utilities";
 import { Puffs, IPuff } from "../Navigation";
 import { PublicationDataFragment as IPublication } from "../../graphql/__generated__/operations";
@@ -64,15 +62,11 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
 
   return (
     <div className="gradient">
-      <Container cssProp={MainContainerStyle}>
+      <div className="container">
         <div className="domain-page">
           <div className="domain-page__header">
             <div className="domain-page__header-heading">
-              {heading && (
-                <Heading size={"3xl"} color={"pinkPop"} weight={"light"}>
-                  {checkLang(heading)}
-                </Heading>
-              )}
+              {heading && <h1>{checkLang(heading)}</h1>}
               <div>
                 <p className="preamble text-md domain-page__preamble">
                   {checkLang(preamble)}
@@ -86,12 +80,12 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                     <label className="screen-reader" htmlFor="start-search">
                       {t("startpage$search_placeholder")}
                     </label>
-                    <SearchField
+                    <input
                       id="start-search"
                       name="q"
                       autoComplete="off"
                       placeholder={t("startpage$search_placeholder")}
-                      submitLabel="screen-reader"
+                      // submitLabel="screen-reader"
                     />
                   </form>
                 )}
@@ -151,9 +145,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
 
           {areas && !domain && lang === "sv" && (
             <div className="domain-page__link-block domain-page__theme-block">
-              <Heading level={2} size="xl" color="white">
-                {t("pages|data$data-areas_text")}
-              </Heading>
+              <h2>{t("pages|data$data-areas_text")}</h2>
               <Puffs links={areas} />
             </div>
           )}
@@ -161,9 +153,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           {!domain && (
             <div className="domain-page__statistics">
               <div className="domain-page__show_more--link">
-                <Heading level={2} size="xl" color="white">
-                  {t("pages|statistic$statistic-numbers")}
-                </Heading>
+                <h2>{t("pages|statistic$statistic-numbers")}</h2>
                 <Link
                   href={`/${t("routes|statistics$path")}`}
                   locale={lang}
@@ -183,7 +173,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             </div>
           )}
         </div>
-      </Container>
+      </div>
     </div>
   );
 };

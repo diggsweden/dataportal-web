@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { SearchField, Spinner } from "@digg/design-system";
 import { SearchContextData } from ".";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { SearchMode } from "./SearchFilters";
@@ -71,10 +70,10 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           <label className="screen-reader" htmlFor="search-field">
             {placeholder}
           </label>
-          <SearchField
+          <input
             autoFocus
             id="search-field"
-            submitLabel={t("common|search")}
+            // submitLabel={t("common|search")}
             autoComplete="off"
             name="q"
             type="text"
@@ -86,7 +85,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
             }}
             key={search.request.query ? "loaded" : "not loaded"}
           />
-          {search.loadingFacets && <Spinner className={"spinner"} />}
+          {/*{search.loadingFacets && <Spinner className={"spinner"} />}*/}
         </div>
       </form>
     </div>

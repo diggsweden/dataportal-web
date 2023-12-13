@@ -1,4 +1,3 @@
-import { Heading } from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
 // import 'scss/statistic/statistic.scss';
@@ -73,9 +72,7 @@ export const StatisticGraphNumbers: React.FC = () => {
         {/* Toplist */}
         <div className="statistic-toplist">
           <div className="toplist-wrapper">
-            <Heading level={2} size="lg">
-              {t("statistic$dataset-numbers")}
-            </Heading>
+            <h2>{t("statistic$dataset-numbers")}</h2>
             <div className="top-list">
               <ol className="text-md font-bold">
                 {stats.yList &&

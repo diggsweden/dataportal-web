@@ -1,4 +1,3 @@
-import { css } from "@digg/design-system";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { RelatedContentFragment } from "../../graphql/__generated__/operations";
@@ -16,10 +15,6 @@ export const Links: React.FC<{
       {links.map((l, index) => {
         return (
           <li
-            css={css`
-              span {
-              }
-            `}
             key={index}
             onClick={() => router.push(`${basepath || ""}${l?.slug}`)}
           >

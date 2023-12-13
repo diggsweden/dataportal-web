@@ -1,11 +1,3 @@
-import {
-  ArrowDropIcon,
-  Button,
-  colorPalette,
-  css,
-  fontSize,
-  space,
-} from "@digg/design-system";
 import FocusTrap from "focus-trap-react";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
@@ -25,18 +17,6 @@ export interface SearchFilterProps {
    */
   children?: React.ReactNode;
 }
-
-const buttonStyles = css`
-  transition: background-color 0.25s cubic-bezier(0.1, 0.89, 0.45, 0.94);
-
-  &:focus {
-    box-shadow: none;
-    background-color: ${colorPalette.gray200};
-    color: ${colorPalette.gray900};
-  }
-
-  text-align: left;
-`;
 
 export const SearchFilter: React.FC<SearchFilterProps> = ({
   title,
@@ -66,8 +46,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
         ref={ref}
         onKeyDown={(ev) => ev.key === "Escape" && handleOpen(false)}
       >
-        <Button
-          css={buttonStyles}
+        <button
           className={
             (open ? "text-base open" : "text-base") + " filter-button_mobile"
           }
@@ -75,39 +54,19 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
           aria-haspopup={true}
           aria-expanded={open}
         >
-          <div
-            css={css`
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            `}
-          >
-            <span
-              css={css`
-                ${fontSize("base")};
-                margin-bottom: 0;
-              `}
-            >
-              {title || t("open")}
-            </span>
+          <div>
+            <span>{title || t("open")}</span>
 
             <div>
-              <ArrowDropIcon
-                rotation={open ? -180 : 0}
-                width={[20, 25]}
-                color="white"
-              />
+              {/*<ArrowDropIcon*/}
+              {/*  rotation={open ? -180 : 0}*/}
+              {/*  width={[20, 25]}*/}
+              {/*  color="white"*/}
+              {/*/>*/}
             </div>
           </div>
-        </Button>
-        <div
-          css={css`
-            display: ${open ? "block" : "none"};
-            ${space({ p: [4, 6, 8] })}
-          `}
-        >
-          {children}
-        </div>
+        </button>
+        <div>{children}</div>
       </div>
     </FocusTrap>
   );

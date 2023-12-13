@@ -1,8 +1,6 @@
-import { Container, Heading } from "@digg/design-system";
 import { MeiliSearch } from "meilisearch";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import { MainContainerStyle } from "../../styles/general/emotion";
 
 export const SearchTestPage: React.FC = () => {
   const [hits, setHits] = useState<any[]>();
@@ -34,8 +32,8 @@ export const SearchTestPage: React.FC = () => {
         <meta property="og:title" content={`Söktest - Sveriges dataportal`} />
         <meta name="twitter:title" content={`Söktest - Sveriges dataportal`} />
       </Head>
-      <Container cssProp={MainContainerStyle}>
-        <Heading size={"2xl"}>Söktest </Heading>
+      <div className="container">
+        <h2>Söktest </h2>
         <div className="content statistic-page">
           <h2>Sök direkt via Meiliclient</h2>
           <input
@@ -54,7 +52,7 @@ export const SearchTestPage: React.FC = () => {
               ))}
           </ul>
         </div>
-      </Container>
+      </div>
     </>
   );
 };

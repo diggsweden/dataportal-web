@@ -1,7 +1,5 @@
-import { Container, Heading } from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
 import React from "react";
-import { MainContainerStyle } from "../../styles/general/emotion";
 import {
   Illustration_1,
   Illustration_2,
@@ -11,7 +9,7 @@ import {
 export const Highlight: React.FC = () => {
   const { t } = useTranslation("pages");
   return (
-    <Container cssProp={MainContainerStyle}>
+    <div>
       <div className="highlight">
         <div className="highlight__illustraitons">
           <div className="illustration-container">
@@ -25,12 +23,10 @@ export const Highlight: React.FC = () => {
           </div>
         </div>
         <div className="highlight__txt">
-          <Heading level={2} size="xl">
-            {t("highlight$highlight-header")}
-          </Heading>
+          <h2>{t("highlight$highlight-header")}</h2>
           <p className="text-md">{t("highlight$highlight-text")}</p>
         </div>
       </div>
-    </Container>
+    </div>
   );
 };

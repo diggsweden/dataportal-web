@@ -1,4 +1,3 @@
-import { Heading } from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "..";
@@ -118,9 +117,7 @@ export const Statistic: React.FC = () => {
       {/* Toplist */}
       <div className="statistic-toplist">
         <div className="toplist-wrapper">
-          <Heading level={2} size="lg">
-            {t("statistic$top-organizations")}
-          </Heading>
+          <h2>{t("statistic$top-organizations")}</h2>
 
           <div className="top-list">
             <ol key={"toplist-organisation"} className="text-md font-bold">
@@ -145,9 +142,7 @@ export const Statistic: React.FC = () => {
         </div>
 
         <div className="toplist-wrapper">
-          <Heading level={2} size="lg">
-            {t("statistic$top-categories")}
-          </Heading>
+          <h2>{t("statistic$top-categories")}</h2>
 
           <div className="top-list">
             <ol className="text-md font-bold">

@@ -1,9 +1,8 @@
-import { CookieSetting } from "@digg/design-system";
 import React, { useEffect } from "react";
 import { useStateCallback } from "../../hooks/useStateCallback";
 
 export interface LocalStore {
-  cookieSettings: CookieSetting | undefined;
+  cookieSettings: null | undefined;
 }
 
 /* eslint-disable no-unused-vars */

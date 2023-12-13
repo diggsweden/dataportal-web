@@ -1,4 +1,3 @@
-import { ArrowDropIcon, Container, Heading } from "@digg/design-system";
 import React, { useContext, useEffect, useState } from "react";
 import {
   SearchContext,
@@ -18,7 +17,6 @@ import Link from "next/link";
 import { useScript } from "../../hooks/useScript";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
-import { MainContainerStyle } from "../../styles/general/emotion";
 
 interface SearchProps {
   activeLink?: string;
@@ -80,7 +78,7 @@ export const SearchPage: React.FC<SearchProps> = () => {
   }, [pathname]);
 
   return (
-    <Container cssProp={MainContainerStyle}>
+    <div className="container">
       <Head>
         <title>{`${t("common|search-dataapi")} - Sveriges dataportal`}</title>
         <meta
@@ -175,14 +173,9 @@ export const SearchPage: React.FC<SearchProps> = () => {
                 <SearchHeader activeLink={"search"} query={query} />
 
                 <div className="row search-header-wrapper">
-                  <Heading
-                    color={"pinkPop"}
-                    weight={"light"}
-                    size={"3xl"}
-                    className="search-header"
-                  >
+                  <h1 className="search-header">
                     {t("common|search-dataapi")}
-                  </Heading>
+                  </h1>
 
                   <button
                     aria-expanded={showTip}
@@ -195,11 +188,10 @@ export const SearchPage: React.FC<SearchProps> = () => {
                       setShowTip(!showTip);
                     }}
                   >
-                    {t("pages|search$search-tips")}{" "}
-                    <ArrowDropIcon
-                      rotation={showTip ? 180 : 0}
-                      width={"24px"}
-                    />
+                    {t("pages|search$search-tips")} {/*<ArrowDropIcon*/}
+                    {/*  rotation={showTip ? 180 : 0}*/}
+                    {/*  width={"24px"}*/}
+                    {/*/>*/}
                   </button>
                 </div>
 
@@ -279,6 +271,6 @@ export const SearchPage: React.FC<SearchProps> = () => {
           </SearchContext.Consumer>
         </SearchProvider>
       )}
-    </Container>
+    </div>
   );
 };

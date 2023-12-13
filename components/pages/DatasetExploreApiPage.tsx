@@ -10,7 +10,6 @@ import { SettingsContext } from "../SettingsProvider";
 import { useRouter } from "next/router";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
-import { Heading } from "@digg/design-system";
 
 const ApiExplorer = dynamic(
   () =>
@@ -238,12 +237,7 @@ export const DataSetExploreApiPage: React.FC<{
       <div className="detailpage__wrapper detailpage__wrapper--apiexplore">
         <div className="detailpage__wrapper-topinfo">
           {/* Title */}
-          <Heading
-            weight="light"
-            size="3xl"
-            className="api-title"
-            color="pinkPop"
-          >
+          <h3 className="api-title" color="pinkPop">
             {t("pages|explore-api-page$explore-api")}{" "}
             <script
               type="text/x-entryscape-handlebar"
@@ -255,7 +249,7 @@ export const DataSetExploreApiPage: React.FC<{
                           `,
               }}
             ></script>
-          </Heading>
+          </h3>
 
           {/* Publisher */}
           <span className="text-md api-publisher">{entry.publisher}</span>
@@ -349,24 +343,16 @@ export const DataSetExploreApiPage: React.FC<{
 
             <div className="content-tab-text">
               <div className="highlight-block">
-                <Heading level={2}>
-                  {t("pages|explore-api-page$access-to-api")}
-                </Heading>
+                <h2>{t("pages|explore-api-page$access-to-api")}</h2>
                 <p>{t("pages|explore-api-page$access-to-api-txt")}</p>
-                <Heading level={2}>
-                  {t("pages|explore-api-page$open-apis")}
-                </Heading>
+                <h2>{t("pages|explore-api-page$open-apis")}</h2>
                 <p>{t("pages|explore-api-page$open-apis-txt")}</p>
-                <Heading level={2}>
-                  {t("pages|explore-api-page$api-key")}
-                </Heading>
+                <h2>{t("pages|explore-api-page$api-key")}</h2>
                 <p>{t("pages|explore-api-page$api-key-txt")}</p>
 
                 {entry.contact && (
                   <>
-                    <Heading level={2}>
-                      {t("pages|explore-api-page$contact-publisher")}
-                    </Heading>
+                    <h2>{t("pages|explore-api-page$contact-publisher")}</h2>
                     <p>
                       <ExternalLink
                         isMail={true}

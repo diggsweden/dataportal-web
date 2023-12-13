@@ -1,51 +1,6 @@
-import "../styles/articles/articles.scss";
-import "../styles/general/variables.scss";
-import "../styles/general/typography.scss";
-import "../styles/general/general.scss";
-import "../styles/general/prism.scss";
-import "../styles/general/utils.scss";
-import "../styles/header/header.scss";
-import "../styles/footer/footer.scss";
-import "../styles/breadcrumb/breadcrumb.scss";
-import "../styles/search/search_bar.scss";
-import "../styles/search/search_filter.scss";
-import "../styles/search/search_result.scss";
-import "../styles/search/search_head.scss";
-import "../styles/blocks/blocks.scss";
-import "../styles/startpage/domainpage.scss";
-import "../styles/startpage/devportal_block.scss";
-import "../styles/startpage/startpage_categories.scss";
-import "../styles/startpage/startpage_search.scss";
-import "../styles/swagger/swagger.scss";
-import "../styles/content/content.scss";
-import "../styles/content/contentgrid.scss";
-import "../styles/content/anchorLinkMenu.scss";
-import "../styles/blockspage/blockspage.scss";
-import "../styles/highlight/highlight.scss";
-import "../styles/statistic/statistic.scss";
-import "../styles/form/form_pages.scss";
-import "../styles/notfoundpage/notfoundpage.scss";
-import "../styles/general/image.scss";
-import "../styles/sidebar/sidebar.scss";
-import "../node_modules/react-vis/dist/style.css";
-import "../components/Form/ProgressComponent/FormProgress.scss";
-
-//Only for importing fonts
-import "../styles/global.css";
-
 import { useEffect, useState } from "react";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
-import {
-  colorPalette,
-  ErrorBoundary,
-  fontSize,
-  SkipToContent,
-  skipToContent,
-  skipToElement,
-  theme,
-  ThemeProvider,
-} from "@digg/design-system";
 import { ApolloProvider } from "@apollo/client";
 import {
   Breadcrumb,
@@ -79,7 +34,6 @@ import { useRouter } from "next/router";
 import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "../env/Settings.Sandbox";
 import useTranslation from "next-translate/useTranslation";
-import { css } from "@emotion/react";
 import SideBar from "../components/Navigation/Menu/Menu-SideBar";
 
 const GetCookiesAccepted = () => {
@@ -106,11 +60,11 @@ const defaultDescrtiption =
  * focuses on element with id provided from path
  * @param pathWithHash url path along with hash
  */
-const onHash = (pathWithHash: string) => {
-  const hashIndex = pathWithHash.indexOf("#");
-  const hash = pathWithHash.substring(hashIndex);
-  onNextFrame(() => skipToElement(hash));
-};
+// const onHash = (pathWithHash: string) => {
+//   // const hashIndex = pathWithHash.indexOf("#");
+//   // const hash = pathWithHash.substring(hashIndex);
+//   // onNextFrame(() => skipToElement(hash));
+// };
 
 function Dataportal({ Component, pageProps }: DataportalenProps) {
   //let env = SettingsUtil.create();
@@ -164,13 +118,13 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   }, []);
 
   useEffect(() => {
-    if (previousPath) {
-      asPath.includes("#")
-        ? onHash(asPath)
-        : skipToContent(undefined, { showFocus: false, includeHeading: true });
-    } else {
-      asPath.includes("#") && onHash(asPath);
-    }
+    // if (previousPath) {
+    //   asPath.includes("#")
+    //     ? onHash(asPath)
+    //     : skipToContent(undefined, { showFocus: false, includeHeading: true });
+    // } else {
+    //   asPath.includes("#") && onHash(asPath);
+    // }
   }, [asPath]);
 
   return (
@@ -184,203 +138,166 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
           matomoSiteId: reactenv("MATOMO_SITE_ID"),
         }}
       >
-        <ThemeProvider theme={dataportalTheme}>
-          <LocalStoreProvider>
-            <TrackingProvider
-              initalActivation={GetCookiesAccepted() && matomoActivated}
-            >
-              <Head>
-                <meta name="referrer" content="no-referrer" />
-                <meta
-                  httpEquiv="Content-Security-Policy"
-                  content={generateCSP({ nonce: env.nonce })}
-                />
-                {/* SEO */}
-                <title>
-                  {title
+        <LocalStoreProvider>
+          <TrackingProvider
+            initalActivation={GetCookiesAccepted() && matomoActivated}
+          >
+            <Head>
+              <meta name="referrer" content="no-referrer" />
+              <meta
+                httpEquiv="Content-Security-Policy"
+                content={generateCSP({ nonce: env.nonce })}
+              />
+              {/* SEO */}
+              <title>
+                {title
+                  ? `${title} - Sveriges Dataportal`
+                  : "Sveriges Dataportal"}
+              </title>
+              <meta
+                property="og:title"
+                content={
+                  title
                     ? `${title} - Sveriges Dataportal`
-                    : "Sveriges Dataportal"}
-                </title>
-                <meta
-                  property="og:title"
-                  content={
-                    title
-                      ? `${title} - Sveriges Dataportal`
-                      : "Sveriges Dataportal"
-                  }
-                />
-                <meta
-                  name="twitter:title"
-                  content={
-                    title
-                      ? `${title} - Sveriges Dataportal`
-                      : "Sveriges Dataportal"
-                  }
-                />
-                <meta
-                  name="description"
-                  content={description || defaultDescrtiption}
-                />
-                <meta
-                  name="og:description"
-                  content={description || defaultDescrtiption}
-                />
-                <meta
-                  name="twitter:description"
-                  content={description || defaultDescrtiption}
-                />
-                <meta property="og:image" content={imageUrl} />
-                <meta name="twitter:image" content={imageUrl} />
-                <link
-                  rel="canonical"
-                  href={`${env.CANONICAL_URL}${asPath || ""}`}
-                />
-                <meta
-                  property="og:url"
-                  content={`${env.CANONICAL_URL}${asPath || ""}`}
-                />
-                <meta
-                  name="twitter:url"
-                  content={`${env.CANONICAL_URL}${asPath || ""}`}
-                />
-                <meta
-                  name="robots"
-                  content={`${
-                    robotsFollow && allowSEO ? "follow" : "nofollow"
-                  }, ${robotsIndex && allowSEO ? "index" : "noindex"}`}
-                />
-                <meta name="og:site_name" content={defaultSettings.siteName} />
-                <meta name="language" content={locale} />
-                <meta name="og:type" content="website" />
-                {/* PWA settings */}
-                <link rel="icon" href="/favicon.ico" />
-                <link rel="manifest" href="/manifest.json" />
-                <meta name="theme-color" content={theme.primary || "#171A21"} />
-                <link
-                  rel="apple-touch-icon"
-                  href="/images/apple-touch-icon.png"
-                />
-                <meta
-                  name="apple-mobile-web-app-status-bar"
-                  content={theme.primary}
-                />
-                <link
-                  rel="icon"
-                  type="image/png"
-                  href="/images/svdp-favicon-16.png"
-                  sizes="16x16"
-                />
-                <link
-                  rel="icon"
-                  type="image/png"
-                  href="/images/svdp-favicon-32.png"
-                  sizes="32x32"
-                />
-                <link
-                  rel="icon"
-                  type="image/png"
-                  href="/images/svdp-favicon-64.png"
-                  sizes="64x64"
-                />
-                <link
-                  rel="apple-touch-icon"
-                  href="/images/svdp-favicon-150.png"
-                />
-                <link
-                  rel="apple-touch-icon"
-                  sizes="180x180"
-                  href="/images/svdp-favicon.png"
-                />
-                <link
-                  rel="apple-touch-icon"
-                  sizes="152x152"
-                  href="/images/svdp-favicon.png"
-                />
-                <link
-                  rel="apple-touch-icon"
-                  sizes="167x167"
-                  href="/images/svdp-favicon.png"
-                />
-                <link
-                  rel="mask-icon"
-                  href="/images/safari-pinned-tab.svg"
-                  color="black"
-                />
-              </Head>
-              <div id="scriptsPlaceholder" />
-              <CookieBanner />
-              <div
-                id="top"
-                css={css`
-                  display: flex;
-                  flex-direction: column;
-                  min-height: 100vh;
-                  background-color: ${colorPalette.gray900};
-                  contain: paint;
-                `}
-              >
-                <SkipToContent text={t("skiptocontent")} />
-                <Header
-                  menu={undefined}
-                  env={env}
-                  setOpenSidebar={setOpenSideBar}
-                  openSideBar={openSideBar}
-                />
-                <noscript>
-                  <div
-                    css={css`
-                      position: fixed;
-                      bottom: 0;
-                      left: 0;
-                      width: 100%;
-                      background-color: ${colorPalette.brown300};
-                      padding: 24px;
-                      z-index: 100;
-                    `}
-                  >
-                    <span
-                      css={css`
-                        ${fontSize("md")};
-                        text-align: center;
-                      `}
-                    >
-                      {defaultSettings.noScriptContent}
-                    </span>
-                  </div>
-                </noscript>
-                <ErrorBoundary>
-                  {breadcrumbState.crumbs.length > 0 && (
-                    <Breadcrumb {...breadcrumbState} />
-                  )}
-                  <main>
-                    {heroImage?.url ? (
-                      <div className="hero">
-                        <CustomImage image={heroImage} />
-                      </div>
-                    ) : (
-                      (pageProps as DataportalPageProps).type ===
-                        "MultiContainer" ||
-                      ((pageProps as DataportalPageProps).type ===
-                        "Publication" && (
-                        <div
-                          css={css`
-                            margin-top: 2rem; //Add margin to compensate for lack of hero image
-                          `}
-                        />
-                      ))
-                    )}
-                    <Component {...pageProps} />
-                  </main>
-                </ErrorBoundary>
-                <Footer />
-                <SideBar
-                  openSideBar={openSideBar}
-                  setOpenSidebar={setOpenSideBar}
-                />
-              </div>
-            </TrackingProvider>
-          </LocalStoreProvider>
-        </ThemeProvider>
+                    : "Sveriges Dataportal"
+                }
+              />
+              <meta
+                name="twitter:title"
+                content={
+                  title
+                    ? `${title} - Sveriges Dataportal`
+                    : "Sveriges Dataportal"
+                }
+              />
+              <meta
+                name="description"
+                content={description || defaultDescrtiption}
+              />
+              <meta
+                name="og:description"
+                content={description || defaultDescrtiption}
+              />
+              <meta
+                name="twitter:description"
+                content={description || defaultDescrtiption}
+              />
+              <meta property="og:image" content={imageUrl} />
+              <meta name="twitter:image" content={imageUrl} />
+              <link
+                rel="canonical"
+                href={`${env.CANONICAL_URL}${asPath || ""}`}
+              />
+              <meta
+                property="og:url"
+                content={`${env.CANONICAL_URL}${asPath || ""}`}
+              />
+              <meta
+                name="twitter:url"
+                content={`${env.CANONICAL_URL}${asPath || ""}`}
+              />
+              <meta
+                name="robots"
+                content={`${
+                  robotsFollow && allowSEO ? "follow" : "nofollow"
+                }, ${robotsIndex && allowSEO ? "index" : "noindex"}`}
+              />
+              <meta name="og:site_name" content={defaultSettings.siteName} />
+              <meta name="language" content={locale} />
+              <meta name="og:type" content="website" />
+              {/* PWA settings */}
+              <link rel="icon" href="/favicon.ico" />
+              <link rel="manifest" href="/manifest.json" />
+              <meta name="theme-color" content={"#171A21"} />
+              <link
+                rel="apple-touch-icon"
+                href="/images/apple-touch-icon.png"
+              />
+              <meta name="apple-mobile-web-app-status-bar" />
+              <link
+                rel="icon"
+                type="image/png"
+                href="/images/svdp-favicon-16.png"
+                sizes="16x16"
+              />
+              <link
+                rel="icon"
+                type="image/png"
+                href="/images/svdp-favicon-32.png"
+                sizes="32x32"
+              />
+              <link
+                rel="icon"
+                type="image/png"
+                href="/images/svdp-favicon-64.png"
+                sizes="64x64"
+              />
+              <link
+                rel="apple-touch-icon"
+                href="/images/svdp-favicon-150.png"
+              />
+              <link
+                rel="apple-touch-icon"
+                sizes="180x180"
+                href="/images/svdp-favicon.png"
+              />
+              <link
+                rel="apple-touch-icon"
+                sizes="152x152"
+                href="/images/svdp-favicon.png"
+              />
+              <link
+                rel="apple-touch-icon"
+                sizes="167x167"
+                href="/images/svdp-favicon.png"
+              />
+              <link
+                rel="mask-icon"
+                href="/images/safari-pinned-tab.svg"
+                color="black"
+              />
+            </Head>
+            <div id="scriptsPlaceholder" />
+            {/*<CookieBanner />*/}
+            <div id="top">
+              {/*<SkipToContent text={t("skiptocontent")} />*/}
+              <Header
+                menu={undefined}
+                env={env}
+                setOpenSidebar={setOpenSideBar}
+                openSideBar={openSideBar}
+              />
+              <noscript>
+                <div>
+                  <span>{defaultSettings.noScriptContent}</span>
+                </div>
+              </noscript>
+              {/*<ErrorBoundary>*/}
+              {/*  {breadcrumbState.crumbs.length > 0 && (*/}
+              {/*    <Breadcrumb {...breadcrumbState} />*/}
+              {/*  )}*/}
+              {/*  <main>*/}
+              {/*    {heroImage?.url ? (*/}
+              {/*      <div className="hero">*/}
+              {/*        <CustomImage image={heroImage} />*/}
+              {/*      </div>*/}
+              {/*    ) : (*/}
+              {/*      (pageProps as DataportalPageProps).type ===*/}
+              {/*        "MultiContainer" ||*/}
+              {/*      ((pageProps as DataportalPageProps).type ===*/}
+              {/*        "Publication" && <div />)*/}
+              {/*    )}*/}
+              {/*    <Component {...pageProps} />*/}
+              {/*  </main>*/}
+              {/*</ErrorBoundary>*/}
+              <Footer />
+              <SideBar
+                openSideBar={openSideBar}
+                setOpenSidebar={setOpenSideBar}
+              />
+            </div>
+          </TrackingProvider>
+        </LocalStoreProvider>
       </SettingsProvider>
     </ApolloProvider>
   );

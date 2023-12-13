@@ -1,4 +1,3 @@
-import { colorPalette, Heading, SearchIcon } from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import React from "react";
@@ -14,7 +13,7 @@ export const SearchBlock: React.FC = () => {
       </div>
       <div className="startpage-top">
         <div className="startpage-search">
-          <Heading size="2xl">{t("startpage$search_title_1")}</Heading>
+          <h2>{t("startpage$search_title_1")}</h2>
           <form className="startpage-form" method="GET" action={`/datasets`}>
             <label className="screen-reader" htmlFor="start-search">
               {t("startpage$search_placeholder")}
@@ -31,7 +30,7 @@ export const SearchBlock: React.FC = () => {
               type="submit"
               aria-label={t("startpage$search_placeholder")}
             >
-              <SearchIcon color={colorPalette.white} width={[32]} />
+              {/*<SearchIcon color={colorPalette.white} width={[32]} />*/}
             </button>
           </form>
         </div>

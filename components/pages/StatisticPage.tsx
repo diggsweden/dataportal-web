@@ -1,11 +1,9 @@
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import { Container, Heading } from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { MainContainerStyle } from "../../styles/general/emotion";
 
 const DynamicStatisticGraphNumbers = dynamic(
   () =>
@@ -59,8 +57,8 @@ export const StatisticPage: React.FC = () => {
           )} - Sveriges dataportal`}
         />
       </Head>
-      <Container cssProp={MainContainerStyle}>
-        <Heading size={"2xl"}>{t("statistic$statistic-page-header")} </Heading>
+      <div className="container">
+        <h2>{t("statistic$statistic-page-header")} </h2>
         <div className="content statistic-page">
           <p className="main-text text-md">
             {t("statistic$statistic-page-text")}
@@ -72,7 +70,7 @@ export const StatisticPage: React.FC = () => {
           </p>
           <DynamicStatistic />
         </div>
-      </Container>
+      </div>
     </>
   );
 };

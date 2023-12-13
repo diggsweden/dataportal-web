@@ -5,7 +5,6 @@ import { EntrystoreContext } from "../../components/EntrystoreProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Heading } from "@digg/design-system";
 import { hemvist } from "../../utilities";
 
 export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
@@ -181,9 +180,7 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
       <div className="detailpage__wrapper">
         {/* Left column */}
         <div className="detailpage__wrapper--leftcol content">
-          <Heading size={"3xl"} weight="light">
-            {title}
-          </Heading>
+          <h1>{title}</h1>
           <script
             type="text/x-entryscape-handlebar"
             data-entryscape="true"
@@ -204,9 +201,7 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
             ></span>
           </p>
 
-          <Heading level={2}>
-            {t("pages|specification_page$resource_specification")}
-          </Heading>
+          <h2>{t("pages|specification_page$resource_specification")}</h2>
           <div
             className="specification__resource"
             data-entryscape="resourceDescriptors2"
@@ -214,9 +209,7 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
           ></div>
 
           <div className="contact__publisher hbbr">
-            <Heading level={3}>
-              {t("pages|datasetpage$contact-publisher")}
-            </Heading>
+            <h3>{t("pages|datasetpage$contact-publisher")}</h3>
             <p className="text-md">
               {t("pages|datasetpage$contact-publisher-text")}
               {t("pages|datasetpage$contact-publisher-text2")}{" "}
@@ -235,9 +228,7 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
         {/* Right column */}
         <div className="detailpage__wrapper--rightcol specification__about hbbr">
           <div className="detailpage__wrapper--rightcol-info text-base">
-            <Heading level={2} size="md">
-              {t("pages|specification_page$about_specification")}
-            </Heading>
+            <h2>{t("pages|specification_page$about_specification")}</h2>
 
             <span
               data-entryscape="hemvist"

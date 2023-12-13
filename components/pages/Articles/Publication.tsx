@@ -1,7 +1,5 @@
-import { Container, css, Heading } from "@digg/design-system";
 import React from "react";
 import { ArticleBlock, ContentArea } from "../..";
-import { MainContainerStyle } from "../../../styles/general/emotion";
 import { checkLang, PublicationResponse } from "../../../utilities";
 
 const whitelistedTagsSV = ["Goda exempel", "Event", "Nyhet"];
@@ -30,33 +28,24 @@ export const Publication: React.FC<PublicationResponse> = ({
   related,
 }) => {
   return (
-    <Container cssProp={MainContainerStyle}>
-      <div
-        css={css`
-          position: relative;
-          margin-top: 2rem;
-        `}
-      >
+    <div className="container">
+      <div>
         <div className={"content "}>
-          {heading && (
-            <Heading size={"3xl"} weight={"light"} color={"pinkPop"}>
-              {checkLang(heading)}
-            </Heading>
-          )}
+          {heading && <h1>{checkLang(heading)}</h1>}
           <p className="preamble text-lg">{checkLang(preamble)}</p>
           {blocks && blocks.length > 0 && <ContentArea blocks={blocks} />}
         </div>
       </div>
       {related && related.length > 0 && (
         <div className="related-content">
-          <Heading level={2}>
+          <h2>
             Fler{" "}
             {tags &&
               getRelatedHeading(findPublicationTypeTag(tags)?.value || "")}
-          </Heading>
+          </h2>
           <ArticleBlock articles={related} />
         </div>
       )}
-    </Container>
+    </div>
   );
 };

@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
-  matcher: ['/((?!_next|__ENV|api|fonts|images|static|favicon.ico).*)', '/'],
+  matcher: ["/((?!_next|__ENV|api|fonts|images|static|favicon.ico).*)", "/"],
 };
 
 /**
@@ -18,21 +18,21 @@ export function middleware(req: NextRequest) {
 
   if (!rootUser && !rootPwd) return NextResponse.next();
 
-  const basicAuth = req.headers.get('authorization');
+  const basicAuth = req.headers.get("authorization");
   const url = req.nextUrl;
 
   if (basicAuth) {
-    const aiScopePath = '/offentligai/fortroendemodellen';
+    const aiScopePath = "/offentligai/fortroendemodellen";
     const aiScope = url.pathname.startsWith(aiScopePath);
-    const authValue = basicAuth.split(' ')[1];
-    const [user, pwd] = atob(authValue).split(':');
+    const authValue = basicAuth.split(" ")[1];
+    const [user, pwd] = atob(authValue).split(":");
     const hasRootAccess = user === rootUser && pwd === rootPwd;
     const hasAIAccess = user === aiUser && pwd === aiPwd;
 
     // ? prevent annoying auth prompts when hovering over links if user has scoped access
     if (hasAIAccess && !aiScope) {
       url.pathname = aiScopePath;
-      url.search = '';
+      url.search = "";
       return NextResponse.redirect(url);
     }
 
@@ -48,6 +48,6 @@ export function middleware(req: NextRequest) {
       return NextResponse.next();
     }
   }
-  url.pathname = '/api/auth';
+  url.pathname = "/api/auth";
   return NextResponse.rewrite(url);
 }

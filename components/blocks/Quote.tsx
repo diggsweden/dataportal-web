@@ -1,4 +1,3 @@
-import { colorPalette, QuoteIcon } from "@digg/design-system";
 import React from "react";
 
 interface IQuoteBlock {
@@ -8,9 +7,7 @@ interface IQuoteBlock {
 export const Quote: React.FC<IQuoteBlock> = ({ children }) => {
   return (
     <div className="quoteblock">
-      <span className="icon">
-        <QuoteIcon width={32} color={colorPalette.pinkPop} />
-      </span>
+      <span className="icon"></span>
       <blockquote>{children}</blockquote>
     </div>
   );

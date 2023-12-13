@@ -1,4 +1,3 @@
-import { CloseIcon, SearchIcon } from "@digg/design-system";
 import hamburger from "../../public/icons/hamburger.svg";
 import diggLogo from "../../public/icons/diggLogo.svg";
 import dataportalenLogo from "../../public/icons/dataportalenLogo.svg";
@@ -25,14 +24,12 @@ interface SearchButtonProps {
   show: boolean;
   pathname: string;
   styles?: any;
-  iconColor?: DiggColor;
 }
 
 const SearchButton: React.FC<SearchButtonProps> = ({
   toggle,
   show,
   pathname,
-  styles,
 }) => {
   const { t } = useTranslation("common");
   return (
@@ -42,12 +39,11 @@ const SearchButton: React.FC<SearchButtonProps> = ({
       className={`search-link search-toggle${
         pathname === "/search" ? " active" : ""
       }`}
-      css={styles}
     >
       {show ? (
-        <CloseIcon color={"white"} width={20} className="search-link--icon" />
+        <span color={"white"} className="search-link--icon" />
       ) : (
-        <SearchIcon color={"white"} width={20} className="search-link--icon" />
+        <span color={"white"} className="search-link--icon" />
       )}
       <span>{show ? t("close_search") : t("search")}</span>
     </button>
@@ -70,7 +66,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
         className={"search-link search-toggle"}
       >
         {props.openSideBar ? (
-          <CloseIcon color={"white"} width={20} className="search-link--icon" />
+          <span className="search-link--icon" />
         ) : (
           <Image src={hamburger} alt={"hamburger-icon"} />
         )}

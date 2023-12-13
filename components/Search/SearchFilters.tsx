@@ -1,11 +1,5 @@
 import React, { useState } from "react";
 import { ESRdfType, ESType, SearchContextData, SearchFilter } from "..";
-import {
-  Button,
-  CloseIcon,
-  colorPalette,
-  SearchIcon,
-} from "@digg/design-system";
 import { CloseIcon as CloseIcon2, FilterIcon } from "../Icons";
 import useTranslation from "next-translate/useTranslation";
 
@@ -67,7 +61,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
       />
       <i className="filter-search__icon">
         {" "}
-        <SearchIcon color={colorPalette.gray700} width={[25]} />
+        {/*<SearchIcon color={colorPalette.gray700} width={[25]} />*/}
       </i>
     </div>
   );
@@ -76,7 +70,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
 const MarkAll: React.FC<MarkAllProps> = ({ search, toggleKey, title }) => {
   return (
     <div className="filter-checkall">
-      <Button
+      <button
         className={`filter-btn ${
           search.facetSelected(toggleKey, "*") && "selected"
         }`}
@@ -111,7 +105,7 @@ const MarkAll: React.FC<MarkAllProps> = ({ search, toggleKey, title }) => {
       >
         {title} {search.facetSelected(toggleKey, "*")}
         <span className="check"></span>
-      </Button>
+      </button>
     </div>
   );
 };
@@ -235,8 +229,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                               facetValue.resource,
                             );
                             return (
-                              <Button
-                                secondary={true}
+                              <button
                                 aria-pressed={selected}
                                 key={index}
                                 className={`filter-btn ${
@@ -283,13 +276,13 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                                       : "check"
                                   }
                                 ></span>
-                              </Button>
+                              </button>
                             );
                           },
                         )}
 
                         {value.facetValues.length > value.show && (
-                          <Button
+                          <button
                             className="filter-btn"
                             onClick={() => {
                               search.fetchMoreFacets(key);
@@ -298,7 +291,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                             {search.loadingFacets
                               ? `${t("common|loading")}...`
                               : `${t("common|load-more")}...`}
-                          </Button>
+                          </button>
                         )}
 
                         {facetValues.length == 0 && (
@@ -401,7 +394,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                 }}
               >
                 {facetValue.title || facetValue.resource}{" "}
-                <CloseIcon width={[15]} />
+                {/*<CloseIcon width={[15]} />*/}
               </button>
             ),
           )}

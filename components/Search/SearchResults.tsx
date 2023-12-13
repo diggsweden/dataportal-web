@@ -8,7 +8,6 @@ import { CompactList, DetailedList } from "../Icons";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { SearchSortOrder } from "../pages/SearchPage";
-import { Button, Heading } from "@digg/design-system";
 
 interface SearchResultsProps {
   search: SearchContextData;
@@ -236,13 +235,13 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     <>
       <div id="search-result" className="search-result">
         <div className="search-result-head">
-          <Heading level={2} size="md" className="search-result-header">
+          <h2 className="search-result-header">
             {search.loadingHits && <span>{t("common|loading")}</span>}
             {!search.loadingHits &&
               search.result &&
               (search.result.count || 0) >= 0 &&
               `${search.result.count} ${t("pages|search$dataset-hits")}`}
-          </Heading>
+          </h2>
 
           {searchMode == "datasets" && (
             <div
@@ -375,8 +374,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
           <div className="prev-next-page">
             <div className="first-page">
               {(search.request.page || 0) > 1 && (
-                <Button
-                  inline
+                <button
                   onClick={() => {
                     clearCurrentScrollPos();
                     search
@@ -392,12 +390,11 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                   }}
                 >
                   {t("pages|search$first-page")}
-                </Button>
+                </button>
               )}
             </div>
-            <Button
+            <button
               disabled={(search.request.page || 0) === 0}
-              inline
               onClick={() => {
                 clearCurrentScrollPos();
                 search
@@ -413,16 +410,15 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
               }}
             >
               {t("pages|search$prev-page")}
-            </Button>
+            </button>
             <span>
               {t("pages|search$page")} {(search.request.page || 0) + 1}{" "}
               {t("common|of")} {search.result.pages}
             </span>
-            <Button
+            <button
               disabled={
                 (search.result.pages || 1) === (search.request.page || 0) + 1
               }
-              inline
               onClick={() => {
                 clearCurrentScrollPos();
                 search
@@ -438,7 +434,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
               }}
             >
               {t("pages|search$next-page")}
-            </Button>
+            </button>
           </div>
         </div>
       )}

@@ -6,7 +6,6 @@ import useTranslation from "next-translate/useTranslation";
 import { SettingsContext } from "../SettingsProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
-import { Heading } from "@digg/design-system";
 import {
   accessrigthsIndicator,
   architechtureIndicator,
@@ -359,9 +358,7 @@ export const DataSetPage: React.FC = () => {
       <div className="detailpage__wrapper">
         <div className="detailpage__header">
           {/* Title */}
-          <Heading weight="light" size={"3xl"} color="pinkPop">
-            {entry.title}
-          </Heading>
+          <h1>{entry.title}</h1>
 
           {/* Publisher */}
           <script
@@ -412,9 +409,7 @@ export const DataSetPage: React.FC = () => {
           {/* Left column */}
           <div className="detailpage__wrapper--leftcol">
             {/* Use data - header */}
-            <Heading level={2} className="hbbr">
-              {t("pages|datasetpage$use-data")}
-            </Heading>
+            <h2>{t("pages|datasetpage$use-data")}</h2>
 
             {/* Distribution list */}
             <div
@@ -433,9 +428,7 @@ export const DataSetPage: React.FC = () => {
 
             {/* Questions  or comments */}
             <div className="contact__publisher hbbr">
-              <Heading level={3}>
-                {t("pages|datasetpage$contact-publisher")}
-              </Heading>
+              <h3>{t("pages|datasetpage$contact-publisher")}</h3>
               <p className="">
                 {t("pages|datasetpage$contact-publisher-text")}
                 {t("pages|datasetpage$contact-publisher-text2")}{" "}
@@ -456,7 +449,7 @@ export const DataSetPage: React.FC = () => {
         <div className="detailpage__wrapper--rightcol hbbr">
           {/* About dataset - wrapper  */}
           <div className="detailpage__wrapper--rightcol-info text-base">
-            <Heading level={2}>{t("pages|datasetpage$about-dataset")}</Heading>
+            <h2>{t("pages|datasetpage$about-dataset")}</h2>
 
             {/* About dataset */}
             <div
@@ -468,9 +461,7 @@ export const DataSetPage: React.FC = () => {
 
           {/* Catalog informaton wrapper */}
           <div className="detailpage__wrapper--rightcol-info text-base">
-            <Heading level={2} size={"md"}>
-              {t("pages|datasetpage$catalog")}
-            </Heading>
+            <h2>{t("pages|datasetpage$catalog")}</h2>
 
             {/* Catalog */}
             <script

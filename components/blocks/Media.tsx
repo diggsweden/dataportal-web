@@ -1,7 +1,6 @@
 import { MediaFragment as IMedia } from "../../graphql/__generated__/operations";
 import { FileLink } from "../Navigation";
 import { checkLang } from "../../utilities";
-import { Heading } from "@digg/design-system";
 import { Video } from "../Video";
 import env from "@beam-australia/react-env";
 import { MediaBaseFragment } from "../../graphql/__generated__/operations";
@@ -62,12 +61,8 @@ const renderMedia = (media: IMedia["media"], mediaDescription?: string) => {
 
 export const Media: React.FC<IMedia> = ({ heading, description, media }) => {
   return (
-    <div className="media">
-      {heading && (
-        <Heading level={2} className="media-heading">
-          {checkLang(heading)}
-        </Heading>
-      )}
+    <div>
+      {heading && <h2>{checkLang(heading)}</h2>}
       {renderMedia(media, description as string)}
     </div>
   );

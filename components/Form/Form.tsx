@@ -1,22 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FormPage, FormBottomNav, FormGeneratePDF } from "./FormPages";
-import {
-  ArrowIcon,
-  Button,
-  Container,
-  css,
-  Heading,
-} from "@digg/design-system";
 import FormTypes from "./FormTypes";
 import FormProgress from "./ProgressComponent/FormProgress";
-import {
-  DiggProgressbar,
-  FormBackButton,
-  FormWrapper,
-} from "./Styles/FormStyles";
 import { FormDataFragment as IForm } from "../../graphql/__generated__/operations";
 import Link from "next/link";
-import { MainContainerStyle } from "../../styles/general/emotion";
 import { FormDropdownNavigation } from "../Navigation/FormDropdownNavigation";
 import { GetLocalstorageData, handleScroll } from "./Utils/formUtils";
 import useTranslation from "next-translate/useTranslation";
@@ -229,7 +216,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
   return (
     <>
       {formDataArray[0] && (
-        <Container cssProp={MainContainerStyle}>
+        <div>
           {page > (showFirstPage ? 0 : 1) && (
             <FormBackButton
               onClick={() => {
@@ -377,7 +364,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
               )}
             </>
           </FormWrapper>
-        </Container>
+        </div>
       )}
     </>
   );

@@ -1,4 +1,3 @@
-import { css, Heading } from "@digg/design-system";
 import React from "react";
 import {
   ContainerData_Dataportal_Digg_Container_Fragment,
@@ -83,16 +82,10 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ blocks }) => {
           default:
             return (
               <div key={id}>
-                <Heading level={2} lang="en">
+                <h2>
                   <>{(block as any)?.__typename} Not found</>
-                </Heading>
-                <pre
-                  css={css`
-                    overflow: auto;
-                  `}
-                >
-                  {JSON.stringify(block, null, 2)}
-                </pre>
+                </h2>
+                <pre>{JSON.stringify(block, null, 2)}</pre>
               </div>
             );
         }

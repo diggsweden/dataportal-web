@@ -6,7 +6,6 @@ import { initBreadcrumb } from "../../pages/_app";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Heading } from "@digg/design-system";
 import { hemvist } from "../../utilities";
 
 export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
@@ -605,9 +604,9 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
       <div className="detailpage__wrapper">
         {/* Left column */}
         <div className="detailpage__wrapper--leftcol content">
-          <Heading size={"3xl"} weight="light" className="terminology_header">
+          <h1 className="terminology_header">
             <span>{entry.title}</span>
-          </Heading>
+          </h1>
 
           <p className="description text-md">
             <span
@@ -693,10 +692,10 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
         {/* Right column */}
         <div className="detailpage__wrapper--rightcol hbbr">
           <div className="detailpage__wrapper--rightcol-info text-base">
-            <Heading level={2}>
+            <h2>
               <span data-entryscape="term-head" />
               <span data-entryscape="concept-head" />
-            </Heading>
+            </h2>
             <span data-entryscape="hemvist" className="text-base hemvist" />
             <span
               className="text-base terminology"

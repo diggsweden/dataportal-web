@@ -16,8 +16,6 @@ import { useScript } from "../../hooks/useScript";
 import { useRouter } from "next/router";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
-import { Container, Heading } from "@digg/design-system";
-import { MainContainerStyle } from "../../styles/general/emotion";
 
 interface SearchProps {
   activeLink?: string;
@@ -140,18 +138,11 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
           <SearchContext.Consumer>
             {(search) => (
               <div className="wpb_wrapper">
-                <Container cssProp={MainContainerStyle}>
+                <div className="container">
                   <SearchHeader activeLink={"terms"} query={query} />
 
                   <div className="row">
-                    <Heading
-                      size={"3xl"}
-                      color="pinkPop"
-                      weight="light"
-                      className="search-header"
-                    >
-                      {t("search-concept")}
-                    </Heading>
+                    <h1 className="search-header">{t("search-concept")}</h1>
                   </div>
 
                   <SearchInput
@@ -174,7 +165,7 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
                     search={search}
                     searchMode="concepts"
                   />
-                </Container>
+                </div>
               </div>
             )}
           </SearchContext.Consumer>
