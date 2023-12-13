@@ -18,7 +18,6 @@ import { defaultSettings } from "../components/SettingsProvider/SettingsProvider
 import {
   click,
   DataportalPageProps,
-  dataportalTheme,
   generateRandomKey,
   keyUp,
   onNextFrame,
@@ -61,9 +60,9 @@ const defaultDescrtiption =
  * @param pathWithHash url path along with hash
  */
 // const onHash = (pathWithHash: string) => {
-//   // const hashIndex = pathWithHash.indexOf("#");
-//   // const hash = pathWithHash.substring(hashIndex);
-//   // onNextFrame(() => skipToElement(hash));
+//   const hashIndex = pathWithHash.indexOf("#");
+//   const hash = pathWithHash.substring(hashIndex);
+//   onNextFrame(() => skipToElement(hash));
 // };
 
 function Dataportal({ Component, pageProps }: DataportalenProps) {
@@ -117,15 +116,15 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     };
   }, []);
 
-  useEffect(() => {
-    // if (previousPath) {
-    //   asPath.includes("#")
-    //     ? onHash(asPath)
-    //     : skipToContent(undefined, { showFocus: false, includeHeading: true });
-    // } else {
-    //   asPath.includes("#") && onHash(asPath);
-    // }
-  }, [asPath]);
+  // useEffect(() => {
+  //   if (previousPath) {
+  //     asPath.includes("#")
+  //       ? onHash(asPath)
+  //       : skipToContent(undefined, { showFocus: false, includeHeading: true });
+  //   } else {
+  //     asPath.includes("#") && onHash(asPath);
+  //   }
+  // }, [asPath]);
 
   return (
     <ApolloProvider client={client}>
@@ -272,24 +271,22 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   <span>{defaultSettings.noScriptContent}</span>
                 </div>
               </noscript>
-              {/*<ErrorBoundary>*/}
-              {/*  {breadcrumbState.crumbs.length > 0 && (*/}
-              {/*    <Breadcrumb {...breadcrumbState} />*/}
-              {/*  )}*/}
-              {/*  <main>*/}
-              {/*    {heroImage?.url ? (*/}
-              {/*      <div className="hero">*/}
-              {/*        <CustomImage image={heroImage} />*/}
-              {/*      </div>*/}
-              {/*    ) : (*/}
-              {/*      (pageProps as DataportalPageProps).type ===*/}
-              {/*        "MultiContainer" ||*/}
-              {/*      ((pageProps as DataportalPageProps).type ===*/}
-              {/*        "Publication" && <div />)*/}
-              {/*    )}*/}
-              {/*    <Component {...pageProps} />*/}
-              {/*  </main>*/}
-              {/*</ErrorBoundary>*/}
+              {breadcrumbState.crumbs.length > 0 && (
+                <Breadcrumb {...breadcrumbState} />
+              )}
+              <main>
+                {heroImage?.url ? (
+                  <div className="hero">
+                    <CustomImage image={heroImage} />
+                  </div>
+                ) : (
+                  (pageProps as DataportalPageProps).type ===
+                    "MultiContainer" ||
+                  ((pageProps as DataportalPageProps).type ===
+                    "Publication" && <div />)
+                )}
+                <Component {...pageProps} />
+              </main>
               <Footer />
               <SideBar
                 openSideBar={openSideBar}
