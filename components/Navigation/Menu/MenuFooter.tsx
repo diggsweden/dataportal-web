@@ -1,8 +1,8 @@
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import React from "react";
-import Image from "next/image";
-import { footerMenu } from "./menu-data";
+import { footerMenu } from "./menuData";
+import Heading from "@/components/global/Typography/Heading";
 
 interface FooterMenuItem {
   title: string;
@@ -18,19 +18,28 @@ interface FooterMenuData {
 export const MenuFooter: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <div className="footer__links">
+    <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-xl">
       {footerMenu.map((footer: FooterMenuData, idx: number) => (
-        <div key={idx} className="footer__links__group">
-          <h2>{t(`common|${footer.title}`)}</h2>
-          <ul>
+        <div key={idx} className="flex flex-col gap-sm">
+          <Heading size={"h5"}>{t(`common|${footer.title}`)}</Heading>
+          <ul className="space-y-sm">
             {footer.children.map((link, idx: number) => (
-              <li key={idx}>
+              <li key={idx} className="text-md text-green-600 underline">
                 {link.href ? (
-                  <Link href={link.href} target="_blank">
+                  <Link
+                    href={link.href}
+                    target="_blank"
+                    className="inline-flex items-center gap-sm"
+                  >
                     {link.type === "external"
                       ? t(`common|${link.title}`)
                       : link.title}
-                    <Image src={link.icon} alt="link icon" className="svg" />
+                    <link.icon
+                      className="inline-flex items-center [&_path]:fill-green-600"
+                      width={16}
+                      height={16}
+                      viewBox="0 0 24 24"
+                    />
                   </Link>
                 ) : (
                   <Link href={`/${t(`routes|${link.title}$path`)}`}>

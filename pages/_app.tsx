@@ -7,13 +7,13 @@ import {
   BreadcrumbProps,
   CookieBanner,
   CustomImage,
-  Footer,
-  Header,
   LocalStore,
   LocalStoreProvider,
   SettingsProvider,
   TrackingProvider,
-} from "../components";
+  Header,
+  Footer,
+} from "@/components";
 import { defaultSettings } from "../components/SettingsProvider/SettingsProvider";
 import {
   click,
@@ -33,7 +33,7 @@ import { useRouter } from "next/router";
 import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "../env/Settings.Sandbox";
 import useTranslation from "next-translate/useTranslation";
-import SideBar from "../components/Navigation/Menu/Menu-SideBar";
+import SideBar from "../components/Navigation/Menu/MenuSideBar";
 import "../styles/global.css";
 
 const GetCookiesAccepted = () => {
@@ -267,6 +267,10 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 setOpenSidebar={setOpenSideBar}
                 openSideBar={openSideBar}
               />
+              <SideBar
+                openSideBar={openSideBar}
+                setOpenSidebar={setOpenSideBar}
+              />
               <noscript>
                 <div>
                   <span>{defaultSettings.noScriptContent}</span>
@@ -289,10 +293,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 <Component {...pageProps} />
               </main>
               <Footer />
-              <SideBar
-                openSideBar={openSideBar}
-                setOpenSidebar={setOpenSideBar}
-              />
             </div>
           </TrackingProvider>
         </LocalStoreProvider>
