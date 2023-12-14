@@ -1,5 +1,5 @@
 import { usePathname } from "next/navigation";
-import { mainMenu } from "./menu-data";
+import { mainMenu } from "./menuData";
 import Image from "next/image";
 import arrowRight from "../../../assets/icons/arrowRight.svg";
 import externalLink from "../../../assets/icons/external-link.svg";
@@ -56,13 +56,17 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
   }, [isEn]);
 
   return (
-    <div className={`menu${openSideBar ? " open" : ""}`}>
-      <ul className="menuList">
+    <nav
+      className={`absolute right-none top-[128px] h-full w-[300px] bg-white transition-all duration-500 ease-in-out ${
+        openSideBar ? "flex" : "-right-full"
+      }`}
+    >
+      <ul className="w-full list-none">
         {menues.map((menu: MenuItem, idx: number) => (
-          <li key={idx}>
+          <li key={idx} className="group cursor-pointer">
             {menu.href ? (
               <Link href={menu.href} target="_blank">
-                <div className="menuitem">
+                <div className="flex w-full flex-row items-center gap-md p-md  text-brown-600">
                   <Image
                     className={"svg"}
                     src={menu.icon}
@@ -71,7 +75,9 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
                     alt="svg-icon"
                     priority
                   />
-                  {t(`common|${menu.title}`)}
+                  <span className="w-full underline-offset-4 group-hover:underline">
+                    {t(`common|${menu.title}`)}
+                  </span>
                   <Image
                     className="svg external"
                     src={externalLink}
@@ -83,8 +89,8 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
                 </div>
               </Link>
             ) : menu.children ? (
-              <details className="menuDetails">
-                <summary className="menuitem">
+              <details className="flex">
+                <summary className="box-border inline-flex w-full flex-row gap-md p-md text-brown-600">
                   <Image
                     className="svg"
                     src={menu.icon}
@@ -93,7 +99,9 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
                     alt="svg-icon"
                     priority
                   />
-                  <span>{t(`routes|${menu.title}$title`)}</span>
+                  <span className="w-full underline-offset-4 hover:underline">
+                    {t(`routes|${menu.title}$title`)}
+                  </span>
                   <Image
                     className="detailsArrow"
                     src={arrowRight}
@@ -103,19 +111,17 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
                     priority
                   />
                 </summary>
-                <ul className="subMenu">
+                <ul className="pl-[48px] pr-lg">
                   {menu.children.map((subMenu, idx: number) => (
-                    <li
-                      key={idx}
-                      className={`subMenuItem ${isActive(
-                        `/${t(`routes|${subMenu.title}$path`)}`,
-                      )}`}
-                    >
+                    <li key={idx}>
                       <Link
                         href={`/${t(`routes|${subMenu.title}$path`)}`}
                         onClick={() => setOpenSidebar(false)}
+                        className="group flex w-full flex-row items-center gap-md py-md"
                       >
-                        {t(`routes|${subMenu.title}$title`)}
+                        <span className="text-brown-600 underline-offset-4 group-hover:underline">
+                          {t(`routes|${subMenu.title}$title`)}
+                        </span>
                       </Link>
                     </li>
                   ))}
@@ -125,9 +131,10 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
               <Link
                 href={t(`routes|${menu.title}$path`)}
                 onClick={() => setOpenSidebar(false)}
+                className="inline-flex w-full p-md"
               >
                 <div
-                  className={`menuitem${isActive(
+                  className={`inline-flex w-full flex-row items-center gap-md text-brown-600 ${isActive(
                     `/${t(`routes|${menu.title}$path`)}`,
                   )}`}
                 >
@@ -139,14 +146,16 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
                     alt="svg-icon"
                     priority
                   />
-                  {t(`routes|${menu.title}$title`)}
+                  <span className="underline-offset-4 group-hover:underline">
+                    {t(`routes|${menu.title}$title`)}
+                  </span>
                 </div>
               </Link>
             )}
           </li>
         ))}
       </ul>
-    </div>
+    </nav>
   );
 };
 export default SideBar;

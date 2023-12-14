@@ -102,7 +102,7 @@ class MyDocument extends Document {
             href="https://admin.dataportal.se"
             crossOrigin="anonymous"
           />
-          <meta name="theme-color" content="#FBF2F0" />;
+          <meta name="theme-color" content="#FBF2F0" />
         </Head>
         <body className="bg-pink-100 font-ubuntu text-md text-brown-900">
           <Main />

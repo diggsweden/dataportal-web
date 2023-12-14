@@ -5,8 +5,6 @@ export * from "./CookieBanner";
 export * from "./Image";
 export * from "./EntrystoreProvider";
 export * from "./FileFormatBadge";
-export * from "./Footer";
-export * from "./Header";
 export * from "./LocalStoreProvider";
 export * from "./Navigation";
 export * from "./ReactPortal";
@@ -16,4 +14,8 @@ export * from "./SearchHead";
 export * from "./StartPageComponents";
 export * from "./SettingsProvider";
 export * from "./TrackingProvider";
-export * from "./Form";
+export * from "./global/Button";
+export * from "./layout/Footer";
+export * from "./layout/Header";
+/* export * from "./Form"; */
+/* export * from "./global/Typography/Heading"; */

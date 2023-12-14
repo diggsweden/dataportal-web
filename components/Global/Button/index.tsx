@@ -5,52 +5,57 @@ import React, {
   AnchorHTMLAttributes,
 } from "react";
 import { cx, cva, VariantProps } from "class-variance-authority";
-import Image from "next/image";
 import Link from "next/link";
 
-const buttonVariants = cva([""], {
-  variants: {
-    size: {
-      plain: ["h-[24px] text-sm px-xs"],
-      sm: ["h-[32px] text-sm px-md"],
-      lg: ["h-[44px] text-md px-md"],
+const buttonVariants = cva(
+  [
+    "flex flex-row items-center [&_svg]:inline-flex disabled:bg-brown-400 disabled:text-brown-600 [&_path]:disabled:fill-brown-600",
+  ],
+  {
+    variants: {
+      size: {
+        sm: ["h-[32px] text-sm px-md gap-sm "],
+        lg: ["h-[44px] text-md px-md gap-sm "],
+      },
+      variant: {
+        primary: [
+          "bg-brown-600 text-brown-100 hover:bg-brown-800 [&_path]:fill-brown-100",
+        ],
+        secondary: ["bg-white"],
+      },
     },
-    variant: {
-      primary: ["bg-brown-600"],
-      secondary: ["bg-white"],
-      negative: ["bg-red-600"],
+    defaultVariants: {
+      size: "lg",
+      variant: "primary",
     },
   },
-  defaultVariants: {
-    size: "lg",
-    variant: "primary",
-  },
-});
+);
 
-type IconLabelProps = VariantProps<typeof buttonVariants> & {
+type IconLabelProps = {
   icon?: any;
+  size?: "plain" | "sm" | "lg";
   label?: string;
   iconPosition?: "left" | "right";
 };
 
 const IconLabel: FC<IconLabelProps> = ({ icon, label, size, iconPosition }) => {
+  const Icon = icon;
+
   return (
     <>
       {iconPosition === "left" && (
-        <Image
-          src={icon}
-          alt="button icon"
-          height={size === "lg" ? 32 : 16}
-          width={size === "lg" ? 32 : 16}
+        <Icon
+          height={size === "lg" ? 24 : 16}
+          width={size === "lg" ? 24 : 16}
+          viewBox={size !== "lg" && "0 0 24 24"}
         />
       )}
       {label && label}
       {iconPosition === "right" && (
-        <Image
-          src={icon}
-          alt="button icon"
-          height={size === "lg" ? 32 : 16}
-          width={size === "lg" ? 32 : 16}
+        <Icon
+          height={size === "lg" ? 24 : 16}
+          width={size === "lg" ? 24 : 16}
+          viewBox={size !== "lg" && "0 0 24 24"}
         />
       )}
     </>
@@ -71,7 +76,12 @@ const Button: FC<
       className={cx(buttonVariants({ variant, size }), className)}
       {...rest}
     >
-      <IconLabel iconPosition={iconPosition} icon={icon} label={label} />
+      <IconLabel
+        size={size ? size : "lg"}
+        iconPosition={iconPosition}
+        icon={icon}
+        label={label}
+      />
     </button>
   );
 };
@@ -82,6 +92,7 @@ type ButtonLinkProps = VariantProps<typeof buttonVariants> & {
   label?: string;
   className?: string;
   href: string;
+  locale?: string;
 };
 
 const ButtonLink: FC<
@@ -92,6 +103,7 @@ const ButtonLink: FC<
   className,
   label,
   href,
+  locale,
   icon,
   iconPosition,
   ...rest
@@ -100,9 +112,17 @@ const ButtonLink: FC<
     <Link
       href={href}
       className={cx(buttonVariants({ variant, size }), className)}
+      locale={locale}
       {...rest}
     >
-      <IconLabel iconPosition={iconPosition} icon={icon} label={label} />
+      <>
+        <IconLabel
+          size={size ? size : "lg"}
+          iconPosition={iconPosition}
+          icon={icon}
+          label={label}
+        />
+      </>
     </Link>
   );
 };
