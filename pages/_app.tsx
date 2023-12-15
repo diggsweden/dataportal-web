@@ -5,7 +5,6 @@ import { ApolloProvider } from "@apollo/client";
 import {
   Breadcrumb,
   BreadcrumbProps,
-  CookieBanner,
   CustomImage,
   LocalStore,
   LocalStoreProvider,
@@ -20,9 +19,7 @@ import {
   DataportalPageProps,
   generateRandomKey,
   keyUp,
-  onNextFrame,
   resolvePage,
-  usePrevious,
 } from "../utilities";
 import { EnvSettings, SettingsUtil } from "../env";
 import Head from "next/head";
@@ -32,9 +29,9 @@ import { SeoDataFragment } from "../graphql/__generated__/operations";
 import { useRouter } from "next/router";
 import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "../env/Settings.Sandbox";
-import useTranslation from "next-translate/useTranslation";
-import SideBar from "../components/Navigation/Menu/MenuSideBar";
 import "../styles/global.css";
+import NavSide from "@/components/navigation/NavSide";
+import Container from "@/components/layout/Container";
 
 const GetCookiesAccepted = () => {
   try {
@@ -76,8 +73,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   const [openSideBar, setOpenSideBar] = useState(false);
   const [breadcrumbState, setBreadcrumb] =
     useState<BreadcrumbProps>(initBreadcrumb);
-  const previousPath = usePrevious(asPath);
-  const { t } = useTranslation("common");
   const { seo, heroImage } =
     resolvePage(pageProps as DataportalPageProps) || {};
   const { title, description, image, robotsFollow, robotsIndex } =
@@ -259,15 +254,13 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
             </Head>
             <div id="scriptsPlaceholder" />
             {/*<CookieBanner />*/}
-            <div id="top">
+            <div id="top" className="relative overflow-hidden">
               {/*<SkipToContent text={t("skiptocontent")} />*/}
               <Header
-                menu={undefined}
-                env={env}
                 setOpenSidebar={setOpenSideBar}
                 openSideBar={openSideBar}
               />
-              <SideBar
+              <NavSide
                 openSideBar={openSideBar}
                 setOpenSidebar={setOpenSideBar}
               />
@@ -280,19 +273,25 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 <Breadcrumb {...breadcrumbState} />
               )}
               <main>
-                {heroImage?.url ? (
-                  <div className="hero">
-                    <CustomImage image={heroImage} />
-                  </div>
-                ) : (
-                  (pageProps as DataportalPageProps).type ===
-                    "MultiContainer" ||
-                  ((pageProps as DataportalPageProps).type ===
-                    "Publication" && <div />)
-                )}
-                <Component {...pageProps} />
+                <Container
+                  className={`transition-all duration-300 ease-in-out ${
+                    openSideBar ? "lg:w-[calc(100vw-300px)]" : "w-full"
+                  }`}
+                >
+                  {heroImage?.url ? (
+                    <div className="hero">
+                      <CustomImage image={heroImage} />
+                    </div>
+                  ) : (
+                    (pageProps as DataportalPageProps).type ===
+                      "MultiContainer" ||
+                    ((pageProps as DataportalPageProps).type ===
+                      "Publication" && <div />)
+                  )}
+                  <Component {...pageProps} />
+                </Container>
               </main>
-              <Footer />
+              <Footer openSideBar={openSideBar} />
             </div>
           </TrackingProvider>
         </LocalStoreProvider>

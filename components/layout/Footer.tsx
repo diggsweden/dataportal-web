@@ -1,15 +1,26 @@
 import React from "react";
 import DiggLogo from "@/assets/logos/diggLarge.svg";
-import { MenuFooter } from "@/components/Navigation/Menu/MenuFooter";
+import { NavFooter } from "@/components/navigation/NavFooter";
+import Container from "./Container";
 
-export const Footer: React.FC = () => {
+type FooterProps = {
+  openSideBar: boolean;
+};
+
+export const Footer: React.FC<FooterProps> = ({ openSideBar }) => {
   return (
     <footer className="mt-xl bg-white py-xl">
-      <div className="container space-y-2xl">
-        <MenuFooter />
+      <Container
+        className={`transition-all duration-300 ease-in-out ${
+          openSideBar ? "lg:w-[calc(100vw-300px)]" : "w-full"
+        }`}
+      >
+        <div className="space-y-2xl">
+          <NavFooter />
 
-        <DiggLogo />
-      </div>
+          <DiggLogo />
+        </div>
+      </Container>
     </footer>
   );
 };

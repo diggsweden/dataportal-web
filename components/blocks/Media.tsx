@@ -1,5 +1,5 @@
 import { MediaFragment as IMedia } from "../../graphql/__generated__/operations";
-import { FileLink } from "../Navigation";
+import { FileLink } from "../navigation";
 import { checkLang } from "../../utilities";
 import { Video } from "../Video";
 import env from "@beam-australia/react-env";

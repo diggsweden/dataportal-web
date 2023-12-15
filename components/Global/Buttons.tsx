@@ -9,7 +9,7 @@ import Link from "next/link";
 
 const buttonVariants = cva(
   [
-    "flex flex-row items-center [&_svg]:inline-flex disabled:bg-brown-400 disabled:text-brown-600 [&_path]:disabled:fill-brown-600",
+    "flex flex-row items-center [&_svg]:inline-flex disabled:bg-brown-400 disabled:text-brown-600 [&_path]:disabled:fill-brown-600 disabled:border-none",
   ],
   {
     variants: {
@@ -21,7 +21,9 @@ const buttonVariants = cva(
         primary: [
           "bg-brown-600 text-brown-100 hover:bg-brown-800 [&_path]:fill-brown-100",
         ],
-        secondary: ["bg-white"],
+        secondary: [
+          "border-brown-600 border-2 bg-transparent text-brown-600 hover:bg-whiteOpaque5 [&_path]:fill-brown-600",
+        ],
       },
     },
     defaultVariants: {
@@ -50,7 +52,7 @@ const IconLabel: FC<IconLabelProps> = ({ icon, label, size, iconPosition }) => {
           viewBox={size !== "lg" && "0 0 24 24"}
         />
       )}
-      {label && label}
+      {label && <span>{label}</span>}
       {iconPosition === "right" && (
         <Icon
           height={size === "lg" ? 24 : 16}

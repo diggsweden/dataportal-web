@@ -6,6 +6,11 @@ module.exports = {
   ],
   darkMode: "media",
   theme: {
+    extend: {
+      backgroundImage: {
+        "nav-pattern": 'url("/assets/icons/navPixels.svg")',
+      },
+    },
     screens: {
       sm: "0px",
       md: "600px",
@@ -80,6 +85,10 @@ module.exports = {
     fontFamily: {
       ubuntu: ["Ubuntu", "sans-serif"],
     },
+    fontWeight: {
+      normal: 400,
+      strong: 500,
+    },
     fontSize: {
       xs: ["0.75rem", { lineHeight: "1rem" }], // 12px/16px
       sm: ["0.875rem", { lineHeight: "1.25rem" }], // 14px/20px
@@ -92,5 +101,6 @@ module.exports = {
       "5xl": ["3rem", { lineHeight: "3.5rem" }], // 48px/56px
     },
   },
+
   plugins: [require("@tailwindcss/typography")],
 };
