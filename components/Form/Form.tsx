@@ -4,7 +4,7 @@ import FormTypes from "./FormTypes";
 import FormProgress from "./ProgressComponent/FormProgress";
 import { FormDataFragment as IForm } from "../../graphql/__generated__/operations";
 import Link from "next/link";
-import { FormDropdownNavigation } from "../Navigation/FormDropdownNavigation";
+import { FormDropdownNavigation } from "../navigation/FormDropdownNavigation";
 import { GetLocalstorageData, handleScroll } from "./Utils/formUtils";
 import useTranslation from "next-translate/useTranslation";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
@@ -230,7 +230,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
             >
               <span className="back-button">
                 <ArrowIcon color={"white"} width={"18px"} />
-                <span className="text-base font-medium back-text">
+                <span className="text-base back-text font-medium">
                   {t("pages|form$previous-section-text")}
                 </span>
               </span>
@@ -248,7 +248,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
                 <FormBackButton>
                   <span className="back-button">
                     <ArrowIcon color={"white"} width={"18px"} />
-                    <span className="text-base font-medium back-text">
+                    <span className="text-base back-text font-medium">
                       {t("pages|form$go-back-text")}
                     </span>
                   </span>

@@ -1,14 +1,14 @@
-import home from "../../../assets/icons/home.svg";
-import data from "../../../assets/icons/data.svg";
-import delaData from "../../../assets/icons/dela-data.svg";
-import stodVerktyg from "../../../assets/icons/stod-verktyg.svg";
-import nyheter from "../../../assets/icons/nyheter.svg";
-import community from "../../../assets/icons/community.svg";
-import datasamverkan from "../../../assets/icons/datasamverkan.svg";
-import godaExempel from "../../../assets/icons/godaExempel.svg";
-import globe from "../../../assets/icons/globe.svg";
-import externalLink from "../../../assets/icons/external-link.svg";
-import mail from "../../../assets/icons/mail.svg";
+import home from "@/assets/icons/home.svg";
+import data from "@/assets/icons/data.svg";
+import delaData from "@/assets/icons/dela-data.svg";
+import stodVerktyg from "@/assets/icons/stod-verktyg.svg";
+import nyheter from "@/assets/icons/nyheter.svg";
+import community from "@/assets/icons/community.svg";
+import datasamverkan from "@/assets/icons/datasamverkan.svg";
+import godaExempel from "@/assets/icons/godaExempel.svg";
+import globe from "@/assets/icons/globe.svg";
+import externalLink from "@/assets/icons/external-link.svg";
+import mail from "@/assets/icons/mail.svg";
 
 interface MenuItem {
   title: string;
@@ -42,7 +42,17 @@ interface FooterMenuData {
   children: FooterMenuItem[];
 }
 
-export const mainMenu: MenuData[] = [
+const topNav: TopMenuData[] = [
+  { title: "about-us", icon: stodVerktyg },
+  {
+    title: "community",
+    href: "https://community.dataportal.se/",
+    icon: community,
+  },
+  { title: "language", icon: globe },
+];
+
+const mainNav: MenuData[] = [
   {
     title: "home-text",
     promoted: false,
@@ -129,17 +139,7 @@ export const mainMenu: MenuData[] = [
   },
 ];
 
-export const topMenu: TopMenuData[] = [
-  { title: "about-us", icon: stodVerktyg },
-  {
-    title: "community",
-    href: "https://community.dataportal.se/",
-    icon: community,
-  },
-  { title: "language", icon: globe },
-];
-
-export const footerMenu: FooterMenuData[] = [
+const footerNav: FooterMenuData[] = [
   {
     title: "dataportal",
     children: [
@@ -186,3 +186,5 @@ export const footerMenu: FooterMenuData[] = [
     ],
   },
 ];
+
+export { topNav, mainNav, footerNav };

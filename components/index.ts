@@ -6,7 +6,8 @@ export * from "./Image";
 export * from "./EntrystoreProvider";
 export * from "./FileFormatBadge";
 export * from "./LocalStoreProvider";
-export * from "./Navigation";
+export * from "./navigation";
+export * from "./navigation/NavSide";
 export * from "./ReactPortal";
 export * from "./Search";
 export * from "./SearchFilter";
@@ -14,7 +15,7 @@ export * from "./SearchHead";
 export * from "./StartPageComponents";
 export * from "./SettingsProvider";
 export * from "./TrackingProvider";
-export * from "./global/Button";
+export * from "./global/Buttons";
 export * from "./layout/Footer";
 export * from "./layout/Header";
 /* export * from "./Form"; */

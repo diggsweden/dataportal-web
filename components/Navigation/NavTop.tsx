@@ -1,5 +1,4 @@
-import { usePathname } from "next/navigation";
-import { topMenu } from "./menuData";
+import { topNav } from "./navData";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -16,8 +15,7 @@ interface SidebarProps {
   setOpenSidebar: Function;
 }
 
-const MenuTop: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
-  const pathname = usePathname();
+const NavTop: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
   const { t, lang } = useTranslation();
   const [isClient, setIsClient] = useState(false);
 
@@ -36,7 +34,7 @@ const MenuTop: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
       </Link>
       <nav>
         <ul className="flex flex-row">
-          {topMenu.map((menu: TopMenuData, idx: number) => (
+          {topNav.map((menu: TopMenuData, idx: number) => (
             <li key={idx} className="group text-sm">
               {menu.href ? (
                 <>
@@ -46,6 +44,7 @@ const MenuTop: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
                     iconPosition="left"
                     label={t(`common|${menu.title}`)}
                     size={"sm"}
+                    className="[&_span]:hidden md:[&_span]:block"
                   />
                 </>
               ) : (
@@ -57,6 +56,10 @@ const MenuTop: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
                   iconPosition="left"
                   label={t(`routes|${menu.title}$title`)}
                   size={"sm"}
+                  className={`${
+                    menu.title !== "language" &&
+                    "[&_span]:hidden md:[&_span]:block"
+                  }`}
                 />
               )}
             </li>
@@ -67,4 +70,4 @@ const MenuTop: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
   );
 };
 
-export default MenuTop;
+export default NavTop;

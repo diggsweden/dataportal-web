@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import React from "react";
-import { footerMenu } from "./menuData";
+import { footerNav } from "./navData";
 import Heading from "@/components/global/Typography/Heading";
 
 interface FooterMenuItem {
@@ -15,11 +15,11 @@ interface FooterMenuData {
   title: string;
   children: FooterMenuItem[];
 }
-export const MenuFooter: React.FC = () => {
+export const NavFooter: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-xl">
-      {footerMenu.map((footer: FooterMenuData, idx: number) => (
+    <div className="flex flex-col gap-xl lg:grid lg:grid-cols-2">
+      {footerNav.map((footer: FooterMenuData, idx: number) => (
         <div key={idx} className="flex flex-col gap-sm">
           <Heading size={"h5"}>{t(`common|${footer.title}`)}</Heading>
           <ul className="space-y-sm">

@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 
 const nextTranslate = require("next-translate-plugin");
-const withSvgr = require("next-plugin-svgr");
 
 const baseHeaders = [
   {
@@ -41,47 +40,66 @@ const csp = [
   },
 ];
 
-const nextConfig = withSvgr(
-  nextTranslate({
-    webpack: (config) => {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        os: false,
-        https: false,
-        http: false,
-        zlib: false,
-        events: false,
-        net: false,
-        dgram: false,
-        tls: false,
-      };
+const nextConfig = nextTranslate({
+  webpack: (config) => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      os: false,
+      https: false,
+      http: false,
+      zlib: false,
+      events: false,
+      net: false,
+      dgram: false,
+      tls: false,
+    };
 
-      return config;
-    },
-    productionBrowserSourceMaps: true,
-    env: {
-      REVALIDATE_INTERVAL: process.env.REVALIDATE_INTERVAL,
-    },
-    images: {
-      domains: [process.env.IMAGE_DOMAIN || "localhost", "bcdn.screen9.com"],
-      unoptimized: true,
-      deviceSizes: [640, 768, 1024, 1280, 1536, 1640, 1920],
-      dangerouslyAllowSVG: true,
-    },
-    async headers() {
-      return [
-        {
-          source: "/(.*)",
-          headers: [...baseHeaders, ...csp],
-        },
-        {
-          source: "/",
-          headers: [...baseHeaders, ...csp],
-        },
-      ];
-    },
-  }),
-);
+    // Grab the existing rule that handles SVG imports
+    const fileLoaderRule = config.module.rules.find((rule) =>
+      rule.test?.test?.(".svg"),
+    );
+
+    config.module.rules.push(
+      // Reapply the existing rule, but only for svg imports ending in ?url
+      {
+        ...fileLoaderRule,
+        test: /\.svg$/i,
+        resourceQuery: /url/, // *.svg?url
+      },
+      // Convert all other *.svg imports to React components
+      {
+        test: /\.svg$/i,
+        issuer: fileLoaderRule.issuer,
+        resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] }, // exclude if *.svg?url
+        use: ["@svgr/webpack"],
+      },
+    );
+
+    return config;
+  },
+  productionBrowserSourceMaps: true,
+  env: {
+    REVALIDATE_INTERVAL: process.env.REVALIDATE_INTERVAL,
+  },
+  images: {
+    domains: [process.env.IMAGE_DOMAIN || "localhost", "bcdn.screen9.com"],
+    unoptimized: true,
+    deviceSizes: [640, 768, 1024, 1280, 1536, 1640, 1920],
+    dangerouslyAllowSVG: true,
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [...baseHeaders, ...csp],
+      },
+      {
+        source: "/",
+        headers: [...baseHeaders, ...csp],
+      },
+    ];
+  },
+});
 
 module.exports = nextConfig;
