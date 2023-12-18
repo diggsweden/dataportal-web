@@ -1,21 +1,22 @@
-import { topNav } from "./navData";
+import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ButtonLink } from "@/components";
+import Link from "next/link";
+import { topNav } from "@/components/navigation/Nav/navData";
+import { ButtonLink } from "@/components/global/Button";
 import DiggSmall from "@/assets/logos/diggSmall.svg";
 
-interface TopMenuData {
+interface NavTopData {
   title: string;
   icon: any;
   href?: string;
 }
 
-interface SidebarProps {
-  setOpenSidebar: Function;
+interface NavTopProps {
+  setOpenNavSide: Function;
 }
 
-const NavTop: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
+const NavTop: FC<NavTopProps> = ({ setOpenNavSide }) => {
   const { t, lang } = useTranslation();
   const [isClient, setIsClient] = useState(false);
 
@@ -34,7 +35,7 @@ const NavTop: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
       </Link>
       <nav>
         <ul className="flex flex-row">
-          {topNav.map((menu: TopMenuData, idx: number) => (
+          {topNav.map((menu: NavTopData, idx: number) => (
             <li key={idx} className="group text-sm">
               {menu.href ? (
                 <>
@@ -51,7 +52,7 @@ const NavTop: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
                 <ButtonLink
                   href={`/${t(`routes|${menu.title}$path`)}`}
                   locale={`${menu.title === "language" ? "" : lang}`}
-                  onClick={() => setOpenSidebar(false)}
+                  onClick={() => setOpenNavSide(false)}
                   icon={menu.icon}
                   iconPosition="left"
                   label={t(`routes|${menu.title}$title`)}

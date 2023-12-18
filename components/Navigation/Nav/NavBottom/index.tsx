@@ -1,27 +1,28 @@
-import { mainNav } from "./navData";
+import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
-import Link from "next/link.js";
 import { useEffect, useState } from "react";
+import Link from "next/link.js";
+import { Button, ButtonLink } from "@/components/global/Button";
+import { mainNav } from "@/components/navigation/Nav/navData";
 import Dataportal from "@/assets/logos/dataportal.svg";
-import { Button, ButtonLink } from "@/components/global/Buttons";
 import CloseCross from "@/assets/icons/closeCross.svg";
 import Hamburger from "@/assets/icons/hamburger.svg";
 
-interface MenuItem {
+interface NavBottomData {
   title: string;
   promoted: boolean;
   inEn?: boolean;
   icon?: any;
   href?: string;
-  children?: MenuItem[];
+  children?: NavBottomData[];
 }
 
-interface SidebarProps {
-  setOpenSidebar: Function;
-  openSideBar: boolean;
+interface NavBottomProps {
+  setOpenNavSide: Function;
+  openNavSide: boolean;
 }
 
-const NavBottom: React.FC<SidebarProps> = ({ setOpenSidebar, openSideBar }) => {
+const NavBottom: FC<NavBottomProps> = ({ setOpenNavSide, openNavSide }) => {
   const [menues, setMenues] = useState<any>([]);
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
@@ -43,26 +44,26 @@ const NavBottom: React.FC<SidebarProps> = ({ setOpenSidebar, openSideBar }) => {
       <Link
         className="hidden md:block"
         href={t(`common|${"lang-path"}`)}
-        onClick={() => setOpenSidebar(false)}
+        onClick={() => setOpenNavSide(false)}
       >
         <Dataportal />
       </Link>
       <div className="flex flex-row items-center">
         <nav className="hidden flex-row items-center gap-sm lg:flex">
-          {menues.map((menu: MenuItem, idx: number) => (
+          {menues.map((menu: NavBottomData, idx: number) => (
             <ButtonLink
               key={idx}
               href={t(`routes|${menu.title}$path`)}
-              onClick={() => setOpenSidebar(false)}
+              onClick={() => setOpenNavSide(false)}
               label={t(`routes|${menu.title}$title`)}
             />
           ))}
         </nav>
         <Button
-          icon={openSideBar ? CloseCross : Hamburger}
+          icon={openNavSide ? CloseCross : Hamburger}
           iconPosition="left"
           onClick={() =>
-            openSideBar ? setOpenSidebar(false) : setOpenSidebar(true)
+            openNavSide ? setOpenNavSide(false) : setOpenNavSide(true)
           }
           label={t("common|menu")}
         />

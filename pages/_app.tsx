@@ -10,8 +10,6 @@ import {
   LocalStoreProvider,
   SettingsProvider,
   TrackingProvider,
-  Header,
-  Footer,
 } from "@/components";
 import { defaultSettings } from "../components/SettingsProvider/SettingsProvider";
 import {
@@ -30,8 +28,10 @@ import { useRouter } from "next/router";
 import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "../env/Settings.Sandbox";
 import "../styles/global.css";
-import NavSide from "@/components/navigation/NavSide";
+import NavSide from "@/components/navigation/Nav/NavSide";
 import Container from "@/components/layout/Container";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 const GetCookiesAccepted = () => {
   try {
@@ -70,7 +70,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   //*Put shared props into state to persist between pages that doesn't use getStaticProps
   const [env, setEnv] = useState<EnvSettings>(SettingsUtil.create());
   const [matomoActivated, setMatomoActivated] = useState<boolean>(true);
-  const [openSideBar, setOpenSideBar] = useState(false);
+  const [openNavSide, setOpenNavSide] = useState(false);
   const [breadcrumbState, setBreadcrumb] =
     useState<BreadcrumbProps>(initBreadcrumb);
   const { seo, heroImage } =
@@ -99,7 +99,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
       }
 
       window.addEventListener("resize", function () {
-        setOpenSideBar(false);
+        setOpenNavSide(false);
       });
     }
     document.documentElement.classList.add("no-focus-outline");
@@ -254,15 +254,15 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
             </Head>
             <div id="scriptsPlaceholder" />
             {/*<CookieBanner />*/}
-            <div id="top" className="relative overflow-hidden">
+            <div id="top" className="relative min-h-screen overflow-hidden">
               {/*<SkipToContent text={t("skiptocontent")} />*/}
               <Header
-                setOpenSidebar={setOpenSideBar}
-                openSideBar={openSideBar}
+                setOpenNavSide={setOpenNavSide}
+                openNavSide={openNavSide}
               />
               <NavSide
-                openSideBar={openSideBar}
-                setOpenSidebar={setOpenSideBar}
+                openNavSide={openNavSide}
+                setOpenNavSide={setOpenNavSide}
               />
               <noscript>
                 <div>
@@ -272,12 +272,12 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
               {breadcrumbState.crumbs.length > 0 && (
                 <Breadcrumb {...breadcrumbState} />
               )}
-              <main>
-                <Container
-                  className={`transition-all duration-300 ease-in-out ${
-                    openSideBar ? "lg:w-[calc(100vw-300px)]" : "w-full"
-                  }`}
-                >
+              <main
+                className={`transition-all duration-300 ease-in-out ${
+                  openNavSide ? "lg:w-[calc(100vw-300px)]" : "w-full"
+                }`}
+              >
+                <Container>
                   {heroImage?.url ? (
                     <div className="hero">
                       <CustomImage image={heroImage} />
@@ -291,7 +291,10 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   <Component {...pageProps} />
                 </Container>
               </main>
-              <Footer openSideBar={openSideBar} />
+              <Footer
+                setOpenNavSide={setOpenNavSide}
+                openNavSide={openNavSide}
+              />
             </div>
           </TrackingProvider>
         </LocalStoreProvider>

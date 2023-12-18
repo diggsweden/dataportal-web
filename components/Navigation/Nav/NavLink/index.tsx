@@ -1,9 +1,9 @@
 import React, { FC, PropsWithChildren, AnchorHTMLAttributes } from "react";
 import { cx, cva, VariantProps } from "class-variance-authority";
 import Link from "next/link";
-import ExternalLink from "@/assets/icons/external-link.svg";
-import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
+import { usePathname } from "next/navigation";
+import ExternalLink from "@/assets/icons/external-link.svg";
 import NavPixels from "@/assets/icons/navPixels.svg";
 
 const navLinkVariants = cva(

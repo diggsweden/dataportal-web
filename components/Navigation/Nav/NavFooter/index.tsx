@@ -1,34 +1,45 @@
+import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
-import Link from "next/link";
-import React from "react";
-import { footerNav } from "./navData";
 import Heading from "@/components/global/Typography/Heading";
+import { footerNav } from "@/components/navigation/Nav/navData";
+import Element from "@/components/global/Typography/Element";
 
-interface FooterMenuItem {
+interface NavFooterItem {
   title: string;
   icon: any;
   type?: "internal" | "external" | "email";
   href?: string;
 }
 
-interface FooterMenuData {
+interface NavFooterData {
   title: string;
-  children: FooterMenuItem[];
+  children: NavFooterItem[];
 }
-export const NavFooter: React.FC = () => {
+
+interface NavFooterProps {
+  setOpenNavSide: Function;
+}
+
+export const NavFooter: FC<NavFooterProps> = ({ setOpenNavSide }) => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-xl lg:grid lg:grid-cols-2">
-      {footerNav.map((footer: FooterMenuData, idx: number) => (
+      {footerNav.map((footer: NavFooterData, idx: number) => (
         <div key={idx} className="flex flex-col gap-sm">
           <Heading size={"h5"}>{t(`common|${footer.title}`)}</Heading>
           <ul className="space-y-sm">
             {footer.children.map((link, idx: number) => (
-              <li key={idx} className="text-md text-green-600 underline">
+              <li
+                key={idx}
+                /*                 className="text-md text-green-600 underline" */
+                onClick={() =>
+                  link.type === "internal" && setOpenNavSide(false)
+                }
+              >
                 {link.href ? (
-                  <Link
+                  <Element
+                    variant="a"
                     href={link.href}
-                    target="_blank"
                     className="inline-flex items-center gap-sm"
                   >
                     {link.type === "external"
@@ -40,11 +51,14 @@ export const NavFooter: React.FC = () => {
                       height={16}
                       viewBox="0 0 24 24"
                     />
-                  </Link>
+                  </Element>
                 ) : (
-                  <Link href={`/${t(`routes|${link.title}$path`)}`}>
+                  <Element
+                    variant="a"
+                    href={`/${t(`routes|${link.title}$path`)}`}
+                  >
                     {t(`routes|${link.title}$title`)}
-                  </Link>
+                  </Element>
                 )}
               </li>
             ))}
