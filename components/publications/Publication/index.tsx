@@ -1,5 +1,5 @@
 import React from "react";
-import { ArticleBlock, ContentArea } from "../..";
+import {  ContentArea } from "../..";
 import { checkLang, PublicationResponse } from "../../../utilities";
 
 const whitelistedTagsSV = ["Goda exempel", "Event", "Nyhet"];
@@ -43,7 +43,7 @@ export const Publication: React.FC<PublicationResponse> = ({
             {tags &&
               getRelatedHeading(findPublicationTypeTag(tags)?.value || "")}
           </h2>
-          <ArticleBlock articles={related} />
+          {/* <ArticleBlock articles={related} /> */}
         </div>
       )}
     </div>

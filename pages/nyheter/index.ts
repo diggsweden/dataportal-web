@@ -1,4 +1,4 @@
-import { ArticleListPage } from "../../components/pages/Articles";
+import {PublicationList} from "@/components/publications/PublicationList"
 import { getPublicationsList, populateSeo } from "../../utilities";
 
 export async function getStaticProps({ locale }: any) {
@@ -12,4 +12,4 @@ export async function getStaticProps({ locale }: any) {
   });
 }
 
-export default ArticleListPage;
+export default PublicationList;

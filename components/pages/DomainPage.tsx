@@ -12,7 +12,7 @@ import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Dataportal_LinkType } from "../../graphql/__generated__/types";
-
+import { PublicationList } from "../publications/PublicationList";
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   domain?: DiggDomain;
@@ -41,12 +41,12 @@ const DynamicStatistic = dynamic(() => import("../Statistic/Statistic"), {
   ssr: false,
 });
 
-const DynamicArticleBlock = dynamic(
-  () => import("../blocks/Article").then((c) => c.ArticleBlock),
-  {
-    ssr: false,
-  },
-);
+// const ArticleTeaser = dynamic(
+//   () => import("@/components/publications/PublicationTeaser").then((c) => c.ArticleBlock),
+//   {
+//     ssr: false,
+//   },
+// );
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
   const { domain, areas, news, example } = props || {};
@@ -98,12 +98,13 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             basepath={domain ? "/" + domain : undefined}
           />
         )}
+
         {/* I´ll be back for this */}
         {!isEn && pathname === `/` && (
           <>
             {news && (
-              <DynamicArticleBlock
-                articles={news}
+              <PublicationList
+                publications={news}
                 showMoreLink={{
                   title: t("pages|news$view-all"),
                   slug: t("routes|news$path"),
@@ -116,8 +117,8 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             )}
 
             {example && (
-              <DynamicArticleBlock
-                articles={example}
+              <PublicationList
+                publications={example}
                 showMoreLink={{
                   title: t("pages|good-examples$view-all"),
                   slug: t("routes|good-examples$path"),

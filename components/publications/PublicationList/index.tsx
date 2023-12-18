@@ -9,7 +9,9 @@ import { ContainerDataFragment as IContainer } from "../../../graphql/__generate
 import { checkLang } from "../../../utilities";
 import { PublicationListResponse } from "../../../utilities";
 import NoSsr from "../../NoSsr/NoSsr";
-import { ArticleBlock } from "../../blocks";
+import { CustomImage } from "@/components/Image";
+import { PublicationTeaser } from "../PublicationTeaser";
+// import { ArticleBlock } from "../../blocks";
 
 const isPublication = (
   article: Publication | IContainer,
@@ -28,8 +30,8 @@ const sortArticles = (
   }
 };
 
-export const ArticleListPage: React.FC<PublicationListResponse> = ({
-  articles,
+export const PublicationList: React.FC<PublicationListResponse> = ({
+  publications,
   category,
   domain,
   seo,
@@ -46,10 +48,10 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
 
   const articlesPerPage = 10;
   const articlesVisited = articlesNumber * articlesPerPage;
-  const displayArticles = articles
+  const displayArticles = publications
     .sort(sortArticles)
     .slice(articlesVisited, articlesVisited + articlesPerPage);
-  const pageCount = Math.ceil(articles.length / articlesPerPage);
+  const pageCount = Math.ceil(publications.length / articlesPerPage);
   const metaTitle =
     title ||
     (category
@@ -64,10 +66,10 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
     push(`?page=${selected}`);
   };
 
-  useEffect(() => {
-    // skipToContent();
-    // startFromTop();
-  }, [currentPage]);
+  //   useEffect(() => {
+  //     skipToContent();
+  //     startFromTop();
+  //   }, [currentPage]);
 
   useEffect(() => {
     trackPageView({ documentTitle: "Nyheter" });
@@ -81,22 +83,22 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
     }
   }, [query]);
 
-  const renderGrid = () => {
-    if (displayArticles.length > articlesPerPage) {
-      return (
-        <ArticleBlock
-          articles={
-            displayArticles.slice(
-              articlesPerPage * currentPage - 1,
-              articlesPerPage * currentPage,
-            ) as Publication[]
-          }
-        />
-      );
-    } else {
-      return <ArticleBlock articles={displayArticles as Publication[]} />;
-    }
-  };
+  //   const renderGrid = () => {
+  //     if (displayArticles.length > articlesPerPage) {
+  //       return (
+  //         <ArticleBlock
+  //           articles={
+  //             displayArticles.slice(
+  //               articlesPerPage * currentPage - 1,
+  //               articlesPerPage * currentPage,
+  //             ) as Publication[]
+  //           }
+  //         />
+  //       );
+  //     } else {
+  //       return <ArticleBlock articles={displayArticles as Publication[]} />;
+  //     }
+  //   };
 
   const renderPagination = () => {
     return (
@@ -114,9 +116,14 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
     );
   };
 
+  function getDate(date: string) {
+    const parsedDate = new Date(date);
+    return parsedDate.getDay();
+  }
+
   return (
     <div className="container">
-      <Head>
+      {/* <Head>
         <title>{metaTitle}</title>
         <meta property="og:title" content={metaTitle} />
         <meta name="twitter:title" content={metaTitle} />
@@ -127,16 +134,26 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
             <meta name="twitter:description" content={description} />
           </>
         )}
-      </Head>
+      </Head> */}
       <h1>{heading || category?.name || t("pages|publications$title")}</h1>
-      <div className="content">
-        {/* <Button
-          onClick={() => {
-            setGridView(!gridView);
-          }}
-        >
-          {gridView ? t('pages|search$list-view') : t('pages|search$grid-view')}
-        </Button> */}
+      <div>
+        <ul>
+          {publications.map((publication) => (
+            <article>
+              {/* <CustomImage image={publication.image}/> */}
+              <PublicationTeaser publication={publication} />
+              <div>
+                <div>
+                  <span>{getDate(publication.createdAt)} Juni 2023</span>|
+                  <span>{publication.tags[0].value}</span>
+                </div>
+                <span>{publication.heading}</span>
+              </div>
+            </article>
+          ))}
+        </ul>
+      </div>
+      {/* <div className="content">
         {!gridView ? (
           <div className="article-list" id="articles">
             <ul>
@@ -188,7 +205,7 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
               })}
             </ul>
             {/* Show pagination only when there is more than one page */}
-            {pageCount > 1 && (
+      {/* {pageCount > 1 && (
               <div className="currentpage-tracker">
                 <span className="text-base">
                   {t("pages|search$page")} {currentPage} {t("common|of")}{" "}
@@ -200,11 +217,11 @@ export const ArticleListPage: React.FC<PublicationListResponse> = ({
           </div>
         ) : (
           <div className="article-list" id="articles">
-            {renderGrid()}
-            {renderPagination()}
+            {/* {renderGrid()} */}
+      {/* {renderPagination()}
           </div>
         )}
-      </div>
+      </div> */}{" "}
     </div>
   );
 };
