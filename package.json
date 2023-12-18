@@ -38,7 +38,6 @@
     "react-children-utilities": "^2.8.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^8.0.3",
-    "react-native-gesture-handler": "^2.14.0",
     "react-show-more-text": "^1.5.2",
     "react-vis": "^1.11.7",
     "rehype-raw": "^6.1.1",
@@ -81,7 +80,7 @@
   },
   "engines": {
     "npm": ">=8.1.2",
-    "node": ">=16.13.2"
+    "node": ">=18.18.0"
   },
   "packageManager": "yarn@3.6.3"
 }
