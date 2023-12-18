@@ -62,9 +62,7 @@ const NavBottom: FC<NavBottomProps> = ({ setOpenNavSide, openNavSide }) => {
         <Button
           icon={openNavSide ? CloseCross : Hamburger}
           iconPosition="left"
-          onClick={() =>
-            openNavSide ? setOpenNavSide(false) : setOpenNavSide(true)
-          }
+          onClick={() => setOpenNavSide(!openNavSide)}
           label={t("common|menu")}
         />
       </div>
