@@ -1,48 +1,48 @@
-import home from "@/assets/icons/home.svg";
-import data from "@/assets/icons/data.svg";
-import delaData from "@/assets/icons/dela-data.svg";
-import stodVerktyg from "@/assets/icons/stod-verktyg.svg";
-import nyheter from "@/assets/icons/nyheter.svg";
 import community from "@/assets/icons/community.svg";
+import data from "@/assets/icons/data.svg";
 import datasamverkan from "@/assets/icons/datasamverkan.svg";
-import godaExempel from "@/assets/icons/godaExempel.svg";
-import globe from "@/assets/icons/globe.svg";
+import delaData from "@/assets/icons/dela-data.svg";
 import externalLink from "@/assets/icons/external-link.svg";
+import globe from "@/assets/icons/globe.svg";
+import godaExempel from "@/assets/icons/godaExempel.svg";
+import home from "@/assets/icons/home.svg";
 import mail from "@/assets/icons/mail.svg";
+import nyheter from "@/assets/icons/nyheter.svg";
+import stodVerktyg from "@/assets/icons/stod-verktyg.svg";
 
-interface MenuItem {
+interface NavItem {
   title: string;
   inEn: boolean;
 }
 
-interface MenuData {
+interface NavData {
   title: string;
   promoted?: boolean;
   inEn?: boolean;
   icon?: any;
   href?: string;
-  children?: MenuItem[];
+  children?: NavItem[];
 }
 
-interface TopMenuData {
+interface NavTopData {
   title: string;
   icon: any;
   href?: string;
 }
 
-interface FooterMenuItem {
+interface NavFooterItem {
   title: string;
   icon: any;
   type?: "internal" | "external" | "email";
   href?: string;
 }
 
-interface FooterMenuData {
+interface NavFooterData {
   title: string;
-  children: FooterMenuItem[];
+  children: NavFooterItem[];
 }
 
-const topNav: TopMenuData[] = [
+const topNav: NavTopData[] = [
   { title: "about-us", icon: stodVerktyg },
   {
     title: "community",
@@ -52,7 +52,7 @@ const topNav: TopMenuData[] = [
   { title: "language", icon: globe },
 ];
 
-const mainNav: MenuData[] = [
+const mainNav: NavData[] = [
   {
     title: "home-text",
     promoted: false,
@@ -139,7 +139,7 @@ const mainNav: MenuData[] = [
   },
 ];
 
-const footerNav: FooterMenuData[] = [
+const footerNav: NavFooterData[] = [
   {
     title: "dataportal",
     children: [

@@ -1,9 +1,9 @@
 import { cx } from "class-variance-authority";
-import useTranslation from "next-translate/useTranslation";
-import Link from "next/link";
 import { DetailsHTMLAttributes, FC, PropsWithChildren, useState } from "react";
-import ArrowRight from "@/assets/icons/arrowRight.svg";
+import useTranslation from "next-translate/useTranslation";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
+import ArrowRight from "@/assets/icons/arrowRight.svg";
 import NavPixels from "@/assets/icons/navPixels.svg";
 
 type NavListProps = {
@@ -11,12 +11,12 @@ type NavListProps = {
   label: string;
   className?: string;
   list: any[];
-  setOpenSidebar: Function;
+  setOpenNavSide: Function;
 };
 
 const NavList: FC<
   PropsWithChildren<NavListProps & DetailsHTMLAttributes<HTMLDetailsElement>>
-> = ({ className, list, label, setOpenSidebar, icon }) => {
+> = ({ className, list, label, setOpenNavSide, icon }) => {
   const pathname = usePathname();
   const { t } = useTranslation();
 
@@ -63,7 +63,7 @@ const NavList: FC<
               isActive(`/${t(`routes|${menu.title}$path`)}`) &&
               "font-strong bg-pink-100 text-brown-900"
             }`}
-            onClick={() => setOpenSidebar(false)}
+            onClick={() => setOpenNavSide(false)}
           >
             <Link
               href={`/${t(`routes|${menu.title}$path`)}`}

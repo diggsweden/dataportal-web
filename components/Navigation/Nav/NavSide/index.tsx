@@ -1,26 +1,26 @@
-import { usePathname } from "next/navigation";
-import { mainNav } from "./navData";
+import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
-import NavLink from "@/components/navigation/NavLink";
-import NavList from "@/components/navigation/NavList";
+import { mainNav } from "@/components/navigation/Nav/navData";
+import NavLink from "@/components/navigation/Nav/NavLink";
+import NavList from "@/components/navigation/Nav/NavList";
 
-interface MenuItem {
+interface NavSideData {
   title: string;
   promoted: boolean;
   inEn?: boolean;
   icon?: any;
   href?: string;
-  children?: MenuItem[];
+  children?: NavSideData[];
 }
 
-interface SidebarProps {
-  openSideBar: boolean;
-  setOpenSidebar: Function;
+interface NavSideProps {
+  openNavSide: boolean;
+  setOpenNavSide: Function;
 }
 
-const NavSide: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
-  const [menues, setMenues] = useState<any>([]);
+const NavSide: FC<NavSideProps> = ({ openNavSide, setOpenNavSide }) => {
+  const [menu, setMenu] = useState<any>([]);
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
 
@@ -37,20 +37,20 @@ const NavSide: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
           children: menu.children?.filter((subMenu) => subMenu.inEn),
         }));
 
-      setMenues(enMenu);
+      setMenu(enMenu);
     } else {
-      setMenues(mainNav);
+      setMenu(mainNav);
     }
   }, [isEn]);
 
   return (
     <nav
       className={`absolute top-[128px] -mb-[128px] h-[calc(100%-128px)] w-[300px] bg-white transition-all duration-500 ease-in-out ${
-        openSideBar ? "right-none" : "-right-full"
+        openNavSide ? "right-none" : "-right-full"
       }`}
     >
       <ul className="w-full list-none">
-        {menues.map((menu: MenuItem, idx: number) => (
+        {menu.map((menu: NavSideData, idx: number) => (
           <li key={idx}>
             {menu.href ? (
               <NavLink
@@ -64,14 +64,14 @@ const NavSide: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
                 icon={menu.icon}
                 list={menu.children}
                 label={t(`routes|${menu.title}$title`)}
-                setOpenSidebar={setOpenSidebar}
+                setOpenNavSide={setOpenNavSide}
               />
             ) : (
               <NavLink
                 href={`/${t(`routes|${menu.title}$path`)}`}
                 icon={menu.icon}
                 label={t(`routes|${menu.title}$title`)}
-                onClick={() => setOpenSidebar(false)}
+                onClick={() => setOpenNavSide(false)}
               />
             )}
           </li>

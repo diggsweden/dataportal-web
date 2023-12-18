@@ -1,4 +1,4 @@
-import React, {
+import {
   FC,
   PropsWithChildren,
   ButtonHTMLAttributes,
@@ -49,7 +49,7 @@ const IconLabel: FC<IconLabelProps> = ({ icon, label, size, iconPosition }) => {
         <Icon
           height={size === "lg" ? 24 : 16}
           width={size === "lg" ? 24 : 16}
-          viewBox={size !== "lg" && "0 0 24 24"}
+          viewBox="0 0 24 24"
         />
       )}
       {label && <span>{label}</span>}
@@ -57,7 +57,7 @@ const IconLabel: FC<IconLabelProps> = ({ icon, label, size, iconPosition }) => {
         <Icon
           height={size === "lg" ? 24 : 16}
           width={size === "lg" ? 24 : 16}
-          viewBox={size !== "lg" && "0 0 24 24"}
+          viewBox="0 0 24 24"
         />
       )}
     </>
