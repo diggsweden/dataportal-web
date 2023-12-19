@@ -4,8 +4,8 @@ import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 import { usePathname } from "next/navigation";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
-import NavPixels from "@/assets/icons/navPixels.svg";
-import ArrowRight from "@/assets/icons/arrowRight.svg";
+import NavPixelsImage from "@/assets/icons/navPixels.svg";
+import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 
 const sideBarLinkVariants = cva(
   [
@@ -55,7 +55,7 @@ const MenuLink: FC<MenuLinkProps> = ({
       target={variant === "external" ? "_blank" : "_self"}
     >
       <>
-        {isActive && <NavPixels className="absolute right-none" />}
+        {isActive && <NavPixelsImage className="absolute right-none" />}
         {Icon && (
           <Icon
             viewBox="0 0 24 24"
@@ -145,7 +145,7 @@ const SideBarLink: FC<PropsWithChildren<SideBarLinkProps>> = ({
           >
             {label}
           </span>
-          <ArrowRight
+          <ArrowRightIcon
             className={`absolute right-md ${
               open
                 ? "rotate-90 transition-all duration-300 ease-in-out [&_path]:fill-pink-600"
