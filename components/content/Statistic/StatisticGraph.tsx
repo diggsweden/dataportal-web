@@ -66,7 +66,7 @@ export const StatisticGraph: React.FC = () => {
   const BarSeries = useCanvas ? VerticalBarSeriesCanvas : VerticalBarSeries;
 
   return (
-    <div className="w-full">
+    <div className="statistics-graph mb-lg w-full lg:mb-none lg:w-[78%]">
       <span className="sr-only">{t("pages|statistic$graph-screenreader")}</span>
 
       <div className="flex flex-col items-end">
@@ -80,7 +80,11 @@ export const StatisticGraph: React.FC = () => {
             right: 0,
           }}
         >
-          <XAxis height={0} tickSizeOuter={0} className="text-sm" />
+          <XAxis
+            height={0}
+            tickSizeOuter={0}
+            className="hide-odd-stat text-sm"
+          />
           <YAxis width={64} className="text-sm" />
           {/* @ts-ignore */}
           <BarSeries data={stats.x} barWidth={0.75} color="#CD7A6E" />

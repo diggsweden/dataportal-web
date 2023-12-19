@@ -49,4 +49,22 @@
   a {
     @apply text-md text-green-600 underline underline-offset-4;
   }
+  .hide-odd-stat .rv-xy-plot__axis__tick {
+    display: none;
+  }
+  .hide-odd-stat .rv-xy-plot__axis__tick:first-child {
+    display: block;
+  }
+  .hide-odd-stat .rv-xy-plot__axis__tick:last-child {
+    display: block;
+  }
+  @screen md {
+    .hide-odd-stat .rv-xy-plot__axis__tick {
+      display: block;
+    }
+    .hide-odd-stat .rv-xy-plot__axis__tick:nth-child(even) {
+      display: none;
+    }
+  }
 }
+

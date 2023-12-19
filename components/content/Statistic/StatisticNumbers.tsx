@@ -62,7 +62,7 @@ export const StatisticNumbers = () => {
   }, []);
 
   return (
-    <div className="grid gap-lg">
+    <div className="flex w-full flex-col justify-between lg:w-[18%]">
       <StatisticDataPresentation
         dataText={t("search$datasets")}
         dataNumber={state.datasetCount}
