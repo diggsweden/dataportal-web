@@ -10,7 +10,7 @@ The Swedish data portal is tightly integrated with the EntryScape product suite 
 EntryScape Registry is a solution for managing a registry of data catalogs and related information
 
 ## Requirements
-![node-current](https://img.shields.io/badge/node-16.13.2-green)
+![node-current](https://img.shields.io/badge/node-18.18.0-green)
 ![npm-current](https://img.shields.io/badge/npm-8.1.2-green)
 ![nextjs-current](https://img.shields.io/badge/nextjs-12.1.6-green)
 
@@ -23,7 +23,7 @@ Start by creating an ```.env.local``` file. Use the ```.env.local.example``` as 
 ### Run application in development mode
 Starts the application in development mode with hot-code reloading, error reporting, and more. See [Nextjs Development](https://nextjs.org/docs/app/api-reference/next-cli#development) for more information.
 Run:
-```sh 
+```sh
 yarn
 yarn dev
 ```
@@ -33,7 +33,7 @@ Visit [http://localhost:3000](http://localhost:3000) in the browser.
 Builds the application for production usage. See [Nextjs production build](https://nextjs.org/docs/app/api-reference/next-cli#build) for more info.
 And Start the Next.js production server. See [Nextjs start production](https://nextjs.org/docs/app/api-reference/next-cli#production) for more info.
 
-Use real data from dataportalen.se by using the variables under "Connect to production backend. (dataportal.se)." in env.local.example file. 
+Use real data from dataportalen.se by using the variables under "Connect to production backend. (dataportal.se)." in env.local.example file.
 Run:
 ```sh
 yarn
@@ -46,7 +46,17 @@ Visit [http://localhost:3000](http://localhost:3000) in the browser.
 ### Run application with Docker
 
 ```sh
-#build image
+yarn build
+```
+
+Detta kommer generera applikationen som statiska filer under .next-mappen.
+
+## Docker
+Docker version running is [node:18-alpine](https://hub.docker.com/layers/library/node/18-alpine/images/sha256-28630a8b97ae8336d77b6dae5705bea816bdc1d6383901bb4495c521929a4091?context=explore)
+
+
+```sh
+#bygg image
 docker build . -t nextjs-dataportal
 
 #create container

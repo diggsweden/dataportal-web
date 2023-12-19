@@ -203,7 +203,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                   es
                 )
               );
-              valuePromises.push(getLocalizedValue(graph, 'dcterms:description', nextLang, es));
+              valuePromises.push(
+                getLocalizedValue(graph, 'dcterms:description', nextLang, es, { resourceURI })
+              );
               if (fetchMore) {
                 valuePromises.push(getLocalizedValue(graph, 'dcterms:publisher', nextLang, es));
                 valuePromises.push(
@@ -269,7 +271,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                   es
                 )
               );
-              valuePromises.push(getLocalizedValue(graph, 'dcterms:description', nextLang, es));
+              valuePromises.push(
+                getLocalizedValue(graph, 'dcterms:description', nextLang, es, { resourceURI })
+              );
               if (fetchMore) {
                 valuePromises.push(getLocalizedValue(graph, 'dcterms:publisher', nextLang, es));
                 valuePromises.push(
