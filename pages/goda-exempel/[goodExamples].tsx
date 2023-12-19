@@ -1,7 +1,6 @@
-"../../styles/general/emotion";
 import { GetStaticPaths, GetStaticProps } from "next/types";
 import { getPublication } from "../../utilities";
-import { Publication } from "../../components/pages/Articles";
+import { Publication } from "@/components/publications/Publication";
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   const slug = ("/" + params?.goodExamples) as string;

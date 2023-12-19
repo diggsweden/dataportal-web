@@ -116,14 +116,9 @@ export const PublicationList: React.FC<PublicationListResponse> = ({
     );
   };
 
-  function getDate(date: string) {
-    const parsedDate = new Date(date);
-    return parsedDate.getDay();
-  }
-
   return (
     <div className="container">
-      {/* <Head>
+      <Head>
         <title>{metaTitle}</title>
         <meta property="og:title" content={metaTitle} />
         <meta name="twitter:title" content={metaTitle} />
@@ -134,22 +129,16 @@ export const PublicationList: React.FC<PublicationListResponse> = ({
             <meta name="twitter:description" content={description} />
           </>
         )}
-      </Head> */}
-      <h1>{heading || category?.name || t("pages|publications$title")}</h1>
-      <div>
-        <ul>
+      </Head>
+      <div className="py-xl">
+        <h1 className="text-2xl">
+          {heading || category?.name || t("pages|publications$title")}
+        </h1>
+        <ul className="gap-4 grid grid-flow-col gap-xl pt-xl">
           {publications.map((publication) => (
-            <article>
-              {/* <CustomImage image={publication.image}/> */}
+            <li className="md:w-[296px]">
               <PublicationTeaser publication={publication} />
-              <div>
-                <div>
-                  <span>{getDate(publication.createdAt)} Juni 2023</span>|
-                  <span>{publication.tags[0].value}</span>
-                </div>
-                <span>{publication.heading}</span>
-              </div>
-            </article>
+            </li>
           ))}
         </ul>
       </div>

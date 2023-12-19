@@ -20,7 +20,7 @@ interface ResponsiveSizes {
 
 interface CustomImageProps {
   image: ImageInterface;
-  style?: "responsive" | "fill";
+  style?: string;
   sizes?: ImageSizes;
 }
 

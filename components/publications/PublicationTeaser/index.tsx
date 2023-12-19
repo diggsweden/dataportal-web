@@ -154,11 +154,8 @@
 //   );
 // };
 
-
 import useTranslation from "next-translate/useTranslation";
-import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 import { checkLang } from "@/utilities";
 import { ImageFragment } from "@/graphql/__generated__/operations";
@@ -168,13 +165,48 @@ import { LinkFragment as DiggLink } from "@/graphql/__generated__/operations";
 import placeholderimg from "@/public/images/noimage.svg";
 import NoSsr from "@/components/NoSsr/NoSsr";
 import { CustomImage } from "@/components/Image";
+import LinkArrow from "@/assets/icons/linkArrow.svg";
+export const PublicationTeaser = ({ publication }: any) => {
+  const { createdAt, tags, heading, slug, image } = publication;
+  const { t } = useTranslation();
 
+  function getHref(tag: string) {
+    const cleanString = tag.toLowerCase().replace(/\s/g, "");
+    switch (cleanString) {
+      case "nyhet":
+        return `nyheter${slug}`;
+        break;
+      case "godaexempel":
+        return `goda-exempel${slug}`;
+        break;
+      default:
+        return "";
+        break;
+    }
+  }
 
-export const PublicationTeaser = (publication) => {
-    return (
+  const href = tags[0].value;
+  function getDate(date: string) {
+    const parsedDate = new Date(date);
+    return parsedDate.getDay();
+  }
+
+  return (
+    <article>
+      <CustomImage style="h-[184px] w-full" image={image !== null && image} />
+      <div className="flex flex-col px-md py-lg">
         <div>
-              <img src="https://www.ikea.com/images/small-office-space-with-idasen-beige-sit-stand-desks-alefjae-9b5623c200848100a14b982fb9185ffd.jpg?f=s" alt="" />
-
+          <span>{getDate(createdAt)} Juni 2023</span>|
+          <span>
+            {tags[0]?.value ? tags[0].value : t("pages|listpage$fallback-tag")}
+          </span>
         </div>
-    )
-}
+        <span className="pb-md pt-sm">{heading}</span>
+        <div className="flex items-center gap-xs">
+          <Link href={getHref(href)}>Läs mer</Link>
+          <LinkArrow />
+        </div>
+      </div>
+    </article>
+  );
+};
