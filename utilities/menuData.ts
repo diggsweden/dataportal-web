@@ -1,14 +1,14 @@
-import community from "@/assets/icons/community.svg";
-import data from "@/assets/icons/data.svg";
-import datasamverkan from "@/assets/icons/datasamverkan.svg";
-import delaData from "@/assets/icons/dela-data.svg";
-import externalLink from "@/assets/icons/external-link.svg";
-import globe from "@/assets/icons/globe.svg";
-import godaExempel from "@/assets/icons/godaExempel.svg";
-import home from "@/assets/icons/home.svg";
-import mail from "@/assets/icons/mail.svg";
-import nyheter from "@/assets/icons/nyheter.svg";
-import stodVerktyg from "@/assets/icons/stod-verktyg.svg";
+import communityIcon from "@/assets/icons/community.svg";
+import dataIcon from "@/assets/icons/data.svg";
+import datasamverkanIcon from "@/assets/icons/datasamverkan.svg";
+import delaDataIcon from "@/assets/icons/dela-data.svg";
+import externalLinkIcon from "@/assets/icons/external-link.svg";
+import globeIcon from "@/assets/icons/globe.svg";
+import godaExempelIcon from "@/assets/icons/godaExempel.svg";
+import homeIcon from "@/assets/icons/home.svg";
+import mailIcon from "@/assets/icons/mail.svg";
+import nyheterIcon from "@/assets/icons/nyheter.svg";
+import stodVerktygIcon from "@/assets/icons/stod-verktyg.svg";
 
 interface NavItem {
   title: string;
@@ -43,13 +43,13 @@ interface NavFooterData {
 }
 
 const topNav: NavTopData[] = [
-  { title: "about-us", icon: stodVerktyg },
+  { title: "about-us", icon: stodVerktygIcon },
   {
     title: "community",
     href: "https://community.dataportal.se/",
-    icon: community,
+    icon: communityIcon,
   },
-  { title: "language", icon: globe },
+  { title: "language", icon: globeIcon },
 ];
 
 const mainNav: NavData[] = [
@@ -57,18 +57,18 @@ const mainNav: NavData[] = [
     title: "home-text",
     promoted: false,
     inEn: true,
-    icon: home,
+    icon: homeIcon,
   },
   {
     title: "search-api",
     promoted: true,
     inEn: true,
-    icon: data,
+    icon: dataIcon,
   },
   {
     title: "support-tools",
     promoted: true,
-    icon: stodVerktyg,
+    icon: stodVerktygIcon,
     children: [
       {
         title: "support-tools",
@@ -87,7 +87,7 @@ const mainNav: NavData[] = [
   {
     title: "good-examples",
     promoted: true,
-    icon: godaExempel,
+    icon: godaExempelIcon,
     children: [
       {
         title: "good-examples",
@@ -103,12 +103,12 @@ const mainNav: NavData[] = [
     title: "data-collaboration",
     promoted: false,
     inEn: false,
-    icon: datasamverkan,
+    icon: datasamverkanIcon,
   },
   {
     title: "why-share-data",
     promoted: true,
-    icon: delaData,
+    icon: delaDataIcon,
     children: [
       {
         title: "shara-data-benefits",
@@ -128,14 +128,14 @@ const mainNav: NavData[] = [
     title: "news",
     promoted: false,
     inEn: false,
-    icon: nyheter,
+    icon: nyheterIcon,
   },
   {
     title: "community",
     promoted: false,
     inEn: true,
     href: "https://community.dataportal.se/",
-    icon: community,
+    icon: communityIcon,
   },
 ];
 
@@ -146,25 +146,25 @@ const footerNav: NavFooterData[] = [
       {
         title: "about-website",
         type: "internal",
-        icon: externalLink,
+        icon: externalLinkIcon,
       },
       {
         title: "github",
         href: "https://github.com/DIGGSweden/dataportal-web",
         type: "external",
-        icon: externalLink,
+        icon: externalLinkIcon,
       },
       {
         title: "feedback",
         href: "https://community.dataportal.se/category/4/feedback-p%C3%A5-dataportal-se",
         type: "external",
-        icon: externalLink,
+        icon: externalLinkIcon,
       },
       {
         title: "info@digg.se",
         href: "mailto:info@digg.se",
         type: "email",
-        icon: mail,
+        icon: mailIcon,
       },
     ],
   },
@@ -175,13 +175,13 @@ const footerNav: NavFooterData[] = [
         title: "documentation-services",
         href: "https://docs.dataportal.se/",
         type: "external",
-        icon: externalLink,
+        icon: externalLinkIcon,
       },
       {
         title: "guidance-share",
         href: "https://www.digg.se/utveckling-av-digital-forvaltning/oppna-och-delade-data/offentliga-aktorer",
         type: "external",
-        icon: externalLink,
+        icon: externalLinkIcon,
       },
     ],
   },

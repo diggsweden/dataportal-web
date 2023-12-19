@@ -1,27 +1,23 @@
-import React from "react";
+import { FC } from "react";
 import DiggLogo from "@/assets/logos/diggLarge.svg";
-import { NavFooter } from "@/components/navigation/Nav/NavFooter";
+import FooterNav from "@/components/navigation/FooterNav";
 import Container from "../Container";
 
 type FooterProps = {
-  openNavSide: boolean;
-  setOpenNavSide: Function;
+  openSideBar: boolean;
+  setOpenSideBar: Function;
 };
 
-export const Footer: React.FC<FooterProps> = ({
-  openNavSide,
-  setOpenNavSide,
-}) => {
+const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
   return (
     <footer className="mt-xl bg-white py-xl">
       <div
         className={`transition-all duration-300 ease-in-out ${
-          openNavSide ? "lg:w-[calc(100vw-300px)]" : "w-full"
+          openSideBar ? "lg:w-[calc(100vw-300px)]" : "w-full"
         }`}
       >
         <Container className="space-y-2xl">
-          <NavFooter setOpenNavSide={setOpenNavSide} />
-
+          <FooterNav setOpenSideBar={setOpenSideBar} />
           <DiggLogo />
         </Container>
       </div>
