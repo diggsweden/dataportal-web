@@ -3,26 +3,26 @@ import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import Link from "next/link.js";
 import { Button, ButtonLink } from "@/components/global/Button";
-import { mainNav } from "@/components/navigation/Nav/navData";
-import Dataportal from "@/assets/logos/dataportal.svg";
-import CloseCross from "@/assets/icons/closeCross.svg";
-import Hamburger from "@/assets/icons/hamburger.svg";
+import { mainNav } from "@/utilities/menuData";
+import DataportalLogo from "@/assets/logos/dataportal.svg";
+import CloseCrossIcon from "@/assets/icons/closeCross.svg";
+import HamburgerIcon from "@/assets/icons/hamburger.svg";
 
-interface NavBottomData {
+interface MainNavData {
   title: string;
   promoted: boolean;
   inEn?: boolean;
   icon?: any;
   href?: string;
-  children?: NavBottomData[];
+  children?: MainNavData[];
 }
 
-interface NavBottomProps {
-  setOpenNavSide: Function;
-  openNavSide: boolean;
+interface MainNavProps {
+  setOpenSideBar: Function;
+  openSideBar: boolean;
 }
 
-const NavBottom: FC<NavBottomProps> = ({ setOpenNavSide, openNavSide }) => {
+const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   const [menues, setMenues] = useState<any>([]);
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
@@ -44,25 +44,25 @@ const NavBottom: FC<NavBottomProps> = ({ setOpenNavSide, openNavSide }) => {
       <Link
         className="hidden md:block"
         href={t(`common|${"lang-path"}`)}
-        onClick={() => setOpenNavSide(false)}
+        onClick={() => setOpenSideBar(false)}
       >
-        <Dataportal />
+        <DataportalLogo />
       </Link>
       <div className="flex flex-row items-center">
         <nav className="hidden flex-row items-center gap-sm lg:flex">
-          {menues.map((menu: NavBottomData, idx: number) => (
+          {menues.map((menu: MainNavData, idx: number) => (
             <ButtonLink
               key={idx}
               href={t(`routes|${menu.title}$path`)}
-              onClick={() => setOpenNavSide(false)}
+              onClick={() => setOpenSideBar(false)}
               label={t(`routes|${menu.title}$title`)}
             />
           ))}
         </nav>
         <Button
-          icon={openNavSide ? CloseCross : Hamburger}
+          icon={openSideBar ? CloseCrossIcon : HamburgerIcon}
           iconPosition="left"
-          onClick={() => setOpenNavSide(!openNavSide)}
+          onClick={() => setOpenSideBar(!openSideBar)}
           label={t("common|menu")}
         />
       </div>
@@ -70,4 +70,4 @@ const NavBottom: FC<NavBottomProps> = ({ setOpenNavSide, openNavSide }) => {
   );
 };
 
-export default NavBottom;
+export default MainNav;

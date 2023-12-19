@@ -2,21 +2,21 @@ import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { topNav } from "@/components/navigation/Nav/navData";
+import { topNav } from "@/utilities/menuData";
 import { ButtonLink } from "@/components/global/Button";
-import DiggSmall from "@/assets/logos/diggSmall.svg";
+import DiggSmallLogo from "@/assets/logos/diggSmall.svg";
 
-interface NavTopData {
+interface TopNavData {
   title: string;
   icon: any;
   href?: string;
 }
 
-interface NavTopProps {
-  setOpenNavSide: Function;
+interface TopNavProps {
+  setOpenSideBar: Function;
 }
 
-const NavTop: FC<NavTopProps> = ({ setOpenNavSide }) => {
+const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
   const { t, lang } = useTranslation();
   const [isClient, setIsClient] = useState(false);
 
@@ -31,11 +31,11 @@ const NavTop: FC<NavTopProps> = ({ setOpenNavSide }) => {
   return (
     <div className="flex h-[32px] flex-row items-center justify-between">
       <Link href={"https://digg.se/"} target="_blank">
-        <DiggSmall />
+        <DiggSmallLogo />
       </Link>
       <nav>
         <ul className="flex flex-row">
-          {topNav.map((menu: NavTopData, idx: number) => (
+          {topNav.map((menu: TopNavData, idx: number) => (
             <li key={idx} className="group text-sm">
               {menu.href ? (
                 <>
@@ -52,7 +52,7 @@ const NavTop: FC<NavTopProps> = ({ setOpenNavSide }) => {
                 <ButtonLink
                   href={`/${t(`routes|${menu.title}$path`)}`}
                   locale={`${menu.title === "language" ? "" : lang}`}
-                  onClick={() => setOpenNavSide(false)}
+                  onClick={() => setOpenSideBar(false)}
                   icon={menu.icon}
                   iconPosition="left"
                   label={t(`routes|${menu.title}$title`)}
@@ -71,4 +71,4 @@ const NavTop: FC<NavTopProps> = ({ setOpenNavSide }) => {
   );
 };
 
-export default NavTop;
+export default TopNav;

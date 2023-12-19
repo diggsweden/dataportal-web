@@ -7,7 +7,7 @@ export * from "./EntrystoreProvider";
 export * from "./FileFormatBadge";
 export * from "./LocalStoreProvider";
 export * from "./navigation";
-export * from "./navigation/Nav/NavSide";
+export * from "./navigation/SideBar";
 export * from "./ReactPortal";
 export * from "./Search";
 export * from "./SearchFilter";

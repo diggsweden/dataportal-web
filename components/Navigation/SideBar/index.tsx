@@ -1,9 +1,8 @@
 import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
-import { mainNav } from "@/components/navigation/Nav/navData";
-import NavLink from "@/components/navigation/Nav/NavLink";
-import NavList from "@/components/navigation/Nav/NavList";
+import { mainNav } from "@/utilities/menuData";
+import SideBarLink from "@/components/navigation/SideBar/SideBarLink.tsx";
 
 interface NavSideData {
   title: string;
@@ -15,11 +14,10 @@ interface NavSideData {
 }
 
 interface NavSideProps {
-  openNavSide: boolean;
-  setOpenNavSide: Function;
+  openSideBar: boolean;
 }
 
-const NavSide: FC<NavSideProps> = ({ openNavSide, setOpenNavSide }) => {
+const SideBar: FC<NavSideProps> = ({ openSideBar }) => {
   const [menu, setMenu] = useState<any>([]);
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
@@ -46,32 +44,34 @@ const NavSide: FC<NavSideProps> = ({ openNavSide, setOpenNavSide }) => {
   return (
     <nav
       className={`absolute top-[128px] -mb-[128px] h-[calc(100%-128px)] w-[300px] bg-white transition-all duration-500 ease-in-out ${
-        openNavSide ? "right-none" : "-right-full"
+        openSideBar ? "right-none" : "-right-full"
       }`}
     >
       <ul className="w-full list-none">
         {menu.map((menu: NavSideData, idx: number) => (
           <li key={idx}>
             {menu.href ? (
-              <NavLink
+              <SideBarLink
+                level="1"
                 icon={menu.icon}
                 href={menu.href}
                 label={t(`common|${menu.title}`)}
                 variant={"external"}
               />
             ) : menu.children ? (
-              <NavList
+              <SideBarLink
+                level="2"
                 icon={menu.icon}
                 list={menu.children}
                 label={t(`routes|${menu.title}$title`)}
-                setOpenNavSide={setOpenNavSide}
+                openSideBar={openSideBar}
               />
             ) : (
-              <NavLink
+              <SideBarLink
+                level="1"
                 href={`/${t(`routes|${menu.title}$path`)}`}
                 icon={menu.icon}
                 label={t(`routes|${menu.title}$title`)}
-                onClick={() => setOpenNavSide(false)}
               />
             )}
           </li>
@@ -80,4 +80,4 @@ const NavSide: FC<NavSideProps> = ({ openNavSide, setOpenNavSide }) => {
     </nav>
   );
 };
-export default NavSide;
+export default SideBar;

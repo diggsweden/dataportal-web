@@ -1,44 +1,43 @@
 import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
 import Heading from "@/components/global/Typography/Heading";
-import { footerNav } from "@/components/navigation/Nav/navData";
-import Element from "@/components/global/Typography/Element";
+import { footerNav } from "@/utilities/menuData";
+import Link from "next/link";
 
-interface NavFooterItem {
+interface FooterNavItem {
   title: string;
   icon: any;
   type?: "internal" | "external" | "email";
   href?: string;
 }
 
-interface NavFooterData {
+interface FooterNavData {
   title: string;
-  children: NavFooterItem[];
+  children: FooterNavItem[];
 }
 
-interface NavFooterProps {
-  setOpenNavSide: Function;
+interface FooterNavProps {
+  setOpenSideBar: Function;
 }
 
-export const NavFooter: FC<NavFooterProps> = ({ setOpenNavSide }) => {
+const FooterNav: FC<FooterNavProps> = ({ setOpenSideBar }) => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-xl lg:grid lg:grid-cols-2">
-      {footerNav.map((footer: NavFooterData, idx: number) => (
+      {footerNav.map((footer: FooterNavData, idx: number) => (
         <div key={idx} className="flex flex-col gap-sm">
           <Heading size={"h5"}>{t(`common|${footer.title}`)}</Heading>
           <ul className="space-y-sm">
             {footer.children.map((link, idx: number) => (
               <li
                 key={idx}
-                /*                 className="text-md text-green-600 underline" */
+                className="text-md text-green-600 underline underline-offset-[3px]"
                 onClick={() =>
-                  link.type === "internal" && setOpenNavSide(false)
+                  link.type === "internal" && setOpenSideBar(false)
                 }
               >
                 {link.href ? (
-                  <Element
-                    variant="a"
+                  <Link
                     href={link.href}
                     className="inline-flex items-center gap-sm"
                   >
@@ -51,14 +50,11 @@ export const NavFooter: FC<NavFooterProps> = ({ setOpenNavSide }) => {
                       height={16}
                       viewBox="0 0 24 24"
                     />
-                  </Element>
+                  </Link>
                 ) : (
-                  <Element
-                    variant="a"
-                    href={`/${t(`routes|${link.title}$path`)}`}
-                  >
+                  <Link href={`/${t(`routes|${link.title}$path`)}`}>
                     {t(`routes|${link.title}$title`)}
-                  </Element>
+                  </Link>
                 )}
               </li>
             ))}
@@ -68,3 +64,5 @@ export const NavFooter: FC<NavFooterProps> = ({ setOpenNavSide }) => {
     </div>
   );
 };
+
+export default FooterNav;

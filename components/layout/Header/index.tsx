@@ -1,26 +1,23 @@
-import React, { useEffect } from "react";
-import NavBottom from "@/components/navigation/Nav/NavBottom";
-import NavTop from "@/components/navigation/Nav/NavTop";
+import { FC, useEffect } from "react";
+import MainNav from "@/components/navigation/MainNav";
+import TopNav from "@/components/navigation/TopNav";
 
 type HeaderProps = {
-  setOpenNavSide: Function;
-  openNavSide: boolean;
+  setOpenSideBar: Function;
+  openSideBar: boolean;
 };
 
-export const Header: React.FC<HeaderProps> = ({
-  openNavSide,
-  setOpenNavSide,
-}) => {
+export const Header: FC<HeaderProps> = ({ openSideBar, setOpenSideBar }) => {
   useEffect(() => {
     return () => {
-      window.removeEventListener("resize", () => setOpenNavSide(false));
+      window.removeEventListener("resize", () => setOpenSideBar(false));
     };
-  }, [openNavSide]);
+  }, [openSideBar]);
 
   return (
     <header className="flex w-screen flex-col gap-md bg-brown-600 px-xl py-lg">
-      <NavTop setOpenNavSide={setOpenNavSide} />
-      <NavBottom setOpenNavSide={setOpenNavSide} openNavSide={openNavSide} />
+      <TopNav setOpenSideBar={setOpenSideBar} />
+      <MainNav setOpenSideBar={setOpenSideBar} openSideBar={openSideBar} />
     </header>
   );
 };
