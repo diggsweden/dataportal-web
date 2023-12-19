@@ -1,6 +1,6 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "..";
+import { SettingsContext } from "@/components";
 import {
   FlexibleXYPlot,
   VerticalBarSeries,
@@ -66,35 +66,26 @@ export const StatisticGraph: React.FC = () => {
   const BarSeries = useCanvas ? VerticalBarSeriesCanvas : VerticalBarSeries;
 
   return (
-    <div className="statistic-div">
-      <span className="screen-reader">
-        {t("pages|statistic$graph-screenreader")}
-      </span>
+    <div className="w-full">
+      <span className="sr-only">{t("pages|statistic$graph-screenreader")}</span>
 
-      <div className="graphbox">
+      <div className="flex flex-col items-end">
         {/* @ts-ignore */}
         <FlexibleXYPlot
           xType="ordinal"
-          height={430}
-          className="graph-vertical-bar"
+          height={380}
           margin={{
-            bottom: 64,
+            bottom: 40,
             left: 70,
-            right: 15,
+            right: 0,
           }}
         >
-          <XAxis height={0} tickSizeOuter={0} />
-          <YAxis width={64} />
+          <XAxis height={0} tickSizeOuter={0} className="text-sm" />
+          <YAxis width={64} className="text-sm" />
           {/* @ts-ignore */}
-          <BarSeries
-            className="vertical-bar-series-example"
-            data={stats.x}
-            barWidth={0.75}
-          />
+          <BarSeries data={stats.x} barWidth={0.75} color="#CD7A6E" />
         </FlexibleXYPlot>
-        <span className="graph-text text-md">
-          {t("pages|statistic$dataset-numbers")}
-        </span>
+        <span>{t("pages|statistic$dataset-numbers")}</span>
       </div>
     </div>
   );

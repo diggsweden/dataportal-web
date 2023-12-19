@@ -14,7 +14,7 @@ export class StatisticListItemHistory extends React.Component<StatisticListItemH
     return (
       <li>
         <span className="text-md">{this.props.listText}</span>
-        <span className="list-value text-md font-bold">
+        <span className="list-value font-bold text-md">
           {this.props.listNumber}
         </span>
       </li>

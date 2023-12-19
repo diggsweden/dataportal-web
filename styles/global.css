@@ -44,3 +44,9 @@
   font-display: swap;
   unicode-range: U+000-5FF;
 }
+
+@layer base {
+  a {
+    @apply text-md text-green-600 underline underline-offset-4;
+  }
+}

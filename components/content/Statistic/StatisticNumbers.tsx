@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 import { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "..";
-import { EnvSettings } from "../../env";
+import { SettingsContext } from "@/components";
+import { EnvSettings } from "@/env";
 import { StatisticDataPresentation } from "./StatisticDataPresentation";
 
 export const getNumbersData = async (env: EnvSettings) => {
@@ -62,17 +62,15 @@ export const StatisticNumbers = () => {
   }, []);
 
   return (
-    <div className="numbers">
-      <div className="statistic-numbers">
-        <StatisticDataPresentation
-          dataText={t("search$datasets")}
-          dataNumber={state.datasetCount}
-        />
-        <StatisticDataPresentation
-          dataText={t("search$organization")}
-          dataNumber={state.publisherCount}
-        />
-      </div>
+    <div className="grid gap-lg">
+      <StatisticDataPresentation
+        dataText={t("search$datasets")}
+        dataNumber={state.datasetCount}
+      />
+      <StatisticDataPresentation
+        dataText={t("search$organization")}
+        dataNumber={state.publisherCount}
+      />
     </div>
   );
 };

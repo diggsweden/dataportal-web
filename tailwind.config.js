@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+let primaryColor = "#CD7A6E";
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -20,9 +23,10 @@ module.exports = {
       sm: 160,
       md: 620,
       lg: 960,
-      xl: 1200,
+      xl: 1140,
     },
     colors: {
+      primary: primaryColor,
       white: "#FFFFFF",
       transparent: "#00000000",
       whiteOpaque5: "#FFFFFFE6",
@@ -44,7 +48,7 @@ module.exports = {
         100: "#EEF0EE",
       },
       pink: {
-        600: "#CD7A6E",
+        600: primaryColor,
         500: "#DCA29B",
         400: "#E6BDB8",
         200: "#F3DEDB",
@@ -74,7 +78,11 @@ module.exports = {
     },
     container: ({ theme }) => ({
       center: true,
-      padding: theme("spacing.xl"),
+      padding: {
+        DEFAULT: theme("spacing.md"),
+        sm: theme("spacing.lg"),
+        lg: theme("spacing.xl"),
+      },
     }),
     borderRadius: {
       sm: "0",

@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
 // import 'scss/statistic/statistic.scss';
-import { SettingsContext } from "..";
+import { SettingsContext } from "@/components";
 import { StatisticListItemHistory } from "./";
 
 // import { isIE } from 'react-device-detect';
@@ -74,7 +74,7 @@ export const StatisticGraphNumbers: React.FC = () => {
           <div className="toplist-wrapper">
             <h2>{t("statistic$dataset-numbers")}</h2>
             <div className="top-list">
-              <ol className="text-md font-bold">
+              <ol className="font-bold text-md">
                 {stats.yList &&
                   stats.yList
                     .slice(0, stats.topItemsToShow)

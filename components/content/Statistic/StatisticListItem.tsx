@@ -14,13 +14,13 @@ export class StatisticListItem extends React.Component<StatisticListItemProps> {
 
   render() {
     return (
-      <li>
-        <Link href={this.props.listUrl || "#"} className="text-md font-normal">
-          {this.props.listText}
-        </Link>
-        <span className="list-value text-md font-bold">
-          {this.props.listNumber}
-        </span>
+      <li className="mb-lg pl-sm last:mb-none">
+        <div className="flex w-full justify-between">
+          <Link href={this.props.listUrl || "#"} className="mr-sm">
+            {this.props.listText}
+          </Link>
+          <span className="font-strong">{this.props.listNumber}</span>
+        </div>
       </li>
     );
   }

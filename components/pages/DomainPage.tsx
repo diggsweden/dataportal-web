@@ -1,17 +1,18 @@
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { ContainerData_Dataportal_Digg_Container_Fragment } from "../../graphql/__generated__/operations";
-import { checkLang } from "../../utilities";
+import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__generated__/operations";
+import { checkLang } from "@/utilities";
 import { Puffs, IPuff } from "../navigation";
 import { PublicationDataFragment as IPublication } from "../../graphql/__generated__/operations";
 import useTranslation from "next-translate/useTranslation";
 import { ContentArea } from "../ContentArea";
 import { CategoriesNav } from "../StartPageComponents";
-import { handleDomain } from "../../utilities/domain";
+import { handleDomain } from "@/utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Dataportal_LinkType } from "../../graphql/__generated__/types";
+import { Dataportal_LinkType } from "@/graphql/__generated__/types";
+import Heading from "@/components/global/Typography/Heading";
 
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
@@ -24,22 +25,25 @@ export interface DomainProps
 }
 
 const DynamicStatisticGraph = dynamic(
-  () => import("../Statistic/StatisticGraph"),
+  () => import("@/components/content/Statistic/StatisticGraph"),
   {
     ssr: false,
   },
 );
 
 const DynamicStatisticNumbers = dynamic(
-  () => import("../Statistic/StatisticNumbers"),
+  () => import("@/components/content/Statistic/StatisticNumbers"),
   {
     ssr: false,
   },
 );
 
-const DynamicStatistic = dynamic(() => import("../Statistic/Statistic"), {
-  ssr: false,
-});
+const DynamicStatistic = dynamic(
+  () => import("@/components/content/Statistic/Statistic"),
+  {
+    ssr: false,
+  },
+);
 
 const DynamicArticleBlock = dynamic(
   () => import("../blocks/Article").then((c) => c.ArticleBlock),
@@ -150,9 +154,11 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
         )}
 
         {!domain && (
-          <div className="domain-page__statistics">
-            <div className="domain-page__show_more--link">
-              <h2>{t("pages|statistic$statistic-numbers")}</h2>
+          <section id="statistics">
+            <div className="mb-2xl flex items-end justify-between">
+              <Heading size={"h1"}>
+                {t("pages|statistic$statistic-numbers")}
+              </Heading>
               <Link
                 href={`/${t("routes|statistics$path")}`}
                 locale={lang}
@@ -163,13 +169,13 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               </Link>
             </div>
 
-            <div className="statistic-wrapper">
+            <div className="mb-2xl grid gap-xl md:grid-cols-[3.7fr_1fr]">
               <DynamicStatisticGraph />
               <DynamicStatisticNumbers />
             </div>
 
             <DynamicStatistic />
-          </div>
+          </section>
         )}
       </div>
     </div>

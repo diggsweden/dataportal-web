@@ -5,10 +5,10 @@ const headingVariants = cva([], {
   variants: {
     size: {
       h1: ["text-5xl"],
-      h2: ["text-4xl"],
-      h3: ["text-3xl"],
-      h4: ["text-2xl"],
-      h5: ["text-xl"],
+      h2: ["text-2xl"],
+      h3: ["text-xl", "mb-lg"],
+      h4: ["text-md"],
+      h5: ["text-sm"],
     },
   },
   defaultVariants: {

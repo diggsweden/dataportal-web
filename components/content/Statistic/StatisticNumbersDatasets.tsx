@@ -1,12 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "..";
-// import { isIE } from 'react-device-detect';
-// import '../../../node_modules/react-vis/dist/style.css';
+import { SettingsContext } from "@/components";
 
-export const StatisticNumbersPublishers = () => {
+export const StatisticNumbersDatasets = () => {
   const { env } = useContext(SettingsContext);
   const [state, setState] = useState({
-    publishers: 151,
+    datasets: 2180,
   });
 
   useEffect(() => {
@@ -18,17 +16,17 @@ export const StatisticNumbersPublishers = () => {
       )
         .then((response) => response.json())
         .then((data) => {
-          if (data && data.datasetCount && data.publisherCount)
+          if (data && data.datasetCount)
             setState({
-              publishers: data.publisherCount,
+              datasets: data.datasetCount,
             });
         });
     }
   });
 
-  if (/* isIE do we still need this? */ false) {
+  if (/* isIE do wee still need this */ false) {
     return <></>;
   } else {
-    return <span className="text-lg">{state.publishers}</span>;
+    return <span className="text-lg"> {state.datasets}</span>;
   }
 };
