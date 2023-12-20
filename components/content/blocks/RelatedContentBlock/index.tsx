@@ -25,7 +25,7 @@ const RelatedContentBlock: FC<RelatedContentProps> = ({
     PieChartIcon,
     PieChartIcon,
   ];
-  /*   console.log(links); */
+
   return (
     <ul
       className={`grid grid-flow-row auto-rows-fr py-xl md:grid-cols-2 lg:grid-cols-3 ${
