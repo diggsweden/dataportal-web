@@ -116,7 +116,9 @@ export const Statistic: React.FC = () => {
   return (
     <div className="grid items-start gap-xl md:grid-cols-2">
       <div className="bg-white p-xl">
-        <Heading size={"h3"}>{t("statistic$top-organizations")}</Heading>
+        <Heading level={3} size="sm" className="mb-lg">
+          {t("statistic$top-organizations")}
+        </Heading>
 
         <ol key={"toplist-organisation"} className="list-decimal pl-lg">
           {stats.series
@@ -139,7 +141,9 @@ export const Statistic: React.FC = () => {
       </div>
 
       <div className="bg-white p-xl">
-        <Heading size={"h3"}>{t("statistic$top-categories")}</Heading>
+        <Heading level={3} size="sm" className="mb-lg">
+          {t("statistic$top-categories")}
+        </Heading>
 
         <ol className="list-decimal pl-lg">
           {stats.seriesTheme &&

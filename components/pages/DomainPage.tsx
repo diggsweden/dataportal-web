@@ -154,7 +154,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
         {!domain && (
           <section id="statistics" className="my-xl">
             <div className="mb-2xl flex items-end justify-between">
-              <Heading size={"h1"}>
+              <Heading level={2} size={"lg"}>
                 {t("pages|statistic$statistic-numbers")}
               </Heading>
               <Link
