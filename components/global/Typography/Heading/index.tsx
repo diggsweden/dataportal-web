@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from "react";
+import React, { FC, HTMLAttributes, HTMLProps, PropsWithChildren } from "react";
 import { cx, cva, VariantProps } from "class-variance-authority";
 
 const headingVariants = cva([], {
@@ -16,15 +16,11 @@ const headingVariants = cva([], {
   },
 });
 
-type HeadingProps = VariantProps<typeof headingVariants> & {
-  className?: string;
-};
+type HeadingProps = VariantProps<typeof headingVariants>;
 
-const Heading: FC<PropsWithChildren<HeadingProps>> = ({
-  size,
-  className,
-  children,
-}) => {
+const Heading: FC<
+  PropsWithChildren<HeadingProps & HTMLAttributes<HTMLHeadElement>>
+> = ({ size, className, children }) => {
   const CustomTag = size as keyof JSX.IntrinsicElements;
   return (
     <CustomTag className={cx(headingVariants({ size }), className)}>

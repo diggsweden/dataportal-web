@@ -3,15 +3,17 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { ContainerData_Dataportal_Digg_Container_Fragment } from "../../graphql/__generated__/operations";
 import { checkLang } from "../../utilities";
-import { Puffs, IPuff } from "../navigation";
 import { PublicationDataFragment as IPublication } from "../../graphql/__generated__/operations";
 import useTranslation from "next-translate/useTranslation";
-import { ContentArea } from "../ContentArea";
 import { CategoriesNav } from "../StartPageComponents";
 import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Dataportal_LinkType } from "../../graphql/__generated__/types";
+import RelatedContentBlock from "@/components/content/blocks/RelatedContentBlock";
+import Heading from "@/components/global/Typography/Heading";
+import { PromoProps } from "@/components/content/Promo";
+import BlockList from "@/components/content/blocks/BlockList";
 
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
@@ -19,8 +21,7 @@ export interface DomainProps
   news?: IPublication[];
   example?: IPublication[];
   event?: IPublication;
-  areas?: IPuff[];
-  themes?: IPuff[];
+  areas?: PromoProps[];
 }
 
 const DynamicStatisticGraph = dynamic(
@@ -92,12 +93,8 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           </div>
         </div>
 
-        {puffs && (
-          <Puffs
-            links={puffs.links as IPuff[]}
-            basepath={domain ? "/" + domain : undefined}
-          />
-        )}
+        {puffs && <RelatedContentBlock links={puffs.links as PromoProps[]} />}
+
         {/* I´ll be back for this */}
         {!isEn && pathname === `/` && (
           <>
@@ -135,7 +132,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           {/* todo: this width? */}
           {content && (
             <div className="content">
-              <ContentArea blocks={content} />
+              <BlockList blocks={content} />
             </div>
           )}
         </div>
@@ -144,8 +141,8 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
 
         {areas && !domain && lang === "sv" && (
           <div className="domain-page__link-block domain-page__theme-block">
-            <h2>{t("pages|data$data-areas_text")}</h2>
-            <Puffs links={areas} />
+            <Heading size={"h3"}>{t("pages|data$data-areas_text")}</Heading>
+            <RelatedContentBlock links={areas} icons={true} />
           </div>
         )}
 
