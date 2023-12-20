@@ -1,9 +1,9 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "@/components";
+import { SettingsContext } from "@/components/SettingsProvider";
 import { EnvSettings } from "@/env";
 import { StatisticListItem } from "./StatisticListItem";
-import { getNumbersData } from "./StatisticNumbers";
+import { getNumbersData } from "@/components/content/Statistic/StatisticNumbers";
 import Heading from "@/components/global/Typography/Heading";
 
 interface StatisticState {

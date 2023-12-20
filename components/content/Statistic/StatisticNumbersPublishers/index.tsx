@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "@/components";
-// import { isIE } from 'react-device-detect';
-// import '../../../node_modules/react-vis/dist/style.css';
+import { SettingsContext } from "@/components/SettingsProvider";
 
 export const StatisticNumbersPublishers = () => {
   const { env } = useContext(SettingsContext);

@@ -1,8 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
-// import 'scss/statistic/statistic.scss';
-import { SettingsContext } from "@/components";
-import { StatisticListItemHistory } from "./";
+import { SettingsContext } from "@/components/SettingsProvider";
+import { StatisticListItemHistory } from "@/components/content/Statistic/StatisticListItemHistory";
 
 // import { isIE } from 'react-device-detect';
 

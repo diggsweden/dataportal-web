@@ -1,8 +1,8 @@
 import useTranslation from "next-translate/useTranslation";
 import { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "@/components";
+import { SettingsContext } from "@/components/SettingsProvider";
 import { EnvSettings } from "@/env";
-import { StatisticDataPresentation } from "./StatisticDataPresentation";
+import { StatisticDataPresentation } from "@/components/content/Statistic/StatisticDataPresentation";
 
 export const getNumbersData = async (env: EnvSettings) => {
   const ESOrgStatsUrl =

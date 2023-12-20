@@ -4,10 +4,10 @@ import { useEffect } from "react";
 import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__generated__/operations";
 import { checkLang } from "@/utilities";
 import { Puffs, IPuff } from "../navigation";
-import { PublicationDataFragment as IPublication } from "../../graphql/__generated__/operations";
+import { PublicationDataFragment as IPublication } from "@/graphql/__generated__/operations";
 import useTranslation from "next-translate/useTranslation";
 import { ContentArea } from "../ContentArea";
-import { CategoriesNav } from "../StartPageComponents";
+import { CategoriesNav } from "@/components/StartPageComponents";
 import { handleDomain } from "@/utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -39,7 +39,7 @@ const DynamicStatisticNumbers = dynamic(
 );
 
 const DynamicStatistic = dynamic(
-  () => import("@/components/content/Statistic/Statistic"),
+  () => import("@/components/content/Statistic"),
   {
     ssr: false,
   },
