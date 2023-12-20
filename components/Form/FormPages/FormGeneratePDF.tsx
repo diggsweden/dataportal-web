@@ -6,7 +6,7 @@ import { GeneratePDF } from "../Utils/formUtils";
 import FormTypes from "../FormTypes";
 import useTranslation from "next-translate/useTranslation";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
-import ContentHandler from "@/components/content/ContentHandler";
+import BlockList from "@/components/content/blocks/BlockList";
 
 type Props = {
   formDataArray: FormTypes[][];
@@ -23,7 +23,7 @@ const FormGeneratePDF: React.FC<Props> = ({ formDataArray, blocks }) => {
       <>
         {blocks && (
           <div className="generate-pdf-block">
-            <ContentHandler blocks={blocks} />
+            <BlockList blocks={blocks} />
           </div>
         )}
       </>

@@ -7,7 +7,7 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
-import ContentHandler from "@/components/content/ContentHandler";
+import BlockList from "@/components/content/blocks/BlockList";
 
 /**
  * Uses prismjs to style codeblock
@@ -155,7 +155,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 
         <div className={fullWidth ? fullWidth : "content"}>
           <p className="preamble text-lg">{checkLang(preamble)}</p>
-          {blocks && blocks.length > 0 && <ContentHandler blocks={blocks} />}
+          {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
         </div>
       </div>
     </div>

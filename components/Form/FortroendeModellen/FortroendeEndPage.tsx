@@ -8,7 +8,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import fortroendeLogo from "@/public/images/förtroendemodell-logo.svg";
 import Image from "next/image";
-import ContentHandler from "@/components/content/ContentHandler";
+import BlockList from "@/components/content/blocks/BlockList";
 
 export const FortroendeEndPage: React.FC<ModuleDataFragment> = ({ blocks }) => {
   const { t } = useTranslation();
@@ -79,7 +79,7 @@ export const FortroendeEndPage: React.FC<ModuleDataFragment> = ({ blocks }) => {
           </Heading>
         )}
 
-        <ContentHandler blocks={blocks} />
+        <BlockList blocks={blocks} />
 
         <div className="badge-wrapper">
           <a

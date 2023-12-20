@@ -6,7 +6,7 @@ import { FormBackButton, FormWrapper } from "../Styles/FormStyles";
 import { highlightCode } from "../../pages/Articles";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
-import ContentHandler from "@/components/content/ContentHandler";
+import BlockList from "@/components/content/blocks/BlockList";
 
 export const FortroendeModulePage: React.FC<ModuleDataFragment> = ({
   blocks,
@@ -62,7 +62,7 @@ export const FortroendeModulePage: React.FC<ModuleDataFragment> = ({
         )}
 
         <div className="form-module-style">
-          <ContentHandler blocks={blocks} />
+          <BlockList blocks={blocks} />
         </div>
       </FormWrapper>
     </Container>

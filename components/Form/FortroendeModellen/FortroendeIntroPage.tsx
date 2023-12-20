@@ -4,7 +4,7 @@ import { FormNavButtons, FormWrapper } from "../Styles/FormStyles";
 import { useRouter } from "next/router";
 import { MainContainerStyle } from "@/styles/general/emotion";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
-import ContentHandler from "@/components/content/ContentHandler";
+import BlockList from "@/components/content/blocks/BlockList";
 
 export const FortroendeIntroPage: React.FC<ModuleDataFragment> = ({
   blocks,
@@ -19,7 +19,7 @@ export const FortroendeIntroPage: React.FC<ModuleDataFragment> = ({
         <Heading color="pinkPop" size={"3xl"} weight={"light"}>
           Förtroendemodellen
         </Heading>
-        {intro && <ContentHandler blocks={intro} />}
+        {intro && <BlockList blocks={intro} />}
       </FormWrapper>
 
       <FormNavButtons className="start-buttons">
@@ -63,9 +63,7 @@ export const FortroendeIntroPage: React.FC<ModuleDataFragment> = ({
           </span>
         </Button>
       </FormNavButtons>
-      <FormWrapper>
-        {extraInfo && <ContentHandler blocks={extraInfo} />}
-      </FormWrapper>
+      <FormWrapper>{extraInfo && <BlockList blocks={extraInfo} />}</FormWrapper>
     </Container>
   );
 };

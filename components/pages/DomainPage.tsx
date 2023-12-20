@@ -13,7 +13,7 @@ import { Dataportal_LinkType } from "../../graphql/__generated__/types";
 import RelatedContentBlock from "@/components/content/blocks/RelatedContentBlock";
 import Heading from "@/components/global/Typography/Heading";
 import { PromoProps } from "@/components/content/Promo";
-import ContentHandler from "@/components/content/ContentHandler";
+import BlockList from "@/components/content/blocks/BlockList";
 
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
@@ -132,7 +132,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           {/* todo: this width? */}
           {content && (
             <div className="content">
-              <ContentHandler blocks={content} />
+              <BlockList blocks={content} />
             </div>
           )}
         </div>

@@ -8,7 +8,7 @@ import { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { Faq, Media, Text, Form } from "@/components/blocks";
 import RelatedContentBlock from "@/components/content/blocks/RelatedContentBlock";
 
-interface ContentHandlerProps {
+interface blockListProps {
   blocks:
     | ContainerData_Dataportal_Digg_Container_Fragment["blocks"]
     | ModuleDataFragment["blocks"];
@@ -20,7 +20,7 @@ interface ContentHandlerProps {
  * @param pos the position of the FAQ
  * @returns FaqBlocks wrapped in <dl> element
  */
-const handleFaqs = (blocks: ContentHandlerProps["blocks"], pos: number) => {
+const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
   // skip rendering if previous block was FAQ
   // because then in should already be rendered
   const previousBlock = blocks[pos - 1];
@@ -44,7 +44,7 @@ const handleFaqs = (blocks: ContentHandlerProps["blocks"], pos: number) => {
   );
 };
 
-export const ContentHandler: React.FC<ContentHandlerProps> = ({ blocks }) => {
+export const BlockList: React.FC<blockListProps> = ({ blocks }) => {
   return (
     <>
       {blocks?.map((block, index) => {
@@ -66,7 +66,7 @@ export const ContentHandler: React.FC<ContentHandlerProps> = ({ blocks }) => {
             return (
               typedBlock.modules &&
               typedBlock.modules.map((module) => (
-                <ContentHandler {...module} key={module.identifier} />
+                <BlockList {...module} key={module.identifier} />
               ))
             );
           case "dataportal_Digg_FormBlock":
@@ -94,4 +94,4 @@ export const ContentHandler: React.FC<ContentHandlerProps> = ({ blocks }) => {
   );
 };
 
-export default ContentHandler;
+export default BlockList;
