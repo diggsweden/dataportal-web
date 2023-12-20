@@ -7,7 +7,7 @@ import { checkLang } from "@/utilities";
 import { handleDomain } from "@/utilities/domain";
 import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__generated__/operations";
 import { PublicationDataFragment as IPublication } from "@/graphql/__generated__/operations";
-import { PublicationList } from "../publications/PublicationList";
+import { PublicationList } from "@/components/content/PublicationList";
 import { PromoProps } from "@/components/content/Promo";
 import { CategoriesNav } from "@/components/StartPageComponents";
 import RelatedContentBlock from "@/components/content/blocks/RelatedContentBlock";

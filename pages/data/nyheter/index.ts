@@ -1,6 +1,5 @@
-import { getPublicationsList, populateSeo } from "../../../utilities";
-import {PublicationList} from "@/components/publications/PublicationList";
-
+import { getPublicationsList, populateSeo } from "@/utilities";
+import { PublicationList } from "@/components/content/PublicationList";
 export async function getStaticProps({ locale }: any) {
   return await getPublicationsList(["data"], ["Nyhet"], locale || "sv", {
     seo: {

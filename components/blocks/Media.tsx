@@ -1,11 +1,11 @@
 import { MediaFragment as IMedia } from "@/graphql/__generated__/operations";
-import { FileLink } from "../navigation";
+import { FileLink } from "@/components/navigation";
 import { checkLang } from "@/utilities";
 import { Video } from "../Video";
 import env from "@beam-australia/react-env";
 import { MediaBaseFragment } from "@/graphql/__generated__/operations";
 import { isExternalLink } from "@/utilities";
-import { CustomImage } from "../global/CustomImage";
+import { CustomImage } from "@/components/global/CustomImage";
 
 export const handleUrl = ({ screen9, url, __typename }: MediaBaseFragment) => {
   const documentBaseUrl = env("DOCUMENT_BASE_URL");

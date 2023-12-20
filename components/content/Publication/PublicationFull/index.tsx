@@ -20,7 +20,7 @@ const getRelatedHeading = (tag: string) => {
   }
 };
 
-export const Publication: React.FC<PublicationResponse> = ({
+export const PublicationFull: React.FC<PublicationResponse> = ({
   heading,
   preamble,
   tags,

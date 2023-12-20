@@ -1,4 +1,4 @@
-import { PublicationList } from "@/components/publications/PublicationList";
+import { PublicationList } from "@/components/content/PublicationList";
 import { getPublicationsList, populateSeo } from "@/utilities";
 
 export async function getStaticProps({ locale }: any) {

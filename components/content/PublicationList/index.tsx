@@ -4,7 +4,7 @@ import Head from "next/head";
 import { useRouter, usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { PublicationListResponse } from "@/utilities";
-import { PublicationTeaser } from "../PublicationTeaser";
+import { PublicationTeaser } from "@/components/content/Publication/PublicationTeaser";
 import { Pagination } from "@/components/global/Pagination";
 import { ButtonLink } from "@/components/global/Button";
 import Heading from "@/components/global/Typography/Heading";
