@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 
 const DynamicStatisticGraphNumbers = dynamic(
   () =>
-    import("../Statistic/StatisticGraphNumbers").then(
+    import("@/components/content/Statistic/StatisticGraphNumbers").then(
       (c) => c.StatisticGraphNumbers,
     ),
   {
@@ -17,7 +17,7 @@ const DynamicStatisticGraphNumbers = dynamic(
 
 const DynamicStatisticNumbersDatasets = dynamic(
   () =>
-    import("../Statistic/StatisticNumbersDatasets").then(
+    import("@/components/content/Statistic/StatisticNumbersDatasets").then(
       (c) => c.StatisticNumbersDatasets,
     ),
   {
@@ -25,9 +25,12 @@ const DynamicStatisticNumbersDatasets = dynamic(
   },
 );
 
-const DynamicStatistic = dynamic(() => import("../Statistic/Statistic"), {
-  ssr: false,
-});
+const DynamicStatistic = dynamic(
+  () => import("@/components/content/Statistic/Statistic"),
+  {
+    ssr: false,
+  },
+);
 
 export const StatisticPage: React.FC = () => {
   const { t } = useTranslation("pages");

@@ -1,9 +1,10 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "..";
-import { EnvSettings } from "../../env";
+import { SettingsContext } from "@/components/SettingsProvider";
+import { EnvSettings } from "@/env";
 import { StatisticListItem } from "./StatisticListItem";
-import { getNumbersData } from "./StatisticNumbers";
+import { getNumbersData } from "@/components/content/Statistic/StatisticNumbers";
+import Heading from "@/components/global/Typography/Heading";
 
 interface StatisticState {
   children?: React.ReactNode;
@@ -113,60 +114,53 @@ export const Statistic: React.FC = () => {
   }, [lang]);
 
   return (
-    <div className="toplist">
-      {/* Toplist */}
-      <div className="statistic-toplist">
-        <div className="toplist-wrapper">
-          <h2>{t("statistic$top-organizations")}</h2>
+    <div className="grid items-start gap-xl md:grid-cols-2">
+      <div className="bg-white p-xl">
+        <Heading size={"h3"}>{t("statistic$top-organizations")}</Heading>
 
-          <div className="top-list">
-            <ol key={"toplist-organisation"} className="text-md font-bold">
-              {stats.series
-                .slice(0, stats.topItemsToShow)
-                .map((item: any, index: any) => {
-                  return (
-                    <StatisticListItem
-                      key={"org-" + index}
-                      listText={stats.labels && stats.labels[index]}
-                      listNumber={item}
-                      listUrl={`/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${
-                        stats.values && encodeURIComponent(stats.values[index])
-                      }%7C%7Cfalse%7C%7Curi%7C%7COrganisationer%7C%7C${
-                        stats.labels && stats.labels[index]
-                      }`}
-                    />
-                  );
-                })}
-            </ol>
-          </div>
-        </div>
+        <ol key={"toplist-organisation"} className="list-decimal pl-lg">
+          {stats.series
+            .slice(0, stats.topItemsToShow)
+            .map((item: any, index: any) => {
+              return (
+                <StatisticListItem
+                  key={"org-" + index}
+                  listText={stats.labels && stats.labels[index]}
+                  listNumber={item}
+                  listUrl={`/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${
+                    stats.values && encodeURIComponent(stats.values[index])
+                  }%7C%7Cfalse%7C%7Curi%7C%7COrganisationer%7C%7C${
+                    stats.labels && stats.labels[index]
+                  }`}
+                />
+              );
+            })}
+        </ol>
+      </div>
 
-        <div className="toplist-wrapper">
-          <h2>{t("statistic$top-categories")}</h2>
+      <div className="bg-white p-xl">
+        <Heading size={"h3"}>{t("statistic$top-categories")}</Heading>
 
-          <div className="top-list">
-            <ol className="text-md font-bold">
-              {stats.seriesTheme &&
-                stats.seriesTheme
-                  .slice(0, stats.topItemsToShow)
-                  .map((item: any, index: any) => {
-                    return (
-                      <StatisticListItem
-                        key={"cat-" + index}
-                        listText={stats.labelsTheme && stats.labelsTheme[index]}
-                        listNumber={item}
-                        listUrl={`/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7C${
-                          stats.valuesTheme &&
-                          encodeURIComponent(stats.valuesTheme[index])
-                        }%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7C${
-                          stats.labelsTheme && stats.labelsTheme[index]
-                        }`}
-                      />
-                    );
-                  })}
-            </ol>
-          </div>
-        </div>
+        <ol className="list-decimal pl-lg">
+          {stats.seriesTheme &&
+            stats.seriesTheme
+              .slice(0, stats.topItemsToShow)
+              .map((item: any, index: any) => {
+                return (
+                  <StatisticListItem
+                    key={"cat-" + index}
+                    listText={stats.labelsTheme && stats.labelsTheme[index]}
+                    listNumber={item}
+                    listUrl={`/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7C${
+                      stats.valuesTheme &&
+                      encodeURIComponent(stats.valuesTheme[index])
+                    }%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7C${
+                      stats.labelsTheme && stats.labelsTheme[index]
+                    }`}
+                  />
+                );
+              })}
+        </ol>
       </div>
     </div>
   );
