@@ -1,19 +1,18 @@
-import { IPuff } from "../components";
 import {
   browserclient,
   client,
   CONTAINER_MULTI_QUERY,
   RELATED_CONTAINER_QUERY,
-} from "../graphql";
+} from "@/graphql";
 import {
   DOMAIN_AGGREGATE_QUERY,
   ROOT_AGGREGATE_QUERY,
-} from "../graphql/aggregateQuery";
-import { FORM_QUERY } from "../graphql/formQuery";
-import { MODULE_QUERY } from "../graphql/moduleQuery";
-import { PUBLICATION_QUERY } from "../graphql/publicationQuery";
-import { SEARCH_QUERY } from "../graphql/searchQuery";
-import { Dataportal_ContainerState } from "../graphql/__generated__/types";
+} from "@/graphql/aggregateQuery";
+import { FORM_QUERY } from "@/graphql/formQuery";
+import { MODULE_QUERY } from "@/graphql/moduleQuery";
+import { PUBLICATION_QUERY } from "@/graphql/publicationQuery";
+import { SEARCH_QUERY } from "@/graphql/searchQuery";
+import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
   CategoryFragment,
   ContainerData_Dataportal_Digg_Container_Fragment,
@@ -37,8 +36,8 @@ import {
   RootAggregateQueryVariables,
   SearchQueryVariables,
   SeoDataFragment,
-} from "../graphql/__generated__/operations";
-import { populatePuffs } from "./areasAndThemesHelper";
+} from "@/graphql/__generated__/operations";
+import { PromoProps } from "@/components/content/Promo";
 
 /**
  * ? Better comments: https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
@@ -187,16 +186,16 @@ export interface PublicationListResponse {
 export interface DomainAggregateResponse
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   type: "DomainAggregate";
-  areas?: IPuff[];
-  themes?: IPuff[];
+  areas?: PromoProps[];
+  themes?: PromoProps[];
   domain: DiggDomain;
 }
 
 export interface RootAggregateResponse
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   type: "RootAggregate";
-  areas?: IPuff[];
-  themes?: IPuff[];
+  areas?: PromoProps[];
+  themes?: PromoProps[];
   news?: PublicationDataFragment;
   examples?: PublicationDataFragment;
   events?: PublicationDataFragment;
@@ -541,10 +540,16 @@ export const getDomainAggregate = async (
     const themeTaxonomy =
       domain.taxonomies.find((t) => t.slug === "teman") || null;
     const areas = areaTaxonomy
-      ? populatePuffs(areaTaxonomy.categories, "dataomraden")
+      ? areaTaxonomy.categories.map((category) => ({
+          title: category.name,
+          slug: category.slug,
+        }))
       : null;
     const themes = themeTaxonomy
-      ? populatePuffs(themeTaxonomy.categories, "teman")
+      ? themeTaxonomy.categories.map((category) => ({
+          title: category.name,
+          slug: category.slug,
+        }))
       : null;
 
     // The value of the `props` key will be
@@ -634,8 +639,18 @@ export const getRootAggregate = async (
     const news = data.news || null;
     const example = data.examples || null;
     const event = data.events[0] || null;
-    const areas = data.areas ? populatePuffs(data.areas, "dataomraden") : null;
-    const themes = data.themes ? populatePuffs(data.themes, "teman") : null;
+    const areas = data.areas
+      ? data.areas.map((area) => ({
+          title: area.name,
+          slug: area.slug,
+        }))
+      : null;
+    const themes = data.themes
+      ? data.themes.map((theme) => ({
+          title: theme.name,
+          slug: theme.slug,
+        }))
+      : null;
 
     // The value of the `props` key will be
     //  passed to the `Page` component

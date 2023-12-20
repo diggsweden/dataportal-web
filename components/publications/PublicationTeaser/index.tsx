@@ -1,12 +1,13 @@
 import useTranslation from "next-translate/useTranslation";
 import React from "react";
 import { CustomImage } from "@/components/global/CustomImage";
-import LinkArrow from "@/assets/icons/linkArrow.svg";
+import Arrow from "@/assets/icons/arrowRight.svg";
 import { ButtonLink } from "@/components/global/Button";
 import {
   PublicationDataFragment as Publication,
   ContainerDataFragment as IContainer,
 } from "@/graphql/__generated__/operations";
+import Heading from "@/components/global/Typography/Heading";
 
 type PublicationTeaser = {
   publication: Publication | IContainer;
@@ -50,7 +51,9 @@ export const PublicationTeaser: React.FC<PublicationTeaser> = ({
             {getDate(createdAt)} Juni 2023 |{" "}
             {tags[0]?.value ? tags[0].value : t("pages|listpage$fallback-tag")}
           </span>
-          <h3 className="pb-md pt-sm text-xl">{heading}</h3>
+          <Heading className="pb-md pt-sm" level={3} size={"sm"}>
+            {heading}
+          </Heading>
         </div>
       </div>
       <ButtonLink
@@ -58,7 +61,7 @@ export const PublicationTeaser: React.FC<PublicationTeaser> = ({
         variant="plain"
         size="sm"
         label="Läs mer"
-        icon={LinkArrow}
+        icon={Arrow}
         iconPosition="right"
       />
     </article>

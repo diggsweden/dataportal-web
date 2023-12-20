@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+let primaryColor = "#CD7A6E";
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -14,15 +17,17 @@ module.exports = {
     screens: {
       sm: "0px",
       md: "600px",
-      lg: "1124px",
+      lg: "984px",
+      xl: "1124px",
     },
     maxWidth: {
       sm: 160,
       md: 620,
       lg: 960,
-      xl: 1200,
+      xl: 1140,
     },
     colors: {
+      primary: primaryColor,
       white: "#FFFFFF",
       transparent: "#00000000",
       whiteOpaque5: "#FFFFFFE6",
@@ -44,7 +49,7 @@ module.exports = {
         100: "#EEF0EE",
       },
       pink: {
-        600: "#CD7A6E",
+        600: primaryColor,
         500: "#DCA29B",
         400: "#E6BDB8",
         200: "#F3DEDB",
@@ -74,7 +79,11 @@ module.exports = {
     },
     container: ({ theme }) => ({
       center: true,
-      padding: theme("spacing.xl"),
+      padding: {
+        DEFAULT: theme("spacing.md"),
+        sm: theme("spacing.lg"),
+        lg: theme("spacing.xl"),
+      },
     }),
     borderRadius: {
       sm: "0",
@@ -90,15 +99,11 @@ module.exports = {
       strong: 500,
     },
     fontSize: {
-      xs: ["0.75rem", { lineHeight: "1rem" }], // 12px/16px
       sm: ["0.875rem", { lineHeight: "1.25rem" }], // 14px/20px
       md: ["1rem", { lineHeight: "1.5rem" }], // 16px/24px
-      lg: ["1.125rem", { lineHeight: "1.75rem" }], // 18px/28px
-      xl: ["1.25rem", { lineHeight: "1.75rem" }], // 20px/28px
-      "2xl": ["1.5rem", { lineHeight: "2rem" }], // 24px/32px
-      "3xl": ["1.875rem", { lineHeight: "2.25rem" }], // 30px/36px
-      "4xl": ["2.25rem", { lineHeight: "2.5rem" }], // 36px/40px
-      "5xl": ["3rem", { lineHeight: "3.5rem" }], // 48px/56px
+      lg: ["1.25rem", { lineHeight: "1.75rem" }], // 20px/28px
+      xl: ["1.75rem", { lineHeight: "2.25rem" }], // 28px/36px
+      "2xl": ["3rem", { lineHeight: "3.5rem" }], // 48px/56px
     },
   },
 

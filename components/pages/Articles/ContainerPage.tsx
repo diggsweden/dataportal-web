@@ -1,16 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  ContainerNavigation,
-  ContentArea,
-  SettingsContext,
-} from "../../../components";
+import { ContainerNavigation, SettingsContext } from "@/components";
 import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "../../../graphql/__generated__/operations";
-import { isIE } from "../../../utilities";
-import { checkLang } from "../../../utilities";
+import { isIE } from "@/utilities";
+import { checkLang } from "@/utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { RelatedContainerFragment } from "../../../graphql/__generated__/operations";
+import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
+import BlockList from "@/components/content/blocks/BlockList";
 
 /**
  * Uses prismjs to style codeblock
@@ -158,7 +155,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 
         <div className={fullWidth ? fullWidth : "content"}>
           <p className="preamble text-lg">{checkLang(preamble)}</p>
-          {blocks && blocks.length > 0 && <ContentArea blocks={blocks} />}
+          {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
         </div>
       </div>
     </div>

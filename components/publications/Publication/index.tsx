@@ -1,6 +1,6 @@
 import React from "react";
-import {  ContentArea } from "../..";
-import { checkLang, PublicationResponse } from "../../../utilities";
+import BlockList from "@/components/content/blocks/BlockList";
+import { checkLang, PublicationResponse } from "@/utilities";
 
 const whitelistedTagsSV = ["Goda exempel", "Event", "Nyhet"];
 export const findPublicationTypeTag = (tags: PublicationResponse["tags"]) => {
@@ -33,7 +33,7 @@ export const Publication: React.FC<PublicationResponse> = ({
         <div className={"content "}>
           {heading && <h1>{checkLang(heading)}</h1>}
           <p className="preamble text-lg">{checkLang(preamble)}</p>
-          {blocks && blocks.length > 0 && <ContentArea blocks={blocks} />}
+          {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
         </div>
       </div>
       {related && related.length > 0 && (

@@ -7,6 +7,7 @@ import { PublicationListResponse } from "@/utilities";
 import { PublicationTeaser } from "../PublicationTeaser";
 import { Pagination } from "@/components/global/Pagination";
 import { ButtonLink } from "@/components/global/Button";
+import Heading from "@/components/global/Typography/Heading";
 export const PublicationList: React.FC<PublicationListResponse> = ({
   publications,
   category,
@@ -53,23 +54,23 @@ export const PublicationList: React.FC<PublicationListResponse> = ({
       <Head>
         <title>{metaTitle}</title>
         <meta property="og:title" content={metaTitle} />
-        <meta name="twitter:title" content={metaTitle} />
         {description && (
           <>
             <meta name="description" content={description} />
             <meta name="og:description" content={description} />
-            <meta name="twitter:description" content={description} />
           </>
         )}
       </Head>
-      <div className="pt-xl">
+      <div className={`${pathname === "/" ? "py-xl" : "pt-xl"}`}>
         <div
           className={`flex items-center ${
             publicationCount <= 3 ? "justify-between" : "gap-sm"
           } text-2xl`}
         >
-          {!showMoreLink && <span>{publicationCount}</span>}
-          <h1>{heading}</h1>
+          <Heading level={2} size={"md"}>
+            {!showMoreLink && <span className="pr-sm">{publicationCount}</span>}
+            {heading}
+          </Heading>
           {showMoreLink && (
             <ButtonLink
               size="sm"

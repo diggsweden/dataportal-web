@@ -1,4 +1,4 @@
-import Arrow from "@/assets/icons/arrowRight.svg";
+import Arrow from "@/assets/icons/chevronRight.svg";
 import useTranslation from "next-translate/useTranslation";
 import { PublicationDataFragment as Publication } from "@/graphql/__generated__/operations";
 import { ContainerDataFragment as IContainer } from "@/graphql/__generated__/operations";

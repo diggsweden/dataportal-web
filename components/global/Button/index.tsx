@@ -9,7 +9,7 @@ import Link from "next/link";
 
 const buttonVariants = cva(
   [
-    "flex flex-row items-center [&_svg]:inline-flex disabled:bg-brown-400 disabled:text-brown-600 [&_path]:disabled:fill-brown-600 disabled:border-none",
+    "flex flex-row items-center w-fit [&_svg]:inline-flex disabled:bg-brown-400 disabled:text-brown-600 [&_path]:disabled:fill-brown-600 disabled:border-none no-underline",
   ],
   {
     variants: {
@@ -93,7 +93,6 @@ type ButtonLinkProps = VariantProps<typeof buttonVariants> & {
   icon?: any;
   iconPosition?: "left" | "right";
   label?: string;
-  className?: string;
   href: string;
   locale?: string;
 };

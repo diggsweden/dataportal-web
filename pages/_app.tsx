@@ -28,7 +28,7 @@ import { useRouter } from "next/router";
 import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "../env/Settings.Sandbox";
 import "../styles/global.css";
-import NavSide from "@/components/navigation/Nav/NavSide";
+import SideBar from "@/components/navigation/SideBar";
 import Container from "@/components/layout/Container";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -70,7 +70,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   //*Put shared props into state to persist between pages that doesn't use getStaticProps
   const [env, setEnv] = useState<EnvSettings>(SettingsUtil.create());
   const [matomoActivated, setMatomoActivated] = useState<boolean>(true);
-  const [openNavSide, setOpenNavSide] = useState(false);
+  const [openSideBar, setOpenSideBar] = useState(false);
   const [breadcrumbState, setBreadcrumb] =
     useState<BreadcrumbProps>(initBreadcrumb);
   const { seo, heroImage } =
@@ -99,7 +99,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
       }
 
       window.addEventListener("resize", function () {
-        setOpenNavSide(false);
+        setOpenSideBar(false);
       });
     }
     document.documentElement.classList.add("no-focus-outline");
@@ -257,13 +257,10 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
             <div id="top" className="relative min-h-screen overflow-hidden">
               {/*<SkipToContent text={t("skiptocontent")} />*/}
               <Header
-                setOpenNavSide={setOpenNavSide}
-                openNavSide={openNavSide}
+                setOpenSideBar={setOpenSideBar}
+                openSideBar={openSideBar}
               />
-              <NavSide
-                openNavSide={openNavSide}
-                setOpenNavSide={setOpenNavSide}
-              />
+              <SideBar openSideBar={openSideBar} />
               <noscript>
                 <div>
                   <span>{defaultSettings.noScriptContent}</span>
@@ -274,7 +271,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
               )}
               <main
                 className={`transition-all duration-300 ease-in-out ${
-                  openNavSide ? "lg:w-[calc(100vw-300px)]" : "w-full"
+                  openSideBar ? "lg:w-[calc(100vw-300px)]" : "w-full"
                 }`}
               >
                 <Container>
@@ -292,8 +289,8 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 </Container>
               </main>
               <Footer
-                setOpenNavSide={setOpenNavSide}
-                openNavSide={openNavSide}
+                setOpenSideBar={setOpenSideBar}
+                openSideBar={openSideBar}
               />
             </div>
           </TrackingProvider>

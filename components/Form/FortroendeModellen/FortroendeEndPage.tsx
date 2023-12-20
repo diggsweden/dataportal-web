@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { MainContainerStyle } from "../../../styles/general/emotion";
 import { ModuleDataFragment } from "../../../graphql/__generated__/operations";
-import { ContentArea } from "../../ContentArea";
 import { ArrowIcon, Container, css, Heading } from "@digg/design-system";
 import { FormBackButton, FormWrapper } from "../Styles/FormStyles";
 import { highlightCode } from "../../pages/Articles";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
-import fortroendeLogo from "../../../public/images/förtroendemodell-logo.svg";
+import fortroendeLogo from "@/public/images/förtroendemodell-logo.svg";
 import Image from "next/image";
+import BlockList from "@/components/content/blocks/BlockList";
 
 export const FortroendeEndPage: React.FC<ModuleDataFragment> = ({ blocks }) => {
   const { t } = useTranslation();
@@ -60,7 +60,7 @@ export const FortroendeEndPage: React.FC<ModuleDataFragment> = ({ blocks }) => {
         >
           <span className="back-button">
             <ArrowIcon color={"white"} width={"18px"} />
-            <span className="text-base font-medium back-text">
+            <span className="text-base back-text font-medium">
               {t("pages|form$go-back-text")}
             </span>
           </span>
@@ -79,7 +79,7 @@ export const FortroendeEndPage: React.FC<ModuleDataFragment> = ({ blocks }) => {
           </Heading>
         )}
 
-        <ContentArea blocks={blocks} />
+        <BlockList blocks={blocks} />
 
         <div className="badge-wrapper">
           <a

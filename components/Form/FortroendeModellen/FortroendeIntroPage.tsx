@@ -2,9 +2,9 @@ import React from "react";
 import { ArrowIcon, Button, Container, Heading } from "@digg/design-system";
 import { FormNavButtons, FormWrapper } from "../Styles/FormStyles";
 import { useRouter } from "next/router";
-import { MainContainerStyle } from "../../../styles/general/emotion";
-import { ModuleDataFragment } from "../../../graphql/__generated__/operations";
-import { ContentArea } from "../../ContentArea";
+import { MainContainerStyle } from "@/styles/general/emotion";
+import { ModuleDataFragment } from "@/graphql/__generated__/operations";
+import BlockList from "@/components/content/blocks/BlockList";
 
 export const FortroendeIntroPage: React.FC<ModuleDataFragment> = ({
   blocks,
@@ -19,7 +19,7 @@ export const FortroendeIntroPage: React.FC<ModuleDataFragment> = ({
         <Heading color="pinkPop" size={"3xl"} weight={"light"}>
           Förtroendemodellen
         </Heading>
-        {intro && <ContentArea blocks={intro} />}
+        {intro && <BlockList blocks={intro} />}
       </FormWrapper>
 
       <FormNavButtons className="start-buttons">
@@ -63,9 +63,7 @@ export const FortroendeIntroPage: React.FC<ModuleDataFragment> = ({
           </span>
         </Button>
       </FormNavButtons>
-      <FormWrapper>
-        {extraInfo && <ContentArea blocks={extraInfo} />}
-      </FormWrapper>
+      <FormWrapper>{extraInfo && <BlockList blocks={extraInfo} />}</FormWrapper>
     </Container>
   );
 };

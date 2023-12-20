@@ -1,44 +1,49 @@
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { ContainerData_Dataportal_Digg_Container_Fragment } from "../../graphql/__generated__/operations";
-import { checkLang } from "../../utilities";
-import { Puffs, IPuff } from "../navigation";
-import { PublicationDataFragment as IPublication } from "../../graphql/__generated__/operations";
-import useTranslation from "next-translate/useTranslation";
-import { ContentArea } from "../ContentArea";
-import { CategoriesNav } from "../StartPageComponents";
-import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { checkLang } from "@/utilities";
+import { handleDomain } from "@/utilities/domain";
+import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__generated__/operations";
+import { PublicationDataFragment as IPublication } from "@/graphql/__generated__/operations";
 import { PublicationList } from "../publications/PublicationList";
+import { PromoProps } from "@/components/content/Promo";
+import { CategoriesNav } from "@/components/StartPageComponents";
+import RelatedContentBlock from "@/components/content/blocks/RelatedContentBlock";
+import BlockList from "@/components/content/blocks/BlockList";
+import useTranslation from "next-translate/useTranslation";
+import Heading from "@/components/global/Typography/Heading";
+
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   domain?: DiggDomain;
   news?: IPublication[];
   example?: IPublication[];
   event?: IPublication;
-  areas?: IPuff[];
-  themes?: IPuff[];
+  areas?: PromoProps[];
 }
 
 const DynamicStatisticGraph = dynamic(
-  () => import("../Statistic/StatisticGraph"),
+  () => import("@/components/content/Statistic/StatisticGraph"),
   {
     ssr: false,
   },
 );
 
 const DynamicStatisticNumbers = dynamic(
-  () => import("../Statistic/StatisticNumbers"),
+  () => import("@/components/content/Statistic/StatisticNumbers"),
   {
     ssr: false,
   },
 );
 
-const DynamicStatistic = dynamic(() => import("../Statistic/Statistic"), {
-  ssr: false,
-});
+const DynamicStatistic = dynamic(
+  () => import("@/components/content/Statistic"),
+  {
+    ssr: false,
+  },
+);
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
   const { domain, areas, news, example } = props || {};
@@ -83,13 +88,9 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           </div>
         </div>
 
-        {puffs && (
-          <Puffs
-            links={puffs.links as IPuff[]}
-            basepath={domain ? "/" + domain : undefined}
-          />
-        )}
+        {puffs && <RelatedContentBlock links={puffs.links as PromoProps[]} />}
 
+        {/* I´ll be back for this */}
         {!isEn && pathname === `/` && (
           <>
             {example && (
@@ -118,7 +119,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
         <div className={"fullWidth"}>
           {content && (
             <div className="content">
-              <ContentArea blocks={content} />
+              <BlockList blocks={content} />
             </div>
           )}
         </div>
@@ -127,15 +128,19 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
 
         {areas && !domain && lang === "sv" && (
           <div className="domain-page__link-block domain-page__theme-block">
-            <h2>{t("pages|data$data-areas_text")}</h2>
-            <Puffs links={areas} />
+            <Heading size={"md"} level={2}>
+              {t("pages|data$data-areas_text")}
+            </Heading>
+            <RelatedContentBlock links={areas} icons={true} />
           </div>
         )}
 
         {!domain && (
-          <div className="domain-page__statistics">
-            <div className="domain-page__show_more--link">
-              <h2>{t("pages|statistic$statistic-numbers")}</h2>
+          <section id="statistics" className="my-xl">
+            <div className="mb-2xl flex items-end justify-between">
+              <Heading level={2} size={"lg"}>
+                {t("pages|statistic$statistic-numbers")}
+              </Heading>
               <Link
                 href={`/${t("routes|statistics$path")}`}
                 locale={lang}
@@ -146,13 +151,13 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               </Link>
             </div>
 
-            <div className="statistic-wrapper">
+            <div className="mb-2xl flex flex-wrap justify-between">
               <DynamicStatisticGraph />
               <DynamicStatisticNumbers />
             </div>
 
             <DynamicStatistic />
-          </div>
+          </section>
         )}
       </div>
     </div>
