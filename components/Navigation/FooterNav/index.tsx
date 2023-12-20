@@ -26,7 +26,9 @@ const FooterNav: FC<FooterNavProps> = ({ setOpenSideBar }) => {
     <div className="flex flex-col gap-xl lg:grid lg:grid-cols-2">
       {footerNav.map((footer: FooterNavData, idx: number) => (
         <div key={idx} className="flex flex-col gap-sm">
-          <Heading size={"h5"}>{t(`common|${footer.title}`)}</Heading>
+          <Heading size={"sm"} level={3}>
+            {t(`common|${footer.title}`)}
+          </Heading>
           <ul className="space-y-sm">
             {footer.children.map((link, idx: number) => (
               <li

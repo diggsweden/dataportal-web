@@ -4,24 +4,24 @@ import { cx, cva, VariantProps } from "class-variance-authority";
 const headingVariants = cva([], {
   variants: {
     size: {
-      h1: ["text-5xl"],
-      h2: ["text-4xl"],
-      h3: ["text-3xl"],
-      h4: ["text-2xl"],
-      h5: ["text-xl"],
+      lg: ["text-2xl"],
+      md: ["text-xl"],
+      sm: ["text-lg"],
     },
   },
   defaultVariants: {
-    size: "h1",
+    size: "md",
   },
 });
 
-type HeadingProps = VariantProps<typeof headingVariants>;
+type HeadingProps = VariantProps<typeof headingVariants> & {
+  level: 1 | 2 | 3;
+};
 
 const Heading: FC<
   PropsWithChildren<HeadingProps & HTMLAttributes<HTMLHeadElement>>
-> = ({ size, className, children }) => {
-  const CustomTag = size as keyof JSX.IntrinsicElements;
+> = ({ size, level, className, children }) => {
+  const CustomTag = `h${level}` as keyof JSX.IntrinsicElements;
   return (
     <CustomTag className={cx(headingVariants({ size }), className)}>
       {children}
