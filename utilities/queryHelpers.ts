@@ -1,4 +1,3 @@
-import { IPuff } from "../components";
 import {
   browserclient,
   client,
@@ -38,7 +37,7 @@ import {
   SearchQueryVariables,
   SeoDataFragment,
 } from "../graphql/__generated__/operations";
-import { populatePuffs } from "./areasAndThemesHelper";
+import { LinksBlockProps } from "@/components/content/Blocks/LinksBlock";
 
 /**
  * ? Better comments: https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
@@ -186,16 +185,16 @@ export interface PublicationListResponse {
 export interface DomainAggregateResponse
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   type: "DomainAggregate";
-  areas?: IPuff[];
-  themes?: IPuff[];
+  areas?: LinksBlockProps[];
+  themes?: LinksBlockProps[];
   domain: DiggDomain;
 }
 
 export interface RootAggregateResponse
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   type: "RootAggregate";
-  areas?: IPuff[];
-  themes?: IPuff[];
+  areas?: LinksBlockProps[];
+  themes?: LinksBlockProps[];
   news?: PublicationDataFragment;
   examples?: PublicationDataFragment;
   events?: PublicationDataFragment;
@@ -540,10 +539,16 @@ export const getDomainAggregate = async (
     const themeTaxonomy =
       domain.taxonomies.find((t) => t.slug === "teman") || null;
     const areas = areaTaxonomy
-      ? populatePuffs(areaTaxonomy.categories, "dataomraden")
+      ? areaTaxonomy.categories.map((category) => ({
+          title: category.name,
+          slug: category.slug,
+        }))
       : null;
     const themes = themeTaxonomy
-      ? populatePuffs(themeTaxonomy.categories, "teman")
+      ? themeTaxonomy.categories.map((category) => ({
+          title: category.name,
+          slug: category.slug,
+        }))
       : null;
 
     // The value of the `props` key will be
@@ -633,8 +638,18 @@ export const getRootAggregate = async (
     const news = data.news || null;
     const example = data.examples || null;
     const event = data.events[0] || null;
-    const areas = data.areas ? populatePuffs(data.areas, "dataomraden") : null;
-    const themes = data.themes ? populatePuffs(data.themes, "teman") : null;
+    const areas = data.areas
+      ? data.areas.map((area) => ({
+          title: area.name,
+          slug: area.slug,
+        }))
+      : null;
+    const themes = data.themes
+      ? data.themes.map((theme) => ({
+          title: theme.name,
+          slug: theme.slug,
+        }))
+      : null;
 
     // The value of the `props` key will be
     //  passed to the `Page` component

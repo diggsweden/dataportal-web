@@ -1,5 +1,4 @@
 export * from "./app";
-export * from "./areasAndThemesHelper";
 export * from "./checkers";
 export * from "./checkLang";
 export * from "./dcatUtils";

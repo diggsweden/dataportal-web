@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { ContainerData_Dataportal_Digg_Container_Fragment } from "../../graphql/__generated__/operations";
 import { checkLang } from "../../utilities";
-import { Puffs, IPuff } from "../navigation";
 import { PublicationDataFragment as IPublication } from "../../graphql/__generated__/operations";
 import useTranslation from "next-translate/useTranslation";
 import { ContentArea } from "../ContentArea";
@@ -12,6 +11,8 @@ import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Dataportal_LinkType } from "../../graphql/__generated__/types";
+import LinksBlock, { LinksBlockProps } from "../content/Blocks/LinksBlock";
+import Heading from "@/components/global/Typography/Heading";
 
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
@@ -19,8 +20,7 @@ export interface DomainProps
   news?: IPublication[];
   example?: IPublication[];
   event?: IPublication;
-  areas?: IPuff[];
-  themes?: IPuff[];
+  areas?: LinksBlockProps[];
 }
 
 const DynamicStatisticGraph = dynamic(
@@ -92,12 +92,8 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           </div>
         </div>
 
-        {puffs && (
-          <Puffs
-            links={puffs.links as IPuff[]}
-            basepath={domain ? "/" + domain : undefined}
-          />
-        )}
+        {puffs && <LinksBlock links={puffs.links as LinksBlockProps[]} />}
+
         {/* I´ll be back for this */}
         {!isEn && pathname === `/` && (
           <>
@@ -144,8 +140,9 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
 
         {areas && !domain && lang === "sv" && (
           <div className="domain-page__link-block domain-page__theme-block">
-            <h2>{t("pages|data$data-areas_text")}</h2>
-            <Puffs links={areas} />
+            <Heading size={"h3"}>{t("pages|data$data-areas_text")}</Heading>
+
+            <LinksBlock links={areas} icons={true} />
           </div>
         )}
 

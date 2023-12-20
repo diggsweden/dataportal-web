@@ -1,15 +1,12 @@
 import React from "react";
+import LinksBlock, {
+  LinksBlockProps,
+} from "@/components/content/Blocks/LinksBlock";
 
-import { RelatedContentFragment as IRelatedContent } from "../../graphql/__generated__/operations";
-import { Links } from "../navigation";
-
-interface RelatedContentProps extends IRelatedContent {
-  domain?: DiggDomain;
+interface RelatedContentProps {
+  links: LinksBlockProps[];
 }
 
-export const RelatedContent: React.FC<RelatedContentProps> = ({
-  links,
-  domain,
-}) => {
-  return <Links links={links || []} basepath={domain} />;
+export const RelatedContent: React.FC<RelatedContentProps> = ({ links }) => {
+  return <LinksBlock links={links} inline={true} />;
 };
