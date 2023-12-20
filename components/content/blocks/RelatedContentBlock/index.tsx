@@ -4,7 +4,7 @@ import CarIcon from "@/assets/linkIcons/car.svg";
 import HeartIcon from "@/assets/linkIcons/heart.svg";
 import PieChartIcon from "@/assets/linkIcons/pieChart.svg";
 import PlanetIcon from "@/assets/linkIcons/planet.svg";
-import Promo, { PromoProps } from "../../Promo";
+import Promo, { PromoProps } from "@/components/content/Promo";
 
 interface RelatedContentProps {
   links: PromoProps[] | any;
