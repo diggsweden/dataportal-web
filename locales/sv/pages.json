@@ -176,14 +176,14 @@
   "news": {
     "text": "nyheter",
     "title": "Nyheter",
-    "view-all": "Visa alla nyheter",
+    "view-all": "Visa alla",
     "social_meta_title": "Nyheter - Sveriges Dataportal",
     "social_meta_description": "Nyheter på Sveriges Dataportal"
   },
   "good-examples": {
     "text": "goda exempel",
     "title": "Goda exempel",
-    "view-all": "Visa alla goda exempel",
+    "view-all": "Visa alla",
     "social_meta_title": "Goda exempel - Sveriges Dataportal",
     "social_meta_description": "Goda exempel på Sveriges Dataportal"
   },

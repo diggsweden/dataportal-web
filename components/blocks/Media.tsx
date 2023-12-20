@@ -1,11 +1,11 @@
-import { MediaFragment as IMedia } from "../../graphql/__generated__/operations";
+import { MediaFragment as IMedia } from "@/graphql/__generated__/operations";
 import { FileLink } from "../navigation";
-import { checkLang } from "../../utilities";
+import { checkLang } from "@/utilities";
 import { Video } from "../Video";
 import env from "@beam-australia/react-env";
-import { MediaBaseFragment } from "../../graphql/__generated__/operations";
-import { isExternalLink } from "../../utilities";
-import { CustomImage } from "../Image";
+import { MediaBaseFragment } from "@/graphql/__generated__/operations";
+import { isExternalLink } from "@/utilities";
+import { CustomImage } from "../global/CustomImage";
 
 export const handleUrl = ({ screen9, url, __typename }: MediaBaseFragment) => {
   const documentBaseUrl = env("DOCUMENT_BASE_URL");
@@ -30,11 +30,7 @@ const renderMedia = (media: IMedia["media"], mediaDescription?: string) => {
       }
       return (
         <figure>
-          <CustomImage
-            image={media}
-            style="responsive"
-            sizes={{ mobile: "100vw", tablet: "100vw", desktop: "50vw" }}
-          />
+          <CustomImage image={media} className="responsive" />
           {mediaDescription && (
             <figcaption>
               <p className="media-description">{checkLang(mediaDescription)}</p>

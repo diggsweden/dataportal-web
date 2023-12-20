@@ -1,123 +1,55 @@
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter, usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { PublicationDataFragment as Publication } from "../../../graphql/__generated__/operations";
-import { ContainerDataFragment as IContainer } from "../../../graphql/__generated__/operations";
-import { checkLang } from "../../../utilities";
-import { PublicationListResponse } from "../../../utilities";
-import NoSsr from "../../NoSsr/NoSsr";
-import { CustomImage } from "@/components/Image";
+import { PublicationListResponse } from "@/utilities";
 import { PublicationTeaser } from "../PublicationTeaser";
-// import { ArticleBlock } from "../../blocks";
-
-const isPublication = (
-  article: Publication | IContainer,
-): article is Publication => {
-  return article?.__typename === "dataportal_Digg_Publication";
-};
-
-const sortArticles = (
-  a: Publication | IContainer,
-  b: Publication | IContainer,
-) => {
-  if (isPublication(a) && isPublication(b)) {
-    return (new Date(b.publishedAt) as any) - (new Date(a.publishedAt) as any);
-  } else {
-    return (new Date(b.updatedAt) as any) - (new Date(a.updatedAt) as any);
-  }
-};
-
+import { Pagination } from "@/components/global/Pagination";
+import { ButtonLink } from "@/components/global/Button";
 export const PublicationList: React.FC<PublicationListResponse> = ({
   publications,
   category,
-  domain,
   seo,
-  basePath,
   heading,
+  showMoreLink,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [articlesNumber, setPageNumber] = useState(0);
-  const [gridView] = useState(false);
-  const { t, lang } = useTranslation();
-  const { pathname, push, query } = useRouter() || {};
+  const [pageNumber, setPageNumber] = useState(0);
+  const { t } = useTranslation();
+  const { push } = useRouter();
+  const pathname = usePathname();
   const { trackPageView } = useMatomo();
   const { title, description } = seo || {};
-
-  const articlesPerPage = 10;
-  const articlesVisited = articlesNumber * articlesPerPage;
-  const displayArticles = publications
-    .sort(sortArticles)
-    .slice(articlesVisited, articlesVisited + articlesPerPage);
-  const pageCount = Math.ceil(publications.length / articlesPerPage);
+  const publicationsPerPage = 12;
+  const articlesVisited = pageNumber * publicationsPerPage;
+  const publicationsOnPage = publications.slice(
+    articlesVisited,
+    articlesVisited + publicationsPerPage,
+  );
+  const pageCount = Math.ceil(publications.length / 12);
+  const publicationCount = publicationsOnPage.length;
   const metaTitle =
     title ||
     (category
       ? `${category.name} - Sveriges dataportal`
       : `${t("pages|publications$social_meta_title")}`);
-  const domainSlug = domain ? `/${domain}` : "";
-  const categorySlug = category ? `/${category.slug}` : "";
 
-  const changePage = (selected: number) => {
-    setPageNumber(selected);
-    setCurrentPage(selected);
-    push(`?page=${selected}`);
-  };
-
-  //   useEffect(() => {
-  //     skipToContent();
-  //     startFromTop();
-  //   }, [currentPage]);
+  useEffect(() => {
+    if (pathname !== "/") {
+      setCurrentPage(currentPage);
+      setPageNumber(currentPage - 1);
+      push(`?page=${currentPage}`, { scroll: false });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [currentPage]);
 
   useEffect(() => {
     trackPageView({ documentTitle: "Nyheter" });
   }, [pathname]);
 
-  useEffect(() => {
-    if (query.page) {
-      const newPage = parseInt(query.page as string);
-      setPageNumber(newPage - 1);
-      setCurrentPage(newPage);
-    }
-  }, [query]);
-
-  //   const renderGrid = () => {
-  //     if (displayArticles.length > articlesPerPage) {
-  //       return (
-  //         <ArticleBlock
-  //           articles={
-  //             displayArticles.slice(
-  //               articlesPerPage * currentPage - 1,
-  //               articlesPerPage * currentPage,
-  //             ) as Publication[]
-  //           }
-  //         />
-  //       );
-  //     } else {
-  //       return <ArticleBlock articles={displayArticles as Publication[]} />;
-  //     }
-  //   };
-
-  const renderPagination = () => {
-    return (
-      pageCount > 1 && (
-        <div className="article-list--pagination ">
-          {/*<Pagination*/}
-          {/*  totalResults={articles.length}*/}
-          {/*  resultsPerPage={articlesPerPage}*/}
-          {/*  currentPage={currentPage}*/}
-          {/*  onPageChanged={changePage}*/}
-          {/*  nextButtonText="Nästa"*/}
-          {/*/>*/}
-        </div>
-      )
-    );
-  };
-
   return (
-    <div className="container">
+    <div>
       <Head>
         <title>{metaTitle}</title>
         <meta property="og:title" content={metaTitle} />
@@ -130,87 +62,44 @@ export const PublicationList: React.FC<PublicationListResponse> = ({
           </>
         )}
       </Head>
-      <div className="py-xl">
-        <h1 className="text-2xl">
-          {heading || category?.name || t("pages|publications$title")}
-        </h1>
-        <ul className="gap-4 grid grid-flow-col gap-xl pt-xl">
-          {publications.map((publication) => (
-            <li className="md:w-[296px]">
-              <PublicationTeaser publication={publication} />
-            </li>
-          ))}
-        </ul>
-      </div>
-      {/* <div className="content">
-        {!gridView ? (
-          <div className="article-list" id="articles">
-            <ul>
-              {articles.length === 0 && (
-                <span className="loading-msg">
-                  {t("pages|listpage$no-articles")}
-                </span>
-              )}
-              {displayArticles.map((article, index) => {
-                const isPub = isPublication(article);
-                const { slug, heading, preamble, tags } = article;
-                return (
-                  <li key={index}>
-                    <NoSsr>
-                      {isPub && (
-                        <span className="publication-top-bar">
-                          <span className="text-base">
-                            {article.publishedAt}
-                          </span>
-                          {tags[0]?.value ? (
-                            <span className="text-base">{tags[0].value}</span>
-                          ) : (
-                            <span className="text-base">
-                              {t("pages|listpage$fallback-tag")}
-                            </span>
-                          )}
-                        </span>
-                      )}
-                    </NoSsr>
-                    <Link
-                      locale={lang}
-                      href={
-                        isPub
-                          ? `${basePath || pathname}${slug}`
-                          : `${domainSlug}${categorySlug}${slug}`
-                      }
-                      passHref
-                    >
-                      <span className="text-lg link heading-link">
-                        {checkLang(heading)}
-                      </span>
-                    </Link>
-
-                    <p className="text-base truncate-2">
-                      {checkLang(preamble)}
-                    </p>
-                  </li>
-                );
-              })}
-            </ul>
-            {/* Show pagination only when there is more than one page */}
-      {/* {pageCount > 1 && (
-              <div className="currentpage-tracker">
-                <span className="text-base">
-                  {t("pages|search$page")} {currentPage} {t("common|of")}{" "}
-                  {pageCount}
-                </span>
-              </div>
-            )}
-            {renderPagination()}
-          </div>
+      <div className="pt-xl">
+        <div
+          className={`flex items-center ${
+            publicationCount <= 3 ? "justify-between" : "gap-sm"
+          } text-2xl`}
+        >
+          {!showMoreLink && <span>{publicationCount}</span>}
+          <h1>{heading}</h1>
+          {showMoreLink && (
+            <ButtonLink
+              size="sm"
+              href={showMoreLink.slug}
+              label={showMoreLink.title}
+              variant="secondary"
+            />
+          )}
+        </div>
+        {publicationsOnPage.length > 0 ? (
+          <ul className="gap-4 grid grid-cols-1 gap-xl pt-xl md:grid-cols-2 lg:grid-cols-3">
+            {publicationsOnPage.map((publication, idx) => (
+              <li key={idx}>
+                <PublicationTeaser publication={publication} />
+              </li>
+            ))}
+          </ul>
         ) : (
-          <div className="article-list" id="articles">
-            {/* {renderGrid()} */}
-      {/* {renderPagination()}
+          <span className="pt-xl">{t("pages|listpage$no-articles")}</span>
+        )}
+        {!showMoreLink && pageCount > 1 && (
+          <div className="flex justify-center">
+            <Pagination
+              publications={publications}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
           </div>
         )}
-      </div> */}{" "}
+      </div>
     </div>
   );
 };

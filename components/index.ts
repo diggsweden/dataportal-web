@@ -2,7 +2,7 @@ export * from "./ApiExploring";
 export * from "./blocks";
 export * from "./ContentArea";
 export * from "./CookieBanner";
-export * from "./Image";
+export * from "./global/CustomImage";
 export * from "./EntrystoreProvider";
 export * from "./FileFormatBadge";
 export * from "./LocalStoreProvider";

@@ -172,7 +172,7 @@ export interface PublicationResponse extends PublicationDataFragment {
 }
 
 export interface PublicationListResponse {
-  type: "PublicationList";
+  type?: "PublicationList";
   publications:
     | PublicationDataFragment[]
     | ContainerData_Dataportal_Digg_Container_Fragment[];
@@ -181,6 +181,7 @@ export interface PublicationListResponse {
   seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
+  showMoreLink?: any;
 }
 
 export interface DomainAggregateResponse

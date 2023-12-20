@@ -11,7 +11,6 @@ import { CategoriesNav } from "../StartPageComponents";
 import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Dataportal_LinkType } from "../../graphql/__generated__/types";
 import { PublicationList } from "../publications/PublicationList";
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
@@ -40,13 +39,6 @@ const DynamicStatisticNumbers = dynamic(
 const DynamicStatistic = dynamic(() => import("../Statistic/Statistic"), {
   ssr: false,
 });
-
-// const ArticleTeaser = dynamic(
-//   () => import("@/components/publications/PublicationTeaser").then((c) => c.ArticleBlock),
-//   {
-//     ssr: false,
-//   },
-// );
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
   const { domain, areas, news, example } = props || {};
@@ -84,7 +76,6 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                     name="q"
                     autoComplete="off"
                     placeholder={t("startpage$search_placeholder")}
-                    // submitLabel="screen-reader"
                   />
                 </form>
               )}
@@ -99,41 +90,32 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           />
         )}
 
-        {/* I´ll be back for this */}
         {!isEn && pathname === `/` && (
           <>
-            {news && (
-              <PublicationList
-                publications={news}
-                showMoreLink={{
-                  title: t("pages|news$view-all"),
-                  slug: t("routes|news$path"),
-                  description: null,
-                  __typename: "dataportal_Digg_Link",
-                  linktype: Dataportal_LinkType.External,
-                }}
-                heading={t("pages|startpage$news")}
-              />
-            )}
-
             {example && (
               <PublicationList
                 publications={example}
                 showMoreLink={{
                   title: t("pages|good-examples$view-all"),
                   slug: t("routes|good-examples$path"),
-                  description: null,
-                  __typename: "dataportal_Digg_Link",
-                  linktype: Dataportal_LinkType.External,
                 }}
                 heading={t("pages|startpage$good-examples")}
+              />
+            )}
+            {news && (
+              <PublicationList
+                publications={news}
+                showMoreLink={{
+                  title: t("pages|news$view-all"),
+                  slug: t("routes|news$path"),
+                }}
+                heading={t("pages|startpage$news")}
               />
             )}
           </>
         )}
 
         <div className={"fullWidth"}>
-          {/* todo: this width? */}
           {content && (
             <div className="content">
               <ContentArea blocks={content} />
