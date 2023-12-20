@@ -5,8 +5,8 @@ import { DiggConfirmModal } from "../Styles/FormStyles";
 import { GeneratePDF } from "../Utils/formUtils";
 import FormTypes from "../FormTypes";
 import useTranslation from "next-translate/useTranslation";
-import { ModuleDataFragment } from "../../../graphql/__generated__/operations";
-import { ContentArea } from "../../ContentArea";
+import { ModuleDataFragment } from "@/graphql/__generated__/operations";
+import ContentHandler from "@/components/content/ContentHandler";
 
 type Props = {
   formDataArray: FormTypes[][];
@@ -23,7 +23,7 @@ const FormGeneratePDF: React.FC<Props> = ({ formDataArray, blocks }) => {
       <>
         {blocks && (
           <div className="generate-pdf-block">
-            <ContentArea blocks={blocks} />
+            <ContentHandler blocks={blocks} />
           </div>
         )}
       </>

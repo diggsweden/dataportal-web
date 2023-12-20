@@ -3,16 +3,16 @@ import {
   client,
   CONTAINER_MULTI_QUERY,
   RELATED_CONTAINER_QUERY,
-} from "../graphql";
+} from "@/graphql";
 import {
   DOMAIN_AGGREGATE_QUERY,
   ROOT_AGGREGATE_QUERY,
-} from "../graphql/aggregateQuery";
-import { FORM_QUERY } from "../graphql/formQuery";
-import { MODULE_QUERY } from "../graphql/moduleQuery";
-import { PUBLICATION_QUERY } from "../graphql/publicationQuery";
-import { SEARCH_QUERY } from "../graphql/searchQuery";
-import { Dataportal_ContainerState } from "../graphql/__generated__/types";
+} from "@/graphql/aggregateQuery";
+import { FORM_QUERY } from "@/graphql/formQuery";
+import { MODULE_QUERY } from "@/graphql/moduleQuery";
+import { PUBLICATION_QUERY } from "@/graphql/publicationQuery";
+import { SEARCH_QUERY } from "@/graphql/searchQuery";
+import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
   CategoryFragment,
   ContainerData_Dataportal_Digg_Container_Fragment,
@@ -36,8 +36,8 @@ import {
   RootAggregateQueryVariables,
   SearchQueryVariables,
   SeoDataFragment,
-} from "../graphql/__generated__/operations";
-import { LinksBlockProps } from "@/components/content/Blocks/LinksBlock";
+} from "@/graphql/__generated__/operations";
+import { PromoProps } from "@/components/content/Promo";
 
 /**
  * ? Better comments: https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
@@ -185,16 +185,16 @@ export interface PublicationListResponse {
 export interface DomainAggregateResponse
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   type: "DomainAggregate";
-  areas?: LinksBlockProps[];
-  themes?: LinksBlockProps[];
+  areas?: PromoProps[];
+  themes?: PromoProps[];
   domain: DiggDomain;
 }
 
 export interface RootAggregateResponse
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   type: "RootAggregate";
-  areas?: LinksBlockProps[];
-  themes?: LinksBlockProps[];
+  areas?: PromoProps[];
+  themes?: PromoProps[];
   news?: PublicationDataFragment;
   examples?: PublicationDataFragment;
   events?: PublicationDataFragment;

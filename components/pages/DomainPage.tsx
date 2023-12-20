@@ -5,16 +5,15 @@ import { ContainerData_Dataportal_Digg_Container_Fragment } from "../../graphql/
 import { checkLang } from "../../utilities";
 import { PublicationDataFragment as IPublication } from "../../graphql/__generated__/operations";
 import useTranslation from "next-translate/useTranslation";
-import { ContentArea } from "../ContentArea";
 import { CategoriesNav } from "../StartPageComponents";
 import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Dataportal_LinkType } from "../../graphql/__generated__/types";
-import LinksBlock, {
-  LinksBlockProps,
-} from "@/components/content/Blocks/LinksBlock";
+import RelatedContentBlock from "@/components/content/blocks/RelatedContentBlock";
 import Heading from "@/components/global/Typography/Heading";
+import { PromoProps } from "@/components/content/Promo";
+import ContentHandler from "@/components/content/ContentHandler";
 
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
@@ -22,7 +21,7 @@ export interface DomainProps
   news?: IPublication[];
   example?: IPublication[];
   event?: IPublication;
-  areas?: LinksBlockProps[];
+  areas?: PromoProps[];
 }
 
 const DynamicStatisticGraph = dynamic(
@@ -94,7 +93,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           </div>
         </div>
 
-        {puffs && <LinksBlock links={puffs.links as LinksBlockProps[]} />}
+        {puffs && <RelatedContentBlock links={puffs.links as PromoProps[]} />}
 
         {/* I´ll be back for this */}
         {!isEn && pathname === `/` && (
@@ -133,7 +132,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           {/* todo: this width? */}
           {content && (
             <div className="content">
-              <ContentArea blocks={content} />
+              <ContentHandler blocks={content} />
             </div>
           )}
         </div>
@@ -143,7 +142,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
         {areas && !domain && lang === "sv" && (
           <div className="domain-page__link-block domain-page__theme-block">
             <Heading size={"h3"}>{t("pages|data$data-areas_text")}</Heading>
-            <LinksBlock links={areas} icons={true} />
+            <RelatedContentBlock links={areas} icons={true} />
           </div>
         )}
 

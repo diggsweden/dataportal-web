@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { MainContainerStyle } from "../../../styles/general/emotion";
-import { ModuleDataFragment } from "../../../graphql/__generated__/operations";
-import { ContentArea } from "../../ContentArea";
+import { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { ArrowIcon, Container, css, Heading } from "@digg/design-system";
 import { FormBackButton, FormWrapper } from "../Styles/FormStyles";
 import { highlightCode } from "../../pages/Articles";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
+import ContentHandler from "@/components/content/ContentHandler";
 
 export const FortroendeModulePage: React.FC<ModuleDataFragment> = ({
   blocks,
@@ -42,7 +42,7 @@ export const FortroendeModulePage: React.FC<ModuleDataFragment> = ({
         >
           <span className="back-button">
             <ArrowIcon color={"white"} width={"18px"} />
-            <span className="text-base font-medium back-text">
+            <span className="text-base back-text font-medium">
               {t("pages|form$go-back-text")}
             </span>
           </span>
@@ -62,7 +62,7 @@ export const FortroendeModulePage: React.FC<ModuleDataFragment> = ({
         )}
 
         <div className="form-module-style">
-          <ContentArea blocks={blocks} />
+          <ContentHandler blocks={blocks} />
         </div>
       </FormWrapper>
     </Container>
