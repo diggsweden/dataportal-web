@@ -1,7 +1,6 @@
-"../../styles/general/emotion";
 import { GetStaticPaths, GetStaticProps } from "next/types";
-import { getPublication } from "../../utilities";
-import { Publication } from "../../components/pages/Articles";
+import { getPublication } from "@/utilities";
+import { PublicationFull } from "@/components/content/Publication/PublicationFull";
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   const slug = ("/" + params?.news) as string;
@@ -17,4 +16,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export default Publication;
+export default PublicationFull;

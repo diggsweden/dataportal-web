@@ -171,8 +171,8 @@ export interface PublicationResponse extends PublicationDataFragment {
 }
 
 export interface PublicationListResponse {
-  type: "PublicationList";
-  articles:
+  type?: "PublicationList";
+  publications:
     | PublicationDataFragment[]
     | ContainerData_Dataportal_Digg_Container_Fragment[];
   category?: ContainerData_Dataportal_Digg_Container_Fragment;
@@ -180,6 +180,7 @@ export interface PublicationListResponse {
   seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
+  showMoreLink?: any;
 }
 
 export interface DomainAggregateResponse
@@ -378,7 +379,7 @@ export const getPublicationsList = async (
     return {
       props: {
         type: "PublicationList",
-        articles: Array.isArray(publications) ? publications : [],
+        publications: Array.isArray(publications) ? publications : [],
         domain: domains[0] || null,
         seo: seo || null,
         basePath: basePath || null,
@@ -393,7 +394,7 @@ export const getPublicationsList = async (
     return {
       props: {
         type: "PublicationList",
-        articles: [],
+        publications: [],
         domain: domains[0] || null,
         seo: seo || null,
         basePath: basePath || null,

@@ -1,5 +1,5 @@
-import { ArticleListPage } from "../../components/pages/Articles";
-import { getPublicationsList, populateSeo } from "../../utilities";
+import { PublicationList } from "@/components/content/PublicationList";
+import { getPublicationsList, populateSeo } from "@/utilities";
 
 export async function getStaticProps({ locale }: any) {
   return await getPublicationsList([], ["Nyhet"], locale || "sv", {
@@ -12,4 +12,4 @@ export async function getStaticProps({ locale }: any) {
   });
 }
 
-export default ArticleListPage;
+export default PublicationList;

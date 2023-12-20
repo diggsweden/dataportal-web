@@ -1,7 +1,6 @@
 import React from "react";
-import { ArticleBlock } from "../..";
-import { checkLang, PublicationResponse } from "@/utilities";
 import BlockList from "@/components/content/blocks/BlockList";
+import { checkLang, PublicationResponse } from "@/utilities";
 
 const whitelistedTagsSV = ["Goda exempel", "Event", "Nyhet"];
 export const findPublicationTypeTag = (tags: PublicationResponse["tags"]) => {
@@ -21,7 +20,7 @@ const getRelatedHeading = (tag: string) => {
   }
 };
 
-export const Publication: React.FC<PublicationResponse> = ({
+export const PublicationFull: React.FC<PublicationResponse> = ({
   heading,
   preamble,
   tags,
@@ -44,7 +43,7 @@ export const Publication: React.FC<PublicationResponse> = ({
             {tags &&
               getRelatedHeading(findPublicationTypeTag(tags)?.value || "")}
           </h2>
-          <ArticleBlock articles={related} />
+          {/* <ArticleBlock articles={related} /> */}
         </div>
       )}
     </div>

@@ -1,6 +1,5 @@
-import { getPublicationsList, populateSeo } from "../../../utilities";
-import ArticleListPage from "../../aktuellt";
-
+import { getPublicationsList, populateSeo } from "@/utilities";
+import { PublicationList } from "@/components/content/PublicationList";
 export async function getStaticProps({ locale }: any) {
   return await getPublicationsList(["data"], ["Nyhet"], locale || "sv", {
     seo: {
@@ -13,4 +12,4 @@ export async function getStaticProps({ locale }: any) {
   });
 }
 
-export default ArticleListPage;
+export default PublicationList;

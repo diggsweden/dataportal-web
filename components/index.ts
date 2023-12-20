@@ -1,7 +1,6 @@
 export * from "./ApiExploring";
 export * from "./blocks";
 export * from "./CookieBanner";
-export * from "./Image";
 export * from "./EntrystoreProvider";
 export * from "./FileFormatBadge";
 export * from "./LocalStoreProvider";

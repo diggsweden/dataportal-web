@@ -24,6 +24,7 @@ const buttonVariants = cva(
         secondary: [
           "border-brown-600 border-2 bg-transparent text-brown-600 hover:bg-whiteOpaque5 [&_path]:fill-brown-600",
         ],
+        plain: ["text-brown-600 hover:bg-brown-200 [&_path]:fill-brown-600"],
       },
     },
     defaultVariants: {

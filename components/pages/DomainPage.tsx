@@ -7,7 +7,7 @@ import { checkLang } from "@/utilities";
 import { handleDomain } from "@/utilities/domain";
 import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__generated__/operations";
 import { PublicationDataFragment as IPublication } from "@/graphql/__generated__/operations";
-import { Dataportal_LinkType } from "@/graphql/__generated__/types";
+import { PublicationList } from "@/components/content/PublicationList";
 import { PromoProps } from "@/components/content/Promo";
 import { CategoriesNav } from "@/components/StartPageComponents";
 import RelatedContentBlock from "@/components/content/blocks/RelatedContentBlock";
@@ -40,13 +40,6 @@ const DynamicStatisticNumbers = dynamic(
 
 const DynamicStatistic = dynamic(
   () => import("@/components/content/Statistic"),
-  {
-    ssr: false,
-  },
-);
-
-const DynamicArticleBlock = dynamic(
-  () => import("../blocks/Article").then((c) => c.ArticleBlock),
   {
     ssr: false,
   },
@@ -88,7 +81,6 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
                     name="q"
                     autoComplete="off"
                     placeholder={t("startpage$search_placeholder")}
-                    // submitLabel="screen-reader"
                   />
                 </form>
               )}
@@ -101,38 +93,30 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
         {/* I´ll be back for this */}
         {!isEn && pathname === `/` && (
           <>
-            {news && (
-              <DynamicArticleBlock
-                articles={news}
-                showMoreLink={{
-                  title: t("pages|news$view-all"),
-                  slug: t("routes|news$path"),
-                  description: null,
-                  __typename: "dataportal_Digg_Link",
-                  linktype: Dataportal_LinkType.External,
-                }}
-                heading={t("pages|startpage$news")}
-              />
-            )}
-
             {example && (
-              <DynamicArticleBlock
-                articles={example}
+              <PublicationList
+                publications={example}
                 showMoreLink={{
                   title: t("pages|good-examples$view-all"),
                   slug: t("routes|good-examples$path"),
-                  description: null,
-                  __typename: "dataportal_Digg_Link",
-                  linktype: Dataportal_LinkType.External,
                 }}
                 heading={t("pages|startpage$good-examples")}
+              />
+            )}
+            {news && (
+              <PublicationList
+                publications={news}
+                showMoreLink={{
+                  title: t("pages|news$view-all"),
+                  slug: t("routes|news$path"),
+                }}
+                heading={t("pages|startpage$news")}
               />
             )}
           </>
         )}
 
         <div className={"fullWidth"}>
-          {/* todo: this width? */}
           {content && (
             <div className="content">
               <BlockList blocks={content} />
