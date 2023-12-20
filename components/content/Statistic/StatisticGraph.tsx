@@ -66,7 +66,7 @@ export const StatisticGraph: React.FC = () => {
   const BarSeries = useCanvas ? VerticalBarSeriesCanvas : VerticalBarSeries;
 
   return (
-    <div className="statistics-graph mb-lg w-full lg:mb-none lg:w-[78%]">
+    <div className="statistics-graph mb-lg w-full lg:mb-none lg:w-[79%]">
       <span className="sr-only">{t("pages|statistic$graph-screenreader")}</span>
 
       <div className="flex flex-col items-end">
@@ -77,7 +77,7 @@ export const StatisticGraph: React.FC = () => {
           margin={{
             bottom: 40,
             left: 70,
-            right: 0,
+            right: 10,
           }}
         >
           <XAxis
@@ -89,7 +89,7 @@ export const StatisticGraph: React.FC = () => {
           {/* @ts-ignore */}
           <BarSeries data={stats.x} barWidth={0.75} color="#CD7A6E" />
         </FlexibleXYPlot>
-        <span>{t("pages|statistic$dataset-numbers")}</span>
+        <span className="mr-md">{t("pages|statistic$dataset-numbers")}</span>
       </div>
     </div>
   );
