@@ -3,12 +3,12 @@ import {
   ContainerData_Dataportal_Digg_Container_Fragment,
   ModuleListDataFragment,
   FaqFragment,
-} from "../../graphql/__generated__/operations";
-import { ModuleDataFragment } from "../../graphql/__generated__/operations";
-import { Faq, RelatedContent, Media, Text, Form } from "../blocks";
-import Modules from "./Modules";
+} from "@/graphql/__generated__/operations";
+import { ModuleDataFragment } from "@/graphql/__generated__/operations";
+import { Faq, Media, Text, Form } from "@/components/blocks";
+import RelatedContentBlock from "@/components/content/blocks/RelatedContentBlock";
 
-interface ContentAreaProps {
+interface blockListProps {
   blocks:
     | ContainerData_Dataportal_Digg_Container_Fragment["blocks"]
     | ModuleDataFragment["blocks"];
@@ -20,7 +20,7 @@ interface ContentAreaProps {
  * @param pos the position of the FAQ
  * @returns FaqBlocks wrapped in <dl> element
  */
-const handleFaqs = (blocks: ContentAreaProps["blocks"], pos: number) => {
+const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
   // skip rendering if previous block was FAQ
   // because then in should already be rendered
   const previousBlock = blocks[pos - 1];
@@ -44,7 +44,7 @@ const handleFaqs = (blocks: ContentAreaProps["blocks"], pos: number) => {
   );
 };
 
-export const ContentArea: React.FC<ContentAreaProps> = ({ blocks }) => {
+export const BlockList: React.FC<blockListProps> = ({ blocks }) => {
   return (
     <>
       {blocks?.map((block, index) => {
@@ -60,13 +60,13 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ blocks }) => {
           case "dataportal_Digg_Faq":
             return handleFaqs(blocks, index);
           case "dataportal_Digg_RelatedContent":
-            return <RelatedContent {...block} key={id} />;
+            return <RelatedContentBlock {...block} key={id} inline={true} />;
           case "dataportal_Digg_ModuleList":
             const typedBlock = block as ModuleListDataFragment;
             return (
               typedBlock.modules &&
               typedBlock.modules.map((module) => (
-                <Modules {...module} key={module.identifier} />
+                <BlockList {...module} key={module.identifier} />
               ))
             );
           case "dataportal_Digg_FormBlock":
@@ -94,4 +94,4 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ blocks }) => {
   );
 };
 
-export default ContentArea;
+export default BlockList;

@@ -90,15 +90,11 @@ module.exports = {
       strong: 500,
     },
     fontSize: {
-      xs: ["0.75rem", { lineHeight: "1rem" }], // 12px/16px
       sm: ["0.875rem", { lineHeight: "1.25rem" }], // 14px/20px
       md: ["1rem", { lineHeight: "1.5rem" }], // 16px/24px
-      lg: ["1.125rem", { lineHeight: "1.75rem" }], // 18px/28px
-      xl: ["1.25rem", { lineHeight: "1.75rem" }], // 20px/28px
-      "2xl": ["1.5rem", { lineHeight: "2rem" }], // 24px/32px
-      "3xl": ["1.875rem", { lineHeight: "2.25rem" }], // 30px/36px
-      "4xl": ["2.25rem", { lineHeight: "2.5rem" }], // 36px/40px
-      "5xl": ["3rem", { lineHeight: "3.5rem" }], // 48px/56px
+      lg: ["1.25rem", { lineHeight: "1.75rem" }], // 20px/28px
+      xl: ["1.75rem", { lineHeight: "2.25rem" }], // 28px/36px
+      "2xl": ["3rem", { lineHeight: "3.5rem" }], // 48px/56px
     },
   },
 

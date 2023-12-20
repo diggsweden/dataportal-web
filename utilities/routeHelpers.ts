@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { BreadcrumbProps, IPuff } from "../components";
+import { BreadcrumbProps } from "@/components";
 
 /**
  * Make @param str URL-friendly
@@ -88,50 +88,3 @@ export const makeBreadcrumbsFromPath = (
   });
   return { name: inactiveCrumbName, crumbs };
 };
-
-const areasColors: ColorGroupOverride = {
-  accent: "black",
-  background: "pinkPop",
-};
-
-// todo - use translations for title and slugs
-export const areas: IPuff[] = [
-  {
-    title: "Livslångt lärande",
-    slug: "/livslangt-larande",
-    colors: areasColors,
-  },
-  { title: "Bilddata", slug: "/bilddata", colors: areasColors },
-  { title: "Elektriska vägar", slug: "/elektriska-vagar", colors: areasColors },
-  { title: "Rymddata", slug: "/rymddata", colors: areasColors },
-  { title: "Smart statistik", slug: "/smart-statistik", colors: areasColors },
-];
-
-const themesColors: ColorGroupOverride = {
-  accent: "pinkPop",
-  background: "gray800",
-};
-
-// todo - use translations for title and slugs
-export const themes: IPuff[] = [
-  {
-    title: "Upphandling",
-    slug: "/upphandling",
-    icon: "bookThin",
-    colors: themesColors,
-  },
-  {
-    title: "Innovation",
-    slug: "/innovation",
-    icon: "alien8bit",
-    colors: themesColors,
-  },
-  {
-    title: "Tema 3",
-    slug: "/tema-3",
-    icon: "binaryThin",
-    colors: themesColors,
-  },
-  { title: "Tema 4", slug: "/tema-4", icon: "menu", colors: themesColors },
-  { title: "Tema 5", slug: "/tema-5", icon: "arrowDrop", colors: themesColors },
-];
