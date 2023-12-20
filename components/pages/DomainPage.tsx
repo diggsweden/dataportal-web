@@ -144,7 +144,9 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
 
         {areas && !domain && lang === "sv" && (
           <div className="domain-page__link-block domain-page__theme-block">
-            <Heading size={"h3"}>{t("pages|data$data-areas_text")}</Heading>
+            <Heading size={"md"} level={2}>
+              {t("pages|data$data-areas_text")}
+            </Heading>
             <RelatedContentBlock links={areas} icons={true} />
           </div>
         )}

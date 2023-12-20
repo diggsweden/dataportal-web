@@ -29,7 +29,7 @@ const Promo: FC<{
         </div>
       )}
       <div className="flex h-full flex-col bg-white p-lg">
-        <Heading size="h5" className={inline ? "pb-lg" : ""}>
+        <Heading level={3} size="sm" className={inline ? "pb-lg" : ""}>
           {link.title}
         </Heading>
         {!inline && (

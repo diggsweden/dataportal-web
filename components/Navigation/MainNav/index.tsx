@@ -40,13 +40,15 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   }, [isEn]);
 
   return (
-    <div className="flex flex-row items-center justify-end md:justify-between">
+    <div className="flex flex-row items-center justify-between">
       <Link
-        className="hidden md:block"
         href={t(`common|${"lang-path"}`)}
         onClick={() => setOpenSideBar(false)}
       >
-        <DataportalLogo />
+        <DataportalLogo
+          viewBox="0 0 228 44"
+          className="h-[32px] w-[160px] md:h-[44px] md:w-[228px]"
+        />
       </Link>
       <div className="flex flex-row items-center">
         <nav className="hidden flex-row items-center gap-sm lg:flex">

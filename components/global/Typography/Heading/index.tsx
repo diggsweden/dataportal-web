@@ -1,27 +1,27 @@
-import React, { FC, HTMLAttributes, HTMLProps, PropsWithChildren } from "react";
+import React, { FC, HTMLAttributes, PropsWithChildren } from "react";
 import { cx, cva, VariantProps } from "class-variance-authority";
 
 const headingVariants = cva([], {
   variants: {
     size: {
-      h1: ["text-5xl"],
-      h2: ["text-2xl"],
-      h3: ["text-xl", "mb-lg"],
-      h4: ["text-md"],
-      h5: ["text-sm"],
+      lg: ["text-2xl"],
+      md: ["text-xl"],
+      sm: ["text-lg"],
     },
   },
   defaultVariants: {
-    size: "h1",
+    size: "md",
   },
 });
 
-type HeadingProps = VariantProps<typeof headingVariants>;
+type HeadingProps = VariantProps<typeof headingVariants> & {
+  level: 1 | 2 | 3;
+};
 
 const Heading: FC<
   PropsWithChildren<HeadingProps & HTMLAttributes<HTMLHeadElement>>
-> = ({ size, className, children }) => {
-  const CustomTag = size as keyof JSX.IntrinsicElements;
+> = ({ size, level, className, children }) => {
+  const CustomTag = `h${level}` as keyof JSX.IntrinsicElements;
   return (
     <CustomTag className={cx(headingVariants({ size }), className)}>
       {children}

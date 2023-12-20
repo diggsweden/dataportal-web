@@ -1,11 +1,18 @@
-import React, { FC, PropsWithChildren, useEffect, useState } from "react";
+import React, {
+  AnchorHTMLAttributes,
+  FC,
+  HTMLAttributes,
+  PropsWithChildren,
+  useEffect,
+  useState,
+} from "react";
 import { cx, cva, VariantProps } from "class-variance-authority";
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 import { usePathname } from "next/navigation";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import NavPixelsImage from "@/assets/icons/navPixels.svg";
-import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
+import ChevronRightIcon from "@/assets/icons/chevronRight.svg";
 
 const sideBarLinkVariants = cva(
   [
@@ -61,12 +68,12 @@ const MenuLink: FC<MenuLinkProps> = ({
             viewBox="0 0 24 24"
             width={24}
             height={24}
-            className={isActive && "[&_path]:fill-pink-600"}
+            className={isActive ? "[&_path]:fill-pink-600" : ""}
           />
         )}
         <span
           className={`z-50 underline-offset-4 group-hover:underline ${
-            isActive && "font-strong text-brown-900"
+            isActive ? "font-strong text-brown-900" : ""
           }`}
         >
           {label}
@@ -89,20 +96,13 @@ type SideBarLinkProps = VariantProps<typeof sideBarLinkVariants> & {
   icon?: any;
   href?: string;
   label: string;
-  className?: string;
   list?: any[];
   openSideBar?: boolean;
 };
 
-const SideBarLink: FC<PropsWithChildren<SideBarLinkProps>> = ({
-  level,
-  href,
-  className,
-  icon,
-  label,
-  list,
-  openSideBar,
-}) => {
+const SideBarLink: FC<
+  PropsWithChildren<SideBarLinkProps & HTMLAttributes<HTMLElement>>
+> = ({ level, href, className, icon, label, list, openSideBar }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const Icon = icon;
@@ -137,7 +137,7 @@ const SideBarLink: FC<PropsWithChildren<SideBarLinkProps>> = ({
           className="group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl"
           onClick={() => setOpen(!open)}
         >
-          <Icon className={open && "[&_path]:fill-pink-600"} />
+          <Icon className={open ? "[&_path]:fill-pink-600" : ""} />
           <span
             className={`underline-offset-4 group-hover:underline ${
               open && "font-strong text-brown-900"
@@ -145,7 +145,7 @@ const SideBarLink: FC<PropsWithChildren<SideBarLinkProps>> = ({
           >
             {label}
           </span>
-          <ArrowRightIcon
+          <ChevronRightIcon
             className={`absolute right-md ${
               open
                 ? "rotate-90 transition-all duration-300 ease-in-out [&_path]:fill-pink-600"
