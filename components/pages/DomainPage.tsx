@@ -11,7 +11,9 @@ import { handleDomain } from "../../utilities/domain";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Dataportal_LinkType } from "../../graphql/__generated__/types";
-import LinksBlock, { LinksBlockProps } from "../content/Blocks/LinksBlock";
+import LinksBlock, {
+  LinksBlockProps,
+} from "@/components/content/Blocks/LinksBlock";
 import Heading from "@/components/global/Typography/Heading";
 
 export interface DomainProps
@@ -141,7 +143,6 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
         {areas && !domain && lang === "sv" && (
           <div className="domain-page__link-block domain-page__theme-block">
             <Heading size={"h3"}>{t("pages|data$data-areas_text")}</Heading>
-
             <LinksBlock links={areas} icons={true} />
           </div>
         )}
