@@ -1,5 +1,4 @@
 import React, {
-  AnchorHTMLAttributes,
   FC,
   HTMLAttributes,
   PropsWithChildren,
@@ -16,7 +15,7 @@ import ChevronRightIcon from "@/assets/icons/chevronRight.svg";
 
 const sideBarLinkVariants = cva(
   [
-    "flex w-full cursor-pointer flex-row items-center gap-md p-md group text-md text-brown-600 overflow-y-hidden relative",
+    "flex w-full cursor-pointer flex-row no-underline items-center gap-md p-md group text-md text-brown-600 overflow-y-hidden relative",
   ],
   {
     variants: {
@@ -134,7 +133,7 @@ const SideBarLink: FC<
     return (
       <>
         <button
-          className="group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl"
+          className="group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl text-brown-600"
           onClick={() => setOpen(!open)}
         >
           <Icon className={open ? "[&_path]:fill-pink-600" : ""} />
