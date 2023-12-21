@@ -25,7 +25,7 @@ const GoodExamplesList: NextPage<PublicationListResponse> = (data) => {
   const metaTitle = t("pages|good-examples$social_meta_title");
 
   return (
-    <div id="news-list">
+    <div id="examples-list" className="my-xl">
       <Head>
         <title>{metaTitle}</title>
         <meta property="og:title" content={metaTitle} />

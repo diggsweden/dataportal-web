@@ -26,7 +26,7 @@ const NewsList: NextPage<PublicationListResponse> = (data) => {
   const metaTitle = t("pages|publications$social_meta_title");
 
   return (
-    <div id="news-list">
+    <div id="news-list" className="my-xl">
       <Head>
         <title>{metaTitle}</title>
         <meta property="og:title" content={metaTitle} />
