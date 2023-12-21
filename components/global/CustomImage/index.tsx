@@ -4,6 +4,7 @@ import { ImageFragment as ImageInterface } from "@/graphql/__generated__/operati
 import { isExternalLink } from "@/utilities";
 import Image from "next/image";
 import noImage from "@/assets/logos/noImage.png";
+
 interface CustomImageProps {
   image: ImageInterface | null;
   className?: string;

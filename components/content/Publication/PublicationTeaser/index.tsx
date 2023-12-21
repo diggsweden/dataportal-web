@@ -46,7 +46,7 @@ export const PublicationTeaser: React.FC<PublicationTeaser> = ({
           image={image}
           className="h-[184px] w-full object-cover md:h-[240px] lg:h-[184px]"
         />
-        <div className="px-md pt-lg text-sm text-brown-600">
+        <div className="text-textPrimary px-md pt-lg text-sm">
           <span>
             {getDate(createdAt)} Juni 2023 |{" "}
             {tags[0]?.value ? tags[0].value : t("pages|listpage$fallback-tag")}

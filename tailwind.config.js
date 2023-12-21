@@ -1,7 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 
-let primaryColor = "#CD7A6E";
-
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -27,7 +25,8 @@ module.exports = {
       xl: 1140,
     },
     colors: {
-      primary: primaryColor,
+      primary: "#CD7A6E",
+      textPrimary: "#2B2A29",
       white: "#FFFFFF",
       transparent: "#00000000",
       whiteOpaque5: "#FFFFFFE6",
@@ -49,7 +48,7 @@ module.exports = {
         100: "#EEF0EE",
       },
       pink: {
-        600: primaryColor,
+        600: "#CD7A6E",
         500: "#DCA29B",
         400: "#E6BDB8",
         200: "#F3DEDB",

@@ -5,7 +5,6 @@ import { ApolloProvider } from "@apollo/client";
 import {
   Breadcrumb,
   BreadcrumbProps,
-  CustomImage,
   LocalStore,
   LocalStoreProvider,
   SettingsProvider,
@@ -32,6 +31,7 @@ import SideBar from "@/components/navigation/SideBar";
 import Container from "@/components/layout/Container";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { CustomImage } from "@/components/global/CustomImage";
 
 const GetCookiesAccepted = () => {
   try {

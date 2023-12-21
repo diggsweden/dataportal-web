@@ -1,7 +1,8 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect } from "react";
-import { LocalStoreContext, SettingsContext } from "..";
-import { TrackingContext } from "../TrackingProvider";
+import { TrackingContext } from "@/components/TrackingProvider";
+import { SettingsContext } from "@/components/SettingsProvider";
+import { LocalStoreContext } from "@/components/LocalStoreProvider";
 
 export const CookieBanner: React.FC = () => {
   const { store, set } = useContext(LocalStoreContext);
