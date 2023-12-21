@@ -33,7 +33,6 @@ const GoodExamplesList: NextPage<PublicationListResponse> = (data) => {
         publications={data.publications}
         heading={data.heading}
       />
-      ;
     </div>
   );
 };

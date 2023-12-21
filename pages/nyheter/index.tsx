@@ -34,7 +34,6 @@ const NewsList: NextPage<PublicationListResponse> = (data) => {
         publications={data.publications}
         heading={data.heading}
       />
-      ;
     </div>
   );
 };
