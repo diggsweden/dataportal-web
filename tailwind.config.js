@@ -78,7 +78,6 @@ module.exports = {
       "2xl": "80px",
     },
     container: ({ theme }) => ({
-      center: true,
       padding: {
         DEFAULT: theme("spacing.md"),
         sm: theme("spacing.lg"),

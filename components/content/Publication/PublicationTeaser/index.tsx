@@ -2,7 +2,6 @@ import useTranslation from "next-translate/useTranslation";
 import React, { FC } from "react";
 import { CustomImage } from "@/components/global/CustomImage";
 import ArrowIcon from "@/assets/icons/arrowRight.svg";
-
 import {
   ContainerDataFragment as IContainer,
   PublicationDataFragment as Publication,
@@ -10,11 +9,13 @@ import {
 import Heading from "@/components/global/Typography/Heading";
 import Link from "next/link";
 
-type PublicationTeaser = {
+interface PublicationTeaserProps {
   publication: Publication | IContainer;
-};
+}
 
-export const PublicationTeaser: FC<PublicationTeaser> = ({ publication }) => {
+export const PublicationTeaser: FC<PublicationTeaserProps> = ({
+  publication,
+}) => {
   const { createdAt, tags, heading, slug, image } = publication;
   const { t } = useTranslation();
   const tag = tags[0].value;

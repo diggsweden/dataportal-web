@@ -9,9 +9,14 @@ const container = cva(["container"], {
       lg: ["max-w-lg"],
       xl: ["max-w-xl"],
     },
+    position: {
+      center: ["mx-auto"],
+      left: ["ml-none", "mr-auto"],
+    },
   },
   defaultVariants: {
     size: "xl",
+    position: "center",
   },
 });
 
@@ -19,8 +24,8 @@ type ContainerProps = VariantProps<typeof container>;
 
 const Container: FC<
   PropsWithChildren<ContainerProps & HTMLAttributes<HTMLDivElement>>
-> = ({ size, className, ...props }) => (
-  <div className={container({ size, className })} {...props} />
+> = ({ size, position, className, ...props }) => (
+  <div className={container({ size, position, className })} {...props} />
 );
 
 export default Container;
