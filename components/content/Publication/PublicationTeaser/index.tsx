@@ -26,7 +26,7 @@ export const PublicationTeaser: FC<PublicationTeaser> = ({ publication }) => {
       .replace(/[^\w\s-]/g, "")
       .replace(/[\s_-]+/g, "-")
       .replace(/^-+|-+$/g, "");
-    return cleanString + slug;
+    return cleanString === "nyhet" ? "nyheter" + slug : cleanString + slug;
   }
 
   function formatDate(date: string) {

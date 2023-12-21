@@ -275,7 +275,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   openSideBar ? "lg:w-[calc(100vw-300px)]" : "w-full"
                 }`}
               >
-                <Container>
+                <Container className="my-xl">
                   {heroImage?.url ? (
                     <div className="hero">
                       <CustomImage image={heroImage} />
