@@ -7,32 +7,23 @@ import {
 import { cx, cva, VariantProps } from "class-variance-authority";
 import Link from "next/link";
 
-const buttonVariants = cva(
-  [
-    "flex flex-row items-center w-fit [&_svg]:inline-flex disabled:bg-brown-400 disabled:text-brown-600 [&_path]:disabled:fill-brown-600 disabled:border-none no-underline",
-  ],
-  {
-    variants: {
-      size: {
-        sm: ["h-[32px] text-sm px-md gap-sm "],
-        lg: ["h-[44px] text-md px-md gap-sm "],
-      },
-      variant: {
-        primary: [
-          "bg-brown-600 text-brown-100 hover:bg-brown-800 [&_path]:fill-brown-100",
-        ],
-        secondary: [
-          "border-brown-600 border-2 bg-transparent text-brown-600 hover:bg-whiteOpaque5 [&_path]:fill-brown-600",
-        ],
-        plain: ["text-brown-600 hover:bg-brown-200 [&_path]:fill-brown-600"],
-      },
+const buttonVariants = cva(["button"], {
+  variants: {
+    size: {
+      sm: ["button--small"],
+      lg: ["button--large"],
     },
-    defaultVariants: {
-      size: "lg",
-      variant: "primary",
+    variant: {
+      primary: ["button--primary"],
+      secondary: ["button--secondary"],
+      plain: ["button--plain"],
     },
   },
-);
+  defaultVariants: {
+    size: "lg",
+    variant: "primary",
+  },
+});
 
 type IconLabelProps = {
   icon?: any;

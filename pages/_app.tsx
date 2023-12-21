@@ -10,28 +10,29 @@ import {
   SettingsProvider,
   TrackingProvider,
 } from "@/components";
-import { defaultSettings } from "../components/SettingsProvider/SettingsProvider";
+import { defaultSettings } from "@/components/SettingsProvider/SettingsProvider";
 import {
   click,
   DataportalPageProps,
   generateRandomKey,
   keyUp,
   resolvePage,
-} from "../utilities";
-import { EnvSettings, SettingsUtil } from "../env";
+} from "@/utilities";
+import { EnvSettings, SettingsUtil } from "@/env";
 import Head from "next/head";
-import { client } from "../graphql/client";
+import { client } from "@/graphql";
 import generateCSP from "../utilities/generateCsp";
-import { SeoDataFragment } from "../graphql/__generated__/operations";
+import { SeoDataFragment } from "@/graphql/__generated__/operations";
 import { useRouter } from "next/router";
 import reactenv from "@beam-australia/react-env";
-import { Settings_Sandbox } from "../env/Settings.Sandbox";
+import { Settings_Sandbox } from "@/env/Settings.Sandbox";
 import "../styles/global.css";
 import SideBar from "@/components/navigation/SideBar";
 import Container from "@/components/layout/Container";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { CustomImage } from "@/components/global/CustomImage";
+import CookieBanner from "@/components/CookieBanner/CookieBanner";
 
 const GetCookiesAccepted = () => {
   try {
@@ -253,9 +254,9 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
               />
             </Head>
             <div id="scriptsPlaceholder" />
-            {/*<CookieBanner />*/}
+            <CookieBanner />
             <div id="top" className="relative min-h-screen overflow-hidden">
-              {/*<SkipToContent text={t("skiptocontent")} />*/}
+              {/*@todo fix this -> <SkipToContent text={t("skiptocontent")} />*/}
               <Header
                 setOpenSideBar={setOpenSideBar}
                 openSideBar={openSideBar}

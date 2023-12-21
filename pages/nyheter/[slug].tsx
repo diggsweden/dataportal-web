@@ -3,7 +3,7 @@ import { getPublication } from "@/utilities";
 import { PublicationFull } from "@/components/content/Publication/PublicationFull";
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
-  const slug = ("/" + params?.news) as string;
+  const slug = ("/" + params?.slug) as string;
   return (await getPublication(slug, locale || "sv")) as any;
 };
 
