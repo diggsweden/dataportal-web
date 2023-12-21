@@ -4,6 +4,9 @@ import { PublicationResponse } from "@/utilities";
 import Container from "@/components/layout/Container";
 import { PublicationList } from "@/components/content/Publication/PublicationList";
 import { Hero } from "@/components/layout/Hero";
+import { formatDateWithTime } from "@/utilities/dateHelper";
+import Heading from "@/components/global/Typography/Heading";
+import DateIcon from "@/assets/icons/date.svg";
 
 const whitelistedTagsSV = ["Goda exempel", "Event", "Nyhet"];
 export const findPublicationTypeTag = (tags: PublicationResponse["tags"]) => {
@@ -30,18 +33,36 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
   tags,
   blocks,
   related,
+  publishedAt,
 }) => {
   let relatedHeading =
     "Fler " + getRelatedHeading(findPublicationTypeTag(tags)?.value || "");
   return (
-    <div>
-      <Hero heading={heading} preamble={preamble} image={image}></Hero>
-      <Container className="ml-0" position="left">
-        {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
+    <article>
+      <Hero heading={heading} preamble={preamble} image={image} />
+      <Container>
+        <main className="grid grid-cols-5 gap-xl">
+          {blocks && blocks.length > 0 && (
+            <div id="content" className="col-span-3">
+              <BlockList blocks={blocks} />
+            </div>
+          )}
+          <aside id="sidebar" className="col-span-2">
+            <Heading
+              level={4}
+              size="sm"
+              className="mb-sm flex text-textSecondary"
+            >
+              <DateIcon className="mr-sm" />
+              Publiceringsdatum
+            </Heading>
+            <p className="ml-lg pl-md">{formatDateWithTime(publishedAt)}</p>
+          </aside>
+        </main>
         {related && related.length > 0 && (
           <PublicationList publications={related} heading={relatedHeading} />
         )}
       </Container>
-    </div>
+    </article>
   );
 };

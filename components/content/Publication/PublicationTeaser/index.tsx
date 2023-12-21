@@ -8,6 +8,7 @@ import {
 } from "@/graphql/__generated__/operations";
 import Heading from "@/components/global/Typography/Heading";
 import Link from "next/link";
+import { formatDate } from "@/utilities/dateHelper";
 
 interface PublicationTeaserProps {
   publication: Publication | IContainer;
@@ -28,14 +29,6 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
       .replace(/[\s_-]+/g, "-")
       .replace(/^-+|-+$/g, "");
     return cleanString === "nyhet" ? "nyheter" + slug : cleanString + slug;
-  }
-
-  function formatDate(date: string) {
-    return new Date(date).toLocaleDateString("sv", {
-      year: "numeric",
-      day: "numeric",
-      month: "long",
-    });
   }
 
   return (
