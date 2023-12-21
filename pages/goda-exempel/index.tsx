@@ -7,6 +7,7 @@ import {
 import { NextPage } from "next";
 import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
+import Heading from "@/components/global/Typography/Heading";
 
 export async function getStaticProps({ locale }: any) {
   return await getPublicationsList([], ["Goda exempel"], locale || "sv", {
@@ -29,6 +30,9 @@ const GoodExamplesList: NextPage<PublicationListResponse> = (data) => {
         <title>{metaTitle}</title>
         <meta property="og:title" content={metaTitle} />
       </Head>
+      <Heading level={1} size={"lg"} className="mb-xl">
+        {data.heading}
+      </Heading>
       <PublicationList
         publications={data.publications}
         heading={data.heading}
