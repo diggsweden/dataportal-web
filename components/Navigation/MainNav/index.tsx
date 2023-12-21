@@ -42,7 +42,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   return (
     <div className="flex flex-row items-center justify-between">
       <Link
-        href={t(`common|${"lang-path"}`)}
+        href={`/${t(`common|${"lang-path"}`)}`}
         onClick={() => setOpenSideBar(false)}
       >
         <DataportalLogo
@@ -55,7 +55,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           {menues.map((menu: MainNavData, idx: number) => (
             <ButtonLink
               key={idx}
-              href={t(`routes|${menu.title}$path`)}
+              href={`/${t(`routes|${menu.title}$path`)}`}
               onClick={() => setOpenSideBar(false)}
               label={t(`routes|${menu.title}$title`)}
             />
