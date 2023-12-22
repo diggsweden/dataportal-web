@@ -72,8 +72,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   const [openSideBar, setOpenSideBar] = useState(false);
   const [breadcrumbState, setBreadcrumb] =
     useState<BreadcrumbProps>(initBreadcrumb);
-  const { seo, heroImage } =
-    resolvePage(pageProps as DataportalPageProps) || {};
+  const { seo } = resolvePage(pageProps as DataportalPageProps) || {};
   const { title, description, image, robotsFollow, robotsIndex } =
     (seo as SeoDataFragment) || {};
   const strapiImageUrl = image?.url;
@@ -84,7 +83,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   const allowSEO = env.envName == "prod" && !isDraft ? true : false;
   const appRenderKey = generateRandomKey(16);
   //eslint-disable-next-line
-  // console.log({ seo, blocks });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
