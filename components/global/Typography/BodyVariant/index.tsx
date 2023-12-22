@@ -5,9 +5,9 @@ const bodyVariants = cva(["text-md"], {
   variants: {
     variant: {
       p: [""],
-      ol: ["my-md list-decimal space-y-sm pl-sm"],
-      ul: ["my-md ml-lg list-disc space-y-sm pl-sm md:mb-xl"],
-      li: ["pl-xs text-sm md:text-md"],
+      ol: ["my-md ml-lg list-decimal space-y-xs pl-sm"],
+      ul: ["my-md ml-lg list-disc space-y-xs pl-sm"],
+      li: ["pl-xs text-md"],
     },
   },
   defaultVariants: {
