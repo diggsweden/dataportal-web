@@ -7,6 +7,7 @@ import { Hero } from "@/components/layout/Hero";
 import { formatDateWithTime } from "@/utilities/dateHelper";
 import Heading from "@/components/global/Typography/Heading";
 import DateIcon from "@/assets/icons/date.svg";
+import useTranslation from "next-translate/useTranslation";
 
 const whitelistedTagsSV = ["Goda exempel", "Event", "Nyhet"];
 export const findPublicationTypeTag = (tags: PublicationResponse["tags"]) => {
@@ -37,6 +38,7 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
 }) => {
   let relatedHeading =
     "Fler " + getRelatedHeading(findPublicationTypeTag(tags)?.value || "");
+  const { t } = useTranslation();
   return (
     <article>
       <Hero heading={heading} preamble={preamble} image={image} />
@@ -52,7 +54,7 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
               className="mb-sm flex text-textSecondary"
             >
               <DateIcon className="mr-sm" />
-              Publiceringsdatum
+              {t("common|published-date")}
             </Heading>
             <p className="ml-lg pl-md">{formatDateWithTime(publishedAt)}</p>
           </aside>
