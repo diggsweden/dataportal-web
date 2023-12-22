@@ -15,7 +15,7 @@ const headingVariants = cva([], {
 });
 
 type HeadingProps = VariantProps<typeof headingVariants> & {
-  level: 1 | 2 | 3 | 4;
+  level: 1 | 2 | 3 | 4 | 5 | 6;
 };
 
 const Heading: FC<

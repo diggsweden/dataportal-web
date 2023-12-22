@@ -47,26 +47,26 @@
 
 @layer base {
   a {
-    @apply text-md text-green-600 underline underline-offset-4;
+    @apply text-md underline underline-offset-4;
   }
 
   .button {
-    @apply flex flex-row items-center w-fit [&_svg]:inline-flex disabled:bg-brown-400 disabled:text-brown-600 [&_path]:disabled:fill-brown-600 disabled:border-none no-underline;
+    @apply flex w-fit flex-row items-center no-underline disabled:border-none disabled:bg-brown-400 disabled:text-brown-600 [&_path]:disabled:fill-brown-600 [&_svg]:inline-flex;
   }
   .button--primary {
-    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 [&_path]:fill-brown-100;
+    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 group-hover:bg-brown-800 [&_path]:fill-brown-100;
   }
   .button--secondary {
-    @apply border-brown-600 border-2 bg-transparent text-brown-600 hover:bg-whiteOpaque5 [&_path]:fill-brown-600;
+    @apply border-2 border-brown-600 bg-transparent text-brown-600 hover:bg-whiteOpaque5 group-hover:bg-whiteOpaque5 [&_path]:fill-brown-600;
   }
   .button--plain {
     @apply text-brown-600 hover:bg-brown-200 group-hover:bg-brown-200 [&_path]:fill-brown-600;
   }
   .button--small {
-    @apply h-[32px] text-sm px-md gap-sm;
+    @apply h-[32px] gap-sm px-md text-sm;
   }
   .button--large {
-    @apply h-[44px] text-md px-md gap-sm;
+    @apply h-[44px] gap-sm px-md text-md;
   }
 }
 
@@ -88,4 +88,3 @@
     display: none;
   }
 }
-

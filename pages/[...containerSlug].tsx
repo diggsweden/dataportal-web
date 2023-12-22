@@ -1,7 +1,7 @@
 import { getMultiContainer, MultiContainerResponse } from "@/utilities";
 import { GetStaticPaths } from "next/types";
 import { ContainerPage } from "@/components/pages/Articles";
-import { PublicationList } from "@/components/content/Publication/PublicationList";
+import { ListPage } from "@/components/content/ListPage";
 import { useRouter } from "next/router";
 
 export const Page: React.FC<MultiContainerResponse> = ({
@@ -26,7 +26,7 @@ export const Page: React.FC<MultiContainerResponse> = ({
 
   if (category && categoryContainers) {
     return (
-      <PublicationList
+      <ListPage
         type="PublicationList"
         publications={categoryContainers}
         category={category}

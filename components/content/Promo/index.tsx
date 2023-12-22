@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { ButtonLink } from "@/components/global/Button";
 import Heading from "@/components/global/Typography/Heading";
 import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
 
 export interface PromoProps {
   title: string;
@@ -15,37 +15,39 @@ export interface PromoProps {
 const Promo: FC<{
   link: PromoProps;
   icon?: any;
-  inline?: boolean;
-}> = ({ link, icon, inline }) => {
+}> = ({ link, icon }) => {
   const { t } = useTranslation("common");
 
   const Icon = icon;
 
   return (
-    <li className="flex flex-col bg-white">
+    <Link
+      href={link.slug}
+      target={link.linktype === "EXTERNAL" ? "_blank" : "_self"}
+      className="group flex h-full flex-col bg-white text-brown-900 no-underline"
+    >
       {icon && (
         <div className="flex justify-center bg-pink-600">
           <Icon />
         </div>
       )}
-      <div className="flex h-full flex-col bg-white p-lg">
-        <Heading level={3} size="sm" className={inline ? "pb-lg" : ""}>
+      <div className="flex h-full flex-col p-lg">
+        <Heading
+          level={3}
+          size="sm"
+          className={link.description ? "" : "pb-lg"}
+        >
           {link.title}
         </Heading>
-        {!inline && (
+        {link.description && (
           <p className="pb-lg pt-sm text-brown-600">{link.description}</p>
         )}
-        <ButtonLink
-          href={link.slug}
-          label={t("read-more")}
-          size="sm"
-          className="mt-auto"
-          icon={ArrowRightIcon}
-          iconPosition="right"
-          target={link.linktype === "EXTERNAL" ? "_blank" : "_self"}
-        />
+        <span className="button button--small button--primary mt-auto">
+          {t("read-more")}
+          <ArrowRightIcon height={16} width={16} viewBox="0 0 24 24" />
+        </span>
       </div>
-    </li>
+    </Link>
   );
 };
 

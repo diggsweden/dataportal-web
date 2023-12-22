@@ -54,7 +54,10 @@ const FooterNav: FC<FooterNavProps> = ({ setOpenSideBar }) => {
                     />
                   </Link>
                 ) : (
-                  <Link href={`/${t(`routes|${link.title}$path`)}`}>
+                  <Link
+                    className="inline-flex"
+                    href={`/${t(`routes|${link.title}$path`)}`}
+                  >
                     {t(`routes|${link.title}$title`)}
                   </Link>
                 )}

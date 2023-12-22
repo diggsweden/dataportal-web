@@ -5,8 +5,11 @@ import {
   FaqFragment,
 } from "@/graphql/__generated__/operations";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
-import { Faq, Media, Text, Form } from "@/components/blocks";
+import { Media } from "@/components/blocks";
+/* import Form from "@/components/Form/Form"; */
 import RelatedContentBlock from "@/components/content/blocks/RelatedContentBlock";
+import TextBlock from "@/components/content/blocks/TextBlock";
+import { AccordionBlock } from "../AccordionBlock";
 
 interface blockListProps {
   blocks:
@@ -36,11 +39,16 @@ const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
   const faqGroup = blocks.slice(pos, pos + i);
 
   return (
-    <dl className="faqblock" key={`content-${pos}-${faqGroup[0].id}`}>
-      {faqGroup.map((faq) => (
-        <Faq {...(faq as FaqFragment)} key={faq?.id} />
+    <ul
+      className="mx-sm my-xl max-w-[500px] divide-y divide-brown-200 border-y border-brown-200"
+      key={`content-${pos}-${faqGroup[0].id}`}
+    >
+      {faqGroup.map((faq, idx: number) => (
+        <li key={idx} className="px-xs">
+          <AccordionBlock {...(faq as FaqFragment)} key={faq?.id} />
+        </li>
       ))}
-    </dl>
+    </ul>
   );
 };
 
@@ -54,7 +62,7 @@ export const BlockList: React.FC<blockListProps> = ({ blocks }) => {
         const { id } = block || {};
         switch (block.__typename) {
           case "dataportal_Digg_Text":
-            return <Text {...block} key={id} />;
+            return <TextBlock {...block} key={id} />;
           case "dataportal_Digg_Media":
             return <Media {...block} key={id} />;
           case "dataportal_Digg_Faq":
@@ -71,13 +79,15 @@ export const BlockList: React.FC<blockListProps> = ({ blocks }) => {
             );
           case "dataportal_Digg_FormBlock":
             return (
-              <Form
-                key={block.id}
-                elements={block.elements}
-                id={block.id}
-                identifier={block.id}
-                __typename="dataportal_Digg_Form"
-              />
+              <>
+                {/*            <Form
+                  key={block.id}
+                  elements={block.elements}
+                  id={block.id}
+                  identifier={block.id}
+                  __typename="dataportal_Digg_Form"
+                /> */}
+              </>
             );
           default:
             return (

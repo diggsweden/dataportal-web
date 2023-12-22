@@ -118,9 +118,9 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             </>
           )}
 
-          <div className={"fullWidth"}>
+          <div className={"mb-xl"}>
             {content && (
-              <div className="content">
+              <div className="space-y-lg">
                 <BlockList blocks={content} />
               </div>
             )}
