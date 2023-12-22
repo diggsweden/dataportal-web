@@ -1,4 +1,4 @@
-export function formatDate(date: string) {
+export function formatDate(lang: string, date: string) {
   return new Date(date).toLocaleDateString("sv", {
     year: "numeric",
     day: "numeric",
@@ -6,7 +6,7 @@ export function formatDate(date: string) {
   });
 }
 
-export function formatDateWithTime(date: string) {
+export function formatDateWithTime(lang: string, date: string) {
   return new Date(date).toLocaleDateString("sv", {
     year: "numeric",
     day: "numeric",

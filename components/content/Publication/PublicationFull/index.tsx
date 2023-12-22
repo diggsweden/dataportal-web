@@ -38,7 +38,8 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
 }) => {
   let relatedHeading =
     "Fler " + getRelatedHeading(findPublicationTypeTag(tags)?.value || "");
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+
   return (
     <article>
       <Hero heading={heading} preamble={preamble} image={image} />
@@ -51,12 +52,14 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
             <Heading
               level={4}
               size="sm"
-              className="mb-sm flex text-textSecondary"
+              className="mb-md flex text-textSecondary"
             >
               <DateIcon className="mr-sm" />
               {t("common|published-date")}
             </Heading>
-            <p className="ml-lg pl-md">{formatDateWithTime(publishedAt)}</p>
+            <p className="ml-lg pl-md">
+              {formatDateWithTime(lang, publishedAt)}
+            </p>
           </aside>
         </div>
         {related && related.length > 0 && (

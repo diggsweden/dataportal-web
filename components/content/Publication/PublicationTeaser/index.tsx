@@ -18,7 +18,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
   publication,
 }) => {
   const { createdAt, tags, heading, slug, image } = publication;
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const tag = tags[0].value;
 
   function getUrlWithTag(tag: string) {
@@ -44,7 +44,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
         <div className="px-md pt-lg text-sm text-textPrimary">
           <span className="text-textSecondary">
             {tag ? tag : t("pages|listpage$fallback-tag")} |{" "}
-            {formatDate(createdAt)}
+            {formatDate(lang, createdAt)}
           </span>
           <Heading className="pb-md pt-sm" level={3} size={"sm"}>
             {heading}
