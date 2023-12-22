@@ -30,7 +30,6 @@ import "../styles/global.css";
 import SideBar from "@/components/navigation/SideBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { CustomImage } from "@/components/global/CustomImage";
 import CookieBanner from "@/components/CookieBanner/CookieBanner";
 
 const GetCookiesAccepted = () => {

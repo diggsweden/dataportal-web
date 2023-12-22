@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/components";
 import { ContainerNavigation } from "@/components/navigation";
-import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "../../../graphql/__generated__/operations";
+import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "@/graphql/__generated__/operations";
+import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
 import { isIE } from "@/utilities";
 import { checkLang } from "@/utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
-import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
 import BlockList from "@/components/content/blocks/BlockList";
 import Heading from "@/components/global/Typography/Heading";
 import Container from "@/components/layout/Container";

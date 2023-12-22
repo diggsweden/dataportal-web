@@ -1,10 +1,11 @@
-import { getMultiContainer, MultiContainerResponse } from "@/utilities";
+import { FC } from "react";
 import { GetStaticPaths } from "next/types";
+import { useRouter } from "next/router";
+import { getMultiContainer, MultiContainerResponse } from "@/utilities";
 import { ContainerPage } from "@/components/pages/Articles";
 import { ListPage } from "@/components/content/ListPage";
-import { useRouter } from "next/router";
 
-export const Page: React.FC<MultiContainerResponse> = ({
+export const Page: FC<MultiContainerResponse> = ({
   container,
   related,
   category,

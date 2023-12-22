@@ -8,7 +8,11 @@ import { PublicationList } from "@/components/content/Publication/PublicationLis
 import { PublicationListResponse } from "@/utilities";
 import { Pagination } from "@/components/global/Pagination";
 
-export const ListPage: FC<PublicationListResponse> = (data) => {
+export const ListPage: FC<PublicationListResponse> = ({
+  publications,
+  seo,
+  heading,
+}) => {
   const { trackPageView } = useMatomo();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageNumber, setPageNumber] = useState(0);
@@ -16,16 +20,14 @@ export const ListPage: FC<PublicationListResponse> = (data) => {
   const pathname = usePathname();
   const publicationsPerPage = 12;
   const articlesVisited = pageNumber * publicationsPerPage;
-  const publicationsOnPage = data.publications.slice(
+  const publicationsOnPage = publications.slice(
     articlesVisited,
     articlesVisited + publicationsPerPage,
   );
-
-  const metaTitle = data.seo!.title;
-  const metaDescription = data.seo!.description;
+  const { title, description } = seo || {};
 
   useEffect(() => {
-    trackPageView({ documentTitle: data.heading });
+    trackPageView({ documentTitle: heading });
   }, [pathname]);
 
   useEffect(() => {
@@ -40,28 +42,32 @@ export const ListPage: FC<PublicationListResponse> = (data) => {
   return (
     <div id="news-list" className="my-xl">
       <Head>
-        <title>{data.seo!.title}</title>
-        {metaTitle && <meta property="og:title" content={metaTitle} />}
-        {metaDescription && (
-          <meta property="og:description" content={metaDescription} />
+        <title>{title}</title>
+        {title && <meta property="og:title" content={title} />}
+        {description && (
+          <>
+            <meta name="description" content={description} />
+            <meta name="og:description" content={description} />
+            <meta name="twitter:description" content={description} />
+          </>
         )}
       </Head>
 
       <Container>
         <Heading level={1} size={"lg"} className="mb-xl">
-          {data.heading}
+          {heading}
         </Heading>
       </Container>
 
       <Container>
         <PublicationList
           publications={publicationsOnPage}
-          heading={`${publicationsOnPage.length} ${data.heading}`}
+          heading={`${publicationsOnPage.length} ${heading}`}
         />
 
         <div className="flex justify-center">
           <Pagination
-            publications={data.publications}
+            publications={publications}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
           />
