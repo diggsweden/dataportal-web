@@ -15,6 +15,7 @@ import useTranslation from "next-translate/useTranslation";
 import Heading from "@/components/global/Typography/Heading";
 import Container from "@/components/layout/Container";
 import { Hero } from "@/components/layout/Hero";
+import { Preamble } from "@/components/global/Typography/Preamble";
 
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
@@ -67,16 +68,22 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
     };
   }
 
+  let conditionalPreamble = domain === "data" ? null : preamble;
+
   return (
     <div id="DomainPage">
       <Hero
         heading={heading}
-        preamble={preamble}
+        preamble={conditionalPreamble}
         image={props.image}
         search={searchProps}
       />
 
       <Container>
+        {domain === "data" && (
+          <Preamble className="max-w-md">{preamble}</Preamble>
+        )}
+
         {puffs && <RelatedContentBlock links={puffs.links as PromoProps[]} />}
 
         {/* I´ll be back for this */}
@@ -106,11 +113,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
         )}
 
         <div className={"mb-xl"}>
-          {content && (
-            <div className="space-y-lg">
-              <BlockList blocks={content} />
-            </div>
-          )}
+          {content && <BlockList blocks={content} />}
         </div>
 
         {domain === "data" && <CategoriesNav />}

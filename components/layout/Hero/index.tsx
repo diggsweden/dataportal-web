@@ -5,12 +5,14 @@ import { CustomImage } from "@/components/global/CustomImage";
 import { ImageFragment } from "@/graphql/__generated__/operations";
 import Container from "@/components/layout/Container";
 import { useRouter } from "next/router";
+import { SearchInput } from "@/components/global/Form/SearchInput";
+import { Preamble } from "@/components/global/Typography/Preamble";
 
 interface HeroProps {
   heading: string | null;
   preamble?: string | null;
   image: ImageFragment | null;
-  search: SearchProps | null;
+  search?: SearchProps | null;
 }
 
 interface SearchProps {
@@ -20,7 +22,6 @@ interface SearchProps {
 
 export const Hero: FC<HeroProps> = ({ heading, preamble, image, search }) => {
   const { pathname } = useRouter();
-
   const isFrontpage = pathname === "/";
 
   return (
@@ -45,13 +46,7 @@ export const Hero: FC<HeroProps> = ({ heading, preamble, image, search }) => {
               </Heading>
             )}
             {preamble && (
-              <div
-                className={`text-lg ${
-                  search ? "text-brown-100" : "text-textSecondary"
-                }`}
-              >
-                {preamble}
-              </div>
+              <Preamble color={search ? "light" : "dark"}>{preamble}</Preamble>
             )}
             {search && (
               <div id="SearchHero" className="mt-xl">
@@ -63,12 +58,9 @@ export const Hero: FC<HeroProps> = ({ heading, preamble, image, search }) => {
                   <label className="sr-only" htmlFor="start-search">
                     {search.placeholder}
                   </label>
-                  <input
+                  <SearchInput
                     id="start-search"
-                    name="q"
-                    autoComplete="off"
                     placeholder={search.placeholder}
-                    className="w-full bg-white p-md text-textPrimary"
                   />
                 </form>
               </div>
