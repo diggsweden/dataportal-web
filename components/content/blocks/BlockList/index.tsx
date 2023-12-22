@@ -40,12 +40,12 @@ const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
 
   return (
     <ul
-      className="mx-sm my-xl max-w-[500px] divide-y divide-brown-200 border-y border-brown-200"
+      className="my-xl divide-y divide-brown-200 border-y border-brown-200"
       key={`content-${pos}-${faqGroup[0].id}`}
     >
-      {faqGroup.map((faq, idx: number) => (
-        <li key={idx} className="px-xs">
-          <AccordionBlock {...(faq as FaqFragment)} key={faq?.id} />
+      {faqGroup.map((faq) => (
+        <li key={faq.id} className="px-xs">
+          <AccordionBlock {...(faq as FaqFragment)} idx={faq.id} />
         </li>
       ))}
     </ul>
