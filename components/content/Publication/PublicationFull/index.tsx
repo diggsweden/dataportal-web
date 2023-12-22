@@ -41,13 +41,11 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
     <article>
       <Hero heading={heading} preamble={preamble} image={image} />
       <Container>
-        <main className="grid grid-cols-5 gap-xl">
-          {blocks && blocks.length > 0 && (
-            <div id="content" className="col-span-3">
-              <BlockList blocks={blocks} />
-            </div>
-          )}
-          <aside id="sidebar" className="col-span-2">
+        <div className="grid gap-xl md:grid-cols-5">
+          <main id="content" className="order-2 col-span-3 md:order-1">
+            {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
+          </main>
+          <aside id="sidebar" className="order-1 col-span-2 md:order-2">
             <Heading
               level={4}
               size="sm"
@@ -58,7 +56,7 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
             </Heading>
             <p className="ml-lg pl-md">{formatDateWithTime(publishedAt)}</p>
           </aside>
-        </main>
+        </div>
         {related && related.length > 0 && (
           <PublicationList publications={related} heading={relatedHeading} />
         )}

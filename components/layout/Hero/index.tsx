@@ -25,7 +25,9 @@ export const Hero: FC<HeroProps> = ({ heading, preamble, image }) => (
             {checkLang(heading)}
           </Heading>
         )}
-        {preamble && <div className="text-textSecondary">{preamble}</div>}
+        {preamble && (
+          <div className="text-lg text-textSecondary">{preamble}</div>
+        )}
       </div>
     </Container>
   </div>
