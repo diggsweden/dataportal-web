@@ -1,5 +1,5 @@
 import { getRootAggregate } from "../utilities";
-import DomainPage from "./oppen-kallkod";
+import { DomainPage } from "@/components/content/DomainPage";
 
 export async function getStaticProps({ locale }: any) {
   return await getRootAggregate(locale);
