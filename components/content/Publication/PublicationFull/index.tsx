@@ -52,7 +52,7 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
             <Heading
               level={4}
               size="sm"
-              className="text-textSecondary mb-md flex"
+              className="mb-md flex text-textSecondary"
             >
               <DateIcon className="mr-sm" />
               {t("common|published-date")}

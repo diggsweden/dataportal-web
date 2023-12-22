@@ -28,7 +28,9 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
       .replace(/[^\w\s-]/g, "")
       .replace(/[\s_-]+/g, "-")
       .replace(/^-+|-+$/g, "");
-    return cleanString === "nyhet" ? "nyheter" + slug : cleanString + slug;
+    return cleanString === "nyhet"
+      ? "/nyheter" + slug
+      : "/" + cleanString + slug;
   }
 
   return (
