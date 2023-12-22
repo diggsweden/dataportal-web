@@ -133,7 +133,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               <Heading size={"md"} level={2}>
                 {t("pages|data$data-areas_text")}
               </Heading>
-              <RelatedContentBlock links={areas} icons={true} />
+              <RelatedContentBlock links={areas} icons={true} inline={true} />
             </div>
           )}
 

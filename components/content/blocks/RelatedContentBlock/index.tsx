@@ -5,7 +5,6 @@ import HeartIcon from "@/assets/linkIcons/heart.svg";
 import PieChartIcon from "@/assets/linkIcons/pieChart.svg";
 import PlanetIcon from "@/assets/linkIcons/planet.svg";
 import Promo, { PromoProps } from "@/components/content/Promo";
-import Link from "next/link";
 
 interface RelatedContentProps {
   links: PromoProps[] | any;
@@ -29,26 +28,20 @@ const RelatedContentBlock: FC<RelatedContentProps> = ({
 
   return (
     <ul
-      className={`${icons ? "gap-xl" : "gap-lg"} ${
-        inline
-          ? "flex list-inside list-disc flex-col gap-none pl-sm text-green-600"
-          : "grid list-none grid-flow-row auto-rows-fr py-xl md:grid-cols-2 lg:grid-cols-3"
+      className={`grid grid-flow-row auto-rows-fr py-xl md:grid-cols-2 lg:grid-cols-3 ${
+        icons ? "gap-xl" : "gap-lg"
       }`}
     >
-      {links.map((link: PromoProps, idx: number) => (
-        <li key={idx} className={inline ? "" : "flex flex-col bg-white"}>
-          {inline ? (
-            <Link
-              href={link.slug}
-              target={link.linktype === "EXTERNAL" ? "_blank" : "_self"}
-            >
-              {link.title}
-            </Link>
-          ) : (
-            <Promo icon={icons && linkIcons[idx]} link={link} />
-          )}
-        </li>
-      ))}
+      {links.map((link: PromoProps, idx: number) => {
+        return (
+          <Promo
+            key={idx}
+            icon={icons && linkIcons[idx]}
+            link={link}
+            inline={inline}
+          />
+        );
+      })}
     </ul>
   );
 };

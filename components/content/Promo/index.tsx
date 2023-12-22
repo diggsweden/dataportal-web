@@ -15,7 +15,8 @@ export interface PromoProps {
 const Promo: FC<{
   link: PromoProps;
   icon?: any;
-}> = ({ link, icon }) => {
+  inline?: boolean;
+}> = ({ link, icon, inline }) => {
   const { t } = useTranslation("common");
 
   const Icon = icon;
@@ -35,11 +36,11 @@ const Promo: FC<{
         <Heading
           level={3}
           size="sm"
-          className={link.description ? "" : "pb-lg"}
+          className={link.description && !inline ? "" : "pb-lg"}
         >
           {link.title}
         </Heading>
-        {link.description && (
+        {link.description && !inline && (
           <p className="pb-lg pt-sm text-brown-600">{link.description}</p>
         )}
         <span className="button button--small button--primary mt-auto">
