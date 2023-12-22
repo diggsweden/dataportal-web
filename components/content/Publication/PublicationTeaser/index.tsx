@@ -2,21 +2,23 @@ import useTranslation from "next-translate/useTranslation";
 import React, { FC } from "react";
 import { CustomImage } from "@/components/global/CustomImage";
 import ArrowIcon from "@/assets/icons/arrowRight.svg";
-
 import {
   ContainerDataFragment as IContainer,
   PublicationDataFragment as Publication,
 } from "@/graphql/__generated__/operations";
 import Heading from "@/components/global/Typography/Heading";
 import Link from "next/link";
+import { formatDate } from "@/utilities/dateHelper";
 
-type PublicationTeaser = {
+interface PublicationTeaserProps {
   publication: Publication | IContainer;
-};
+}
 
-export const PublicationTeaser: FC<PublicationTeaser> = ({ publication }) => {
+export const PublicationTeaser: FC<PublicationTeaserProps> = ({
+  publication,
+}) => {
   const { createdAt, tags, heading, slug, image } = publication;
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const tag = tags[0].value;
 
   function getUrlWithTag(tag: string) {
@@ -27,14 +29,6 @@ export const PublicationTeaser: FC<PublicationTeaser> = ({ publication }) => {
       .replace(/[\s_-]+/g, "-")
       .replace(/^-+|-+$/g, "");
     return cleanString === "nyhet" ? "nyheter" + slug : cleanString + slug;
-  }
-
-  function formatDate(date: string) {
-    return new Date(date).toLocaleDateString("sv", {
-      year: "numeric",
-      day: "numeric",
-      month: "long",
-    });
   }
 
   return (
@@ -50,7 +44,7 @@ export const PublicationTeaser: FC<PublicationTeaser> = ({ publication }) => {
         <div className="px-md pt-lg text-sm text-textPrimary">
           <span className="text-textSecondary">
             {tag ? tag : t("pages|listpage$fallback-tag")} |{" "}
-            {formatDate(createdAt)}
+            {formatDate(lang, createdAt)}
           </span>
           <Heading className="pb-md pt-sm" level={3} size={"sm"}>
             {heading}

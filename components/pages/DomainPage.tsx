@@ -7,13 +7,14 @@ import { checkLang } from "@/utilities";
 import { handleDomain } from "@/utilities/domain";
 import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__generated__/operations";
 import { PublicationDataFragment as IPublication } from "@/graphql/__generated__/operations";
-import { PublicationList } from "@/components/content/PublicationList";
+import { PublicationList } from "@/components/content/Publication/PublicationList";
 import { PromoProps } from "@/components/content/Promo";
 import { CategoriesNav } from "@/components/StartPageComponents";
 import RelatedContentBlock from "@/components/content/blocks/RelatedContentBlock";
 import BlockList from "@/components/content/blocks/BlockList";
 import useTranslation from "next-translate/useTranslation";
 import Heading from "@/components/global/Typography/Heading";
+import Container from "@/components/layout/Container";
 
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
@@ -88,77 +89,79 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           </div>
         </div>
 
-        {puffs && <RelatedContentBlock links={puffs.links as PromoProps[]} />}
+        <Container>
+          {puffs && <RelatedContentBlock links={puffs.links as PromoProps[]} />}
 
-        {/* I´ll be back for this */}
-        {!isEn && pathname === `/` && (
-          <>
-            {example && (
-              <PublicationList
-                publications={example}
-                showMoreLink={{
-                  title: t("pages|good-examples$view-all"),
-                  slug: t("routes|good-examples$path"),
-                }}
-                heading={t("pages|startpage$good-examples")}
-              />
-            )}
-            {news && (
-              <PublicationList
-                publications={news}
-                showMoreLink={{
-                  title: t("pages|news$view-all"),
-                  slug: t("routes|news$path"),
-                }}
-                heading={t("pages|startpage$news")}
-              />
-            )}
-          </>
-        )}
+          {/* I´ll be back for this */}
+          {!isEn && pathname === `/` && (
+            <>
+              {example && (
+                <PublicationList
+                  publications={example}
+                  showMoreLink={{
+                    title: t("pages|good-examples$view-all"),
+                    slug: t("routes|good-examples$path"),
+                  }}
+                  heading={t("pages|startpage$good-examples")}
+                />
+              )}
+              {news && (
+                <PublicationList
+                  publications={news}
+                  showMoreLink={{
+                    title: t("pages|news$view-all"),
+                    slug: t("routes|news$path"),
+                  }}
+                  heading={t("pages|startpage$news")}
+                />
+              )}
+            </>
+          )}
 
-        <div className={"fullWidth"}>
-          {content && (
-            <div className="content">
-              <BlockList blocks={content} />
+          <div className={"fullWidth"}>
+            {content && (
+              <div className="content">
+                <BlockList blocks={content} />
+              </div>
+            )}
+          </div>
+
+          {domain === "data" && <CategoriesNav />}
+
+          {areas && !domain && lang === "sv" && (
+            <div className="domain-page__link-block domain-page__theme-block">
+              <Heading size={"md"} level={2}>
+                {t("pages|data$data-areas_text")}
+              </Heading>
+              <RelatedContentBlock links={areas} icons={true} />
             </div>
           )}
-        </div>
 
-        {domain === "data" && <CategoriesNav />}
+          {!domain && (
+            <section id="statistics" className="my-xl">
+              <div className="mb-2xl flex items-end justify-between">
+                <Heading level={2} size={"lg"}>
+                  {t("pages|statistic$statistic-numbers")}
+                </Heading>
+                <Link
+                  href={`/${t("routes|statistics$path")}`}
+                  locale={lang}
+                  className="statistic-link"
+                  legacyBehavior
+                >
+                  {t("pages|statistic$statistic-link")}
+                </Link>
+              </div>
 
-        {areas && !domain && lang === "sv" && (
-          <div className="domain-page__link-block domain-page__theme-block">
-            <Heading size={"md"} level={2}>
-              {t("pages|data$data-areas_text")}
-            </Heading>
-            <RelatedContentBlock links={areas} icons={true} />
-          </div>
-        )}
+              <div className="mb-2xl flex flex-wrap justify-between">
+                <DynamicStatisticGraph />
+                <DynamicStatisticNumbers />
+              </div>
 
-        {!domain && (
-          <section id="statistics" className="my-xl">
-            <div className="mb-2xl flex items-end justify-between">
-              <Heading level={2} size={"lg"}>
-                {t("pages|statistic$statistic-numbers")}
-              </Heading>
-              <Link
-                href={`/${t("routes|statistics$path")}`}
-                locale={lang}
-                className="statistic-link"
-                legacyBehavior
-              >
-                {t("pages|statistic$statistic-link")}
-              </Link>
-            </div>
-
-            <div className="mb-2xl flex flex-wrap justify-between">
-              <DynamicStatisticGraph />
-              <DynamicStatisticNumbers />
-            </div>
-
-            <DynamicStatistic />
-          </section>
-        )}
+              <DynamicStatistic />
+            </section>
+          )}
+        </Container>
       </div>
     </div>
   );
