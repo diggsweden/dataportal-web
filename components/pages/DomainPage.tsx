@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { checkLang } from "@/utilities";
 import { handleDomain } from "@/utilities/domain";
 import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__generated__/operations";
 import { PublicationDataFragment as IPublication } from "@/graphql/__generated__/operations";
@@ -59,26 +58,23 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
     trackPageView({ documentTitle: "OpenSource" });
   }, [pathname]);
 
+  let searchProps = null;
+
+  if (pathname === "/" || domain === "data") {
+    searchProps = {
+      destination: `/${lang}/datasets`,
+      placeholder: t("startpage$search_placeholder"),
+    };
+  }
+
   return (
     <div id="DomainPage">
-      <Hero heading={heading} preamble={preamble} image={props.image} />
-      {domain === "data" && (
-        <form
-          className="datapage-form"
-          method="GET"
-          action={`/${lang}/datasets`}
-        >
-          <label className="screen-reader" htmlFor="start-search">
-            {t("startpage$search_placeholder")}
-          </label>
-          <input
-            id="start-search"
-            name="q"
-            autoComplete="off"
-            placeholder={t("startpage$search_placeholder")}
-          />
-        </form>
-      )}
+      <Hero
+        heading={heading}
+        preamble={preamble}
+        image={props.image}
+        search={searchProps}
+      />
 
       <Container>
         {puffs && <RelatedContentBlock links={puffs.links as PromoProps[]} />}
