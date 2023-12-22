@@ -5,9 +5,9 @@ import { isIE } from "@/utilities";
 import { checkLang } from "@/utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
 import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
 import BlockList from "@/components/content/blocks/BlockList";
+import Heading from "@/components/global/Typography/Heading";
 
 /**
  * Uses prismjs to style codeblock
@@ -101,14 +101,13 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 }) => {
   const [menuItems, setMenuItems] = useState<Anchorlink[]>([]);
   const { asPath } = useRouter() || {};
-  const { t } = useTranslation();
   const { trackPageView } = useMatomo();
-  const AnchorLinkMenuRef = React.createRef<HTMLDivElement>(); //for making changes in ms edge legacy
+
   const { appRenderKey } = useContext(SettingsContext);
 
   // todo - add some conditions for these
-  const showContentMenu = menuItems[0] && menuItems.length > 2;
-  const fullWidth = false;
+  // const showContentMenu = menuItems[0] && menuItems.length > 2;
+
   const hasRelatedContent = related && related.length > 2;
 
   useEffect(() => {
@@ -134,29 +133,19 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   }, [asPath]);
 
   return (
-    <div className="container">
+    <div className="mt-xl space-y-xl">
       {hasRelatedContent && (
         <ContainerNavigation related={related} domain={domain} />
       )}
-      {heading && <h2>{checkLang(heading)}</h2>}
-      <div>
-        {!fullWidth && (
-          <div className="anchorlink_wrapper">
-            {showContentMenu && (
-              // <AnchorLinkMenu
-              //   menuItems={menuItems}
-              //   menuHeading={t("common|content-menu-heading")}
-              //   anchorLinkMenuRef={AnchorLinkMenuRef}
-              // />
-              <div></div>
-            )}
-          </div>
-        )}
+      {heading && (
+        <Heading size={"lg"} level={1}>
+          {checkLang(heading)}
+        </Heading>
+      )}
 
-        <div className={fullWidth ? fullWidth : "content"}>
-          <p className="preamble text-lg">{checkLang(preamble)}</p>
-          {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
-        </div>
+      <div className="max-w-md space-y-xl">
+        <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
+        {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
       </div>
     </div>
   );

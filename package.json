@@ -25,6 +25,7 @@
     "fetch-enhanced": "^8.1.1",
     "focus-trap-react": "^10.0.0",
     "graphql": "16.4.0",
+    "html-react-parser": "^5.0.11",
     "https-proxy-agent": "^5.0.1",
     "lucene": "^2.1.1",
     "meilisearch": "^0.27.0",
