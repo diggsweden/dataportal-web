@@ -108,7 +108,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   const { appRenderKey } = useContext(SettingsContext);
 
   // todo - add some conditions for these
-  // const showContentMenu = menuItems[0] && menuItems.length > 2;
+  const showContentMenu = menuItems[0] && menuItems.length > 2;
 
   const hasRelatedContent = related && related.length > 2;
 
@@ -145,6 +145,16 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
             {checkLang(heading)}
           </Heading>
         )}
+        <div className="anchorlink_wrapper">
+          {showContentMenu && (
+            // <AnchorLinkMenu
+            //   menuItems={menuItems}
+            //   menuHeading={t("common|content-menu-heading")}
+            //   anchorLinkMenuRef={AnchorLinkMenuRef}
+            // />
+            <div></div>
+          )}
+        </div>
 
         <div className="max-w-md space-y-xl">
           <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
