@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ContainerNavigation, SettingsContext } from "@/components";
+import { SettingsContext } from "@/components";
+import { ContainerNavigation } from "@/components/navigation";
 import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "../../../graphql/__generated__/operations";
 import { isIE } from "@/utilities";
 import { checkLang } from "@/utilities";
@@ -8,6 +9,7 @@ import { useRouter } from "next/router";
 import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
 import BlockList from "@/components/content/blocks/BlockList";
 import Heading from "@/components/global/Typography/Heading";
+import Container from "@/components/layout/Container";
 
 /**
  * Uses prismjs to style codeblock
@@ -133,20 +135,22 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   }, [asPath]);
 
   return (
-    <div className="mt-xl space-y-xl">
-      {hasRelatedContent && (
-        <ContainerNavigation related={related} domain={domain} />
-      )}
-      {heading && (
-        <Heading size={"lg"} level={1}>
-          {checkLang(heading)}
-        </Heading>
-      )}
+    <Container>
+      <div className="mt-xl space-y-xl">
+        {hasRelatedContent && (
+          <ContainerNavigation related={related} domain={domain} />
+        )}
+        {heading && (
+          <Heading size={"lg"} level={1}>
+            {checkLang(heading)}
+          </Heading>
+        )}
 
-      <div className="max-w-md space-y-xl">
-        <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
-        {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
+        <div className="max-w-md space-y-xl">
+          <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
+          {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
+        </div>
       </div>
-    </div>
+    </Container>
   );
 };

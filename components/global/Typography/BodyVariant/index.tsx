@@ -1,6 +1,5 @@
 import React, { FC, PropsWithChildren } from "react";
 import { cx, cva, VariantProps } from "class-variance-authority";
-import Link from "next/link";
 
 const bodyVariants = cva(["text-md"], {
   variants: {
@@ -25,25 +24,13 @@ const BodyVariant: FC<PropsWithChildren<BodyProps>> = ({
   variant,
   className,
   children,
-  href,
 }) => {
   const CustomTag = variant as keyof JSX.IntrinsicElements;
 
-  if (variant === "a" && href) {
-    return (
-      <Link
-        className={cx(bodyVariants({ variant }), className)}
-        href={href}
-        target={"_blank"}
-      >
-        {children}
-      </Link>
-    );
-  } else
-    return (
-      <CustomTag className={cx(bodyVariants({ variant }), className)}>
-        {children}
-      </CustomTag>
-    );
+  return (
+    <CustomTag className={cx(bodyVariants({ variant }), className)}>
+      {children}
+    </CustomTag>
+  );
 };
 export default BodyVariant;

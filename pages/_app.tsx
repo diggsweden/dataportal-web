@@ -28,7 +28,6 @@ import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "@/env/Settings.Sandbox";
 import "../styles/global.css";
 import SideBar from "@/components/navigation/SideBar";
-import Container from "@/components/layout/Container";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { CustomImage } from "@/components/global/CustomImage";
@@ -275,19 +274,10 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   openSideBar ? "lg:w-[calc(100vw-300px)]" : "w-full"
                 }`}
               >
-                <Container>
-                  {heroImage?.url ? (
-                    <div className="hero">
-                      <CustomImage image={heroImage} />
-                    </div>
-                  ) : (
-                    (pageProps as DataportalPageProps).type ===
-                      "MultiContainer" ||
-                    ((pageProps as DataportalPageProps).type ===
-                      "Publication" && <div />)
-                  )}
-                  <Component {...pageProps} />
-                </Container>
+                {/*{(pageProps as DataportalPageProps).type === "MultiContainer" ||*/}
+                {/*  ((pageProps as DataportalPageProps).type ===*/}
+                {/*    "Publication" && <div />)}*/}
+                <Component {...pageProps} />
               </main>
               <Footer
                 setOpenSideBar={setOpenSideBar}

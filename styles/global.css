@@ -54,10 +54,10 @@
     @apply flex w-fit flex-row items-center no-underline disabled:border-none disabled:bg-brown-400 disabled:text-brown-600 [&_path]:disabled:fill-brown-600 [&_svg]:inline-flex;
   }
   .button--primary {
-    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 [&_path]:fill-brown-100;
+    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 group-hover:bg-brown-800 [&_path]:fill-brown-100;
   }
   .button--secondary {
-    @apply border-2 border-brown-600 bg-transparent text-brown-600 hover:bg-whiteOpaque5 [&_path]:fill-brown-600;
+    @apply border-2 border-brown-600 bg-transparent text-brown-600 hover:bg-whiteOpaque5 group-hover:bg-whiteOpaque5 [&_path]:fill-brown-600;
   }
   .button--plain {
     @apply text-brown-600 hover:bg-brown-200 group-hover:bg-brown-200 [&_path]:fill-brown-600;

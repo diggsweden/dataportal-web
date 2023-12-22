@@ -1,7 +1,8 @@
 import { FC } from "react";
 import QuoteIcon from "@/assets/icons/quote.svg";
+import { DOMNode } from "html-react-parser";
 
-const QuoteBlock: FC<{ children: [] }> = ({ children }) => {
+const QuoteBlock: FC<{ children: DOMNode[] }> = ({ children }) => {
   return (
     <blockquote className="grid auto-cols-auto gap-lg text-xl font-normal text-pink-600">
       <QuoteIcon className="flex w-[40px]" />

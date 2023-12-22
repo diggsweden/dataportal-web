@@ -180,7 +180,6 @@ export interface PublicationListResponse {
   seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
-  showMoreLink?: any;
 }
 
 export interface DomainAggregateResponse

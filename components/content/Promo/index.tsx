@@ -24,7 +24,7 @@ const Promo: FC<{
     <Link
       href={link.slug}
       target={link.linktype === "EXTERNAL" ? "_blank" : "_self"}
-      className="flex h-full flex-col bg-white text-brown-900 no-underline"
+      className="group flex h-full flex-col bg-white text-brown-900 no-underline"
     >
       {icon && (
         <div className="flex justify-center bg-pink-600">
@@ -42,10 +42,10 @@ const Promo: FC<{
         {link.description && (
           <p className="pb-lg pt-sm text-brown-600">{link.description}</p>
         )}
-        <div className="button button--small button--primary mt-auto">
+        <span className="button button--small button--primary mt-auto">
           {t("read-more")}
           <ArrowRightIcon height={16} width={16} viewBox="0 0 24 24" />
-        </div>
+        </span>
       </div>
     </Link>
   );

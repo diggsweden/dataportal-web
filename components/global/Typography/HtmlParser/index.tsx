@@ -9,6 +9,7 @@ import parse, {
 } from "html-react-parser";
 import Image from "next/image";
 import QuoteBlock from "@/components/content/blocks/QuoteBlock";
+import Link from "next/link";
 
 export const HtmlParser: FC<{ text: string }> = ({ text }) => {
   const options: HTMLReactParserOptions = {
@@ -16,18 +17,23 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
       if (node instanceof Element) {
         const { name, attribs, children } = node;
 
-        if (name === "ul" || name === "ol" || name === "li" || name === "a") {
+        if (name === "ul" || name === "ol" || name === "li") {
           return (
-            <BodyVariant
-              variant={name}
-              href={attribs.href ? attribs.href : undefined}
-            >
+            <BodyVariant variant={name}>
               {domToReact(children as DOMNode[], options)}
             </BodyVariant>
           );
         }
+        if (name == "a") {
+          return (
+            <Link href={attribs.href} target={"_blank"}>
+              {domToReact(children as DOMNode[], options)}
+            </Link>
+          );
+        }
 
         if (name === "blockquote") {
+          /* @ts-ignore @todos Fix qute block to work for different children */
           return <QuoteBlock>{domToReact(children as DOMNode[])}</QuoteBlock>;
         }
 
@@ -41,7 +47,16 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
             />
           );
         }
-        if (name === "h1" || name === "h2" || name === "h3") {
+
+        /* Remove smaller headings when strapi is fixed and only have  */
+        if (
+          name === "h1" ||
+          name === "h2" ||
+          name === "h3" ||
+          name === "h4" ||
+          name === "h5" ||
+          name === "h6"
+        ) {
           const level = parseInt(name[1]);
           const size = name === "h1" ? "lg" : name === "h2" ? "md" : "sm";
 
@@ -53,13 +68,6 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
           );
         }
         /* Remove when strapi is fixed and only have  */
-        if (name === "h4" || name === "h5" || name === "h6") {
-          return (
-            <Heading level={3} size={"sm"}>
-              {domToReact(children as DOMNode[], options)}
-            </Heading>
-          );
-        }
       }
     },
   };

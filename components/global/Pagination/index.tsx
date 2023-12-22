@@ -20,7 +20,7 @@ export const Pagination: React.FC<Pagination> = ({
   const { t } = useTranslation();
 
   return (
-    <div className="flex w-full items-center justify-between pt-xl">
+    <div className="flex w-full items-center justify-between">
       <span>
         {t("pages|search$page")} {currentPage} {t("common|of")} {pageCount}
       </span>
