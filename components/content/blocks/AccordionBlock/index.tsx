@@ -5,7 +5,7 @@ import CloseIcon from "@/assets/icons/closeCross.svg";
 import PlusIcon from "@/assets/icons/plus.svg";
 
 interface AccordionBlockProps extends IFaq {
-  idx: string;
+  idx: number;
 }
 
 export const AccordionBlock: FC<AccordionBlockProps> = ({

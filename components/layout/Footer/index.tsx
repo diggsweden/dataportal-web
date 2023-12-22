@@ -13,7 +13,7 @@ const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
     <footer className="mt-xl bg-white py-xl">
       <div
         className={`transition-all duration-300 ease-in-out ${
-          openSideBar ? "lg:w-[calc(100vw-300px)]" : "w-full"
+          openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
         }`}
       >
         <Container className="space-y-2xl">

@@ -268,7 +268,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
               )}
               <main
                 className={`transition-all duration-300 ease-in-out ${
-                  openSideBar ? "lg:w-[calc(100vw-300px)]" : "w-full"
+                  openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
                 }`}
               >
                 {/*{(pageProps as DataportalPageProps).type === "MultiContainer" ||*/}
