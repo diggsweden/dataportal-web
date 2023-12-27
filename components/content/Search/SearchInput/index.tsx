@@ -14,11 +14,9 @@ export const SearchInput: FC<SearchInputProps> = ({ id, placeholder }) => {
 
   return (
     <div className="relative flex items-center justify-end">
-      {placeholder && (
-        <label className="sr-only" htmlFor="start-search">
-          {placeholder}
-        </label>
-      )}
+      <label className="sr-only" htmlFor="start-search">
+        {placeholder}
+      </label>
       <TextInput
         id={id}
         name="q"
