@@ -43,9 +43,9 @@ const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
       className="my-xl divide-y divide-brown-200 border-y border-brown-200"
       key={`content-${pos}-${faqGroup[0].id}`}
     >
-      {faqGroup.map((faq) => (
-        <li key={faq.id} className="px-xs">
-          <AccordionBlock {...(faq as FaqFragment)} idx={faq.id} />
+      {faqGroup.map((faq, idx: number) => (
+        <li key={idx} className="px-xs">
+          <AccordionBlock {...(faq as FaqFragment)} idx={idx} />
         </li>
       ))}
     </ul>
@@ -60,15 +60,22 @@ export const BlockList: React.FC<blockListProps> = ({ blocks }) => {
           return;
         }
         const { id } = block || {};
+
         switch (block.__typename) {
           case "dataportal_Digg_Text":
-            return <TextBlock {...block} key={id} />;
+            return <TextBlock {...block} key={`${id}-${index}`} />;
           case "dataportal_Digg_Media":
-            return <Media {...block} key={id} />;
+            return <Media {...block} key={`${id}-${index}`} />;
           case "dataportal_Digg_Faq":
             return handleFaqs(blocks, index);
           case "dataportal_Digg_RelatedContent":
-            return <RelatedContentBlock {...block} key={id} inline={true} />;
+            return (
+              <RelatedContentBlock
+                {...block}
+                key={`${id}-${index}`}
+                inline={true}
+              />
+            );
           case "dataportal_Digg_ModuleList":
             const typedBlock = block as ModuleListDataFragment;
             return (

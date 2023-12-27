@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/components";
-import { ContainerNavigation } from "@/components/navigation";
 import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "@/graphql/__generated__/operations";
 import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
 import { isIE } from "@/utilities";
@@ -10,6 +9,7 @@ import { useRouter } from "next/router";
 import BlockList from "@/components/content/blocks/BlockList";
 import Heading from "@/components/global/Typography/Heading";
 import Container from "@/components/layout/Container";
+import ContainerSideBar from "@/components/navigation/ContainerSideBar";
 
 /**
  * Uses prismjs to style codeblock
@@ -108,7 +108,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   const { appRenderKey } = useContext(SettingsContext);
 
   // todo - add some conditions for these
-  const showContentMenu = menuItems[0] && menuItems.length > 2;
+  /*   const showContentMenu = menuItems[0] && menuItems.length > 2; */
 
   const hasRelatedContent = related && related.length > 2;
 
@@ -136,29 +136,38 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 
   return (
     <Container>
-      <div className="mt-xl space-y-xl">
+      <div
+        className={`grid space-y-xl py-xl md:grid-cols-[620px_minmax(0,_1fr)] 
+        lg:grid-cols-[200px_620px_minmax(0,_1fr)] lg:gap-x-xl`}
+      >
         {hasRelatedContent && (
-          <ContainerNavigation related={related} domain={domain} />
+          <ContainerSideBar related={related} domain={domain} />
         )}
         {heading && (
-          <Heading size={"lg"} level={1}>
+          <Heading
+            size={"lg"}
+            level={1}
+            className="col-span-2 row-span-1 !mt-none lg:col-start-2"
+          >
             {checkLang(heading)}
           </Heading>
         )}
-        <div className="anchorlink_wrapper">
-          {showContentMenu && (
-            // <AnchorLinkMenu
-            //   menuItems={menuItems}
-            //   menuHeading={t("common|content-menu-heading")}
-            //   anchorLinkMenuRef={AnchorLinkMenuRef}
-            // />
-            <div></div>
-          )}
-        </div>
 
-        <div className="max-w-md space-y-xl">
+        <div className="max-w-md space-y-xl lg:col-span-3 lg:col-start-2">
           <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
           {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
+        </div>
+
+        <div className="anchorlink_wrapper">
+          {/*       {showContentMenu && (
+            <div>
+              <AnchorLinkMenu
+                menuItems={menuItems}
+                menuHeading={t("common|content-menu-heading")}
+                anchorLinkMenuRef={AnchorLinkMenuRef}
+              />
+            </div>
+          )} */}
         </div>
       </div>
     </Container>
