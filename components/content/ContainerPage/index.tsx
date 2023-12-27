@@ -177,5 +177,3 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
     </Container>
   );
 };
-/* <div className="relative xl:col-span-1 xl:col-start-1 xl:row-span-2 xl:flex">
-          </div> */
