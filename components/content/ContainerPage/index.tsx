@@ -2,8 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/components";
 import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "@/graphql/__generated__/operations";
 import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
-import { isIE } from "@/utilities";
-import { checkLang } from "@/utilities";
+import { checkLang, isIE } from "@/utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import BlockList from "@/components/content/blocks/BlockList";
@@ -48,9 +47,9 @@ export const highlightCodeBlock = async () => {
  */
 const getLinks = () => {
   const menuItems: Anchorlink[] = [];
-  const headerScope = ".content";
   const cont: HTMLElement =
-    document.querySelector(headerScope) || document.createElement("div");
+    document.querySelector("#content") || document.createElement("div");
+
   const hTags = Array.prototype.slice.call(
     cont.querySelectorAll("h2") || document.createElement("div"),
     0,
@@ -103,16 +102,12 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   related,
   domain,
 }) => {
-  const [menuItems, setMenuItems] = useState<Anchorlink[]>([]);
+  const [menuItems, setMenuItems] = useState<Anchorlink[] | []>([]);
   const { asPath } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t } = useTranslation("common");
 
   const { appRenderKey } = useContext(SettingsContext);
-
-  // todo - add some conditions for these
-  const showContentMenu = menuItems[0] && menuItems.length > 2;
-  /*   const hTags = document.querySelectorAll("h2");   */
 
   const hasRelatedContent = related && related.length > 2;
 
@@ -141,7 +136,8 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   return (
     <Container>
       <div
-        className={`mx-auto grid grid-cols-1 gap-y-lg py-xl
+        id="containerPage"
+        className={`relative mx-auto grid max-w-md grid-cols-1 gap-y-lg py-xl lg:w-fit lg:max-w-xl
         lg:grid-cols-[620px_132px] lg:gap-xl xl:grid-cols-[200px_620px_132px]`}
       >
         {hasRelatedContent && (
@@ -157,17 +153,19 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
           </Heading>
         )}
 
-        <div className="col-start-1 max-w-md space-y-xl xl:col-span-1 xl:col-start-2">
+        <div
+          id="content"
+          className="col-start-1 max-w-md space-y-xl xl:col-span-1 xl:col-start-2"
+        >
           <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
-          {blocks && blocks.length > 0 && (
-            <BlockList blocks={blocks} className="content" />
-          )}
+          {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
         </div>
 
-        {showContentMenu && (
+        {menuItems.length > 2 && (
           <div
-            className={`right-none top-none col-start-1 row-start-3 flex h-full flex-col gap-md 
-            lg:col-start-2 lg:row-start-3 xl:col-span-1 xl:col-start-3 xl:row-start-2`}
+            id="containerNav"
+            className={`col-start-1 row-start-3 lg:absolute lg:right-none lg:col-start-2 
+          lg:row-start-3 lg:h-full  xl:col-span-1 xl:col-start-3  xl:row-start-2`}
           >
             <ContainerNav
               menuHeading={t("common|content-menu-heading")}
@@ -179,3 +177,5 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
     </Container>
   );
 };
+/* <div className="relative xl:col-span-1 xl:col-start-1 xl:row-span-2 xl:flex">
+          </div> */

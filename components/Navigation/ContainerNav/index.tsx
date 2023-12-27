@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 interface ContainerDpDwnProps {
   menuItems: Anchorlink[];
   menuHeading: string;
-  domain?: DiggDomain;
 }
 
 interface WatchedItem {
@@ -28,6 +27,8 @@ const ContainerNav: React.FC<ContainerDpDwnProps> = ({
   const [latestActiveItem, setLatestActiveItem] = useState<WatchedItem | null>(
     null,
   );
+  const [fixedNav, setFixedNav] = useState(false);
+
   let timer = useRef(0);
   const watch = () => {
     let watchedItems: WatchedItem[] = [];
@@ -50,15 +51,43 @@ const ContainerNav: React.FC<ContainerDpDwnProps> = ({
   };
 
   useEffect(() => {
-    timer.current = window.setInterval(() => watch(), 100);
+    timer.current = window.setInterval(() => {
+      watch();
+    }, 100);
 
     return () => {
       window.clearInterval(timer.current);
     };
   });
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const containerPage = document.getElementById("containerPage");
+      const containerNav = document.getElementById("containerNav");
+
+      if (containerPage && containerNav) {
+        const containerRect = containerPage.getBoundingClientRect();
+        const navRect = containerNav.getBoundingClientRect();
+
+        setFixedNav(
+          navRect.top < 97 && window.scrollY < containerRect.height - 168,
+        );
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [fixedNav]);
+
   return (
-    <>
+    <div
+      className={`mb-xl flex flex-col gap-md lg:w-[132px] ${
+        fixedNav ? "lg:fixed lg:top-[96px] lg:-translate-x-full" : "static"
+      }`}
+    >
       <Heading level={3} size={"xs"} className="text-brown-600">
         {menuHeading}
       </Heading>
@@ -69,7 +98,7 @@ const ContainerNav: React.FC<ContainerDpDwnProps> = ({
               href={`#${item.id}`}
               className={`inline-flex cursor-pointer p-sm pl-lg text-sm no-underline underline-offset-4 hover:underline ${
                 latestActiveItem?.id === item.id
-                  ? "border-l-[3px] border-pink-600 font-strong"
+                  ? "border-l-[3px] border-pink-600 pl-[18px] font-strong"
                   : "border-l  border-brown-200 font-normal"
               }`}
             >
@@ -78,7 +107,7 @@ const ContainerNav: React.FC<ContainerDpDwnProps> = ({
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 };
 
