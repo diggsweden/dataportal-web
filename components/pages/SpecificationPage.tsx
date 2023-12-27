@@ -1,11 +1,11 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect } from "react";
-import { SettingsContext } from "..";
 import { EntrystoreContext } from "../../components/EntrystoreProvider";
+import { SettingsContext } from "@/providers/SettingsProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { hemvist } from "../../utilities";
+import { hemvist } from "@/utilities";
 
 export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
   const { env } = useContext(SettingsContext);
@@ -214,7 +214,7 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
               {t("pages|datasetpage$contact-publisher-text")}
               {t("pages|datasetpage$contact-publisher-text2")}{" "}
               <a
-                className="text-md link"
+                className="link text-md"
                 href="https://community.dataportal.se/"
                 lang="en"
               >

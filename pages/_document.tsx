@@ -6,14 +6,14 @@ import Document, {
   NextScript,
 } from "next/document";
 import { ApolloProvider } from "@apollo/client";
-import {
-  LocalStoreProvider,
-  SettingsProvider,
-  TrackingProvider,
-} from "../components";
-import { defaultSettings } from "../components/SettingsProvider/SettingsProvider";
 import { client } from "../graphql/client";
 import { SettingsUtil } from "../env";
+import {
+  SettingsProvider,
+  defaultSettings,
+} from "@/providers/SettingsProvider";
+import { LocalStoreProvider } from "@/providers/LocalStoreProvider";
+import { TrackingProvider } from "@/providers/TrackingProvider";
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "@/components/SettingsProvider";
+import { SettingsContext } from "@/providers/SettingsProvider";
 
 export const StatisticNumbersDatasets = () => {
   const { env } = useContext(SettingsContext);

@@ -1,25 +1,14 @@
-import React, { FC } from "react";
+import React, { FC, InputHTMLAttributes } from "react";
 
-interface TextInputProps {
-  id: string;
-  name?: string;
-  placeholder?: string;
-  autoComplete?: "on" | "off";
-}
+interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {}
 
-export const TextInput: FC<TextInputProps> = ({
-  id,
-  name,
-  placeholder,
-  autoComplete = "on",
-}) => (
+export const TextInput: FC<TextInputProps> = ({ ...props }) => (
   <input
-    id={id}
-    name={name}
-    autoComplete={autoComplete}
-    placeholder={placeholder}
+    type="text"
+    {...props}
     className="hover:outline-out focus:outline-out active:outline-out
-    w-full border border-brown-600 bg-white
+    h-[52px] w-full border border-brown-600
+    bg-white
     p-md text-textPrimary placeholder:text-textSecondary
     hover:outline-brown-800 focus:outline-brown-800 active:outline-brown-800"
   />
