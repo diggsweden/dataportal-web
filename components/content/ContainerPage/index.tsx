@@ -10,6 +10,8 @@ import BlockList from "@/components/content/blocks/BlockList";
 import Heading from "@/components/global/Typography/Heading";
 import Container from "@/components/layout/Container";
 import ContainerSideBar from "@/components/navigation/ContainerSideBar";
+import ContainerNav from "@/components/navigation/ContainerNav";
+import useTranslation from "next-translate/useTranslation";
 
 /**
  * Uses prismjs to style codeblock
@@ -104,11 +106,13 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   const [menuItems, setMenuItems] = useState<Anchorlink[]>([]);
   const { asPath } = useRouter() || {};
   const { trackPageView } = useMatomo();
+  const { t } = useTranslation("common");
 
   const { appRenderKey } = useContext(SettingsContext);
 
   // todo - add some conditions for these
-  /*   const showContentMenu = menuItems[0] && menuItems.length > 2; */
+  const showContentMenu = menuItems[0] && menuItems.length > 2;
+  /*   const hTags = document.querySelectorAll("h2");   */
 
   const hasRelatedContent = related && related.length > 2;
 
@@ -137,8 +141,8 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   return (
     <Container>
       <div
-        className={`grid space-y-xl py-xl md:grid-cols-[620px_minmax(0,_1fr)] 
-        lg:grid-cols-[200px_620px_minmax(0,_1fr)] lg:gap-x-xl`}
+        className={`mx-auto grid grid-cols-1 gap-y-lg py-xl
+        lg:grid-cols-[620px_132px] lg:gap-xl xl:grid-cols-[200px_620px_132px]`}
       >
         {hasRelatedContent && (
           <ContainerSideBar related={related} domain={domain} />
@@ -147,28 +151,30 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
           <Heading
             size={"lg"}
             level={1}
-            className="col-span-2 row-span-1 !mt-none lg:col-start-2"
+            className="col-span-2 row-span-1 xl:col-start-2"
           >
             {checkLang(heading)}
           </Heading>
         )}
 
-        <div className="max-w-md space-y-xl lg:col-span-3 lg:col-start-2">
+        <div className="col-start-1 max-w-md space-y-xl xl:col-span-1 xl:col-start-2">
           <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
-          {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
+          {blocks && blocks.length > 0 && (
+            <BlockList blocks={blocks} className="content" />
+          )}
         </div>
 
-        <div className="anchorlink_wrapper">
-          {/*       {showContentMenu && (
-            <div>
-              <AnchorLinkMenu
-                menuItems={menuItems}
-                menuHeading={t("common|content-menu-heading")}
-                anchorLinkMenuRef={AnchorLinkMenuRef}
-              />
-            </div>
-          )} */}
-        </div>
+        {showContentMenu && (
+          <div
+            className={`right-none top-none col-start-1 row-start-3 flex h-full flex-col gap-md 
+            lg:col-start-2 lg:row-start-3 xl:col-span-1 xl:col-start-3 xl:row-start-2`}
+          >
+            <ContainerNav
+              menuHeading={t("common|content-menu-heading")}
+              menuItems={menuItems}
+            />
+          </div>
+        )}
       </div>
     </Container>
   );

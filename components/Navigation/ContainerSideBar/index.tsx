@@ -20,8 +20,9 @@ const ContainerSideBar: React.FC<ContainerDpDwnProps> = ({
   useEffect(() => {
     return () => {
       window.addEventListener("resize", () => setExpanded(false));
+      window.addEventListener("scroll", () => setExpanded(false));
     };
-  }, [expanded]);
+  });
 
   const { asPath } = useRouter() || {};
 
@@ -31,10 +32,10 @@ const ContainerSideBar: React.FC<ContainerDpDwnProps> = ({
 
   return (
     <div
-      className={`row-start-1 lg:static lg:col-span-1 lg:col-start-1 lg:row-span-2 lg:flex ${
+      className={`row-start-1 xl:static xl:col-span-1 xl:col-start-1 xl:row-span-2 xl:flex ${
         expanded
-          ? `absolute left-none top-none mr-none h-full w-screen bg-brown-800 px-sm py-md
-           md:relative md:w-fit md:bg-transparent md:p-none md:py-none lg:static`
+          ? `fixed left-none top-none h-screen w-screen overflow-hidden bg-brown-800 px-md py-lg
+           md:relative md:w-fit md:bg-transparent md:p-none md:py-none xl:static`
           : "flex"
       }`}
     >
@@ -43,15 +44,13 @@ const ContainerSideBar: React.FC<ContainerDpDwnProps> = ({
         icon={expanded ? CloseCrossIcon : HamburgerIcon}
         label={related[0].name}
         onClick={() => setExpanded(!expanded)}
-        className={`w-full md:w-[320px] lg:hidden ${
-          expanded ? "my-sm md:mb-lg md:mt-none" : "mb-lg"
-        }`}
+        className={`w-full md:w-[320px] xl:hidden`}
       />
       <ul
-        className={`flex w-full flex-col bg-white  md:absolute md:w-[320px] lg:relative lg:flex lg:bg-transparent ${
+        className={`flex w-full flex-col bg-white  md:absolute md:w-[320px] xl:relative xl:flex xl:bg-transparent ${
           expanded
-            ? "h-fit max-h-[calc(100vh-80px)] overflow-y-scroll md:-mt-sm md:max-h-[calc(100vh-228px)]"
-            : "hidden "
+            ? "mt-md h-fit max-h-[calc(100vh-92px)] overflow-y-scroll md:mt-none md:max-h-[calc(100vh-228px)]"
+            : "hidden"
         }`}
       >
         {related.map(({ name, slug }) => {

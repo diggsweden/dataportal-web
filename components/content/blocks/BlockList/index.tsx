@@ -15,6 +15,7 @@ interface blockListProps {
   blocks:
     | ContainerData_Dataportal_Digg_Container_Fragment["blocks"]
     | ModuleDataFragment["blocks"];
+  className?: string;
 }
 
 /**
@@ -52,9 +53,9 @@ const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
   );
 };
 
-export const BlockList: React.FC<blockListProps> = ({ blocks }) => {
+export const BlockList: React.FC<blockListProps> = ({ blocks, className }) => {
   return (
-    <>
+    <div className={`max-w-md space-y-md ${className}`}>
       {blocks?.map((block, index) => {
         if (block == null) {
           return;
@@ -107,7 +108,7 @@ export const BlockList: React.FC<blockListProps> = ({ blocks }) => {
             );
         }
       })}
-    </>
+    </div>
   );
 };
 
