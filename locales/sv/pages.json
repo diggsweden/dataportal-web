@@ -2,7 +2,7 @@
   "startpage": {
     "heading": "Sveriges Dataportal för ökad innovationskraft",
     "preamble": "Dataportalen är till för er som har data, för er som redan använder och utvecklar kring data, såväl som för er som precis har börjat fundera på hur den samlade kraften i vår data kan förflytta samhället framåt.",
-    "search_placeholder": "Sök",
+    "search_placeholder": "Sök data och API:er",
     "seo_description": "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor",
     "seo_title": "Sveriges Dataportal",
     "search_title_1": "Sök och utforska data i Sverige",
@@ -84,7 +84,6 @@
     "numberofhits-20": "20 träffar",
     "numberofhits-50": "50 träffar",
     "numberofhits-100": "100 träffar",
-
     "filtersearch": "Sök inom filter",
     "search-tips": "Söktips",
     "search-tips-search-head": "Vidga sökning med asterisk (*)",

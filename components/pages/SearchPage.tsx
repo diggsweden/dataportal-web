@@ -3,7 +3,7 @@ import {
   SearchContext,
   SearchHeader,
   SearchFilters,
-  SearchInput,
+  SearchForm,
   SearchResults,
   ESType,
   ESRdfType,
@@ -246,7 +246,7 @@ export const SearchPage: React.FC<SearchProps> = () => {
                   </div>
                 </div>
 
-                <SearchInput
+                <SearchForm
                   search={search}
                   searchMode={"datasets"}
                   query={query}

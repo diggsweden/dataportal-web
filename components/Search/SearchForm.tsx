@@ -4,7 +4,7 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { SearchMode } from "./SearchFilters";
 import useTranslation from "next-translate/useTranslation";
 
-interface SearchInputProps {
+interface SearchFormProps {
   search: SearchContextData;
   searchMode: SearchMode;
   query: string;
@@ -18,7 +18,7 @@ interface SearchInputProps {
  * @param {*} { search, searchType, query, setQuery }
  * @returns a form with a text input
  */
-export const SearchInput: React.FC<SearchInputProps> = ({
+export const SearchForm: React.FC<SearchFormProps> = ({
   search,
   searchMode,
   query,
@@ -91,5 +91,3 @@ export const SearchInput: React.FC<SearchInputProps> = ({
     </div>
   );
 };
-
-export default SearchInput;

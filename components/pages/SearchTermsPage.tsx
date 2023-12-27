@@ -7,7 +7,7 @@ import {
   SearchContext,
   SearchFilters,
   SearchHeader,
-  SearchInput,
+  SearchForm,
   SearchResults,
 } from "..";
 import { SettingsContext } from "@/providers/SettingsProvider";
@@ -145,7 +145,7 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
                     <h1 className="search-header">{t("search-concept")}</h1>
                   </div>
 
-                  <SearchInput
+                  <SearchForm
                     search={search}
                     searchMode="concepts"
                     query={query}
