@@ -2,15 +2,13 @@ import { useEffect, useState } from "react";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { ApolloProvider } from "@apollo/client";
+import { LocalStore, LocalStoreProvider } from "@/providers/LocalStoreProvider";
+import { Breadcrumb, BreadcrumbProps } from "@/components/navigation";
+import { TrackingProvider } from "@/providers/TrackingProvider";
 import {
-  Breadcrumb,
-  BreadcrumbProps,
-  LocalStore,
-  LocalStoreProvider,
+  defaultSettings,
   SettingsProvider,
-  TrackingProvider,
-} from "@/components";
-import { defaultSettings } from "@/components/SettingsProvider/SettingsProvider";
+} from "@/providers/SettingsProvider";
 import {
   click,
   DataportalPageProps,

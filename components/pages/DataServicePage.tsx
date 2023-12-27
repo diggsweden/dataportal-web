@@ -1,21 +1,18 @@
-import useTranslation from "next-translate/useTranslation";
-import { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
-import {
-  ApiIndexContext,
-  EntrystoreContext,
-  SettingsContext,
-} from "../../components";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import useTranslation from "next-translate/useTranslation";
+import { ApiIndexContext, EntrystoreContext } from "@/components";
 import Link from "next/link";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import Head from "next/head";
+import { SettingsContext } from "@/providers/SettingsProvider";
 import {
   accessrigthsIndicator,
   architechtureIndicator,
   exploreApiLink,
   licenseIndicator,
   periodicityIndicator,
-} from "../../utilities";
+} from "@/utilities";
 
 export const DataServicePage: React.FC<{
   dataSet: string | string[] | undefined;
@@ -239,7 +236,7 @@ export const DataServicePage: React.FC<{
                   "routes|dataservices$path",
                 )}/${cid}_${eid}/${name}/apiexplore/${eid}`}
                 locale={lang}
-                className="dataservice-explore-api-link entryscape text-md link"
+                className="dataservice-explore-api-link entryscape link text-md"
               >
                 Utforska API
               </Link>

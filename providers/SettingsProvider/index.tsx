@@ -1,6 +1,6 @@
 import React from "react";
-import { EnvSettings, SettingsUtil } from "../../env";
-import { BreadcrumbProps } from "../navigation";
+import { EnvSettings, SettingsUtil } from "@/env";
+import { BreadcrumbProps } from "@/components/navigation";
 
 interface SettingsContext extends DataportalSettings {
   env: EnvSettings;
@@ -60,5 +60,3 @@ export const SettingsProvider: React.FunctionComponent<{
     </SettingsContext.Provider>
   );
 };
-
-export default SettingsProvider;

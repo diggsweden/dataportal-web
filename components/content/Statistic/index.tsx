@@ -1,6 +1,6 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "@/components/SettingsProvider";
+import { SettingsContext } from "@/providers/SettingsProvider";
 import { EnvSettings } from "@/env";
 import { StatisticListItem } from "./StatisticListItem";
 import { getNumbersData } from "@/components/content/Statistic/StatisticNumbers";

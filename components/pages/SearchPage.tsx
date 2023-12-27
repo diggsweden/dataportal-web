@@ -5,16 +5,16 @@ import {
   SearchFilters,
   SearchInput,
   SearchResults,
-  SettingsContext,
   ESType,
   ESRdfType,
 } from "..";
+import { SettingsContext } from "@/providers/SettingsProvider";
 import SearchProvider from "../Search/SearchProvider";
 import { decode } from "qss";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
-import { useScript } from "../../hooks/useScript";
+import { useScript } from "@/hooks/useScript";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 

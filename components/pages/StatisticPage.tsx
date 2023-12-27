@@ -26,7 +26,7 @@ const DynamicStatisticNumbersDatasets = dynamic(
 );
 
 const DynamicStatistic = dynamic(
-  () => import("@/components/content/Statistic/Statistic"),
+  () => import("@/components/content/Statistic"),
   {
     ssr: false,
   },

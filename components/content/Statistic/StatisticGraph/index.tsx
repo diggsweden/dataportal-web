@@ -1,6 +1,6 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "@/components/SettingsProvider";
+import { SettingsContext } from "@/providers/SettingsProvider";
 import {
   FlexibleXYPlot,
   VerticalBarSeries,

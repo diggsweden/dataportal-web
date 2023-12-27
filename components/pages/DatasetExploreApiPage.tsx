@@ -4,9 +4,9 @@ import {
   ApiExplorerProps,
   EntrystoreContext,
   ExternalLink,
-} from "../../components";
+} from "@/components";
 import useTranslation from "next-translate/useTranslation";
-import { SettingsContext } from "../SettingsProvider";
+import { SettingsContext } from "@/providers/SettingsProvider";
 import { useRouter } from "next/router";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
@@ -252,7 +252,7 @@ export const DataSetExploreApiPage: React.FC<{
           </h3>
 
           {/* Publisher */}
-          <span className="text-md api-publisher">{entry.publisher}</span>
+          <span className="api-publisher text-md">{entry.publisher}</span>
 
           {/* Indicators */}
           <div className="row indicators indicators__swagger">
@@ -284,7 +284,7 @@ export const DataSetExploreApiPage: React.FC<{
           </div>
 
           {/* Refers to dataset - heading*/}
-          <span className="text-md font-bold">
+          <span className="font-bold text-md">
             {t("pages|explore-api-page$belongs-to-dataset")}
           </span>
 

@@ -1,6 +1,6 @@
 import { createInstance, MatomoProvider } from "@datapunt/matomo-tracker-react";
 import React, { useContext, useState } from "react";
-import { SettingsContext } from "../SettingsProvider";
+import { SettingsContext } from "@/providers/SettingsProvider";
 
 export interface ITrackingContext {
   activateMatomo: Boolean;

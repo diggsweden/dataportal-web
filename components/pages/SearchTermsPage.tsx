@@ -9,8 +9,8 @@ import {
   SearchHeader,
   SearchInput,
   SearchResults,
-  SettingsContext,
 } from "..";
+import { SettingsContext } from "@/providers/SettingsProvider";
 import useTranslation from "next-translate/useTranslation";
 import { useScript } from "../../hooks/useScript";
 import { useRouter } from "next/router";

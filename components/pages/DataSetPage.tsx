@@ -3,7 +3,7 @@ import { EntrystoreContext } from "..";
 import ShowMoreText from "react-show-more-text";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { SettingsContext } from "../SettingsProvider";
+import { SettingsContext } from "@/providers/SettingsProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import {
@@ -433,7 +433,7 @@ export const DataSetPage: React.FC = () => {
                 {t("pages|datasetpage$contact-publisher-text")}
                 {t("pages|datasetpage$contact-publisher-text2")}{" "}
                 <a
-                  className="text-md link"
+                  className="link text-md"
                   href="https://community.dataportal.se/"
                   lang="en"
                 >

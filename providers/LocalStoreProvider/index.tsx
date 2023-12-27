@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useStateCallback } from "../../hooks/useStateCallback";
+import { useStateCallback } from "@/hooks/useStateCallback";
 
 export interface LocalStore {
   cookieSettings: null | undefined;
