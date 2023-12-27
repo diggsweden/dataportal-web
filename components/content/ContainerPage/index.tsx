@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "@/components";
+import { SettingsContext } from "@/providers/SettingsProvider";
 import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "@/graphql/__generated__/operations";
 import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
 import { isIE } from "@/utilities";
