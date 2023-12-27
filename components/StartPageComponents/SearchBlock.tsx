@@ -41,7 +41,7 @@ export const SearchBlock: React.FC = () => {
               aria-label={t("search$datasets")}
               href={`${lang}/datasets?p=1&q=&f=`}
               locale={lang}
-              className="text-md font-bold"
+              className="font-bold text-md"
             >
               {t("search$datasets")}
             </Link>
@@ -54,7 +54,7 @@ export const SearchBlock: React.FC = () => {
                 aria-label={t("search$concepts")}
                 href={`${lang}/concepts?p=1&q=&f=`}
                 locale={lang}
-                className="text-md font-bold"
+                className="font-bold text-md"
               >
                 {t("search$concepts")}
               </Link>
@@ -69,7 +69,7 @@ export const SearchBlock: React.FC = () => {
                 aria-label={t("search$specifications")}
                 href={`/specifications?p=1&q=&f=`}
                 locale={lang}
-                className="text-md font-bold"
+                className="font-bold text-md"
               >
                 {t("search$specifications")}
               </Link>

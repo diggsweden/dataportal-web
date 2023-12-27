@@ -1,12 +1,15 @@
 import React, { FC } from "react";
 import Heading from "@/components/global/Typography/Heading";
 import { checkLang } from "@/utilities";
+import useTranslation from "next-translate/useTranslation";
 import { CustomImage } from "@/components/global/CustomImage";
 import { ImageFragment } from "@/graphql/__generated__/operations";
 import Container from "@/components/layout/Container";
 import { useRouter } from "next/router";
-import { SearchInput } from "@/components/global/Form/SearchInput";
+import { SearchInput } from "@/components/content/Search/SearchInput";
 import { Preamble } from "@/components/global/Typography/Preamble";
+import { ButtonLink } from "@/components/global/Button";
+import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 
 interface HeroProps {
   heading: string | null;
@@ -22,6 +25,7 @@ interface SearchProps {
 
 export const Hero: FC<HeroProps> = ({ heading, preamble, image, search }) => {
   const { pathname } = useRouter();
+  const { t, lang } = useTranslation();
   const isFrontpage = pathname === "/";
 
   return (
@@ -55,14 +59,38 @@ export const Hero: FC<HeroProps> = ({ heading, preamble, image, search }) => {
                   method="GET"
                   action={search.destination}
                 >
-                  <label className="sr-only" htmlFor="start-search">
-                    {search.placeholder}
-                  </label>
                   <SearchInput
                     id="start-search"
                     placeholder={search.placeholder}
                   />
                 </form>
+                <div
+                  className={`${
+                    isFrontpage && "justify-center"
+                  } mt-lg flex space-x-md `}
+                >
+                  <ButtonLink
+                    href={`/${lang}/datasets`}
+                    label={t("common|all-data-api")}
+                    size="sm"
+                    icon={ArrowRightIcon}
+                    iconPosition="right"
+                  />
+                  <ButtonLink
+                    href={`/${lang}/concepts`}
+                    label={t("common|all-concepts")}
+                    size="sm"
+                    icon={ArrowRightIcon}
+                    iconPosition="right"
+                  />
+                  <ButtonLink
+                    href={`/${lang}/specifications`}
+                    label={t("common|all-specs")}
+                    size="sm"
+                    icon={ArrowRightIcon}
+                    iconPosition="right"
+                  />
+                </div>
               </div>
             )}
           </div>

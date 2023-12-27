@@ -3,7 +3,7 @@ import {
   SearchContext,
   SearchHeader,
   SearchFilters,
-  SearchInput,
+  SearchForm,
   SearchResults,
   SettingsContext,
   ESType,
@@ -14,7 +14,7 @@ import { decode } from "qss";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
-import { useScript } from "../../hooks/useScript";
+import { useScript } from "@/hooks/useScript";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 
@@ -246,7 +246,7 @@ export const SearchPage: React.FC<SearchProps> = () => {
                   </div>
                 </div>
 
-                <SearchInput
+                <SearchForm
                   search={search}
                   searchMode={"datasets"}
                   query={query}
