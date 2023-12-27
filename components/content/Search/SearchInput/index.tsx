@@ -22,6 +22,7 @@ export const SearchInput: FC<SearchInputProps> = ({ id, placeholder }) => {
       <TextInput
         id={id}
         name="q"
+        type="text"
         autoComplete="off"
         placeholder={placeholder}
       />

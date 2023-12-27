@@ -1,27 +1,11 @@
-import React, { ChangeEvent, FC } from "react";
+import React, { FC, InputHTMLAttributes } from "react";
 
-interface TextInputProps {
-  id: string;
-  name?: string;
-  placeholder?: string;
-  autoComplete?: "on" | "off";
-  // eslint-disable-next-line no-unused-vars
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-}
+interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {}
 
-export const TextInput: FC<TextInputProps> = ({
-  id,
-  name,
-  placeholder,
-  autoComplete = "on",
-  onChange,
-}) => (
+export const TextInput: FC<TextInputProps> = ({ ...props }) => (
   <input
-    id={id}
-    name={name}
-    autoComplete={autoComplete}
-    placeholder={placeholder}
-    onChange={(e) => onChange && onChange(e)}
+    type="text"
+    {...props}
     className="hover:outline-out focus:outline-out active:outline-out
     h-[52px] w-full border border-brown-600
     bg-white
