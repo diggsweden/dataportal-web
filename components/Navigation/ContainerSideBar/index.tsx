@@ -11,7 +11,10 @@ interface ContainerDpDwnProps {
   domain?: DiggDomain;
 }
 
-const ContainerNav: React.FC<ContainerDpDwnProps> = ({ related, domain }) => {
+const ContainerSideBar: React.FC<ContainerDpDwnProps> = ({
+  related,
+  domain,
+}) => {
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
@@ -80,39 +83,8 @@ const ContainerNav: React.FC<ContainerDpDwnProps> = ({ related, domain }) => {
           );
         })}
       </ul>
-
-      {/*    <button
-        className="mw px height"
-        aria-haspopup={true}
-        aria-expanded={expanded}
-        onClick={() => setExpanded(!expanded)}
-      >
-        <span className="button--content">
-          <span>{t("go-to")}</span>
-        </span>
-      </button>
-      {expanded && (
-        <nav className="mw navigation" aria-label="kategori">
-          <ul>
-            {related.map(({ name, slug }) => {
-              const url = `${domain ? "/" + domain : ""}${slug}`;
-              return (
-                <li
-                  className={`navigation--item px height${
-                    isActive(url) ? " active" : ""
-                  }`}
-                  onClick={() => handleClick(url)}
-                  key={slug}
-                >
-                  <Link href={url}>{name}</Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-      )} */}
     </div>
   );
 };
 
-export default ContainerNav;
+export default ContainerSideBar;

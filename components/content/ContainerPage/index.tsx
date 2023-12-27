@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import BlockList from "@/components/content/blocks/BlockList";
 import Heading from "@/components/global/Typography/Heading";
 import Container from "@/components/layout/Container";
-import ContainerNav from "@/components/navigation/ContainerNav";
+import ContainerSideBar from "@/components/navigation/ContainerSideBar";
 
 /**
  * Uses prismjs to style codeblock
@@ -141,7 +141,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
         lg:grid-cols-[200px_620px_minmax(0,_1fr)] lg:gap-x-xl`}
       >
         {hasRelatedContent && (
-          <ContainerNav related={related} domain={domain} />
+          <ContainerSideBar related={related} domain={domain} />
         )}
         {heading && (
           <Heading
