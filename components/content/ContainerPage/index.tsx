@@ -8,8 +8,8 @@ import { useRouter } from "next/router";
 import BlockList from "@/components/content/blocks/BlockList";
 import Heading from "@/components/global/Typography/Heading";
 import Container from "@/components/layout/Container";
-import ContainerSideBar from "@/components/navigation/ContainerSideBar";
 import ContainerNav from "@/components/navigation/ContainerNav";
+import StickyNav from "@/components/navigation/StickyNav";
 import useTranslation from "next-translate/useTranslation";
 
 /**
@@ -135,12 +135,12 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 
   return (
     <Container>
-      <div
+      <article
         className={`mx-auto grid max-w-md grid-cols-1 gap-y-lg py-xl lg:w-fit lg:max-w-xl
         lg:grid-cols-[620px_132px] lg:gap-xl xl:grid-cols-[200px_620px_132px]`}
       >
         {hasRelatedContent && (
-          <ContainerSideBar related={related} domain={domain} />
+          <ContainerNav related={related} domain={domain} />
         )}
         {heading && (
           <Heading
@@ -152,27 +152,27 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
           </Heading>
         )}
 
-        <div
+        <main
           id="content"
           className="col-start-1 max-w-md space-y-xl xl:col-span-1 xl:col-start-2"
         >
           <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
           {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
-        </div>
+        </main>
 
         {menuItems.length > 2 && (
           <div
-            id="containerNav"
+            id="stickyNav"
             className={`col-start-1 row-start-3 lg:relative lg:right-none lg:col-start-2 
           lg:row-start-3 lg:h-full xl:col-span-1 xl:col-start-3  xl:row-start-2`}
           >
-            <ContainerNav
+            <StickyNav
               menuHeading={t("common|content-menu-heading")}
               menuItems={menuItems}
             />
           </div>
         )}
-      </div>
+      </article>
     </Container>
   );
 };
