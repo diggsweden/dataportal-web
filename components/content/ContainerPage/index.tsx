@@ -48,7 +48,7 @@ export const highlightCodeBlock = async () => {
 const getLinks = () => {
   const menuItems: Anchorlink[] = [];
   const cont: HTMLElement =
-    document.querySelector("#content") || document.createElement("div");
+    document.querySelector(".content") || document.createElement("div");
 
   const hTags = Array.prototype.slice.call(
     cont.querySelectorAll("h2") || document.createElement("div"),
@@ -152,10 +152,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
           </Heading>
         )}
 
-        <main
-          id="content"
-          className="col-start-1 max-w-md space-y-xl xl:col-span-1 xl:col-start-2"
-        >
+        <main className="content col-start-1 max-w-md space-y-xl xl:col-span-1 xl:col-start-2">
           <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
           {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
         </main>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
 import { Button } from "@/components/global/Button";
 import CloseCrossIcon from "@/assets/icons/closeCross.svg";
@@ -14,16 +14,6 @@ interface ContainerDpDwnProps {
 const ContainerNav: React.FC<ContainerDpDwnProps> = ({ related, domain }) => {
   const [expanded, setExpanded] = useState(false);
 
-  useEffect(() => {
-    window.addEventListener("resize", () => setExpanded(false));
-    window.addEventListener("scroll", () => setExpanded(false));
-
-    return () => {
-      window.removeEventListener("resize", () => setExpanded(false));
-      window.removeEventListener("scroll", () => setExpanded(false));
-    };
-  });
-
   const { asPath } = useRouter() || {};
 
   const isActive = (url: string) => {
@@ -32,10 +22,8 @@ const ContainerNav: React.FC<ContainerDpDwnProps> = ({ related, domain }) => {
 
   return (
     <nav
-      className={`xl:col-span-1 xl:col-start-1 xl:row-span-2 xl:flex ${
-        expanded
-          ? `fixed left-none top-none h-screen w-screen overflow-hidden bg-brown-800 px-md py-lg md:relative md:h-fit md:w-fit md:overflow-visible md:bg-transparent md:p-none md:py-none`
-          : "relative"
+      className={`flex xl:col-span-1 xl:col-start-1 xl:row-span-2 ${
+        expanded ? `relative md:h-fit md:w-fit` : "relative"
       }`}
     >
       <Button
@@ -46,9 +34,9 @@ const ContainerNav: React.FC<ContainerDpDwnProps> = ({ related, domain }) => {
         className={`w-full md:w-[320px] xl:hidden`}
       />
       <ul
-        className={`flex w-full flex-col bg-white md:absolute md:w-[320px] xl:static xl:flex xl:bg-transparent ${
+        className={`absolute flex-col bg-white md:w-[320px] xl:static xl:flex xl:bg-transparent ${
           expanded
-            ? "mt-md h-fit max-h-[calc(100vh-92px)] overflow-y-scroll md:mt-none md:max-h-[calc(100vh-228px)]"
+            ? "top-[56px] h-fit max-h-[calc(100vh-252px)] w-full overflow-y-scroll"
             : "hidden"
         }`}
       >
