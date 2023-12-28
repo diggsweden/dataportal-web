@@ -45,6 +45,10 @@
   unicode-range: U+000-5FF;
 }
 
+body {
+  background: linear-gradient(90deg, rgba(205, 122, 110, 0.03) 0%, rgba(205, 122, 110, 0.09) 100%);
+}
+
 @layer base {
   a {
     @apply text-md underline underline-offset-4;
