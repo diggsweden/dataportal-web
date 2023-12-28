@@ -1,7 +1,7 @@
 import FocusTrap from "focus-trap-react";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
-import { useClickoutside } from "../../hooks/useClickoutside";
+import { useClickoutside } from "@/hooks/useClickoutside";
 
 export interface SearchFilterProps {
   /**

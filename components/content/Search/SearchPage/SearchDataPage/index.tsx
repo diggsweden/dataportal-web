@@ -1,37 +1,30 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  SearchContext,
-  SearchHeader,
-  SearchFilters,
-  SearchForm,
-  SearchResults,
-  ESType,
-  ESRdfType,
-} from "..";
+import { SearchForm } from "@/components/content/Search/SearchForm";
 import { SettingsContext } from "@/providers/SettingsProvider";
-import SearchProvider from "../Search/SearchProvider";
+import SearchProvider, {
+  SearchContext,
+  SearchSortOrder,
+} from "@/providers/SearchProvider";
 import { decode } from "qss";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import Link from "next/link";
 import { useScript } from "@/hooks/useScript";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
+import Container from "@/components/layout/Container";
+import { ESRdfType, ESType } from "@/utilities/entryScape";
+import SearchFilters from "@/components/content/Search/SearchFilters";
+import SearchResults from "@/components/content/Search/SearchResults";
+import Heading from "@/components/global/Typography/Heading";
+import { Button } from "@/components/global/Button";
+import { SearchTips } from "@/components/content/Search/SearchTips";
+import { SearchPageSelector } from "@/components/content/Search/SearchPageSelector";
 
 interface SearchProps {
   activeLink?: string;
 }
 
-/* eslint-disable no-unused-vars */
-export enum SearchSortOrder {
-  score_desc = 2,
-  modified_asc = 4,
-  modified_desc = 8,
-}
-
-/* eslint-enable no-unused-vars */
-
-export const SearchPage: React.FC<SearchProps> = () => {
+export const SearchDataPage: React.FC<SearchProps> = () => {
   const { env } = useContext(SettingsContext);
   const { pathname, query: routerQuery } = useRouter() || {};
   const { t, lang } = useTranslation();
@@ -169,16 +162,15 @@ export const SearchPage: React.FC<SearchProps> = () => {
         >
           <SearchContext.Consumer>
             {(search) => (
-              <div className="wpb_wrapper">
-                <SearchHeader activeLink={"search"} query={query} />
-
-                <div className="row search-header-wrapper">
-                  <h1 className="search-header">
+              <Container className="my-xl">
+                <div className="flex justify-between">
+                  <Heading level={1} size="lg">
                     {t("common|search-dataapi")}
-                  </h1>
+                  </Heading>
 
-                  <button
+                  <Button
                     aria-expanded={showTip}
+                    variant="plain"
                     className={
                       "search-tip__btn text-xs" +
                       (showTip ? " search-tip__btn--active" : "")
@@ -187,64 +179,10 @@ export const SearchPage: React.FC<SearchProps> = () => {
                       clearCurrentScrollPos();
                       setShowTip(!showTip);
                     }}
-                  >
-                    {t("pages|search$search-tips")} {/*<ArrowDropIcon*/}
-                    {/*  rotation={showTip ? 180 : 0}*/}
-                    {/*  width={"24px"}*/}
-                    {/*/>*/}
-                  </button>
+                    label={t("pages|search$search-tips")}
+                  />
                 </div>
-
-                <div
-                  className={"search-tip__modal" + (showTip ? " show-tip" : "")}
-                >
-                  <div className="search-tip__modal-wrapper">
-                    <div className="text-bold text-lg">
-                      {t("pages|search$search-tips-search-head")}
-                    </div>
-                    <span className="text-base">
-                      {t("pages|search$search-tips-search-txt")}
-                    </span>
-                    <div className="text-bold text-lg">
-                      {t("pages|search$search-tips-filter-head")}
-                    </div>
-                    <span className="text-base">
-                      {t("pages|search$search-tips-filter-txt")}
-                    </span>
-                    <div className="text-bold text-lg">
-                      {t("pages|search$search-tips-searchfilter-head")}
-                    </div>
-                    <span className="text-base">
-                      {t("pages|search$search-tips-searchfilter-txt")}
-                    </span>
-                    <div className="text-bold text-lg">
-                      {" "}
-                      {t("pages|search$search-tips-sort-head")}{" "}
-                    </div>
-                    <span className="text-base">
-                      {t("pages|search$search-tips-sort-txt1")}
-                      {t("pages|search$search-tips-sort-txt2")}
-                      {t("pages|search$search-tips-sort-txt3")}
-                      {t("pages|search$search-tips-sort-txt4")}
-                      {t("pages|search$search-tips-sort-txt5")}
-                    </span>
-                    <span className="text-bold text-lg">
-                      {" "}
-                      {t("pages|search$search-tips-license-head")}{" "}
-                    </span>
-                    <span className="text-base">
-                      {t("pages|search$search-tips-license-txt")}{" "}
-                      <Link
-                        href={`${t("routes|about-us$path")}`}
-                        locale={lang}
-                        className="text-base"
-                      >
-                        {t("pages|search$search-tips-license-link")}
-                      </Link>
-                      .
-                    </span>
-                  </div>
-                </div>
+                <SearchTips showTip={showTip} />
 
                 <SearchForm
                   search={search}
@@ -252,6 +190,8 @@ export const SearchPage: React.FC<SearchProps> = () => {
                   query={query}
                   setQuery={setQuery}
                 />
+
+                <SearchPageSelector activeLink={"search"} query={query} />
 
                 <SearchFilters
                   showFilter={showFilter}
@@ -266,7 +206,7 @@ export const SearchPage: React.FC<SearchProps> = () => {
                   search={search}
                   searchMode="datasets"
                 />
-              </div>
+              </Container>
             )}
           </SearchContext.Consumer>
         </SearchProvider>

@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { EntrystoreProvider, SettingsContext } from "../../components";
-import { SpecificationPage } from "../../components/pages/SpecificationPage";
-import { useScript } from "../../hooks/useScript";
+import { SpecificationPage } from "@/components/pages/SpecificationPage";
+import { useScript } from "@/hooks/useScript";
+import { SettingsContext } from "@/providers/SettingsProvider";
+import EntrystoreProvider from "@/providers/EntrystoreProvider";
 
 export default function Concept() {
   const { env } = useContext(SettingsContext);

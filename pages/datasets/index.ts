@@ -1,3 +1,3 @@
-import { SearchPage } from "../../components/pages/SearchPage";
+import { SearchDataPage } from "@/components/content/Search/SearchPage/SearchDataPage";
 
-export default SearchPage;
+export default SearchDataPage;

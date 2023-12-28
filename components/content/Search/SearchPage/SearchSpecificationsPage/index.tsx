@@ -1,27 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-import SearchProvider from "../Search/SearchProvider";
 import { decode } from "qss";
-import {
-  ESRdfType,
-  ESType,
-  SearchContext,
-  SearchFilters,
-  SearchHeader,
-  SearchForm,
-  SearchResults,
-} from "..";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import useTranslation from "next-translate/useTranslation";
-import { useScript } from "../../hooks/useScript";
+import { useScript } from "@/hooks/useScript";
 import { useRouter } from "next/router";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
+import SearchProvider, { SearchContext } from "@/providers/SearchProvider";
+import { ESRdfType, ESType } from "@/utilities/entryScape";
+import { SearchForm } from "@/components/content/Search/SearchForm";
+import SearchFilters from "@/components/content/Search/SearchFilters";
+import SearchResults from "@/components/content/Search/SearchResults";
+import Heading from "@/components/global/Typography/Heading";
+import { SearchPageSelector } from "@/components/content/Search/SearchPageSelector";
 
 interface SearchProps {
   activeLink?: string;
 }
 
-export const SearchTermsPage: React.FC<SearchProps> = () => {
+export const SearchSpecificationsPage: React.FC<SearchProps> = () => {
   const { env } = useContext(SettingsContext);
   const { t, lang } = useTranslation("common");
   const [query, setQuery] = useState("");
@@ -39,24 +36,21 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
     if (typeof window !== "undefined") {
       //handles back/forward button
       window.addEventListener("popstate", () => {
-        var qs = decode(window.location.search.substring(1)) as any;
-        let querytext =
+        let qs = decode(window.location.search.substring(1)) as any;
+        const querytext =
           qs.q && qs.q.toString().length > 0 ? qs.q.toString() : "";
 
         if (querytext) setQuery(querytext);
       });
 
       //*** makes sure querytext is set from location to input, on page reloads
-      var qs = decode(window.location.search.substring(1)) as any;
+      let qs = decode(window.location.search.substring(1)) as any;
       let querytext = qs.q && qs.q.toString().length > 0 ? qs.q.toString() : "";
 
       if (querytext)
         setQuery(decodeURIComponent(querytext.replace(/\+/g, "%20")));
 
       //***
-
-      //Scroll to top on pagination click.
-      // window.scrollTo(0, 0);
     }
   }, []);
 
@@ -67,70 +61,78 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
   });
 
   useEffect(() => {
-    trackPageView({ documentTitle: t("routes|concepts$title") });
+    trackPageView({ documentTitle: t("routes|specifications$title") });
   }, [pathname]);
 
   const pathResover = (hitMeta: any) => {
-    var resourceUri = hitMeta.getResourceURI();
+    let resourceUri = hitMeta.getResourceURI();
+    let path = "";
 
-    var path = "";
+    if (resourceUri.includes("://")) {
+      let tmp = resourceUri.split("://");
+      path = tmp[1];
 
-    if (resourceUri.indexOf("://") > -1) {
-      var tmp = resourceUri.split("://");
-      path = tmp[0] + "/" + tmp[1];
+      if (path.includes("dataportal.se/")) {
+        path = path.replace("dataportal.se/", "");
+      }
     } else path = resourceUri;
 
-    if (resourceUri && !resourceUri.includes("dataportal.se"))
-      return `/externalconcepts/${path}`;
-    else {
-      //NDP-343
-      if (path.startsWith("https/dataportal.se/concepts"))
-        path = path.replace("https/dataportal.se/concepts", "");
-
-      return `/concepts${path}`;
-    }
+    return `/${path}`;
   };
 
   return (
     <>
       <Head>
-        <title>{`${t("search-concept")} - Sveriges dataportal`}</title>
+        <title>{`${t("search-specs")} - Sveriges dataportal`}</title>
         <meta
           property="og:title"
-          content={`${t("search-concept")} - Sveriges dataportal`}
+          content={`${t("search-specs")} - Sveriges dataportal`}
         />
         <meta
           name="twitter:title"
-          content={`${t("search-concept")} - Sveriges dataportal`}
+          content={`${t("search-specs")} - Sveriges dataportal`}
         />
       </Head>
       {postscribeStatus === "ready" && (
         <SearchProvider
-          entryscapeUrl={
-            env.ENTRYSCAPE_TERMS_PATH
-              ? `https://${env.ENTRYSCAPE_TERMS_PATH}/store`
-              : "https://editera.dataportal.se/store"
-          }
           hitSpecifications={{
-            "http://www.w3.org/2004/02/skos/core#Concept": {
-              path: `/concepts/`,
-              titleResource: "http://www.w3.org/2004/02/skos/core#prefLabel",
-              descriptionResource:
-                "http://www.w3.org/2004/02/skos/core#definition",
+            "http://www.w3.org/ns/dx/prof/Profile": {
+              path: `/specifications/`,
+              titleResource: "dcterms:title",
+              descriptionResource: "dcterms:description",
+              pathResolver: pathResover,
+            },
+            "http://purl.org/dc/terms/Standard": {
+              path: `/specifications/`,
+              titleResource: "dcterms:title",
+              descriptionResource: "dcterms:description",
               pathResolver: pathResover,
             },
           }}
           facetSpecification={{
             facets: [
               {
-                resource: "http://www.w3.org/2004/02/skos/core#inScheme",
+                resource: "http://www.w3.org/ns/dcat#theme",
                 type: ESType.uri,
+                dcatProperty: "dcat:theme",
+                dcatType: "choice",
+                dcatFilterEnabled: true,
                 indexOrder: 0,
+              },
+              {
+                resource: "http://purl.org/dc/terms/publisher",
+                type: ESType.uri,
+                indexOrder: 1,
               },
             ],
           }}
+          entryscapeUrl={
+            env.ENTRYSCAPE_SPECS_PATH
+              ? `https://${env.ENTRYSCAPE_SPECS_PATH}/store`
+              : "https://editera.dataportal.se/store"
+          }
           initRequest={{
-            esRdfTypes: [ESRdfType.term],
+            esRdfTypes: [ESRdfType.spec_standard, ESRdfType.spec_profile],
             language: lang,
             takeFacets: 30,
           }}
@@ -139,31 +141,35 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
             {(search) => (
               <div className="wpb_wrapper">
                 <div className="container">
-                  <SearchHeader activeLink={"terms"} query={query} />
-
                   <div className="row">
-                    <h1 className="search-header">{t("search-concept")}</h1>
+                    <Heading level={1} size="lg">
+                      {t("search-specs")}
+                    </Heading>
                   </div>
 
                   <SearchForm
                     search={search}
-                    searchMode="concepts"
+                    searchMode="specifications"
                     query={query}
                     setQuery={setQuery}
                   />
 
+                  <SearchPageSelector
+                    activeLink={"specifications"}
+                    query={query}
+                  />
                   <SearchFilters
-                    showFilter={showFilter}
                     search={search}
-                    searchMode="concepts"
+                    showFilter={showFilter}
+                    searchMode="specifications"
                     query={query}
                     setShowFilter={setShowFilter}
                   />
-                  <noscript>{t("search-datasets")}</noscript>
+                  <noscript>{t("no-js-text")}</noscript>
                   <SearchResults
                     showSorting={showFilter}
                     search={search}
-                    searchMode="concepts"
+                    searchMode="specifications"
                   />
                 </div>
               </div>

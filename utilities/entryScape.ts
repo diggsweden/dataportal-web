@@ -5,9 +5,9 @@ import {
   getLocalizedValue,
   listChoices,
   slugify,
-} from "../../utilities";
+} from "@/utilities";
 import { Translate } from "next-translate";
-import { SearchSortOrder } from "../pages/SearchPage";
+import { SearchSortOrder } from "@/providers/SearchProvider";
 //const tokenize = require('edge-ngrams')()
 
 //unfortunate hack to get a entrystore class instance, script is inserted in head

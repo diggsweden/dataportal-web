@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { SearchContextData } from ".";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import { SearchMode } from "./SearchFilters";
-import { FileFormatBadge } from "../FileFormatBadge";
-import { clearLocalStorage } from "../../utilities";
-import { CompactList, DetailedList } from "../Icons";
+import { SearchMode } from "@/components/content/Search/SearchFilters";
+import { FileFormatBadge } from "@/components/FileFormatBadge";
+import { clearLocalStorage } from "@/utilities";
+import { CompactList, DetailedList } from "@/components/Icons";
 import useTranslation from "next-translate/useTranslation";
+import { SearchSortOrder, SearchContextData } from "@/providers/SearchProvider";
 import Link from "next/link";
-import { SearchSortOrder } from "../pages/SearchPage";
 
 interface SearchResultsProps {
   search: SearchContextData;
@@ -300,7 +299,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                       }}
                     >
                       <p
-                        className="text-lg link heading-link"
+                        className="link heading-link text-lg"
                         lang={hit.titleLang}
                       >
                         {hit.title}
