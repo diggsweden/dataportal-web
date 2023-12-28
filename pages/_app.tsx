@@ -265,7 +265,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 <Breadcrumb {...breadcrumbState} />
               )}
               <main
-                className={`transition-all duration-300 ease-in-out ${
+                className={`min-h-[calc(100vh-656px)] transition-all duration-300 ease-in-out lg:min-h-[calc(100vh-524px)] ${
                   openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
                 }`}
               >

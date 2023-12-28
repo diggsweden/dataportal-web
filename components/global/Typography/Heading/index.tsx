@@ -7,6 +7,7 @@ const headingVariants = cva([], {
       lg: ["text-2xl"],
       md: ["text-xl"],
       sm: ["text-lg"],
+      xs: ["text-md"],
     },
   },
   defaultVariants: {

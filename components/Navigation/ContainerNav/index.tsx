@@ -11,17 +11,18 @@ interface ContainerDpDwnProps {
   domain?: DiggDomain;
 }
 
-const ContainerSideBar: React.FC<ContainerDpDwnProps> = ({
-  related,
-  domain,
-}) => {
+const ContainerNav: React.FC<ContainerDpDwnProps> = ({ related, domain }) => {
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
+    window.addEventListener("resize", () => setExpanded(false));
+    window.addEventListener("scroll", () => setExpanded(false));
+
     return () => {
-      window.addEventListener("resize", () => setExpanded(false));
+      window.removeEventListener("resize", () => setExpanded(false));
+      window.removeEventListener("scroll", () => setExpanded(false));
     };
-  }, [expanded]);
+  });
 
   const { asPath } = useRouter() || {};
 
@@ -30,12 +31,11 @@ const ContainerSideBar: React.FC<ContainerDpDwnProps> = ({
   };
 
   return (
-    <div
-      className={`row-start-1 lg:static lg:col-span-1 lg:col-start-1 lg:row-span-2 lg:flex ${
+    <nav
+      className={`xl:col-span-1 xl:col-start-1 xl:row-span-2 xl:flex ${
         expanded
-          ? `absolute left-none top-none mr-none h-full w-screen bg-brown-800 px-sm py-md
-           md:relative md:w-fit md:bg-transparent md:p-none md:py-none lg:static`
-          : "flex"
+          ? `fixed left-none top-none h-screen w-screen overflow-hidden bg-brown-800 px-md py-lg md:relative md:h-fit md:w-fit md:overflow-visible md:bg-transparent md:p-none md:py-none`
+          : "relative"
       }`}
     >
       <Button
@@ -43,15 +43,13 @@ const ContainerSideBar: React.FC<ContainerDpDwnProps> = ({
         icon={expanded ? CloseCrossIcon : HamburgerIcon}
         label={related[0].name}
         onClick={() => setExpanded(!expanded)}
-        className={`w-full md:w-[320px] lg:hidden ${
-          expanded ? "my-sm md:mb-lg md:mt-none" : "mb-lg"
-        }`}
+        className={`w-full md:w-[320px] xl:hidden`}
       />
       <ul
-        className={`flex w-full flex-col bg-white  md:absolute md:w-[320px] lg:relative lg:flex lg:bg-transparent ${
+        className={`flex w-full flex-col bg-white md:absolute md:w-[320px] xl:static xl:flex xl:bg-transparent ${
           expanded
-            ? "h-fit max-h-[calc(100vh-80px)] overflow-y-scroll md:-mt-sm md:max-h-[calc(100vh-228px)]"
-            : "hidden "
+            ? "mt-md h-fit max-h-[calc(100vh-92px)] overflow-y-scroll md:mt-none md:max-h-[calc(100vh-228px)]"
+            : "hidden"
         }`}
       >
         {related.map(({ name, slug }) => {
@@ -69,12 +67,10 @@ const ContainerSideBar: React.FC<ContainerDpDwnProps> = ({
                   isActive(url) ? "cursor-default" : "hover:underline"
                 }`}
                 aria-disabled={isActive(url)}
-                onClick={() =>
-                  setTimeout(() => {
-                    setExpanded(false);
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }, 300)
-                }
+                onClick={() => {
+                  setExpanded(false);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
                 scroll={false}
               >
                 {name}
@@ -83,8 +79,8 @@ const ContainerSideBar: React.FC<ContainerDpDwnProps> = ({
           );
         })}
       </ul>
-    </div>
+    </nav>
   );
 };
 
-export default ContainerSideBar;
+export default ContainerNav;
