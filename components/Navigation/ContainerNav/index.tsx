@@ -27,9 +27,17 @@ const ContainerNav: React.FC<ContainerDpDwnProps> = ({
   const [latestActiveItem, setLatestActiveItem] = useState<WatchedItem | null>(
     null,
   );
-  const [fixedNav, setFixedNav] = useState(false);
-
+  const [fixedNav, setFixedNav] = useState<{
+    top: boolean;
+    bottom: boolean;
+    bottomPosition: string;
+  }>({
+    top: false,
+    bottom: false,
+    bottomPosition: "",
+  });
   let timer = useRef(0);
+
   const watch = () => {
     let watchedItems: WatchedItem[] = [];
     menuItems.map((item) => {
@@ -62,16 +70,18 @@ const ContainerNav: React.FC<ContainerDpDwnProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      const containerPage = document.getElementById("containerPage");
       const containerNav = document.getElementById("containerNav");
+      const navBox = document.getElementById("navBox");
 
-      if (containerPage && containerNav) {
-        const containerRect = containerPage.getBoundingClientRect();
+      if (navBox && containerNav) {
         const navRect = containerNav.getBoundingClientRect();
+        const navBoxRect = navBox.getBoundingClientRect();
 
-        setFixedNav(
-          navRect.top < 97 && window.scrollY < containerRect.height - 168,
-        );
+        setFixedNav({
+          top: navRect.top < 97 && window.scrollY <= navRect.height,
+          bottom: window.scrollY > navRect.height,
+          bottomPosition: `${navRect.height - navBoxRect.height - 40}px`,
+        });
       }
     };
 
@@ -84,9 +94,15 @@ const ContainerNav: React.FC<ContainerDpDwnProps> = ({
 
   return (
     <div
+      id="navBox"
       className={`mb-xl flex flex-col gap-md lg:w-[132px] ${
-        fixedNav ? "lg:fixed lg:top-[96px] lg:-translate-x-full" : "static"
+        fixedNav.top
+          ? "lg:fixed lg:top-[96px]"
+          : fixedNav.bottom
+          ? "lg:absolute"
+          : "static"
       }`}
+      style={{ top: fixedNav.bottom ? fixedNav.bottomPosition : "" }}
     >
       <Heading level={3} size={"xs"} className="text-brown-600">
         {menuHeading}

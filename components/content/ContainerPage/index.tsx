@@ -136,8 +136,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   return (
     <Container>
       <div
-        id="containerPage"
-        className={`relative mx-auto grid max-w-md grid-cols-1 gap-y-lg py-xl lg:w-fit lg:max-w-xl
+        className={`mx-auto grid max-w-md grid-cols-1 gap-y-lg py-xl lg:w-fit lg:max-w-xl
         lg:grid-cols-[620px_132px] lg:gap-xl xl:grid-cols-[200px_620px_132px]`}
       >
         {hasRelatedContent && (
@@ -164,8 +163,8 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
         {menuItems.length > 2 && (
           <div
             id="containerNav"
-            className={`col-start-1 row-start-3 lg:absolute lg:right-none lg:col-start-2 
-          lg:row-start-3 lg:h-full  xl:col-span-1 xl:col-start-3  xl:row-start-2`}
+            className={`col-start-1 row-start-3 lg:relative lg:right-none lg:col-start-2 
+          lg:row-start-3 lg:h-full xl:col-span-1 xl:col-start-3  xl:row-start-2`}
           >
             <ContainerNav
               menuHeading={t("common|content-menu-heading")}
