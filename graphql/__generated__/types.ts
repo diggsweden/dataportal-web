@@ -17,6 +17,10 @@ export interface Scalars {
   Float: { input: number; output: number; }
   dataportal_DateTime: { input: any; output: any; }
   dataportal_JSON: { input: any; output: any; }
+  dataportal_v1_DateTime: { input: any; output: any; }
+  dataportal_v1_JSON: { input: any; output: any; }
+  devportal_v1_DateTime: { input: any; output: any; }
+  devportal_v1_JSON: { input: any; output: any; }
 }
 
 /** The publicationstate of a container, either preview or live */
@@ -66,4 +70,48 @@ export interface Dataportal_QuerySearchArgs {
   locale?: InputMaybe<Scalars['String']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   query?: InputMaybe<Scalars['String']['input']>;
+}
+
+/** The publicationstate of a container, either preview or live */
+export enum Dataportal_V1_ContainerState {
+  Live = 'live',
+  Preview = 'preview'
+}
+
+export enum Dataportal_V1_LinkType {
+  Document = 'DOCUMENT',
+  External = 'EXTERNAL',
+  Internal = 'INTERNAL'
+}
+
+export interface Dataportal_V1_QueryContainerArgs {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  /** secret to be able to access containers that are in preview state */
+  previewSecret?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Dataportal_V1_ContainerState>;
+}
+
+/** The publicationstate of a container, either preview or live */
+export enum Devportal_V1_ContainerState {
+  Live = 'live',
+  Preview = 'preview'
+}
+
+export enum Devportal_V1_LinkType {
+  Document = 'DOCUMENT',
+  External = 'EXTERNAL',
+  Internal = 'INTERNAL'
+}
+
+export interface Devportal_V1_QueryContainerArgs {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  /** secret to be able to access containers that are in preview state */
+  previewSecret?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Devportal_V1_ContainerState>;
 }
