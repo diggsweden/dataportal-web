@@ -1,3 +1,4 @@
+import reactEnv from '@beam-australia/react-env';
 interface Options {
   prodOnly?: boolean;
 }
@@ -60,9 +61,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   add("form-action", `'self'`);
   add(
     "img-src",
-    `'self' ${
-      process.env.IMAGE_DOMAIN || ""
-    } https://diggdrstoragetest.blob.core.windows.net/ data: *`
+    `'self' ${process.env.IMAGE_DOMAIN || ""} https://diggdrstoragetest.blob.core.windows.net/ data: *`
   );
   add(
     "media-src",
@@ -76,8 +75,13 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "style-src-elem",
     `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`
   );
-  add("style-src-attr", `'self' 'unsafe-inline'`);
-  add("connect-src", `'self' https://* http://localhost:1300/`);
+  add(
+    "style-src-attr",
+    `'self' 'unsafe-inline'`);
+  add(
+    "connect-src",
+    `'self' https://* http://127.0.0.1:1300/ ${reactEnv('APOLLO_URL') || '' }`
+  );
 
   // return the object in a formatted value (this won't work on IE11 without a polyfill!)
   return Object.entries(policy)
