@@ -10,27 +10,27 @@ export const SearchTips: FC<SearchTipsProps> = ({ showTip }) => {
   const { t, lang } = useTranslation();
 
   return (
-    <div className={"search-tip__modal " + (showTip ? "block" : "hidden")}>
-      <div className="search-tip__modal-wrapper">
-        <div className="text-bold text-lg">
+    <div className={showTip ? "block" : "hidden"}>
+      <div className="my-lg max-w-md bg-brown-100 p-lg">
+        <div className="mb-xs text-lg">
           {t("pages|search$search-tips-search-head")}
         </div>
         <span className="text-base">
           {t("pages|search$search-tips-search-txt")}
         </span>
-        <div className="text-bold text-lg">
+        <div className="my-xs text-lg">
           {t("pages|search$search-tips-filter-head")}
         </div>
         <span className="text-base">
           {t("pages|search$search-tips-filter-txt")}
         </span>
-        <div className="text-bold text-lg">
+        <div className="my-xs text-lg">
           {t("pages|search$search-tips-searchfilter-head")}
         </div>
         <span className="text-base">
           {t("pages|search$search-tips-searchfilter-txt")}
         </span>
-        <div className="text-bold text-lg">
+        <div className="my-xs text-lg">
           {" "}
           {t("pages|search$search-tips-sort-head")}{" "}
         </div>
@@ -41,21 +41,20 @@ export const SearchTips: FC<SearchTipsProps> = ({ showTip }) => {
           {t("pages|search$search-tips-sort-txt4")}
           {t("pages|search$search-tips-sort-txt5")}
         </span>
-        <span className="text-bold text-lg">
-          {" "}
+        <div className="my-xs text-lg">
           {t("pages|search$search-tips-license-head")}{" "}
-        </span>
-        <span className="text-base">
+        </div>
+        <div>
           {t("pages|search$search-tips-license-txt")}{" "}
           <Link
             href={`${t("routes|about-us$path")}`}
             locale={lang}
-            className="text-base"
+            className="text-md"
           >
             {t("pages|search$search-tips-license-link")}
           </Link>
           .
-        </span>
+        </div>
       </div>
     </div>
   );

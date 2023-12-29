@@ -10,6 +10,7 @@ import Link from "next/link";
 const buttonVariants = cva(["button"], {
   variants: {
     size: {
+      xs: ["button--xs"],
       sm: ["button--small"],
       lg: ["button--large"],
     },
@@ -17,6 +18,7 @@ const buttonVariants = cva(["button"], {
       primary: ["button--primary"],
       secondary: ["button--secondary"],
       plain: ["button--plain"],
+      filter: ["button--filter"],
     },
   },
   defaultVariants: {
@@ -27,7 +29,7 @@ const buttonVariants = cva(["button"], {
 
 type IconLabelProps = {
   icon?: any;
-  size?: "plain" | "sm" | "lg";
+  size?: "xs" | "sm" | "lg";
   label?: string;
   iconPosition?: "left" | "right";
 };
