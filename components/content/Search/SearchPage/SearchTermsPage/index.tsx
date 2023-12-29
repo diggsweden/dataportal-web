@@ -12,6 +12,8 @@ import { SearchForm } from "@/components/content/Search/SearchForm";
 import SearchFilters from "@/components/content/Search/SearchFilters";
 import SearchResults from "@/components/content/Search/SearchResults";
 import { SearchPageSelector } from "@/components/content/Search/SearchPageSelector";
+import Heading from "@/components/global/Typography/Heading";
+import Container from "@/components/layout/Container";
 
 interface SearchProps {
   activeLink?: string;
@@ -133,36 +135,34 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
         >
           <SearchContext.Consumer>
             {(search) => (
-              <div className="wpb_wrapper">
-                <div className="container">
-                  <div className="row">
-                    <h1 className="search-header">{t("search-concept")}</h1>
-                  </div>
+              <Container className="my-xl">
+                <Heading level={1} size="lg">
+                  {t("search-concept")}
+                </Heading>
 
-                  <SearchForm
-                    search={search}
-                    searchMode="concepts"
-                    query={query}
-                    setQuery={setQuery}
-                  />
+                <SearchForm
+                  search={search}
+                  searchMode="concepts"
+                  query={query}
+                  setQuery={setQuery}
+                />
 
-                  <SearchPageSelector activeLink={"terms"} query={query} />
+                <SearchPageSelector activeLink={"terms"} query={query} />
 
-                  <SearchFilters
-                    showFilter={showFilter}
-                    search={search}
-                    searchMode="concepts"
-                    query={query}
-                    setShowFilter={setShowFilter}
-                  />
-                  <noscript>{t("search-datasets")}</noscript>
-                  <SearchResults
-                    showSorting={showFilter}
-                    search={search}
-                    searchMode="concepts"
-                  />
-                </div>
-              </div>
+                <SearchFilters
+                  showFilter={showFilter}
+                  search={search}
+                  searchMode="concepts"
+                  query={query}
+                  setShowFilter={setShowFilter}
+                />
+                <noscript>{t("search-datasets")}</noscript>
+                <SearchResults
+                  showSorting={showFilter}
+                  search={search}
+                  searchMode="concepts"
+                />
+              </Container>
             )}
           </SearchContext.Consumer>
         </SearchProvider>

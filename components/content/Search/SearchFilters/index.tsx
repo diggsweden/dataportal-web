@@ -175,7 +175,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
           isOpen && "compact-filters"
         }`}
       >
-        <div className="search-filter-row">
+        <div className="flex space-x-md">
           {search.allFacets &&
             Object.entries(search.allFacets)
               .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))

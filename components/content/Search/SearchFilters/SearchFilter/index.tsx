@@ -2,12 +2,14 @@ import FocusTrap from "focus-trap-react";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import { useClickoutside } from "@/hooks/useClickoutside";
+import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
+import { Button } from "@/components/global/Button";
 
 export interface SearchFilterProps {
   /**
    * Title of the button to open the filter
    */
-  title: String | null;
+  title: string | null;
   /**
    * Default value for 'open' state
    */
@@ -46,27 +48,20 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
         ref={ref}
         onKeyDown={(ev) => ev.key === "Escape" && handleOpen(false)}
       >
-        <button
+        <Button
+          variant="secondary"
+          size="sm"
+          label={title || t("open")}
+          icon={ChevronDownIcon}
+          iconPosition="right"
+          aria-haspopup={true}
+          aria-expanded={open}
+          onClick={() => handleOpen(!open)}
           className={
             (open ? "text-base open" : "text-base") + " filter-button_mobile"
           }
-          onClick={() => handleOpen(!open)}
-          aria-haspopup={true}
-          aria-expanded={open}
-        >
-          <div>
-            <span>{title || t("open")}</span>
-
-            <div>
-              {/*<ArrowDropIcon*/}
-              {/*  rotation={open ? -180 : 0}*/}
-              {/*  width={[20, 25]}*/}
-              {/*  color="white"*/}
-              {/*/>*/}
-            </div>
-          </div>
-        </button>
-        <div>{children}</div>
+        />
+        <div className={open ? "block" : "hidden"}>{children}</div>
       </div>
     </FocusTrap>
   );

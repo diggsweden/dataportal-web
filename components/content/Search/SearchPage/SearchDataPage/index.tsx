@@ -71,7 +71,7 @@ export const SearchDataPage: React.FC<SearchProps> = () => {
   }, [pathname]);
 
   return (
-    <div className="container">
+    <div id="data-search">
       <Head>
         <title>{`${t("common|search-dataapi")} - Sveriges dataportal`}</title>
         <meta
@@ -182,6 +182,7 @@ export const SearchDataPage: React.FC<SearchProps> = () => {
                     label={t("pages|search$search-tips")}
                   />
                 </div>
+
                 <SearchTips showTip={showTip} />
 
                 <SearchForm

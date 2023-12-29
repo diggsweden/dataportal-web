@@ -3,8 +3,9 @@ import { DataSetExploreApiPage } from "@/components/pages/DatasetExploreApiPage"
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { useScript } from "@/hooks/useScript";
-import { ApiIndexProvider, EntrystoreProvider } from "@/components";
+import { ApiIndexProvider } from "@/components";
 import { SettingsContext } from "@/providers/SettingsProvider";
+import EntrystoreProvider from "@/providers/EntrystoreProvider";
 
 export default function ExploreApiPage() {
   const { env } = useContext(SettingsContext);

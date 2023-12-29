@@ -13,6 +13,7 @@ import SearchFilters from "@/components/content/Search/SearchFilters";
 import SearchResults from "@/components/content/Search/SearchResults";
 import Heading from "@/components/global/Typography/Heading";
 import { SearchPageSelector } from "@/components/content/Search/SearchPageSelector";
+import Container from "@/components/layout/Container";
 
 interface SearchProps {
   activeLink?: string;
@@ -139,40 +140,36 @@ export const SearchSpecificationsPage: React.FC<SearchProps> = () => {
         >
           <SearchContext.Consumer>
             {(search) => (
-              <div className="wpb_wrapper">
-                <div className="container">
-                  <div className="row">
-                    <Heading level={1} size="lg">
-                      {t("search-specs")}
-                    </Heading>
-                  </div>
+              <Container className="my-xl">
+                <Heading level={1} size="lg">
+                  {t("search-specs")}
+                </Heading>
 
-                  <SearchForm
-                    search={search}
-                    searchMode="specifications"
-                    query={query}
-                    setQuery={setQuery}
-                  />
+                <SearchForm
+                  search={search}
+                  searchMode="specifications"
+                  query={query}
+                  setQuery={setQuery}
+                />
 
-                  <SearchPageSelector
-                    activeLink={"specifications"}
-                    query={query}
-                  />
-                  <SearchFilters
-                    search={search}
-                    showFilter={showFilter}
-                    searchMode="specifications"
-                    query={query}
-                    setShowFilter={setShowFilter}
-                  />
-                  <noscript>{t("no-js-text")}</noscript>
-                  <SearchResults
-                    showSorting={showFilter}
-                    search={search}
-                    searchMode="specifications"
-                  />
-                </div>
-              </div>
+                <SearchPageSelector
+                  activeLink={"specifications"}
+                  query={query}
+                />
+                <SearchFilters
+                  search={search}
+                  showFilter={showFilter}
+                  searchMode="specifications"
+                  query={query}
+                  setShowFilter={setShowFilter}
+                />
+                <noscript>{t("no-js-text")}</noscript>
+                <SearchResults
+                  showSorting={showFilter}
+                  search={search}
+                  searchMode="specifications"
+                />
+              </Container>
             )}
           </SearchContext.Consumer>
         </SearchProvider>

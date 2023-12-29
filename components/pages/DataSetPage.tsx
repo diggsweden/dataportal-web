@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import { EntrystoreContext } from "..";
 import ShowMoreText from "react-show-more-text";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { SettingsContext } from "@/providers/SettingsProvider";
+import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import {
