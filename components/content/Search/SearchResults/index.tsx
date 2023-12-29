@@ -197,7 +197,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     });
   };
 
-  const [isCompact, setCompact] = useState(true);
+  const [isCompact, setCompact] = useState(false);
 
   useEffect(() => {
     clearLocalStorage("ScrollposY_", `ScrollposY_${searchKey}`);
@@ -216,14 +216,14 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   return (
     <>
       <div id="search-result" className="my-xl">
-        <div className="flex justify-between">
-          <h2 className="search-result-header">
+        <div className="mb-lg flex justify-between">
+          <Heading level={2} size="md" className="search-result-header">
             {search.loadingHits && <span>{t("common|loading")}</span>}
             {!search.loadingHits &&
               search.result &&
               (search.result.count || 0) >= 0 &&
               `${search.result.count} ${t("pages|search$dataset-hits")}`}
-          </h2>
+          </Heading>
 
           {searchMode == "datasets" && (
             <div
@@ -247,22 +247,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
             <ul className="search-result-list space-y-xl">
               {search.result.hits &&
                 search.result.hits.map((hit, index) => (
-                  <li className="search-result-list-item" key={index}>
-                    {hit.metadata &&
-                      search.allFacets &&
-                      !search.loadingFacets &&
-                      hit.metadata["inScheme_resource"] &&
-                      search.getFacetValueTitle(
-                        "http://www.w3.org/2004/02/skos/core#inScheme",
-                        hit.metadata["inScheme_resource"][0],
-                      ) && (
-                        <span>
-                          {search.getFacetValueTitle(
-                            "http://www.w3.org/2004/02/skos/core#inScheme",
-                            hit.metadata["inScheme_resource"][0],
-                          )}
-                        </span>
-                      )}
+                  <li className="max-w-lg" key={index}>
                     <Link
                       href={`${hit.url}#ref=${
                         window ? window.location.search : ""
@@ -271,76 +256,93 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                         saveCurrentScrollPos();
                         trackSearchHitClick(hit.url || "");
                       }}
+                      className="group no-underline"
                     >
+                      {hit.metadata &&
+                        search.allFacets &&
+                        !search.loadingFacets &&
+                        hit.metadata["inScheme_resource"] &&
+                        search.getFacetValueTitle(
+                          "http://www.w3.org/2004/02/skos/core#inScheme",
+                          hit.metadata["inScheme_resource"][0],
+                        ) && (
+                          <span>
+                            {search.getFacetValueTitle(
+                              "http://www.w3.org/2004/02/skos/core#inScheme",
+                              hit.metadata["inScheme_resource"][0],
+                            )}
+                          </span>
+                        )}
+
                       <Heading
                         level={3}
                         size="sm"
-                        className="mb-lg text-green-600"
+                        className="mb-sm font-normal text-green-600 group-hover:underline "
                         lang={hit.titleLang}
                       >
                         {hit.title}
                       </Heading>
-                    </Link>
 
-                    {isCompact && hit.descriptionLang && (
-                      <p className="mb-xs">{hit.description}</p>
-                    )}
+                      {isCompact && hit.descriptionLang && (
+                        <p className="mb-xs">{hit.description}</p>
+                      )}
 
-                    {!isCompact && (
-                      <div className="org-format">
-                        <span className="result-org text-base">
-                          {hit.metadata &&
-                            hit.metadata["organisation_literal"] &&
-                            hit.metadata["organisation_literal"][0]}
-                        </span>
+                      {!isCompact && (
+                        <div className="org-format">
+                          <span className="result-org text-base">
+                            {hit.metadata &&
+                              hit.metadata["organisation_literal"] &&
+                              hit.metadata["organisation_literal"][0]}
+                          </span>
 
-                        <div className="org-format-filebadges">
+                          <div className="org-format-filebadges">
+                            {hit.metadata &&
+                              hit.metadata["format_literal"] &&
+                              hit.metadata["format_literal"].map(
+                                (m: string, index: number) => (
+                                  <p className="text-base file" key={index}>
+                                    <FileFormatBadge badgeName={m} />
+                                  </p>
+                                ),
+                              )}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="mb-xs text-sm font-strong text-textSecondary">
+                        {isCompact &&
+                          hit.metadata &&
+                          hit.metadata["organisation_literal"] &&
+                          hit.metadata["organisation_literal"].length > 0 && (
+                            <span className="organisation">
+                              {hit.metadata["organisation_literal"][0] + " | "}
+                            </span>
+                          )}
+                        {isCompact && (
+                          <span className="category">
+                            {hit.metadata &&
+                              hit.metadata["theme_literal"].join(",  ")}
+                          </span>
+                        )}
+                      </div>
+
+                      {isCompact && (
+                        <div className="formats space-x-md">
                           {hit.metadata &&
                             hit.metadata["format_literal"] &&
                             hit.metadata["format_literal"].map(
                               (m: string, index: number) => (
-                                <p className="text-base file" key={index}>
+                                <span
+                                  className="bg-pink-200 px-sm py-xs text-sm uppercase"
+                                  key={index}
+                                >
                                   <FileFormatBadge badgeName={m} />
-                                </p>
+                                </span>
                               ),
                             )}
                         </div>
-                      </div>
-                    )}
-
-                    <div className="mb-xs text-sm font-strong text-textSecondary">
-                      {isCompact && (
-                        <span className="organisation">
-                          {hit.metadata &&
-                            hit.metadata["organisation_literal"] &&
-                            hit.metadata["organisation_literal"][0]}
-                          |
-                        </span>
                       )}
-                      {isCompact && (
-                        <span className="category">
-                          {hit.metadata &&
-                            hit.metadata["theme_literal"].join(",  ")}
-                        </span>
-                      )}
-                    </div>
-
-                    {isCompact && (
-                      <div className="formats space-x-md">
-                        {hit.metadata &&
-                          hit.metadata["format_literal"] &&
-                          hit.metadata["format_literal"].map(
-                            (m: string, index: number) => (
-                              <span
-                                className="bg-pink-200 px-sm py-xs text-sm uppercase"
-                                key={index}
-                              >
-                                <FileFormatBadge badgeName={m} />
-                              </span>
-                            ),
-                          )}
-                      </div>
-                    )}
+                    </Link>
                   </li>
                 ))}
             </ul>
