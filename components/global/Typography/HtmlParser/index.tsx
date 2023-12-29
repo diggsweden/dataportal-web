@@ -59,10 +59,15 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
         ) {
           const level = parseInt(name[1]);
           const size = name === "h1" ? "lg" : name === "h2" ? "md" : "sm";
-
+          const className =
+            name === "h1"
+              ? "mb-lg mt-xl"
+              : name === "h2"
+              ? "!my-lg !mt-xl"
+              : "!mt-lg";
           return (
             // @ts-ignore
-            <Heading level={level} size={size}>
+            <Heading level={level} size={size} className={className}>
               {domToReact(children as DOMNode[], options)}
             </Heading>
           );

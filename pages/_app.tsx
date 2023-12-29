@@ -92,10 +92,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
         //disable matomo
         setMatomoActivated(false);
       }
-
-      window.addEventListener("resize", function () {
-        setOpenSideBar(false);
-      });
     }
     document.documentElement.classList.add("no-focus-outline");
     document.body.addEventListener("keyup", keyUp);

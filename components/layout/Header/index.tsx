@@ -15,7 +15,7 @@ export const Header: FC<HeaderProps> = ({ openSideBar, setOpenSideBar }) => {
   }, [openSideBar]);
 
   return (
-    <header className="flex w-screen flex-col gap-md bg-brown-600 px-xl py-lg">
+    <header className="flex w-screen flex-col gap-md bg-brown-600 px-md py-lg md:px-xl">
       <TopNav setOpenSideBar={setOpenSideBar} />
       <MainNav setOpenSideBar={setOpenSideBar} openSideBar={openSideBar} />
     </header>

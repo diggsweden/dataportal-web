@@ -43,7 +43,7 @@ const SideBar: FC<NavSideProps> = ({ openSideBar }) => {
 
   return (
     <nav
-      className={`absolute top-[128px] -mb-[128px] h-[calc(100%-128px)] w-[300px] bg-white transition-all duration-500 ease-in-out ${
+      className={`absolute top-[128px] z-50 -mb-[128px] h-[calc(100%-128px)] w-[300px] bg-white transition-all duration-500 ease-in-out ${
         openSideBar ? "right-none" : "-right-full"
       }`}
     >
