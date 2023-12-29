@@ -70,7 +70,6 @@ export const SearchForm: React.FC<SearchFormProps> = ({
         <SearchInput
           autoFocus
           id="search-field"
-          // submitLabel={t("common|search")}
           autoComplete="off"
           name="q"
           type="text"
