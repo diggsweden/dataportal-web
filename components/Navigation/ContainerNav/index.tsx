@@ -22,21 +22,23 @@ const ContainerNav: React.FC<ContainerDpDwnProps> = ({ related, domain }) => {
 
   return (
     <nav
-      className={`flex xl:col-span-1 xl:col-start-1 xl:row-span-2 ${
-        expanded ? `relative md:h-fit md:w-fit` : "relative"
-      }`}
+      className={`relative flex h-fit xl:col-span-1 xl:col-start-1 xl:row-span-2`}
     >
+      {expanded && (
+        <div className="bg-brownOpaque5 fixed left-none top-none z-30 h-screen w-screen md:hidden" />
+      )}
+
       <Button
         iconPosition="left"
         icon={expanded ? CloseCrossIcon : HamburgerIcon}
         label={related[0].name}
         onClick={() => setExpanded(!expanded)}
-        className={`w-full md:w-[320px] xl:hidden`}
+        className={`z-40 w-full md:w-[320px] xl:hidden`}
       />
       <ul
-        className={`absolute flex-col bg-white md:w-[320px] xl:static xl:flex xl:bg-transparent ${
+        className={`absolute flex-col bg-white md:w-[320px] xl:static xl:flex xl:h-full xl:bg-transparent ${
           expanded
-            ? "top-[56px] h-fit max-h-[calc(100vh-252px)] w-full overflow-y-scroll"
+            ? "top-[56px] z-40 h-fit max-h-[calc(100vh-252px)] w-full overflow-y-scroll"
             : "hidden"
         }`}
       >
