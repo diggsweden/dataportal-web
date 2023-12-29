@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
-import { querySearch } from "../../utilities";
+import { querySearch } from "@/utilities";
 import { useRouter } from "next/router";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import Link from "next/link";
-import { SearchHitFragment } from "../../graphql/__generated__/operations";
-import { getSearchHit } from "../../utilities/searchHelpers";
+import { SearchHitFragment } from "@/graphql/__generated__/operations";
+import { getSearchHit } from "@/utilities/searchHelpers";
+import Heading from "@/components/global/Typography/Heading";
+import Container from "@/components/layout/Container";
+import { SearchPageSelector } from "@/components/content/Search/SearchPageSelector";
+import { SearchInput } from "@/components/content/Search/SearchInput";
 
 interface SearchProps {
   activeLink?: string;
@@ -182,128 +186,121 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
           content={`${t("common|search")} - Sveriges dataportal`}
         />
       </Head>
-      <div className="wpb_wrapper">
-        <div className="container">
-          <div className="row">
-            <h1 className="search-header">{t("common|search-content")}</h1>
+      <Container className="my-xl">
+        <Heading level={1} size="lg">
+          {t("common|search-content")}
+        </Heading>
+
+        <form
+          className="my-xl max-w-md"
+          onSubmit={(event) => {
+            clearCurrentScrollPos();
+            event.preventDefault();
+            routerQuery.q = query;
+            routerQuery.p = "1";
+            router.push(router);
+            setSearchRequest({
+              ...searchRequest,
+              query: query,
+              page: 1,
+            });
+          }}
+        >
+          <SearchInput
+            autoFocus
+            id="search-field"
+            autoComplete="off"
+            name="q"
+            type="text"
+            placeholder={t("pages|content$search")}
+            value={query || ""}
+            onChange={(e) => {
+              clearCurrentScrollPos();
+              setQuery(e.target.value);
+            }}
+            key={searchRequest?.query ? "loaded" : "not loaded"}
+          />
+        </form>
+
+        <SearchPageSelector />
+
+        <div id="search-result" className="search-result">
+          <div className="search-result-head">
+            <h2 className="search-result-header">
+              {loading && <span>{t("common|loading")}</span>}
+              {!loading &&
+                searchResult &&
+                (searchResult.count || 0) >= 0 &&
+                `${searchResult.count} ${t("pages|search$content-hits")}`}
+            </h2>
           </div>
 
-          <div>
-            <form
-              onSubmit={(event) => {
-                clearCurrentScrollPos();
-                event.preventDefault();
-                routerQuery.q = query;
-                routerQuery.p = "1";
-                router.push(router);
-                setSearchRequest({
-                  ...searchRequest,
-                  query: query,
-                  page: 1,
-                });
-              }}
-            >
-              <div className="search-box">
-                <label className="screen-reader" htmlFor="search-field">
-                  Content
-                </label>
-                <input
-                  autoFocus
-                  id="search-field"
-                  // submitLabel={t("common|search")}
-                  autoComplete="off"
-                  name="q"
-                  type="text"
-                  placeholder={t("pages|content$search")}
-                  value={query || ""}
-                  onChange={(e) => {
-                    clearCurrentScrollPos();
-                    setQuery(e.target.value);
-                  }}
-                  key={searchRequest?.query ? "loaded" : "not loaded"}
-                />
-              </div>
-            </form>
-          </div>
-
-          <div id="search-result" className="search-result">
-            <div className="search-result-head">
-              <h2 className="search-result-header">
-                {loading && <span>{t("common|loading")}</span>}
-                {!loading &&
-                  searchResult &&
-                  (searchResult.count || 0) >= 0 &&
-                  `${searchResult.count} ${t("pages|search$content-hits")}`}
-              </h2>
-            </div>
-
-            {searchResult && (
-              <div>
-                <ul className="search-result-list">
-                  {searchResult.hits &&
-                    searchResult.hits.map((hit: SearchHit, index: number) => (
-                      <li className="search-result-list-item" key={index}>
-                        <Link
-                          href={`${hit.url}#ref=${
-                            window ? window.location.search : ""
-                          }`}
-                          onClick={() => {
-                            saveCurrentScrollPos();
-                            trackSearchHitClick(hit.url || "");
-                          }}
+          {searchResult && (
+            <div>
+              <ul className="search-result-list">
+                {searchResult.hits &&
+                  searchResult.hits.map((hit: SearchHit, index: number) => (
+                    <li className="search-result-list-item" key={index}>
+                      <Link
+                        href={`${hit.url}#ref=${
+                          window ? window.location.search : ""
+                        }`}
+                        onClick={() => {
+                          saveCurrentScrollPos();
+                          trackSearchHitClick(hit.url || "");
+                        }}
+                      >
+                        <p
+                          lang={hit.titleLang}
+                          className="link heading-link text-lg"
                         >
-                          <p
-                            lang={hit.titleLang}
-                            className="text-lg link heading-link"
-                          >
-                            {highlightWords(hit.title)}
-                          </p>
-                        </Link>
-                        {hit.description && (
-                          <p className="text-base no-underline">
-                            {highlightWords(hit.description)}
-                          </p>
-                        )}
-                      </li>
-                    ))}
-                </ul>
-              </div>
-            )}
-          </div>
-
-          {searchResult?.count && searchResult.count > PER_PAGE && (
-            <div className="pagination">
-              <div className="prev-next-page">
-                {/* Prev page */}
-                <button
-                  disabled={searchRequest?.page === 1}
-                  onClick={() => handlePagination("decrement")}
-                >
-                  {t("pages|search$prev-page")}
-                </button>
-
-                <span>
-                  {t("pages|search$page")} {searchRequest?.page ?? 1}{" "}
-                  {t("common|of")}{" "}
-                  {searchResult?.count &&
-                    Math.ceil(searchResult.count / PER_PAGE)}
-                </span>
-
-                {/* Next page */}
-                <button
-                  disabled={
-                    (searchRequest?.page ?? 1) >=
-                    Math.ceil(searchResult?.count / PER_PAGE)
-                  }
-                  onClick={() => handlePagination("increment")}
-                >
-                  {t("pages|search$next-page")}
-                </button>
-              </div>
+                          {highlightWords(hit.title)}
+                        </p>
+                      </Link>
+                      {hit.description && (
+                        <p className="text-base no-underline">
+                          {highlightWords(hit.description)}
+                        </p>
+                      )}
+                    </li>
+                  ))}
+              </ul>
             </div>
           )}
         </div>
-      </div>
+
+        {searchResult?.count && searchResult.count > PER_PAGE && (
+          <div className="pagination">
+            <div className="prev-next-page">
+              {/* Prev page */}
+              <button
+                disabled={searchRequest?.page === 1}
+                onClick={() => handlePagination("decrement")}
+              >
+                {t("pages|search$prev-page")}
+              </button>
+
+              <span>
+                {t("pages|search$page")} {searchRequest?.page ?? 1}{" "}
+                {t("common|of")}{" "}
+                {searchResult?.count &&
+                  Math.ceil(searchResult.count / PER_PAGE)}
+              </span>
+
+              {/* Next page */}
+              <button
+                disabled={
+                  (searchRequest?.page ?? 1) >=
+                  Math.ceil(searchResult?.count / PER_PAGE)
+                }
+                onClick={() => handlePagination("increment")}
+              >
+                {t("pages|search$next-page")}
+              </button>
+            </div>
+          </div>
+        )}
+      </Container>
     </>
   );
 };

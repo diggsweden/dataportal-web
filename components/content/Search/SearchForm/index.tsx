@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { SearchContextData } from ".";
+import { SearchContextData } from "@/providers/SearchProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import { SearchMode } from "./SearchFilters";
+import { SearchMode } from "@/components/content/Search/SearchFilters";
 import useTranslation from "next-translate/useTranslation";
+import { SearchInput } from "@/components/content/Search/SearchInput";
 
 interface SearchFormProps {
   search: SearchContextData;
@@ -52,7 +53,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
   }, [search.result]);
 
   return (
-    <div>
+    <div className="my-xl max-w-md">
       <form
         onSubmit={(event) => {
           clearCurrentScrollPos();
@@ -66,27 +67,21 @@ export const SearchForm: React.FC<SearchFormProps> = ({
             .then(() => search.doSearch());
         }}
       >
-        <div className="search-box">
-          <label className="screen-reader" htmlFor="search-field">
-            {placeholder}
-          </label>
-          <input
-            autoFocus
-            id="search-field"
-            // submitLabel={t("common|search")}
-            autoComplete="off"
-            name="q"
-            type="text"
-            placeholder={placeholder}
-            value={query || ""}
-            onChange={(e) => {
-              clearCurrentScrollPos();
-              setQuery(e.target.value);
-            }}
-            key={search.request.query ? "loaded" : "not loaded"}
-          />
-          {/*{search.loadingFacets && <Spinner className={"spinner"} />}*/}
-        </div>
+        <SearchInput
+          autoFocus
+          id="search-field"
+          autoComplete="off"
+          name="q"
+          type="text"
+          placeholder={placeholder}
+          value={query || ""}
+          onChange={(e) => {
+            clearCurrentScrollPos();
+            setQuery(e.target.value);
+          }}
+          key={search.request.query ? "loaded" : "not loaded"}
+        />
+        {/*{search.loadingFacets && <Spinner className={"spinner"} />}*/}
       </form>
     </div>
   );

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { SearchContextData } from ".";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import { SearchMode } from "./SearchFilters";
-import { FileFormatBadge } from "../FileFormatBadge";
-import { clearLocalStorage } from "../../utilities";
-import { CompactList, DetailedList } from "../Icons";
+import { SearchMode } from "@/components/content/Search/SearchFilters";
+import { FileFormatBadge } from "@/components/FileFormatBadge";
+import { clearLocalStorage } from "@/utilities";
 import useTranslation from "next-translate/useTranslation";
+import { SearchSortOrder, SearchContextData } from "@/providers/SearchProvider";
 import Link from "next/link";
-import { SearchSortOrder } from "../pages/SearchPage";
+import Heading from "@/components/global/Typography/Heading";
 
 interface SearchResultsProps {
   search: SearchContextData;
@@ -58,7 +57,45 @@ const SortingOptions: React.FC<{
 }> = ({ search, setCompact, isCompact }) => {
   const { t } = useTranslation();
   return (
-    <div className="sorting-options">
+    <div className="flex space-x-md">
+      <div id="list-view" className="listview-options">
+        {isCompact ? (
+          <button
+            aria-label={
+              isCompact
+                ? `${t("pages|search$compact-list")}`
+                : `${t("pages|search$compact-list-active")}`
+            }
+            onClick={() => {
+              clearCurrentScrollPos();
+              search.set({ compact: true }).then(() => {
+                search.setStateToLocation();
+                setCompact(false);
+              });
+            }}
+          >
+            {t("pages|search$compact-list")}
+          </button>
+        ) : (
+          <button
+            aria-label={
+              isCompact
+                ? `${t("pages|search$detailed-list-active")}`
+                : `${t("pages|search$detailed-list")}`
+            }
+            onClick={() => {
+              clearCurrentScrollPos();
+              search.set({ compact: false }).then(() => {
+                search.setStateToLocation();
+                setCompact(true);
+              });
+            }}
+          >
+            {t("pages|search$detailed-list")}
+          </button>
+        )}
+      </div>
+
       <div className="search-sort">
         <label className="sorting-heading text-base font-bold" htmlFor="sort">
           {t("pages|search$sort")}
@@ -128,60 +165,6 @@ const SortingOptions: React.FC<{
           </option>
         </select>
       </div>
-
-      {/* //Show compact och detailed list view. */}
-      <div className="listview-options">
-        <span className="sorting-heading text-base font-bold">
-          {t("pages|search$list-view")}
-        </span>
-        {isCompact ? (
-          <button
-            aria-label={
-              isCompact
-                ? `${t("pages|search$compact-list")}`
-                : `${t("pages|search$compact-list-active")}`
-            }
-            className={
-              isCompact
-                ? "text-base list-view_btn"
-                : "text-base list-view_btn active"
-            }
-            onClick={() => {
-              clearCurrentScrollPos();
-              search.set({ compact: true }).then(() => {
-                search.setStateToLocation();
-                setCompact(false);
-              });
-            }}
-          >
-            {t("pages|search$compact-list")}
-            <CompactList />
-          </button>
-        ) : (
-          <button
-            aria-label={
-              isCompact
-                ? `${t("pages|search$detailed-list-active")}`
-                : `${t("pages|search$detailed-list")}`
-            }
-            className={
-              isCompact
-                ? "text-base list-view_btn active"
-                : "text-base list-view_btn"
-            }
-            onClick={() => {
-              clearCurrentScrollPos();
-              search.set({ compact: false }).then(() => {
-                search.setStateToLocation();
-                setCompact(true);
-              });
-            }}
-          >
-            {t("pages|search$detailed-list")}
-            <DetailedList />
-          </button>
-        )}
-      </div>
     </div>
   );
 };
@@ -221,8 +204,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   }, [searchKey]);
 
   useEffect(() => {
-    if (search.request.compact && search.request.compact == true)
-      setCompact(false);
+    if (search.request.compact && search.request.compact) setCompact(false);
     else setCompact(true);
   });
 
@@ -233,8 +215,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 
   return (
     <>
-      <div id="search-result" className="search-result">
-        <div className="search-result-head">
+      <div id="search-result" className="my-xl">
+        <div className="flex justify-between">
           <h2 className="search-result-header">
             {search.loadingHits && <span>{t("common|loading")}</span>}
             {!search.loadingHits &&
@@ -262,19 +244,10 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 
         {search.result && (
           <div>
-            <ul className="search-result-list">
+            <ul className="search-result-list space-y-xl">
               {search.result.hits &&
                 search.result.hits.map((hit, index) => (
                   <li className="search-result-list-item" key={index}>
-                    {isCompact ? (
-                      <span className="result-theme text-base truncate">
-                        {hit.metadata &&
-                          hit.metadata["theme_literal"].join(",  ")}
-                      </span>
-                    ) : (
-                      ""
-                    )}
-
                     {hit.metadata &&
                       search.allFacets &&
                       !search.loadingFacets &&
@@ -283,7 +256,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                         "http://www.w3.org/2004/02/skos/core#inScheme",
                         hit.metadata["inScheme_resource"][0],
                       ) && (
-                        <span className="result-theme text-base">
+                        <span>
                           {search.getFacetValueTitle(
                             "http://www.w3.org/2004/02/skos/core#inScheme",
                             hit.metadata["inScheme_resource"][0],
@@ -299,23 +272,21 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                         trackSearchHitClick(hit.url || "");
                       }}
                     >
-                      <p
-                        className="text-lg link heading-link"
+                      <Heading
+                        level={3}
+                        size="sm"
+                        className="mb-lg text-green-600"
                         lang={hit.titleLang}
                       >
                         {hit.title}
-                      </p>
+                      </Heading>
                     </Link>
 
-                    {isCompact && hit.descriptionLang ? (
-                      <p className="text-base">{hit.description}</p>
-                    ) : (
-                      ""
+                    {isCompact && hit.descriptionLang && (
+                      <p className="mb-xs">{hit.description}</p>
                     )}
 
-                    {isCompact ? (
-                      ""
-                    ) : (
+                    {!isCompact && (
                       <div className="org-format">
                         <span className="result-org text-base">
                           {hit.metadata &&
@@ -337,30 +308,38 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                       </div>
                     )}
 
-                    {isCompact ? (
-                      <span className="result-org text-base font-bold">
-                        {hit.metadata &&
-                          hit.metadata["organisation_literal"] &&
-                          hit.metadata["organisation_literal"][0]}
-                      </span>
-                    ) : (
-                      ""
-                    )}
+                    <div className="mb-xs text-sm font-strong text-textSecondary">
+                      {isCompact && (
+                        <span className="organisation">
+                          {hit.metadata &&
+                            hit.metadata["organisation_literal"] &&
+                            hit.metadata["organisation_literal"][0]}
+                          |
+                        </span>
+                      )}
+                      {isCompact && (
+                        <span className="category">
+                          {hit.metadata &&
+                            hit.metadata["theme_literal"].join(",  ")}
+                        </span>
+                      )}
+                    </div>
 
-                    {isCompact ? (
-                      <div className="format-row">
+                    {isCompact && (
+                      <div className="formats space-x-md">
                         {hit.metadata &&
                           hit.metadata["format_literal"] &&
                           hit.metadata["format_literal"].map(
                             (m: string, index: number) => (
-                              <p className="result-format" key={index}>
+                              <span
+                                className="bg-pink-200 px-sm py-xs text-sm uppercase"
+                                key={index}
+                              >
                                 <FileFormatBadge badgeName={m} />
-                              </p>
+                              </span>
                             ),
                           )}
                       </div>
-                    ) : (
-                      ""
                     )}
                   </li>
                 ))}

@@ -104,7 +104,7 @@ class MyDocument extends Document {
           />
           <meta name="theme-color" content="#FBF2F0" />
         </Head>
-        <body className="bg-pink-100 font-ubuntu text-md text-brown-900">
+        <body className="font-ubuntu text-md text-textPrimary">
           <Main />
           <NextScript nonce={SettingsUtil.getCurrent().nonce} />
         </body>

@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { FormEvent, forwardRef, useState } from "react";
-import { SearchMode } from "./SearchFilters";
+import { SearchMode } from "@/components/content/Search/SearchFilters";
 
 const searchModes: SearchMode[] = [
   "content",

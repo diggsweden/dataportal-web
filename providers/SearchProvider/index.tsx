@@ -1,9 +1,17 @@
 import React, { createContext } from "react";
-import { EntryScape, ESRdfType, ESType } from "./EntryScape";
+import { EntryScape, ESRdfType, ESType } from "@/utilities/entryScape";
 import { decode, encode } from "qss";
-import { DCATData, fetchDCATMeta } from "../../utilities/";
+import { DCATData, fetchDCATMeta } from "@/utilities";
 import withTranslation from "next-translate/withTranslation";
-import { SearchSortOrder } from "../pages/SearchPage";
+
+/* eslint-disable no-unused-vars */
+export enum SearchSortOrder {
+  score_desc = 2,
+  modified_asc = 4,
+  modified_desc = 8,
+}
+
+/* eslint-enable no-unused-vars */
 
 /**
  * Props for search provider

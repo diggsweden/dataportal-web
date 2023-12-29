@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { ESRdfType, ESType, SearchContextData, SearchFilter } from "..";
-import { CloseIcon as CloseIcon2, FilterIcon } from "../Icons";
+import { ESRdfType, ESType } from "@/utilities/entryScape";
+import { CloseIcon as CloseIcon2, FilterIcon } from "@/components/Icons";
 import useTranslation from "next-translate/useTranslation";
+import { SearchContextData } from "@/providers/SearchProvider";
+import { SearchFilter } from "@/components/content/Search/SearchFilters/SearchFilter";
 
 interface SearchFilterProps {
   showFilter: boolean;
@@ -173,7 +175,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
           isOpen && "compact-filters"
         }`}
       >
-        <div className="search-filter-row">
+        <div className="flex space-x-md">
           {search.allFacets &&
             Object.entries(search.allFacets)
               .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
