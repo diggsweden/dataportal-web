@@ -1,6 +1,6 @@
 import { FC } from "react";
 import DiggLogo from "@/assets/logos/diggLarge.svg";
-import FooterNav from "@/components/navigation/FooterNav";
+import { FooterNav } from "@/components/navigation/FooterNav";
 import Container from "@/components/layout/Container";
 
 type FooterProps = {
@@ -8,7 +8,7 @@ type FooterProps = {
   setOpenSideBar: Function;
 };
 
-const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
+export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
   return (
     <footer className="mt-xl bg-white py-xl">
       <div
@@ -24,5 +24,3 @@ const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
     </footer>
   );
 };
-
-export default Footer;

@@ -4,9 +4,10 @@ import { cx, cva, VariantProps } from "class-variance-authority";
 const headingVariants = cva([], {
   variants: {
     size: {
-      lg: ["text-2xl"],
-      md: ["text-xl"],
-      sm: ["text-lg"],
+      lg: ["text-2xl mb-lg"],
+      md: ["text-xl mb-lg"],
+      sm: ["text-lg mb-md"],
+      xs: ["text-md mb-md"],
     },
   },
   defaultVariants: {
@@ -15,10 +16,10 @@ const headingVariants = cva([], {
 });
 
 type HeadingProps = VariantProps<typeof headingVariants> & {
-  level: 1 | 2 | 3 | 4 | 5 | 6;
+  level: 1 | 2 | 3 | 4 | 5;
 };
 
-const Heading: FC<
+export const Heading: FC<
   PropsWithChildren<HeadingProps & HTMLAttributes<HTMLHeadElement>>
 > = ({ size, level, className, children }) => {
   const CustomTag = `h${level}` as keyof JSX.IntrinsicElements;
@@ -28,5 +29,3 @@ const Heading: FC<
     </CustomTag>
   );
 };
-
-export default Heading;

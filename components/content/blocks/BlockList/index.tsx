@@ -5,16 +5,17 @@ import {
   FaqFragment,
 } from "@/graphql/__generated__/operations";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
-import { Media } from "@/components/blocks";
 /* import Form from "@/components/Form/Form"; */
-import RelatedContentBlock from "@/components/content/blocks/RelatedContentBlock";
-import TextBlock from "@/components/content/blocks/TextBlock";
-import { AccordionBlock } from "../AccordionBlock";
+import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentBlock";
+import { TextBlock } from "@/components/content/blocks/TextBlock";
+import { AccordionBlock } from "@/components/content/blocks/AccordionBlock";
+import { MediaBlock } from "@/components/content/blocks/MediaBlock";
 
 interface blockListProps {
   blocks:
     | ContainerData_Dataportal_Digg_Container_Fragment["blocks"]
     | ModuleDataFragment["blocks"];
+  className?: string;
 }
 
 /**
@@ -40,7 +41,7 @@ const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
 
   return (
     <ul
-      className="my-xl divide-y divide-brown-200 border-y border-brown-200"
+      className="divide-y divide-brown-200 border-y border-brown-200"
       key={`content-${pos}-${faqGroup[0].id}`}
     >
       {faqGroup.map((faq, idx: number) => (
@@ -52,9 +53,9 @@ const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
   );
 };
 
-export const BlockList: React.FC<blockListProps> = ({ blocks }) => {
+export const BlockList: React.FC<blockListProps> = ({ blocks, className }) => {
   return (
-    <>
+    <div className={`mb-xl space-y-xl ${className ? className : ""}`}>
       {blocks?.map((block, index) => {
         if (block == null) {
           return;
@@ -65,7 +66,7 @@ export const BlockList: React.FC<blockListProps> = ({ blocks }) => {
           case "dataportal_Digg_Text":
             return <TextBlock {...block} key={`${id}-${index}`} />;
           case "dataportal_Digg_Media":
-            return <Media {...block} key={`${id}-${index}`} />;
+            return <MediaBlock {...block} key={`${id}-${index}`} />;
           case "dataportal_Digg_Faq":
             return handleFaqs(blocks, index);
           case "dataportal_Digg_RelatedContent":
@@ -107,8 +108,6 @@ export const BlockList: React.FC<blockListProps> = ({ blocks }) => {
             );
         }
       })}
-    </>
+    </div>
   );
 };
-
-export default BlockList;

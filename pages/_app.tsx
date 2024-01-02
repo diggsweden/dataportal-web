@@ -25,9 +25,9 @@ import { useRouter } from "next/router";
 import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "@/env/Settings.Sandbox";
 import "../styles/global.css";
-import SideBar from "@/components/navigation/SideBar";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { SideBar } from "@/components/navigation/SideBar";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import CookieBanner from "@/components/CookieBanner/CookieBanner";
 
 const GetCookiesAccepted = () => {
@@ -92,10 +92,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
         //disable matomo
         setMatomoActivated(false);
       }
-
-      window.addEventListener("resize", function () {
-        setOpenSideBar(false);
-      });
     }
     document.documentElement.classList.add("no-focus-outline");
     document.body.addEventListener("keyup", keyUp);
@@ -265,7 +261,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 <Breadcrumb {...breadcrumbState} />
               )}
               <main
-                className={`transition-all duration-300 ease-in-out ${
+                className={`min-h-[calc(100vh-656px)] transition-all duration-300 ease-in-out lg:min-h-[calc(100vh-524px)] ${
                   openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
                 }`}
               >

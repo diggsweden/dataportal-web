@@ -6,7 +6,7 @@ import {
   ContainerDataFragment as IContainer,
   PublicationDataFragment as Publication,
 } from "@/graphql/__generated__/operations";
-import Heading from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/global/Typography/Heading";
 import Link from "next/link";
 import { formatDate } from "@/utilities/dateHelper";
 

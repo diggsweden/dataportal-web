@@ -4,7 +4,7 @@ import CarIcon from "@/assets/linkIcons/car.svg";
 import HeartIcon from "@/assets/linkIcons/heart.svg";
 import PieChartIcon from "@/assets/linkIcons/pieChart.svg";
 import PlanetIcon from "@/assets/linkIcons/planet.svg";
-import Promo, { PromoProps } from "@/components/content/Promo";
+import { PromoProps, Promo } from "@/components/content/Promo";
 
 interface RelatedContentProps {
   links: PromoProps[] | any;
@@ -12,7 +12,7 @@ interface RelatedContentProps {
   icons?: boolean;
 }
 
-const RelatedContentBlock: FC<RelatedContentProps> = ({
+export const RelatedContentBlock: FC<RelatedContentProps> = ({
   links,
   icons,
   inline,
@@ -28,9 +28,9 @@ const RelatedContentBlock: FC<RelatedContentProps> = ({
 
   return (
     <ul
-      className={`grid grid-flow-row auto-rows-fr py-xl md:grid-cols-2 lg:grid-cols-3 ${
+      className={`my-xl grid grid-flow-row auto-rows-fr md:grid-cols-2 ${
         icons ? "gap-xl" : "gap-lg"
-      }`}
+      } ${inline && !icons ? "max-w-md" : "lg:grid-cols-3"}`}
     >
       {links.map((link: PromoProps, idx: number) => {
         return (
@@ -45,5 +45,3 @@ const RelatedContentBlock: FC<RelatedContentProps> = ({
     </ul>
   );
 };
-
-export default RelatedContentBlock;

@@ -3,7 +3,7 @@ import {
   ImageFragment,
   RelatedContentFragment as RelatedContent,
 } from "../graphql/__generated__/operations";
-import { DomainProps } from "../components/pages/DomainPage";
+import { DomainProps } from "@/components/content/DomainPage";
 import { Dataportal_LinkType } from "../graphql/__generated__/types";
 import useTranslation from "next-translate/useTranslation";
 import start from "../public/images/illu-start.png";
@@ -12,7 +12,7 @@ import data from "../public/images/illu-data.png";
 import kallkod from "../public/images/illu-kallkod.png";
 import { StaticImageData } from "next/image";
 import { Translate } from "next-translate";
-import { handleUrl } from "../components";
+import { handleUrl } from "@/components/content/blocks/MediaBlock";
 
 interface ParsedProps {
   content: Block[];

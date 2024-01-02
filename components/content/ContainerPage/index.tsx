@@ -2,14 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "@/graphql/__generated__/operations";
 import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
-import { isIE } from "@/utilities";
-import { checkLang } from "@/utilities";
+import { checkLang, isIE } from "@/utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import { useRouter } from "next/router";
-import BlockList from "@/components/content/blocks/BlockList";
-import Heading from "@/components/global/Typography/Heading";
+import { BlockList } from "@/components/content/blocks/BlockList";
+import { Heading } from "@/components/global/Typography/Heading";
 import Container from "@/components/layout/Container";
-import ContainerSideBar from "@/components/navigation/ContainerSideBar";
+import { ContainerNav } from "@/components/navigation/ContainerNav";
+import { StickyNav } from "@/components/navigation/StickyNav";
+import useTranslation from "next-translate/useTranslation";
+import { usePathname } from "next/navigation";
 
 /**
  * Uses prismjs to style codeblock
@@ -46,9 +47,9 @@ export const highlightCodeBlock = async () => {
  */
 const getLinks = () => {
   const menuItems: Anchorlink[] = [];
-  const headerScope = ".content";
   const cont: HTMLElement =
-    document.querySelector(headerScope) || document.createElement("div");
+    document.querySelector(".content") || document.createElement("div");
+
   const hTags = Array.prototype.slice.call(
     cont.querySelectorAll("h2") || document.createElement("div"),
     0,
@@ -101,19 +102,18 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   related,
   domain,
 }) => {
-  const [menuItems, setMenuItems] = useState<Anchorlink[]>([]);
-  const { asPath } = useRouter() || {};
+  const [menuItems, setMenuItems] = useState<Anchorlink[] | []>([]);
+  const pathname = usePathname();
   const { trackPageView } = useMatomo();
+  const { t } = useTranslation("common");
 
   const { appRenderKey } = useContext(SettingsContext);
-
-  // todo - add some conditions for these
-  /*   const showContentMenu = menuItems[0] && menuItems.length > 2; */
 
   const hasRelatedContent = related && related.length > 2;
 
   useEffect(() => {
     const newMenuItems = getLinks();
+
     // Make sure that the state needs to be updated
     if (
       (menuItems[0] &&
@@ -124,7 +124,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
     ) {
       !isIE && setMenuItems(newMenuItems);
     }
-  }, [menuItems, asPath, appRenderKey]);
+  }, [menuItems, pathname, appRenderKey]);
 
   useEffect(() => {
     //Highlights code using prismjs
@@ -132,44 +132,45 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 
     // Matomo tracking
     trackPageView({ documentTitle: name });
-  }, [asPath]);
+  }, [pathname]);
 
   return (
     <Container>
-      <div
-        className={`grid space-y-xl py-xl md:grid-cols-[620px_minmax(0,_1fr)] 
-        lg:grid-cols-[200px_620px_minmax(0,_1fr)] lg:gap-x-xl`}
+      <article
+        className={`mx-auto grid max-w-md grid-cols-1 py-xl lg:w-fit lg:max-w-xl
+        lg:grid-cols-[620px_132px] lg:gap-x-xl xl:grid-cols-[200px_620px_132px]`}
       >
         {hasRelatedContent && (
-          <ContainerSideBar related={related} domain={domain} />
+          <ContainerNav related={related} domain={domain} />
         )}
         {heading && (
           <Heading
             size={"lg"}
             level={1}
-            className="col-span-2 row-span-1 !mt-none lg:col-start-2"
+            className="col-span-2 row-span-1 xl:col-start-2 xl:mb-xl"
           >
             {checkLang(heading)}
           </Heading>
         )}
 
-        <div className="max-w-md space-y-xl lg:col-span-3 lg:col-start-2">
+        <main className="content col-start-1 max-w-md space-y-xl xl:col-span-1 xl:col-start-2">
           <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
           {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
-        </div>
+        </main>
 
-        <div className="anchorlink_wrapper">
-          {/*       {showContentMenu && (
-            <div>
-              <AnchorLinkMenu
-                menuItems={menuItems}
-                menuHeading={t("common|content-menu-heading")}
-                anchorLinkMenuRef={AnchorLinkMenuRef}
-              />
-            </div>
-          )} */}
-        </div>
-      </div>
+        {menuItems.length > 2 && (
+          <div
+            id="stickyNav"
+            className={`col-start-1 row-start-3 lg:relative lg:right-none lg:col-start-2 
+          lg:row-start-3 lg:h-full xl:col-span-1 xl:col-start-3  xl:row-start-2`}
+          >
+            <StickyNav
+              menuHeading={t("common|content-menu-heading")}
+              menuItems={menuItems}
+            />
+          </div>
+        )}
+      </article>
     </Container>
   );
 };

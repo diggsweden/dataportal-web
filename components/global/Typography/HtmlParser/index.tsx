@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Heading from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/global/Typography/Heading";
 import BodyVariant from "@/components/global/Typography/BodyVariant";
 import parse, {
   Element,
@@ -8,8 +8,6 @@ import parse, {
   DOMNode,
 } from "html-react-parser";
 import Image from "next/image";
-import QuoteBlock from "@/components/content/blocks/QuoteBlock";
-import Link from "next/link";
 
 export const HtmlParser: FC<{ text: string }> = ({ text }) => {
   const options: HTMLReactParserOptions = {
@@ -17,24 +15,19 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
       if (node instanceof Element) {
         const { name, attribs, children } = node;
 
-        if (name === "ul" || name === "ol" || name === "li") {
+        if (
+          name === "ul" ||
+          name === "ol" ||
+          name === "li" ||
+          name === "p" ||
+          name === "a" ||
+          name === "blockquote"
+        ) {
           return (
-            <BodyVariant variant={name}>
+            <BodyVariant variant={name} href={attribs.href}>
               {domToReact(children as DOMNode[], options)}
             </BodyVariant>
           );
-        }
-        if (name == "a") {
-          return (
-            <Link href={attribs.href} target={"_blank"}>
-              {domToReact(children as DOMNode[], options)}
-            </Link>
-          );
-        }
-
-        if (name === "blockquote") {
-          /* @ts-ignore @todos Fix qute block to work for different children */
-          return <QuoteBlock>{domToReact(children as DOMNode[])}</QuoteBlock>;
         }
 
         if (name === "img") {
@@ -48,26 +41,35 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
           );
         }
 
-        /* Remove smaller headings when strapi is fixed and only have  */
+        if (attribs.class === "infoblock") {
+          return (
+            <div
+              className={`!my-lg border-l-[3px] border-l-primary p-lg  ${attribs.class}`}
+            >
+              {domToReact(children as DOMNode[], options)}
+            </div>
+          );
+        }
+
+        /* Remove smaller headings when strapi is fixed and only have h2 and h3 */
         if (
           name === "h1" ||
           name === "h2" ||
           name === "h3" ||
           name === "h4" ||
-          name === "h5" ||
-          name === "h6"
+          name === "h5"
         ) {
           const level = parseInt(name[1]);
           const size = name === "h1" ? "lg" : name === "h2" ? "md" : "sm";
-
+          const className =
+            name === "h1" ? "!mt-xl" : name === "h2" ? "!mt-xl" : "!mt-lg";
           return (
             // @ts-ignore
-            <Heading level={level} size={size}>
+            <Heading level={level} size={size} className={className}>
               {domToReact(children as DOMNode[], options)}
             </Heading>
           );
         }
-        /* Remove when strapi is fixed and only have  */
       }
     },
   };

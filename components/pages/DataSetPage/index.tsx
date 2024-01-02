@@ -14,7 +14,7 @@ import {
   periodicityIndicator,
 } from "@/utilities";
 import Container from "@/components/layout/Container";
-import Heading from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/global/Typography/Heading";
 
 const filterCatalogProperties = [
   "dcat:keyword",
@@ -386,7 +386,7 @@ export const DataSetPage: React.FC = () => {
         <Heading
           level={1}
           size={"lg"}
-          className="py-xl pt-xl text-xl lg:text-2xl"
+          className="mb-none py-xl text-xl lg:text-2xl"
         >
           {entry.title}
         </Heading>
@@ -502,7 +502,7 @@ export const DataSetPage: React.FC = () => {
             </div>
 
             {/* Catalog informaton wrapper */}
-            <div className="bg-pink-200 p-md">
+            <div className="bg-white p-md">
               <h2>{t("pages|datasetpage$catalog")}</h2>
 
               {/* Catalog */}
@@ -530,7 +530,7 @@ export const DataSetPage: React.FC = () => {
                 data-entryscape-block="template"
                 dangerouslySetInnerHTML={{
                   __html: `
-                      <a target="_blank" href="{{metadataURI}}?recursive=dcat">
+                      <a target="_blank" class="text-white" href="{{metadataURI}}?recursive=dcat">
                       <button class="button--primary button--large text-white flex items-center">
                       ${t("pages|datasetpage$rdf")}
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

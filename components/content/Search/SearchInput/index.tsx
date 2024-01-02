@@ -1,15 +1,19 @@
-import React, { FC } from "react";
+import React, { FC, InputHTMLAttributes } from "react";
 import { TextInput } from "@/components/global/Form/TextInput";
 import { Button } from "@/components/global/Button";
 import SearchIcon from "@/assets/icons/search.svg";
 import useTranslation from "next-translate/useTranslation";
 
-interface SearchInputProps {
+interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   id: string;
   placeholder: string;
 }
 
-export const SearchInput: FC<SearchInputProps> = ({ id, placeholder }) => {
+export const SearchInput: FC<SearchInputProps> = ({
+  id,
+  placeholder,
+  ...props
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -23,6 +27,7 @@ export const SearchInput: FC<SearchInputProps> = ({ id, placeholder }) => {
         type="text"
         autoComplete="off"
         placeholder={placeholder}
+        {...props}
       />
       <div id="searchSubmit" className="absolute mr-[4px] h-[44px]">
         <Button

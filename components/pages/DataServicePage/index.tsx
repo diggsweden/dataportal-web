@@ -15,7 +15,7 @@ import {
   periodicityIndicator,
 } from "@/utilities";
 import Container from "@/components/layout/Container";
-import Heading from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/global/Typography/Heading";
 
 export const DataServicePage: React.FC<{
   dataSet: string | string[] | undefined;

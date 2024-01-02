@@ -74,7 +74,7 @@
     "datasets": "Data & API:er",
     "concepts": "Begrepp",
     "specifications": "Specifikationer",
-    "content": "Innehåll på webbplatsen",
+    "content": "Webbplatsinnehåll",
     "organization": "Organisationer",
     "relevance": "Relevans",
     "date": "Senast ändrad",
@@ -111,28 +111,28 @@
     "pagination-next-txt": "Nästa"
   },
   "datasets": {
-    "search": "Sök",
+    "search": "Sök Data & Api:er",
     "datasets": "datamängder",
     "social_meta_title": "Sök data & API:er",
     "social_meta_description": "Data & API:er på Sveriges Dataportal"
   },
   "concepts": {
-    "search": "Sök",
+    "search": "Sök begrepp",
     "concepts": "begrepp",
     "social_meta_title": "Sök begrepp",
     "social_meta_description": "Begrepp på Sveriges Dataportal"
   },
   "specifications": {
-    "search": "Sök",
+    "search": "Sök specifikationer",
     "specifications": "specifikationer",
     "social_meta_title": "Sök specifikationer",
     "social_meta_description": "Specifikationer på Sveriges Dataportal"
   },
   "content": {
-    "search": "Sök",
-    "content": "Innehåll",
-    "social_meta_title": "Sök innehåll",
-    "social_meta_description": "Innehåll på Sveriges dataportal"
+    "search": "Sök webbplatsinnehåll",
+    "content": "Webbplatsinnehåll",
+    "social_meta_title": "Sök webbplatsinnehåll",
+    "social_meta_description": "Webbplatsinnehåll på Sveriges dataportal"
   },
   "notfoundpage": {
     "heading": "404 - Sidan hittades inte",

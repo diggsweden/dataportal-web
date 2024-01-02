@@ -123,3 +123,7 @@
 .rdformsSingleline {
   @apply mt-none text-sm !important;
 }
+
+.entryscape a:hover {
+  @apply no-underline !important;
+}

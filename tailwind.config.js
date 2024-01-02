@@ -31,6 +31,7 @@ module.exports = {
       white: "#FFFFFF",
       transparent: "#00000000",
       whiteOpaque5: "#FFFFFFE6",
+      brownOpaque5: "#3F3D3CAB",
       blackOpaque3: "#000000EA",
       brown: {
         900: "#2B2A29",
