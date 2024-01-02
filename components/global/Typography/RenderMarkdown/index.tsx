@@ -84,6 +84,8 @@ const renderQuote = (children: any) => {
   );
 };
 
+/* Might be needed to structure the code if using markdown */
+
 /*
 const renderCode = (props: any) => {
   return (

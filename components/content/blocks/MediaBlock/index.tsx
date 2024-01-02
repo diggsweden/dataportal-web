@@ -7,7 +7,7 @@ import { CustomImage } from "@/components/global/CustomImage";
 import { Heading } from "@/components/global/Typography/Heading";
 import Link from "next/link";
 import DownloadIcon from "@/assets/icons/download.svg";
-import { VideoPlayer } from "@/components/global/Video";
+import { VideoPlayer } from "@/components/global/VideoPlayer";
 
 export const handleUrl = ({ screen9, url, __typename }: MediaBaseFragment) => {
   const documentBaseUrl = env("DOCUMENT_BASE_URL");
@@ -48,10 +48,6 @@ const renderMedia = (
       return (
         <figure>
           <div className="pb-sm">
-            {/*       <video controls>
-              <source src={url} type={media.mime} />
-              Video
-            </video> */}
             <VideoPlayer media={media} url={url} />
           </div>
           {mediaDescription && (

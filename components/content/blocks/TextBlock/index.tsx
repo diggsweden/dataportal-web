@@ -7,7 +7,7 @@ export const TextBlock: FC<TextFragment> = ({ heading, text }) => {
   return (
     <div className="max-w-md space-y-md break-words">
       {heading && (
-        <Heading level={2} size={"md"} className="mb-lg">
+        <Heading level={2} size={"md"}>
           {heading}
         </Heading>
       )}
