@@ -16,10 +16,10 @@ export const AccordionBlock: FC<AccordionBlockProps> = ({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="" title={question}>
+    <div title={question}>
       <button
         id={`accordion${idx}`}
-        className="group inline-flex w-full flex-row items-center justify-between gap-md py-lg"
+        className="group inline-flex w-full flex-row items-center justify-between gap-md py-lg text-start"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-controls={`section${idx}`}

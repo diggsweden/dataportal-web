@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Heading from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/global/Typography/Heading";
 import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
@@ -12,7 +12,7 @@ export interface PromoProps {
   __typename?: string;
 }
 
-const Promo: FC<{
+export const Promo: FC<{
   link: PromoProps;
   icon?: any;
   inline?: boolean;
@@ -51,5 +51,3 @@ const Promo: FC<{
     </Link>
   );
 };
-
-export default Promo;

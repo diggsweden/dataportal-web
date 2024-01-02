@@ -17,7 +17,7 @@ interface NavSideProps {
   openSideBar: boolean;
 }
 
-const SideBar: FC<NavSideProps> = ({ openSideBar }) => {
+export const SideBar: FC<NavSideProps> = ({ openSideBar }) => {
   const [menu, setMenu] = useState<any>([]);
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
@@ -80,4 +80,3 @@ const SideBar: FC<NavSideProps> = ({ openSideBar }) => {
     </nav>
   );
 };
-export default SideBar;

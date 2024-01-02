@@ -1,6 +1,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "@/styles/codeBlock.css";
 
 @font-face {
   font-family: "Ubuntu";
@@ -100,4 +101,33 @@ body {
 
 * {
   scroll-behavior: smooth;
+}
+/* General styling for the table */
+table {
+  @apply !my-lg w-full table-auto border-collapse border border-brown-200;
+}
+
+table caption {
+  @apply mb-sm text-start font-strong;
+}
+
+table thead {
+  @apply bg-brown-500 text-left text-white;
+}
+
+table thead th {
+  @apply whitespace-normal border border-brown-200 p-sm font-strong;
+}
+
+table tbody {
+  @apply border-collapse;
+}
+
+table tbody td {
+  @apply border border-brown-200 p-sm;
+}
+
+/* General styling for mark */
+mark {
+  @apply bg-red-400;
 }
