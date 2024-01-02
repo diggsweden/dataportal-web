@@ -7,7 +7,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { SearchHitFragment } from "@/graphql/__generated__/operations";
 import { getSearchHit } from "@/utilities/searchHelpers";
-import Heading from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/global/Typography/Heading";
 import Container from "@/components/layout/Container";
 import { SearchPageSelector } from "@/components/content/Search/SearchPageSelector";
 import { SearchInput } from "@/components/content/Search/SearchInput";

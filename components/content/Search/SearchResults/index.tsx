@@ -6,7 +6,7 @@ import { clearLocalStorage } from "@/utilities";
 import useTranslation from "next-translate/useTranslation";
 import { SearchSortOrder, SearchContextData } from "@/providers/SearchProvider";
 import Link from "next/link";
-import Heading from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/global/Typography/Heading";
 
 interface SearchResultsProps {
   search: SearchContextData;

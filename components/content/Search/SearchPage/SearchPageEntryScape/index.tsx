@@ -15,7 +15,7 @@ import Container from "@/components/layout/Container";
 import { ESRdfType, ESType } from "@/utilities/entryScape";
 import SearchFilters from "@/components/content/Search/SearchFilters";
 import SearchResults from "@/components/content/Search/SearchResults";
-import Heading from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/global/Typography/Heading";
 import { Button } from "@/components/global/Button";
 import { SearchTips } from "@/components/content/Search/SearchTips";
 import { SearchPageSelector } from "@/components/content/Search/SearchPageSelector";
