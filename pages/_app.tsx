@@ -25,9 +25,9 @@ import { useRouter } from "next/router";
 import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "@/env/Settings.Sandbox";
 import "../styles/global.css";
-import SideBar from "@/components/navigation/SideBar";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { SideBar } from "@/components/navigation/SideBar";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import CookieBanner from "@/components/CookieBanner/CookieBanner";
 
 const GetCookiesAccepted = () => {

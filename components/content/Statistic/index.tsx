@@ -4,7 +4,7 @@ import { SettingsContext } from "@/providers/SettingsProvider";
 import { EnvSettings } from "@/env";
 import { StatisticListItem } from "./StatisticListItem";
 import { getNumbersData } from "@/components/content/Statistic/StatisticNumbers";
-import Heading from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/global/Typography/Heading";
 
 interface StatisticState {
   children?: React.ReactNode;

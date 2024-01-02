@@ -1,11 +1,11 @@
 import React from "react";
-import BlockList from "@/components/content/blocks/BlockList";
+import { BlockList } from "@/components/content/blocks/BlockList";
 import { PublicationResponse } from "@/utilities";
 import Container from "@/components/layout/Container";
 import { PublicationList } from "@/components/content/Publication/PublicationList";
 import { Hero } from "@/components/layout/Hero";
 import { formatDateWithTime } from "@/utilities/dateHelper";
-import Heading from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/global/Typography/Heading";
 import DateIcon from "@/assets/icons/date.svg";
 import useTranslation from "next-translate/useTranslation";
 

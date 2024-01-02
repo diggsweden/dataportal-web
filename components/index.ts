@@ -1,5 +1,4 @@
 export * from "./ApiExploring";
-export * from "./blocks";
 export * from "./CookieBanner";
 export * from "./EntrystoreProvider";
 export * from "./FileFormatBadge";

@@ -4,13 +4,13 @@ import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "
 import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
 import { checkLang, isIE } from "@/utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import { useRouter } from "next/router";
-import BlockList from "@/components/content/blocks/BlockList";
-import Heading from "@/components/global/Typography/Heading";
+import { BlockList } from "@/components/content/blocks/BlockList";
+import { Heading } from "@/components/global/Typography/Heading";
 import Container from "@/components/layout/Container";
-import ContainerNav from "@/components/navigation/ContainerNav";
-import StickyNav from "@/components/navigation/StickyNav";
+import { ContainerNav } from "@/components/navigation/ContainerNav";
+import { StickyNav } from "@/components/navigation/StickyNav";
 import useTranslation from "next-translate/useTranslation";
+import { usePathname } from "next/navigation";
 
 /**
  * Uses prismjs to style codeblock
@@ -103,7 +103,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   domain,
 }) => {
   const [menuItems, setMenuItems] = useState<Anchorlink[] | []>([]);
-  const { asPath } = useRouter() || {};
+  const pathname = usePathname();
   const { trackPageView } = useMatomo();
   const { t } = useTranslation("common");
 
@@ -113,6 +113,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 
   useEffect(() => {
     const newMenuItems = getLinks();
+
     // Make sure that the state needs to be updated
     if (
       (menuItems[0] &&
@@ -123,7 +124,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
     ) {
       !isIE && setMenuItems(newMenuItems);
     }
-  }, [menuItems, asPath, appRenderKey]);
+  }, [menuItems, pathname, appRenderKey]);
 
   useEffect(() => {
     //Highlights code using prismjs
@@ -131,13 +132,13 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 
     // Matomo tracking
     trackPageView({ documentTitle: name });
-  }, [asPath]);
+  }, [pathname]);
 
   return (
     <Container>
       <article
-        className={`mx-auto grid max-w-md grid-cols-1 gap-y-lg py-xl lg:w-fit lg:max-w-xl
-        lg:grid-cols-[620px_132px] lg:gap-xl xl:grid-cols-[200px_620px_132px]`}
+        className={`mx-auto grid max-w-md grid-cols-1 py-xl lg:w-fit lg:max-w-xl
+        lg:grid-cols-[620px_132px] lg:gap-x-xl xl:grid-cols-[200px_620px_132px]`}
       >
         {hasRelatedContent && (
           <ContainerNav related={related} domain={domain} />
@@ -146,7 +147,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
           <Heading
             size={"lg"}
             level={1}
-            className="col-span-2 row-span-1 xl:col-start-2"
+            className="col-span-2 row-span-1 xl:col-start-2 xl:mb-xl"
           >
             {checkLang(heading)}
           </Heading>

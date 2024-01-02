@@ -1,6 +1,6 @@
 import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
-import Heading from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/global/Typography/Heading";
 import { footerNav } from "@/utilities/menuData";
 import Link from "next/link";
 
@@ -20,7 +20,7 @@ interface FooterNavProps {
   setOpenSideBar: Function;
 }
 
-const FooterNav: FC<FooterNavProps> = ({ setOpenSideBar }) => {
+export const FooterNav: FC<FooterNavProps> = ({ setOpenSideBar }) => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-xl lg:grid lg:grid-cols-2">
@@ -69,5 +69,3 @@ const FooterNav: FC<FooterNavProps> = ({ setOpenSideBar }) => {
     </div>
   );
 };
-
-export default FooterNav;

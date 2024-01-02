@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Heading from "@/components/global/Typography/Heading";
-import { useEffect, useRef, useState } from "react";
+import { Heading } from "@/components/global/Typography/Heading";
+import { FC, useEffect, useRef, useState } from "react";
 
 interface StickyNavProps {
   menuItems: Anchorlink[];
@@ -20,7 +20,7 @@ const isInView = (element: HTMLElement) => {
   return false;
 };
 
-const StickyNav: React.FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
+export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
   const [latestActiveItem, setLatestActiveItem] = useState<WatchedItem | null>(
     null,
   );
@@ -92,7 +92,7 @@ const StickyNav: React.FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
   return (
     <div
       id="navBox"
-      className={`mb-xl flex flex-col gap-md lg:w-[132px] ${
+      className={`mb-lg flex flex-col lg:w-[132px] xl:mb-xl ${
         fixedNav.top
           ? "lg:fixed lg:top-[96px]"
           : fixedNav.bottom
@@ -123,5 +123,3 @@ const StickyNav: React.FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
     </div>
   );
 };
-
-export default StickyNav;

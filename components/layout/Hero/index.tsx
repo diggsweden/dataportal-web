@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import Heading from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/global/Typography/Heading";
 import { checkLang } from "@/utilities";
 import useTranslation from "next-translate/useTranslation";
 import { CustomImage } from "@/components/global/CustomImage";

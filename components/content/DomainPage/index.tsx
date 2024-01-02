@@ -9,10 +9,10 @@ import { PublicationDataFragment as IPublication } from "@/graphql/__generated__
 import { PublicationList } from "@/components/content/Publication/PublicationList";
 import { PromoProps } from "@/components/content/Promo";
 import { CategoriesNav } from "@/components/StartPageComponents";
-import RelatedContentBlock from "@/components/content/blocks/RelatedContentBlock";
-import BlockList from "@/components/content/blocks/BlockList";
+import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentBlock";
+import { BlockList } from "@/components/content/blocks/BlockList";
 import useTranslation from "next-translate/useTranslation";
-import Heading from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/global/Typography/Heading";
 import Container from "@/components/layout/Container";
 import { Hero } from "@/components/layout/Hero";
 import { Preamble } from "@/components/global/Typography/Preamble";
