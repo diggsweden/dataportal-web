@@ -2,7 +2,8 @@ import React, { useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import useTranslation from "next-translate/useTranslation";
-import { ApiIndexContext, EntrystoreContext } from "@/components";
+import { ApiIndexContext } from "@/components";
+import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import Link from "next/link";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { SettingsContext } from "@/providers/SettingsProvider";
@@ -13,8 +14,8 @@ import {
   licenseIndicator,
   periodicityIndicator,
 } from "@/utilities";
-import Container from "../../layout/Container";
-import Heading from "../../global/Typography/Heading";
+import Container from "@/components/layout/Container";
+import Heading from "@/components/global/Typography/Heading";
 
 export const DataServicePage: React.FC<{
   dataSet: string | string[] | undefined;
@@ -168,43 +169,42 @@ export const DataServicePage: React.FC<{
         <Heading className="py-xl" size="lg" level={1}>
           {entry.title}
         </Heading>
-        {/* Publisher */}
-        <script
-          type="text/x-entryscape-handlebar"
-          data-entryscape="true"
-          data-entryscape-component="template"
-          dangerouslySetInnerHTML={{
-            __html: `
-                      <p class="text-md">
-                        {{text relation="dcterms:publisher"}} 
-                      <p>
-                      `,
-          }}
-        />
 
-        {/* Indicators */}
-        <div className="flex text-textSecondary">
-          <div
-            data-entryscape="architectureIndicator"
-            className="architectureIndicator"
-          />
-          <div
-            data-entryscape="accessRightsIndicator"
-            className="accessRightsIndicator"
-          />
-          <div
-            data-entryscape="periodicityIndicator"
-            className="architectureIndicator"
-          />
-          <div
-            data-entryscape="licenseIndicator"
-            className="licenseIndicator"
-          />
-        </div>
-
-        <div className="mt-lg flex gap-2xl">
+        <div className="flex gap-2xl">
           {/* Left column */}
-          <div>
+          <div className="flex flex-col gap-lg">
+            {/* Publisher */}
+            <script
+              type="text/x-entryscape-handlebar"
+              data-entryscape="true"
+              data-entryscape-component="template"
+              dangerouslySetInnerHTML={{
+                __html: `
+                        {{text relation="dcterms:publisher"}} 
+                      `,
+              }}
+            />
+
+            {/* Indicators */}
+            <div className="flex text-textSecondary">
+              <div
+                data-entryscape="architectureIndicator"
+                className="architectureIndicator"
+              />
+              <div
+                data-entryscape="accessRightsIndicator"
+                className="accessRightsIndicator"
+              />
+              <div
+                data-entryscape="periodicityIndicator"
+                className="architectureIndicator"
+              />
+              <div
+                data-entryscape="licenseIndicator"
+                className="licenseIndicator"
+              />
+            </div>
+
             <div className=" bg-white p-lg">
               {/* Description */}
               <script
@@ -248,22 +248,24 @@ export const DataServicePage: React.FC<{
                   <br />
                 </span>
               )}
+            </div>
 
-              <div className="contact__publisher hbbr">
-                <h3>{t("pages|datasetpage$contact-publisher")}</h3>
-                <p>
-                  {t("pages|datasetpage$contact-publisher-text")}
-                  {t("pages|datasetpage$contact-publisher-text2")}{" "}
-                  <a
-                    className="link"
-                    href="https://community.dataportal.se/"
-                    lang="en"
-                  >
-                    community
-                  </a>
-                  .
-                </p>
-              </div>
+            <div className="bg-pink-200 p-lg">
+              <Heading level={3}>
+                {t("pages|datasetpage$contact-publisher")}
+              </Heading>
+              <p>
+                {t("pages|datasetpage$contact-publisher-text")}
+                {t("pages|datasetpage$contact-publisher-text2")}{" "}
+                <a
+                  className="link"
+                  href="https://community.dataportal.se/"
+                  lang="en"
+                >
+                  community
+                </a>
+                .
+              </p>
             </div>
           </div>
 
@@ -278,7 +280,7 @@ export const DataServicePage: React.FC<{
               data-entryscape-component="template"
               dangerouslySetInnerHTML={{
                 __html: `
-                        <div class="dataservice_moreinfo">
+                        <div class="w-[296px]">
                           {{viewMetadata 
                               template="dcat:DataService"
                               filterpredicates="dcterms:title,dcterms:publisher,dcat:endpointURL"

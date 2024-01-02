@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { EntrystoreContext } from "@/components/EntrystoreProvider";
+import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { SettingsContext } from "@/providers/SettingsProvider";

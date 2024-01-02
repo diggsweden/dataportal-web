@@ -1,8 +1,8 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
-import { EntrystoreContext } from "../EntrystoreProvider";
-import { initBreadcrumb } from "../../pages/_app";
+import { EntrystoreContext } from "@/providers/EntrystoreProvider";
+import { initBreadcrumb } from "@/pages/_app";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";

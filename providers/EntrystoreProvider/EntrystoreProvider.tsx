@@ -1,8 +1,8 @@
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import React, { createContext, useEffect, useState } from "react";
-import { EnvSettings } from "../../env/EnvSettings";
-import { SettingsUtil } from "../../env/SettingsUtil";
+import { EnvSettings } from "@/env/EnvSettings";
+import { SettingsUtil } from "@/env/SettingsUtil";
 
 //unfortunate hack to get a entrystore class instance, script is inserted in head
 declare var EntryStore: any;

@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import {
-  ApiExplorerProps,
-  EntrystoreContext,
-  ExternalLink,
-} from "@/components";
+import { ApiExplorerProps } from "@/components";
+import { ExternalLink } from "@/components/navigation";
+import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import useTranslation from "next-translate/useTranslation";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { useRouter } from "next/router";
