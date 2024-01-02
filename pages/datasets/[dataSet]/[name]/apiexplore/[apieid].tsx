@@ -8,7 +8,7 @@ import {
   EntrystoreProvider,
   SettingsContext,
 } from "../../../../../components";
-
+import { SettingsContext } from "@/providers/SettingsProvider";
 export default function ExploreApiPage() {
   const { env } = useContext(SettingsContext);
 

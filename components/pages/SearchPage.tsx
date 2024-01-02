@@ -9,7 +9,7 @@ import {
   ESRdfType,
 } from "..";
 import { SettingsContext } from "@/providers/SettingsProvider";
-import SearchProvider from "../Search/SearchProvider";
+import SearchProvider from "@/components/Search/SearchProvider";
 import { decode } from "qss";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";

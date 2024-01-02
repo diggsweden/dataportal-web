@@ -59,7 +59,7 @@
     @apply flex w-fit flex-row items-center no-underline disabled:border-none disabled:bg-brown-400 disabled:text-brown-600 [&_path]:disabled:fill-brown-600 [&_svg]:inline-flex;
   }
   .button--primary {
-    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 group-hover:bg-brown-800 [&_path]:fill-brown-100;
+    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 group-hover:bg-brown-800 [&_path]:fill-brown-100 !important;
   }
   .button--secondary {
     @apply border-2 border-brown-600 bg-transparent text-brown-600 hover:bg-whiteOpaque5 group-hover:bg-whiteOpaque5 [&_path]:fill-brown-600;
@@ -92,4 +92,118 @@
   .hide-odd-stat .rv-xy-plot__axis__tick:nth-child(even) {
     display: none;
   }
+}
+
+/* Entryscape*/
+
+/* Custom list */
+.slide-down {
+  display: none;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.5s ease-in-out;
+}
+
+.slide-down.active {
+  display: block;
+  max-height: 1000px; /* Adjust the maximum height as needed */
+}
+
+.list div {
+  @apply bg-white shadow-none;
+}
+
+.list div button {
+  @apply border-none bg-brown-600 text-white !important;
+}
+
+.about-dataset {
+  @apply w-[296px] !important;
+}
+
+.about-dataset h2 {
+  @apply text-sm !important;
+}
+
+.rdforms {
+  @apply mb-md !important;
+}
+
+.rdformsRow {
+  @apply inline-grid !important;
+}
+
+.rdformsLabel {
+  @apply border-none text-sm text-textSecondary !important;
+}
+
+.rdformsRepeatedValue {
+  @apply border-none !important;
+}
+
+.rdformsUrl {
+  @apply text-sm text-green-600 underline underline-offset-2 !important;
+}
+
+.keywordHeading {
+  @apply mb-sm text-sm text-textSecondary !important;
+}
+
+.keywordTitle {
+  @apply mb-xs text-sm text-textPrimary !important;
+}
+
+.rdformsOrigin {
+  @apply ml-none grid pl-none !important;
+}
+
+.rdformsPresenter .compact {
+  @apply bg-primary;
+}
+
+.rdformsField {
+  @apply text-sm !important;
+}
+
+.format-badge span {
+  @apply mr-sm !important;
+}
+
+.eachprop__ellipsis,
+.eachprop__restseparator {
+  @apply hidden !important;
+}
+
+.eachprop__expandbutton,
+.eachprop__unexpandbutton {
+  @apply ml-none font-ubuntu text-sm !important;
+  font-weight: 600;
+}
+
+.rdformsFields div {
+  @apply m-none border-none bg-transparent p-none !important;
+}
+
+.rdformsRow {
+  @apply pl-none !important;
+}
+.rdformsRow {
+  .rdformsPresenter .rdformsLabel {
+    @apply hidden;
+  }
+}
+
+.contact__publisher {
+  @apply bg-pink-100 p-lg !important;
+}
+
+.contact__publisher h3 {
+  @apply mb-md text-lg !important;
+}
+
+.indicators {
+  @apply flex text-textSecondary;
+}
+.indicators span i {
+  @apply mr-md h-[32px] w-[32px] rounded-full border-2 border-textSecondary p-xs text-center text-textSecondary;
 }
