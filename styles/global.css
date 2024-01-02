@@ -223,9 +223,9 @@
   @apply w-full !important;
 }
 
-/* .esbRowControl {
-  @apply hidden;
-} */
+.esbRow {
+  @apply mb-lg !important;
+}
 
 .esbRowMain {
   @apply w-full !important;

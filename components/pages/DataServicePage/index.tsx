@@ -168,44 +168,44 @@ export const DataServicePage: React.FC<{
         <Heading className="py-xl" size="lg" level={1}>
           {entry.title}
         </Heading>
-        <div className="flex">
-          {/* Left column */}
-          <div className="mr-2xl">
-            {/* Publisher */}
-            <script
-              type="text/x-entryscape-handlebar"
-              data-entryscape="true"
-              data-entryscape-component="template"
-              dangerouslySetInnerHTML={{
-                __html: `
+        {/* Publisher */}
+        <script
+          type="text/x-entryscape-handlebar"
+          data-entryscape="true"
+          data-entryscape-component="template"
+          dangerouslySetInnerHTML={{
+            __html: `
                       <p class="text-md">
                         {{text relation="dcterms:publisher"}} 
                       <p>
                       `,
-              }}
-            />
+          }}
+        />
 
-            {/* Indicators */}
-            <div className="flex text-textSecondary">
-              <div
-                data-entryscape="architectureIndicator"
-                className="architectureIndicator"
-              />
-              <div
-                data-entryscape="accessRightsIndicator"
-                className="accessRightsIndicator"
-              />
-              <div
-                data-entryscape="periodicityIndicator"
-                className="architectureIndicator"
-              />
-              <div
-                data-entryscape="licenseIndicator"
-                className="licenseIndicator"
-              />
-            </div>
+        {/* Indicators */}
+        <div className="flex text-textSecondary">
+          <div
+            data-entryscape="architectureIndicator"
+            className="architectureIndicator"
+          />
+          <div
+            data-entryscape="accessRightsIndicator"
+            className="accessRightsIndicator"
+          />
+          <div
+            data-entryscape="periodicityIndicator"
+            className="architectureIndicator"
+          />
+          <div
+            data-entryscape="licenseIndicator"
+            className="licenseIndicator"
+          />
+        </div>
 
-            <div className="mt-lg bg-white p-lg">
+        <div className="mt-lg flex gap-2xl">
+          {/* Left column */}
+          <div>
+            <div className=" bg-white p-lg">
               {/* Description */}
               <script
                 type="text/x-entryscape-handlebar"
@@ -269,7 +269,9 @@ export const DataServicePage: React.FC<{
 
           {/* Right column */}
           <div className="w-[296px]">
-            <h2>{t("pages|dataservicepage$api")}</h2>
+            <Heading level={2} size={"sm"}>
+              {t("pages|dataservicepage$api")}
+            </Heading>
             <script
               type="text/x-entryscape-handlebar"
               data-entryscape="true"
