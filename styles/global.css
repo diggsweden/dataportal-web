@@ -97,6 +97,7 @@
 /* Entryscape*/
 
 /* Custom list */
+
 .slide-down {
   display: none;
   overflow: hidden;
@@ -106,7 +107,7 @@
 
 .slide-down.active {
   display: block;
-  max-height: 1000px; /* Adjust the maximum height as needed */
+  max-height: 1000px;
 }
 
 .list div {
@@ -121,12 +122,16 @@
   @apply w-[296px] !important;
 }
 
+.esbRowHead {
+  @apply max-h-none !important;
+}
+
 .about-dataset h2 {
   @apply text-sm !important;
 }
 
 .rdforms {
-  @apply mb-md !important;
+  @apply mb-md mr-none !important;
 }
 
 .rdformsRow {
@@ -204,6 +209,24 @@
 .indicators {
   @apply flex text-textSecondary;
 }
-.indicators span i {
-  @apply mr-md h-[32px] w-[32px] rounded-full border-2 border-textSecondary p-xs text-center text-textSecondary;
+
+.esbRow,
+.esbRowExpand {
+  @apply bg-white shadow-none !important;
+}
+
+.contact__publisher {
+  @apply bg-pink-200 !important;
+}
+
+.rdformsRow {
+  @apply w-full !important;
+}
+
+/* .esbRowControl {
+  @apply hidden;
+} */
+
+.esbRowMain {
+  @apply w-full !important;
 }
