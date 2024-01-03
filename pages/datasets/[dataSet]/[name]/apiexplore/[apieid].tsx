@@ -1,4 +1,4 @@
-import { DataSetExploreApiPage } from "@/components/content/entryscape/DatasetExploreApiPage";
+import { DataSetExploreApiPage } from "@/components/content/Entryscape/DatasetExploreApiPage";
 // export default DataSetExploreApiPage;
 import { useRouter } from "next/router";
 import { useContext } from "react";

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { ApiIndexProvider } from "@/components";
-import { DataSetPage } from "@/components/content/entryscape/DataSetPage";
+import { DataSetPage } from "@/components/content/Entryscape/DataSetPage";
 import { useScript } from "@/hooks/useScript";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import EntrystoreProvider from "@/providers/EntrystoreProvider";

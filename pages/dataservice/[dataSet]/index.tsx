@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 import { EntrystoreProvider } from "@/providers/EntrystoreProvider";
 import { SettingsContext } from "@/providers/SettingsProvider";
-import { DataServicePage } from "@/components/content/entryscape/DataServicePage";
+import { DataServicePage } from "@/components/content/Entryscape/DataServicePage";
 import { useScript } from "@/hooks/useScript";
 
 export default function ExploreApiPage() {
