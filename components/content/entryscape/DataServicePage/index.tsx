@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import useTranslation from "next-translate/useTranslation";
-import { ApiIndexContext } from "@/components";
+import { ApiIndexContext } from "@/providers/ApiIndexContext";
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import Link from "next/link";
 import { useMatomo } from "@datapunt/matomo-tracker-react";

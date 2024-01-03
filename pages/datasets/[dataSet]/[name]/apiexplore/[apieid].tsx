@@ -3,7 +3,7 @@ import { DataSetExploreApiPage } from "@/components/content/Entryscape/DatasetEx
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { useScript } from "@/hooks/useScript";
-import { ApiIndexProvider } from "@/components";
+import { ApiIndexProvider } from "@/providers/ApiIndexContext";
 import EntrystoreProvider from "@/providers/EntrystoreProvider";
 import { SettingsContext } from "@/providers/SettingsProvider";
 
