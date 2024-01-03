@@ -1,3 +1,14 @@
+@import "tailwindcss/base";
+
+@layer base {
+  .button--secondary {
+    @apply border-2 border-brown-600 bg-transparent text-brown-600 hover:bg-whiteOpaque5 group-hover:bg-whiteOpaque5 [&_path]:fill-brown-600;
+  }
+  .button--large {
+    @apply h-[44px] gap-sm px-md text-md;
+  }
+}
+
 .esbRowHead {
   @apply relative max-h-none !important;
 }
@@ -126,4 +137,87 @@
 
 .entryscape a:hover {
   @apply no-underline !important;
+}
+
+.svg-assets {
+  @apply hidden;
+}
+
+/* SWAGGER UI */
+.swagger-ui {
+  .title {
+    @apply mb-md flex text-lg;
+  }
+
+  .base-url,
+  p {
+    @apply mb-sm;
+  }
+
+  .scheme-container label {
+    @apply flex flex-col gap-xs;
+
+    select {
+      @apply w-fit cursor-pointer bg-pink-200 px-md py-sm uppercase;
+    }
+  }
+
+  .info {
+    a {
+      @apply text-green-600 hover:text-brown-800;
+    }
+  }
+
+  .main,
+  .info,
+  .scheme-container {
+    @apply mb-lg;
+  }
+}
+
+.opblock-tag {
+  @apply flex cursor-pointer justify-between bg-brown-600 p-md text-white [&_svg]:fill-white;
+}
+
+.opblock-summary-control {
+  @apply flex w-full items-center bg-brown-200 p-md;
+
+  .opblock-summary-path {
+    @apply ml-md w-full text-left;
+  }
+  svg {
+    @apply min-w-fit;
+  }
+
+  .opblock-summary-description {
+    @apply mr-md w-full  text-left text-[10px] text-sm;
+  }
+}
+
+.opblock-summary-method {
+  @apply text-lg font-strong;
+}
+
+.opblock-section-header {
+  @apply flex items-center justify-between  text-lg;
+
+  span {
+    @apply text-sm;
+  }
+  label {
+    @apply flex items-center gap-md;
+  }
+  select {
+    @apply w-fit cursor-pointer bg-pink-200 px-md py-sm text-md uppercase;
+  }
+}
+
+.parameters-col_description {
+  input {
+    @apply p-sm text-brown-900;
+  }
+}
+
+.try-out__btn {
+  @apply button--secondary button--large;
 }
