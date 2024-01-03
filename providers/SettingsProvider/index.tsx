@@ -7,7 +7,6 @@ interface SettingsContext extends DataportalSettings {
   setBreadcrumb?: React.Dispatch<React.SetStateAction<BreadcrumbProps>>;
   appRenderKey: string;
 }
-
 export const extractSettings = (diggSettings: {
   items: { key: string; value: string }[];
 }): DataportalSettings => {

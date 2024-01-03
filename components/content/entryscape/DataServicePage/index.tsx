@@ -270,7 +270,7 @@ export const DataServicePage: React.FC<{
           </div>
 
           {/* Right column */}
-          <div className="w-[296px]">
+          <div>
             <Heading level={2} size={"sm"}>
               {t("pages|dataservicepage$api")}
             </Heading>

@@ -291,8 +291,9 @@ export const DataSetPage: React.FC = () => {
                   '<span>{{text fallback="<span class=\\\'distributionNoName\\\'>${t(
                     "pages|datasetpage$no_title",
                   )}</span>"}}</span>' +                  
-                  '<div class="flex gap-lg">' +
+                  '<div class="flex gap-md">' +
                   '{{distributionAccessCustom}}' +
+                  '{{exploreApiLink}}' +
                   '</span>' +
                   '{{#ifprop "dcat:accessService"}}{{accessServiceCustom}}{{/ifprop}}',
                   rowexpand: '{{#ifprop "dcat:downloadURL"}}' +
@@ -321,7 +322,7 @@ export const DataSetPage: React.FC = () => {
                           )}" unexpandbutton="${t(
                             "pages|datasetpage$view_less",
                           )}"}}' +
-                            '<div title="{{value}}" class="text-sm bg-pink-200 my-sm p-xs" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
+                            '<div title="{{value}}" class="text-sm bg-pink-200 w-fit my-sm p-xs" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
                           '{{/eachprop}}' +
                         '</div>' +
                       '</div>' +
@@ -489,7 +490,7 @@ export const DataSetPage: React.FC = () => {
           {/* Right column */}
           <div className="pt-xl lg:w-[296px] lg:pt-none">
             {/* About dataset - wrapper  */}
-            <div className="lg:w-[296px]">
+            <div className=" lg:w-[296px] ">
               <Heading level={2} size={"sm"} className="pl-sm">
                 {t("pages|datasetpage$about-dataset")}
               </Heading>

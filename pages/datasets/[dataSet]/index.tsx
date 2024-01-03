@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { ApiIndexProvider } from "@/components";
 import EntrystoreProvider from "@/providers/EntrystoreProvider";
 import { SettingsContext } from "@/providers/SettingsProvider";
-import { DataSetPage } from "@/components/pages/DataSetPage";
+import { DataSetPage } from "@/components/content/entryscape/DataSetPage";
 import { useScript } from "@/hooks/useScript";
 
 export default function DataSet() {

@@ -11,7 +11,7 @@ import Head from "next/head";
 
 const ApiExplorer = dynamic(
   () =>
-    import("../../components/ApiExploring/").then(
+    import("../../ApiExploring").then(
       (c) => c.ApiExplorer,
       (e) => e as React.FC<ApiExplorerProps>,
     ),

@@ -1,9 +1,9 @@
 // export default DataSetExploreApiPage;
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { EntrystoreProvider } from "@/components";
+import { EntrystoreProvider } from "@/providers/EntrystoreProvider";
 import { SettingsContext } from "@/providers/SettingsProvider";
-import { DataServicePage } from "@/components/pages/DataServicePage";
+import { DataServicePage } from "@/components/content/entryscape/DataServicePage";
 import { useScript } from "@/hooks/useScript";
 
 export default function ExploreApiPage() {
