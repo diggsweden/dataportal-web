@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { ApiIndexProvider, EntrystoreProvider } from "../../../../components";
+import { ApiIndexProvider, EntrystoreProvider } from "@/components";
 import { SettingsContext } from "@/providers/SettingsProvider";
 
-import { DataSetPage } from "../../../../components/pages/DataSetPage";
-import { useScript } from "../../../../hooks/useScript";
+import { DataSetPage } from "@/components/pages/DataSetPage";
+import { useScript } from "@/hooks/useScript";
 
 export default function DataSet() {
   const { env } = useContext(SettingsContext);
