@@ -16,6 +16,7 @@ import { Heading } from "@/components/global/Typography/Heading";
 import Container from "@/components/layout/Container";
 import { Hero } from "@/components/layout/Hero";
 import { Preamble } from "@/components/global/Typography/Preamble";
+import { ContentBox } from "../ContentBox";
 
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
@@ -116,10 +117,27 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           {content && <BlockList blocks={content} />}
         </div>
 
+        {!domain && lang === "sv" && (
+          <div className="py-xl">
+            <ContentBox
+              heading="Var med och delta"
+              description="På Sveriges dataportal synliggörs data från en rad olika typer av organisationer och sektorer. Data hämtas via länkar för nedladdning eller efterfrågas hos respektive organisation som ansvarar för sina egna datamängder."
+              links={[
+                { label: "Tipsa om dataanvändning", href: "/anvand-data" },
+                { label: "Begär ut data", href: "/datasamverkan" },
+                {
+                  label: "Delta i communityt",
+                  href: "https://community.dataportal.se/",
+                },
+              ]}
+            />{" "}
+          </div>
+        )}
+
         {domain === "data" && <CategoriesNav />}
 
         {areas && !domain && lang === "sv" && (
-          <div className="domain-page__link-block domain-page__theme-block">
+          <div className="py-xl">
             <Heading size={"md"} level={2}>
               {t("pages|data$data-areas_text")}
             </Heading>
