@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { EnvSettings } from "../../env/EnvSettings";
-import { ApiIndexContext } from "./ApiIndexContext";
+import { EnvSettings } from "@/env/EnvSettings";
+import { ApiIndexContext } from "@/providers/ApiIndexContext";
 import dynamic from "next/dynamic";
 
 export interface ApiExplorerProps {

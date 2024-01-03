@@ -6190,7 +6190,6 @@ __metadata:
     react-children-utilities: ^2.8.0
     react-dom: ^18.2.0
     react-markdown: ^8.0.3
-    react-show-more-text: ^1.5.2
     react-vis: ^1.11.7
     rehype-raw: ^6.1.1
     remark-gfm: ^3.0.1
@@ -12134,17 +12133,6 @@ __metadata:
     react-native:
       optional: true
   checksum: 369a2bdcf87915659af9e5c55abfd9f52a84e43e0d12dcc108ed17dbe6933558b7b7fc12caa9c10c1a10a8be7df89454b6c96989d8573fedec1a772c94a1f145
-  languageName: node
-  linkType: hard
-
-"react-show-more-text@npm:^1.5.2":
-  version: 1.7.1
-  resolution: "react-show-more-text@npm:1.7.1"
-  dependencies:
-    prop-types: ^15.7.2
-  peerDependencies:
-    react: 16 - 18.x
-  checksum: dfb4d671f6dbba82ea4702678562dd7ea3dd4ebd35c43a4991b0a1f412ccc6314b2103816c14104f95bcb162a75e60de29a670253787abc467f9374d546a3ae1
   languageName: node
   linkType: hard
 

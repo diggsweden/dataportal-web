@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from "react";
-import ShowMoreText from "react-show-more-text";
+import React, { useContext, useEffect, useState } from "react";
+import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { SettingsContext } from "@/providers/SettingsProvider";
-import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
+import { Button } from "@/components/global/Button";
 import Head from "next/head";
 import {
   accessrigthsIndicator,
@@ -12,7 +12,9 @@ import {
   exploreApiLink,
   licenseIndicator,
   periodicityIndicator,
-} from "../../utilities";
+} from "@/utilities";
+import Container from "@/components/layout/Container";
+import { Heading } from "@/components/global/Typography/Heading";
 
 const filterCatalogProperties = [
   "dcat:keyword",
@@ -53,7 +55,8 @@ export const DataSetPage: React.FC = () => {
   const eid = ids[1];
   const hasWindow = typeof window !== "undefined";
   const postscribe = hasWindow && (window as any).postscribe;
-
+  const [showText, setShowText] = useState(false);
+  const [descriptionHeight, setDescriptionHeight] = useState(0);
   /**
    * Async load scripts requiered for EntryScape blocks,
    * or else blocks wont have access to DOM
@@ -82,6 +85,15 @@ export const DataSetPage: React.FC = () => {
   useEffect(() => {
     trackPageView({ documentTitle: Array.isArray(name) ? name[0] : name });
   }, [pathname]);
+
+  useEffect(() => {
+    (() => {
+      const description = document.querySelector("#pre-description");
+      if (description) {
+        return setDescriptionHeight(description.clientHeight);
+      }
+    })();
+  });
 
   const addScripts = () => {
     if (hasWindow) {
@@ -166,14 +178,14 @@ export const DataSetPage: React.FC = () => {
                   '<span title="Inget format angivet" class="text-md" data-esb-collection-format="__na">-</span>' +
                   '{{/ifprop}}' +
                   '{{#eachprop "dcterms:format"}}' +
-                  '<span title="{{value}}" class="text-md" data-esb-collection-format="{{optionvalue}}">{{label}}</span>' +
+                  '<span title="{{value}}" class="uppercase" data-esb-collection-format="{{optionvalue}}">{{label}}</span>' +
                   '{{/eachprop}}</div>',
               },
               {
               block: 'formatBadges2',
               extends: 'template',
               template: '{{#eachprop "dcterms:format"}}' +
-                '<span title="{{value}}" class="text-md font-bold distribution__format" data-esb-collection-format="{{optionvalue}}">{{label}}</span>' +
+                '<span title="{{value}}" class="uppercase" data-esb-collection-format="{{optionvalue}}">{{label}}</span>' +
                 '{{/eachprop}}',
               },
               {
@@ -184,14 +196,24 @@ export const DataSetPage: React.FC = () => {
                     "pages|datasetpage$several_links",
                   )}{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" min="2" invert="true"}}' +
-                  '<a href="{{prop "dcat:downloadURL"}}" class="text-md matomo_download distribution__link download_url" target="_blank">${t(
-                    "pages|datasetpage$download_link",
-                  )}</a>' +
+                  '<a href="{{prop "dcat:downloadURL"}}" class="text-white" target="_blank">' +
+                  '<button class="button--primary button--large text-white flex items-center">' +
+                  '${t("pages|datasetpage$download_link")}' +
+                  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                  '<path d="M14 3V5H17.59L7.76 14.83L9.17 16.24L19 6.41V10H21V3M19 19H5V5H12V3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V12H19V19Z" fill="#6E615A"/>' +
+                  '</svg>' +
+                  '</button>' +
+                  '</a>' +
                   '{{/ifprop}}' +
                   '{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" invert="true"}}' +
-                  '<a href="{{prop "dcat:accessURL"}}" class="text-md distribution__link access_url" target="_blank">' +
+                  '<a href="{{prop "dcat:accessURL"}}" class="text-white" target="_blank">' +
+                  '<button class="button--primary button--large text-white flex items-center">' +
                   '${t("pages|datasetpage$download_link_adress")}' +
+                  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                  '<path d="M14 3V5H17.59L7.76 14.83L9.17 16.24L19 6.41V10H21V3M19 19H5V5H12V3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V12H19V19Z" fill="#6E615A"/>' +
+                  '</svg>' +
+                  '</button>' +
                   '{{/ifprop}}',
               },
               {
@@ -220,11 +242,15 @@ export const DataSetPage: React.FC = () => {
                 block: 'accessServiceCustom',
                 extends: 'template',
                 relation: 'dcat:accessService',
-                template: '<hr>' +
-                  '{{view rdformsid="dcat:endpointDescription,dcat:dcterms:type_ds"}}' +
-                  '{{link class="api_readmore text-md link" namedclick="dataservice-link" content="${t(
+                template: 
+                '<button class="button--primary button--large flex items-center">' +
+                  '{{link class="text-white" namedclick="dataservice-link" content="${t(
                     "pages|datasetpage$read_about_api",
-                  )}"}}'          
+                  )}"}}' +
+                  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                  '<path d="M4.08008 11V13H16.0801L10.5801 18.5L12.0001 19.92L19.9201 12L12.0001 4.08002L10.5801 5.50002L16.0801 11H4.08008Z" fill="#6E615A"/>' +
+                  '</svg>' +
+                '</button>'          
               },
               {
                 block: 'costIndicator',
@@ -240,6 +266,7 @@ export const DataSetPage: React.FC = () => {
                 template: '{{#ifprop "schema:offers"}}<span class="esbIndicator" title="Avgift"><i class="fas fa-coins"></i>' +
                   '<span class="esbIndicatorLabel">Avgift</span></span>{{/ifprop}}',
               },
+              
               {
                 block: 'distributionListCustom',
                 extends: 'list',
@@ -254,22 +281,22 @@ export const DataSetPage: React.FC = () => {
                   "pages|datasetpage$no_data",
                 )}</div>',
                 rowhead:
-                  '<span class="esbRowAlign">' +
-                  '<span class="esbRowAlignOther">{{formatBadges2}}</span>' +
+                  '<span class="flex flex-col gap-sm">' +
+                  '<div class="flex justify-between gap-lg">' +
+                  '<span class="text-textPrimary text-lg">{{formatBadges2}}</span>' +
                   '{{#ifprop "rdf:type" uri="esterms:ServiceDistribution"}}' +
-                    '<span class="distribution_api-flag text-md"><i class="icon-cog--before"></i>API</span>' +
-                  '{{/ifprop}}' +                  
-                  '<span class="esbRowAlignPrimary">{{text fallback="<span class=\\\'distributionNoName\\\'>${t(
+                    '<span class="text-textSecondary text-md"><i class="icon-cog--before"></i>API</span>' +
+                  '{{/ifprop}}' +  
+                  '</div>' +                
+                  '<span>{{text fallback="<span class=\\\'distributionNoName\\\'>${t(
                     "pages|datasetpage$no_title",
                   )}</span>"}}</span>' +                  
-                  '<div class="distribution_link-row">' +
-                  
+                  '<div class="flex gap-md">' +
+                  '{{distributionAccessCustom}}' +
                   '{{exploreApiLink}}' +
-
-                  '<span class="esbRowAlignSecondary">{{distributionAccessCustom}}</span></span>',
+                  '</span>' +
+                  '{{#ifprop "dcat:accessService"}}{{accessServiceCustom}}{{/ifprop}}',
                   rowexpand: '{{#ifprop "dcat:downloadURL"}}' +
-                  '</div>' +
-
                   '{{#ifprop "dcat:downloadURL" min="2"}}' +
                   '<h{{hinc}} class="distribution_files_header">${t(
                     "pages|datasetpage$several_links_header",
@@ -277,9 +304,9 @@ export const DataSetPage: React.FC = () => {
                   '{{fileList2 directlabel="inherit:registry"}}' +
                   '{{/ifprop}}' +
                   '{{/ifprop}}' +
-                  '{{view rdformsid="dcat:Distribution" filterpredicates="dcat:downloadURL,dcterms:title,dcat:accessService"}}' +
-                  '{{#ifprop "dcat:accessService"}}{{accessServiceCustom}}{{/ifprop}}',
+                  '{{view rdformsid="dcat:Distribution" filterpredicates="dcat:downloadURL,dcterms:title,dcat:accessService"}}'
               },
+              
               {
                 block: 'keyword',
                 extends: 'template',
@@ -289,13 +316,13 @@ export const DataSetPage: React.FC = () => {
                         '<div class="rdformsLabel">' +
                           '${t("pages|datasetpage$keyword")}' +
                         '</div>' +
-                        '<div class="rdformsFields">' +
+                        '<div class="">' +
                           '{{#eachprop "dcat:keyword" limit=4 expandbutton="${t(
                             "pages|datasetpage$view_more",
                           )}" unexpandbutton="${t(
                             "pages|datasetpage$view_less",
                           )}"}}' +
-                            '<div title="{{value}}" class="rdformsOrigin rdformsOrigin_A rdformsField rdformsSingleline" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
+                            '<div title="{{value}}" class="text-sm bg-pink-200 w-fit my-sm p-xs" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
                           '{{/eachprop}}' +
                         '</div>' +
                       '</div>' +
@@ -343,7 +370,7 @@ export const DataSetPage: React.FC = () => {
   };
 
   return (
-    <div className="detailpage">
+    <Container>
       <Head>
         <title>{`${entry.title} - Sveriges dataportal`}</title>
         <meta
@@ -355,121 +382,137 @@ export const DataSetPage: React.FC = () => {
           content={`${entry.title} - Sveriges dataportal`}
         />
       </Head>
-      <div className="detailpage__wrapper">
-        <div className="detailpage__header">
-          {/* Title */}
-          <h1>{entry.title}</h1>
+      <div>
+        {/* Title */}
+        <Heading
+          level={1}
+          size={"lg"}
+          className="mb-none py-xl text-xl lg:text-2xl"
+        >
+          {entry.title}
+        </Heading>
 
-          {/* Publisher */}
-          <script
-            type="text/x-entryscape-handlebar"
-            data-entryscape="true"
-            data-entryscape-component="template"
-            dangerouslySetInnerHTML={{
-              __html: `
-                                <p class="text-md">
-                                  {{text relation="dcterms:publisher"}} 
-                                <p>
-                                `,
-            }}
-          />
-
-          {/* Indicators */}
-          <div className="row indicators">
-            <div
-              data-entryscape="accessRightsIndicator"
-              className="accessRightsIndicator"
-            />
-            <div
-              data-entryscape="periodicityIndicator"
-              className="architectureIndicator"
-            />
-            <div
-              data-entryscape="licenseIndicator"
-              className="licenseIndicator"
-            />
-
-            <div data-entryscape="costIndicator2" className="costIndicator" />
-          </div>
-
-          {/* Description */}
-          <div className="description">
-            <ShowMoreText
-              lines={8}
-              more={t("pages|datasetpage$view_more")}
-              less={t("pages|datasetpage$view_less")}
-              className="text-md"
-              anchorClass="text-md view-more-text-link"
-              expanded={false}
-            >
-              <span className="text-md">{entry.description}</span>
-            </ShowMoreText>
-          </div>
-
+        <div className="gap-2xl lg:flex">
           {/* Left column */}
-          <div className="detailpage__wrapper--leftcol">
-            {/* Use data - header */}
-            <h2>{t("pages|datasetpage$use-data")}</h2>
-
-            {/* Distribution list */}
-            <div
-              className="distribution__list"
-              data-entryscape="distributionListCustom"
-              data-entryscape-registry="true"
-            ></div>
-
-            {/* Dataset map */}
-            <div
-              className="dataset__map"
-              data-entryscape="view"
-              data-entryscape-rdformsid="dcat:dcterms:spatial_bb_da"
-              data-entryscape-label="false"
-            ></div>
-
-            {/* Questions  or comments */}
-            <div className="contact__publisher hbbr">
-              <h3>{t("pages|datasetpage$contact-publisher")}</h3>
-              <p className="">
-                {t("pages|datasetpage$contact-publisher-text")}
-                {t("pages|datasetpage$contact-publisher-text2")}{" "}
-                <a
-                  className="link text-md"
-                  href="https://community.dataportal.se/"
-                  lang="en"
-                >
-                  community
-                </a>
-                .
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Right column */}
-        <div className="detailpage__wrapper--rightcol hbbr">
-          {/* About dataset - wrapper  */}
-          <div className="detailpage__wrapper--rightcol-info text-base">
-            <h2>{t("pages|datasetpage$about-dataset")}</h2>
-
-            {/* About dataset */}
-            <div
-              data-entryscape-dialog
-              data-entryscape-rdformsid="dcat:contactPoint"
-            />
-            <div data-entryscape="aboutDataset" className="aboutDataset" />
-          </div>
-
-          {/* Catalog informaton wrapper */}
-          <div className="detailpage__wrapper--rightcol-info text-base">
-            <h2>{t("pages|datasetpage$catalog")}</h2>
-
-            {/* Catalog */}
+          <div className="flex flex-col gap-lg">
+            {/* Publisher */}
             <script
               type="text/x-entryscape-handlebar"
               data-entryscape="true"
-              data-entryscape-block="template"
+              data-entryscape-component="template"
               dangerouslySetInnerHTML={{
                 __html: `
+                              
+                                  {{text relation="dcterms:publisher"}} 
+                               
+                                `,
+              }}
+            />
+
+            {/* Indicators */}
+            <div className="row indicators">
+              <div
+                data-entryscape="accessRightsIndicator"
+                className="accessRightsIndicator"
+              />
+              <div
+                data-entryscape="periodicityIndicator"
+                className="architectureIndicator"
+              />
+              <div
+                data-entryscape="licenseIndicator"
+                className="licenseIndicator"
+              />
+
+              <div data-entryscape="costIndicator2" className="costIndicator" />
+            </div>
+
+            {/* Description */}
+            <div className="flex flex-col items-end gap-sm">
+              <pre
+                id="pre-description"
+                className={`w-full whitespace-pre-line text-left font-ubuntu text-md ${
+                  showText ? "line-clamp-none" : "line-clamp-[8]"
+                }`}
+              >
+                {entry.description}
+              </pre>
+              {descriptionHeight > 191 && (
+                <Button
+                  size={"sm"}
+                  variant={"plain"}
+                  label={
+                    showText
+                      ? t("pages|datasetpage$view_less")
+                      : t("pages|datasetpage$view_more")
+                  }
+                  onClick={() => setShowText(!showText)}
+                />
+              )}
+            </div>
+
+            <div>
+              {/* Distribution list */}
+              <div
+                className="distribution__list"
+                data-entryscape="distributionListCustom"
+                data-entryscape-registry="true"
+              ></div>
+
+              {/* Dataset map */}
+              <div
+                className="dataset__map"
+                data-entryscape="view"
+                data-entryscape-rdformsid="dcat:dcterms:spatial_bb_da"
+                data-entryscape-label="false"
+              ></div>
+
+              {/* Questions  or comments */}
+              <div className="contact__publisher hbbr">
+                <Heading level={3}>
+                  {t("pages|datasetpage$contact-publisher")}
+                </Heading>
+                <p className="">
+                  {t("pages|datasetpage$contact-publisher-text")}
+                  {t("pages|datasetpage$contact-publisher-text2")}{" "}
+                  <a
+                    className="link text-md"
+                    href="https://community.dataportal.se/"
+                    lang="en"
+                  >
+                    community
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+          </div>
+          {/* Right column */}
+          <div className="pt-xl lg:w-[296px] lg:pt-none">
+            {/* About dataset - wrapper  */}
+            <div className=" lg:w-[296px] ">
+              <Heading level={2} size={"sm"} className="pl-sm">
+                {t("pages|datasetpage$about-dataset")}
+              </Heading>
+              {/* About dataset */}
+              <div
+                data-entryscape-dialog
+                data-entryscape-rdformsid="dcat:contactPoint"
+              />
+              <div data-entryscape="aboutDataset" className="p-md" />
+            </div>
+
+            {/* Catalog informaton wrapper */}
+            <div className="bg-white p-md">
+              <h2>{t("pages|datasetpage$catalog")}</h2>
+
+              {/* Catalog */}
+              <script
+                type="text/x-entryscape-handlebar"
+                data-entryscape="true"
+                data-entryscape-block="template"
+                dangerouslySetInnerHTML={{
+                  __html: `
                           {{viewMetadata 
                           relationinverse="dcat:dataset" 
                           onecol=true 
@@ -477,28 +520,32 @@ export const DataSetPage: React.FC = () => {
                           filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi"
                           }}
                         `,
-              }}
-            ></script>
-          </div>
+                }}
+              ></script>
 
-          {/* Download RDF */}
-          <script
-            className="download__rdf"
-            type="text/x-entryscape-handlebar"
-            data-entryscape="true"
-            data-entryscape-block="template"
-            dangerouslySetInnerHTML={{
-              __html: `
-                      <a class="download__rdf--link matomo_download text-md link" target="_blank" href="{{metadataURI}}?recursive=dcat">${t(
-                        "pages|datasetpage$rdf",
-                      )}</a>
+              {/* Download RDF */}
+              <script
+                className="download__rdf"
+                type="text/x-entryscape-handlebar"
+                data-entryscape="true"
+                data-entryscape-block="template"
+                dangerouslySetInnerHTML={{
+                  __html: `
+                      <a target="_blank" class="text-white" href="{{metadataURI}}?recursive=dcat">
+                      <button class="button--primary button--large text-white flex items-center">
+                      ${t("pages|datasetpage$rdf")}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18V15H6V18H18V15H20V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6Z" fill="#F0EFEE"/>
+                      </svg>
+                      </button>
+                      </a>
                       `,
-            }}
-          ></script>
+                }}
+              ></script>
+            </div>
+          </div>
         </div>
-
-        <div className="detailpage__columns"></div>
       </div>
-    </div>
+    </Container>
   );
 };
