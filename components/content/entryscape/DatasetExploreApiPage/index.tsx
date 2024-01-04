@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { ApiExplorerProps } from "@/components";
+import { ApiExplorerProps } from "@/components/content/Entryscape/ApiExploring";
 import { ExternalLink } from "@/components/navigation";
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import useTranslation from "next-translate/useTranslation";
@@ -8,10 +8,13 @@ import { SettingsContext } from "@/providers/SettingsProvider";
 import { useRouter } from "next/router";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
+import { Heading } from "@/components/global/Typography/Heading";
+import Container from "@/components/layout/Container";
+import MailIcon from "@/assets/icons/mail.svg";
 
 const ApiExplorer = dynamic(
   () =>
-    import("../../ApiExploring").then(
+    import("@/components/content/Entryscape/ApiExploring").then(
       (c) => c.ApiExplorer,
       (e) => e as React.FC<ApiExplorerProps>,
     ),
@@ -31,6 +34,7 @@ export const DataSetExploreApiPage: React.FC<{
   const entry = useContext(EntrystoreContext);
 
   const [toggleTabs, setToggleTabs] = useState(1);
+  const tab = toggleTabs === 1;
   const { trackPageView } = useMatomo();
   let postscribe: any;
 
@@ -220,7 +224,7 @@ export const DataSetExploreApiPage: React.FC<{
   };
 
   return (
-    <div className="detailpage">
+    <Container>
       <Head>
         <title>{`${entry.title} - Sveriges dataportal`}</title>
         <meta
@@ -232,71 +236,62 @@ export const DataSetExploreApiPage: React.FC<{
           content={`${entry.title} - Sveriges dataportal`}
         />
       </Head>
-      <div className="detailpage__wrapper detailpage__wrapper--apiexplore">
-        <div className="detailpage__wrapper-topinfo">
-          {/* Title */}
-          <h3 className="api-title" color="pinkPop">
-            {t("pages|explore-api-page$explore-api")}{" "}
-            <script
-              type="text/x-entryscape-handlebar"
-              data-entryscape="true"
-              data-entryscape-component="template"
-              dangerouslySetInnerHTML={{
-                __html: `
-                           <span>{{text content="\${dcterms:title}"}}</span>
-                          `,
-              }}
-            ></script>
-          </h3>
+      <div className="detailpage__wrapper-topinfo">
+        {/* Title */}
+        <Heading level={3} size={"lg"} className="pt-xl text-xl lg:text-2xl">
+          {t("pages|explore-api-page$explore-api")}
+        </Heading>
+        {/* Publisher */}
+        <span>{entry.publisher}</span>
+        {/* Indicators */}
+        <div className="my-lg flex text-textSecondary">
+          <div
+            data-entryscape="accessRightsIndicator"
+            className="accessRightsIndicator"
+            data-entryscape-entry={eid}
+            data-entryscape-context={cid}
+          ></div>
+          <div
+            data-entryscape="periodicityIndicator"
+            className="architectureIndicator"
+            data-entryscape-entry={eid}
+            data-entryscape-context={cid}
+          ></div>
+          <div
+            data-entryscape="licenseIndicator2"
+            className="licenseIndicator"
+            data-entryscape-entry={eid}
+            data-entryscape-context={cid}
+          ></div>
 
-          {/* Publisher */}
-          <span className="api-publisher text-md">{entry.publisher}</span>
-
-          {/* Indicators */}
-          <div className="row indicators indicators__swagger">
-            <div
-              data-entryscape="accessRightsIndicator"
-              className="accessRightsIndicator"
-              data-entryscape-entry={eid}
-              data-entryscape-context={cid}
-            ></div>
-            <div
-              data-entryscape="periodicityIndicator"
-              className="architectureIndicator"
-              data-entryscape-entry={eid}
-              data-entryscape-context={cid}
-            ></div>
-            <div
-              data-entryscape="licenseIndicator2"
-              className="licenseIndicator"
-              data-entryscape-entry={eid}
-              data-entryscape-context={cid}
-            ></div>
-
-            <div
-              data-entryscape="costIndicator2"
-              className="costIndicator"
-              data-entryscape-entry={eid}
-              data-entryscape-context={cid}
-            ></div>
-          </div>
-
+          <div
+            data-entryscape="costIndicator2"
+            className="costIndicator"
+            data-entryscape-entry={eid}
+            data-entryscape-context={cid}
+          ></div>
+        </div>
+        <div className="flex flex-col">
           {/* Refers to dataset - heading*/}
-          <span className="font-bold text-md">
+          <span className="font-bold pb-sm lg:text-lg">
             {t("pages|explore-api-page$belongs-to-dataset")}
           </span>
 
           {/* Refers to dataset - datset */}
-          <span className="api-title-sm text-md">{entry.title}</span>
+          <span className="break-words text-sm lg:text-md">{entry.title}</span>
         </div>
 
+        <div className="my-lg h-[1px] break-words border border-brown-600 opacity-20"></div>
+
         {/* Tabs navigation */}
-        <nav className="tabs-nav">
-          <ul>
+        <nav className="mb-lg">
+          <ul className="flex gap-xl">
             <li>
               <button
                 className={
-                  toggleTabs === 1 ? "active-tab text-base" : "text-base"
+                  tab
+                    ? "text-md underline decoration-2 underline-offset-4	 lg:text-lg"
+                    : "text-md lg:text-lg"
                 }
                 onClick={() => toggleTab(1)}
               >
@@ -305,7 +300,11 @@ export const DataSetExploreApiPage: React.FC<{
             </li>
             <li>
               <button
-                className={toggleTabs === 2 ? "active-tab" : ""}
+                className={
+                  !tab
+                    ? "text-md underline decoration-2	underline-offset-4 lg:text-lg"
+                    : "text-md lg:text-lg"
+                }
                 onClick={() => toggleTab(2)}
               >
                 Information
@@ -315,57 +314,50 @@ export const DataSetExploreApiPage: React.FC<{
         </nav>
 
         {/* Tabs */}
-        <div className="content-tabs-wrapper">
-          {/* Tab 1 - Swagger*/}
-          <div
-            id="content-tab-1"
-            className={
-              toggleTabs === 1
-                ? "content-tab active-content-tab"
-                : "content-tab"
-            }
-          >
+        <div>
+          <div className={tab ? "block" : "hidden"}>
             <ApiExplorer env={env} contextId={cid} entryId={apieid as string} />
           </div>
 
-          {/* Tab 2 - Information */}
-          <div
-            id="content-tab-2"
-            className={
-              toggleTabs === 2
-                ? "active-content-tab content-tab"
-                : "content-tab"
-            }
-          >
-            <div data-entryscape="view"></div>
+          <div className={!tab ? "block" : "hidden"}>
+            <div className="mb-xl" data-entryscape="view"></div>
 
-            <div className="content-tab-text">
-              <div className="highlight-block">
-                <h2>{t("pages|explore-api-page$access-to-api")}</h2>
+            <div className="max-w-md bg-pink-200 p-md [&_h2]:mb-xs [&_h2]:text-md [&_h2]:text-textSecondary [&_h2]:lg:text-lg [&_p]:mb-lg [&_p]:text-sm [&_p]:text-textPrimary [&_p]:lg:text-md">
+              <div>
+                <Heading level={2}>
+                  {t("pages|explore-api-page$access-to-api")}
+                </Heading>
                 <p>{t("pages|explore-api-page$access-to-api-txt")}</p>
-                <h2>{t("pages|explore-api-page$open-apis")}</h2>
+                <Heading level={2}>
+                  {t("pages|explore-api-page$open-apis")}
+                </Heading>
                 <p>{t("pages|explore-api-page$open-apis-txt")}</p>
-                <h2>{t("pages|explore-api-page$api-key")}</h2>
+                <Heading level={2}>
+                  {t("pages|explore-api-page$api-key")}
+                </Heading>
                 <p>{t("pages|explore-api-page$api-key-txt")}</p>
-
-                {entry.contact && (
-                  <>
-                    <h2>{t("pages|explore-api-page$contact-publisher")}</h2>
-                    <p>
-                      <ExternalLink
-                        isMail={true}
-                        href={`mailto:${entry.contact.email}`}
-                      >
-                        {entry.contact.name}
-                      </ExternalLink>
-                    </p>
-                  </>
-                )}
               </div>
+              {entry.contact && (
+                <div>
+                  <Heading level={2}>
+                    {t("pages|explore-api-page$contact-publisher")}
+                  </Heading>
+                  <p className="flex items-center gap-xs">
+                    <ExternalLink
+                      className="mb-xstext-brown-800 hover:no-underline"
+                      isMail={true}
+                      href={`mailto:${entry.contact.email}`}
+                    >
+                      {entry.contact.name}
+                    </ExternalLink>
+                    <MailIcon width={16} height={16} viewBox="0 0 24 24" />
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };

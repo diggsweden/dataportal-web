@@ -112,7 +112,7 @@
 }
 
 .esbRowHead .esbRowControl > button {
-  @apply m-none flex h-[44px] w-full items-center justify-evenly gap-xs rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary hover:bg-brown-100 hover:no-underline focus:no-underline focus:shadow-none focus-visible:shadow-none !important;
+  @apply m-none mb-xs flex h-[44px] w-full items-center justify-evenly gap-xs rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary hover:bg-brown-100 hover:no-underline focus:no-underline focus:shadow-none focus-visible:shadow-none !important;
 }
 
 .btn-link::before {
@@ -126,4 +126,90 @@
 
 .entryscape a:hover {
   @apply no-underline !important;
+}
+
+.svg-assets {
+  @apply hidden;
+}
+
+/* SWAGGER UI */
+.swagger-ui {
+  .title {
+    @apply mb-md md:flex lg:text-lg;
+
+    .version {
+      @apply ml-[-8px] md:ml-none;
+    }
+  }
+
+  .base-url {
+    @apply overflow-auto pb-sm text-sm;
+  }
+
+  .scheme-container label {
+    @apply flex flex-col gap-xs break-words;
+
+    select {
+      @apply w-fit cursor-pointer bg-pink-200 px-md py-sm uppercase;
+    }
+  }
+
+  .info {
+    a {
+      @apply break-words text-green-600 hover:text-brown-800;
+    }
+  }
+
+  .main,
+  .info,
+  .scheme-container {
+    @apply mb-lg;
+  }
+}
+
+.opblock-tag {
+  @apply flex cursor-pointer justify-between bg-brown-600 p-md text-white [&_svg]:fill-white;
+}
+
+.opblock-summary-control {
+  @apply relative flex w-full items-center bg-brown-200 p-md text-left;
+
+  .opblock-summary-path {
+    @apply ml-md w-full text-left;
+  }
+  svg {
+    @apply ml-sm min-w-fit;
+  }
+
+  .opblock-summary-description {
+    @apply mr-md hidden w-full  text-left text-[10px] text-sm lg:block;
+  }
+}
+
+.opblock-summary-method {
+  @apply text-lg font-strong;
+}
+
+.opblock-section-header {
+  @apply flex items-center justify-between  text-lg;
+
+  span {
+    @apply text-sm;
+  }
+  label {
+    @apply flex items-center gap-md;
+  }
+  select {
+    @apply w-fit cursor-pointer bg-pink-200 px-md py-sm text-md uppercase;
+  }
+}
+
+.parameters-col_description {
+  input {
+    @apply p-sm text-brown-900;
+  }
+}
+
+.try-out__btn {
+  @apply button--secondary button--large;
 }
