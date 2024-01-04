@@ -184,8 +184,8 @@ export const SearchContentPage: FC<SearchProps> = () => {
     });
   };
 
-  const removeLeadingSlash = (url: string | undefined) => {
-    return url?.replace(/^\//, "");
+  const cleanDoubleSlash = (url: string) => {
+    return url.replace(/\/\//g, "/");
   };
 
   return (
@@ -252,14 +252,12 @@ export const SearchContentPage: FC<SearchProps> = () => {
                   searchResult.hits.map((hit: SearchHit, index: number) => (
                     <li className="max-w-lg" key={index}>
                       <Link
-                        href={`${removeLeadingSlash(hit.url)}#ref=${
+                        href={`${cleanDoubleSlash(hit.url!)}#ref=${
                           window ? window.location.search : ""
                         }`}
                         onClick={() => {
                           saveCurrentScrollPos();
-                          trackSearchHitClick(
-                            removeLeadingSlash(hit.url) || "",
-                          );
+                          trackSearchHitClick(cleanDoubleSlash(hit.url!) || "");
                         }}
                         className="group no-underline"
                       >
