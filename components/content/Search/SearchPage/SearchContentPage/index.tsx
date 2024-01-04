@@ -184,6 +184,10 @@ export const SearchContentPage: FC<SearchProps> = () => {
     });
   };
 
+  const removeLeadingSlash = (url: string | undefined) => {
+    return url?.replace(/^\//, "");
+  };
+
   return (
     <div className="SearchContentPage">
       <Head>
@@ -248,13 +252,13 @@ export const SearchContentPage: FC<SearchProps> = () => {
                   searchResult.hits.map((hit: SearchHit, index: number) => (
                     <li className="max-w-lg" key={index}>
                       <Link
-                        href={`${hit.url?.replace(/^\//, "")}#ref=${
+                        href={`${removeLeadingSlash(hit.url)}#ref=${
                           window ? window.location.search : ""
                         }`}
                         onClick={() => {
                           saveCurrentScrollPos();
                           trackSearchHitClick(
-                            hit.url?.replace(/^\//, "") || "",
+                            removeLeadingSlash(hit.url) || "",
                           );
                         }}
                         className="group no-underline"
