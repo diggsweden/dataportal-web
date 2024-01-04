@@ -395,7 +395,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                     label={facetValue.title || facetValue.resource}
                     icon={CloseIcon}
                     iconPosition="right"
-                    className="w-full justify-between py-md text-left md:w-auto md:py-[2px]"
+                    className="w-full justify-between py-md text-left font-strong md:w-auto md:py-[2px]"
                     onClick={() => {
                       clearCurrentScrollPos();
                       search.toggleFacet(facetValue).then(() => {
