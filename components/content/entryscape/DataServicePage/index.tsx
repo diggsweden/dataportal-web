@@ -166,11 +166,11 @@ export const DataServicePage: React.FC<{
         />
       </Head>
       <main>
-        <Heading className="py-xl" size="lg" level={1}>
+        <Heading className="py-xl text-xl lg:text-2xl" size="lg" level={1}>
           {entry.title}
         </Heading>
 
-        <div className="flex gap-2xl">
+        <div className="gap-2xl lg:flex">
           {/* Left column */}
           <div className="flex flex-col gap-lg">
             {/* Publisher */}
@@ -205,7 +205,7 @@ export const DataServicePage: React.FC<{
               />
             </div>
 
-            <div className=" bg-white p-lg">
+            <div className="bg-white p-lg">
               {/* Description */}
               <script
                 type="text/x-entryscape-handlebar"
@@ -270,7 +270,7 @@ export const DataServicePage: React.FC<{
           </div>
 
           {/* Right column */}
-          <div>
+          <div className="mt-xl lg:mt-none lg:w-[296px]">
             <Heading level={2} size={"sm"}>
               {t("pages|dataservicepage$api")}
             </Heading>
@@ -280,7 +280,7 @@ export const DataServicePage: React.FC<{
               data-entryscape-component="template"
               dangerouslySetInnerHTML={{
                 __html: `
-                        <div class="w-[296px]">
+                        <div class="lg:w-[296px]">
                           {{viewMetadata 
                               template="dcat:DataService"
                               filterpredicates="dcterms:title,dcterms:publisher,dcat:endpointURL"

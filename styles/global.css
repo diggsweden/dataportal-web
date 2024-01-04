@@ -106,6 +106,7 @@ body {
 
 * {
   scroll-behavior: smooth;
+  font-family: Ubuntu, sans-serif;
 }
 /* General styling for the table */
 table {

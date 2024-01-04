@@ -291,7 +291,7 @@ export const DataSetPage: React.FC = () => {
                   '<span>{{text fallback="<span class=\\\'distributionNoName\\\'>${t(
                     "pages|datasetpage$no_title",
                   )}</span>"}}</span>' +                  
-                  '<div class="flex gap-md">' +
+                  '<div class="flex flex-col md:flex-row gap-sm mt-md md:mt-none">' +
                   '{{distributionAccessCustom}}' +
                   '{{exploreApiLink}}' +
                   '</span>' +
@@ -316,13 +316,13 @@ export const DataSetPage: React.FC = () => {
                         '<div class="rdformsLabel">' +
                           '${t("pages|datasetpage$keyword")}' +
                         '</div>' +
-                        '<div class="">' +
+                        '<div>' +
                           '{{#eachprop "dcat:keyword" limit=4 expandbutton="${t(
                             "pages|datasetpage$view_more",
                           )}" unexpandbutton="${t(
                             "pages|datasetpage$view_less",
                           )}"}}' +
-                            '<div title="{{value}}" class="text-sm bg-pink-200 w-fit my-sm p-xs" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
+                            '<div title="{{value}}" class="text-sm font-strong bg-pink-200 w-fit my-sm p-xs" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
                           '{{/eachprop}}' +
                         '</div>' +
                       '</div>' +

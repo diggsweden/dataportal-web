@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { ApiExplorerProps } from "@/components";
+import { ApiExplorerProps } from "@/components/content/Entryscape/ApiExploring";
 import { ExternalLink } from "@/components/navigation";
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import useTranslation from "next-translate/useTranslation";
@@ -10,10 +10,11 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import { Heading } from "@/components/global/Typography/Heading";
 import Container from "@/components/layout/Container";
+import MailIcon from "@/assets/icons/mail.svg";
 
 const ApiExplorer = dynamic(
   () =>
-    import("@/components/ApiExploring").then(
+    import("@/components/content/Entryscape/ApiExploring").then(
       (c) => c.ApiExplorer,
       (e) => e as React.FC<ApiExplorerProps>,
     ),
@@ -63,7 +64,7 @@ export const DataSetExploreApiPage: React.FC<{
 
   useEffect(() => {
     addScriptsDistribution();
-  });
+  }, []);
 
   useEffect(() => {
     trackPageView({
@@ -237,7 +238,7 @@ export const DataSetExploreApiPage: React.FC<{
       </Head>
       <div className="detailpage__wrapper-topinfo">
         {/* Title */}
-        <Heading level={3} size={"lg"} className="pt-xl">
+        <Heading level={3} size={"lg"} className="pt-xl text-xl lg:text-2xl">
           {t("pages|explore-api-page$explore-api")}
         </Heading>
         {/* Publisher */}
@@ -272,15 +273,15 @@ export const DataSetExploreApiPage: React.FC<{
         </div>
         <div className="flex flex-col">
           {/* Refers to dataset - heading*/}
-          <span className="font-bold pb-sm text-lg">
+          <span className="font-bold pb-sm lg:text-lg">
             {t("pages|explore-api-page$belongs-to-dataset")}
           </span>
 
           {/* Refers to dataset - datset */}
-          <span className="api-title-sm text-md">{entry.title}</span>
+          <span className="break-words text-sm lg:text-md">{entry.title}</span>
         </div>
 
-        <div className="my-lg h-[1px] border border-brown-600 opacity-20"></div>
+        <div className="my-lg h-[1px] break-words border border-brown-600 opacity-20"></div>
 
         {/* Tabs navigation */}
         <nav className="mb-lg">
@@ -289,8 +290,8 @@ export const DataSetExploreApiPage: React.FC<{
               <button
                 className={
                   tab
-                    ? "text-lg underline decoration-2	 underline-offset-4"
-                    : "text-lg"
+                    ? "text-md underline decoration-2 underline-offset-4	 lg:text-lg"
+                    : "text-md lg:text-lg"
                 }
                 onClick={() => toggleTab(1)}
               >
@@ -301,8 +302,8 @@ export const DataSetExploreApiPage: React.FC<{
               <button
                 className={
                   !tab
-                    ? "text-lg underline	decoration-2 underline-offset-4"
-                    : "text-lg"
+                    ? "text-md underline decoration-2	underline-offset-4 lg:text-lg"
+                    : "text-md lg:text-lg"
                 }
                 onClick={() => toggleTab(2)}
               >
@@ -313,58 +314,48 @@ export const DataSetExploreApiPage: React.FC<{
         </nav>
 
         {/* Tabs */}
-        <div className="content-tabs-wrapper">
-          {tab ? (
-            <div
-              id="content-tab-1"
-              className={tab ? "content-tab active-content-tab" : "content-tab"}
-            >
-              <ApiExplorer
-                env={env}
-                contextId={cid}
-                entryId={apieid as string}
-              />
-            </div>
-          ) : (
-            <div
-              id="content-tab-2"
-              className={tab ? "content-tab active-content-tab" : "content-tab"}
-            >
-              <div className="mb-xl" data-entryscape="view"></div>
+        <div>
+          <div className={tab ? "block" : "hidden"}>
+            <ApiExplorer env={env} contextId={cid} entryId={apieid as string} />
+          </div>
 
-              <div className="max-w-md bg-pink-200 p-md [&_h2]:mb-xs [&_h2]:text-textSecondary [&_p]:mb-lg [&_p]:text-textPrimary">
-                <div>
-                  <Heading level={2} size={"sm"}>
-                    {t("pages|explore-api-page$access-to-api")}
-                  </Heading>
-                  <p>{t("pages|explore-api-page$access-to-api-txt")}</p>
-                  <Heading level={2} size={"sm"}>
-                    {t("pages|explore-api-page$open-apis")}
-                  </Heading>
-                  <p>{t("pages|explore-api-page$open-apis-txt")}</p>
-                  <Heading level={2} size={"sm"}>
-                    {t("pages|explore-api-page$api-key")}
-                  </Heading>
-                  <p>{t("pages|explore-api-page$api-key-txt")}</p>
-                </div>
-                {entry.contact && (
-                  <div>
-                    <Heading level={2} size={"sm"}>
-                      {t("pages|explore-api-page$contact-publisher")}
-                    </Heading>
-                    <p>
-                      <ExternalLink
-                        isMail={true}
-                        href={`mailto:${entry.contact.email}`}
-                      >
-                        {entry.contact.name}
-                      </ExternalLink>
-                    </p>
-                  </div>
-                )}
+          <div className={!tab ? "block" : "hidden"}>
+            <div className="mb-xl" data-entryscape="view"></div>
+
+            <div className="max-w-md bg-pink-200 p-md [&_h2]:mb-xs [&_h2]:text-md [&_h2]:text-textSecondary [&_h2]:lg:text-lg [&_p]:mb-lg [&_p]:text-sm [&_p]:text-textPrimary [&_p]:lg:text-md">
+              <div>
+                <Heading level={2}>
+                  {t("pages|explore-api-page$access-to-api")}
+                </Heading>
+                <p>{t("pages|explore-api-page$access-to-api-txt")}</p>
+                <Heading level={2}>
+                  {t("pages|explore-api-page$open-apis")}
+                </Heading>
+                <p>{t("pages|explore-api-page$open-apis-txt")}</p>
+                <Heading level={2}>
+                  {t("pages|explore-api-page$api-key")}
+                </Heading>
+                <p>{t("pages|explore-api-page$api-key-txt")}</p>
               </div>
+              {entry.contact && (
+                <div>
+                  <Heading level={2}>
+                    {t("pages|explore-api-page$contact-publisher")}
+                  </Heading>
+                  <p className="flex items-center gap-xs">
+                    <ExternalLink
+                      className="mb-xstext-brown-800 hover:no-underline"
+                      isMail={true}
+                      href={`mailto:${entry.contact.email}`}
+                    >
+                      {entry.contact.name}
+                    </ExternalLink>
+                    <MailIcon width={16} height={16} viewBox="0 0 24 24" />
+                  </p>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </Container>

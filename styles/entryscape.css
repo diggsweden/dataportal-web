@@ -123,7 +123,7 @@
 }
 
 .esbRowHead .esbRowControl > button {
-  @apply m-none flex h-[44px] w-full items-center justify-evenly gap-xs rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary hover:bg-brown-100 hover:no-underline focus:no-underline focus:shadow-none focus-visible:shadow-none !important;
+  @apply m-none mb-xs flex h-[44px] w-full items-center justify-evenly gap-xs rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary hover:bg-brown-100 hover:no-underline focus:no-underline focus:shadow-none focus-visible:shadow-none !important;
 }
 
 .btn-link::before {
@@ -146,16 +146,19 @@
 /* SWAGGER UI */
 .swagger-ui {
   .title {
-    @apply mb-md flex text-lg;
+    @apply mb-md md:flex lg:text-lg;
+
+    .version {
+      @apply ml-[-8px] md:ml-none;
+    }
   }
 
-  .base-url,
-  p {
-    @apply mb-sm;
+  .base-url {
+    @apply overflow-auto pb-sm text-sm;
   }
 
   .scheme-container label {
-    @apply flex flex-col gap-xs;
+    @apply flex flex-col gap-xs break-words;
 
     select {
       @apply w-fit cursor-pointer bg-pink-200 px-md py-sm uppercase;
@@ -164,7 +167,7 @@
 
   .info {
     a {
-      @apply text-green-600 hover:text-brown-800;
+      @apply break-words text-green-600 hover:text-brown-800;
     }
   }
 
@@ -180,17 +183,17 @@
 }
 
 .opblock-summary-control {
-  @apply flex w-full items-center bg-brown-200 p-md;
+  @apply relative flex w-full items-center bg-brown-200 p-md text-left;
 
   .opblock-summary-path {
     @apply ml-md w-full text-left;
   }
   svg {
-    @apply min-w-fit;
+    @apply ml-sm min-w-fit;
   }
 
   .opblock-summary-description {
-    @apply mr-md w-full  text-left text-[10px] text-sm;
+    @apply mr-md hidden w-full  text-left text-[10px] text-sm lg:block;
   }
 }
 
