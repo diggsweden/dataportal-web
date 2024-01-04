@@ -12,11 +12,13 @@ export class StatisticListItemHistory extends React.Component<StatisticListItemH
 
   render() {
     return (
-      <li>
-        <span className="text-md">{this.props.listText}</span>
-        <span className="list-value font-bold text-md">
-          {this.props.listNumber}
-        </span>
+      <li className="pl-sm">
+        <p className="inline-flex w-full justify-between">
+          <span className="">{this.props.listText}</span>
+          <span className="text-right font-strong">
+            {this.props.listNumber}
+          </span>
+        </p>
       </li>
     );
   }

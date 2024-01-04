@@ -1,9 +1,11 @@
+import { FC, useEffect } from "react";
+import { useRouter } from "next/router";
+import Container from "@/components/layout/Container";
+import { Heading } from "@/components/global/Typography/Heading";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import useTranslation from "next-translate/useTranslation";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
 
 const DynamicStatisticGraphNumbers = dynamic(
   () =>
@@ -32,7 +34,7 @@ const DynamicStatistic = dynamic(
   },
 );
 
-export const StatisticPage: React.FC = () => {
+export const StatisticPage: FC = () => {
   const { t } = useTranslation("pages");
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
@@ -60,20 +62,24 @@ export const StatisticPage: React.FC = () => {
           )} - Sveriges dataportal`}
         />
       </Head>
-      <div className="container">
-        <h2>{t("statistic$statistic-page-header")} </h2>
-        <div className="content statistic-page">
-          <p className="main-text text-md">
+      <Container className="py-xl">
+        <Heading level={1} size={"lg"}>
+          {t("statistic$statistic-page-header")}
+        </Heading>
+        <div className="max-w-md">
+          <p className="mb-xl text-lg text-brown-600">
             {t("statistic$statistic-page-text")}
           </p>
           <DynamicStatisticGraphNumbers />
-          <p className="main-text text-md">
+          <p className="mb-xl mt-md">
             {t("statistic$statistic-page-numberofdatasets")}{" "}
             <DynamicStatisticNumbersDatasets />
           </p>
-          <DynamicStatistic />
+          <div className="flex flex-col gap-xl">
+            <DynamicStatistic />
+          </div>
         </div>
-      </div>
+      </Container>
     </>
   );
 };

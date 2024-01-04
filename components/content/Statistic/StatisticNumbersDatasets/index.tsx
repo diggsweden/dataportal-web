@@ -27,6 +27,6 @@ export const StatisticNumbersDatasets = () => {
   if (/* isIE do wee still need this */ false) {
     return <></>;
   } else {
-    return <span className="text-lg"> {state.datasets}</span>;
+    return <span className="text-lg font-strong"> {state.datasets}</span>;
   }
 };
