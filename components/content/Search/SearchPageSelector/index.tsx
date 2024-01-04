@@ -12,7 +12,7 @@ export const SearchPageSelector: React.FC<SearchTabsProps> = ({ query }) => {
   const { t, lang } = useTranslation("pages");
   const { pathname } = useRouter() || {};
   return (
-    <div className="mb-lg flex space-x-md overflow-x-scroll">
+    <div className="mb-lg flex space-x-md overflow-x-scroll md:overflow-x-visible">
       <Tab
         href={`${lang}/datasets?q=${query ? query : ""}&f=`}
         active={pathname === "/datasets"}
