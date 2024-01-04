@@ -7,6 +7,10 @@ import useTranslation from "next-translate/useTranslation";
 import { SearchSortOrder, SearchContextData } from "@/providers/SearchProvider";
 import Link from "next/link";
 import Heading from "@/components/global/Typography/Heading";
+import { Button } from "@/components/global/Button";
+import ListIcon from "@/assets/icons/list.svg";
+import DetailedListIcon from "@/assets/icons/listDetailed.svg";
+import { Select } from "@/components/global/Form/Select";
 
 interface SearchResultsProps {
   search: SearchContextData;
@@ -56,115 +60,88 @@ const SortingOptions: React.FC<{
   search: SearchContextData;
 }> = ({ search, setCompact, isCompact }) => {
   const { t } = useTranslation();
+
   return (
-    <div className="flex space-x-md">
-      <div id="list-view" className="listview-options">
-        {isCompact ? (
-          <button
-            aria-label={
-              isCompact
-                ? `${t("pages|search$compact-list")}`
-                : `${t("pages|search$compact-list-active")}`
-            }
-            onClick={() => {
-              clearCurrentScrollPos();
-              search.set({ compact: true }).then(() => {
-                search.setStateToLocation();
-                setCompact(false);
-              });
-            }}
-          >
-            {t("pages|search$compact-list")}
-          </button>
-        ) : (
-          <button
-            aria-label={
-              isCompact
-                ? `${t("pages|search$detailed-list-active")}`
-                : `${t("pages|search$detailed-list")}`
-            }
-            onClick={() => {
-              clearCurrentScrollPos();
-              search.set({ compact: false }).then(() => {
-                search.setStateToLocation();
-                setCompact(true);
-              });
-            }}
-          >
-            {t("pages|search$detailed-list")}
-          </button>
-        )}
-      </div>
+    <div className="mb-lg flex items-center gap-md md:mb-none">
+      <Button
+        size="sm"
+        variant="plain"
+        className="order-3 md:order-none"
+        aria-label={
+          isCompact
+            ? t("pages|search$detailed-list-active")
+            : t("pages|search$detailed-list")
+        }
+        onClick={() => {
+          clearCurrentScrollPos();
+          search.set({ compact: isCompact }).then(() => {
+            search.setStateToLocation();
+            setCompact(!isCompact);
+          });
+        }}
+      >
+        {isCompact ? <ListIcon /> : <DetailedListIcon />}
+        <span className="hidden md:block">
+          {isCompact
+            ? t("pages|search$compact-list")
+            : t("pages|search$detailed-list")}
+        </span>
+      </Button>
 
-      <div className="search-sort">
-        <label className="sorting-heading text-base font-bold" htmlFor="sort">
-          {t("pages|search$sort")}
-        </label>
-        <select
-          className="text-base"
-          id="sort"
-          name={t("pages|search$sort")}
-          onChange={(event) => {
-            event.preventDefault();
-            clearCurrentScrollPos();
-            search
-              .set({
-                page: 0,
-                sortOrder: parseInt(event.target.value),
-              })
-              .then(() => search.doSearch());
-          }}
+      <Select
+        id="sort"
+        label={t("pages|search$sort")}
+        onChange={(event) => {
+          event.preventDefault();
+          clearCurrentScrollPos();
+          search
+            .set({
+              page: 0,
+              sortOrder: parseInt(event.target.value),
+            })
+            .then(() => search.doSearch());
+        }}
+      >
+        <option
+          aria-selected={search.request.sortOrder == SearchSortOrder.score_desc}
+          value={SearchSortOrder.score_desc}
         >
-          <option
-            aria-selected={
-              search.request.sortOrder == SearchSortOrder.score_desc
-            }
-            value={SearchSortOrder.score_desc}
-          >
-            {t("pages|search$relevance")}
-          </option>
+          {t("pages|search$relevance")}
+        </option>
 
-          <option
-            aria-selected={
-              search.request.sortOrder == SearchSortOrder.modified_desc
-            }
-            value={SearchSortOrder.modified_desc}
-          >
-            {t("pages|search$date")}
-          </option>
-        </select>
-      </div>
-
-      <div className="search-hits">
-        <label className="sorting-heading text-base font-bold" htmlFor="hits">
-          {t("pages|search$numberofhits")}
-        </label>
-
-        <select
-          className="text-base"
-          id="hits"
-          name={t("pages|search$numberofhits")}
-          onChange={(event) => {
-            event?.preventDefault();
-            clearCurrentScrollPos();
-            search
-              .set({
-                take: parseInt(event.target.value),
-              })
-              .then(() => search.doSearch());
-          }}
+        <option
+          aria-selected={
+            search.request.sortOrder == SearchSortOrder.modified_desc
+          }
+          value={SearchSortOrder.modified_desc}
         >
-          <option aria-selected={search.request.take == 20} value="20">
-            {t("pages|search$numberofhits-20")}
-          </option>
-          <option aria-selected={search.request.take == 50} value="50">
-            {t("pages|search$numberofhits-50")}
-          </option>
-          <option aria-selected={search.request.take == 100} value="100">
-            {t("pages|search$numberofhits-100")}
-          </option>
-        </select>
-      </div>
+          {t("pages|search$date")}
+        </option>
+      </Select>
+
+      <Select
+        id="hits"
+        label={t("pages|search$numberofhits")}
+        onChange={(event) => {
+          event?.preventDefault();
+          clearCurrentScrollPos();
+          search
+            .set({
+              take: parseInt(event.target.value),
+            })
+            .then(() => search.doSearch());
+        }}
+      >
+        <option aria-selected={search.request.take == 20} value="20">
+          {t("pages|search$numberofhits-20")}
+        </option>
+        <option aria-selected={search.request.take == 50} value="50">
+          {t("pages|search$numberofhits-50")}
+        </option>
+        <option aria-selected={search.request.take == 100} value="100">
+          {t("pages|search$numberofhits-100")}
+        </option>
+      </Select>
     </div>
   );
 };
@@ -178,7 +155,6 @@ const SortingOptions: React.FC<{
 export const SearchResults: React.FC<SearchResultsProps> = ({
   search,
   searchMode,
-  showSorting,
 }) => {
   const { trackEvent } = useMatomo();
   const { t } = useTranslation();
@@ -216,7 +192,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   return (
     <>
       <div id="search-result" className="my-xl">
-        <div className="mb-lg flex justify-between">
+        <div className="mb-lg flex flex-col-reverse justify-between md:flex-row">
           <Heading level={2} size="md" className="search-result-header">
             {search.loadingHits && <span>{t("common|loading")}</span>}
             {!search.loadingHits &&
@@ -226,19 +202,11 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
           </Heading>
 
           {searchMode == "datasets" && (
-            <div
-              className={
-                showSorting
-                  ? "active sorting-options-wrapper"
-                  : "sorting-options-wrapper"
-              }
-            >
-              <SortingOptions
-                setCompact={setCompact}
-                isCompact={isCompact}
-                search={search}
-              />
-            </div>
+            <SortingOptions
+              setCompact={setCompact}
+              isCompact={isCompact}
+              search={search}
+            />
           )}
         </div>
 
@@ -287,46 +255,30 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                         <p className="mb-xs">{hit.description}</p>
                       )}
 
-                      {!isCompact && (
-                        <div className="org-format">
-                          <span className="result-org text-base">
-                            {hit.metadata &&
-                              hit.metadata["organisation_literal"] &&
-                              hit.metadata["organisation_literal"][0]}
-                          </span>
-
-                          <div className="org-format-filebadges">
-                            {hit.metadata &&
-                              hit.metadata["format_literal"] &&
-                              hit.metadata["format_literal"].map(
-                                (m: string, index: number) => (
-                                  <p className="text-base file" key={index}>
-                                    <FileFormatBadge badgeName={m} />
-                                  </p>
-                                ),
-                              )}
-                          </div>
+                      <div
+                        className={
+                          !isCompact
+                            ? "flex items-baseline space-x-md"
+                            : "block"
+                        }
+                      >
+                        <div className="mb-xs text-sm font-strong text-textSecondary">
+                          {hit.metadata &&
+                            hit.metadata["theme_literal"].length > 0 && (
+                              <span className="category">
+                                {hit.metadata["theme_literal"].join(",  ") +
+                                  " | "}
+                              </span>
+                            )}
+                          {hit.metadata &&
+                            hit.metadata["organisation_literal"] &&
+                            hit.metadata["organisation_literal"].length > 0 && (
+                              <span className="organisation">
+                                {hit.metadata["organisation_literal"][0]}
+                              </span>
+                            )}
                         </div>
-                      )}
 
-                      <div className="mb-xs text-sm font-strong text-textSecondary">
-                        {isCompact &&
-                          hit.metadata &&
-                          hit.metadata["organisation_literal"] &&
-                          hit.metadata["organisation_literal"].length > 0 && (
-                            <span className="organisation">
-                              {hit.metadata["organisation_literal"][0] + " | "}
-                            </span>
-                          )}
-                        {isCompact && (
-                          <span className="category">
-                            {hit.metadata &&
-                              hit.metadata["theme_literal"].join(",  ")}
-                          </span>
-                        )}
-                      </div>
-
-                      {isCompact && (
                         <div className="formats space-x-md">
                           {hit.metadata &&
                             hit.metadata["format_literal"] &&
@@ -341,7 +293,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                               ),
                             )}
                         </div>
-                      )}
+                      </div>
                     </Link>
                   </li>
                 ))}

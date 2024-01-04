@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import Heading from "@/components/global/Typography/Heading";
 import { checkLang } from "@/utilities";
 import useTranslation from "next-translate/useTranslation";
@@ -27,6 +27,7 @@ export const Hero: FC<HeroProps> = ({ heading, preamble, image, search }) => {
   const { pathname } = useRouter();
   const { t, lang } = useTranslation();
   const isFrontpage = pathname === "/";
+  const [query, setQuery] = useState("");
 
   return (
     <div
@@ -62,6 +63,8 @@ export const Hero: FC<HeroProps> = ({ heading, preamble, image, search }) => {
                   <SearchInput
                     id="start-search"
                     placeholder={search.placeholder}
+                    query={query}
+                    setQuery={setQuery}
                   />
                 </form>
                 <div
@@ -70,21 +73,21 @@ export const Hero: FC<HeroProps> = ({ heading, preamble, image, search }) => {
                   } mt-lg flex space-x-md `}
                 >
                   <ButtonLink
-                    href={`/${lang}/datasets`}
+                    href={`${lang}/datasets?q=&f=`}
                     label={t("common|all-data-api")}
                     size="sm"
                     icon={ArrowRightIcon}
                     iconPosition="right"
                   />
                   <ButtonLink
-                    href={`/${lang}/concepts`}
+                    href={`/${lang}/concepts?q=&f=`}
                     label={t("common|all-concepts")}
                     size="sm"
                     icon={ArrowRightIcon}
                     iconPosition="right"
                   />
                   <ButtonLink
-                    href={`/${lang}/specifications`}
+                    href={`/${lang}/specifications?q=&f=`}
                     label={t("common|all-specs")}
                     size="sm"
                     icon={ArrowRightIcon}

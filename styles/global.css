@@ -75,11 +75,14 @@ body {
   .button--plain {
     @apply text-brown-600 hover:bg-brown-200 group-hover:bg-brown-200 [&_path]:fill-brown-600 ;
   }
+  .button--plain.active {
+    @apply [&_svg]:rotate-180;
+  }
   .button--filter {
     @apply bg-brown-800 text-white [&_path]:fill-white;
   }
   .button--xs {
-    @apply h-[24px] gap-sm px-md text-sm;
+    @apply gap-sm px-md py-[2px] text-sm;
   }
   .button--small {
     @apply h-[32px] gap-sm px-md text-sm;

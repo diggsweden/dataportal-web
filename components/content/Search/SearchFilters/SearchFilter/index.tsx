@@ -1,26 +1,15 @@
 import FocusTrap from "focus-trap-react";
 import useTranslation from "next-translate/useTranslation";
-import { useEffect, useState } from "react";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { useClickoutside } from "@/hooks/useClickoutside";
 import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
-import { Button } from "@/components/global/Button";
 
 export interface SearchFilterProps {
-  /**
-   * Title of the button to open the filter
-   */
   title: string | null;
-  /**
-   * Default value for 'open' state
-   */
   defaultValue?: boolean;
-  /**
-   * Content in the filter
-   */
-  children?: React.ReactNode;
 }
 
-export const SearchFilter: React.FC<SearchFilterProps> = ({
+export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
   title,
   defaultValue,
   children,
@@ -48,18 +37,20 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
         ref={ref}
         onKeyDown={(ev) => ev.key === "Escape" && handleOpen(false)}
       >
-        <Button
-          variant="secondary"
-          size="sm"
-          label={title || t("open")}
-          icon={ChevronDownIcon}
-          iconPosition="right"
+        <button
           aria-haspopup={true}
           aria-expanded={open}
           onClick={() => handleOpen(!open)}
-          className={(open && "active") + " filter-button_mobile"}
-        />
-        <div className={open ? "block" : "hidden"}>{children}</div>
+          className={`${
+            open && "active"
+          } button button--secondary button--large md:button--small w-full justify-between md:justify-start`}
+        >
+          {title || t("open")}
+          <ChevronDownIcon />
+        </button>
+        <div className={open ? "relative block md:static" : "hidden"}>
+          {children}
+        </div>
       </div>
     </FocusTrap>
   );

@@ -11,7 +11,7 @@ export const SearchTips: FC<SearchTipsProps> = ({ showTip }) => {
 
   return (
     <div className={showTip ? "block" : "hidden"}>
-      <div className="my-lg max-w-md bg-brown-100 p-lg">
+      <div className="my-lg max-w-md bg-white p-lg">
         <div className="mb-xs text-lg">
           {t("pages|search$search-tips-search-head")}
         </div>

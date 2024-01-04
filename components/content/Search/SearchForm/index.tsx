@@ -9,8 +9,7 @@ interface SearchFormProps {
   search: SearchContextData;
   searchMode: SearchMode;
   query: string;
-  // eslint-disable-next-line no-unused-vars
-  setQuery: (value: string) => void;
+  setQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
 /**
@@ -39,11 +38,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
 
   useEffect(() => {
     setTrackedQuery(query || "");
-    if (
-      query && trackedQuery !== query && search.result.count === 0
-        ? true
-        : false
-    ) {
+    if (!!(query && trackedQuery !== query && search.result.count === 0)) {
       trackEvent({
         category: `Sökord utan resultat - Typ: ${searchMode}`,
         action: query || "",
@@ -55,13 +50,13 @@ export const SearchForm: React.FC<SearchFormProps> = ({
   return (
     <div className="my-xl max-w-md">
       <form
-        onSubmit={(event) => {
+        onSubmit={(e) => {
           clearCurrentScrollPos();
-          event.preventDefault();
+          e.preventDefault();
           search
             .set({
               page: 0,
-              query: searchMode == "datasets" ? query : query ? query : "*",
+              query: query,
               fetchFacets: true,
             })
             .then(() => search.doSearch());
@@ -72,16 +67,13 @@ export const SearchForm: React.FC<SearchFormProps> = ({
           id="search-field"
           autoComplete="off"
           name="q"
-          type="text"
           placeholder={placeholder}
-          value={query || ""}
-          onChange={(e) => {
-            clearCurrentScrollPos();
-            setQuery(e.target.value);
-          }}
+          query={query}
+          setQuery={setQuery}
+          value={query}
+          search={search}
           key={search.request.query ? "loaded" : "not loaded"}
         />
-        {/*{search.loadingFacets && <Spinner className={"spinner"} />}*/}
       </form>
     </div>
   );

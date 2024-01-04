@@ -4,7 +4,6 @@ import React from "react";
 import { Tab } from "@/components/global/Tab";
 
 interface SearchTabsProps {
-  activeLink?: string;
   query?: string;
 }
 
@@ -13,7 +12,7 @@ export const SearchPageSelector: React.FC<SearchTabsProps> = ({ query }) => {
   const { t, lang } = useTranslation("pages");
   const { pathname } = useRouter() || {};
   return (
-    <div className="mb-lg flex space-x-md">
+    <div className="mb-lg flex space-x-md overflow-x-scroll">
       <Tab
         href={`${lang}/datasets?q=${query ? query : ""}&f=`}
         active={pathname === "/datasets"}
@@ -32,10 +31,7 @@ export const SearchPageSelector: React.FC<SearchTabsProps> = ({ query }) => {
       >
         {t("search$specifications")}
       </Tab>
-      <Tab
-        href={`${lang}/search?q=${query ? query : ""}&f=`}
-        active={pathname === "/search"}
-      >
+      <Tab href={`${lang}/search?q=&f=`} active={pathname === "/search"}>
         {t("search$content")}
       </Tab>
     </div>

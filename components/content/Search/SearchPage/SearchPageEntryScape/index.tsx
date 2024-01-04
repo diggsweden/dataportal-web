@@ -308,10 +308,7 @@ export const SearchPageEntryScape: React.FC<SearchProps> = ({ searchType }) => {
                       size="sm"
                       icon={ChevronDownIcon}
                       iconPosition="right"
-                      className={
-                        "search-tip__btn text-xs" +
-                        (showTip ? " search-tip__btn--active" : "")
-                      }
+                      className={showTip ? "active" : " "}
                       onClick={() => {
                         clearCurrentScrollPos();
                         setShowTip(!showTip);
@@ -330,11 +327,11 @@ export const SearchPageEntryScape: React.FC<SearchProps> = ({ searchType }) => {
                   setQuery={setQuery}
                 />
 
-                <SearchPageSelector activeLink={"search"} query={query} />
+                <SearchPageSelector query={query} />
 
                 <SearchFilters
                   showFilter={showFilter}
-                  searchMode="datasets"
+                  searchMode={searchType}
                   search={search}
                   query={query}
                   setShowFilter={setShowFilter}

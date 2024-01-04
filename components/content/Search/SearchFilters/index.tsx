@@ -9,6 +9,8 @@ import TrashIcon from "@/assets/icons/trash.svg";
 import SearchIcon from "@/assets/icons/search.svg";
 import { Button } from "@/components/global/Button";
 import { TextInput } from "@/components/global/Form/TextInput";
+import CheckboxIcon from "@/assets/icons/checkbox.svg";
+import CheckboxCheckedIcon from "@/assets/icons/checkboxChecked.svg";
 
 interface SearchFilterProps {
   showFilter: boolean;
@@ -58,6 +60,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
         id={filterKey}
         name={filterKey}
         placeholder={t("search$filtersearch")}
+        className="border-none hover:outline-0 focus:outline-0"
         value={filter[filterKey] || ""}
         onChange={(e) => (
           clearCurrentScrollPos(),
@@ -141,6 +144,7 @@ const FindFilters = (
  * @param {SearchContextData} search context for handling searchstate
  * @param {SearchMode} searchMode
  * @param {string} query
+ * @param setShowFilter
  * @returns JSX-elements of selects and checkboxes
  */
 export const SearchFilters: React.FC<SearchFilterProps> = ({
@@ -160,24 +164,22 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
   };
 
   return (
-    <>
-      <div className="mb-md">
-        <Button
-          variant="plain"
-          size="sm"
-          icon={FilterIcon}
-          iconPosition="left"
-          aria-label={
-            showFilter ? t("common|hide-filter") : t("common|show-filter")
-          }
-          className={showFilter ? "filter-active" : ""}
-          onClick={() => setShowFilter(!showFilter)}
-          label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
-        ></Button>
-      </div>
+    <div id="SearchFilters">
+      <Button
+        variant="plain"
+        size="sm"
+        icon={FilterIcon}
+        iconPosition="left"
+        aria-label={
+          showFilter ? t("common|hide-filter") : t("common|show-filter")
+        }
+        className={showFilter ? "filter-active" : ""}
+        onClick={() => setShowFilter(!showFilter)}
+        label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
+      />
 
       <div className={showFilter ? "block" : "hidden"}>
-        <div className="mb-lg flex space-x-md">
+        <ul className="mb-lg mt-md flex flex-col flex-wrap gap-md md:flex-row">
           {search.allFacets &&
             Object.entries(search.allFacets)
               .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
@@ -194,7 +196,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                     )
                   : value?.facetValues.slice(0, show);
                 return (
-                  <div key={"box" + value.title} className="search-filter">
+                  <li key={"box" + value.title}>
                     <SearchFilter
                       title={
                         value.title +
@@ -204,7 +206,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                         )
                       }
                     >
-                      <div className="absolute mt-sm max-w-[330px] bg-white shadow-md">
+                      <div className="absolute z-10 mr-lg mt-sm w-full overflow-y-scroll bg-white shadow-md md:max-w-[330px]">
                         {searchMode == "datasets" && ( //only render on searchpage
                           <>
                             {isLicense ? (
@@ -236,8 +238,8 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                               <button
                                 aria-pressed={selected}
                                 key={index}
-                                className={`block w-full px-md py-md text-left hover:bg-brown-100 ${
-                                  selected && "selected"
+                                className={`group relative flex w-full items-center py-md pl-md pr-xl text-left hover:bg-brown-100 ${
+                                  selected && "font-strong"
                                 }`}
                                 onClick={() => {
                                   clearCurrentScrollPos();
@@ -273,50 +275,49 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                               >
                                 {facetValue.title || facetValue.resource} (
                                 {facetValue.count}) {selected}
-                                <span
-                                  className={
-                                    search.facetSelected(key, "*")
-                                      ? "check-disabled check"
-                                      : "check"
-                                  }
-                                ></span>
+                                <span className="absolute right-md">
+                                  {selected ? (
+                                    <CheckboxCheckedIcon />
+                                  ) : (
+                                    <CheckboxIcon />
+                                  )}
+                                </span>
                               </button>
                             );
                           },
                         )}
 
                         {value.facetValues.length > value.show && (
-                          <button
-                            className="filter-btn"
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            className="mx-sm my-md"
                             onClick={() => {
                               search.fetchMoreFacets(key);
                             }}
-                          >
-                            {search.loadingFacets
-                              ? `${t("common|loading")}...`
-                              : `${t("common|load-more")}...`}
-                          </button>
+                            disabled={search.loadingFacets}
+                            label={
+                              search.loadingFacets
+                                ? t("common|loading")
+                                : t("common|load-more")
+                            }
+                          />
                         )}
-
                         {facetValues.length == 0 && (
-                          <div className="no-filter-hits show">
-                            {t("pages|search$nohits")}
-                          </div>
+                          <div className="p-md">{t("pages|search$nohits")}</div>
                         )}
                       </div>
                     </SearchFilter>
-                  </div>
+                  </li>
                 );
               })}
           {searchMode == "datasets" && (
-            <div className="button button--secondary button--small">
-              <label className="text-base" htmlFor="api_only">
-                API
-              </label>
+            <div className="relative max-w-[74px]">
               <input
                 id="api_only"
                 name="API"
                 type="checkbox"
+                className="peer/api-only sr-only"
                 checked={
                   search.request.esRdfTypes?.some(
                     (t) => t == ESRdfType.esterms_ServedByDataService,
@@ -364,62 +365,71 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                   }
                 }}
               />
+              <label
+                className="button button--small button--secondary cursor-pointer pr-xl"
+                htmlFor="api_only"
+              >
+                API
+              </label>
+              <CheckboxIcon className="absolute right-sm top-sm peer-checked/api-only:hidden" />
+              <CheckboxCheckedIcon className="absolute right-sm top-sm hidden peer-checked/api-only:block" />
             </div>
           )}
-        </div>
+        </ul>
       </div>
+      {search.request.facetValues && search.request.facetValues.length > 0 && (
+        <div className="mt-lg flex flex-col justify-between gap-md md:flex-row md:items-baseline">
+          <div className="flex flex-col flex-wrap gap-sm md:flex-row md:gap-md">
+            <span className="text-textSecondary">
+              {t("common|active-filters")}:
+            </span>
 
-      <div className="flex justify-between">
-        <div className="flex space-x-md">
-          {search.request.facetValues &&
-            search.request.facetValues.length > 0 && (
-              <span className="text-textSecondary">
-                {t("common|active-filters")}:
-              </span>
-            )}
-          {search.request &&
-            search.request.facetValues &&
-            (search.request.facetValues as SearchFacetValue[]).map(
-              (facetValue: SearchFacetValue, index: number) => (
-                <Button
-                  variant="filter"
-                  size="xs"
-                  key={index}
-                  label={facetValue.title || facetValue.resource}
-                  icon={CloseIcon}
-                  iconPosition="right"
-                  onClick={() => {
-                    clearCurrentScrollPos();
-                    search.toggleFacet(facetValue).then(() => {
-                      search.doSearch();
-                    });
-                  }}
-                />
-              ),
-            )}
+            {search.request &&
+              search.request.facetValues &&
+              (search.request.facetValues as SearchFacetValue[]).map(
+                (facetValue: SearchFacetValue, index: number) => (
+                  <Button
+                    variant="filter"
+                    size="xs"
+                    key={index}
+                    label={facetValue.title || facetValue.resource}
+                    icon={CloseIcon}
+                    iconPosition="right"
+                    className="w-full justify-between py-md text-left md:w-auto md:py-[2px]"
+                    onClick={() => {
+                      clearCurrentScrollPos();
+                      search.toggleFacet(facetValue).then(() => {
+                        search.doSearch();
+                      });
+                    }}
+                  />
+                ),
+              )}
+          </div>
+
+          <div
+            className={
+              search.request?.facetValues &&
+              search.request.facetValues.length >= 2
+                ? "block whitespace-nowrap"
+                : "hidden"
+            }
+          >
+            <Button
+              variant="plain"
+              size="sm"
+              icon={TrashIcon}
+              iconPosition="left"
+              onClick={() => {
+                clearCurrentScrollPos();
+                search.set({ facetValues: [] }).then(() => search.doSearch());
+              }}
+              label={t("common|clear-filters")}
+            />
+          </div>
         </div>
-        <div
-          className={
-            search.request?.facetValues &&
-            search.request.facetValues.length >= 2
-              ? "block"
-              : "hidden"
-          }
-        >
-          <Button
-            variant="plain"
-            size="sm"
-            icon={TrashIcon}
-            iconPosition="left"
-            onClick={() => {
-              clearCurrentScrollPos();
-              search.set({ facetValues: [] }).then(() => search.doSearch());
-            }}
-            label={t("common|clear-filters")}
-          />
-        </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 };
 
