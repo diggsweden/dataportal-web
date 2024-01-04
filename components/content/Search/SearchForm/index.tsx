@@ -47,31 +47,34 @@ export const SearchForm: React.FC<SearchFormProps> = ({
     }
   }, [search.result]);
 
+  const submitSearch = (newQuery: string) => {
+    search
+      .set({
+        page: 0,
+        query: newQuery,
+        fetchFacets: true,
+      })
+      .then(() => search.doSearch());
+  };
+
   return (
     <div className="my-xl max-w-md">
       <form
         onSubmit={(e) => {
           clearCurrentScrollPos();
           e.preventDefault();
-          search
-            .set({
-              page: 0,
-              query: query,
-              fetchFacets: true,
-            })
-            .then(() => search.doSearch());
+          submitSearch(query);
         }}
       >
         <SearchInput
           autoFocus
           id="search-field"
-          autoComplete="off"
-          name="q"
           placeholder={placeholder}
+          isLoading={search.loadingFacets}
           query={query}
           setQuery={setQuery}
+          submitSearch={submitSearch}
           value={query}
-          search={search}
           key={search.request.query ? "loaded" : "not loaded"}
         />
       </form>

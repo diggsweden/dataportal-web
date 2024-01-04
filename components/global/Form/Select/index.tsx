@@ -18,7 +18,7 @@ export const Select: FC<PropsWithChildren<SelectProps>> = ({
     <select
       id={id}
       className="button button--secondary button--small appearance-none bg-[url('/icons/chevronDown.svg')]
-     bg-right bg-no-repeat pr-xl"
+     bg-[95%] bg-no-repeat pr-xl"
       name={label}
       {...props}
     >

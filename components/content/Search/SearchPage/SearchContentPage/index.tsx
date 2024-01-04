@@ -217,13 +217,11 @@ export const SearchContentPage: FC<SearchProps> = () => {
           <SearchInput
             autoFocus
             id="search-field"
-            autoComplete="off"
-            name="q"
-            type="text"
             placeholder={t("pages|content$search")}
+            isLoading={loading}
             query={query}
             setQuery={setQuery}
-            submitMeiliSearch={submitSearch}
+            submitSearch={submitSearch}
             onChange={(e) => {
               clearCurrentScrollPos();
               setQuery(e.target.value);
