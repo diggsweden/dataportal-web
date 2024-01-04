@@ -10,7 +10,6 @@ export interface BreadcrumbProps {
 
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({ crumbs, name }) => {
   const { lang } = useTranslation();
-
   return (
     <div className="breadcrumb text-sm">
       {crumbs.length > 0 && (

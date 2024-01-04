@@ -43,7 +43,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
           image={image}
           className="h-[184px] w-full object-cover md:h-[240px] lg:h-[184px]"
         />
-        <div className="px-md pt-lg text-sm text-textPrimary">
+        <div className="text-textPrimary px-md pt-lg text-sm">
           <span className="text-textSecondary">
             {tag ? tag : t("pages|listpage$fallback-tag")} |{" "}
             {formatDate(lang, createdAt)}

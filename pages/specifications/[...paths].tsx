@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { SpecificationPage } from "@/components/pages/SpecificationPage";
+import { SpecificationPage } from "@/components/content/Entryscape/SpecificationPage";
 import { useScript } from "@/hooks/useScript";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import EntrystoreProvider from "@/providers/EntrystoreProvider";

@@ -2,7 +2,8 @@ import React, { useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import useTranslation from "next-translate/useTranslation";
-import { ApiIndexContext, EntrystoreContext } from "@/components";
+import { ApiIndexContext } from "@/providers/ApiIndexContext";
+import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import Link from "next/link";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { SettingsContext } from "@/providers/SettingsProvider";
@@ -13,6 +14,8 @@ import {
   licenseIndicator,
   periodicityIndicator,
 } from "@/utilities";
+import Container from "@/components/layout/Container";
+import { Heading } from "@/components/global/Typography/Heading";
 
 export const DataServicePage: React.FC<{
   dataSet: string | string[] | undefined;
@@ -150,7 +153,7 @@ export const DataServicePage: React.FC<{
   };
 
   return (
-    <div className="detailpage">
+    <Container>
       <Head>
         <title>{`${entry.title} - Sveriges dataportal`}</title>
         <meta
@@ -162,63 +165,65 @@ export const DataServicePage: React.FC<{
           content={`${entry.title} - Sveriges dataportal`}
         />
       </Head>
-      <div className="detailpage__wrapper dataservices">
-        {/* Left column */}
-        <div className="detailpage__wrapper--leftcol content">
-          <h1>{entry.title}</h1>
+      <main>
+        <Heading className="py-xl text-xl lg:text-2xl" size="lg" level={1}>
+          {entry.title}
+        </Heading>
 
-          {/* Publisher */}
-          <script
-            type="text/x-entryscape-handlebar"
-            data-entryscape="true"
-            data-entryscape-component="template"
-            dangerouslySetInnerHTML={{
-              __html: `
-                      <p class="text-md">
+        <div className="gap-2xl lg:flex">
+          {/* Left column */}
+          <div className="flex flex-col gap-lg">
+            {/* Publisher */}
+            <script
+              type="text/x-entryscape-handlebar"
+              data-entryscape="true"
+              data-entryscape-component="template"
+              dangerouslySetInnerHTML={{
+                __html: `
                         {{text relation="dcterms:publisher"}} 
-                      <p>
                       `,
-            }}
-          />
+              }}
+            />
 
-          {/* Indicators */}
-          <div className="row indicators">
-            <div
-              data-entryscape="architectureIndicator"
-              className="architectureIndicator"
-            />
-            <div
-              data-entryscape="accessRightsIndicator"
-              className="accessRightsIndicator"
-            />
-            <div
-              data-entryscape="periodicityIndicator"
-              className="architectureIndicator"
-            />
-            <div
-              data-entryscape="licenseIndicator"
-              className="licenseIndicator"
-            />
-          </div>
+            {/* Indicators */}
+            <div className="flex text-textSecondary">
+              <div
+                data-entryscape="architectureIndicator"
+                className="architectureIndicator"
+              />
+              <div
+                data-entryscape="accessRightsIndicator"
+                className="accessRightsIndicator"
+              />
+              <div
+                data-entryscape="periodicityIndicator"
+                className="architectureIndicator"
+              />
+              <div
+                data-entryscape="licenseIndicator"
+                className="licenseIndicator"
+              />
+            </div>
 
-          {/* Description */}
-          <script
-            type="text/x-entryscape-handlebar"
-            data-entryscape="true"
-            data-entryscape-component="template"
-            dangerouslySetInnerHTML={{
-              __html: `
+            <div className="bg-white p-lg">
+              {/* Description */}
+              <script
+                type="text/x-entryscape-handlebar"
+                data-entryscape="true"
+                data-entryscape-component="template"
+                dangerouslySetInnerHTML={{
+                  __html: `
                       <div class="description text-md">{{text content="\${dcterms:description}"}}</div>
                       `,
-            }}
-          />
+                }}
+              />
 
-          <script
-            type="text/x-entryscape-handlebar"
-            data-entryscape="true"
-            data-entryscape-component="template"
-            dangerouslySetInnerHTML={{
-              __html: `                        
+              <script
+                type="text/x-entryscape-handlebar"
+                data-entryscape="true"
+                data-entryscape-component="template"
+                dangerouslySetInnerHTML={{
+                  __html: `                        
                       <div class="dataservice__access">
                         {{viewMetadata 
                             template="dcat:DataService"
@@ -226,53 +231,56 @@ export const DataServicePage: React.FC<{
                           }}
                       </div>
                       `,
-            }}
-          />
+                }}
+              />
 
-          {findDetection(cid, eid) && (
-            <span className="esbRowAlignSecondary">
-              <Link
-                href={`/${t(
-                  "routes|dataservices$path",
-                )}/${cid}_${eid}/${name}/apiexplore/${eid}`}
-                locale={lang}
-                className="dataservice-explore-api-link entryscape link text-md"
-              >
-                Utforska API
-              </Link>
-              <br />
-            </span>
-          )}
+              {findDetection(cid, eid) && (
+                <span className="esbRowAlignSecondary">
+                  <Link
+                    href={`/${t(
+                      "routes|dataservices$path",
+                    )}/${cid}_${eid}/${name}/apiexplore/${eid}`}
+                    locale={lang}
+                    className="dataservice-explore-api-link entryscape link text-md"
+                  >
+                    Utforska API
+                  </Link>
+                  <br />
+                </span>
+              )}
+            </div>
 
-          <div className="contact__publisher hbbr">
-            <h3>{t("pages|datasetpage$contact-publisher")}</h3>
-            <p>
-              {t("pages|datasetpage$contact-publisher-text")}
-              {t("pages|datasetpage$contact-publisher-text2")}{" "}
-              <a
-                className="link"
-                href="https://community.dataportal.se/"
-                lang="en"
-              >
-                community
-              </a>
-              .
-            </p>
+            <div className="bg-pink-200 p-lg">
+              <Heading level={3}>
+                {t("pages|datasetpage$contact-publisher")}
+              </Heading>
+              <p>
+                {t("pages|datasetpage$contact-publisher-text")}
+                {t("pages|datasetpage$contact-publisher-text2")}{" "}
+                <a
+                  className="link"
+                  href="https://community.dataportal.se/"
+                  lang="en"
+                >
+                  community
+                </a>
+                .
+              </p>
+            </div>
           </div>
-        </div>
 
-        {/* Right column */}
-        <div className="detailpage__wrapper--rightcol hbbr">
-          <div className="detailpage__wrapper--rightcol-info text-base">
-            <h2>{t("pages|dataservicepage$api")}</h2>
-
+          {/* Right column */}
+          <div className="mt-xl lg:mt-none lg:w-[296px]">
+            <Heading level={2} size={"sm"}>
+              {t("pages|dataservicepage$api")}
+            </Heading>
             <script
               type="text/x-entryscape-handlebar"
               data-entryscape="true"
               data-entryscape-component="template"
               dangerouslySetInnerHTML={{
                 __html: `
-                        <div class="dataservice_moreinfo">
+                        <div class="lg:w-[296px]">
                           {{viewMetadata 
                               template="dcat:DataService"
                               filterpredicates="dcterms:title,dcterms:publisher,dcat:endpointURL"
@@ -283,7 +291,7 @@ export const DataServicePage: React.FC<{
             ></script>
           </div>
         </div>
-      </div>
-    </div>
+      </main>
+    </Container>
   );
 };

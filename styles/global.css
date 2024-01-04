@@ -1,6 +1,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "@/styles/entryscape.css";
 @import "@/styles/codeBlock.css";
 
 @font-face {
@@ -47,7 +48,11 @@
 }
 
 body {
-  background: linear-gradient(90deg, rgba(205, 122, 110, 0.03) 0%, rgba(205, 122, 110, 0.09) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(205, 122, 110, 0.03) 0%,
+    rgba(205, 122, 110, 0.09) 100%
+  );
 }
 
 @layer base {
@@ -64,7 +69,7 @@ body {
     @apply flex w-fit flex-row items-center no-underline disabled:border-none disabled:bg-brown-400 disabled:text-brown-600 [&_path]:disabled:fill-brown-600 [&_svg]:inline-flex;
   }
   .button--primary {
-    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 group-hover:bg-brown-800 [&_path]:fill-brown-100;
+    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 group-hover:bg-brown-800 [&_path]:fill-brown-100 !important;
   }
   .button--secondary {
     @apply border-2 border-brown-600 bg-transparent text-brown-600 hover:bg-whiteOpaque5 group-hover:bg-whiteOpaque5 [&_path]:fill-brown-600;
@@ -101,6 +106,7 @@ body {
 
 * {
   scroll-behavior: smooth;
+  font-family: Ubuntu, sans-serif;
 }
 /* General styling for the table */
 table {

@@ -1,6 +1,6 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect } from "react";
-import { EntrystoreContext } from "../../components/EntrystoreProvider";
+import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";

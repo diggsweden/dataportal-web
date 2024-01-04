@@ -1,0 +1,215 @@
+.esbRowHead {
+  @apply relative max-h-none !important;
+}
+
+.about-dataset h2 {
+  @apply text-sm !important;
+}
+
+.rdforms {
+  @apply mr-none !important;
+}
+
+.rdformsRow {
+  @apply inline-grid !important;
+}
+
+.rdformsLabel {
+  @apply min-w-fit border-none text-sm text-textSecondary !important;
+}
+
+.rdformsRepeatedValue {
+  @apply border-none !important;
+}
+
+.rdformsUrl {
+  @apply text-sm text-green-600 underline underline-offset-2 hover:text-brown-800 !important;
+}
+
+.keywordHeading {
+  @apply mb-sm text-sm text-textSecondary !important;
+}
+
+.keywordTitle {
+  @apply mb-xs text-sm text-textPrimary !important;
+}
+
+.rdformsOrigin {
+  @apply ml-none grid pl-none !important;
+}
+
+.rdformsOrigin {
+  @apply mt-none !important;
+}
+
+.rdformsPresenter .compact {
+  @apply bg-primary;
+}
+
+.escoPosition {
+  @apply mt-lg !important;
+}
+
+.format-badge span {
+  @apply mr-sm !important;
+}
+
+.eachprop__ellipsis,
+.eachprop__restseparator {
+  @apply hidden !important;
+}
+
+.eachprop__expandbutton,
+.eachprop__unexpandbutton {
+  @apply ml-none font-ubuntu text-sm !important;
+  font-weight: 600;
+}
+
+.rdformsFields div {
+  @apply border-none bg-transparent p-none !important;
+}
+
+.rdformsRow {
+  @apply pl-none !important;
+}
+.rdformsRow {
+  .rdformsPresenter .rdformsLabel {
+    @apply hidden;
+  }
+}
+
+.contact__publisher {
+  @apply bg-pink-100 p-lg !important;
+}
+
+.contact__publisher h3 {
+  @apply mb-md text-lg !important;
+}
+
+.indicators {
+  @apply flex text-textSecondary;
+}
+
+.esbRow,
+.esbRowExpand {
+  @apply bg-white shadow-none !important;
+}
+
+.rdformsRow {
+  @apply w-full !important;
+}
+
+.esbRow {
+  @apply mb-lg !important;
+}
+
+.esbRowMain {
+  @apply w-full !important;
+}
+
+.esbRowControl {
+  @apply absolute -right-none m-md flex w-fit items-center justify-items-end place-self-end !important;
+}
+
+.esbRowHead .esbRowControl > button {
+  @apply m-none mb-xs flex h-[44px] w-full items-center justify-evenly gap-xs rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary hover:bg-brown-100 hover:no-underline focus:no-underline focus:shadow-none focus-visible:shadow-none !important;
+}
+
+.btn-link::before {
+  content: attr(Title);
+}
+
+.rdformsField,
+.rdformsSingleline {
+  @apply mt-none text-sm !important;
+}
+
+.entryscape a:hover {
+  @apply no-underline !important;
+}
+
+.svg-assets {
+  @apply hidden;
+}
+
+/* SWAGGER UI */
+.swagger-ui {
+  .title {
+    @apply mb-md md:flex lg:text-lg;
+
+    .version {
+      @apply ml-[-8px] md:ml-none;
+    }
+  }
+
+  .base-url {
+    @apply overflow-auto pb-sm text-sm;
+  }
+
+  .scheme-container label {
+    @apply flex flex-col gap-xs break-words;
+
+    select {
+      @apply w-fit cursor-pointer bg-pink-200 px-md py-sm uppercase;
+    }
+  }
+
+  .info {
+    a {
+      @apply break-words text-green-600 hover:text-brown-800;
+    }
+  }
+
+  .main,
+  .info,
+  .scheme-container {
+    @apply mb-lg;
+  }
+}
+
+.opblock-tag {
+  @apply flex cursor-pointer justify-between bg-brown-600 p-md text-white [&_svg]:fill-white;
+}
+
+.opblock-summary-control {
+  @apply relative flex w-full items-center bg-brown-200 p-md text-left;
+
+  .opblock-summary-path {
+    @apply ml-md w-full text-left;
+  }
+  svg {
+    @apply ml-sm min-w-fit;
+  }
+
+  .opblock-summary-description {
+    @apply mr-md hidden w-full  text-left text-[10px] text-sm lg:block;
+  }
+}
+
+.opblock-summary-method {
+  @apply text-lg font-strong;
+}
+
+.opblock-section-header {
+  @apply flex items-center justify-between  text-lg;
+
+  span {
+    @apply text-sm;
+  }
+  label {
+    @apply flex items-center gap-md;
+  }
+  select {
+    @apply w-fit cursor-pointer bg-pink-200 px-md py-sm text-md uppercase;
+  }
+}
+
+.parameters-col_description {
+  input {
+    @apply p-sm text-brown-900;
+  }
+}
+
+.try-out__btn {
+  @apply button--secondary button--large;
+}
