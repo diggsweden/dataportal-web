@@ -266,15 +266,15 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                           {hit.metadata &&
                             hit.metadata["theme_literal"].length > 0 && (
                               <span className="category">
-                                {hit.metadata["theme_literal"].join(",  ") +
-                                  " | "}
+                                {hit.metadata["theme_literal"].join(",  ")}
                               </span>
                             )}
                           {hit.metadata &&
                             hit.metadata["organisation_literal"] &&
                             hit.metadata["organisation_literal"].length > 0 && (
                               <span className="organisation">
-                                {hit.metadata["organisation_literal"][0]}
+                                {" | " +
+                                  hit.metadata["organisation_literal"][0]}
                               </span>
                             )}
                         </div>

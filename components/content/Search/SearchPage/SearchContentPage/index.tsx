@@ -202,7 +202,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
         />
       </Head>
       <Container className="my-xl">
-        <Heading level={1} size="lg">
+        <Heading level={1} size="lg" className="mb-none">
           {t("common|search-content")}
         </Heading>
 
@@ -234,7 +234,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
 
         <div id="search-result" className="my-xl">
           <div className="mb-xl">
-            <Heading level={2} size="md" className="search-result-header">
+            <Heading level={2} size="md">
               {loading && <span>{t("common|loading")}</span>}
               {!loading &&
                 searchResult &&

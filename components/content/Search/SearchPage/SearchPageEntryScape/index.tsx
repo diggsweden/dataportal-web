@@ -297,7 +297,7 @@ export const SearchPageEntryScape: React.FC<SearchProps> = ({ searchType }) => {
             {(search) => (
               <Container className="my-xl">
                 <div className="flex max-w-md items-end justify-between">
-                  <Heading level={1} size="lg">
+                  <Heading level={1} size="lg" className="mb-none">
                     {pageTitle}
                   </Heading>
 
