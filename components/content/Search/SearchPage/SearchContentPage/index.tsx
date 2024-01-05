@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { querySearch } from "@/utilities";
 import { useRouter } from "next/router";
@@ -232,7 +232,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
 
         <SearchPageSelector />
 
-        <div id="search-result" className="search-result">
+        <div id="search-result" className="my-xl">
           <div className="mb-xl">
             <Heading level={2} size="md" className="search-result-header">
               {loading && <span>{t("common|loading")}</span>}
@@ -244,37 +244,35 @@ export const SearchContentPage: FC<SearchProps> = () => {
           </div>
 
           {searchResult && (
-            <div>
-              <ul className="search-result-list space-y-xl">
-                {searchResult.hits &&
-                  searchResult.hits.map((hit: SearchHit, index: number) => (
-                    <li className="max-w-lg" key={index}>
-                      <Link
-                        href={`${cleanDoubleSlash(hit.url!)}#ref=${
-                          window ? window.location.search : ""
-                        }`}
-                        onClick={() => {
-                          saveCurrentScrollPos();
-                          trackSearchHitClick(cleanDoubleSlash(hit.url!) || "");
-                        }}
-                        className="group no-underline"
+            <ul className="search-result-list space-y-xl">
+              {searchResult.hits &&
+                searchResult.hits.map((hit: SearchHit, index: number) => (
+                  <li className="max-w-lg" key={index}>
+                    <Link
+                      href={`${cleanDoubleSlash(hit.url!)}#ref=${
+                        window ? window.location.search : ""
+                      }`}
+                      onClick={() => {
+                        saveCurrentScrollPos();
+                        trackSearchHitClick(cleanDoubleSlash(hit.url!) || "");
+                      }}
+                      className="group no-underline"
+                    >
+                      <Heading
+                        level={3}
+                        size="sm"
+                        className="mb-sm font-normal text-green-600 group-hover:underline "
+                        lang={hit.titleLang}
                       >
-                        <Heading
-                          level={3}
-                          size="sm"
-                          className="mb-sm font-normal text-green-600 group-hover:underline "
-                          lang={hit.titleLang}
-                        >
-                          {highlightWords(hit.title)}
-                        </Heading>
-                      </Link>
-                      {hit.description && (
-                        <p>{highlightWords(hit.description)}</p>
-                      )}
-                    </li>
-                  ))}
-              </ul>
-            </div>
+                        {highlightWords(hit.title)}
+                      </Heading>
+                    </Link>
+                    {hit.description && (
+                      <p>{highlightWords(hit.description)}</p>
+                    )}
+                  </li>
+                ))}
+            </ul>
           )}
         </div>
 

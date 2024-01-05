@@ -1,9 +1,4 @@
-import React, {
-  Dispatch,
-  FC,
-  InputHTMLAttributes,
-  SetStateAction,
-} from "react";
+import { Dispatch, FC, InputHTMLAttributes, SetStateAction } from "react";
 import { TextInput } from "@/components/global/Form/TextInput";
 import { Button } from "@/components/global/Button";
 import SearchIcon from "@/assets/icons/search.svg";
