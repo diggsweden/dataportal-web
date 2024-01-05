@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 
@@ -15,26 +15,20 @@ export const SearchTips: FC<SearchTipsProps> = ({ showTip }) => {
         <div className="mb-xs text-lg">
           {t("pages|search$search-tips-search-head")}
         </div>
-        <span className="text-base">
-          {t("pages|search$search-tips-search-txt")}
-        </span>
+        <span>{t("pages|search$search-tips-search-txt")}</span>
         <div className="my-xs text-lg">
           {t("pages|search$search-tips-filter-head")}
         </div>
-        <span className="text-base">
-          {t("pages|search$search-tips-filter-txt")}
-        </span>
+        <span>{t("pages|search$search-tips-filter-txt")}</span>
         <div className="my-xs text-lg">
           {t("pages|search$search-tips-searchfilter-head")}
         </div>
-        <span className="text-base">
-          {t("pages|search$search-tips-searchfilter-txt")}
-        </span>
+        <span>{t("pages|search$search-tips-searchfilter-txt")}</span>
         <div className="my-xs text-lg">
           {" "}
           {t("pages|search$search-tips-sort-head")}{" "}
         </div>
-        <span className="text-base">
+        <span>
           {t("pages|search$search-tips-sort-txt1")}
           {t("pages|search$search-tips-sort-txt2")}
           {t("pages|search$search-tips-sort-txt3")}

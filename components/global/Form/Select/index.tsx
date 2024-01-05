@@ -1,4 +1,4 @@
-import React, { FC, InputHTMLAttributes, PropsWithChildren } from "react";
+import { FC, InputHTMLAttributes, PropsWithChildren } from "react";
 
 interface SelectProps extends InputHTMLAttributes<HTMLSelectElement> {
   id: string;

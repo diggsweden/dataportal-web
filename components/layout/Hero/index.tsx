@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import Heading from "@/components/global/Typography/Heading";
 import { checkLang } from "@/utilities";
 import useTranslation from "next-translate/useTranslation";
