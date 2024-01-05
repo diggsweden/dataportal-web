@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { SearchMode } from "@/components/content/Search/SearchFilters";
-import { FileFormatBadge } from "@/components/FileFormatBadge";
+import { FileFormatBadge } from "@/components/global/FileFormatBadge";
 import { clearLocalStorage } from "@/utilities";
 import useTranslation from "next-translate/useTranslation";
 import { SearchSortOrder, SearchContextData } from "@/providers/SearchProvider";
