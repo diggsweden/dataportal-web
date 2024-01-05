@@ -35,7 +35,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
       <Link
         href={"https://digg.se/"}
         target="_blank"
-        className="focus:outline-dashed focus:outline-2 focus:outline-offset-2 focus:outline-white"
+        className="focus:outline-white"
       >
         <DiggSmallLogo />
       </Link>
