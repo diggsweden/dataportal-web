@@ -143,7 +143,7 @@ const SideBarLink: FC<
     return (
       <>
         <button
-          className="group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl text-brown-600 focus:outline-dashed focus:outline-2 focus:-outline-offset-2 focus:outline-primary"
+          className="group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl text-brown-600 focus:-outline-offset-2"
           onClick={() => setOpen(!open)}
           tabIndex={openSideBar ? 0 : -1}
         >
