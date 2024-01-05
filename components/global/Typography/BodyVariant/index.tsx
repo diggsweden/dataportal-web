@@ -37,12 +37,7 @@ const BodyVariant: FC<PropsWithChildren<BodyProps>> = ({
   children,
 }) => {
   if (variant === "a" && href) {
-    const isVoid = href === "javascript:void(0)";
     const isExternal = isExternalLink(href);
-
-    if (isVoid) {
-      return <span className="underline underline-offset-4">{children}</span>;
-    }
 
     return (
       <Link

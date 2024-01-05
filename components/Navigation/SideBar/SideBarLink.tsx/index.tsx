@@ -35,6 +35,7 @@ type MenuLinkProps = VariantProps<typeof sideBarLinkVariants> & {
   href: string;
   label: string;
   className?: string;
+  tabIndex?: number;
 };
 
 const MenuLink: FC<MenuLinkProps> = ({
@@ -43,6 +44,7 @@ const MenuLink: FC<MenuLinkProps> = ({
   label,
   Icon,
   variant,
+  tabIndex,
 }) => {
   const { t } = useTranslation();
   const pathname = usePathname();
@@ -54,10 +56,12 @@ const MenuLink: FC<MenuLinkProps> = ({
     <Link
       className={cx(
         sideBarLinkVariants({ variant }),
+        "focus:-outline-offset-2",
         isActive && "bg-pink-100",
         className,
       )}
       href={href}
+      tabIndex={tabIndex}
       target={variant === "external" ? "_blank" : "_self"}
     >
       <>
@@ -126,15 +130,22 @@ const SideBarLink: FC<
 
   if (level === "1" && href) {
     return (
-      <MenuLink href={href} label={label} Icon={Icon} className={className} />
+      <MenuLink
+        href={href}
+        label={label}
+        Icon={Icon}
+        className={className}
+        tabIndex={openSideBar ? 0 : -1}
+      />
     );
   }
   if (level === "2" && list) {
     return (
       <>
         <button
-          className="group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl text-brown-600"
+          className="group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl text-brown-600 focus:-outline-offset-2"
           onClick={() => setOpen(!open)}
+          tabIndex={openSideBar ? 0 : -1}
         >
           <Icon className={open ? "[&_path]:fill-pink-600" : ""} />
           <span
@@ -160,6 +171,7 @@ const SideBarLink: FC<
                   href={`/${t(`routes|${menu.title}$path`)}`}
                   label={t(`routes|${menu.title}$title`)}
                   className={`pl-[48px] ${className}`}
+                  tabIndex={openSideBar ? 0 : -1}
                 />
               </li>
             ))}
