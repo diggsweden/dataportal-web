@@ -131,38 +131,35 @@
 }
 
 /* SWAGGER UI */
-.swagger-ui {
-  .title {
-    @apply mb-md md:flex lg:text-lg;
 
-    .version {
-      @apply ml-[-8px] md:ml-none;
-    }
-  }
+.swagger-ui .title {
+  @apply mb-md md:flex lg:text-lg;
+}
 
-  .base-url {
-    @apply overflow-auto pb-sm text-sm;
-  }
+.swagger-ui .version {
+  @apply ml-[-8px] md:ml-none;
+}
 
-  .scheme-container label {
-    @apply flex flex-col gap-xs break-words;
+.swagger-ui .base-url {
+  @apply overflow-auto pb-sm text-sm;
+}
 
-    select {
-      @apply w-fit cursor-pointer bg-pink-200 px-md py-sm uppercase;
-    }
-  }
+.scheme-container label {
+  @apply flex flex-col gap-xs break-words;
+}
 
-  .info {
-    a {
-      @apply break-words text-green-600 hover:text-brown-800;
-    }
-  }
+.scheme-container label select {
+  @apply w-fit cursor-pointer bg-pink-200 px-md py-sm uppercase;
+}
 
-  .main,
-  .info,
-  .scheme-container {
-    @apply mb-lg;
-  }
+.swagger-ui .info a {
+  @apply break-words text-green-600 hover:text-brown-800;
+}
+
+.main,
+.info,
+.scheme-container {
+  @apply mb-lg;
 }
 
 .opblock-tag {
@@ -171,17 +168,17 @@
 
 .opblock-summary-control {
   @apply relative flex w-full items-center bg-brown-200 p-md text-left;
+}
 
-  .opblock-summary-path {
-    @apply ml-md w-full text-left;
-  }
-  svg {
-    @apply ml-sm min-w-fit;
-  }
+.opblock-summary-control .opblock-summary-path {
+  @apply ml-md w-full text-left;
+}
+.opblock-summary-control svg {
+  @apply ml-sm min-w-fit;
+}
 
-  .opblock-summary-description {
-    @apply mr-md hidden w-full  text-left text-[10px] text-sm lg:block;
-  }
+.opblock-summary-control .opblock-summary-description {
+  @apply mr-md hidden w-full  text-left text-[10px] text-sm lg:block;
 }
 
 .opblock-summary-method {
@@ -190,22 +187,20 @@
 
 .opblock-section-header {
   @apply flex items-center justify-between  text-lg;
-
-  span {
-    @apply text-sm;
-  }
-  label {
-    @apply flex items-center gap-md;
-  }
-  select {
-    @apply w-fit cursor-pointer bg-pink-200 px-md py-sm text-md uppercase;
-  }
 }
 
-.parameters-col_description {
-  input {
-    @apply p-sm text-brown-900;
-  }
+.opblock-section-header span {
+  @apply text-sm;
+}
+.opblock-section-header label {
+  @apply flex items-center gap-md;
+}
+.opblock-section-header select {
+  @apply w-fit cursor-pointer bg-pink-200 px-md py-sm text-md uppercase;
+}
+
+.parameters-col_description input {
+  @apply p-sm text-brown-900;
 }
 
 .try-out__btn {
