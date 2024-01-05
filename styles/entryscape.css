@@ -133,7 +133,7 @@
 }
 
 /* SWAGGER UI */
-.title {
+.swagger-ui .title {
   @apply mb-md md:flex lg:text-lg;
 }
 
