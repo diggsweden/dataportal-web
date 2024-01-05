@@ -44,7 +44,7 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar }) => {
   return (
     <nav
       className={`absolute right-none top-[128px] z-50 -mb-[128px] h-[calc(100%-128px)] w-[300px] bg-white transition-all duration-300 ease-in-out ${
-        openSideBar ? "-right-full" : "translate-x-full"
+        openSideBar ? "" : "translate-x-full"
       }`}
     >
       <ul className="w-full list-none">
