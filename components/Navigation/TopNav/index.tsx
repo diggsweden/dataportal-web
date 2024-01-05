@@ -5,6 +5,7 @@ import Link from "next/link";
 import { topNav } from "@/utilities/menuData";
 import { ButtonLink } from "@/components/global/Button";
 import DiggSmallLogo from "@/assets/logos/diggSmall.svg";
+import { usePathname } from "next/navigation";
 
 interface TopNavData {
   title: string;
@@ -17,6 +18,7 @@ interface TopNavProps {
 }
 
 const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
+  const pathname = usePathname();
   const { t, lang } = useTranslation();
   const [isClient, setIsClient] = useState(false);
 
@@ -30,7 +32,11 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
 
   return (
     <div className="flex h-[32px] flex-row items-center justify-between">
-      <Link href={"https://digg.se/"} target="_blank">
+      <Link
+        href={"https://digg.se/"}
+        target="_blank"
+        className="focus:outline-dashed focus:outline-2 focus:outline-offset-2 focus:outline-white"
+      >
         <DiggSmallLogo />
       </Link>
       <nav>
@@ -45,21 +51,26 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
                     iconPosition="left"
                     label={t(`common|${menu.title}`)}
                     size={"sm"}
-                    className="[&_span]:hidden md:[&_span]:block"
+                    className="focus:-outline-offset-2 focus:outline-white [&_span]:hidden md:[&_span]:block"
                   />
                 </>
               ) : (
                 <ButtonLink
-                  href={`/${t(`routes|${menu.title}$path`)}`}
+                  href={`${t(`routes|${menu.title}$path`)}`}
                   locale={`${menu.title === "language" ? "" : lang}`}
                   onClick={() => setOpenSideBar(false)}
                   icon={menu.icon}
                   iconPosition="left"
                   label={t(`routes|${menu.title}$title`)}
                   size={"sm"}
-                  className={`${
+                  className={`focus:-outline-offset-2 focus:outline-white ${
                     menu.title !== "language" &&
                     "[&_span]:hidden md:[&_span]:block"
+                  } ${
+                    pathname === `/${t(`routes|${menu.title}$path`)}` &&
+                    menu.title !== "language"
+                      ? " active"
+                      : ""
                   }`}
                 />
               )}
