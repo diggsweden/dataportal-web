@@ -32,6 +32,12 @@ export const VideoPlayer: FC<VideoProps> = ({ media, url }) => {
       className={`group relative ${
         isPlaying ? "cursor-default" : "cursor-pointer"
       }`}
+      onClick={() => {
+        setIsPlaying(true);
+        if (!thumbnail) {
+          setUrlState(`${url}#t=0`);
+        }
+      }}
     >
       {windowLoaded && (
         <>
@@ -45,15 +51,9 @@ export const VideoPlayer: FC<VideoProps> = ({ media, url }) => {
             light={thumbnail}
           />
           <button
-            className={`absolute left-1/2 top-1/2 -translate-x-1/4 -translate-y-1/2 cursor-pointer rounded-full p-xs group-hover:bg-whiteOpaque5 ${
+            className={`absolute left-1/2 top-1/2 -translate-x-1/4 -translate-y-1/2 cursor-pointer rounded-full group-hover:opacity-70 ${
               isPlaying ? "hidden group-hover:bg-none" : "block"
             }}`}
-            onClick={() => {
-              setIsPlaying(true);
-              if (!thumbnail) {
-                setUrlState(`${url}#t=0`);
-              }
-            }}
           >
             <PlayIcon className={`${isPlaying ? "hidden" : "block"}`} />
           </button>
