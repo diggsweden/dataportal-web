@@ -54,7 +54,7 @@ const BodyVariant: FC<PropsWithChildren<BodyProps>> = ({
         {isMailLink(href) && (
           <MailIcon width={16} height={16} viewBox="0 0 24 24" />
         )}
-        {isExternal && (
+        {isExternal && !isMailLink(href) && (
           <ExternalLinkIcon width={16} height={16} viewBox="0 0 24 24" />
         )}
       </Link>
