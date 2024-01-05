@@ -284,12 +284,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                             hit.metadata["format_literal"] &&
                             hit.metadata["format_literal"].map(
                               (m: string, index: number) => (
-                                <span
-                                  className="bg-pink-200 px-sm py-xs text-sm uppercase"
-                                  key={index}
-                                >
-                                  <FileFormatBadge badgeName={m} />
-                                </span>
+                                <FileFormatBadge key={index} badgeName={m} />
                               ),
                             )}
                         </div>

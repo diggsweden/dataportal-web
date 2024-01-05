@@ -139,5 +139,9 @@ export const FileFormatBadge: FC<FileFormatBadgeProps> = ({ badgeName }) => {
       break;
   }
 
-  return <span className={`format ${className}`}>{text}</span>;
+  return (
+    <span className={`bg-pink-200 px-sm py-xs text-sm uppercase ${className}`}>
+      {text}
+    </span>
+  );
 };
