@@ -138,7 +138,9 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
     <Container>
       <article
         className={`mx-auto grid max-w-md grid-cols-1 py-xl lg:w-fit lg:max-w-xl
-        lg:grid-cols-[620px_132px] lg:gap-x-xl xl:grid-cols-[200px_620px_132px]`}
+        lg:grid-cols-[620px_132px] lg:gap-x-xl ${
+          hasRelatedContent ? "xl:grid-cols-[200px_620px_132px]" : ""
+        }`}
       >
         {hasRelatedContent && (
           <ContainerNav related={related} domain={domain} />
@@ -147,13 +149,19 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
           <Heading
             size={"lg"}
             level={1}
-            className="col-span-2 row-span-1 xl:col-start-2 xl:mb-xl"
+            className={`col-span-2 row-span-1 ${
+              hasRelatedContent ? "xl:col-start-2 xl:mb-xl" : ""
+            }`}
           >
             {checkLang(heading)}
           </Heading>
         )}
 
-        <main className="content col-start-1 max-w-md space-y-xl xl:col-span-1 xl:col-start-2">
+        <main
+          className={`content col-start-1 max-w-md space-y-xl ${
+            hasRelatedContent ? "xl:col-span-1 xl:col-start-2" : ""
+          }`}
+        >
           <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
           {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
         </main>
@@ -162,7 +170,11 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
           <div
             id="stickyNav"
             className={`col-start-1 row-start-3 lg:relative lg:right-none lg:col-start-2 
-          lg:row-start-3 lg:h-full xl:col-span-1 xl:col-start-3  xl:row-start-2`}
+          lg:row-start-2 lg:h-full ${
+            hasRelatedContent
+              ? " xl:col-span-1 xl:col-start-3  xl:row-start-2 "
+              : ""
+          }`}
           >
             <StickyNav
               menuHeading={t("common|content-menu-heading")}
