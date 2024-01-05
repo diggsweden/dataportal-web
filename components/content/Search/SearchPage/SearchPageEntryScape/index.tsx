@@ -19,6 +19,7 @@ import { Heading } from "@/components/global/Typography/Heading";
 import { Button } from "@/components/global/Button";
 import { SearchTips } from "@/components/content/Search/SearchTips";
 import { SearchPageSelector } from "@/components/content/Search/SearchPageSelector";
+import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
 
 interface SearchProps {
   activeLink?: string;
@@ -295,7 +296,7 @@ export const SearchPageEntryScape: React.FC<SearchProps> = ({ searchType }) => {
           <SearchContext.Consumer>
             {(search) => (
               <Container className="my-xl">
-                <div className="flex justify-between">
+                <div className="flex max-w-md items-end justify-between">
                   <Heading level={1} size="lg">
                     {pageTitle}
                   </Heading>
@@ -304,6 +305,9 @@ export const SearchPageEntryScape: React.FC<SearchProps> = ({ searchType }) => {
                     <Button
                       aria-expanded={showTip}
                       variant="plain"
+                      size="sm"
+                      icon={ChevronDownIcon}
+                      iconPosition="right"
                       className={
                         "search-tip__btn text-xs" +
                         (showTip ? " search-tip__btn--active" : "")

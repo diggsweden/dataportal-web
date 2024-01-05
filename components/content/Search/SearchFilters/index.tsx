@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { ESRdfType, ESType } from "@/utilities/entryScape";
-import { CloseIcon as CloseIcon2, FilterIcon } from "@/components/Icons";
 import useTranslation from "next-translate/useTranslation";
 import { SearchContextData } from "@/providers/SearchProvider";
 import { SearchFilter } from "@/components/content/Search/SearchFilters/SearchFilter";
+import FilterIcon from "@/assets/icons/filter.svg";
+import CloseIcon from "@/assets/icons/closeCross.svg";
+import TrashIcon from "@/assets/icons/trash.svg";
+import SearchIcon from "@/assets/icons/search.svg";
+import { Button } from "@/components/global/Button";
+import { TextInput } from "@/components/global/Form/TextInput";
 
 interface SearchFilterProps {
   showFilter: boolean;
@@ -45,15 +50,14 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
   };
 
   return (
-    <div className="filter-search">
-      <label htmlFor={filterKey} className="hidden">
+    <div className="relative flex items-center">
+      <label htmlFor={filterKey} className="sr-only">
         {t("search$filtersearch")}
       </label>
-      <input
+      <TextInput
         id={filterKey}
         name={filterKey}
         placeholder={t("search$filtersearch")}
-        className="filter-search__input"
         value={filter[filterKey] || ""}
         onChange={(e) => (
           clearCurrentScrollPos(),
@@ -61,10 +65,11 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
           setFilter({ ...filter, [filterKey]: e.target.value })
         )}
       />
-      <i className="filter-search__icon">
-        {" "}
-        {/*<SearchIcon color={colorPalette.gray700} width={[25]} />*/}
-      </i>
+      <SearchIcon
+        height={24}
+        width={24}
+        className="absolute right-sm [&_path]:fill-brown-500"
+      />
     </div>
   );
 };
@@ -147,7 +152,6 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
 }) => {
   const { t } = useTranslation();
   const [inputFilter, setInputFilter] = useState<InputFilter>({});
-  const [isOpen, setOpen] = useState(true);
 
   const clearCurrentScrollPos = () => {
     if (typeof localStorage != "undefined" && typeof location != "undefined") {
@@ -157,25 +161,23 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
 
   return (
     <>
-      <div className="mobile-filters">
-        <button
+      <div className="mb-md">
+        <Button
+          variant="plain"
+          size="sm"
+          icon={FilterIcon}
+          iconPosition="left"
           aria-label={
             showFilter ? t("common|hide-filter") : t("common|show-filter")
           }
           className={showFilter ? "filter-active" : ""}
           onClick={() => setShowFilter(!showFilter)}
-        >
-          {t("common|filter")}
-          {showFilter ? <CloseIcon2 /> : <FilterIcon />}
-        </button>
+          label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
+        ></Button>
       </div>
 
-      <div
-        className={`search-filter-box ${showFilter && "show-filter"} ${
-          isOpen && "compact-filters"
-        }`}
-      >
-        <div className="flex space-x-md">
+      <div className={showFilter ? "block" : "hidden"}>
+        <div className="mb-lg flex space-x-md">
           {search.allFacets &&
             Object.entries(search.allFacets)
               .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
@@ -202,7 +204,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                         )
                       }
                     >
-                      <div className="search-filter-list">
+                      <div className="absolute mt-sm max-w-[330px] bg-white shadow-md">
                         {searchMode == "datasets" && ( //only render on searchpage
                           <>
                             {isLicense ? (
@@ -234,7 +236,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                               <button
                                 aria-pressed={selected}
                                 key={index}
-                                className={`filter-btn ${
+                                className={`block w-full px-md py-md text-left hover:bg-brown-100 ${
                                   selected && "selected"
                                 }`}
                                 onClick={() => {
@@ -306,26 +308,16 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                   </div>
                 );
               })}
-        </div>
-
-        {searchMode == "datasets" && (
-          <div className="checkbox__wrapper">
-            <input
-              id="api_only"
-              name="API"
-              type="checkbox"
-              checked={
-                search.request.esRdfTypes?.some(
-                  (t) => t == ESRdfType.esterms_ServedByDataService,
-                ) &&
-                search.request.esRdfTypes?.some(
-                  (t) => t == ESRdfType.esterms_IndependentDataService,
-                ) &&
-                !search.request.esRdfTypes?.some((t) => t == ESRdfType.dataset)
-              }
-              onChange={() => {
-                clearCurrentScrollPos();
-                if (
+          {searchMode == "datasets" && (
+            <div className="button button--secondary button--small">
+              <label className="text-base" htmlFor="api_only">
+                API
+              </label>
+              <input
+                id="api_only"
+                name="API"
+                type="checkbox"
+                checked={
                   search.request.esRdfTypes?.some(
                     (t) => t == ESRdfType.esterms_ServedByDataService,
                   ) &&
@@ -335,87 +327,97 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                   !search.request.esRdfTypes?.some(
                     (t) => t == ESRdfType.dataset,
                   )
-                ) {
-                  search
-                    .set({
-                      esRdfTypes: [
-                        ESRdfType.dataset,
-                        ESRdfType.esterms_IndependentDataService,
-                        ESRdfType.esterms_ServedByDataService,
-                      ],
-                      query: query,
-                    })
-                    .then(() => search.doSearch());
-                } else {
-                  search
-                    .set({
-                      esRdfTypes: [
-                        ESRdfType.esterms_IndependentDataService,
-                        ESRdfType.esterms_ServedByDataService,
-                      ],
-                      query: query,
-                    })
-                    .then(() => search.doSearch());
                 }
-              }}
-            ></input>
-            <label className="text-base" htmlFor="api_only">
-              API
-            </label>
-          </div>
-        )}
-      </div>
-
-      {searchMode == "datasets" && (
-        <div className="search-toolbar">
-          <button
-            className={isOpen ? "more-filters-btn" : "more-filters-btn active"}
-            onClick={() => setOpen(!isOpen)}
-          >
-            {isOpen
-              ? `${t("pages|search$more-filters")}`
-              : `${t("pages|search$less-filters")}`}
-            {isOpen ? <FilterIcon /> : <CloseIcon2 />}
-          </button>
-        </div>
-      )}
-
-      <div className="selected-filters">
-        {search.request &&
-          search.request.facetValues &&
-          (search.request.facetValues as SearchFacetValue[]).map(
-            (facetValue: SearchFacetValue, index: number) => (
-              <button
-                key={index}
-                className="selectedfilter"
-                onClick={() => {
+                onChange={() => {
                   clearCurrentScrollPos();
-                  search.toggleFacet(facetValue).then(() => {
-                    search.doSearch();
-                  });
+                  if (
+                    search.request.esRdfTypes?.some(
+                      (t) => t == ESRdfType.esterms_ServedByDataService,
+                    ) &&
+                    search.request.esRdfTypes?.some(
+                      (t) => t == ESRdfType.esterms_IndependentDataService,
+                    ) &&
+                    !search.request.esRdfTypes?.some(
+                      (t) => t == ESRdfType.dataset,
+                    )
+                  ) {
+                    search
+                      .set({
+                        esRdfTypes: [
+                          ESRdfType.dataset,
+                          ESRdfType.esterms_IndependentDataService,
+                          ESRdfType.esterms_ServedByDataService,
+                        ],
+                        query: query,
+                      })
+                      .then(() => search.doSearch());
+                  } else {
+                    search
+                      .set({
+                        esRdfTypes: [
+                          ESRdfType.esterms_IndependentDataService,
+                          ESRdfType.esterms_ServedByDataService,
+                        ],
+                        query: query,
+                      })
+                      .then(() => search.doSearch());
+                  }
                 }}
-              >
-                {facetValue.title || facetValue.resource}{" "}
-                {/*<CloseIcon width={[15]} />*/}
-              </button>
-            ),
+              />
+            </div>
           )}
+        </div>
       </div>
-      <div
-        className={`clear-filters ${
-          search.request?.facetValues &&
-          search.request.facetValues.length >= 2 &&
-          "show"
-        }`}
-      >
-        <button
-          onClick={() => {
-            clearCurrentScrollPos();
-            search.set({ facetValues: [] }).then(() => search.doSearch());
-          }}
+
+      <div className="flex justify-between">
+        <div className="flex space-x-md">
+          {search.request.facetValues &&
+            search.request.facetValues.length > 0 && (
+              <span className="text-textSecondary">
+                {t("common|active-filters")}:
+              </span>
+            )}
+          {search.request &&
+            search.request.facetValues &&
+            (search.request.facetValues as SearchFacetValue[]).map(
+              (facetValue: SearchFacetValue, index: number) => (
+                <Button
+                  variant="filter"
+                  size="xs"
+                  key={index}
+                  label={facetValue.title || facetValue.resource}
+                  icon={CloseIcon}
+                  iconPosition="right"
+                  onClick={() => {
+                    clearCurrentScrollPos();
+                    search.toggleFacet(facetValue).then(() => {
+                      search.doSearch();
+                    });
+                  }}
+                />
+              ),
+            )}
+        </div>
+        <div
+          className={
+            search.request?.facetValues &&
+            search.request.facetValues.length >= 2
+              ? "block"
+              : "hidden"
+          }
         >
-          {t("common|clear-filters")} ({search.request?.facetValues?.length})
-        </button>
+          <Button
+            variant="plain"
+            size="sm"
+            icon={TrashIcon}
+            iconPosition="left"
+            onClick={() => {
+              clearCurrentScrollPos();
+              search.set({ facetValues: [] }).then(() => search.doSearch());
+            }}
+            label={t("common|clear-filters")}
+          />
+        </div>
       </div>
     </>
   );

@@ -28,6 +28,7 @@
   "external_link": "Leads to external website",
   "exploreapi": "Explore API",
   "filter": "Filters",
+  "active-filters": "Active filters",
   "filter-text": "The page updates automatically when you apply filters",
   "hide-filter": "Hide filter",
   "home-text": "Home",

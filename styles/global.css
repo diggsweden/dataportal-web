@@ -77,12 +77,21 @@ body {
     @apply bg-brown-800 [&_path]:fill-brown-100;
   }
   .button--secondary {
-    @apply border-2 border-brown-600 bg-transparent text-brown-600 hover:bg-whiteOpaque5 focus:bg-whiteOpaque5 
+    @apply border-2 border-brown-600 bg-transparent text-brown-600 hover:bg-whiteOpaque5 focus:bg-whiteOpaque5
     group-hover:bg-brown-800 group-hover:bg-whiteOpaque5 group-focus:bg-whiteOpaque5 [&_path]:fill-brown-600;
   }
   .button--plain {
     @apply text-brown-600 hover:bg-brown-200 focus:bg-brown-200 group-hover:bg-brown-200 group-hover:bg-whiteOpaque5 
     group-focus:bg-brown-200 [&_path]:fill-brown-600;
+  }
+  .button--secondary.active {
+    @apply bg-brown-600 text-white [&_path]:fill-white [&_svg]:rotate-180;
+  }
+  .button--filter {
+    @apply bg-brown-800 text-white [&_path]:fill-white;
+  }
+  .button--xs {
+    @apply h-[24px] gap-sm px-md text-sm;
   }
   .button--small {
     @apply h-[32px] gap-sm px-md text-sm;

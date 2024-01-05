@@ -57,9 +57,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
           aria-haspopup={true}
           aria-expanded={open}
           onClick={() => handleOpen(!open)}
-          className={
-            (open ? "text-base open" : "text-base") + " filter-button_mobile"
-          }
+          className={(open && "active") + " filter-button_mobile"}
         />
         <div className={open ? "block" : "hidden"}>{children}</div>
       </div>
