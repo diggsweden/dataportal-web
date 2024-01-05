@@ -2,6 +2,7 @@ import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { StatisticListItemHistory } from "@/components/content/Statistic/StatisticListItemHistory";
+import { Heading } from "@/components/global/Typography/Heading";
 
 // import { isIE } from 'react-device-detect';
 
@@ -67,28 +68,23 @@ export const StatisticGraphNumbers: React.FC = () => {
     return <></>;
   } else {
     return (
-      <div className="toplist">
-        {/* Toplist */}
-        <div className="statistic-toplist">
-          <div className="toplist-wrapper">
-            <h2>{t("statistic$dataset-numbers")}</h2>
-            <div className="top-list">
-              <ol className="font-bold text-md">
-                {stats.yList &&
-                  stats.yList
-                    .slice(0, stats.topItemsToShow)
-                    .map((item: any, index: any) => {
-                      return (
-                        <StatisticListItemHistory
-                          key={"cat-" + index}
-                          listText={stats.xList && stats.xList[index]}
-                          listNumber={item}
-                        />
-                      );
-                    })}
-              </ol>
-            </div>
-          </div>
+      <div>
+        <Heading level={2}>{t("statistic$dataset-numbers")}</Heading>
+        <div className="bg-white p-xl">
+          <ol className="list-decimal space-y-lg pl-lg">
+            {stats.yList &&
+              stats.yList
+                .slice(0, stats.topItemsToShow)
+                .map((item: any, index: any) => {
+                  return (
+                    <StatisticListItemHistory
+                      key={"cat-" + index}
+                      listText={stats.xList && stats.xList[index]}
+                      listNumber={item}
+                    />
+                  );
+                })}
+          </ol>
         </div>
       </div>
     );

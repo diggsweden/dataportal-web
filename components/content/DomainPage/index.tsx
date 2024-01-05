@@ -16,7 +16,7 @@ import { Heading } from "@/components/global/Typography/Heading";
 import Container from "@/components/layout/Container";
 import { Hero } from "@/components/layout/Hero";
 import { Preamble } from "@/components/global/Typography/Preamble";
-import { ContentBox } from "../ContentBox";
+import { ContentBox } from "@/components/content/ContentBox";
 
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
@@ -165,8 +165,9 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               <DynamicStatisticGraph />
               <DynamicStatisticNumbers />
             </div>
-
-            <DynamicStatistic />
+            <div className="grid items-start gap-xl md:grid-cols-2">
+              <DynamicStatistic />
+            </div>
           </section>
         )}
       </Container>

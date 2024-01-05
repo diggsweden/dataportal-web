@@ -2,7 +2,7 @@ import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { EnvSettings } from "@/env";
-import { StatisticListItem } from "./StatisticListItem";
+import { StatisticListItem } from "@/components/content/Statistic/StatisticListItem";
 import { getNumbersData } from "@/components/content/Statistic/StatisticNumbers";
 import { Heading } from "@/components/global/Typography/Heading";
 
@@ -114,7 +114,7 @@ export const Statistic: React.FC = () => {
   }, [lang]);
 
   return (
-    <div className="grid items-start gap-xl md:grid-cols-2">
+    <>
       <div className="bg-white p-xl">
         <Heading level={3} size="sm" className="mb-lg">
           {t("statistic$top-organizations")}
@@ -166,7 +166,7 @@ export const Statistic: React.FC = () => {
               })}
         </ol>
       </div>
-    </div>
+    </>
   );
 };
 
