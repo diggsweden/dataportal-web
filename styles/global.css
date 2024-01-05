@@ -125,9 +125,13 @@ body {
 }
 
 * {
-  scroll-behavior: smooth;
   font-family: Ubuntu, sans-serif;
 }
+
+a {
+  scroll-behavior: smooth;
+}
+
 /* General styling for the table */
 table {
   @apply !my-lg w-full table-auto border-collapse border border-brown-200;
