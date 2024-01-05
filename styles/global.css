@@ -67,14 +67,15 @@ body {
 
   .button {
     @apply flex w-fit flex-row items-center no-underline focus:outline-offset-2 focus:outline-primary disabled:border-none 
-    disabled:bg-brown-400 disabled:text-brown-600 group-focus:outline-dashed group-focus:outline-2 group-focus:outline-offset-2 
-    group-focus:outline-primary [&_path]:disabled:fill-brown-600 [&_svg]:inline-flex;
+    disabled:bg-brown-400 disabled:text-brown-600 
+     [&_path]:disabled:fill-brown-600 [&_svg]:inline-flex;
   }
   .button--primary {
-    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 focus:bg-brown-800 group-focus:bg-brown-800 [&_path]:fill-brown-100;
+    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 focus:bg-brown-800 group-hover:!bg-brown-800 
+    group-focus:bg-brown-800 [&_path]:fill-brown-100;
   }
   .button--primary.active {
-    @apply bg-brown-800 [&_path]:fill-brown-100;
+    @apply !bg-brown-800 [&_path]:fill-brown-100;
   }
   .button--secondary {
     @apply border-2 border-brown-600 bg-transparent text-brown-600 hover:bg-whiteOpaque5 focus:bg-whiteOpaque5
@@ -84,8 +85,8 @@ body {
     @apply bg-brown-600 text-white [&_path]:fill-white [&_svg]:rotate-180;
   }
   .button--plain {
-    @apply text-brown-600 hover:bg-brown-200 focus:bg-brown-200 group-hover:bg-brown-200 group-hover:bg-whiteOpaque5 
-    group-focus:bg-brown-200 [&_path]:fill-brown-600;
+    @apply text-brown-600 hover:bg-brown-200 focus:bg-brown-200 group-hover:bg-brown-200 group-focus:bg-brown-200 
+    [&_path]:fill-brown-600;
   }
   .button--plain.active {
     @apply [&_svg]:rotate-180;
@@ -159,11 +160,20 @@ mark {
 
 /* General styling for focus */
 button:focus:not(:focus-visible),
-a:focus:not(:focus-visible) {
-  outline: none;
+a:focus:not(:focus-visible),
+.button:focus:not(:focus-visible)
+/* span:focus:not(:focus-visible) */ {
+  @apply !outline-none group-focus:outline-none;
+}
+
+.button:focus:not(:focus-visible) {
+  @apply hover:bg-textPrimary;
+  background-color: inherit;
 }
 
 a:focus-visible,
-button:focus-visible {
-  @apply outline-dashed outline-2 outline-offset-2 outline-primary;
+button:focus-visible,
+.button:focus-visible {
+  @apply !outline-dashed !outline-2 !outline-offset-2 !outline-primary group-focus:!outline-dashed 
+  group-focus:!outline-2 group-focus:!outline-offset-2 group-focus:!outline-primary;
 }
