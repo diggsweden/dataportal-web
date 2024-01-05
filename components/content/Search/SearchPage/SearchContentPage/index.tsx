@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { querySearch } from "@/utilities";
 import { useRouter } from "next/router";
@@ -16,7 +16,7 @@ interface SearchProps {
   activeLink?: string;
 }
 
-export const SearchContentPage: React.FC<SearchProps> = () => {
+export const SearchContentPage: FC<SearchProps> = () => {
   const router = useRouter() || {};
   const { pathname, query: routerQuery } = router || {};
   const { t, lang } = useTranslation("common");
@@ -173,8 +173,19 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
     });
   }, [routerQuery]);
 
+  const submitSearch = (newQuery: string) => {
+    routerQuery.q = newQuery;
+    routerQuery.p = "1";
+    router.push(router);
+    setSearchRequest({
+      ...searchRequest,
+      query: newQuery,
+      page: 1,
+    });
+  };
+
   return (
-    <>
+    <div className="SearchContentPage">
       <Head>
         <title>{`${t("common|search")} - Sveriges dataportal`}</title>
         <meta
@@ -196,14 +207,7 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
           onSubmit={(event) => {
             clearCurrentScrollPos();
             event.preventDefault();
-            routerQuery.q = query;
-            routerQuery.p = "1";
-            router.push(router);
-            setSearchRequest({
-              ...searchRequest,
-              query: query,
-              page: 1,
-            });
+            submitSearch(query);
           }}
         >
           <SearchInput
@@ -213,7 +217,9 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
             name="q"
             type="text"
             placeholder={t("pages|content$search")}
-            value={query || ""}
+            query={query}
+            setQuery={setQuery}
+            submitMeiliSearch={submitSearch}
             onChange={(e) => {
               clearCurrentScrollPos();
               setQuery(e.target.value);
@@ -225,42 +231,45 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
         <SearchPageSelector />
 
         <div id="search-result" className="search-result">
-          <div className="search-result-head">
-            <h2 className="search-result-header">
+          <div className="mb-xl">
+            <Heading level={2} size="md" className="search-result-header">
               {loading && <span>{t("common|loading")}</span>}
               {!loading &&
                 searchResult &&
                 (searchResult.count || 0) >= 0 &&
                 `${searchResult.count} ${t("pages|search$content-hits")}`}
-            </h2>
+            </Heading>
           </div>
 
           {searchResult && (
             <div>
-              <ul className="search-result-list">
+              <ul className="search-result-list space-y-xl">
                 {searchResult.hits &&
                   searchResult.hits.map((hit: SearchHit, index: number) => (
-                    <li className="search-result-list-item" key={index}>
+                    <li className="max-w-lg" key={index}>
                       <Link
-                        href={`${hit.url}#ref=${
+                        href={`${hit.url?.replace(/^\//, "")}#ref=${
                           window ? window.location.search : ""
                         }`}
                         onClick={() => {
                           saveCurrentScrollPos();
-                          trackSearchHitClick(hit.url || "");
+                          trackSearchHitClick(
+                            hit.url?.replace(/^\//, "") || "",
+                          );
                         }}
+                        className="group no-underline"
                       >
-                        <p
+                        <Heading
+                          level={3}
+                          size="sm"
+                          className="mb-sm font-normal text-green-600 group-hover:underline "
                           lang={hit.titleLang}
-                          className="link heading-link text-lg"
                         >
                           {highlightWords(hit.title)}
-                        </p>
+                        </Heading>
                       </Link>
                       {hit.description && (
-                        <p className="text-base no-underline">
-                          {highlightWords(hit.description)}
-                        </p>
+                        <p>{highlightWords(hit.description)}</p>
                       )}
                     </li>
                   ))}
@@ -301,6 +310,6 @@ export const SearchContentPage: React.FC<SearchProps> = () => {
           </div>
         )}
       </Container>
-    </>
+    </div>
   );
 };

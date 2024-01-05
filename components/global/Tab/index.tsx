@@ -16,7 +16,7 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
       {href ? (
         <Link
           href={href}
-          className={`p-md no-underline
+          className={`whitespace-nowrap p-md no-underline
           ${
             active
               ? "bg-pink-200 font-strong text-textPrimary "

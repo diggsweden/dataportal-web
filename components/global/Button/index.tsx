@@ -66,7 +66,16 @@ type ButtonProps = VariantProps<typeof buttonVariants> & {
 
 const Button: FC<
   PropsWithChildren<ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>>
-> = ({ variant, size, className, icon, iconPosition, label, ...rest }) => {
+> = ({
+  variant,
+  size,
+  className,
+  icon,
+  iconPosition,
+  label,
+  children,
+  ...rest
+}) => {
   return (
     <button
       className={cx(buttonVariants({ variant, size }), className)}
@@ -78,6 +87,7 @@ const Button: FC<
         icon={icon}
         label={label}
       />
+      {children}
     </button>
   );
 };
@@ -110,14 +120,12 @@ const ButtonLink: FC<
       locale={locale}
       {...rest}
     >
-      <>
-        <IconLabel
-          size={size ? size : "lg"}
-          iconPosition={iconPosition}
-          icon={icon}
-          label={label}
-        />
-      </>
+      <IconLabel
+        size={size ? size : "lg"}
+        iconPosition={iconPosition}
+        icon={icon}
+        label={label}
+      />
     </Link>
   );
 };
