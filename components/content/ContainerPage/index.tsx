@@ -158,9 +158,8 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
         )}
 
         <main
-          className={`content col-start-1 max-w-md space-y-xl ${
-            hasRelatedContent ? "xl:col-span-1 xl:col-start-2" : ""
-          }`}
+          className={`content col-start-1 max-w-md space-y-xl
+           ${hasRelatedContent ? "xl:col-span-1 xl:col-start-2" : ""}`}
         >
           <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
           {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
@@ -170,7 +169,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
           <div
             id="stickyNav"
             className={`col-start-1 row-start-3 lg:relative lg:right-none lg:col-start-2 
-          lg:row-start-2 lg:h-full ${
+          lg:row-start-3 lg:h-full ${
             hasRelatedContent
               ? " xl:col-span-1 xl:col-start-3  xl:row-start-2 "
               : ""
