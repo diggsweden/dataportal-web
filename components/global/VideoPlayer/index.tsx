@@ -49,9 +49,11 @@ export const VideoPlayer: FC<VideoProps> = ({ media, url }) => {
             playsinline={true}
             onPlay={() => !thumbnail && setUrlState(`${url}#t=0`)}
             light={thumbnail}
+            width={"100%"}
+            height={"100%"}
           />
           <button
-            className={`absolute left-1/2 top-1/2 -translate-x-1/4 -translate-y-1/2 cursor-pointer rounded-full group-hover:opacity-70 ${
+            className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full group-hover:opacity-70 ${
               isPlaying ? "hidden group-hover:bg-none" : "block"
             }}`}
           >
