@@ -40,7 +40,7 @@ const MenuMain: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
       {menues.map((menu: MenuItem, idx: number) => (
         <Link
           key={idx}
-          href={t(`routes|${menu.title}$path`)}
+          href={`/${t(`routes|${menu.title}$path`)}`}
           className={`header-link${
             pathname === `/${t(`routes|${menu.title}$path`)}` ? " active" : ""
           }`}
