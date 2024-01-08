@@ -472,7 +472,7 @@ export const DataSetPage: React.FC = () => {
                 <Heading level={3}>
                   {t("pages|datasetpage$contact-publisher")}
                 </Heading>
-                <p className="">
+                <p>
                   {t("pages|datasetpage$contact-publisher-text")}
                   {t("pages|datasetpage$contact-publisher-text2")}{" "}
                   <a

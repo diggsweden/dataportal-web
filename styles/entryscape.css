@@ -210,3 +210,7 @@
 .explore-api-btn {
   @apply button--primary button--large button bg-brown-600 text-white hover:bg-brown-800 !important;
 }
+
+.hemvist {
+  @apply text-sm text-green-600 underline !important;
+}
