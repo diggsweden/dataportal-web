@@ -169,11 +169,11 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
           <div
             id="stickyNav"
             className={`col-start-1 row-start-3 lg:relative lg:right-none lg:col-start-2 
-          lg:row-start-3 lg:h-full ${
-            hasRelatedContent
-              ? " xl:col-span-1 xl:col-start-3  xl:row-start-2 "
-              : ""
-          }`}
+           lg:h-full ${
+             hasRelatedContent
+               ? " lg:row-start-3 xl:col-span-1 xl:col-start-3  xl:row-start-2 "
+               : "lg:row-start-2"
+           }`}
           >
             <StickyNav
               menuHeading={t("common|content-menu-heading")}
