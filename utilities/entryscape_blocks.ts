@@ -124,11 +124,11 @@ export const hemvist = (t: Translate) => `
         linkTitle = '${t("pages|specification_page$address")}';
       
       if (resourceURI.indexOf('https://dataportal.se/') === 0) {
-        node.innerHTML=linkTitle + ': <a href='+resourceURI+'>'+resourceURI+'</a>';
+        node.innerHTML=linkTitle + ': <a class="hemvist" href='+resourceURI+'>'+resourceURI+'</a>';
       }
       else
       {
-        node.innerHTML='<span class="">'+linkTitle+'</span> <a href='+resourceURI+'>'+resourceURI+'</a>';
+        node.innerHTML='<span class="hemvist">'+linkTitle+'</span> <a href='+resourceURI+'>'+resourceURI+'</a>';
       } 
     }
   }
