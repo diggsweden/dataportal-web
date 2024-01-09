@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { EntrystoreProvider } from "@/providers/EntrystoreProvider";
-import { ConceptPage } from "@/components/content/Entryscape/ConceptPage";
+import { ConceptPage } from "@/components/content/entryscape/ConceptPage";
 import { useScript } from "@/hooks/useScript";
 
 export default function Concept() {
