@@ -10,7 +10,6 @@ import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { usePathname } from "next/navigation";
 import { SearchInput } from "@/components/content/Search/SearchInput";
 import SearchIcon from "@/assets/icons/search.svg";
-import { useRouter } from "next/router";
 
 interface MainNavData {
   title: string;
@@ -31,7 +30,6 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   const [openSearch, setOpenSearch] = useState<boolean>(false);
   const [query, setQuery] = useState("");
   const pathname = usePathname();
-  const router = useRouter();
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
 
@@ -46,12 +44,6 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
       setMenues(enMenu);
     }
   }, [isEn]);
-
-  const submitSearch = async (newQuery: string) => {
-    await router.push(`/search?q=${newQuery}&f=&p=1`);
-    setQuery("");
-    setOpenSearch(false);
-  };
 
   return (
     <div className="flex flex-row items-center justify-between">
@@ -98,20 +90,15 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                   ? "w-full [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900"
                   : "w-none overflow-hidden"
               }`}
-              onSubmit={(event) => {
-                event.preventDefault();
-                submitSearch(query);
-              }}
+              action="/search"
             >
               <SearchInput
                 id="start-search"
                 placeholder={t("common|search")}
                 query={query}
                 setQuery={setQuery}
-                submitSearch={submitSearch}
                 hideLabel={true}
-                searchOnClear={false}
-                className="h-[44px]	border-none hover:outline-0 focus:outline-0"
+                className="ml-sm	h-[44px] border-none hover:outline-0 focus:outline-0"
               />
             </form>
           )}
