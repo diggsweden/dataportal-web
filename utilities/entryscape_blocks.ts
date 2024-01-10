@@ -128,7 +128,7 @@ export const hemvist = (t: Translate) => `
       }
       else
       {
-        node.innerHTML='<span class="hemvist">'+linkTitle+'</span> <a href='+resourceURI+'>'+resourceURI+'</a>';
+        node.innerHTML='<span class="text-sm text-textSecondary">'+linkTitle+'</span> <a href='+resourceURI+'>'+resourceURI+'</a>';
       } 
     }
   }

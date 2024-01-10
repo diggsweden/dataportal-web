@@ -211,6 +211,46 @@
   @apply button--primary button--large button bg-brown-600 text-white hover:bg-brown-800 !important;
 }
 
-.hemvist {
-  @apply text-sm text-green-600 underline !important;
+.entryscape a {
+  @apply block break-all text-sm text-green-600 underline !important;
+}
+
+.entryscape h3 {
+  @apply mb-none text-sm font-normal text-textSecondary !important;
+}
+
+.relatedList-label {
+  @apply mt-none text-lg !important;
+}
+
+.concept-header {
+  @apply mb-md text-lg !important;
+}
+
+.concept_hierarchy {
+  @apply overflow-scroll py-md;
+}
+
+.concept_hierarchy svg {
+  @apply overflow-auto  !important;
+}
+
+.concept_hierarchy rect {
+  @apply max-w-sm fill-green-600 stroke-none text-white !important;
+}
+
+.concept_hierarchy text {
+  @apply fill-white !important;
+}
+
+.esbHierarchy__expandableNode rect {
+  @apply fill-brown-900 !important;
+}
+
+.esbHierarchy__leafNode rect {
+  @apply fill-brown-800 !important;
+}
+
+.entryListRow {
+  @apply mb-xs;
 }

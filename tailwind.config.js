@@ -23,6 +23,7 @@ module.exports = {
       md: 620,
       lg: 960,
       xl: 1140,
+      fit: "fit-content",
     },
     colors: {
       primary: "#CD7A6E",
