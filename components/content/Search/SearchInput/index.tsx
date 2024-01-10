@@ -13,7 +13,7 @@ interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   setQuery: Dispatch<SetStateAction<string>>;
   isLoading?: boolean;
   submitSearch?: Dispatch<string>;
-  inputSize?: "small" | "large";
+  type?: "small" | "large";
 }
 
 export const SearchInput: FC<SearchInputProps> = ({
@@ -23,7 +23,7 @@ export const SearchInput: FC<SearchInputProps> = ({
   isLoading,
   submitSearch,
   setQuery,
-  inputSize,
+  type,
   ...props
 }) => {
   const { t } = useTranslation();
@@ -39,7 +39,7 @@ export const SearchInput: FC<SearchInputProps> = ({
         autoComplete="off"
         placeholder={placeholder}
         value={query}
-        inputSize={inputSize}
+        type={type}
         onChange={(e) => setQuery(e.target.value)}
         {...props}
       />
@@ -58,7 +58,7 @@ export const SearchInput: FC<SearchInputProps> = ({
         )}
         <Button
           type="submit"
-          label={inputSize !== "small" ? t("common|search") : ""}
+          label={type !== "small" ? t("common|search") : ""}
           icon={isLoading ? SpinnerIcon : SearchIcon}
           iconPosition="left"
         />

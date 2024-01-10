@@ -97,7 +97,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                 placeholder={t("common|search")}
                 query={query}
                 setQuery={setQuery}
-                inputSize="small"
+                type="small"
                 className="ml-sm border-none hover:outline-0 focus:outline-0"
               />
             </form>
