@@ -6,6 +6,8 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { hemvist } from "@/utilities";
+import Container from "@/components/layout/Container";
+import { Heading } from "@/components/global/Typography/Heading";
 
 export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
   const { env } = useContext(SettingsContext);
@@ -135,12 +137,13 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
                 unexpandTooltip: 'Visa mindre',
                 listbody: '<div class="specification__resource--body">{{body}}</div>',
                 listplaceholder: '<div class="alert alert-info" role="alert">Denna specifikation har inga resurser.</div>',
-                rowhead:'<span class="specification__resource--header text-lg font-bold">{{text}}</span>' + 
-                  '<span class="specification__resource--type text-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
-                  '<div class="specification__resource--description text-md esbDescription">{{ text content="\${skos:definition}" }}</div>' +
-                  '<a target="_blank" class="specification__resource--downloadlink download_url text-md" href="{{resourceURI}}">${t(
+                rowhead:
+                '<span class="">{{text}}</span>' + 
+                  '<span class="block mb-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
+                  '<div>{{ text content="\${skos:definition}" }}</div>' +
+                  '<a target="_blank" href="{{resourceURI}}"><button class="button button--primary button--large text-white" >${t(
                     "pages|specification_page$download",
-                  )} {{prop "prof:hasRole" class="type" render="label"}}</a>',
+                  )} {{prop "prof:hasRole" class="type" render="label"}}</button> </a>',
               },
               {
                 block: 'indexLink',
@@ -171,79 +174,81 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
   };
 
   return (
-    <div className="detailpage specification">
+    <Container>
       <Head>
         <title>{title ? `${title} - Sveriges dataportal` : "test"}</title>
         <meta property="og:title" content={`${title} - Sveriges dataportal`} />
         <meta name="twitter:title" content={`${title} - Sveriges dataportal`} />
       </Head>
-      <div className="detailpage__wrapper">
-        {/* Left column */}
-        <div className="detailpage__wrapper--leftcol content">
-          <h1>{title}</h1>
-          <script
-            type="text/x-entryscape-handlebar"
-            data-entryscape="true"
-            data-entryscape-component="template"
-            dangerouslySetInnerHTML={{
-              __html: `
+      <div>
+        <Heading
+          level={1}
+          size={"lg"}
+          className="mb-none py-xl text-xl lg:text-2xl"
+        >
+          {title}
+        </Heading>
+        <div className="gap-2xl lg:flex">
+          {/* Left column */}
+          <div>
+            <script
+              type="text/x-entryscape-handlebar"
+              data-entryscape="true"
+              data-entryscape-component="template"
+              dangerouslySetInnerHTML={{
+                __html: `
                           <p class="text-md">
                             {{text relation="dcterms:publisher"}} 
                           <p>
                           `,
-            }}
-          ></script>
+              }}
+            ></script>
 
-          <p className="text-md">
             <span
+              className="py-lg"
               data-entryscape="text"
               data-entryscape-content="${dcterms:description}"
             ></span>
-          </p>
-
-          <h2>{t("pages|specification_page$resource_specification")}</h2>
-          <div
-            className="specification__resource"
-            data-entryscape="resourceDescriptors2"
-            data-entryscape-rdftype="prof:ResourceDescriptor"
-          ></div>
-
-          <div className="contact__publisher hbbr">
-            <h3>{t("pages|datasetpage$contact-publisher")}</h3>
-            <p className="text-md">
-              {t("pages|datasetpage$contact-publisher-text")}
-              {t("pages|datasetpage$contact-publisher-text2")}{" "}
-              <a
-                className="link text-md"
-                href="https://community.dataportal.se/"
-                lang="en"
-              >
-                community
-              </a>
-              .
-            </p>
-          </div>
-        </div>
-
-        {/* Right column */}
-        <div className="detailpage__wrapper--rightcol specification__about hbbr">
-          <div className="detailpage__wrapper--rightcol-info text-base">
-            <h2>{t("pages|specification_page$about_specification")}</h2>
-
-            <span
-              data-entryscape="hemvist"
-              className="text-base hemvist hemvist__specification"
-            />
-
+            <Heading level={2} size={"md"} className="mb-none py-lg">
+              {t("pages|specification_page$resource_specification")}
+            </Heading>
             <div
-              className="specificationDetails"
-              data-entryscape="view"
-              data-entryscape-rdformsid="prof:Profile"
-              data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev"
+              data-entryscape="resourceDescriptors2"
+              data-entryscape-rdftype="prof:ResourceDescriptor"
             ></div>
+
+            <div className="contact__publisher hbbr">
+              <Heading level={3}>
+                {t("pages|datasetpage$contact-publisher")}
+              </Heading>
+              <p>
+                {t("pages|datasetpage$contact-publisher-text")}
+                {t("pages|datasetpage$contact-publisher-text2")}{" "}
+                <a href="https://community.dataportal.se/" lang="en">
+                  community
+                </a>
+                .
+              </p>
+            </div>
+          </div>
+
+          {/* Right column */}
+          <div className="pt-xl lg:w-[296px] lg:pt-none">
+            <div className="min-w-296px">
+              <Heading level={2} size={"sm"}>
+                {t("pages|specification_page$about_specification")}
+              </Heading>
+              <span data-entryscape="hemvist" />
+
+              <div
+                data-entryscape="view"
+                data-entryscape-rdformsid="prof:Profile"
+                data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev"
+              ></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
