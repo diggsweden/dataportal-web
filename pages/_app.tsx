@@ -34,7 +34,6 @@ import {
   Breadcrumb,
   BreadcrumbProps,
 } from "@/components/navigation/BreadCrumb";
-import path from "path";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import { Hero } from "@/components/layout/Hero";
@@ -113,6 +112,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     };
   }, []);
 
+  console.log("pageProps", pageProps);
   useEffect(() => {
     const heading = pageProps.heading;
     const containerHeading = pageProps.container?.name;
@@ -308,7 +308,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 />
               )}
 
-              {breadcrumbState.crumbs.length > 0 && (
+              {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
                 <Breadcrumb {...breadcrumbState} />
               )}
 
