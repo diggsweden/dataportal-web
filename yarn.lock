@@ -3971,15 +3971,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/graphql@npm:^14.5.0":
-  version: 14.5.0
-  resolution: "@types/graphql@npm:14.5.0"
-  dependencies:
-    graphql: "npm:*"
-  checksum: 8f6e3873a75f1818b6551dae88002d786f764c6c3f5d3b228078ecfc8fb1b116fcec03a1a0dd1f83790505d8e5ecfc4737e152ad7abb6948ff5412f11d7b1b38
-  languageName: node
-  linkType: hard
-
 "@types/hast@npm:^2.0.0":
   version: 2.3.8
   resolution: "@types/hast@npm:2.3.8"
@@ -6356,7 +6347,6 @@ __metadata:
     "@graphql-codegen/typescript-operations": "npm:^4.0.1"
     "@svgr/webpack": "npm:^8.1.0"
     "@tailwindcss/typography": "npm:^0.5.10"
-    "@types/graphql": "npm:^14.5.0"
     "@types/node": "npm:18.7.16"
     "@types/node-fetch": "npm:^2.6.2"
     "@types/prismjs": "npm:^1.26.0"
@@ -8251,17 +8241,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:*, graphql@npm:16.8.1":
-  version: 16.8.1
-  resolution: "graphql@npm:16.8.1"
-  checksum: 7a09d3ec5f75061afe2bd2421a2d53cf37273d2ecaad8f34febea1f1ac205dfec2834aec3419fa0a10fcc9fb345863b2f893562fb07ea825da2ae82f6392893c
-  languageName: node
-  linkType: hard
-
 "graphql@npm:14.0.2 - 14.2.0 || ^14.3.1 || ^15.0.0":
   version: 15.8.0
   resolution: "graphql@npm:15.8.0"
   checksum: f8d830287a9028d6779b59c437e0ade63a713b47521b02b60316df1761b805b1a7ce03be88053d224b7f78f5d1d1a786d287ab229cd158b42ebeea9e86daaba5
+  languageName: node
+  linkType: hard
+
+"graphql@npm:16.8.1":
+  version: 16.8.1
+  resolution: "graphql@npm:16.8.1"
+  checksum: 7a09d3ec5f75061afe2bd2421a2d53cf37273d2ecaad8f34febea1f1ac205dfec2834aec3419fa0a10fcc9fb345863b2f893562fb07ea825da2ae82f6392893c
   languageName: node
   linkType: hard
 
@@ -14388,7 +14378,7 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>":
   version: 5.3.3
-  resolution: "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=f3b441"
+  resolution: "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=29ae49"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
