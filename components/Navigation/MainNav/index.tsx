@@ -37,7 +37,6 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
     let enMenu;
     if (isEn) {
       enMenu = mainNav.filter((menu) => menu.promoted && menu.inEn);
-
       setMenues(enMenu);
     } else {
       enMenu = mainNav.filter((menu) => menu.promoted);
@@ -75,12 +74,12 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         </nav>
         <div className="relative left-none flex hidden justify-end lg:block">
           {!openSearch ? (
-            <button
+            <Button
               onClick={() => setOpenSearch(!openSearch)}
               className="cursor-pointer p-[10px] hover:bg-brown-800"
             >
               <SearchIcon />
-            </button>
+            </Button>
           ) : (
             <form
               className={`transition-width w-[220px] text-sm duration-100 [&_div]:mr-none [&_div_div_button]:p-[10px] ${
@@ -97,6 +96,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                 placeholder={t("common|search")}
                 query={query}
                 setQuery={setQuery}
+                setOpenSearch={setOpenSearch}
                 type="small"
                 className="ml-sm border-none hover:outline-0 focus:outline-0"
               />
