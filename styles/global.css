@@ -66,8 +66,8 @@ body {
   }
 
   .button {
-    @apply flex w-fit flex-row items-center no-underline focus:outline-offset-2 focus:outline-primary disabled:border-none 
-    disabled:bg-brown-400 disabled:text-brown-600 
+    @apply flex w-fit flex-row items-center no-underline focus:outline-offset-2 focus:outline-primary disabled:cursor-not-allowed 
+    disabled:border-none disabled:bg-brown-400 disabled:text-brown-600 disabled:hover:bg-brown-400
      [&_path]:disabled:fill-brown-600 [&_svg]:inline-flex;
   }
   .button--primary {
@@ -165,19 +165,19 @@ mark {
 /* General styling for focus */
 button:focus:not(:focus-visible),
 a:focus:not(:focus-visible),
-.button:focus:not(:focus-visible)
-/* span:focus:not(:focus-visible) */ {
+.button:focus:not(:focus-visible),
+input[type="radio"]:focus:not(:focus-visible) {
   @apply !outline-none group-focus:outline-none;
 }
 
-.button:focus:not(:focus-visible) {
-  @apply hover:bg-textPrimary;
-  background-color: inherit;
+.button:focus:not(:focus-visible):not(:hover) {
+  background-color: initial;
 }
 
 a:focus-visible,
 button:focus-visible,
-.button:focus-visible {
+.button:focus-visible,
+input[type="radio"]:focus-visible {
   @apply outline-dashed outline-2 outline-offset-2 outline-primary group-focus:outline-dashed 
   group-focus:outline-2 group-focus:outline-offset-2 group-focus:outline-primary;
 }

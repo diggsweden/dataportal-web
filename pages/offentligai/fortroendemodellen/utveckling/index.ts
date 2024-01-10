@@ -1,5 +1,5 @@
-import { Form } from "../../../../components";
-import { getForm, getModule } from "../../../../utilities";
+import { FormWrapper } from "@/components/global/Form/FormWrapper";
+import { getForm, getModule } from "@/utilities";
 
 export async function getStaticProps({ locale }: any) {
   const p1 = await getForm("fortroendemodellen", locale);
@@ -17,4 +17,4 @@ export async function getStaticProps({ locale }: any) {
   //return await getForm('fortroendemodellen', locale);
 }
 
-export default Form;
+export default FormWrapper;

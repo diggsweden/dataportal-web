@@ -6,7 +6,8 @@ import { isExternalLink } from "@/utilities";
 import { CustomImage } from "@/components/global/CustomImage";
 import { Heading } from "@/components/global/Typography/Heading";
 import Link from "next/link";
-import DownloadIcon from "@/assets/icons/download.svg";
+import DocumentIcon from "@/assets/icons/document.svg";
+import PDFIcon from "@/assets/icons/PDF.svg";
 import { VideoPlayer } from "@/components/global/VideoPlayer";
 
 export const handleUrl = ({ screen9, url, __typename }: MediaBaseFragment) => {
@@ -28,6 +29,7 @@ const renderMedia = (
 ) => {
   const { description } = media;
   const url = handleUrl(media);
+  const isPDF = url?.includes(".pdf");
 
   switch (media.__typename) {
     case "dataportal_Digg_Image":
@@ -35,7 +37,7 @@ const renderMedia = (
         return null;
       }
       return (
-        <figure>
+        <figure className="border-b border-brown-200 pb-sm">
           <CustomImage image={media} className="pb-sm" />
           {mediaDescription && (
             <figcaption className="text-brown-600">
@@ -46,7 +48,7 @@ const renderMedia = (
       );
     case "dataportal_Digg_Video":
       return (
-        <figure>
+        <figure className="border-b border-brown-200 pb-sm">
           <div className="pb-sm">
             <VideoPlayer media={media} url={url} />
           </div>
@@ -66,7 +68,11 @@ const renderMedia = (
           target="_blank"
         >
           {description || url}
-          <DownloadIcon className="mb-[2px] ml-xs inline-block" />
+          {isPDF ? (
+            <PDFIcon className="ml-xs inline-block" />
+          ) : (
+            <DocumentIcon className="ml-xs inline-block" />
+          )}
         </Link>
       );
   }
@@ -78,7 +84,7 @@ export const MediaBlock: React.FC<MediaFragment> = ({
   media,
 }) => {
   return (
-    <div className="border-b border-brown-200 pb-sm">
+    <div>
       {heading && (
         <Heading level={2} size={"md"}>
           {heading}

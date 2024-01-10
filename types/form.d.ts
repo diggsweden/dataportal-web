@@ -5,9 +5,9 @@ import {
   FormElement_Dataportal_Digg_FormPageBreak_Fragment,
   FormElement_Dataportal_Digg_FormText_Fragment,
   FormElement_Dataportal_Digg_FormTextArea_Fragment,
-} from "../../graphql/__generated__/operations";
+} from "@/graphql/__generated__/operations";
 
-export interface DefaultProps {
+interface DefaultProps {
   value: string;
   number: number;
 }
@@ -19,7 +19,7 @@ interface FormText
   __typename: "dataportal_Digg_FormText";
 }
 
-export interface TextArea
+interface TextArea
   extends FormElement_Dataportal_Digg_FormTextArea_Fragment,
     DefaultProps {
   ID: number;
@@ -51,11 +51,11 @@ interface FormChoice extends ChoiceFragment {
   ID: number;
 }
 
-type FormTypes =
+export type FormTypes =
   | FormText
   | TextArea
   | FormRadio
   | Description
   | PageBreak
   | FormChoice;
-export default FormTypes;
+/* export default FormTypes; */

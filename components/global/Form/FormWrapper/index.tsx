@@ -1,30 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { FormPage, FormBottomNav, FormGeneratePDF } from "./FormPages";
-import FormTypes from "./FormTypes";
-import FormProgress from "./ProgressComponent/FormProgress";
-import { FormDataFragment as IForm } from "../../graphql/__generated__/operations";
-import Link from "next/link";
-import { FormDropdownNavigation } from "../navigation/FormDropdownNavigation";
-import { GetLocalstorageData, handleScroll } from "./Utils/formUtils";
+import { FC, useEffect, useRef, useState } from "react";
+import { FormDataFragment as IForm } from "@/graphql/__generated__/operations";
+import { FormNav } from "@/components/navigation/FormNav";
 import useTranslation from "next-translate/useTranslation";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import { useRouter } from "next/router";
-import { ModuleDataFragment } from "../../graphql/__generated__/operations";
+import { usePathname } from "next/navigation";
+import { ModuleDataFragment } from "@/graphql/__generated__/operations";
+import { FormTypes } from "@/types/form";
+import { GetLocalstorageData, handleScroll } from "@/utilities/formUtils";
+import ArrowIcon from "@/assets/icons/arrowLeft.svg";
+import { Button, ButtonLink } from "@/components/global/Button";
+import { Heading } from "@/components/global/Typography/Heading";
+import { RenderForm } from "@/components/global/Form/RenderForm";
+import { FormBottomNav } from "@/components/navigation/FormBottomNav";
+import { FormGeneratePDF } from "@/components/global/Form/FormGeneratePDF";
+import { ProgressBar } from "@/components/global/ProgressBar";
+import Container from "@/components/layout/Container";
 
 type Props = IForm & {
   elements: IForm["elements"];
   module?: ModuleDataFragment["blocks"] | null;
 };
 
-export const Form: React.FC<Props> = ({ elements, module }) => {
+export const FormWrapper: FC<Props> = ({ elements, module }) => {
   const { trackPageView } = useMatomo();
   const { t } = useTranslation();
-  const { pathname, asPath } = useRouter() || {};
+  const pathname = usePathname();
   const [page, setPage] = useState<number>(-1);
-  const scrollRef = React.useRef<HTMLSpanElement>(null);
+  const scrollRef = useRef<HTMLSpanElement>(null);
   const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>(
     [],
   );
+
   const [formSteps, setFormSteps] = useState<string[]>([]); //The title of the different pages
   const [showFirstPage, setShowFirstPage] = useState<boolean>(true);
   const [formIntroText, setFormIntroText] = useState<{
@@ -47,7 +53,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
     });
 
     SetupPages(elements as FormTypes[]);
-    GetLocalstorageData(setFormDataArray, elements, asPath);
+    GetLocalstorageData(setFormDataArray, elements, pathname);
   }, []);
 
   const SetupPages = (data: FormTypes[]) => {
@@ -140,7 +146,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
 
   //Set correct starting page depending if any pagebreak exists or not.
   useEffect(() => {
-    const pageLastVisit = localStorage.getItem(`${asPath}Page`);
+    const pageLastVisit = localStorage.getItem(`${pathname}Page`);
     if (!showFirstPage) {
       setPage(pageLastVisit ? parseInt(pageLastVisit) : 1);
     } else {
@@ -150,7 +156,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
 
   useEffect(() => {
     if (page === -1) return;
-    localStorage.setItem(`${asPath}Page`, page.toString());
+    localStorage.setItem(`${pathname}Page`, page.toString());
   }, [page]);
 
   //Update the fields when data is changed in the form. Handles all types of fields.
@@ -193,7 +199,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
       });
     }
     setTimeout(() => {
-      localStorage.setItem(`${asPath}Data`, JSON.stringify(formDataArray));
+      localStorage.setItem(`${pathname}Data`, JSON.stringify(formDataArray));
     }, 100);
   };
 
@@ -214,78 +220,29 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
   }
 
   return (
-    <>
+    <Container>
       {formDataArray[0] && (
-        <div>
-          {page > (showFirstPage ? 0 : 1) && (
-            <FormBackButton
-              onClick={() => {
-                setPage(page - 1);
-                if (page - 1 === 0) {
-                  window.scrollTo(0, 0);
-                } else {
-                  handleScroll(scrollRef);
-                }
-              }}
-            >
-              <span className="back-button">
-                <ArrowIcon color={"white"} width={"18px"} />
-                <span className="text-base back-text font-medium">
-                  {t("pages|form$previous-section-text")}
-                </span>
-              </span>
-            </FormBackButton>
-          )}
-          <span ref={scrollRef}></span>
-          <FormWrapper>
+        <div className="max-w-md py-xl">
+          <span ref={scrollRef} />
+          <div className="space-y-lg">
             {page === (showFirstPage ? 0 : 1) && (
-              <Link
+              <ButtonLink
                 href={"/offentligai/fortroendemodellen"}
-                css={css`
-                  width: fit-content;
-                `}
-              >
-                <FormBackButton>
-                  <span className="back-button">
-                    <ArrowIcon color={"white"} width={"18px"} />
-                    <span className="text-base back-text font-medium">
-                      {t("pages|form$go-back-text")}
-                    </span>
-                  </span>
-                </FormBackButton>
-              </Link>
+                label={t("pages|form$go-back-text")}
+                icon={ArrowIcon}
+                iconPosition="left"
+              />
             )}
 
             {/* Show the correct progress-bar */}
             {page !== 0 && formSteps.length > 0 && (
               <>
-                {formSteps.length < 5 ? (
-                  <FormProgress
-                    formSteps={[
-                      ...formSteps,
-                      t("pages|form$generate-pdf-text"),
-                    ]}
-                    curPage={page}
-                    clickCallback={setPage}
-                  />
-                ) : (
-                  <>
-                    <FormDropdownNavigation
-                      pageNames={[
-                        ...formSteps,
-                        t("pages|form$generate-pdf-text"),
-                      ]}
-                      setPage={setPage}
-                      forceUpdate={page - 1}
-                    />
-                    <DiggProgressbar
-                      page={page}
-                      totPages={formSteps.length}
-                      data-page={page}
-                      data-totalpages={formSteps.length + 1}
-                    />
-                  </>
-                )}
+                <FormNav
+                  pageNames={[...formSteps, t("pages|form$generate-pdf-text")]}
+                  setPage={setPage}
+                  forceUpdate={page - 1}
+                />
+                <ProgressBar page={page} totalPages={formSteps.length + 1} />
               </>
             )}
 
@@ -295,53 +252,34 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
                   {/* If first element in form is description, render the text here */}
                   {formIntroText.title.length > 0 && (
                     <>
-                      <Heading
-                        level={1}
-                        color="pinkPop"
-                        size={"3xl"}
-                        weight={"light"}
-                        css={css`
-                          margin-top: 1rem;
-                        `}
-                      >
+                      <Heading level={1} size={"lg"}>
                         {formIntroText.title}
                       </Heading>
-                      <div
-                        className="text-md"
-                        dangerouslySetInnerHTML={{ __html: formIntroText.text }}
-                      ></div>
+
+                      <p className="text-md">{formIntroText.text}</p>
                     </>
                   )}
-
                   <Button
-                    primary
                     onClick={() => {
                       setPage(page + 1);
                       handleScroll(scrollRef);
                     }}
-                    css={css`
-                      margin: 3rem 0;
-                      width: 13rem;
-                    `}
-                    className="text-base"
-                  >
-                    {t("pages|form$start-evaluation-text")}
-                  </Button>
+                    label={t("pages|form$start-evaluation-text")}
+                  />
                 </>
               )}
 
               {formDataArray.map((data: FormTypes[], index) => {
                 index++; //Start at page 1 since page 0 is the intro page
                 return (
-                  <React.Fragment key={`page${index}`}>
+                  <div key={`page${index}`} className="space-y-lg">
                     {page === index && (
                       <>
-                        <FormPage
+                        <RenderForm
                           UpdateFormDataArray={UpdateFormDataArray}
                           formDataArray={data}
                           pageIndex={index}
                         />
-
                         <FormBottomNav
                           key={`nav${index}`}
                           setFormDataArray={setFormDataArray}
@@ -352,7 +290,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
                         />
                       </>
                     )}
-                  </React.Fragment>
+                  </div>
                 );
               })}
 
@@ -363,11 +301,9 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
                 />
               )}
             </>
-          </FormWrapper>
+          </div>
         </div>
       )}
-    </>
+    </Container>
   );
 };
-
-export default Form;
