@@ -72,7 +72,7 @@ const makeArticles = (
 
 /**
  * Block for rendering newslist-items, in blockformat.
- * @param {Publication_dataportal_Digg_Publications} articles array of news fetched from apollo gateway
+ * @param {PublicationDataFragment} articles array of news fetched from apollo gateway
  */
 export const ArticleBlock: React.FC<ArticleBlockProps> = ({
   articles: unknownArticles,

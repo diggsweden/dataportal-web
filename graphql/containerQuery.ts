@@ -18,14 +18,6 @@ export const CONTAINER_QUERY = gql`
   ${MODULE_FRAGMENT}
 `;
 
-export const RELATED_CONTAINER_QUERY = gql`
-  query Related($filter: dataportal_QueryContainerArgs) {
-    containers: dataportal_Digg_Containers(filter: $filter) {
-      ...RelatedContainer
-    }
-  }
-`;
-
 export const CONTAINER_MULTI_QUERY = gql`
   query MultiContainers(
     $category: dataportal_QueryContainerArgs
@@ -49,4 +41,13 @@ export const RELATED_CONTAINER = gql`
     name
     slug
   }
+`;
+
+export const RELATED_CONTAINER_QUERY = gql`
+  query Related($filter: dataportal_QueryContainerArgs) {
+    containers: dataportal_Digg_Containers(filter: $filter) {
+      ...RelatedContainer
+    }
+  }
+  ${RELATED_CONTAINER}
 `;

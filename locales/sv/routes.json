@@ -1,6 +1,6 @@
 {
   "about-website": {
-    "path": "om-webbplatsen",
+    "path": "/om-webbplatsen",
     "title": "Om webbplatsen"
   },
   "accessibility": {
@@ -64,7 +64,7 @@
     "title": "Statistik"
   },
   "about-us": {
-    "path": "om-oss",
+    "path": "/om-oss",
     "title": "Om oss"
   },
   "api_explore": {

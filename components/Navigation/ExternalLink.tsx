@@ -3,7 +3,11 @@ import useTranslation from "next-translate/useTranslation";
 import Link, { LinkProps } from "next/link";
 import { onlyText } from "react-children-utilities";
 
-const ExtLink = styled(Link)<{ isMail?: boolean }>`
+const ExtLink = styled(Link, {
+  // shouldForwardProp allows you to send isMail prop to the
+  // underlying DOM element that the styled component represents (Link).
+  shouldForwardProp: (prop) => prop !== "isMail",
+})<{ isMail?: boolean }>`
   //Sets the size of the icon (1.125rem = 18px)
   --size: 1.125rem;
 
