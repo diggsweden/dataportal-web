@@ -13,8 +13,7 @@ import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentB
 import { BlockList } from "@/components/content/blocks/BlockList";
 import useTranslation from "next-translate/useTranslation";
 import { Heading } from "@/components/global/Typography/Heading";
-import Container from "@/components/layout/Container";
-import { Hero } from "@/components/layout/Hero";
+import { Container } from "@/components/layout/Container";
 import { Preamble } from "@/components/global/Typography/Preamble";
 import { ContentBox } from "@/components/content/ContentBox";
 
@@ -50,7 +49,7 @@ const DynamicStatistic = dynamic(
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
   const { domain, areas, news, example } = props || {};
-  const { content, puffs, heading, preamble } = handleDomain(props);
+  const { content, puffs, preamble } = handleDomain(props);
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation("pages");
@@ -60,26 +59,8 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
     trackPageView({ documentTitle: "OpenSource" });
   }, [pathname]);
 
-  let searchProps = null;
-
-  if (pathname === "/" || domain === "data") {
-    searchProps = {
-      destination: `/${lang}/datasets`,
-      placeholder: t("startpage$search_placeholder"),
-    };
-  }
-
-  let conditionalPreamble = domain === "data" ? null : preamble;
-
   return (
     <div id="DomainPage">
-      <Hero
-        heading={heading}
-        preamble={conditionalPreamble}
-        image={props.image}
-        search={searchProps}
-      />
-
       <Container>
         {domain === "data" && (
           <Preamble className="max-w-md">{preamble}</Preamble>

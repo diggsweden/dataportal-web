@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { hemvist } from "@/utilities";
 import { Heading } from "@/components/global/Typography/Heading";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 
 export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
   curi,

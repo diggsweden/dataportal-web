@@ -4,7 +4,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/navigation";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import { highlightCode } from "@/components/content/ContainerPage";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Button } from "@/components/global/Button";
 import ArrowIcon from "@/assets/icons/arrowLeft.svg";
@@ -31,7 +31,7 @@ export const FortroendeModulePage: FC<ModuleDataFragment> = ({ blocks }) => {
   }, []);
 
   return (
-    <Container className="py-xl ">
+    <Container>
       <Button
         className="mb-lg"
         label={t("pages|form$go-back-text")}

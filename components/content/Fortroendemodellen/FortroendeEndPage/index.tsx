@@ -3,7 +3,7 @@ import { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/navigation";
 import { highlightCode } from "@/components/content/ContainerPage";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/global/Button";
 import { Heading } from "@/components/global/Typography/Heading";
 import Link from "next/link";
@@ -35,7 +35,7 @@ export const FortroendeEndPage: FC<ModuleDataFragment> = ({ blocks }) => {
   }, []);
 
   return (
-    <Container className="space-y-xl py-xl">
+    <Container className="space-y-xl">
       <Button
         icon={ArrowIcon}
         iconPosition="left"

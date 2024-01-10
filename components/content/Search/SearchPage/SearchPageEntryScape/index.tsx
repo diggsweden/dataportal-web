@@ -11,7 +11,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useScript } from "@/hooks/useScript";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 import { ESRdfType, ESType } from "@/utilities/entryScape";
 import SearchFilters from "@/components/content/Search/SearchFilters";
 import SearchResults from "@/components/content/Search/SearchResults";
@@ -295,7 +295,7 @@ export const SearchPageEntryScape: React.FC<SearchProps> = ({ searchType }) => {
         >
           <SearchContext.Consumer>
             {(search) => (
-              <Container className="my-xl">
+              <Container>
                 <div className="flex max-w-md items-end justify-between">
                   <Heading level={1} size="lg" className="mb-none">
                     {pageTitle}

@@ -69,6 +69,7 @@ export const FormNav: React.FC<ContainerDpDwnProps> = ({
             return (
               <li
                 key={name}
+                tabIndex={0}
                 className={`cursor-pointer p-md hover:bg-brown-100 ${
                   isActive(name) ? "!cursor-default bg-brown-100" : ""
                 }`}

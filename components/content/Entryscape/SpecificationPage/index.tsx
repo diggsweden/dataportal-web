@@ -6,7 +6,7 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { hemvist } from "@/utilities";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 
 export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {

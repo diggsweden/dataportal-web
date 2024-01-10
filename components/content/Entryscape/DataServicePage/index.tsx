@@ -14,7 +14,7 @@ import {
   licenseIndicator,
   periodicityIndicator,
 } from "@/utilities";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 
 export const DataServicePage: React.FC<{

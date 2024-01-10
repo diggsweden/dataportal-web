@@ -12,5 +12,4 @@ export * from "./localStorageHelpers";
 export * from "./onNextFrame";
 export * from "./queryHelpers";
 export * from "./routeHelpers";
-export * from "./stringManipulation";
 export * from "./usePrevious";

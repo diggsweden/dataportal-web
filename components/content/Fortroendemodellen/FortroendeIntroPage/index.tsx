@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 import { usePathname } from "next/navigation";
 import { ButtonLink } from "@/components/global/Button";
@@ -13,7 +13,7 @@ export const FortroendeIntroPage: FC<ModuleDataFragment> = ({ blocks }) => {
   const extraInfo = blocks.slice(1);
 
   return (
-    <Container className="py-xl">
+    <Container>
       <div>
         <Heading size={"lg"} level={1}>
           Förtroendemodellen

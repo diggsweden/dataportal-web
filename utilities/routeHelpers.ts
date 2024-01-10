@@ -1,5 +1,5 @@
+import { BreadcrumbProps } from "@/components/navigation/BreadCrumb";
 import useTranslation from "next-translate/useTranslation";
-import { BreadcrumbProps } from "@/components";
 
 /**
  * Make @param str URL-friendly
@@ -72,18 +72,21 @@ export const makeBreadcrumbsFromPath = (
   const paths = path.split("/");
   paths.shift();
   const crumbs: Breadcrumb[] = [
-    { name: "Start", link: { ...linkBase, link: "/" } },
+    { name: "start", link: { ...linkBase, link: "/" } },
   ];
-  paths.map((p, index) => {
+
+  const basePath: string[] = [];
+
+  paths.map((path, index) => {
     if (index !== paths.length - 1) {
-      const capitalized = p.charAt(0).toUpperCase() + p.slice(1);
       crumbs.push({
-        name: capitalized.replace("-", " "),
+        name: path.replace("-", " "),
         link: {
           ...linkBase,
-          link: `${crumbs[index].link}${index !== 0 ? "/" : ""}${p}`,
+          link: `${index === 0 ? "/" : `${basePath.join("")}/`}${path}`,
         },
       });
+      basePath.push(`/${path}`);
     }
   });
   return { name: inactiveCrumbName, crumbs };

@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import { Heading } from "@/components/global/Typography/Heading";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 import MailIcon from "@/assets/icons/mail.svg";
 
 const ApiExplorer = dynamic(

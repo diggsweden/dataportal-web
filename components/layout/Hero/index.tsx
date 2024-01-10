@@ -4,7 +4,7 @@ import { checkLang } from "@/utilities";
 import useTranslation from "next-translate/useTranslation";
 import { CustomImage } from "@/components/global/CustomImage";
 import { ImageFragment } from "@/graphql/__generated__/operations";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 import { useRouter } from "next/router";
 import { SearchInput } from "@/components/content/Search/SearchInput";
 import { Preamble } from "@/components/global/Typography/Preamble";
@@ -30,10 +30,7 @@ export const Hero: FC<HeroProps> = ({ heading, preamble, image, search }) => {
   const [query, setQuery] = useState("");
 
   return (
-    <div
-      id="Hero"
-      className="relative mb-xl flex flex-col justify-center py-2xl"
-    >
+    <div id="Hero" className="relative flex flex-col justify-center py-2xl">
       {image && (
         <div className="absolute left-none top-none h-full w-full">
           <CustomImage image={image} className="h-full w-full object-cover" />
