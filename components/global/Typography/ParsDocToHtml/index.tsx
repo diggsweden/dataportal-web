@@ -1,5 +1,5 @@
-import FormTypes, { TextArea } from "../FormTypes";
-import fortroendeImg from "../../../public/images/förtroendemodell-logo.svg";
+import FortroendemodellenImage from "@/assets/logos/fortroendemodellen.png";
+import { FormTypes, TextArea } from "@/types/form";
 
 const renderTextAndImages = (field: TextArea) => {
   if (field.images && Object.keys(field.images).length > 0) {
@@ -26,7 +26,7 @@ const renderTextAndImages = (field: TextArea) => {
   }
 };
 
-export const GenerateHTML = (formData: FormTypes[][]) => {
+export const ParsDocToHtml = (formData: FormTypes[][]) => {
   const pageHead = `
 <head>
     <style>
@@ -131,7 +131,7 @@ export const GenerateHTML = (formData: FormTypes[][]) => {
     `<div class="content text-md">
     <a href="https://offentligai.se" target="_blank" rel="external noopener noreferrer">
     <img width="200px"
-        src="${fortroendeImg.src}"
+        src="${FortroendemodellenImage.src}"
         alt="Förtroendemodellen logo badge" />
     </a>
   ` +

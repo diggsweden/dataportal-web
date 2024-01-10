@@ -1,13 +1,19 @@
-import { FormDataFragment } from "../../../graphql/__generated__/operations";
-import FormTypes from "../FormTypes";
-import { GenerateHTML } from "./GenerateHTMLForPDF";
-import React from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  MouseEvent,
+  RefObject,
+  SetStateAction,
+} from "react";
+import { FormDataFragment } from "@/graphql/__generated__/operations";
+import { FormTypes } from "@/types/form";
+import { ParsDocToHtml } from "@/components/global/Typography/ParsDocToHtml";
 
 /* Import json */
 export const ImportFromJsonFile = (
-  e: React.ChangeEvent<HTMLInputElement>,
+  e: ChangeEvent<HTMLInputElement>,
   formData: FormTypes[][],
-  setFormDataArray: React.Dispatch<React.SetStateAction<FormTypes[][]>>,
+  setFormDataArray: Dispatch<SetStateAction<FormTypes[][]>>,
 ) => {
   if (e.target.files === null) {
     return;
@@ -92,13 +98,13 @@ export const ImportFromJsonFile = (
 };
 
 export const GeneratePDF = (
-  e: React.MouseEvent<HTMLButtonElement>,
-  iframeRef: React.RefObject<HTMLIFrameElement>,
+  e: MouseEvent<HTMLButtonElement>,
+  iframeRef: RefObject<HTMLIFrameElement>,
   formDataArray: FormTypes[][],
 ) => {
   e.preventDefault();
   //Generate the PDF html data and set the iframe
-  let docToPrint = GenerateHTML(formDataArray);
+  let docToPrint = ParsDocToHtml(formDataArray);
   iframeRef?.current?.setAttribute("srcDoc", docToPrint);
 
   //For some reason we can't access .print unless we add a slight delay
@@ -122,7 +128,7 @@ export const GenerateJsonFile = (formDataArray: FormTypes[][]) => {
 };
 
 export const GetLocalstorageData = (
-  setFormDataArray: React.Dispatch<React.SetStateAction<FormTypes[][]>>,
+  setFormDataArray: Dispatch<SetStateAction<FormTypes[][]>>,
   elements: FormDataFragment["elements"],
   path: string,
 ) => {
@@ -160,7 +166,7 @@ export const GetLocalstorageData = (
   }
 };
 
-export const handleScroll = (scrollRef: React.RefObject<HTMLSpanElement>) => {
+export const handleScroll = (scrollRef: RefObject<HTMLSpanElement>) => {
   if (
     scrollRef.current?.offsetTop === undefined ||
     window.pageYOffset === undefined

@@ -3,6 +3,8 @@ import { Heading } from "@/components/global/Typography/Heading";
 import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { isExternalLink } from "@/utilities";
 
 export interface PromoProps {
   title: string;
@@ -18,12 +20,19 @@ export const Promo: FC<{
   inline?: boolean;
 }> = ({ link, icon, inline }) => {
   const { t } = useTranslation("common");
+  const pathname = usePathname();
 
   const Icon = icon;
 
   return (
     <Link
-      href={link.slug}
+      href={
+        isExternalLink(link.slug)
+          ? link.slug
+          : pathname === "/" || pathname === "/data"
+          ? `${link.slug}`
+          : `${pathname}${link.slug}`
+      }
       target={link.linktype === "EXTERNAL" ? "_blank" : "_self"}
       className="group flex h-full flex-col bg-white text-brown-900 no-underline"
     >
