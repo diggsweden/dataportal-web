@@ -24,11 +24,11 @@ import { SeoDataFragment } from "@/graphql/__generated__/operations";
 import { useRouter } from "next/router";
 import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "@/env/Settings.Sandbox";
-import "../styles/global.css";
 import { SideBar } from "@/components/navigation/SideBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieBanner } from "@/components/global/CookieBanner";
+import "@/styles/base.css";
 
 const GetCookiesAccepted = () => {
   try {

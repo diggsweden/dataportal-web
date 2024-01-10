@@ -1,8 +1,6 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import "@/styles/entryscape.css";
-@import "@/styles/codeBlock.css";
 
 @font-face {
   font-family: "Ubuntu";
@@ -181,3 +179,4 @@ input[type="radio"]:focus-visible {
   @apply outline-dashed outline-2 outline-offset-2 outline-primary group-focus:outline-dashed 
   group-focus:outline-2 group-focus:outline-offset-2 group-focus:outline-primary;
 }
+
