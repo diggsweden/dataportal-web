@@ -1,5 +1,10 @@
-import { gql } from '@apollo/client';
-import { BLOCK_FRAGMENT, CONTAINER_FRAGMENT, SEO_FRAGMENT, MODULE_FRAGMENT } from './fragments';
+import { gql } from "@apollo/client";
+import {
+  BLOCK_FRAGMENT,
+  CONTAINER_FRAGMENT,
+  SEO_FRAGMENT,
+  MODULE_FRAGMENT,
+} from "./fragments";
 
 export const CONTAINER_QUERY = gql`
   query Containers($filter: dataportal_QueryContainerArgs) {
@@ -11,15 +16,6 @@ export const CONTAINER_QUERY = gql`
   ${BLOCK_FRAGMENT}
   ${SEO_FRAGMENT}
   ${MODULE_FRAGMENT}
-`;
-
-export const RELATED_CONTAINER_QUERY = gql`
-  query Related($filter: dataportal_QueryContainerArgs) {
-    containers: dataportal_Digg_Containers(filter: $filter) {
-      name
-      slug
-    }
-  }
 `;
 
 export const CONTAINER_MULTI_QUERY = gql`
@@ -38,4 +34,20 @@ export const CONTAINER_MULTI_QUERY = gql`
   ${BLOCK_FRAGMENT}
   ${SEO_FRAGMENT}
   ${MODULE_FRAGMENT}
+`;
+
+export const RELATED_CONTAINER = gql`
+  fragment RelatedContainer on dataportal_Digg_Container {
+    name
+    slug
+  }
+`;
+
+export const RELATED_CONTAINER_QUERY = gql`
+  query Related($filter: dataportal_QueryContainerArgs) {
+    containers: dataportal_Digg_Containers(filter: $filter) {
+      ...RelatedContainer
+    }
+  }
+  ${RELATED_CONTAINER}
 `;

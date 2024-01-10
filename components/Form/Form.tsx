@@ -14,10 +14,7 @@ import {
   FormBackButton,
   FormWrapper,
 } from "./Styles/FormStyles";
-import {
-  Form_dataportal_Digg_Form as IForm,
-  Form_dataportal_Digg_Form_elements,
-} from "../../graphql/__generated__/Form";
+import { FormDataFragment as IForm } from "../../graphql/__generated__/operations";
 import Link from "next/link";
 import { MainContainerStyle } from "../../styles/general/emotion";
 import { FormDropdownNavigation } from "../Navigation/FormDropdownNavigation";
@@ -25,11 +22,11 @@ import { GetLocalstorageData, handleScroll } from "./Utils/formUtils";
 import useTranslation from "next-translate/useTranslation";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
-import { Module_dataportal_Digg_Module_blocks } from "../../graphql/__generated__/Module";
+import { ModuleDataFragment } from "../../graphql/__generated__/operations";
 
 type Props = IForm & {
-  elements: Form_dataportal_Digg_Form_elements[];
-  module?: Module_dataportal_Digg_Module_blocks[] | null;
+  elements: IForm["elements"];
+  module?: ModuleDataFragment["blocks"] | null;
 };
 
 export const Form: React.FC<Props> = ({ elements, module }) => {
@@ -39,7 +36,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
   const [page, setPage] = useState<number>(-1);
   const scrollRef = React.useRef<HTMLSpanElement>(null);
   const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>(
-    []
+    [],
   );
   const [formSteps, setFormSteps] = useState<string[]>([]); //The title of the different pages
   const [showFirstPage, setShowFirstPage] = useState<boolean>(true);
@@ -174,7 +171,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
     e: React.ChangeEvent<any>,
     fieldToUpdate: FormTypes,
     pageIndex: number,
-    imgData: { fileName: string; base64: string } | null = null
+    imgData: { fileName: string; base64: string } | null = null,
   ) => {
     pageIndex = pageIndex - 1; //Page index starts at 1 since we hardcode the first page.
 
@@ -184,7 +181,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
         let itemIndex = prev[pageIndex].findIndex(
           (item) =>
             "choices" in item &&
-            item.choices.some((choice) => choice.ID === fieldToUpdate.ID)
+            item.choices.some((choice) => choice.ID === fieldToUpdate.ID),
         );
         let foundObj = prev[pageIndex][itemIndex];
         if (foundObj && "choices" in foundObj) {
@@ -195,7 +192,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
     } else {
       setFormDataArray((prev) => {
         let itemIndex = prev[pageIndex].findIndex(
-          (item) => item.ID === fieldToUpdate.ID
+          (item) => item.ID === fieldToUpdate.ID,
         );
         let foundObj = prev[pageIndex][itemIndex];
         if ("value" in foundObj) {
@@ -216,7 +213,7 @@ export const Form: React.FC<Props> = ({ elements, module }) => {
   //Check if an image has been added to the textarea, and if so add it to the images object.
   function checkForImage(
     foundObj: FormTypes,
-    isImg: { fileName: string; base64: string }
+    isImg: { fileName: string; base64: string },
   ) {
     if (
       foundObj.__typename === "dataportal_Digg_FormTextArea" &&

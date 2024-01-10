@@ -1,12 +1,12 @@
 import {
-  MenuIcon,
+  ChatIcon,
   CloseIcon,
   colorPalette,
   css,
-  responsiveProp,
-  InfoCircleIcon,
-  ChatIcon,
   GlobeIcon,
+  InfoCircleIcon,
+  MenuIcon,
+  responsiveProp,
   SearchIcon,
 } from "@digg/design-system";
 import React, { useEffect, useRef, useState } from "react";

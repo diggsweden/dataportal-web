@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Spinner, SearchField } from "@digg/design-system";
+import { SearchField, Spinner } from "@digg/design-system";
 import { SearchContextData } from ".";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { SearchMode } from "./SearchFilters";

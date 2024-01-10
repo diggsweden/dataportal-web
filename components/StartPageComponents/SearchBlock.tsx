@@ -1,4 +1,4 @@
-import { SearchIcon, colorPalette, Heading } from "@digg/design-system";
+import { colorPalette, Heading, SearchIcon } from "@digg/design-system";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import React from "react";

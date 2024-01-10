@@ -1,12 +1,13 @@
-import { Form_dataportal_Digg_Form_elements } from "../../../graphql/__generated__/Form";
+import { FormDataFragment } from "../../../graphql/__generated__/operations";
 import FormTypes from "../FormTypes";
 import { GenerateHTML } from "./GenerateHTMLForPDF";
+import React from "react";
 
 /* Import json */
 export const ImportFromJsonFile = (
   e: React.ChangeEvent<HTMLInputElement>,
   formData: FormTypes[][],
-  setFormDataArray: React.Dispatch<React.SetStateAction<FormTypes[][]>>
+  setFormDataArray: React.Dispatch<React.SetStateAction<FormTypes[][]>>,
 ) => {
   if (e.target.files === null) {
     return;
@@ -93,7 +94,7 @@ export const ImportFromJsonFile = (
 export const GeneratePDF = (
   e: React.MouseEvent<HTMLButtonElement>,
   iframeRef: React.RefObject<HTMLIFrameElement>,
-  formDataArray: FormTypes[][]
+  formDataArray: FormTypes[][],
 ) => {
   e.preventDefault();
   //Generate the PDF html data and set the iframe
@@ -122,8 +123,8 @@ export const GenerateJsonFile = (formDataArray: FormTypes[][]) => {
 
 export const GetLocalstorageData = (
   setFormDataArray: React.Dispatch<React.SetStateAction<FormTypes[][]>>,
-  elements: Form_dataportal_Digg_Form_elements[],
-  path: string
+  elements: FormDataFragment["elements"],
+  path: string,
 ) => {
   const localData = localStorage.getItem(`${path}Data`);
   if (localData) {

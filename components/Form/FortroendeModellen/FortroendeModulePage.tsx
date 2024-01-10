@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { MainContainerStyle } from "../../../styles/general/emotion";
-import { Module_dataportal_Digg_Module } from "../../../graphql/__generated__/Module";
+import { ModuleDataFragment } from "../../../graphql/__generated__/operations";
 import { ContentArea } from "../../ContentArea";
-import { Heading, Container, css, ArrowIcon } from "@digg/design-system";
+import { ArrowIcon, Container, css, Heading } from "@digg/design-system";
 import { FormBackButton, FormWrapper } from "../Styles/FormStyles";
 import { highlightCode } from "../../pages/Articles";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 
-export const FortroendeModulePage: React.FC<Module_dataportal_Digg_Module> = ({
+export const FortroendeModulePage: React.FC<ModuleDataFragment> = ({
   blocks,
 }) => {
   const { t } = useTranslation();

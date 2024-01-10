@@ -17,17 +17,17 @@ export const CategoriesNav: React.FC = () => {
             <Link
               aria-label={t("pages|startpage$search_datasets_format", {
                 category: t(
-                  "resources|http://publications.europa.eu/resource/authority/data-theme/ENVI"
+                  "resources|http://publications.europa.eu/resource/authority/data-theme/ENVI",
                 ),
               })}
               href={SearchDatasetsPagePath(
                 lang,
                 "http://www.w3.org/ns/dcat#theme",
-                "http://publications.europa.eu/resource/authority/data-theme/ENVI"
+                "http://publications.europa.eu/resource/authority/data-theme/ENVI",
               )}
             >
               {t(
-                "resources|http://publications.europa.eu/resource/authority/data-theme/ENVI"
+                "resources|http://publications.europa.eu/resource/authority/data-theme/ENVI",
               )}
             </Link>
           </li>
@@ -35,17 +35,17 @@ export const CategoriesNav: React.FC = () => {
             <Link
               aria-label={t("pages|startpage$search_datasets_format", {
                 category: t(
-                  "resources|http://publications.europa.eu/resource/authority/data-theme/ECON"
+                  "resources|http://publications.europa.eu/resource/authority/data-theme/ECON",
                 ),
               })}
               href={SearchDatasetsPagePath(
                 lang,
                 "http://www.w3.org/ns/dcat#theme",
-                "http://publications.europa.eu/resource/authority/data-theme/ECON"
+                "http://publications.europa.eu/resource/authority/data-theme/ECON",
               )}
             >
               {t(
-                "resources|http://publications.europa.eu/resource/authority/data-theme/ECON"
+                "resources|http://publications.europa.eu/resource/authority/data-theme/ECON",
               )}
             </Link>
           </li>
@@ -53,36 +53,17 @@ export const CategoriesNav: React.FC = () => {
             <Link
               aria-label={t("pages|startpage$search_datasets_format", {
                 category: t(
-                  "resources|http://publications.europa.eu/resource/authority/data-theme/EDUC"
+                  "resources|http://publications.europa.eu/resource/authority/data-theme/EDUC",
                 ),
               })}
               href={SearchDatasetsPagePath(
                 lang,
                 "http://www.w3.org/ns/dcat#theme",
-                "http://publications.europa.eu/resource/authority/data-theme/EDUC"
+                "http://publications.europa.eu/resource/authority/data-theme/EDUC",
               )}
             >
               {t(
-                "resources|http://publications.europa.eu/resource/authority/data-theme/EDUC"
-              )}
-            </Link>
-          </li>
-
-          <li>
-            <Link
-              aria-label={t("pages|startpage$search_datasets_format", {
-                category: t(
-                  "resources|http://publications.europa.eu/resource/authority/data-theme/REGI"
-                ),
-              })}
-              href={SearchDatasetsPagePath(
-                lang,
-                "http://www.w3.org/ns/dcat#theme",
-                "http://publications.europa.eu/resource/authority/data-theme/REGI"
-              )}
-            >
-              {t(
-                "resources|http://publications.europa.eu/resource/authority/data-theme/REGI"
+                "resources|http://publications.europa.eu/resource/authority/data-theme/EDUC",
               )}
             </Link>
           </li>
@@ -91,17 +72,17 @@ export const CategoriesNav: React.FC = () => {
             <Link
               aria-label={t("pages|startpage$search_datasets_format", {
                 category: t(
-                  "resources|http://publications.europa.eu/resource/authority/data-theme/INTR"
+                  "resources|http://publications.europa.eu/resource/authority/data-theme/REGI",
                 ),
               })}
               href={SearchDatasetsPagePath(
                 lang,
                 "http://www.w3.org/ns/dcat#theme",
-                "http://publications.europa.eu/resource/authority/data-theme/INTR"
+                "http://publications.europa.eu/resource/authority/data-theme/REGI",
               )}
             >
               {t(
-                "resources|http://publications.europa.eu/resource/authority/data-theme/INTR"
+                "resources|http://publications.europa.eu/resource/authority/data-theme/REGI",
               )}
             </Link>
           </li>
@@ -110,35 +91,17 @@ export const CategoriesNav: React.FC = () => {
             <Link
               aria-label={t("pages|startpage$search_datasets_format", {
                 category: t(
-                  "resources|http://publications.europa.eu/resource/authority/data-theme/GOVE"
+                  "resources|http://publications.europa.eu/resource/authority/data-theme/INTR",
                 ),
               })}
               href={SearchDatasetsPagePath(
                 lang,
                 "http://www.w3.org/ns/dcat#theme",
-                "http://publications.europa.eu/resource/authority/data-theme/GOVE"
+                "http://publications.europa.eu/resource/authority/data-theme/INTR",
               )}
             >
               {t(
-                "resources|http://publications.europa.eu/resource/authority/data-theme/GOVE"
-              )}
-            </Link>
-          </li>
-          <li>
-            <Link
-              aria-label={t("pages|startpage$search_datasets_format", {
-                category: t(
-                  "resources|http://publications.europa.eu/resource/authority/data-theme/ENER"
-                ),
-              })}
-              href={SearchDatasetsPagePath(
-                lang,
-                "http://www.w3.org/ns/dcat#theme",
-                "http://publications.europa.eu/resource/authority/data-theme/ENER"
-              )}
-            >
-              {t(
-                "resources|http://publications.europa.eu/resource/authority/data-theme/ENER"
+                "resources|http://publications.europa.eu/resource/authority/data-theme/INTR",
               )}
             </Link>
           </li>
@@ -147,17 +110,35 @@ export const CategoriesNav: React.FC = () => {
             <Link
               aria-label={t("pages|startpage$search_datasets_format", {
                 category: t(
-                  "resources|http://publications.europa.eu/resource/authority/data-theme/JUST"
+                  "resources|http://publications.europa.eu/resource/authority/data-theme/GOVE",
                 ),
               })}
               href={SearchDatasetsPagePath(
                 lang,
                 "http://www.w3.org/ns/dcat#theme",
-                "http://publications.europa.eu/resource/authority/data-theme/JUST"
+                "http://publications.europa.eu/resource/authority/data-theme/GOVE",
               )}
             >
               {t(
-                "resources|http://publications.europa.eu/resource/authority/data-theme/JUST"
+                "resources|http://publications.europa.eu/resource/authority/data-theme/GOVE",
+              )}
+            </Link>
+          </li>
+          <li>
+            <Link
+              aria-label={t("pages|startpage$search_datasets_format", {
+                category: t(
+                  "resources|http://publications.europa.eu/resource/authority/data-theme/ENER",
+                ),
+              })}
+              href={SearchDatasetsPagePath(
+                lang,
+                "http://www.w3.org/ns/dcat#theme",
+                "http://publications.europa.eu/resource/authority/data-theme/ENER",
+              )}
+            >
+              {t(
+                "resources|http://publications.europa.eu/resource/authority/data-theme/ENER",
               )}
             </Link>
           </li>
@@ -166,35 +147,17 @@ export const CategoriesNav: React.FC = () => {
             <Link
               aria-label={t("pages|startpage$search_datasets_format", {
                 category: t(
-                  "resources|http://publications.europa.eu/resource/authority/data-theme/HEAL"
+                  "resources|http://publications.europa.eu/resource/authority/data-theme/JUST",
                 ),
               })}
               href={SearchDatasetsPagePath(
                 lang,
                 "http://www.w3.org/ns/dcat#theme",
-                "http://publications.europa.eu/resource/authority/data-theme/HEAL"
+                "http://publications.europa.eu/resource/authority/data-theme/JUST",
               )}
             >
               {t(
-                "resources|http://publications.europa.eu/resource/authority/data-theme/HEAL"
-              )}
-            </Link>
-          </li>
-          <li>
-            <Link
-              aria-label={t("pages|startpage$search_datasets_format", {
-                category: t(
-                  "resources|http://publications.europa.eu/resource/authority/data-theme/SOCI"
-                ),
-              })}
-              href={SearchDatasetsPagePath(
-                lang,
-                "http://www.w3.org/ns/dcat#theme",
-                "http://publications.europa.eu/resource/authority/data-theme/SOCI"
-              )}
-            >
-              {t(
-                "resources|http://publications.europa.eu/resource/authority/data-theme/SOCI"
+                "resources|http://publications.europa.eu/resource/authority/data-theme/JUST",
               )}
             </Link>
           </li>
@@ -203,17 +166,35 @@ export const CategoriesNav: React.FC = () => {
             <Link
               aria-label={t("pages|startpage$search_datasets_format", {
                 category: t(
-                  "resources|http://publications.europa.eu/resource/authority/data-theme/AGRI"
+                  "resources|http://publications.europa.eu/resource/authority/data-theme/HEAL",
                 ),
               })}
               href={SearchDatasetsPagePath(
                 lang,
                 "http://www.w3.org/ns/dcat#theme",
-                "http://publications.europa.eu/resource/authority/data-theme/AGRI"
+                "http://publications.europa.eu/resource/authority/data-theme/HEAL",
               )}
             >
               {t(
-                "resources|http://publications.europa.eu/resource/authority/data-theme/AGRI"
+                "resources|http://publications.europa.eu/resource/authority/data-theme/HEAL",
+              )}
+            </Link>
+          </li>
+          <li>
+            <Link
+              aria-label={t("pages|startpage$search_datasets_format", {
+                category: t(
+                  "resources|http://publications.europa.eu/resource/authority/data-theme/SOCI",
+                ),
+              })}
+              href={SearchDatasetsPagePath(
+                lang,
+                "http://www.w3.org/ns/dcat#theme",
+                "http://publications.europa.eu/resource/authority/data-theme/SOCI",
+              )}
+            >
+              {t(
+                "resources|http://publications.europa.eu/resource/authority/data-theme/SOCI",
               )}
             </Link>
           </li>
@@ -222,17 +203,36 @@ export const CategoriesNav: React.FC = () => {
             <Link
               aria-label={t("pages|startpage$search_datasets_format", {
                 category: t(
-                  "resources|http://publications.europa.eu/resource/authority/data-theme/TRAN"
+                  "resources|http://publications.europa.eu/resource/authority/data-theme/AGRI",
                 ),
               })}
               href={SearchDatasetsPagePath(
                 lang,
                 "http://www.w3.org/ns/dcat#theme",
-                "http://publications.europa.eu/resource/authority/data-theme/TRAN"
+                "http://publications.europa.eu/resource/authority/data-theme/AGRI",
               )}
             >
               {t(
-                "resources|http://publications.europa.eu/resource/authority/data-theme/TRAN"
+                "resources|http://publications.europa.eu/resource/authority/data-theme/AGRI",
+              )}
+            </Link>
+          </li>
+
+          <li>
+            <Link
+              aria-label={t("pages|startpage$search_datasets_format", {
+                category: t(
+                  "resources|http://publications.europa.eu/resource/authority/data-theme/TRAN",
+                ),
+              })}
+              href={SearchDatasetsPagePath(
+                lang,
+                "http://www.w3.org/ns/dcat#theme",
+                "http://publications.europa.eu/resource/authority/data-theme/TRAN",
+              )}
+            >
+              {t(
+                "resources|http://publications.europa.eu/resource/authority/data-theme/TRAN",
               )}
             </Link>
           </li>
@@ -240,17 +240,17 @@ export const CategoriesNav: React.FC = () => {
             <Link
               aria-label={t("pages|startpage$search_datasets_format", {
                 category: t(
-                  "resources|http://publications.europa.eu/resource/authority/data-theme/TECH"
+                  "resources|http://publications.europa.eu/resource/authority/data-theme/TECH",
                 ),
               })}
               href={SearchDatasetsPagePath(
                 lang,
                 "http://www.w3.org/ns/dcat#theme",
-                "http://publications.europa.eu/resource/authority/data-theme/TECH"
+                "http://publications.europa.eu/resource/authority/data-theme/TECH",
               )}
             >
               {t(
-                "resources|http://publications.europa.eu/resource/authority/data-theme/TECH"
+                "resources|http://publications.europa.eu/resource/authority/data-theme/TECH",
               )}
             </Link>
           </li>

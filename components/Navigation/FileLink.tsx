@@ -1,4 +1,4 @@
-import { css, PdfIcon, styled } from '@digg/design-system';
+import { css, PdfIcon, styled } from "@digg/design-system";
 
 interface FileLinkProps {
   link: string;

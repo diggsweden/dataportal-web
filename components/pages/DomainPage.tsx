@@ -8,11 +8,11 @@ import {
 } from "@digg/design-system";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { Containers_dataportal_Digg_Containers } from "../../graphql/__generated__/Containers";
+import { ContainerData_Dataportal_Digg_Container_Fragment } from "../../graphql/__generated__/operations";
 import { MainContainerStyle } from "../../styles/general/emotion";
 import { checkLang } from "../../utilities";
 import { Puffs, IPuff } from "../Navigation";
-import { Publication_dataportal_Digg_Publications as IPublication } from "../../graphql/__generated__/Publication";
+import { PublicationDataFragment as IPublication } from "../../graphql/__generated__/operations";
 import useTranslation from "next-translate/useTranslation";
 import { ContentArea } from "../ContentArea";
 import { CategoriesNav } from "../StartPageComponents";
@@ -21,7 +21,8 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { CustomImage } from "../Image";
 
-export interface DomainProps extends Containers_dataportal_Digg_Containers {
+export interface DomainProps
+  extends ContainerData_Dataportal_Digg_Container_Fragment {
   domain?: DiggDomain;
   news?: IPublication;
   example?: IPublication;
@@ -34,14 +35,14 @@ const DynamicStatisticGraph = dynamic(
   () => import("../Statistic/StatisticGraph"),
   {
     ssr: false,
-  }
+  },
 );
 
 const DynamicStatisticNumbers = dynamic(
   () => import("../Statistic/StatisticNumbers"),
   {
     ssr: false,
-  }
+  },
 );
 
 const DynamicStatistic = dynamic(() => import("../Statistic/Statistic"), {
@@ -52,7 +53,7 @@ const DynamicArticleBlock = dynamic(
   () => import("../blocks/Article").then((c) => c.ArticleBlock),
   {
     ssr: false,
-  }
+  },
 );
 
 export const DomainPage: React.FC<DomainProps> = (props) => {

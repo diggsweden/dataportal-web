@@ -16,9 +16,9 @@ const ApiExplorer = dynamic(
   () =>
     import("../../components/ApiExploring/").then(
       (c) => c.ApiExplorer,
-      (e) => e as React.FC<ApiExplorerProps>
+      (e) => e as React.FC<ApiExplorerProps>,
     ),
-  { ssr: false }
+  { ssr: false },
 );
 
 export const DataSetExploreApiPage: React.FC<{
@@ -216,7 +216,7 @@ export const DataSetExploreApiPage: React.FC<{
           `,
           {
             done: function () {},
-          }
+          },
         );
       }
     }

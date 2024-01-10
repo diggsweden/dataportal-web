@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { capitalizeFirstLetter } from "../../utilities";
-import { checkLang } from "../../utilities/checkLang";
+import { checkLang } from "../../utilities";
 
 export interface BreadcrumbProps {
   name: string;

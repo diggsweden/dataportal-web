@@ -10,10 +10,11 @@ export interface ApiIndex {
   list: (contextid: string, entryid: string) => ApiIndexItem[] | undefined;
   findDetection: (
     contextid: string,
-    entryid: string
+    entryid: string,
   ) => ApiSpecDetection | undefined;
   loading: boolean;
 }
+
 /* eslint-enable no-unused-vars */
 
 export interface ApiIndexItem {
@@ -51,7 +52,7 @@ export const ApiIndexProvider: React.FC<ApiIndexProviderProps> = ({
 
   const listByContainer = (
     contextid: string,
-    containerEntryId: string
+    containerEntryId: string,
   ): ApiIndexItem[] => {
     let result: ApiIndexItem[] = [];
 
@@ -73,7 +74,7 @@ export const ApiIndexProvider: React.FC<ApiIndexProviderProps> = ({
 
   const findFirstMatch = (
     contextid: string,
-    entryid: string
+    entryid: string,
   ): ApiSpecDetection | undefined => {
     let result: ApiSpecDetection | undefined = undefined;
 

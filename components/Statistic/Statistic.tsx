@@ -1,10 +1,10 @@
-import { Heading } from '@digg/design-system';
-import useTranslation from 'next-translate/useTranslation';
-import React, { useContext, useEffect, useState } from 'react';
-import { SettingsContext } from '..';
-import { EnvSettings } from '../../env';
-import { StatisticListItem } from './StatisticListItem';
-import { getNumbersData } from './StatisticNumbers';
+import { Heading } from "@digg/design-system";
+import useTranslation from "next-translate/useTranslation";
+import React, { useContext, useEffect, useState } from "react";
+import { SettingsContext } from "..";
+import { EnvSettings } from "../../env";
+import { StatisticListItem } from "./StatisticListItem";
+import { getNumbersData } from "./StatisticNumbers";
 
 interface StatisticState {
   children?: React.ReactNode;
@@ -27,9 +27,9 @@ interface StatisticState {
 export const getStatistics = async (env: EnvSettings, lang: string) => {
   const numbersData = await getNumbersData(env);
 
-  let url = 'https://admin.dataportal.se/charts/themeData.json';
+  let url = "https://admin.dataportal.se/charts/themeData.json";
 
-  if (env.ENTRYSCAPE_THEME_STATS_URL_EN && lang != 'sv') {
+  if (env.ENTRYSCAPE_THEME_STATS_URL_EN && lang != "sv") {
     url = env.ENTRYSCAPE_THEME_STATS_URL_EN;
   } else if (env.ENTRYSCAPE_THEME_STATS_URL) {
     url = env.ENTRYSCAPE_THEME_STATS_URL;
@@ -42,7 +42,10 @@ export const getStatistics = async (env: EnvSettings, lang: string) => {
 
   // ! Log if there is an error
   !themeStatsResponse.ok &&
-    console.error({ status: themeStatsResponse.status, text: themeStatsResponse.statusText });
+    console.error({
+      status: themeStatsResponse.status,
+      text: themeStatsResponse.statusText,
+    });
 
   const getThemeStats = async () => {
     if (!themeStatsResponse.ok) return {};
@@ -82,7 +85,7 @@ export const getStatistics = async (env: EnvSettings, lang: string) => {
 //Statistic
 export const Statistic: React.FC = () => {
   const { env } = useContext(SettingsContext);
-  const { t, lang } = useTranslation('pages');
+  const { t, lang } = useTranslation("pages");
 
   const [stats, setStats] = useState<StatisticState>({
     publisherCount: -1,
@@ -106,7 +109,7 @@ export const Statistic: React.FC = () => {
       setStats({
         ...stats,
         ...data,
-      })
+      }),
     );
   }, [lang]);
 
@@ -115,61 +118,57 @@ export const Statistic: React.FC = () => {
       {/* Toplist */}
       <div className="statistic-toplist">
         <div className="toplist-wrapper">
-          <Heading
-            level={2}
-            size="lg"
-          >
-            {t('statistic$top-organizations')}
+          <Heading level={2} size="lg">
+            {t("statistic$top-organizations")}
           </Heading>
 
           <div className="top-list">
-            <ol
-              key={'toplist-organisation'}
-              className="text-md font-bold"
-            >
-              {stats.series.slice(0, stats.topItemsToShow).map((item: any, index: any) => {
-                return (
-                  <StatisticListItem
-                    key={'org-' + index}
-                    listText={stats.labels && stats.labels[index]}
-                    listNumber={item}
-                    listUrl={`/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${
-                      stats.values && encodeURIComponent(stats.values[index])
-                    }%7C%7Cfalse%7C%7Curi%7C%7COrganisationer%7C%7C${
-                      stats.labels && stats.labels[index]
-                    }`}
-                  />
-                );
-              })}
+            <ol key={"toplist-organisation"} className="text-md font-bold">
+              {stats.series
+                .slice(0, stats.topItemsToShow)
+                .map((item: any, index: any) => {
+                  return (
+                    <StatisticListItem
+                      key={"org-" + index}
+                      listText={stats.labels && stats.labels[index]}
+                      listNumber={item}
+                      listUrl={`/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${
+                        stats.values && encodeURIComponent(stats.values[index])
+                      }%7C%7Cfalse%7C%7Curi%7C%7COrganisationer%7C%7C${
+                        stats.labels && stats.labels[index]
+                      }`}
+                    />
+                  );
+                })}
             </ol>
           </div>
         </div>
 
         <div className="toplist-wrapper">
-          <Heading
-            level={2}
-            size="lg"
-          >
-            {t('statistic$top-categories')}
+          <Heading level={2} size="lg">
+            {t("statistic$top-categories")}
           </Heading>
 
           <div className="top-list">
             <ol className="text-md font-bold">
               {stats.seriesTheme &&
-                stats.seriesTheme.slice(0, stats.topItemsToShow).map((item: any, index: any) => {
-                  return (
-                    <StatisticListItem
-                      key={'cat-' + index}
-                      listText={stats.labelsTheme && stats.labelsTheme[index]}
-                      listNumber={item}
-                      listUrl={`/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7C${
-                        stats.valuesTheme && encodeURIComponent(stats.valuesTheme[index])
-                      }%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7C${
-                        stats.labelsTheme && stats.labelsTheme[index]
-                      }`}
-                    />
-                  );
-                })}
+                stats.seriesTheme
+                  .slice(0, stats.topItemsToShow)
+                  .map((item: any, index: any) => {
+                    return (
+                      <StatisticListItem
+                        key={"cat-" + index}
+                        listText={stats.labelsTheme && stats.labelsTheme[index]}
+                        listNumber={item}
+                        listUrl={`/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7C${
+                          stats.valuesTheme &&
+                          encodeURIComponent(stats.valuesTheme[index])
+                        }%7C%7Cfalse%7C%7Curi%7C%7CKategorier%7C%7C${
+                          stats.labelsTheme && stats.labelsTheme[index]
+                        }`}
+                      />
+                    );
+                  })}
             </ol>
           </div>
         </div>

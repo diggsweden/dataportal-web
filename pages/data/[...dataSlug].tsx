@@ -1,9 +1,10 @@
-import { GetStaticPaths, GetStaticProps } from 'next/types';
-import { getMultiContainer } from '../../utilities';
-import { Page } from '../[...containerSlug]';
+import { GetStaticPaths, GetStaticProps } from "next/types";
+import { getMultiContainer } from "../../utilities";
+import { Page } from "../[...containerSlug]";
+
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   const slugs = params?.dataSlug as Array<string>;
-  return (await getMultiContainer(slugs, locale || 'sv', 'data')) as any;
+  return (await getMultiContainer(slugs, locale || "sv", "data")) as any;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -11,7 +12,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: 'blocking',
+    fallback: "blocking",
   };
 };
 

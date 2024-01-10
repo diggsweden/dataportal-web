@@ -1,6 +1,6 @@
 import React, { createContext } from "react";
 import { EntryScape, ESRdfType, ESType } from "./EntryScape";
-import { encode, decode } from "qss";
+import { decode, encode } from "qss";
 import { DCATData, fetchDCATMeta } from "../../utilities/";
 import withTranslation from "next-translate/withTranslation";
 import { SearchSortOrder } from "../pages/SearchPage";
@@ -36,7 +36,7 @@ export interface SearchContextData {
   doSearch: (
     appendHits?: Boolean,
     setStateToLocation?: Boolean,
-    reSortOnDone?: Boolean
+    reSortOnDone?: Boolean,
   ) => Promise<void>;
   setStateToLocation: () => void;
   sortAllFacets: (excludeFacet?: string) => void;
@@ -90,7 +90,7 @@ const hasWindow = typeof window !== "undefined";
 const hasLocalStore = typeof Storage !== "undefined";
 
 export const SearchContext = createContext<SearchContextData>(
-  defaultSearchSettings
+  defaultSearchSettings,
 );
 
 /**
@@ -162,7 +162,7 @@ class SearchProvider extends React.Component<
               });
             }
           },
-        }
+        },
       );
     }
   }
@@ -215,7 +215,7 @@ class SearchProvider extends React.Component<
         },
         () => {
           resolve();
-        }
+        },
       );
     });
   };
@@ -249,7 +249,7 @@ class SearchProvider extends React.Component<
           lang,
           t,
           this.props.facetSpecification,
-          this.props.hitSpecifications
+          this.props.hitSpecifications,
         );
 
         var facetValues = this.state.request.facetValues as SearchFacetValue[];
@@ -258,7 +258,7 @@ class SearchProvider extends React.Component<
           //Fetch counts for each group of facets
           let groupedFacets = Array.from(facetValues).reduce(function (
             acc: { [facet: string]: SearchFacetValue[] },
-            obj: SearchFacetValue
+            obj: SearchFacetValue,
           ) {
             var key = obj.facet;
 
@@ -266,8 +266,7 @@ class SearchProvider extends React.Component<
 
             acc[key].push(obj);
             return acc;
-          },
-          {});
+          }, {});
 
           let searchPromises: Promise<any>[] = [];
 
@@ -275,7 +274,7 @@ class SearchProvider extends React.Component<
           if (groupedFacets && Object.entries(groupedFacets).length > 0) {
             for (let group in groupedFacets) {
               let facetsNotInGroup: SearchFacetValue[] = facetValues.filter(
-                (f) => f.facet !== group
+                (f) => f.facet !== group,
               );
 
               searchPromises.push(
@@ -301,14 +300,14 @@ class SearchProvider extends React.Component<
                           Object.entries(allFacets).forEach(([k, v]) => {
                             if (k == group) {
                               let esFacetsInGroup = res.esFacets!.find(
-                                (f) => f.predicate == group
+                                (f) => f.predicate == group,
                               );
 
                               v.facetValues.forEach((f) => {
                                 if (esFacetsInGroup && esFacetsInGroup.values) {
                                   var resultFacetValue =
                                     esFacetsInGroup!.values.find(
-                                      (fv) => fv.name == f.resource
+                                      (fv) => fv.name == f.resource,
                                     );
 
                                   if (resultFacetValue) {
@@ -329,10 +328,10 @@ class SearchProvider extends React.Component<
                             allFacets: allFacets,
                           };
                         },
-                        () => {}
+                        () => {},
                       );
                     }
-                  })
+                  }),
               );
             }
 
@@ -419,7 +418,7 @@ class SearchProvider extends React.Component<
               if (facets[k] && facets[k].facetValues) {
                 v.facetValues.forEach((f) => {
                   var resultFacetValue = facets[k].facetValues.find(
-                    (fv) => fv.resource === f.resource // fv.title === f.title && fv.resource === f.resource
+                    (fv) => fv.resource === f.resource, // fv.title === f.title && fv.resource === f.resource
                   );
 
                   if (resultFacetValue) f.count = resultFacetValue.count || 0;
@@ -439,7 +438,7 @@ class SearchProvider extends React.Component<
                 v.facetValues.forEach((f: SearchFacetValue) => {
                   if (
                     !allFacets[k].facetValues.find(
-                      (ff) => ff.resource == f.resource
+                      (ff) => ff.resource == f.resource,
                     )
                   ) {
                     //ff.title == f.title &&
@@ -456,7 +455,7 @@ class SearchProvider extends React.Component<
           },
           () => {
             resolve();
-          }
+          },
         );
       }
     });
@@ -472,7 +471,7 @@ class SearchProvider extends React.Component<
       if (!facetValues) return false;
 
       var existing = facetValues.filter(
-        (v: SearchFacetValue) => v.facet == key && v.resource == value
+        (v: SearchFacetValue) => v.facet == key && v.resource == value,
       );
 
       //existed
@@ -492,7 +491,7 @@ class SearchProvider extends React.Component<
       var facetValues = this.state.request.facetValues as SearchFacetValue[];
 
       var existing = facetValues.filter(
-        (v: SearchFacetValue) => v.facet == key
+        (v: SearchFacetValue) => v.facet == key,
       );
 
       //existed
@@ -590,7 +589,7 @@ class SearchProvider extends React.Component<
               () => {
                 wasCached = true;
                 resolve();
-              }
+              },
             );
           }
         }
@@ -602,7 +601,7 @@ class SearchProvider extends React.Component<
           lang,
           t,
           this.props.facetSpecification,
-          this.props.hitSpecifications
+          this.props.hitSpecifications,
         );
 
         entryScape
@@ -628,15 +627,15 @@ class SearchProvider extends React.Component<
                         if (hasLocalStore && hasWindow) {
                           window.localStorage.setItem(
                             store_cache_key,
-                            JSON.stringify(r)
+                            JSON.stringify(r),
                           );
                           window.localStorage.setItem(
                             store_cache_key_stamp,
-                            JSON.stringify(new Date(Date.now()))
+                            JSON.stringify(new Date(Date.now())),
                           );
                         }
                         resolve();
-                      }
+                      },
                     );
                   } else {
                     this.setState(
@@ -647,7 +646,7 @@ class SearchProvider extends React.Component<
                       },
                       () => {
                         resolve();
-                      }
+                      },
                     );
                   }
                 });
@@ -659,7 +658,7 @@ class SearchProvider extends React.Component<
                 },
                 () => {
                   resolve();
-                }
+                },
               );
             }
           })
@@ -712,7 +711,7 @@ class SearchProvider extends React.Component<
             titleResource: "http://xmlns.com/foaf/0.1/name",
             descriptionResource: "",
           },
-        }
+        },
       );
 
       entryScape
@@ -731,7 +730,7 @@ class SearchProvider extends React.Component<
                 facets[facetkey].facetValues &&
                 h.title &&
                 !facets[facetkey].facetValues.some(
-                  (f) => f.title?.toLowerCase() == h.title.toLowerCase()
+                  (f) => f.title?.toLowerCase() == h.title.toLowerCase(),
                 )
               ) {
                 var newValue: SearchFacetValue = {
@@ -747,7 +746,7 @@ class SearchProvider extends React.Component<
                 newValue.facetValueString = `${facetkey}||${newValue.resource}||${newValue.related}||${ESType.uri}||${facets[facetkey].title}||${newValue.title}`;
 
                 (facets[facetkey].facetValues as SearchFacetValue[]).push(
-                  newValue
+                  newValue,
                 );
               }
             });
@@ -760,17 +759,17 @@ class SearchProvider extends React.Component<
               if (hasLocalStore && hasWindow) {
                 window.localStorage.setItem(
                   store_cache_key,
-                  JSON.stringify(facets)
+                  JSON.stringify(facets),
                 );
                 window.localStorage.setItem(
                   store_cache_key_stamp,
-                  JSON.stringify(new Date(Date.now()))
+                  JSON.stringify(new Date(Date.now())),
                 );
               }
 
               this.mergeAllFacetsAndResult();
               resolve();
-            }
+            },
           );
         })
         .catch(() => {
@@ -821,7 +820,7 @@ class SearchProvider extends React.Component<
         (v: SearchFacetValue) =>
           v.facet == facetValue.facet &&
           v.resource == facetValue.resource &&
-          v.title == facetValue.title
+          v.title == facetValue.title,
       );
 
       //existed - remove from array
@@ -848,7 +847,7 @@ class SearchProvider extends React.Component<
         },
         () => {
           resolve();
-        }
+        },
       );
     });
   };
@@ -886,7 +885,7 @@ class SearchProvider extends React.Component<
       let facets =
         this.state.request && this.state.request.facetValues
           ? Object.values(this.state.request.facetValues).map(
-              (fval: SearchFacetValue) => fval.facetValueString
+              (fval: SearchFacetValue) => fval.facetValueString,
             )
           : [];
 
@@ -1004,7 +1003,7 @@ class SearchProvider extends React.Component<
             if (querytext) {
               fetchResults = true;
               state.request.query = decodeURIComponent(
-                querytext.replace(/\+/g, "%20")
+                querytext.replace(/\+/g, "%20"),
               );
             }
 
@@ -1041,7 +1040,7 @@ class SearchProvider extends React.Component<
           },
           () => {
             resolve(fetchResults);
-          }
+          },
         );
       }
     });
@@ -1053,7 +1052,7 @@ class SearchProvider extends React.Component<
   doSearch = (
     appendHits: Boolean = false,
     setStateToLocation: Boolean = true,
-    reSortOnDone: Boolean = true
+    reSortOnDone: Boolean = true,
   ) => {
     const { t, lang } = this.props.i18n;
     return new Promise<void>((resolve) => {
@@ -1070,7 +1069,7 @@ class SearchProvider extends React.Component<
         lang,
         t,
         this.props.facetSpecification,
-        this.props.hitSpecifications
+        this.props.hitSpecifications,
       );
       entryScape
         .solrSearch(this.state.request, this.state.dcatmeta)
@@ -1113,7 +1112,7 @@ class SearchProvider extends React.Component<
                   .getFacets(
                     res.esFacets,
                     this.state.request.takeFacets || 5,
-                    this.state.dcatmeta
+                    this.state.dcatmeta,
                   )
                   .then((res) => {
                     this.setState(
@@ -1134,7 +1133,7 @@ class SearchProvider extends React.Component<
                             resolve();
                           });
                         });
-                      }
+                      },
                     );
                   });
               } else {
@@ -1142,7 +1141,7 @@ class SearchProvider extends React.Component<
 
                 resolve();
               }
-            }
+            },
           );
         });
     });
@@ -1173,10 +1172,10 @@ class SearchProvider extends React.Component<
               },
               () => {
                 resolve();
-              }
+              },
             );
           });
-        }
+        },
       );
     });
   };

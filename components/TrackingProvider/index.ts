@@ -1,1 +1,1 @@
-export * from './TrackingProvider';
+export * from "./TrackingProvider";

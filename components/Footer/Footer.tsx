@@ -3,13 +3,13 @@ import { Translate } from "next-translate";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import React from "react";
-import { dataportal_LinkType } from "../../graphql/__generated__/globalTypes";
+import { Dataportal_LinkType } from "../../graphql/__generated__/types";
 import { ExternalLink, IPuff } from "../Navigation";
 import Image from "next/image";
 import euLogo from "../../public/images/eu.png";
 
 const columns = (
-  t: Translate
+  t: Translate,
 ): { title: string; links: IPuff[] | DiggLink[] }[] => [
   {
     title: "Dataportal",
@@ -18,14 +18,14 @@ const columns = (
         __typename: "dataportal_Digg_Link",
         title: t("routes|about-website$title") || "",
         link: t("routes|about-website$path"),
-        linktype: dataportal_LinkType.INTERNAL,
+        linktype: Dataportal_LinkType.Internal,
         description: null,
       },
       {
         __typename: "dataportal_Digg_Link",
         title: "info@digg.se",
         link: "mailto:info@digg.se",
-        linktype: dataportal_LinkType.EXTERNAL,
+        linktype: Dataportal_LinkType.External,
         description: null,
       },
     ],
@@ -102,13 +102,13 @@ export const Footer: React.FC = () => {
                           }
                         : {
                             slug: l.slug,
-                            type: dataportal_LinkType.INTERNAL,
+                            type: Dataportal_LinkType.Internal,
                             isMail: l.title === "info@digg.se",
                           };
 
                       return (
                         <li key={index}>
-                          {type === dataportal_LinkType.INTERNAL ? (
+                          {type === Dataportal_LinkType.External ? (
                             <Link href={slug} className="text-md">
                               {l?.title}
                             </Link>

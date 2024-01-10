@@ -6,7 +6,7 @@ import {
   colorPalette,
   SearchIcon,
 } from "@digg/design-system";
-import { FilterIcon, CloseIcon as CloseIcon2 } from "../Icons";
+import { CloseIcon as CloseIcon2, FilterIcon } from "../Icons";
 import useTranslation from "next-translate/useTranslation";
 
 interface SearchFilterProps {
@@ -84,7 +84,7 @@ const MarkAll: React.FC<MarkAllProps> = ({ search, toggleKey, title }) => {
           await search.set({
             facetValues: search.request.facetValues
               ? search.request.facetValues.filter(
-                  (f) => f.facet != toggleKey || f.facetType == ESType.wildcard
+                  (f) => f.facet != toggleKey || f.facetType == ESType.wildcard,
                 )
               : [],
           });
@@ -118,7 +118,7 @@ const MarkAll: React.FC<MarkAllProps> = ({ search, toggleKey, title }) => {
 
 const FindFilters = (
   categoryFilters: SearchFacetValue[],
-  checkedFilters: SearchFacetValue[] | undefined
+  checkedFilters: SearchFacetValue[] | undefined,
 ) => {
   if (!checkedFilters) return "";
 
@@ -188,10 +188,11 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                 const shouldFetchMore = value.show <= value.count;
                 const show = (value && value.show) || 20;
                 const facetValues = inputFilter[key]
-                  ? value?.facetValues.filter((v) =>
-                      v.title
-                        ?.toLowerCase()
-                        .includes(inputFilter[key].toLowerCase())
+                  ? value?.facetValues.filter(
+                      (v) =>
+                        v.title
+                          ?.toLowerCase()
+                          .includes(inputFilter[key].toLowerCase()),
                     )
                   : value?.facetValues.slice(0, show);
                 return (
@@ -201,7 +202,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                         value.title +
                         FindFilters(
                           value.facetValues,
-                          search.request.facetValues
+                          search.request.facetValues,
                         )
                       }
                     >
@@ -231,7 +232,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                           (facetValue: SearchFacetValue, index: number) => {
                             const selected = search.facetSelected(
                               key,
-                              facetValue.resource
+                              facetValue.resource,
                             );
                             return (
                               <Button
@@ -255,7 +256,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                                           facetValueString: "",
                                           resource: "*",
                                           title: t(
-                                            `filters|allchecktext$${key}`
+                                            `filters|allchecktext$${key}`,
                                           ),
                                         };
                                         await search.toggleFacet(wildcardFacet);
@@ -284,7 +285,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                                 ></span>
                               </Button>
                             );
-                          }
+                          },
                         )}
 
                         {value.facetValues.length > value.show && (
@@ -320,10 +321,10 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
               type="checkbox"
               checked={
                 search.request.esRdfTypes?.some(
-                  (t) => t == ESRdfType.esterms_ServedByDataService
+                  (t) => t == ESRdfType.esterms_ServedByDataService,
                 ) &&
                 search.request.esRdfTypes?.some(
-                  (t) => t == ESRdfType.esterms_IndependentDataService
+                  (t) => t == ESRdfType.esterms_IndependentDataService,
                 ) &&
                 !search.request.esRdfTypes?.some((t) => t == ESRdfType.dataset)
               }
@@ -331,13 +332,13 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                 clearCurrentScrollPos();
                 if (
                   search.request.esRdfTypes?.some(
-                    (t) => t == ESRdfType.esterms_ServedByDataService
+                    (t) => t == ESRdfType.esterms_ServedByDataService,
                   ) &&
                   search.request.esRdfTypes?.some(
-                    (t) => t == ESRdfType.esterms_IndependentDataService
+                    (t) => t == ESRdfType.esterms_IndependentDataService,
                   ) &&
                   !search.request.esRdfTypes?.some(
-                    (t) => t == ESRdfType.dataset
+                    (t) => t == ESRdfType.dataset,
                   )
                 ) {
                   search
@@ -402,7 +403,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                 {facetValue.title || facetValue.resource}{" "}
                 <CloseIcon width={[15]} />
               </button>
-            )
+            ),
           )}
       </div>
       <div

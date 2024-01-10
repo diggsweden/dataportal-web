@@ -1,51 +1,59 @@
-import React from 'react';
-import { dataportal_ContainerState } from '../../graphql/__generated__/globalTypes';
+import React from "react";
+import { Dataportal_ContainerState } from "../../graphql/__generated__/types";
 import {
   DataportalPageProps,
   getDomainAggregate,
   getMultiContainer,
   getPublication,
   getRootAggregate,
-} from '../../utilities';
-import DomainPage from '../oppen-kallkod';
-import { ArticleListPage, Publication as PublicationPage } from '../../components/pages/Articles';
-import Page from '../[...containerSlug]';
+} from "../../utilities";
+import DomainPage from "../oppen-kallkod";
+import {
+  ArticleListPage,
+  Publication as PublicationPage,
+} from "../../components/pages/Articles";
+import Page from "../[...containerSlug]";
 
-const getQuery = async (slug: string, locale: string, secret: string, isPublication: boolean) => {
+const getQuery = async (
+  slug: string,
+  locale: string,
+  secret: string,
+  isPublication: boolean,
+) => {
   if (isPublication)
     return getPublication(slug, locale, {
-      state: dataportal_ContainerState.preview,
+      state: Dataportal_ContainerState.Preview,
       secret,
       revalidate: false,
     });
   switch (slug) {
-    case '/':
+    case "/":
       return await getRootAggregate(locale, {
-        state: dataportal_ContainerState.preview,
+        state: Dataportal_ContainerState.Preview,
         secret,
         revalidate: false,
       });
-    case '/offentligai':
-      return await getDomainAggregate('offentligai', locale, {
-        state: dataportal_ContainerState.preview,
+    case "/offentligai":
+      return await getDomainAggregate("offentligai", locale, {
+        state: Dataportal_ContainerState.Preview,
         secret,
         revalidate: false,
       });
-    case '/data':
-      return await getDomainAggregate('data', locale, {
-        state: dataportal_ContainerState.preview,
+    case "/data":
+      return await getDomainAggregate("data", locale, {
+        state: Dataportal_ContainerState.Preview,
         secret,
         revalidate: false,
       });
-    case '/oppen-kallkod':
-      return await getDomainAggregate('oppen-kallkod', locale, {
-        state: dataportal_ContainerState.preview,
+    case "/oppen-kallkod":
+      return await getDomainAggregate("oppen-kallkod", locale, {
+        state: Dataportal_ContainerState.Preview,
         secret,
         revalidate: false,
       });
     default:
       return await getMultiContainer([slug.substring(1)], locale, undefined, {
-        state: dataportal_ContainerState.preview,
+        state: Dataportal_ContainerState.Preview,
         secret,
         revalidate: false,
       });
@@ -54,15 +62,15 @@ const getQuery = async (slug: string, locale: string, secret: string, isPublicat
 
 const render = (props: DataportalPageProps) => {
   switch (props.type) {
-    case 'DomainAggregate':
+    case "DomainAggregate":
       return <DomainPage {...props} />;
-    case 'RootAggregate':
+    case "RootAggregate":
       return <DomainPage {...props} />;
-    case 'MultiContainer':
+    case "MultiContainer":
       return <Page {...props} />;
-    case 'Publication':
+    case "Publication":
       return <PublicationPage {...props} />;
-    case 'PublicationList':
+    case "PublicationList":
       return <ArticleListPage {...props} />;
     default:
       return null;
@@ -72,11 +80,11 @@ const render = (props: DataportalPageProps) => {
 const Draft: React.FC<DataportalPageProps> = (props) => render(props);
 
 export const getServerSideProps = async ({ query, locale }: any) => {
-  const slug = (query?.slug as string) || '';
-  const secret = (query?.secret as string) || '';
-  const isPublication = (query?.type as string) === 'publication';
+  const slug = (query?.slug as string) || "";
+  const secret = (query?.secret as string) || "";
+  const isPublication = (query?.type as string) === "publication";
   // Get external data from the file system, API, DB, etc.
-  return await getQuery(slug, locale || 'sv', secret, isPublication);
+  return await getQuery(slug, locale || "sv", secret, isPublication);
 };
 
 export default Draft;

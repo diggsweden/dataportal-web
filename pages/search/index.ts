@@ -1,2 +1,3 @@
-import { SearchContentPage } from '../../components/pages/SearchContentPage';
+import { SearchContentPage } from "../../components/pages/SearchContentPage";
+
 export default SearchContentPage;
