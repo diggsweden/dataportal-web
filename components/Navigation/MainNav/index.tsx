@@ -93,12 +93,12 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
               action="/search"
             >
               <SearchInput
-                id="start-search"
+                id="header-search"
                 placeholder={t("common|search")}
                 query={query}
                 setQuery={setQuery}
-                hideLabel={true}
-                className="ml-sm	h-[44px] border-none hover:outline-0 focus:outline-0"
+                inputSize="small"
+                className="ml-sm border-none hover:outline-0 focus:outline-0"
               />
             </form>
           )}
