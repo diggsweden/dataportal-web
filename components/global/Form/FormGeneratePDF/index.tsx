@@ -1,5 +1,5 @@
 import { FC, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { BlockList } from "@/components/content/blocks/BlockList";
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const FormGeneratePDF: FC<Props> = ({ formDataArray, blocks }) => {
-  const router = useRouter();
+  const pathname = usePathname();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const finishedModalRef = useRef<HTMLDivElement>(null);
   const [showModal, setShowModal] = useState(false);
@@ -33,7 +33,7 @@ export const FormGeneratePDF: FC<Props> = ({ formDataArray, blocks }) => {
         onClick={(e) => {
           GeneratePDF(e, iframeRef, formDataArray);
 
-          const url = router.asPath;
+          const url = pathname;
           const urlArray = url.split("/");
           const curPath = urlArray[urlArray.length - 1];
           const pathsToIgnore = ["uppfoljning", "infor-utveckling"];

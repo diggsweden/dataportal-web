@@ -8,7 +8,7 @@ import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__ge
 import { PublicationDataFragment as IPublication } from "@/graphql/__generated__/operations";
 import { PublicationList } from "@/components/content/Publication/PublicationList";
 import { PromoProps } from "@/components/content/Promo";
-import { CategoriesNav } from "@/components/StartPageComponents";
+import { CategoriesNav } from "@/components/navigation/CategoriesNav";
 import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentBlock";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import useTranslation from "next-translate/useTranslation";
