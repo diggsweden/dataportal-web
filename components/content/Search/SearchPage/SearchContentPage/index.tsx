@@ -8,7 +8,7 @@ import Link from "next/link";
 import { SearchHitFragment } from "@/graphql/__generated__/operations";
 import { getSearchHit } from "@/utilities/searchHelpers";
 import { Heading } from "@/components/global/Typography/Heading";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 import { SearchPageSelector } from "@/components/content/Search/SearchPageSelector";
 import { SearchInput } from "@/components/content/Search/SearchInput";
 
@@ -201,7 +201,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
           content={`${t("common|search")} - Sveriges dataportal`}
         />
       </Head>
-      <Container className="my-xl">
+      <Container>
         <Heading level={1} size="lg" className="mb-none">
           {t("common|search-content")}
         </Heading>

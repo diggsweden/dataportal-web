@@ -17,10 +17,8 @@ const container = cva(["container"], {
 
 type ContainerProps = VariantProps<typeof container>;
 
-const Container: FC<
+export const Container: FC<
   PropsWithChildren<ContainerProps & HTMLAttributes<HTMLDivElement>>
 > = ({ size, className, ...props }) => (
   <div className={container({ size, className })} {...props} />
 );
-
-export default Container;

@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
 import { useRouter } from "next/router";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import useTranslation from "next-translate/useTranslation";
@@ -62,7 +62,7 @@ export const StatisticPage: FC = () => {
           )} - Sveriges dataportal`}
         />
       </Head>
-      <Container className="py-xl">
+      <Container>
         <Heading level={1} size={"lg"}>
           {t("statistic$statistic-page-header")}
         </Heading>

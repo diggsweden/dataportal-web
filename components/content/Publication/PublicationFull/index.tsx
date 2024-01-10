@@ -1,9 +1,8 @@
 import React from "react";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import { PublicationResponse } from "@/utilities";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 import { PublicationList } from "@/components/content/Publication/PublicationList";
-import { Hero } from "@/components/layout/Hero";
 import { formatDateWithTime } from "@/utilities/dateHelper";
 import { Heading } from "@/components/global/Typography/Heading";
 import DateIcon from "@/assets/icons/date.svg";
@@ -28,9 +27,6 @@ const getRelatedHeading = (tag: string) => {
 };
 
 export const PublicationFull: React.FC<PublicationResponse> = ({
-  heading,
-  preamble,
-  image,
   tags,
   blocks,
   related,
@@ -42,7 +38,6 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
 
   return (
     <article>
-      <Hero heading={heading} preamble={preamble} image={image} />
       <Container>
         <div className="grid gap-xl md:grid-cols-5">
           <main id="content" className="order-2 col-span-3 md:order-1">

@@ -1,6 +1,6 @@
 import React from "react";
 import { EnvSettings, SettingsUtil } from "@/env";
-import { BreadcrumbProps } from "@/components/navigation";
+import { BreadcrumbProps } from "@/components/navigation/BreadCrumb";
 
 interface SettingsContext extends DataportalSettings {
   env: EnvSettings;

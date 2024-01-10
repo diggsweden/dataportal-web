@@ -1,5 +1,5 @@
 import { Heading } from "@/components/global/Typography/Heading";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import React from "react";

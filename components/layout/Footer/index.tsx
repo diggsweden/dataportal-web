@@ -1,7 +1,7 @@
 import { FC } from "react";
 import DiggLogo from "@/assets/logos/diggLarge.svg";
 import { FooterNav } from "@/components/navigation/FooterNav";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 
 type FooterProps = {
   openSideBar: boolean;

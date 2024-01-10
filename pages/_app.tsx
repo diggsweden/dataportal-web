@@ -3,7 +3,7 @@ import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { ApolloProvider } from "@apollo/client";
 import { LocalStore, LocalStoreProvider } from "@/providers/LocalStoreProvider";
-import { Breadcrumb, BreadcrumbProps } from "@/components/navigation";
+
 import { TrackingProvider } from "@/providers/TrackingProvider";
 import {
   defaultSettings,
@@ -14,6 +14,7 @@ import {
   DataportalPageProps,
   generateRandomKey,
   keyUp,
+  makeBreadcrumbsFromPath,
   resolvePage,
 } from "@/utilities";
 import { EnvSettings, SettingsUtil } from "@/env";
@@ -29,6 +30,14 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieBanner } from "@/components/global/CookieBanner";
 import "@/styles/base.css";
+import {
+  Breadcrumb,
+  BreadcrumbProps,
+} from "@/components/navigation/BreadCrumb";
+import path from "path";
+import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
+import { Hero } from "@/components/layout/Hero";
 
 const GetCookiesAccepted = () => {
   try {
@@ -62,25 +71,26 @@ const defaultDescrtiption =
 
 function Dataportal({ Component, pageProps }: DataportalenProps) {
   //let env = SettingsUtil.create();
-  const { locale, asPath } = useRouter() || {};
-
+  const { locale } = useRouter() || {};
+  const pathname = usePathname();
   //*Put shared props into state to persist between pages that doesn't use getStaticProps
   const [env, setEnv] = useState<EnvSettings>(SettingsUtil.create());
   const [matomoActivated, setMatomoActivated] = useState<boolean>(true);
   const [openSideBar, setOpenSideBar] = useState(false);
   const [breadcrumbState, setBreadcrumb] =
     useState<BreadcrumbProps>(initBreadcrumb);
-  const { seo } = resolvePage(pageProps as DataportalPageProps) || {};
+  const { seo, heroImage } =
+    resolvePage(pageProps as DataportalPageProps) || {};
   const { title, description, image, robotsFollow, robotsIndex } =
     (seo as SeoDataFragment) || {};
   const strapiImageUrl = image?.url;
   const imageUrl = strapiImageUrl
     ? `${reactenv("MEDIA_BASE_URL") || ""}${strapiImageUrl}`
     : "/images/svdp-favicon-150.png";
-  const isDraft = asPath?.substring(0, 7) === "/drafts";
+  const isDraft = pathname?.substring(0, 7) === "/drafts";
   const allowSEO = env.envName == "prod" && !isDraft ? true : false;
   const appRenderKey = generateRandomKey(16);
-  //eslint-disable-next-line
+  const { t, lang } = useTranslation("pages");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -103,15 +113,46 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     };
   }, []);
 
+  useEffect(() => {
+    const heading = pageProps.heading;
+    const containerHeading = pageProps.container?.name;
+    if (containerHeading) {
+      const crumbs = makeBreadcrumbsFromPath(pathname, heading);
+      setBreadcrumb({
+        crumbs: crumbs.crumbs,
+        name: containerHeading ? containerHeading : "",
+      });
+    }
+    if (heading) {
+      const crumbs = makeBreadcrumbsFromPath(pathname, containerHeading);
+      setBreadcrumb({
+        crumbs: crumbs.crumbs,
+        name: heading ? heading : "",
+      });
+    }
+  }, [pathname]);
+
+  let searchProps = null;
+
+  if (pathname === "/" || pageProps.domain === "data") {
+    searchProps = {
+      destination: `/${lang}/datasets`,
+      placeholder: t("startpage$search_placeholder"),
+    };
+  }
+
+  let conditionalPreamble =
+    pageProps.domain === "data" ? null : pageProps.preamble;
+
   // useEffect(() => {
   //   if (previousPath) {
-  //     asPath.includes("#")
-  //       ? onHash(asPath)
+  //     pathname.includes("#")
+  //       ? onHash(pathname)
   //       : skipToContent(undefined, { showFocus: false, includeHeading: true });
   //   } else {
-  //     asPath.includes("#") && onHash(asPath);
+  //     pathname.includes("#") && onHash(pathname);
   //   }
-  // }, [asPath]);
+  // }, [pathname]);
 
   return (
     <ApolloProvider client={client}>
@@ -172,15 +213,15 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
               <meta name="twitter:image" content={imageUrl} />
               <link
                 rel="canonical"
-                href={`${env.CANONICAL_URL}${asPath || ""}`}
+                href={`${env.CANONICAL_URL}${pathname || ""}`}
               />
               <meta
                 property="og:url"
-                content={`${env.CANONICAL_URL}${asPath || ""}`}
+                content={`${env.CANONICAL_URL}${pathname || ""}`}
               />
               <meta
                 name="twitter:url"
-                content={`${env.CANONICAL_URL}${asPath || ""}`}
+                content={`${env.CANONICAL_URL}${pathname || ""}`}
               />
               <meta
                 name="robots"
@@ -257,11 +298,22 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   <span>{defaultSettings.noScriptContent}</span>
                 </div>
               </noscript>
+
+              {heroImage && (
+                <Hero
+                  heading={pageProps.heading}
+                  preamble={conditionalPreamble}
+                  image={heroImage}
+                  search={searchProps}
+                />
+              )}
+
               {breadcrumbState.crumbs.length > 0 && (
                 <Breadcrumb {...breadcrumbState} />
               )}
+
               <main
-                className={`min-h-[calc(100vh-656px)] transition-all duration-300 ease-in-out lg:min-h-[calc(100vh-524px)] ${
+                className={`mt-xl min-h-[calc(100vh-656px)] pb-xl transition-all duration-300 ease-in-out lg:min-h-[calc(100vh-524px)] ${
                   openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
                 }`}
               >

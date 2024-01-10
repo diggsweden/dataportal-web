@@ -14,7 +14,7 @@ import { RenderForm } from "@/components/global/Form/RenderForm";
 import { FormBottomNav } from "@/components/navigation/FormBottomNav";
 import { FormGeneratePDF } from "@/components/global/Form/FormGeneratePDF";
 import { ProgressBar } from "@/components/global/ProgressBar";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 
 type Props = IForm & {
   elements: IForm["elements"];

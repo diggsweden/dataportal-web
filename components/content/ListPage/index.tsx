@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import Head from "next/head";
 import { usePathname, useRouter } from "next/navigation";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import Container from "@/components/layout/Container";
+import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 import { PublicationList } from "@/components/content/Publication/PublicationList";
 import { PublicationListResponse } from "@/utilities";
