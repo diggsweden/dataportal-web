@@ -7,7 +7,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     seo: {
       ...populateSeo,
       title: "Nyheter - Sveriges Dataportal",
-      description: "Nyheter relaterat till Data & API:er",
+      description: "Nyheter för Sveriges Dataportal",
     },
     basePath: `/nyheter`,
     heading: "Nyheter",

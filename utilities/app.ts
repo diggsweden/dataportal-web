@@ -1,5 +1,5 @@
-import { PublicationDataFragment } from "../graphql/__generated__/operations";
-import { SeoDataFragment } from "../graphql/__generated__/operations";
+import { PublicationDataFragment } from "@/graphql/__generated__/operations";
+import { SeoDataFragment } from "@/graphql/__generated__/operations";
 import {
   DomainAggregateResponse,
   FormResponse,
@@ -20,6 +20,8 @@ export type DataportalPageProps =
   | ModuleResponse;
 
 type ResolvedPage = {
+  heading?: string | null;
+  preamble?: string | null;
   heroImage?: PublicationDataFragment["image"] | null;
   seo?: SeoDataFragment | null;
 };
@@ -33,15 +35,24 @@ type ResolvedPage = {
 export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
   switch (props.type) {
     case "RootAggregate":
-      return { seo: props.seo };
+      return { seo: props.seo, heroImage: props.image, heading: props.heading };
     case "DomainAggregate":
-      return { seo: props.seo };
+      return { seo: props.seo, heroImage: props.image, heading: props.heading };
     case "MultiContainer":
-      return { seo: props.container?.seo, heroImage: props.container?.image };
+      return {
+        seo: props.container?.seo,
+        heroImage: props.container?.image,
+        heading: props.container?.heading,
+      };
     case "Publication":
-      return { seo: props.seo, heroImage: props.image };
+      return {
+        seo: props.seo,
+        heading: props.heading,
+        preamble: props.preamble,
+        heroImage: props.image,
+      };
     case "PublicationList":
-      return {};
+      return { seo: props.seo, heading: props.heading };
     case "Form":
       return {};
     case "Module":

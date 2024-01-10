@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from "react";
-import Head from "next/head";
 import { usePathname, useRouter } from "next/navigation";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { Container } from "@/components/layout/Container";
@@ -10,7 +9,6 @@ import { Pagination } from "@/components/global/Pagination";
 
 export const ListPage: FC<PublicationListResponse> = ({
   publications,
-  seo,
   heading,
 }) => {
   const { trackPageView } = useMatomo();
@@ -24,7 +22,6 @@ export const ListPage: FC<PublicationListResponse> = ({
     articlesVisited,
     articlesVisited + publicationsPerPage,
   );
-  const { title, description } = seo || {};
 
   useEffect(() => {
     trackPageView({ documentTitle: heading });
@@ -41,18 +38,6 @@ export const ListPage: FC<PublicationListResponse> = ({
 
   return (
     <div id="news-list" className="my-xl">
-      <Head>
-        <title>{title}</title>
-        {title && <meta property="og:title" content={title} />}
-        {description && (
-          <>
-            <meta name="description" content={description} />
-            <meta name="og:description" content={description} />
-            <meta name="twitter:description" content={description} />
-          </>
-        )}
-      </Head>
-
       <Container>
         <Heading level={1} size={"lg"} className="mb-xl">
           {heading}
