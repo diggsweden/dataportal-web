@@ -10,14 +10,14 @@ type Props = {
 export const ProgressBar: FC<Props> = ({ page, totalPages }) => {
   return (
     <div
-      className="flex w-full overflow-hidden border border-brown-500 bg-white"
+      className="flex w-full overflow-hidden border border-brown-600 bg-white"
       role="progressbar"
       aria-valuenow={page}
       aria-valuemin={1}
       aria-valuemax={totalPages}
     >
       <div
-        className="overflow-hidden whitespace-nowrap bg-brown-500 text-center text-white"
+        className="overflow-hidden whitespace-nowrap bg-pink-600 text-center text-white"
         style={{ width: `${(page / totalPages) * 100}%` }}
       >
         {page + "/" + totalPages}

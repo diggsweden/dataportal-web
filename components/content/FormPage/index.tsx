@@ -21,7 +21,7 @@ type Props = IForm & {
   module?: ModuleDataFragment["blocks"] | null;
 };
 
-export const FormWrapper: FC<Props> = ({ elements, module }) => {
+export const FormPage: FC<Props> = ({ elements, module }) => {
   const { trackPageView } = useMatomo();
   const { t } = useTranslation();
   const pathname = usePathname();

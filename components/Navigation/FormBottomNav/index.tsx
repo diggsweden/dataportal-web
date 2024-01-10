@@ -62,18 +62,19 @@ export const FormBottomNav: FC<Props> = ({
 
   return (
     <nav className="space-y-xl py-xl">
-      <div className="flex justify-between">
-        <Button
-          label={t("pages|form$previous-section-text")}
-          icon={ArrowLeftIcon}
-          iconPosition="left"
-          variant={"secondary"}
-          onClick={() => {
-            setPage(page - 1);
-            handleScroll(scrollRef);
-          }}
-          disabled={page === 1}
-        />
+      <div className={`flex ${page === 1 ? "justify-end" : "justify-between"}`}>
+        {page > 1 && (
+          <Button
+            label={t("pages|form$previous-section-text")}
+            icon={ArrowLeftIcon}
+            iconPosition="left"
+            variant={"secondary"}
+            onClick={() => {
+              setPage(page - 1);
+              handleScroll(scrollRef);
+            }}
+          />
+        )}
         <Button
           label={t("pages|form$next-section-text")}
           icon={ArrowRightIcon}

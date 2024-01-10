@@ -1,4 +1,4 @@
-import { FormWrapper } from "@/components/global/Form/FormWrapper";
+import { FormPage } from "@/components/content/FormPage";
 import { getForm, getModule } from "@/utilities";
 
 export async function getStaticProps({ locale }: any) {
@@ -17,4 +17,4 @@ export async function getStaticProps({ locale }: any) {
   //return await getForm('fortroendemodellen', locale);
 }
 
-export default FormWrapper;
+export default FormPage;
