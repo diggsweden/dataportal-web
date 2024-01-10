@@ -56,7 +56,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
                 </>
               ) : (
                 <ButtonLink
-                  href={`${t(`routes|${menu.title}$path`)}`}
+                  href={`/${t(`routes|${menu.title}$path`)}`}
                   locale={`${menu.title === "language" ? "" : lang}`}
                   onClick={() => setOpenSideBar(false)}
                   icon={menu.icon}

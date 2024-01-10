@@ -8,6 +8,9 @@ import DataportalLogo from "@/assets/logos/dataportal.svg";
 import CloseCrossIcon from "@/assets/icons/closeCross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { usePathname } from "next/navigation";
+import { SearchInput } from "@/components/content/Search/SearchInput";
+import SearchIcon from "@/assets/icons/search.svg";
+import { useRouter } from "next/router";
 
 interface MainNavData {
   title: string;
@@ -25,7 +28,10 @@ interface MainNavProps {
 
 const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   const [menues, setMenues] = useState<any>([]);
+  const [openSearch, setOpenSearch] = useState<boolean>(false);
+  const [query, setQuery] = useState("");
   const pathname = usePathname();
+  const router = useRouter();
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
 
@@ -40,6 +46,12 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
       setMenues(enMenu);
     }
   }, [isEn]);
+
+  const submitSearch = async (newQuery: string) => {
+    await router.push(`/search?q=${newQuery}&f=&p=1`);
+    setQuery("");
+    setOpenSearch(false);
+  };
 
   return (
     <div className="flex flex-row items-center justify-between">
@@ -69,6 +81,42 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
             />
           ))}
         </nav>
+        <div className="relative left-none flex hidden justify-end lg:block">
+          {!openSearch ? (
+            <div
+              onClick={() => setOpenSearch(!openSearch)}
+              className="cursor-pointer p-[10px] hover:bg-brown-800"
+            >
+              <SearchIcon />
+            </div>
+          ) : (
+            <form
+              className={`transition-width w-[220px] text-sm duration-100 [&_div]:mr-none [&_div_div_button]:p-[10px] ${
+                query && "first:[&_div_div_button]:bg-white"
+              }  ${
+                openSearch
+                  ? "w-full [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900"
+                  : "w-none overflow-hidden"
+              }`}
+              onSubmit={(event) => {
+                event.preventDefault();
+                submitSearch(query);
+              }}
+            >
+              <SearchInput
+                id="start-search"
+                placeholder={t("common|search")}
+                query={query}
+                setQuery={setQuery}
+                submitSearch={submitSearch}
+                hideLabel={true}
+                searchOnClear={false}
+                className="h-[44px]	border-none hover:outline-0 focus:outline-0"
+              />
+            </form>
+          )}
+        </div>
+
         <Button
           icon={openSideBar ? CloseCrossIcon : HamburgerIcon}
           iconPosition="left"
