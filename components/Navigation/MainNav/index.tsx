@@ -75,12 +75,12 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         </nav>
         <div className="relative left-none flex hidden justify-end lg:block">
           {!openSearch ? (
-            <div
+            <button
               onClick={() => setOpenSearch(!openSearch)}
               className="cursor-pointer p-[10px] hover:bg-brown-800"
             >
               <SearchIcon />
-            </div>
+            </button>
           ) : (
             <form
               className={`transition-width w-[220px] text-sm duration-100 [&_div]:mr-none [&_div_div_button]:p-[10px] ${
