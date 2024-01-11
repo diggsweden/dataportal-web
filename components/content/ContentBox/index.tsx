@@ -22,7 +22,7 @@ export const ContentBox: FC<ContentBoxProps> = ({
         {heading}
       </Heading>
       <p className="text-center">{description}</p>
-      <div className="flex justify-center gap-xl">
+      <div className="flex flex-wrap justify-center gap-md lg:gap-xl">
         {links?.map((link, idx: number) => (
           <ButtonLink
             key={idx}
