@@ -99,10 +99,45 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     };
   }, []);
 
-  console.log("pageProps", pageProps);
   useEffect(() => {
     const heading = pageProps.heading;
-    const containerHeading = pageProps.container?.name;
+    const containerHeading = pageProps.container?.heading;
+
+    if (pageProps.type === "MultiContainer") {
+      const categoryName = pageProps.category?.name;
+      const catergoryUrl = pageProps.category?.slug;
+      const containerDomainName = pageProps.container?.domains[0]?.name;
+      const containerDomainUrl = pageProps.container?.domains[0]?.slug;
+
+      if (categoryName && catergoryUrl && containerHeading) {
+        const crumbs = makeBreadcrumbsFromPath(
+          pathname,
+          containerHeading,
+          categoryName,
+          catergoryUrl,
+        );
+
+        return setBreadcrumb({
+          crumbs: crumbs.crumbs,
+          name: containerHeading,
+        });
+      }
+
+      if (containerDomainName && containerDomainUrl && containerHeading) {
+        const crumbs = makeBreadcrumbsFromPath(
+          pathname,
+          containerHeading,
+          containerDomainName,
+          containerDomainUrl,
+        );
+
+        return setBreadcrumb({
+          crumbs: crumbs.crumbs,
+          name: containerHeading,
+        });
+      }
+    }
+
     if (containerHeading) {
       const crumbs = makeBreadcrumbsFromPath(pathname, heading);
       setBreadcrumb({
@@ -181,7 +216,13 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
               )}
 
               {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
-                <Breadcrumb {...breadcrumbState} />
+                <div
+                  className={`transition-all duration-300 ease-in-out ${
+                    openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
+                  }`}
+                >
+                  <Breadcrumb {...breadcrumbState} />
+                </div>
               )}
 
               <main
