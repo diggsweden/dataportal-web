@@ -12,7 +12,7 @@ import { ButtonLink } from "@/components/global/Button";
 import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 
 interface HeroProps {
-  heading: string | null;
+  heading?: string | null;
   preamble?: string | null;
   image: ImageFragment | null;
   search?: SearchProps | null;
