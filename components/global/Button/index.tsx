@@ -12,7 +12,7 @@ const buttonVariants = cva(["button"], {
     size: {
       xs: ["button--xs"],
       sm: ["button--small"],
-      lg: ["button--large"],
+      lg: ["button--small lg:button--large"],
     },
     variant: {
       primary: ["button--primary"],

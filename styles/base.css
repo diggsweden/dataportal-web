@@ -96,10 +96,10 @@ body {
     @apply gap-sm px-md py-[2px] text-sm;
   }
   .button--small {
-    @apply h-[32px] gap-sm px-md text-sm;
+    @apply gap-sm px-md py-[6px] text-sm;
   }
   .button--large {
-    @apply h-[44px] gap-sm px-md text-md;
+    @apply gap-sm p-sm py-[10px] text-md;
   }
 }
 
