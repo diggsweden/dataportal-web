@@ -159,7 +159,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
         )}
 
         <main
-          className={`content col-start-1 max-w-md space-y-xl
+          className={`content col-start-1 max-w-md space-y-lg md:space-y-xl
            ${hasRelatedContent ? "xl:col-span-1 xl:col-start-2" : ""}`}
         >
           <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
