@@ -25,7 +25,7 @@ import { SideBar } from "@/components/navigation/SideBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieBanner } from "@/components/global/CookieBanner";
-import "@/styles/base.css";
+import "@/styles/main.css";
 import {
   Breadcrumb,
   BreadcrumbProps,
