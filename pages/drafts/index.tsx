@@ -11,6 +11,7 @@ import DomainPage from "../oppen-kallkod";
 import Page from "../[...containerSlug]";
 import { ListPage } from "@/components/content/ListPage";
 import { PublicationFull } from "@/components/content/Publication/PublicationFull";
+import { ContainerPage } from "@/components/content/ContainerPage";
 
 const getQuery = async (
   slug: string,
@@ -63,7 +64,7 @@ const render = (props: DataportalPageProps) => {
     case "DomainAggregate":
       return <DomainPage {...props} />;
     case "RootAggregate":
-      return <DomainPage {...props} />;
+      return <ContainerPage {...props} />;
     case "MultiContainer":
       return <Page {...props} />;
     case "Publication":
