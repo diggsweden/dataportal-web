@@ -46,18 +46,20 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
 
   return (
     <div className="flex flex-row items-center justify-between">
-      <Link
-        href={`${t(`common|${"lang-path"}`)}`}
-        onClick={() => setOpenSideBar(false)}
-        className="focus:outline-white"
-      >
-        <DataportalLogo
-          viewBox="0 0 228 44"
-          className="h-[32px] w-[160px] md:h-[44px] md:w-[228px]"
-        />
-      </Link>
-      <div className="flex flex-row items-center">
-        <nav className="hidden flex-row items-center gap-sm lg:flex">
+      {!openSearch && (
+        <Link
+          href={`${t(`common|${"lang-path"}`)}`}
+          onClick={() => setOpenSideBar(false)}
+          className="focus:outline-white"
+        >
+          <DataportalLogo
+            viewBox="0 0 228 44"
+            className="h-[32px] w-[160px] md:h-[44px] md:w-[228px]"
+          />
+        </Link>
+      )}
+      <div className="flex w-full flex-row items-center justify-end">
+        <nav className="hidden flex-row items-center gap-sm xl:flex">
           {menues.map((menu: MainNavData, idx: number) => (
             <ButtonLink
               key={idx}
@@ -72,7 +74,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
             />
           ))}
         </nav>
-        <div className="relative left-none flex hidden justify-end lg:block">
+        <div className="relative left-none flex w-full justify-end md:w-auto">
           {!openSearch ? (
             <Button
               onClick={() => setOpenSearch(!openSearch)}
@@ -82,9 +84,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
             </Button>
           ) : (
             <form
-              className={`transition-width w-[220px] text-sm duration-100 [&_div]:mr-none [&_div_div_button]:p-[10px] ${
-                query && "first:[&_div_div_button]:bg-white"
-              }  ${
+              className={`transition-width max-w-[274px] text-sm duration-100 md:w-[274px] [&_div]:mr-none [&_div_div_button]:p-[10px] first:[&_div_div_button]:bg-white  ${
                 openSearch
                   ? "w-full [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900"
                   : "w-none overflow-hidden"
@@ -98,7 +98,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                 setQuery={setQuery}
                 setOpenSearch={setOpenSearch}
                 type="small"
-                className="ml-sm border-none hover:outline-0 focus:outline-0"
+                className="border-none hover:outline-0 focus:outline-0 md:ml-sm"
               />
             </form>
           )}
