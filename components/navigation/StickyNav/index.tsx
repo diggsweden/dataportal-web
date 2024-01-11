@@ -92,9 +92,9 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
   return (
     <div
       id="navBox"
-      className={`mb-lg flex flex-col lg:w-[132px] xl:mb-xl ${
+      className={`mb-lg flex flex-col lg:max-w-[300px] xl:mb-xl xl:max-w-sm ${
         fixedNav.top
-          ? "lg:fixed lg:top-[96px]"
+          ? "overflow-y-scroll lg:fixed lg:top-[96px] lg:max-h-[calc(100vh-192px)]"
           : fixedNav.bottom
           ? "lg:absolute"
           : "static"

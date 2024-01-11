@@ -15,9 +15,9 @@ export const Breadcrumb: FC<BreadcrumbProps> = ({ crumbs, name }) => {
   const { lang } = useTranslation();
 
   return (
-    <Container className="mb-xl py-md">
+    <Container className="mb-lg py-md md:mb-xl">
       {crumbs.length > 0 && (
-        <ul className="flex items-center gap-md">
+        <ul className="flex flex-wrap items-center gap-md">
           {crumbs.map((crumb, index) => {
             return (
               <li
