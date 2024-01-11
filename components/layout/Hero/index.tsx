@@ -43,12 +43,14 @@ export const Hero: FC<HeroProps> = ({ heading, preamble, image, search }) => {
             ${search ? "text-brown-100" : "bg-white p-xl"} max-w-md`}
           >
             {heading && (
-              <Heading level={1} size="lg" className="mb-lg">
+              <Heading level={1} size="lg" className="mb-none">
                 {checkLang(heading)}
               </Heading>
             )}
             {preamble && (
-              <Preamble color={search ? "light" : "dark"}>{preamble}</Preamble>
+              <Preamble className="mt-lg" color={search ? "light" : "dark"}>
+                {preamble}
+              </Preamble>
             )}
             {search && (
               <div id="SearchHero" className="mt-xl">

@@ -96,6 +96,7 @@ export const highlightCode = () => {
 
 export const ContainerPage: React.FC<ContainerPageProps> = ({
   heading,
+  image,
   preamble,
   blocks,
   name,
@@ -145,7 +146,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
         {hasRelatedContent && (
           <ContainerNav related={related} domain={domain} />
         )}
-        {heading && (
+        {!image && heading && (
           <Heading
             size={"lg"}
             level={1}
