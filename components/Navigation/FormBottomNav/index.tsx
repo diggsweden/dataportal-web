@@ -61,7 +61,7 @@ export const FormBottomNav: FC<Props> = ({
   };
 
   return (
-    <nav className="space-y-xl py-xl">
+    <nav className="space-y-xl pt-xl">
       <div className={`flex ${page === 1 ? "justify-end" : "justify-between"}`}>
         {page > 1 && (
           <Button

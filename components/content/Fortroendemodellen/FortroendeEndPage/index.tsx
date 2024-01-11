@@ -1,20 +1,14 @@
 import { FC, useEffect, useState } from "react";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
-import useTranslation from "next-translate/useTranslation";
-import { useRouter } from "next/navigation";
 import { highlightCode } from "@/components/content/ContainerPage";
 import { Container } from "@/components/layout/Container";
-import { Button } from "@/components/global/Button";
 import { Heading } from "@/components/global/Typography/Heading";
 import Link from "next/link";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import Image from "next/image";
 import fortroendemodellImage from "@/assets/logos/fortroendemodellen.png";
-import ArrowIcon from "@/assets/icons/arrowLeft.svg";
 
 export const FortroendeEndPage: FC<ModuleDataFragment> = ({ blocks }) => {
-  const { t } = useTranslation();
-  const router = useRouter();
   const [heading, setHeading] = useState<string | null>(null);
 
   const getHeading = () => {
@@ -36,13 +30,6 @@ export const FortroendeEndPage: FC<ModuleDataFragment> = ({ blocks }) => {
 
   return (
     <Container className="space-y-xl">
-      <Button
-        icon={ArrowIcon}
-        iconPosition="left"
-        label={t("pages|form$go-back-text")}
-        onClick={() => router.back()}
-      />
-
       {heading && (
         <Heading level={1} size={"lg"}>
           {heading}

@@ -68,6 +68,8 @@ export const linkBase: DiggLink = {
 export const makeBreadcrumbsFromPath = (
   path: string,
   inactiveCrumbName: string,
+  categoryName?: string,
+  categoryPath?: string,
 ): BreadcrumbProps => {
   const paths = path.split("/");
   paths.shift();
@@ -75,12 +77,28 @@ export const makeBreadcrumbsFromPath = (
     { name: "start", link: { ...linkBase, link: "/" } },
   ];
 
-  const basePath: string[] = [];
+  let basePath: string[] = [];
+
+  if (categoryName && categoryPath) {
+    paths.map((path, index) => {
+      if (index !== paths.length - 1) {
+        crumbs.push({
+          name: index === 0 ? categoryName : path.replaceAll("-", " "),
+          link: {
+            ...linkBase,
+            link: `${index === 0 ? `/` : `${basePath.join("")}/`}${path}`,
+          },
+        });
+        basePath.push(`/${path}`);
+      }
+    });
+    return { name: inactiveCrumbName, crumbs };
+  }
 
   paths.map((path, index) => {
     if (index !== paths.length - 1) {
       crumbs.push({
-        name: path.replace("-", " "),
+        name: path.replaceAll("-", " "),
         link: {
           ...linkBase,
           link: `${index === 0 ? "/" : `${basePath.join("")}/`}${path}`,

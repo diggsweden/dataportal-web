@@ -83,7 +83,7 @@ body {
     @apply bg-brown-600 text-white [&_path]:fill-white [&_svg]:rotate-180;
   }
   .button--plain {
-    @apply text-brown-600 hover:bg-brown-200 focus:bg-brown-200 group-hover:bg-brown-200 group-focus:bg-brown-200 
+    @apply bg-transparent text-brown-600 hover:bg-brown-200 focus:bg-brown-200 group-hover:bg-brown-200 group-focus:bg-brown-200 
     [&_path]:fill-brown-600;
   }
   .button--plain.active {
@@ -168,8 +168,16 @@ input[type="radio"]:focus:not(:focus-visible) {
   @apply !outline-none group-focus:outline-none;
 }
 
-.button:focus:not(:focus-visible):not(:hover) {
-  background-color: initial;
+.button--primary:focus:not(:focus-visible) {
+  @apply bg-brown-600 text-brown-100 hover:bg-brown-800 [&_path]:fill-brown-100;
+}
+
+.button--secondary:focus:not(:focus-visible) {
+  @apply bg-transparent text-brown-600 hover:bg-whiteOpaque5 [&_path]:fill-brown-600;
+}
+
+.button--plain:focus:not(:focus-visible) {
+  @apply bg-transparent text-brown-600 hover:bg-brown-200 [&_path]:fill-brown-600;
 }
 
 a:focus-visible,
@@ -179,4 +187,3 @@ input[type="radio"]:focus-visible {
   @apply outline-dashed outline-2 outline-offset-2 outline-primary group-focus:outline-dashed 
   group-focus:outline-2 group-focus:outline-offset-2 group-focus:outline-primary;
 }
-

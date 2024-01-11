@@ -205,6 +205,9 @@ export interface FormResponse extends FormDataFragment {
 }
 
 export interface ModuleResponse extends ModuleDataFragment {
+  seo?: SeoDataFragment;
+  basePath?: string;
+  heading?: string;
   type: "Module";
 }
 
@@ -233,6 +236,11 @@ export interface PublicationQueryOptions extends QueryOptions {
   tags?: string[];
 }
 
+export interface ModuleOptions {
+  seo?: SeoDataFragment;
+  basePath?: string;
+  heading?: string;
+}
 /* #endregion */
 
 /**
@@ -732,6 +740,7 @@ export const querySearch = async (
 
 export const getForm = async (identifier: string, locale?: string) => {
   const revalidate = true;
+
   try {
     const { data } = await client.query<FormQuery, FormQueryVariables>({
       query: FORM_QUERY,
@@ -758,8 +767,13 @@ export const getForm = async (identifier: string, locale?: string) => {
   }
 };
 
-export const getModule = async (identifier: string, locale?: string) => {
+export const getModule = async (
+  identifier: string,
+  locale?: string,
+  opts?: ModuleOptions,
+) => {
   const revalidate = true;
+  const { seo, basePath, heading } = opts || {};
 
   const emptyModule: ModuleDataFragment = {
     __typename: "dataportal_Digg_Module",
@@ -777,7 +791,13 @@ export const getModule = async (identifier: string, locale?: string) => {
     const mod = data.dataportal_Digg_Module;
 
     return {
-      props: { ...mod, type: "Module" } as ModuleResponse,
+      props: {
+        ...mod,
+        type: "Module",
+        seo: seo || null,
+        basePath: basePath || null,
+        heading: heading || null,
+      } as ModuleResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
@@ -785,7 +805,13 @@ export const getModule = async (identifier: string, locale?: string) => {
   } catch (error: any) {
     logGqlErrors(error);
     return {
-      props: { ...emptyModule, type: "Module" } as ModuleResponse,
+      props: {
+        ...emptyModule,
+        type: "Module",
+        seo: seo || null,
+        basePath: basePath || null,
+        heading: heading || null,
+      } as ModuleResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
