@@ -30,7 +30,8 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
   const isActive = (path: string) => {
     if (
       pathname === path ||
-      (pathname === "/" && path === t(`common|lang-path`))
+      (pathname === "/" && path === t(`common|lang-path`)) ||
+      pathname?.startsWith(path)
     ) {
       return " active";
     } else return "";
@@ -123,7 +124,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
               </details>
             ) : (
               <Link
-                href={t(`routes|${menu.title}$path`)}
+                href={`/${t(`routes|${menu.title}$path`)}`}
                 onClick={() => setOpenSidebar(false)}
               >
                 <div
