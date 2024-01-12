@@ -196,7 +196,7 @@ export const DataSetPage: React.FC = () => {
                     "pages|datasetpage$several_links",
                   )}{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" min="2" invert="true"}}' +
-                  '<a href="{{prop "dcat:downloadURL"}}" class="text-white" target="_blank">' +
+                  '<a href="{{prop "dcat:downloadURL"}}" class="text-white">' +
                   '<button class="button--primary button--large text-white flex items-center">' +
                   '${t("pages|datasetpage$download_link")}' +
                   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
@@ -207,7 +207,7 @@ export const DataSetPage: React.FC = () => {
                   '{{/ifprop}}' +
                   '{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" invert="true"}}' +
-                  '<a href="{{prop "dcat:accessURL"}}" class="text-white" target="_blank">' +
+                  '<a href="{{prop "dcat:accessURL"}}" class="text-white">' +
                   '<button class="button--primary button--large text-white flex items-center">' +
                   '${t("pages|datasetpage$download_link_adress")}' +
                   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
@@ -230,7 +230,7 @@ export const DataSetPage: React.FC = () => {
                   '<div class="esbRowMain">' +
                   '<span class="esbRowAlign"><span class="esbRowAlignPrimary text-base">{{labelish}}</span>' +
                   '<span class="esbRowAlignSecondary text-base"><a href="{{value}}"' +
-                  ' class="text-base" target="_blank">' +
+                  ' class="text-base">' +
                   '${t(
                     "pages|datasetpage$download_link",
                   )}</a></span></span></div></div></div>' +
@@ -531,7 +531,7 @@ export const DataSetPage: React.FC = () => {
                 data-entryscape-block="template"
                 dangerouslySetInnerHTML={{
                   __html: `
-                      <a target="_blank" class="text-white" href="{{metadataURI}}?recursive=dcat">
+                      <a class="text-white" href="{{metadataURI}}?recursive=dcat">
                       <button class="button--primary button--large text-white flex items-center">
                       ${t("pages|datasetpage$rdf")}
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
