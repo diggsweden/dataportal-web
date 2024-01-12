@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
@@ -11,10 +11,8 @@ export const ListPage: FC<PublicationListResponse> = ({
   publications,
   heading,
 }) => {
-  const { trackPageView } = useMatomo();
-  const [currentPage, setCurrentPage] = useState(1);
   const [pageNumber, setPageNumber] = useState(0);
-  const { push } = useRouter();
+  const { trackPageView } = useMatomo();
   const pathname = usePathname();
   const publicationsPerPage = 12;
   const articlesVisited = pageNumber * publicationsPerPage;
@@ -26,15 +24,6 @@ export const ListPage: FC<PublicationListResponse> = ({
   useEffect(() => {
     trackPageView({ documentTitle: heading });
   }, [pathname]);
-
-  useEffect(() => {
-    if (pathname !== "/") {
-      setCurrentPage(currentPage);
-      setPageNumber(currentPage - 1);
-      push(`?page=${currentPage}`, { scroll: false });
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [currentPage]);
 
   return (
     <div id="news-list" className="my-xl">
@@ -52,9 +41,9 @@ export const ListPage: FC<PublicationListResponse> = ({
 
         <div className="flex justify-center">
           <Pagination
-            publications={publications}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
+            searchResult={publications}
+            perPage={12}
+            setPageNumber={setPageNumber}
           />
         </div>
       </Container>

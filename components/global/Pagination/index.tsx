@@ -2,27 +2,72 @@ import Arrow from "@/assets/icons/chevronRight.svg";
 import useTranslation from "next-translate/useTranslation";
 import { PublicationDataFragment as Publication } from "@/graphql/__generated__/operations";
 import { ContainerDataFragment as IContainer } from "@/graphql/__generated__/operations";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 type Pagination = {
-  publications: Publication[] | IContainer[];
-  currentPage: number;
-  setCurrentPage: Function;
+  searchResult: Publication[] | IContainer[] | any;
+  perPage?: number | any;
+  setPageNumber?: Function | any;
+  pages?: number | any;
 };
 
 export const Pagination: React.FC<Pagination> = ({
-  publications,
-  currentPage,
-  setCurrentPage,
+  searchResult,
+  perPage,
+  setPageNumber,
+  pages,
 }) => {
-  const pageCount = Math.ceil(publications.length / 12);
-  const pagination = Array.from({ length: pageCount }, (_, index) => index + 1);
-  const lastIndex = pagination[pagination.length - 1];
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageCount = Math.ceil(searchResult.length / perPage);
   const { t } = useTranslation();
+  const { push } = useRouter();
+  const pathname = usePathname();
+  const middlePages = ["..."];
+  const maxPagesToShow = 7;
+  const pagesToShowBeforeAfter = 3;
+  const lastIndex = pages ? pages : pageCount;
+
+  let pagination;
+
+  if (pages > maxPagesToShow || pageCount > maxPagesToShow) {
+    const firstPages = Array.from(
+      { length: Math.min(pagesToShowBeforeAfter, pages ? pages : pageCount) },
+      (_, index) => index + (currentPage > 2 ? currentPage - 1 : 1),
+    );
+
+    const lastPages = Array.from(
+      { length: Math.min(pagesToShowBeforeAfter, pages ? pages : pageCount) },
+      (_, index) => (pages ? pages - 3 + index + 1 : pageCount - 3 + index + 1),
+    );
+
+    pagination = [...firstPages, ...middlePages, ...lastPages];
+  } else {
+    pagination = Array.from(
+      { length: pages ? pages : pageCount },
+      (_, index) => index + 1,
+    );
+  }
+
+  useEffect(() => {
+    if (pathname !== "/") {
+      setCurrentPage(currentPage);
+      setPageNumber(currentPage - 1);
+      currentPage !== 1 ? push(`?page=${currentPage}`) : push("");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [currentPage]);
 
   return (
-    <div className="flex w-full items-center justify-between">
+    <div
+      className={`${
+        !pages ? (pageCount === 1 ? "hidden" : "flex") : "flex"
+      }  mt-xl w-full flex-col items-center justify-between gap-md md:flex-row md:gap-none`}
+    >
       <span>
-        {t("pages|search$page")} {currentPage} {t("common|of")} {pageCount}
+        {t("pages|search$page")} {currentPage} {t("common|of")}{" "}
+        {pages ? pages : pageCount}
       </span>
       <div className="flex items-center">
         <button
@@ -32,7 +77,7 @@ export const Pagination: React.FC<Pagination> = ({
               : () => null
           }
           className={`flex h-xl w-xl items-center justify-center bg-white ${
-            currentPage === 1 ? "[&_path]:opacity-50" : ""
+            currentPage === 1 ? "[&_path]:opacity-50" : "hover:bg-brown-200"
           }`}
           disabled={currentPage === 1}
         >
@@ -45,7 +90,7 @@ export const Pagination: React.FC<Pagination> = ({
             className={`${
               value === currentPage
                 ? "bg-brown-800 text-white"
-                : "bg-white hover:bg-brown-200"
+                : `bg-white  ${value === "..." ? "" : "hover:bg-brown-200"}`
             } flex h-xl w-xl cursor-pointer items-center justify-center`}
           >
             <span>{value}</span>
@@ -58,7 +103,9 @@ export const Pagination: React.FC<Pagination> = ({
               : () => null
           }
           className={`flex h-xl w-xl items-center justify-center bg-white ${
-            currentPage === lastIndex ? "[&_path]:opacity-50" : ""
+            currentPage === lastIndex
+              ? "[&_path]:opacity-50"
+              : "hover:bg-brown-200"
           }`}
           disabled={currentPage === lastIndex}
         >

@@ -11,6 +11,7 @@ import { Button } from "@/components/global/Button";
 import ListIcon from "@/assets/icons/list.svg";
 import DetailedListIcon from "@/assets/icons/listDetailed.svg";
 import { Select } from "@/components/global/Form/Select";
+import { Pagination } from "@/components/global/Pagination";
 
 interface SearchResultsProps {
   search: SearchContextData;
@@ -156,6 +157,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   search,
   searchMode,
 }) => {
+  const [pageNumber, setPageNumber] = useState(0);
   const { trackEvent } = useMatomo();
   const { t } = useTranslation();
 
@@ -180,14 +182,27 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   }, [searchKey]);
 
   useEffect(() => {
+    const count = search.result.count || -1;
+    count > 0 && posY && posY != "0" && window.scrollTo(0, parseInt(posY, 10));
     if (search.request.compact && search.request.compact) setCompact(false);
     else setCompact(true);
   });
 
   useEffect(() => {
-    const count = search.result.count || -1;
-    count > 0 && posY && posY != "0" && window.scrollTo(0, parseInt(posY, 10));
-  });
+    if (search.result.pages || 0 > 1) {
+      clearCurrentScrollPos();
+      search
+        .set({
+          page: pageNumber || 0,
+        })
+        .then(() => search.doSearch());
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      searchFocus();
+    }
+  }, [pageNumber]);
 
   return (
     <>
@@ -295,77 +310,14 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
             </ul>
           </div>
         )}
+        {(search.result.pages || 0) > 1 && (
+          <Pagination
+            searchResult={search.result.count}
+            pages={search.result.pages}
+            setPageNumber={setPageNumber}
+          />
+        )}
       </div>
-
-      {(search.result.pages || 0) > 1 && (
-        <div className="pagination">
-          <div className="prev-next-page">
-            <div className="first-page">
-              {(search.request.page || 0) > 1 && (
-                <button
-                  onClick={() => {
-                    clearCurrentScrollPos();
-                    search
-                      .set({
-                        page: 0,
-                      })
-                      .then(() => search.doSearch());
-                    window.scrollTo({
-                      top: 0,
-                      behavior: "smooth",
-                    });
-                    searchFocus();
-                  }}
-                >
-                  {t("pages|search$first-page")}
-                </button>
-              )}
-            </div>
-            <button
-              disabled={(search.request.page || 0) === 0}
-              onClick={() => {
-                clearCurrentScrollPos();
-                search
-                  .set({
-                    page: (search.request.page || 0) - 1,
-                  })
-                  .then(() => search.doSearch());
-                window.scrollTo({
-                  top: 0,
-                  behavior: "smooth",
-                });
-                searchFocus();
-              }}
-            >
-              {t("pages|search$prev-page")}
-            </button>
-            <span>
-              {t("pages|search$page")} {(search.request.page || 0) + 1}{" "}
-              {t("common|of")} {search.result.pages}
-            </span>
-            <button
-              disabled={
-                (search.result.pages || 1) === (search.request.page || 0) + 1
-              }
-              onClick={() => {
-                clearCurrentScrollPos();
-                search
-                  .set({
-                    page: (search.request.page || 0) + 1,
-                  })
-                  .then(() => search.doSearch());
-                window.scrollTo({
-                  top: 0,
-                  behavior: "smooth",
-                });
-                searchFocus();
-              }}
-            >
-              {t("pages|search$next-page")}
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 };
