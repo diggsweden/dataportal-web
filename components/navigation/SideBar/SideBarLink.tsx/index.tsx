@@ -113,24 +113,22 @@ const SideBarLink: FC<
   const pathname = usePathname();
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!openSideBar && list) {
-        const hasActiveLink = list.some(
-          (menu) =>
-            pathname === `/${t(`routes|${menu.title}$path`)}` ||
-            (pathname === "/" &&
-              `/${t(`common|lang-path`)}` ===
-                `/${t(`routes|${menu.title}$path`)}`) ||
-            pathname.startsWith(`/${t(`routes|${menu.title}$path`)}`),
-        );
-        if (!hasActiveLink) {
-          setOpen(false);
-        } else {
-          setOpen(true);
-        }
+    if (!openSideBar && list) {
+      const hasActiveLink = list.some(
+        (menu) =>
+          pathname === `/${t(`routes|${menu.title}$path`)}` ||
+          (pathname === "/" &&
+            `/${t(`common|lang-path`)}` ===
+              `/${t(`routes|${menu.title}$path`)}`) ||
+          pathname.startsWith(`/${t(`routes|${menu.title}$path`)}`),
+      );
+      if (!hasActiveLink) {
+        setOpen(false);
+      } else {
+        setOpen(true);
       }
-    }, 300);
-  }, [openSideBar, pathname, list]);
+    }
+  }, [pathname, list]);
 
   if (level === "1" && href) {
     return (
