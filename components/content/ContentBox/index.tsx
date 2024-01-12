@@ -28,7 +28,6 @@ export const ContentBox: FC<ContentBoxProps> = ({
             key={idx}
             href={link.href}
             label={link.label}
-            target={isExternalLink(link.href) ? "_blank" : "_self"}
             icon={isExternalLink(link.href) ? ExternalLinkIcon : ArrowRightIcon}
             iconPosition="right"
           />

@@ -129,7 +129,7 @@ export const ParsDocToHtml = (formData: FormTypes[][]) => {
   const html =
     /* Adds image to the top-right of the pdf */
     `<div class="content text-md">
-    <a href="https://offentligai.se" target="_blank" rel="external noopener noreferrer">
+    <a href="https://offentligai.se" rel="external noopener noreferrer">
     <img width="200px"
         src="${FortroendemodellenImage.src}"
         alt="Förtroendemodellen logo badge" />

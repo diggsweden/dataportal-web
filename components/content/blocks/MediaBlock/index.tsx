@@ -65,7 +65,6 @@ const renderMedia = (
         <Link
           href={url}
           className="text-lg text-brown-600 underline-offset-[6px] hover:no-underline"
-          target="_blank"
         >
           {description || url}
           {isPDF ? (

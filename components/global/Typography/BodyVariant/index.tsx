@@ -43,7 +43,6 @@ const BodyVariant: FC<PropsWithChildren<BodyProps>> = ({
     return (
       <Link
         href={href}
-        target={isExternal ? "_blank" : "_self"}
         onClick={() => {
           if (!isExternal) {
             window.scrollTo({ top: 0, behavior: "smooth" });

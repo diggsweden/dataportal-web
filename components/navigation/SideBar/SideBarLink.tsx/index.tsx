@@ -62,7 +62,6 @@ const MenuLink: FC<MenuLinkProps> = ({
       )}
       href={href}
       tabIndex={tabIndex}
-      target={variant === "external" ? "_blank" : "_self"}
     >
       <>
         {isActive && <NavPixelsImage className="absolute right-none" />}

@@ -33,7 +33,6 @@ export const Promo: FC<{
           ? `${link.slug}`
           : `${pathname}${link.slug}`
       }
-      target={link.linktype === "EXTERNAL" ? "_blank" : "_self"}
       className="group flex h-full flex-col bg-white text-brown-900 no-underline"
     >
       {icon && (

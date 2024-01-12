@@ -141,7 +141,7 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
                 '<span class="">{{text}}</span>' + 
                   '<span class="block mb-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
                   '<div>{{ text content="\${skos:definition}" }}</div>' +
-                  '<a target="_blank" href="{{resourceURI}}"><button class="button button--primary button--large text-white" >${t(
+                  '<a href="{{resourceURI}}"><button class="button button--primary button--large text-white" >${t(
                     "pages|specification_page$download",
                   )} {{prop "prof:hasRole" class="type" render="label"}}</button> </a>',
               },

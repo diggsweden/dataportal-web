@@ -32,11 +32,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
 
   return (
     <div className="flex h-[32px] flex-row items-center justify-between">
-      <Link
-        href={"https://digg.se/"}
-        target="_blank"
-        className="focus:outline-white"
-      >
+      <Link href={"https://digg.se/"} className="focus:outline-white">
         <DiggSmallLogo />
       </Link>
       <nav>
