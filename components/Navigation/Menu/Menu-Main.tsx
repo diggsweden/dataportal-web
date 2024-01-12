@@ -42,7 +42,9 @@ const MenuMain: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
           key={idx}
           href={`/${t(`routes|${menu.title}$path`)}`}
           className={`header-link${
-            pathname === `/${t(`routes|${menu.title}$path`)}` ? " active" : ""
+            pathname?.startsWith(`/${t(`routes|${menu.title}$path`)}`)
+              ? " active"
+              : ""
           }`}
           onClick={() => setOpenSidebar(false)}
         >

@@ -86,7 +86,7 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
 
   function getUrl(article: Article) {
     const { slug, type } = article;
-    const publicationUrl = `/aktuellt${slug}`;
+    const publicationUrl = `/${showMoreLink?.slug}${slug}`;
     const containerUrl = `${slug}`;
     return type === "publication" ? publicationUrl : containerUrl;
   }
