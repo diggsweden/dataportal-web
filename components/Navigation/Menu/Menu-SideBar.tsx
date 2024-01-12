@@ -30,7 +30,8 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
   const isActive = (path: string) => {
     if (
       pathname === path ||
-      (pathname === "/" && path === t(`common|lang-path`))
+      (pathname === "/" && path === t(`common|lang-path`)) ||
+      pathname?.startsWith(path)
     ) {
       return " active";
     } else return "";
