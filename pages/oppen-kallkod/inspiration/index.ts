@@ -1,5 +1,5 @@
-import { getPublicationsList, populateSeo } from "../../../utilities";
-import ArticleListPage from "../../aktuellt";
+import { getPublicationsList, populateSeo } from "@/utilities";
+import { ListPage } from "@/components/content/ListPage";
 
 export async function getStaticProps({ locale }: any) {
   return await getPublicationsList(
@@ -18,4 +18,4 @@ export async function getStaticProps({ locale }: any) {
   );
 }
 
-export default ArticleListPage;
+export default ListPage;

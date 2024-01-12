@@ -1,6 +1,6 @@
 import { GetStaticPaths } from "next/types";
-import { Publication } from "../../../components/pages/Articles";
-import { getPublication } from "../../../utilities";
+import { getPublication } from "@/utilities";
+import { PublicationFull } from "@/components/content/Publication/PublicationFull";
 
 export const getStaticProps = async ({ params, locale }: any) => {
   const slug = ("/" + params?.event) as string;
@@ -19,4 +19,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export default Publication;
+export default PublicationFull;
