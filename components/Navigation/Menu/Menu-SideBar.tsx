@@ -124,7 +124,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
               </details>
             ) : (
               <Link
-                href={t(`routes|${menu.title}$path`)}
+                href={`/${t(`routes|${menu.title}$path`)}`}
                 onClick={() => setOpenSidebar(false)}
               >
                 <div
