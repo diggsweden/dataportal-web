@@ -24,7 +24,7 @@ export const AccordionBlock: FC<AccordionBlockProps> = ({
         aria-expanded={open}
         aria-controls={`section${idx}`}
       >
-        <span className="text-lg underline-offset-4 group-hover:underline">
+        <span className="max-w-[calc(100%-36px)] text-lg underline-offset-4 group-hover:underline">
           {question}
         </span>
         {open ? (

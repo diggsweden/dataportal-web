@@ -7,8 +7,7 @@ import { usePathname } from "next/navigation";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { FormTypes } from "@/types/form";
 import { GetLocalstorageData, handleScroll } from "@/utilities/formUtils";
-import ArrowIcon from "@/assets/icons/arrowLeft.svg";
-import { Button, ButtonLink } from "@/components/global/Button";
+import { Button } from "@/components/global/Button";
 import { Heading } from "@/components/global/Typography/Heading";
 import { RenderForm } from "@/components/global/Form/RenderForm";
 import { FormBottomNav } from "@/components/navigation/FormBottomNav";
@@ -222,18 +221,9 @@ export const FormWrapper: FC<Props> = ({ elements, module }) => {
   return (
     <Container>
       {formDataArray[0] && (
-        <div className="max-w-md py-xl">
+        <div className="max-w-md">
           <span ref={scrollRef} />
           <div className="space-y-lg">
-            {page === (showFirstPage ? 0 : 1) && (
-              <ButtonLink
-                href={"/offentligai/fortroendemodellen"}
-                label={t("pages|form$go-back-text")}
-                icon={ArrowIcon}
-                iconPosition="left"
-              />
-            )}
-
             {/* Show the correct progress-bar */}
             {page !== 0 && formSteps.length > 0 && (
               <>

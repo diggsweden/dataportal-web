@@ -29,6 +29,15 @@ import { SideBar } from "@/components/navigation/SideBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieBanner } from "@/components/global/CookieBanner";
+import "@/styles/main.css";
+import {
+  Breadcrumb,
+  BreadcrumbProps,
+} from "@/components/navigation/BreadCrumb";
+import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
+import { Hero } from "@/components/layout/Hero";
+import { MetaData } from "@/components/global/MetaData";
 
 const GetCookiesAccepted = () => {
   try {
@@ -102,6 +111,72 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
       document.body.removeEventListener("mousedown", click);
     };
   }, []);
+
+  useEffect(() => {
+    const heading = pageProps.heading;
+    const containerHeading = pageProps.container?.heading;
+
+    if (pageProps.type === "MultiContainer") {
+      const categoryName = pageProps.category?.name;
+      const catergoryUrl = pageProps.category?.slug;
+      const containerDomainName = pageProps.container?.domains[0]?.name;
+      const containerDomainUrl = pageProps.container?.domains[0]?.slug;
+
+      if (categoryName && catergoryUrl && containerHeading) {
+        const crumbs = makeBreadcrumbsFromPath(
+          pathname,
+          containerHeading,
+          categoryName,
+          catergoryUrl,
+        );
+
+        return setBreadcrumb({
+          crumbs: crumbs.crumbs,
+          name: containerHeading,
+        });
+      }
+
+      if (containerDomainName && containerDomainUrl && containerHeading) {
+        const crumbs = makeBreadcrumbsFromPath(
+          pathname,
+          containerHeading,
+          containerDomainName,
+          containerDomainUrl,
+        );
+
+        return setBreadcrumb({
+          crumbs: crumbs.crumbs,
+          name: containerHeading,
+        });
+      }
+    }
+
+    if (containerHeading) {
+      const crumbs = makeBreadcrumbsFromPath(pathname, heading);
+      setBreadcrumb({
+        crumbs: crumbs.crumbs,
+        name: containerHeading ? containerHeading : "",
+      });
+    }
+    if (heading) {
+      const crumbs = makeBreadcrumbsFromPath(pathname, containerHeading);
+      setBreadcrumb({
+        crumbs: crumbs.crumbs,
+        name: heading ? heading : "",
+      });
+    }
+  }, [pathname]);
+
+  let searchProps = null;
+
+  if (pathname === "/" || pageProps.domain === "data") {
+    searchProps = {
+      destination: `/${lang}/datasets`,
+      placeholder: t("startpage$search_placeholder"),
+    };
+  }
+
+  let conditionalPreamble = pageProps.domain === "data" ? null : preamble;
 
   // useEffect(() => {
   //   if (previousPath) {
@@ -257,8 +332,24 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   <span>{defaultSettings.noScriptContent}</span>
                 </div>
               </noscript>
-              {breadcrumbState.crumbs.length > 0 && (
-                <Breadcrumb {...breadcrumbState} />
+
+              {heroImage && (
+                <Hero
+                  heading={heading}
+                  preamble={conditionalPreamble}
+                  image={heroImage}
+                  search={searchProps}
+                />
+              )}
+
+              {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
+                <div
+                  className={`transition-all duration-300 ease-in-out ${
+                    openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
+                  }`}
+                >
+                  <Breadcrumb {...breadcrumbState} />
+                </div>
               )}
               <main
                 className={`min-h-[calc(100vh-656px)] transition-all duration-300 ease-in-out lg:min-h-[calc(100vh-524px)] ${

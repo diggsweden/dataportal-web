@@ -41,6 +41,16 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
           );
         }
 
+        if (name === "table") {
+          return (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                {domToReact(children as DOMNode[], options)}
+              </table>
+            </div>
+          );
+        }
+
         if (attribs.class === "infoblock") {
           return (
             <div

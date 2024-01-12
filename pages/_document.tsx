@@ -59,11 +59,7 @@ class MyDocument extends Document {
             type="text/javascript"
             src="/__ENV.js"
           />
-          <link
-            href="https://cdn.screen9.com/players/amber-player.css"
-            rel="stylesheet"
-            type="text/css"
-          />
+
           <link
             rel="preload"
             href="/fonts/Ubuntu/Ubuntu-Regular.woff2"
