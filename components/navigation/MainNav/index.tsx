@@ -62,7 +62,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
               onClick={() => setOpenSideBar(false)}
               label={t(`routes|${menu.title}$title`)}
               className={`focus:-outline-offset-2 focus:outline-white ${
-                pathname === `/${t(`routes|${menu.title}$path`)}`
+                pathname.startsWith(`/${t(`routes|${menu.title}$path`)}`)
                   ? " active"
                   : ""
               }`}

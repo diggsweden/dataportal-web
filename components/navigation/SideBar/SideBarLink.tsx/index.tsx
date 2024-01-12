@@ -50,7 +50,9 @@ const MenuLink: FC<MenuLinkProps> = ({
   const pathname = usePathname();
 
   const isActive =
-    pathname === href || (pathname === "/" && href === t(`common|lang-path`));
+    pathname === href ||
+    (pathname === "/" && href === t(`common|lang-path`)) ||
+    pathname.startsWith(href);
 
   return (
     <Link
@@ -117,7 +119,8 @@ const SideBarLink: FC<
           pathname === `/${t(`routes|${menu.title}$path`)}` ||
           (pathname === "/" &&
             `/${t(`common|lang-path`)}` ===
-              `/${t(`routes|${menu.title}$path`)}`),
+              `/${t(`routes|${menu.title}$path`)}`) ||
+          pathname.startsWith(`/${t(`routes|${menu.title}$path`)}`),
       );
       if (!hasActiveLink) {
         setOpen(false);
@@ -125,7 +128,7 @@ const SideBarLink: FC<
         setOpen(true);
       }
     }
-  }, [openSideBar, pathname, list]);
+  }, [pathname, list]);
 
   if (level === "1" && href) {
     return (

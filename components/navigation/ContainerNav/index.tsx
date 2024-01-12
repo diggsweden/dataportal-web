@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
 import { Button } from "@/components/global/Button";
 import CloseCrossIcon from "@/assets/icons/closeCross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
+import { usePathname } from "next/navigation";
 
 interface ContainerDpDwnProps {
   related: RelatedContainerFragment[];
@@ -16,11 +16,14 @@ export const ContainerNav: React.FC<ContainerDpDwnProps> = ({
   domain,
 }) => {
   const [expanded, setExpanded] = useState(false);
-
-  const { asPath } = useRouter() || {};
+  const pathname = usePathname();
 
   const isActive = (url: string) => {
-    return asPath === url;
+    if (url === related[0].slug) {
+      return pathname === related[0].slug;
+    } else {
+      return pathname.startsWith(url) && pathname !== related[0].slug;
+    }
   };
 
   return (
