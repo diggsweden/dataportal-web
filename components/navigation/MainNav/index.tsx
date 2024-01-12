@@ -46,18 +46,20 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
 
   return (
     <div className="flex flex-row items-center justify-between">
-      {!openSearch && (
-        <Link
-          href={`${t(`common|${"lang-path"}`)}`}
-          onClick={() => setOpenSideBar(false)}
-          className="focus:outline-white"
-        >
-          <DataportalLogo
-            viewBox="0 0 228 44"
-            className="h-[32px] w-[160px] md:h-[44px] md:w-[228px]"
-          />
-        </Link>
-      )}
+      <Link
+        href={`${t(`common|${"lang-path"}`)}`}
+        onClick={() => setOpenSideBar(false)}
+        className="focus:outline-white"
+      >
+        <DataportalLogo
+          viewBox="0 0 228 44"
+          className={`${
+            openSearch
+              ? "hidden lg:block xl:w-[150px]"
+              : "h-[32px] w-[160px] md:h-[44px] md:w-[228px] "
+          } `}
+        />
+      </Link>
       <div className="flex w-full flex-row items-center justify-end">
         <nav className="hidden flex-row items-center gap-sm xl:flex">
           {menues.map((menu: MainNavData, idx: number) => (
