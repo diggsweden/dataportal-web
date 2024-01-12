@@ -138,9 +138,9 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   return (
     <Container>
       <article
-        className={`grid max-w-md grid-cols-1 lg:w-fit lg:max-w-xl
-        lg:grid-cols-[620px_132px] lg:gap-x-xl ${
-          hasRelatedContent ? "xl:grid-cols-[200px_620px_132px]" : ""
+        className={`grid max-w-md grid-cols-1 lg:max-w-xl
+        lg:grid-cols-[620px_1fr] lg:gap-x-xl ${
+          hasRelatedContent ? "xl:grid-cols-[200px_620px_1fr]" : ""
         }`}
       >
         {hasRelatedContent && (
@@ -159,7 +159,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
         )}
 
         <main
-          className={`content col-start-1 max-w-md space-y-xl
+          className={`content col-start-1 max-w-md space-y-lg md:space-y-xl
            ${hasRelatedContent ? "xl:col-span-1 xl:col-start-2" : ""}`}
         >
           <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
@@ -169,10 +169,12 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
         {menuItems.length > 2 && (
           <div
             id="stickyNav"
-            className={`col-start-1 row-start-3 lg:relative lg:right-none lg:col-start-2 
+            className={`col-start-1 row-start-3 w-full lg:relative lg:right-none lg:col-start-2 
            lg:h-full ${
-             hasRelatedContent
-               ? " lg:row-start-3 xl:col-span-1 xl:col-start-3  xl:row-start-2 "
+             hasRelatedContent && image
+               ? "lg:row-start-2 xl:col-span-1 xl:col-start-3 xl:row-start-1 "
+               : hasRelatedContent && !image
+               ? "lg:row-start-3 xl:col-span-1 xl:col-start-3 xl:row-start-2"
                : "lg:row-start-2"
            }`}
           >

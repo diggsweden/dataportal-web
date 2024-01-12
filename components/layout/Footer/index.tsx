@@ -16,7 +16,7 @@ export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
           openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
         }`}
       >
-        <Container className="space-y-2xl">
+        <Container className="space-y-xl md:space-y-2xl">
           <FooterNav setOpenSideBar={setOpenSideBar} />
           <DiggLogo />
         </Container>

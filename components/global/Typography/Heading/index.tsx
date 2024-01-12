@@ -1,13 +1,13 @@
 import React, { FC, HTMLAttributes, PropsWithChildren } from "react";
 import { cx, cva, VariantProps } from "class-variance-authority";
 
-const headingVariants = cva([], {
+const headingVariants = cva(["text-wrap"], {
   variants: {
     size: {
-      lg: ["text-2xl mb-lg"],
-      md: ["text-xl mb-lg"],
-      sm: ["text-lg mb-md"],
-      xs: ["text-md mb-md"],
+      lg: ["text-xl md:text-2xl mb-lg"],
+      md: ["text-lg md:text-xl mb-md md:mb-lg"],
+      sm: ["text-md md:text-lg mb-md"],
+      xs: ["text-sm md:text-md mb-sm md:mb-md"],
     },
   },
   defaultVariants: {

@@ -72,7 +72,11 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
           const level = parseInt(name[1]);
           const size = name === "h1" ? "lg" : name === "h2" ? "md" : "sm";
           const className =
-            name === "h1" ? "!mt-xl" : name === "h2" ? "!mt-xl" : "!mt-lg";
+            name === "h1"
+              ? "!mt-lg md:!mt-xl"
+              : name === "h2"
+              ? "!mt-lg md:!mt-xl"
+              : "!mt-md md:!mt-lg";
           return (
             // @ts-ignore
             <Heading level={level} size={size} className={className}>

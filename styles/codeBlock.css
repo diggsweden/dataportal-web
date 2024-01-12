@@ -20,7 +20,7 @@ code[class*="language-"] ::selection {
 
 /* Code blocks */
 pre[class*="language-"] {
-  @apply overflow-auto p-lg pl-md;
+  @apply min-h-[82px] overflow-auto p-lg pl-md pr-2xl;
 }
 
 :not(pre) > code[class*="language-"],
