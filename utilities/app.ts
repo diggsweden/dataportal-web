@@ -56,7 +56,7 @@ export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
     case "Form":
       return {};
     case "Module":
-      return {};
+      return { seo: props.seo, heading: props.heading };
     default:
       return {};
   }

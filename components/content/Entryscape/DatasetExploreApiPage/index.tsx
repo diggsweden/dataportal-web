@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { ApiExplorerProps } from "@/components/content/Entryscape/ApiExploring";
-import { ExternalLink } from "@/components/navigation";
+import { ExternalLink } from "@/components/navigation/ExternalLink";
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import useTranslation from "next-translate/useTranslation";
 import { SettingsContext } from "@/providers/SettingsProvider";
