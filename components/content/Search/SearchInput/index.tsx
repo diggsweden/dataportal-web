@@ -14,7 +14,6 @@ interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   isLoading?: boolean;
   submitSearch?: Dispatch<string>;
   type?: "small" | "large";
-  setOpenSearch?: Function;
 }
 
 export const SearchInput: FC<SearchInputProps> = ({
@@ -25,7 +24,6 @@ export const SearchInput: FC<SearchInputProps> = ({
   submitSearch,
   setQuery,
   type,
-  setOpenSearch,
   ...props
 }) => {
   const { t } = useTranslation();
@@ -55,7 +53,6 @@ export const SearchInput: FC<SearchInputProps> = ({
             onClick={() => {
               submitSearch && submitSearch("");
               setQuery("");
-              setOpenSearch && setOpenSearch(false);
             }}
           />
         )}

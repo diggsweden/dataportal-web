@@ -98,7 +98,6 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                 placeholder={t("common|search")}
                 query={query}
                 setQuery={setQuery}
-                setOpenSearch={setOpenSearch}
                 type="small"
                 className="!h-[44px] border-none !bg-brown-100 pr-[90px] hover:outline-0 focus:outline-0 md:ml-sm"
               />
