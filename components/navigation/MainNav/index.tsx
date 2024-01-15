@@ -86,9 +86,11 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
             </Button>
           ) : (
             <form
-              className={`transition-width max-w-[274px] text-sm duration-100 md:w-[274px] [&_div]:mr-none [&_div_div_button]:p-[10px] first:[&_div_div_button]:bg-transparent hover:first:[&_div_div_button]:bg-brown-200  ${
+              className={`transition-width max-w-[274px] text-sm duration-100 md:w-[274px] [&_div]:mr-none [&_div_div_button]:p-[10px] hover:first:[&_div_div_button]:bg-brown-200  ${
                 openSearch
-                  ? "w-full [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900"
+                  ? `w-full ${
+                      query ? "first:[&_div_div_button]:bg-transparent" : ""
+                    } [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900`
                   : "w-none overflow-hidden"
               }`}
               action="/search"
