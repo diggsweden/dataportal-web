@@ -1,7 +1,7 @@
 import Arrow from "@/assets/icons/chevronRight.svg";
 import useTranslation from "next-translate/useTranslation";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
 type Pagination = {
@@ -74,7 +74,9 @@ export const Pagination: React.FC<Pagination> = ({
   useEffect(() => {
     if (pathname !== "/") {
       setPageNumber(currentPage - 1);
-      currentPage !== 1 ? push(`?page=${currentPage}`) : push("");
+      currentPage !== 1
+        ? push(`?page=${currentPage}`, { scroll: false })
+        : push("", { scroll: false });
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [currentPage]);
