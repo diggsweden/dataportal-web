@@ -41,8 +41,8 @@ export const ListPage: FC<PublicationListResponse> = ({
 
         <div className="flex justify-center">
           <Pagination
-            searchResult={publications}
-            perPage={12}
+            searchResult={publications.length}
+            itemsPerPage={12}
             setPageNumber={setPageNumber}
           />
         </div>

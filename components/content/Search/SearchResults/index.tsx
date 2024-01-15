@@ -158,6 +158,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   searchMode,
 }) => {
   const [pageNumber, setPageNumber] = useState(0);
+  const [isCompact, setCompact] = useState(false);
   const { trackEvent } = useMatomo();
   const { t } = useTranslation();
 
@@ -174,8 +175,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       action: `Url: ${url}, sökfras: ${search.request.query}, typ: ${searchMode}`,
     });
   };
-
-  const [isCompact, setCompact] = useState(false);
 
   useEffect(() => {
     clearLocalStorage("ScrollposY_", `ScrollposY_${searchKey}`);
@@ -313,8 +312,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
         {(search.result.pages || 0) > 1 && (
           <Pagination
             searchResult={search.result.count}
-            pages={search.result.pages}
             setPageNumber={setPageNumber}
+            itemsPerPage={search.request.take ? search.request.take : 20}
           />
         )}
       </div>
