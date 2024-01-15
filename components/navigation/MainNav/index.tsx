@@ -100,7 +100,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                 setQuery={setQuery}
                 setOpenSearch={setOpenSearch}
                 type="small"
-                className="!pr-90 !h-[44px] border-none !bg-brown-100 pr-[85px] hover:outline-0 focus:outline-0 md:ml-sm"
+                className="!h-[44px] border-none !bg-brown-100 pr-[90px] hover:outline-0 focus:outline-0 md:ml-sm"
               />
             </form>
           )}
