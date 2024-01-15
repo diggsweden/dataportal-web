@@ -18,6 +18,10 @@ export const Pagination: React.FC<Pagination> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [screenSize, setScreenSize] = useState(false);
   const pageCount: number = Math.ceil(searchResult / itemsPerPage);
+  const firstOnCurrentPage =
+    currentPage === 1 ? 1 : (currentPage - 1) * itemsPerPage;
+  const lastOnCurrentPage =
+    currentPage === pageCount ? searchResult : itemsPerPage * currentPage;
   const { t } = useTranslation();
   const { push } = useRouter();
   const pathname = usePathname();
@@ -88,13 +92,18 @@ export const Pagination: React.FC<Pagination> = ({
       }  mt-xl w-full flex-col items-center justify-between gap-md md:flex-row md:gap-none`}
     >
       <span>
-        {t("pages|search$page")} {currentPage} {t("common|of")} {pageCount}
+        {t("pages|search$showing")}
+        <span className="font-strong"> {firstOnCurrentPage} </span>
+        {t("common|to")}
+        <span className="font-strong"> {lastOnCurrentPage} </span>
+        {t("common|of")} <span className="font-strong"> {searchResult} </span>
+        {t("pages|search$results")}
       </span>
       <div className="flex items-center">
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
           className={`flex h-xl w-xl items-center justify-center bg-white ${
-            currentPage === 1 ? "[&_path]:opacity-20" : ""
+            currentPage === 1 ? "cursor-not-allowed [&_path]:opacity-20" : ""
           }`}
           disabled={currentPage === 1}
         >
@@ -107,7 +116,9 @@ export const Pagination: React.FC<Pagination> = ({
             className={`${
               value === currentPage
                 ? "bg-brown-800 text-white"
-                : `bg-white ${value !== "..." ? "hover:bg-brown-200" : ""} `
+                : `bg-white ${
+                    value !== "..." ? "hover:bg-brown-200" : "cursor-auto"
+                  } `
             } flex h-xl w-xl cursor-pointer items-center justify-center`}
           >
             <span>{value}</span>
@@ -116,7 +127,9 @@ export const Pagination: React.FC<Pagination> = ({
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           className={`flex h-xl w-xl items-center justify-center !bg-white ${
-            currentPage === pageCount ? "[&_path]:opacity-20" : ""
+            currentPage === pageCount
+              ? "cursor-not-allowed [&_path]:opacity-20"
+              : ""
           }`}
           disabled={currentPage === pageCount}
         >
