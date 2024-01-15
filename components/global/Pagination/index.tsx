@@ -17,17 +17,17 @@ export const Pagination: React.FC<Pagination> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [screenSize, setScreenSize] = useState(false);
-  const pageCount: number = Math.ceil(searchResult / itemsPerPage);
+  const totalPages: number = Math.ceil(searchResult / itemsPerPage);
   const firstOnCurrentPage =
     currentPage === 1 ? 1 : (currentPage - 1) * itemsPerPage;
   const lastOnCurrentPage =
-    currentPage === pageCount ? searchResult : itemsPerPage * currentPage;
+    currentPage === totalPages ? searchResult : itemsPerPage * currentPage;
   const { t } = useTranslation();
   const { push } = useRouter();
   const pathname = usePathname();
   const pageSpace: string = "...";
   const numbersArray: number[] = Array.from(
-    { length: pageCount },
+    { length: totalPages },
     (_, index) => index + 1,
   );
 
@@ -41,36 +41,32 @@ export const Pagination: React.FC<Pagination> = ({
 
   const pagination = () => {
     if (screenSize) {
-      if (pageCount > 5) {
-        return [
-          1,
-          currentPage === 1 || currentPage === 2 || currentPage === 3
-            ? 2
-            : pageSpace,
-          currentPage === pageCount || currentPage === pageCount - 1
-            ? pageCount - 2
-            : currentPage === 1 || currentPage === 2
-            ? 3
-            : currentPage,
-          currentPage >= pageCount - 2 ? pageCount - 1 : pageSpace,
-          pageCount,
-        ];
+      if (totalPages > 5) {
+        if (currentPage > 2 && currentPage <= totalPages - 2) {
+          return [1, pageSpace, currentPage, pageSpace, totalPages];
+        }
+        if (currentPage >= totalPages - 3) {
+          return [1, pageSpace, ...numbersArray.slice(-3)];
+        }
+        return [...numbersArray.slice(0, 3), pageSpace, totalPages];
       } else return numbersArray;
     }
-    if (pageCount > 7) {
-      if (currentPage >= pageCount - 4) {
-        return [1, pageSpace, ...numbersArray.slice(-5)];
-      } else {
+    if (totalPages > 7) {
+      if (currentPage > 3 && currentPage < totalPages - 3) {
         return [
           1,
-          currentPage === pageCount - 5 ? pageSpace : null,
-          currentPage === 1 ? 2 : currentPage,
-          currentPage === 1 ? 3 : currentPage + 1,
-          currentPage === pageCount - 5 ? currentPage + 2 : pageSpace,
-          pageCount - 2,
-          pageCount - 1,
-          pageCount,
-        ].filter((item) => item !== null);
+          pageSpace,
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          pageSpace,
+          totalPages,
+        ];
+      }
+      if (currentPage >= totalPages - 4) {
+        return [1, pageSpace, ...numbersArray.slice(-5)];
+      } else {
+        return [...numbersArray.slice(0, 5), pageSpace, totalPages];
       }
     } else return numbersArray;
   };
@@ -88,7 +84,7 @@ export const Pagination: React.FC<Pagination> = ({
   return (
     <div
       className={`${
-        pageCount <= 1 ? "hidden" : "flex"
+        totalPages <= 1 ? "hidden" : "flex"
       }  mt-xl w-full flex-col items-center justify-between gap-md md:flex-row md:gap-none`}
     >
       <span>
@@ -103,7 +99,9 @@ export const Pagination: React.FC<Pagination> = ({
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
           className={`flex h-xl w-xl items-center justify-center bg-white ${
-            currentPage === 1 ? "cursor-not-allowed [&_path]:opacity-20" : ""
+            currentPage === 1
+              ? "cursor-not-allowed [&_path]:opacity-20"
+              : "hover:bg-brown-200"
           }`}
           disabled={currentPage === 1}
         >
@@ -115,7 +113,7 @@ export const Pagination: React.FC<Pagination> = ({
             key={idx}
             className={`${
               value === currentPage
-                ? "bg-brown-800 text-white"
+                ? "cursor-auto bg-brown-800 text-white"
                 : `bg-white ${
                     value !== "..." ? "hover:bg-brown-200" : "cursor-auto"
                   } `
@@ -126,12 +124,12 @@ export const Pagination: React.FC<Pagination> = ({
         ))}
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
-          className={`flex h-xl w-xl items-center justify-center !bg-white ${
-            currentPage === pageCount
+          className={`flex h-xl w-xl items-center justify-center bg-white ${
+            currentPage === totalPages
               ? "cursor-not-allowed [&_path]:opacity-20"
-              : ""
+              : "hover:bg-brown-200"
           }`}
-          disabled={currentPage === pageCount}
+          disabled={currentPage === totalPages}
         >
           <Arrow />
         </button>
