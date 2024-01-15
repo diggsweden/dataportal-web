@@ -45,7 +45,7 @@ export const SearchInput: FC<SearchInputProps> = ({
         onChange={(e) => setQuery(e.target.value)}
         {...props}
       />
-      <div className="absolute mr-[4px] flex h-[44px]">
+      <div className="absolute mr-xs flex h-[44px]">
         {(type === "small" || query) && (
           <Button
             type="reset"
