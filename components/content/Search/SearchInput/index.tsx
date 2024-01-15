@@ -44,7 +44,7 @@ export const SearchInput: FC<SearchInputProps> = ({
         {...props}
       />
       <div className="absolute mr-xs flex h-[44px]">
-        {(type === "small" || query) && (
+        {query && (
           <Button
             type="reset"
             variant="plain"
