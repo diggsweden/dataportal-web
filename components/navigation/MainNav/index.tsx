@@ -86,7 +86,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
             </Button>
           ) : (
             <form
-              className={`transition-width max-w-[274px] text-sm duration-100 md:w-[274px] [&_div]:mr-none [&_div_div_button]:p-[10px] first:[&_div_div_button]:bg-white  ${
+              className={`transition-width max-w-[274px] text-sm duration-100 md:w-[274px] [&_div]:mr-none [&_div_div_button]:p-[10px] first:[&_div_div_button]:bg-white hover:first:[&_div_div_button]:bg-brown-200  ${
                 openSearch
                   ? "w-full [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900"
                   : "w-none overflow-hidden"
@@ -100,7 +100,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                 setQuery={setQuery}
                 setOpenSearch={setOpenSearch}
                 type="small"
-                className="!h-[44px] border-none hover:outline-0 focus:outline-0 md:ml-sm"
+                className="!pr-85 !h-[44px] border-none pr-[85px] hover:outline-0 focus:outline-0 md:ml-sm"
               />
             </form>
           )}
