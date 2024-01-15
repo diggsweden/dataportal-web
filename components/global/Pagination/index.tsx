@@ -1,13 +1,13 @@
 import Arrow from "@/assets/icons/chevronRight.svg";
 import useTranslation from "next-translate/useTranslation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
 type Pagination = {
   searchResult: number | any;
   itemsPerPage: number;
-  setPageNumber: Function;
+  setPageNumber: Dispatch<React.SetStateAction<number>>;
 };
 
 export const Pagination: React.FC<Pagination> = ({
