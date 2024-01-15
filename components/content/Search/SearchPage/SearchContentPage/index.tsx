@@ -11,6 +11,7 @@ import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 import { SearchPageSelector } from "@/components/content/Search/SearchPageSelector";
 import { SearchInput } from "@/components/content/Search/SearchInput";
+import { Pagination } from "@/components/global/Pagination";
 
 interface SearchProps {
   activeLink?: string;
@@ -22,6 +23,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
   const { t, lang } = useTranslation("common");
   const [query, setQuery] = useState((routerQuery?.q as string) || "");
   const [trackedQuery, setTrackedQuery] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
   const { trackEvent } = useMatomo();
   const { trackPageView } = useMatomo();
 
@@ -45,9 +47,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
       searchRequest.query || "",
       lang,
       PER_PAGE,
-      searchRequest?.page && searchRequest?.page > 1
-        ? (searchRequest?.page - 1) * PER_PAGE
-        : 0,
+      pageNumber && pageNumber > 1 ? (pageNumber - 1) * PER_PAGE : 0,
       true,
     )) as any;
 
@@ -69,21 +69,6 @@ export const SearchContentPage: FC<SearchProps> = () => {
   const clearCurrentScrollPos = () => {
     if (typeof localStorage != "undefined" && typeof location != "undefined") {
       localStorage.setItem(`ScrollposY_${location.search}`, "0");
-    }
-  };
-
-  const searchFocus = () => {
-    let content = document.querySelector("#search-result");
-    if (!content) return;
-
-    const focusable = content.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    );
-
-    const first = focusable[0];
-
-    if (first) {
-      first.focus();
     }
   };
 
@@ -120,21 +105,6 @@ export const SearchContentPage: FC<SearchProps> = () => {
     );
   };
 
-  const handlePagination = (action: "increment" | "decrement") => {
-    if (!searchRequest.page) return;
-    const decrement = searchRequest.page > 1 ? +searchRequest.page - 1 : 1;
-    const increment = +(searchRequest?.page ?? 1) + 1;
-    const page = action === "increment" ? increment : decrement;
-    router.query.p = page.toString();
-    router.push(router);
-    clearCurrentScrollPos();
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-    searchFocus();
-  };
-
   useEffect(() => {
     setTrackedQuery(query || "");
     if (!!(query && trackedQuery !== query && searchResult?.count === 0)) {
@@ -150,6 +120,16 @@ export const SearchContentPage: FC<SearchProps> = () => {
     const count = searchResult?.count || -1;
     count > 0 && posY && posY != "0" && window.scrollTo(0, parseInt(posY, 10));
   });
+
+  useEffect(() => {
+    router.query.p = (1 + pageNumber).toString();
+    router.push(router);
+    clearCurrentScrollPos();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [pageNumber]);
 
   useEffect(() => {
     doSearch();
@@ -275,37 +255,12 @@ export const SearchContentPage: FC<SearchProps> = () => {
             </ul>
           )}
         </div>
-
-        {searchResult?.count && searchResult.count > PER_PAGE && (
-          <div className="pagination">
-            <div className="prev-next-page">
-              {/* Prev page */}
-              <button
-                disabled={searchRequest?.page === 1}
-                onClick={() => handlePagination("decrement")}
-              >
-                {t("pages|search$prev-page")}
-              </button>
-
-              <span>
-                {t("pages|search$page")} {searchRequest?.page ?? 1}{" "}
-                {t("common|of")}{" "}
-                {searchResult?.count &&
-                  Math.ceil(searchResult.count / PER_PAGE)}
-              </span>
-
-              {/* Next page */}
-              <button
-                disabled={
-                  (searchRequest?.page ?? 1) >=
-                  Math.ceil(searchResult?.count / PER_PAGE)
-                }
-                onClick={() => handlePagination("increment")}
-              >
-                {t("pages|search$next-page")}
-              </button>
-            </div>
-          </div>
+        {searchResult?.hits && (
+          <Pagination
+            searchResult={searchResult?.count}
+            setPageNumber={setPageNumber}
+            itemsPerPage={PER_PAGE}
+          />
         )}
       </Container>
     </div>
