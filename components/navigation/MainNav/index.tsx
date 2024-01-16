@@ -80,7 +80,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           {!openSearch ? (
             <Button
               onClick={() => setOpenSearch(!openSearch)}
-              className="h-[44px] cursor-pointer p-[10px] hover:bg-brown-800 focus-visible:outline-white"
+              className="h-[44px] cursor-pointer p-[10px] hover:bg-brown-800 focus-visible:-outline-offset-2 focus-visible:outline-white"
             >
               <SearchIcon />
             </Button>
