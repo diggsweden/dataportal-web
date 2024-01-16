@@ -17,6 +17,7 @@ import {
   ImportFromJsonFile,
   handleScroll,
 } from "@/utilities/formUtils";
+import { Modal } from "@/components/global/Modal";
 
 type Props = {
   setPage: Dispatch<SetStateAction<number>>;
@@ -35,8 +36,6 @@ export const FormBottomNav: FC<Props> = ({
 }) => {
   const [clearModalOpen, setClearModalOpen] = useState(false);
   const [saveModalOpen, setSaveModalOpen] = useState(false);
-  const clearModalRef = useRef<HTMLDivElement>(null);
-  const saveModalRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { t } = useTranslation();
   const pathname = usePathname();
@@ -61,7 +60,7 @@ export const FormBottomNav: FC<Props> = ({
   };
 
   return (
-    <nav className="space-y-xl pt-xl">
+    <nav className="z-40 space-y-xl pt-xl">
       <div className={`flex ${page === 1 ? "justify-end" : "justify-between"}`}>
         {page > 1 && (
           <Button
@@ -114,90 +113,26 @@ export const FormBottomNav: FC<Props> = ({
         />
       </div>
 
-      <div
-        className={`absolute left-none top-none z-40 !mt-none h-full w-full bg-brownOpaque5 ${
-          saveModalOpen || clearModalOpen ? "visible" : "hidden"
-        }`}
-        onClick={() => {
-          setSaveModalOpen(false);
-          setClearModalOpen(false);
-        }}
+      <Modal
+        heading={t("pages|form$clear-confirm-text")}
+        onClick={clearForm}
+        modalOpen={clearModalOpen}
+        setModalOpen={setClearModalOpen}
+        closeBtn={"Avbryt"}
+        confirmBtn={t("common|yes")}
       />
 
-      <div
-        ref={clearModalRef}
-        className={`fixed left-1/2 top-1/2 z-50 !mt-none -translate-x-1/2 
-        -translate-y-full bg-white p-xl shadow-2xl ${
-          clearModalOpen ? "visible" : "hidden"
-        }`}
-        onClick={(e) => {
-          if (e.currentTarget !== e.target) {
-            setClearModalOpen(false);
-          }
-        }}
-      >
-        <p>{t("pages|form$clear-confirm-text")}</p>
-        <div className="modal-buttons">
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              clearModalRef.current?.classList.add("hide");
-            }}
-          >
-            Avbryt
-          </button>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              clearForm();
-              clearModalRef.current?.classList.add("hide");
-            }}
-          >
-            Ja
-          </button>
-        </div>
-      </div>
-
-      <div
-        ref={saveModalRef}
-        className={`fixed left-1/2 top-1/2 z-50 !mt-none -translate-x-1/2 
-        -translate-y-full bg-white p-xl shadow-2xl ${
-          saveModalOpen ? "visible" : "hidden"
-        }`}
-        onClick={(e) => {
-          if (e.currentTarget !== e.target) {
-            setSaveModalOpen(false);
-          }
-        }}
-      >
-        <p>
-          När du klickar på OK så kommer en JSON-fil att genereras och laddas
-          ner.
-          <br />
-          <br />
-          Läs i Guiden till förtroendemoellen på förstasidan om hur du använder
-          JSON-filen.
-        </p>
-        <div className="modal-buttons">
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              saveModalRef.current?.classList.add("hide");
-            }}
-          >
-            Avbryt
-          </button>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              GenerateJsonFile(formDataArray);
-              saveModalRef.current?.classList.add("hide");
-            }}
-          >
-            Ok
-          </button>
-        </div>
-      </div>
+      <Modal
+        heading={` När du klickar på OK så kommer en JSON-fil att genereras och laddas
+          ner.`}
+        text={`Läs i Guiden till förtroendemoellen på förstasidan om hur du använder
+          JSON-filen.`}
+        onClick={() => GenerateJsonFile(formDataArray)}
+        modalOpen={saveModalOpen}
+        setModalOpen={setSaveModalOpen}
+        closeBtn={"Avbryt"}
+        confirmBtn={"OK"}
+      />
     </nav>
   );
 };
