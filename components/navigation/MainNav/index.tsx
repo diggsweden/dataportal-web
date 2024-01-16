@@ -49,7 +49,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
       <Link
         href={`${t(`common|${"lang-path"}`)}`}
         onClick={() => setOpenSideBar(false)}
-        className="focus:outline-white"
+        className="focus-visible:outline-white"
       >
         <DataportalLogo
           viewBox="0 0 228 44"
@@ -68,7 +68,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
               href={`/${t(`routes|${menu.title}$path`)}`}
               onClick={() => setOpenSideBar(false)}
               label={t(`routes|${menu.title}$title`)}
-              className={`focus:-outline-offset-2 focus:outline-white ${
+              className={`focus-visible:-outline-offset-2 focus-visible:outline-white ${
                 pathname.startsWith(`/${t(`routes|${menu.title}$path`)}`)
                   ? " active"
                   : ""
@@ -101,7 +101,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                 query={query}
                 setQuery={setQuery}
                 type="small"
-                className="!h-[44px] border-none !bg-brown-100 pr-[90px] hover:outline-0 focus:outline-0 md:ml-sm"
+                className="!h-[44px] border-none !bg-brown-100 pr-[90px] hover:outline-0 focus-visible:outline-0 md:ml-sm"
               />
             </form>
           )}
@@ -112,7 +112,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           iconPosition="left"
           onClick={() => setOpenSideBar(!openSideBar)}
           label={t("common|menu")}
-          className="focus:-outline-offset-2 focus:!outline-white"
+          className="focus-visible:-outline-offset-2 focus-visible:!outline-white"
         />
       </div>
     </div>

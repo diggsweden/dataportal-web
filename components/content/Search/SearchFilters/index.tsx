@@ -60,7 +60,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
         id={filterKey}
         name={filterKey}
         placeholder={t("search$filtersearch")}
-        className="border-none hover:outline-0 focus:outline-0"
+        className="border-none hover:outline-0 focus-visible:outline-0"
         value={filter[filterKey] || ""}
         onChange={(e) => (
           clearCurrentScrollPos(),

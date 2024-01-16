@@ -98,7 +98,7 @@ export const Pagination: FC<Pagination> = ({
       <div className="flex items-center">
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
-          className={`flex h-xl w-xl items-center justify-center bg-white focus:-outline-offset-2 ${
+          className={`flex h-xl w-xl items-center justify-center bg-white focus-visible:-outline-offset-2 ${
             currentPage === 1
               ? "cursor-not-allowed [&_path]:opacity-20"
               : "hover:bg-brown-200"
@@ -111,7 +111,7 @@ export const Pagination: FC<Pagination> = ({
           <button
             onClick={value === "..." ? () => null : () => setCurrentPage(value)}
             key={idx}
-            className={`focus:-outline-offset-2 ${
+            className={`focus-visible:-outline-offset-2 ${
               value === currentPage
                 ? "cursor-auto bg-brown-800 text-white"
                 : `bg-white ${
@@ -124,7 +124,7 @@ export const Pagination: FC<Pagination> = ({
         ))}
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
-          className={`flex h-xl w-xl items-center justify-center bg-white focus:-outline-offset-2 ${
+          className={`flex h-xl w-xl items-center justify-center bg-white focus-visible:-outline-offset-2 ${
             currentPage === totalPages
               ? "cursor-not-allowed [&_path]:opacity-20"
               : "hover:bg-brown-200"
