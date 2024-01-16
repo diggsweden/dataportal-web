@@ -1,13 +1,15 @@
 import useTranslation from "next-translate/useTranslation";
-import { useEffect, useState } from "react";
+import { Dispatch, RefObject, useEffect, useState } from "react";
 import { useClickoutside } from "@/hooks/useClickoutside";
 import { Button } from "@/components/global/Button";
 import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
 import ChevronUpIcon from "@/assets/icons/chevronUp.svg";
+import { handleScroll } from "@/utilities/formUtils";
 
 interface ContainerDpDwnProps {
   pageNames: string[];
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  setPage: Dispatch<React.SetStateAction<number>>;
+  scrollRef: RefObject<HTMLSpanElement>;
   className?: string;
   forceUpdate?: number;
 }
@@ -17,6 +19,7 @@ export const FormNav: React.FC<ContainerDpDwnProps> = ({
   className,
   setPage,
   forceUpdate,
+  scrollRef,
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [curActive, setCurActive] = useState("");
@@ -39,6 +42,7 @@ export const FormNav: React.FC<ContainerDpDwnProps> = ({
     setCurActive(pageName);
     setExpanded(false);
     setPage(pageNames.indexOf(pageName) + 1);
+    handleScroll(scrollRef);
   };
 
   const isActive = (pageName: string) => {
@@ -46,41 +50,51 @@ export const FormNav: React.FC<ContainerDpDwnProps> = ({
   };
 
   return (
-    <nav ref={ref} className={`relative mb-lg ${className ? className : ""}}`}>
+    <nav
+      ref={ref}
+      className={`relative row-start-1 mb-lg flex h-fit w-full lg:col-span-1 lg:col-start-1 
+      lg:row-span-2 lg:mb-xl ${className ? className : ""}`}
+    >
+      {expanded && (
+        <div className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden" />
+      )}
+
       <Button
         iconPosition="right"
         icon={expanded ? ChevronUpIcon : ChevronDownIcon}
         aria-haspopup={true}
         label={curActive === "" ? t("go-to") : curActive}
         onClick={() => setExpanded(!expanded)}
-        className={`w-[328px] justify-between border !bg-white text-textPrimary hover:border-2 hover:bg-white `}
-        variant={"secondary"}
+        className={`!button--large z-40 !w-full justify-between md:!w-[328px] lg:hidden`}
       />
 
-      {expanded && (
-        <ul
-          className={`absolute w-[328px] flex-col bg-white ${
-            expanded
-              ? "-bottom-sm z-40 h-fit max-h-[calc(100vh-252px)] translate-y-full overflow-y-scroll shadow-2xl"
-              : "hidden"
-          }`}
-        >
-          {pageNames.map((name) => {
-            return (
-              <li
-                key={name}
-                tabIndex={0}
-                className={`cursor-pointer p-md hover:bg-brown-100 ${
-                  isActive(name) ? "!cursor-default bg-brown-100" : ""
-                }`}
-                onClick={(e) => handleClick(e, name)}
-              >
-                {name}
-              </li>
-            );
-          })}
-        </ul>
-      )}
+      <ul
+        className={`absolute w-full flex-col bg-white md:w-[328px] lg:static lg:flex lg:h-full lg:w-fit 
+        lg:bg-transparent ${
+          expanded
+            ? `-bottom-sm z-40 h-fit max-h-[calc(100vh-292px)] translate-y-full overflow-y-scroll 
+            shadow-2xl md:max-h-[calc(100vh-248px)]`
+            : "hidden"
+        }`}
+      >
+        {pageNames.map((name, idx: number) => {
+          return (
+            <li
+              key={`name-${idx}`}
+              tabIndex={0}
+              className={`cursor-pointer p-md no-underline underline-offset-4
+               ${
+                 isActive(name)
+                   ? "!cursor-default bg-brown-900 text-white"
+                   : "text-textSecondary hover:underline"
+               }`}
+              onClick={(e) => handleClick(e, name)}
+            >
+              {name}
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 };
