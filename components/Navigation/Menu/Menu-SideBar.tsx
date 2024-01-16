@@ -24,6 +24,7 @@ interface SidebarProps {
 const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
   const [menues, setMenues] = useState<any>([]);
   const pathname = usePathname();
+  const paths = pathname?.split("/").splice(1);
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
 
@@ -31,7 +32,7 @@ const SideBar: React.FC<SidebarProps> = ({ openSideBar, setOpenSidebar }) => {
     if (
       pathname === path ||
       (pathname === "/" && path === t(`common|lang-path`)) ||
-      pathname?.startsWith(path)
+      (pathname?.startsWith(path) && paths && paths.length > 1)
     ) {
       return " active";
     } else return "";

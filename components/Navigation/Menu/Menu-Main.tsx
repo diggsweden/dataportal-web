@@ -22,6 +22,7 @@ const MenuMain: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
   const pathname = usePathname();
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
+  const paths = pathname?.split("/").splice(1);
 
   useEffect(() => {
     let enMenu;
@@ -42,7 +43,10 @@ const MenuMain: React.FC<SidebarProps> = ({ setOpenSidebar }) => {
           key={idx}
           href={`/${t(`routes|${menu.title}$path`)}`}
           className={`header-link${
-            pathname?.startsWith(`/${t(`routes|${menu.title}$path`)}`)
+            (pathname?.startsWith(`/${t(`routes|${menu.title}$path`)}`) &&
+              paths &&
+              paths.length > 1) ||
+            pathname === `/${t(`routes|${menu.title}$path`)}`
               ? " active"
               : ""
           }`}
