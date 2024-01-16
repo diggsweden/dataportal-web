@@ -161,25 +161,6 @@ mark {
 }
 
 /* General styling for focus */
-button:focus:not(:focus-visible),
-a:focus:not(:focus-visible),
-.button:focus:not(:focus-visible),
-input[type="radio"]:focus:not(:focus-visible) {
-  @apply !outline-none group-focus:outline-none;
-}
-
-.button--primary:focus:not(:focus-visible) {
-  @apply bg-brown-600 text-brown-100 hover:bg-brown-800 [&_path]:fill-brown-100;
-}
-
-.button--secondary:focus:not(:focus-visible) {
-  @apply bg-transparent text-brown-600 hover:bg-whiteOpaque5 [&_path]:fill-brown-600;
-}
-
-.button--plain:focus:not(:focus-visible) {
-  @apply bg-transparent text-brown-600 hover:bg-brown-200 [&_path]:fill-brown-600;
-}
-
 a:focus-visible,
 button:focus-visible,
 .button:focus-visible,

@@ -55,7 +55,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           viewBox="0 0 228 44"
           className={`${
             openSearch
-              ? "hidden lg:block xl:w-[150px]"
+              ? "2xl:w-[228px] hidden lg:block xl:w-[150px]"
               : "h-[32px] w-[160px] md:h-[44px] md:w-[228px] "
           } `}
         />
@@ -80,17 +80,17 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           {!openSearch ? (
             <Button
               onClick={() => setOpenSearch(!openSearch)}
+              icon={SearchIcon}
+              iconPosition="left"
               className="cursor-pointer p-[10px] hover:bg-brown-800 focus-visible:-outline-offset-2 focus-visible:outline-white"
-            >
-              <SearchIcon />
-            </Button>
+            />
           ) : (
             <form
               className={`transition-width max-w-[274px] text-sm duration-100 md:w-[274px] [&_div]:mr-none [&_div_div_button]:p-[10px] hover:first:[&_div_div_button]:bg-brown-200  ${
                 openSearch
                   ? `w-full ${
                       query ? "first:[&_div_div_button]:bg-transparent" : ""
-                    } [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900`
+                    } [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900 focus-visible:[&_div_div_button]:-outline-offset-2 focus-visible:[&_div_div_button]:outline-white`
                   : "w-none overflow-hidden"
               }`}
               action="/search"

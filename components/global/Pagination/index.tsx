@@ -97,8 +97,9 @@ export const Pagination: FC<Pagination> = ({
       </span>
       <div className="flex items-center">
         <button
+          tabIndex={currentPage === 1 ? -1 : 0}
           onClick={() => setCurrentPage(currentPage - 1)}
-          className={`flex h-xl w-xl items-center justify-center bg-white focus-visible:-outline-offset-2 ${
+          className={`flex h-xl w-xl items-center justify-center bg-white focus-visible:bg-brown-200 focus-visible:-outline-offset-2 ${
             currentPage === 1
               ? "cursor-not-allowed [&_path]:opacity-20"
               : "hover:bg-brown-200"
@@ -109,9 +110,10 @@ export const Pagination: FC<Pagination> = ({
         </button>
         {pagination().map((value: any, idx: number) => (
           <button
+            tabIndex={value === "..." || value === currentPage ? -1 : 0}
             onClick={value === "..." ? () => null : () => setCurrentPage(value)}
             key={idx}
-            className={`focus-visible:-outline-offset-2 ${
+            className={`focus-visible:bg-brown-200 focus-visible:-outline-offset-2 ${
               value === currentPage
                 ? "cursor-auto bg-brown-800 text-white"
                 : `bg-white ${
@@ -123,8 +125,9 @@ export const Pagination: FC<Pagination> = ({
           </button>
         ))}
         <button
+          tabIndex={currentPage === totalPages ? -1 : 0}
           onClick={() => setCurrentPage(currentPage + 1)}
-          className={`flex h-xl w-xl items-center justify-center bg-white focus-visible:-outline-offset-2 ${
+          className={`flex h-xl w-xl items-center justify-center bg-white focus-visible:bg-brown-200 focus-visible:-outline-offset-2 ${
             currentPage === totalPages
               ? "cursor-not-allowed [&_path]:opacity-20"
               : "hover:bg-brown-200"
