@@ -26,7 +26,7 @@ interface MainNavProps {
 const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   const [menues, setMenues] = useState<any>([]);
   const pathname = usePathname();
-  const basePath = pathname.split("/").splice(1, 1);
+  const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
 
@@ -41,10 +41,6 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
       setMenues(enMenu);
     }
   }, [isEn]);
-
-  const isActive = (url: string) => {
-    return pathname.startsWith(url) && url === `/${basePath[0]}`;
-  };
 
   return (
     <div className="flex flex-row items-center justify-between">
@@ -67,7 +63,9 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
               onClick={() => setOpenSideBar(false)}
               label={t(`routes|${menu.title}$title`)}
               className={`focus:-outline-offset-2 focus:outline-white ${
-                isActive(`/${t(`routes|${menu.title}$path`)}`) ? " active" : ""
+                `/${t(`routes|${menu.title}$path`)}` === basePath
+                  ? " active"
+                  : ""
               }`}
             />
           ))}
