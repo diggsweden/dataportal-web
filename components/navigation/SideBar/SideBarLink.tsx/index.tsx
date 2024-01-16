@@ -48,11 +48,12 @@ const MenuLink: FC<MenuLinkProps> = ({
 }) => {
   const { t } = useTranslation();
   const pathname = usePathname();
+  const paths = pathname.split("/").splice(1);
 
   const isActive =
     pathname === href ||
     (pathname === "/" && href === t(`common|lang-path`)) ||
-    pathname.startsWith(href);
+    (pathname.startsWith(href) && paths.length > 1);
 
   return (
     <Link
