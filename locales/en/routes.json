@@ -35,14 +35,6 @@
     "path": "dataservice",
     "title": "api"
   },
-  "publications": {
-    "path": "aktuellt",
-    "title": "Aktuellt"
-  },
-  "inspiration": {
-    "path": "inspiration",
-    "title": "Inspiration"
-  },
   "events": {
     "path": "events",
     "title": "Events"

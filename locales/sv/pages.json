@@ -16,7 +16,6 @@
     "data-api-header": "Data och API:er",
     "open-source-header": "Öppen källkod",
     "public-ai-header": "Offentlig AI",
-    "current-news": "Aktuellt",
     "news": "Nyheter",
     "good-examples": "Goda exempel"
   },
@@ -164,13 +163,6 @@
   },
   "dataservicepage": {
     "api": "Om API"
-  },
-  "publications": {
-    "text": "publikationer",
-    "title": "Aktuellt",
-    "view-all": "Visa alla publikationer",
-    "social_meta_title": "Publikationer - Sveriges Dataportal",
-    "social_meta_description": "Publikationer på Sveriges Dataportal"
   },
   "news": {
     "text": "nyheter",
