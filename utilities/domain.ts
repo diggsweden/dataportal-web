@@ -153,12 +153,6 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
               ...aiStrapiPuffs.links,
               {
                 ...populate,
-                title: "Inspiration",
-                slug: "/inspiration",
-                description: t("ai$inspiration_description"),
-              },
-              {
-                ...populate,
                 title: t("ai$model"),
                 slug: "/fortroendemodellen",
                 description: t("ai$model_description"),
@@ -169,12 +163,6 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
             id: "ai-puffs",
             __typename: "dataportal_Digg_RelatedContent",
             links: [
-              {
-                ...populate,
-                title: "Inspiration",
-                slug: "/inspiration",
-                description: t("ai$inspiration_description"),
-              },
               {
                 ...populate,
                 title: t("ai$model"),

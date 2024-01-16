@@ -28,8 +28,12 @@ export const getSearchHit = (
             .join(" "),
         } as SearchHit;
       case "dataportal_Digg_Publication":
+        const basePath =
+          r.hit.tags && r.hit.tags[0].value === "Nyhet"
+            ? t("routes|news$path")
+            : t("routes|good-examples$path");
         return {
-          url: `/${t("routes|publications$path")}/${r.hit.slug}`,
+          url: `/${basePath}/${r.hit.slug}`,
           title: r.hit?.heading ?? r.hit?.name,
           description: r.highlights
             ?.map((c) => {
