@@ -138,6 +138,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   return (
     <Container>
       <article
+        id="ContainerPage"
         className={`grid max-w-md grid-cols-1 lg:max-w-xl
         lg:grid-cols-[620px_1fr] lg:gap-x-xl ${
           hasRelatedContent ? "xl:grid-cols-[200px_620px_1fr]" : ""
