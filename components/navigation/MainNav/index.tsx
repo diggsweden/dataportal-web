@@ -89,7 +89,9 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
               className={`transition-width max-w-[274px] text-sm duration-100 md:w-[274px] [&_div]:mr-none [&_div_div_button]:p-[10px] hover:first:[&_div_div_button]:bg-brown-200  ${
                 openSearch
                   ? `w-full ${
-                      query ? "first:[&_div_div_button]:bg-transparent" : ""
+                      query
+                        ? "first:[&_div_div_button]:bg-transparent first:focus-visible:[&_div_div_button]:bg-brown-200 first:focus-visible:[&_div_div_button]:-outline-offset-2 first:focus-visible:[&_div_div_button]:outline-pink-600"
+                        : ""
                     } [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900 focus-visible:[&_div_div_button]:-outline-offset-2 focus-visible:[&_div_div_button]:outline-white`
                   : "w-none overflow-hidden"
               }`}
