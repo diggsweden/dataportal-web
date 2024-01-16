@@ -85,12 +85,14 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
   const articles = makeArticles(unknownArticles, theme);
 
   function getUrl(article: Article) {
-    const { slug, type } = article;
-    const publicationUrl = `/${showMoreLink?.slug}${slug}`;
+    const { slug, type, tags } = article;
+    const publicationUrl = `/${
+      tags && tags[0].value === "Nyhet" ? "nyheter" : "goda-exempel"
+    }${slug}`;
     const containerUrl = `${slug}`;
+
     return type === "publication" ? publicationUrl : containerUrl;
   }
-
   function handleClick(
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
     url: string,
@@ -149,11 +151,11 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
                   <Link
                     href={url}
                     locale={lang}
-                    className="text-lg font-bold link"
+                    className="font-bold link text-lg"
                   >
                     <Heading
                       level={3}
-                      className="article-heading text-lg font-bold link"
+                      className="article-heading font-bold link text-lg"
                     >
                       {checkLang(title)}
                     </Heading>
@@ -164,7 +166,7 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({
           })}
       </ul>
       {showMoreLink && (
-        <Link href={showMoreLink.slug} locale={lang} className="text-md link">
+        <Link href={showMoreLink.slug} locale={lang} className="link text-md">
           {showMoreLink.title || showMoreLink.slug}
         </Link>
       )}
