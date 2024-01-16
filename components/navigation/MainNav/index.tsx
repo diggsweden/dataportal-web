@@ -30,6 +30,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   const [openSearch, setOpenSearch] = useState<boolean>(false);
   const [query, setQuery] = useState("");
   const pathname = usePathname();
+  const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
 
@@ -69,7 +70,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
               onClick={() => setOpenSideBar(false)}
               label={t(`routes|${menu.title}$title`)}
               className={`focus:-outline-offset-2 focus:outline-white ${
-                pathname.startsWith(`/${t(`routes|${menu.title}$path`)}`)
+                `/${t(`routes|${menu.title}$path`)}` === basePath
                   ? " active"
                   : ""
               }`}
