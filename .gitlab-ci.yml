@@ -15,6 +15,7 @@ variables:
 
 stages:
   - build
+  - deploy
 image:build:release:
   stage: build
   cache:
