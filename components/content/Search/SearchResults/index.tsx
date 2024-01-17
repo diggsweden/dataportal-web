@@ -92,6 +92,7 @@ const SortingOptions: React.FC<{
       <Select
         id="sort"
         label={t("pages|search$sort")}
+        value={search.request.sortOrder}
         onChange={(event) => {
           event.preventDefault();
           clearCurrentScrollPos();
@@ -123,6 +124,7 @@ const SortingOptions: React.FC<{
       <Select
         id="hits"
         label={t("pages|search$numberofhits")}
+        value={search.request.take}
         onChange={(event) => {
           event?.preventDefault();
           clearCurrentScrollPos();
@@ -157,7 +159,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   search,
   searchMode,
 }) => {
-  const [pageNumber, setPageNumber] = useState(0);
+  const [pageNumber, setPageNumber] = useState<number>(0);
   const [isCompact, setCompact] = useState(false);
   const { trackEvent } = useMatomo();
   const { t } = useTranslation();
@@ -188,11 +190,11 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   });
 
   useEffect(() => {
-    if (search.result.pages || 0 > 1) {
+    if (search.result.pages) {
       clearCurrentScrollPos();
       search
         .set({
-          page: pageNumber || 0,
+          page: pageNumber - 1,
         })
         .then(() => search.doSearch());
       window.scrollTo({
@@ -309,14 +311,14 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
             </ul>
           </div>
         )}
-        {(search.result.pages || 0) > 1 && (
-          <Pagination
-            searchResult={search.result.count}
-            setPageNumber={setPageNumber}
-            itemsPerPage={search.request.take ? search.request.take : 20}
-          />
-        )}
       </div>
+      {(search.result.pages || 0) > 1 && (
+        <Pagination
+          searchResult={search.result.count}
+          setPageNumber={setPageNumber}
+          itemsPerPage={search.request.take ? search.request.take : 20}
+        />
+      )}
     </>
   );
 };

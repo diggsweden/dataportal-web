@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
 type Pagination = {
-  searchResult: number;
+  searchResult: number | any;
   itemsPerPage: number;
   setPageNumber: Dispatch<SetStateAction<number>>;
 };
@@ -52,7 +52,7 @@ export const Pagination: FC<Pagination> = ({
       } else return numbersArray;
     }
     if (totalPages > 7) {
-      if (currentPage > 3 && currentPage < totalPages - 3) {
+      if (currentPage > 3 && currentPage < totalPages - 2) {
         return [
           1,
           pageSpace,
@@ -63,29 +63,38 @@ export const Pagination: FC<Pagination> = ({
           totalPages,
         ];
       }
-      if (currentPage >= totalPages - 4) {
-        return [1, pageSpace, ...numbersArray.slice(-5)];
+      if (currentPage >= totalPages - 2) {
+        return [
+          1,
+          pageSpace,
+          ...numbersArray.slice(currentPage === totalPages - 2 ? -4 : -3),
+        ];
       } else {
-        return [...numbersArray.slice(0, 5), pageSpace, totalPages];
+        return [
+          ...numbersArray.slice(0, currentPage === 3 ? 4 : 3),
+          pageSpace,
+          totalPages,
+        ];
       }
     } else return numbersArray;
   };
 
-  useEffect(() => {
-    if (pathname !== "/") {
-      setPageNumber(currentPage - 1);
-      currentPage !== 1
-        ? push(`?page=${currentPage}`, { scroll: false })
+  const changePage = (page: number) => {
+    if (pathname === ("/nyheter" || "/goda-exempel")) {
+      page !== 1
+        ? push(`?page=${2}`, { scroll: false })
         : push("", { scroll: false });
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }, [currentPage]);
+    setPageNumber(page);
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div
       className={`${
         totalPages <= 1 ? "hidden" : "flex"
-      }  mt-xl w-full flex-col items-center justify-between gap-md md:flex-row md:gap-none`}
+      }  mt-xl w-full flex-col items-center justify-between gap-lg lg:flex-row lg:gap-none`}
     >
       <span>
         {t("pages|search$showing")}
@@ -97,7 +106,7 @@ export const Pagination: FC<Pagination> = ({
       </span>
       <div className="flex items-center">
         <button
-          onClick={() => setCurrentPage(currentPage - 1)}
+          onClick={() => changePage(currentPage - 1)}
           className={`flex h-xl w-xl items-center justify-center bg-white focus:-outline-offset-2 ${
             currentPage === 1
               ? "cursor-not-allowed [&_path]:opacity-20"
@@ -109,7 +118,7 @@ export const Pagination: FC<Pagination> = ({
         </button>
         {pagination().map((value: any, idx: number) => (
           <button
-            onClick={value === "..." ? () => null : () => setCurrentPage(value)}
+            onClick={value === "..." ? () => null : () => changePage(value)}
             key={idx}
             className={`focus:-outline-offset-2 ${
               value === currentPage
@@ -123,7 +132,7 @@ export const Pagination: FC<Pagination> = ({
           </button>
         ))}
         <button
-          onClick={() => setCurrentPage(currentPage + 1)}
+          onClick={() => changePage(currentPage + 1)}
           className={`flex h-xl w-xl items-center justify-center bg-white focus:-outline-offset-2 ${
             currentPage === totalPages
               ? "cursor-not-allowed [&_path]:opacity-20"

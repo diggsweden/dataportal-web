@@ -11,11 +11,11 @@ export const ListPage: FC<PublicationListResponse> = ({
   publications,
   heading,
 }) => {
-  const [pageNumber, setPageNumber] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
   const { trackPageView } = useMatomo();
   const pathname = usePathname();
   const publicationsPerPage = 12;
-  const articlesVisited = pageNumber * publicationsPerPage;
+  const articlesVisited = (pageNumber - 1) * publicationsPerPage;
   const publicationsOnPage = publications.slice(
     articlesVisited,
     articlesVisited + publicationsPerPage,

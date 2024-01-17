@@ -122,7 +122,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
   });
 
   useEffect(() => {
-    router.query.p = (1 + pageNumber).toString();
+    router.query.p = pageNumber.toString();
     router.push(router);
     clearCurrentScrollPos();
     window.scrollTo({
