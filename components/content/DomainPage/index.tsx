@@ -8,7 +8,6 @@ import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__ge
 import { PublicationDataFragment as IPublication } from "@/graphql/__generated__/operations";
 import { PublicationList } from "@/components/content/Publication/PublicationList";
 import { PromoProps } from "@/components/content/Promo";
-import { CategoriesNav } from "@/components/navigation/CategoriesNav";
 import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentBlock";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import useTranslation from "next-translate/useTranslation";
@@ -16,6 +15,7 @@ import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 import { Preamble } from "@/components/global/Typography/Preamble";
 import { ContentBox } from "@/components/content/ContentBox";
+import { CategoryBox } from "@/components/content/CategoryBox";
 
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
@@ -115,7 +115,11 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           </div>
         )}
 
-        {domain === "data" && <CategoriesNav />}
+        {domain === "data" && (
+          <>
+            <CategoryBox />
+          </>
+        )}
 
         {areas && !domain && lang === "sv" && (
           <div className="py-xl">
