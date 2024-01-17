@@ -1,0 +1,29 @@
+image: docker:20.10.16
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_TAG
+variables:
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_TLS_VERIFY: 1
+  DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+  TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+  IMAGE_NAME: "$IMAGE:$TAG"
+  DOCKER_IMAGE: "$IMAGE_NAME"
+  KANIKO_CACHE_ARGS: ""
+
+stages:
+  - build
+
+image:build:release:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - mkdir -p /kaniko/.docker
+    - cat $DOCKER_AUTH_CONFIG > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile Dockerfile --destination $IMAGE:$TAG
