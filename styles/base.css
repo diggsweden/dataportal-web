@@ -99,7 +99,7 @@ body {
     @apply gap-sm px-md py-[6px] text-sm;
   }
   .button--large {
-    @apply gap-sm p-sm py-[10px] text-md;
+    @apply gap-sm px-md py-[10px] text-md;
   }
 }
 
