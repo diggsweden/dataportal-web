@@ -48,17 +48,16 @@ const MenuLink: FC<MenuLinkProps> = ({
 }) => {
   const { t } = useTranslation();
   const pathname = usePathname();
+  const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
 
   const isActive =
-    pathname === href ||
-    (pathname === "/" && href === t(`common|lang-path`)) ||
-    pathname.startsWith(href);
+    (pathname === "/" && href === t(`common|lang-path`)) || href === basePath;
 
   return (
     <Link
       className={cx(
         sideBarLinkVariants({ variant }),
-        "focus:-outline-offset-2",
+        "focus-visible:-outline-offset-2",
         isActive && "bg-pink-100",
         className,
       )}
@@ -111,16 +110,12 @@ const SideBarLink: FC<
   const [open, setOpen] = useState(false);
   const Icon = icon;
   const pathname = usePathname();
+  const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
 
   useEffect(() => {
     if (!openSideBar && list) {
       const hasActiveLink = list.some(
-        (menu) =>
-          pathname === `/${t(`routes|${menu.title}$path`)}` ||
-          (pathname === "/" &&
-            `/${t(`common|lang-path`)}` ===
-              `/${t(`routes|${menu.title}$path`)}`) ||
-          pathname.startsWith(`/${t(`routes|${menu.title}$path`)}`),
+        (menu) => basePath === `/${t(`routes|${menu.title}$path`)}`,
       );
       if (!hasActiveLink) {
         setOpen(false);
@@ -145,7 +140,7 @@ const SideBarLink: FC<
     return (
       <>
         <button
-          className="group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl text-brown-600 focus:-outline-offset-2"
+          className="group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl text-brown-600 focus-visible:-outline-offset-2"
           onClick={() => setOpen(!open)}
           tabIndex={openSideBar ? 0 : -1}
         >

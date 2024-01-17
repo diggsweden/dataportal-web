@@ -49,13 +49,13 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
       <Link
         href={`${t(`common|${"lang-path"}`)}`}
         onClick={() => setOpenSideBar(false)}
-        className="focus:outline-white"
+        className="focus-visible:outline-white"
       >
         <DataportalLogo
           viewBox="0 0 228 44"
           className={`${
             openSearch
-              ? "hidden lg:block xl:w-[150px]"
+              ? "2xl:w-[228px] hidden lg:block xl:w-[150px]"
               : "h-[32px] w-[160px] md:h-[44px] md:w-[228px] "
           } `}
         />
@@ -68,7 +68,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
               href={`/${t(`routes|${menu.title}$path`)}`}
               onClick={() => setOpenSideBar(false)}
               label={t(`routes|${menu.title}$title`)}
-              className={`focus:-outline-offset-2 focus:outline-white ${
+              className={`focus-visible:-outline-offset-2 focus-visible:outline-white ${
                 pathname.startsWith(`/${t(`routes|${menu.title}$path`)}`)
                   ? " active"
                   : ""
@@ -80,20 +80,22 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           {!openSearch ? (
             <Button
               onClick={() => setOpenSearch(!openSearch)}
-              className="cursor-pointer p-[10px] hover:bg-brown-800"
-            >
-              <SearchIcon />
-            </Button>
+              icon={SearchIcon}
+              iconPosition="left"
+              className="cursor-pointer p-[10px] hover:bg-brown-800 focus-visible:-outline-offset-2 focus-visible:outline-white"
+            />
           ) : (
             <form
               className={`transition-width max-w-[274px] text-sm duration-100 md:w-[274px] [&_div]:mr-none [&_div_div_button]:p-[10px] hover:first:[&_div_div_button]:bg-brown-200  ${
                 openSearch
                   ? `w-full ${
-                      query ? "first:[&_div_div_button]:bg-transparent" : ""
-                    } [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900`
+                      query
+                        ? "first:[&_div_div_button]:bg-transparent first:focus-visible:[&_div_div_button]:bg-brown-200 first:focus-visible:[&_div_div_button]:-outline-offset-2 first:focus-visible:[&_div_div_button]:outline-pink-600"
+                        : ""
+                    } [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900 focus-visible:[&_div_div_button]:-outline-offset-2 focus-visible:[&_div_div_button]:outline-white`
                   : "w-none overflow-hidden"
               }`}
-              action="/search"
+              action={lang + "/search"}
             >
               <SearchInput
                 id="header-search"
@@ -101,7 +103,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                 query={query}
                 setQuery={setQuery}
                 type="small"
-                className="!h-[44px] border-none !bg-brown-100 pr-[90px] hover:outline-0 focus:outline-0 md:ml-sm"
+                className="!h-[44px] border-none !bg-brown-100 pr-[90px] hover:outline-0 focus-visible:outline-0 md:ml-sm"
               />
             </form>
           )}
@@ -112,7 +114,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           iconPosition="left"
           onClick={() => setOpenSideBar(!openSideBar)}
           label={t("common|menu")}
-          className="focus:-outline-offset-2 focus:!outline-white"
+          className="focus-visible:-outline-offset-2 focus-visible:!outline-white"
         />
       </div>
     </div>

@@ -64,26 +64,26 @@ body {
   }
 
   .button {
-    @apply flex w-fit flex-row items-center no-underline focus:outline-offset-2 focus:outline-primary disabled:cursor-not-allowed 
+    @apply flex w-fit flex-row items-center no-underline focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed 
     disabled:border-none disabled:bg-brown-400 disabled:text-brown-600 disabled:hover:bg-brown-400
      [&_path]:disabled:fill-brown-600 [&_svg]:inline-flex;
   }
   .button--primary {
-    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 focus:bg-brown-800 group-hover:!bg-brown-800 
+    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 focus-visible:bg-brown-800 group-hover:!bg-brown-800 
     group-focus:bg-brown-800 [&_path]:fill-brown-100;
   }
   .button--primary.active {
     @apply !bg-brown-800 [&_path]:fill-brown-100;
   }
   .button--secondary {
-    @apply border-2 border-brown-600 bg-transparent text-brown-600 hover:bg-whiteOpaque5 focus:bg-whiteOpaque5
+    @apply border-2 border-brown-600 bg-transparent text-brown-600 hover:bg-whiteOpaque5 focus-visible:bg-whiteOpaque5
     group-hover:bg-brown-800 group-hover:bg-whiteOpaque5 group-focus:bg-whiteOpaque5 [&_path]:fill-brown-600;
   }
   .button--secondary.active {
     @apply bg-brown-600 text-white [&_path]:fill-white [&_svg]:rotate-180;
   }
   .button--plain {
-    @apply bg-transparent text-brown-600 hover:bg-brown-200 focus:bg-brown-200 group-hover:bg-brown-200 group-focus:bg-brown-200 
+    @apply bg-transparent text-brown-600 hover:bg-brown-200 focus-visible:bg-brown-200 group-hover:bg-brown-200 group-focus:bg-brown-200 
     [&_path]:fill-brown-600;
   }
   .button--plain.active {
@@ -161,25 +161,6 @@ mark {
 }
 
 /* General styling for focus */
-button:focus:not(:focus-visible),
-a:focus:not(:focus-visible),
-.button:focus:not(:focus-visible),
-input[type="radio"]:focus:not(:focus-visible) {
-  @apply !outline-none group-focus:outline-none;
-}
-
-.button--primary:focus:not(:focus-visible) {
-  @apply bg-brown-600 text-brown-100 hover:bg-brown-800 [&_path]:fill-brown-100;
-}
-
-.button--secondary:focus:not(:focus-visible) {
-  @apply bg-transparent text-brown-600 hover:bg-whiteOpaque5 [&_path]:fill-brown-600;
-}
-
-.button--plain:focus:not(:focus-visible) {
-  @apply bg-transparent text-brown-600 hover:bg-brown-200 [&_path]:fill-brown-600;
-}
-
 a:focus-visible,
 button:focus-visible,
 .button:focus-visible,
