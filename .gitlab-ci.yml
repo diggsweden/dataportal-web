@@ -48,3 +48,23 @@ image:build:tagged:
     - mkdir -p /kaniko/.docker
     - cat $DOCKER_AUTH_CONFIG > /kaniko/.docker/config.json
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile Dockerfile --destination $IMAGE:$CI_COMMIT_TAG
+
+deploy:branch:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "beta"'
+  variables:
+    IMAGE_DATAPORTAL_WEB: $IMAGE:$TAG
+  stage: deploy
+  trigger:
+    project: digg/deploy-dataportal
+    branch: main
+
+deploy:tag:
+  rules:
+    - if: $CI_COMMIT_TAG
+  variables:
+    IMAGE_DATAPORTAL_WEB: $IMAGE:$CI_COMMIT_TAG
+  stage: deploy
+  trigger:
+    project: digg/deploy-dataportal
+    branch: main
