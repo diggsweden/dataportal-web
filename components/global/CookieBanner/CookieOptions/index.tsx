@@ -7,14 +7,14 @@ import { useEffect, useRef } from "react";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Toggle } from "@/components/global/Form/Toggle";
 
-export interface CookieSettingsProps {
+export interface CookieOptionsProps {
   cookieSettingsHeading: string;
   cookieSettings: CookieSetting;
   setCookieSettings: React.Dispatch<React.SetStateAction<CookieSetting>>;
   necessaryCookieText?: NecessaryCookies;
 }
 
-export const CookieOptions: React.FC<CookieSettingsProps> = ({
+export const CookieOptions: React.FC<CookieOptionsProps> = ({
   cookieSettingsHeading,
   cookieSettings,
   setCookieSettings,
