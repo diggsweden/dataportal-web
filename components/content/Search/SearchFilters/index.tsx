@@ -366,13 +366,13 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                 }}
               />
               <label
-                className="button button--small button--secondary cursor-pointer pr-xl"
+                className="button button--small button--secondary z-2 relative cursor-pointer pr-xl"
                 htmlFor="api_only"
               >
                 API
               </label>
-              <CheckboxIcon className="absolute right-sm top-sm peer-checked/api-only:hidden" />
-              <CheckboxCheckedIcon className="absolute right-sm top-sm hidden peer-checked/api-only:block" />
+              <CheckboxIcon className="pointer-events-none absolute right-sm top-1/4 peer-checked/api-only:hidden" />
+              <CheckboxCheckedIcon className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/api-only:block" />
             </div>
           )}
         </ul>

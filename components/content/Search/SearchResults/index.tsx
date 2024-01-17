@@ -204,120 +204,115 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   }, [pageNumber]);
 
   return (
-    <>
-      <div id="search-result" className="my-xl">
-        <div className="mb-lg flex flex-col-reverse justify-between md:flex-row">
-          <Heading level={2} size="md" className="search-result-header">
-            {search.loadingHits && <span>{t("common|loading")}</span>}
-            {!search.loadingHits &&
-              search.result &&
-              (search.result.count || 0) >= 0 &&
-              `${search.result.count} ${t("pages|search$dataset-hits")}`}
-          </Heading>
+    <div id="search-result" className="my-xl">
+      <div className="mb-lg flex flex-col-reverse justify-between md:flex-row">
+        <Heading level={2} size="md" className="search-result-header">
+          {search.loadingHits && <span>{t("common|loading")}</span>}
+          {!search.loadingHits &&
+            search.result &&
+            (search.result.count || 0) >= 0 &&
+            `${search.result.count} ${t("pages|search$dataset-hits")}`}
+        </Heading>
 
-          {searchMode == "datasets" && (
-            <SortingOptions
-              setCompact={setCompact}
-              isCompact={isCompact}
-              search={search}
-            />
-          )}
-        </div>
-
-        {search.result && (
-          <div>
-            <ul className="search-result-list space-y-xl">
-              {search.result.hits &&
-                search.result.hits.map((hit, index) => (
-                  <li className="max-w-lg" key={index}>
-                    <Link
-                      href={`${hit.url}#ref=${
-                        window ? window.location.search : ""
-                      }`}
-                      onClick={() => {
-                        saveCurrentScrollPos();
-                        trackSearchHitClick(hit.url || "");
-                      }}
-                      className="group no-underline"
-                    >
-                      {hit.metadata &&
-                        search.allFacets &&
-                        !search.loadingFacets &&
-                        hit.metadata["inScheme_resource"] &&
-                        search.getFacetValueTitle(
-                          "http://www.w3.org/2004/02/skos/core#inScheme",
-                          hit.metadata["inScheme_resource"][0],
-                        ) && (
-                          <span>
-                            {search.getFacetValueTitle(
-                              "http://www.w3.org/2004/02/skos/core#inScheme",
-                              hit.metadata["inScheme_resource"][0],
-                            )}
-                          </span>
-                        )}
-
-                      <Heading
-                        level={3}
-                        size="sm"
-                        className="mb-sm font-normal text-green-600 group-hover:underline "
-                        lang={hit.titleLang}
-                      >
-                        {hit.title}
-                      </Heading>
-
-                      {isCompact && hit.descriptionLang && (
-                        <p className="mb-xs">{hit.description}</p>
-                      )}
-
-                      <div
-                        className={
-                          !isCompact
-                            ? "flex items-baseline space-x-md"
-                            : "block"
-                        }
-                      >
-                        <div className="mb-xs text-sm font-strong text-textSecondary">
-                          {hit.metadata &&
-                            hit.metadata["theme_literal"].length > 0 && (
-                              <span className="category">
-                                {hit.metadata["theme_literal"].join(",  ")}
-                              </span>
-                            )}
-                          {hit.metadata &&
-                            hit.metadata["organisation_literal"] &&
-                            hit.metadata["organisation_literal"].length > 0 && (
-                              <span className="organisation">
-                                {" | " +
-                                  hit.metadata["organisation_literal"][0]}
-                              </span>
-                            )}
-                        </div>
-
-                        <div className="formats space-x-md">
-                          {hit.metadata &&
-                            hit.metadata["format_literal"] &&
-                            hit.metadata["format_literal"].map(
-                              (m: string, index: number) => (
-                                <FileFormatBadge key={index} badgeName={m} />
-                              ),
-                            )}
-                        </div>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        )}
-        {(search.result.pages || 0) > 1 && (
-          <Pagination
-            searchResult={search.result.count}
-            setPageNumber={setPageNumber}
-            itemsPerPage={search.request.take ? search.request.take : 20}
+        {searchMode == "datasets" && (
+          <SortingOptions
+            setCompact={setCompact}
+            isCompact={isCompact}
+            search={search}
           />
         )}
       </div>
-    </>
+
+      {search.result && (
+        <div>
+          <ul className="search-result-list space-y-xl">
+            {search.result.hits &&
+              search.result.hits.map((hit, index) => (
+                <li className="max-w-lg" key={index}>
+                  <Link
+                    href={`${hit.url}#ref=${
+                      window ? window.location.search : ""
+                    }`}
+                    onClick={() => {
+                      saveCurrentScrollPos();
+                      trackSearchHitClick(hit.url || "");
+                    }}
+                    className="group block no-underline"
+                  >
+                    {hit.metadata &&
+                      search.allFacets &&
+                      !search.loadingFacets &&
+                      hit.metadata["inScheme_resource"] &&
+                      search.getFacetValueTitle(
+                        "http://www.w3.org/2004/02/skos/core#inScheme",
+                        hit.metadata["inScheme_resource"][0],
+                      ) && (
+                        <span>
+                          {search.getFacetValueTitle(
+                            "http://www.w3.org/2004/02/skos/core#inScheme",
+                            hit.metadata["inScheme_resource"][0],
+                          )}
+                        </span>
+                      )}
+
+                    <Heading
+                      level={3}
+                      size="sm"
+                      className="mb-sm font-normal text-green-600 group-hover:underline "
+                      lang={hit.titleLang}
+                    >
+                      {hit.title}
+                    </Heading>
+
+                    {isCompact && hit.descriptionLang && (
+                      <p className="mb-xs">{hit.description}</p>
+                    )}
+
+                    <div
+                      className={
+                        !isCompact ? "flex items-baseline space-x-md" : "block"
+                      }
+                    >
+                      <div className="mb-xs text-sm font-strong text-textSecondary">
+                        {hit.metadata &&
+                          hit.metadata["theme_literal"].length > 0 && (
+                            <span className="category">
+                              {hit.metadata["theme_literal"].join(",  ")}
+                            </span>
+                          )}
+                        {hit.metadata &&
+                          hit.metadata["organisation_literal"] &&
+                          hit.metadata["organisation_literal"].length > 0 && (
+                            <span className="organisation">
+                              {" | " + hit.metadata["organisation_literal"][0]}
+                            </span>
+                          )}
+                      </div>
+
+                      <div className="formats space-x-md">
+                        {hit.metadata &&
+                          hit.metadata["format_literal"] &&
+                          hit.metadata["format_literal"].map(
+                            (m: string, index: number) => (
+                              <FileFormatBadge key={index} badgeName={m} />
+                            ),
+                          )}
+                      </div>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+          </ul>
+        </div>
+      )}
+      {(search.result.pages || 0) > 1 && (
+        <Pagination
+          searchResult={search.result.count}
+          setPageNumber={setPageNumber}
+          itemsPerPage={search.request.take ? search.request.take : 20}
+        />
+      )}
+    </div>
   );
 };
 
