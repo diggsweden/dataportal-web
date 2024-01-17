@@ -10,12 +10,17 @@ import { PublicationList } from "@/components/content/Publication/PublicationLis
 import { PromoProps } from "@/components/content/Promo";
 import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentBlock";
 import { BlockList } from "@/components/content/blocks/BlockList";
-import useTranslation from "next-translate/useTranslation";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 import { Preamble } from "@/components/global/Typography/Preamble";
 import { ContentBox } from "@/components/content/ContentBox";
 import { dataCategories } from "@/utilities/dataCategories";
+import { ButtonLink } from "@/components/global/Button";
+import { isExternalLink } from "@/utilities";
+import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
+import ExternalLinkIcon from "@/assets/icons/external-link.svg";
+import useTranslation from "next-translate/useTranslation";
+
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   domain?: DiggDomain;
@@ -45,6 +50,15 @@ const DynamicStatistic = dynamic(
     ssr: false,
   },
 );
+
+const contentBoxLinks = [
+  { label: "Tipsa om dataanvändning", href: "/anvand-data" },
+  { label: "Begär ut data", href: "/datasamverkan" },
+  {
+    label: "Delta i communityt",
+    href: "https://community.dataportal.se/",
+  },
+];
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
   const { domain, areas, news, example } = props || {};
@@ -101,22 +115,48 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           <ContentBox
             heading="Var med och delta"
             description="På Sveriges dataportal synliggörs data från en rad olika typer av organisationer och sektorer. Data hämtas via länkar för nedladdning eller efterfrågas hos respektive organisation som ansvarar för sina egna datamängder."
-            links={[
-              { label: "Tipsa om dataanvändning", href: "/anvand-data" },
-              { label: "Begär ut data", href: "/datasamverkan" },
-              {
-                label: "Delta i communityt",
-                href: "https://community.dataportal.se/",
-              },
-            ]}
-          />
+          >
+            <div className="flex flex-wrap justify-center gap-md lg:gap-xl">
+              {contentBoxLinks.map((link, idx: number) => (
+                <ButtonLink
+                  key={idx}
+                  href={link.href}
+                  label={link.label}
+                  icon={
+                    isExternalLink(link.href)
+                      ? ExternalLinkIcon
+                      : ArrowRightIcon
+                  }
+                  iconPosition="right"
+                />
+              ))}
+            </div>
+          </ContentBox>
         )}
 
         {domain === "data" && (
-          <ContentBox
-            heading={t("pages|startpage$datasets_by_category")}
-            categories={dataCategories}
-          />
+          <ContentBox heading={t("pages|startpage$datasets_by_category")}>
+            <ul className="flex flex-wrap justify-center gap-md lg:gap-lg">
+              {dataCategories?.map((category, idx: number) => (
+                <li key={idx}>
+                  <ButtonLink
+                    className="text-center"
+                    aria-label={t("pages|startpage$search_datasets_format", {
+                      category: t(`resources|${category.href}`),
+                    })}
+                    href={`/${t("routes|datasets$path")}?f=${encodeURIComponent(
+                      `http://www.w3.org/ns/dcat#theme||${
+                        category.href
+                      }||FALSE||uri||${t(
+                        "resources|http://www.w3.org/ns/dcat#theme",
+                      )}||${t("resources|" + category.href)}`,
+                    )}`}
+                    label={t(`resources|${category.href}`)}
+                  />
+                </li>
+              ))}
+            </ul>
+          </ContentBox>
         )}
 
         {areas && !domain && lang === "sv" && (
