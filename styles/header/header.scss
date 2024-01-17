@@ -28,34 +28,6 @@ header {
       }
     }
   }
-
-  .header__mobile-menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: calc(100vh - 5.875rem);
-    margin-top: $space-8;
-
-    a {
-      margin-bottom: $space-8;
-      transform: scale(1);
-      transition: all 0.1s ease-in-out;
-
-      &:hover {
-        transform: scale(1.1);
-      }
-    }
-
-    .header__mobile-menu_link {
-      color: $clr-pinkPop;
-    }
-
-    .link-btn {
-      display: flex;
-      justify-content: center;
-      background-color: $clr-gray800;
-    }
-  }
 }
 
 .dataportal-logo {
@@ -68,39 +40,13 @@ header {
   }
 }
 
-.main-bar {
-  transition: padding 0.25s ease;
-  z-index: 1000;
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  width: auto;
-  justify-content: flex-start;
-}
-
-.main-bar__right-menu {
-  display: flex;
-}
-
-.open-close-link {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  justify-items: auto;
-  z-index: 999999999;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.header-box {
-  max-width: calc(100% - 2rem);
+.header-top {
+  // max-width: calc(100% - 2rem);
+  margin: 0 20px !important;
   display: flex;
   justify-content: space-between;
   transition: padding 0.25s ease;
-  z-index: 1000;
+  z-index: 10000;
   margin: auto;
 
   svg {
@@ -109,40 +55,62 @@ header {
     }
   }
 
-  .right-bar-item {
-    display: none;
+  .top-nav {
+    display: flex;
+    align-items: center;
+    & > ul {
+      display: flex;
+      flex-direction: row;
+      gap: $space-8;
+      list-style: none;
+      margin: 0;
 
-    @media screen and (min-width: $media-lg) {
-      display: block;
+      & .top-link {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: $space-2;
+        border-bottom: 2px solid transparent;
+        padding-bottom: 2px;
+        cursor: pointer;
+        &:hover {
+          border-color: $clr-pinkPop;
+          .svg {
+            filter: invert(50%) brightness(175%) grayscale(100%);
+          }
+        }
+
+        &_text {
+          display: none;
+          @media screen and (min-width: $media-sm) {
+            display: block;
+          }
+        }
+
+        &.active {
+          border-color: $clr-pinkPop;
+        }
+      }
+      .svg {
+        filter: invert(50%) brightness(125%) grayscale(100%);
+      }
     }
   }
 }
 
-.start-link {
-  font-size: 18px;
-  // padding-bottom: $space-4;
-  transition: all 0.25s ease;
+.dataportalen-logo {
+  width: 135px;
+  height: 26px;
+  margin-right: auto;
+  display: none;
 
-  @media screen and (min-width: $media-xl) {
-    padding-right: $space-12;
+  @media screen and (min-width: "600px") {
+    display: block;
+    width: 228px;
+    height: 44px;
   }
-
-  a {
-    color: $clr-white;
-    text-decoration: none;
-  }
-
-  .start-link-text {
-    font-size: 1rem;
-    margin-right: 1rem;
-
-    @media screen and (min-width: $media-sm) {
-      font-size: 1.25rem;
-    }
-
-    @media screen and (min-width: $media-xl) {
-      margin-right: 0rem;
-    }
+  @media screen and (min-width: "370px") {
+    display: block;
   }
 }
 
@@ -150,23 +118,33 @@ header {
   display: none;
   flex-wrap: wrap;
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: $space-8;
 
-  .header-link {
+  @media screen and (min-width: $media-lg) {
+    margin: 0 !important;
+  }
+
+  .main-nav .header-link {
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
+    margin: 0 !important;
+    display: none;
+    @media screen and (min-width: "600px") {
+      display: block;
+    }
   }
 
   &.text-base {
+    flex-wrap: wrap;
     margin: 0;
+    gap: 20px;
   }
 
   @media screen and (min-width: $media-lg) {
     display: flex;
     flex-wrap: nowrap;
-
-    a {
-      margin-left: $space-8;
-    }
   }
 
   .search-link {
@@ -183,161 +161,65 @@ header {
 
     .search-link--icon {
       margin-right: $space-2;
-    }
-  }
-
-  .header-link {
-    font-family: Ubuntu !important;
-    color: white;
-    margin-top: $space-6;
-    text-decoration: none;
-    border-bottom: 3px solid transparent;
-    padding-bottom: $space-4;
-    margin-bottom: -1px; //To make border intersect with parent border
-    word-break: keep-all;
-    margin-left: $space-4;
-    margin-right: $space-4;
-    transition: all 0.25s ease;
-
-    &:hover {
-      border-color: $clr-pinkPop;
-    }
-
-    //Style for active NavLink
-    &.active {
-      text-decoration: none;
-      border-bottom: 3px solid $clr-pinkPop;
+      filter: invert(50%) brightness(125%) grayscale(100%);
     }
 
     @media screen and (min-width: $media-sm) {
-      margin-top: 0;
+      display: flex;
     }
+  }
 
-    @media screen and (min-width: $media-md) {
-      &.header-link--top {
-        position: absolute;
-        top: 2.5rem;
-        right: -12px;
-        font-size: 14px;
-        color: white;
-        border-bottom: 1px solid $clr-gray600;
-        padding-bottom: 0;
-        margin-top: 0.5rem;
+  .mainNav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding: 0 20px;
+    gap: $space-6;
 
-        &:hover {
-          border-color: $clr-pink200;
+    @media screen and (max-width: $media-lg) {
+      display: none;
+    }
+    .header-link {
+      font-family: Ubuntu !important;
+      color: white;
+      margin-top: $space-6;
+      text-decoration: none;
+      border-bottom: 3px solid transparent;
+      padding-bottom: 2px;
+      white-space: nowrap;
+      transition: all 0.25s ease;
+
+      &:hover {
+        border-color: $clr-pinkPop;
+      }
+
+      //Style for active NavLink
+      &.active {
+        text-decoration: none;
+        border-bottom: 3px solid $clr-pinkPop;
+      }
+
+      @media screen and (min-width: $media-sm) {
+        margin-top: 0;
+      }
+
+      @media screen and (min-width: $media-md) {
+        &.header-link--top {
+          position: absolute;
+          top: 2.5rem;
+          right: -12px;
+          font-size: 14px;
+          color: white;
+          border-bottom: 1px solid $clr-gray600;
+          padding-bottom: 0;
+          margin-top: 0.5rem;
+
+          &:hover {
+            border-color: $clr-pink200;
+          }
         }
       }
     }
-  }
-}
-
-.menu-bg {
-  position: absolute;
-  top: 3.6rem;
-  left: 0;
-  height: 110vh;
-  width: 100%;
-  z-index: 3800;
-  background-color: $clr-gray900;
-  display: none;
-}
-
-.menu-bg--active {
-  display: block;
-}
-
-.click-outside {
-  height: 100%;
-  width: 100%;
-  min-height: 200px;
-
-  @media screen and (min-width: $media-md) {
-    display: none;
-  }
-}
-
-.header__bottom-links {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-width: calc(100% - 2rem);
-
-  &--link {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-right: $space-2;
-    margin-left: $space-2;
-
-    .search-link--icon {
-      margin-right: $space-2;
-      svg {
-        visibility: visible;
-        height: 20px;
-        width: 20px;
-      }
-    }
-  }
-}
-
-.header-links--active {
-  z-index: 4000;
-  position: absolute;
-  top: 4rem;
-  left: 0;
-  width: 100%;
-  overflow-y: auto;
-
-  @media screen and (min-width: $media-lg) {
-    display: none;
-  }
-
-  .header-link {
-    width: 100%;
-    padding: $space-4;
-    background-color: $clr-white;
-    color: $clr-white;
-    // margin-bottom: 2px;
-    text-decoration: none;
-    border-left: 0px solid $clr-pink600;
-
-    &:hover {
-      border-left: 5px solid $clr-pink300;
-      transition: 0.1s;
-    }
-
-    &:focus {
-      outline-offset: -2px !important;
-    }
-
-    &:first-of-type {
-      margin-top: 2px;
-    }
-  }
-
-  .link-btn {
-    width: 100%;
-    padding: 1rem;
-    background-color: $clr-gray300;
-    display: flex;
-    justify-content: flex-start;
-    border: none;
-  }
-
-  .active {
-    border-left: 5px solid $clr-pink600;
-
-    &:hover {
-      border-color: $clr-pink600;
-    }
-  }
-
-  svg {
-    visibility: hidden;
-    height: 0;
-    width: 0;
   }
 }
 
@@ -347,7 +229,22 @@ header {
   background: transparent;
   border: none;
   cursor: pointer;
+  height: 28px;
   color: white;
+  gap: 8px;
+  border: 2px solid #f49383;
+  border-radius: 2px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: 0.3s;
+  &:hover {
+    border: 2px solid #ffffff;
+  }
+
+  @media screen and (min-width: 600px) {
+    height: 48px;
+    padding: 0 20px;
+  }
 }
 
 .global-search {
@@ -355,13 +252,13 @@ header {
   padding: $space-6;
   position: absolute;
   width: 100vw;
-  z-index: 0;
   bottom: 0;
   left: 50%;
   transform: translate(-50%);
   background-color: $clr-gray900;
   border-top: 1px solid $clr-gray600;
   transition: unset;
+  z-index: -1;
 
   &.visible {
     transition: opacity 0.1s ease-in;
@@ -384,4 +281,42 @@ header {
   fieldset {
     margin-top: $space-4;
   }
+}
+
+.header-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  margin-top: 12px;
+  z-index: 10000;
+  @media screen and (min-width: "600px") {
+    margin-top: 20px;
+  }
+
+  .main-nav {
+    display: none;
+    gap: 24px;
+    padding: 0 20px;
+    @media screen and (min-width: "1090px") {
+      display: flex;
+      gap: 24px;
+    }
+  }
+}
+
+.header-bottom-box {
+  display: flex;
+}
+
+.searchAndMenu {
+  display: flex;
+  gap: 12px;
+  @media screen and (min-width: "600px") {
+    gap: 20px;
+  }
+}
+
+.header-bottom-logo {
+  margin-left: 0px !important;
 }

@@ -51,6 +51,10 @@
     "path": "news",
     "title": "News"
   },
+  "good-examples": {
+    "path": "good-examples",
+    "title": "Good examples"
+  },
   "start": {
     "path": "",
     "title": "Sveriges Dataportal"
@@ -66,5 +70,53 @@
   "api_explore": {
     "path": "apiexplore",
     "title": "Explore API"
+  },
+  "search-api": {
+    "path": "data",
+    "title": "Data & API:er"
+  },
+  "contribute": {
+    "path": "contribute",
+    "title": "Contribute"
+  },
+  "data-collaboration": {
+    "path": "data-collaboration",
+    "title": "Data collaboration"
+  },
+  "shara-data-benefits": {
+    "path": "shara-data-benefits",
+    "title": "Benefits with sharing data"
+  },
+  "legislation": {
+    "path": "legislation",
+    "title": "Legislation"
+  },
+  "governance": {
+    "path": "governance",
+    "title": "Governance"
+  },
+  "use-data": {
+    "path": "use-data",
+    "title": "Get started with using your data"
+  },
+  "share-data": {
+    "path": "share-data",
+    "title": "Get started with sharing your data"
+  },
+  "support-tools": {
+    "path": "support-tools",
+    "title": "Tools and support"
+  },
+  "home-text": {
+    "path": "en",
+    "title": "Home"
+  },
+  "why-share-data": {
+    "path": "why-share-data",
+    "title": "Why share data"
+  },
+  "language": {
+    "path": "sv",
+    "title": "Svenska"
   }
 }

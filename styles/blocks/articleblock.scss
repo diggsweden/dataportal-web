@@ -1,8 +1,9 @@
-@import '~@digg/design-system/lib/sass/variables';
+@import "~@digg/design-system/lib/sass/variables";
 .articleblock {
   margin-bottom: $space-16;
 
   padding: 0;
+
   ul {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
@@ -25,8 +26,8 @@
       height: 100%;
 
       @media screen and (min-width: $media-sm) {
-        max-width: calc(80rem/3);
-      }      
+        max-width: calc(80rem / 3);
+      }
 
       &.brownTheme {
         background-color: $clr-brown200;
@@ -94,7 +95,7 @@
       .news-img {
         position: relative;
 
-        img{
+        img {
           object-fit: cover;
         }
 
@@ -103,7 +104,7 @@
           display: block;
           height: 0;
           width: 0;
-          padding-bottom: calc(9/16 * 100%); //Preserve 16:9 ratio
+          padding-bottom: calc(9 / 16 * 100%); //Preserve 16:9 ratio
         }
 
         @media screen and (min-width: $media-sm) {
@@ -116,7 +117,7 @@
         }
       }
 
-      .no-image{
+      .no-image {
         background-color: $clr-gray800;
       }
 
@@ -130,7 +131,7 @@
           align-items: center;
           margin: $space-2 0 $space-1 0;
 
-          span{
+          span {
             color: $clr-gray500;
           }
         }

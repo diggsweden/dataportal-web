@@ -76,7 +76,7 @@ export const containerArgsFromSlugs = (
   locale: string,
   domain?: DiggDomain,
   state?: Dataportal_ContainerState,
-  secret?: string,
+  secret?: string
 ): MultiContainersQueryVariables => {
   const defaultVars = {
     category: {
@@ -126,7 +126,7 @@ const hasIdendicalSibling = (slugs: string[], domain?: DiggDomain) => {
 const getRelatedContainers = async (
   categories: CategoryFragment[],
   locale: string,
-  domain?: DiggDomain,
+  domain?: DiggDomain
 ) => {
   const relatedCategories = categories.map((c) => c.slug);
 
@@ -196,9 +196,9 @@ export interface RootAggregateResponse
   type: "RootAggregate";
   areas?: IPuff[];
   themes?: IPuff[];
-  news?: PublicationDataFragment;
-  examples?: PublicationDataFragment;
-  events?: PublicationDataFragment;
+  news?: PublicationDataFragment[];
+  examples?: PublicationDataFragment[];
+  events?: PublicationDataFragment[];
 }
 
 export interface FormResponse extends FormDataFragment {
@@ -242,7 +242,7 @@ export interface PublicationQueryOptions extends QueryOptions {
  * @returns {Array<String[]>} An array with stringarrays based on all containerslugs
  */
 export const extractSlugs = (
-  containers: (ContainerData_Dataportal_Digg_Container_Fragment | null)[],
+  containers: (ContainerData_Dataportal_Digg_Container_Fragment | null)[]
 ) => {
   const slugsArray: Array<string[]> = [];
   containers.map((page) => {
@@ -262,14 +262,14 @@ export const getMultiContainer = async (
   slugs: string[],
   locale: string,
   domain?: DiggDomain,
-  opts: QueryOptions = { revalidate: true },
+  opts: QueryOptions = { revalidate: true }
 ) => {
   const { state, secret, revalidate } = opts;
   if (hasIdendicalSibling(slugs, domain)) {
     console.warn(
       `Cannot have identicall slugs after another: '${
         domain ? `/${domain}/` : ""
-      }${slugs.join("/")}'`,
+      }${slugs.join("/")}'`
     );
     return notFound(revalidate);
   }
@@ -338,7 +338,7 @@ export const getPublicationsList = async (
   domains: DiggDomain[],
   tags: string[],
   locale: string,
-  opts?: PublicationListOptions,
+  opts?: PublicationListOptions
 ) => {
   // If nextjs should check for changes on the server
   const revalidate = true;
@@ -354,7 +354,7 @@ export const getPublicationsList = async (
         filter: {
           locale,
           state: Dataportal_ContainerState.Live,
-          tags,
+          tags: tags,
           domains,
           limit: 1000,
         },
@@ -372,7 +372,7 @@ export const getPublicationsList = async (
       console.warn(
         `No publications found${
           domains.length > 0 ? ` in domain(s) ${domains.join(",")}` : ""
-        } with tags: '${tags.join(",")}'`,
+        } with tags: '${tags.join(",")}'`
       );
     }
 
@@ -417,7 +417,7 @@ export const getPublicationsList = async (
 export const getPublication = async (
   slug: string,
   locale: string,
-  opts: PublicationQueryOptions = { revalidate: true },
+  opts: PublicationQueryOptions = { revalidate: true }
 ) => {
   const { state, secret, revalidate, domain, tags } = opts;
   try {
@@ -475,7 +475,7 @@ export const getPublication = async (
         ...publication,
         related:
           relatedPublicationResult?.data?.dataportal_Digg_Publications.filter(
-            (pub) => pub?.id !== publication.id,
+            (pub) => pub?.id !== publication.id
           ) || [],
       } as PublicationResponse,
       ...(revalidate
@@ -497,7 +497,7 @@ export const getPublication = async (
 export const getDomainAggregate = async (
   domainSlug: string,
   locale: string,
-  opts: QueryOptions = { revalidate: true },
+  opts: QueryOptions = { revalidate: true }
 ) => {
   const { state, secret, revalidate } = opts;
   const sharedVariables = {
@@ -574,7 +574,7 @@ export const getDomainAggregate = async (
 
 export const getRootAggregate = async (
   locale: string,
-  opts: QueryOptions = { revalidate: true },
+  opts: QueryOptions = { revalidate: true }
 ) => {
   const { state, secret, revalidate } = opts;
   // todo - add localization to translate files
@@ -630,8 +630,8 @@ export const getRootAggregate = async (
       console.warn(`No container found with slug: '/'`);
     }
 
-    const news = data.news[0] || null;
-    const example = data.examples[0] || null;
+    const news = data.news || null;
+    const example = data.examples || null;
     const event = data.events[0] || null;
     const areas = data.areas ? populatePuffs(data.areas, "dataomraden") : null;
     const themes = data.themes ? populatePuffs(data.themes, "teman") : null;
@@ -675,7 +675,7 @@ export const querySearch = async (
   locale: string,
   limit: number,
   offset: number,
-  clientQuery: boolean,
+  clientQuery: boolean
 ) => {
   try {
     let cl = clientQuery ? browserclient : client;

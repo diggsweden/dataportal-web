@@ -37,7 +37,7 @@
   },
   "publications": {
     "path": "aktuellt",
-    "title": "Nyheter"
+    "title": "Aktuellt"
   },
   "inspiration": {
     "path": "inspiration",
@@ -50,6 +50,10 @@
   "news": {
     "path": "nyheter",
     "title": "Nyheter"
+  },
+  "good-examples": {
+    "path": "goda-exempel",
+    "title": "Goda exempel"
   },
   "start": {
     "path": "",
@@ -66,5 +70,53 @@
   "api_explore": {
     "path": "apiexplore",
     "title": "Utforska API"
+  },
+  "search-api": {
+    "path": "data",
+    "title": "Data & API:er"
+  },
+  "contribute": {
+    "path": "var-med-och-bidra",
+    "title": "Var med och bidra"
+  },
+  "data-collaboration": {
+    "path": "datasamverkan",
+    "title": "Datasamverkan"
+  },
+  "shara-data-benefits": {
+    "path": "nyttor-med-datadelning",
+    "title": "Nyttor med datadelning"
+  },
+  "legislation": {
+    "path": "lagstiftning",
+    "title": "Lagstiftning"
+  },
+  "governance": {
+    "path": "styrning",
+    "title": "Styrning"
+  },
+  "use-data": {
+    "path": "anvand-data",
+    "title": "Kom igång med att använda din data"
+  },
+  "share-data": {
+    "path": "dela-data",
+    "title": "Kom igång med att dela din data"
+  },
+  "support-tools": {
+    "path": "stod-och-verktyg",
+    "title": "Stöd och verktyg"
+  },
+  "home-text": {
+    "path": "sv",
+    "title": "Hem"
+  },
+  "why-share-data": {
+    "path": "varfor-dela-data",
+    "title": "Varför dela data"
+  },
+  "language": {
+    "path": "en",
+    "title": "English"
   }
 }

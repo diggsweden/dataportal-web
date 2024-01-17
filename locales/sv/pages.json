@@ -16,7 +16,9 @@
     "data-api-header": "Data och API:er",
     "open-source-header": "Öppen källkod",
     "public-ai-header": "Offentlig AI",
-    "current-news": "Aktuellt"
+    "current-news": "Aktuellt",
+    "news": "Nyheter",
+    "good-examples": "Goda exempel"
   },
   "ai": {
     "heading": "Offentlig AI",
@@ -171,6 +173,20 @@
     "social_meta_title": "Publikationer - Sveriges Dataportal",
     "social_meta_description": "Publikationer på Sveriges Dataportal"
   },
+  "news": {
+    "text": "nyheter",
+    "title": "Nyheter",
+    "view-all": "Visa alla nyheter",
+    "social_meta_title": "Nyheter - Sveriges Dataportal",
+    "social_meta_description": "Nyheter på Sveriges Dataportal"
+  },
+  "good-examples": {
+    "text": "goda exempel",
+    "title": "Goda exempel",
+    "view-all": "Visa alla goda exempel",
+    "social_meta_title": "Goda exempel - Sveriges Dataportal",
+    "social_meta_description": "Goda exempel på Sveriges Dataportal"
+  },
   "redirect": {
     "pagenotfound_header": "Oj, sidan kan inte hittas!",
     "pagenotfound-text": "Det kan bero på att oppnadata.se flyttade till dataportal.se den 23 september 2020. Förhoppningsvis kan de här länkarna hjälpa dig att hitta det du söker.",
@@ -248,7 +264,7 @@
     "contact-publisher": "Kontakt till utgivare",
     "api-contract": "API-kontrakt"
   },
-  "form":{
+  "form": {
     "placeholder-text": "Fyll i ditt svar",
     "clear-all-text": "Rensa alla svar",
     "clear-confirm-text": "Är du säker på att du vill rensa alla svar?",
@@ -256,7 +272,7 @@
     "next-section-text": "Nästa avsnitt",
     "previous-section-text": "Föregående avsnitt",
     "save-form": "Spara era svar på din dator",
-    "generate-pdf-text" : "Generera PDF",
+    "generate-pdf-text": "Generera PDF",
     "form-continue-text": "Vill du gå vidare?",
     "start-evaluation-text": "Starta utvärdering",
     "go-back-text": "Tillbaka"
