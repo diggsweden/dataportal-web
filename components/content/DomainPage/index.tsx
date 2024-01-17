@@ -15,8 +15,7 @@ import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 import { Preamble } from "@/components/global/Typography/Preamble";
 import { ContentBox } from "@/components/content/ContentBox";
-import { CategoryBox } from "@/components/content/CategoryBox";
-
+import { dataCategories } from "@/utilities/dataCategories";
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   domain?: DiggDomain;
@@ -52,7 +51,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   const { content, puffs, preamble } = handleDomain(props);
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
-  const { t, lang } = useTranslation("pages");
+  const { t, lang } = useTranslation();
   const isEn = lang === "en";
 
   useEffect(() => {
@@ -99,26 +98,25 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
         </div>
 
         {!domain && lang === "sv" && (
-          <div className="py-xl">
-            <ContentBox
-              heading="Var med och delta"
-              description="På Sveriges dataportal synliggörs data från en rad olika typer av organisationer och sektorer. Data hämtas via länkar för nedladdning eller efterfrågas hos respektive organisation som ansvarar för sina egna datamängder."
-              links={[
-                { label: "Tipsa om dataanvändning", href: "/anvand-data" },
-                { label: "Begär ut data", href: "/datasamverkan" },
-                {
-                  label: "Delta i communityt",
-                  href: "https://community.dataportal.se/",
-                },
-              ]}
-            />{" "}
-          </div>
+          <ContentBox
+            heading="Var med och delta"
+            description="På Sveriges dataportal synliggörs data från en rad olika typer av organisationer och sektorer. Data hämtas via länkar för nedladdning eller efterfrågas hos respektive organisation som ansvarar för sina egna datamängder."
+            links={[
+              { label: "Tipsa om dataanvändning", href: "/anvand-data" },
+              { label: "Begär ut data", href: "/datasamverkan" },
+              {
+                label: "Delta i communityt",
+                href: "https://community.dataportal.se/",
+              },
+            ]}
+          />
         )}
 
         {domain === "data" && (
-          <>
-            <CategoryBox />
-          </>
+          <ContentBox
+            heading={t("pages|startpage$datasets_by_category")}
+            categories={dataCategories}
+          />
         )}
 
         {areas && !domain && lang === "sv" && (
