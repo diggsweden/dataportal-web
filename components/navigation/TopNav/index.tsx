@@ -32,11 +32,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
 
   return (
     <div className="flex h-[32px] flex-row items-center justify-between">
-      <Link
-        href={"https://digg.se/"}
-        target="_blank"
-        className="focus:outline-white"
-      >
+      <Link href={"https://digg.se/"} className="focus-visible:outline-white">
         <DiggSmallLogo />
       </Link>
       <nav>
@@ -51,7 +47,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
                     iconPosition="left"
                     label={t(`common|${menu.title}`)}
                     size={"sm"}
-                    className="focus:-outline-offset-2 focus:outline-white [&_span]:hidden md:[&_span]:block"
+                    className="focus-visible:-outline-offset-2 focus-visible:outline-white [&_span]:hidden md:[&_span]:block"
                   />
                 </>
               ) : (
@@ -63,7 +59,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
                   iconPosition="left"
                   label={t(`routes|${menu.title}$title`)}
                   size={"sm"}
-                  className={`focus:-outline-offset-2 focus:outline-white ${
+                  className={`focus-visible:-outline-offset-2 focus-visible:outline-white ${
                     menu.title !== "language" &&
                     "[&_span]:hidden md:[&_span]:block"
                   } ${

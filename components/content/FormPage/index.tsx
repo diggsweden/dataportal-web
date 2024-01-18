@@ -221,77 +221,79 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
   return (
     <Container>
       {formDataArray[0] && (
-        <div className="max-w-md">
-          <span ref={scrollRef} />
-          <div className="space-y-lg">
-            {/* Show the correct progress-bar */}
-            {page !== 0 && formSteps.length > 0 && (
+        <div className="grid grid-cols-1 lg:max-w-xl lg:grid-cols-[200px_620px_1fr] lg:gap-x-xl ">
+          {page !== 0 && formSteps.length > 0 && (
+            <FormNav
+              pageNames={[...formSteps, t("pages|form$generate-pdf-text")]}
+              setPage={setPage}
+              scrollRef={scrollRef}
+              forceUpdate={page - 1}
+            />
+          )}
+
+          <>
+            {page === 0 && (
               <>
-                <FormNav
-                  pageNames={[...formSteps, t("pages|form$generate-pdf-text")]}
-                  setPage={setPage}
-                  forceUpdate={page - 1}
+                {/* If first element in form is description, render the text here */}
+                {formIntroText.title.length > 0 && (
+                  <>
+                    <Heading level={1} size={"lg"}>
+                      {formIntroText.title}
+                    </Heading>
+
+                    <p className="text-md">{formIntroText.text}</p>
+                  </>
+                )}
+                <Button
+                  onClick={() => {
+                    setPage(page + 1);
+                    handleScroll(scrollRef);
+                  }}
+                  label={t("pages|form$start-evaluation-text")}
                 />
-                <ProgressBar page={page} totalPages={formSteps.length + 1} />
               </>
             )}
 
-            <>
-              {page === 0 && (
-                <>
-                  {/* If first element in form is description, render the text here */}
-                  {formIntroText.title.length > 0 && (
-                    <>
-                      <Heading level={1} size={"lg"}>
-                        {formIntroText.title}
-                      </Heading>
-
-                      <p className="text-md">{formIntroText.text}</p>
-                    </>
-                  )}
-                  <Button
-                    onClick={() => {
-                      setPage(page + 1);
-                      handleScroll(scrollRef);
-                    }}
-                    label={t("pages|form$start-evaluation-text")}
-                  />
-                </>
-              )}
-
-              {formDataArray.map((data: FormTypes[], index) => {
-                index++; //Start at page 1 since page 0 is the intro page
+            {formDataArray.map((data: FormTypes[], index) => {
+              index++; //Start at page 1 since page 0 is the intro page
+              if (page === index) {
                 return (
-                  <div key={`page${index}`} className="space-y-lg">
-                    {page === index && (
-                      <>
-                        <RenderForm
-                          UpdateFormDataArray={UpdateFormDataArray}
-                          formDataArray={data}
-                          pageIndex={index}
-                        />
-                        <FormBottomNav
-                          key={`nav${index}`}
-                          setFormDataArray={setFormDataArray}
-                          formDataArray={formDataArray}
-                          setPage={setPage}
-                          page={page}
-                          scrollRef={scrollRef}
-                        />
-                      </>
+                  <div
+                    key={`page${index}`}
+                    className="col-span-1 col-start-1 row-start-2 max-w-md lg:col-start-2 lg:row-start-1"
+                  >
+                    <span ref={scrollRef} />
+                    {page !== 0 && formSteps.length > 0 && (
+                      <ProgressBar
+                        page={page}
+                        totalPages={formSteps.length + 1}
+                      />
                     )}
+                    <RenderForm
+                      UpdateFormDataArray={UpdateFormDataArray}
+                      formDataArray={data}
+                      pageIndex={index}
+                    />
+                    <FormBottomNav
+                      key={`nav${index}`}
+                      setFormDataArray={setFormDataArray}
+                      formDataArray={formDataArray}
+                      setPage={setPage}
+                      page={page}
+                      scrollRef={scrollRef}
+                    />
                   </div>
                 );
-              })}
+              }
+            })}
 
-              {page === formDataArray.length + 1 && (
-                <FormGeneratePDF
-                  formDataArray={formDataArray}
-                  blocks={module ? module : null}
-                />
-              )}
-            </>
-          </div>
+            {page === formDataArray.length + 1 && (
+              <FormGeneratePDF
+                formDataArray={formDataArray}
+                blocks={module ? module : null}
+              />
+            )}
+          </>
         </div>
       )}
     </Container>

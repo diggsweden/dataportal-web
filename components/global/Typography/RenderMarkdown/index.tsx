@@ -4,7 +4,7 @@ import rehypeRaw from "rehype-raw";
 import Image from "next/image";
 import Link from "next/link";
 import QuoteIcon from "@/assets/icons/quote.svg";
-import { checkLang, isExternalLink, isMailLink } from "@/utilities";
+import { checkLang } from "@/utilities";
 import { Heading } from "@/components/global/Typography/Heading";
 
 type HeadingLevel = 1 | 2 | 3 | 4 | 5;
@@ -54,11 +54,7 @@ export const renderMarkdown = (markdown: string) => {
 
 const renderLink = ({ href, children }: any) => {
   return (
-    <Link
-      href={href}
-      target={isExternalLink(href) || isMailLink(href) ? "_blank" : "_self"}
-      className=""
-    >
+    <Link href={href}>
       <span>{children}</span>
     </Link>
   );

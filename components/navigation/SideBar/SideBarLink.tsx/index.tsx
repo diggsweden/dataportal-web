@@ -48,21 +48,21 @@ const MenuLink: FC<MenuLinkProps> = ({
 }) => {
   const { t } = useTranslation();
   const pathname = usePathname();
+  const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
 
   const isActive =
-    pathname === href || (pathname === "/" && href === t(`common|lang-path`));
+    (pathname === "/" && href === t(`common|lang-path`)) || href === basePath;
 
   return (
     <Link
       className={cx(
         sideBarLinkVariants({ variant }),
-        "focus:-outline-offset-2",
+        "focus-visible:-outline-offset-2",
         isActive && "bg-pink-100",
         className,
       )}
       href={href}
       tabIndex={tabIndex}
-      target={variant === "external" ? "_blank" : "_self"}
     >
       <>
         {isActive && <NavPixelsImage className="absolute right-none" />}
@@ -110,15 +110,12 @@ const SideBarLink: FC<
   const [open, setOpen] = useState(false);
   const Icon = icon;
   const pathname = usePathname();
+  const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
 
   useEffect(() => {
     if (!openSideBar && list) {
       const hasActiveLink = list.some(
-        (menu) =>
-          pathname === `/${t(`routes|${menu.title}$path`)}` ||
-          (pathname === "/" &&
-            `/${t(`common|lang-path`)}` ===
-              `/${t(`routes|${menu.title}$path`)}`),
+        (menu) => basePath === `/${t(`routes|${menu.title}$path`)}`,
       );
       if (!hasActiveLink) {
         setOpen(false);
@@ -126,7 +123,7 @@ const SideBarLink: FC<
         setOpen(true);
       }
     }
-  }, [openSideBar, pathname, list]);
+  }, [pathname, list]);
 
   if (level === "1" && href) {
     return (
@@ -143,7 +140,7 @@ const SideBarLink: FC<
     return (
       <>
         <button
-          className="group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl text-brown-600 focus:-outline-offset-2"
+          className="group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl text-brown-600 focus-visible:-outline-offset-2"
           onClick={() => setOpen(!open)}
           tabIndex={openSideBar ? 0 : -1}
         >

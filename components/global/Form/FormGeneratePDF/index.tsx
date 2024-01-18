@@ -3,11 +3,11 @@ import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { BlockList } from "@/components/content/blocks/BlockList";
-import { Button, ButtonLink } from "@/components/global/Button";
+import { Button } from "@/components/global/Button";
 import { FormTypes } from "@/types/form";
 import { GeneratePDF } from "@/utilities/formUtils";
-import { Heading } from "@/components/global/Typography/Heading";
-import ArrowIcon from "@/assets/icons/arrowRight.svg";
+
+import { Modal } from "../../Modal";
 
 type Props = {
   formDataArray: FormTypes[][];
@@ -17,11 +17,10 @@ type Props = {
 export const FormGeneratePDF: FC<Props> = ({ formDataArray, blocks }) => {
   const pathname = usePathname();
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const finishedModalRef = useRef<HTMLDivElement>(null);
   const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation();
   return (
-    <>
+    <div>
       {blocks && (
         <div className="generate-pdf-block">
           <BlockList blocks={blocks} />
@@ -47,39 +46,13 @@ export const FormGeneratePDF: FC<Props> = ({ formDataArray, blocks }) => {
         type="submit"
       />
 
-      <div
-        ref={finishedModalRef}
-        className={`absolute left-1/2 top-1/2 z-50 !mt-none -translate-x-1/2 
-        -translate-y-full bg-white p-xl shadow-2xl ${
-          showModal ? "visible" : "hidden"
-        }`}
-      >
-        <Heading level={3} size="sm">
-          {t("pages|form$form-continue-text")}
-        </Heading>
-
-        <div className="flex justify-between">
-          <Button
-            variant={"secondary"}
-            onClick={() => setShowModal(false)}
-            label={t("common|no")}
-            className="hover:bg-brown-200"
-          />
-          <ButtonLink
-            href="/offentligai/fortroendemodellen/success"
-            label={t("common|yes")}
-            icon={ArrowIcon}
-            iconPosition="right"
-            onClick={() => setShowModal(false)}
-          />
-        </div>
-      </div>
-
-      {/* This is to set a background color behind the open modal */}
-      <div
-        className={`absolute left-none top-none z-40 !mt-none h-full w-full bg-brownOpaque5 ${
-          showModal ? "visible" : "hidden"
-        }`}
+      <Modal
+        heading={t("pages|form$form-continue-text")}
+        closeBtn={t("common|no")}
+        modalOpen={showModal}
+        setModalOpen={setShowModal}
+        confirmBtn={t("common|yes")}
+        href={"/offentligai/fortroendemodellen/success"}
       />
 
       {/* Hidden iframe used only for printing */}
@@ -90,6 +63,6 @@ export const FormGeneratePDF: FC<Props> = ({ formDataArray, blocks }) => {
         id="printFrame"
         srcDoc="<div>Empty</div>"
       ></iframe>
-    </>
+    </div>
   );
 };

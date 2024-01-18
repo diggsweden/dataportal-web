@@ -23,5 +23,3 @@ export const ExternalLink: React.FC<ExternalLinkProps> = (props) => {
     </Link>
   );
 };
-
-export default ExternalLink;

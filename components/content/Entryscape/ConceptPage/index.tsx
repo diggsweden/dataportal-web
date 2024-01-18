@@ -694,7 +694,6 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                           <a
                             class="terminology__download-link"
                             href="{{ metadataURI}}"
-                            target="_blank"
                           >
                             RDF/XML
                           </a>
@@ -702,7 +701,6 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                           <a
                             class="terminology__download-link"
                             href="{{ metadataURI }}?format=text/turtle"
-                            target="_blank"
                           >
                             TURTLE
                           </a>
@@ -710,7 +708,6 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                           <a
                             class="terminology__download-link"
                             href="{{ metadataURI }}?format=text/n-triples"
-                            target="_blank"
                           >
                             N-TRIPLES
                           </a>
@@ -718,7 +715,6 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                           <a
                             class="terminology__download-link"
                             href="{{ metadataURI }}?format=application/ld+json"
-                            target="_blank"
                           >
                             JSON-LD
                           </a>

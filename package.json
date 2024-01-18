@@ -3,6 +3,7 @@
   "version": "4.4.6-beta",
   "private": true,
   "scripts": {
+    "postinstall": "husky install",
     "dev": "react-env --env local -- next dev",
     "build": "next build",
     "start": "react-env --env local -- next start",
