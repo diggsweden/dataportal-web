@@ -168,3 +168,13 @@ input[type="radio"]:focus-visible {
   @apply outline-dashed outline-2 outline-offset-2 outline-primary group-focus:outline-dashed 
   group-focus:outline-2 group-focus:outline-offset-2 group-focus:outline-primary;
 }
+
+/* SWAGGER UI */
+
+.try-out__btn {
+  @apply button--secondary button--large;
+}
+
+.explore-api-btn {
+  @apply button--primary button--large button bg-brown-600 text-white hover:bg-brown-800 !important;
+}
