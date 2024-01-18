@@ -14,9 +14,9 @@ export const ListPage: FC<PublicationListResponse> = ({
 }) => {
   const { trackPageView } = useMatomo();
   const pathname = usePathname();
-  const router: NextRouter | any = useRouter();
+  const router: NextRouter = useRouter();
   const publicationsPerPage = 12;
-  const page = parseInt(router.query.page) || 1;
+  const page = parseInt(router.query.page as string) || 1;
   const startIndex = (page - 1) * publicationsPerPage;
   const endIndex = startIndex + publicationsPerPage;
   const publicationsOnPage = publications.slice(startIndex, endIndex);
@@ -48,7 +48,7 @@ export const ListPage: FC<PublicationListResponse> = ({
             <Pagination
               totalResults={publications.length || 0}
               itemsPerPage={publicationsPerPage}
-              pageNumber={parseInt(router.query.page)}
+              pageNumber={parseInt(router.query.page as string)}
               changePage={changePage}
             />
           )}

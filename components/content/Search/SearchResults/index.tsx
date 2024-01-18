@@ -92,6 +92,7 @@ const SortingOptions: React.FC<{
       <Select
         id="sort"
         label={t("pages|search$sort")}
+        value={search.request.sortOrder}
         onChange={(event) => {
           event.preventDefault();
           clearCurrentScrollPos();
@@ -123,6 +124,7 @@ const SortingOptions: React.FC<{
       <Select
         id="hits"
         label={t("pages|search$numberofhits")}
+        value={search.request.take}
         onChange={(event) => {
           event?.preventDefault();
           clearCurrentScrollPos();
