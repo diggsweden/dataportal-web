@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { Container } from "@/components/layout/Container";
@@ -6,16 +6,18 @@ import { Heading } from "@/components/global/Typography/Heading";
 import { PublicationList } from "@/components/content/Publication/PublicationList";
 import { PublicationListResponse } from "@/utilities";
 import { Pagination } from "@/components/global/Pagination";
+import { useRouter } from "next/router";
 
 export const ListPage: FC<PublicationListResponse> = ({
   publications,
   heading,
 }) => {
-  const [pageNumber, setPageNumber] = useState(1);
   const { trackPageView } = useMatomo();
   const pathname = usePathname();
+  const router = useRouter();
+  const page: any = router.query.page || 1;
   const publicationsPerPage = 12;
-  const articlesVisited = (pageNumber - 1) * publicationsPerPage;
+  const articlesVisited = (page - 1) * publicationsPerPage;
   const publicationsOnPage = publications.slice(
     articlesVisited,
     articlesVisited + publicationsPerPage,
@@ -43,7 +45,6 @@ export const ListPage: FC<PublicationListResponse> = ({
           <Pagination
             searchResult={publications.length}
             itemsPerPage={publicationsPerPage}
-            setPageNumber={setPageNumber}
           />
         </div>
       </Container>

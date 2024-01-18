@@ -1,13 +1,13 @@
 import Arrow from "@/assets/icons/chevronRight.svg";
 import useTranslation from "next-translate/useTranslation";
 import { useState, useEffect, Dispatch, SetStateAction, FC } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
 
 type Pagination = {
   searchResult: number | any;
   itemsPerPage: number;
-  setPageNumber: Dispatch<SetStateAction<number>>;
+  setPageNumber?: Dispatch<SetStateAction<number>>;
 };
 
 export const Pagination: FC<Pagination> = ({
@@ -15,29 +15,31 @@ export const Pagination: FC<Pagination> = ({
   itemsPerPage,
   setPageNumber,
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const [screenSize, setScreenSize] = useState(false);
   const totalPages: number = Math.ceil(searchResult / itemsPerPage);
-  const firstOnCurrentPage =
-    currentPage === 1 ? 1 : (currentPage - 1) * itemsPerPage;
-  const lastOnCurrentPage =
-    currentPage === totalPages ? searchResult : itemsPerPage * currentPage;
   const { t } = useTranslation();
-  const { push } = useRouter();
+  const router = useRouter();
+  const { page, p }: any = router.query;
+  const onPage = parseInt(page) || parseInt(p) || 1;
+  const [currentPage, setCurrentPage] = useState(onPage);
+  const firstOnCurrentPage =
+    currentPage === 1 ? 1 : (currentPage - 1) * itemsPerPage + 1;
+  const lastOnCurrentPage =
+    currentPage === currentPage ? searchResult : itemsPerPage * currentPage;
   const pathname = usePathname();
   const pageSpace: string = "...";
   const numbersArray: number[] = Array.from(
     { length: totalPages },
     (_, index) => index + 1,
   );
-
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.addEventListener("resize", () =>
         setScreenSize(window.innerWidth > 600 ? false : true),
       );
     }
-  }, []);
+    setCurrentPage(onPage);
+  }, [parseInt(page)]);
 
   const pagination = () => {
     if (screenSize) {
@@ -81,11 +83,9 @@ export const Pagination: FC<Pagination> = ({
 
   const changePage = (page: number) => {
     if (pathname === ("/nyheter" || "/goda-exempel")) {
-      page !== 1
-        ? push(`?page=${2}`, { scroll: false })
-        : push("", { scroll: false });
+      page !== 1 ? router.push(`?page=${page}`) : router.push("");
     }
-    setPageNumber(page);
+    setPageNumber && setPageNumber(page);
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -118,7 +118,11 @@ export const Pagination: FC<Pagination> = ({
         </button>
         {pagination().map((value: any, idx: number) => (
           <button
-            onClick={value === "..." ? () => null : () => changePage(value)}
+            onClick={
+              value === "..." || value === currentPage
+                ? () => null
+                : () => changePage(value)
+            }
             key={idx}
             className={`focus:-outline-offset-2 ${
               value === currentPage

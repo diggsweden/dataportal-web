@@ -23,7 +23,9 @@ export const SearchContentPage: FC<SearchProps> = () => {
   const { t, lang } = useTranslation("common");
   const [query, setQuery] = useState((routerQuery?.q as string) || "");
   const [trackedQuery, setTrackedQuery] = useState("");
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(
+    parseInt(routerQuery?.p as string) || 1,
+  );
   const { trackEvent } = useMatomo();
   const { trackPageView } = useMatomo();
 
