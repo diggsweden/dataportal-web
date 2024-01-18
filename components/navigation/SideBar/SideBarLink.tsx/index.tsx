@@ -57,7 +57,7 @@ const MenuLink: FC<MenuLinkProps> = ({
     <Link
       className={cx(
         sideBarLinkVariants({ variant }),
-        "focus-visible:-outline-offset-2",
+        "focus--in focus--underline",
         isActive && "bg-pink-100",
         className,
       )}
@@ -140,7 +140,7 @@ const SideBarLink: FC<
     return (
       <>
         <button
-          className="group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl text-brown-600 focus-visible:-outline-offset-2"
+          className="focus--in focus--underline group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl text-brown-600"
           onClick={() => setOpen(!open)}
           tabIndex={openSideBar ? 0 : -1}
         >

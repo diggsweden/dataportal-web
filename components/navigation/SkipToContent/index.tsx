@@ -1,43 +1,20 @@
 import { Button } from "@/components/global/Button";
-import Link from "next/link";
+
 import { FC } from "react";
 
-type SkipOptions = {
-  showFocus?: boolean;
-  includeHeading?: boolean;
-};
-
-export const skipToContent = (
-  ev?: React.MouseEvent,
-  options: SkipOptions = { showFocus: true, includeHeading: true },
-) => {
-  const { showFocus, includeHeading } = options;
-  if (ev) {
-    ev.preventDefault();
-  }
+export const skipToContent = () => {
   let content = document.querySelector("#Hero");
-  if (!content) content = document.querySelector("#ContainerPage");
+  if (!content) content = document.querySelector("article");
   if (!content) content = document.querySelector("main");
   if (!content) return;
 
   const focusable = content.querySelectorAll<HTMLElement>(
-    `${
-      includeHeading ? "h1, " : ""
-    }button, a, [href]:not(.view-more-text-link), input, select, textarea, [tabindex]:not([tabindex="-1"])`,
+    `h1, button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])`,
   );
 
   const first = focusable[0];
 
   if (first) {
-    if (first.nodeName === "H1") {
-      first.tabIndex = -1;
-    }
-    if (showFocus) {
-      setTimeout(() => {
-        document.documentElement.classList.remove("no-focus-outline");
-      }, 50);
-    }
-
     startFromTop();
     first.focus();
   }
@@ -45,20 +22,13 @@ export const skipToContent = (
 
 export const SkipToContent: FC<{ text: string }> = ({ text }) => {
   return (
-    <>
-      <Button
-        className={`fixed left-none top-none z-50 w-[276px] justify-center bg-brown-900 !py-[15px] 
-        text-brown-100 focus:outline-dashed focus:outline-2 focus:-outline-offset-2 focus:outline-white`}
-        onClick={skipToContent}
-        label={text}
-      />
-
-      <noscript>
-        <Link className="" href="#main">
-          {text}
-        </Link>
-      </noscript>
-    </>
+    <Button
+      tabIndex={1}
+      className={`focus--white focus--outline focus--in absolute left-none top-none z-50 w-[276px] 
+        -translate-x-full justify-center bg-brown-900 !py-[15px] text-brown-100 focus-visible:translate-x-none`}
+      onClick={skipToContent}
+      label={text}
+    />
   );
 };
 

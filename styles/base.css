@@ -63,13 +63,32 @@ body {
     outline-width: 2px;
   }
 
+  .focus--outline {
+    @apply focus-visible:outline-dashed focus-visible:outline-[3px] group-focus-visible:outline-dashed group-focus-visible:outline-[3px];
+  }
+  .focus--white {
+    @apply focus-visible:outline-white group-focus-visible:outline-white !important;
+  }
+  .focus--primary {
+    @apply focus-visible:outline-primary group-focus-visible:outline-primary;
+  }
+  .focus--in{
+    @apply focus-visible:-outline-offset-[3px] group-focus-visible:-outline-offset-[3px] !important;
+  }
+  .focus--out{
+    @apply focus-visible:outline-offset-2 group-focus-visible:outline-offset-2;
+  }
+  .focus--underline {
+    @apply focus-visible:underline group-focus-visible:underline;
+  }
+  
   .button {
-    @apply flex w-fit flex-row items-center no-underline focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed 
+    @apply flex w-fit flex-row items-center no-underline disabled:cursor-not-allowed 
     disabled:border-none disabled:bg-brown-400 disabled:text-brown-600 disabled:hover:bg-brown-400
      [&_path]:disabled:fill-brown-600 [&_svg]:inline-flex;
   }
   .button--primary {
-    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 focus-visible:bg-brown-800 group-hover:!bg-brown-800 
+    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 focus-visible:bg-brown-800 group-hover:bg-brown-800 
     group-focus:bg-brown-800 [&_path]:fill-brown-100;
   }
   .button--primary.active {
@@ -99,7 +118,7 @@ body {
     @apply gap-sm px-md py-[6px] text-sm;
   }
   .button--large {
-    @apply gap-sm p-sm py-[10px] text-md;
+    @apply gap-sm px-md py-[10px] text-md;
   }
 }
 
@@ -161,10 +180,6 @@ mark {
 }
 
 /* General styling for focus */
-a:focus-visible,
-button:focus-visible,
-.button:focus-visible,
-input[type="radio"]:focus-visible {
-  @apply outline-dashed outline-2 outline-offset-2 outline-primary group-focus:outline-dashed 
-  group-focus:outline-2 group-focus:outline-offset-2 group-focus:outline-primary;
+a, h1, button, .button, input[type="radio"] {
+  @apply focus--outline focus--primary focus--out;
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
 import { Button } from "@/components/global/Button";
 import CloseCrossIcon from "@/assets/icons/closeCross.svg";
@@ -17,6 +17,11 @@ export const ContainerNav: React.FC<ContainerDpDwnProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
+  const [vw, setVw] = useState(0);
+
+  useEffect(() => {
+    setVw(window.innerWidth);
+  }, []);
 
   const isActive = (url: string) => {
     if (url === related[0].slug) {
@@ -34,13 +39,17 @@ export const ContainerNav: React.FC<ContainerDpDwnProps> = ({
         <div className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden" />
       )}
 
-      <Button
-        iconPosition="left"
-        icon={expanded ? CloseCrossIcon : HamburgerIcon}
-        label={related[0].name}
-        onClick={() => setExpanded(!expanded)}
-        className={`!button--large z-40 w-full md:w-[320px] xl:hidden`}
-      />
+      {/* This is added so a user can tab through the page when the button is not visible */}
+      {vw < 1124 && (
+        <Button
+          iconPosition="left"
+          icon={expanded ? CloseCrossIcon : HamburgerIcon}
+          label={related[0].name}
+          onClick={() => setExpanded(!expanded)}
+          className={`!button--large z-40 w-full md:w-[320px] xl:hidden`}
+        />
+      )}
+
       <ul
         className={`absolute flex-col bg-white md:w-[320px] xl:static xl:flex xl:h-full xl:bg-transparent ${
           expanded
@@ -60,12 +69,20 @@ export const ContainerNav: React.FC<ContainerDpDwnProps> = ({
               <Link
                 href={url}
                 className={`inline-flex w-full px-md py-sm no-underline ${
-                  isActive(url) ? "cursor-default" : "hover:underline"
+                  isActive(url)
+                    ? "cursor-default"
+                    : "focus--underline hover:underline"
                 }`}
                 aria-disabled={isActive(url)}
                 onClick={() => {
                   setExpanded(false);
                   window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    setExpanded(false);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }
                 }}
                 scroll={false}
               >

@@ -138,7 +138,6 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   return (
     <Container>
       <article
-        id="ContainerPage"
         className={`grid max-w-md grid-cols-1 lg:max-w-xl
         lg:grid-cols-[620px_1fr] lg:gap-x-xl ${
           hasRelatedContent ? "xl:grid-cols-[200px_620px_1fr]" : ""
@@ -147,25 +146,18 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
         {hasRelatedContent && (
           <ContainerNav related={related} domain={domain} />
         )}
+
         {!image && heading && (
           <Heading
             size={"lg"}
             level={1}
-            className={`col-span-2 row-span-1 ${
+            className={`ContainerHeading col-span-2 row-span-1 ${
               hasRelatedContent ? "xl:col-start-2 xl:mb-xl" : ""
             }`}
           >
             {checkLang(heading)}
           </Heading>
         )}
-
-        <main
-          className={`content col-start-1 max-w-md space-y-lg md:space-y-xl
-           ${hasRelatedContent ? "xl:col-span-1 xl:col-start-2" : ""}`}
-        >
-          <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
-          {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
-        </main>
 
         {menuItems.length > 2 && (
           <div
@@ -185,6 +177,14 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
             />
           </div>
         )}
+
+        <main
+          className={`content col-start-1 max-w-md space-y-lg md:space-y-xl
+           ${hasRelatedContent ? "xl:col-span-1 xl:col-start-2" : ""}`}
+        >
+          <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
+          {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
+        </main>
       </article>
     </Container>
   );

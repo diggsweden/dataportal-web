@@ -175,9 +175,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
 
   useEffect(() => {
     if (previousPath) {
-      pathname.includes("#")
-        ? onHash(pathname)
-        : skipToContent(undefined, { showFocus: false, includeHeading: true });
+      pathname.includes("#") ? onHash(pathname) : skipToContent();
     } else {
       pathname.includes("#") && onHash(pathname);
     }
@@ -234,6 +232,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
               )}
 
               <main
+                id="main"
                 className={`mt-lg min-h-[calc(100vh-656px)] pb-lg transition-all duration-300 
                 ease-in-out md:mt-xl md:pb-xl lg:min-h-[calc(100vh-524px)] ${
                   openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"

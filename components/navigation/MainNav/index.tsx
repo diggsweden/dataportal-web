@@ -49,18 +49,18 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
       <Link
         href={`${t(`common|${"lang-path"}`)}`}
         onClick={() => setOpenSideBar(false)}
-        className="focus-visible:outline-white"
+        className="focus--white"
       >
         <DataportalLogo
           viewBox="0 0 228 44"
           className={`${
             openSearch
-              ? "2xl:w-[228px] hidden lg:block xl:w-[150px]"
+              ? "hidden lg:block xl:w-[150px] 2xl:w-[228px]"
               : "h-[32px] w-[160px] md:h-[44px] md:w-[228px] "
           } `}
         />
       </Link>
-      <div className="flex w-full flex-row items-center justify-end">
+      <div className="flex w-full flex-row items-center justify-end space-x-md">
         <nav className="hidden flex-row items-center gap-sm xl:flex">
           {menues.map((menu: MainNavData, idx: number) => (
             <ButtonLink
@@ -68,7 +68,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
               href={`/${t(`routes|${menu.title}$path`)}`}
               onClick={() => setOpenSideBar(false)}
               label={t(`routes|${menu.title}$title`)}
-              className={`focus-visible:-outline-offset-2 focus-visible:outline-white ${
+              className={`focus--white focus--in ${
                 pathname.startsWith(`/${t(`routes|${menu.title}$path`)}`)
                   ? " active"
                   : ""
@@ -82,7 +82,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
               onClick={() => setOpenSearch(!openSearch)}
               icon={SearchIcon}
               iconPosition="left"
-              className="cursor-pointer p-[10px] hover:bg-brown-800 focus-visible:-outline-offset-2 focus-visible:outline-white"
+              className="focus--white focus--in cursor-pointer p-[10px]"
             />
           ) : (
             <form
@@ -103,7 +103,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                 query={query}
                 setQuery={setQuery}
                 type="small"
-                className="!h-[44px] border-none !bg-brown-100 pr-[90px] hover:outline-0 focus-visible:outline-0 md:ml-sm"
+                className="focus-i-n !h-[44px] border-none !bg-brown-100 pr-[90px] hover:outline-0"
               />
             </form>
           )}
@@ -114,7 +114,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           iconPosition="left"
           onClick={() => setOpenSideBar(!openSideBar)}
           label={t("common|menu")}
-          className="focus-visible:-outline-offset-2 focus-visible:!outline-white"
+          className="focus--white focus--in"
         />
       </div>
     </div>

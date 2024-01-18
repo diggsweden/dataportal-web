@@ -25,20 +25,18 @@ export const FormNav: React.FC<ContainerDpDwnProps> = ({
   const [curActive, setCurActive] = useState("");
   const ref = useClickoutside(() => setExpanded(false));
   const { t } = useTranslation("common");
+  const [vw, setVw] = useState(0);
 
   useEffect(() => {
     setCurActive(pageNames[0]);
+    setVw(window.innerWidth);
   }, []);
 
   useEffect(() => {
     forceUpdate && setCurActive(pageNames[forceUpdate]);
   }, [forceUpdate]);
 
-  const handleClick = (
-    e: React.MouseEvent<HTMLLIElement>,
-    pageName: string,
-  ) => {
-    e.preventDefault();
+  const handleClick = (pageName: string) => {
     setCurActive(pageName);
     setExpanded(false);
     setPage(pageNames.indexOf(pageName) + 1);
@@ -59,15 +57,17 @@ export const FormNav: React.FC<ContainerDpDwnProps> = ({
         <div className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden" />
       )}
 
-      <Button
-        iconPosition="right"
-        icon={expanded ? ChevronUpIcon : ChevronDownIcon}
-        aria-haspopup={true}
-        label={curActive === "" ? t("go-to") : curActive}
-        onClick={() => setExpanded(!expanded)}
-        className={`!button--large z-40 !w-full justify-between md:!w-[328px] lg:hidden`}
-      />
-
+      {/* This is added so a user can tab through the page when the button is not visible */}
+      {vw < 984 && (
+        <Button
+          iconPosition="right"
+          icon={expanded ? ChevronUpIcon : ChevronDownIcon}
+          aria-haspopup={true}
+          label={curActive === "" ? t("go-to") : curActive}
+          onClick={() => setExpanded(!expanded)}
+          className={`!button--large z-40 !w-full justify-between md:!w-[328px] lg:hidden`}
+        />
+      )}
       <ul
         className={`absolute w-full flex-col bg-white md:w-[328px] lg:static lg:flex lg:h-full lg:w-fit 
         lg:bg-transparent ${
@@ -82,13 +82,18 @@ export const FormNav: React.FC<ContainerDpDwnProps> = ({
             <li
               key={`name-${idx}`}
               tabIndex={0}
-              className={`cursor-pointer p-md no-underline underline-offset-4
+              className={`focus--outline focus--primary focus--out cursor-pointer p-md no-underline underline-offset-4
                ${
                  isActive(name)
                    ? "!cursor-default bg-brown-900 text-white"
-                   : "text-textSecondary hover:underline"
+                   : "focus--underline text-textSecondary hover:underline"
                }`}
-              onClick={(e) => handleClick(e, name)}
+              onClick={() => handleClick(name)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleClick(name);
+                }
+              }}
             >
               {name}
             </li>
