@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useStateCallback } from "@/hooks/useStateCallback";
+import { CookieSetting } from "@/components/global/CookieBanner";
 
 export interface LocalStore {
-  cookieSettings: null | undefined;
+  cookieSettings?: CookieSetting;
 }
 
 /* eslint-disable no-unused-vars */
