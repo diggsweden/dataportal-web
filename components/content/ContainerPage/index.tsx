@@ -146,6 +146,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
         {hasRelatedContent && (
           <ContainerNav related={related} domain={domain} />
         )}
+
         {!image && heading && (
           <Heading
             size={"lg"}
@@ -157,14 +158,6 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
             {checkLang(heading)}
           </Heading>
         )}
-
-        <main
-          className={`content col-start-1 max-w-md space-y-lg md:space-y-xl
-           ${hasRelatedContent ? "xl:col-span-1 xl:col-start-2" : ""}`}
-        >
-          <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
-          {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
-        </main>
 
         {menuItems.length > 2 && (
           <div
@@ -184,6 +177,14 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
             />
           </div>
         )}
+
+        <main
+          className={`content col-start-1 max-w-md space-y-lg md:space-y-xl
+           ${hasRelatedContent ? "xl:col-span-1 xl:col-start-2" : ""}`}
+        >
+          <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
+          {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
+        </main>
       </article>
     </Container>
   );

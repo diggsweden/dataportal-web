@@ -17,14 +17,18 @@ const headingVariants = cva(["text-wrap"], {
 
 type HeadingProps = VariantProps<typeof headingVariants> & {
   level: 1 | 2 | 3 | 4 | 5;
+  tabIndex?: number;
 };
 
 export const Heading: FC<
-  PropsWithChildren<HeadingProps & HTMLAttributes<HTMLHeadElement>>
-> = ({ size, level, className, children }) => {
+  PropsWithChildren<HeadingProps & HTMLAttributes<HTMLElement>>
+> = ({ size, level, className, tabIndex, children }) => {
   const CustomTag = `h${level}` as keyof JSX.IntrinsicElements;
   return (
-    <CustomTag className={cx(headingVariants({ size }), className)}>
+    <CustomTag
+      className={cx(headingVariants({ size }), className)}
+      tabIndex={level === 1 || tabIndex === 0 ? 0 : -1}
+    >
       {children}
     </CustomTag>
   );

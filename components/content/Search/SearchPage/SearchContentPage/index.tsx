@@ -241,7 +241,8 @@ export const SearchContentPage: FC<SearchProps> = () => {
                       <Heading
                         level={3}
                         size="sm"
-                        className="mb-sm font-normal text-green-600 group-hover:underline "
+                        className={`focus--underline focus--outline focus--primary focus--out mb-sm font-normal 
+                        text-green-600 group-hover:underline`}
                         lang={hit.titleLang}
                       >
                         {highlightWords(hit.title)}

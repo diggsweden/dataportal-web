@@ -237,7 +237,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                       saveCurrentScrollPos();
                       trackSearchHitClick(hit.url || "");
                     }}
-                    className="group block no-underline"
+                    className="group block no-underline focus-visible:outline-none"
                   >
                     {hit.metadata &&
                       search.allFacets &&
@@ -258,7 +258,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                     <Heading
                       level={3}
                       size="sm"
-                      className="mb-sm font-normal text-green-600 group-hover:underline "
+                      className="focus--underline mb-sm font-normal text-green-600 group-hover:underline"
                       lang={hit.titleLang}
                     >
                       {hit.title}

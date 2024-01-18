@@ -60,7 +60,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
         id={filterKey}
         name={filterKey}
         placeholder={t("search$filtersearch")}
-        className="border-none hover:outline-0 focus-visible:outline-0"
+        className="focus--in border-none"
         value={filter[filterKey] || ""}
         onChange={(e) => (
           clearCurrentScrollPos(),
@@ -314,6 +314,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
           {searchMode == "datasets" && (
             <div className="relative max-w-[74px]">
               <input
+                tabIndex={-1}
                 id="api_only"
                 name="API"
                 type="checkbox"
@@ -366,7 +367,8 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                 }}
               />
               <label
-                className="button button--small button--secondary z-2 relative cursor-pointer pr-xl"
+                tabIndex={0}
+                className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl focus-visible:bg-whiteOpaque5"
                 htmlFor="api_only"
               >
                 API

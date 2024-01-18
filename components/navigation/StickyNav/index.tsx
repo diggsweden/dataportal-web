@@ -101,7 +101,12 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
       }`}
       style={{ top: fixedNav.bottom ? fixedNav.bottomPosition : "" }}
     >
-      <Heading level={3} size={"xs"} className="text-brown-600">
+      <Heading
+        tabIndex={0}
+        level={3}
+        size={"xs"}
+        className="focus--outline focus--primary focus--out text-brown-600"
+      >
         {menuHeading}
       </Heading>
       <ul className={`flex w-full flex-col`}>
@@ -112,7 +117,7 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
               className={`inline-flex cursor-pointer p-sm pl-lg text-sm no-underline underline-offset-4 hover:underline ${
                 latestActiveItem?.id === item.id
                   ? "border-l-[3px] border-pink-600 pl-[18px] font-strong"
-                  : "border-l  border-brown-200 font-normal"
+                  : "focus--underline border-l border-brown-200 font-normal"
               }`}
             >
               {item.text}
