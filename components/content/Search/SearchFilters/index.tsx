@@ -368,13 +368,13 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
               />
               <label
                 tabIndex={0}
-                className="button button--small button--secondary focus--outline focus--primary cursor-pointer pr-xl focus-visible:bg-whiteOpaque5"
+                className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl focus-visible:bg-whiteOpaque5"
                 htmlFor="api_only"
               >
                 API
               </label>
-              <CheckboxIcon className="absolute right-sm top-sm peer-checked/api-only:hidden" />
-              <CheckboxCheckedIcon className="absolute right-sm top-sm hidden peer-checked/api-only:block" />
+              <CheckboxIcon className="pointer-events-none absolute right-sm top-1/4 peer-checked/api-only:hidden" />
+              <CheckboxCheckedIcon className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/api-only:block" />
             </div>
           )}
         </ul>

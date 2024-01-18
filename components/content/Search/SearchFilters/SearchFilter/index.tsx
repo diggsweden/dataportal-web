@@ -43,7 +43,7 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
           onClick={() => handleOpen(!open)}
           className={`${
             open && "active"
-          } button button--secondary button--large md:button--small w-full justify-between md:justify-start`}
+          } button button--secondary button--large md:button--small w-full justify-between md:justify-start md:py-[4px]`}
         >
           {title || t("open")}
           <ChevronDownIcon />

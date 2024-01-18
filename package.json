@@ -3,6 +3,7 @@
   "version": "4.4.6-beta",
   "private": true,
   "scripts": {
+    "postinstall": "husky install",
     "dev": "react-env --env local -- next dev",
     "build": "next build",
     "start": "react-env --env local -- next start",
@@ -70,6 +71,8 @@
     "eslint": "8.23.0",
     "eslint-config-next": "13.0.2",
     "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
     "next-translate-plugin": "^2.6.2",
     "postcss": "^8.4.32",
     "prettier": "3.0.3",

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
 type Pagination = {
-  searchResult: number;
+  searchResult: number | any;
   itemsPerPage: number;
   setPageNumber: Dispatch<SetStateAction<number>>;
 };
