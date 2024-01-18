@@ -1,45 +1,40 @@
 import Arrow from "@/assets/icons/chevronRight.svg";
 import useTranslation from "next-translate/useTranslation";
-import { useState, useEffect, Dispatch, SetStateAction, FC } from "react";
-import { useRouter } from "next/router";
-import { usePathname } from "next/navigation";
-
+import { useState, useEffect, Dispatch, FC } from "react";
 type Pagination = {
-  searchResult: number | any;
+  totalResults: number;
   itemsPerPage: number;
-  setPageNumber?: Dispatch<SetStateAction<number>>;
+  pageNumber: number | undefined;
+  changePage: Dispatch<number>;
 };
 
 export const Pagination: FC<Pagination> = ({
-  searchResult,
+  totalResults,
   itemsPerPage,
-  setPageNumber,
+  pageNumber,
+  changePage,
 }) => {
   const [screenSize, setScreenSize] = useState(false);
-  const totalPages: number = Math.ceil(searchResult / itemsPerPage);
+  const totalPages: number = Math.ceil(totalResults / itemsPerPage);
   const { t } = useTranslation();
-  const router = useRouter();
-  const { page, p }: any = router.query;
-  const onPage = parseInt(page) || parseInt(p) || 1;
-  const [currentPage, setCurrentPage] = useState(onPage);
+  const [currentPage, setCurrentPage] = useState(pageNumber ? pageNumber : 1);
   const firstOnCurrentPage =
     currentPage === 1 ? 1 : (currentPage - 1) * itemsPerPage + 1;
   const lastOnCurrentPage =
-    currentPage === currentPage ? searchResult : itemsPerPage * currentPage;
-  const pathname = usePathname();
+    currentPage === currentPage ? totalResults : itemsPerPage * currentPage;
   const pageSpace: string = "...";
   const numbersArray: number[] = Array.from(
     { length: totalPages },
     (_, index) => index + 1,
   );
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.addEventListener("resize", () =>
         setScreenSize(window.innerWidth > 600 ? false : true),
       );
     }
-    setCurrentPage(onPage);
-  }, [parseInt(page)]);
+  }, []);
 
   const pagination = () => {
     if (screenSize) {
@@ -81,11 +76,8 @@ export const Pagination: FC<Pagination> = ({
     } else return numbersArray;
   };
 
-  const changePage = (page: number) => {
-    if (pathname === ("/nyheter" || "/goda-exempel")) {
-      page !== 1 ? router.push(`?page=${page}`) : router.push("");
-    }
-    setPageNumber && setPageNumber(page);
+  const changePageNumber = (page: number) => {
+    changePage(page);
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -101,7 +93,7 @@ export const Pagination: FC<Pagination> = ({
         <span className="font-strong"> {firstOnCurrentPage} </span>
         {t("common|to")}
         <span className="font-strong"> {lastOnCurrentPage} </span>
-        {t("common|of")} <span className="font-strong"> {searchResult} </span>
+        {t("common|of")} <span className="font-strong"> {totalResults} </span>
         {t("pages|search$results")}
       </span>
       <div className="flex items-center">
@@ -122,7 +114,7 @@ export const Pagination: FC<Pagination> = ({
             onClick={
               value === "..." || value === currentPage
                 ? () => null
-                : () => changePage(value)
+                : () => changePageNumber(value)
             }
             tabIndex={value === "..." || value === currentPage ? -1 : 0}
             key={idx}

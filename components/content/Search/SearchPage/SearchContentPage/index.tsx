@@ -23,12 +23,9 @@ export const SearchContentPage: FC<SearchProps> = () => {
   const { t, lang } = useTranslation("common");
   const [query, setQuery] = useState((routerQuery?.q as string) || "");
   const [trackedQuery, setTrackedQuery] = useState("");
-  const [pageNumber, setPageNumber] = useState(
-    parseInt(routerQuery?.p as string) || 1,
-  );
   const { trackEvent } = useMatomo();
   const { trackPageView } = useMatomo();
-
+  const pageNumber = parseInt(routerQuery?.p as string) || 1;
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [searchRequest, setSearchRequest] = useState<SearchRequest>({
     page: parseInt(routerQuery?.p as string),
@@ -132,6 +129,16 @@ export const SearchContentPage: FC<SearchProps> = () => {
       behavior: "smooth",
     });
   }, [pageNumber]);
+
+  const changePage = (page: number) => {
+    router.query.p = page.toString();
+    router.push(router);
+    clearCurrentScrollPos();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     doSearch();
@@ -259,9 +266,10 @@ export const SearchContentPage: FC<SearchProps> = () => {
         </div>
         {searchResult?.hits && (
           <Pagination
-            searchResult={searchResult?.count}
-            setPageNumber={setPageNumber}
+            totalResults={searchResult?.count || 0}
             itemsPerPage={PER_PAGE}
+            pageNumber={pageNumber}
+            changePage={changePage}
           />
         )}
       </Container>

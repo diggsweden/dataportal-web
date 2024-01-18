@@ -55,7 +55,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           viewBox="0 0 228 44"
           className={`${
             openSearch
-              ? "2xl:w-[228px] hidden lg:block xl:w-[150px]"
+              ? "hidden lg:block xl:w-[150px] 2xl:w-[228px]"
               : "h-[32px] w-[160px] md:h-[44px] md:w-[228px] "
           } `}
         />

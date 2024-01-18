@@ -92,7 +92,6 @@ const SortingOptions: React.FC<{
       <Select
         id="sort"
         label={t("pages|search$sort")}
-        value={search.request.sortOrder}
         onChange={(event) => {
           event.preventDefault();
           clearCurrentScrollPos();
@@ -124,7 +123,6 @@ const SortingOptions: React.FC<{
       <Select
         id="hits"
         label={t("pages|search$numberofhits")}
-        value={search.request.take}
         onChange={(event) => {
           event?.preventDefault();
           clearCurrentScrollPos();
@@ -159,7 +157,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   search,
   searchMode,
 }) => {
-  const [pageNumber, setPageNumber] = useState<number>(0);
   const [isCompact, setCompact] = useState(false);
   const { trackEvent } = useMatomo();
   const { t } = useTranslation();
@@ -189,12 +186,12 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     else setCompact(true);
   });
 
-  useEffect(() => {
-    if (search.result.pages) {
+  const changePage = (page: number) => {
+    if (search.result.pages || 0 > 1) {
       clearCurrentScrollPos();
       search
         .set({
-          page: pageNumber - 1,
+          page: page - 1,
         })
         .then(() => search.doSearch());
       window.scrollTo({
@@ -203,8 +200,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       });
       searchFocus();
     }
-  }, [pageNumber]);
-
+  };
   return (
     <div id="search-result" className="my-xl">
       <div className="mb-lg flex flex-col-reverse justify-between md:flex-row">
@@ -300,21 +296,22 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                             ),
                           )}
                       </div>
-                    </Link>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        )}
-      </div>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+          </ul>
+        </div>
+      )}
       {(search.result.pages || 0) > 1 && (
         <Pagination
-          searchResult={search.result.count}
-          setPageNumber={setPageNumber}
+          totalResults={search.result.count || 0}
           itemsPerPage={search.request.take ? search.request.take : 20}
+          pageNumber={search?.request.page && search?.request.page + 1}
+          changePage={changePage}
         />
       )}
-    </>
+    </div>
   );
 };
 
