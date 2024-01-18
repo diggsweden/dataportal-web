@@ -203,14 +203,6 @@
   @apply p-sm text-brown-900;
 }
 
-.try-out__btn {
-  @apply button--secondary button--large;
-}
-
-.explore-api-btn {
-  @apply button--primary button--large button bg-brown-600 text-white hover:bg-brown-800 !important;
-}
- 
 .entryscape a {
   @apply block break-all text-sm text-green-600 underline !important;
 }
