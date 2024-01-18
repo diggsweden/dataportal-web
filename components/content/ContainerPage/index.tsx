@@ -151,7 +151,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
           <Heading
             size={"lg"}
             level={1}
-            className={`ContainerHeading col-span-2 row-span-1 ${
+            className={`col-span-2 row-span-1 ${
               hasRelatedContent ? "xl:col-start-2 xl:mb-xl" : ""
             }`}
           >
