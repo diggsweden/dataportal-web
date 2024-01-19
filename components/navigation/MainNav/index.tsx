@@ -95,7 +95,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                     } [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900 focus-visible:[&_div_div_button]:-outline-offset-2 focus-visible:[&_div_div_button]:outline-white`
                   : "w-none overflow-hidden"
               }`}
-              action={lang + "/search"}
+              action={`/${lang}/search`}
             >
               <SearchInput
                 id="header-search"

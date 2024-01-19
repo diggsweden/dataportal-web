@@ -37,7 +37,7 @@ const renderMedia = (
         return null;
       }
       return (
-        <figure className="border-b border-brown-200 pb-sm">
+        <figure className="max-w-md border-b border-brown-200 pb-sm">
           <CustomImage image={media} className="pb-sm" />
           {mediaDescription && (
             <figcaption className="text-brown-600">

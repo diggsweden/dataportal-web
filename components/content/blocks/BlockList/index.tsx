@@ -41,7 +41,7 @@ const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
 
   return (
     <ul
-      className="divide-y divide-brown-200 border-y border-brown-200"
+      className="max-w-md divide-y divide-brown-200 border-y border-brown-200"
       key={`content-${pos}-${faqGroup[0].id}`}
     >
       {faqGroup.map((faq, idx: number) => (
