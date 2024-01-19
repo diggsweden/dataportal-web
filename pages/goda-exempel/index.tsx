@@ -10,6 +10,18 @@ export async function getStaticProps({ locale }: any) {
     },
     basePath: `/goda-exempel`,
     heading: "Goda exempel",
+    heroImage: {
+      __typename: "dataportal_Digg_Image",
+      width: 1920,
+      height: 400,
+      url: "/images/goodExamplesHero.png",
+      alt: "Goda exempel",
+      name: "goodExamplesHero.png",
+      description: null,
+      mime: "image/png",
+      ext: null,
+      screen9: null,
+    },
   });
 }
 

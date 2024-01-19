@@ -1,4 +1,7 @@
-import { PublicationDataFragment } from "@/graphql/__generated__/operations";
+import {
+  ImageFragment,
+  PublicationDataFragment,
+} from "@/graphql/__generated__/operations";
 import { SeoDataFragment } from "@/graphql/__generated__/operations";
 import {
   DomainAggregateResponse,
@@ -22,7 +25,7 @@ export type DataportalPageProps =
 type ResolvedPage = {
   heading?: string | null;
   preamble?: string | null;
-  heroImage?: PublicationDataFragment["image"] | null;
+  heroImage?: PublicationDataFragment["image"] | ImageFragment | null;
   seo?: SeoDataFragment | null;
 };
 
@@ -52,7 +55,11 @@ export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
         heroImage: props.image,
       };
     case "PublicationList":
-      return { seo: props.seo, heading: props.heading };
+      return {
+        seo: props.seo,
+        heading: props.heading,
+        heroImage: props.heroImage,
+      };
     case "Form":
       return {};
     case "Module":

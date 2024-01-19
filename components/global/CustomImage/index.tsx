@@ -33,9 +33,10 @@ export const CustomImage: React.FC<CustomImageProps> = ({
     );
   }
 
-  const src = isExternalLink(image.url)
-    ? image.url
-    : (env("MEDIA_BASE_URL") || "") + image.url;
+  const src =
+    isExternalLink(image.url) || image.url.startsWith("/images")
+      ? image.url
+      : (env("MEDIA_BASE_URL") || "") + image.url;
 
   return (
     <Image
