@@ -2,7 +2,7 @@ import Arrow from "@/assets/icons/chevronRight.svg";
 import useTranslation from "next-translate/useTranslation";
 import { useState, useEffect, Dispatch, FC } from "react";
 type Pagination = {
-  searchResult: number | any;
+  totalResults: number | any;
   itemsPerPage: number;
   pageNumber: number | undefined;
   changePage: Dispatch<number>;
