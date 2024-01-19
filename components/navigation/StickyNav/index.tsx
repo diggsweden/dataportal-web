@@ -113,7 +113,6 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
       }}
     >
       <Heading
-        tabIndex={0}
         level={3}
         size={"xs"}
         className="focus--outline focus--primary focus--in text-brown-600"

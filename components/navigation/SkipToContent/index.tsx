@@ -9,7 +9,7 @@ export const skipToContent = () => {
   if (!content) return;
 
   const focusable = content.querySelectorAll<HTMLElement>(
-    `h1, button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])`,
+    `button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])`,
   );
 
   const first = focusable[0];
