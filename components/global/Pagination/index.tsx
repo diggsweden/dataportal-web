@@ -1,30 +1,27 @@
 import Arrow from "@/assets/icons/chevronRight.svg";
 import useTranslation from "next-translate/useTranslation";
-import { useState, useEffect, Dispatch, SetStateAction, FC } from "react";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
-
+import { useState, useEffect, Dispatch, FC } from "react";
 type Pagination = {
-  searchResult: number | any;
+  totalResults: number | any;
   itemsPerPage: number;
-  setPageNumber: Dispatch<SetStateAction<number>>;
+  pageNumber: number | undefined;
+  changePage: Dispatch<number>;
 };
 
 export const Pagination: FC<Pagination> = ({
-  searchResult,
+  totalResults,
   itemsPerPage,
-  setPageNumber,
+  pageNumber,
+  changePage,
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const [screenSize, setScreenSize] = useState(false);
-  const totalPages: number = Math.ceil(searchResult / itemsPerPage);
-  const firstOnCurrentPage =
-    currentPage === 1 ? 1 : (currentPage - 1) * itemsPerPage;
-  const lastOnCurrentPage =
-    currentPage === totalPages ? searchResult : itemsPerPage * currentPage;
+  const totalPages: number = Math.ceil(totalResults / itemsPerPage);
   const { t } = useTranslation();
-  const { push } = useRouter();
-  const pathname = usePathname();
+  const [currentPage, setCurrentPage] = useState(pageNumber ? pageNumber : 1);
+  const firstOnCurrentPage =
+    currentPage === 1 ? 1 : (currentPage - 1) * itemsPerPage + 1;
+  const lastOnCurrentPage =
+    currentPage === currentPage ? totalResults : itemsPerPage * currentPage;
   const pageSpace: string = "...";
   const numbersArray: number[] = Array.from(
     { length: totalPages },
@@ -52,7 +49,7 @@ export const Pagination: FC<Pagination> = ({
       } else return numbersArray;
     }
     if (totalPages > 7) {
-      if (currentPage > 3 && currentPage < totalPages - 3) {
+      if (currentPage > 3 && currentPage < totalPages - 2) {
         return [
           1,
           pageSpace,
@@ -63,36 +60,40 @@ export const Pagination: FC<Pagination> = ({
           totalPages,
         ];
       }
-      if (currentPage >= totalPages - 4) {
-        return [1, pageSpace, ...numbersArray.slice(-5)];
+      if (currentPage >= totalPages - 2) {
+        return [
+          1,
+          pageSpace,
+          ...numbersArray.slice(currentPage === totalPages - 2 ? -4 : -3),
+        ];
       } else {
-        return [...numbersArray.slice(0, 5), pageSpace, totalPages];
+        return [
+          ...numbersArray.slice(0, currentPage === 3 ? 4 : 3),
+          pageSpace,
+          totalPages,
+        ];
       }
     } else return numbersArray;
   };
 
-  useEffect(() => {
-    if (pathname !== "/") {
-      setPageNumber(currentPage - 1);
-      currentPage !== 1
-        ? push(`?page=${currentPage}`, { scroll: false })
-        : push("", { scroll: false });
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [currentPage]);
+  const changePageNumber = (page: number) => {
+    changePage(page);
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div
       className={`${
         totalPages <= 1 ? "hidden" : "flex"
-      }  mt-xl w-full flex-col items-center justify-between gap-md md:flex-row md:gap-none`}
+      }  mt-xl w-full flex-col items-center justify-between gap-lg lg:flex-row lg:gap-none`}
     >
       <span>
         {t("pages|search$showing")}
         <span className="font-strong"> {firstOnCurrentPage} </span>
         {t("common|to")}
         <span className="font-strong"> {lastOnCurrentPage} </span>
-        {t("common|of")} <span className="font-strong"> {searchResult} </span>
+        {t("common|of")} <span className="font-strong"> {totalResults} </span>
         {t("pages|search$results")}
       </span>
       <div className="flex items-center">
@@ -110,8 +111,12 @@ export const Pagination: FC<Pagination> = ({
         </button>
         {pagination().map((value: any, idx: number) => (
           <button
+            onClick={
+              value === "..." || value === currentPage
+                ? () => null
+                : () => changePageNumber(value)
+            }
             tabIndex={value === "..." || value === currentPage ? -1 : 0}
-            onClick={value === "..." ? () => null : () => setCurrentPage(value)}
             key={idx}
             className={`focus--in focus-visible:bg-brown-200 ${
               value === currentPage
