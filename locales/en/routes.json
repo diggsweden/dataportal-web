@@ -1,6 +1,6 @@
 {
   "about-website": {
-    "path": "/about-this-website",
+    "path": "about-this-website",
     "title": "About website"
   },
   "accessibility": {
@@ -64,7 +64,7 @@
     "title": "Statistics"
   },
   "about-us": {
-    "path": "/about-us",
+    "path": "about-us",
     "title": "About us"
   },
   "api_explore": {

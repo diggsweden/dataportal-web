@@ -11,7 +11,7 @@ variables:
   TAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
   IMAGE_NAME: "$IMAGE:$TAG"
   DOCKER_IMAGE: "$IMAGE_NAME"
-  KANIKO_CACHE_ARGS: "--cache=true --cache-copy-layers=true --cache-ttl=24h"
+  KANIKO_CACHE_ARGS: ""
 
 stages:
   - build
