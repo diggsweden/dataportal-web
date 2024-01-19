@@ -32,10 +32,7 @@ export const ContainerNav: React.FC<ContainerDpDwnProps> = ({
   };
 
   return (
-    <nav
-      className="relative"
-      /*  className={`relative mb-lg flex h-fit xl:col-span-1 xl:col-start-1 xl:row-span-2 xl:mb-xl`} */
-    >
+    <nav className="relative">
       {expanded && (
         <div className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden" />
       )}
