@@ -37,7 +37,7 @@ const renderMedia = (
         return null;
       }
       return (
-        <figure className="max-w-md border-b border-brown-200 pb-sm">
+        <figure className="border-b border-brown-200 pb-sm">
           <CustomImage image={media} className="pb-sm" />
           {mediaDescription && (
             <figcaption className="text-brown-600">
@@ -83,7 +83,7 @@ export const MediaBlock: React.FC<MediaFragment> = ({
   media,
 }) => {
   return (
-    <div>
+    <div className="max-w-md">
       {heading && (
         <Heading level={2} size={"md"}>
           {heading}
