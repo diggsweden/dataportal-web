@@ -82,7 +82,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
               onClick={() => setOpenSearch(!openSearch)}
               icon={SearchIcon}
               iconPosition="left"
-              className="focus--white focus--in cursor-pointer p-[10px]"
+              className="focus--white focus--in w-[44px] cursor-pointer p-[10px]"
             />
           ) : (
             <form

@@ -21,7 +21,7 @@ export const Pagination: FC<Pagination> = ({
   const firstOnCurrentPage =
     currentPage === 1 ? 1 : (currentPage - 1) * itemsPerPage + 1;
   const lastOnCurrentPage =
-    currentPage === currentPage ? totalResults : itemsPerPage * currentPage;
+    currentPage === 1 ? totalResults : itemsPerPage * currentPage;
   const pageSpace: string = "...";
   const numbersArray: number[] = Array.from(
     { length: totalPages },
