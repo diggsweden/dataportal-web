@@ -210,7 +210,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 ),
               );
               valuePromises.push(
-                getLocalizedValue(graph, "dcterms:description", nextLang, es),
+                getLocalizedValue(graph, "dcterms:description", nextLang, es, {
+                  resourceURI,
+                }),
               );
               if (fetchMore) {
                 valuePromises.push(

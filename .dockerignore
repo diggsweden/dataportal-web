@@ -1,6 +1,4 @@
 Dockerfile*.*
-.dockerignore
-node_modules
 yarn-error.log
 README.md
 .env
@@ -9,3 +7,4 @@ README.md
 .env.development
 .yarnrc
 __ENV.js
+.git

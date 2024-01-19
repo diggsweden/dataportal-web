@@ -15,7 +15,9 @@ import {
   generateRandomKey,
   keyUp,
   makeBreadcrumbsFromPath,
+  onNextFrame,
   resolvePage,
+  usePrevious,
 } from "@/utilities";
 import { EnvSettings, SettingsUtil } from "@/env";
 import { client } from "@/graphql";
@@ -34,6 +36,11 @@ import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import { Hero } from "@/components/layout/Hero";
 import { MetaData } from "@/components/global/MetaData";
+import {
+  SkipToContent,
+  skipToContent,
+  skipToElement,
+} from "@/components/navigation/SkipToContent";
 
 const GetCookiesAccepted = () => {
   try {
@@ -57,11 +64,11 @@ export const initBreadcrumb = {
  * focuses on element with id provided from path
  * @param pathWithHash url path along with hash
  */
-// const onHash = (pathWithHash: string) => {
-//   const hashIndex = pathWithHash.indexOf("#");
-//   const hash = pathWithHash.substring(hashIndex);
-//   onNextFrame(() => skipToElement(hash));
-// };
+const onHash = (pathWithHash: string) => {
+  const hashIndex = pathWithHash.indexOf("#");
+  const hash = pathWithHash.substring(hashIndex);
+  onNextFrame(() => skipToElement(hash));
+};
 
 function Dataportal({ Component, pageProps }: DataportalenProps) {
   const pathname = usePathname();
@@ -74,9 +81,10 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   const { seo, heading, heroImage, preamble } = resolvePage(
     pageProps as DataportalPageProps,
   );
+  const previousPath = usePrevious(pathname);
 
   const appRenderKey = generateRandomKey(16);
-  const { t, lang } = useTranslation("pages");
+  const { t, lang } = useTranslation();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -159,21 +167,19 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   if (pathname === "/" || pageProps.domain === "data") {
     searchProps = {
       destination: `/${lang}/datasets`,
-      placeholder: t("startpage$search_placeholder"),
+      placeholder: t("pages|startpage$search_placeholder"),
     };
   }
 
   let conditionalPreamble = pageProps.domain === "data" ? null : preamble;
 
-  // useEffect(() => {
-  //   if (previousPath) {
-  //     pathname.includes("#")
-  //       ? onHash(pathname)
-  //       : skipToContent(undefined, { showFocus: false, includeHeading: true });
-  //   } else {
-  //     pathname.includes("#") && onHash(pathname);
-  //   }
-  // }, [pathname]);
+  useEffect(() => {
+    if (previousPath) {
+      pathname.includes("#") ? onHash(pathname) : skipToContent();
+    } else {
+      pathname.includes("#") && onHash(pathname);
+    }
+  }, [pathname]);
 
   return (
     <ApolloProvider client={client}>
@@ -194,7 +200,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
             <div id="scriptsPlaceholder" />
             <CookieBanner />
             <div id="top" className="relative min-h-screen overflow-hidden">
-              {/*@todo fix this -> <SkipToContent text={t("skiptocontent")} />*/}
+              <SkipToContent text={t("common|skiptocontent")} />
               <Header
                 setOpenSideBar={setOpenSideBar}
                 openSideBar={openSideBar}
@@ -226,6 +232,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
               )}
 
               <main
+                id="main"
                 className={`mt-lg min-h-[calc(100vh-656px)] pb-lg transition-all duration-300 
                 ease-in-out md:mt-xl md:pb-xl lg:min-h-[calc(100vh-524px)] ${
                   openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"

@@ -134,7 +134,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           </ContentBox>
         )}
 
-        {domain === "data" && (
+        {!domain && (
           <ContentBox heading={t("pages|startpage$datasets_by_category")}>
             <ul className="flex flex-wrap justify-center gap-md lg:gap-lg">
               {dataCategories?.map((category, idx: number) => (

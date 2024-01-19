@@ -1,0 +1,21 @@
+name: PushRepoToGitlab
+on: [push]
+jobs:
+  pushtogitlab:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Branch name
+      run: echo running on branch ${GITHUB_REF_NAME}
+    - name: Push To Gitlab
+      env:
+        token: ${{ secrets.GITLABTOKEN }}
+        gitlabrepo: ${{ secrets.GITLABREPO }}
+      run: |
+        echo Starting to push repo to gitlab
+        git config user.name "GitHub"
+        git config user.email "git@digitalist.github.com"
+        git remote set-url origin "https://oauth2:${token}@${gitlabrepo}"
+        git push origin ${GITHUB_REF_NAME}

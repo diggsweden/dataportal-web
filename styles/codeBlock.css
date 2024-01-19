@@ -139,7 +139,8 @@ div.code-toolbar {
 }
 
 div.code-toolbar pre {
-  @apply focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-primary;
+  @apply focus-visible:outline-dashed focus-visible:outline-[3px] group-focus-visible:outline-dashed group-focus-visible:outline-[3px]
+   focus-visible:outline-primary group-focus-visible:outline-primary focus-visible:outline-offset-2 group-focus-visible:outline-offset-2;
 }
 
 div.code-toolbar > .toolbar {
@@ -147,7 +148,8 @@ div.code-toolbar > .toolbar {
 }
 
 div.code-toolbar > .toolbar button {
-  @apply z-20 cursor-pointer bg-brown-600 p-sm hover:bg-primary focus-visible:outline-dashed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white;
+  @apply focus-visible:outline-dashed focus-visible:outline-[3px] group-focus-visible:outline-dashed group-focus-visible:outline-[3px] 
+  focus-visible:outline-white group-focus-visible:outline-white z-20 cursor-pointer bg-brown-600 p-sm hover:bg-primary;
 }
 
 div.code-toolbar > .toolbar span {

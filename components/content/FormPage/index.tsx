@@ -221,7 +221,10 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
   return (
     <Container>
       {formDataArray[0] && (
-        <div className="grid grid-cols-1 lg:max-w-xl lg:grid-cols-[200px_620px_1fr] lg:gap-x-xl ">
+        <div
+          id="FormPage"
+          className="grid grid-cols-1 lg:max-w-xl lg:grid-cols-[200px_620px_1fr] lg:gap-x-xl "
+        >
           {page !== 0 && formSteps.length > 0 && (
             <FormNav
               pageNames={[...formSteps, t("pages|form$generate-pdf-text")]}
