@@ -167,7 +167,9 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
               id="content"
               className={`flex w-full max-w-md flex-col space-y-lg md:space-y-xl lg:min-w-[620px]`}
             >
-              <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
+              {preamble && (
+                <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
+              )}
               {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
             </main>
           </div>
