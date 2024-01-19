@@ -48,7 +48,7 @@ export const highlightCodeBlock = async () => {
 const getLinks = () => {
   const menuItems: Anchorlink[] = [];
   const cont: HTMLElement =
-    document.querySelector(".content") || document.createElement("div");
+    document.querySelector("#content") || document.createElement("div");
 
   const hTags = Array.prototype.slice.call(
     cont.querySelectorAll("h2") || document.createElement("div"),
@@ -137,54 +137,41 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 
   return (
     <Container>
-      <article
-        className={`grid max-w-md grid-cols-1 lg:max-w-xl
-        lg:grid-cols-[620px_1fr] lg:gap-x-xl ${
-          hasRelatedContent ? "xl:grid-cols-[200px_620px_1fr]" : ""
-        }`}
-      >
+      <article className="flex w-full flex-col gap-md lg:gap-xl xl:flex-row">
         {hasRelatedContent && (
           <ContainerNav related={related} domain={domain} />
         )}
+        <div className="flex w-full flex-col">
+          {!image && heading && (
+            <Heading
+              size={"lg"}
+              level={1}
+              className={`col-span-2 row-span-1 ${
+                hasRelatedContent ? "xl:col-start-2 xl:mb-xl" : ""
+              }`}
+            >
+              {checkLang(heading)}
+            </Heading>
+          )}
+          <div className="flex w-full flex-col items-start justify-end gap-xl lg:flex-row-reverse">
+            {menuItems.length > 2 && (
+              <div id="stickyNav" className="w-full">
+                <StickyNav
+                  menuHeading={t("common|content-menu-heading")}
+                  menuItems={menuItems}
+                />
+              </div>
+            )}
 
-        {!image && heading && (
-          <Heading
-            size={"lg"}
-            level={1}
-            className={`col-span-2 row-span-1 ${
-              hasRelatedContent ? "xl:col-start-2 xl:mb-xl" : ""
-            }`}
-          >
-            {checkLang(heading)}
-          </Heading>
-        )}
-
-        {menuItems.length > 2 && (
-          <div
-            id="stickyNav"
-            className={`col-start-1 row-start-3 w-full lg:relative lg:right-none lg:col-start-2 
-           lg:h-full ${
-             hasRelatedContent && image
-               ? "lg:row-start-2 xl:col-span-1 xl:col-start-3 xl:row-start-1 "
-               : hasRelatedContent && !image
-               ? "lg:row-start-3 xl:col-span-1 xl:col-start-3 xl:row-start-2"
-               : "lg:row-start-2"
-           }`}
-          >
-            <StickyNav
-              menuHeading={t("common|content-menu-heading")}
-              menuItems={menuItems}
-            />
+            <main
+              id="content"
+              className={`flex w-full max-w-md flex-col space-y-lg md:space-y-xl lg:min-w-[620px]`}
+            >
+              <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
+              {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
+            </main>
           </div>
-        )}
-
-        <main
-          className={`content col-start-1 max-w-md space-y-lg md:space-y-xl
-           ${hasRelatedContent ? "xl:col-span-1 xl:col-start-2" : ""}`}
-        >
-          <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
-          {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
-        </main>
+        </div>
       </article>
     </Container>
   );
