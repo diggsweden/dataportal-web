@@ -24,17 +24,15 @@ export const ContainerNav: React.FC<ContainerDpDwnProps> = ({
   }, []);
 
   const isActive = (url: string) => {
-    if (url === related[0].slug) {
-      return pathname === related[0].slug;
+    if (url === related[0].slug || url.endsWith(related[0].slug)) {
+      return pathname === url;
     } else {
       return pathname.startsWith(url) && pathname !== related[0].slug;
     }
   };
 
   return (
-    <nav
-      className={`relative mb-lg flex h-fit xl:col-span-1 xl:col-start-1 xl:row-span-2 xl:mb-xl`}
-    >
+    <nav className="relative">
       {expanded && (
         <div className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden" />
       )}
@@ -51,7 +49,7 @@ export const ContainerNav: React.FC<ContainerDpDwnProps> = ({
       )}
 
       <ul
-        className={`absolute flex-col bg-white md:w-[320px] xl:static xl:flex xl:h-full xl:bg-transparent ${
+        className={`absolute flex-col bg-white md:w-[320px] xl:static xl:flex xl:h-full xl:w-[200px] xl:bg-transparent ${
           expanded
             ? "top-[56px] z-40 h-fit max-h-[calc(100vh-292px)] w-full overflow-y-scroll md:max-h-[calc(100vh-292px)]"
             : "hidden"

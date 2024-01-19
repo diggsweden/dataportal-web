@@ -33,6 +33,8 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
     bottom: false,
     bottomPosition: "",
   });
+
+  const [width, setWidth] = useState<string>("");
   let timer = useRef(0);
 
   const watch = () => {
@@ -68,17 +70,23 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
   useEffect(() => {
     const handleScroll = () => {
       const stickyNav = document.getElementById("stickyNav");
+      const content = document.getElementById("content");
       const navBox = document.getElementById("navBox");
 
-      if (navBox && stickyNav) {
+      if (navBox && stickyNav && content) {
         const navRect = stickyNav.getBoundingClientRect();
+        const contentRect = content.getBoundingClientRect();
         const navBoxRect = navBox.getBoundingClientRect();
 
         setFixedNav({
-          top: navRect.top < 97 && window.scrollY <= navRect.height,
-          bottom: window.scrollY > navRect.height,
-          bottomPosition: `${navRect.height - navBoxRect.height - 40}px`,
+          top: contentRect.top < 77 && window.scrollY <= contentRect.height,
+          bottom: contentRect.height - navBoxRect.height + 192 < window.scrollY,
+          bottomPosition: `${contentRect.height - navBoxRect.height}px`,
         });
+
+        if (!fixedNav.top) {
+          setWidth(`${navRect.width}px`);
+        }
       }
     };
 
@@ -92,29 +100,32 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
   return (
     <div
       id="navBox"
-      className={`mb-lg flex flex-col lg:w-[132px] xl:mb-xl ${
-        fixedNav.top
-          ? "lg:fixed lg:top-[96px]"
+      className={`w-fit overflow-auto ${
+        fixedNav.top && !fixedNav.bottom
+          ? `lg:fixed lg:top-[76px] lg:max-h-[calc(100vh-152px)]`
           : fixedNav.bottom
-          ? "lg:absolute"
+          ? "lg:relative lg:max-h-[calc(100vh-152px)]"
           : "static"
       }`}
-      style={{ top: fixedNav.bottom ? fixedNav.bottomPosition : "" }}
+      style={{
+        top: fixedNav.bottom ? fixedNav.bottomPosition : "",
+        maxWidth: width,
+      }}
     >
       <Heading
         tabIndex={0}
         level={3}
         size={"xs"}
-        className="focus--outline focus--primary focus--out text-brown-600"
+        className="focus--outline focus--primary focus--in text-brown-600"
       >
         {menuHeading}
       </Heading>
-      <ul className={`flex w-full flex-col`}>
+      <ul className={``}>
         {menuItems.map((item) => (
           <li key={item.id}>
             <Link
               href={`#${item.id}`}
-              className={`inline-flex cursor-pointer p-sm pl-lg text-sm no-underline underline-offset-4 hover:underline ${
+              className={`focus--in flex cursor-pointer p-sm pl-lg text-sm no-underline underline-offset-4 hover:underline ${
                 latestActiveItem?.id === item.id
                   ? "border-l-[3px] border-pink-600 pl-[18px] font-strong"
                   : "focus--underline border-l border-brown-200 font-normal"
