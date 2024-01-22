@@ -52,7 +52,7 @@ image:build:tagged:
 
 update:deploy:branch:
   rules:
-    - if: '$CI_COMMIT_BRANCH == "beta"'
+    - if: '$CI_COMMIT_BRANCH == "stage-beta"'
   variables:
     WEBTAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
     AUTHOR: $CI_COMMIT_AUTHOR
