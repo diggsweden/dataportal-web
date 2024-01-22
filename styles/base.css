@@ -72,16 +72,16 @@ body {
   .focus--primary {
     @apply focus-visible:outline-primary group-focus-visible:outline-primary;
   }
-  .focus--in{
+  .focus--in {
     @apply focus-visible:-outline-offset-[3px] group-focus-visible:-outline-offset-[3px] !important;
   }
-  .focus--out{
+  .focus--out {
     @apply focus-visible:outline-offset-2 group-focus-visible:outline-offset-2;
   }
   .focus--underline {
     @apply focus-visible:underline group-focus-visible:underline;
   }
-  
+
   .button {
     @apply flex w-fit flex-row items-center no-underline disabled:cursor-not-allowed 
     disabled:border-none disabled:bg-brown-400 disabled:text-brown-600 disabled:hover:bg-brown-400
@@ -180,16 +180,31 @@ mark {
 }
 
 /* General styling for focus */
-a, h1, button, .button, input[type="radio"] {
+a,
+h1,
+button,
+.button,
+input[type="radio"] {
   @apply focus--outline focus--primary focus--out;
 }
 
 /* SWAGGER UI */
 
-.try-out__btn {
+/* .try-out__btn {
   @apply button--secondary button--large;
+} */
+
+/* .try-out__btn .cancel {
+  @apply !border-2 !border-[#ff6060] !text-[#ff6060] !important;
 }
 
 .explore-api-btn {
   @apply button--primary button--large button bg-brown-600 text-white hover:bg-brown-800 !important;
+} */
+
+.opblock-section-header button {
+  @apply button--secondary button--large;
+}
+.opblock-section-header .try-out .cancel {
+  @apply border-red-600 text-red-600;
 }

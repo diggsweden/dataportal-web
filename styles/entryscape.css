@@ -132,6 +132,109 @@
 
 /* SWAGGER UI */
 
+.swagger-ui .opblock-get,
+.opblock-get tr,
+.opblock-summary-get button {
+  background-color: #cce2fa;
+}
+
+.swagger-ui .opblock-post,
+.opblock-post tr,
+.opblock-summary-post button {
+  background-color: #c8ebd9;
+}
+
+.swagger-ui .opblock-put,
+.opblock-put tr,
+.opblock-summary-put button {
+  background-color: #fadebf;
+}
+
+.swagger-ui .opblock-patch,
+.opblock-patch tr,
+.opblock-summary-patch button {
+  background-color: #e3eeed;
+}
+
+.swagger-ui .opblock-delete,
+.opblock-delete tr,
+.opblock-summary-delete button {
+  background-color: #fad5d3;
+}
+
+.opblock-summary-method {
+  @apply rounded-md px-lg py-xs text-md text-white !important;
+}
+
+.opblock-get .opblock-summary-method {
+  @apply bg-[#0173e4];
+}
+
+.opblock-post .opblock-summary-method {
+  @apply bg-[#258659];
+}
+
+.opblock-put .opblock-summary-method {
+  @apply bg-[#a86629];
+}
+
+.opblock-patch .opblock-summary-method {
+  @apply bg-[#14827b];
+}
+
+.opblock-delete .opblock-summary-method {
+  @apply bg-[#ed0908];
+}
+
+.opblock-section-header,
+.view-line-link {
+  @apply px-md py-lg;
+}
+
+.opblock-get .opblock-section-header,
+.view-line-link {
+  @apply bg-[#f5f9ff];
+}
+
+.opblock-post .opblock-section-header,
+.view-line-link {
+  @apply bg-[#f4fbf8];
+}
+
+.opblock-put .opblock-section-header,
+.view-line-link {
+  @apply bg-[#fdf8f3];
+}
+
+.opblock-patch .opblock-section-header,
+.view-line-link {
+  @apply bg-[#f5fffb];
+}
+
+.opblock-delete .opblock-section-header,
+.view-line-link {
+  @apply bg-[#fff7f7];
+}
+
+.swagger-ui input,
+.swagger-ui .markdown p {
+  @apply w-full max-w-md py-sm;
+}
+.swagger-ui thead {
+  @apply border-b-2 border-brownOpaque5 text-textPrimary !important;
+}
+.view-line-link {
+  @apply hidden;
+}
+
+.swagger-ui select {
+  @apply w-fit cursor-pointer bg-[#d8d8d8] px-md py-sm uppercase;
+}
+
+.swagger-ui table {
+  @apply !mt-none;
+}
+
 .swagger-ui .title {
   @apply mb-md md:flex lg:text-lg;
 }
@@ -148,10 +251,6 @@
   @apply flex flex-col gap-xs break-words;
 }
 
-.scheme-container label select {
-  @apply w-fit cursor-pointer bg-pink-200 px-md py-sm uppercase;
-}
-
 .swagger-ui .info a {
   @apply break-words text-green-600 hover:text-brown-800;
 }
@@ -163,7 +262,7 @@
 }
 
 .opblock-tag {
-  @apply flex cursor-pointer justify-between bg-brown-600 p-md text-white [&_svg]:fill-white;
+  @apply flex cursor-pointer justify-between bg-[#d8d8d8] p-md text-textPrimary [&_svg]:fill-textPrimary;
 }
 
 .opblock-summary-control {
@@ -196,7 +295,7 @@
   @apply flex items-center gap-md;
 }
 .opblock-section-header select {
-  @apply w-fit cursor-pointer bg-pink-200 px-md py-sm text-md uppercase;
+  @apply w-fit cursor-pointer bg-[#d8d8d8] px-md py-sm text-md uppercase;
 }
 
 .parameters-col_description input {
