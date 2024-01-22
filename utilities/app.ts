@@ -1,4 +1,7 @@
-import { PublicationDataFragment } from "@/graphql/__generated__/operations";
+import {
+  ImageFragment,
+  PublicationDataFragment,
+} from "@/graphql/__generated__/operations";
 import { SeoDataFragment } from "@/graphql/__generated__/operations";
 import {
   DomainAggregateResponse,
@@ -8,7 +11,8 @@ import {
   PublicationListResponse,
   PublicationResponse,
   RootAggregateResponse,
-} from "./queryHelpers";
+} from "@/utilities/queryHelpers";
+import { StaticImageData } from "next/image";
 
 export type DataportalPageProps =
   | MultiContainerResponse
@@ -22,7 +26,7 @@ export type DataportalPageProps =
 type ResolvedPage = {
   heading?: string | null;
   preamble?: string | null;
-  heroImage?: PublicationDataFragment["image"] | null;
+  heroImage?: PublicationDataFragment["image"] | ImageFragment | null;
   seo?: SeoDataFragment | null;
 };
 
@@ -52,7 +56,11 @@ export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
         heroImage: props.image,
       };
     case "PublicationList":
-      return { seo: props.seo, heading: props.heading };
+      return {
+        seo: props.seo,
+        heading: props.heading,
+        heroImage: props.heroImage,
+      };
     case "Form":
       return {};
     case "Module":
@@ -71,3 +79,16 @@ export const populateSeo: SeoDataFragment = {
   robotsFollow: true,
   robotsIndex: true,
 };
+
+export const renderImage = (img: StaticImageData): ImageFragment => ({
+  __typename: "dataportal_Digg_Image",
+  url: img as any,
+  name: null,
+  alt: null,
+  description: null,
+  mime: "image/png",
+  ext: ".png",
+  width: img.width,
+  height: img.height,
+  screen9: { id: "" }, // just add dummy data to make ts happy
+});

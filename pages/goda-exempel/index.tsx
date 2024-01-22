@@ -1,7 +1,8 @@
-import { getPublicationsList, populateSeo } from "@/utilities";
+import { getPublicationsList, populateSeo, renderImage } from "@/utilities";
+import { GetStaticProps } from "next";
 import { ListPage } from "@/components/content/ListPage";
 
-export async function getStaticProps({ locale }: any) {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return await getPublicationsList([], ["Goda exempel"], locale || "sv", {
     seo: {
       ...populateSeo,
@@ -10,7 +11,12 @@ export async function getStaticProps({ locale }: any) {
     },
     basePath: `/goda-exempel`,
     heading: "Goda exempel",
+    heroImage: renderImage({
+      src: "/images/goodExamplesHero.png",
+      width: 1700,
+      height: 300,
+    }),
   });
-}
+};
 
 export default ListPage;

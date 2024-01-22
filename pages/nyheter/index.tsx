@@ -1,4 +1,4 @@
-import { getPublicationsList, populateSeo } from "@/utilities";
+import { getPublicationsList, populateSeo, renderImage } from "@/utilities";
 import { GetStaticProps } from "next/types";
 import { ListPage } from "@/components/content/ListPage";
 
@@ -11,6 +11,11 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     },
     basePath: `/nyheter`,
     heading: "Nyheter",
+    heroImage: renderImage({
+      src: "/images/newsHero.png",
+      width: 1700,
+      height: 300,
+    }),
   });
 };
 
