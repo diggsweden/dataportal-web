@@ -50,6 +50,12 @@ const getQuery = async (
         secret,
         revalidate: false,
       });
+    case "/datasamverkan":
+      return await getDomainAggregate("datasamverkan", locale, {
+        state: Dataportal_ContainerState.Preview,
+        secret,
+        revalidate: false,
+      });
     default:
       return await getMultiContainer([slug.substring(1)], locale, undefined, {
         state: Dataportal_ContainerState.Preview,

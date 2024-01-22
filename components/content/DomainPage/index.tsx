@@ -75,9 +75,10 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   return (
     <div id="DomainPage">
       <Container>
-        {domain === "data" && (
-          <Preamble className="max-w-md">{preamble}</Preamble>
-        )}
+        {domain === "data" ||
+          (domain === "datasamverkan" && (
+            <Preamble className="max-w-md">{preamble}</Preamble>
+          ))}
 
         {puffs && <RelatedContentBlock links={puffs.links as PromoProps[]} />}
 
@@ -159,7 +160,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           </ContentBox>
         )}
 
-        {areas && !domain && lang === "sv" && (
+        {areas && domain === "datasamverkan" && lang === "sv" && (
           <div className="py-xl">
             <Heading size={"md"} level={2}>
               {t("pages|data$data-areas_text")}
