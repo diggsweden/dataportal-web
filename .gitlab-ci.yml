@@ -24,7 +24,7 @@ image:build:release:
       - node_modules/
       - .next/cache/
   rules:
-    - if: $CI_COMMIT_BRANCH == "beta"
+    - if: $CI_COMMIT_BRANCH == "stage-beta"
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
