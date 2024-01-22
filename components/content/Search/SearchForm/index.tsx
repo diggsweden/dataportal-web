@@ -58,7 +58,7 @@ export const SearchForm: React.FC<SearchFormProps> = ({
   };
 
   return (
-    <div className="my-xl max-w-md">
+    <div className="my-lg max-w-md md:my-xl">
       <form
         onSubmit={(e) => {
           clearCurrentScrollPos();

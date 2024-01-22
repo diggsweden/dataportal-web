@@ -196,7 +196,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
         </Heading>
 
         <form
-          className="my-xl max-w-md"
+          className="my-lg max-w-md md:my-xl"
           onSubmit={(event) => {
             clearCurrentScrollPos();
             event.preventDefault();
@@ -221,8 +221,8 @@ export const SearchContentPage: FC<SearchProps> = () => {
 
         <SearchPageSelector />
 
-        <div id="search-result" className="my-xl">
-          <div className="mb-xl">
+        <div id="search-result" className="my-lg md:my-xl">
+          <div className="mb-lg md:mb-xl">
             <Heading level={2} size="md">
               {loading && <span>{t("common|loading")}</span>}
               {!loading &&
@@ -233,7 +233,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
           </div>
 
           {searchResult && (
-            <ul className="search-result-list space-y-xl">
+            <ul className="search-result-list space-y-lg md:space-y-xl">
               {searchResult.hits &&
                 searchResult.hits.map((hit: SearchHit, index: number) => (
                   <li className="max-w-lg" key={index}>

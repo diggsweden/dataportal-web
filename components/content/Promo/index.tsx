@@ -29,7 +29,9 @@ export const Promo: FC<{
       href={
         isExternalLink(link.slug)
           ? link.slug
-          : pathname === "/" || pathname === "/data"
+          : pathname === "/" ||
+            pathname === "/data" ||
+            pathname === "/datasamverkan"
           ? `${link.slug}`
           : `${pathname}${link.slug}`
       }

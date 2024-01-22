@@ -16,6 +16,7 @@ interface HeroProps {
   preamble?: string | null;
   image: ImageFragment | null;
   search?: SearchProps | null;
+  className?: string;
 }
 
 interface SearchProps {
@@ -23,14 +24,25 @@ interface SearchProps {
   placeholder: string;
 }
 
-export const Hero: FC<HeroProps> = ({ heading, preamble, image, search }) => {
+export const Hero: FC<HeroProps> = ({
+  heading,
+  preamble,
+  image,
+  search,
+  className,
+}) => {
   const { pathname } = useRouter();
   const { t, lang } = useTranslation();
   const isFrontpage = pathname === "/";
   const [query, setQuery] = useState("");
 
   return (
-    <div id="Hero" className="relative flex flex-col justify-center py-2xl">
+    <div
+      id="Hero"
+      className={`relative flex flex-col justify-center py-2xl ${
+        className ? className : ""
+      }`}
+    >
       {image && (
         <div className="absolute left-none top-none h-full w-full">
           <CustomImage image={image} className="h-full w-full object-cover" />
@@ -68,8 +80,8 @@ export const Hero: FC<HeroProps> = ({ heading, preamble, image, search }) => {
                 </form>
                 <div
                   className={`${
-                    isFrontpage && "justify-center"
-                  } mt-lg flex space-x-md `}
+                    isFrontpage ? "" : "md:justify-start"
+                  } md mt-lg flex flex-wrap justify-center gap-md md:flex-row`}
                 >
                   <ButtonLink
                     href={`${lang}/datasets?q=&f=`}

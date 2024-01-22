@@ -28,6 +28,7 @@ export const CustomImage: React.FC<CustomImageProps> = ({
         src={image.url}
         width={image.width || 300}
         height={image.height || 200}
+        className={className}
         alt={image.alt || ""}
       />
     );

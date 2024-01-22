@@ -21,6 +21,7 @@ import {
   FormDataFragment,
   FormQuery,
   FormQueryVariables,
+  ImageFragment,
   ModuleDataFragment,
   ModuleQuery,
   ModuleQueryVariables,
@@ -180,6 +181,8 @@ export interface PublicationListResponse {
   seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
+  preamble?: string;
+  heroImage?: ImageFragment | null;
 }
 
 export interface DomainAggregateResponse
@@ -229,6 +232,8 @@ export interface PublicationListOptions {
   seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
+  preamble?: string;
+  heroImage?: ImageFragment | null;
 }
 
 export interface PublicationQueryOptions extends QueryOptions {
@@ -349,7 +354,7 @@ export const getPublicationsList = async (
 ) => {
   // If nextjs should check for changes on the server
   const revalidate = true;
-  const { seo, basePath, heading } = opts || {};
+  const { seo, basePath, heading, preamble, heroImage } = opts || {};
 
   try {
     const { data, error } = await client.query<
@@ -391,6 +396,8 @@ export const getPublicationsList = async (
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
+        preamble: preamble || null,
+        heroImage: heroImage || null,
       } as PublicationListResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
@@ -406,6 +413,7 @@ export const getPublicationsList = async (
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
+        heroImage: heroImage || null,
       } as PublicationListResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }

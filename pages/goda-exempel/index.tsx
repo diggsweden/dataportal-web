@@ -1,16 +1,23 @@
-import { getPublicationsList, populateSeo } from "@/utilities";
+import { getPublicationsList, populateSeo, renderImage } from "@/utilities";
+import { GetStaticProps } from "next";
 import { ListPage } from "@/components/content/ListPage";
 
-export async function getStaticProps({ locale }: any) {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return await getPublicationsList([], ["Goda exempel"], locale || "sv", {
     seo: {
       ...populateSeo,
       title: "Goda exempel - Sveriges Dataportal",
-      description: "Inspirerande exempel relaterat till Data & API:er.",
+      description: "Goda exempel på datadriven innovation i samhället.",
     },
     basePath: `/goda-exempel`,
     heading: "Goda exempel",
+    preamble: "Goda exempel på datadriven innovation i samhället.",
+    heroImage: renderImage({
+      src: "/images/goodExamplesHero.png",
+      width: 1700,
+      height: 300,
+    }),
   });
-}
+};
 
 export default ListPage;

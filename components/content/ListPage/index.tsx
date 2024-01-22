@@ -2,7 +2,6 @@ import { FC, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { Container } from "@/components/layout/Container";
-import { Heading } from "@/components/global/Typography/Heading";
 import { PublicationList } from "@/components/content/Publication/PublicationList";
 import { PublicationListResponse } from "@/utilities";
 import { Pagination } from "@/components/global/Pagination";
@@ -30,13 +29,7 @@ export const ListPage: FC<PublicationListResponse> = ({
   };
 
   return (
-    <div id="news-list" className="my-xl">
-      <Container>
-        <Heading level={1} size={"lg"} className="mb-xl">
-          {heading}
-        </Heading>
-      </Container>
-
+    <div id="news-list" className="my-lg md:my-xl">
       <Container>
         <PublicationList
           publications={publicationsOnPage}

@@ -212,37 +212,35 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 </div>
               </noscript>
 
-              {heroImage && (
-                <Hero
-                  heading={heading}
-                  preamble={conditionalPreamble}
-                  image={heroImage}
-                  search={searchProps}
-                />
-              )}
-
-              {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
-                <div
-                  className={`transition-all duration-300 ease-in-out ${
-                    openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
-                  }`}
-                >
-                  <Breadcrumb {...breadcrumbState} />
-                </div>
-              )}
-
-              <main
-                id="main"
-                className={`mt-lg min-h-[calc(100vh-656px)] pb-lg transition-all duration-300 
-                ease-in-out md:mt-xl md:pb-xl lg:min-h-[calc(100vh-524px)] ${
-                  openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
+              <div
+                id="siteWrapper"
+                className={`transition-all duration-300 ease-in-out ${
+                  openSideBar ? "2xl:w-[calc(100vw-300px)]" : "w-full"
                 }`}
               >
-                {/*{(pageProps as DataportalPageProps).type === "MultiContainer" ||*/}
-                {/*  ((pageProps as DataportalPageProps).type ===*/}
-                {/*    "Publication" && <div />)}*/}
-                <Component {...pageProps} />
-              </main>
+                {heroImage && (
+                  <Hero
+                    heading={heading}
+                    preamble={conditionalPreamble}
+                    image={heroImage}
+                    search={searchProps}
+                  />
+                )}
+
+                {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
+                  <Breadcrumb {...breadcrumbState} />
+                )}
+
+                <main
+                  id="main"
+                  className={`mt-lg min-h-[calc(100vh-656px)] pb-lg md:mt-xl md:pb-xl lg:min-h-[calc(100vh-524px)]`}
+                >
+                  {/*{(pageProps as DataportalPageProps).type === "MultiContainer" ||*/}
+                  {/*  ((pageProps as DataportalPageProps).type ===*/}
+                  {/*    "Publication" && <div />)}*/}
+                  <Component {...pageProps} />
+                </main>
+              </div>
               <Footer
                 setOpenSideBar={setOpenSideBar}
                 openSideBar={openSideBar}

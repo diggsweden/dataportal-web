@@ -60,7 +60,7 @@ export const FormBottomNav: FC<Props> = ({
   };
 
   return (
-    <nav className="z-40 space-y-xl pt-xl">
+    <nav className="z-40 space-y-lg pt-xl md:space-y-xl">
       <div className={`flex ${page === 1 ? "justify-end" : "justify-between"}`}>
         {page > 1 && (
           <Button
@@ -85,10 +85,11 @@ export const FormBottomNav: FC<Props> = ({
         />
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex flex-col gap-md md:flex-row md:justify-between">
         <Button
           label={t("pages|form$save-form")}
           onClick={() => setSaveModalOpen(true)}
+          className="button--large w-full justify-center md:w-auto md:justify-start"
         />
         <input
           type="file"
@@ -106,10 +107,12 @@ export const FormBottomNav: FC<Props> = ({
             e.preventDefault();
             fileInputRef.current?.click();
           }}
+          className="button--large w-full justify-center md:w-auto md:justify-start"
         />
         <Button
           label={t("pages|form$clear-all-text")}
           onClick={() => setClearModalOpen(true)}
+          className="button--large w-full justify-center md:w-auto md:justify-start"
         />
       </div>
 

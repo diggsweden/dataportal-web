@@ -173,7 +173,6 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
         aria-label={
           showFilter ? t("common|hide-filter") : t("common|show-filter")
         }
-        className={showFilter ? "filter-active" : ""}
         onClick={() => setShowFilter(!showFilter)}
         label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
       />

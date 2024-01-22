@@ -2,17 +2,17 @@ import {
   BlockDataFragment as Block,
   ImageFragment,
   RelatedContentFragment as RelatedContent,
-} from "../graphql/__generated__/operations";
+} from "@/graphql/__generated__/operations";
 import { DomainProps } from "@/components/content/DomainPage";
-import { Dataportal_LinkType } from "../graphql/__generated__/types";
+import { Dataportal_LinkType } from "@/graphql/__generated__/types";
 import useTranslation from "next-translate/useTranslation";
-import start from "../public/images/illu-start.png";
-import ai from "../public/images/illu-ai.png";
-import data from "../public/images/illu-data.png";
-import kallkod from "../public/images/illu-kallkod.png";
-import { StaticImageData } from "next/image";
+import start from "@/public/images/illu-start.png";
+import ai from "@/public/images/illu-ai.png";
+import data from "@/public/images/illu-data.png";
+import kallkod from "@/public/images/illu-kallkod.png";
 import { Translate } from "next-translate";
 import { handleUrl } from "@/components/content/blocks/MediaBlock";
+import { renderImage } from "@/utilities/app";
 
 interface ParsedProps {
   content: Block[];
@@ -65,33 +65,20 @@ const fallback = (domain: DiggDomain | undefined): ParsedProps => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { t } = useTranslation("pages");
 
-  const image = (img: StaticImageData): ImageFragment => ({
-    __typename: "dataportal_Digg_Image",
-    url: img as any,
-    name: null,
-    alt: null,
-    description: null,
-    mime: "image/png",
-    ext: ".png",
-    width: img.width,
-    height: img.height,
-    screen9: { id: "" }, // just add dummy data to make ts happy
-  });
-
   switch (domain) {
     case "offentligai":
       return {
         ...emptyProps,
         heading: t("ai$heading"),
         preamble: t("ai$preamble"),
-        image: image(ai),
+        image: renderImage(ai),
       };
     case "data":
       return {
         ...emptyProps,
         heading: t("data$heading"),
         preamble: t("data$preamble"),
-        image: image(data),
+        image: renderImage(data),
         puffs: dataPuffs(t),
       };
     case "oppen-kallkod":
@@ -99,14 +86,14 @@ const fallback = (domain: DiggDomain | undefined): ParsedProps => {
         ...emptyProps,
         heading: t("os$heading"),
         preamble: t("os$preamble"),
-        image: image(kallkod),
+        image: renderImage(kallkod),
       };
     default:
       return {
         ...emptyProps,
         heading: t("startpage$heading"),
         preamble: t("startpage$preamble"),
-        image: image(start as any),
+        image: renderImage(start as any),
       };
   }
 };
