@@ -218,6 +218,9 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   preamble={conditionalPreamble}
                   image={heroImage}
                   search={searchProps}
+                  className={`transition-all duration-300 ease-in-out ${
+                    openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
+                  }`}
                 />
               )}
 
