@@ -14,7 +14,7 @@ import {
   DataportalPageProps,
   generateRandomKey,
   keyUp,
-  makeBreadcrumbsFromPath,
+  linkBase,
   onNextFrame,
   resolvePage,
   usePrevious,
@@ -57,7 +57,7 @@ interface DataportalenProps extends AppProps {
 
 export const initBreadcrumb = {
   name: "",
-  crumbs: [],
+  crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
 };
 
 /**
@@ -76,11 +76,14 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   const [env, setEnv] = useState<EnvSettings>(SettingsUtil.create());
   const [matomoActivated, setMatomoActivated] = useState<boolean>(true);
   const [openSideBar, setOpenSideBar] = useState(false);
-  const [breadcrumbState, setBreadcrumb] =
-    useState<BreadcrumbProps>(initBreadcrumb);
   const { seo, heading, heroImage, preamble } = resolvePage(
     pageProps as DataportalPageProps,
   );
+  const [breadcrumbState, setBreadcrumb] = useState<BreadcrumbProps>({
+    name: heading || "",
+    crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+  });
+
   const previousPath = usePrevious(pathname);
 
   const appRenderKey = generateRandomKey(16);
@@ -106,61 +109,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
       document.body.removeEventListener("mousedown", click);
     };
   }, []);
-
-  useEffect(() => {
-    const heading = pageProps.heading;
-    const containerHeading = pageProps.container?.heading;
-
-    if (pageProps.type === "MultiContainer") {
-      const categoryName = pageProps.category?.name;
-      const catergoryUrl = pageProps.category?.slug;
-      const containerDomainName = pageProps.container?.domains[0]?.name;
-      const containerDomainUrl = pageProps.container?.domains[0]?.slug;
-
-      if (categoryName && catergoryUrl && containerHeading) {
-        const crumbs = makeBreadcrumbsFromPath(
-          pathname,
-          containerHeading,
-          categoryName,
-          catergoryUrl,
-        );
-
-        return setBreadcrumb({
-          crumbs: crumbs.crumbs,
-          name: containerHeading,
-        });
-      }
-
-      if (containerDomainName && containerDomainUrl && containerHeading) {
-        const crumbs = makeBreadcrumbsFromPath(
-          pathname,
-          containerHeading,
-          containerDomainName,
-          containerDomainUrl,
-        );
-
-        return setBreadcrumb({
-          crumbs: crumbs.crumbs,
-          name: containerHeading,
-        });
-      }
-    }
-
-    if (containerHeading) {
-      const crumbs = makeBreadcrumbsFromPath(pathname, heading);
-      setBreadcrumb({
-        crumbs: crumbs.crumbs,
-        name: containerHeading ? containerHeading : "",
-      });
-    }
-    if (heading) {
-      const crumbs = makeBreadcrumbsFromPath(pathname, containerHeading);
-      setBreadcrumb({
-        crumbs: crumbs.crumbs,
-        name: heading ? heading : "",
-      });
-    }
-  }, [pathname]);
 
   let searchProps = null;
 

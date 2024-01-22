@@ -56,12 +56,16 @@
     "title": "Statistik"
   },
   "about-us": {
-    "path": "/om-oss",
+    "path": "om-oss",
     "title": "Om oss"
   },
   "api_explore": {
     "path": "apiexplore",
     "title": "Utforska API"
+  },
+  "search": {
+    "path": "search",
+    "title": "Sök innehåll"
   },
   "search-api": {
     "path": "data",

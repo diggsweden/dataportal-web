@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
-import { querySearch } from "@/utilities";
+import { linkBase, querySearch } from "@/utilities";
 import { useRouter } from "next/router";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
@@ -12,6 +12,7 @@ import { Container } from "@/components/layout/Container";
 import { SearchPageSelector } from "@/components/content/Search/SearchPageSelector";
 import { SearchInput } from "@/components/content/Search/SearchInput";
 import { Pagination } from "@/components/global/Pagination";
+import { SettingsContext } from "@/providers/SettingsProvider";
 
 interface SearchProps {
   activeLink?: string;
@@ -19,6 +20,7 @@ interface SearchProps {
 
 export const SearchContentPage: FC<SearchProps> = () => {
   const router = useRouter() || {};
+  const { setBreadcrumb } = useContext(SettingsContext);
   const { pathname, query: routerQuery } = router || {};
   const { t, lang } = useTranslation("common");
   const [query, setQuery] = useState((routerQuery?.q as string) || "");
@@ -145,6 +147,11 @@ export const SearchContentPage: FC<SearchProps> = () => {
   }, [searchRequest]);
 
   useEffect(() => {
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: t("common|search-content"),
+        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+      });
     trackPageView({ documentTitle: t("routes|search$title") });
   }, [pathname]);
 

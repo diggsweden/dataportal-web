@@ -11,6 +11,7 @@ import Head from "next/head";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 import MailIcon from "@/assets/icons/mail.svg";
+import { linkBase } from "@/utilities";
 
 const ApiExplorer = dynamic(
   () =>
@@ -25,12 +26,12 @@ export const DataSetExploreApiPage: React.FC<{
   dataSet: string | string[] | undefined;
   apieid: string | string[] | undefined;
 }> = ({ dataSet, apieid }) => {
-  const { pathname } = useRouter() || {};
+  const { pathname, query } = useRouter() || {};
   const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];
   const eid = ids[1];
   const { t, lang } = useTranslation();
-  const { env } = useContext(SettingsContext);
+  const { env, setBreadcrumb } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
 
   const [toggleTabs, setToggleTabs] = useState(1);
@@ -71,6 +72,29 @@ export const DataSetExploreApiPage: React.FC<{
       documentTitle: `${t("routes|api_explore$title")} - ${apieid}`,
     });
   }, [pathname]);
+
+  useEffect(() => {
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: t("routes|api_explore$title"),
+        crumbs: [
+          { name: "start", link: { ...linkBase, link: "/" } },
+          {
+            name: t("routes|datasets$title"),
+            link: { ...linkBase, link: `/${t("routes|datasets$path")}?q=&f=` },
+          },
+          {
+            name: (entry.title as string) || "",
+            link: {
+              ...linkBase,
+              link: `/${t("routes|datasets$path")}/${query.dataSet}/${
+                query.name
+              }`,
+            },
+          },
+        ],
+      });
+  }, [entry]);
 
   const addScriptsDistribution = () => {
     if (typeof window !== "undefined") {

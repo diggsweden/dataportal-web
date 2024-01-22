@@ -21,6 +21,7 @@ export type DataportalPageProps =
 
 type ResolvedPage = {
   heading?: string | null;
+  parentHeading?: string | null;
   preamble?: string | null;
   heroImage?: PublicationDataFragment["image"] | null;
   seo?: SeoDataFragment | null;
@@ -43,6 +44,7 @@ export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
         seo: props.container?.seo,
         heroImage: props.container?.image,
         heading: props.container?.heading,
+        preamble: props.container?.preamble,
       };
     case "Publication":
       return {
@@ -56,7 +58,10 @@ export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
     case "Form":
       return {};
     case "Module":
-      return { seo: props.seo, heading: props.heading };
+      return {
+        seo: props.seo,
+        heading: props.heading,
+      };
     default:
       return {};
   }

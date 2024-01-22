@@ -1,18 +1,20 @@
-import { FC, useEffect } from "react";
+import { FC, useContext, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 import { PublicationList } from "@/components/content/Publication/PublicationList";
-import { PublicationListResponse } from "@/utilities";
+import { linkBase, PublicationListResponse } from "@/utilities";
 import { Pagination } from "@/components/global/Pagination";
 import { useRouter, NextRouter } from "next/router";
+import { SettingsContext } from "@/providers/SettingsProvider";
 
 export const ListPage: FC<PublicationListResponse> = ({
   publications,
   heading,
 }) => {
   const { trackPageView } = useMatomo();
+  const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
   const router: NextRouter = useRouter();
   const publicationsPerPage = 12;
@@ -22,6 +24,12 @@ export const ListPage: FC<PublicationListResponse> = ({
   const publicationsOnPage = publications.slice(startIndex, endIndex);
 
   useEffect(() => {
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: heading!,
+        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+      });
+
     trackPageView({ documentTitle: heading });
   }, [pathname]);
 
