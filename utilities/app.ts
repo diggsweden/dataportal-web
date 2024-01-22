@@ -11,7 +11,8 @@ import {
   PublicationListResponse,
   PublicationResponse,
   RootAggregateResponse,
-} from "./queryHelpers";
+} from "@/utilities/queryHelpers";
+import { StaticImageData } from "next/image";
 
 export type DataportalPageProps =
   | MultiContainerResponse
@@ -78,3 +79,16 @@ export const populateSeo: SeoDataFragment = {
   robotsFollow: true,
   robotsIndex: true,
 };
+
+export const renderImage = (img: StaticImageData): ImageFragment => ({
+  __typename: "dataportal_Digg_Image",
+  url: img as any,
+  name: null,
+  alt: null,
+  description: null,
+  mime: "image/png",
+  ext: ".png",
+  width: img.width,
+  height: img.height,
+  screen9: { id: "" }, // just add dummy data to make ts happy
+});

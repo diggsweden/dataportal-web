@@ -28,15 +28,15 @@ export const CustomImage: React.FC<CustomImageProps> = ({
         src={image.url}
         width={image.width || 300}
         height={image.height || 200}
+        className={className}
         alt={image.alt || ""}
       />
     );
   }
 
-  const src =
-    isExternalLink(image.url) || image.url.startsWith("/images")
-      ? image.url
-      : (env("MEDIA_BASE_URL") || "") + image.url;
+  const src = isExternalLink(image.url)
+    ? image.url
+    : (env("MEDIA_BASE_URL") || "") + image.url;
 
   return (
     <Image
