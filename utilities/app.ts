@@ -39,7 +39,12 @@ type ResolvedPage = {
 export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
   switch (props.type) {
     case "RootAggregate":
-      return { seo: props.seo, heroImage: props.image, heading: props.heading };
+      return {
+        seo: props.seo,
+        heroImage: props.image,
+        heading: props.heading,
+        preamble: props.preamble,
+      };
     case "DomainAggregate":
       return { seo: props.seo, heroImage: props.image, heading: props.heading };
     case "MultiContainer":
@@ -60,6 +65,7 @@ export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
         seo: props.seo,
         heading: props.heading,
         heroImage: props.heroImage,
+        preamble: props.preamble,
       };
     case "Form":
       return {};

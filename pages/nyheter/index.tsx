@@ -11,6 +11,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     },
     basePath: `/nyheter`,
     heading: "Nyheter",
+    preamble: "Nyheter för Sveriges Dataportal",
     heroImage: renderImage({
       src: "/images/newsHero.png",
       width: 1700,

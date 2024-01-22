@@ -181,6 +181,7 @@ export interface PublicationListResponse {
   seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
+  preamble?: string;
   heroImage?: ImageFragment | null;
 }
 
@@ -231,6 +232,7 @@ export interface PublicationListOptions {
   seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
+  preamble?: string;
   heroImage?: ImageFragment | null;
 }
 
@@ -352,7 +354,7 @@ export const getPublicationsList = async (
 ) => {
   // If nextjs should check for changes on the server
   const revalidate = true;
-  const { seo, basePath, heading, heroImage } = opts || {};
+  const { seo, basePath, heading, preamble, heroImage } = opts || {};
 
   try {
     const { data, error } = await client.query<
@@ -394,6 +396,7 @@ export const getPublicationsList = async (
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
+        preamble: preamble || null,
         heroImage: heroImage || null,
       } as PublicationListResponse,
       ...(revalidate
