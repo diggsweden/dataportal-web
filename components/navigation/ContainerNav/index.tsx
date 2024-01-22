@@ -44,14 +44,14 @@ export const ContainerNav: React.FC<ContainerDpDwnProps> = ({
           icon={expanded ? CloseCrossIcon : HamburgerIcon}
           label={related[0].name}
           onClick={() => setExpanded(!expanded)}
-          className={`!button--large z-40 w-full md:w-[320px] xl:hidden`}
+          className={`!button--large relative z-40 w-full md:w-[320px] xl:hidden`}
         />
       )}
 
       <ul
         className={`absolute flex-col bg-white md:w-[320px] xl:static xl:flex xl:h-full xl:w-[200px] xl:bg-transparent ${
           expanded
-            ? "top-[56px] z-40 h-fit max-h-[calc(100vh-292px)] w-full overflow-y-scroll md:max-h-[calc(100vh-292px)]"
+            ? "-bottom-sm z-40 h-fit max-h-[calc(100svh-292px)] w-full translate-y-full overflow-y-scroll md:max-h-[calc(100vh-292px)]"
             : "hidden"
         }`}
       >

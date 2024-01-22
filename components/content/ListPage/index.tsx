@@ -29,7 +29,7 @@ export const ListPage: FC<PublicationListResponse> = ({
   };
 
   return (
-    <div id="news-list" className="my-xl">
+    <div id="news-list" className="my-lg md:my-xl">
       <Container>
         <PublicationList
           publications={publicationsOnPage}
