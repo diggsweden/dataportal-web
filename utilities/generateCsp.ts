@@ -40,7 +40,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "script-src",
     `'self' ${
       nonce ? `'nonce-${nonce}'` : ""
-    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se *.entryscape.com *.dataportal.se`,
+    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se *.entryscape.com *.dataportal.se *.beta.dataportal.digikube.dgstage.se`,
     { prodOnly: true },
   );
   add(
@@ -61,7 +61,9 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   add("form-action", `'self'`);
   add(
     "img-src",
-    `'self' ${process.env.IMAGE_DOMAIN || ""} https://diggdrstoragetest.blob.core.windows.net/ data: *`,
+    `'self' ${
+      process.env.IMAGE_DOMAIN || ""
+    } https://diggdrstoragetest.blob.core.windows.net/ data: *`,
   );
   add(
     "media-src",
@@ -75,12 +77,10 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "style-src-elem",
     `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`,
   );
-  add(
-    "style-src-attr",
-    `'self' 'unsafe-inline'`);
+  add("style-src-attr", `'self' 'unsafe-inline'`);
   add(
     "connect-src",
-    `'self' https://* http://127.0.0.1:1300/ ${reactEnv('APOLLO_URL') || '' }`
+    `'self' https://* http://127.0.0.1:1300/ ${reactEnv("APOLLO_URL") || ""}`,
   );
 
   // return the object in a formatted value (this won't work on IE11 without a polyfill!)
