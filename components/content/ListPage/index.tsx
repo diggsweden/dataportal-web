@@ -42,17 +42,16 @@ export const ListPage: FC<PublicationListResponse> = ({
           publications={publicationsOnPage}
           heading={`${publications.length} ${heading}`}
         />
-
-        <div className="flex justify-center">
-          {router.isReady && (
+        {publications.length > 12 && (
+          <div className="flex justify-center">
             <Pagination
               totalResults={publications.length || 0}
               itemsPerPage={publicationsPerPage}
               pageNumber={parseInt(router.query.page as string)}
               changePage={changePage}
             />
-          )}
-        </div>
+          </div>
+        )}
       </Container>
     </div>
   );
