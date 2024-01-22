@@ -80,8 +80,8 @@ export const Hero: FC<HeroProps> = ({
                 </form>
                 <div
                   className={`${
-                    isFrontpage && "justify-center"
-                  } mt-lg flex space-x-md `}
+                    isFrontpage ? "" : "md:justify-start"
+                  } md mt-lg flex flex-wrap justify-center gap-md md:flex-row`}
                 >
                   <ButtonLink
                     href={`${lang}/datasets?q=&f=`}

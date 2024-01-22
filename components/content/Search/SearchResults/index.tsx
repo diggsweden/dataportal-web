@@ -204,7 +204,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     }
   };
   return (
-    <div id="search-result" className="my-xl">
+    <div id="search-result" className="my-lg md:my-xl">
       <div className="mb-lg flex flex-col-reverse justify-between md:flex-row">
         <Heading level={2} size="md" className="search-result-header">
           {search.loadingHits && <span>{t("common|loading")}</span>}
