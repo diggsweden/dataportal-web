@@ -75,7 +75,7 @@ export const resolvePage = (
   t: any,
 ): ResolvedPage => {
   // @ts-ignore
-  if (!props.id) {
+  if (!props.id && lang === "en") {
     // @ts-ignore
     return fallback(props.domain, t);
   }
