@@ -185,8 +185,7 @@
 }
 
 .opblock-summary {
-  display: flex;
-  align-items: center;
+  @apply flex items-center;
 }
 
 .swagger-ui .opblock-get,
@@ -394,7 +393,7 @@
 }
 
 .opblock-summary-control .opblock-summary-path {
-  @apply max-w-fit px-md text-left;
+  @apply max-w-fit px-md pr-xl text-left md:pr-none;
 }
 .opblock-summary-control svg {
   @apply absolute right-md ml-sm min-w-fit;
@@ -427,15 +426,15 @@
 }
 
 .download-contents {
-  @apply absolute bottom-[10px] right-[50px] flex h-[30px] cursor-pointer items-center bg-white px-sm text-textPrimary opacity-70 hover:opacity-90;
+  @apply absolute bottom-[10px] right-[50px] flex h-[20px] cursor-pointer items-center bg-white px-sm text-textPrimary opacity-70 hover:opacity-90;
 }
 
 .opblock-summary .copy-to-clipboard {
-  @apply absolute right-[42px] hidden h-sm cursor-pointer items-center bg-brownOpaque5 hover:bg-textPrimary focus:bg-primary;
+  @apply absolute right-[42px] hidden h-[30px] cursor-pointer items-center bg-brownOpaque5 hover:bg-textPrimary focus:bg-primary;
 }
 
 .opblock-summary:hover > .copy-to-clipboard {
-  @apply flex !important;
+  @apply md:flex !important;
 }
 
 .opblock-summary-control .opblock-summary-description {
@@ -514,4 +513,16 @@
 
 .responses-inner h4 {
   @apply text-lg;
+}
+
+.swagger-ui .no-margin {
+  overflow: auto;
+}
+
+.swagger-ui .no-margin {
+  overflow: auto;
+}
+
+.swagger-ui .opblock-body {
+  min-width: 500px;
 }

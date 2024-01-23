@@ -194,7 +194,7 @@ input[type="radio"] {
 
 /* SWAGGER UI */
 .try-out__btn {
-  @apply button--secondary button--large;
+  @apply button--secondary button--small md:button--large;
 }
 
 .try-out__btn .cancel {
