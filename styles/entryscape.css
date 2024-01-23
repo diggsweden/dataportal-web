@@ -138,7 +138,11 @@
 }
 
 .response-col_description {
-  @apply max-w-lg;
+  @apply max-w-lg p-none md:p-sm;
+}
+
+.responses-header td {
+  @apply my-md font-strong;
 }
 
 .response-col_status {
@@ -158,20 +162,11 @@
 }
 
 .language-json span {
-  white-space: pre-wrap !important;
-  word-break: break-all;
+  @apply whitespace-pre-wrap break-all !important;
 }
-/* 
-.responses-table .live-responses-table {
-  max-width: 620px;
-} */
 
 .highlight-code .microlight {
   @apply max-h-[500px] overflow-y-scroll;
-}
-
-.highlight-code {
-  width: inherit !important;
 }
 
 .swagger-ui td,
@@ -350,10 +345,6 @@
   @apply hidden;
 }
 
-.swagger-ui select {
-  @apply w-fit cursor-pointer bg-[#d8d8d8] px-md py-sm uppercase;
-}
-
 .swagger-ui table {
   @apply !mt-none;
 }
@@ -426,7 +417,7 @@
 }
 
 .download-contents {
-  @apply absolute bottom-[10px] right-[50px] flex h-[20px] cursor-pointer items-center bg-white px-sm text-textPrimary opacity-70 hover:opacity-90;
+  @apply absolute bottom-[10px] right-[50px]  flex h-[30px] cursor-pointer items-center bg-white px-sm pt-xs text-center text-textPrimary opacity-70 hover:opacity-90;
 }
 
 .opblock-summary .copy-to-clipboard {
@@ -459,8 +450,9 @@
 .opblock-section-header label {
   @apply flex items-center gap-md;
 }
-.opblock-section-header select {
-  @apply w-fit cursor-pointer bg-[#d8d8d8] px-md py-sm text-md uppercase;
+.opblock-section-header select,
+.scheme-container select {
+  @apply w-fit cursor-pointer border-r-8 border-transparent bg-[#d8d8d8] px-md py-sm text-md uppercase outline-none;
 }
 
 .parameters-col_description input {
@@ -513,6 +505,10 @@
 
 .responses-inner h4 {
   @apply text-lg;
+}
+
+.responses-inner h5 {
+  @apply mb-sm;
 }
 
 .swagger-ui .no-margin {

@@ -193,16 +193,9 @@ input[type="radio"] {
 }
 
 /* SWAGGER UI */
-.try-out__btn {
-  @apply button--secondary button--small md:button--large;
-}
-
-.try-out__btn .cancel {
-  @apply !border-2 !border-[#ff6060] !text-[#ff6060] !important;
-}
 
 .opblock-section-header button {
-  @apply button--secondary button--large;
+  @apply button--secondary button--small md:button--large;
 }
 .opblock-section-header .try-out .cancel {
   @apply border-red-600 text-red-600;
