@@ -61,8 +61,8 @@ const contentBoxLinks = [
 ];
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
-  const { domain, areas, news, example } = props || {};
-  const { content, puffs, preamble } = handleDomain(props);
+  const { domain, areas, news, example, image } = props || {};
+  const { content, puffs, preamble, heroImage } = handleDomain(props);
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation();
@@ -75,10 +75,9 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   return (
     <div id="DomainPage">
       <Container>
-        {domain === "data" ||
-          (domain === "datasamverkan" && (
-            <Preamble className="max-w-md">{preamble}</Preamble>
-          ))}
+        {domain === "data" || (!image && preamble && !heroImage) ? (
+          <Preamble className="max-w-md">{preamble}</Preamble>
+        ) : null}
 
         {puffs && <RelatedContentBlock links={puffs.links as PromoProps[]} />}
 

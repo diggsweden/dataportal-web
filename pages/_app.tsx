@@ -3,7 +3,6 @@ import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { ApolloProvider } from "@apollo/client";
 import { LocalStore, LocalStoreProvider } from "@/providers/LocalStoreProvider";
-
 import { TrackingProvider } from "@/providers/TrackingProvider";
 import {
   defaultSettings,
@@ -72,6 +71,7 @@ const onHash = (pathWithHash: string) => {
 
 function Dataportal({ Component, pageProps }: DataportalenProps) {
   const pathname = usePathname();
+  const { t, lang } = useTranslation();
   // Put shared props into state to persist between pages that doesn't use getStaticProps
   const [env, setEnv] = useState<EnvSettings>(SettingsUtil.create());
   const [matomoActivated, setMatomoActivated] = useState<boolean>(true);
@@ -80,11 +80,13 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     useState<BreadcrumbProps>(initBreadcrumb);
   const { seo, heading, heroImage, preamble } = resolvePage(
     pageProps as DataportalPageProps,
+    lang,
+    t,
   );
+
   const previousPath = usePrevious(pathname);
 
   const appRenderKey = generateRandomKey(16);
-  const { t, lang } = useTranslation();
 
   useEffect(() => {
     if (typeof window !== "undefined") {

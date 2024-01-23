@@ -13,6 +13,10 @@ import {
   RootAggregateResponse,
 } from "@/utilities/queryHelpers";
 import { StaticImageData } from "next/image";
+import start from "@/public/images/startPageHero.png";
+import ai from "@/public/images/aiHero.png";
+import data from "@/public/images/dataHero.png";
+import kallkod from "@/public/images/kallkodHero.png";
 
 export type DataportalPageProps =
   | MultiContainerResponse
@@ -30,13 +34,52 @@ type ResolvedPage = {
   seo?: SeoDataFragment | null;
 };
 
+const fallback = (domain: DiggDomain | undefined, t: any): ResolvedPage => {
+  switch (domain) {
+    case "offentligai":
+      return {
+        heading: t("pages|ai$heading"),
+        preamble: t("pages|ai$preamble"),
+        heroImage: renderImage(ai),
+      };
+    case "data":
+      return {
+        heading: t("pages|data$heading"),
+        preamble: t("pages|data$preamble"),
+        heroImage: renderImage(data),
+      };
+    case "oppen-kallkod":
+      return {
+        heading: t("pages|os$heading"),
+        preamble: t("pages|os$preamble"),
+        heroImage: renderImage(kallkod),
+      };
+    default:
+      return {
+        heading: t("pages|startpage$heading"),
+        preamble: t("pages|startpage$preamble"),
+        heroImage: renderImage(start),
+      };
+  }
+};
+
 /**
  * Resolves different types of api responses into the same format
  *
  * @param {DataportalPageProps} props
  * @returns {ResolvedPage}
  */
-export const resolvePage = (props: DataportalPageProps): ResolvedPage => {
+export const resolvePage = (
+  props: DataportalPageProps,
+  lang: string,
+  t: any,
+): ResolvedPage => {
+  // @ts-ignore
+  if (!props.id) {
+    // @ts-ignore
+    return fallback(props.domain, t);
+  }
+
   switch (props.type) {
     case "RootAggregate":
       return {
