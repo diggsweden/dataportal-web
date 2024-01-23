@@ -89,7 +89,12 @@ export const resolvePage = (
         preamble: props.preamble,
       };
     case "DomainAggregate":
-      return { seo: props.seo, heroImage: props.image, heading: props.heading };
+      return {
+        seo: props.seo,
+        heroImage: props.image,
+        heading: props.heading,
+        preamble: props.preamble,
+      };
     case "MultiContainer":
       return {
         seo: props.container?.seo,
