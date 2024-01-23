@@ -132,38 +132,135 @@
 
 /* SWAGGER UI */
 
+.swagger-ui .table-container,
+.responses-inner {
+  @apply p-md;
+}
+
+.response-col_description {
+  @apply max-w-lg;
+}
+
+.response-col_status {
+  @apply flex;
+}
+
+.microlight {
+  @apply bg-white p-md;
+}
+
+.responses-inner h4 {
+  @apply my-sm;
+}
+
+.request-url pre {
+  @apply break-all p-sm text-sm;
+}
+
+.language-json span {
+  white-space: pre-wrap !important;
+  word-break: break-all;
+}
+/* 
+.responses-table .live-responses-table {
+  max-width: 620px;
+} */
+
+.highlight-code .microlight {
+  @apply max-h-[500px] overflow-y-scroll;
+}
+
+.highlight-code {
+  width: inherit !important;
+}
+
+.swagger-ui td,
+.swagger-ui th,
+.swagger-ui table {
+  @apply border-none;
+}
+
+.swagger-ui .parameters-col_name {
+  @apply w-1/5;
+}
+
+.opblock-summary {
+  display: flex;
+  align-items: center;
+}
+
 .swagger-ui .opblock-get,
 .opblock-get tr,
 .opblock-summary-get button {
-  background-color: #cce2fa;
+  @apply bg-[#cce2fa];
 }
 
 .swagger-ui .opblock-post,
 .opblock-post tr,
 .opblock-summary-post button {
-  background-color: #c8ebd9;
+  @apply bg-[#c8ebd9];
 }
 
 .swagger-ui .opblock-put,
 .opblock-put tr,
 .opblock-summary-put button {
-  background-color: #fadebf;
+  @apply bg-[#fadebf];
 }
 
 .swagger-ui .opblock-patch,
 .opblock-patch tr,
 .opblock-summary-patch button {
-  background-color: #e3eeed;
+  @apply bg-[#e3eeed];
 }
 
 .swagger-ui .opblock-delete,
 .opblock-delete tr,
 .opblock-summary-delete button {
-  background-color: #fad5d3;
+  @apply bg-[#fad5d3];
 }
 
 .opblock-summary-method {
   @apply rounded-md px-lg py-xs text-md text-white !important;
+}
+
+.swagger-ui .btn-group {
+  @apply flex gap-md p-lg;
+}
+
+.execute {
+  @apply w-1/2 py-sm text-white;
+}
+
+.execute:hover {
+  @apply opacity-80;
+}
+
+.opblock-get .execute {
+  @apply bg-[#0173e4];
+}
+
+.opblock-post .execute {
+  @apply bg-[#258659];
+}
+
+.opblock-put .execute {
+  @apply bg-[#a86629];
+}
+
+.opblock-patch .execute {
+  @apply bg-[#14827b];
+}
+
+.opblock-delete .execute {
+  @apply bg-[#ed0908];
+}
+
+.btn-clear {
+  @apply w-1/2 bg-brownOpaque5 text-white;
+}
+
+.btn-clear:hover {
+  @apply opacity-70;
 }
 
 .opblock-get .opblock-summary-method {
@@ -216,6 +313,33 @@
   @apply bg-[#fff7f7];
 }
 
+.execute-wrapper {
+  @apply p-lg;
+}
+.execute-wrapper button {
+  @apply flex h-md w-full items-center justify-center p-lg text-white;
+}
+
+.opblock-get .execute-wrapper button {
+  @apply bg-[#0173e4];
+}
+
+.opblock-post .execute-wrapper button {
+  @apply bg-[#258659];
+}
+
+.opblock-put .execute-wrapper button {
+  @apply bg-[#a86629];
+}
+
+.opblock-patch .execute-wrapper button {
+  @apply bg-[#14827b];
+}
+
+.opblock-delete .execute-wrapper button {
+  @apply bg-[#ed0908];
+}
+
 .swagger-ui input,
 .swagger-ui .markdown p {
   @apply w-full max-w-md py-sm;
@@ -266,18 +390,60 @@
 }
 
 .opblock-summary-control {
-  @apply relative flex w-full items-center bg-brown-200 p-md text-left;
+  @apply relative flex w-full items-center p-md text-left;
 }
 
 .opblock-summary-control .opblock-summary-path {
-  @apply ml-md w-full text-left;
+  @apply max-w-fit px-md text-left;
 }
 .opblock-summary-control svg {
-  @apply ml-sm min-w-fit;
+  @apply absolute right-md ml-sm min-w-fit;
+}
+
+.curl-command .copy-to-clipboard,
+.highlight-code .copy-to-clipboard {
+  @apply absolute bottom-[10px] right-[10px] flex h-[30px] w-[30px] items-center justify-center bg-white opacity-70 hover:opacity-90;
+}
+
+.copy-to-clipboard button {
+  background:
+    url("../assets/icons//copy-to-clipboard.svg"),
+    no-repeat center;
+  @apply h-[20px] w-[20px] bg-contain;
+}
+
+.curl-command,
+.highlight-code,
+.request-url {
+  @apply relative mb-xl;
+}
+
+.response-col_status {
+  @apply mr-md font-strong;
+}
+
+.microlight {
+  @apply whitespace-pre-wrap;
+}
+
+.download-contents {
+  @apply absolute bottom-[10px] right-[50px] flex h-[30px] cursor-pointer items-center bg-white px-sm text-textPrimary opacity-70 hover:opacity-90;
+}
+
+.opblock-summary .copy-to-clipboard {
+  @apply absolute right-[42px] hidden h-sm cursor-pointer items-center bg-brownOpaque5 hover:bg-textPrimary focus:bg-primary;
+}
+
+.opblock-summary:hover > .copy-to-clipboard {
+  @apply flex !important;
 }
 
 .opblock-summary-control .opblock-summary-description {
   @apply mr-md hidden w-full  text-left text-[10px] text-sm lg:block;
+}
+
+#operations-default-datasetQuery {
+  @apply relative;
 }
 
 .opblock-summary-method {
@@ -344,4 +510,8 @@
 
 .entryListRow {
   @apply mb-xs;
+}
+
+.responses-inner h4 {
+  @apply text-lg;
 }
