@@ -45,6 +45,10 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
     }
   }, [isEn]);
 
+  useEffect(() => {
+    setOpenSearch(false);
+  }, [pathname]);
+
   return (
     <div className="flex flex-row items-center justify-between">
       <Link
