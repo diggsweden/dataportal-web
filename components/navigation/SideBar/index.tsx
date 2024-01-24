@@ -43,7 +43,7 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar }) => {
 
   return (
     <nav
-      className={`absolute right-none top-[128px] z-50 -mb-[128px] h-[calc(100%-128px)] w-[300px] bg-white transition-all duration-300 ease-in-out ${
+      className={`absolute right-none top-[128px] z-50 -mb-[128px] box-border h-[calc(100%-128px)] w-[300px] border-l-[1px] border-brown-200 bg-white  transition-all duration-300 ease-in-out ${
         openSideBar ? "" : "translate-x-full"
       }`}
     >
