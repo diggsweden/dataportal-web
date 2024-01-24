@@ -43,6 +43,7 @@ export const FormGeneratePDF: FC<Props> = ({ formDataArray, blocks }) => {
             }, 500);
           }
         }}
+        className="button--large"
         type="submit"
       />
 

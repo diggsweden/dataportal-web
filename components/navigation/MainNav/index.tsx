@@ -1,6 +1,5 @@
-import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState, useRef } from "react";
 import Link from "next/link.js";
 import { Button, ButtonLink } from "@/components/global/Button";
 import { mainNav } from "@/utilities/menuData";
@@ -33,6 +32,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let enMenu;
@@ -46,8 +46,17 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   }, [isEn]);
 
   useEffect(() => {
-    setOpenSearch(false);
-  }, [pathname]);
+    const handleCloseSearch = (event: MouseEvent) => {
+      if (!ref.current?.contains(event.target as Node)) {
+        setOpenSearch(false);
+      }
+    };
+
+    window.addEventListener("mouseup", handleCloseSearch);
+    return () => {
+      window.removeEventListener("mouseup", handleCloseSearch);
+    };
+  }, [ref]);
 
   return (
     <div className="flex flex-row items-center justify-between">
@@ -81,7 +90,10 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
             />
           ))}
         </nav>
-        <div className="relative left-none flex w-full justify-end md:w-auto">
+        <div
+          ref={ref}
+          className="relative left-none flex w-full justify-end md:w-auto"
+        >
           {!openSearch ? (
             <Button
               onClick={() => setOpenSearch(!openSearch)}
@@ -119,7 +131,9 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           iconPosition="left"
           onClick={() => setOpenSideBar(!openSideBar)}
           label={t("common|menu")}
-          className="button--large focus--white focus--in"
+          className={`button--large focus--white focus--in ${
+            openSideBar ? "active" : ""
+          }`}
         />
       </div>
     </div>
