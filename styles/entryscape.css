@@ -132,6 +132,223 @@
 
 /* SWAGGER UI */
 
+.swagger-ui .table-container,
+.responses-inner {
+  @apply p-md;
+}
+
+.response-col_description {
+  @apply max-w-lg p-none md:p-sm;
+}
+
+.responses-header td {
+  @apply my-md font-strong;
+}
+
+.response-col_status {
+  @apply flex;
+}
+
+.microlight {
+  @apply bg-white p-md;
+}
+
+.responses-inner h4 {
+  @apply my-sm;
+}
+
+.request-url pre {
+  @apply break-all p-sm text-sm;
+}
+
+.language-json span {
+  @apply whitespace-pre-wrap break-all !important;
+}
+
+.highlight-code .microlight {
+  @apply max-h-[500px] overflow-y-scroll;
+}
+
+.swagger-ui td,
+.swagger-ui th,
+.swagger-ui table {
+  @apply border-none;
+}
+
+.swagger-ui .parameters-col_name {
+  @apply w-1/5;
+}
+
+.opblock-summary {
+  @apply flex items-center;
+}
+
+.swagger-ui .opblock-get,
+.opblock-get tr,
+.opblock-summary-get button {
+  @apply bg-[#cce2fa];
+}
+
+.swagger-ui .opblock-post,
+.opblock-post tr,
+.opblock-summary-post button {
+  @apply bg-[#c8ebd9];
+}
+
+.swagger-ui .opblock-put,
+.opblock-put tr,
+.opblock-summary-put button {
+  @apply bg-[#fadebf];
+}
+
+.swagger-ui .opblock-patch,
+.opblock-patch tr,
+.opblock-summary-patch button {
+  @apply bg-[#e3eeed];
+}
+
+.swagger-ui .opblock-delete,
+.opblock-delete tr,
+.opblock-summary-delete button {
+  @apply bg-[#fad5d3];
+}
+
+.opblock-summary-method {
+  @apply rounded-md px-lg py-xs text-md text-white !important;
+}
+
+.swagger-ui .btn-group {
+  @apply flex gap-md p-lg;
+}
+
+.execute {
+  @apply w-1/2 py-sm text-white;
+}
+
+.execute:hover {
+  @apply opacity-80;
+}
+
+.opblock-get .execute {
+  @apply bg-[#0173e4];
+}
+
+.opblock-post .execute {
+  @apply bg-[#258659];
+}
+
+.opblock-put .execute {
+  @apply bg-[#a86629];
+}
+
+.opblock-patch .execute {
+  @apply bg-[#14827b];
+}
+
+.opblock-delete .execute {
+  @apply bg-[#ed0908];
+}
+
+.btn-clear {
+  @apply w-1/2 bg-brownOpaque5 text-white;
+}
+
+.btn-clear:hover {
+  @apply opacity-70;
+}
+
+.opblock-get .opblock-summary-method {
+  @apply bg-[#0173e4];
+}
+
+.opblock-post .opblock-summary-method {
+  @apply bg-[#258659];
+}
+
+.opblock-put .opblock-summary-method {
+  @apply bg-[#a86629];
+}
+
+.opblock-patch .opblock-summary-method {
+  @apply bg-[#14827b];
+}
+
+.opblock-delete .opblock-summary-method {
+  @apply bg-[#ed0908];
+}
+
+.opblock-section-header,
+.view-line-link {
+  @apply px-md py-lg;
+}
+
+.opblock-get .opblock-section-header,
+.view-line-link {
+  @apply bg-[#f5f9ff];
+}
+
+.opblock-post .opblock-section-header,
+.view-line-link {
+  @apply bg-[#f4fbf8];
+}
+
+.opblock-put .opblock-section-header,
+.view-line-link {
+  @apply bg-[#fdf8f3];
+}
+
+.opblock-patch .opblock-section-header,
+.view-line-link {
+  @apply bg-[#f5fffb];
+}
+
+.opblock-delete .opblock-section-header,
+.view-line-link {
+  @apply bg-[#fff7f7];
+}
+
+.execute-wrapper {
+  @apply p-lg;
+}
+.execute-wrapper button {
+  @apply flex h-md w-full items-center justify-center p-lg text-white;
+}
+
+.opblock-get .execute-wrapper button {
+  @apply bg-[#0173e4];
+}
+
+.opblock-post .execute-wrapper button {
+  @apply bg-[#258659];
+}
+
+.opblock-put .execute-wrapper button {
+  @apply bg-[#a86629];
+}
+
+.opblock-patch .execute-wrapper button {
+  @apply bg-[#14827b];
+}
+
+.opblock-delete .execute-wrapper button {
+  @apply bg-[#ed0908];
+}
+
+.swagger-ui input,
+.swagger-ui .markdown p {
+  @apply w-full max-w-md py-sm;
+}
+.swagger-ui thead {
+  @apply border-b-2 border-brownOpaque5 text-textPrimary !important;
+}
+.view-line-link {
+  @apply hidden;
+}
+
+.swagger-ui table {
+  @apply !mt-none;
+}
+
 .swagger-ui .title {
   @apply mb-md md:flex lg:text-lg;
 }
@@ -148,10 +365,6 @@
   @apply flex flex-col gap-xs break-words;
 }
 
-.scheme-container label select {
-  @apply w-fit cursor-pointer bg-pink-200 px-md py-sm uppercase;
-}
-
 .swagger-ui .info a {
   @apply break-words text-green-600 hover:text-brown-800;
 }
@@ -163,22 +376,64 @@
 }
 
 .opblock-tag {
-  @apply flex cursor-pointer justify-between bg-brown-600 p-md text-white [&_svg]:fill-white;
+  @apply flex cursor-pointer justify-between bg-[#d8d8d8] p-md text-textPrimary [&_svg]:fill-textPrimary;
 }
 
 .opblock-summary-control {
-  @apply relative flex w-full items-center bg-brown-200 p-md text-left;
+  @apply relative flex w-full items-center p-md text-left;
 }
 
 .opblock-summary-control .opblock-summary-path {
-  @apply ml-md w-full text-left;
+  @apply max-w-fit px-md pr-xl text-left md:pr-none;
 }
 .opblock-summary-control svg {
-  @apply ml-sm min-w-fit;
+  @apply absolute right-md ml-sm min-w-fit;
+}
+
+.curl-command .copy-to-clipboard,
+.highlight-code .copy-to-clipboard {
+  @apply absolute bottom-[10px] right-[10px] flex h-[30px] w-[30px] items-center justify-center bg-white opacity-70 hover:opacity-90;
+}
+
+.copy-to-clipboard button {
+  background:
+    url("../assets/icons//copy-to-clipboard.svg"),
+    no-repeat center;
+  @apply h-[20px] w-[20px] bg-contain;
+}
+
+.curl-command,
+.highlight-code,
+.request-url {
+  @apply relative mb-xl;
+}
+
+.response-col_status {
+  @apply mr-md font-strong;
+}
+
+.microlight {
+  @apply whitespace-pre-wrap;
+}
+
+.download-contents {
+  @apply absolute bottom-[10px] right-[50px]  flex h-[30px] cursor-pointer items-center bg-white px-sm pt-xs text-center text-textPrimary opacity-70 hover:opacity-90;
+}
+
+.opblock-summary .copy-to-clipboard {
+  @apply absolute right-[42px] hidden h-[30px] cursor-pointer items-center bg-brownOpaque5 hover:bg-textPrimary focus:bg-primary;
+}
+
+.opblock-summary:hover > .copy-to-clipboard {
+  @apply md:flex !important;
 }
 
 .opblock-summary-control .opblock-summary-description {
   @apply mr-md hidden w-full  text-left text-[10px] text-sm lg:block;
+}
+
+#operations-default-datasetQuery {
+  @apply relative;
 }
 
 .opblock-summary-method {
@@ -195,8 +450,9 @@
 .opblock-section-header label {
   @apply flex items-center gap-md;
 }
-.opblock-section-header select {
-  @apply w-fit cursor-pointer bg-pink-200 px-md py-sm text-md uppercase;
+.opblock-section-header select,
+.scheme-container select {
+  @apply w-fit cursor-pointer border-r-8 border-transparent bg-[#d8d8d8] px-md py-sm text-md uppercase outline-none;
 }
 
 .parameters-col_description input {
@@ -245,4 +501,24 @@
 
 .entryListRow {
   @apply mb-xs;
+}
+
+.responses-inner h4 {
+  @apply text-lg;
+}
+
+.responses-inner h5 {
+  @apply mb-sm;
+}
+
+.swagger-ui .no-margin {
+  overflow: auto;
+}
+
+.swagger-ui .no-margin {
+  overflow: auto;
+}
+
+.swagger-ui .opblock-body {
+  min-width: 500px;
 }

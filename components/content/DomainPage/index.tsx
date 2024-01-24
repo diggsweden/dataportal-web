@@ -61,8 +61,8 @@ const contentBoxLinks = [
 ];
 
 export const DomainPage: React.FC<DomainProps> = (props) => {
-  const { domain, areas, news, example } = props || {};
-  const { content, puffs, preamble } = handleDomain(props);
+  const { domain, areas, news, example, image, heading } = props || {};
+  const { content, puffs, preamble, heroImage } = handleDomain(props);
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation();
@@ -75,10 +75,15 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   return (
     <div id="DomainPage">
       <Container>
-        {domain === "data" ||
-          (domain === "datasamverkan" && (
-            <Preamble className="max-w-md">{preamble}</Preamble>
-          ))}
+        {!image && heading && (
+          <Heading level={1} size="lg" className="mb-lg md:mb-xl">
+            {heading}
+          </Heading>
+        )}
+
+        {domain === "data" || (!image && preamble && !heroImage) ? (
+          <Preamble className="max-w-md">{preamble}</Preamble>
+        ) : null}
 
         {puffs && <RelatedContentBlock links={puffs.links as PromoProps[]} />}
 
@@ -161,12 +166,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
         )}
 
         {areas && domain === "datasamverkan" && lang === "sv" && (
-          <div className="py-xl">
-            <Heading size={"md"} level={2}>
-              {t("pages|data$data-areas_text")}
-            </Heading>
-            <RelatedContentBlock links={areas} icons={true} inline={true} />
-          </div>
+          <RelatedContentBlock links={areas} icons={true} inline={true} />
         )}
 
         {!domain && (
