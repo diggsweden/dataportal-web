@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useContext, useEffect, useRef, useState } from "react";
 import { FormDataFragment as IForm } from "@/graphql/__generated__/operations";
 import { FormNav } from "@/components/navigation/FormNav";
 import useTranslation from "next-translate/useTranslation";
@@ -14,6 +14,8 @@ import { FormBottomNav } from "@/components/navigation/FormBottomNav";
 import { FormGeneratePDF } from "@/components/global/Form/FormGeneratePDF";
 import { ProgressBar } from "@/components/global/ProgressBar";
 import { Container } from "@/components/layout/Container";
+import { linkBase } from "@/utilities";
+import { SettingsContext } from "@/providers/SettingsProvider";
 
 type Props = IForm & {
   elements: IForm["elements"];
@@ -23,6 +25,7 @@ type Props = IForm & {
 export const FormPage: FC<Props> = ({ elements, module }) => {
   const { trackPageView } = useMatomo();
   const { t } = useTranslation();
+  const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
   const [page, setPage] = useState<number>(-1);
   const scrollRef = useRef<HTMLSpanElement>(null);
@@ -38,8 +41,25 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
   }>({ title: "", text: "" });
   let questionNumber = 1; //Used for visual numberings (can't use ID since we don't want headings/pagebreaks to be numbered)
 
+  // Temporary breadcrumbs for förtroendemodellen
   useEffect(() => {
-    trackPageView({ documentTitle: "Fortroendemodellen" });
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: "Fortroendemodellen utveckling",
+        crumbs: [
+          { name: "start", link: { ...linkBase, link: "/" } },
+          { name: "Offentlig AI", link: { ...linkBase, link: "/offentligai" } },
+          {
+            name: "Förtroendemodellen",
+            link: {
+              ...linkBase,
+              link: "/offentligai/fortroendemodellen",
+            },
+          },
+        ],
+      });
+
+    trackPageView({ documentTitle: "Fortroendemodellen utveckling" });
   }, [pathname]);
 
   useEffect(() => {

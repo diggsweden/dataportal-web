@@ -114,6 +114,9 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   const { appRenderKey } = useContext(SettingsContext);
 
   const hasRelatedContent = related && related.length > 2;
+  const categoryLadingPage =
+    name.toLowerCase().replaceAll(" ", "") ===
+    category?.name.toLowerCase().replaceAll(" ", "");
 
   useEffect(() => {
     const newMenuItems = getLinks();
@@ -135,7 +138,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
     highlightCode();
 
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
-    if (category) {
+    if (category && !categoryLadingPage) {
       crumbs.push({
         name: category.name,
         link: { ...linkBase, link: category.slug },
