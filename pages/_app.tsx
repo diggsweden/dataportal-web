@@ -149,7 +149,12 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
             <MetaData seo={seo} />
             <div id="scriptsPlaceholder" />
             <CookieBanner />
-            <div id="top" className="relative min-h-screen overflow-hidden">
+            <div
+              id="top"
+              className={`relative h-screen min-h-screen overflow-hidden md:h-auto ${
+                openSideBar ? "overflow-y-hidden" : "overflow-y-scroll"
+              }`}
+            >
               <SkipToContent text={t("common|skiptocontent")} />
               <Header
                 setOpenSideBar={setOpenSideBar}
@@ -186,7 +191,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
 
                 <main
                   id="main"
-                  className={`mt-lg min-h-[calc(100vh-656px)] pb-lg md:mt-xl md:pb-xl lg:min-h-[calc(100vh-524px)]`}
+                  className={`mt-lg min-h-[calc(100vh-744px)] pb-lg md:mt-xl md:pb-xl lg:min-h-[calc(100vh-612px)]`}
                 >
                   {/*{(pageProps as DataportalPageProps).type === "MultiContainer" ||*/}
                   {/*  ((pageProps as DataportalPageProps).type ===*/}

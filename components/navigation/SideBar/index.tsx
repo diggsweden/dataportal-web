@@ -3,6 +3,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import { mainNav } from "@/utilities/menuData";
 import SideBarLink from "@/components/navigation/SideBar/SideBarLink.tsx";
+import { useClickoutside } from "@/hooks/useClickoutside";
 
 interface NavSideData {
   title: string;
@@ -22,6 +23,9 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
   const [menu, setMenu] = useState<any>([]);
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
+  const ref = useClickoutside(
+    () => window.innerWidth < 1200 && setOpenSideBar(false),
+  );
 
   useEffect(() => {
     if (isEn) {
@@ -44,9 +48,11 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
 
   return (
     <nav
-      className={`absolute right-none top-[128px] z-50 -mb-[128px] h-[calc(100%-128px)] w-full bg-white transition-all duration-300 ease-in-out md:w-[300px] ${
-        openSideBar ? "" : "translate-x-full"
-      }`}
+      ref={ref}
+      className={`absolute right-none top-[128px] z-50 -mb-[128px] h-[calc(100%-128px)] w-full
+       overflow-y-scroll bg-white transition-all duration-300 ease-in-out md:w-[300px] ${
+         openSideBar ? "" : "translate-x-full"
+       }`}
     >
       <ul className="w-full list-none">
         {menu.map((menu: NavSideData, idx: number) => (
