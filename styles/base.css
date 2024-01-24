@@ -143,7 +143,6 @@ body {
 
 * {
   font-family: Ubuntu, sans-serif;
-  @apply antialiased;
 }
 
 a {
