@@ -9,7 +9,7 @@ import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { usePathname } from "next/navigation";
 import { SearchInput } from "@/components/content/Search/SearchInput";
 import SearchIcon from "@/assets/icons/search.svg";
-
+import { useClickoutside } from "@/hooks/useClickoutside";
 interface MainNavData {
   title: string;
   promoted: boolean;
@@ -32,7 +32,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
-  const ref = useRef<HTMLDivElement | null>(null);
+  const ref = useClickoutside(() => setOpenSearch(false));
 
   useEffect(() => {
     let enMenu;
@@ -44,19 +44,6 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
       setMenues(enMenu);
     }
   }, [isEn]);
-
-  useEffect(() => {
-    const handleCloseSearch = (event: MouseEvent) => {
-      if (!ref.current?.contains(event.target as Node)) {
-        setOpenSearch(false);
-      }
-    };
-
-    window.addEventListener("mouseup", handleCloseSearch);
-    return () => {
-      window.removeEventListener("mouseup", handleCloseSearch);
-    };
-  }, [ref]);
 
   return (
     <div className="flex flex-row items-center justify-between">
