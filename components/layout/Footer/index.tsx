@@ -11,7 +11,7 @@ type FooterProps = {
 
 export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
   return (
-    <footer className="mt-xl bg-white py-xl">
+    <footer className="mt-xl border-t-[1px] border-brown-200 bg-white py-xl">
       <div
         className={`transition-all duration-300 ease-in-out ${
           openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
