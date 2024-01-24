@@ -40,7 +40,7 @@ export const FortroendeModulePage: FC<ModuleDataFragment> = ({ blocks }) => {
             name: "Förtroendemodellen",
             link: {
               ...linkBase,
-              link: "/fortroendemodellen",
+              link: "/offentligai/fortroendemodellen",
             },
           },
         ],
