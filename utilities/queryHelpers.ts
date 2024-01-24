@@ -478,7 +478,7 @@ export const getPublication = async (
       PublicationQueryVariables
     >({
       query: PUBLICATION_QUERY,
-      variables: { filter: { limit: 4, locale, domains, tags: relatedTags } },
+      variables: { filter: { limit: 3, locale, domains, tags: relatedTags } },
       fetchPolicy: "no-cache",
     });
 
