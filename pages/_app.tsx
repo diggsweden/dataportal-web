@@ -155,7 +155,10 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 setOpenSideBar={setOpenSideBar}
                 openSideBar={openSideBar}
               />
-              <SideBar openSideBar={openSideBar} />
+              <SideBar
+                openSideBar={openSideBar}
+                setOpenSideBar={setOpenSideBar}
+              />
               <noscript>
                 <div>
                   <span>{defaultSettings.noScriptContent}</span>
