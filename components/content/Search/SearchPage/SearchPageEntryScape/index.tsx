@@ -20,6 +20,7 @@ import { Button } from "@/components/global/Button";
 import { SearchTips } from "@/components/content/Search/SearchTips";
 import { SearchPageSelector } from "@/components/content/Search/SearchPageSelector";
 import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
+import { linkBase } from "@/utilities";
 
 interface SearchProps {
   activeLink?: string;
@@ -27,7 +28,7 @@ interface SearchProps {
 }
 
 export const SearchPageEntryScape: React.FC<SearchProps> = ({ searchType }) => {
-  const { env } = useContext(SettingsContext);
+  const { env, setBreadcrumb } = useContext(SettingsContext);
   const { pathname, query: routerQuery } = useRouter() || {};
   const { t, lang } = useTranslation();
   const [query, setQuery] = useState("");
@@ -71,6 +72,12 @@ export const SearchPageEntryScape: React.FC<SearchProps> = ({ searchType }) => {
   const pageTitle = t(`routes|${searchType}$title`);
 
   useEffect(() => {
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: pageTitle,
+        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+      });
+
     trackPageView({ documentTitle: pageTitle });
   }, [pathname]);
 

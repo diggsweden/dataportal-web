@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "@/graphql/__generated__/operations";
 import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
-import { checkLang, isIE } from "@/utilities";
+import { checkLang, isIE, linkBase } from "@/utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import { Heading } from "@/components/global/Typography/Heading";
@@ -97,6 +97,8 @@ export const highlightCode = () => {
 export const ContainerPage: React.FC<ContainerPageProps> = ({
   heading,
   image,
+  category,
+  domains,
   preamble,
   blocks,
   name,
@@ -104,6 +106,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   domain,
 }) => {
   const [menuItems, setMenuItems] = useState<Anchorlink[] | []>([]);
+  const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
   const { trackPageView } = useMatomo();
   const { t } = useTranslation("common");
@@ -130,6 +133,25 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   useEffect(() => {
     //Highlights code using prismjs
     highlightCode();
+
+    const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
+    if (category) {
+      crumbs.push({
+        name: category.name,
+        link: { ...linkBase, link: category.slug },
+      });
+    } else if (domain) {
+      crumbs.push({
+        name: domains[0].name,
+        link: { ...linkBase, link: `/${domains[0].slug}` },
+      });
+    }
+
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: heading!,
+        crumbs: crumbs,
+      });
 
     // Matomo tracking
     trackPageView({ documentTitle: name });
@@ -167,7 +189,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
               id="content"
               className={`flex w-full max-w-md flex-col space-y-lg md:space-y-xl lg:min-w-[620px]`}
             >
-              {preamble && (
+              {!image && preamble && (
                 <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
               )}
               {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}

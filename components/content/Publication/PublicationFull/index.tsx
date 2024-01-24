@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { BlockList } from "@/components/content/blocks/BlockList";
-import { PublicationResponse } from "@/utilities";
+import { linkBase, PublicationResponse, slugify } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { PublicationList } from "@/components/content/Publication/PublicationList";
 import { formatDateWithTime } from "@/utilities/dateHelper";
 import { Heading } from "@/components/global/Typography/Heading";
 import DateIcon from "@/assets/icons/date.svg";
 import useTranslation from "next-translate/useTranslation";
+import { highlightCode } from "@/components/content/ContainerPage";
+import { useMatomo } from "@datapunt/matomo-tracker-react";
+import { usePathname } from "next/navigation";
+import { SettingsContext } from "@/providers/SettingsProvider";
 
 const whitelistedTagsSV = ["Goda exempel", "Event", "Nyhet"];
 export const findPublicationTypeTag = (tags: PublicationResponse["tags"]) => {
@@ -16,25 +20,56 @@ export const findPublicationTypeTag = (tags: PublicationResponse["tags"]) => {
 const getRelatedHeading = (tag: string) => {
   switch (tag) {
     case "Event":
-      return tag.toLowerCase();
+      return tag;
     case "Goda exempel":
-      return tag.toLowerCase();
+      return tag;
     case "Nyhet":
-      return "nyheter";
+      return "Nyheter";
     default:
-      return "artiklar";
+      return "Artiklar";
   }
 };
 
 export const PublicationFull: React.FC<PublicationResponse> = ({
   tags,
+  heading,
+  name,
   blocks,
   related,
   publishedAt,
 }) => {
-  let relatedHeading =
-    "Fler " + getRelatedHeading(findPublicationTypeTag(tags)?.value || "");
+  const tag = findPublicationTypeTag(tags);
+  let relatedHeading = getRelatedHeading(tag?.value || "");
   const { t, lang } = useTranslation();
+  const { trackPageView } = useMatomo();
+  const pathname = usePathname();
+  const { setBreadcrumb } = useContext(SettingsContext);
+
+  useEffect(() => {
+    //Highlights code using prismjs
+    highlightCode();
+
+    const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
+
+    if (tag) {
+      crumbs.push({
+        name: relatedHeading,
+        link: {
+          ...linkBase,
+          link: `/${slugify(relatedHeading)}`,
+        },
+      });
+    }
+
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: heading!,
+        crumbs: crumbs,
+      });
+
+    // Matomo tracking
+    trackPageView({ documentTitle: name });
+  }, [pathname]);
 
   return (
     <article>
@@ -58,7 +93,10 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
           </aside>
         </div>
         {related && related.length > 0 && (
-          <PublicationList publications={related} heading={relatedHeading} />
+          <PublicationList
+            publications={related}
+            heading={"Fler " + relatedHeading.toLowerCase()}
+          />
         )}
       </Container>
     </article>

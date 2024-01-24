@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
@@ -6,6 +6,8 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import useTranslation from "next-translate/useTranslation";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import { SettingsContext } from "@/providers/SettingsProvider";
+import { linkBase } from "@/utilities";
 
 const DynamicStatisticGraphNumbers = dynamic(
   () =>
@@ -38,8 +40,15 @@ export const StatisticPage: FC = () => {
   const { t } = useTranslation("pages");
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
+  const { setBreadcrumb } = useContext(SettingsContext);
 
   useEffect(() => {
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: t("statistic$statistic-page-header"),
+        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+      });
+
     trackPageView({ documentTitle: "Statistik" });
   }, [pathname]);
 

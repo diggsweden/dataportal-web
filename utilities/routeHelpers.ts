@@ -1,4 +1,3 @@
-import { BreadcrumbProps } from "@/components/navigation/BreadCrumb";
 import useTranslation from "next-translate/useTranslation";
 
 /**
@@ -65,12 +64,7 @@ export const linkBase: DiggLink = {
  * @param {string} inactiveCrumbName the title of the current resource ex the h1
  * @returns {BreadcrumbProps} BreadcrumbProps to use for settings breadcrumb
  */
-export const makeBreadcrumbsFromPath = (
-  path: string,
-  inactiveCrumbName: string,
-  categoryName?: string,
-  categoryPath?: string,
-): BreadcrumbProps => {
+export const makeBreadcrumbsFromPath = (path: string) => {
   const paths = path.split("/");
   paths.shift();
   const crumbs: Breadcrumb[] = [
@@ -78,22 +72,6 @@ export const makeBreadcrumbsFromPath = (
   ];
 
   let basePath: string[] = [];
-
-  if (categoryName && categoryPath) {
-    paths.map((path, index) => {
-      if (index !== paths.length - 1) {
-        crumbs.push({
-          name: index === 0 ? categoryName : path.replaceAll("-", " "),
-          link: {
-            ...linkBase,
-            link: `${index === 0 ? `/` : `${basePath.join("")}/`}${path}`,
-          },
-        });
-        basePath.push(`/${path}`);
-      }
-    });
-    return { name: inactiveCrumbName, crumbs };
-  }
 
   paths.map((path, index) => {
     if (index !== paths.length - 1) {
@@ -107,5 +85,6 @@ export const makeBreadcrumbsFromPath = (
       basePath.push(`/${path}`);
     }
   });
-  return { name: inactiveCrumbName, crumbs };
+
+  return crumbs;
 };

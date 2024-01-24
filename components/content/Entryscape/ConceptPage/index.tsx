@@ -2,11 +2,10 @@ import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
-import { initBreadcrumb } from "@/pages/_app";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { hemvist } from "@/utilities";
+import { hemvist, linkBase } from "@/utilities";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 
@@ -23,7 +22,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
 
   /**
    * Async load scripts requiered for EntryScape blocks,
-   * or else blocks wont have access to DOM
+   * or else blocks won't have access to DOM
    */
   useEffect(() => {
     //we need to reload the page when using the back/forward buttons to a blocks rendered page
@@ -39,12 +38,21 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
         };
     }
     addScripts();
-    return () => {
-      setBreadcrumb && setBreadcrumb(initBreadcrumb);
-    };
   }, []);
 
   useEffect(() => {
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: entry.title,
+        crumbs: [
+          { name: "start", link: { ...linkBase, link: "/" } },
+          {
+            name: t("routes|concepts$title"),
+            link: { ...linkBase, link: `/${t("routes|concepts$path")}?q=&f=` },
+          },
+        ],
+      });
+
     trackPageView({ documentTitle: entry.title });
   }, [pathname, entry.title]);
 
