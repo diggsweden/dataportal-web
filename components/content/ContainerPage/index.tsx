@@ -101,6 +101,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   domains,
   preamble,
   blocks,
+  slug,
   name,
   related,
   domain,
@@ -114,9 +115,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   const { appRenderKey } = useContext(SettingsContext);
 
   const hasRelatedContent = related && related.length > 2;
-  const categoryLadingPage =
-    name.toLowerCase().replaceAll(" ", "") ===
-    category?.name.toLowerCase().replaceAll(" ", "");
+  const categoryLadingPage = slug.split("/").join("") === category?.slug;
 
   useEffect(() => {
     const newMenuItems = getLinks();
@@ -152,7 +151,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 
     setBreadcrumb &&
       setBreadcrumb({
-        name: heading!,
+        name: name,
         crumbs: crumbs,
       });
 
