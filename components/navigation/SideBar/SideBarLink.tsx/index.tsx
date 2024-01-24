@@ -36,6 +36,7 @@ type MenuLinkProps = VariantProps<typeof sideBarLinkVariants> & {
   label: string;
   className?: string;
   tabIndex?: number;
+  setOpenSideBar: Function;
 };
 
 const MenuLink: FC<MenuLinkProps> = ({
@@ -45,10 +46,12 @@ const MenuLink: FC<MenuLinkProps> = ({
   Icon,
   variant,
   tabIndex,
+  setOpenSideBar,
 }) => {
   const { t } = useTranslation();
   const pathname = usePathname();
   const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
+  const vw = window.innerWidth;
 
   const isActive =
     (pathname === "/" && href === t(`common|lang-path`)) || href === basePath;
@@ -63,6 +66,7 @@ const MenuLink: FC<MenuLinkProps> = ({
       )}
       href={href}
       tabIndex={tabIndex}
+      onClick={() => vw < 600 && setOpenSideBar(false)}
     >
       <>
         {isActive && <NavPixelsImage className="absolute right-none" />}
@@ -101,11 +105,21 @@ type SideBarLinkProps = VariantProps<typeof sideBarLinkVariants> & {
   label: string;
   list?: any[];
   openSideBar?: boolean;
+  setOpenSideBar: Function;
 };
 
 const SideBarLink: FC<
   PropsWithChildren<SideBarLinkProps & HTMLAttributes<HTMLElement>>
-> = ({ level, href, className, icon, label, list, openSideBar }) => {
+> = ({
+  level,
+  href,
+  className,
+  icon,
+  label,
+  list,
+  openSideBar,
+  setOpenSideBar,
+}) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const Icon = icon;
@@ -133,6 +147,7 @@ const SideBarLink: FC<
         Icon={Icon}
         className={className}
         tabIndex={openSideBar ? 0 : -1}
+        setOpenSideBar={setOpenSideBar}
       />
     );
   }
@@ -169,6 +184,7 @@ const SideBarLink: FC<
                   label={t(`routes|${menu.title}$title`)}
                   className={`pl-[48px] ${className}`}
                   tabIndex={openSideBar ? 0 : -1}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </li>
             ))}

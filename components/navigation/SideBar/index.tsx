@@ -15,9 +15,10 @@ interface NavSideData {
 
 interface NavSideProps {
   openSideBar: boolean;
+  setOpenSideBar: Function;
 }
 
-export const SideBar: FC<NavSideProps> = ({ openSideBar }) => {
+export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
   const [menu, setMenu] = useState<any>([]);
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
@@ -43,7 +44,7 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar }) => {
 
   return (
     <nav
-      className={`absolute right-none top-[128px] z-50 -mb-[128px] h-[calc(100%-128px)] w-[300px] bg-white transition-all duration-300 ease-in-out ${
+      className={`absolute right-none top-[128px] z-50 -mb-[128px] h-[calc(100%-128px)] w-full bg-white transition-all duration-300 ease-in-out md:w-[300px] ${
         openSideBar ? "" : "translate-x-full"
       }`}
     >
@@ -58,6 +59,7 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar }) => {
                 label={t(`common|${menu.title}`)}
                 variant={"external"}
                 openSideBar={openSideBar}
+                setOpenSideBar={setOpenSideBar}
               />
             ) : menu.children ? (
               <SideBarLink
@@ -66,6 +68,7 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar }) => {
                 list={menu.children}
                 label={t(`routes|${menu.title}$title`)}
                 openSideBar={openSideBar}
+                setOpenSideBar={setOpenSideBar}
               />
             ) : (
               <SideBarLink
@@ -74,6 +77,7 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar }) => {
                 icon={menu.icon}
                 label={t(`routes|${menu.title}$title`)}
                 openSideBar={openSideBar}
+                setOpenSideBar={setOpenSideBar}
               />
             )}
           </li>

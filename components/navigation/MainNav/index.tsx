@@ -119,7 +119,9 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           iconPosition="left"
           onClick={() => setOpenSideBar(!openSideBar)}
           label={t("common|menu")}
-          className="button--large focus--white focus--in"
+          className={`button--large focus--white focus--in ${
+            openSideBar ? "active" : ""
+          }`}
         />
       </div>
     </div>
