@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useState } from "react";
 import Link from "next/link.js";
 import { Button, ButtonLink } from "@/components/global/Button";
 import { mainNav } from "@/utilities/menuData";
