@@ -137,15 +137,16 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
     highlightCode();
 
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
+    if (domain) {
+      crumbs.push({
+        name: domains[0].name,
+        link: { ...linkBase, link: `/${domains[0].slug}` },
+      });
+    }
     if (category && !categoryLadingPage) {
       crumbs.push({
         name: category.name,
         link: { ...linkBase, link: category.slug },
-      });
-    } else if (domain) {
-      crumbs.push({
-        name: domains[0].name,
-        link: { ...linkBase, link: `/${domains[0].slug}` },
       });
     }
 
