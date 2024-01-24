@@ -43,7 +43,7 @@ export const Breadcrumb: FC<BreadcrumbProps> = ({ crumbs, name }) => {
           })}
           <li
             key={"inactive-breadcrumb"}
-            className="breadcrumb__list--item text-xs"
+            className="breadcrumb__list--item text-xs font-strong"
           >
             {checkLang(name)}
           </li>
