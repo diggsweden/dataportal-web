@@ -56,7 +56,7 @@ const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
 export const BlockList: React.FC<blockListProps> = ({ blocks, className }) => {
   return (
     <div
-      className={`mb:lg space-y-xl md:mb-xl md:space-y-xl ${
+      className={`mb-lg space-y-xl md:mb-xl md:space-y-xl ${
         className ? className : ""
       }`}
     >
