@@ -12,6 +12,7 @@ import {
   architechtureIndicator,
   exploreApiLink,
   licenseIndicator,
+  linkBase,
   periodicityIndicator,
 } from "@/utilities";
 import { Container } from "@/components/layout/Container";
@@ -23,7 +24,7 @@ export const DataServicePage: React.FC<{
 }> = ({ dataSet, name }) => {
   const { lang, t } = useTranslation();
   const { findDetection } = useContext(ApiIndexContext);
-  const { env } = useContext(SettingsContext);
+  const { env, setBreadcrumb } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { asPath } = useRouter() || {};
   const { trackPageView } = useMatomo();
@@ -49,6 +50,18 @@ export const DataServicePage: React.FC<{
           window.location.reload();
         };
     }
+
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: entry.title || "",
+        crumbs: [
+          { name: "start", link: { ...linkBase, link: "/" } },
+          {
+            name: t("routes|datasets$title"),
+            link: { ...linkBase, link: `/${t("routes|datasets$path")}?q=&f=` },
+          },
+        ],
+      });
   }, [entry.title]);
 
   useEffect(() => {

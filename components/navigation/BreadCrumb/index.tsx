@@ -27,7 +27,7 @@ export const Breadcrumb: FC<BreadcrumbProps> = ({ crumbs, name }) => {
                 <Link
                   href={`${crumb.link.link}`}
                   locale={lang}
-                  className="capitalize no-underline"
+                  className="no-underline"
                 >
                   {crumb.name === "start" ? (
                     <HomeIcon className="[&_path]:hover:fill-brown-900" />

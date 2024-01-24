@@ -1,6 +1,6 @@
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { handleDomain } from "@/utilities/domain";
@@ -16,10 +16,11 @@ import { Preamble } from "@/components/global/Typography/Preamble";
 import { ContentBox } from "@/components/content/ContentBox";
 import { dataCategories } from "@/utilities/dataCategories";
 import { ButtonLink } from "@/components/global/Button";
-import { isExternalLink } from "@/utilities";
+import { isExternalLink, linkBase } from "@/utilities";
 import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import useTranslation from "next-translate/useTranslation";
+import { SettingsContext } from "@/providers/SettingsProvider";
 
 export interface DomainProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
@@ -63,12 +64,19 @@ const contentBoxLinks = [
 export const DomainPage: React.FC<DomainProps> = (props) => {
   const { domain, areas, news, example, image, heading } = props || {};
   const { content, puffs, preamble, heroImage } = handleDomain(props);
+  const { setBreadcrumb } = useContext(SettingsContext);
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
 
   useEffect(() => {
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: props.heading!,
+        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+      });
+
     trackPageView({ documentTitle: "OpenSource" });
   }, [pathname]);
 

@@ -5,12 +5,12 @@ import { SettingsContext } from "@/providers/SettingsProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { hemvist } from "@/utilities";
+import { hemvist, linkBase } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 
 export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
-  const { env } = useContext(SettingsContext);
+  const { env, setBreadcrumb } = useContext(SettingsContext);
   const { title } = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
   const { pathname } = useRouter() || {};
@@ -39,6 +39,23 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
   useEffect(() => {
     trackPageView({ documentTitle: title });
   }, [pathname]);
+
+  useEffect(() => {
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: title,
+        crumbs: [
+          { name: "start", link: { ...linkBase, link: "/" } },
+          {
+            name: t("routes|specifications$title"),
+            link: {
+              ...linkBase,
+              link: `/${t("routes|specifications$path")}?q=&f=`,
+            },
+          },
+        ],
+      });
+  }, [pathname, title]);
 
   const addScripts = () => {
     if (typeof window !== "undefined") {

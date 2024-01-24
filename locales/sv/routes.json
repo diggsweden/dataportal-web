@@ -63,6 +63,10 @@
     "path": "apiexplore",
     "title": "Utforska API"
   },
+  "search": {
+    "path": "search",
+    "title": "Sök innehåll"
+  },
   "search-api": {
     "path": "data",
     "title": "Data & API:er"

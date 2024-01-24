@@ -11,6 +11,7 @@ import {
   architechtureIndicator,
   exploreApiLink,
   licenseIndicator,
+  linkBase,
   periodicityIndicator,
 } from "@/utilities";
 import { Container } from "@/components/layout/Container";
@@ -45,7 +46,7 @@ const filterContactAndLandingPage = [
 
 export const DataSetPage: React.FC = () => {
   const { pathname, query } = useRouter() || {};
-  const { env } = useContext(SettingsContext);
+  const { env, setBreadcrumb } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
   const { trackPageView } = useMatomo();
@@ -75,6 +76,20 @@ export const DataSetPage: React.FC = () => {
         };
     }
   }, []);
+
+  useEffect(() => {
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: entry.title,
+        crumbs: [
+          { name: "start", link: { ...linkBase, link: "/" } },
+          {
+            name: t("routes|datasets$title"),
+            link: { ...linkBase, link: `/${t("routes|datasets$path")}?q=&f=` },
+          },
+        ],
+      });
+  }, [pathname, entry]);
 
   useEffect(() => {
     if (postscribe) {

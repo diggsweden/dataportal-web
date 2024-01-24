@@ -63,6 +63,10 @@
     "path": "apiexplore",
     "title": "Explore API"
   },
+  "search": {
+    "path": "search",
+    "title": "Search for content"
+  },
   "search-api": {
     "path": "data",
     "title": "Data & API:er"
