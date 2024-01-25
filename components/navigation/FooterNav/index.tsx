@@ -23,10 +23,13 @@ interface FooterNavProps {
 export const FooterNav: FC<FooterNavProps> = ({ setOpenSideBar }) => {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col gap-xl lg:grid lg:grid-cols-2">
+    <nav
+      aria-label="Footer"
+      className="flex flex-col gap-xl lg:grid lg:grid-cols-2"
+    >
       {footerNav.map((footer: FooterNavData, idx: number) => (
         <div key={idx} className="flex flex-col gap-sm">
-          <Heading size={"sm"} level={3}>
+          <Heading size={"sm"} level={2}>
             {t(`common|${footer.title}`)}
           </Heading>
           <ul className="space-y-sm">
@@ -66,6 +69,6 @@ export const FooterNav: FC<FooterNavProps> = ({ setOpenSideBar }) => {
           </ul>
         </div>
       ))}
-    </div>
+    </nav>
   );
 };

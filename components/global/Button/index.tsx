@@ -79,6 +79,7 @@ const Button: FC<
   return (
     <button
       className={cx(buttonVariants({ variant, size }), className)}
+      aria-label={label}
       {...rest}
     >
       <IconLabel
@@ -116,6 +117,7 @@ const ButtonLink: FC<
   return (
     <Link
       href={href}
+      aria-label={label ? label : href}
       className={cx(buttonVariants({ variant, size }), className)}
       locale={locale}
       {...rest}

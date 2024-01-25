@@ -188,15 +188,16 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
               </div>
             )}
 
-            <main
+            <div
               id="content"
+              aria-label="Main content"
               className={`flex w-full max-w-md flex-col space-y-lg md:space-y-xl lg:min-w-[620px]`}
             >
               {!image && preamble && (
                 <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
               )}
               {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
-            </main>
+            </div>
           </div>
         </div>
       </article>

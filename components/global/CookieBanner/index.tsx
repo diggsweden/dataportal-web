@@ -56,7 +56,10 @@ export const CookieBanner: FC = () => {
 
   return store.cookieSettings &&
     Object.keys(store.cookieSettings).length === 0 ? (
-    <div className="fixed bottom-none z-50 w-full bg-brown-100 py-xl">
+    <section
+      className="fixed bottom-none z-50 w-full bg-brown-100 py-xl"
+      aria-label="Cookie Banner"
+    >
       <Container>
         <div className="mb-lg">{t(cookieInformation)}</div>
 
@@ -108,7 +111,7 @@ export const CookieBanner: FC = () => {
           </div>
         </form>
       </Container>
-    </div>
+    </section>
   ) : (
     <></>
   );
