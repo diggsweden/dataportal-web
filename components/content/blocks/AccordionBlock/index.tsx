@@ -21,6 +21,7 @@ export const AccordionBlock: FC<AccordionBlockProps> = ({
         id={`accordion${idx}`}
         className="group inline-flex w-full flex-row items-center justify-between gap-md py-lg text-start"
         onClick={() => setOpen(!open)}
+        aria-label={question}
         aria-expanded={open}
         aria-controls={`section${idx}`}
       >
