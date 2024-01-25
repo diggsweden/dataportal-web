@@ -19,12 +19,12 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
   inline,
 }) => {
   const linkIcons = [
-    { icon: BookIcon, label: "Kompetens och livslångt lärande" },
-    { icon: HeartIcon, label: "Bilddata" },
-    { icon: CarIcon, label: "Elektrifieringen av transportsektorn" },
-    { icon: PlanetIcon, label: "Rymddata" },
-    { icon: PieChartIcon, label: "Smart statistik" },
-    { icon: AIIcon, label: "OffentligAI" },
+    { icon: BookIcon, slug: "kompetens-och-livslangt-larande" },
+    { icon: HeartIcon, slug: "bilddata" },
+    { icon: CarIcon, slug: "elektrifieringen-av-transportsektorn" },
+    { icon: PlanetIcon, slug: "rymddata" },
+    { icon: PieChartIcon, slug: "smart-statistik" },
+    { icon: AIIcon, slug: "offentligai" },
   ];
 
   return (
@@ -34,13 +34,15 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
       } ${inline && !icons ? "max-w-md" : "lg:grid-cols-3"}`}
     >
       {links.map((link: PromoProps, idx: number) => {
-        const iconIndex = linkIcons.findIndex(
-          (icon) => icon.label === link.title,
-        );
         return (
           <li key={idx}>
             <Promo
-              icon={icons && linkIcons[iconIndex].icon}
+              icon={
+                icons &&
+                linkIcons[
+                  linkIcons.findIndex((icon) => icon.slug === link.slug)
+                ]?.icon
+              }
               link={link}
               inline={inline}
             />
