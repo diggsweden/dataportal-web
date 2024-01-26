@@ -32,10 +32,14 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
 
   return (
     <div className="flex h-[32px] flex-row items-center justify-between">
-      <Link href={"https://digg.se/"} className="focus--white">
+      <Link
+        aria-label="Digg logo"
+        href={"https://digg.se/"}
+        className="focus--white"
+      >
         <DiggSmallLogo />
       </Link>
-      <nav>
+      <nav aria-label="Service">
         <ul className="flex flex-row">
           {topNav.map((menu: TopNavData, idx: number) => (
             <li key={idx} className="group text-sm">

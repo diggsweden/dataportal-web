@@ -53,6 +53,7 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
        overflow-y-scroll bg-white transition-all duration-300 ease-in-out md:w-[300px] ${
          openSideBar ? "" : "translate-x-full"
        }`}
+      aria-label="Sidebar"
     >
       <ul className="w-full list-none">
         {menu.map((menu: NavSideData, idx: number) => (

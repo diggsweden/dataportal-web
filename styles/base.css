@@ -159,7 +159,7 @@ table caption {
 }
 
 table thead {
-  @apply bg-brown-500 text-left text-white;
+  @apply bg-brown-600 text-left text-white;
 }
 
 table thead th {

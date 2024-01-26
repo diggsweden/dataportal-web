@@ -34,12 +34,9 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
     >
       {links.map((link: PromoProps, idx: number) => {
         return (
-          <Promo
-            key={idx}
-            icon={icons && linkIcons[idx]}
-            link={link}
-            inline={inline}
-          />
+          <li key={idx}>
+            <Promo icon={icons && linkIcons[idx]} link={link} inline={inline} />
+          </li>
         );
       })}
     </ul>

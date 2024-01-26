@@ -15,40 +15,43 @@ export const Breadcrumb: FC<BreadcrumbProps> = ({ crumbs, name }) => {
   const { lang } = useTranslation();
 
   return (
-    <Container className="mb-lg py-md md:mb-xl">
-      {crumbs.length > 0 && (
-        <ul className="flex flex-wrap items-center gap-md">
-          {crumbs.map((crumb, index) => {
-            return (
-              <li
-                key={index}
-                className="flex items-center gap-md text-sm text-textSecondary hover:text-textPrimary"
-              >
-                <Link
-                  href={`${crumb.link.link}`}
-                  locale={lang}
-                  className="no-underline"
+    <Container>
+      <nav className="mb-lg py-md md:mb-xl" aria-label="breadcrumb">
+        {crumbs.length > 0 && (
+          <ul className="flex flex-wrap items-center gap-md">
+            {crumbs.map((crumb, index) => {
+              return (
+                <li
+                  key={index}
+                  className="flex items-center gap-md text-sm text-textSecondary hover:text-textPrimary"
                 >
-                  {crumb.name === "start" ? (
-                    <HomeIcon className="[&_path]:hover:fill-brown-900" />
-                  ) : (
-                    checkLang(crumb.name)
+                  <Link
+                    aria-label={crumb.name}
+                    href={`${crumb.link.link}`}
+                    locale={lang}
+                    className="no-underline"
+                  >
+                    {crumb.name === "start" ? (
+                      <HomeIcon className="[&_path]:hover:fill-brown-900" />
+                    ) : (
+                      checkLang(crumb.name)
+                    )}
+                  </Link>
+                  {index !== crumbs.length && (
+                    <BreadcrumbDividerIcon className="" />
                   )}
-                </Link>
-                {index !== crumbs.length && (
-                  <BreadcrumbDividerIcon className="" />
-                )}
-              </li>
-            );
-          })}
-          <li
-            key={"inactive-breadcrumb"}
-            className="breadcrumb__list--item text-xs font-strong antialiased"
-          >
-            {checkLang(name)}
-          </li>
-        </ul>
-      )}
+                </li>
+              );
+            })}
+            <li
+              key={"inactive-breadcrumb"}
+              className="breadcrumb__list--item text-xs font-strong antialiased"
+            >
+              {checkLang(name)}
+            </li>
+          </ul>
+        )}
+      </nav>
     </Container>
   );
 };

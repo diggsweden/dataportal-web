@@ -72,7 +72,7 @@ export const StatisticPage: FC = () => {
         />
       </Head>
       <Container>
-        <Heading level={1} size={"lg"}>
+        <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {t("statistic$statistic-page-header")}
         </Heading>
         <div className="max-w-md">

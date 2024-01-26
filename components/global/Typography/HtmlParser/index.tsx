@@ -13,7 +13,7 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
   const options: HTMLReactParserOptions = {
     replace: (node) => {
       if (node instanceof Element) {
-        const { name, attribs, children } = node;
+        const { name, attribs, children, prev } = node;
 
         if (
           name === "ul" ||
@@ -74,9 +74,11 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
           const className =
             name === "h1"
               ? "!mt-lg md:!mt-xl"
+              : name === "h2" && prev
+              ? "!mt-lg md:!mt-xl !mb-md md:!mb-lg"
               : name === "h2"
-              ? "!mt-lg md:!mt-xl"
-              : "!mt-md md:!mt-lg";
+              ? "!mb-md md:!mb-lg"
+              : "!mt-md md:!mt-lg !mb-md";
           return (
             // @ts-ignore
             <Heading level={level} size={size} className={className}>

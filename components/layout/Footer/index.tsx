@@ -19,8 +19,8 @@ export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
       >
         <Container className="space-y-xl md:space-y-2xl">
           <FooterNav setOpenSideBar={setOpenSideBar} />
-          <div className="flex flex-col justify-between gap-lg align-top md:flex-row md:gap-none">
-            <DiggLogo />
+          <div className="flex flex-col justify-between gap-xl align-top md:flex-row md:gap-none">
+            <DiggLogo aria-label="Digg logo" />
             <Image
               src={eulogo}
               width={200}
