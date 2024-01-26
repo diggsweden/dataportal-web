@@ -9,7 +9,10 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { css, Heading, space } from '@digg/design-system';
 
-export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
+export const SpecificationPage: React.FC<{ curi?: string; scheme?: string }> = ({
+  curi,
+  scheme,
+}) => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
   const { title } = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
@@ -76,10 +79,63 @@ export const SpecificationPage: React.FC<{ curi: string }> = ({ curi }) => {
           </script>
 
           <script>
+          
+          function getDataportalUri(resourceUri, isTerm){
+            var path = '';                      
+            if(resourceUri.indexOf('://') > -1)
+            {
+              var tmp = resourceUri.split("://");
+              path = tmp[0] + '/' + tmp[1];
+            }
+            else
+              path = resourceUri;              
+            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalspecification/") > -1)
+              return "/externalspecification/" + path;
+            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/specifications/") > -1)
+            {
+              var entryPath = resourceUri.replace("https://dataportal.se/specifications","");
+                return "/specifications" + entryPath;
+            }
+            return resourceUri;
+          }
+          function getLocalizedValue(metadataGraph, prop, lang) {
+              var val = '';
+              var fallbackLang = 'sv';
+          
+              var stmts = metadataGraph.find(null, prop);
+              if (stmts.length > 0) {      
+                var obj = {};
+                for (var s = 0; s < stmts.length; s++) {
+                  obj[stmts[s].getLanguage() || ''] = stmts[s].getValue();
+                }
+          
+                if(typeof obj[lang] != 'undefined')
+                {        
+                  val = obj[lang];
+                }
+                else if(obj[fallbackLang] && fallbackLang != lang)
+                {       
+                  val = obj[fallbackLang];
+                }
+                else
+                {        
+                  val = Object.entries(obj)[0][1];
+                }
+              }
+          
+              return val;
+          }
+
+          
           window.__entryscape_config = [{
             block: 'config',
             page_language: '${lang}',            
-            routes: [              
+            routes: [   
+              {
+                regex:new RegExp('(\/*\/externalspecification\/)(.+)'),
+                uri:'${scheme}://${curi}',
+                page_language: '${lang}'
+              },             
               {
                 regex:new RegExp('(\/*\/specifications\/)(.+)'),
                 uri:'https://dataportal.se/specifications/${curi}',
