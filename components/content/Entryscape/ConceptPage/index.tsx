@@ -331,7 +331,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     node.firstElementChild.appendChild(el);
                          
                     var ruri = entry.getResourceURI();
-                    var label = getLocalizedValue(entry.getMetadata(),'skos:prefLabel','${lang}'); 
+                    var label = getLocalizedValue(entry.getAllMetadata(),'skos:prefLabel','${lang}'); 
                     el.innerHTML = label
                     var dpUri = getDataportalUri(ruri);
                     el.setAttribute('href', dpUri)
@@ -351,11 +351,11 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                     
                     node.firstElementChild.appendChild(el);
 
-                    var ruri = getLocalizedValue(entry.getMetadata(),'skos:inScheme','${lang}');                                             
+                    var ruri = getLocalizedValue(entry.getAllMetadata(),'skos:inScheme','${lang}');                                             
 
                     if(ruri)
                       util.getEntryByResourceURI(ruri).then((e) => {                              
-                        var label = getLocalizedValue(e.getMetadata(),'dcterms:title','${lang}'); 
+                        var label = getLocalizedValue(e.getAllMetadata(),'dcterms:title','${lang}'); 
                         el.innerHTML = label
                         var dpUri = getDataportalUri(ruri,true);
                         el.setAttribute('href', dpUri)

@@ -45,7 +45,7 @@ export const licenseIndicator = `
     block: 'licenseIndicator',
     loadEntry: true,
     run: function(node, data, items, entry) {
-      var v = entry.getMetadata().findFirstValue(null, 'dcterms:license');
+      var v = entry.getAllMetadata().findFirstValue(null, 'dcterms:license');
       if (v.indexOf("http://creativecommons.org/") === 0) {
 
         var variant;
