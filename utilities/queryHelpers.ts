@@ -141,7 +141,6 @@ const getRelatedContainers = async (
           limit: 50,
         },
       },
-      fetchPolicy: "no-cache",
     });
 
     if (result.error || result.errors) return null;
@@ -296,7 +295,6 @@ export const getMultiContainer = async (
     >({
       query: CONTAINER_MULTI_QUERY,
       variables: containerArgsFromSlugs(slugs, locale, domain, state, secret),
-      fetchPolicy: "no-cache",
     });
 
     if (error || errors) {
@@ -371,7 +369,6 @@ export const getPublicationsList = async (
           limit: 1000,
         },
       },
-      fetchPolicy: "no-cache",
     });
 
     const publications = data?.dataportal_Digg_Publications;
@@ -452,7 +449,6 @@ export const getPublication = async (
           ...(state ? { state } : {}),
         },
       },
-      fetchPolicy: "no-cache",
     });
 
     const publication =
@@ -479,7 +475,6 @@ export const getPublication = async (
     >({
       query: PUBLICATION_QUERY,
       variables: { filter: { limit: 3, locale, domains, tags: relatedTags } },
-      fetchPolicy: "no-cache",
     });
 
     // console.log(relatedPublicationResult.data.dataportal_Digg_Publications);
@@ -534,7 +529,6 @@ export const getDomainAggregate = async (
           slug: "/" + (domainSlug || ""),
         },
       },
-      fetchPolicy: "no-cache",
     });
 
     if (result && result.error) {
@@ -638,7 +632,6 @@ export const getRootAggregate = async (
         state: state || Dataportal_ContainerState.Live,
         ...(secret ? { previewSecret: secret } : {}),
       },
-      fetchPolicy: "no-cache",
     });
 
     if (error) {
@@ -729,7 +722,6 @@ export const querySearch = async (
           locale,
         },
       },
-      fetchPolicy: "no-cache",
     });
 
     const result =
@@ -753,7 +745,6 @@ export const getForm = async (identifier: string, locale?: string) => {
     const { data } = await client.query<FormQuery, FormQueryVariables>({
       query: FORM_QUERY,
       variables: { identifier, locale },
-      fetchPolicy: "no-cache",
     });
 
     const form = data.dataportal_Digg_Form;
@@ -793,7 +784,6 @@ export const getModule = async (
     const { data } = await client.query<ModuleQuery, ModuleQueryVariables>({
       query: MODULE_QUERY,
       variables: { identifier, locale },
-      fetchPolicy: "no-cache",
     });
 
     const mod = data.dataportal_Digg_Module;
