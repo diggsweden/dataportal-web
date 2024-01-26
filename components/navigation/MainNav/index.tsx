@@ -49,6 +49,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
     <div className="flex flex-row items-center justify-between">
       <Link
         href={`${t(`common|${"lang-path"}`)}`}
+        aria-label="Dataportal logo"
         onClick={() => setOpenSideBar(false)}
         className="focus--white"
       >
@@ -62,7 +63,10 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         />
       </Link>
       <div className="flex w-full flex-row items-center justify-end space-x-md">
-        <nav className="hidden flex-row items-center gap-sm xl:flex">
+        <nav
+          className="hidden flex-row items-center gap-sm xl:flex"
+          aria-label="Main"
+        >
           {menues.map((menu: MainNavData, idx: number) => (
             <ButtonLink
               key={idx}
@@ -83,6 +87,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         >
           {!openSearch ? (
             <Button
+              aria-label="Search"
               onClick={() => setOpenSearch(!openSearch)}
               icon={SearchIcon}
               iconPosition="left"

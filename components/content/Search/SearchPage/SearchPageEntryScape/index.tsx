@@ -107,9 +107,13 @@ export const SearchPageEntryScape: React.FC<SearchProps> = ({ searchType }) => {
       path = tmp[0] + "/" + tmp[1];
     } else path = resourceUri;
 
-    if (resourceUri && !resourceUri.includes("dataportal.se"))
-      return `/externalconcepts/${path}`;
-    else {
+    if (
+      resourceUri &&
+      (!resourceUri.includes("dataportal.se") ||
+        resourceUri.includes("sandbox.dataportal.se"))
+    ) {
+      return `/externalconcept/${path}`;
+    } else {
       //NDP-343
       if (path.startsWith("https/dataportal.se/concepts"))
         path = path.replace("https/dataportal.se/concepts", "");

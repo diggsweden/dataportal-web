@@ -117,7 +117,7 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
               {
                 ...populate,
                 title: t("ai$model"),
-                slug: "/fortroendemodellen",
+                slug: "/offentligai/fortroendemodellen",
                 description: t("ai$model_description"),
               },
             ],
@@ -129,7 +129,7 @@ export const handleDomain = (props: DomainProps): ParsedProps => {
               {
                 ...populate,
                 title: t("ai$model"),
-                slug: "/fortroendemodellen",
+                slug: "/offentligai/fortroendemodellen",
                 description: t("ai$model_description"),
               },
             ],

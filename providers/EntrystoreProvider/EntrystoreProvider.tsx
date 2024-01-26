@@ -5,7 +5,7 @@ import { EnvSettings } from "@/env";
 import { SettingsUtil } from "@/env";
 
 //unfortunate hack to get a entrystore class instance, script is inserted in head
-declare var EntryStore: any;
+declare var ESJS: any;
 
 export interface EntrystoreProviderProps {
   env: EnvSettings;
@@ -70,7 +70,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         "#scriptsPlaceholder",
         ` 
         <script 
-         src="/entrystore_2021-03-18.js"
+         src="https://entrystore.org/js/4.15.0-dev/entrystore.js"
          crossorigin="anonymous"></script>        
         `,
         {
@@ -120,7 +120,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         if (stType && stType == "uri" && !stValue.includes("mailto:")) {
           let res = await resourcesSearch([stValue], es);
           if (res && res.length > 0) {
-            let meta = res[0].getMetadata();
+            let meta = res[0].getAllMetadata();
 
             if (meta)
               obj[stmts[s].getLanguage() || ""] = getLocalizedValue(
@@ -178,10 +178,10 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
     addScripts(async () => {
       //if we have an ES url, try to get a active instance of EntryScape
       if (defaultESEntry.env) {
-        defaultESEntry.entrystore = new EntryStore.EntryStore(
+        defaultESEntry.entrystore = new ESJS.EntryStore(
           `https://${entrystoreUrl}/store`,
         );
-        var util = new EntryStore.EntryStoreUtil(defaultESEntry.entrystore);
+        var util = new ESJS.EntryStoreUtil(defaultESEntry.entrystore);
         const es = defaultESEntry.entrystore;
 
         //we have entryUri
@@ -191,7 +191,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
             .then(async (entry: any) => {
               defaultESEntry.entry = entry;
 
-              const graph = entry.getMetadata();
+              const graph = entry.getAllMetadata();
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
 
@@ -265,7 +265,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               defaultESEntry.entry = entry;
               if (!entry) return;
 
-              const graph = entry.getMetadata();
+              const graph = entry.getAllMetadata();
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
 

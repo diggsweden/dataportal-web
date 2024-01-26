@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { Heading } from "@/components/global/Typography/Heading";
 import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
+import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { isExternalLink } from "@/utilities";
 
 export interface PromoProps {
@@ -20,21 +20,13 @@ export const Promo: FC<{
   inline?: boolean;
 }> = ({ link, icon, inline }) => {
   const { t } = useTranslation("common");
-  const pathname = usePathname();
 
   const Icon = icon;
 
   return (
     <Link
-      href={
-        isExternalLink(link.slug)
-          ? link.slug
-          : pathname === "/" ||
-            pathname === "/data" ||
-            pathname === "/datasamverkan"
-          ? `${link.slug}`
-          : `${pathname}${link.slug}`
-      }
+      href={link.slug}
+      aria-label={link.title}
       className="group flex h-full flex-col bg-white text-brown-900 no-underline"
     >
       {icon && (
@@ -44,7 +36,7 @@ export const Promo: FC<{
       )}
       <div className="flex h-full flex-col p-lg">
         <Heading
-          level={3}
+          level={!inline ? 2 : 3}
           size="sm"
           className={link.description && !inline ? "" : "pb-lg"}
         >
@@ -55,7 +47,11 @@ export const Promo: FC<{
         )}
         <span className="button button--small button--primary mt-auto">
           {t("read-more")}
-          <ArrowRightIcon height={16} width={16} viewBox="0 0 24 24" />
+          {isExternalLink(link.slug) ? (
+            <ExternalLinkIcon height={16} width={16} viewBox="0 0 24 24" />
+          ) : (
+            <ArrowRightIcon height={16} width={16} viewBox="0 0 24 24" />
+          )}
         </span>
       </div>
     </Link>

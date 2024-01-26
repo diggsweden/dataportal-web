@@ -69,7 +69,9 @@ export const StatisticGraphNumbers: React.FC = () => {
   } else {
     return (
       <div>
-        <Heading level={2}>{t("statistic$dataset-numbers")}</Heading>
+        <Heading level={2} className="mb-lg md:mb-xl">
+          {t("statistic$dataset-numbers")}
+        </Heading>
         <div className="bg-white p-xl">
           <ol className="list-decimal space-y-lg pl-lg">
             {stats.yList &&

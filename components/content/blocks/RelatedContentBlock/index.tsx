@@ -4,6 +4,7 @@ import CarIcon from "@/assets/linkIcons/car.svg";
 import HeartIcon from "@/assets/linkIcons/heart.svg";
 import PieChartIcon from "@/assets/linkIcons/pieChart.svg";
 import PlanetIcon from "@/assets/linkIcons/planet.svg";
+import AIIcon from "@/assets/linkIcons/ai.svg";
 import { PromoProps, Promo } from "@/components/content/Promo";
 
 interface RelatedContentProps {
@@ -18,12 +19,12 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
   inline,
 }) => {
   const linkIcons = [
-    BookIcon,
-    HeartIcon,
-    CarIcon,
-    PlanetIcon,
-    PieChartIcon,
-    PieChartIcon,
+    { icon: BookIcon, slug: "kompetens-och-livslangt-larande" },
+    { icon: HeartIcon, slug: "bilddata" },
+    { icon: CarIcon, slug: "elektrifieringen-av-transportsektorn" },
+    { icon: PlanetIcon, slug: "rymddata" },
+    { icon: PieChartIcon, slug: "smart-statistik" },
+    { icon: AIIcon, slug: "offentligai" },
   ];
 
   return (
@@ -34,12 +35,18 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
     >
       {links.map((link: PromoProps, idx: number) => {
         return (
-          <Promo
-            key={idx}
-            icon={icons && linkIcons[idx]}
-            link={link}
-            inline={inline}
-          />
+          <li key={idx}>
+            <Promo
+              icon={
+                icons &&
+                linkIcons[
+                  linkIcons.findIndex((icon) => icon.slug === link.slug)
+                ]?.icon
+              }
+              link={link}
+              inline={inline}
+            />
+          </li>
         );
       })}
     </ul>

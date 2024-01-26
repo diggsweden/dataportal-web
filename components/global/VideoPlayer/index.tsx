@@ -53,6 +53,7 @@ export const VideoPlayer: FC<VideoProps> = ({ media, url }) => {
             height={"100%"}
           />
           <button
+            aria-label="Play video"
             className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full group-hover:opacity-70 ${
               isPlaying ? "hidden group-hover:bg-none" : "block"
             }}`}

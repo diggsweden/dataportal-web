@@ -37,15 +37,20 @@ export const Hero: FC<HeroProps> = ({
   const [query, setQuery] = useState("");
 
   return (
-    <div
+    <section
       id="Hero"
+      aria-label="Hero"
       className={`relative flex flex-col justify-center py-2xl ${
         className ? className : ""
       }`}
     >
       {image && (
         <div className="absolute left-none top-none h-full w-full">
-          <CustomImage image={image} className="h-full w-full object-cover" />
+          <CustomImage
+            image={image}
+            className="h-full w-full object-cover"
+            aria-label="Hero image"
+          />
         </div>
       )}
       <Container>
@@ -65,7 +70,7 @@ export const Hero: FC<HeroProps> = ({
               </Preamble>
             )}
             {search && (
-              <div id="SearchHero" className="mt-xl">
+              <div id="SearchHero" className="mt-xl" aria-label="Hero search">
                 <form
                   className="datapage-form"
                   method="GET"
@@ -110,6 +115,6 @@ export const Hero: FC<HeroProps> = ({
           </div>
         </div>
       </Container>
-    </div>
+    </section>
   );
 };

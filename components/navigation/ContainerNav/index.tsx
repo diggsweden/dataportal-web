@@ -32,7 +32,7 @@ export const ContainerNav: React.FC<ContainerDpDwnProps> = ({
   };
 
   return (
-    <nav className="relative">
+    <nav className="relative" aria-label="Container main">
       {expanded && (
         <div className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden" />
       )}
