@@ -111,6 +111,10 @@ const mainNav: NavData[] = [
     icon: delaDataIcon,
     children: [
       {
+        title: "why-share-data",
+        inEn: false,
+      },
+      {
         title: "shara-data-benefits",
         inEn: false,
       },
