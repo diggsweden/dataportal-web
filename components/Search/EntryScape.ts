@@ -301,7 +301,7 @@ export class EntryScape {
       let values: { [key: string]: string[] } = {};
 
       if (es) {
-        let metadata = es.getMetadata();
+        let metadata = es.getAllMetadata();
 
         values['organisation_literal'] = metadata
           .find(null, 'http://www.w3.org/ns/dcat#keyword')
@@ -611,7 +611,7 @@ export class EntryScape {
               titleResource: 'blaa',
             };
 
-            const metaData = child.getMetadata();
+            const metaData = child.getAllMetadata();
             const resourceURI = child.getResourceURI();
             const context = child.getContext();
             const rdfType = metaData.findFirstValue(
