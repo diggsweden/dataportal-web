@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { SearchForm } from "@/components/content/Search/SearchForm";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import SearchProvider, {
@@ -27,7 +27,7 @@ interface SearchProps {
   searchType: "datasets" | "concepts" | "specifications";
 }
 
-export const SearchPageEntryScape: React.FC<SearchProps> = ({ searchType }) => {
+export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
   const { pathname, query: routerQuery } = useRouter() || {};
   const { t, lang } = useTranslation();
@@ -87,14 +87,21 @@ export const SearchPageEntryScape: React.FC<SearchProps> = ({ searchType }) => {
 
     if (resourceUri.includes("://")) {
       let tmp = resourceUri.split("://");
-      path = tmp[1];
-
-      if (path.includes("dataportal.se/")) {
-        path = path.replace("dataportal.se/", "");
-      }
+      path = tmp[0] + "/" + tmp[1];
     } else path = resourceUri;
 
-    return `/${path}`;
+    if (
+      resourceUri &&
+      (!resourceUri.includes("dataportal.se") ||
+        resourceUri.includes("sandbox.dataportal.se"))
+    ) {
+      return `/externalspecification/${path}`;
+    } else {
+      if (path.startsWith("https/dataportal.se/specifications"))
+        path = path.replace("https/dataportal.se/specifications", "");
+
+      return `/specifications${path}`;
+    }
   };
 
   const termsPathResover = (hitMeta: any) => {

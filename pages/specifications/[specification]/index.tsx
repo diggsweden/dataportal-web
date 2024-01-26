@@ -5,11 +5,11 @@ import { useScript } from "@/hooks/useScript";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import EntrystoreProvider from "@/providers/EntrystoreProvider";
 
-export default function Concept() {
+export default function Specification() {
   const { env } = useContext(SettingsContext);
   const { query } = useRouter() || {};
-  const { paths } = query || {};
-  const curi = (paths as string[])?.join("/");
+  const { specification } = query || {};
+  const curi = specification;
   const entryUri = `https://dataportal.se/specifications/${curi}`;
   const postscribeStatus = useScript(
     "/postscribe.min.js",
@@ -17,14 +17,14 @@ export default function Concept() {
     "anonymous",
   );
 
-  return postscribeStatus === "ready" && curi.length > 0 ? (
+  return postscribeStatus === "ready" ? (
     <EntrystoreProvider
       env={env}
       entryUri={entryUri}
       entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
       fetchMore={false}
     >
-      <SpecificationPage curi={curi} />
+      <SpecificationPage {...(typeof curi === "string" ? { curi } : {})} />
     </EntrystoreProvider>
   ) : (
     <></>
