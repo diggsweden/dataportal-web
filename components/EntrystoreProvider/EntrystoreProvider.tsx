@@ -118,7 +118,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         if (stType && stType == 'uri' && !stValue.includes('mailto:')) {
           let res = await resourcesSearch([stValue], es);
           if (res && res.length > 0) {
-            let meta = res[0].getMetadata();
+            let meta = res[0].getAllMetadata();
 
             if (meta)
               obj[stmts[s].getLanguage() || ''] = getLocalizedValue(
@@ -255,7 +255,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               defaultESEntry.entry = entry;
               if (!entry) return;
 
-              const graph = entry.getMetadata();
+              const graph = entry.getAllMetadata();
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
 

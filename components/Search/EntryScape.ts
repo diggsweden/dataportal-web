@@ -210,7 +210,7 @@ export class EntryScape {
                 let entry = res.find((entry: any) => entry.getResourceURI() == f.resource);
 
                 if (entry) {
-                  const meta = entry.getMetadata();
+                  const meta = entry.getAllMetadata();
 
                   let title = getLocalizedValue(meta, 'http://xmlns.com/foaf/0.1/name', this.lang);
 
