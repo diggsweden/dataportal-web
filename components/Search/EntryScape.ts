@@ -5,7 +5,7 @@ import { SearchSortOrder } from '../pages/SearchPage';
 //const tokenize = require('edge-ngrams')()
 
 //unfortunate hack to get a entrystore class instance, script is inserted in head
-declare var EntryStore: any;
+declare var ESJS: any;
 
 //#region ES members
 
@@ -79,7 +79,7 @@ export class EntryScape {
     this.lang = lang || 'sv';
     this.t = t;
 
-    EntryStore.namespaces.add('esterms', 'http://entryscape.com/terms/');
+    ESJS.namespaces.add('esterms', 'http://entryscape.com/terms/');
   }
 
   /**
@@ -247,7 +247,7 @@ export class EntryScape {
   getResources(resources: string[]): Promise<any> {
     return new Promise<any>((resolve) => {
       let result: any[] = [];
-      const es = new EntryStore.EntryStore(this.entryscapeUrl);
+      const es = new ESJS.EntryStore(this.entryscapeUrl);
       const maxRequestUriLength: number = 1500; //for batching request, max URI length is actually 2083 (IE), but keep it safe
       let resTmp: string[] = [];
       let requestPromises: Promise<any>[] = [];
@@ -452,7 +452,7 @@ export class EntryScape {
       modifiedQuery = modifiedQuery.map((s) => s.trim()).filter((s) => s.length > 0 && s != 'AND');
       let lang = request.language || 'sv';
 
-      const es = new EntryStore.EntryStore(this.entryscapeUrl);
+      const es = new ESJS.EntryStore(this.entryscapeUrl);
 
       let esQuery = es.newSolrQuery();
       let searchList: any;
@@ -595,7 +595,7 @@ export class EntryScape {
             });
           }
 
-          let children = EntryStore.factory.extractSearchResults(data, searchList, es);
+          let children = ESJS.factory.extractSearchResults(data, searchList, es);
 
           //facets must be retrieved explicitly if requested
           if (request.fetchFacets) {
