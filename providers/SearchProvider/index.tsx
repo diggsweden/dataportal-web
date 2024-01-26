@@ -137,7 +137,7 @@ class SearchProvider extends React.Component<
         "#scriptsPlaceholder",
         ` 
         <script
-         src=https://entrystore.org/js/4.15.0-dev/entrystore.js
+         src="https://entrystore.org/js/4.15.0-dev/entrystore.js"
          crossorigin="anonymous"></script>
         `,
         {
