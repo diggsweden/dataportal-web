@@ -77,20 +77,24 @@ export const SearchSpecificationsPage: React.FC<SearchProps> = () => {
   const pathResover = (hitMeta: any) => {
     var resourceUri = hitMeta.getResourceURI();
 
-    var scheme = 'https';
     var path = '';
 
     if (resourceUri.includes('://')) {
-      var tmp = resourceUri.split('://');
-      path = tmp[1];
-      scheme = tmp[0];
-
-      if (path.includes('dataportal.se/')) {
-        path = path.replace('dataportal.se/', '');
-      }
+      let tmp = resourceUri.split('://');
+      path = tmp[0] + '/' + tmp[1];
     } else path = resourceUri;
 
-    return `/${path}`;
+    if (
+      resourceUri &&
+      (!resourceUri.includes('dataportal.se') || resourceUri.includes('sandbox.dataportal.se'))
+    ) {
+      return `/externalspecification/${path}`;
+    } else {
+      if (path.startsWith('https/dataportal.se/specifications'))
+        path = path.replace('https/dataportal.se/specifications', '');
+
+      return `/specifications${path}`;
+    }
   };
 
   return (
