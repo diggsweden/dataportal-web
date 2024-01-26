@@ -6,7 +6,7 @@ import EntrystoreProvider from "@/providers/EntrystoreProvider";
 import { useScript } from "@/hooks/useScript";
 import { SpecificationPage } from "@/components/content/Entryscape/SpecificationPage";
 
-export default function Concept() {
+export default function Specification() {
   const { env } = useContext(SettingsContext);
   const { query } = useRouter() || {};
   const { specification } = query || {};

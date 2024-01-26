@@ -5,7 +5,7 @@ import { useScript } from "@/hooks/useScript";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import EntrystoreProvider from "@/providers/EntrystoreProvider";
 
-export default function Concept() {
+export default function Specification() {
   const { env } = useContext(SettingsContext);
   const { query } = useRouter() || {};
   const { specification, param } = query || {};

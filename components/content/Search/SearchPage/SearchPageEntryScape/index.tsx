@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { SearchForm } from "@/components/content/Search/SearchForm";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import SearchProvider, {
@@ -27,7 +27,7 @@ interface SearchProps {
   searchType: "datasets" | "concepts" | "specifications";
 }
 
-export const SearchPageEntryScape: React.FC<SearchProps> = ({ searchType }) => {
+export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
   const { pathname, query: routerQuery } = useRouter() || {};
   const { t, lang } = useTranslation();

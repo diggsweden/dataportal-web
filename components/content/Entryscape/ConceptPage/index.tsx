@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import React, { useContext, useEffect } from "react";
+import { FC, useContext, useEffect } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
@@ -9,7 +9,7 @@ import { hemvist, linkBase } from "@/utilities";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 
-export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
+export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
   curi,
   scheme,
 }) => {
