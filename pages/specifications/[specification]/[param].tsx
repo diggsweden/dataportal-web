@@ -8,8 +8,8 @@ import EntrystoreProvider from "@/providers/EntrystoreProvider";
 export default function Concept() {
   const { env } = useContext(SettingsContext);
   const { query } = useRouter() || {};
-  const { paths } = query || {};
-  const curi = (paths as string[])?.join("/");
+  const { specification, param } = query || {};
+  const curi = `${specification}/${param}`;
   const entryUri = `https://dataportal.se/specifications/${curi}`;
   const postscribeStatus = useScript(
     "/postscribe.min.js",
@@ -17,7 +17,7 @@ export default function Concept() {
     "anonymous",
   );
 
-  return postscribeStatus === "ready" && curi.length > 0 ? (
+  return postscribeStatus === "ready" ? (
     <EntrystoreProvider
       env={env}
       entryUri={entryUri}
