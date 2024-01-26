@@ -5,7 +5,7 @@ import { EnvSettings } from '../../env/EnvSettings';
 import { SettingsUtil } from '../../env/SettingsUtil';
 
 //unfortunate hack to get a entrystore class instance, script is inserted in head
-declare var EntryStore: any;
+declare var ESJS: any;
 
 export interface EntrystoreProviderProps {
   env: EnvSettings;
@@ -70,7 +70,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         '#scriptsPlaceholder',
         ` 
         <script 
-         src="/entrystore_2021-03-18.js"
+         src=https://entrystore.org/js/4.15.0-dev/entrystore.js
          crossorigin="anonymous"></script>        
         `,
         {
@@ -176,8 +176,8 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
     addScripts(async () => {
       //if we have an ES url, try to get a active instance of EntryScape
       if (defaultESEntry.env) {
-        defaultESEntry.entrystore = new EntryStore.EntryStore(`https://${entrystoreUrl}/store`);
-        var util = new EntryStore.EntryStoreUtil(defaultESEntry.entrystore);
+        defaultESEntry.entrystore = new ESJS.EntryStore(`https://${entrystoreUrl}/store`);
+        var util = new ESJS.EntryStoreUtil(defaultESEntry.entrystore);
         const es = defaultESEntry.entrystore;
 
         //we have entryUri

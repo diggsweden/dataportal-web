@@ -6,7 +6,7 @@ export class Settings_Dev extends EnvSettings {
   // ENTRYSCAPE_DATASETS_PATH="sandbox.admin.dataportal.se"
 
   ENTRYSCAPE_SPECS_PATH="editera.dataportal.se"
-  ENTRYSCAPE_TERMS_PATH="editera.dataportal.se"
+  ENTRYSCAPE_TERMS_PATH="sandbox.editera.dataportal.se"
   ENTRYSCAPE_ORG_STATS_URL="https://admin.dataportal.se/charts/orgData.json"
   ENTRYSCAPE_THEME_STATS_URL="https://admin.dataportal.se/charts/themeData.json"
   ENTRYSCAPE_THEME_STATS_URL_EN="https://admin.dataportal.se/charts/themeData_en.json"
