@@ -2,11 +2,11 @@ import { generateRandomKey } from "../utilities";
 import { EnvSettings } from "./EnvSettings";
 
 export class Settings_Dev extends EnvSettings {
-  ENTRYSCAPE_DATASETS_PATH = "admin.dataportal.se";
+  ENTRYSCAPE_DATASETS_PATH = "sandbox.editera.dataportal.se";
   // ENTRYSCAPE_DATASETS_PATH="sandbox.admin.dataportal.se"
 
-  ENTRYSCAPE_SPECS_PATH = "editera.dataportal.se";
-  ENTRYSCAPE_TERMS_PATH = "editera.dataportal.se";
+  ENTRYSCAPE_SPECS_PATH = "sandbox.editera.dataportal.se";
+  ENTRYSCAPE_TERMS_PATH = "sandbox.editera.dataportal.se";
   ENTRYSCAPE_ORG_STATS_URL = "https://admin.dataportal.se/charts/orgData.json";
   ENTRYSCAPE_THEME_STATS_URL =
     "https://admin.dataportal.se/charts/themeData.json";
@@ -18,13 +18,12 @@ export class Settings_Dev extends EnvSettings {
   ENTRYSCAPE_HISTORY_STATS_URL =
     "https://admin.dataportal.se/stats/historyData.json";
 
-  ENTRYSCAPE_BLOCKS_URL =
-    "https://static.cdn.entryscape.com/blocks/0.20/app.js";
+  ENTRYSCAPE_BLOCKS_URL = "https://static.cdn.entryscape.com/blocks/1/app.js";
 
   ENTRYSCAPE_OPENDATA_SV_URL =
-    "https://static.entryscape.com/blocks/0.20/ext/opendata-sv.js";
+    "https://static.cdn.entryscape.com/blocks-ext/1/opendata/opendata-sv.js";
   ENTRYSCAPE_OPENDATA_EN_URL =
-    "https://static.entryscape.com/blocks/0.20/ext/opendata-en.js";
+    "https://static.cdn.entryscape.com/blocks-ext/1/opendata/opendata-en.js";
 
   ENTRYSCAPE_SITEMAP_JSON_URL = "https://admin.dataportal.se/sitemap.json";
 
