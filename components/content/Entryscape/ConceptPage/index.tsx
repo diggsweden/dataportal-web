@@ -347,7 +347,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
                   {
                     var el = document.createElement('a');
                     var entrystore = entry.getEntryStore();
-                    var util = new window.EntryStore.EntryStoreUtil(entrystore);
+                    var util = new window.ESJS.EntryStoreUtil(entrystore);
                     
                     node.firstElementChild.appendChild(el);
 
