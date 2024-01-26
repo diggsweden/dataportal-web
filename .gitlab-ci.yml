@@ -26,6 +26,7 @@ image:build:release:
   before_script:
     - echo APOLLO_URL=$APOLLO_URL >> .env.production
     - echo REACT_APP_APOLLO_URL=$REACT_APP_APOLLO_URL >> .env.production
+    - echo IMAGE_DOMAIN=$IMAGE_DOMAIN >> .env.production
   script:
     - mkdir -p /kaniko/.docker
     - cat $DOCKER_AUTH_CONFIG > /kaniko/.docker/config.json
@@ -43,6 +44,10 @@ image:build:tagged:
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
+  before_script:
+    - echo APOLLO_URL=$APOLLO_URL >> .env.production
+    - echo REACT_APP_APOLLO_URL=$REACT_APP_APOLLO_URL >> .env.production
+    - echo IMAGE_DOMAIN=$IMAGE_DOMAIN >> .env.production
   script:
     - mkdir -p /kaniko/.docker
     - cat $DOCKER_AUTH_CONFIG > /kaniko/.docker/config.json
