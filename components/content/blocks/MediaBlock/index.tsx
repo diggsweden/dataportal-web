@@ -85,7 +85,7 @@ export const MediaBlock: React.FC<MediaFragment> = ({
   return (
     <div className="max-w-md">
       {heading && (
-        <Heading level={2} size={"md"}>
+        <Heading level={2} size={"md"} className="mb-md md:mb-lg">
           {heading}
         </Heading>
       )}

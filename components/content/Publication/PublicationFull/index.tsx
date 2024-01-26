@@ -75,9 +75,9 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
     <article>
       <Container>
         <div className="grid gap-xl lg:grid-cols-5">
-          <main id="content" className="order-2 col-span-3 max-w-md lg:order-1">
+          <div id="content" className="order-2 col-span-3 max-w-md lg:order-1">
             {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
-          </main>
+          </div>
           <aside id="sidebar" className="order-1 col-span-2 lg:order-2">
             <Heading
               level={4}
