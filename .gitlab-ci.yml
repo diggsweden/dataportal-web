@@ -18,16 +18,14 @@ stages:
   - deploy
 image:build:release:
   stage: build
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - node_modules/
-      - .next/cache/
   rules:
     - if: $CI_COMMIT_BRANCH == "stage-beta"
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
+  before_script:
+    - echo $APOLLO_URL >> .env.production
+    - echo $REACT_APP_APOLLO_URL >> .env.production
   script:
     - mkdir -p /kaniko/.docker
     - cat $DOCKER_AUTH_CONFIG > /kaniko/.docker/config.json
