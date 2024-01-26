@@ -89,11 +89,11 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
             else
               path = resourceUri;              
 
-            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalconcepts/") > -1)
+            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalconcept/") > -1)
               if(isTerm)
                 return "/externalterminology/" + path;
               else
-                return "/externalconcepts/" + path;
+                return "/externalconcept/" + path;
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/concepts/") > -1)
             {
@@ -106,7 +106,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
             }
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalterminology/") > -1)                            
-              return "/externalconcepts/" + path;
+              return "/externalconcept/" + path;
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/terminology/") > -1)    
             {
@@ -151,7 +151,7 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({
             page_language: '${lang}',
             routes: [              
               {
-                regex:new RegExp('(\/*\/externalconcepts\/)(.+)'),
+                regex:new RegExp('(\/*\/externalconcept\/)(.+)'),
                 uri:'${scheme}://${curi}',
                 page_language: '${lang}'
               },             

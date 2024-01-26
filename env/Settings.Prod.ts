@@ -16,13 +16,12 @@ export class Settings_Prod extends EnvSettings {
   ENTRYSCAPE_HISTORY_STATS_URL =
     "https://admin.dataportal.se/stats/historyData.json";
 
-  ENTRYSCAPE_BLOCKS_URL =
-    "https://static.cdn.entryscape.com/blocks/0.20/app.js";
+  ENTRYSCAPE_BLOCKS_URL = "https://static.cdn.entryscape.com/blocks/1/app.js";
 
   ENTRYSCAPE_OPENDATA_SV_URL =
-    "https://static.entryscape.com/blocks/0.20/ext/opendata-sv.js";
+    "https://static.cdn.entryscape.com/blocks-ext/1/opendata/opendata-sv.js";
   ENTRYSCAPE_OPENDATA_EN_URL =
-    "https://static.entryscape.com/blocks/0.20/ext/opendata-en.js";
+    "https://static.cdn.entryscape.com/blocks-ext/1/opendata/opendata-en.js";
 
   ENTRYSCAPE_SITEMAP_JSON_URL = "https://admin.dataportal.se/sitemap.json";
 
