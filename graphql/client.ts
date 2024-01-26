@@ -6,7 +6,7 @@ export const browserclient = new ApolloClient({
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {
-      fetchPolicy: "no-cache",
+      fetchPolicy: "cache-first",
     },
   },
 });
@@ -16,7 +16,7 @@ export const client = new ApolloClient({
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {
-      fetchPolicy: "no-cache",
+      fetchPolicy: "cache-first",
     },
   },
 });
