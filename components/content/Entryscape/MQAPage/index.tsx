@@ -4,7 +4,6 @@ import { Container } from "@/components/layout/Container";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { linkBase } from "@/utilities";
 import { usePathname } from "next/navigation";
-import { Preamble } from "@/components/global/Typography/Preamble";
 
 export const MQAPage: FC = () => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
@@ -56,7 +55,7 @@ export const MQAPage: FC = () => {
       <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
         Metadata Quality Assessment (MQA)
       </Heading>
-      <Preamble></Preamble>
+
       <div
         data-entryscape="config"
         data-entryscape-entrystore={`${env.ENTRYSCAPE_MQA_PATH}/store`}
