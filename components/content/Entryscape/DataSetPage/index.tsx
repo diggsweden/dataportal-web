@@ -43,6 +43,7 @@ const filterContactAndLandingPage = [
   ...filterCatalogProperties,
   "dcat:contactPoint",
   "dcat:landingPage",
+  "http://data.europa.eu/r5r/applicableLegislation",
 ];
 
 export const DataSetPage: React.FC = () => {
