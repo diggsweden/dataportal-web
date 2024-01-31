@@ -31,7 +31,8 @@ export class Settings_Dev extends EnvSettings {
 
   CANONICAL_URL = "http://localhost:3000";
 
-  DCAT_BUNDLE_PATH = "/dcatse_bundle_2022-02-20.json";
+  DCAT_BUNDLE_PATH =
+    "https://static.infra.entryscape.com/blocks-ext/1/opendata/dcat-ap_se2.json";
 
   MATOMO_SITEID = 6;
 

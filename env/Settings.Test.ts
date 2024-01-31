@@ -30,7 +30,8 @@ export class Settings_Test extends EnvSettings {
 
   CANONICAL_URL = "http://dataportal.test.local";
 
-  DCAT_BUNDLE_PATH = "/dcatse_bundle_2022-02-20.json";
+  DCAT_BUNDLE_PATH =
+    "https://static.infra.entryscape.com/blocks-ext/1/opendata/dcat-ap_se2.json";
 
   envName = "test";
 

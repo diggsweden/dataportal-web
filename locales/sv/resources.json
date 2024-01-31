@@ -5,6 +5,7 @@
   "http://purl.org/dc/terms/format": "Format",
   "http://purl.org/dc/terms/accessRights": "Åtkomsträttigheter",
   "http://purl.org/dc/terms/license": "Licens",
+  "http://data.europa.eu/r5r/applicableLegislation": "Värdefulla datamängder",
 
   "https://dataportal.se/concepts/licensecategories/otherlicense": "Övriga licenser",
   "https://dataportal.se/concepts/licensecategories/nolicense": "Saknar licens",

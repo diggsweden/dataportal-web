@@ -9,6 +9,7 @@ import Head from "next/head";
 import {
   accessrigthsIndicator,
   architechtureIndicator,
+  hvdIndicator,
   exploreApiLink,
   licenseIndicator,
   linkBase,
@@ -184,6 +185,7 @@ export const DataSetPage: React.FC = () => {
               ${periodicityIndicator},
               ${licenseIndicator},
               ${architechtureIndicator},
+              ${hvdIndicator},
               ${exploreApiLink(cid, eid, t)},
               {
                 block: 'formatBadge',
@@ -438,7 +440,7 @@ export const DataSetPage: React.FC = () => {
                 data-entryscape="licenseIndicator"
                 className="licenseIndicator"
               />
-
+              <div data-entryscape="hvdIndicator" className="hvdIndicator" />
               <div data-entryscape="costIndicator2" className="costIndicator" />
             </div>
 
