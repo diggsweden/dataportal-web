@@ -428,7 +428,7 @@ export const DataSetPage: React.FC = () => {
             />
 
             {/* Indicators */}
-            <div className="row indicators">
+            <div className="indicators flex max-w-fit flex-col md:flex-row [&_div]:min-w-fit">
               <div
                 data-entryscape="accessRightsIndicator"
                 className="accessRightsIndicator"
