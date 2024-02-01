@@ -2,24 +2,16 @@ import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { usePathname } from "next/navigation";
-import { FC, useContext, useEffect, useRef, useState } from "react";
+import { FC, useContext, useEffect } from "react";
 import { linkBase } from "@/utilities";
-// import useTranslation from "next-translate/useTranslation";
-// import { EntrystoreContext } from "@/providers/EntrystoreProvider";
+import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 
-export const MQACategoryPage: FC<{ curi?: string; scheme?: string }> = ({
-  curi,
-  scheme,
-}) => {
-  // const { lang } = useTranslation();
-  // const entry = useContext(EntrystoreContext);
+export const MQACategoryPage: FC = () => {
+  const entry = useContext(EntrystoreContext);
   const { env, setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
-  const ref = useRef(null);
-  const [title, setTitle] = useState("");
-  let postscribe: any;
+  // let postscribe: any;
 
-  // console.log("entry", entry);
   /**
    * Async load scripts requiered for EntryScape blocks,
    * or else blocks wont have access to DOM
@@ -37,7 +29,7 @@ export const MQACategoryPage: FC<{ curi?: string; scheme?: string }> = ({
           window.location.reload();
         };
     }
-    addScripts();
+    /*     addScripts(); */
 
     const script1 = document.createElement("script");
     script1.src = env.ENTRYSCAPE_MQA_URL;
@@ -56,22 +48,9 @@ export const MQACategoryPage: FC<{ curi?: string; scheme?: string }> = ({
   }, []);
 
   useEffect(() => {
-    /*     const categoryTitle = document.querySelector("#mqaCategoryTitle");
-
-    if (categoryTitle?.textContent) {
-      setTitle(categoryTitle.textContent);
-    }
-
-    if (ref.current) {
-      setTitle(ref.current.innerHTML);
-    } */
-    setTitle("Katalog");
-  }, [ref.current]);
-
-  useEffect(() => {
     setBreadcrumb &&
       setBreadcrumb({
-        name: title,
+        name: entry.title,
         crumbs: [
           { name: "start", link: { ...linkBase, link: "/" } },
           {
@@ -83,9 +62,10 @@ export const MQACategoryPage: FC<{ curi?: string; scheme?: string }> = ({
           },
         ],
       });
-  }, [pathname]);
+  }, [pathname, entry.title]);
 
-  const addScripts = () => {
+  /* This is kept for when the pathname url should be improved */
+  /*   const addScripts = () => {
     if (typeof window !== "undefined") {
       postscribe = (window as any).postscribe;
 
@@ -106,33 +86,13 @@ export const MQACategoryPage: FC<{ curi?: string; scheme?: string }> = ({
 
           <script> 
           
-          function getDataportalUri(resourceUri, isTerm){
-
-            var path = '';                      
-
-            if(resourceUri.indexOf('://') > -1)
-            {
-              var tmp = resourceUri.split("://");
-              path = tmp[0] + '/' + tmp[1];
-            }
-            else
-              path = resourceUri;              
-
-            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/mqa/") > -1)
-                return "/mqa/" + path;
-
-
-            return resourceUri;
-          }
-
-          
           window.__entryscape_config = [{
             block: 'config',
             page_language: 'sv',
             routes: [              
               {
                 regex:new RegExp('(\/*\/mqa\/)(.+)'),
-                uri:'${scheme}://${curi}',
+                uri:'/${curi}',
                 page_language: 'sv'
               },                                      
             ],           
@@ -140,14 +100,86 @@ export const MQACategoryPage: FC<{ curi?: string; scheme?: string }> = ({
               env.ENTRYSCAPE_MQA_PATH
                 ? env.ENTRYSCAPE_MQA_PATH
                 : "editera.dataportal.se"
-            }/store',
-            clicks: {
-              category: 'index',
-              test: 'test.html',
-            },
+            }/store',  
             blocks: [
-
-    
+              {
+                block: 'catalogMQA',
+                extends: 'template',
+                testData: false,
+                template: '{{charts mqaOverview=false}}',
+              },
+              {
+                block: 'charts',
+                extends: 'template',
+                mqaOverview: false,
+                before(node, data) {
+                  return data.entry
+                      .getResource(true)
+                      .getJSON()
+                      .then((jsonData) => {
+                        const dimensionData = { data: { labels: [], datasets: [] }, colors: [{ backgroundColor: [] }] };
+                        data.indicatorData = esbMqaTemplate.map(({ dimensionKey, dimensionLabel, indicators, color }) => {
+                          dimensionData.data.labels.push(dimensionLabel);
+                          dimensionData.data.datasets.push(jsonData[dimensionKey]?.score.percentage || 0);
+             
+                          return {
+                            label: dimensionLabel,
+                            id: dimensionKey,
+                            color,
+                            indicators: indicators.map(({ indicatorKey, indicatorLabel, okRegex = /yes/ }) => {
+                              const chartData = { labels: [], datasets: [] };
+                              const colors = [];
+                              jsonData[dimensionKey]?.indicators[indicatorKey]?.score.forEach(({ name, percentage }) => {
+                 
+                                const labelReplacer = esbMqaIndicatorResults.find((label) => label.pattern.test(name));
+                                chartData.labels.push(name.replace(labelReplacer.pattern, labelReplacer.replacement));
+                                chartData.datasets.push(percentage || 0);
+                              });
+                              return {
+                                colors: JSON.stringify(colors),
+                                label: indicatorLabel,
+                                data: JSON.stringify(chartData),
+                              };
+                            }),
+                          };
+                        });
+                        data.dimensionData = {
+                          data: JSON.stringify(dimensionData.data),
+                          colors: JSON.stringify(dimensionData.colors),
+                        };
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                },
+                template:
+                    '<div class="esbChartsContainer--grid">' +
+                    '{{#unless mqaOverview}}' +
+                    ' <h2>{{state.catalogHeading}} {{prop "dcterms:title"}}</h2>' +
+                    '{{/unless}}' +
+                    '{{#ifprop "esterms:success" literal="true"}}' +
+                    ' <div class="esbTopContainer--flex">' +
+                    '   <div class="esbRadarChartContainer">' +
+                    '   {{#if mqaOverview}}' +
+                    '     <h2>{{state.overviewRadarHeading}}</h2><span class="esbChartInfo">{{info mqa=true}}</span>' +
+                    '     {{dimensionRadarChart data=dimensionData.data colors=dimensionData.colors}}' +
+                    '     {{expandingCharts indicatorData="inherit"}}' +
+                    '   {{else}}' +
+                    '     <h2>{{state.catalogRadarHeading}}</h2><span class="esbChartInfo">{{info mqa=true}}</span>' +
+                    '     {{dimensionRadarChart data=dimensionData.data colors=dimensionData.colors}}' +
+                    '   {{/if}}' +
+                    '   </div>' +
+                    '   <div class="esbScoreCardsContainer--flex">' +
+                    '     <div class="esbMQAResultCard">{{mqaResult mqaOverview="inherit"}}</div>' +
+                    '     <div class="esbFiveStarResultCard">{{fiveStarResult mqaOverview="inherit"}}</div>' +
+                    '   </div>' +
+                    ' </div>' +
+                    ' {{#unless mqaOverview}}' +
+                    ' <div class="esbDimensionsContainer--grid">{{indicatorCharts indicatorData="inherit"}}</div>' +
+                    ' {{/unless}}' +
+                    '{{/ifprop}}' +
+                    '</div>',
+              },
             ],
             
           }];
@@ -163,7 +195,7 @@ export const MQACategoryPage: FC<{ curi?: string; scheme?: string }> = ({
         );
       }
     }
-  };
+  }; */
 
   return (
     <Container>
@@ -173,13 +205,6 @@ export const MQACategoryPage: FC<{ curi?: string; scheme?: string }> = ({
         data-entryscape="config"
         data-entryscape-entrystore={`https://${env.ENTRYSCAPE_MQA_PATH}/store`}
       ></div>
-      <span
-        ref={ref}
-        id="mqaCategoryTitle"
-        className="hidden"
-        data-entryscape="template"
-        data-entryscape-template={'{{prop "dcterms:title"}}'}
-      ></span>
 
       <div data-entryscape="catalogMQA" className="catalogMQA"></div>
     </Container>
