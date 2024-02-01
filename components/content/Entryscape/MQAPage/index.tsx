@@ -58,7 +58,7 @@ export const MQAPage: FC = () => {
 
       <div
         data-entryscape="config"
-        data-entryscape-entrystore={`${env.ENTRYSCAPE_MQA_PATH}/store`}
+        data-entryscape-entrystore={`https://${env.ENTRYSCAPE_MQA_PATH}/store`}
         data-entryscape-clicks='{"katalog": "mqa/catalog/"}'
       ></div>
 

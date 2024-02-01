@@ -183,14 +183,13 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         );
         var util = new ESJS.EntryStoreUtil(defaultESEntry.entrystore);
         const es = defaultESEntry.entrystore;
-
+        // console.log(util);
         //we have entryUri
         if (entryUri) {
           util
             .getEntryByResourceURI(entryUri)
             .then(async (entry: any) => {
               defaultESEntry.entry = entry;
-
               const graph = entry.getAllMetadata();
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
@@ -330,7 +329,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               }
             });
         } else {
-          router.push("/404");
+          /*      router.push("/404"); */
         }
       }
     });

@@ -126,6 +126,10 @@ export const hemvist = (t: Translate) => `
       if (resourceURI.indexOf('https://dataportal.se/') === 0) {
         node.innerHTML=linkTitle + ': <a class="hemvist" href='+resourceURI+'>'+resourceURI+'</a>';
       }
+      if (resourceURI.indexOf('https://www-sandbox.dataportal.se/') === 0) {
+        console.log(window.location.pathname)
+        node.innerHTML=linkTitle + ': <a class="hemvist" href='+window.location.pathname+'>'+window.location.origin+window.location.pathname+'</a>';
+      }
       else
       {
         node.innerHTML='<span class="text-sm text-textSecondary">'+linkTitle+'</span> <a href='+resourceURI+'>'+resourceURI+'</a>';
