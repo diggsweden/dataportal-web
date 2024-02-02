@@ -4,27 +4,19 @@ import { Container } from "@/components/layout/Container";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { linkBase } from "@/utilities";
 import { usePathname } from "next/navigation";
+import { useMatomo } from "@datapunt/matomo-tracker-react";
 
 export const MQAPage: FC = () => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
+  const { trackPageView } = useMatomo();
   const pathname = usePathname();
+  const pageTitle = "Metadatakvalitet per katalog";
 
   /**
    * Async load scripts requiered for EntryScape blocks,
    * or else blocks wont have access to DOM
    */
   useEffect(() => {
-    //we need to reload the page when using the back/forward buttons to a blocks rendered page
-    if (typeof window !== "undefined") {
-      if (
-        window.location &&
-        window.location.hash &&
-        window.location.hash.includes("ref=?")
-      )
-        window.onpopstate = () => {
-          window.location.reload();
-        };
-    }
     const script1 = document.createElement("script");
     script1.src = env.ENTRYSCAPE_MQA_URL;
 
@@ -45,15 +37,17 @@ export const MQAPage: FC = () => {
   useEffect(() => {
     setBreadcrumb &&
       setBreadcrumb({
-        name: "Metadatakvalitet per katalog",
+        name: pageTitle,
         crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
       });
+
+    trackPageView({ documentTitle: pageTitle });
   }, [pathname]);
 
   return (
     <Container>
       <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
-        Metadatakvalitet per katalog
+        {pageTitle}
       </Heading>
 
       <div
