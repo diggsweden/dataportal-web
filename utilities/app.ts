@@ -79,7 +79,7 @@ export const resolvePage = (
   pathname: string,
 ): ResolvedPage => {
   // @ts-ignore
-  if (!props.id && lang === "en") {
+  if ((!props.id || !props.image) && lang === "en") {
     // @ts-ignore
     return fallback(props.domain ? props.domain : pathname, t);
   }
