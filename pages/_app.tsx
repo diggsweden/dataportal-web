@@ -80,6 +80,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     pageProps as DataportalPageProps,
     lang,
     t,
+    pathname,
   );
 
   const [breadcrumbState, setBreadcrumb] = useState<BreadcrumbProps>({
