@@ -45,7 +45,7 @@ export const MQAPage: FC = () => {
   useEffect(() => {
     setBreadcrumb &&
       setBreadcrumb({
-        name: "MQA",
+        name: "Metadatakvalitet per katalog",
         crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
       });
   }, [pathname]);
@@ -53,13 +53,13 @@ export const MQAPage: FC = () => {
   return (
     <Container>
       <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
-        Metadata Quality Assessment (MQA)
+        Metadatakvalitet per katalog
       </Heading>
 
       <div
         data-entryscape="config"
-        data-entryscape-entrystore={`${env.ENTRYSCAPE_MQA_PATH}/store`}
-        data-entryscape-clicks='{"katalog": "mqa/catalog/"}'
+        data-entryscape-entrystore={`https://${env.ENTRYSCAPE_MQA_PATH}/store`}
+        data-entryscape-clicks='{"katalog": "/metadatakvalitet/katalog/${entry}/${context}"}'
       ></div>
 
       <div data-entryscape="totMQA" className="totMQA"></div>
