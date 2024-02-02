@@ -183,7 +183,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         );
         var util = new ESJS.EntryStoreUtil(defaultESEntry.entrystore);
         const es = defaultESEntry.entrystore;
-        // console.log(util);
+
         //we have entryUri
         if (entryUri) {
           util
@@ -329,7 +329,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               }
             });
         } else {
-          /*      router.push("/404"); */
+          router.push("/404");
         }
       }
     });
