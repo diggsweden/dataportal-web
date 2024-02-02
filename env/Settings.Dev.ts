@@ -7,6 +7,8 @@ export class Settings_Dev extends EnvSettings {
 
   ENTRYSCAPE_SPECS_PATH = "editera.dataportal.se";
   ENTRYSCAPE_TERMS_PATH = "editera.dataportal.se";
+  ENTRYSCAPE_MQA_PATH = "sandbox.admin.dataportal.se";
+
   ENTRYSCAPE_ORG_STATS_URL = "https://admin.dataportal.se/charts/orgData.json";
   ENTRYSCAPE_THEME_STATS_URL =
     "https://admin.dataportal.se/charts/themeData.json";
@@ -19,6 +21,9 @@ export class Settings_Dev extends EnvSettings {
     "https://admin.dataportal.se/stats/historyData.json";
 
   ENTRYSCAPE_BLOCKS_URL = "https://static.cdn.entryscape.com/blocks/1/app.js";
+
+  ENTRYSCAPE_MQA_URL =
+    "https://static.cdn.entryscape.com/blocks-ext/1/opendata/mqa-sv.js";
 
   ENTRYSCAPE_OPENDATA_SV_URL =
     "https://static.cdn.entryscape.com/blocks-ext/1/opendata/opendata-sv.js";
