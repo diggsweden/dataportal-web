@@ -54,7 +54,7 @@ export const MQACategoryPage: FC = () => {
         crumbs: [
           { name: "start", link: { ...linkBase, link: "/" } },
           {
-            name: "MQA",
+            name: "Metadatakvalitet per katalog",
             link: {
               ...linkBase,
               link: `/mqa`,
