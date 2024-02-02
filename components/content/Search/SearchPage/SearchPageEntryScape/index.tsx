@@ -191,6 +191,14 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             dcatFilterEnabled: false,
             indexOrder: 6,
           },
+          {
+            resource: "http://data.europa.eu/r5r/applicableLegislation",
+            type: ESType.uri,
+            dcatProperty: "dcatap:applicableLegislation",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 7,
+          },
         ],
       },
       initRequest: {

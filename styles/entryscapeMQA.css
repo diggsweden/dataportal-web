@@ -1,0 +1,135 @@
+/* Styling for MQA overview and Category landingpage */
+.totMQA,
+.catalogMQA {
+  @apply flex flex-col gap-lg font-ubuntu text-md md:gap-xl !important;
+}
+
+.totMQA h2,
+.totMQA .esbListHead-grid > h3,
+.catalogMQA h2 {
+  @apply m-none mb-sm text-lg font-normal md:mb-md md:text-xl !important;
+}
+
+.catalogMQA > .esbChartsContainer--grid > h2 {
+  @apply mb-lg text-xl font-normal md:mb-xl md:text-2xl !important;
+}
+
+.totMQA .esbResult,
+.catalogMQA .esbResult {
+  @apply text-lg font-strong md:text-xl !important;
+}
+
+.totMQA .esbTopContainer--flex,
+.catalogMQA .esbTopContainer--flex {
+  @apply w-full flex-col gap-lg lg:flex-row lg:gap-xl;
+}
+
+.totMQA .esbRadarChartContainer,
+.catalogMQA .esbRadarChartContainer {
+  @apply w-full overflow-auto lg:max-w-[calc(100%-270px)] !important;
+}
+
+.totMQA .esbDimensionsContainer > .esbDimensionContainer--grid,
+.catalogMQA .esbDimensionsContainer > .esbDimensionContainer--grid {
+  @apply gap-md md:gap-x-none md:gap-y-lg !important;
+}
+
+.totMQA .esbIndicatorChart,
+.catalogMQA .esbIndicatorChart {
+  @apply w-full !important;
+}
+
+.totMQA .esbIndicatorChartLabel,
+.catalogMQA .esbIndicatorChartLabel {
+  @apply m-none mt-xs h-fit w-full text-center md:mt-sm;
+}
+
+.totMQA .esbIndicatorContainer,
+.catalogMQA .esbIndicatorContainer {
+  @apply flex flex-col items-center;
+}
+
+.totMQA .esbInlineDiv#_ebh_14,
+.catalogMQA .esbInlineDiv#_ebh_3 {
+  @apply overflow-x-hidden !important;
+}
+
+.totMQA .esbInlineDiv#_ebh_14 > div,
+.catalogMQA .esbInlineDiv#_ebh_3 > div {
+  @apply min-w-[350px] overflow-x-hidden !important;
+}
+
+.totMQA .esbScoreCardsContainer--flex,
+.catalogMQA .esbScoreCardsContainer--flex {
+  @apply flex-col gap-md md:flex-row md:gap-lg lg:flex-col lg:gap-xl;
+}
+
+.totMQA .esbDimensionsContainer--grid,
+.catalogMQA .esbDimensionsContainer--grid {
+  @apply mt-lg gap-md md:gap-lg;
+}
+.totMQA .esbScoreCardsContainer--flex > div,
+.catalogMQA .esbScoreCardsContainer--flex > div {
+  @apply w-full md:w-1/2 lg:w-full lg:min-w-[250px];
+}
+
+.totMQA .esbRadarChartContainer,
+.totMQA .esbScoreCardsContainer--flex > div,
+.totMQA .esbMQAResultCard,
+.totMQA .esbDimensionsContainer,
+.catalogMQA .esbRadarChartContainer,
+.catalogMQA .esbScoreCardsContainer--flex > div,
+.catalogMQA .esbDimensionsContainer {
+  @apply m-none p-md md:p-lg;
+}
+
+.totMQA .esbExpandHead > button {
+  @apply m-none rounded-sm hover:bg-brown-200 focus:shadow-none focus-visible:bg-brown-200
+  focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-primary;
+}
+
+.totMQA .esbExpandHead > button[title="Visa mindre"] {
+  @apply bg-brown-200;
+}
+
+/* Styling for total MQA list */
+.totMQA .entryList {
+  @apply space-y-lg;
+}
+
+.totMQA a {
+  @apply no-underline hover:underline focus-visible:underline !important;
+}
+
+.totMQA .esbInlineHeading {
+  @apply m-none mb-sm text-md font-strong md:mb-md md:text-lg !important;
+}
+
+.totMQA .esbRowLink {
+  @apply border-none !no-underline hover:bg-brown-200 focus-visible:bg-brown-200 !important;
+}
+
+.totMQA .esbRowLink > .esbRowMain {
+  @apply flex flex-col md:flex-row !important;
+}
+
+/* Styling for total MQA list pagination */
+.page-text {
+  @apply mx-md md:mx-lg !important;
+}
+
+.page-item > button {
+  @apply rounded-sm !important;
+}
+.totMQA .page-link:not(:disabled) {
+  @apply border-none bg-white text-brown-900 shadow-none hover:bg-brown-200 focus-visible:bg-brown-200
+  focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:-outline-offset-2 focus-visible:outline-primary !important;
+}
+
+.totMQA .page-link[disabled="true"] {
+  @apply border-none bg-white text-brown-400 !important;
+}
+
+.totMQA .entryPagination {
+  @apply pb-none pt-lg md:pt-xl;
+}

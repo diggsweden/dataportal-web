@@ -65,6 +65,15 @@ export const licenseIndicator = `
   }
 `;
 
+export const hvdIndicator = `
+  {
+    block: 'hvdIndicator',
+    extends: 'template',
+    template: '{{#eachprop "http://data.europa.eu/r5r/applicableLegislation"}}<span class="esbIndicator" title="Särskilt värdefull datamängd">' +
+     '<i class="fas fa-dollar-sign"></i>' +
+      '<span class="ml-xs">{{label}}</span></span>{{/eachprop}}',
+  }`;
+
 export const exploreApiLink = (cid: string, eid: string, t: Translate) => `
   {
     block: 'exploreApiLinkRun',                     

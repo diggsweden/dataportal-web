@@ -9,6 +9,7 @@ import Head from "next/head";
 import {
   accessrigthsIndicator,
   architechtureIndicator,
+  hvdIndicator,
   exploreApiLink,
   licenseIndicator,
   linkBase,
@@ -42,6 +43,7 @@ const filterContactAndLandingPage = [
   ...filterCatalogProperties,
   "dcat:contactPoint",
   "dcat:landingPage",
+  "http://data.europa.eu/r5r/applicableLegislation",
 ];
 
 export const DataSetPage: React.FC = () => {
@@ -184,6 +186,7 @@ export const DataSetPage: React.FC = () => {
               ${periodicityIndicator},
               ${licenseIndicator},
               ${architechtureIndicator},
+              ${hvdIndicator},
               ${exploreApiLink(cid, eid, t)},
               {
                 block: 'formatBadge',
@@ -425,7 +428,7 @@ export const DataSetPage: React.FC = () => {
             />
 
             {/* Indicators */}
-            <div className="row indicators">
+            <div className="indicators flex max-w-fit flex-col md:flex-row [&_div]:min-w-fit">
               <div
                 data-entryscape="accessRightsIndicator"
                 className="accessRightsIndicator"
@@ -438,7 +441,7 @@ export const DataSetPage: React.FC = () => {
                 data-entryscape="licenseIndicator"
                 className="licenseIndicator"
               />
-
+              <div data-entryscape="hvdIndicator" className="hvdIndicator" />
               <div data-entryscape="costIndicator2" className="costIndicator" />
             </div>
 

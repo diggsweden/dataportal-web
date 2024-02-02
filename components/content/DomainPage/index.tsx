@@ -73,7 +73,9 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   useEffect(() => {
     setBreadcrumb &&
       setBreadcrumb({
-        name: props.heading!,
+        name: props.heading
+          ? props.heading
+          : t(`pages|${props.domain}$heading`),
         crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
       });
 

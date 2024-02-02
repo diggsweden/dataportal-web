@@ -32,6 +32,7 @@ export enum ESRdfType {
   term = "http://www.w3.org/2004/02/skos/core#Concept",
   esterms_IndependentDataService = "esterms:IndependentDataService",
   esterms_ServedByDataService = "esterms:ServedByDataService",
+  hvd = "http://data.europa.eu/eli/reg_impl/2023/138/oj",
   agent = "http://xmlns.com/foaf/0.1/Agent",
 }
 
