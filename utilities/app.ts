@@ -35,7 +35,7 @@ type ResolvedPage = {
   seo?: SeoDataFragment | null;
 };
 
-const fallback = (domain: DiggDomain | undefined, t: any): ResolvedPage => {
+const fallback = (domain: DiggDomain | "/", t: any): ResolvedPage => {
   switch (domain) {
     case "offentligai":
       return {
@@ -55,12 +55,14 @@ const fallback = (domain: DiggDomain | undefined, t: any): ResolvedPage => {
         preamble: t("pages|os$preamble"),
         heroImage: renderImage(kallkod),
       };
-    default:
+    case "/":
       return {
         heading: t("pages|startpage$heading"),
         preamble: t("pages|startpage$preamble"),
         heroImage: renderImage(start),
       };
+    default:
+      return {};
   }
 };
 
@@ -74,11 +76,12 @@ export const resolvePage = (
   props: DataportalPageProps,
   lang: string,
   t: any,
+  pathname: string,
 ): ResolvedPage => {
   // @ts-ignore
   if (!props.id && lang === "en") {
     // @ts-ignore
-    return fallback(props.domain, t);
+    return fallback(props.domain ? props.domain : pathname, t);
   }
 
   switch (props.type) {
