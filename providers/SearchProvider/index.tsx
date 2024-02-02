@@ -229,7 +229,9 @@ class SearchProvider extends React.Component<
   };
 
   fetchDCATMeta = async (): Promise<void> => {
-    let dcatmeta = await fetchDCATMeta("/dcatse_bundle_2022-02-20.json");
+    let dcatmeta = await fetchDCATMeta(
+      "https://static.infra.entryscape.com/blocks-ext/1/opendata/dcat-ap_se2.json",
+    );
 
     if (dcatmeta && dcatmeta.templates && dcatmeta.templates.length > 0) {
       this.setState({

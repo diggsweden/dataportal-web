@@ -78,7 +78,9 @@ export const fetchDCATMeta = async (
   dcatUrl: string,
 ): Promise<DCATData | undefined> => {
   return new Promise<DCATData | undefined>(async (resolve) => {
-    let dcatFileUrl = dcatUrl || "/dcatse_bundle_2022-02-20.json";
+    let dcatFileUrl =
+      dcatUrl ||
+      "https://static.infra.entryscape.com/blocks-ext/1/opendata/dcat-ap_se2.json";
 
     if (dcatFileUrl && dcatFileUrl.length > 0) {
       await fetch(dcatFileUrl, {

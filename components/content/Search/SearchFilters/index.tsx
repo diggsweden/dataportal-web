@@ -156,11 +156,41 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
 }) => {
   const { t } = useTranslation();
   const [inputFilter, setInputFilter] = useState<InputFilter>({});
-
+  const hvd = "http://data.europa.eu/r5r/applicableLegislation";
   const clearCurrentScrollPos = () => {
     if (typeof localStorage != "undefined" && typeof location != "undefined") {
       localStorage.setItem(`ScrollposY_${location.search}`, "0");
     }
+  };
+
+  const selected = (key: string, facetValue: SearchFacetValue) => {
+    return search.facetSelected(key, facetValue.resource);
+  };
+
+  const doSearch = (key: string, facetValue: SearchFacetValue) => {
+    clearCurrentScrollPos();
+    search.toggleFacet(facetValue).then(async () => {
+      if (search.facetSelected(key, "*")) {
+        let wildcardFacet: SearchFacetValue = {
+          count: -1,
+          facet: key,
+          facetType: ESType.wildcard,
+          related: false,
+          facetValueString: "",
+          resource: "*",
+          title: t(`filters|allchecktext$${key}`),
+        };
+        await search.toggleFacet(wildcardFacet);
+      }
+
+      search.doSearch(false, true, false).then(() => {
+        if (selected(key, facetValue)) {
+          search.sortAllFacets(key);
+        } else {
+          search.sortAllFacets();
+        }
+      });
+    });
   };
 
   return (
@@ -194,121 +224,122 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                           .includes(inputFilter[key].toLowerCase()),
                     )
                   : value?.facetValues.slice(0, show);
-                return (
-                  <li key={"box" + value.title}>
-                    <SearchFilter
-                      title={
-                        value.title +
-                        FindFilters(
-                          value.facetValues,
-                          search.request.facetValues,
-                        )
-                      }
-                    >
-                      <div className="absolute z-10 mr-lg mt-sm w-full overflow-y-scroll bg-white shadow-md md:max-w-[330px]">
-                        {searchMode == "datasets" && ( //only render on searchpage
-                          <>
-                            {isLicense ? (
-                              <MarkAll
-                                search={search}
-                                toggleKey={key}
-                                title={t(`filters|allchecktext$${key}`)}
-                              />
-                            ) : (
-                              <FilterSearch
-                                filterKey={key}
-                                filter={inputFilter}
-                                setFilter={setInputFilter}
-                                fetchMore={() =>
-                                  shouldFetchMore && search.fetchMoreFacets(key)
-                                }
-                              />
-                            )}
-                          </>
-                        )}
 
-                        {facetValues.map(
-                          (facetValue: SearchFacetValue, index: number) => {
-                            const selected = search.facetSelected(
-                              key,
-                              facetValue.resource,
-                            );
-                            return (
-                              <button
-                                aria-pressed={selected}
-                                key={index}
-                                className={`group relative flex w-full items-center py-md pl-md pr-xl text-left hover:bg-brown-100 ${
-                                  selected && "font-strong"
-                                }`}
-                                onClick={() => {
-                                  clearCurrentScrollPos();
-                                  search
-                                    .toggleFacet(facetValue)
-                                    .then(async () => {
-                                      if (search.facetSelected(key, "*")) {
-                                        let wildcardFacet: SearchFacetValue = {
-                                          count: -1,
-                                          facet: key,
-                                          facetType: ESType.wildcard,
-                                          related: false,
-                                          facetValueString: "",
-                                          resource: "*",
-                                          title: t(
-                                            `filters|allchecktext$${key}`,
-                                          ),
-                                        };
-                                        await search.toggleFacet(wildcardFacet);
-                                      }
+                if (key !== hvd) {
+                  return (
+                    <li key={"box" + value.title}>
+                      <SearchFilter
+                        title={
+                          value.title +
+                          FindFilters(
+                            value.facetValues,
+                            search.request.facetValues,
+                          )
+                        }
+                      >
+                        <div className="absolute z-10 mr-lg mt-sm w-full overflow-y-scroll bg-white shadow-md md:max-w-[330px]">
+                          {searchMode == "datasets" && ( //only render on searchpage
+                            <>
+                              {isLicense ? (
+                                <MarkAll
+                                  search={search}
+                                  toggleKey={key}
+                                  title={t(`filters|allchecktext$${key}`)}
+                                />
+                              ) : (
+                                <FilterSearch
+                                  filterKey={key}
+                                  filter={inputFilter}
+                                  setFilter={setInputFilter}
+                                  fetchMore={() =>
+                                    shouldFetchMore &&
+                                    search.fetchMoreFacets(key)
+                                  }
+                                />
+                              )}
+                            </>
+                          )}
 
-                                      search
-                                        .doSearch(false, true, false)
-                                        .then(() => {
-                                          if (selected) {
-                                            search.sortAllFacets(key);
-                                          } else {
-                                            search.sortAllFacets();
-                                          }
-                                        });
-                                    });
-                                }}
-                              >
-                                {facetValue.title || facetValue.resource} (
-                                {facetValue.count}) {selected}
-                                <span className="absolute right-md">
-                                  {selected ? (
-                                    <CheckboxCheckedIcon />
-                                  ) : (
-                                    <CheckboxIcon />
-                                  )}
-                                </span>
-                              </button>
-                            );
-                          },
-                        )}
+                          {facetValues.map(
+                            (facetValue: SearchFacetValue, index: number) => {
+                              return (
+                                <button
+                                  aria-pressed={selected(key, facetValue)}
+                                  key={index}
+                                  className={`group relative flex w-full items-center py-md pl-md pr-xl text-left hover:bg-brown-100 ${
+                                    selected(key, facetValue) && "font-strong"
+                                  }`}
+                                  onClick={() => {
+                                    doSearch(key, facetValue);
+                                  }}
+                                >
+                                  {facetValue.title || facetValue.resource} (
+                                  {facetValue.count}){" "}
+                                  {selected(key, facetValue)}
+                                  <span className="absolute right-md">
+                                    {selected(key, facetValue) ? (
+                                      <CheckboxCheckedIcon />
+                                    ) : (
+                                      <CheckboxIcon />
+                                    )}
+                                  </span>
+                                </button>
+                              );
+                            },
+                          )}
 
-                        {value.facetValues.length > value.show && (
-                          <Button
-                            variant="secondary"
-                            size="sm"
-                            className="mx-sm my-md"
-                            onClick={() => {
-                              search.fetchMoreFacets(key);
-                            }}
-                            disabled={search.loadingFacets}
-                            label={
-                              search.loadingFacets
-                                ? t("common|loading")
-                                : t("common|load-more")
-                            }
-                          />
+                          {value.facetValues.length > value.show && (
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              className="mx-sm my-md"
+                              onClick={() => {
+                                search.fetchMoreFacets(key);
+                              }}
+                              disabled={search.loadingFacets}
+                              label={
+                                search.loadingFacets
+                                  ? t("common|loading")
+                                  : t("common|load-more")
+                              }
+                            />
+                          )}
+                          {facetValues.length == 0 && (
+                            <div className="p-md">
+                              {t("pages|search$nohits")}
+                            </div>
+                          )}
+                        </div>
+                      </SearchFilter>
+                    </li>
+                  );
+                } else {
+                  return (
+                    // eslint-disable-next-line react/jsx-key
+                    <div className="relative flex max-w-[222px]">
+                      <input
+                        tabIndex={-1}
+                        id="hvd_only"
+                        name="API"
+                        type="checkbox"
+                        className="peer/api-only sr-only"
+                        checked={search.request.facetValues?.some(
+                          (t) => t.title == ESRdfType.hvd,
                         )}
-                        {facetValues.length == 0 && (
-                          <div className="p-md">{t("pages|search$nohits")}</div>
-                        )}
-                      </div>
-                    </SearchFilter>
-                  </li>
-                );
+                        onChange={() => doSearch(key, facetValues[0])}
+                      />
+                      <label
+                        tabIndex={0}
+                        className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-[50px] focus-visible:bg-whiteOpaque5 md:pr-xl"
+                        htmlFor="hvd_only"
+                      >
+                        {t(`resources|${key}`)}
+                      </label>
+                      <CheckboxIcon className="pointer-events-none absolute right-sm top-1/4 peer-checked/api-only:hidden" />
+                      <CheckboxCheckedIcon className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/api-only:block" />
+                    </div>
+                  );
+                }
               })}
           {searchMode == "datasets" && (
             <div className="relative max-w-[74px]">
@@ -378,58 +409,58 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
           )}
         </ul>
       </div>
-      {search.request.facetValues && search.request.facetValues.length > 0 && (
-        <div className="mt-lg flex flex-col justify-between gap-md md:flex-row md:items-baseline">
-          <div className="flex flex-col flex-wrap gap-sm md:flex-row md:gap-md">
-            <span className="text-textSecondary">
-              {t("common|active-filters")}:
-            </span>
-
-            {search.request &&
-              search.request.facetValues &&
-              (search.request.facetValues as SearchFacetValue[]).map(
-                (facetValue: SearchFacetValue, index: number) => (
-                  <Button
-                    variant="filter"
-                    size="xs"
-                    key={index}
-                    label={facetValue.title || facetValue.resource}
-                    icon={CloseIcon}
-                    iconPosition="right"
-                    className="w-full justify-between py-md text-left font-strong md:w-auto md:py-[2px]"
-                    onClick={() => {
-                      clearCurrentScrollPos();
-                      search.toggleFacet(facetValue).then(() => {
-                        search.doSearch();
-                      });
-                    }}
-                  />
-                ),
-              )}
+      {!search.request.facetValues?.some((t) => t.facet == hvd) &&
+        search.request.facetValues &&
+        search.request.facetValues.length > 0 && (
+          <div className="mt-lg flex flex-col justify-between gap-md md:flex-row md:items-baseline">
+            <div className="flex flex-col flex-wrap gap-sm md:flex-row md:gap-md">
+              <span className="text-textSecondary">
+                {t("common|active-filters")}
+              </span>
+              {search.request &&
+                search.request.facetValues &&
+                (search.request.facetValues as SearchFacetValue[]).map(
+                  (facetValue: SearchFacetValue, index: number) => (
+                    <Button
+                      variant="filter"
+                      size="xs"
+                      key={index}
+                      label={facetValue.title || facetValue.resource}
+                      icon={CloseIcon}
+                      iconPosition="right"
+                      className="w-full justify-between py-md text-left font-strong md:w-auto md:py-[2px]"
+                      onClick={() => {
+                        clearCurrentScrollPos();
+                        search.toggleFacet(facetValue).then(() => {
+                          search.doSearch();
+                        });
+                      }}
+                    />
+                  ),
+                )}
+            </div>
+            <div
+              className={
+                search.request?.facetValues &&
+                search.request.facetValues.length >= 2
+                  ? "block whitespace-nowrap"
+                  : "hidden"
+              }
+            >
+              <Button
+                variant="plain"
+                size="sm"
+                icon={TrashIcon}
+                iconPosition="left"
+                onClick={() => {
+                  clearCurrentScrollPos();
+                  search.set({ facetValues: [] }).then(() => search.doSearch());
+                }}
+                label={t("common|clear-filters")}
+              />
+            </div>
           </div>
-
-          <div
-            className={
-              search.request?.facetValues &&
-              search.request.facetValues.length >= 2
-                ? "block whitespace-nowrap"
-                : "hidden"
-            }
-          >
-            <Button
-              variant="plain"
-              size="sm"
-              icon={TrashIcon}
-              iconPosition="left"
-              onClick={() => {
-                clearCurrentScrollPos();
-                search.set({ facetValues: [] }).then(() => search.doSearch());
-              }}
-              label={t("common|clear-filters")}
-            />
-          </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };
