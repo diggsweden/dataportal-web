@@ -190,6 +190,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
             .getEntryByResourceURI(entryUri)
             .then(async (entry: any) => {
               defaultESEntry.entry = entry;
+
               const graph = entry.getAllMetadata();
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
