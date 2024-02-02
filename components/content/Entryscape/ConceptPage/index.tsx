@@ -164,10 +164,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                 regex:new RegExp('(\/*\/terminology\/)(.+)'),
                 uri:'https://dataportal.se/concepts/${curi}',
                 page_language: '${lang}',
-                constraints: {
-                  "rdf:type": "skos:ConceptScheme"
-              }
-              },             
+                },  
               {
                 regex:new RegExp('(\/*\/concepts\/)(.+)'),
                 uri:'https://dataportal.se/concepts/${curi}',
@@ -434,7 +431,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                   {
                     block: 'toppbegrepp',
                     extends: 'template',
-                    template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme"}}<h2 class="toplist-header  text-md">${t(
+                    template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme"}}<h2 class="toplist-header !text-lg">${t(
                       "pages|concept_page$first_level_concepts",
                     )}</h2>{{toppbegreppLista}}{{/ifprop}}'
                   },
@@ -536,15 +533,15 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                   },
                   {
                     block: 'concept-head',
-                    class: 'text-md',
+                    class: 'text-lg',
                     extends: 'template',
-                    template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme"}}<span class="text-md">${t(
+                    template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme"}}<span class="text-lg">${t(
                       "pages|concept_page$about_terminology",
                     )}</h2>{{/ifprop}}'
                   },
                   {
                     block: 'term-head',
-                    class: 'text-lg',
+                    class: 'text-sm',
                     extends: 'template',
                     template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}<span class="text-lg">${t(
                       "pages|concept_page$about_concept",
@@ -628,12 +625,17 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               data-entryscape-fallback=""
               data-entryscape-content="${skos:altLabel}"
             />
-
             <span data-entryscape="example-Label" />
             <span
               data-entryscape="text"
               data-entryscape-fallback=""
-              data-entryscape-content="${skos:example}"
+              data-entryscape-content="${skos:definition}"
+            />
+
+            <span
+              data-entryscape="text"
+              data-entryscape-fallback=""
+              data-entryscape-content="${dcterms:description}"
             />
           </div>
 
@@ -684,7 +686,10 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               <span data-entryscape="term-head" />
               <span data-entryscape="concept-head" />
             </Heading>
-            <span data-entryscape="hemvist" />
+            <span
+              className="text-sm text-textSecondary"
+              data-entryscape="hemvist"
+            />
             <span className="text-md" data-entryscape="terminology" />
             <span data-entryscape="terminologyButton" />
             <script
