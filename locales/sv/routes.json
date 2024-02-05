@@ -71,10 +71,6 @@
     "path": "data",
     "title": "Data & API:er"
   },
-  "contribute": {
-    "path": "var-med-och-bidra",
-    "title": "Var med och bidra"
-  },
   "data-collaboration": {
     "path": "datasamverkan",
     "title": "Datasamverkan"
@@ -90,10 +86,6 @@
   "governance": {
     "path": "styrning",
     "title": "Styrning"
-  },
-  "use-data": {
-    "path": "anvand-data",
-    "title": "Kom igång med att använda din data"
   },
   "share-data": {
     "path": "dela-data",
@@ -114,5 +106,38 @@
   "language": {
     "path": "en",
     "title": "English"
+  },
+  "educations": {
+    "path": "utbildningar",
+    "title": "Utbildningar"
+  },
+  "strategies": {
+    "path": "strategies",
+    "title": "Strategier"
+  },
+  "principles": {
+    "path": "principles",
+    "title": "Principer"
+  },
+  "results": {
+    "path": "resultat-och-uppföljning",
+    "title": "Resultat och uppföljning"
+  },
+  "metadata": {
+    "path": "metadatakvalitet-per-katalog",
+    "title": "Metadatakvalitet per katalog"
+  },
+  "cookies": {
+    "analytic-heading": "Analytiska kakor",
+    "analytic-description": "Ger oss information om hur vår webbplats används som gör att vi kan underhålla, driva och förbättra användarupplevelsen.",
+    "necessary-heading": "Nödvändiga kakor",
+    "necessary-description": "En del kakor gör att våra tjänster är säkra och fungerar som de ska. Dessa nödvändiga kakor är alltid aktiverade och går inte att inaktivera.",
+    "settings-heading": "Inställningar för kakor",
+    "customize-cookies-heading": "Anpassa inställningar för kakor",
+    "path": "om-webbplatsen/om-kakor",
+    "link-title": "Läs mer om kakor",
+    "cookie-text": "På dataportal.se använder vi kakor (cookies) för att webbplatsen ska fungera på ett bra sätt för dig. Med hjälp av webbanalys och anonymiserad data vidareutvecklas webbplatsen ytterligare. Genom att surfa vidare godkänner du att vi använder kakor.",
+    "cookie-setting": "Spara och godkänn",
+    "cookie-setting-open": "Spara och godkänn alla kakor"
   }
 }

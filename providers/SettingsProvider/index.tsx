@@ -23,12 +23,6 @@ export const extractSettings = (diggSettings: {
     noScriptContent:
       diggSettings?.items?.find((s) => s?.key === "noScriptContent")?.value ||
       "",
-    cookieInformation:
-      diggSettings?.items?.find((s) => s?.key === "cookieInformation")?.value ||
-      "",
-    cookieMoreInfoLink:
-      diggSettings?.items?.find((s) => s?.key === "cookieMoreInfoLink")
-        ?.value || "",
     matomoSiteId:
       diggSettings?.items?.find((s) => s?.key === "matomoSiteId")?.value || "",
   };
@@ -40,8 +34,6 @@ export const defaultSettings: SettingsContext = {
   pageNotFoundHeading: "",
   pageNotFoundText: "",
   noScriptContent: "",
-  cookieInformation: "cookie-text",
-  cookieMoreInfoLink: "/om-webbplatsen/om-kakor",
   matomoSiteId: "-1",
   appRenderKey: "",
 };
