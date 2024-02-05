@@ -22,16 +22,17 @@ export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
         <Container className="space-y-xl md:space-y-2xl">
           <FooterNav setOpenSideBar={setOpenSideBar} />
           <div className="flex flex-col justify-between gap-xl align-top md:flex-row md:gap-none">
-            <span>
-              {t("common|managed-and-developed-by")}
+            <div className="mr-lg">
+              <span className="font-strong">Sveriges dataportal </span>
+              <span>{t("common|managed-and-developed-by")}</span>
               <Link
                 aria-label="Digg logo"
                 href={"https://digg.se/"}
-                className="focus--red text-green-600"
+                className="focus--red min-w-min text-green-600"
               >
                 Digg – Myndigheten för digital förvaltning
               </Link>
-            </span>
+            </div>
             <Image
               src={"/images/europeiskaunionen.png"}
               width={200}
