@@ -43,8 +43,6 @@ interface DataportalSettings {
   pageNotFoundHeading: string;
   pageNotFoundText: string;
   noScriptContent: string;
-  cookieInformation: string;
-  cookieMoreInfoLink: string;
   matomoSiteId: string;
 }
 
