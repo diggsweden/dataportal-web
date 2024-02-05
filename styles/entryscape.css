@@ -110,7 +110,7 @@
 }
 
 .esbRowHead .esbRowControl > button {
-  @apply m-none mb-xs flex h-[44px] w-full items-center justify-evenly gap-xs rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary hover:bg-brown-100 hover:no-underline focus-visible:no-underline focus-visible:shadow-none focus-visible:shadow-none !important;
+  @apply m-none mb-xs flex h-[44px] w-full items-center justify-evenly gap-xs rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary shadow-none hover:bg-brown-100 hover:no-underline focus-visible:no-underline focus-visible:shadow-none !important;
 }
 
 .btn-link::before {
