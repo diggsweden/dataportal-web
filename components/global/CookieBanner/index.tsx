@@ -62,7 +62,7 @@ export const CookieBanner: FC = () => {
         <div className="mb-lg">{t("cookies$cookie-text")}</div>
 
         <Link
-          href={t("cookies$path") || "/"}
+          href={`/${t("cookies$path")}` || "/"}
           passHref
           className="text-green-600"
         >
