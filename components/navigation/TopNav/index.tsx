@@ -1,10 +1,8 @@
 import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { topNav } from "@/utilities/menuData";
 import { ButtonLink } from "@/components/global/Button";
-import DiggSmallLogo from "@/assets/logos/diggSmall.svg";
 import { usePathname } from "next/navigation";
 
 interface TopNavData {
@@ -31,14 +29,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
   }
 
   return (
-    <div className="flex h-[32px] flex-row items-center justify-between">
-      <Link
-        aria-label="Digg logo"
-        href={"https://digg.se/"}
-        className="focus--white"
-      >
-        <DiggSmallLogo />
-      </Link>
+    <div className="flex h-[32px] flex-row items-center justify-end">
       <nav aria-label="Service">
         <ul className="flex flex-row">
           {topNav.map((menu: TopNavData, idx: number) => (
