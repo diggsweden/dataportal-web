@@ -31,7 +31,10 @@ export const SearchPageSelector: React.FC<SearchTabsProps> = ({ query }) => {
       >
         {t("search$specifications")}
       </Tab>
-      <Tab href={`${lang}/search?q=&f=`} active={pathname === "/search"}>
+      <Tab
+        href={`${lang}/search?q=${query ? query : ""}&f=`}
+        active={pathname === "/search"}
+      >
         {t("search$content")}
       </Tab>
     </div>
