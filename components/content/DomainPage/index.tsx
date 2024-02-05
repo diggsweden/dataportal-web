@@ -69,6 +69,16 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
+  const promotedAreas = [
+    "offentligai",
+    "bilddata",
+    "kompetens-och-livslangt-larande",
+  ];
+  const filteredAreas = !domain
+    ? promotedAreas?.flatMap(
+        (slug) => areas?.filter((area) => area.slug === slug),
+      )
+    : areas;
 
   useEffect(() => {
     setBreadcrumb &&
@@ -150,6 +160,19 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           </ContentBox>
         )}
 
+        {filteredAreas &&
+          (domain === "datasamverkan" || !domain) &&
+          lang === "sv" && (
+            <RelatedContentBlock
+              links={filteredAreas}
+              icons={true}
+              inline={true}
+              isTeaser={!domain && true}
+              heading="Datasamverkan"
+              href="datasamverkan"
+            />
+          )}
+
         {!domain && (
           <ContentBox heading={t("pages|startpage$datasets_by_category")}>
             <ul className="flex flex-wrap justify-center gap-md lg:gap-lg">
@@ -173,10 +196,6 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               ))}
             </ul>
           </ContentBox>
-        )}
-
-        {areas && domain === "datasamverkan" && lang === "sv" && (
-          <RelatedContentBlock links={areas} icons={true} inline={true} />
         )}
 
         {!domain && (

@@ -6,18 +6,27 @@ import PieChartIcon from "@/assets/linkIcons/pieChart.svg";
 import PlanetIcon from "@/assets/linkIcons/planet.svg";
 import AIIcon from "@/assets/linkIcons/ai.svg";
 import { PromoProps, Promo } from "@/components/content/Promo";
-
+import { ButtonLink } from "@/components/global/Button";
+import { Heading } from "@/components/global/Typography/Heading";
+import useTranslation from "next-translate/useTranslation";
 interface RelatedContentProps {
   links: PromoProps[] | any;
   inline?: boolean;
   icons?: boolean;
+  isTeaser?: boolean;
+  heading?: string;
+  href?: string;
 }
 
 export const RelatedContentBlock: FC<RelatedContentProps> = ({
   links,
   icons,
   inline,
+  isTeaser,
+  heading,
+  href,
 }) => {
+  const { t } = useTranslation("pages");
   const linkIcons = [
     { icon: BookIcon, slug: "kompetens-och-livslangt-larande" },
     { icon: HeartIcon, slug: "bilddata" },
@@ -28,27 +37,47 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
   ];
 
   return (
-    <ul
-      className={`my-xl grid grid-flow-row auto-rows-fr md:grid-cols-2 ${
-        icons ? "gap-xl" : "gap-lg"
-      } ${inline && !icons ? "max-w-md" : "lg:grid-cols-3"}`}
-    >
-      {links.map((link: PromoProps, idx: number) => {
-        return (
-          <li key={idx}>
-            <Promo
-              icon={
-                icons &&
-                linkIcons[
-                  linkIcons.findIndex((icon) => icon.slug === link.slug)
-                ]?.icon
-              }
-              link={link}
-              inline={inline}
+    <div className="mb-xl">
+      {isTeaser && (
+        <div className="flex justify-between gap-sm text-2xl">
+          {heading && (
+            <Heading level={2} size={"md"}>
+              {heading}
+            </Heading>
+          )}
+
+          {href && (
+            <ButtonLink
+              size="sm"
+              href={href}
+              label={t("news$view-all")}
+              variant="secondary"
             />
-          </li>
-        );
-      })}
-    </ul>
+          )}
+        </div>
+      )}
+      <ul
+        className={`my-xl grid grid-flow-row auto-rows-fr md:grid-cols-2 ${
+          icons ? "gap-xl" : "gap-lg"
+        } ${inline && !icons ? "max-w-md" : "lg:grid-cols-3"}`}
+      >
+        {links.map((link: PromoProps, idx: number) => {
+          return (
+            <li key={idx}>
+              <Promo
+                icon={
+                  icons &&
+                  linkIcons[
+                    linkIcons.findIndex((icon) => icon.slug === link.slug)
+                  ]?.icon
+                }
+                link={link}
+                inline={inline}
+              />
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 };
