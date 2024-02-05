@@ -211,8 +211,8 @@ export const SpecificationPage: FC<{
                 extends: 'list',
                 relation: 'prof:hasResource',
                 template: 'prof:ResourceDescriptor',
-                expandTooltip: 'Visa mer',
-                unexpandTooltip: 'Visa mindre',
+                expandTooltip: '${t("pages|datasetpage$view_more")}',
+                unexpandTooltip: '${t("pages|datasetpage$view_less")}',
                 listbody: '<div class="specification__resource--body">{{body}}</div>',
                 listplaceholder: '<div class="alert alert-info" role="alert">Denna specifikation har inga resurser.</div>',
                 rowhead:
