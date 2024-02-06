@@ -97,7 +97,12 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/concepts/") > -1)
             {
-              var entryPath = resourceUri.replace("https://dataportal.se/concepts","");
+              let entryPath = '';
+              if(resourceUri.includes('https://www-sandbox.dataportal.se/concepts'))
+              entryPath = resourceUri.replace("https://www-sandbox.dataportal.se/concepts","");
+
+              else
+              entryPath = resourceUri.replace("https://dataportal.se/concepts","");
 
               if(isTerm)
                 return "/terminology" + entryPath;
@@ -110,8 +115,14 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/terminology/") > -1)    
             {
-              var entryPath = resourceUri.replace("https://dataportal.se/concepts","");            
-               return "/concepts" + entryPath;
+              let entryPath = '';
+              if(resourceUri.includes('https://www-sandbox.dataportal.se/concepts'))
+              entryPath = resourceUri.replace("https://www-sandbox.dataportal.se/concepts","");
+
+              else
+              entryPath = resourceUri.replace("https://dataportal.se/concepts","");
+
+              return "/concepts" + entryPath;
             }
 
             return resourceUri;
@@ -162,14 +173,22 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               },         
               {
                 regex:new RegExp('(\/*\/terminology\/)(.+)'),
-                uri:'https://dataportal.se/concepts/${curi}',
+                uri:'https://${
+                  env.ENTRYSCAPE_TERMS_PATH.includes("sandbox")
+                    ? "www-sandbox.dataportal.se"
+                    : "dataportal.se"
+                }/concepts/${curi}',
                 page_language: '${lang}',
                 },  
               {
                 regex:new RegExp('(\/*\/concepts\/)(.+)'),
-                uri:'https://dataportal.se/concepts/${curi}',
+                uri:'https://${
+                  env.ENTRYSCAPE_TERMS_PATH.includes("sandbox")
+                    ? "www-sandbox.dataportal.se"
+                    : "dataportal.se"
+                }/concepts/${curi}',
                 page_language: '${lang}'
-              }                            
+              }                 
             ],           
             entrystore: 'https://${
               env.ENTRYSCAPE_TERMS_PATH
@@ -326,7 +345,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                     node.setAttribute('class', 'entryscape')  
 
                     node.firstElementChild.appendChild(el);
-                         
+                    
                     var ruri = entry.getResourceURI();
                     var label = getLocalizedValue(entry.getAllMetadata(),'skos:prefLabel','${lang}'); 
                     el.innerHTML = label
