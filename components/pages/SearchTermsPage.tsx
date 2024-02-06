@@ -87,7 +87,9 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
       path = tmp[0] + '/' + tmp[1];
     } else path = resourceUri;
 
-    if (resourceUri && !resourceUri.includes('dataportal.se')) return `/externalconcepts/${path}`;
+    if (resourceUri &&
+      (!resourceUri.includes("dataportal.se") ||
+        resourceUri.includes("sandbox.dataportal.se"))) return `/externalconcepts/${path}`;
     else {
       //NDP-343
       if (path.startsWith('https/dataportal.se/concepts'))

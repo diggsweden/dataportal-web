@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import { EntrystoreProvider, SettingsContext } from '../../components';
-import { SpecificationPage } from '../../components/pages/SpecificationPage';
-import { useScript } from '../../hooks/useScript';
-export default function Concept() {
+import { EntrystoreProvider, SettingsContext } from '../../../components';
+import { SpecificationPage } from '../../../components/pages/SpecificationPage';
+import { useScript } from '../../../hooks/useScript';
+export default function Specification() {
   const { env } = useContext(SettingsContext);
   const { query } = useRouter() || {};
-  const { paths } = query || {};
-  const curi = (paths as string[])?.join('/');
+  const { specification, param  } = query || {};
+  const curi = `${specification}/${param}`;
   const entryUri = `https://dataportal.se/specifications/${curi}`;
   const postscribeStatus = useScript(
     '/postscribe.min.js',
