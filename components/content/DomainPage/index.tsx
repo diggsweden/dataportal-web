@@ -69,13 +69,13 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
-  const promotedAreas = [
+  const promotedAreaTeasers = [
     "offentligai",
     "bilddata",
     "kompetens-och-livslangt-larande",
   ];
   const filteredAreas = !domain
-    ? promotedAreas?.flatMap(
+    ? promotedAreaTeasers?.flatMap(
         (slug) => areas?.filter((area) => area.slug === slug),
       )
     : areas;
