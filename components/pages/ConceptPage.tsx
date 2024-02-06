@@ -89,7 +89,11 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({ curi
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/concepts/") > -1)
             {
-              var entryPath = resourceUri.replace("https://dataportal.se/concepts","");
+              let entryPath = '';
+              if(resourceUri.includes('https://www-sandbox.dataportal.se/concepts'))
+              entryPath = resourceUri.replace("https://www-sandbox.dataportal.se/concepts","");
+              else
+              entryPath = resourceUri.replace("https://dataportal.se/concepts","");
 
               if(isTerm)
                 return "/${lang}/terminology" + entryPath;
@@ -102,8 +106,13 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({ curi
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/terminology/") > -1)    
             {
-              var entryPath = resourceUri.replace("https://dataportal.se/concepts","");            
-               return "/${lang}/concepts" + entryPath;
+              let entryPath = '';
+              if(resourceUri.includes('https://www-sandbox.dataportal.se/concepts'))
+              entryPath = resourceUri.replace("https://www-sandbox.dataportal.se/concepts","");
+              else
+              entryPath = resourceUri.replace("https://dataportal.se/concepts","");
+
+              return "/${lang}/concepts" + entryPath;
             }
 
             return resourceUri;
@@ -154,7 +163,11 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({ curi
               },         
               {
                 regex:new RegExp('(\/*\/terminology\/)(.+)'),
-                uri:'https://dataportal.se/concepts/${curi}',
+                uri:'https://${
+                  env.ENTRYSCAPE_TERMS_PATH.includes('sandbox')
+                    ? 'www-sandbox.dataportal.se'
+                    : 'dataportal.se'
+                }/concepts/${curi}',
                 page_language: '${lang}',
                 constraints: {
                   "rdf:type": "skos:ConceptScheme"
@@ -162,7 +175,11 @@ export const ConceptPage: React.FC<{ curi?: string; scheme?: string }> = ({ curi
               },             
               {
                 regex:new RegExp('(\/*\/concepts\/)(.+)'),
-                uri:'https://dataportal.se/concepts/${curi}',
+                uri:'https://${
+                  env.ENTRYSCAPE_TERMS_PATH.includes('sandbox')
+                    ? 'www-sandbox.dataportal.se'
+                    : 'dataportal.se'
+                }/concepts/${curi}',
                 page_language: '${lang}'
               }                            
             ],           
