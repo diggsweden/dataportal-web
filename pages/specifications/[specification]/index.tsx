@@ -10,7 +10,12 @@ export default function Specification() {
   const { query } = useRouter() || {};
   const { specification } = query || {};
   const curi = specification;
-  const entryUri = `https://dataportal.se/specifications/${curi}`;
+  let entryUri = "";
+
+  if (env.ENTRYSCAPE_TERMS_PATH.includes("sandbox"))
+    entryUri = `https://www-sandbox.dataportal.se/specifications/${curi}`;
+  else entryUri = `https://dataportal.se/specifications/${curi}`;
+
   const postscribeStatus = useScript(
     "/postscribe.min.js",
     "sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM",
