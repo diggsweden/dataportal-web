@@ -70,7 +70,7 @@ export const hvdIndicator = `
     block: 'hvdIndicator',
     extends: 'template',
     template: '{{#eachprop "http://data.europa.eu/r5r/applicableLegislation"}}<span class="esbIndicator" title="Särskilt värdefull datamängd">' +
-     '<i class="fas fa-dollar-sign"></i>' +
+     '<i class="fas fa-star"></i>' +
       '<span class="ml-xs">{{label}}</span></span>{{/eachprop}}',
   }`;
 
