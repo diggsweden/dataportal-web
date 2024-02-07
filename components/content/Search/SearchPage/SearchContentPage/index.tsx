@@ -226,7 +226,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
           />
         </form>
 
-        <SearchPageSelector />
+        <SearchPageSelector query={query} />
 
         <div id="search-result" className="my-lg md:my-xl">
           <div className="mb-lg md:mb-xl">
