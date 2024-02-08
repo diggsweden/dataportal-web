@@ -261,8 +261,8 @@ export const DataSetPage: React.FC = () => {
                 extends: 'template',
                 relation: 'dcat:accessService',
                 template: 
-                '<button class="button--primary button--large flex items-center">' +
-                  '{{link class="text-white" namedclick="dataservice-link" content="${t(
+                '<button class="button--primary button--large flex items-center !no-underline">' +
+                  '{{link class="linkInBtn noUnderline" tabIndex="-1" namedclick="dataservice-link" content="${t(
                     "pages|datasetpage$read_about_api",
                   )}"}}' +
                   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +

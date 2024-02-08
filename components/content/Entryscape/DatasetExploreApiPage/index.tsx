@@ -11,7 +11,7 @@ import Head from "next/head";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 import { linkBase } from "@/utilities";
-import BodyVariant from "@/components/global/Typography/BodyVariant";
+import { CustomLink } from "@/components/global/CustomLink";
 
 const ApiExplorer = dynamic(
   () =>
@@ -367,13 +367,12 @@ export const DataSetExploreApiPage: React.FC<{
                     {t("pages|explore-api-page$contact-publisher")}
                   </Heading>
 
-                  <BodyVariant
-                    variant="a"
+                  <CustomLink
                     className="!mb-lg text-brown-800"
                     href={`mailto:${entry.contact.email}`}
                   >
                     {entry.contact.name}
-                  </BodyVariant>
+                  </CustomLink>
                 </div>
               )}
             </div>

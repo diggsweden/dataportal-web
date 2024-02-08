@@ -509,6 +509,10 @@
   @apply mb-md text-lg !important;
 }
 
+.linkInBtn {
+  @apply text-white !important;
+}
+
 .concept_hierarchy {
   @apply overflow-scroll bg-white py-md;
 }
@@ -530,7 +534,7 @@
 }
 
 .esbHierarchy__leafNode rect {
-  @apply fill-brown-800 !important;
+  @apply fill-brown-600 !important;
 }
 
 .entryListRow {
