@@ -1,4 +1,12 @@
-image: docker:20.10.16
+image: docker:20.10.16-dind
+
+include:
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - template: Code-Quality.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/Container-Scanning.gitlab-ci.yml
+
 workflow:
   rules:
     - if: $CI_COMMIT_BRANCH
@@ -16,6 +24,16 @@ variables:
 stages:
   - build
   - deploy
+  - test
+
+.dt-upload:
+  stage: .post
+  image: docker:20.10.16-dind
+  services:
+    - name: docker:20.10.16-dind
+  before_script:
+    - apk add --update curl
+
 image:build:release:
   stage: build
   rules:
@@ -76,3 +94,153 @@ update:deploy:tag:
   trigger:
     project: digg/deploy-dataportal
     branch: main
+
+
+cloc:
+  dependencies: []
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "stage-beta"'
+  stage: test
+  image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/node:18-alpine
+  before_script:
+    - apk add perl
+    - npm install -g cloc
+  script:
+    - cloc src --json -out cloc.json
+  artifacts:
+    paths:
+    - cloc.json
+    when: always
+    expire_in: 1 day
+
+
+container_scanning:
+  stage: test
+  variables:
+    GIT_STRATEGY: fetch
+    CS_IMAGE: $IMAGE:$TAG
+    CS_REGISTRY_USER: $DOCKER_USER
+    CS_REGISTRY_PASSWORD: $DOCKER_PASSWORD
+  needs:
+    - image:build:release
+  artifacts:
+    paths:
+      - gl-container-scanning-report.json
+      - gl-dependency-scanning-report.json
+      - gl-sbom-report.cdx.json
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "stage-beta"'
+
+code_quality:
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_TLS_VERIFY: 1
+    DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+  before_script:
+    - until docker info; do sleep 1; done
+
+code_quality_html:
+  extends: code_quality
+  variables:
+    REPORT_FORMAT: html
+  artifacts:
+    paths: [gl-code-quality-report.html]
+  before_script:
+    - until docker info; do sleep 1; done
+
+semgrep-sast:
+  dependencies: []
+  after_script:
+    - cp gl-sast-report.json gl-semgrep-report.json
+  artifacts:
+    paths:
+      - gl-semgrep-report.json
+
+nodejs-scan-sast:
+  dependencies: []
+  after_script:
+    - cp gl-sast-report.json gl-nodejs-report.json
+  artifacts:
+    paths:
+      - gl-nodejs-report.json
+
+gemnasium-dependency_scanning:
+  rules:  # override rules to not require lockfile to be committed
+    - when: on_success
+  after_script: cp gl-dependency-scanning-report.json gl-dependency-node-scanning-report.json
+  artifacts:
+    paths:
+      - gl-dependency-node-scanning-report.json
+
+dd:upload:cloc:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "stage-beta"'
+  image: maibornwolff/dd-import:latest
+  needs:
+    - job: cloc
+      artifacts: true
+  stage: .post
+  variables:
+    DD_FILE_NAME: "cloc.json"
+  script:
+    - dd-import-languages.sh
+
+dd:upload:nodejs:dependency:scanning:
+  image: maibornwolff/dd-import:latest
+  needs:
+    - job: gemnasium-dependency_scanning
+      artifacts: true
+  stage: .post
+  variables:
+    GIT_STRATEGY: none
+    DD_TEST_NAME: "GitLab Dependency Scanning Report"
+    DD_TEST_TYPE_NAME: "GitLab Dependency Scanning Report"
+    DD_FILE_NAME: "gl-dependency-node-scanning-report.json"
+  script:
+    - dd-reimport-findings.sh
+
+dd:upload:nodejs:sast:scanning:
+  image: maibornwolff/dd-import:latest
+  needs:
+    - job: nodejs-scan-sast
+      artifacts: true
+  stage: .post
+  variables:
+    GIT_STRATEGY: none
+    DD_TEST_NAME: "GitLab SAST Report"
+    DD_TEST_TYPE_NAME: "GitLab SAST Report"
+    DD_FILE_NAME: "gl-nodejs-report.json"
+  script:
+    - dd-reimport-findings.sh
+
+dt-import-sbom-scan:
+  extends: .dt-upload
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "stage-beta"'
+  needs:
+    - job: container_scanning
+      artifacts: true
+  script:
+    - |
+      curl -X "POST" "$DT_URL" \
+        -H "application/json; charset=utf8" \
+        -H "X-Api-Key: $DT_API_KEY" \
+        -F "autoCreate=true" \
+        -F "projectName=$CI_PROJECT_NAME" \
+        -F "projectVersion=$CI_COMMIT_BRANCH" \
+        -F "bom=@gl-sbom-report.cdx.json"
+
+dd:upload:container:dependency:scanning:
+  image: maibornwolff/dd-import:latest
+  needs:
+    - job: container_scanning
+      artifacts: true
+  stage: .post
+  variables:
+    GIT_STRATEGY: none
+    DD_TEST_NAME: "GitLab Container Scan"
+    DD_TEST_TYPE_NAME: "GitLab Container Scan"
+    DD_FILE_NAME: "gl-container-scanning-report.json"
+  script:
+    - dd-reimport-findings.sh
