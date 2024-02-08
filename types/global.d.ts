@@ -70,7 +70,6 @@ type CSPDirective =
   | "manifest-src"
   | "media-src"
   | "object-src"
-  | "prefetch-src"
   | "script-src"
   | "script-src-elem"
   | "script-src-attr"

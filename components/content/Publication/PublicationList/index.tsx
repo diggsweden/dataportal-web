@@ -25,9 +25,9 @@ export const PublicationList: FC<PublicationListProps> = ({
   const { t } = useTranslation();
 
   return (
-    <div className="mb-xl">
+    <div className="my-lg md:my-xl">
       <div
-        className={`flex items-center ${
+        className={`mb-lg flex items-center md:mb-xl ${
           publications.length <= 3 ? "justify-between" : "gap-sm"
         } text-2xl`}
       >
@@ -46,7 +46,7 @@ export const PublicationList: FC<PublicationListProps> = ({
         )}
       </div>
       {publications.length > 0 ? (
-        <ul className="gap-4 grid grid-cols-1 gap-xl pt-xl md:grid-cols-2 lg:grid-cols-3">
+        <ul className="gap-4 grid grid-cols-1 gap-xl md:grid-cols-2 lg:grid-cols-3">
           {publications.map((publication, idx) => (
             <li key={idx}>
               <PublicationTeaser publication={publication} />
@@ -54,7 +54,7 @@ export const PublicationList: FC<PublicationListProps> = ({
           ))}
         </ul>
       ) : (
-        <span className="pt-xl">{t("pages|listpage$no-articles")}</span>
+        <span>{t("pages|listpage$no-articles")}</span>
       )}
     </div>
   );

@@ -48,6 +48,13 @@ const BodyVariant: FC<PropsWithChildren<BodyProps>> = ({
             window.scrollTo({ top: 0, behavior: "smooth" });
           }
         }}
+        aria-label={
+          isMailLink(href)
+            ? "email_link"
+            : isExternal
+            ? "external_link"
+            : "internal_link"
+        }
         className={cx(bodyVariants({ variant }), className)}
       >
         {children}

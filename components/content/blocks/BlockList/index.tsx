@@ -5,11 +5,11 @@ import {
   FaqFragment,
 } from "@/graphql/__generated__/operations";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
-/* import Form from "@/components/Form/Form"; */
 import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentBlock";
 import { TextBlock } from "@/components/content/blocks/TextBlock";
 import { AccordionBlock } from "@/components/content/blocks/AccordionBlock";
 import { MediaBlock } from "@/components/content/blocks/MediaBlock";
+import { FormPage } from "@/components/content/FormPage";
 
 interface blockListProps {
   blocks:
@@ -91,15 +91,13 @@ export const BlockList: React.FC<blockListProps> = ({ blocks, className }) => {
             );
           case "dataportal_Digg_FormBlock":
             return (
-              <>
-                {/*            <Form
-                  key={block.id}
-                  elements={block.elements}
-                  id={block.id}
-                  identifier={block.id}
-                  __typename="dataportal_Digg_Form"
-                /> */}
-              </>
+              <FormPage
+                key={block.id}
+                elements={block.elements}
+                id={block.id}
+                identifier={block.id}
+                __typename="dataportal_Digg_Form"
+              />
             );
           default:
             return (

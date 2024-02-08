@@ -1,14 +1,15 @@
 import useTranslation from "next-translate/useTranslation";
 import Link, { LinkProps } from "next/link";
+import { FC } from "react";
 import { onlyText } from "react-children-utilities";
 
-interface ExternalLinkProps extends LinkProps {
+interface CustomLinkProps extends LinkProps {
   className?: string;
   children?: React.ReactNode;
   isMail?: boolean;
 }
 
-export const ExternalLink: React.FC<ExternalLinkProps> = (props) => {
+export const CustomLink: FC<CustomLinkProps> = (props) => {
   const { t } = useTranslation("common");
   const text = onlyText(props.children);
   return (

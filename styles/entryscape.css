@@ -11,11 +11,17 @@
 }
 
 .rdformsRow {
-  @apply inline-grid !important;
+  @apply mb-md inline-grid w-full p-none md:mb-lg !important;
 }
 
-.rdformsLabel {
-  @apply min-w-fit border-none text-sm text-textSecondary !important;
+.rdformsRow .rdformsRow {
+  @apply mb-none !important;
+}
+
+.rdformsLabel,
+.information-container .title {
+  @apply mb-sm min-w-fit border-none p-none font-ubuntu text-sm font-strong text-textSecondary
+  focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-primary !important;
 }
 
 .rdformsRepeatedValue {
@@ -69,9 +75,6 @@
   @apply border-none bg-transparent p-none !important;
 }
 
-.rdformsRow {
-  @apply pl-none !important;
-}
 .rdformsRow .rdformsPresenter .rdformsLabel {
   @apply hidden;
 }
@@ -91,10 +94,6 @@
 .esbRow,
 .esbRowExpand {
   @apply bg-white shadow-none !important;
-}
-
-.rdformsRow {
-  @apply w-full !important;
 }
 
 .esbRow {
@@ -117,13 +116,13 @@
   content: attr(Title);
 }
 
+.btn-link {
+  @apply no-underline focus-visible:bg-brown-100 focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-primary !important;
+}
+
 .rdformsField,
 .rdformsSingleline {
   @apply mt-none text-sm !important;
-}
-
-.entryscape a:hover {
-  @apply no-underline !important;
 }
 
 .svg-assets {
@@ -375,6 +374,11 @@
   @apply mb-lg;
 }
 
+.information-container,
+.information-container pre {
+  @apply font-ubuntu text-sm;
+}
+
 .opblock-tag {
   @apply flex cursor-pointer justify-between bg-[#d8d8d8] p-md text-textPrimary [&_svg]:fill-textPrimary;
 }
@@ -397,7 +401,7 @@
 
 .copy-to-clipboard button {
   background:
-    url("../assets/icons//copy-to-clipboard.svg"),
+    url("../assets/icons/copy-to-clipboard.svg"),
     no-repeat center;
   @apply h-[20px] w-[20px] bg-contain;
 }
@@ -459,12 +463,42 @@
   @apply p-sm text-brown-900;
 }
 
-.entryscape a {
-  @apply block break-all text-sm text-green-600 underline !important;
+.entryscape a:not(.noUnderline),
+.information-container a {
+  @apply block w-fit break-all text-sm text-green-600 underline;
+}
+
+.entryscape a:not(.noUnderline) {
+  @apply text-green-600 !important;
+}
+
+.entryscape a:hover,
+.information-container a:hover {
+  @apply no-underline !important;
 }
 
 .entryscape h3 {
-  @apply mb-none text-sm font-normal text-textSecondary !important;
+  @apply mb-sm text-sm font-strong text-textSecondary !important;
+}
+
+.preamble {
+  @apply mb-lg font-ubuntu text-lg text-textSecondary md:mb-xl !important;
+}
+
+.conceptDetail h2 {
+  @apply mb-sm mt-none text-lg font-normal !important;
+}
+
+.conceptDetail span {
+  @apply text-md !important;
+}
+
+.conceptDetail a {
+  @apply mb-none w-fit text-md text-green-600 !important;
+}
+
+.conceptDetail .entryList {
+  @apply space-y-sm !important;
 }
 
 .relatedList-label {
@@ -476,7 +510,7 @@
 }
 
 .concept_hierarchy {
-  @apply overflow-scroll py-md;
+  @apply overflow-scroll bg-white py-md;
 }
 
 .concept_hierarchy svg {

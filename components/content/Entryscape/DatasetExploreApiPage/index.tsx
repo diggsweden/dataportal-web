@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { ApiExplorerProps } from "@/components/content/Entryscape/ApiExploring";
-import { ExternalLink } from "@/components/navigation/ExternalLink";
+
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import useTranslation from "next-translate/useTranslation";
 import { SettingsContext } from "@/providers/SettingsProvider";
@@ -10,8 +10,8 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
-import MailIcon from "@/assets/icons/mail.svg";
 import { linkBase } from "@/utilities";
+import BodyVariant from "@/components/global/Typography/BodyVariant";
 
 const ApiExplorer = dynamic(
   () =>
@@ -262,7 +262,7 @@ export const DataSetExploreApiPage: React.FC<{
       </Head>
       <div className="detailpage__wrapper-topinfo">
         {/* Title */}
-        <Heading level={3} size={"lg"} className="pt-xl text-xl lg:text-2xl">
+        <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {t("pages|explore-api-page$explore-api")}
         </Heading>
         {/* Publisher */}
@@ -297,9 +297,9 @@ export const DataSetExploreApiPage: React.FC<{
         </div>
         <div className="flex flex-col">
           {/* Refers to dataset - heading*/}
-          <span className="font-bold pb-sm lg:text-lg">
+          <Heading level={2} size={"sm"} className="mb-sm md:mb-md">
             {t("pages|explore-api-page$belongs-to-dataset")}
-          </span>
+          </Heading>
 
           {/* Refers to dataset - datset */}
           <span className="break-words text-sm lg:text-md">{entry.title}</span>
@@ -348,34 +348,32 @@ export const DataSetExploreApiPage: React.FC<{
 
             <div className="max-w-md bg-pink-200 p-md [&_h2]:mb-xs [&_h2]:text-md [&_h2]:text-textSecondary [&_h2]:lg:text-lg [&_p]:mb-lg [&_p]:text-sm [&_p]:text-textPrimary [&_p]:lg:text-md">
               <div>
-                <Heading level={2}>
+                <Heading level={2} size={"sm"}>
                   {t("pages|explore-api-page$access-to-api")}
                 </Heading>
                 <p>{t("pages|explore-api-page$access-to-api-txt")}</p>
-                <Heading level={2}>
+                <Heading level={2} size={"sm"}>
                   {t("pages|explore-api-page$open-apis")}
                 </Heading>
                 <p>{t("pages|explore-api-page$open-apis-txt")}</p>
-                <Heading level={2}>
+                <Heading level={2} size={"sm"}>
                   {t("pages|explore-api-page$api-key")}
                 </Heading>
                 <p>{t("pages|explore-api-page$api-key-txt")}</p>
               </div>
               {entry.contact && (
-                <div>
-                  <Heading level={2}>
+                <div className="mb-md">
+                  <Heading level={2} size={"sm"}>
                     {t("pages|explore-api-page$contact-publisher")}
                   </Heading>
-                  <p className="flex items-center gap-xs">
-                    <ExternalLink
-                      className="mb-xstext-brown-800 hover:no-underline"
-                      isMail={true}
-                      href={`mailto:${entry.contact.email}`}
-                    >
-                      {entry.contact.name}
-                    </ExternalLink>
-                    <MailIcon width={16} height={16} viewBox="0 0 24 24" />
-                  </p>
+
+                  <BodyVariant
+                    variant="a"
+                    className="!mb-lg text-brown-800"
+                    href={`mailto:${entry.contact.email}`}
+                  >
+                    {entry.contact.name}
+                  </BodyVariant>
                 </div>
               )}
             </div>
