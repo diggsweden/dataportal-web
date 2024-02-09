@@ -71,7 +71,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   const isEn = lang === "en";
   const promotedAreaTeasers = [
     "offentligai",
-    "bilddata",
+    "e-halso-initiativet",
     "kompetens-och-livslangt-larande",
   ];
   const filteredAreas = !domain

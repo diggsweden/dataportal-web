@@ -127,6 +127,10 @@
     "path": "metadatakvalitet",
     "title": "Metadatakvalitet per katalog"
   },
+  "open-data-charter": {
+    "path": "uppfoljning-open-data-charter",
+    "title": "Uppföljning Open data charter"
+  },
   "cookies": {
     "analytic-heading": "Analytiska kakor",
     "analytic-description": "Ger oss information om hur vår webbplats används som gör att vi kan underhålla, driva och förbättra användarupplevelsen.",
