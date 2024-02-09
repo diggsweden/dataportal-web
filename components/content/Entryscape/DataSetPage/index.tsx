@@ -214,8 +214,8 @@ export const DataSetPage: React.FC = () => {
                     "pages|datasetpage$several_links",
                   )}{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" min="2" invert="true"}}' +
-                  '<a href="{{prop "dcat:downloadURL"}}" class="text-white">' +
-                  '<button class="button--primary button--large text-white flex items-center">' +
+                  '<a href="{{prop "dcat:downloadURL"}}" class="text-white noUnderline">' +
+                  '<button class="button--primary button--large text-white flex items-center !no-underline">' +
                   '${t("pages|datasetpage$download_link")}' +
                   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
                   '<path d="M14 3V5H17.59L7.76 14.83L9.17 16.24L19 6.41V10H21V3M19 19H5V5H12V3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V12H19V19Z" fill="#6E615A"/>' +
@@ -225,8 +225,8 @@ export const DataSetPage: React.FC = () => {
                   '{{/ifprop}}' +
                   '{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" invert="true"}}' +
-                  '<a href="{{prop "dcat:accessURL"}}" class="text-white">' +
-                  '<button class="button--primary button--large text-white flex items-center">' +
+                  '<a href="{{prop "dcat:accessURL"}}" class="text-white noUnderline">' +
+                  '<button class="button--primary button--large text-white flex items-center !no-underline">' +
                   '${t("pages|datasetpage$download_link_adress")}' +
                   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
                   '<path d="M14 3V5H17.59L7.76 14.83L9.17 16.24L19 6.41V10H21V3M19 19H5V5H12V3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V12H19V19Z" fill="#6E615A"/>' +
@@ -261,8 +261,8 @@ export const DataSetPage: React.FC = () => {
                 extends: 'template',
                 relation: 'dcat:accessService',
                 template: 
-                '<button class="button--primary button--large flex items-center">' +
-                  '{{link class="text-white" namedclick="dataservice-link" content="${t(
+                '<button class="button--primary button--large flex items-center !no-underline">' +
+                  '{{link class="linkInBtn noUnderline" tabIndex="-1" namedclick="dataservice-link" content="${t(
                     "pages|datasetpage$read_about_api",
                   )}"}}' +
                   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
@@ -289,8 +289,8 @@ export const DataSetPage: React.FC = () => {
                 block: 'distributionListCustom',
                 extends: 'list',
                 relation: 'dcat:distribution',
-                expandTooltip: 'Visa mer',
-                unexpandTooltip: 'Visa mindre',
+                expandTooltip: '${t("pages|datasetpage$view_more")}',
+                unexpandTooltip: '${t("pages|datasetpage$view_less")}',
                 registry: false,
                 clickExpand: false,
                 hl: 2,
@@ -340,7 +340,7 @@ export const DataSetPage: React.FC = () => {
                           )}" unexpandbutton="${t(
                             "pages|datasetpage$view_less",
                           )}"}}' +
-                            '<div title="{{value}}" class="text-sm font-strong bg-pink-200 w-fit my-sm p-xs" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
+                            '<div title="{{value}}" class="text-sm mb-sm font-strong bg-pink-200 w-fit py-xs px-sm" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
                           '{{/eachprop}}' +
                         '</div>' +
                       '</div>' +
@@ -402,17 +402,13 @@ export const DataSetPage: React.FC = () => {
       </Head>
       <div>
         {/* Title */}
-        <Heading
-          level={1}
-          size={"lg"}
-          className="mb-none py-xl text-xl lg:text-2xl"
-        >
+        <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {entry.title}
         </Heading>
 
-        <div className="gap-2xl lg:flex">
+        <div className="mb-lg gap-2xl md:mb-xl lg:flex">
           {/* Left column */}
-          <div className="flex flex-col gap-lg">
+          <div className="mb-lg flex w-full max-w-md flex-col gap-lg lg:mb-xl">
             {/* Publisher */}
             <script
               type="text/x-entryscape-handlebar"
@@ -487,7 +483,11 @@ export const DataSetPage: React.FC = () => {
 
               {/* Questions  or comments */}
               <div className="contact__publisher hbbr">
-                <Heading level={3}>
+                <Heading
+                  level={2}
+                  size={"sm"}
+                  className="mb-sm text-textSecondary md:mb-md"
+                >
                   {t("pages|datasetpage$contact-publisher")}
                 </Heading>
                 <p>
@@ -506,10 +506,14 @@ export const DataSetPage: React.FC = () => {
             </div>
           </div>
           {/* Right column */}
-          <div className="pt-xl lg:w-[296px] lg:pt-none">
+          <div className="mb-lg w-full pt-none lg:mb-none lg:max-w-[296px]">
             {/* About dataset - wrapper  */}
             <div className=" lg:w-[296px] ">
-              <Heading level={2} size={"sm"} className="pl-sm">
+              <Heading
+                level={2}
+                size={"sm"}
+                className="mb-md text-textSecondary md:mb-lg"
+              >
                 {t("pages|datasetpage$about-dataset")}
               </Heading>
               {/* About dataset */}
@@ -517,12 +521,18 @@ export const DataSetPage: React.FC = () => {
                 data-entryscape-dialog
                 data-entryscape-rdformsid="dcat:contactPoint"
               />
-              <div data-entryscape="aboutDataset" className="p-md" />
+              <div data-entryscape="aboutDataset" className="mb-lg" />
             </div>
 
             {/* Catalog informaton wrapper */}
             <div className="bg-white p-md">
-              <h2>{t("pages|datasetpage$catalog")}</h2>
+              <Heading
+                level={2}
+                size={"sm"}
+                className="mb-sm text-textSecondary md:mb-md"
+              >
+                {t("pages|datasetpage$catalog")}
+              </Heading>
 
               {/* Catalog */}
               <script
@@ -549,8 +559,8 @@ export const DataSetPage: React.FC = () => {
                 data-entryscape-block="template"
                 dangerouslySetInnerHTML={{
                   __html: `
-                      <a class="text-white" href="{{metadataURI}}?recursive=dcat">
-                      <button class="button--primary button--large text-white flex items-center">
+                      <a class="text-white noUnderline" href="{{metadataURI}}?recursive=dcat">
+                      <button class="button--primary button--large text-white flex items-center !no-underline">
                       ${t("pages|datasetpage$rdf")}
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                       <path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18V15H6V18H18V15H20V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6Z" fill="#F0EFEE"/>

@@ -5,6 +5,7 @@ import HeartIcon from "@/assets/linkIcons/heart.svg";
 import PieChartIcon from "@/assets/linkIcons/pieChart.svg";
 import PlanetIcon from "@/assets/linkIcons/planet.svg";
 import AIIcon from "@/assets/linkIcons/ai.svg";
+import RobotIcon from "@/assets/linkIcons/robotIcon.svg";
 import { PromoProps, Promo } from "@/components/content/Promo";
 import { ButtonLink } from "@/components/global/Button";
 import { Heading } from "@/components/global/Typography/Heading";
@@ -34,6 +35,7 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
     { icon: PlanetIcon, slug: "rymddata" },
     { icon: PieChartIcon, slug: "smart-statistik" },
     { icon: AIIcon, slug: "offentligai" },
+    { icon: RobotIcon, slug: "utvecklarportalen-stod-for-api-utveckling" },
   ];
 
   return (
