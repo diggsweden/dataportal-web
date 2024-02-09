@@ -12,7 +12,7 @@ export default function Specification() {
   const curi = specification;
   let entryUri = "";
 
-  if (env.ENTRYSCAPE_TERMS_PATH.includes("sandbox"))
+  if (env.ENTRYSCAPE_SPECS_PATH.includes("sandbox"))
     entryUri = `https://www-sandbox.dataportal.se/specifications/${curi}`;
   else entryUri = `https://dataportal.se/specifications/${curi}`;
 
@@ -26,7 +26,7 @@ export default function Specification() {
     <EntrystoreProvider
       env={env}
       entryUri={entryUri}
-      entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
+      entrystoreUrl={env.ENTRYSCAPE_SPECS_PATH}
       fetchMore={false}
     >
       <SpecificationPage {...(typeof curi === "string" ? { curi } : {})} />

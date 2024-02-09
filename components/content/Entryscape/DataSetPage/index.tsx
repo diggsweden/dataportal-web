@@ -482,7 +482,7 @@ export const DataSetPage: React.FC = () => {
               ></div>
 
               {/* Questions  or comments */}
-              <div className="contact__publisher hbbr">
+              <div className="contact__publisher mt-md md:mt-lg">
                 <Heading
                   level={2}
                   size={"sm"}
@@ -516,6 +516,7 @@ export const DataSetPage: React.FC = () => {
               >
                 {t("pages|datasetpage$about-dataset")}
               </Heading>
+
               {/* About dataset */}
               <div
                 data-entryscape-dialog
