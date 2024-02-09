@@ -11,6 +11,7 @@ import { highlightCode } from "@/components/content/ContainerPage";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { usePathname } from "next/navigation";
 import { SettingsContext } from "@/providers/SettingsProvider";
+import { Preamble } from "@/components/global/Typography/Preamble";
 
 const whitelistedTagsSV = ["Goda exempel", "Event", "Nyhet"];
 export const findPublicationTypeTag = (tags: PublicationResponse["tags"]) => {
@@ -33,6 +34,8 @@ const getRelatedHeading = (tag: string) => {
 export const PublicationFull: React.FC<PublicationResponse> = ({
   tags,
   heading,
+  preamble,
+  image,
   name,
   blocks,
   related,
@@ -72,15 +75,17 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
   }, [pathname]);
 
   return (
-    <article>
-      <Container>
-        <div className="grid gap-xl lg:grid-cols-5">
-          <div id="content" className="order-2 col-span-3 max-w-md lg:order-1">
-            {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
-          </div>
-          <aside id="sidebar" className="order-1 col-span-2 lg:order-2">
+    <Container>
+      <article className="flex w-full flex-col">
+        {!image && heading && (
+          <Heading size={"lg"} level={1} className="mb-lg md:mb-xl">
+            {heading}
+          </Heading>
+        )}
+        <div className="flex w-full flex-col items-start justify-end gap-xl lg:flex-row-reverse">
+          <aside id="sidebar" className="w-full lg:max-w-[296px]">
             <Heading
-              level={4}
+              level={2}
               size="sm"
               className="mb-md flex text-textSecondary"
             >
@@ -91,6 +96,14 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
               {formatDateWithTime(lang, publishedAt)}
             </p>
           </aside>
+
+          <div
+            id="content"
+            className="flex w-full max-w-md flex-col space-y-lg md:space-y-xl"
+          >
+            {!image && preamble && <Preamble>{preamble}</Preamble>}
+            {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
+          </div>
         </div>
         {related && related.length > 0 && (
           <PublicationList
@@ -98,7 +111,7 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
             heading={"Fler " + relatedHeading.toLowerCase()}
           />
         )}
-      </Container>
-    </article>
+      </article>
+    </Container>
   );
 };

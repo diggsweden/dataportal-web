@@ -104,7 +104,7 @@ export const exploreApiLink = (cid: string, eid: string, t: Translate) => `
           el.appendChild(svgIcon);
           label.innerHTML = '${t("pages|datasetpage$explore-api")}'
           el.setAttribute('href', getApiExploreUrl('${eid}',entryId))
-          el.setAttribute('class', 'explore-api-btn') 
+          el.setAttribute('class', 'explore-api-btn noUnderline') 
         }
       }
     },
@@ -133,11 +133,11 @@ export const hemvist = (t: Translate) => `
         linkTitle = '${t("pages|specification_page$address")}';
       
       if (resourceURI.indexOf('https://dataportal.se/') === 0) {
-        node.innerHTML=linkTitle + ': <a class="hemvist" href='+resourceURI+'>'+resourceURI+'</a>';
+        node.innerHTML='<h3 class="!mt-none">' + linkTitle + ':</h3> <a class="hemvist mb-lg" href='+resourceURI+'>'+resourceURI+'</a>';
       }
       else
       {
-        node.innerHTML='<span class="text-sm text-textSecondary">'+linkTitle+'</span> <a href='+resourceURI+'>'+resourceURI+'</a>';
+        node.innerHTML='<h3 class="!mt-none">'+linkTitle+'</h3> <a class="hemvist mb-lg" href='+resourceURI+'>'+resourceURI+'</a>';
       } 
     }
   }

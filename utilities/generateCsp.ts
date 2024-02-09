@@ -1,4 +1,4 @@
-import reactEnv from '@beam-australia/react-env';
+import reactEnv from "@beam-australia/react-env";
 interface Options {
   prodOnly?: boolean;
 }
@@ -24,7 +24,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   const add = (
     directive: CSPDirective,
     value: string,
-    options: Options = {}
+    options: Options = {},
   ) => {
     if (options.prodOnly && process.env.NODE_ENV === "development") return;
     /** eslint-disable */
@@ -56,7 +56,6 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     `'self' data: https://static.entryscape.com https://static.cdn.entryscape.com`,
   );
   add("base-uri", `'self'`);
-  add("prefetch-src", `'self'`);
   add("manifest-src", `'self'`);
   add("form-action", `'self'`);
   add(

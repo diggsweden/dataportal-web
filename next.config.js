@@ -25,7 +25,7 @@ const baseHeaders = [
   },
   {
     key: "Permissions-Policy",
-    value: "camera=(), battery=(), geolocation=(), microphone=()",
+    value: "camera=(), geolocation=(), microphone=()",
   },
   {
     key: "Access-Control-Allow-Origin",

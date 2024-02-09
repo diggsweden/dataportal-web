@@ -262,29 +262,30 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
 
                           {facetValues.map(
                             (facetValue: SearchFacetValue, index: number) => {
-                              return (
-                                <button
-                                  aria-pressed={selected(key, facetValue)}
-                                  key={index}
-                                  className={`group relative flex w-full items-center py-md pl-md pr-xl text-left hover:bg-brown-100 ${
-                                    selected(key, facetValue) && "font-strong"
-                                  }`}
-                                  onClick={() => {
-                                    doSearch(key, facetValue);
-                                  }}
-                                >
-                                  {facetValue.title || facetValue.resource} (
-                                  {facetValue.count}){" "}
-                                  {selected(key, facetValue)}
-                                  <span className="absolute right-md">
-                                    {selected(key, facetValue) ? (
-                                      <CheckboxCheckedIcon />
-                                    ) : (
-                                      <CheckboxIcon />
-                                    )}
-                                  </span>
-                                </button>
-                              );
+                              if (facetValue.count > 0)
+                                return (
+                                  <button
+                                    aria-pressed={selected(key, facetValue)}
+                                    key={index}
+                                    className={`group relative flex w-full items-center break-all py-md pl-md pr-xl text-left hover:bg-brown-100 ${
+                                      selected(key, facetValue) && "font-strong"
+                                    }`}
+                                    onClick={() => {
+                                      doSearch(key, facetValue);
+                                    }}
+                                  >
+                                    {facetValue.title || facetValue.resource} (
+                                    {facetValue.count}){" "}
+                                    {selected(key, facetValue)}
+                                    <span className="absolute right-md">
+                                      {selected(key, facetValue) ? (
+                                        <CheckboxCheckedIcon />
+                                      ) : (
+                                        <CheckboxIcon />
+                                      )}
+                                    </span>
+                                  </button>
+                                );
                             },
                           )}
 
@@ -316,7 +317,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                 } else {
                   return (
                     // eslint-disable-next-line react/jsx-key
-                    <div className="relative flex max-w-[222px]">
+                    <div className="relative max-w-fit">
                       <input
                         tabIndex={-1}
                         id="hvd_only"
@@ -330,19 +331,19 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                       />
                       <label
                         tabIndex={0}
-                        className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-[50px] focus-visible:bg-whiteOpaque5 md:pr-xl"
+                        className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl focus-visible:bg-whiteOpaque5 md:pr-xl"
                         htmlFor="hvd_only"
                       >
                         {t(`resources|${key}`)}
                       </label>
-                      <CheckboxIcon className="pointer-events-none absolute right-sm top-1/4 peer-checked/api-only:hidden" />
-                      <CheckboxCheckedIcon className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/api-only:block" />
+                      <CheckboxIcon className="pointer-events-none absolute right-md top-1/4 peer-checked/api-only:hidden" />
+                      <CheckboxCheckedIcon className="pointer-events-none absolute right-md top-1/4 hidden peer-checked/api-only:block" />
                     </div>
                   );
                 }
               })}
           {searchMode == "datasets" && (
-            <div className="relative max-w-[74px]">
+            <div className="relative max-w-fit">
               <input
                 tabIndex={-1}
                 id="api_only"
@@ -403,8 +404,8 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
               >
                 API
               </label>
-              <CheckboxIcon className="pointer-events-none absolute right-sm top-1/4 peer-checked/api-only:hidden" />
-              <CheckboxCheckedIcon className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/api-only:block" />
+              <CheckboxIcon className="pointer-events-none absolute right-md top-1/4 peer-checked/api-only:hidden" />
+              <CheckboxCheckedIcon className="pointer-events-none absolute right-md top-1/4 hidden peer-checked/api-only:block" />
             </div>
           )}
         </ul>
