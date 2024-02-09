@@ -26,17 +26,17 @@ export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
               <span className="font-strong">Sveriges dataportal </span>
               <span>{t("common|managed-and-developed-by")}</span>
               <Link
-                aria-label="Digg logo"
+                aria-label="Digg - Myndigheten för digital förvaltning"
                 href={"https://digg.se/"}
                 className="focus--red min-w-min text-green-600"
               >
-                Digg – Myndigheten för digital förvaltning
+                Digg - Myndigheten för digital förvaltning
               </Link>
             </div>
             <Image
               src={"/images/europeiskaunionen.png"}
               width={200}
-              height={43}
+              height={42}
               alt="SV Finansieras av Europeiska unionen logo"
             />
           </div>

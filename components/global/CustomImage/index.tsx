@@ -1,5 +1,5 @@
 import env from "@beam-australia/react-env";
-import React from "react";
+import { FC } from "react";
 import { ImageFragment as ImageInterface } from "@/graphql/__generated__/operations";
 import { isExternalLink } from "@/utilities";
 import Image from "next/image";
@@ -12,10 +12,7 @@ interface CustomImageProps {
 
 const isNextStatic = (url: string) => typeof url != "string";
 
-export const CustomImage: React.FC<CustomImageProps> = ({
-  image,
-  className,
-}) => {
+export const CustomImage: FC<CustomImageProps> = ({ image, className }) => {
   if (!image) {
     return (
       <Image src={noImage} alt={"image not found"} className={className} />
@@ -30,6 +27,7 @@ export const CustomImage: React.FC<CustomImageProps> = ({
         height={image.height || 200}
         className={className}
         alt={image.alt || ""}
+        priority
       />
     );
   }
