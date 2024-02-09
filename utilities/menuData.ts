@@ -128,6 +128,10 @@ const mainNav: NavData[] = [
         title: "metadata",
         inEn: false,
       },
+      {
+        title: "open-data-charter",
+        inEn: false,
+      },
     ],
   },
   {
