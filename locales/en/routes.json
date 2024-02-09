@@ -79,5 +79,29 @@
     "cookie-text": "We use cookies on Sweden's data portal to improve your experience of the website. By continuing to browse, you agree that we use cookies.",
     "cookie-setting": "Save and accept all cookies",
     "cookie-setting-open": "Save and accept"
+  },
+  "good-examples": {
+    "path": "",
+    "title": "Good exaples"
+  },
+  "news": {
+    "path": "",
+    "title": "News"
+  },
+  "support-tools": {
+    "path": "",
+    "title": "Support and tools"
+  },
+  "share-data": {
+    "path": "",
+    "title": "Share data"
+  },
+  "data-collaboration": {
+    "path": "",
+    "title": "Data collaboration"
+  },
+  "educations": {
+    "path": "",
+    "title": "Education"
   }
 }
