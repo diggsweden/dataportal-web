@@ -20,7 +20,7 @@
 
 .rdformsLabel,
 .information-container .title {
-  @apply mb-sm min-w-fit border-none p-none font-ubuntu text-sm font-strong text-textSecondary
+  @apply mb-sm min-w-fit border-none p-none font-ubuntu text-sm font-strong text-textSecondary !outline-offset-2
   focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-primary !important;
 }
 
@@ -559,4 +559,9 @@
 
 .swagger-ui .opblock-body {
   min-width: 500px;
+}
+
+.eachprop__expandbutton,
+.eachprop__unexpandbutton {
+  @apply px-sm py-xs font-strong hover:bg-brown-200 focus-visible:bg-brown-200 !important;
 }

@@ -184,8 +184,8 @@ export const SpecificationPage: FC<{
             itemstore: {
               bundles: [
                 'dcat',
-                'https://editera.dataportal.se/theme/templates/adms.json',
-                'https://editera.dataportal.se/theme/templates/prof.json',
+                'https://sandbox.editera.dataportal.se/theme/templates/adms.json',
+                'https://sandbox.editera.dataportal.se/theme/templates/prof.json',
               ],
             },
             blocks: [

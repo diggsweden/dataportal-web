@@ -129,7 +129,7 @@ export const hemvist = (t: Translate) => `
       if(window.location.pathname.indexOf("/terminology/") > -1 || window.location.pathname.indexOf("/externalterminology/") > -1)
         linkTitle = '${t("pages|concept_page$term_adress")}';
 
-      if(window.location.pathname.indexOf("/specifications/") > -1)
+      if(window.location.pathname.indexOf("/specifications/") > -1 || window.location.pathname.indexOf("/externalspecification/") > -1)
         linkTitle = '${t("pages|specification_page$address")}';
       
       if (resourceURI.indexOf('https://dataportal.se/') === 0) {
