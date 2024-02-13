@@ -45,7 +45,7 @@ export const Promo: FC<{
         {link.description && !inline && (
           <p className="pb-lg pt-sm text-brown-600">{link.description}</p>
         )}
-        <span className="button button--small button--primary mt-auto">
+        <span className="button button--small button--primary focus--none mt-auto">
           {t("read-more")}
           {isExternalLink(link.slug) ? (
             <ExternalLinkIcon height={16} width={16} viewBox="0 0 24 24" />
