@@ -52,14 +52,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         aria-label="Dataportal logo"
         onClick={() => setOpenSideBar(false)}
       >
-        <DataportalLogo
-          viewBox="0 0 228 44"
-          className={`${
-            openSearch
-              ? "hidden lg:block xl:w-[150px] 2xl:w-[228px]"
-              : "h-[32px] w-[160px] md:h-[44px] md:w-[228px] "
-          } `}
-        />
+        <DataportalLogo className={`${openSearch && "hidden lg:block"}`} />
       </Link>
       <div className="flex w-full flex-row items-center justify-end space-x-md">
         <nav
