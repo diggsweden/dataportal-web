@@ -106,7 +106,7 @@
 }
 
 .totMQA .esbRowLink {
-  @apply border-none !no-underline hover:bg-brown-200 focus-visible:bg-brown-200 !important;
+  @apply w-full border-none !no-underline hover:bg-brown-200 focus-visible:bg-brown-200 !important;
 }
 
 .totMQA .esbRowLink > .esbRowMain {
