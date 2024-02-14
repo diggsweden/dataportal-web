@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import Link from "next/link.js";
 import { Button, ButtonLink } from "@/components/global/Button";
 import { mainNav } from "@/utilities/menuData";
-import DataportalLogo from "@/assets/logos/dataportal.svg";
+import DataportalLogo from "@/assets/logos/sveriges_dataportal_logo.svg";
 import CloseCrossIcon from "@/assets/icons/closeCross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { usePathname } from "next/navigation";
@@ -51,7 +51,6 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         href={`${t(`common|${"lang-path"}`)}`}
         aria-label="Dataportal logo"
         onClick={() => setOpenSideBar(false)}
-        className="focus--white"
       >
         <DataportalLogo
           viewBox="0 0 228 44"
@@ -69,11 +68,12 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         >
           {menues.map((menu: MainNavData, idx: number) => (
             <ButtonLink
+              variant="plain"
               key={idx}
               href={`/${t(`routes|${menu.title}$path`)}`}
               onClick={() => setOpenSideBar(false)}
               label={t(`routes|${menu.title}$title`)}
-              className={`focus--white focus--in ${
+              className={`${
                 `/${t(`routes|${menu.title}$path`)}` === basePath
                   ? " active"
                   : ""
@@ -87,11 +87,12 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         >
           {!openSearch ? (
             <Button
+              variant="plain"
               aria-label="Search"
               onClick={() => setOpenSearch(!openSearch)}
               icon={SearchIcon}
               iconPosition="left"
-              className="focus--white focus--in w-[44px] cursor-pointer p-[10px]"
+              className="w-[44px] cursor-pointer p-[10px]"
             />
           ) : (
             <form
@@ -119,13 +120,12 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         </div>
 
         <Button
+          variant="plain"
           icon={openSideBar ? CloseCrossIcon : HamburgerIcon}
           iconPosition="left"
           onClick={() => setOpenSideBar(!openSideBar)}
           label={t("common|menu")}
-          className={`button--large focus--white focus--in ${
-            openSideBar ? "active" : ""
-          }`}
+          className={`button--large ${openSideBar ? "active" : ""}`}
         />
       </div>
     </div>
