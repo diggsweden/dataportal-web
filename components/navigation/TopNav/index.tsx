@@ -31,22 +31,22 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
   return (
     <div className="flex h-[32px] flex-row items-center justify-end">
       <nav aria-label="Service">
-        <ul className="flex flex-row">
+        <ul className="flex flex-row space-x-xs">
           {topNav.map((menu: TopNavData, idx: number) => (
             <li key={idx} className="group text-sm">
               {menu.href ? (
-                <>
-                  <ButtonLink
-                    href={menu.href}
-                    icon={menu.icon}
-                    iconPosition="left"
-                    label={t(`common|${menu.title}`)}
-                    size={"sm"}
-                    className="focus--in focus--white [&_span]:hidden md:[&_span]:block"
-                  />
-                </>
+                <ButtonLink
+                  variant="plain"
+                  href={menu.href}
+                  icon={menu.icon}
+                  iconPosition="left"
+                  label={t(`common|${menu.title}`)}
+                  size={"sm"}
+                  className="[&_span]:hidden md:[&_span]:block"
+                />
               ) : (
                 <ButtonLink
+                  variant="plain"
                   href={`/${t(`routes|${menu.title}$path`)}`}
                   locale={`${menu.title === "language" ? "" : lang}`}
                   onClick={() => setOpenSideBar(false)}
@@ -54,11 +54,11 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
                   iconPosition="left"
                   label={t(`routes|${menu.title}$title`)}
                   size={"sm"}
-                  className={`focus--in focus--white ${
+                  className={`${
                     menu.title !== "language" &&
                     "[&_span]:hidden md:[&_span]:block"
                   } ${
-                    pathname === `${t(`routes|${menu.title}$path`)}` &&
+                    pathname === `/${t(`routes|${menu.title}$path`)}` &&
                     menu.title !== "language"
                       ? " active"
                       : ""
