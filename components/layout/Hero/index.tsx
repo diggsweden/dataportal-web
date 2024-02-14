@@ -48,6 +48,7 @@ export const Hero: FC<HeroProps> = ({
         <div className="absolute left-none top-none h-full w-full">
           <CustomImage
             image={image}
+            width={1200}
             className="h-full w-full object-cover"
             aria-label="Hero image"
           />
