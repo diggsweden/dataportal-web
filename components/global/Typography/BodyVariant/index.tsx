@@ -1,10 +1,9 @@
 import React, { FC, PropsWithChildren } from "react";
 import { cx, cva, VariantProps } from "class-variance-authority";
-import { isExternalLink, isMailLink } from "@/utilities";
+import { isExternalLink } from "@/utilities";
 import Link from "next/link";
 import QuoteIcon from "@/assets/icons/quote.svg";
-import MailIcon from "@/assets/icons/mail.svg";
-import ExternalLinkIcon from "@/assets/icons/external-link.svg";
+import { CustomLink } from "../../CustomLink";
 
 const bodyVariants = cva(["text-md"], {
   variants: {
@@ -40,23 +39,24 @@ const BodyVariant: FC<PropsWithChildren<BodyProps>> = ({
   if (variant === "a" && href) {
     const isExternal = isExternalLink(href);
 
+    if (isExternal) {
+      return (
+        <CustomLink
+          href={href}
+          className={cx(bodyVariants({ variant }), className)}
+        >
+          {children}
+        </CustomLink>
+      );
+    }
     return (
       <Link
         href={href}
-        onClick={() => {
-          if (!isExternal) {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }
-        }}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        aria-label={"internal_link"}
         className={cx(bodyVariants({ variant }), className)}
       >
         {children}
-        {isMailLink(href) && (
-          <MailIcon width={16} height={16} viewBox="0 0 24 24" />
-        )}
-        {isExternal && !isMailLink(href) && (
-          <ExternalLinkIcon width={16} height={16} viewBox="0 0 24 24" />
-        )}
       </Link>
     );
   }

@@ -82,10 +82,14 @@ body {
     @apply focus-visible:underline group-focus-visible:underline;
   }
 
+  .focus--none {
+    @apply focus-visible:outline-none group-focus-visible:outline-none !important;
+  }
+
   .button {
-    @apply flex w-fit flex-row items-center no-underline disabled:cursor-not-allowed 
-    disabled:border-none disabled:bg-brown-400 disabled:text-brown-600 disabled:hover:bg-brown-400
-     [&_path]:disabled:fill-brown-600 [&_svg]:inline-flex;
+    @apply flex w-fit cursor-pointer flex-row items-center no-underline 
+    disabled:cursor-not-allowed disabled:border-none disabled:bg-brown-400 disabled:text-brown-600
+     disabled:hover:bg-brown-400 [&_path]:disabled:fill-brown-600 [&_svg]:inline-flex;
   }
   .button--primary {
     @apply bg-brown-600 text-brown-100 hover:bg-brown-800 focus-visible:bg-brown-800 group-hover:bg-brown-800 
@@ -183,13 +187,13 @@ mark {
 a,
 h1,
 button,
-.button,
+.button:not(.focus--none),
 input[type="radio"] {
   @apply focus--outline focus--primary focus--out;
 }
 
 .explore-api-btn {
-  @apply button--primary button--large button bg-brown-600  decoration-white hover:bg-brown-800	 [&_span]:text-white !important;
+  @apply button--primary button--large button bg-brown-600 no-underline hover:bg-brown-800 [&_span]:text-white !important;
 }
 
 /* SWAGGER UI */

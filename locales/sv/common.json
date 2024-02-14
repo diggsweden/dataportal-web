@@ -8,16 +8,6 @@
   "change-lang": "en",
   "contact": "Kontakt",
   "cookies": "om_kakor",
-  "cookie-text": "På dataportal.se använder vi kakor (cookies) för att webbplatsen ska fungera på ett bra sätt för dig. Med hjälp av webbanalys och anonymiserad data vidareutvecklas webbplatsen ytterligare. Genom att surfa vidare godkänner du att vi använder kakor.",
-  "cookie-btn-closed": "Spara och godkänn alla kakor",
-  "cookie-btn-open": "Spara och godkänn",
-  "cookie-btn-settings": "Inställningar för kakor",
-  "cookie-link": "Läs mer om kakor",
-  "cookie-settings-heading": "Anpassa inställningar för kakor",
-  "cookie-analytic-heading": "Analytiska kakor",
-  "cookie-analytic-description": "Ger oss information om hur vår webbplats används som gör att vi kan underhålla, driva och förbättra användarupplevelsen.",
-  "cookie-necessary-heading": "Nödvändiga kakor",
-  "cookie-necessary-description": "En del kakor gör att våra tjänster är säkra och fungerar som de ska. Dessa nödvändiga kakor är alltid aktiverade och går inte att inaktivera.",
   "content-menu-heading": "Innehåll på sidan",
   "clear-filters": "Rensa filter",
   "close": "Stäng",
@@ -80,5 +70,7 @@
   "guidance-share": "Vägledning för öppna och dela data",
   "community": "Community",
   "read-more": "Läs mer",
-  "published-date": "Publiceringsdatum"
+  "published-date": "Publiceringsdatum",
+  "high-value-dataset": "Värdefull datamängd",
+  "managed-and-developed-by": "förvaltas och utvecklas av "
 }

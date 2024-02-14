@@ -98,7 +98,13 @@ export const SpecificationPage: FC<{
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/specifications/") > -1)
             {
-              var entryPath = resourceUri.replace("https://dataportal.se/specifications","");
+              let entryPath = '';
+
+              if(resourceUri.includes('https://www-sandbox.dataportal.se/specifications'))
+              entryPath = resourceUri.replace("https://www-sandbox.dataportal.se/specifications","");
+
+              else
+              entryPath = resourceUri.replace("https://dataportal.se/","");
                 return "/specifications" + entryPath;
             }
 
@@ -144,7 +150,11 @@ export const SpecificationPage: FC<{
               },                
               {
                 regex:new RegExp('(\/*\/specifications\/)(.+)'),
-                uri:'https://dataportal.se/specifications/${curi}',
+                uri:'https://${
+                  env.ENTRYSCAPE_TERMS_PATH.includes("sandbox")
+                    ? "www-sandbox.dataportal.se"
+                    : "dataportal.se"
+                }/specifications/${curi}',
                 page_language: '${lang}'
               }              
             ],
@@ -196,39 +206,21 @@ export const SpecificationPage: FC<{
             blocks: [
               ${hemvist(t)},
               {
-                block: 'specificationSearch',
-                extends: 'searchList',
-                rdftype: ['dcterms:Standard', 'prof:Profile'],
-                rdformsid: 'prof:Profile',
-                initsearch: true,
-                facets: true,
-                headless: true,
-                rowhead: '<h4>{{ link namedclick="specification" }}</h4>' +
-                  '{{ text content="\${dcterms:description}" }}',
-              },
-              {
                 block: 'resourceDescriptors2',
                 extends: 'list',
                 relation: 'prof:hasResource',
                 template: 'prof:ResourceDescriptor',
-                expandTooltip: 'Visa mer',
-                unexpandTooltip: 'Visa mindre',
+                expandTooltip: '${t("pages|datasetpage$view_more")}',
+                unexpandTooltip: '${t("pages|datasetpage$view_less")}',
                 listbody: '<div class="specification__resource--body">{{body}}</div>',
                 listplaceholder: '<div class="alert alert-info" role="alert">Denna specifikation har inga resurser.</div>',
                 rowhead:
                 '<span class="">{{text}}</span>' + 
                   '<span class="block mb-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
                   '<div>{{ text content="\${skos:definition}" }}</div>' +
-                  '<a href="{{resourceURI}}"><button class="button button--primary button--large text-white" >${t(
+                  '<a href="{{resourceURI}}"><button class="button button--primary button--large text-white" tabIndex="-1">${t(
                     "pages|specification_page$download",
-                  )} {{prop "prof:hasRole" class="type" render="label"}}</button> </a>',
-              },
-              {
-                block: 'indexLink',
-                extends: 'template',
-                htemplate: '<a class="btn btn-default primaryBtn" href="/theme/specs">' +
-                  'Tillbaka till sök' +
-                  '</a>',
+                  )} {{prop "prof:hasRole" class="type" render="label"}}</button></a>',
               },
             ],
           }];
@@ -259,35 +251,32 @@ export const SpecificationPage: FC<{
         <meta name="twitter:title" content={`${title} - Sveriges dataportal`} />
       </Head>
       <div>
-        <Heading
-          level={1}
-          size={"lg"}
-          className="mb-none py-xl text-xl lg:text-2xl"
-        >
+        <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {title}
         </Heading>
-        <div className="gap-2xl lg:flex">
+        <div className="flex flex-col gap-xl lg:flex-row lg:gap-2xl">
           {/* Left column */}
-          <div>
+          <div className="flex w-full max-w-md flex-col">
             <script
               type="text/x-entryscape-handlebar"
               data-entryscape="true"
               data-entryscape-component="template"
               dangerouslySetInnerHTML={{
                 __html: `
-                          <p class="text-md">
+                          <span class="text-lg text-textSecondary">
                             {{text relation="dcterms:publisher"}} 
-                          <p>
+                          <span>
                           `,
               }}
             ></script>
 
             <span
-              className="py-lg"
+              className="mb-lg mt-md !font-ubuntu text-lg text-textSecondary md:mb-xl md:mt-lg"
               data-entryscape="text"
               data-entryscape-content="${dcterms:description}"
-            ></span>
-            <Heading level={2} size={"md"} className="mb-none py-lg">
+            />
+
+            <Heading level={2} size={"md"} className="mb-md md:mb-lg">
               {t("pages|specification_page$resource_specification")}
             </Heading>
             <div
@@ -295,8 +284,8 @@ export const SpecificationPage: FC<{
               data-entryscape-rdftype="prof:ResourceDescriptor"
             ></div>
 
-            <div className="contact__publisher hbbr">
-              <Heading level={3}>
+            <div className="contact__publisher hbbr mt-md md:mt-lg">
+              <Heading level={3} size={"sm"}>
                 {t("pages|datasetpage$contact-publisher")}
               </Heading>
               <p>
@@ -313,7 +302,11 @@ export const SpecificationPage: FC<{
           {/* Right column */}
           <div className="pt-xl lg:w-[296px] lg:pt-none">
             <div className="min-w-296px">
-              <Heading level={2} size={"sm"}>
+              <Heading
+                level={2}
+                size={"sm"}
+                className="mb-sm text-textSecondary md:mb-md"
+              >
                 {t("pages|specification_page$about_specification")}
               </Heading>
               <span data-entryscape="hemvist" />

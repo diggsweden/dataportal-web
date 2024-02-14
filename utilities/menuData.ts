@@ -9,6 +9,9 @@ import homeIcon from "@/assets/icons/home.svg";
 import mailIcon from "@/assets/icons/mail.svg";
 import nyheterIcon from "@/assets/icons/nyheter.svg";
 import stodVerktygIcon from "@/assets/icons/stod-verktyg.svg";
+import shareData from "@/assets/icons/shareData.svg";
+import education from "@/assets/icons/stod-verktyg.svg";
+import results from "@/assets/icons/stod-verktyg.svg";
 
 interface NavItem {
   title: string;
@@ -68,36 +71,23 @@ const mainNav: NavData[] = [
   {
     title: "support-tools",
     promoted: true,
+    inEn: false,
     icon: stodVerktygIcon,
-    children: [
-      {
-        title: "support-tools",
-        inEn: false,
-      },
-      {
-        title: "share-data",
-        inEn: false,
-      },
-      {
-        title: "use-data",
-        inEn: false,
-      },
-    ],
+  },
+  {
+    title: "share-data",
+    inEn: false,
+    icon: shareData,
   },
   {
     title: "good-examples",
     promoted: true,
     icon: godaExempelIcon,
-    children: [
-      {
-        title: "good-examples",
-        inEn: false,
-      },
-      {
-        title: "contribute",
-        inEn: false,
-      },
-    ],
+  },
+  {
+    title: "educations",
+    promoted: false,
+    icon: education,
   },
   {
     title: "data-collaboration",
@@ -107,13 +97,9 @@ const mainNav: NavData[] = [
   },
   {
     title: "why-share-data",
-    promoted: true,
+    promoted: false,
     icon: delaDataIcon,
     children: [
-      {
-        title: "why-share-data",
-        inEn: false,
-      },
       {
         title: "shara-data-benefits",
         inEn: false,
@@ -123,7 +109,27 @@ const mainNav: NavData[] = [
         inEn: false,
       },
       {
-        title: "governance",
+        title: "strategies",
+        inEn: false,
+      },
+      {
+        title: "principles",
+        inEn: false,
+      },
+    ],
+  },
+  {
+    title: "results",
+    promoted: false,
+    inEn: false,
+    icon: results,
+    children: [
+      {
+        title: "metadata",
+        inEn: false,
+      },
+      {
+        title: "open-data-charter",
         inEn: false,
       },
     ],

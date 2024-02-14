@@ -39,24 +39,12 @@
     "path": "events",
     "title": "Events"
   },
-  "news": {
-    "path": "news",
-    "title": "News"
-  },
-  "good-examples": {
-    "path": "good-examples",
-    "title": "Good examples"
-  },
-  "start": {
-    "path": "",
-    "title": "Sveriges Dataportal"
-  },
   "statistics": {
     "path": "statistik",
     "title": "Statistics"
   },
   "about-us": {
-    "path": "/about-us",
+    "path": "about-us",
     "title": "About us"
   },
   "api_explore": {
@@ -69,50 +57,51 @@
   },
   "search-api": {
     "path": "data",
-    "title": "Data & API:er"
-  },
-  "contribute": {
-    "path": "contribute",
-    "title": "Contribute"
-  },
-  "data-collaboration": {
-    "path": "data-collaboration",
-    "title": "Data collaboration"
-  },
-  "shara-data-benefits": {
-    "path": "shara-data-benefits",
-    "title": "Benefits with sharing data"
-  },
-  "legislation": {
-    "path": "legislation",
-    "title": "Legislation"
-  },
-  "governance": {
-    "path": "governance",
-    "title": "Governance"
-  },
-  "use-data": {
-    "path": "use-data",
-    "title": "Get started with using your data"
-  },
-  "share-data": {
-    "path": "share-data",
-    "title": "Get started with sharing your data"
-  },
-  "support-tools": {
-    "path": "support-tools",
-    "title": "Tools and support"
+    "title": "Data & API:s"
   },
   "home-text": {
     "path": "en",
     "title": "Home"
   },
-  "why-share-data": {
-    "path": "why-share-data",
-    "title": "Why share data"
-  },
   "language": {
     "path": "sv",
     "title": "Svenska"
+  },
+  "cookies": {
+    "analytic-heading": "Analytical cookies",
+    "analytic-description": "Analytical cookies gives us information about how visitors interact with the site. We use this information to maintain, operate and improve the user experience.",
+    "necessary-heading": "Necessary cookies",
+    "necessary-description": "Necessary cookies are required to enable the basic features of this site. These cookies are always active and you can not deactivate them.",
+    "settings-heading": "Settings for cookies",
+    "customize-cookies-heading": "Customize cookie settings",
+    "path": "about-this-website/about-cookies",
+    "link-title": "Read more about cookies",
+    "cookie-text": "We use cookies on Sweden's data portal to improve your experience of the website. By continuing to browse, you agree that we use cookies.",
+    "cookie-setting": "Save and accept all cookies",
+    "cookie-setting-open": "Save and accept"
+  },
+  "good-examples": {
+    "path": "",
+    "title": "Good exaples"
+  },
+  "news": {
+    "path": "",
+    "title": "News"
+  },
+  "support-tools": {
+    "path": "",
+    "title": "Support and tools"
+  },
+  "share-data": {
+    "path": "",
+    "title": "Share data"
+  },
+  "data-collaboration": {
+    "path": "",
+    "title": "Data collaboration"
+  },
+  "educations": {
+    "path": "",
+    "title": "Education"
   }
 }

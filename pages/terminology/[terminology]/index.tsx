@@ -10,7 +10,12 @@ export default function Concept() {
   const { query } = useRouter() || {};
   const { terminology } = query || {};
   const curi = terminology;
-  const entryUri = `https://dataportal.se/concepts/${curi}`;
+  let entryUri = "";
+
+  if (env.ENTRYSCAPE_TERMS_PATH.includes("sandbox"))
+    entryUri = `https://www-sandbox.dataportal.se/concepts/${curi}`;
+  else entryUri = `https://dataportal.se/concepts/${curi}`;
+
   const postscribeStatus = useScript(
     "/postscribe.min.js",
     "sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM",

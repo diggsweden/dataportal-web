@@ -11,6 +11,7 @@ import { ContainerNav } from "@/components/navigation/ContainerNav";
 import { StickyNav } from "@/components/navigation/StickyNav";
 import useTranslation from "next-translate/useTranslation";
 import { usePathname } from "next/navigation";
+import { Preamble } from "@/components/global/Typography/Preamble";
 
 /**
  * Uses prismjs to style codeblock
@@ -171,7 +172,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
             <Heading
               size={"lg"}
               level={1}
-              className={`col-span-2 row-span-1 mb-lg md:mb-xl ${
+              className={`mb-lg md:mb-xl ${
                 hasRelatedContent ? "xl:col-start-2 xl:mb-xl" : ""
               }`}
             >
@@ -193,9 +194,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
               aria-label="Main content"
               className={`flex w-full max-w-md flex-col space-y-lg md:space-y-xl lg:min-w-[620px]`}
             >
-              {!image && preamble && (
-                <p className="text-lg text-brown-600">{checkLang(preamble)}</p>
-              )}
+              {!image && preamble && <Preamble>{checkLang(preamble)}</Preamble>}
               {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
             </div>
           </div>

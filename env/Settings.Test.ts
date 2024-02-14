@@ -5,6 +5,8 @@ export class Settings_Test extends EnvSettings {
   ENTRYSCAPE_DATASETS_PATH = "admin.dataportal.se";
   ENTRYSCAPE_SPECS_PATH = "editera.dataportal.se";
   ENTRYSCAPE_TERMS_PATH = "editera.dataportal.se";
+  ENTRYSCAPE_MQA_PATH = "sandbox.admin.dataportal.se";
+
   ENTRYSCAPE_ORG_STATS_URL = "https://admin.dataportal.se/charts/orgData.json";
   ENTRYSCAPE_THEME_STATS_URL =
     "https://admin.dataportal.se/charts/themeData.json";
@@ -19,6 +21,9 @@ export class Settings_Test extends EnvSettings {
   ENTRYSCAPE_BLOCKS_URL =
     "https://static.cdn.entryscape.com/blocks/0.20/app.js";
 
+  ENTRYSCAPE_MQA_URL =
+    "https://static.cdn.entryscape.com/blocks-ext/1/opendata/mqa-sv.js";
+
   ENTRYSCAPE_OPENDATA_SV_URL =
     "https://static.entryscape.com/blocks/0.20/ext/opendata-sv.js";
   ENTRYSCAPE_OPENDATA_EN_URL =
@@ -30,7 +35,8 @@ export class Settings_Test extends EnvSettings {
 
   CANONICAL_URL = "http://dataportal.test.local";
 
-  DCAT_BUNDLE_PATH = "/dcatse_bundle_2022-02-20.json";
+  DCAT_BUNDLE_PATH =
+    "https://static.infra.entryscape.com/blocks-ext/1/opendata/dcat-ap_se2.json";
 
   envName = "test";
 

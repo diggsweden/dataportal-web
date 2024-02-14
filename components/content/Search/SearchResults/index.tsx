@@ -162,7 +162,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   const [isCompact, setCompact] = useState(false);
   const { trackEvent } = useMatomo();
   const { t } = useTranslation();
-
+  const hvd = "http://data.europa.eu/r5r/applicableLegislation";
   const searchKey = typeof location != "undefined" ? location.search : "server";
   const posY =
     typeof localStorage != "undefined"
@@ -203,6 +203,12 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       searchFocus();
     }
   };
+
+  function isHVD(dataset: object) {
+    const isHvd = Object.values(dataset).map((ds) => ds.hasOwnProperty(hvd));
+    return isHvd.includes(true);
+  }
+
   return (
     <div id="search-result" className="my-lg md:my-xl">
       <div className="mb-lg flex flex-col-reverse justify-between md:flex-row">
@@ -237,7 +243,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                       saveCurrentScrollPos();
                       trackSearchHitClick(hit.url || "");
                     }}
-                    className="group block no-underline focus-visible:outline-none"
+                    className="group block no-underline"
                   >
                     {hit.metadata &&
                       search.allFacets &&
@@ -288,7 +294,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                             </span>
                           )}
                       </div>
-
                       <div className="formats space-x-md">
                         {hit.metadata &&
                           hit.metadata["format_literal"] &&
@@ -297,6 +302,13 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                               <FileFormatBadge key={index} badgeName={m} />
                             ),
                           )}
+                        {isHVD(hit.esEntry._metadata._graph) && (
+                          <span
+                            className={`bg-green-200 px-sm py-xs text-sm uppercase`}
+                          >
+                            {t("common|high-value-dataset")}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </Link>

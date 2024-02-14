@@ -54,7 +54,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
         </div>
       </div>
 
-      <span className="button button--small button--plain">
+      <span className="button button--small button--plain focus--none">
         Läs mer <ArrowIcon height={16} width={16} viewBox="0 0 24 24" />
       </span>
     </Link>

@@ -90,17 +90,16 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
       path = tmp[0] + "/" + tmp[1];
     } else path = resourceUri;
 
-    if (
-      resourceUri &&
-      (!resourceUri.includes("dataportal.se") ||
-        resourceUri.includes("sandbox.dataportal.se"))
-    ) {
+    if (resourceUri && !resourceUri.includes("dataportal.se")) {
       return `/externalspecification/${path}`;
     } else {
-      if (path.startsWith("https/dataportal.se/specifications"))
-        path = path.replace("https/dataportal.se/specifications", "");
+      if (
+        path.startsWith("https/dataportal.se/specifications") ||
+        path.startsWith("https/www-sandbox.dataportal.se/specifications")
+      )
+        path = path.slice(path.lastIndexOf("dataportal.se/") + 13);
 
-      return `/specifications${path}`;
+      return path;
     }
   };
 
@@ -114,18 +113,17 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
       path = tmp[0] + "/" + tmp[1];
     } else path = resourceUri;
 
-    if (
-      resourceUri &&
-      (!resourceUri.includes("dataportal.se") ||
-        resourceUri.includes("sandbox.dataportal.se"))
-    ) {
+    if (resourceUri && !resourceUri.includes("dataportal.se")) {
       return `/externalconcept/${path}`;
     } else {
       //NDP-343
-      if (path.startsWith("https/dataportal.se/concepts"))
-        path = path.replace("https/dataportal.se/concepts", "");
+      if (
+        path.startsWith("https/dataportal.se/concepts") ||
+        path.startsWith("https/www-sandbox.dataportal.se/concepts")
+      )
+        path = path.slice(path.lastIndexOf("dataportal.se/") + 13);
 
-      return `/concepts${path}`;
+      return path;
     }
   };
 
@@ -190,6 +188,14 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             dcatType: "choice",
             dcatFilterEnabled: false,
             indexOrder: 6,
+          },
+          {
+            resource: "http://data.europa.eu/r5r/applicableLegislation",
+            type: ESType.uri,
+            dcatProperty: "dcatap:applicableLegislation",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 7,
           },
         ],
       },

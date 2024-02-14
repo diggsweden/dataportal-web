@@ -95,7 +95,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
 
     const highlightedText = text.split("**").map((text, index) => {
       if (index % 2 === 1) {
-        return `<span class="search-result-list__highlight">${text}</span>`;
+        return `<strong>${text}</strong>`;
       } else {
         return text;
       }
@@ -226,7 +226,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
           />
         </form>
 
-        <SearchPageSelector />
+        <SearchPageSelector query={query} />
 
         <div id="search-result" className="my-lg md:my-xl">
           <div className="mb-lg md:mb-xl">
@@ -263,10 +263,10 @@ export const SearchContentPage: FC<SearchProps> = () => {
                       >
                         {highlightWords(hit.title)}
                       </Heading>
+                      {hit.description && (
+                        <p>{highlightWords(hit.description)}</p>
+                      )}
                     </Link>
-                    {hit.description && (
-                      <p>{highlightWords(hit.description)}</p>
-                    )}
                   </li>
                 ))}
             </ul>
