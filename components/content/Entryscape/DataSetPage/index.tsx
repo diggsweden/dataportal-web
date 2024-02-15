@@ -7,13 +7,13 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { Button } from "@/components/global/Button";
 import Head from "next/head";
 import {
-  accessrigthsIndicator,
   architechtureIndicator,
   hvdIndicator,
   exploreApiLink,
   licenseIndicator,
   linkBase,
   periodicityIndicator,
+  customIndicators,
 } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
@@ -78,7 +78,7 @@ export const DataSetPage: React.FC = () => {
         };
     }
   }, []);
-
+  /*   console.log(entry); */
   useEffect(() => {
     setBreadcrumb &&
       setBreadcrumb({
@@ -182,7 +182,7 @@ export const DataSetPage: React.FC = () => {
             ],
 
             blocks: [
-              ${accessrigthsIndicator},
+              ${customIndicators},
               ${periodicityIndicator},
               ${licenseIndicator},
               ${architechtureIndicator},
@@ -232,6 +232,7 @@ export const DataSetPage: React.FC = () => {
                   '<path d="M14 3V5H17.59L7.76 14.83L9.17 16.24L19 6.41V10H21V3M19 19H5V5H12V3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V12H19V19Z" fill="#6E615A"/>' +
                   '</svg>' +
                   '</button>' +
+                  '</a>' +
                   '{{/ifprop}}',
               },
               {
@@ -303,7 +304,7 @@ export const DataSetPage: React.FC = () => {
                   '<div class="flex justify-between gap-lg">' +
                   '<span class="text-textPrimary text-lg">{{formatBadges2}}</span>' +
                   '{{#ifprop "rdf:type" uri="esterms:ServiceDistribution"}}' +
-                    '<span class="text-textSecondary text-md"><i class="icon-cog--before"></i>API</span>' +
+                    '<span class="text-textSecondary text-md"></i>API</span>' +
                   '{{/ifprop}}' +  
                   '</div>' +                
                   '<span>{{text fallback="<span class=\\\'distributionNoName\\\'>${t(
@@ -424,11 +425,12 @@ export const DataSetPage: React.FC = () => {
             />
 
             {/* Indicators */}
+            <div
+              data-entryscape="customIndicators"
+              className="indicators flex flex-col flex-wrap gap-x-lg gap-y-sm text-textSecondary md:flex-row"
+            />
+
             <div className="indicators flex max-w-fit flex-col md:flex-row [&_div]:min-w-fit">
-              <div
-                data-entryscape="accessRightsIndicator"
-                className="accessRightsIndicator"
-              />
               <div
                 data-entryscape="periodicityIndicator"
                 className="architectureIndicator"

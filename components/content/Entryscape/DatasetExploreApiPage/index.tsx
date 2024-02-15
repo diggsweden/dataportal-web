@@ -10,7 +10,13 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
-import { linkBase } from "@/utilities";
+import {
+  linkBase,
+  architechtureIndicator,
+  hvdIndicator,
+  licenseIndicator,
+  periodicityIndicator,
+} from "@/utilities";
 import { CustomLink } from "@/components/global/CustomLink";
 
 const ApiExplorer = dynamic(
@@ -160,36 +166,10 @@ export const DataSetExploreApiPage: React.FC<{
             ],
 
             blocks: [
-              {
-                block: 'licenseIndicator2',
-                loadEntry: true,
-                run: function(node, data, items, entry) {
-                  var v = entry.getAllMetadata().findFirstValue(null, 'dcterms:license');
-                  if (v.indexOf("http://creativecommons.org/") === 0) {
-                    var variant;
-                    if (v === "http://creativecommons.org/publicdomain/zero/1.0/") {
-                      variant = "Creative Commons";
-                    } else if (v.indexOf("http://creativecommons.org/licenses/") === 0) {
-                      variant = "Creative commons";
-                    } else {
-                      return; // Unknown cc version.
-                    }
-                    node.innerHTML = '<span class="esbIndicator" title="Licens från Creative Commons">' +
-                      '<i class="license-icon fab fa-creative-commons"></i>' +
-                      '<span class="esbIndicatorLabel">' + variant.toLowerCase() + '</span></span>';
-                  }
-                },
-              },
-              {
-                block: 'architectureIndicator',
-                extends: 'template',
-                template: '{{#ifprop "dcterms:type"}}' +
-                  '<span class="esbIndicator" title="TjÃ¤nstens arkitekturstil">' +
-                  '<span class="material-icons-outlined">build_circle</span>' +
-                  '<i class="fas fa-wrench"></i>' +
-                  '<span class="esbIndicatorLabel">{{#eachprop "dcterms:type"}}{{label}}{{separator}}{{/eachprop}}</span></span>' +
-                  '{{/ifprop}}',
-              },
+              ${periodicityIndicator},
+              ${licenseIndicator},
+              ${architechtureIndicator},
+              ${hvdIndicator},
               {
                 block: 'costIndicator',
                 extends: 'template',
@@ -198,28 +178,6 @@ export const DataSetExploreApiPage: React.FC<{
                   '<span class="esbIndicatorLabel">Avgift</span></span>' +
                   '{{/ifprop}}',
               },
-              {
-                block: 'accessRightsIndicator',
-                extends: 'template',
-                template: '{{#ifprop "dcterms:accessRights"}}' +
-                  '{{#eachprop "dcterms:accessRights"}}<span class="esbIndicator" title="{{description}}">' +
-                  '{{#ifprop "dcterms:accessRights" uri="peu:access-right/PUBLIC"}}' +
-                  '<i class="fas fa-lock-open"></i>{{/ifprop}}' +
-                  '{{#ifprop "dcterms:accessRights" uri="peu:access-right/NON_PUBLIC"}}' +
-                  '<i class="fas fa-key"></i>{{/ifprop}}' +
-                  '{{#ifprop "dcterms:accessRights" uri="peu:access-right/RESTRICTED"}}' +
-                  '<i class="fas fa-lock"></i>{{/ifprop}}' +
-                  '<span class="esbIndicatorLabel">{{label}}</span>{{/eachprop}}' +
-                  '</span>{{/ifprop}}',
-              },
-              {
-                block: 'periodicityIndicator',
-                extends: 'template',
-                template: '{{#eachprop "dcterms:accrualPeriodicity"}}<span class="esbIndicator" title="Uppdateringsfrekvens">' +
-                  '<i class="fas fa-redo"></i>' +
-                  '<span class="">{{label}}</span></span>{{/eachprop}}',
-              },
-
               {
                 block: 'costIndicator2',
                 extends: 'template',

@@ -87,8 +87,8 @@
   @apply mb-md text-lg !important;
 }
 
-.indicators {
-  @apply flex text-textSecondary;
+.indicators .indicator {
+  @apply flex items-center gap-xs;
 }
 
 .esbRow,

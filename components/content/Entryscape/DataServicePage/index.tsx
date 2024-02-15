@@ -8,7 +8,6 @@ import Link from "next/link";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import {
-  accessrigthsIndicator,
   architechtureIndicator,
   exploreApiLink,
   licenseIndicator,
@@ -108,7 +107,6 @@ export const DataServicePage: React.FC<{
             },
 
             blocks: [
-              ${accessrigthsIndicator},
               ${architechtureIndicator},
               ${periodicityIndicator},
               ${exploreApiLink},
