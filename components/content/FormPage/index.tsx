@@ -45,7 +45,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
   useEffect(() => {
     setBreadcrumb &&
       setBreadcrumb({
-        name: "Fortroendemodellen utveckling",
+        name: "Förtroendemodellen utveckling",
         crumbs: [
           { name: "start", link: { ...linkBase, link: "/" } },
           { name: "Offentlig AI", link: { ...linkBase, link: "/offentligai" } },
