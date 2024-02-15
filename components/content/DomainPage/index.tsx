@@ -112,6 +112,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           <>
             {example && (
               <PublicationList
+                type="PublicationList"
                 publications={example}
                 showMoreLink={{
                   title: t("pages|good-examples$view-all"),
@@ -122,6 +123,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             )}
             {news && (
               <PublicationList
+                type="PublicationList"
                 publications={news}
                 showMoreLink={{
                   title: t("pages|news$view-all"),

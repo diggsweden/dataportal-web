@@ -3,24 +3,47 @@ import { usePathname } from "next/navigation";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { Container } from "@/components/layout/Container";
 import { PublicationList } from "@/components/content/Publication/PublicationList";
-import { linkBase, PublicationListResponse } from "@/utilities";
+import { linkBase } from "@/utilities";
 import { Pagination } from "@/components/global/Pagination";
 import { useRouter, NextRouter } from "next/router";
 import { SettingsContext } from "@/providers/SettingsProvider";
+import {
+  ContainerData_Dataportal_Digg_Container_Fragment,
+  PublicationDataFragment,
+  ToolDataFragment,
+} from "@/graphql/__generated__/operations";
 
-export const ListPage: FC<PublicationListResponse> = ({
+interface ListPageProps {
+  tools?: ToolDataFragment[];
+  publications?:
+    | PublicationDataFragment[]
+    | ContainerData_Dataportal_Digg_Container_Fragment[];
+  heading?: string;
+  type?: string;
+  category?: ContainerData_Dataportal_Digg_Container_Fragment;
+  domain?: DiggDomain;
+}
+
+export const ListPage: FC<ListPageProps> = ({
   publications,
+  tools,
   heading,
+  type,
 }) => {
   const { trackPageView } = useMatomo();
   const { setBreadcrumb } = useContext(SettingsContext);
+  const toolsOrPublications = Array.isArray(tools)
+    ? tools
+    : Array.isArray(publications)
+    ? publications
+    : [];
   const pathname = usePathname();
   const router: NextRouter = useRouter();
   const publicationsPerPage = 12;
   const page = parseInt(router.query.page as string) || 1;
   const startIndex = (page - 1) * publicationsPerPage;
   const endIndex = startIndex + publicationsPerPage;
-  const publicationsOnPage = publications.slice(startIndex, endIndex);
+  const publicationsOnPage = toolsOrPublications.slice(startIndex, endIndex);
 
   useEffect(() => {
     setBreadcrumb &&
@@ -40,13 +63,14 @@ export const ListPage: FC<PublicationListResponse> = ({
     <div id="news-list" className="my-lg md:my-xl">
       <Container>
         <PublicationList
+          type={type}
           publications={publicationsOnPage}
-          heading={`${publications.length} ${heading}`}
+          heading={`${toolsOrPublications.length} ${heading}`}
         />
-        {publications.length > 12 && (
+        {type === "PublicationList" && toolsOrPublications.length > 12 && (
           <div className="flex justify-center">
             <Pagination
-              totalResults={publications.length || 0}
+              totalResults={toolsOrPublications.length || 0}
               itemsPerPage={publicationsPerPage}
               pageNumber={parseInt(router.query.page as string)}
               changePage={changePage}

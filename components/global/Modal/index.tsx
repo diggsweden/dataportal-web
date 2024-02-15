@@ -11,6 +11,7 @@ interface ModalProps {
   setModalOpen: Function;
   closeBtn: string;
   confirmBtn: string;
+  description?: any;
   href?: string;
 }
 
@@ -50,6 +51,7 @@ export const Modal: FC<ModalProps> = ({
           </Heading>
         )}
         {text && <p className="pb-lg">{text}</p>}
+
         <div className="flex justify-between">
           <Button
             onClick={() => setModalOpen(false)}

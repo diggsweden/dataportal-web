@@ -11,6 +11,7 @@ import {
 import { FORM_QUERY } from "@/graphql/formQuery";
 import { MODULE_QUERY } from "@/graphql/moduleQuery";
 import { PUBLICATION_QUERY } from "@/graphql/publicationQuery";
+import { TOOL_QUERY } from "@/graphql/toolQuery";
 import { SEARCH_QUERY } from "@/graphql/searchQuery";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
@@ -37,6 +38,9 @@ import {
   RootAggregateQueryVariables,
   SearchQueryVariables,
   SeoDataFragment,
+  ToolDataFragment,
+  ToolQuery,
+  ToolQueryVariables,
 } from "@/graphql/__generated__/operations";
 import { PromoProps } from "@/components/content/Promo";
 
@@ -185,6 +189,15 @@ export interface PublicationListResponse {
   heroImage?: ImageFragment | null;
 }
 
+export interface ToolListResponse {
+  type?: "ToolList";
+  tools: ToolDataFragment[];
+  seo?: SeoDataFragment;
+  heading?: string;
+  preamble?: string;
+  heroImage?: ImageFragment | null;
+}
+
 export interface DomainAggregateResponse
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   type: "DomainAggregate";
@@ -229,10 +242,19 @@ export interface QueryOptions {
 }
 
 export interface PublicationListOptions {
+  type: string;
   seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
   preamble?: string;
+  heroImage?: ImageFragment | null;
+}
+
+export interface ToolistOptions {
+  type: string;
+  heading: string;
+  preamble: string;
+  seo?: SeoDataFragment;
   heroImage?: ImageFragment | null;
 }
 
@@ -421,6 +443,101 @@ export const getPublicationsList = async (
     };
   }
 };
+
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+
+/**
+ * Get a list of publications from strapi
+ *
+ * @param {Array<DiggDomain>} domains
+ * @param {Array<String>} slug
+ * @param {string} locale
+ * @returns {PublicationListResponse} nextjs staticprops
+ */
+export const getToolsList = async (opts?: ToolistOptions) => {
+  // If nextjs should check for changes on the server
+  const revalidate = true;
+  const { heading, preamble, heroImage, seo } = opts || {};
+
+  try {
+    const { data, error } = await client.query<ToolQuery, ToolQueryVariables>({
+      query: TOOL_QUERY,
+      variables: {
+        filter: {
+          limit: 1000,
+        },
+      },
+      fetchPolicy: "no-cache",
+    });
+
+    const tools = data?.dataportal_Digg_Tools;
+
+    if (error) {
+      console.error(error);
+    }
+
+    if (!tools) {
+      console.warn(`No tools found`);
+    }
+
+    return {
+      props: {
+        type: "ToolList",
+        tools: Array.isArray(tools) ? tools : [],
+        seo: seo || null,
+        heading: heading || null,
+        preamble: preamble || null,
+        heroImage: heroImage || null,
+      } as ToolListResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
+    };
+  } catch (error: any) {
+    logGqlErrors(error);
+    return {
+      props: {
+        type: "ToolList",
+        tools: [],
+        seo: seo || null,
+        heading: heading || null,
+        heroImage: heroImage || null,
+      } as ToolListResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
+    };
+  }
+};
+
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
+// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
 
 /**
  * Get publication from strapi

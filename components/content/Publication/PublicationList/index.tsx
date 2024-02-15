@@ -6,11 +6,17 @@ import { Heading } from "@/components/global/Typography/Heading";
 import {
   ContainerDataFragment,
   PublicationDataFragment,
+  ToolDataFragment,
 } from "@/graphql/__generated__/operations";
+import { Toolteaser } from "../ToolTeaser";
 
 interface PublicationListProps {
-  publications: PublicationDataFragment[] | ContainerDataFragment[];
+  publications:
+    | PublicationDataFragment[]
+    | ContainerDataFragment[]
+    | ToolDataFragment[];
   heading?: string;
+  type?: string;
   showMoreLink?: {
     slug: string;
     title: string;
@@ -21,9 +27,10 @@ export const PublicationList: FC<PublicationListProps> = ({
   publications,
   heading,
   showMoreLink,
+  type,
 }) => {
   const { t } = useTranslation();
-
+  const listType = type === "PublicationList";
   return (
     <div className="my-lg md:my-xl">
       <div
@@ -36,7 +43,7 @@ export const PublicationList: FC<PublicationListProps> = ({
             {heading}
           </Heading>
         )}
-        {showMoreLink && (
+        {showMoreLink && showMoreLink.slug && (
           <ButtonLink
             size="sm"
             href={showMoreLink.slug}
@@ -49,7 +56,13 @@ export const PublicationList: FC<PublicationListProps> = ({
         <ul className="gap-4 grid grid-cols-1 gap-xl md:grid-cols-2 lg:grid-cols-3">
           {publications.map((publication, idx) => (
             <li key={idx}>
-              <PublicationTeaser publication={publication} />
+              {listType ? (
+                <PublicationTeaser
+                  publication={publication as PublicationDataFragment}
+                />
+              ) : (
+                <Toolteaser tools={publication as ToolDataFragment} />
+              )}
             </li>
           ))}
         </ul>
