@@ -26,7 +26,6 @@ export const Promo: FC<{
   return (
     <Link
       href={link.slug}
-      aria-label={link.title}
       className="group flex h-full flex-col bg-white text-brown-900 no-underline"
     >
       {icon && (
