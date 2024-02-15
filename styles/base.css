@@ -110,7 +110,7 @@ body {
     [&_path]:fill-brown-600;
   }
   .button--plain.active {
-    @apply [&_svg]:rotate-180;
+    @apply [&_svg]:rotate-180 outline-2 outline-brown-600 outline;
   }
   .button--filter {
     @apply bg-brown-800 text-white [&_path]:fill-white;
