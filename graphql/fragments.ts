@@ -90,12 +90,7 @@ export const TOOL_FRAGMENT = gql`
     preamble
     link
     domainLabel
-    description {
-      raw
-      text
-      markdown
-      html
-    }
+    description
   }
 `;
 

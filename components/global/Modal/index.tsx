@@ -2,6 +2,7 @@ import { FC, useRef } from "react";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Button, ButtonLink } from "@/components/global/Button";
 import ArrowIcon from "@/assets/icons/arrowRight.svg";
+import { HtmlParser } from "../Typography/HtmlParser";
 
 interface ModalProps {
   heading: string;
@@ -21,6 +22,7 @@ export const Modal: FC<ModalProps> = ({
   onClick,
   modalOpen,
   setModalOpen,
+  description,
   closeBtn,
   confirmBtn,
   href,
@@ -46,11 +48,26 @@ export const Modal: FC<ModalProps> = ({
         }}
       >
         {heading && (
-          <Heading level={3} size="sm" className={text ? "" : "pb-lg"}>
+          <Heading
+            level={3}
+            size={description ? "md" : "sm"}
+            className={text ? "font-thin" : "pb-lg"}
+          >
             {heading}
           </Heading>
         )}
-        {text && <p className="pb-lg">{text}</p>}
+        {text && (
+          <p
+            className={`${
+              description ? "pt-lg text-lg text-brown-600" : ""
+            } pb-lg`}
+          >
+            {text}
+          </p>
+        )}
+        {description && (
+          <div className="pb-lg">{HtmlParser({ text: description })}</div>
+        )}
 
         <div className="flex justify-between">
           <Button

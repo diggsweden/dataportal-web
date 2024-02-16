@@ -17,47 +17,58 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div>
+    <div className="h-full">
       <Link
         href={link}
         className="group flex h-full flex-col justify-between gap-lg bg-white p-lg no-underline"
       >
-        <div className="flex justify-between [&_svg_path]:fill-red-400">
-          <span className="bg-brown-800 px-md py-xs text-sm text-white">
-            {domainLabel}
-          </span>
-          {isExternalLink(link) ? <ExternalLinkIcon /> : <InternalLinkIcon />}
+        <div className="flex flex-col gap-sm">
+          <div className="flex items-center justify-between [&_svg_path]:fill-red-400 group-hover:[&_svg_path]:fill-green-600">
+            <span
+              className={`px-sm py-[2px] text-sm text-white ${
+                !isExternalLink(link)
+                  ? "bg-brown-800"
+                  : "bg-brown-200 text-brownOpaque5"
+              }`}
+            >
+              {domainLabel}
+            </span>
+            {isExternalLink(link) ? (
+              <ExternalLinkIcon className="translate-x-0 transform transition-transform duration-500 group-hover:translate-x-1/3" />
+            ) : (
+              <InternalLinkIcon className="translate-x-0 transform transition-transform duration-500 group-hover:translate-x-1/3" />
+            )}
+          </div>
+          <div>
+            <Heading
+              className="text-green-600 group-hover:underline"
+              level={3}
+              size={"xs"}
+            >
+              {heading}
+            </Heading>
+          </div>
+          <p className="text-sm">{preamble}</p>
         </div>
-        <div>
-          <Heading
-            className="text-green-600 group-hover:underline"
-            level={3}
-            size={"sm"}
-          >
-            {heading}
-          </Heading>
-        </div>
-        <p>{preamble}</p>
         <span
           onClick={(e) => {
             e.preventDefault();
             setShowModal(true);
           }}
-          className={`${
-            showModal ? "no-hover" : ""
-          } button button--small button--plain focus--none z-50 px-xs hover:!bg-brown-200 group-hover:bg-transparent`}
+          className="text-xs button button--small button--plain focus--none px-xs hover:!bg-brown-200 group-hover:bg-transparent"
         >
           <Info /> Förhandsgrandska
         </span>
       </Link>
       <Modal
         heading={heading}
-        closeBtn={"stäng"}
+        closeBtn={"Stäng"}
         description={description}
         text={preamble}
         modalOpen={showModal}
         setModalOpen={setShowModal}
-        confirmBtn={"hej"}
+        confirmBtn={"Till sidan"}
+        href={link}
       />
     </div>
   );

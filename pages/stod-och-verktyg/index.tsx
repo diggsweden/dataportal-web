@@ -15,7 +15,7 @@ export const getStaticProps: GetStaticProps = async () => {
       "Här kan du som dataproducent eller dataanvändare hitta olika fomer av verktyg och stöd för ditt arbete. Målet är att data ska kunna nyttjas som en strategisk resurs för samhället och att det ska vara så enkelt som möjligt att nå dit.",
     heroImage: {
       __typename: "dataportal_Digg_Image",
-      url: "@/assets/logos/fortroendemodellen.png",
+      url: "",
       name: null,
       alt: null,
       description: null,
