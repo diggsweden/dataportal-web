@@ -64,6 +64,7 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
         heading={heading}
         closeBtn={"Stäng"}
         description={description}
+        type="tools"
         text={preamble}
         modalOpen={showModal}
         setModalOpen={setShowModal}

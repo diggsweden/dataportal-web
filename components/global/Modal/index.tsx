@@ -12,8 +12,9 @@ interface ModalProps {
   setModalOpen: Function;
   closeBtn: string;
   confirmBtn: string;
-  description?: any;
+  description?: string | null;
   href?: string;
+  type?: "tools";
 }
 
 export const Modal: FC<ModalProps> = ({
@@ -26,8 +27,10 @@ export const Modal: FC<ModalProps> = ({
   closeBtn,
   confirmBtn,
   href,
+  type,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const modalType = type === "tools";
   return (
     <>
       <div
@@ -50,7 +53,7 @@ export const Modal: FC<ModalProps> = ({
         {heading && (
           <Heading
             level={3}
-            size={description ? "md" : "sm"}
+            size={modalType ? "md" : "sm"}
             className={text ? "font-thin" : "pb-lg"}
           >
             {heading}
@@ -59,7 +62,7 @@ export const Modal: FC<ModalProps> = ({
         {text && (
           <p
             className={`${
-              description ? "pt-lg text-lg text-brown-600" : ""
+              modalType ? "pt-lg text-lg text-brown-600" : ""
             } pb-lg`}
           >
             {text}
