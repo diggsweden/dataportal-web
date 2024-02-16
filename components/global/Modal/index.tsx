@@ -37,8 +37,8 @@ export const Modal: FC<ModalProps> = ({
       />
       <div
         ref={ref}
-        className={`fixed left-1/2 top-1/2 z-50 !mt-none max-w-md -translate-x-1/2 
-        -translate-y-1/2 bg-white p-xl shadow-2xl ${
+        className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] max-w-md  -translate-x-1/2 -translate-y-1/2 
+        overflow-scroll bg-white p-xl shadow-2xl ${
           modalOpen ? "visible" : "hidden"
         }`}
         onClick={(e) => {

@@ -11,6 +11,7 @@ import {
   PublicationListResponse,
   PublicationResponse,
   RootAggregateResponse,
+  ToolListResponse,
 } from "@/utilities/queryHelpers";
 import { StaticImageData } from "next/image";
 import start from "@/public/images/startPageHero.png";
@@ -25,7 +26,8 @@ export type DataportalPageProps =
   | DomainAggregateResponse
   | RootAggregateResponse
   | FormResponse
-  | ModuleResponse;
+  | ModuleResponse
+  | ToolListResponse;
 
 type ResolvedPage = {
   heading?: string | null;
@@ -112,6 +114,13 @@ export const resolvePage = (
         heading: props.heading,
         preamble: props.preamble,
         heroImage: props.image,
+      };
+    case "ToolList":
+      return {
+        seo: props.seo,
+        heading: props.heading,
+        preamble: props.preamble,
+        heroImage: props.heroImage,
       };
     case "PublicationList":
       return {

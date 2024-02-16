@@ -193,6 +193,7 @@ export interface ToolListResponse {
   type?: "ToolList";
   tools: ToolDataFragment[];
   seo?: SeoDataFragment;
+  basePath?: string;
   heading?: string;
   preamble?: string;
   heroImage?: ImageFragment | null;
@@ -253,6 +254,7 @@ export interface PublicationListOptions {
 export interface ToolistOptions {
   type: string;
   heading: string;
+  basePath?: string;
   preamble: string;
   seo?: SeoDataFragment;
   heroImage?: ImageFragment | null;
@@ -444,20 +446,6 @@ export const getPublicationsList = async (
   }
 };
 
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-
 /**
  * Get a list of publications from strapi
  *
@@ -469,7 +457,7 @@ export const getPublicationsList = async (
 export const getToolsList = async (opts?: ToolistOptions) => {
   // If nextjs should check for changes on the server
   const revalidate = true;
-  const { heading, preamble, heroImage, seo } = opts || {};
+  const { heading, preamble, heroImage, seo, basePath } = opts || {};
 
   try {
     const { data, error } = await client.query<ToolQuery, ToolQueryVariables>({
@@ -497,6 +485,7 @@ export const getToolsList = async (opts?: ToolistOptions) => {
         type: "ToolList",
         tools: Array.isArray(tools) ? tools : [],
         seo: seo || null,
+        basePath: basePath || null,
         heading: heading || null,
         preamble: preamble || null,
         heroImage: heroImage || null,
@@ -511,6 +500,7 @@ export const getToolsList = async (opts?: ToolistOptions) => {
       props: {
         type: "ToolList",
         tools: [],
+        basePath: basePath || null,
         seo: seo || null,
         heading: heading || null,
         heroImage: heroImage || null,
@@ -521,23 +511,6 @@ export const getToolsList = async (opts?: ToolistOptions) => {
     };
   }
 };
-
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
-// fhaojshiodsklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoöklghjnvpjierdslhjnvpiksldjnpilkvjncmsdpolkfjnmcpweoö
 
 /**
  * Get publication from strapi

@@ -25,10 +25,10 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
         <div className="flex flex-col gap-sm">
           <div className="flex items-center justify-between [&_svg_path]:fill-red-400 group-hover:[&_svg_path]:fill-green-600">
             <span
-              className={`px-sm py-[2px] text-sm text-white ${
+              className={`px-sm py-[2px] text-sm ${
                 !isExternalLink(link)
-                  ? "bg-brown-800"
-                  : "bg-brown-200 text-brownOpaque5"
+                  ? "bg-brown-800  text-white"
+                  : "bg-brown-200 text-brown-900"
               }`}
             >
               {domainLabel}
