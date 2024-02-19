@@ -87,7 +87,6 @@ const nextConfig = nextTranslate({
 
   images: {
     domains: [process.env.IMAGE_DOMAIN || "localhost", "bcdn.screen9.com"],
-    deviceSizes: [640, 768, 1024, 1280, 1536, 1640, 1920],
     dangerouslyAllowSVG: true,
   },
   async headers() {

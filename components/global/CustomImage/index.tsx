@@ -36,13 +36,10 @@ export const CustomImage: FC<CustomImageProps> = ({
     );
   }
 
-  // eslint-disable-next-line
-  console.log(image.url);
-
   if (isNextStatic(image.url)) {
     return (
       <Image
-        src={image.url}
+        src={`${image.url}?w=${width ? width : 384}&q=${75}`}
         width={image.width || 300}
         height={image.height || 200}
         className={className}
@@ -57,12 +54,9 @@ export const CustomImage: FC<CustomImageProps> = ({
     ? image.url
     : (env("MEDIA_BASE_URL") || "") + image.url;
 
-  // eslint-disable-next-line
-  console.log(src);
-
   return (
     <Image
-      src={src}
+      src={`${src}?w=${width ? width : 384}&q=${75}`}
       width={width ? width : Number(image.width || "")}
       height={height ? height : Number(image.height || "")}
       className={className}
