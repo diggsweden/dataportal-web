@@ -36,10 +36,12 @@ export const CustomImage: FC<CustomImageProps> = ({
     );
   }
 
+  console.log(image.url);
+
   if (isNextStatic(image.url)) {
     return (
       <Image
-        src={`${image.url}?w=${width ? width : 384}&q=${75}`}
+        src={image.url}
         width={image.width || 300}
         height={image.height || 200}
         className={className}
@@ -54,9 +56,11 @@ export const CustomImage: FC<CustomImageProps> = ({
     ? image.url
     : (env("MEDIA_BASE_URL") || "") + image.url;
 
+  console.log(env("MEDIA_BASE_URL") + image.url);
+
   return (
     <Image
-      src={`${src}?w=${width ? width : 384}&q=${75}`}
+      src={src}
       width={width ? width : Number(image.width || "")}
       height={height ? height : Number(image.height || "")}
       className={className}
