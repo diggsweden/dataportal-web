@@ -36,6 +36,7 @@ export const CustomImage: FC<CustomImageProps> = ({
     );
   }
 
+  // eslint-disable-next-line
   console.log(image.url);
 
   if (isNextStatic(image.url)) {
@@ -56,7 +57,8 @@ export const CustomImage: FC<CustomImageProps> = ({
     ? image.url
     : (env("MEDIA_BASE_URL") || "") + image.url;
 
-  console.log(env("MEDIA_BASE_URL") + image.url);
+  // eslint-disable-next-line
+  console.log(src);
 
   return (
     <Image
