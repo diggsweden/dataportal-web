@@ -43,8 +43,6 @@ interface DataportalSettings {
   pageNotFoundHeading: string;
   pageNotFoundText: string;
   noScriptContent: string;
-  cookieInformation: string;
-  cookieMoreInfoLink: string;
   matomoSiteId: string;
 }
 
@@ -72,7 +70,6 @@ type CSPDirective =
   | "manifest-src"
   | "media-src"
   | "object-src"
-  | "prefetch-src"
   | "script-src"
   | "script-src-elem"
   | "script-src-attr"
@@ -95,4 +92,9 @@ type CSPDirective =
   | "trusted-types"
   | "upgrade-insecure-requests";
 
-type DiggDomain = "offentligai" | "data" | "oppen-kallkod" | "open-source";
+type DiggDomain =
+  | "offentligai"
+  | "data"
+  | "oppen-kallkod"
+  | "open-source"
+  | "datasamverkan";

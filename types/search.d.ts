@@ -1,5 +1,5 @@
 //unfortunate hack to get a entrystore class instance, script is inserted in head
-declare var EntryStore: any;
+declare var ESJS: any;
 
 //#region ES members
 

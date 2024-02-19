@@ -8,11 +8,10 @@ import {
   getRootAggregate,
 } from "../../utilities";
 import DomainPage from "../oppen-kallkod";
-import {
-  ArticleListPage,
-  Publication as PublicationPage,
-} from "../../components/pages/Articles";
 import Page from "../[...containerSlug]";
+import { ListPage } from "@/components/content/ListPage";
+import { PublicationFull } from "@/components/content/Publication/PublicationFull";
+import { ContainerPage } from "@/components/content/ContainerPage";
 
 const getQuery = async (
   slug: string,
@@ -51,6 +50,12 @@ const getQuery = async (
         secret,
         revalidate: false,
       });
+    case "/datasamverkan":
+      return await getDomainAggregate("datasamverkan", locale, {
+        state: Dataportal_ContainerState.Preview,
+        secret,
+        revalidate: false,
+      });
     default:
       return await getMultiContainer([slug.substring(1)], locale, undefined, {
         state: Dataportal_ContainerState.Preview,
@@ -65,13 +70,13 @@ const render = (props: DataportalPageProps) => {
     case "DomainAggregate":
       return <DomainPage {...props} />;
     case "RootAggregate":
-      return <DomainPage {...props} />;
+      return <ContainerPage {...props} />;
     case "MultiContainer":
       return <Page {...props} />;
     case "Publication":
-      return <PublicationPage {...props} />;
+      return <PublicationFull {...props} />;
     case "PublicationList":
-      return <ArticleListPage {...props} />;
+      return <ListPage {...props} />;
     default:
       return null;
   }

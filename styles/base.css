@@ -1,0 +1,206 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@font-face {
+  font-family: "Ubuntu";
+  src:
+    local("Ubuntu"),
+    url("/fonts/Ubuntu/Ubuntu-Light.woff2") format("woff2"),
+    url("/fonts/Ubuntu/Ubuntu-Light.woff") format("woff");
+  font-style: light;
+  font-weight: 300;
+  font-display: swap;
+  unicode-range: U+000-5FF;
+}
+@font-face {
+  font-family: "Ubuntu";
+  src:
+    local("Ubuntu"),
+    url("/fonts/Ubuntu/Ubuntu-Regular.woff2") format("woff2"),
+    url("/fonts/Ubuntu/Ubuntu-Regular.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+000-5FF;
+}
+@font-face {
+  font-family: "Ubuntu";
+  src:
+    url("/fonts/Ubuntu/Ubuntu-Medium.woff2") format("woff2"),
+    url("/fonts/Ubuntu/Ubuntu-Medium.woff") format("woff");
+  font-style: medium;
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Ubuntu";
+  src:
+    local("Ubuntu"),
+    url("/fonts/Ubuntu/Ubuntu-Bold.woff2") format("woff2"),
+    url("/fonts/Ubuntu/Ubuntu-Bold.woff") format("woff");
+  font-style: bold;
+  font-weight: 700;
+  font-display: swap;
+  unicode-range: U+000-5FF;
+}
+
+body {
+  background: linear-gradient(
+    90deg,
+    rgba(205, 122, 110, 0.03) 0%,
+    rgba(205, 122, 110, 0.09) 100%
+  );
+}
+
+@layer base {
+  a {
+    @apply text-md underline underline-offset-4;
+  }
+
+  .outline-out {
+    outline-style: groove;
+    outline-width: 2px;
+  }
+
+  .focus--outline {
+    @apply focus-visible:outline-dashed focus-visible:outline-[3px] group-focus-visible:outline-dashed group-focus-visible:outline-[3px];
+  }
+  .focus--white {
+    @apply focus-visible:outline-white group-focus-visible:outline-white !important;
+  }
+  .focus--primary {
+    @apply focus-visible:outline-primary group-focus-visible:outline-primary;
+  }
+  .focus--in {
+    @apply focus-visible:-outline-offset-[3px] group-focus-visible:-outline-offset-[3px] !important;
+  }
+  .focus--out {
+    @apply focus-visible:outline-offset-2 group-focus-visible:outline-offset-2;
+  }
+  .focus--underline {
+    @apply focus-visible:underline group-focus-visible:underline;
+  }
+
+  .focus--none {
+    @apply focus-visible:outline-none group-focus-visible:outline-none !important;
+  }
+
+  .button {
+    @apply flex w-fit cursor-pointer flex-row items-center no-underline 
+    disabled:cursor-not-allowed disabled:border-none disabled:bg-brown-400 disabled:text-brown-600
+     disabled:hover:bg-brown-400 [&_path]:disabled:fill-brown-600 [&_svg]:inline-flex;
+  }
+  .button--primary {
+    @apply bg-brown-600 text-brown-100 hover:bg-brown-800 focus-visible:bg-brown-800 group-hover:bg-brown-800 
+    group-focus:bg-brown-800 [&_path]:fill-brown-100;
+  }
+  .button--primary.active {
+    @apply !bg-brown-800 [&_path]:fill-brown-100;
+  }
+  .button--secondary {
+    @apply border-2 border-brown-600 bg-transparent text-brown-600 hover:bg-whiteOpaque5 focus-visible:bg-whiteOpaque5
+    group-hover:bg-brown-800 group-hover:bg-whiteOpaque5 group-focus:bg-whiteOpaque5 [&_path]:fill-brown-600;
+  }
+  .button--secondary.active {
+    @apply bg-brown-600 text-white [&_path]:fill-white [&_svg]:rotate-180;
+  }
+  .button--plain {
+    @apply bg-transparent text-brown-600 hover:bg-brown-200 focus-visible:bg-brown-200 group-hover:bg-brown-200 group-focus:bg-brown-200 
+    [&_path]:fill-brown-600;
+  }
+  .button--plain.active {
+    @apply [&_svg]:rotate-180 outline-2 outline-brown-600 outline;
+  }
+  .button--filter {
+    @apply bg-brown-800 text-white [&_path]:fill-white;
+  }
+  .button--xs {
+    @apply gap-sm px-md py-[2px] text-sm;
+  }
+  .button--small {
+    @apply gap-sm px-md py-[6px] text-sm;
+  }
+  .button--large {
+    @apply gap-sm px-md py-[10px] text-md;
+  }
+}
+
+/* Custom styling for Statistics Graph */
+.hide-odd-stat .rv-xy-plot__axis__tick {
+  display: none;
+}
+.hide-odd-stat .rv-xy-plot__axis__tick:first-child {
+  display: block;
+}
+.hide-odd-stat .rv-xy-plot__axis__tick:last-child {
+  display: block;
+}
+@screen md {
+  .hide-odd-stat .rv-xy-plot__axis__tick {
+    display: block;
+  }
+  .hide-odd-stat .rv-xy-plot__axis__tick:nth-child(even) {
+    display: none;
+  }
+}
+
+* {
+  font-family: Ubuntu, sans-serif;
+}
+
+a {
+  scroll-behavior: smooth;
+}
+
+/* General styling for the table */
+table {
+  @apply !my-lg w-full table-auto border-collapse border border-brown-200;
+}
+
+table caption {
+  @apply mb-sm text-start font-strong;
+}
+
+table thead {
+  @apply bg-brown-600 text-left text-white;
+}
+
+table thead th {
+  @apply whitespace-normal border border-brown-200 p-sm font-strong;
+}
+
+table tbody {
+  @apply border-collapse;
+}
+
+table tbody td {
+  @apply border border-brown-200 p-sm;
+}
+
+/* General styling for mark */
+mark {
+  @apply bg-red-400;
+}
+
+/* General styling for focus */
+a,
+h1,
+button,
+.button:not(.focus--none),
+input[type="radio"] {
+  @apply focus--outline focus--primary focus--out;
+}
+
+.explore-api-btn {
+  @apply button--primary button--large button bg-brown-600 no-underline hover:bg-brown-800 [&_span]:text-white !important;
+}
+
+/* SWAGGER UI */
+
+.opblock-section-header button {
+  @apply button--secondary button--small md:button--large;
+}
+.opblock-section-header .try-out .cancel {
+  @apply border-red-600 text-red-600;
+}

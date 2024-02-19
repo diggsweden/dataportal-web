@@ -2,7 +2,7 @@
   "startpage": {
     "heading": "Sveriges Dataportal",
     "preamble": "Sveriges Dataportal is for those of you who have data to share, for those of you who already are involved in data driven development and innovation, as well as for those of you who have just begun to think about how the combined power of our data can move society forward.",
-    "search_placeholder": "Search",
+    "search_placeholder": "Search datasets and APIs",
     "seo_description": "Sweden's national data portal for finding, exploring and using data from the public and private sectors",
     "seo_title": "Sveriges Dataportal",
     "search_title_1": "Search and explore data from Sweden",
@@ -16,7 +16,6 @@
     "data-api-header": "Data & APIs",
     "open-source-header": "Open Source",
     "public-ai-header": "Public AI",
-    "current-news": "Publications",
     "news": "News",
     "good-examples": "Good examples"
   },
@@ -68,8 +67,8 @@
     "next-page": "Next",
     "prev-page": "Previous",
     "first-page": "First",
-    "page": "Page",
-    "of": "of",
+    "showing": "Showing",
+    "results": "results",
     "datasets": "Data & APIs",
     "concepts": "Concepts",
     "specifications": "Specifications",
@@ -151,7 +150,7 @@
     "several_links_header": "The data resource consists of the following files",
     "no_title": "No title given",
     "no_data": "This data set has no data resources",
-    "read_about_api": "Read more about API",
+    "read_about_api": "Explore API",
     "fileformat": "other file format",
     "rdf": "Download metadata as RDF",
     "view_more": "View more",
@@ -163,13 +162,6 @@
   },
   "dataservicepage": {
     "api": "About API"
-  },
-  "publications": {
-    "text": "publications",
-    "title": "Latest topics",
-    "view-all": "View all publications",
-    "social_meta_title": "Publications - Sveriges Dataportal",
-    "social_meta_description": "Publications on Sveriges Dataportal"
   },
   "good-examples": {
     "text": "good examples",

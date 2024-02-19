@@ -5,39 +5,20 @@ import Document, {
   Main,
   NextScript,
 } from "next/document";
-import { GlobalStyles } from "../styles/GlobalStyles";
 import { ApolloProvider } from "@apollo/client";
-import {
-  LocalStoreProvider,
-  SettingsProvider,
-  TrackingProvider,
-} from "../components";
-import { defaultSettings } from "../components/SettingsProvider/SettingsProvider";
 import { client } from "../graphql/client";
-import {
-  CacheProvider,
-  createCache,
-  createEmotionServer,
-  ThemeProvider,
-} from "@digg/design-system";
 import { SettingsUtil } from "../env";
-import { renderToString } from "react-dom/server";
-import { dataportalTheme } from "../utilities";
+import {
+  SettingsProvider,
+  defaultSettings,
+} from "@/providers/SettingsProvider";
+import { LocalStoreProvider } from "@/providers/LocalStoreProvider";
+import { TrackingProvider } from "@/providers/TrackingProvider";
 
-// @ts-ignore
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage;
 
-    const key = "css";
-    const cache = createCache({
-      key: key,
-      nonce: SettingsUtil.getCurrent().nonce,
-    });
-    const { extractCritical } = createEmotionServer(cache);
-
-    let styles = "";
-    let emotionIds: string[] = [];
     const env = SettingsUtil.create();
     // Run the React rendering logic synchronously
     ctx.renderPage = () =>
@@ -45,26 +26,17 @@ class MyDocument extends Document {
         // Useful for wrapping the whole react tree
         enhanceApp: (App) =>
           function callback(props) {
-            const frontend = (
+            return (
               <ApolloProvider client={client}>
                 <SettingsProvider value={{ ...defaultSettings, env }}>
-                  <ThemeProvider theme={dataportalTheme}>
-                    <LocalStoreProvider>
-                      <TrackingProvider initalActivation={false}>
-                        <CacheProvider value={cache}>
-                          <GlobalStyles theme={dataportalTheme} />
-                          <App {...props} />
-                        </CacheProvider>
-                      </TrackingProvider>
-                    </LocalStoreProvider>
-                  </ThemeProvider>
+                  <LocalStoreProvider>
+                    <TrackingProvider initalActivation={false}>
+                      <App {...props} />
+                    </TrackingProvider>
+                  </LocalStoreProvider>
                 </SettingsProvider>
               </ApolloProvider>
             );
-            let { css, ids } = extractCritical(renderToString(frontend));
-            styles = css;
-            emotionIds = ids;
-            return frontend;
           },
         // Useful for wrapping in a per-page basis
         enhanceComponent: (Component) => Component,
@@ -75,16 +47,6 @@ class MyDocument extends Document {
 
     return {
       ...initialProps,
-      styles: (
-        <>
-          {initialProps.styles}
-          <style
-            nonce={SettingsUtil.getCurrent().nonce}
-            data-emotion={`${key} ${emotionIds.join(" ")}`}
-            dangerouslySetInnerHTML={{ __html: styles }}
-          ></style>
-        </>
-      ),
     };
   }
 
@@ -97,11 +59,7 @@ class MyDocument extends Document {
             type="text/javascript"
             src="/__ENV.js"
           />
-          <link
-            href="https://cdn.screen9.com/players/amber-player.css"
-            rel="stylesheet"
-            type="text/css"
-          />
+
           <link
             rel="preload"
             href="/fonts/Ubuntu/Ubuntu-Regular.woff2"
@@ -140,8 +98,9 @@ class MyDocument extends Document {
             href="https://admin.dataportal.se"
             crossOrigin="anonymous"
           />
+          <meta name="theme-color" content="#FBF2F0" />
         </Head>
-        <body>
+        <body className="font-ubuntu text-md text-textPrimary">
           <Main />
           <NextScript nonce={SettingsUtil.getCurrent().nonce} />
         </body>

@@ -1,4 +1,4 @@
-import reactEnv from '@beam-australia/react-env';
+import reactEnv from "@beam-australia/react-env";
 interface Options {
   prodOnly?: boolean;
 }
@@ -24,7 +24,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   const add = (
     directive: CSPDirective,
     value: string,
-    options: Options = {}
+    options: Options = {},
   ) => {
     if (options.prodOnly && process.env.NODE_ENV === "development") return;
     /** eslint-disable */
@@ -40,7 +40,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "script-src",
     `'self' ${
       nonce ? `'nonce-${nonce}'` : ""
-    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se *.entryscape.com *.dataportal.se *.beta.dataportal.digikube.dgstage.se`,
+    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se *.entryscape.com *.dataportal.se *.beta.dataportal.digikube.dgstage.se *.dataportal.dev1.se`,
     { prodOnly: true },
   );
   add(
@@ -56,18 +56,17 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     `'self' data: https://static.entryscape.com https://static.cdn.entryscape.com`,
   );
   add("base-uri", `'self'`);
-  add("prefetch-src", `'self'`);
   add("manifest-src", `'self'`);
   add("form-action", `'self'`);
   add(
     "img-src",
     `'self' ${
-      process.env.IMAGE_DOMAIN || ""
+      reactEnv("IMAGE_DOMAIN") || ""
     } https://diggdrstoragetest.blob.core.windows.net/ data: *`,
   );
   add(
     "media-src",
-    `'self' ${process.env.IMAGE_DOMAIN || ""} https: data: blob:`,
+    `'self' ${reactEnv("IMAGE_DOMAIN") || ""} https: data: blob:`,
   );
   add(
     "style-src",

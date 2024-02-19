@@ -1,4 +1,6 @@
-const nextTranslate = require("next-translate");
+/** @type {import('next').NextConfig} */
+
+const nextTranslate = require("next-translate-plugin");
 
 const baseHeaders = [
   {
@@ -23,7 +25,7 @@ const baseHeaders = [
   },
   {
     key: "Permissions-Policy",
-    value: "camera=(), battery=(), geolocation=(), microphone=()",
+    value: "camera=(), geolocation=(), microphone=()",
   },
   {
     key: "Access-Control-Allow-Origin",
@@ -38,7 +40,7 @@ const csp = [
   },
 ];
 
-module.exports = nextTranslate({
+const nextConfig = nextTranslate({
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
@@ -53,14 +55,38 @@ module.exports = nextTranslate({
       tls: false,
     };
 
+    // Grab the existing rule that handles SVG imports
+    const fileLoaderRule = config.module.rules.find((rule) =>
+      rule.test?.test?.(".svg"),
+    );
+
+    config.module.rules.push(
+      // Reapply the existing rule, but only for svg imports ending in ?url
+      {
+        ...fileLoaderRule,
+        test: /\.svg$/i,
+        resourceQuery: /url/, // *.svg?url
+      },
+      // Convert all other *.svg imports to React components
+      {
+        test: /\.svg$/i,
+        issuer: fileLoaderRule.issuer,
+        resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] }, // exclude if *.svg?url
+        use: ["@svgr/webpack"],
+      },
+    );
+
     return config;
   },
   productionBrowserSourceMaps: true,
   env: {
     REVALIDATE_INTERVAL: process.env.REVALIDATE_INTERVAL,
   },
+
+  staticPageGenerationTimeout: 240,
+
   images: {
-    domains: [process.env.IMAGE_DOMAIN || 'localhost', 'bcdn.screen9.com'],
+    domains: [process.env.IMAGE_DOMAIN || "localhost", "bcdn.screen9.com"],
     unoptimized: true,
     deviceSizes: [640, 768, 1024, 1280, 1536, 1640, 1920],
     dangerouslyAllowSVG: true,
@@ -78,3 +104,5 @@ module.exports = nextTranslate({
     ];
   },
 });
+
+module.exports = nextConfig;

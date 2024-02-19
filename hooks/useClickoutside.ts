@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export const useClickoutside = (onClickOutside: () => void) => {
   const ref = useRef() as any;
@@ -8,9 +8,9 @@ export const useClickoutside = (onClickOutside: () => void) => {
         onClickOutside();
       }
     };
-    document.addEventListener('click', handleClickOutside, true);
+    document.addEventListener("click", handleClickOutside, true);
     return () => {
-      document.removeEventListener('click', handleClickOutside, true);
+      document.removeEventListener("click", handleClickOutside, true);
     };
   }, [onClickOutside]);
 

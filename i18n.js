@@ -1,10 +1,10 @@
 module.exports = {
-  locales: ['sv', 'en'],
-  defaultLocale: 'sv',
+  locales: ["sv", "en"],
+  defaultLocale: "sv",
   pages: {
-    '*': ['common', 'pages', 'resources', 'routes'],
+    "*": ["common", "pages", "resources", "routes"],
   },
-  nsSeparator: '|',
-  keySeparator: '$',
-  logger: () => {} // Delete this row to get logs from next-translate 
+  nsSeparator: "|",
+  keySeparator: "$",
+  logger: () => {}, // Delete this row to get logs from next-translate
 };

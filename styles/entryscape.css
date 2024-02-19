@@ -1,0 +1,562 @@
+.esbRowHead {
+  @apply relative max-h-none !important;
+}
+
+.about-dataset h2 {
+  @apply text-sm !important;
+}
+
+.rdforms {
+  @apply mr-none !important;
+}
+
+.rdformsRow {
+  @apply mb-md inline-grid w-full p-none md:mb-lg !important;
+}
+
+.rdformsRow .rdformsRow {
+  @apply mb-none !important;
+}
+
+.rdformsLabel,
+.information-container .title {
+  @apply mb-sm min-w-fit border-none p-none font-ubuntu text-sm font-strong text-textSecondary
+  focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-primary !important;
+}
+
+.rdformsRepeatedValue {
+  @apply border-none !important;
+}
+
+.rdformsUrl {
+  @apply text-sm text-green-600 underline underline-offset-2 hover:text-brown-800 !important;
+}
+
+.keywordHeading {
+  @apply mb-sm text-sm text-textSecondary !important;
+}
+
+.keywordTitle {
+  @apply mb-xs text-sm text-textPrimary !important;
+}
+
+.rdformsOrigin {
+  @apply ml-none grid pl-none !important;
+}
+
+.rdformsOrigin {
+  @apply mt-none !important;
+}
+
+.rdformsPresenter .compact {
+  @apply bg-primary;
+}
+
+.escoPosition {
+  @apply mt-lg !important;
+}
+
+.format-badge span {
+  @apply mr-sm !important;
+}
+
+.eachprop__ellipsis,
+.eachprop__restseparator {
+  @apply hidden !important;
+}
+
+.eachprop__expandbutton,
+.eachprop__unexpandbutton {
+  @apply ml-none font-ubuntu text-sm !important;
+  font-weight: 600;
+}
+
+.rdformsFields div {
+  @apply border-none bg-transparent p-none !important;
+}
+
+.rdformsRow .rdformsPresenter .rdformsLabel {
+  @apply hidden;
+}
+
+.contact__publisher {
+  @apply bg-pink-100 p-lg !important;
+}
+
+.contact__publisher h3 {
+  @apply mb-md text-lg !important;
+}
+
+.indicators {
+  @apply flex text-textSecondary;
+}
+
+.esbRow,
+.esbRowExpand {
+  @apply bg-white shadow-none !important;
+}
+
+.esbRow {
+  @apply mb-lg !important;
+}
+
+.esbRowMain {
+  @apply w-full !important;
+}
+
+.esbRowControl {
+  @apply absolute -right-none m-md flex w-fit items-center justify-items-end place-self-end !important;
+}
+
+.esbRowHead .esbRowControl > button {
+  @apply m-none mb-xs flex h-[44px] w-full items-center justify-evenly gap-xs rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary shadow-none hover:bg-brown-100 hover:no-underline focus-visible:no-underline focus-visible:shadow-none !important;
+}
+
+.btn-link::before {
+  content: attr(Title);
+}
+
+.btn-link {
+  @apply no-underline focus-visible:bg-brown-100 focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-primary !important;
+}
+
+.rdformsField,
+.rdformsSingleline {
+  @apply mt-none text-sm !important;
+}
+
+.svg-assets {
+  @apply hidden;
+}
+
+/* SWAGGER UI */
+
+.swagger-ui .table-container,
+.responses-inner {
+  @apply p-md;
+}
+
+.response-col_description {
+  @apply max-w-lg p-none md:p-sm;
+}
+
+.responses-header td {
+  @apply my-md font-strong;
+}
+
+.response-col_status {
+  @apply flex;
+}
+
+.microlight {
+  @apply bg-white p-md;
+}
+
+.responses-inner h4 {
+  @apply my-sm;
+}
+
+.request-url pre {
+  @apply break-all p-sm text-sm;
+}
+
+.language-json span {
+  @apply whitespace-pre-wrap break-all !important;
+}
+
+.highlight-code .microlight {
+  @apply max-h-[500px] overflow-y-scroll;
+}
+
+.swagger-ui td,
+.swagger-ui th,
+.swagger-ui table {
+  @apply border-none;
+}
+
+.swagger-ui .parameters-col_name {
+  @apply w-1/5;
+}
+
+.opblock-summary {
+  @apply flex items-center;
+}
+
+.swagger-ui .opblock-get,
+.opblock-get tr,
+.opblock-summary-get button {
+  @apply bg-[#cce2fa];
+}
+
+.swagger-ui .opblock-post,
+.opblock-post tr,
+.opblock-summary-post button {
+  @apply bg-[#c8ebd9];
+}
+
+.swagger-ui .opblock-put,
+.opblock-put tr,
+.opblock-summary-put button {
+  @apply bg-[#fadebf];
+}
+
+.swagger-ui .opblock-patch,
+.opblock-patch tr,
+.opblock-summary-patch button {
+  @apply bg-[#e3eeed];
+}
+
+.swagger-ui .opblock-delete,
+.opblock-delete tr,
+.opblock-summary-delete button {
+  @apply bg-[#fad5d3];
+}
+
+.opblock-summary-method {
+  @apply rounded-md px-lg py-xs text-md text-white !important;
+}
+
+.swagger-ui .btn-group {
+  @apply flex gap-md p-lg;
+}
+
+.execute {
+  @apply w-1/2 py-sm text-white;
+}
+
+.execute:hover {
+  @apply opacity-80;
+}
+
+.opblock-get .execute {
+  @apply bg-[#0173e4];
+}
+
+.opblock-post .execute {
+  @apply bg-[#258659];
+}
+
+.opblock-put .execute {
+  @apply bg-[#a86629];
+}
+
+.opblock-patch .execute {
+  @apply bg-[#14827b];
+}
+
+.opblock-delete .execute {
+  @apply bg-[#ed0908];
+}
+
+.btn-clear {
+  @apply w-1/2 bg-brownOpaque5 text-white;
+}
+
+.btn-clear:hover {
+  @apply opacity-70;
+}
+
+.opblock-get .opblock-summary-method {
+  @apply bg-[#0173e4];
+}
+
+.opblock-post .opblock-summary-method {
+  @apply bg-[#258659];
+}
+
+.opblock-put .opblock-summary-method {
+  @apply bg-[#a86629];
+}
+
+.opblock-patch .opblock-summary-method {
+  @apply bg-[#14827b];
+}
+
+.opblock-delete .opblock-summary-method {
+  @apply bg-[#ed0908];
+}
+
+.opblock-section-header,
+.view-line-link {
+  @apply px-md py-lg;
+}
+
+.opblock-get .opblock-section-header,
+.view-line-link {
+  @apply bg-[#f5f9ff];
+}
+
+.opblock-post .opblock-section-header,
+.view-line-link {
+  @apply bg-[#f4fbf8];
+}
+
+.opblock-put .opblock-section-header,
+.view-line-link {
+  @apply bg-[#fdf8f3];
+}
+
+.opblock-patch .opblock-section-header,
+.view-line-link {
+  @apply bg-[#f5fffb];
+}
+
+.opblock-delete .opblock-section-header,
+.view-line-link {
+  @apply bg-[#fff7f7];
+}
+
+.execute-wrapper {
+  @apply p-lg;
+}
+.execute-wrapper button {
+  @apply flex h-md w-full items-center justify-center p-lg text-white;
+}
+
+.opblock-get .execute-wrapper button {
+  @apply bg-[#0173e4];
+}
+
+.opblock-post .execute-wrapper button {
+  @apply bg-[#258659];
+}
+
+.opblock-put .execute-wrapper button {
+  @apply bg-[#a86629];
+}
+
+.opblock-patch .execute-wrapper button {
+  @apply bg-[#14827b];
+}
+
+.opblock-delete .execute-wrapper button {
+  @apply bg-[#ed0908];
+}
+
+.swagger-ui input,
+.swagger-ui .markdown p {
+  @apply w-full max-w-md py-sm;
+}
+.swagger-ui thead {
+  @apply border-b-2 border-brownOpaque5 text-textPrimary !important;
+}
+.view-line-link {
+  @apply hidden;
+}
+
+.swagger-ui table {
+  @apply !mt-none;
+}
+
+.swagger-ui .title {
+  @apply mb-md md:flex lg:text-lg;
+}
+
+.swagger-ui .version {
+  @apply ml-[-8px] md:ml-none;
+}
+
+.swagger-ui .base-url {
+  @apply overflow-auto pb-sm text-sm;
+}
+
+.scheme-container label {
+  @apply flex flex-col gap-xs break-words;
+}
+
+.swagger-ui .info a {
+  @apply break-words text-green-600 hover:text-brown-800;
+}
+
+.main,
+.info,
+.scheme-container {
+  @apply mb-lg;
+}
+
+.information-container,
+.information-container pre {
+  @apply font-ubuntu text-sm;
+}
+
+.opblock-tag {
+  @apply flex cursor-pointer justify-between bg-[#d8d8d8] p-md text-textPrimary [&_svg]:fill-textPrimary;
+}
+
+.opblock-summary-control {
+  @apply relative flex w-full items-center p-md text-left;
+}
+
+.opblock-summary-control .opblock-summary-path {
+  @apply max-w-fit px-md pr-xl text-left md:pr-none;
+}
+.opblock-summary-control svg {
+  @apply absolute right-md ml-sm min-w-fit;
+}
+
+.curl-command .copy-to-clipboard,
+.highlight-code .copy-to-clipboard {
+  @apply absolute bottom-[10px] right-[10px] flex h-[30px] w-[30px] items-center justify-center bg-white opacity-70 hover:opacity-90;
+}
+
+.copy-to-clipboard button {
+  background:
+    url("../assets/icons/copy-to-clipboard.svg"),
+    no-repeat center;
+  @apply h-[20px] w-[20px] bg-contain;
+}
+
+.curl-command,
+.highlight-code,
+.request-url {
+  @apply relative mb-xl;
+}
+
+.response-col_status {
+  @apply mr-md font-strong;
+}
+
+.microlight {
+  @apply whitespace-pre-wrap;
+}
+
+.download-contents {
+  @apply absolute bottom-[10px] right-[50px]  flex h-[30px] cursor-pointer items-center bg-white px-sm pt-xs text-center text-textPrimary opacity-70 hover:opacity-90;
+}
+
+.opblock-summary .copy-to-clipboard {
+  @apply absolute right-[42px] hidden h-[30px] cursor-pointer items-center bg-brownOpaque5 hover:bg-textPrimary focus:bg-primary;
+}
+
+.opblock-summary:hover > .copy-to-clipboard {
+  @apply md:flex !important;
+}
+
+.opblock-summary-control .opblock-summary-description {
+  @apply mr-md hidden w-full  text-left text-[10px] text-sm lg:block;
+}
+
+#operations-default-datasetQuery {
+  @apply relative;
+}
+
+.opblock-summary-method {
+  @apply text-lg font-strong;
+}
+
+.opblock-section-header {
+  @apply flex items-center justify-between  text-lg;
+}
+
+.opblock-section-header span {
+  @apply text-sm;
+}
+.opblock-section-header label {
+  @apply flex items-center gap-md;
+}
+.opblock-section-header select,
+.scheme-container select {
+  @apply w-fit cursor-pointer border-r-8 border-transparent bg-[#d8d8d8] px-md py-sm text-md uppercase outline-none;
+}
+
+.parameters-col_description input {
+  @apply p-sm text-brown-900;
+}
+
+.entryscape a:not(.noUnderline),
+.information-container a {
+  @apply block w-fit break-all text-sm text-green-600 underline;
+}
+
+.entryscape a:not(.noUnderline) {
+  @apply text-green-600 !important;
+}
+
+.entryscape a:hover,
+.information-container a:hover {
+  @apply no-underline !important;
+}
+
+.entryscape h3 {
+  @apply mb-sm text-sm font-strong text-textSecondary !important;
+}
+
+.preamble {
+  @apply mb-lg font-ubuntu text-lg text-textSecondary md:mb-xl !important;
+}
+
+.conceptDetail h2 {
+  @apply mb-sm mt-none text-lg font-normal !important;
+}
+
+.conceptDetail span {
+  @apply text-md !important;
+}
+
+.conceptDetail a {
+  @apply mb-none w-fit text-md text-green-600 !important;
+}
+
+.conceptDetail .entryList {
+  @apply space-y-sm !important;
+}
+
+.relatedList-label {
+  @apply mt-none text-lg !important;
+}
+
+.concept-header {
+  @apply mb-md text-lg !important;
+}
+
+.linkInBtn {
+  @apply text-white !important;
+}
+
+.concept_hierarchy {
+  @apply overflow-scroll bg-white py-md;
+}
+
+.concept_hierarchy svg {
+  @apply overflow-auto  !important;
+}
+
+.concept_hierarchy rect {
+  @apply max-w-sm fill-green-600 stroke-none text-white !important;
+}
+
+.concept_hierarchy text {
+  @apply fill-white !important;
+}
+
+.esbHierarchy__expandableNode rect {
+  @apply fill-brown-900 !important;
+}
+
+.esbHierarchy__leafNode rect {
+  @apply fill-brown-600 !important;
+}
+
+.entryListRow {
+  @apply mb-xs;
+}
+
+.responses-inner h4 {
+  @apply text-lg;
+}
+
+.responses-inner h5 {
+  @apply mb-sm;
+}
+
+.swagger-ui .no-margin {
+  overflow: auto;
+}
+
+.swagger-ui .no-margin {
+  overflow: auto;
+}
+
+.swagger-ui .opblock-body {
+  min-width: 500px;
+}

@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from "next/types";
-import { getMultiContainer } from "../../utilities";
+import { getMultiContainer } from "@/utilities";
 import { Page } from "../[...containerSlug]";
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {

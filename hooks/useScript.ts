@@ -1,7 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 // Hook
-export const useScript = (src : string, integrity?: string, crossOrigin?: string) => {
+export const useScript = (
+  src: string,
+  integrity?: string,
+  crossOrigin?: string,
+) => {
   // Keep track of script status ("idle", "loading", "ready", "error")
   const [status, setStatus] = useState(src ? "loading" : "idle");
 
@@ -16,7 +20,9 @@ export const useScript = (src : string, integrity?: string, crossOrigin?: string
 
       // Fetch existing script element by src
       // It may have been added by another intance of this hook
-      const existingScript : HTMLScriptElement | null = document.querySelector(`script[src="${src}"]`);
+      const existingScript: HTMLScriptElement | null = document.querySelector(
+        `script[src="${src}"]`,
+      );
       let script: HTMLScriptElement;
 
       if (!existingScript) {
@@ -35,7 +41,7 @@ export const useScript = (src : string, integrity?: string, crossOrigin?: string
         const setAttributeFromEvent = (event: any) => {
           script.setAttribute(
             "data-status",
-            event.type === "load" ? "ready" : "error"
+            event.type === "load" ? "ready" : "error",
           );
         };
 
@@ -44,7 +50,7 @@ export const useScript = (src : string, integrity?: string, crossOrigin?: string
       } else {
         script = existingScript;
         // Grab existing script status from attribute and set to state.
-        setStatus(existingScript.getAttribute("data-status") || 'error');
+        setStatus(existingScript.getAttribute("data-status") || "error");
       }
 
       // Script event handler to update status in state
@@ -66,8 +72,8 @@ export const useScript = (src : string, integrity?: string, crossOrigin?: string
         }
       };
     },
-    [src] // Only re-run effect if script src changes
+    [src], // Only re-run effect if script src changes
   );
 
   return status;
-}
+};
