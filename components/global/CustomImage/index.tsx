@@ -33,9 +33,6 @@ export const CustomImage: FC<CustomImageProps> = ({
   }
 
   if (isNextStatic(image.url)) {
-    // eslint-disable-next-line
-    console.log("src", image.url);
-
     return (
       <Image
         src={image.url}
