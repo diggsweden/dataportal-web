@@ -27,7 +27,7 @@ export const CustomImage: FC<CustomImageProps> = ({
     return (
       <Image
         src={noImage}
-        width={width || 300}
+        width={width || 384}
         height={height || 200}
         alt={"image not found"}
         className={className}
@@ -37,10 +37,13 @@ export const CustomImage: FC<CustomImageProps> = ({
   }
 
   if (isNextStatic(image.url)) {
+    // eslint-disable-next-line
+    console.log("src", image.url);
+
     return (
       <Image
-        src={`${image.url}?w=${width ? width : 384}&q=${75}`}
-        width={image.width || 300}
+        src={image.url}
+        width={image.width || 384}
         height={image.height || 200}
         className={className}
         alt={image.alt || ""}
