@@ -10,13 +10,7 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
-import {
-  linkBase,
-  architechtureIndicator,
-  hvdIndicator,
-  licenseIndicator,
-  periodicityIndicator,
-} from "@/utilities";
+import { linkBase, customIndicators } from "@/utilities";
 import { CustomLink } from "@/components/global/CustomLink";
 
 const ApiExplorer = dynamic(
@@ -166,24 +160,7 @@ export const DataSetExploreApiPage: React.FC<{
             ],
 
             blocks: [
-              ${periodicityIndicator},
-              ${licenseIndicator},
-              ${architechtureIndicator},
-              ${hvdIndicator},
-              {
-                block: 'costIndicator',
-                extends: 'template',
-                template: '{{#ifprop "schema:offers"}}<span class="esbIndicator" title="Avgift">' +
-                  '<i class="fas fa-coins"></i>' +
-                  '<span class="esbIndicatorLabel">Avgift</span></span>' +
-                  '{{/ifprop}}',
-              },
-              {
-                block: 'costIndicator2',
-                extends: 'template',
-                template: '{{#ifprop "schema:offers"}}<span class="esbIndicator" title="Avgift"><i class="fas fa-coins"></i>' +
-                  '<span class="esbIndicatorLabel">Avgift</span></span>{{/ifprop}}',
-              },         
+              ${customIndicators},   
           ]
           }]
           </script>              
@@ -218,40 +195,23 @@ export const DataSetExploreApiPage: React.FC<{
           content={`${entry.title} - Sveriges dataportal`}
         />
       </Head>
-      <div className="detailpage__wrapper-topinfo">
+      <div>
         {/* Title */}
         <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {t("pages|explore-api-page$explore-api")}
         </Heading>
-        {/* Publisher */}
-        <span>{entry.publisher}</span>
-        {/* Indicators */}
-        <div className="my-lg flex text-textSecondary">
-          <div
-            data-entryscape="accessRightsIndicator"
-            className="accessRightsIndicator"
-            data-entryscape-entry={eid}
-            data-entryscape-context={cid}
-          ></div>
-          <div
-            data-entryscape="periodicityIndicator"
-            className="architectureIndicator"
-            data-entryscape-entry={eid}
-            data-entryscape-context={cid}
-          ></div>
-          <div
-            data-entryscape="licenseIndicator2"
-            className="licenseIndicator"
-            data-entryscape-entry={eid}
-            data-entryscape-context={cid}
-          ></div>
 
+        <div className="mb-md flex w-full flex-col gap-lg lg:mb-lg">
+          {/* Publisher */}
+          <span className="text-lg text-textSecondary">{entry.publisher}</span>
+
+          {/* Indicators */}
           <div
-            data-entryscape="costIndicator2"
-            className="costIndicator"
+            data-entryscape="customIndicators"
             data-entryscape-entry={eid}
             data-entryscape-context={cid}
-          ></div>
+            className="indicators flex flex-col flex-wrap gap-x-lg gap-y-sm text-textSecondary md:flex-row"
+          />
         </div>
         <div className="flex flex-col">
           {/* Refers to dataset - heading*/}

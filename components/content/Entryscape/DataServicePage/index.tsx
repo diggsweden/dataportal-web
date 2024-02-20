@@ -8,11 +8,11 @@ import Link from "next/link";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import {
-  architechtureIndicator,
+  customIndicators,
   exploreApiLink,
-  licenseIndicator,
+  keyword,
   linkBase,
-  periodicityIndicator,
+  theme,
 } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
@@ -107,41 +107,10 @@ export const DataServicePage: React.FC<{
             },
 
             blocks: [
-              ${architechtureIndicator},
-              ${periodicityIndicator},
+              ${customIndicators},
               ${exploreApiLink},
-              ${licenseIndicator},
-              {
-                block: 'dataserviceReferences2',
-                extends: 'template',
-                hl: '2',
-                template: '{{#ifprop "dcat:servesDataset"}}' +
-                  '  {{dataserviceForwardReferences hl="inherit:hl"}}' +
-                  '{{/ifprop}}' +
-                  '{{#ifprop "dcat:servesDataset" invert="true"}}' +
-                  '  {{dataserviceBackwardReferences hl="inherit:hl"}}' +
-                  '{{/ifprop}}',
-              },
-              {
-                block: 'dataserviceForwardReferences2',
-                extends: 'list',
-                relation: 'dcat:servesDataset',
-                hl: '2',
-                limit: '3',
-                listhead: '<h{{hl}}>DatamÃ¤ngder som anvÃ¤nder detta API</h{{hl}}>',
-                rowhead: '{{link namedclick="dataset"}}',
-              },
-              {
-                block: 'dataserviceBackwardReferences2',
-                extends: 'list',
-                relationinverse: 'dcat:accessService',
-                layout: 'raw',
-                hl: '2',
-                limit: '3',
-                listhead: '<h{{hl}}>DatamÃ¤ngder som anvÃ¤nder detta API</h{{hl}}>',
-                rowhead: '{{link relationinverse="dcat:distribution" namedclick="dataset"}}',
-              },
-            
+              ${keyword(t)},
+              ${theme(t)},            
             ]
           }]
           </script>              
@@ -177,7 +146,7 @@ export const DataServicePage: React.FC<{
         />
       </Head>
       <main>
-        <Heading className="py-xl text-xl lg:text-2xl" size="lg" level={1}>
+        <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {entry.title}
         </Heading>
 
@@ -191,44 +160,32 @@ export const DataServicePage: React.FC<{
               data-entryscape-component="template"
               dangerouslySetInnerHTML={{
                 __html: `
-                        {{text relation="dcterms:publisher"}} 
+                <span class="text-lg text-textSecondary">
+                {{text relation="dcterms:publisher"}} 
+                </span> 
                       `,
               }}
             />
 
             {/* Indicators */}
-            <div className="flex text-textSecondary">
-              <div
-                data-entryscape="architectureIndicator"
-                className="architectureIndicator"
-              />
-              <div
-                data-entryscape="accessRightsIndicator"
-                className="accessRightsIndicator"
-              />
-              <div
-                data-entryscape="periodicityIndicator"
-                className="architectureIndicator"
-              />
-              <div
-                data-entryscape="licenseIndicator"
-                className="licenseIndicator"
-              />
-            </div>
+            <div
+              data-entryscape="customIndicators"
+              className="indicators flex flex-col flex-wrap gap-x-lg gap-y-sm text-textSecondary md:flex-row"
+            />
+
+            {/* Description */}
+            <script
+              type="text/x-entryscape-handlebar"
+              data-entryscape="true"
+              data-entryscape-component="template"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  <div class="description text-md">{{text content="\${dcterms:description}"}}</div>
+                  `,
+              }}
+            />
 
             <div className="bg-white p-lg">
-              {/* Description */}
-              <script
-                type="text/x-entryscape-handlebar"
-                data-entryscape="true"
-                data-entryscape-component="template"
-                dangerouslySetInnerHTML={{
-                  __html: `
-                      <div class="description text-md">{{text content="\${dcterms:description}"}}</div>
-                      `,
-                }}
-              />
-
               <script
                 type="text/x-entryscape-handlebar"
                 data-entryscape="true"
@@ -281,10 +238,16 @@ export const DataServicePage: React.FC<{
           </div>
 
           {/* Right column */}
-          <div className="mt-xl lg:mt-none lg:w-[296px]">
-            <Heading level={2} size={"sm"}>
+          <div className="mb-lg w-full pt-none lg:mb-none lg:max-w-[296px]">
+            <Heading
+              level={2}
+              size={"sm"}
+              className="mb-md text-textSecondary md:mb-lg"
+            >
               {t("pages|dataservicepage$api")}
             </Heading>
+            {/* About dataservice */}
+            <div data-entryscape="aboutDaservice" className="mb-lg" />
             <script
               type="text/x-entryscape-handlebar"
               data-entryscape="true"
@@ -299,7 +262,7 @@ export const DataServicePage: React.FC<{
                         </div>
                       `,
               }}
-            ></script>
+            />
           </div>
         </div>
       </main>

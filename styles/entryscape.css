@@ -48,6 +48,10 @@
   @apply mt-none !important;
 }
 
+.rdformsOrigin > .rdformsLanguage {
+  @apply hidden !important;
+}
+
 .rdformsPresenter .compact {
   @apply bg-primary;
 }
@@ -67,8 +71,11 @@
 
 .eachprop__expandbutton,
 .eachprop__unexpandbutton {
-  @apply ml-none font-ubuntu text-sm !important;
-  font-weight: 600;
+  @apply ml-none mt-xs px-sm py-xs font-ubuntu text-sm font-normal text-textSecondary hover:bg-brown-200 !important;
+}
+
+.rdformsFields {
+  @apply space-y-sm !important;
 }
 
 .rdformsFields div {
@@ -101,15 +108,15 @@
 }
 
 .esbRowMain {
-  @apply w-full !important;
+  @apply w-full p-lg !important;
 }
 
 .esbRowControl {
-  @apply absolute -right-none m-md flex w-fit items-center justify-items-end place-self-end !important;
+  @apply absolute -right-none m-lg flex w-fit items-center justify-items-end place-self-end !important;
 }
 
 .esbRowHead .esbRowControl > button {
-  @apply m-none mb-xs flex h-[44px] w-full items-center justify-evenly gap-xs rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary shadow-none hover:bg-brown-100 hover:no-underline focus-visible:no-underline focus-visible:shadow-none !important;
+  @apply m-none flex h-[44px] w-full items-center justify-evenly gap-sm rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary shadow-none hover:bg-brown-100 hover:no-underline focus-visible:no-underline focus-visible:shadow-none !important;
 }
 
 .btn-link::before {
