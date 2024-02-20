@@ -86,8 +86,17 @@ const nextConfig = nextTranslate({
   staticPageGenerationTimeout: 240,
 
   images: {
-    domains: [process.env.IMAGE_DOMAIN || "localhost", "bcdn.screen9.com"],
+    domains: [
+      process.env.IMAGE_DOMAIN,
+      "localhost",
+      "graphql.digg.se",
+      "bcdn.screen9.com",
+    ],
+    deviceSizes: [640, 828, 1080, 1200, 1920, 3840],
+    imageSizes: [128, 256, 384],
     dangerouslyAllowSVG: true,
+    contentSecurityPolicy:
+      "default-src 'self'; script-src 'none'; sandbox; img-src; https://graphql.digg.se;",
   },
   async headers() {
     return [

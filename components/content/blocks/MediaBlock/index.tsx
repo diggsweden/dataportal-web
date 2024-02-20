@@ -38,7 +38,11 @@ const renderMedia = (
       }
       return (
         <figure className="border-b border-brown-200 pb-sm">
-          <CustomImage image={media} className="pb-sm" />
+          <CustomImage
+            image={media}
+            className="pb-sm"
+            sizes="(max-width: 640px) 80vw, (max-width: 1200px) 60vw, (max-width: 1920px) 30vw, 25vw"
+          />
           {mediaDescription && (
             <figcaption className="text-brown-600">
               {checkLang(mediaDescription)}
