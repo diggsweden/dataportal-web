@@ -54,9 +54,22 @@ export const CustomImage: FC<CustomImageProps> = ({
     ? image.url
     : (env("MEDIA_BASE_URL") || "") + image.url;
 
+  // eslint-disable-next-line
+  console.log("isNextStatic", isNextStatic);
+  // eslint-disable-next-line
+  console.log("width", width);
+  // eslint-disable-next-line
+  console.log("height", height);
+  // eslint-disable-next-line
+  console.log("sizes", sizes);
+
+  var src_test = `${src}?w=${width ? width : 384}&q=${75}`;
+  // eslint-disable-next-line
+  console.log("src", src_test);
+
   return (
     <Image
-      src={`${src}?w=${width ? width : 384}&q=${75}`}
+      src={src}
       width={width ? width : Number(image.width || "")}
       height={height ? height : Number(image.height || "")}
       className={className}
