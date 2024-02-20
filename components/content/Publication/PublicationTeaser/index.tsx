@@ -41,7 +41,6 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
       <div>
         <CustomImage
           image={image}
-          height={240}
           width={384}
           className="h-[184px] w-full object-cover md:h-[240px] lg:h-[184px]"
         />

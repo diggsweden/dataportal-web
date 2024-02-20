@@ -7,10 +7,8 @@ import noImage from "@/assets/logos/noImage.png";
 
 interface CustomImageProps {
   image: ImageInterface | null;
-  height?: number;
   width?: number;
   className?: string;
-  sizes?: string;
 }
 
 const isNextStatic = (url: string) =>
@@ -18,17 +16,15 @@ const isNextStatic = (url: string) =>
 
 export const CustomImage: FC<CustomImageProps> = ({
   image,
-  height,
   width,
   className,
-  sizes,
 }) => {
   if (!image) {
     return (
       <Image
         src={noImage}
         width={width || 384}
-        height={height || 200}
+        height={200}
         alt={"image not found"}
         className={className}
         priority
@@ -47,7 +43,6 @@ export const CustomImage: FC<CustomImageProps> = ({
         height={image.height || 200}
         className={className}
         alt={image.alt || ""}
-        sizes={sizes || ""}
         priority
       />
     );
@@ -57,28 +52,18 @@ export const CustomImage: FC<CustomImageProps> = ({
     ? image.url
     : (env("MEDIA_BASE_URL") || "") + image.url;
 
-  // eslint-disable-next-line
-  console.log("isNextStatic", isNextStatic);
-  // eslint-disable-next-line
-  console.log("width", width);
-  // eslint-disable-next-line
-  console.log("height", height);
-  // eslint-disable-next-line
-  console.log("sizes", sizes);
-
-  var src_test = `${src}?w=${width ? width : 384}&q=${75}`;
-  // eslint-disable-next-line
-  console.log("src", src_test);
-
+  /* HOTFIX-image-optimize: Adding unoptimized true to external images to not be
+   *  optimized twice by Graphql and Next.js
+   */
   return (
     <Image
-      src={src}
+      src={`${src}?w=${width ? width : 384}&q=${75}`}
       width={width ? width : Number(image.width || "")}
-      height={height ? height : Number(image.height || "")}
+      height={Number(image.height || "")}
       className={className}
       alt={image.alt || ""}
-      sizes={sizes || ""}
       priority
+      unoptimized={true}
     />
   );
 };
