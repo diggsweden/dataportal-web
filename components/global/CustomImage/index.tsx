@@ -59,9 +59,10 @@ export const CustomImage: FC<CustomImageProps> = ({
 
   return (
     <Image
-      src={`${src}?w=${width ? width : 384}&q=${90}`}
+      src={src}
       width={width ? width : Number(image.width || "")}
       height={Number(image.height || "")}
+      quality={100}
       className={className}
       alt={image.alt || ""}
       sizes={
