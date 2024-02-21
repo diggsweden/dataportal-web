@@ -5,7 +5,7 @@ import { SettingsContext } from "@/providers/SettingsProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { hemvist, linkBase } from "@/utilities";
+import { hemvist, keyword, linkBase } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 
@@ -151,7 +151,7 @@ export const SpecificationPage: FC<{
               {
                 regex:new RegExp('(\/*\/specifications\/)(.+)'),
                 uri:'https://${
-                  env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
+                  env.ENTRYSCAPE_SPECS_PATH.startsWith("sandbox")
                     ? "www-sandbox.dataportal.se"
                     : "dataportal.se"
                 }/specifications/${curi}',
@@ -184,12 +184,21 @@ export const SpecificationPage: FC<{
             itemstore: {
               bundles: [
                 'dcat',
-                'https://sandbox.editera.dataportal.se/theme/templates/adms.json',
-                'https://sandbox.editera.dataportal.se/theme/templates/prof.json',
+                'https://${
+                  env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
+                    ? "sandbox.editera.dataportal.se"
+                    : "editera.dataportal.se"
+                }/theme/templates/adms.json',
+                'https://${
+                  env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
+                    ? "sandbox.editera.dataportal.se"
+                    : "editera.dataportal.se"
+                }/theme/templates/prof.json',
               ],
             },
             blocks: [
               ${hemvist(t)},
+              ${keyword(t)},
               {
                 block: 'resourceDescriptors2',
                 extends: 'list',
@@ -204,30 +213,11 @@ export const SpecificationPage: FC<{
                   '<span class="block mb-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
                   '<div>{{ text content="\${skos:definition}" }}</div>' +
                   '<a href="{{resourceURI}}"><span class="button button--primary button--large text-white">${t(
-                    "pages|specification_page$download",
-                  )} {{prop "prof:hasRole" class="type" render="label"}}</span></a>',
-              },
-              {
-                block: 'keyword',
-                extends: 'template',
-                template:'{{#ifprop "dcat:keyword"}}' + 
-                    '<div class="rdforms">' +
-                      '<div class="rdformsRow rdformsTopLevel">' +
-                        '<div class="rdformsLabel">' +
-                          '${t("pages|datasetpage$keyword")}' +
-                        '</div>' +
-                        '<div>' +
-                          '{{#eachprop "dcat:keyword" limit=4 expandbutton="${t(
-                            "pages|datasetpage$view_more",
-                          )}" unexpandbutton="${t(
-                            "pages|datasetpage$view_less",
-                          )}"}}' +
-                            '<div title="{{value}}" class="text-sm mb-sm font-strong bg-pink-200 w-fit py-xs px-sm" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
-                          '{{/eachprop}}' +
-                        '</div>' +
-                      '</div>' +
-                    '</div>' +
-                  '{{/ifprop}}',
+                    "pages|specification_page$specification_download",
+                  )}' +
+                  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                  '<path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18V15H6V18H18V15H20V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6Z" fill="#FFFFFF"/>' +
+                  '</svg></span></a>',
               },
             ],
           }];

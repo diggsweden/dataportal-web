@@ -174,7 +174,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               {
                 regex:new RegExp('(\/*\/terminology\/)(.+)'),
                 uri:'https://${
-                  env.ENTRYSCAPE_TERMS_PATH.includes("sandbox")
+                  env.ENTRYSCAPE_TERMS_PATH.startsWith("sandbox")
                     ? "www-sandbox.dataportal.se"
                     : "dataportal.se"
                 }/concepts/${curi}',
@@ -183,7 +183,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               {
                 regex:new RegExp('(\/*\/concepts\/)(.+)'),
                 uri:'https://${
-                  env.ENTRYSCAPE_TERMS_PATH.includes("sandbox")
+                  env.ENTRYSCAPE_TERMS_PATH.startsWith("sandbox")
                     ? "www-sandbox.dataportal.se"
                     : "dataportal.se"
                 }/concepts/${curi}',
