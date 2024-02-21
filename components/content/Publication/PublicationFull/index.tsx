@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import { linkBase, PublicationResponse, slugify } from "@/utilities";
 import { Container } from "@/components/layout/Container";
-import { PublicationList } from "@/components/content/Publication/PublicationList";
+import { GridList } from "@/components/content/GridList";
 import { formatDateWithTime } from "@/utilities/dateHelper";
 import { Heading } from "@/components/global/Typography/Heading";
 import DateIcon from "@/assets/icons/date.svg";
@@ -106,8 +106,8 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
           </div>
         </div>
         {related && related.length > 0 && (
-          <PublicationList
-            publications={related}
+          <GridList
+            items={related}
             heading={"Fler " + relatedHeading.toLowerCase()}
           />
         )}
