@@ -19,7 +19,6 @@ interface ListPageProps {
     | PublicationDataFragment[]
     | ContainerData_Dataportal_Digg_Container_Fragment[];
   heading?: string;
-  type?: string;
   category?: ContainerData_Dataportal_Digg_Container_Fragment;
   domain?: DiggDomain;
 }

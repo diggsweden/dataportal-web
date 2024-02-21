@@ -28,7 +28,6 @@ export const Page: FC<MultiContainerResponse> = ({
   if (category && categoryContainers) {
     return (
       <ListPage
-        type="PublicationList"
         listItems={categoryContainers}
         category={category}
         domain={domain}
