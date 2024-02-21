@@ -87,15 +87,16 @@ export const SearchTermsPage: React.FC<SearchProps> = () => {
       path = tmp[0] + '/' + tmp[1];
     } else path = resourceUri;
 
-    if (resourceUri &&
-      (!resourceUri.includes("dataportal.se") ||
-        resourceUri.includes("sandbox.dataportal.se"))) return `/externalconcepts/${path}`;
+    if (resourceUri && !resourceUri.includes('dataportal.se')) return `/externalconcepts/${path}`;
     else {
       //NDP-343
-      if (path.startsWith('https/dataportal.se/concepts'))
-        path = path.replace('https/dataportal.se/concepts', '');
+      if (
+        path.startsWith('https/dataportal.se/concepts') ||
+        path.startsWith('https/www-sandbox.dataportal.se/concepts')
+      )
+        path = path.slice(path.lastIndexOf('dataportal.se/') + 13);
 
-      return `/concepts${path}`;
+      return path;
     }
   };
 

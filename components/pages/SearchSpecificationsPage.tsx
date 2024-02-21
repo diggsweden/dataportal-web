@@ -84,16 +84,16 @@ export const SearchSpecificationsPage: React.FC<SearchProps> = () => {
       path = tmp[0] + '/' + tmp[1];
     } else path = resourceUri;
 
-    if (
-      resourceUri &&
-      (!resourceUri.includes('dataportal.se') || resourceUri.includes('sandbox.dataportal.se'))
-    ) {
+    if (resourceUri && !resourceUri.includes('dataportal.se')) {
       return `/externalspecification/${path}`;
     } else {
-      if (path.startsWith('https/dataportal.se/specifications'))
-        path = path.replace('https/dataportal.se/specifications', '');
+      if (
+        path.startsWith('https/dataportal.se/specifications') ||
+        path.startsWith('https/www-sandbox.dataportal.se/specifications')
+      )
+        path = path.slice(path.lastIndexOf('dataportal.se/') + 13);
 
-      return `/specifications${path}`;
+      return path;
     }
   };
 

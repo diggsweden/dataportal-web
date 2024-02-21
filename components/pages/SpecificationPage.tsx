@@ -93,7 +93,11 @@ export const SpecificationPage: React.FC<{ curi?: string; scheme?: string }> = (
               return "/externalspecification/" + path;
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/specifications/") > -1)
             {
-              var entryPath = resourceUri.replace("https://dataportal.se/specifications","");
+              let entryPath = '';
+              if(resourceUri.includes('https://www-sandbox.dataportal.se/specifications'))
+              entryPath = resourceUri.replace("https://www-sandbox.dataportal.se/specifications","");
+              else
+              entryPath = resourceUri.replace("https://dataportal.se/","");
                 return "/specifications" + entryPath;
             }
             return resourceUri;
@@ -138,7 +142,11 @@ export const SpecificationPage: React.FC<{ curi?: string; scheme?: string }> = (
               },             
               {
                 regex:new RegExp('(\/*\/specifications\/)(.+)'),
-                uri:'https://dataportal.se/specifications/${curi}',
+                uri:'https://${
+                  env.ENTRYSCAPE_TERMS_PATH.includes('sandbox')
+                    ? 'www-sandbox.dataportal.se'
+                    : 'dataportal.se'
+                }/specifications/${curi}',
                 page_language: '${lang}'
               }              
             ],
