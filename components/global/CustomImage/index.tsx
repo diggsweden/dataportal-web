@@ -7,26 +7,44 @@ import noImage from "@/assets/logos/noImage.png";
 
 interface CustomImageProps {
   image: ImageInterface | null;
+  height?: number;
+  width?: number;
   className?: string;
+  sizes?: string;
 }
 
-const isNextStatic = (url: string) => typeof url != "string";
+const isNextStatic = (url: string) =>
+  typeof url != "string" || !url.startsWith("/uploads");
 
-export const CustomImage: FC<CustomImageProps> = ({ image, className }) => {
+export const CustomImage: FC<CustomImageProps> = ({
+  image,
+  height,
+  width,
+  className,
+  sizes,
+}) => {
   if (!image) {
     return (
-      <Image src={noImage} alt={"image not found"} className={className} />
+      <Image
+        src={noImage}
+        width={width || 300}
+        height={height || 200}
+        alt={"image not found"}
+        className={className}
+        priority
+      />
     );
   }
 
   if (isNextStatic(image.url)) {
     return (
       <Image
-        src={image.url}
+        src={`${image.url}?w=${width ? width : 384}&q=${75}`}
         width={image.width || 300}
         height={image.height || 200}
         className={className}
         alt={image.alt || ""}
+        sizes={sizes || ""}
         priority
       />
     );
@@ -38,11 +56,13 @@ export const CustomImage: FC<CustomImageProps> = ({ image, className }) => {
 
   return (
     <Image
-      src={`${src}?w=${384}&q=${75}`}
-      width={Number(image.width || "")}
-      height={Number(image.height || "")}
+      src={`${src}?w=${width ? width : 384}&q=${75}`}
+      width={width ? width : Number(image.width || "")}
+      height={height ? height : Number(image.height || "")}
       className={className}
       alt={image.alt || ""}
+      sizes={sizes || ""}
+      priority
     />
   );
 };

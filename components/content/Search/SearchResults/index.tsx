@@ -243,7 +243,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                       saveCurrentScrollPos();
                       trackSearchHitClick(hit.url || "");
                     }}
-                    className="group block no-underline focus-visible:outline-none"
+                    className="group block no-underline"
                   >
                     {hit.metadata &&
                       search.allFacets &&

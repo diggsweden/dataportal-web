@@ -53,7 +53,6 @@ const BodyVariant: FC<PropsWithChildren<BodyProps>> = ({
       <Link
         href={href}
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        aria-label={"internal_link"}
         className={cx(bodyVariants({ variant }), className)}
       >
         {children}

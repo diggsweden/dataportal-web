@@ -7,19 +7,19 @@ import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { Button } from "@/components/global/Button";
 import Head from "next/head";
 import {
-  accessrigthsIndicator,
-  architechtureIndicator,
-  hvdIndicator,
   exploreApiLink,
-  licenseIndicator,
   linkBase,
-  periodicityIndicator,
+  customIndicators,
+  keyword,
+  theme,
+  catalog,
 } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 
 const filterCatalogProperties = [
   "dcat:keyword",
+  "dcat:theme",
   "dcterms:title",
   "dcterms:description",
   "dcterms:publisher",
@@ -30,7 +30,10 @@ const filterCatalogProperties = [
 
 const filterAllExceptContactAndLandingPage = [
   ...filterCatalogProperties,
+  "dcterms:issued",
+  "http://www.w3.org/ns/adms#versionNotes",
   "dcat:theme",
+  "dcat:temporalResolution",
   "dcterms:identifier",
   "dcterms:language",
   "dcterms:modified",
@@ -182,12 +185,11 @@ export const DataSetPage: React.FC = () => {
             ],
 
             blocks: [
-              ${accessrigthsIndicator},
-              ${periodicityIndicator},
-              ${licenseIndicator},
-              ${architechtureIndicator},
-              ${hvdIndicator},
+              ${customIndicators},
               ${exploreApiLink(cid, eid, t)},
+              ${keyword(t)},
+              ${theme(t)},
+              ${catalog},
               {
                 block: 'formatBadge',
                 extends: 'template',
@@ -209,7 +211,8 @@ export const DataSetPage: React.FC = () => {
               {
                 block: 'distributionAccessCustom',
                 extends: 'template',
-                template: '{{#ifprop "dcat:downloadURL"}}' +
+                template: 
+                '{{#ifprop "dcat:downloadURL"}}' +
                   '{{#ifprop "dcat:downloadURL" min="2"}}${t(
                     "pages|datasetpage$several_links",
                   )}{{/ifprop}}' +
@@ -232,13 +235,15 @@ export const DataSetPage: React.FC = () => {
                   '<path d="M14 3V5H17.59L7.76 14.83L9.17 16.24L19 6.41V10H21V3M19 19H5V5H12V3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V12H19V19Z" fill="#6E615A"/>' +
                   '</svg>' +
                   '</button>' +
+                  '</a>' +
                   '{{/ifprop}}',
               },
               {
                 block: 'fileList2',
                 extends: 'template',
                 directlabel: false,
-                template: '{{#unless directlabel}}' +
+                template: 
+                '{{#unless directlabel}}' +
                   '{{fileListEntries}}' +
                   '{{else}}' +
                   '<div class="escoList"><div class="entryList" aria-live="polite">' +
@@ -262,7 +267,7 @@ export const DataSetPage: React.FC = () => {
                 relation: 'dcat:accessService',
                 template: 
                 '<button class="button--primary button--large flex items-center !no-underline">' +
-                  '{{link class="linkInBtn noUnderline" tabIndex="-1" namedclick="dataservice-link" content="${t(
+                  '{{link class="linkInBtn noUnderline" tabindex="-1" namedclick="dataservice-link" content="${t(
                     "pages|datasetpage$read_about_api",
                   )}"}}' +
                   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
@@ -270,21 +275,6 @@ export const DataSetPage: React.FC = () => {
                   '</svg>' +
                 '</button>'          
               },
-              {
-                block: 'costIndicator',
-                extends: 'template',
-                template: '{{#ifprop "schema:offers"}}<span class="esbIndicator" title="Avgift">' +
-                  '<i class="fas fa-coins"></i>' +
-                  '<span class="esbIndicatorLabel">Avgift</span></span>' +
-                  '{{/ifprop}}',
-              },
-              {
-                block: 'costIndicator2',
-                extends: 'template',
-                template: '{{#ifprop "schema:offers"}}<span class="esbIndicator" title="Avgift"><i class="fas fa-coins"></i>' +
-                  '<span class="esbIndicatorLabel">Avgift</span></span>{{/ifprop}}',
-              },
-              
               {
                 block: 'distributionListCustom',
                 extends: 'list',
@@ -299,17 +289,17 @@ export const DataSetPage: React.FC = () => {
                   "pages|datasetpage$no_data",
                 )}</div>',
                 rowhead:
-                  '<span class="flex flex-col gap-sm">' +
-                  '<div class="flex justify-between gap-lg">' +
-                  '<span class="text-textPrimary text-lg">{{formatBadges2}}</span>' +
-                  '{{#ifprop "rdf:type" uri="esterms:ServiceDistribution"}}' +
-                    '<span class="text-textSecondary text-md"><i class="icon-cog--before"></i>API</span>' +
-                  '{{/ifprop}}' +  
-                  '</div>' +                
+                  '<span class="flex flex-col">' +
+                    '<div class="flex justify-between gap-lg mb-sm">' +
+                      '<span class="text-textPrimary text-lg">{{formatBadges2}}</span>' +
+                      '{{#ifprop "rdf:type" uri="esterms:ServiceDistribution"}}' +
+                        '<span class="text-textSecondary text-md"></i>API</span>' +
+                      '{{/ifprop}}' +  
+                    '</div>' +                
                   '<span>{{text fallback="<span class=\\\'distributionNoName\\\'>${t(
                     "pages|datasetpage$no_title",
                   )}</span>"}}</span>' +                  
-                  '<div class="flex flex-col md:flex-row gap-sm mt-md md:mt-none">' +
+                  '<div class="flex flex-col md:flex-row gap-sm mt-md md:mt-lg">' +
                   '{{distributionAccessCustom}}' +
                   '{{exploreApiLink}}' +
                   '</span>' +
@@ -324,48 +314,29 @@ export const DataSetPage: React.FC = () => {
                   '{{/ifprop}}' +
                   '{{view rdformsid="dcat:Distribution" filterpredicates="dcat:downloadURL,dcterms:title,dcat:accessService"}}'
               },
-              
-              {
-                block: 'keyword',
-                extends: 'template',
-                template:'{{#ifprop "dcat:keyword"}}' + 
-                    '<div class="rdforms">' +
-                      '<div class="rdformsRow rdformsTopLevel">' +
-                        '<div class="rdformsLabel">' +
-                          '${t("pages|datasetpage$keyword")}' +
-                        '</div>' +
-                        '<div>' +
-                          '{{#eachprop "dcat:keyword" limit=4 expandbutton="${t(
-                            "pages|datasetpage$view_more",
-                          )}" unexpandbutton="${t(
-                            "pages|datasetpage$view_less",
-                          )}"}}' +
-                            '<div title="{{value}}" class="text-sm mb-sm font-strong bg-pink-200 w-fit py-xs px-sm" data-esb-collection-format="{{optionvalue}}">{{value}}</div>' +
-                          '{{/eachprop}}' +
-                        '</div>' +
-                      '</div>' +
-                    '</div>' +
-                  '{{/ifprop}}',
-              },
               {
                 block: 'aboutDataset',
                 extends: 'template',
-                template: '<div class="about_dataset">' +
-                            '<div class="view_metadata_group">' +
-                              '{{viewMetadata template="dcat:Dataset" filterpredicates="${filterAllExceptContactAndLandingPage.join(
-                                ",",
-                              )}"}}' +
-                            '</div>' +
-                            '<div class="keyword">' +
-                              '{{keyword}}' +
-                            '</div>' +
-                            '<div class="view_metadata_group">' +
-                              '{{viewMetadata template="dcat:Dataset" filterpredicates="${filterContactAndLandingPage.join(
-                                ",",
-                              )}"}}' +
-                            '</div>' +
-                          '</div>',
-              },
+                template: 
+                '<div class="about_dataset">' +
+                  '<div class="view_metadata_group">' +
+                    '{{viewMetadata template="dcat:Dataset" filterpredicates="${filterAllExceptContactAndLandingPage.join(
+                      ",",
+                    )}"}}' +
+                  '</div>' +
+                  '<div class="keyword">' +
+                  '{{keyword}}' +
+                  '</div>' +
+                  '<div class="theme">' +
+                  '{{theme}}' +
+                  '</div>' +
+                  '<div class="view_metadata_group">' +
+                    '{{viewMetadata template="dcat:Dataset" filterpredicates="${filterContactAndLandingPage.join(
+                      ",",
+                    )}"}}' +
+                  '</div>' +
+                '</div>',
+              }, 
             ]
           }]
           </script>              
@@ -414,32 +385,21 @@ export const DataSetPage: React.FC = () => {
               type="text/x-entryscape-handlebar"
               data-entryscape="true"
               data-entryscape-component="template"
+              className="preamble"
               dangerouslySetInnerHTML={{
-                __html: `
-                              
-                                  {{text relation="dcterms:publisher"}} 
-                               
+                __html: `        
+                <span class="text-lg text-textSecondary">
+                {{text relation="dcterms:publisher"}} 
+                </span>                            
                                 `,
               }}
             />
 
             {/* Indicators */}
-            <div className="indicators flex max-w-fit flex-col md:flex-row [&_div]:min-w-fit">
-              <div
-                data-entryscape="accessRightsIndicator"
-                className="accessRightsIndicator"
-              />
-              <div
-                data-entryscape="periodicityIndicator"
-                className="architectureIndicator"
-              />
-              <div
-                data-entryscape="licenseIndicator"
-                className="licenseIndicator"
-              />
-              <div data-entryscape="hvdIndicator" className="hvdIndicator" />
-              <div data-entryscape="costIndicator2" className="costIndicator" />
-            </div>
+            <div
+              data-entryscape="customIndicators"
+              className="indicators flex flex-col flex-wrap gap-x-lg gap-y-sm text-textSecondary md:flex-row"
+            />
 
             {/* Description */}
             <div className="flex flex-col items-end gap-sm">
@@ -518,10 +478,6 @@ export const DataSetPage: React.FC = () => {
               </Heading>
 
               {/* About dataset */}
-              <div
-                data-entryscape-dialog
-                data-entryscape-rdformsid="dcat:contactPoint"
-              />
               <div data-entryscape="aboutDataset" className="mb-lg" />
             </div>
 
@@ -534,8 +490,10 @@ export const DataSetPage: React.FC = () => {
               >
                 {t("pages|datasetpage$catalog")}
               </Heading>
+              <div />
 
               {/* Catalog */}
+              <div data-entryscape="catalog" />
               <script
                 type="text/x-entryscape-handlebar"
                 data-entryscape="true"

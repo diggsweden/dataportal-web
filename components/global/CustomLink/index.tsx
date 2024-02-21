@@ -15,7 +15,6 @@ export const CustomLink: FC<
   return (
     <Link
       href={href}
-      aria-label={isMailLink(href) ? "email_link" : "external_link"}
       className={cx(
         "cursor-pointer [&_svg]:mb-[2px] [&_svg]:ml-xs [&_svg]:inline-block",
         className,

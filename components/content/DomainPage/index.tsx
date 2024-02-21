@@ -71,14 +71,15 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   const isEn = lang === "en";
   const promotedAreaTeasers = [
     "offentligai",
-    "e-halso-initiativet",
+    "halsa-vard-och-omsorg",
     "kompetens-och-livslangt-larande",
   ];
-  const filteredAreas = !domain
-    ? promotedAreaTeasers?.flatMap(
-        (slug) => areas?.filter((area) => area.slug === slug),
-      )
-    : areas;
+  const filteredAreas =
+    areas && !domain
+      ? promotedAreaTeasers?.flatMap(
+          (slug) => areas?.filter((area) => area.slug === slug),
+        )
+      : areas;
 
   useEffect(() => {
     setBreadcrumb &&

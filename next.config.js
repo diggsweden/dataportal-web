@@ -82,6 +82,9 @@ const nextConfig = nextTranslate({
   env: {
     REVALIDATE_INTERVAL: process.env.REVALIDATE_INTERVAL,
   },
+
+  staticPageGenerationTimeout: 240,
+
   images: {
     domains: [process.env.IMAGE_DOMAIN || "localhost", "bcdn.screen9.com"],
     unoptimized: true,

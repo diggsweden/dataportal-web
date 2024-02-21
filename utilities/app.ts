@@ -12,11 +12,6 @@ import {
   PublicationResponse,
   RootAggregateResponse,
 } from "@/utilities/queryHelpers";
-import { StaticImageData } from "next/image";
-import start from "@/public/images/startPageHero.png";
-import ai from "@/public/images/aiHero.png";
-import data from "@/public/images/dataHero.png";
-import kallkod from "@/public/images/kallkodHero.png";
 
 export type DataportalPageProps =
   | MultiContainerResponse
@@ -41,25 +36,69 @@ const fallback = (domain: DiggDomain | "/", t: any): ResolvedPage => {
       return {
         heading: t("pages|ai$heading"),
         preamble: t("pages|ai$preamble"),
-        heroImage: renderImage(ai),
+        heroImage: {
+          __typename: "dataportal_Digg_Image",
+          url: "/images/aiHero.png",
+          name: null,
+          alt: null,
+          description: null,
+          mime: "image/png",
+          ext: ".png",
+          width: 1200,
+          height: 300,
+          screen9: { id: "" },
+        },
       };
     case "data":
       return {
         heading: t("pages|data$heading"),
         preamble: t("pages|data$preamble"),
-        heroImage: renderImage(data),
+        heroImage: {
+          __typename: "dataportal_Digg_Image",
+          url: "/images/dataHero.png",
+          name: null,
+          alt: null,
+          description: null,
+          mime: "image/png",
+          ext: ".png",
+          width: 1200,
+          height: 300,
+          screen9: { id: "" },
+        },
       };
     case "oppen-kallkod":
       return {
         heading: t("pages|os$heading"),
         preamble: t("pages|os$preamble"),
-        heroImage: renderImage(kallkod),
+        heroImage: {
+          __typename: "dataportal_Digg_Image",
+          url: "/images/kallkodHero.png",
+          name: null,
+          alt: null,
+          description: null,
+          mime: "image/png",
+          ext: ".png",
+          width: 1200,
+          height: 300,
+          screen9: { id: "" },
+        },
       };
     case "/":
       return {
         heading: t("pages|startpage$heading"),
         preamble: t("pages|startpage$preamble"),
-        heroImage: renderImage(start),
+        heroImage: {
+          __typename: "dataportal_Digg_Image",
+          url: "/images/startPageHero.png",
+          name: null,
+          alt: null,
+          description: null,
+          mime: "image/png",
+          ext: ".png",
+          width: 1200,
+          height: 300,
+          screen9: { id: "" },
+        },
       };
     default:
       return {};
@@ -141,16 +180,3 @@ export const populateSeo: SeoDataFragment = {
   robotsFollow: true,
   robotsIndex: true,
 };
-
-export const renderImage = (img: StaticImageData): ImageFragment => ({
-  __typename: "dataportal_Digg_Image",
-  url: img as any,
-  name: null,
-  alt: null,
-  description: null,
-  mime: "image/png",
-  ext: ".png",
-  width: img.width,
-  height: img.height,
-  screen9: { id: "" }, // just add dummy data to make ts happy
-});

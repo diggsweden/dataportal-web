@@ -212,7 +212,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
           {search.allFacets &&
             Object.entries(search.allFacets)
               .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
-              .map(([key, value]) => {
+              .map(([key, value], idx: number) => {
                 const isLicense = false; // Removed for now. key.includes('license');
                 const shouldFetchMore = value.show <= value.count;
                 const show = (value && value.show) || 20;
@@ -227,7 +227,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
 
                 if (key !== hvd) {
                   return (
-                    <li key={"box" + value.title}>
+                    <li key={"box" + value.title + idx}>
                       <SearchFilter
                         title={
                           value.title +

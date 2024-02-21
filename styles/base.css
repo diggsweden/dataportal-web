@@ -82,6 +82,10 @@ body {
     @apply focus-visible:underline group-focus-visible:underline;
   }
 
+  .focus--none {
+    @apply focus-visible:outline-none group-focus-visible:outline-none !important;
+  }
+
   .button {
     @apply flex w-fit cursor-pointer flex-row items-center no-underline 
     disabled:cursor-not-allowed disabled:border-none disabled:bg-brown-400 disabled:text-brown-600
@@ -106,7 +110,7 @@ body {
     [&_path]:fill-brown-600;
   }
   .button--plain.active {
-    @apply [&_svg]:rotate-180;
+    @apply [&_svg]:rotate-180 outline-2 outline-brown-600 outline;
   }
   .button--filter {
     @apply bg-brown-800 text-white [&_path]:fill-white;
@@ -183,7 +187,7 @@ mark {
 a,
 h1,
 button,
-.button,
+.button:not(.focus--none),
 input[type="radio"] {
   @apply focus--outline focus--primary focus--out;
 }

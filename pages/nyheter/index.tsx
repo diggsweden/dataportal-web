@@ -1,4 +1,4 @@
-import { getPublicationsList, populateSeo, renderImage } from "@/utilities";
+import { getPublicationsList, populateSeo } from "@/utilities";
 import { GetStaticProps } from "next/types";
 import { ListPage } from "@/components/content/ListPage";
 
@@ -12,11 +12,18 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     basePath: `/nyheter`,
     heading: "Nyheter",
     preamble: "Nyheter för Sveriges Dataportal",
-    heroImage: renderImage({
-      src: "/images/newsHero.png",
-      width: 1700,
+    heroImage: {
+      __typename: "dataportal_Digg_Image",
+      url: "/images/newsHero.png",
+      name: null,
+      alt: null,
+      description: null,
+      mime: "image/png",
+      ext: ".png",
+      width: 1200,
       height: 300,
-    }),
+      screen9: { id: "" },
+    },
   });
 };
 

@@ -5,7 +5,7 @@ import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { hemvist, linkBase } from "@/utilities";
+import { hemvist, linkBase, preambleBlock } from "@/utilities";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 
@@ -215,6 +215,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               }],
             blocks: [
               ${hemvist(t)},
+              ${preambleBlock},
               {
                 block: 'terminologyButton',
                 extends: 'template',
