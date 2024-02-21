@@ -27,26 +27,26 @@ export const GridList: FC<PublicationListProps> = ({
   items,
   heading,
   showMoreLink,
-  type,
 }) => {
   const { t } = useTranslation();
 
   const itemType = (
     item: PublicationDataFragment | ContainerDataFragment | ToolDataFragment,
   ) => {
-    switch (type) {
-      case "PublicationList":
+    switch (item.__typename) {
+      case "dataportal_Digg_Publication":
         return (
           <PublicationTeaser publication={item as PublicationDataFragment} />
         );
         break;
-      case "ToolList":
+      case "dataportal_Digg_Tool":
         return <Toolteaser tools={item as ToolDataFragment} />;
         break;
       default:
         break;
     }
   };
+
   return (
     <div className="my-lg md:my-xl">
       <div

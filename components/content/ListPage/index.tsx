@@ -14,8 +14,8 @@ import {
 } from "@/graphql/__generated__/operations";
 
 interface ListPageProps {
-  tools?: ToolDataFragment[];
-  publications?:
+  listItems?:
+    | ToolDataFragment[]
     | PublicationDataFragment[]
     | ContainerData_Dataportal_Digg_Container_Fragment[];
   heading?: string;
@@ -24,26 +24,17 @@ interface ListPageProps {
   domain?: DiggDomain;
 }
 
-export const ListPage: FC<ListPageProps> = ({
-  publications,
-  tools,
-  heading,
-  type,
-}) => {
+export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
   const { trackPageView } = useMatomo();
   const { setBreadcrumb } = useContext(SettingsContext);
-  const toolsOrPublications = Array.isArray(tools)
-    ? tools
-    : Array.isArray(publications)
-    ? publications
-    : [];
+  const list = Array.isArray(listItems) ? listItems : [];
   const pathname = usePathname();
   const router: NextRouter = useRouter();
-  const publicationsPerPage = 12;
+  const listItemsPerPage = 12;
   const page = parseInt(router.query.page as string) || 1;
-  const startIndex = (page - 1) * publicationsPerPage;
-  const endIndex = startIndex + publicationsPerPage;
-  const publicationsOnPage = toolsOrPublications.slice(startIndex, endIndex);
+  const startIndex = (page - 1) * listItemsPerPage;
+  const endIndex = startIndex + listItemsPerPage;
+  const itemsOnPage = list.slice(startIndex, endIndex);
 
   useEffect(() => {
     setBreadcrumb &&
@@ -62,16 +53,12 @@ export const ListPage: FC<ListPageProps> = ({
   return (
     <div id="news-list" className="my-lg md:my-xl">
       <Container>
-        <GridList
-          type={type}
-          items={publicationsOnPage}
-          heading={`${toolsOrPublications.length} ${heading}`}
-        />
-        {type === "PublicationList" && toolsOrPublications.length > 12 && (
+        <GridList items={itemsOnPage} heading={`${list.length} ${heading}`} />
+        {list.length > 12 && (
           <div className="flex justify-center">
             <Pagination
-              totalResults={toolsOrPublications.length || 0}
-              itemsPerPage={publicationsPerPage}
+              totalResults={list.length || 0}
+              itemsPerPage={listItemsPerPage}
               pageNumber={parseInt(router.query.page as string)}
               changePage={changePage}
             />

@@ -177,7 +177,7 @@ export interface PublicationResponse extends PublicationDataFragment {
 
 export interface PublicationListResponse {
   type?: "PublicationList";
-  publications:
+  listItems:
     | PublicationDataFragment[]
     | ContainerData_Dataportal_Digg_Container_Fragment[];
   category?: ContainerData_Dataportal_Digg_Container_Fragment;
@@ -191,7 +191,7 @@ export interface PublicationListResponse {
 
 export interface ToolListResponse {
   type?: "ToolList";
-  tools: ToolDataFragment[];
+  listItems: ToolDataFragment[];
   seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
@@ -415,7 +415,7 @@ export const getPublicationsList = async (
     return {
       props: {
         type: "PublicationList",
-        publications: Array.isArray(publications) ? publications : [],
+        listItems: Array.isArray(publications) ? publications : [],
         domain: domains[0] || null,
         seo: seo || null,
         basePath: basePath || null,
@@ -432,7 +432,7 @@ export const getPublicationsList = async (
     return {
       props: {
         type: "PublicationList",
-        publications: [],
+        listItems: [],
         domain: domains[0] || null,
         seo: seo || null,
         basePath: basePath || null,
@@ -483,7 +483,7 @@ export const getToolsList = async (opts?: ToolistOptions) => {
     return {
       props: {
         type: "ToolList",
-        tools: Array.isArray(tools) ? tools : [],
+        listItems: Array.isArray(tools) ? tools : [],
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
@@ -499,7 +499,7 @@ export const getToolsList = async (opts?: ToolistOptions) => {
     return {
       props: {
         type: "ToolList",
-        tools: [],
+        listItems: [],
         basePath: basePath || null,
         seo: seo || null,
         heading: heading || null,

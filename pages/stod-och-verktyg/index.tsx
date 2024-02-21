@@ -3,7 +3,7 @@ import { GetStaticProps } from "next";
 import { ListPage } from "@/components/content/ListPage";
 export const getStaticProps: GetStaticProps = async () => {
   return await getToolsList({
-    type: "PublicationList",
+    type: "ToolList",
     seo: {
       ...populateSeo,
       title: "Stöd och verktyg - Sveriges Dataportal",

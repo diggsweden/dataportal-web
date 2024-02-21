@@ -107,7 +107,6 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
         </div>
         {related && related.length > 0 && (
           <GridList
-            type="PublicationList"
             items={related}
             heading={"Fler " + relatedHeading.toLowerCase()}
           />
