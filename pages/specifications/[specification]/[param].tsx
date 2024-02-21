@@ -6,14 +6,14 @@ import { useScript } from '../../../hooks/useScript';
 export default function Specification() {
   const { env } = useContext(SettingsContext);
   const { query } = useRouter() || {};
-  const { specification, param  } = query || {};
+  const { specification, param } = query || {};
   const curi = `${specification}/${param}`;
-  let entryUri = "";
+  let entryUri = '';
 
-  if (env.ENTRYSCAPE_TERMS_PATH.includes("sandbox"))
+  if (env.ENTRYSCAPE_SPECS_PATH.includes('sandbox'))
     entryUri = `https://www-sandbox.dataportal.se/specifications/${curi}`;
   else entryUri = `https://dataportal.se/specifications/${curi}`;
-  
+
   const postscribeStatus = useScript(
     '/postscribe.min.js',
     'sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM',
@@ -24,7 +24,7 @@ export default function Specification() {
     <EntrystoreProvider
       env={env}
       entryUri={entryUri}
-      entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
+      entrystoreUrl={env.ENTRYSCAPE_SPECS_PATH}
       fetchMore={false}
     >
       <SpecificationPage curi={curi} />
