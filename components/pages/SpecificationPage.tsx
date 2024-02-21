@@ -8,7 +8,6 @@ import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { css, Heading, space } from '@digg/design-system';
-import path from 'path';
 
 export const SpecificationPage: React.FC<{ curi?: string; scheme?: string }> = ({
   curi,
