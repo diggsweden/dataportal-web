@@ -1,6 +1,6 @@
 import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
-import { PublicationTeaser } from "@/components/content/Publication/PublicationTeaser";
+import { PublicationTeaser } from "@/components/content/Publication/PublicationBlock";
 import { ButtonLink } from "@/components/global/Button";
 import { Heading } from "@/components/global/Typography/Heading";
 import {
@@ -8,10 +8,10 @@ import {
   PublicationDataFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
-import { Toolteaser } from "../ToolTeaser";
+import { Toolteaser } from "../Tool";
 
 interface PublicationListProps {
-  publications:
+  items:
     | PublicationDataFragment[]
     | ContainerDataFragment[]
     | ToolDataFragment[];
@@ -23,19 +23,35 @@ interface PublicationListProps {
   };
 }
 
-export const PublicationList: FC<PublicationListProps> = ({
-  publications,
+export const GridList: FC<PublicationListProps> = ({
+  items,
   heading,
   showMoreLink,
   type,
 }) => {
   const { t } = useTranslation();
-  const listType = type === "PublicationList";
+
+  const itemType = (
+    item: PublicationDataFragment | ContainerDataFragment | ToolDataFragment,
+  ) => {
+    switch (type) {
+      case "PublicationList":
+        return (
+          <PublicationTeaser publication={item as PublicationDataFragment} />
+        );
+        break;
+      case "ToolList":
+        return <Toolteaser tools={item as ToolDataFragment} />;
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <div className="my-lg md:my-xl">
       <div
         className={`mb-lg flex items-center md:mb-xl ${
-          publications.length <= 3 ? "justify-between" : "gap-sm"
+          items.length <= 3 ? "justify-between" : "gap-sm"
         } text-2xl`}
       >
         {heading && (
@@ -52,18 +68,10 @@ export const PublicationList: FC<PublicationListProps> = ({
           />
         )}
       </div>
-      {publications.length > 0 ? (
+      {items.length > 0 ? (
         <ul className="gap-4 grid grid-cols-1 gap-xl md:grid-cols-2 lg:grid-cols-3">
-          {publications.map((publication, idx) => (
-            <li key={idx}>
-              {listType ? (
-                <PublicationTeaser
-                  publication={publication as PublicationDataFragment}
-                />
-              ) : (
-                <Toolteaser tools={publication as ToolDataFragment} />
-              )}
-            </li>
+          {items.map((item, idx) => (
+            <li key={idx}>{itemType(item)}</li>
           ))}
         </ul>
       ) : (

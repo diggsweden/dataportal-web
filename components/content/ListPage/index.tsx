@@ -2,7 +2,7 @@ import { FC, useContext, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { Container } from "@/components/layout/Container";
-import { PublicationList } from "@/components/content/Publication/PublicationList";
+import { GridList } from "@/components/content/GridList";
 import { linkBase } from "@/utilities";
 import { Pagination } from "@/components/global/Pagination";
 import { useRouter, NextRouter } from "next/router";
@@ -62,9 +62,9 @@ export const ListPage: FC<ListPageProps> = ({
   return (
     <div id="news-list" className="my-lg md:my-xl">
       <Container>
-        <PublicationList
+        <GridList
           type={type}
-          publications={publicationsOnPage}
+          items={publicationsOnPage}
           heading={`${toolsOrPublications.length} ${heading}`}
         />
         {type === "PublicationList" && toolsOrPublications.length > 12 && (

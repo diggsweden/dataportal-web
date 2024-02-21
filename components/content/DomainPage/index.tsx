@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { handleDomain } from "@/utilities/domain";
 import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__generated__/operations";
 import { PublicationDataFragment as IPublication } from "@/graphql/__generated__/operations";
-import { PublicationList } from "@/components/content/Publication/PublicationList";
+import { GridList } from "@/components/content/GridList";
 import { PromoProps } from "@/components/content/Promo";
 import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentBlock";
 import { BlockList } from "@/components/content/blocks/BlockList";
@@ -112,9 +112,9 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
         {!isEn && pathname === `/` && (
           <>
             {example && (
-              <PublicationList
+              <GridList
                 type="PublicationList"
-                publications={example}
+                items={example}
                 showMoreLink={{
                   title: t("pages|good-examples$view-all"),
                   slug: t("routes|good-examples$path"),
@@ -123,9 +123,9 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
               />
             )}
             {news && (
-              <PublicationList
+              <GridList
                 type="PublicationList"
-                publications={news}
+                items={news}
                 showMoreLink={{
                   title: t("pages|news$view-all"),
                   slug: t("routes|news$path"),
