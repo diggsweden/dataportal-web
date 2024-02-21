@@ -8,6 +8,7 @@ import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { css, Heading, space } from '@digg/design-system';
+import path from 'path';
 
 export const SpecificationPage: React.FC<{ curi?: string; scheme?: string }> = ({
   curi,
@@ -55,7 +56,7 @@ export const SpecificationPage: React.FC<{ curi?: string; scheme?: string }> = (
     return () => {
       setBreadcrumb && setBreadcrumb(initBreadcrumb);
     };
-  }, []);
+  }, [title]);
 
   useEffect(() => {
     trackPageView({ documentTitle: title });
@@ -143,7 +144,7 @@ export const SpecificationPage: React.FC<{ curi?: string; scheme?: string }> = (
               {
                 regex:new RegExp('(\/*\/specifications\/)(.+)'),
                 uri:'https://${
-                  env.ENTRYSCAPE_TERMS_PATH.includes('sandbox')
+                  env.ENTRYSCAPE_SPECS_PATH.includes('sandbox')
                     ? 'www-sandbox.dataportal.se'
                     : 'dataportal.se'
                 }/specifications/${curi}',
@@ -165,10 +166,14 @@ export const SpecificationPage: React.FC<{ curi?: string; scheme?: string }> = (
               bundles: [
                 'dcat',
                 'https://${
-                  env.ENTRYSCAPE_SPECS_PATH ? env.ENTRYSCAPE_SPECS_PATH : 'editera.dataportal.se'
+                  env.ENTRYSCAPE_SPECS_PATH.startsWith('sandbox')
+                    ? 'sandbox.editera.dataportal.se'
+                    : 'editera.dataportal.se'
                 }/theme/templates/adms.json',
                 'https://${
-                  env.ENTRYSCAPE_SPECS_PATH ? env.ENTRYSCAPE_SPECS_PATH : 'editera.dataportal.se'
+                  env.ENTRYSCAPE_SPECS_PATH.startsWith('sandbox')
+                    ? 'sandbox.editera.dataportal.se'
+                    : 'editera.dataportal.se'
                 }/theme/templates/prof.json',
               ],
             },
