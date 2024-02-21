@@ -8,6 +8,7 @@ import noImage from "@/assets/logos/noImage.png";
 interface CustomImageProps {
   image: ImageInterface | null;
   width?: number;
+  sizes?: string;
   className?: string;
 }
 
@@ -17,6 +18,7 @@ const isNextStatic = (url: string) =>
 export const CustomImage: FC<CustomImageProps> = ({
   image,
   width,
+  sizes,
   className,
 }) => {
   if (!image) {
@@ -27,6 +29,7 @@ export const CustomImage: FC<CustomImageProps> = ({
         height={200}
         alt={"image not found"}
         className={className}
+        sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw"
         priority
       />
     );
@@ -40,6 +43,11 @@ export const CustomImage: FC<CustomImageProps> = ({
         height={image.height || 200}
         className={className}
         alt={image.alt || ""}
+        sizes={
+          sizes
+            ? sizes
+            : `(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw`
+        }
         priority
       />
     );
@@ -49,18 +57,20 @@ export const CustomImage: FC<CustomImageProps> = ({
     ? image.url
     : (env("MEDIA_BASE_URL") || "") + image.url;
 
-  /* HOTFIX-image-optimize: Adding unoptimized true to external images to not be
-   *  optimized twice by Graphql and Next.js
-   */
   return (
     <Image
-      src={`${src}?w=${width ? width : 384}&q=${75}`}
+      src={src}
       width={width ? width : Number(image.width || "")}
       height={Number(image.height || "")}
+      quality={100}
       className={className}
       alt={image.alt || ""}
+      sizes={
+        sizes
+          ? sizes
+          : `(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw`
+      }
       priority
-      unoptimized={true}
     />
   );
 };
