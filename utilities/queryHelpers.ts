@@ -464,7 +464,7 @@ export const getToolsList = async (opts?: ToolistOptions) => {
       query: TOOL_QUERY,
       variables: {
         filter: {
-          limit: 1000,
+          limit: 100,
         },
       },
       fetchPolicy: "no-cache",
