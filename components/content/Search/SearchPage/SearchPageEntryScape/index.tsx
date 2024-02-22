@@ -346,7 +346,7 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
 
                 <SearchForm
                   search={search}
-                  searchMode={"datasets"}
+                  searchMode={searchType}
                   query={query}
                   setQuery={setQuery}
                 />
