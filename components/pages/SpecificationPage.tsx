@@ -38,6 +38,12 @@ export const SpecificationPage: React.FC<{ curi?: string; scheme?: string }> = (
       };
     }
 
+    addScripts();
+  }, []);
+
+  useEffect(() => {
+    trackPageView({ documentTitle: title });
+
     setBreadcrumb &&
       setBreadcrumb({
         name: title,
@@ -50,16 +56,10 @@ export const SpecificationPage: React.FC<{ curi?: string; scheme?: string }> = (
         ],
       });
 
-    addScripts();
-
     return () => {
       setBreadcrumb && setBreadcrumb(initBreadcrumb);
     };
-  }, [title]);
-
-  useEffect(() => {
-    trackPageView({ documentTitle: title });
-  }, [pathname]);
+  }, [pathname, title]);
 
   const addScripts = () => {
     if (typeof window !== 'undefined') {
