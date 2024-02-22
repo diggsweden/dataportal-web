@@ -7,7 +7,6 @@ import noImage from "@/assets/logos/noImage.png";
 
 interface CustomImageProps {
   image: ImageInterface | null;
-  width?: number;
   sizes?: string;
   className?: string;
 }
@@ -17,7 +16,6 @@ const isNextStatic = (url: string) =>
 
 export const CustomImage: FC<CustomImageProps> = ({
   image,
-  width,
   sizes,
   className,
 }) => {
@@ -25,7 +23,7 @@ export const CustomImage: FC<CustomImageProps> = ({
     return (
       <Image
         src={noImage}
-        width={width || 384}
+        width={384}
         height={200}
         alt={"image not found"}
         className={className}
@@ -57,12 +55,21 @@ export const CustomImage: FC<CustomImageProps> = ({
     ? image.url
     : (env("MEDIA_BASE_URL") || "") + image.url;
 
+  // eslint-disable-next-line
+  console.log("src", src);
+
+  // eslint-disable-next-line
+  console.log("src with query", `${src}?w=${image.width || 384}&q=90`);
+
+  /**
+   * If image is an external link, we need to send query parameters for the image to work properly
+   * */
   return (
     <Image
-      src={src}
-      width={width ? width : Number(image.width || "")}
+      src={`${src}?w=${image.width || 384}&q=90`}
+      width={Number(image.width || 384)}
       height={Number(image.height || "")}
-      quality={100}
+      quality={90}
       className={className}
       alt={image.alt || ""}
       sizes={

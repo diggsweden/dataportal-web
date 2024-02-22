@@ -47,7 +47,6 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
           return (
             <CustomImage
               image={image as ImageFragment}
-              width={640}
               sizes="(max-width: 640px) 80vw, (max-width: 1200px) 60vw, (max-width: 1920px) 30vw, 25vw"
             />
           );
