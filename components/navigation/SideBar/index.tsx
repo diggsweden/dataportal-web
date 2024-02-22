@@ -3,6 +3,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import { mainNav } from "@/utilities/menuData";
 import SideBarLink from "@/components/navigation/SideBar/SideBarLink.tsx";
+import { useClickoutside } from "@/hooks/useClickoutside";
 
 interface NavSideData {
   title: string;
@@ -21,7 +22,9 @@ interface NavSideProps {
 export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
   const [menu, setMenu] = useState<any>([]);
   const { t, lang } = useTranslation();
+  const [vw, setVw] = useState(0);
   const isEn = lang === "en";
+  const ref = useClickoutside(() => (vw < 1200 ? setOpenSideBar(false) : null));
 
   useEffect(() => {
     if (isEn) {
@@ -42,8 +45,20 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
     }
   }, [isEn]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && vw === 0) {
+      setVw(window.innerWidth);
+    }
+
+    window.addEventListener("resize", () => setVw(window.innerWidth));
+
+    return () =>
+      window.removeEventListener("resize", () => setVw(window.innerWidth));
+  });
+
   return (
     <nav
+      ref={ref}
       className={`absolute right-none top-[136px] z-50 -mb-[136px] h-[calc(100%-136px)] w-full
        overflow-y-scroll bg-white transition-all duration-300 ease-in-out md:w-[300px] ${
          openSideBar ? "" : "translate-x-full"
