@@ -24,8 +24,10 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
   const { t, lang } = useTranslation();
   const [vw, setVw] = useState(0);
   const isEn = lang === "en";
-  const ref = useClickoutside(() => (vw < 1200 ? setOpenSideBar(false) : null));
-
+  const ref = useClickoutside(
+    () => (vw < 1200 ? setOpenSideBar(false) : null),
+    ["#sidebarBtn"],
+  );
   useEffect(() => {
     if (isEn) {
       const enMenu = mainNav
