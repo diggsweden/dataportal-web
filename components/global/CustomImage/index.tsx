@@ -7,7 +7,6 @@ import noImage from "@/assets/logos/noImage.png";
 
 interface CustomImageProps {
   image: ImageInterface | null;
-  width?: number;
   sizes?: string;
   className?: string;
 }
@@ -17,7 +16,6 @@ const isNextStatic = (url: string) =>
 
 export const CustomImage: FC<CustomImageProps> = ({
   image,
-  width,
   sizes,
   className,
 }) => {
@@ -25,7 +23,7 @@ export const CustomImage: FC<CustomImageProps> = ({
     return (
       <Image
         src={noImage}
-        width={width || 384}
+        width={384}
         height={200}
         alt={"image not found"}
         className={className}
@@ -62,8 +60,8 @@ export const CustomImage: FC<CustomImageProps> = ({
    * */
   return (
     <Image
-      src={`${src}?w=${width ? width : image.width || 384}&q=90`}
-      width={width ? width : Number(image.width || "")}
+      src={`${src}?w=${image.width || 384}&q=90`}
+      width={Number(image.width || 384)}
       height={Number(image.height || "")}
       quality={90}
       className={className}
