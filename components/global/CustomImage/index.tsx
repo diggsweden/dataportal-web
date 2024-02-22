@@ -57,12 +57,15 @@ export const CustomImage: FC<CustomImageProps> = ({
     ? image.url
     : (env("MEDIA_BASE_URL") || "") + image.url;
 
+  /**
+   * If image is an external link, we need to send query parameters for the image to work properly
+   * */
   return (
     <Image
-      src={src}
+      src={`${src}?w=${width ? width : image.width || 384}&q=90`}
       width={width ? width : Number(image.width || "")}
       height={Number(image.height || "")}
-      quality={100}
+      quality={90}
       className={className}
       alt={image.alt || ""}
       sizes={
