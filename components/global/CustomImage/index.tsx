@@ -55,6 +55,12 @@ export const CustomImage: FC<CustomImageProps> = ({
     ? image.url
     : (env("MEDIA_BASE_URL") || "") + image.url;
 
+  // eslint-disable-next-line
+  console.log("src", src);
+
+  // eslint-disable-next-line
+  console.log("src with query", `${src}?w=${image.width || 384}&q=90`);
+
   /**
    * If image is an external link, we need to send query parameters for the image to work properly
    * */
