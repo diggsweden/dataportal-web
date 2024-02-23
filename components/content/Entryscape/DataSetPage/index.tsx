@@ -217,7 +217,7 @@ export const DataSetPage: React.FC = () => {
                     "pages|datasetpage$several_links",
                   )}{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" min="2" invert="true"}}' +
-                  '<a href="{{prop "dcat:downloadURL"}}" class="text-white noUnderline">' +
+                  '<a href="{{prop "dcat:downloadURL"}}" tabindex="-1" class="text-white noUnderline">' +
                   '<button class="button--primary button--large text-white flex items-center !no-underline">' +
                   '${t("pages|datasetpage$download_link")}' +
                   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
@@ -228,7 +228,7 @@ export const DataSetPage: React.FC = () => {
                   '{{/ifprop}}' +
                   '{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" invert="true"}}' +
-                  '<a href="{{prop "dcat:accessURL"}}" class="text-white noUnderline">' +
+                  '<a href="{{prop "dcat:accessURL"}}" tabindex="-1" class="text-white noUnderline">' +
                   '<button class="button--primary button--large text-white flex items-center !no-underline">' +
                   '${t("pages|datasetpage$download_link_adress")}' +
                   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
@@ -267,7 +267,7 @@ export const DataSetPage: React.FC = () => {
                 relation: 'dcat:accessService',
                 template: 
                 '<button class="button--primary button--large flex items-center !no-underline">' +
-                  '{{link class="linkInBtn noUnderline" tabindex="-1" namedclick="dataservice-link" content="${t(
+                  '{{link class="linkInBtn noUnderline" namedclick="dataservice-link" content="${t(
                     "pages|datasetpage$read_about_api",
                   )}"}}' +
                   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
@@ -431,7 +431,7 @@ export const DataSetPage: React.FC = () => {
                 className="distribution__list"
                 data-entryscape="distributionListCustom"
                 data-entryscape-registry="true"
-              ></div>
+              />
 
               {/* Dataset map */}
               <div
@@ -442,7 +442,7 @@ export const DataSetPage: React.FC = () => {
               ></div>
 
               {/* Questions  or comments */}
-              <div className="contact__publisher hbbr">
+              <div className="contact__publisher mt-md md:mt-lg">
                 <Heading
                   level={2}
                   size={"sm"}
@@ -476,6 +476,7 @@ export const DataSetPage: React.FC = () => {
               >
                 {t("pages|datasetpage$about-dataset")}
               </Heading>
+
               {/* About dataset */}
               <div data-entryscape="aboutDataset" className="mb-lg" />
             </div>
@@ -517,7 +518,7 @@ export const DataSetPage: React.FC = () => {
                 data-entryscape-block="template"
                 dangerouslySetInnerHTML={{
                   __html: `
-                      <a class="text-white noUnderline" href="{{metadataURI}}?recursive=dcat">
+                      <a class="text-white noUnderline" tabindex="-1" href="{{metadataURI}}?recursive=dcat">
                       <button class="button--primary button--large text-white flex items-center !no-underline">
                       ${t("pages|datasetpage$rdf")}
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

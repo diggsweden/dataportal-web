@@ -316,8 +316,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                   );
                 } else {
                   return (
-                    // eslint-disable-next-line react/jsx-key
-                    <div className="relative max-w-fit" key={idx}>
+                    <div key={value.title} className="relative max-w-fit">
                       <input
                         tabIndex={-1}
                         id="hvd_only"
