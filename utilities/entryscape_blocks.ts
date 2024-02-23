@@ -215,7 +215,7 @@ export const hemvist = (t: Translate) => `
       if(window.location.pathname.indexOf("/specifications/") > -1 || window.location.pathname.indexOf("/externalspecification/") > -1)
         linkTitle = '${t("pages|specification_page$address")}';
       
-      if (resourceURI.indexOf('https://dataportal.se/') === 0) {
+      if (resourceURI.indexOf('https://dataportal.se/') === 0 || resourceURI.indexOf('https://www-sandbox.dataportal.se/') === 0) {
         node.innerHTML='<h3 class="!mt-none">' + linkTitle + ':</h3> <a class="hemvist mb-lg" href='+resourceURI+'>'+resourceURI+'</a>';
       }
       else
