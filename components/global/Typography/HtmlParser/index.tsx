@@ -89,7 +89,9 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
               ? "!mt-lg md:!mt-xl !mb-md md:!mb-lg"
               : name === "h2"
               ? "!mb-md md:!mb-lg"
-              : "!mt-md md:!mt-lg !mb-md";
+              : name === "h3" && prev
+              ? "!mt-md md:!mt-lg !mb-md"
+              : "!mb-md";
           return (
             // @ts-ignore
             <Heading level={level} size={size} className={className}>
