@@ -7,7 +7,8 @@ import parse, {
   domToReact,
   DOMNode,
 } from "html-react-parser";
-import Image from "next/image";
+import { CustomImage } from "@/components/global/CustomImage";
+import { ImageFragment } from "@/graphql/__generated__/operations";
 
 export const HtmlParser: FC<{ text: string }> = ({ text }) => {
   const options: HTMLReactParserOptions = {
@@ -31,12 +32,22 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
         }
 
         if (name === "img") {
+          const image = {
+            __typename: "dataportal_Digg_Image",
+            width: Number(attribs.width),
+            height: Number(attribs.height),
+            url: attribs.src,
+            alt: attribs.alt,
+            name: null,
+            description: null,
+            mime: "image/png",
+            ext: ".png",
+            screen9: null,
+          };
           return (
-            <Image
-              src={attribs.src}
-              alt={attribs.alt}
-              width={Number(attribs.width)}
-              height={Number(attribs.height)}
+            <CustomImage
+              image={image as ImageFragment}
+              sizes="(max-width: 640px) 80vw, (max-width: 1200px) 60vw, (max-width: 1920px) 30vw, 25vw"
             />
           );
         }
@@ -78,6 +89,8 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
               ? "!mt-lg md:!mt-xl !mb-md md:!mb-lg"
               : name === "h2"
               ? "!mb-md md:!mb-lg"
+              : name === "h3" && !prev
+              ? "!mb-md"
               : "!mt-md md:!mt-lg !mb-md";
           return (
             // @ts-ignore

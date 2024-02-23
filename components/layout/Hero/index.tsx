@@ -48,7 +48,7 @@ export const Hero: FC<HeroProps> = ({
         <div className="absolute left-none top-none h-full w-full">
           <CustomImage
             image={image}
-            width={1200}
+            sizes="90vw"
             className="h-full w-full object-cover"
             aria-label="Hero image"
           />
@@ -57,7 +57,7 @@ export const Hero: FC<HeroProps> = ({
       <Container>
         <div className="relative z-10">
           <div
-            className={`${isFrontpage && search && "mx-auto text-center"} 
+            className={`${isFrontpage && search && "mx-auto text-center"}
             ${search ? "text-brown-100" : "bg-white p-xl"} max-w-md`}
           >
             {heading && (
