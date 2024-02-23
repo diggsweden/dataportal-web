@@ -14,9 +14,7 @@ import {
   generateRandomKey,
   keyUp,
   linkBase,
-  onNextFrame,
   resolvePage,
-  usePrevious,
 } from "@/utilities";
 import { EnvSettings, SettingsUtil } from "@/env";
 import { client } from "@/graphql";
@@ -37,9 +35,9 @@ import { Hero } from "@/components/layout/Hero";
 import { MetaData } from "@/components/global/MetaData";
 import {
   SkipToContent,
-  skipToContent,
   skipToElement,
 } from "@/components/navigation/SkipToContent";
+import { useRouter } from "next/router";
 
 const GetCookiesAccepted = () => {
   try {
@@ -66,11 +64,12 @@ export const initBreadcrumb = {
 const onHash = (pathWithHash: string) => {
   const hashIndex = pathWithHash.indexOf("#");
   const hash = pathWithHash.substring(hashIndex);
-  onNextFrame(() => skipToElement(hash));
+  skipToElement(hash);
 };
 
 function Dataportal({ Component, pageProps }: DataportalenProps) {
   const pathname = usePathname();
+  const { asPath } = useRouter();
   const { t, lang } = useTranslation();
   // Put shared props into state to persist between pages that doesn't use getStaticProps
   const [env, setEnv] = useState<EnvSettings>(SettingsUtil.create());
@@ -87,8 +86,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     name: heading || "",
     crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
   });
-
-  const previousPath = usePrevious(pathname);
 
   const appRenderKey = generateRandomKey(16);
 
@@ -125,11 +122,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   let conditionalPreamble = pageProps.domain === "data" ? null : preamble;
 
   useEffect(() => {
-    if (previousPath) {
-      pathname.includes("#") ? onHash(pathname) : skipToContent();
-    } else {
-      pathname.includes("#") && onHash(pathname);
-    }
+    asPath.includes("#") && onHash(asPath);
   }, [pathname]);
 
   return (

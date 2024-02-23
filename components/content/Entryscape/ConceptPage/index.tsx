@@ -5,7 +5,7 @@ import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { hemvist, linkBase, preambleBlock } from "@/utilities";
+import { hemvist, linkBase } from "@/utilities";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 
@@ -174,7 +174,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               {
                 regex:new RegExp('(\/*\/terminology\/)(.+)'),
                 uri:'https://${
-                  env.ENTRYSCAPE_TERMS_PATH.includes("sandbox")
+                  env.ENTRYSCAPE_TERMS_PATH.startsWith("sandbox")
                     ? "www-sandbox.dataportal.se"
                     : "dataportal.se"
                 }/concepts/${curi}',
@@ -183,7 +183,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               {
                 regex:new RegExp('(\/*\/concepts\/)(.+)'),
                 uri:'https://${
-                  env.ENTRYSCAPE_TERMS_PATH.includes("sandbox")
+                  env.ENTRYSCAPE_TERMS_PATH.startsWith("sandbox")
                     ? "www-sandbox.dataportal.se"
                     : "dataportal.se"
                 }/concepts/${curi}',
@@ -215,7 +215,6 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               }],
             blocks: [
               ${hemvist(t)},
-              ${preambleBlock},
               {
                 block: 'terminologyButton',
                 extends: 'template',
@@ -310,9 +309,12 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                 block: 'conceptBlock',
                 class: 'conceptDetail',
                 extends: 'template',
-                template: '{{#ifprop "skos:altLabel"}}<div><h2>${t(
-                  "pages|concept_page$alternativ_term",
-                )}</h2><span>{{ text content="\${skos:altLabel}" }}</span></div>{{/ifprop}}' +
+                template: '{{#ifprop "dcterms:description"}}<span class="preamble">{{ text content="\${dcterms:description}" }}</span>{{/ifprop}}' +
+                          '{{#ifprop "skos:definition"}}<span class="preamble">{{ text content="\${skos:definition}" }}</span>{{/ifprop}}' +
+
+                  '{{#ifprop "skos:altLabel"}}<div><h2>${t(
+                    "pages|concept_page$alternativ_term",
+                  )}</h2><span>{{ text content="\${skos:altLabel}" }}</span></div>{{/ifprop}}' +
 
                 '{{#ifprop "skos:example"}}<div><h2>${t(
                   "pages|concept_page$example",
@@ -438,7 +440,6 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
       <div className="mb-lg flex flex-col gap-xl md:mb-xl lg:flex-row lg:gap-2xl">
         {/* Left column */}
         <div className="flex w-full max-w-md flex-col">
-          <span data-entryscape="preambleBlock" />
           <div
             className="flex flex-col gap-lg"
             data-entryscape="conceptBlock"

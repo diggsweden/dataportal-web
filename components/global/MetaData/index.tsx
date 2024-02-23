@@ -20,8 +20,9 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
   const defaultDescription =
     "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor";
 
-  const isDraft = pathname?.substring(0, 7) === "/drafts";
-  const allowSEO = env.envName == "prod" && !isDraft;
+  // const isDraft = pathname?.substring(0, 7) === "/drafts";
+  // const allowSEO = env.envName == "prod" && !isDraft;
+  const allowSEO = false;
 
   return (
     <Head>

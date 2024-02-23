@@ -7,10 +7,8 @@ import noImage from "@/assets/logos/noImage.png";
 
 interface CustomImageProps {
   image: ImageInterface | null;
-  height?: number;
-  width?: number;
-  className?: string;
   sizes?: string;
+  className?: string;
 }
 
 const isNextStatic = (url: string) =>
@@ -18,19 +16,18 @@ const isNextStatic = (url: string) =>
 
 export const CustomImage: FC<CustomImageProps> = ({
   image,
-  height,
-  width,
-  className,
   sizes,
+  className,
 }) => {
   if (!image) {
     return (
       <Image
         src={noImage}
-        width={width || 300}
-        height={height || 200}
+        width={384}
+        height={200}
         alt={"image not found"}
         className={className}
+        sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw"
         priority
       />
     );
@@ -39,12 +36,16 @@ export const CustomImage: FC<CustomImageProps> = ({
   if (isNextStatic(image.url)) {
     return (
       <Image
-        src={`${image.url}?w=${width ? width : 384}&q=${75}`}
-        width={image.width || 300}
+        src={image.url}
+        width={image.width || 384}
         height={image.height || 200}
         className={className}
         alt={image.alt || ""}
-        sizes={sizes || ""}
+        sizes={
+          sizes
+            ? sizes
+            : `(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw`
+        }
         priority
       />
     );
@@ -54,14 +55,22 @@ export const CustomImage: FC<CustomImageProps> = ({
     ? image.url
     : (env("MEDIA_BASE_URL") || "") + image.url;
 
+  /**
+   * If image is an external link, we need to send query parameters for the image to work properly
+   * */
   return (
     <Image
-      src={`${src}?w=${width ? width : 384}&q=${75}`}
-      width={width ? width : Number(image.width || "")}
-      height={height ? height : Number(image.height || "")}
+      src={`${src}?w=${image.width || 384}&q=90`}
+      width={Number(image.width || 384)}
+      height={Number(image.height || "")}
+      quality={90}
       className={className}
       alt={image.alt || ""}
-      sizes={sizes || ""}
+      sizes={
+        sizes
+          ? sizes
+          : `(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw`
+      }
       priority
     />
   );

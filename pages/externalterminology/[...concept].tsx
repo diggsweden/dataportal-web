@@ -4,8 +4,9 @@ import { SettingsContext } from "@/providers/SettingsProvider";
 import { EntrystoreProvider } from "@/providers/EntrystoreProvider";
 import { ConceptPage } from "@/components/content/Entryscape/ConceptPage";
 import { useScript } from "@/hooks/useScript";
+import { GetServerSideProps } from "next";
 
-export default function Concept() {
+export default function Terminology() {
   const { env } = useContext(SettingsContext);
   const { query } = useRouter() || {};
   const { concept } = query || {};
@@ -31,3 +32,18 @@ export default function Concept() {
     <></>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const concept = (params?.concept as string[]) || [];
+  const scheme = concept[0];
+
+  if (scheme != "http" && scheme != "https") {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {},
+  };
+};

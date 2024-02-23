@@ -61,12 +61,12 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   add(
     "img-src",
     `'self' ${
-      process.env.IMAGE_DOMAIN || ""
+      reactEnv("IMAGE_DOMAIN") || ""
     } https://diggdrstoragetest.blob.core.windows.net/ data: *`,
   );
   add(
     "media-src",
-    `'self' ${process.env.IMAGE_DOMAIN || ""} https: data: blob:`,
+    `'self' ${reactEnv("IMAGE_DOMAIN") || ""} https: data: blob:`,
   );
   add(
     "style-src",
