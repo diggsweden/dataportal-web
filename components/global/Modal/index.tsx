@@ -2,6 +2,7 @@ import { FC, useRef } from "react";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Button, ButtonLink } from "@/components/global/Button";
 import ArrowIcon from "@/assets/icons/arrowRight.svg";
+import { HtmlParser } from "../Typography/HtmlParser";
 
 interface ModalProps {
   heading: string;
@@ -11,7 +12,9 @@ interface ModalProps {
   setModalOpen: Function;
   closeBtn: string;
   confirmBtn: string;
+  description?: string | null;
   href?: string;
+  type?: "tools";
 }
 
 export const Modal: FC<ModalProps> = ({
@@ -20,11 +23,14 @@ export const Modal: FC<ModalProps> = ({
   onClick,
   modalOpen,
   setModalOpen,
+  description,
   closeBtn,
   confirmBtn,
   href,
+  type,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const modalType = type === "tools";
   return (
     <>
       <div
@@ -34,8 +40,8 @@ export const Modal: FC<ModalProps> = ({
       />
       <div
         ref={ref}
-        className={`fixed left-1/2 top-1/2 z-50 !mt-none max-w-md -translate-x-1/2 
-        -translate-y-1/2 bg-white p-xl shadow-2xl ${
+        className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] max-w-md  -translate-x-1/2 -translate-y-1/2 
+        overflow-scroll bg-white p-xl shadow-2xl ${
           modalOpen ? "visible" : "hidden"
         }`}
         onClick={(e) => {
@@ -45,11 +51,27 @@ export const Modal: FC<ModalProps> = ({
         }}
       >
         {heading && (
-          <Heading level={3} size="sm" className={text ? "" : "pb-lg"}>
+          <Heading
+            level={3}
+            size={modalType ? "md" : "sm"}
+            className={text ? "font-thin" : "pb-lg"}
+          >
             {heading}
           </Heading>
         )}
-        {text && <p className="pb-lg">{text}</p>}
+        {text && (
+          <p
+            className={`${
+              modalType ? "pt-lg text-lg text-brown-600" : ""
+            } pb-lg`}
+          >
+            {text}
+          </p>
+        )}
+        {description && (
+          <div className="pb-lg">{HtmlParser({ text: description })}</div>
+        )}
+
         <div className="flex justify-between">
           <Button
             onClick={() => setModalOpen(false)}

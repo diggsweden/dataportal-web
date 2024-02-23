@@ -4,6 +4,7 @@ import { ListPage } from "@/components/content/ListPage";
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return await getPublicationsList([], ["Goda exempel"], locale || "sv", {
+    type: "PublicationList",
     seo: {
       ...populateSeo,
       title: "Goda exempel - Sveriges Dataportal",
