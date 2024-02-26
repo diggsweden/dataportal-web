@@ -115,14 +115,14 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
 
   let searchProps = null;
 
-  if (pathname === "/" || pageProps.domain === "data") {
+  if (pathname === ("/" || "data") || pathname === "/data") {
     searchProps = {
       destination: `/${lang}/datasets`,
       placeholder: t("pages|startpage$search_placeholder"),
     };
   }
 
-  let conditionalPreamble = pageProps.domain === "data" ? null : preamble;
+  let conditionalPreamble = pathname === "/data" ? null : preamble;
 
   useEffect(() => {
     if (previousPath) {

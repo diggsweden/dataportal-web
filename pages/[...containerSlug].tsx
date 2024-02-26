@@ -16,7 +16,7 @@ export const Page: FC<MultiContainerResponse> = ({
   const router = useRouter();
 
   if (container) {
-    return router.asPath === "/data" || "/offentligai" ? (
+    return router.asPath === "/data" || router.asPath === "/offentligai" ? (
       <LandingPage {...container} />
     ) : (
       <ContainerPage
