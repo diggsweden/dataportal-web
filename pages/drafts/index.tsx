@@ -1,13 +1,13 @@
 import React from "react";
-import { Dataportal_ContainerState } from "../../graphql/__generated__/types";
+import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
   DataportalPageProps,
   getDomainAggregate,
   getMultiContainer,
   getPublication,
   getRootAggregate,
-} from "../../utilities";
-import DomainPage from "../oppen-kallkod";
+} from "@/utilities";
+import { DomainPage } from "@/components/content/DomainPage";
 import Page from "../[...containerSlug]";
 import { ListPage } from "@/components/content/ListPage";
 import { PublicationFull } from "@/components/content/Publication/PublicationFull";

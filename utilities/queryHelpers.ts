@@ -568,7 +568,7 @@ export const getDomainAggregate = async (
       : null;
 
     // The value of the `props` key will be
-    //  passed to the `Page` component
+    // passed to the `Page` component
     return {
       props: {
         ...container,
