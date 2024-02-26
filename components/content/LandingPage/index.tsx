@@ -71,7 +71,9 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
   const isEn = lang === "en";
 
   const topPromos =
-    blocks[0]?.__typename === "dataportal_Digg_RelatedContent" && blocks[0];
+    blocks.length &&
+    blocks[0].__typename === "dataportal_Digg_RelatedContent" &&
+    blocks[0];
   const content = topPromos ? blocks.slice(1) : blocks;
 
   useEffect(() => {

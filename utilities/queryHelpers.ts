@@ -507,6 +507,7 @@ export const getPublication = async (
  * Get domain container and corresponding data from strapi
  * @param {DiggDomain} domainSlug
  * @param {string} locale
+ * @param opts
  * @returns nextjs static props
  */
 export const getDomainAggregate = async (
