@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { getMultiContainer, MultiContainerResponse } from "@/utilities";
 import { ContainerPage } from "@/components/content/ContainerPage";
 import { ListPage } from "@/components/content/ListPage";
+import { LandingPage } from "@/components/content/LandingPage";
 
 export const Page: FC<MultiContainerResponse> = ({
   container,
@@ -15,7 +16,9 @@ export const Page: FC<MultiContainerResponse> = ({
   const router = useRouter();
 
   if (container) {
-    return (
+    return router.asPath === "/data" || "/offentligai" ? (
+      <LandingPage {...container} />
+    ) : (
       <ContainerPage
         {...container}
         related={related}

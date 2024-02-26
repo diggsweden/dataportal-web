@@ -1,9 +1,8 @@
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { FC, useContext, useEffect } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { handleDomain } from "@/utilities/domain";
 import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__generated__/operations";
 import { PublicationDataFragment as IPublication } from "@/graphql/__generated__/operations";
 import { PublicationList } from "@/components/content/Publication/PublicationList";
@@ -22,7 +21,7 @@ import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import useTranslation from "next-translate/useTranslation";
 import { SettingsContext } from "@/providers/SettingsProvider";
 
-export interface DomainProps
+export interface LandingPageProps
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   domain?: DiggDomain;
   news?: IPublication[];
@@ -61,25 +60,19 @@ const contentBoxLinks = [
   },
 ];
 
-export const DomainPage: React.FC<DomainProps> = (props) => {
-  const { domain, areas, news, example, image, heading } = props || {};
-  const { content, puffs, preamble, heroImage } = handleDomain(props);
+export const LandingPage: FC<LandingPageProps> = (props) => {
+  const { domain, news, example, image, heading, blocks, preamble } =
+    props || {};
+
   const { setBreadcrumb } = useContext(SettingsContext);
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
-  const promotedAreaTeasers = [
-    "offentligai",
-    "e-halso-initiativet",
-    "kompetens-och-livslangt-larande",
-  ];
-  const filteredAreas =
-    areas && !domain
-      ? promotedAreaTeasers?.flatMap(
-          (slug) => areas?.filter((area) => area.slug === slug),
-        )
-      : areas;
+
+  const topPromos =
+    blocks[0]?.__typename === "dataportal_Digg_RelatedContent" && blocks[0];
+  const content = topPromos ? blocks.slice(1) : blocks;
 
   useEffect(() => {
     setBreadcrumb &&
@@ -94,7 +87,7 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
   }, [pathname]);
 
   return (
-    <div id="DomainPage">
+    <div id="LandingPage">
       <Container>
         {!image && heading && (
           <Heading level={1} size="lg" className="mb-lg md:mb-xl">
@@ -102,14 +95,16 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
           </Heading>
         )}
 
-        {domain === "data" || (!image && preamble && !heroImage) ? (
+        {domain === "data" || (!image && preamble) ? (
           <Preamble className="max-w-md">{preamble}</Preamble>
         ) : null}
 
-        {puffs && <RelatedContentBlock links={puffs.links as PromoProps[]} />}
+        {topPromos && (
+          <RelatedContentBlock links={topPromos.links as PromoProps[]} />
+        )}
 
         {/* I´ll be back for this */}
-        {!isEn && pathname === `/` && (
+        {!isEn && pathname === "/" && (
           <>
             {example && (
               <PublicationList
@@ -160,19 +155,6 @@ export const DomainPage: React.FC<DomainProps> = (props) => {
             </div>
           </ContentBox>
         )}
-
-        {filteredAreas &&
-          (domain === "datasamverkan" || !domain) &&
-          lang === "sv" && (
-            <RelatedContentBlock
-              links={filteredAreas}
-              icons={true}
-              inline={true}
-              isTeaser={!domain && true}
-              heading="Datasamverkan"
-              href="datasamverkan"
-            />
-          )}
 
         {!domain && (
           <ContentBox heading={t("pages|startpage$datasets_by_category")}>

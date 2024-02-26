@@ -7,7 +7,7 @@ import {
   getPublication,
   getRootAggregate,
 } from "@/utilities";
-import { DomainPage } from "@/components/content/DomainPage";
+import { LandingPage } from "@/components/content/LandingPage";
 import Page from "../[...containerSlug]";
 import { ListPage } from "@/components/content/ListPage";
 import { PublicationFull } from "@/components/content/Publication/PublicationFull";
@@ -68,7 +68,7 @@ const getQuery = async (
 const render = (props: DataportalPageProps) => {
   switch (props.type) {
     case "DomainAggregate":
-      return <DomainPage {...props} />;
+      return <LandingPage {...props} />;
     case "RootAggregate":
       return <ContainerPage {...props} />;
     case "MultiContainer":

@@ -1,8 +1,8 @@
 import { getRootAggregate } from "@/utilities";
-import { DomainPage } from "@/components/content/DomainPage";
+import { LandingPage } from "@/components/content/LandingPage";
 
 export async function getStaticProps({ locale }: any) {
   return await getRootAggregate(locale);
 }
 
-export default DomainPage;
+export default LandingPage;
