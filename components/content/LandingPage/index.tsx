@@ -65,7 +65,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
     props || {};
 
   const { setBreadcrumb } = useContext(SettingsContext);
-  const { pathname } = useRouter() || {};
+  const { pathname, asPath } = useRouter() || {};
   const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
@@ -95,7 +95,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
           </Heading>
         )}
 
-        {domain === "data" || (!image && preamble) ? (
+        {asPath === "/data" || (!image && preamble) ? (
           <Preamble className="max-w-md">{preamble}</Preamble>
         ) : null}
 
