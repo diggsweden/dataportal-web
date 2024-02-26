@@ -71,6 +71,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
   const isEn = lang === "en";
 
   const topPromos =
+    blocks &&
     blocks.length &&
     blocks[0].__typename === "dataportal_Digg_RelatedContent" &&
     blocks[0];
