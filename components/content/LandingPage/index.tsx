@@ -61,7 +61,7 @@ const contentBoxLinks = [
 ];
 
 export const LandingPage: FC<LandingPageProps> = (props) => {
-  const { domain, news, example, image, heading, blocks, preamble } =
+  const { domain, news, example, image, heading, blocks, preamble, name } =
     props || {};
 
   const { setBreadcrumb } = useContext(SettingsContext);
@@ -77,13 +77,11 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
   useEffect(() => {
     setBreadcrumb &&
       setBreadcrumb({
-        name: props.heading
-          ? props.heading
-          : t(`pages|${props.domain}$heading`),
+        name: heading ? heading : t(`pages|${props.domain}$heading`),
         crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
       });
 
-    trackPageView({ documentTitle: "OpenSource" });
+    trackPageView({ documentTitle: name });
   }, [pathname]);
 
   return (
