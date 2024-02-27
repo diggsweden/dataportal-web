@@ -57,12 +57,6 @@ export const CustomImage: FC<CustomImageProps> = ({
     ? image.url
     : (env("MEDIA_BASE_URL") || "") + image.url;
 
-  // eslint-disable-next-line
-  console.log("src", src);
-
-  // eslint-disable-next-line
-  console.log("src with query", `${src}?w=${image.width || 384}&q=90`);
-
   const srcset = imageWidths
     .map((w) => `${src}?w=${w}&q=${75} ${w}w`)
     .join(", ");
@@ -76,6 +70,8 @@ export const CustomImage: FC<CustomImageProps> = ({
         width={image.width || ""}
         height={image.height || ""}
         alt={image.alt || ""}
+        /* @ts-ignore */
+        fetchpriority="high"
       />
     </picture>
   );
