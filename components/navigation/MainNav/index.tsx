@@ -119,6 +119,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         </div>
 
         <Button
+          id="sidebarBtn"
           variant="plain"
           icon={openSideBar ? CloseCrossIcon : HamburgerIcon}
           iconPosition="left"
