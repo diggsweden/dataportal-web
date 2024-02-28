@@ -14,10 +14,7 @@ import {
 } from "@/graphql/__generated__/operations";
 
 interface ListPageProps {
-  listItems?:
-    | ToolDataFragment[]
-    | PublicationDataFragment[]
-    | ContainerData_Dataportal_Digg_Container_Fragment[];
+  listItems?: ToolDataFragment[] | PublicationDataFragment[];
   heading?: string;
   category?: ContainerData_Dataportal_Digg_Container_Fragment;
   domain?: DiggDomain;

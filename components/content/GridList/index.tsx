@@ -4,17 +4,13 @@ import { PublicationTeaser } from "@/components/content/Publication/PublicationB
 import { ButtonLink } from "@/components/global/Button";
 import { Heading } from "@/components/global/Typography/Heading";
 import {
-  ContainerDataFragment,
   PublicationDataFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
 import { Toolteaser } from "../Tool";
 
 interface ListProps {
-  items:
-    | PublicationDataFragment[]
-    | ContainerDataFragment[]
-    | ToolDataFragment[];
+  items: PublicationDataFragment[] | ToolDataFragment[];
   heading?: string;
   showMoreLink?: {
     slug: string;

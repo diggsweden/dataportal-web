@@ -37,6 +37,15 @@ export const CATEGORY_FRAGMENT = gql`
   }
 `;
 
+export const PARENT_FRAGMENT = gql`
+  fragment Parent on dataportal_Digg_Parent {
+    heading
+    preamble
+    slug
+    name
+  }
+`;
+
 export const CONTAINER_FRAGMENT = gql`
   fragment ContainerData on dataportal_Digg_IContainer {
     id
@@ -50,15 +59,12 @@ export const CONTAINER_FRAGMENT = gql`
     updatedAt
     createdAt
     slug
-    domains {
-      name
-      slug
+    landingpage
+    parent {
+      ...Parent
     }
     categories {
       ...Category
-    }
-    tags {
-      value
     }
     blocks {
       ...BlockData
@@ -72,11 +78,15 @@ export const CONTAINER_FRAGMENT = gql`
   }
   ${MODULE_LIST_DATA_FRAGMENT}
   ${CATEGORY_FRAGMENT}
+  ${PARENT_FRAGMENT}
 `;
 
 export const PUBLICATION_FRAGMENT = gql`
   fragment PublicationData on dataportal_Digg_IPublication {
     ...ContainerData
+    tags {
+      value
+    }
     publishedAt
     startDate
     endDate
@@ -166,6 +176,11 @@ export const LINK_FRAGMENT = gql`
     title
     description
     linktype
+    preamble
+    showPreamble
+    image {
+      ...MediaType
+    }
   }
 `;
 

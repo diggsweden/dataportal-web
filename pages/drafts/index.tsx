@@ -1,13 +1,12 @@
 import React from "react";
-import { Dataportal_ContainerState } from "../../graphql/__generated__/types";
+import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
   DataportalPageProps,
-  getDomainAggregate,
   getMultiContainer,
   getPublication,
   getRootAggregate,
-} from "../../utilities";
-import DomainPage from "../oppen-kallkod";
+} from "@/utilities";
+
 import Page from "../[...containerSlug]";
 import { ListPage } from "@/components/content/ListPage";
 import { PublicationFull } from "@/components/content/Publication/PublicationFull";
@@ -25,6 +24,7 @@ const getQuery = async (
       secret,
       revalidate: false,
     });
+
   switch (slug) {
     case "/":
       return await getRootAggregate(locale, {
@@ -32,32 +32,8 @@ const getQuery = async (
         secret,
         revalidate: false,
       });
-    case "/offentligai":
-      return await getDomainAggregate("offentligai", locale, {
-        state: Dataportal_ContainerState.Preview,
-        secret,
-        revalidate: false,
-      });
-    case "/data":
-      return await getDomainAggregate("data", locale, {
-        state: Dataportal_ContainerState.Preview,
-        secret,
-        revalidate: false,
-      });
-    case "/oppen-kallkod":
-      return await getDomainAggregate("oppen-kallkod", locale, {
-        state: Dataportal_ContainerState.Preview,
-        secret,
-        revalidate: false,
-      });
-    case "/datasamverkan":
-      return await getDomainAggregate("datasamverkan", locale, {
-        state: Dataportal_ContainerState.Preview,
-        secret,
-        revalidate: false,
-      });
     default:
-      return await getMultiContainer([slug.substring(1)], locale, undefined, {
+      return await getMultiContainer([slug.substring(1)], locale, {
         state: Dataportal_ContainerState.Preview,
         secret,
         revalidate: false,
@@ -67,8 +43,6 @@ const getQuery = async (
 
 const render = (props: DataportalPageProps) => {
   switch (props.type) {
-    case "DomainAggregate":
-      return <DomainPage {...props} />;
     case "RootAggregate":
       return <ContainerPage {...props} />;
     case "MultiContainer":
