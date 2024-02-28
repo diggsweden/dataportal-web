@@ -30,7 +30,7 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
   const { t } = useTranslation("pages");
   const linkIcons = [
     { icon: BookIcon, slug: "kompetens-och-livslangt-larande" },
-    { icon: HeartIcon, slug: "e-halso-initiativet" },
+    { icon: HeartIcon, slug: "halsa-vard-och-omsorg" },
     { icon: CarIcon, slug: "elektrifieringen-av-transportsektorn" },
     { icon: PlanetIcon, slug: "rymddata" },
     { icon: PieChartIcon, slug: "smart-statistik" },

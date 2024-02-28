@@ -8,6 +8,7 @@ import { ROOT_AGGREGATE_QUERY } from "@/graphql/aggregateQuery";
 import { FORM_QUERY } from "@/graphql/formQuery";
 import { MODULE_QUERY } from "@/graphql/moduleQuery";
 import { PUBLICATION_QUERY } from "@/graphql/publicationQuery";
+import { TOOL_QUERY } from "@/graphql/toolQuery";
 import { SEARCH_QUERY } from "@/graphql/searchQuery";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
@@ -32,6 +33,9 @@ import {
   RootAggregateQueryVariables,
   SearchQueryVariables,
   SeoDataFragment,
+  ToolDataFragment,
+  ToolQuery,
+  ToolQueryVariables,
 } from "@/graphql/__generated__/operations";
 import { PromoProps } from "@/components/content/Promo";
 
@@ -106,8 +110,18 @@ export interface PublicationResponse extends PublicationDataFragment {
 
 export interface PublicationListResponse {
   type?: "PublicationList";
-  publications: PublicationDataFragment[];
+  listItems: PublicationDataFragment[];
   category?: ContainerData_Dataportal_Digg_Container_Fragment;
+  seo?: SeoDataFragment;
+  basePath?: string;
+  heading?: string;
+  preamble?: string;
+  heroImage?: ImageFragment | null;
+}
+
+export interface ToolListResponse {
+  type?: "ToolList";
+  listItems: ToolDataFragment[];
   seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
@@ -155,6 +169,14 @@ export interface PublicationListOptions {
   basePath?: string;
   heading?: string;
   preamble?: string;
+  heroImage?: ImageFragment | null;
+}
+
+export interface ToolistOptions {
+  heading: string;
+  basePath?: string;
+  preamble: string;
+  seo?: SeoDataFragment;
   heroImage?: ImageFragment | null;
 }
 
@@ -285,7 +307,7 @@ export const getPublicationsList = async (
     return {
       props: {
         type: "PublicationList",
-        publications: Array.isArray(publications) ? publications : [],
+        listItems: Array.isArray(publications) ? publications : [],
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
@@ -301,12 +323,78 @@ export const getPublicationsList = async (
     return {
       props: {
         type: "PublicationList",
-        publications: [],
+        listItems: [],
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
         heroImage: heroImage || null,
       } as PublicationListResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
+    };
+  }
+};
+
+/**
+ * Get a list of publications from strapi
+ *
+ * @param {Array<DiggDomain>} domains
+ * @param {Array<String>} slug
+ * @param {string} locale
+ * @returns {PublicationListResponse} nextjs staticprops
+ */
+export const getToolsList = async (opts?: ToolistOptions) => {
+  // If nextjs should check for changes on the server
+  const revalidate = true;
+  const { heading, preamble, heroImage, seo, basePath } = opts || {};
+
+  try {
+    const { data, error } = await client.query<ToolQuery, ToolQueryVariables>({
+      query: TOOL_QUERY,
+      variables: {
+        filter: {
+          limit: 100,
+        },
+      },
+      fetchPolicy: "no-cache",
+    });
+
+    const tools = data?.dataportal_Digg_Tools;
+
+    if (error) {
+      console.error(error);
+    }
+
+    if (!tools) {
+      console.warn(`No tools found`);
+    }
+
+    return {
+      props: {
+        type: "ToolList",
+        listItems: Array.isArray(tools) ? tools : [],
+        seo: seo || null,
+        basePath: basePath || null,
+        heading: heading || null,
+        preamble: preamble || null,
+        heroImage: heroImage || null,
+      } as ToolListResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
+    };
+  } catch (error: any) {
+    logGqlErrors(error);
+    return {
+      props: {
+        type: "ToolList",
+        listItems: [],
+        basePath: basePath || null,
+        seo: seo || null,
+        heading: heading || null,
+        heroImage: heroImage || null,
+      } as ToolListResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),

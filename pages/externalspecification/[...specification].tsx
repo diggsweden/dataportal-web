@@ -23,7 +23,7 @@ export default function Specification() {
     <EntrystoreProvider
       env={env}
       entryUri={entryUri}
-      entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
+      entrystoreUrl={env.ENTRYSCAPE_SPECS_PATH}
       fetchMore={false}
     >
       <SpecificationPage scheme={scheme} curi={curi} />

@@ -1,12 +1,16 @@
 import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
-import { PublicationTeaser } from "@/components/content/Publication/PublicationTeaser";
+import { PublicationTeaser } from "@/components/content/Publication/PublicationBlock";
 import { ButtonLink } from "@/components/global/Button";
 import { Heading } from "@/components/global/Typography/Heading";
-import { PublicationDataFragment } from "@/graphql/__generated__/operations";
+import {
+  PublicationDataFragment,
+  ToolDataFragment,
+} from "@/graphql/__generated__/operations";
+import { Toolteaser } from "../Tool";
 
-interface PublicationListProps {
-  publications: PublicationDataFragment[];
+interface ListProps {
+  items: PublicationDataFragment[] | ToolDataFragment[];
   heading?: string;
   showMoreLink?: {
     slug: string;
@@ -14,18 +18,14 @@ interface PublicationListProps {
   };
 }
 
-export const PublicationList: FC<PublicationListProps> = ({
-  publications,
-  heading,
-  showMoreLink,
-}) => {
+export const GridList: FC<ListProps> = ({ items, heading, showMoreLink }) => {
   const { t } = useTranslation();
 
   return (
     <div className="my-lg md:my-xl">
       <div
         className={`mb-lg flex items-center md:mb-xl ${
-          publications.length <= 3 ? "justify-between" : "gap-sm"
+          items.length <= 3 ? "justify-between" : "gap-sm"
         } text-2xl`}
       >
         {heading && (
@@ -33,7 +33,7 @@ export const PublicationList: FC<PublicationListProps> = ({
             {heading}
           </Heading>
         )}
-        {showMoreLink && (
+        {showMoreLink && showMoreLink.slug && (
           <ButtonLink
             size="sm"
             href={showMoreLink.slug}
@@ -42,11 +42,20 @@ export const PublicationList: FC<PublicationListProps> = ({
           />
         )}
       </div>
-      {publications.length > 0 ? (
+      {items.length > 0 ? (
         <ul className="gap-4 grid grid-cols-1 gap-xl md:grid-cols-2 lg:grid-cols-3">
-          {publications.map((publication, idx) => (
+          {items.map((item, idx) => (
             <li key={idx}>
-              <PublicationTeaser publication={publication} />
+              {(() => {
+                switch (item.__typename) {
+                  case "dataportal_Digg_Publication":
+                    return <PublicationTeaser publication={item} />;
+                  case "dataportal_Digg_Tool":
+                    return <Toolteaser tools={item} />;
+                  default:
+                    return null;
+                }
+              })()}
             </li>
           ))}
         </ul>

@@ -123,8 +123,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
   });
 
   useEffect(() => {
-    router.query.p = pageNumber.toString();
-    router.push(router);
+    router.push({ query: { ...router.query, p: router.query.p } });
     clearCurrentScrollPos();
     window.scrollTo({
       top: 0,
@@ -133,8 +132,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
   }, [pageNumber]);
 
   const changePage = (page: number) => {
-    router.query.p = page.toString();
-    router.push(router);
+    router.push({ query: { ...router.query, p: page } });
     clearCurrentScrollPos();
     window.scrollTo({
       top: 0,
@@ -157,8 +155,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
 
   useEffect(() => {
     if (!routerQuery.p) {
-      routerQuery.p = "1";
-      router.push(router);
+      router.push({ query: { ...router.query, p: 1 } });
     }
     const q = (routerQuery.q as string) || "";
     setQuery(q);
@@ -170,9 +167,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
   }, [routerQuery]);
 
   const submitSearch = (newQuery: string) => {
-    routerQuery.q = newQuery;
-    routerQuery.p = "1";
-    router.push(router);
+    router.push({ query: { ...router.query, q: newQuery, p: 1 } });
     setSearchRequest({
       ...searchRequest,
       query: newQuery,

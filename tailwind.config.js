@@ -98,6 +98,7 @@ module.exports = {
       ubuntu: ["Ubuntu", "sans-serif"],
     },
     fontWeight: {
+      thin: 300,
       normal: 400,
       strong: 500,
     },

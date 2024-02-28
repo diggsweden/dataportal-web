@@ -5,7 +5,7 @@ import { SettingsContext } from "@/providers/SettingsProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { hemvist, linkBase } from "@/utilities";
+import { hemvist, keyword, linkBase } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 
@@ -102,9 +102,9 @@ export const SpecificationPage: FC<{
 
               if(resourceUri.includes('https://www-sandbox.dataportal.se/specifications'))
               entryPath = resourceUri.replace("https://www-sandbox.dataportal.se/specifications","");
-
+              
               else
-              entryPath = resourceUri.replace("https://dataportal.se/","");
+              entryPath = resourceUri.replace("https://dataportal.se/specifications","");
                 return "/specifications" + entryPath;
             }
 
@@ -151,7 +151,7 @@ export const SpecificationPage: FC<{
               {
                 regex:new RegExp('(\/*\/specifications\/)(.+)'),
                 uri:'https://${
-                  env.ENTRYSCAPE_TERMS_PATH.includes("sandbox")
+                  env.ENTRYSCAPE_SPECS_PATH.startsWith("sandbox")
                     ? "www-sandbox.dataportal.se"
                     : "dataportal.se"
                 }/specifications/${curi}',
@@ -171,17 +171,27 @@ export const SpecificationPage: FC<{
               adms: 'http://www.w3.org/ns/adms#',
               prof: 'http://www.w3.org/ns/dx/prof/',
             },
+            collections: [
+              {
+                type: 'facet',
+                name: 'theme',
+                label: 'Theme',
+                property: 'dcat:theme',
+                nodetype: 'uri',
+                templatesource: 'dcat:theme-isa',
+              }
+            ],
             itemstore: {
               bundles: [
                 'dcat',
                 'https://${
-                  env.ENTRYSCAPE_SPECS_PATH
-                    ? env.ENTRYSCAPE_SPECS_PATH
+                  env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
+                    ? "sandbox.editera.dataportal.se"
                     : "editera.dataportal.se"
                 }/theme/templates/adms.json',
                 'https://${
-                  env.ENTRYSCAPE_SPECS_PATH
-                    ? env.ENTRYSCAPE_SPECS_PATH
+                  env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
+                    ? "sandbox.editera.dataportal.se"
                     : "editera.dataportal.se"
                 }/theme/templates/prof.json',
               ],
@@ -201,10 +211,11 @@ export const SpecificationPage: FC<{
                 label: 'Keyword',
                 property: 'dcat:keyword',
                 nodetype: 'literal',
-              }],
-
+              }
+            ],
             blocks: [
               ${hemvist(t)},
+              ${keyword(t)},
               {
                 block: 'resourceDescriptors2',
                 extends: 'list',
@@ -215,12 +226,15 @@ export const SpecificationPage: FC<{
                 listbody: '<div class="specification__resource--body">{{body}}</div>',
                 listplaceholder: '<div class="alert alert-info" role="alert">Denna specifikation har inga resurser.</div>',
                 rowhead:
-                '<span class="">{{text}}</span>' + 
+                '<span>{{text}}</span>' + 
                   '<span class="block mb-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
                   '<div>{{ text content="\${skos:definition}" }}</div>' +
-                  '<a href="{{resourceURI}}"><button class="button button--primary button--large text-white" tabIndex="-1">${t(
-                    "pages|specification_page$download",
-                  )} {{prop "prof:hasRole" class="type" render="label"}}</button></a>',
+                  '<a href="{{resourceURI}}" tabindex="-1"><button class="button button--primary button--large text-white">${t(
+                    "pages|specification_page$specification_download",
+                  )}' +
+                  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                  '<path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18V15H6V18H18V15H20V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6Z" fill="#FFFFFF"/>' +
+                  '</svg></button></a>',
               },
             ],
           }];
@@ -254,7 +268,7 @@ export const SpecificationPage: FC<{
         <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {title}
         </Heading>
-        <div className="flex flex-col gap-xl lg:flex-row lg:gap-2xl">
+        <div className="flex flex-col gap-xl md:mb-xl lg:flex-row lg:gap-2xl">
           {/* Left column */}
           <div className="flex w-full max-w-md flex-col">
             <script
@@ -284,7 +298,7 @@ export const SpecificationPage: FC<{
               data-entryscape-rdftype="prof:ResourceDescriptor"
             ></div>
 
-            <div className="contact__publisher hbbr mt-md md:mt-lg">
+            <div className="contact__publisher mt-md md:mt-lg">
               <Heading level={3} size={"sm"}>
                 {t("pages|datasetpage$contact-publisher")}
               </Heading>
@@ -310,11 +324,16 @@ export const SpecificationPage: FC<{
                 {t("pages|specification_page$about_specification")}
               </Heading>
               <span data-entryscape="hemvist" />
+              <div data-entryscape="keyword" />
+              <div
+                data-entryscape-dialog
+                data-entryscape-rdformsid="dcat:contactPoint"
+              />
 
               <div
                 data-entryscape="view"
                 data-entryscape-rdformsid="prof:Profile"
-                data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev"
+                data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev,dcat:keyword"
               ></div>
             </div>
           </div>

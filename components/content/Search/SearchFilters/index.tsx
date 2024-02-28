@@ -157,6 +157,10 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
   const { t } = useTranslation();
   const [inputFilter, setInputFilter] = useState<InputFilter>({});
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
+  const containHVD = !search.request.facetValues?.find(
+    (d) => d.facet === hvd && search.request.facetValues?.length === 1,
+  );
+
   const clearCurrentScrollPos = () => {
     if (typeof localStorage != "undefined" && typeof location != "undefined") {
       localStorage.setItem(`ScrollposY_${location.search}`, "0");
@@ -316,8 +320,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                   );
                 } else {
                   return (
-                    // eslint-disable-next-line react/jsx-key
-                    <div className="relative max-w-fit" key={idx}>
+                    <div key={value.title} className="relative max-w-fit">
                       <input
                         tabIndex={-1}
                         id="hvd_only"
@@ -410,18 +413,19 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
           )}
         </ul>
       </div>
-      {!search.request.facetValues?.some((t) => t.facet == hvd) &&
-        search.request.facetValues &&
-        search.request.facetValues.length > 0 && (
-          <div className="mt-lg flex flex-col justify-between gap-md md:flex-row md:items-baseline">
-            <div className="flex flex-col flex-wrap gap-sm md:flex-row md:gap-md">
+      {search.request.facetValues && search.request.facetValues.length > 0 && (
+        <div className="mt-lg flex flex-col justify-between gap-md md:flex-row md:items-baseline">
+          <div className="flex flex-col flex-wrap gap-sm md:flex-row md:gap-md">
+            {containHVD && (
               <span className="text-textSecondary">
                 {t("common|active-filters")}
               </span>
-              {search.request &&
-                search.request.facetValues &&
-                (search.request.facetValues as SearchFacetValue[]).map(
-                  (facetValue: SearchFacetValue, index: number) => (
+            )}
+            {search.request &&
+              search.request.facetValues &&
+              (search.request.facetValues as SearchFacetValue[]).map(
+                (facetValue: SearchFacetValue, index: number) =>
+                  facetValue.facet !== hvd && (
                     <Button
                       variant="filter"
                       size="xs"
@@ -438,30 +442,30 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                       }}
                     />
                   ),
-                )}
-            </div>
-            <div
-              className={
-                search.request?.facetValues &&
-                search.request.facetValues.length >= 2
-                  ? "block whitespace-nowrap"
-                  : "hidden"
-              }
-            >
-              <Button
-                variant="plain"
-                size="sm"
-                icon={TrashIcon}
-                iconPosition="left"
-                onClick={() => {
-                  clearCurrentScrollPos();
-                  search.set({ facetValues: [] }).then(() => search.doSearch());
-                }}
-                label={t("common|clear-filters")}
-              />
-            </div>
+              )}
           </div>
-        )}
+          <div
+            className={
+              search.request?.facetValues &&
+              search.request.facetValues.length >= 2
+                ? "block whitespace-nowrap"
+                : "hidden"
+            }
+          >
+            <Button
+              variant="plain"
+              size="sm"
+              icon={TrashIcon}
+              iconPosition="left"
+              onClick={() => {
+                clearCurrentScrollPos();
+                search.set({ facetValues: [] }).then(() => search.doSearch());
+              }}
+              label={t("common|clear-filters")}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

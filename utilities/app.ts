@@ -10,6 +10,7 @@ import {
   PublicationListResponse,
   PublicationResponse,
   RootAggregateResponse,
+  ToolListResponse,
 } from "@/utilities/queryHelpers";
 
 export type DataportalPageProps =
@@ -18,7 +19,8 @@ export type DataportalPageProps =
   | PublicationResponse
   | RootAggregateResponse
   | FormResponse
-  | ModuleResponse;
+  | ModuleResponse
+  | ToolListResponse;
 
 type ResolvedPage = {
   heading?: string | null;
@@ -79,6 +81,13 @@ export const resolvePage = (
         heading: props.heading,
         preamble: props.preamble,
         heroImage: props.image,
+      };
+    case "ToolList":
+      return {
+        seo: props.seo,
+        heading: props.heading,
+        preamble: props.preamble,
+        heroImage: props.heroImage,
       };
     case "PublicationList":
       return {

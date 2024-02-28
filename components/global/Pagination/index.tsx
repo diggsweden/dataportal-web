@@ -106,6 +106,7 @@ export const Pagination: FC<Pagination> = ({
           }`}
           disabled={currentPage === 1}
         >
+          <span className="sr-only">{t("pages|search$prev-page")}</span>
           <Arrow className="rotate-180" />
         </button>
         {pagination().map((value: any, idx: number) => (
@@ -138,6 +139,7 @@ export const Pagination: FC<Pagination> = ({
           }`}
           disabled={currentPage === totalPages}
         >
+          <span className="sr-only">{t("pages|search$next-page")}</span>
           <Arrow />
         </button>
       </div>

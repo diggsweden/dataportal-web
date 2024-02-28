@@ -2,25 +2,35 @@ import { FC, useContext, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { Container } from "@/components/layout/Container";
-import { PublicationList } from "@/components/content/Publication/PublicationList";
-import { linkBase, PublicationListResponse } from "@/utilities";
+import { GridList } from "@/components/content/GridList";
+import { linkBase } from "@/utilities";
 import { Pagination } from "@/components/global/Pagination";
 import { useRouter, NextRouter } from "next/router";
 import { SettingsContext } from "@/providers/SettingsProvider";
+import {
+  ContainerData_Dataportal_Digg_Container_Fragment,
+  PublicationDataFragment,
+  ToolDataFragment,
+} from "@/graphql/__generated__/operations";
 
-export const ListPage: FC<PublicationListResponse> = ({
-  publications,
-  heading,
-}) => {
+interface ListPageProps {
+  listItems?: ToolDataFragment[] | PublicationDataFragment[];
+  heading?: string;
+  category?: ContainerData_Dataportal_Digg_Container_Fragment;
+  domain?: DiggDomain;
+}
+
+export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
   const { trackPageView } = useMatomo();
   const { setBreadcrumb } = useContext(SettingsContext);
+  const list = Array.isArray(listItems) ? listItems : [];
   const pathname = usePathname();
   const router: NextRouter = useRouter();
-  const publicationsPerPage = 12;
+  const listItemsPerPage = 12;
   const page = parseInt(router.query.page as string) || 1;
-  const startIndex = (page - 1) * publicationsPerPage;
-  const endIndex = startIndex + publicationsPerPage;
-  const publicationsOnPage = publications.slice(startIndex, endIndex);
+  const startIndex = (page - 1) * listItemsPerPage;
+  const endIndex = startIndex + listItemsPerPage;
+  const itemsOnPage = list.slice(startIndex, endIndex);
 
   useEffect(() => {
     setBreadcrumb &&
@@ -39,15 +49,12 @@ export const ListPage: FC<PublicationListResponse> = ({
   return (
     <div id="news-list" className="my-lg md:my-xl">
       <Container>
-        <PublicationList
-          publications={publicationsOnPage}
-          heading={`${publications.length} ${heading}`}
-        />
-        {publications.length > 12 && (
+        <GridList items={itemsOnPage} heading={`${list.length} ${heading}`} />
+        {list.length > 12 && (
           <div className="flex justify-center">
             <Pagination
-              totalResults={publications.length || 0}
-              itemsPerPage={publicationsPerPage}
+              totalResults={list.length || 0}
+              itemsPerPage={listItemsPerPage}
               pageNumber={parseInt(router.query.page as string)}
               changePage={changePage}
             />

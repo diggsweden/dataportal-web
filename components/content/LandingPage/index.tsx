@@ -5,7 +5,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__generated__/operations";
 import { PublicationDataFragment as IPublication } from "@/graphql/__generated__/operations";
-import { PublicationList } from "@/components/content/Publication/PublicationList";
+import { GridList } from "@/components/content/GridList";
 import { PromoProps } from "@/components/content/Promo";
 import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentBlock";
 import { BlockList } from "@/components/content/blocks/BlockList";
@@ -114,8 +114,8 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
         {pathname === "/" && lang === "sv" && (
           <>
             {example && (
-              <PublicationList
-                publications={example}
+              <GridList
+                items={example}
                 showMoreLink={{
                   title: t("pages|good-examples$view-all"),
                   slug: t("routes|good-examples$path"),
@@ -124,8 +124,8 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
               />
             )}
             {news && (
-              <PublicationList
-                publications={news}
+              <GridList
+                items={news}
                 showMoreLink={{
                   title: t("pages|news$view-all"),
                   slug: t("routes|news$path"),
