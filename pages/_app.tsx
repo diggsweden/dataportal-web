@@ -80,7 +80,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     pageProps as DataportalPageProps,
     lang,
     t,
-    pathname,
   );
 
   const [breadcrumbState, setBreadcrumb] = useState<BreadcrumbProps>({
@@ -115,14 +114,15 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
 
   let searchProps = null;
 
-  if (pathname === ("/" || "data") || pathname === "/data") {
+  if (pathname === "/" || pathname === `/${t("routes|search-api$path")}`) {
     searchProps = {
       destination: `/${lang}/datasets`,
       placeholder: t("pages|startpage$search_placeholder"),
     };
   }
 
-  let conditionalPreamble = pathname === "/data" ? null : preamble;
+  let conditionalPreamble =
+    pathname === `/${t("routes|search-api$path")}` ? null : preamble;
 
   useEffect(() => {
     if (previousPath) {

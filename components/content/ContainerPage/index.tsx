@@ -77,7 +77,6 @@ const getLinks = () => {
 
 interface ContainerPageProps extends IContainer {
   related?: RelatedContainerFragment[];
-  domain?: DiggDomain;
   category?: IContainer;
 }
 
@@ -98,14 +97,11 @@ export const highlightCode = () => {
 export const ContainerPage: React.FC<ContainerPageProps> = ({
   heading,
   image,
-  category,
-  domains,
   preamble,
   blocks,
-  slug,
   name,
   related,
-  domain,
+  parent,
 }) => {
   const [menuItems, setMenuItems] = useState<Anchorlink[] | []>([]);
   const { setBreadcrumb } = useContext(SettingsContext);
@@ -116,7 +112,6 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   const { appRenderKey } = useContext(SettingsContext);
 
   const hasRelatedContent = related && related.length > 2;
-  const categoryLadingPage = slug.split("/").join("") === category?.slug;
 
   useEffect(() => {
     const newMenuItems = getLinks();
@@ -138,16 +133,10 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
     highlightCode();
 
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
-    if (domain) {
+    if (parent) {
       crumbs.push({
-        name: domains[0].name,
-        link: { ...linkBase, link: `/${domains[0].slug}` },
-      });
-    }
-    if (category && !categoryLadingPage) {
-      crumbs.push({
-        name: category.name,
-        link: { ...linkBase, link: category.slug },
+        name: parent.name || "",
+        link: { ...linkBase, link: parent.slug },
       });
     }
 
@@ -164,9 +153,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   return (
     <Container>
       <article className="flex w-full flex-col gap-md lg:gap-xl xl:flex-row">
-        {hasRelatedContent && (
-          <ContainerNav related={related} domain={domain} />
-        )}
+        {hasRelatedContent && <ContainerNav related={related} />}
         <div className="flex w-full flex-col">
           {!image && heading && (
             <Heading

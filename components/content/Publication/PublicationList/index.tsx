@@ -3,13 +3,10 @@ import useTranslation from "next-translate/useTranslation";
 import { PublicationTeaser } from "@/components/content/Publication/PublicationTeaser";
 import { ButtonLink } from "@/components/global/Button";
 import { Heading } from "@/components/global/Typography/Heading";
-import {
-  ContainerDataFragment,
-  PublicationDataFragment,
-} from "@/graphql/__generated__/operations";
+import { PublicationDataFragment } from "@/graphql/__generated__/operations";
 
 interface PublicationListProps {
-  publications: PublicationDataFragment[] | ContainerDataFragment[];
+  publications: PublicationDataFragment[];
   heading?: string;
   showMoreLink?: {
     slug: string;

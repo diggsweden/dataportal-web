@@ -1,41 +1,22 @@
 import { FC } from "react";
 import { GetStaticPaths } from "next/types";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { getMultiContainer, MultiContainerResponse } from "@/utilities";
 import { ContainerPage } from "@/components/content/ContainerPage";
-import { ListPage } from "@/components/content/ListPage";
 import { LandingPage } from "@/components/content/LandingPage";
 
 export const Page: FC<MultiContainerResponse> = ({
   container,
   related,
   category,
-  categoryContainers,
-  domain,
 }) => {
   const router = useRouter();
 
   if (container) {
-    return router.asPath === "/data" || router.asPath === "/offentligai" ? (
+    return container.landingpage ? (
       <LandingPage {...container} />
     ) : (
-      <ContainerPage
-        {...container}
-        related={related}
-        domain={domain}
-        category={category}
-      />
-    );
-  }
-
-  if (category && categoryContainers) {
-    return (
-      <ListPage
-        type="PublicationList"
-        publications={categoryContainers}
-        category={category}
-        domain={domain}
-      />
+      <ContainerPage {...container} related={related} category={category} />
     );
   }
 

@@ -2,8 +2,6 @@ import { GetServerSideProps } from "next/types";
 import { client, CONTAINER_QUERY } from "../graphql";
 import { PUBLICATION_QUERY } from "../graphql/publicationQuery";
 import {
-  CategoriesQuery,
-  CategoriesQueryVariables,
   CategoryFragment,
   ContainerData_Dataportal_Digg_Container_Fragment,
   ContainersQuery,
@@ -17,7 +15,6 @@ import { HttpsProxyAgent } from "https-proxy-agent";
 import nodeFetch from "node-fetch";
 import fetchEnhanced from "fetch-enhanced";
 import url from "url";
-import { CATEGORY_QUERY } from "../graphql/domainQuery";
 
 const proxyfetch = fetchEnhanced(nodeFetch);
 
@@ -60,11 +57,7 @@ const slug = (
   if (isPublication(c)) {
     return `/aktuellt${slug}`;
   } else {
-    const domain = c?.domains && c.domains[0];
-    if (domain && `/${domain.slug}` === slug) return slug;
-    const domainSlug =
-      c?.domains && c.domains.length > 0 ? "/" + c.domains[0].slug : "";
-    return domainSlug + slug;
+    return slug;
   }
 };
 
@@ -121,11 +114,10 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   const datasets: any[] = await getDatasets();
 
-  const allContainers: (
-    | ContainerData_Dataportal_Digg_Container_Fragment
-    | PublicationDataFragment
-    | null
-  )[] = [];
+  const allContainers: (ContainerData_Dataportal_Digg_Container_Fragment | null)[] =
+    [];
+
+  const allPublications: (PublicationDataFragment | null)[] = [];
 
   const allCategories: CategoryFragment[] = [];
   locales &&
@@ -141,7 +133,7 @@ export const getServerSideProps: GetServerSideProps = async ({
           variables: { filter: { locale, limit: 9999 } },
         });
 
-        const PublicationResult = await client.query<
+        const publicationResult = await client.query<
           PublicationQuery,
           PublicationQueryVariables
         >({
@@ -149,29 +141,19 @@ export const getServerSideProps: GetServerSideProps = async ({
           variables: { filter: { locale, limit: 9999 } },
         });
 
-        const categoryResult = await client.query<
-          CategoriesQuery,
-          CategoriesQueryVariables
-        >({
-          query: CATEGORY_QUERY,
-          variables: { filter: { locale, limit: 9999 } },
-        });
-
         const containers = containerResult?.data?.dataportal_Digg_Containers;
-        const Publication =
-          PublicationResult?.data?.dataportal_Digg_Publications;
-        const categories = categoryResult.data.categories;
+        const publications =
+          publicationResult?.data?.dataportal_Digg_Publications;
 
         if (containerResult?.error) {
           console.error(containerResult?.error);
         }
-        if (PublicationResult?.error) {
-          console.error(PublicationResult.error);
+        if (publicationResult?.error) {
+          console.error(publicationResult.error);
         }
 
         containers && allContainers.push(...containers);
-        Publication && allContainers.push(...Publication);
-        categories && allCategories.push(...categories);
+        publications && allPublications.push(...publications);
       }),
     ));
 
@@ -180,18 +162,9 @@ export const getServerSideProps: GetServerSideProps = async ({
     "/datasets?p=1&amp;q=&amp;s=2&amp;t=20&amp;f=&amp;rt=dataset%24esterms_IndependentDataService%24esterms_ServedByDataService&amp;c=false",
     "/concepts?p=1&amp;q=&amp;s=2&amp;t=20&amp;f=&amp;rt=term&amp;c=false",
     "/specifications?p=1&amp;q=&amp;s=2&amp;t=20&amp;f=&amp;rt=spec_standard%24spec_profile&amp;c=false",
-    "/aktuellt",
     "/statistik",
     "/en/statistics",
-    "/offentligai/inspiration",
-    "/offentligai/nyheter",
-    "/offentligai/event",
-    "/data/inspiration",
-    "/data/nyheter",
-    "/data/event",
-    "/oppen-kallkod/inspiration",
-    "/oppen-kallkod/nyheter",
-    "/oppen-kallkod/event",
+    "/metadatakvalitet",
   ];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -214,6 +187,21 @@ export const getServerSideProps: GetServerSideProps = async ({
     ${
       Array.isArray(allContainers) &&
       allContainers
+        .map((c) => {
+          return `
+        <url>
+            <loc>${env.CANONICAL_URL}${slug(c)}</loc>
+            <lastmod>${c?.updatedAt}</lastmod>
+            <changefreq>monthly</changefreq>
+            <priority>1.0</priority>
+        </url>
+    `;
+        })
+        .join("")
+    }
+    ${
+      Array.isArray(allPublications) &&
+      allPublications
         .map((c) => {
           return `
         <url>
