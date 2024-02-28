@@ -8,35 +8,6 @@ import {
   SEO_FRAGMENT,
 } from "./fragments";
 
-export const DOMAIN_AGGREGATE_QUERY = gql`
-  query DomainAggregate(
-    $domain: dataportal_QueryDomainArgs
-    $root: dataportal_QueryContainerArgs
-  ) {
-    domain: dataportal_Digg_Domains(filter: $domain) {
-      id
-      name
-      slug
-      taxonomies {
-        id
-        name
-        slug
-        categories {
-          ...Category
-        }
-      }
-    }
-    rootContainer: dataportal_Digg_Containers(filter: $root) {
-      ...ContainerData
-    }
-  }
-  ${CATEGORY_FRAGMENT}
-  ${CONTAINER_FRAGMENT}
-  ${BLOCK_FRAGMENT}
-  ${SEO_FRAGMENT}
-  ${MODULE_FRAGMENT}
-`;
-
 export const ROOT_AGGREGATE_QUERY = gql`
   query RootAggregate(
     $locale: String!

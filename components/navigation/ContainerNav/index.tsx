@@ -8,13 +8,10 @@ import { usePathname } from "next/navigation";
 
 interface ContainerDpDwnProps {
   related: RelatedContainerFragment[];
-  domain?: DiggDomain;
+  parent?: string;
 }
 
-export const ContainerNav: React.FC<ContainerDpDwnProps> = ({
-  related,
-  domain,
-}) => {
+export const ContainerNav: React.FC<ContainerDpDwnProps> = ({ related }) => {
   const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
   const [vw, setVw] = useState(0);
@@ -56,22 +53,21 @@ export const ContainerNav: React.FC<ContainerDpDwnProps> = ({
         }`}
       >
         {related.map(({ name, slug }) => {
-          const url = `${domain ? "/" + domain : ""}${slug}`;
           return (
             <li
               className={`${
-                isActive(url) ? " bg-brown-900 text-white" : "text-brown-600"
+                isActive(slug) ? " bg-brown-900 text-white" : "text-brown-600"
               }`}
               key={slug}
             >
               <Link
-                href={url}
+                href={slug}
                 className={`inline-flex w-full px-md py-sm no-underline ${
-                  isActive(url)
+                  isActive(slug)
                     ? "cursor-default"
                     : "focus--underline hover:underline"
                 }`}
-                aria-disabled={isActive(url)}
+                aria-disabled={isActive(slug)}
                 onClick={() => {
                   setExpanded(false);
                   window.scrollTo({ top: 0, behavior: "smooth" });

@@ -68,7 +68,7 @@
     "title": "Sök innehåll"
   },
   "search-api": {
-    "path": "data",
+    "path": "data-apier",
     "title": "Data & API:er"
   },
   "data-collaboration": {

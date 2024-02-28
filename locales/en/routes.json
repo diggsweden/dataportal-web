@@ -56,7 +56,7 @@
     "title": "Search for content"
   },
   "search-api": {
-    "path": "data",
+    "path": "data-apis",
     "title": "Data & API:s"
   },
   "home-text": {

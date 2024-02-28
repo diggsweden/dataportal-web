@@ -4,10 +4,7 @@ import {
   CONTAINER_MULTI_QUERY,
   RELATED_CONTAINER_QUERY,
 } from "@/graphql";
-import {
-  DOMAIN_AGGREGATE_QUERY,
-  ROOT_AGGREGATE_QUERY,
-} from "@/graphql/aggregateQuery";
+import { ROOT_AGGREGATE_QUERY } from "@/graphql/aggregateQuery";
 import { FORM_QUERY } from "@/graphql/formQuery";
 import { MODULE_QUERY } from "@/graphql/moduleQuery";
 import { PUBLICATION_QUERY } from "@/graphql/publicationQuery";
@@ -16,8 +13,6 @@ import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
   CategoryFragment,
   ContainerData_Dataportal_Digg_Container_Fragment,
-  DomainAggregateQuery,
-  DomainAggregateQueryVariables,
   FormDataFragment,
   FormQuery,
   FormQueryVariables,
@@ -66,67 +61,9 @@ const logGqlErrors = (error: any) => {
   }
 };
 
-/**
- * Build filters from slugs for ContainerQuery
- * @param {String[]} slugs
- * @returns {ContainersVariables[]}
- */
-export const containerArgsFromSlugs = (
-  slugs: string[],
-  locale: string,
-  domain?: DiggDomain,
-  state?: Dataportal_ContainerState,
-  secret?: string,
-): MultiContainersQueryVariables => {
-  const defaultVars = {
-    category: {
-      ...(domain ? { domains: [domain] } : {}),
-      categories: [slugs[0]],
-      locale,
-    },
-    container: {
-      ...(domain ? { domains: [domain] } : {}),
-      slug: `/${slugs.join("/")}`,
-      locale,
-      ...(secret ? { previewSecret: secret } : {}),
-      ...(state ? { state } : {}),
-    },
-  };
-
-  switch (slugs.length) {
-    //one level /category
-    //one level /slug
-    case 1:
-      return {
-        category: {
-          ...(domain ? { domains: [domain] } : {}),
-          categories: [slugs[0]],
-          locale,
-        },
-        container: {
-          ...(domain ? { domains: [domain] } : {}),
-          slug: `/${slugs[0]}`,
-          limit: 1,
-          locale,
-          ...(secret ? { previewSecret: secret } : {}),
-          ...(state ? { state } : {}),
-        },
-      };
-
-    default:
-      return defaultVars;
-  }
-};
-
-const hasIdendicalSibling = (slugs: string[], domain?: DiggDomain) => {
-  const arr = domain ? [domain, ...slugs] : slugs;
-  return arr.some((slug, index) => slug === arr[index - 1]);
-};
-
 const getRelatedContainers = async (
   categories: CategoryFragment[],
   locale: string,
-  domain?: DiggDomain,
 ) => {
   const relatedCategories = categories.map((c) => c.slug);
 
@@ -135,7 +72,6 @@ const getRelatedContainers = async (
       query: RELATED_CONTAINER_QUERY,
       variables: {
         filter: {
-          ...(domain ? { domains: [domain] } : {}),
           locale,
           categories: relatedCategories,
           limit: 50,
@@ -160,10 +96,7 @@ export interface MultiContainerResponse {
   category?: ContainerData_Dataportal_Digg_Container_Fragment;
   container?: ContainerData_Dataportal_Digg_Container_Fragment;
   related?: RelatedContainerFragment[];
-  categoryContainers?:
-    | PublicationDataFragment[]
-    | ContainerData_Dataportal_Digg_Container_Fragment[];
-  domain?: DiggDomain;
+  parent?: DiggLink;
 }
 
 export interface PublicationResponse extends PublicationDataFragment {
@@ -173,24 +106,13 @@ export interface PublicationResponse extends PublicationDataFragment {
 
 export interface PublicationListResponse {
   type?: "PublicationList";
-  publications:
-    | PublicationDataFragment[]
-    | ContainerData_Dataportal_Digg_Container_Fragment[];
+  publications: PublicationDataFragment[];
   category?: ContainerData_Dataportal_Digg_Container_Fragment;
-  domain?: DiggDomain;
   seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
   preamble?: string;
   heroImage?: ImageFragment | null;
-}
-
-export interface DomainAggregateResponse
-  extends ContainerData_Dataportal_Digg_Container_Fragment {
-  type: "DomainAggregate";
-  areas?: PromoProps[];
-  themes?: PromoProps[];
-  domain: DiggDomain;
 }
 
 export interface RootAggregateResponse
@@ -249,42 +171,15 @@ export interface ModuleOptions {
 /* #endregion */
 
 /**
- * Divides every slug from each container into string parts
- * @param {Array<Containers_dataportal_Digg_Containers>} containers
- * @returns {Array<String[]>} An array with stringarrays based on all containerslugs
- */
-export const extractSlugs = (
-  containers: (ContainerData_Dataportal_Digg_Container_Fragment | null)[],
-) => {
-  const slugsArray: Array<string[]> = [];
-  containers.map((page) => {
-    const slugs = page?.slug?.split("/") || [];
-    slugs.length > 0 && slugs[0] === "" && slugs.shift();
-    slugsArray.push(slugs);
-  });
-
-  return slugsArray;
-};
-
-/**
  * @param {Array<string>} slugs
  * @returns
  */
 export const getMultiContainer = async (
   slugs: string[],
   locale: string,
-  domain?: DiggDomain,
   opts: QueryOptions = { revalidate: true },
 ) => {
   const { state, secret, revalidate } = opts;
-  if (hasIdendicalSibling(slugs, domain)) {
-    console.warn(
-      `Cannot have identicall slugs after another: '${
-        domain ? `/${domain}/` : ""
-      }${slugs.join("/")}'`,
-    );
-    return notFound(revalidate);
-  }
 
   const slug = "/" + slugs.join("/");
 
@@ -295,21 +190,28 @@ export const getMultiContainer = async (
       MultiContainersQueryVariables
     >({
       query: CONTAINER_MULTI_QUERY,
-      variables: containerArgsFromSlugs(slugs, locale, domain, state, secret),
+      variables: {
+        category: { categories: [slugs[0]], locale },
+        container: {
+          slug,
+          locale,
+          ...(secret ? { previewSecret: secret } : {}),
+          ...(state ? { state } : {}),
+        },
+      },
       fetchPolicy: "no-cache",
     });
 
     if (error || errors) {
       console.error({ error, errors });
     }
-
     const container = data.container[0] || null;
     const categoryContainers = data.category;
     const category =
       categoryContainers[0]?.categories?.find((c) => c?.slug === slugs[0]) ||
       null;
     const related = container
-      ? await getRelatedContainers(container.categories, locale, domain)
+      ? await getRelatedContainers(container.categories, locale)
       : null;
 
     if (!container && !category) {
@@ -325,8 +227,6 @@ export const getMultiContainer = async (
         container,
         related,
         category,
-        categoryContainers,
-        domain: domain || null,
       },
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
@@ -347,7 +247,6 @@ export const getMultiContainer = async (
  * @returns {PublicationListResponse} nextjs staticprops
  */
 export const getPublicationsList = async (
-  domains: DiggDomain[],
   tags: string[],
   locale: string,
   opts?: PublicationListOptions,
@@ -367,7 +266,6 @@ export const getPublicationsList = async (
           locale,
           state: Dataportal_ContainerState.Live,
           tags: tags,
-          domains,
           limit: 1000,
         },
       },
@@ -381,18 +279,13 @@ export const getPublicationsList = async (
     }
 
     if (!publications) {
-      console.warn(
-        `No publications found${
-          domains.length > 0 ? ` in domain(s) ${domains.join(",")}` : ""
-        } with tags: '${tags.join(",")}'`,
-      );
+      console.warn(`No publications found with tags: '${tags.join(",")}'`);
     }
 
     return {
       props: {
         type: "PublicationList",
         publications: Array.isArray(publications) ? publications : [],
-        domain: domains[0] || null,
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
@@ -409,7 +302,6 @@ export const getPublicationsList = async (
       props: {
         type: "PublicationList",
         publications: [],
-        domain: domains[0] || null,
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
@@ -434,7 +326,7 @@ export const getPublication = async (
   locale: string,
   opts: PublicationQueryOptions = { revalidate: true },
 ) => {
-  const { state, secret, revalidate, domain, tags } = opts;
+  const { state, secret, revalidate, tags } = opts;
   try {
     const mainPublicationResult = await client.query<
       PublicationQuery,
@@ -446,7 +338,6 @@ export const getPublication = async (
           slug,
           limit: 1,
           locale,
-          domains: domain ? [domain] : [],
           tags: tags || [],
           ...(secret ? { previewSecret: secret } : {}),
           ...(state ? { state } : {}),
@@ -469,7 +360,6 @@ export const getPublication = async (
       return notFound(revalidate);
     }
 
-    const domains = publication.domains.map((dom) => dom?.slug || "");
     const relatedTags = publication.tags.map((tag) => tag?.value || "");
     // console.log({ domains, tags });
 
@@ -478,7 +368,7 @@ export const getPublication = async (
       PublicationQueryVariables
     >({
       query: PUBLICATION_QUERY,
-      variables: { filter: { limit: 3, locale, domains, tags: relatedTags } },
+      variables: { filter: { limit: 3, locale, tags: relatedTags } },
       fetchPolicy: "no-cache",
     });
 
@@ -500,97 +390,6 @@ export const getPublication = async (
   } catch (error: any) {
     logGqlErrors(error);
     return notFound(revalidate);
-  }
-};
-
-/**
- * Get domain container and corresponding data from strapi
- * @param {DiggDomain} domainSlug
- * @param {string} locale
- * @param opts
- * @returns nextjs static props
- */
-export const getDomainAggregate = async (
-  domainSlug: string,
-  locale: string,
-  opts: QueryOptions = { revalidate: true },
-) => {
-  const { state, secret, revalidate } = opts;
-  const sharedVariables = {
-    limit: 1,
-    locale,
-  };
-  try {
-    const result = await client.query<
-      DomainAggregateQuery,
-      DomainAggregateQueryVariables
-    >({
-      query: DOMAIN_AGGREGATE_QUERY,
-      variables: {
-        domain: { ...sharedVariables, slug: domainSlug || "" },
-        root: {
-          ...sharedVariables,
-          ...(secret ? { previewSecret: secret } : {}),
-          state: state || Dataportal_ContainerState.Live,
-          slug: "/" + (domainSlug || ""),
-        },
-      },
-      fetchPolicy: "no-cache",
-    });
-
-    if (result && result.error) {
-      console.error(result.error);
-    }
-
-    const container =
-      result && result.data ? result.data.rootContainer[0] : undefined;
-
-    if (!container) {
-      console.warn(`No container found with slug: '${domainSlug}'`);
-    }
-
-    const domain = result.data.domain[0];
-
-    const areaTaxonomy =
-      domain.taxonomies.find((t) => t.slug === "dataomraden") || null;
-    const themeTaxonomy =
-      domain.taxonomies.find((t) => t.slug === "teman") || null;
-    const areas = areaTaxonomy
-      ? areaTaxonomy.categories.map((category) => ({
-          title: category.name,
-          slug: category.slug,
-        }))
-      : null;
-    const themes = themeTaxonomy
-      ? themeTaxonomy.categories.map((category) => ({
-          title: category.name,
-          slug: category.slug,
-        }))
-      : null;
-
-    // The value of the `props` key will be
-    // passed to the `Page` component
-    return {
-      props: {
-        ...container,
-        type: "DomainAggregate",
-        areas,
-        themes,
-        domain: domainSlug,
-      } as DomainAggregateResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
-  } catch (error: any) {
-    logGqlErrors(error);
-    return {
-      props: {
-        type: "DomainAggregate",
-        domain: domainSlug,
-      } as DomainAggregateResponse,
-      revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60"),
-    };
   }
 };
 
