@@ -6,7 +6,7 @@ import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { isExternalLink } from "@/utilities";
 import { CustomImage } from "@/components/global/CustomImage";
-
+import { ImageFragment } from "@/graphql/__generated__/operations";
 export interface PromoProps {
   title: string;
   slug: string;
@@ -15,7 +15,7 @@ export interface PromoProps {
   showPreamble: boolean;
   linktype?: string;
   __typename?: string;
-  image?: any;
+  image?: ImageFragment;
 }
 
 export const Promo: FC<{
