@@ -84,6 +84,16 @@ export const PUBLICATION_FRAGMENT = gql`
   ${CONTAINER_FRAGMENT}
 `;
 
+export const TOOL_FRAGMENT = gql`
+  fragment ToolData on dataportal_Digg_ITool {
+    heading
+    preamble
+    link
+    domainLabel
+    description
+  }
+`;
+
 export const FORM_INPUT_FRAGMENT = gql`
   fragment Input on dataportal_Digg_IFormInput {
     info
@@ -156,6 +166,11 @@ export const LINK_FRAGMENT = gql`
     title
     description
     linktype
+    preamble
+    showPreamble
+    image {
+      ...MediaType
+    }
   }
 `;
 
