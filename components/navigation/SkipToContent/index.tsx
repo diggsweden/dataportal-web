@@ -38,29 +38,10 @@ export const SkipToContent: FC<{ text: string }> = ({ text }) => {
  * @param id to the html-element
  * @param ev the clickEvent that occurs
  */
-export const skipToElement = (id: string, ev?: React.MouseEvent) => {
-  if (ev) {
-    ev.preventDefault();
-  }
-  id = id.replace("#", "");
-  const element = document.getElementById(id);
+export const skipToElement = (id: string) => {
+  const element = document.querySelector(id);
+
   if (!element) return;
-
-  if (element.title === "anchorTarget") {
-    const sibling = document.getElementById(`${id}-value`);
-    if (sibling) {
-      sibling.tabIndex = -1;
-      sibling.focus();
-      element.scrollIntoView();
-    }
-    return;
-  }
-
-  if (element.nodeName === "H1") {
-    element.tabIndex = -1;
-  }
-
-  element.focus();
   element.scrollIntoView();
 };
 

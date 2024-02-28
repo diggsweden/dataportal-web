@@ -17,7 +17,10 @@ export const ContainerNav: React.FC<ContainerDpDwnProps> = ({ related }) => {
   const [vw, setVw] = useState(0);
 
   useEffect(() => {
-    setVw(window.innerWidth);
+    window.addEventListener("resize", () => setVw(window.innerWidth));
+
+    return () =>
+      window.removeEventListener("resize", () => setVw(window.innerWidth));
   }, []);
 
   const isActive = (url: string) => {
