@@ -110,11 +110,10 @@ export interface PublicationResponse extends PublicationDataFragment {
 
 export interface PublicationListResponse {
   type?: "PublicationList";
+  heading: string;
   listItems: PublicationDataFragment[];
-  category?: ContainerData_Dataportal_Digg_Container_Fragment;
   seo?: SeoDataFragment;
   basePath?: string;
-  heading?: string;
   preamble?: string;
   heroImage?: ImageFragment | null;
 }
@@ -181,7 +180,6 @@ export interface ToolistOptions {
 }
 
 export interface PublicationQueryOptions extends QueryOptions {
-  domain?: DiggDomain;
   tags?: string[];
 }
 
@@ -263,7 +261,6 @@ export const getMultiContainer = async (
 /**
  * Get a list of publications from strapi
  *
- * @param {Array<DiggDomain>} domains
  * @param {Array<String>} slug
  * @param {string} locale
  * @returns {PublicationListResponse} nextjs staticprops
@@ -310,7 +307,7 @@ export const getPublicationsList = async (
         listItems: Array.isArray(publications) ? publications : [],
         seo: seo || null,
         basePath: basePath || null,
-        heading: heading || null,
+        heading: heading || "",
         preamble: preamble || null,
         heroImage: heroImage || null,
       } as PublicationListResponse,
@@ -326,7 +323,7 @@ export const getPublicationsList = async (
         listItems: [],
         seo: seo || null,
         basePath: basePath || null,
-        heading: heading || null,
+        heading: heading || "",
         heroImage: heroImage || null,
       } as PublicationListResponse,
       ...(revalidate
@@ -339,7 +336,6 @@ export const getPublicationsList = async (
 /**
  * Get a list of publications from strapi
  *
- * @param {Array<DiggDomain>} domains
  * @param {Array<String>} slug
  * @param {string} locale
  * @returns {PublicationListResponse} nextjs staticprops
@@ -449,7 +445,6 @@ export const getPublication = async (
     }
 
     const relatedTags = publication.tags.map((tag) => tag?.value || "");
-    // console.log({ domains, tags });
 
     const relatedPublicationResult = await client.query<
       PublicationQuery,

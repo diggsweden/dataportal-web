@@ -99,7 +99,6 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   image,
   preamble,
   blocks,
-  name,
   related,
   parent,
 }) => {
@@ -135,19 +134,19 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
     if (parent) {
       crumbs.push({
-        name: parent.name || "",
+        name: parent.heading,
         link: { ...linkBase, link: parent.slug },
       });
     }
 
     setBreadcrumb &&
       setBreadcrumb({
-        name: name,
+        name: heading,
         crumbs: crumbs,
       });
 
     // Matomo tracking
-    trackPageView({ documentTitle: name });
+    trackPageView({ documentTitle: heading });
   }, [pathname]);
 
   return (
