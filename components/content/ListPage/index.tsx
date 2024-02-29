@@ -98,9 +98,8 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
                   onClick={() => setActiveFilter(keyword)}
                   label={keyword.value}
                   className={`${
-                    keyword.id === activeFilter.id
-                      ? "hover-none bg-pink-200 text-blackOpaque3 hover:bg-pink-200"
-                      : ""
+                    keyword.id === activeFilter.id &&
+                    "hover-none bg-pink-200 text-blackOpaque3 hover:bg-pink-200"
                   }`}
                 />
               ),
