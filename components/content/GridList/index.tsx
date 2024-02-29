@@ -17,14 +17,14 @@ interface ListProps {
     title: string;
   };
 }
-interface ItemWithKeywords {
+interface Keyword {
   value: string;
   id: string;
 }
 
 export const GridList: FC<ListProps> = ({ items, heading, showMoreLink }) => {
   const { t } = useTranslation();
-  const [activeFilter, setActiveFilter] = useState<ItemWithKeywords>({
+  const [activeFilter, setActiveFilter] = useState<Keyword>({
     value: "Alla",
     id: "0",
   });
@@ -32,10 +32,10 @@ export const GridList: FC<ListProps> = ({ items, heading, showMoreLink }) => {
   const listType = items && items[0]?.__typename;
 
   function getKeywords(items: ToolDataFragment[]) {
-    const keywords: ItemWithKeywords[] = [{ value: "Alla", id: "0" }];
+    const keywords: Keyword[] = [{ value: "Alla", id: "0" }];
     items.forEach((item) => {
       if (item.keywords) {
-        item.keywords.forEach((keyword: ItemWithKeywords) => {
+        item.keywords.forEach((keyword: Keyword) => {
           !keywords.some((i) => i.id === keyword.id) && keywords.push(keyword);
         });
       }
