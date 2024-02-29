@@ -101,6 +101,10 @@ export const TOOL_FRAGMENT = gql`
     link
     domainLabel
     description
+    keywords {
+      value
+      id
+    }
   }
 `;
 
