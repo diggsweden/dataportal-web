@@ -466,27 +466,27 @@ export const DataSetPage: React.FC = () => {
             </div>
           </div>
           {/* Right column */}
-          <div className="mb-lg w-full pt-none lg:mb-none lg:max-w-[296px]">
+          <div className="mb-lg w-full max-w-md space-y-lg pt-none lg:mb-none lg:max-w-[296px]">
             {/* About dataset - wrapper  */}
-            <div className=" lg:w-[296px] ">
+            <div className="box-border w-full bg-white p-md">
               <Heading
                 level={2}
                 size={"sm"}
-                className="mb-md text-textSecondary md:mb-lg"
+                className="mb-md font-strong text-textSecondary md:mb-lg"
               >
                 {t("pages|datasetpage$about-dataset")}
               </Heading>
 
               {/* About dataset */}
-              <div data-entryscape="aboutDataset" className="mb-lg" />
+              <div data-entryscape="aboutDataset" />
             </div>
 
             {/* Catalog informaton wrapper */}
-            <div className="bg-white p-md">
+            <div className="box-border w-full bg-white p-md">
               <Heading
                 level={2}
                 size={"sm"}
-                className="mb-sm text-textSecondary md:mb-md"
+                className="mb-sm font-strong text-textSecondary md:mb-md"
               >
                 {t("pages|datasetpage$catalog")}
               </Heading>

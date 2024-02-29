@@ -63,7 +63,7 @@ export const initBreadcrumb = {
  */
 const onHash = (pathWithHash: string) => {
   const hashIndex = pathWithHash.indexOf("#");
-  const hash = pathWithHash.substring(hashIndex);
+  const hash = pathWithHash.substring(hashIndex + 1);
   skipToElement(hash);
 };
 
