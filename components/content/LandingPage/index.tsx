@@ -94,8 +94,8 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
   }, [pathname]);
 
   return (
-    <div id="LandingPage">
-      <Container>
+    <Container>
+      <div id="LandingPage" className="space-y-md lg:space-y-xl">
         {!image && heading && (
           <Heading level={1} size="lg" className="mb-lg md:mb-xl">
             {heading}
@@ -211,7 +211,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
             </section>
           </>
         )}
-      </Container>
-    </div>
+      </div>
+    </Container>
   );
 };

@@ -8,20 +8,24 @@ import { isExternalLink } from "@/utilities";
 import { CustomImage } from "@/components/global/CustomImage";
 import { LinkFragment } from "@/graphql/__generated__/operations";
 export interface PromoProps extends LinkFragment {
-  landingPage?: boolean;
+  heading?: string | null;
 }
 
 export const Promo: FC<PromoProps> = ({
   slug,
   title,
-  preamble,
+  customPreamble,
   image,
   description,
   showPreamble,
-  landingPage,
+  heading,
 }) => {
   const { t } = useTranslation("common");
-  const ingress = showPreamble ? (preamble ? preamble : description) : null;
+  const ingress = showPreamble
+    ? customPreamble
+      ? customPreamble
+      : description
+    : null;
 
   return (
     <Link
@@ -31,7 +35,7 @@ export const Promo: FC<PromoProps> = ({
       {image && <CustomImage image={image} className="h-[152px]" />}
       <div className="flex h-full flex-col p-lg">
         <Heading
-          level={!landingPage ? 2 : 3}
+          level={heading ? 3 : 2}
           size="sm"
           className={ingress ? "" : "pb-lg"}
         >

@@ -59,7 +59,7 @@ export const CONTAINER_FRAGMENT = gql`
     updatedAt
     createdAt
     slug
-    landingpage
+    landingPage
     parent {
       ...Parent
     }
@@ -176,7 +176,7 @@ export const LINK_FRAGMENT = gql`
     title
     description
     linktype
-    preamble
+    customPreamble
     showPreamble
     image {
       ...MediaType

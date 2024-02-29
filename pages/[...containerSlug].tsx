@@ -13,7 +13,7 @@ export const Page: FC<MultiContainerResponse> = ({
   const router = useRouter();
 
   if (container) {
-    return container.landingpage ? (
+    return container.landingPage ? (
       <LandingPage {...container} />
     ) : (
       <ContainerPage {...container} related={related} category={category} />

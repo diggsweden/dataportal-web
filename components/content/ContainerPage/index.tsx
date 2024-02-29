@@ -52,7 +52,7 @@ const getLinks = () => {
     document.querySelector("#content") || document.createElement("div");
 
   const hTags = Array.prototype.slice.call(
-    cont.querySelectorAll("h2") || document.createElement("div"),
+    cont.querySelectorAll(".textBlock h2") || document.createElement("div"),
     0,
   );
 

@@ -18,7 +18,7 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
   const { t } = useTranslation("pages");
 
   return (
-    <div className="mb-xl">
+    <>
       {heading && (
         <div className="flex justify-between gap-sm text-2xl">
           {heading && (
@@ -38,18 +38,18 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
         </div>
       )}
       <ul
-        className={`my-xl grid grid-flow-row auto-rows-fr gap-lg md:grid-cols-2 ${
+        className={`grid grid-flow-row auto-rows-fr gap-lg md:grid-cols-2 ${
           landingPage ? "lg:grid-cols-3" : "max-w-md"
-        }`}
+        } ${heading ? "mt-xl" : ""}`}
       >
         {links.map((link: PromoProps, idx: number) => {
           return (
             <li key={idx}>
-              <Promo {...link} landingPage={landingPage} />
+              <Promo {...link} heading={heading} />
             </li>
           );
         })}
       </ul>
-    </div>
+    </>
   );
 };
