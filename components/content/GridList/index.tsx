@@ -35,7 +35,7 @@ export const GridList: FC<ListProps> = ({ items, heading, showMoreLink }) => {
     const keywords: ItemWithKeywords[] = [{ value: "Alla", id: "0" }];
     items.forEach((item) => {
       if (item.keywords) {
-        item.keywords.forEach((keyword: any) => {
+        item.keywords.forEach((keyword: ItemWithKeywords) => {
           !keywords.some((i) => i.id === keyword.id) && keywords.push(keyword);
         });
       }
@@ -78,7 +78,7 @@ export const GridList: FC<ListProps> = ({ items, heading, showMoreLink }) => {
       </div>
       {listType === "dataportal_Digg_Tool" && (
         <div className="mb-xl flex flex-wrap gap-md">
-          {getKeywords(items as any).map((keyword, idx) => (
+          {getKeywords(items as ToolDataFragment[]).map((keyword, idx) => (
             <Button
               variant="plain"
               key={idx}
