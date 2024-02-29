@@ -6,61 +6,43 @@ import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { isExternalLink } from "@/utilities";
 import { CustomImage } from "@/components/global/CustomImage";
-import { ImageFragment } from "@/graphql/__generated__/operations";
-export interface PromoProps {
-  title: string;
-  slug: string;
-  description?: string;
-  preamble?: string;
-  showPreamble: boolean;
-  linktype?: string;
-  __typename?: string;
-  image?: ImageFragment;
+import { LinkFragment } from "@/graphql/__generated__/operations";
+export interface PromoProps extends LinkFragment {
+  landingPage?: boolean;
 }
 
-export const Promo: FC<{
-  link: PromoProps;
-  inline?: boolean;
-  icon?: any;
-}> = ({ link, icon, inline }) => {
+export const Promo: FC<PromoProps> = ({
+  slug,
+  title,
+  preamble,
+  image,
+  description,
+  showPreamble,
+  landingPage,
+}) => {
   const { t } = useTranslation("common");
-  const Icon = icon;
-  const description = link.showPreamble
-    ? link.preamble
-      ? link.preamble
-      : link.description
-    : null;
+  const ingress = showPreamble ? (preamble ? preamble : description) : null;
 
   return (
     <Link
-      href={link.slug}
+      href={slug}
       className="group flex h-full flex-col bg-white text-brown-900 no-underline"
     >
-      {icon ? (
-        <div className="flex justify-center bg-pink-600">
-          <Icon />
-        </div>
-      ) : (
-        link.image && (
-          <div className="flex justify-center bg-pink-600">
-            {icon ? <Icon /> : <CustomImage image={link.image} />}
-          </div>
-        )
-      )}
+      {image && <CustomImage image={image} className="h-[152px]" />}
       <div className="flex h-full flex-col p-lg">
         <Heading
-          level={!inline ? 2 : 3}
+          level={!landingPage ? 2 : 3}
           size="sm"
-          className={description ? "" : "pb-lg"}
+          className={ingress ? "" : "pb-lg"}
         >
-          {link.title}
+          {title}
         </Heading>
-        {description && (
-          <p className="pb-lg pt-sm text-brown-600">{description}</p>
+        {ingress && (
+          <p className="mb-lg line-clamp-3 pt-sm text-brown-600">{ingress}</p>
         )}
         <span className="button button--small button--primary focus--none mt-auto">
           {t("read-more")}
-          {isExternalLink(link.slug) ? (
+          {isExternalLink(slug) ? (
             <ExternalLinkIcon height={16} width={16} viewBox="0 0 24 24" />
           ) : (
             <ArrowRightIcon height={16} width={16} viewBox="0 0 24 24" />

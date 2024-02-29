@@ -107,9 +107,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
           <Preamble className="max-w-md">{preamble}</Preamble>
         ) : null}
 
-        {topPromos && (
-          <RelatedContentBlock links={topPromos.links as PromoProps[]} />
-        )}
+        {topPromos && <RelatedContentBlock {...topPromos} landingPage={true} />}
 
         {pathname === "/" && lang === "sv" && (
           <>
@@ -158,7 +156,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
         )}
 
         <div className={"mb-xl"}>
-          {content && <BlockList blocks={content} />}
+          {content && <BlockList blocks={content} landingPage={true} />}
         </div>
 
         {pathname === "/" && (

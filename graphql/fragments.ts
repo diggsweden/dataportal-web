@@ -224,6 +224,8 @@ export const TEXT_FRAGMENT = gql`
 export const RELATED_CONTENT_FRAGMENT = gql`
   fragment RelatedContent on dataportal_Digg_RelatedContent {
     id
+    heading
+    showMoreLink
     links {
       ...Link
     }
