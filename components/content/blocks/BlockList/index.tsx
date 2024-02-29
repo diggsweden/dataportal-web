@@ -16,6 +16,7 @@ interface blockListProps {
     | ContainerData_Dataportal_Digg_Container_Fragment["blocks"]
     | ModuleDataFragment["blocks"];
   className?: string;
+  landingPage?: boolean;
 }
 
 /**
@@ -53,7 +54,11 @@ const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
   );
 };
 
-export const BlockList: React.FC<blockListProps> = ({ blocks, className }) => {
+export const BlockList: React.FC<blockListProps> = ({
+  blocks,
+  className,
+  landingPage,
+}) => {
   return (
     <div
       className={`mb-lg space-y-xl md:mb-xl md:space-y-xl ${
@@ -78,7 +83,7 @@ export const BlockList: React.FC<blockListProps> = ({ blocks, className }) => {
               <RelatedContentBlock
                 {...block}
                 key={`${id}-${index}`}
-                inline={true}
+                landingPage={landingPage}
               />
             );
           case "dataportal_Digg_ModuleList":

@@ -94,8 +94,8 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
   }, [pathname]);
 
   return (
-    <div id="LandingPage">
-      <Container>
+    <Container>
+      <div id="LandingPage" className="space-y-md lg:space-y-xl">
         {!image && heading && (
           <Heading level={1} size="lg" className="mb-lg md:mb-xl">
             {heading}
@@ -107,9 +107,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
           <Preamble className="max-w-md">{preamble}</Preamble>
         ) : null}
 
-        {topPromos && (
-          <RelatedContentBlock links={topPromos.links as PromoProps[]} />
-        )}
+        {topPromos && <RelatedContentBlock {...topPromos} landingPage={true} />}
 
         {pathname === "/" && lang === "sv" && (
           <>
@@ -158,7 +156,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
         )}
 
         <div className={"mb-xl"}>
-          {content && <BlockList blocks={content} />}
+          {content && <BlockList blocks={content} landingPage={true} />}
         </div>
 
         {pathname === "/" && (
@@ -213,7 +211,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
             </section>
           </>
         )}
-      </Container>
-    </div>
+      </div>
+    </Container>
   );
 };
