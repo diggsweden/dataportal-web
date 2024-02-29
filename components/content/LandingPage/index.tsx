@@ -60,7 +60,7 @@ const contentBoxLinks = [
 ];
 
 export const LandingPage: FC<LandingPageProps> = (props) => {
-  const { parent, news, example, image, heading, blocks, preamble, name } =
+  const { parent, news, example, image, heading, blocks, preamble } =
     props || {};
 
   const { setBreadcrumb } = useContext(SettingsContext);
@@ -79,18 +79,18 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
     if (parent) {
       crumbs.push({
-        name: parent.name || "",
+        name: parent.heading,
         link: { ...linkBase, link: parent.slug },
       });
     }
 
     setBreadcrumb &&
       setBreadcrumb({
-        name: heading ? heading : name,
+        name: heading,
         crumbs: crumbs,
       });
 
-    trackPageView({ documentTitle: name });
+    trackPageView({ documentTitle: heading });
   }, [pathname]);
 
   return (

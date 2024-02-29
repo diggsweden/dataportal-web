@@ -66,7 +66,7 @@ export const PublicationFull: React.FC<PublicationResponse> = ({
 
     setBreadcrumb &&
       setBreadcrumb({
-        name: heading!,
+        name: heading,
         crumbs: crumbs,
       });
 

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
-import { PublicationTeaser } from "@/components/content/Publication/PublicationBlock";
+import { PublicationTeaser } from "@/components/content/Publication/PublicationTeaser";
 import { ButtonLink } from "@/components/global/Button";
 import { Heading } from "@/components/global/Typography/Heading";
 import {

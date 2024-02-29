@@ -8,16 +8,13 @@ import { Pagination } from "@/components/global/Pagination";
 import { useRouter, NextRouter } from "next/router";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import {
-  ContainerData_Dataportal_Digg_Container_Fragment,
   PublicationDataFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
 
 interface ListPageProps {
   listItems?: ToolDataFragment[] | PublicationDataFragment[];
-  heading?: string;
-  category?: ContainerData_Dataportal_Digg_Container_Fragment;
-  domain?: DiggDomain;
+  heading: string;
 }
 
 export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
@@ -35,7 +32,7 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
   useEffect(() => {
     setBreadcrumb &&
       setBreadcrumb({
-        name: heading!,
+        name: heading,
         crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
       });
 
