@@ -72,7 +72,7 @@ export const Modal: FC<ModalProps> = ({
           <div className="pb-lg">{HtmlParser({ text: description })}</div>
         )}
 
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-lg">
           <Button
             onClick={() => setModalOpen(false)}
             className="min-w-[50px] justify-center hover:bg-brown-200"

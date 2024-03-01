@@ -61,7 +61,7 @@ export const GridList: FC<ListProps> = ({ items, heading, showMoreLink }) => {
           ))}
         </ul>
       ) : (
-        <span>{t("pages|listpage$no-articles")}</span>
+        <span>{t("pages|listpage$no-content")}</span>
       )}
     </div>
   );
