@@ -31,7 +31,6 @@ export const CATEGORY_FRAGMENT = gql`
     id
     name
     slug
-    taxonomy
     updatedAt
     locale
   }
@@ -101,6 +100,10 @@ export const TOOL_FRAGMENT = gql`
     link
     domainLabel
     description
+    keywords {
+      value
+      id
+    }
   }
 `;
 
