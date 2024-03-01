@@ -31,7 +31,6 @@ export const CATEGORY_FRAGMENT = gql`
     id
     name
     slug
-    taxonomy
     updatedAt
     locale
   }

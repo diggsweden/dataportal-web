@@ -6,7 +6,6 @@ import dynamic from "next/dynamic";
 import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__generated__/operations";
 import { PublicationDataFragment as IPublication } from "@/graphql/__generated__/operations";
 import { GridList } from "@/components/content/GridList";
-import { PromoProps } from "@/components/content/Promo";
 import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentBlock";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import { Heading } from "@/components/global/Typography/Heading";
@@ -26,7 +25,6 @@ export interface LandingPageProps
   news?: IPublication[];
   example?: IPublication[];
   event?: IPublication;
-  areas?: PromoProps[];
 }
 
 const DynamicStatisticGraph = dynamic(

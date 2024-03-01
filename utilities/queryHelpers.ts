@@ -37,7 +37,6 @@ import {
   ToolQuery,
   ToolQueryVariables,
 } from "@/graphql/__generated__/operations";
-import { PromoProps } from "@/components/content/Promo";
 
 /**
  * ? Better comments: https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
@@ -131,8 +130,6 @@ export interface ToolListResponse {
 export interface RootAggregateResponse
   extends ContainerData_Dataportal_Digg_Container_Fragment {
   type: "RootAggregate";
-  areas?: PromoProps[];
-  themes?: PromoProps[];
   news?: PublicationDataFragment;
   examples?: PublicationDataFragment;
   events?: PublicationDataFragment;
@@ -516,8 +513,6 @@ export const getRootAggregate = async (
         newsTag,
         examplesTag,
         eventsTag,
-        areaSlug: "dataomraden", // todo - translate
-        themeSlug: "teman", // todo - translate
         state: state || Dataportal_ContainerState.Live,
         ...(secret ? { previewSecret: secret } : {}),
       },
@@ -537,18 +532,6 @@ export const getRootAggregate = async (
     const news = data.news || null;
     const example = data.examples || null;
     const event = data.events[0] || null;
-    const areas = data.areas
-      ? data.areas.map((area) => ({
-          title: area.name,
-          slug: area.slug,
-        }))
-      : null;
-    const themes = data.themes
-      ? data.themes.map((theme) => ({
-          title: theme.name,
-          slug: theme.slug,
-        }))
-      : null;
 
     // The value of the `props` key will be
     //  passed to the `Page` component
@@ -559,8 +542,6 @@ export const getRootAggregate = async (
         news,
         example,
         event,
-        areas,
-        themes,
       },
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
