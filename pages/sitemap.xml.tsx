@@ -2,7 +2,6 @@ import { GetServerSideProps } from "next/types";
 import { client, CONTAINER_QUERY } from "../graphql";
 import { PUBLICATION_QUERY } from "../graphql/publicationQuery";
 import {
-  CategoryFragment,
   ContainerData_Dataportal_Digg_Container_Fragment,
   ContainersQuery,
   ContainersQueryVariables,
@@ -119,7 +118,6 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const allPublications: (PublicationDataFragment | null)[] = [];
 
-  const allCategories: CategoryFragment[] = [];
   locales &&
     (await Promise.all(
       // Get all containers in all locales
@@ -206,24 +204,6 @@ export const getServerSideProps: GetServerSideProps = async ({
           return `
         <url>
             <loc>${env.CANONICAL_URL}${slug(c)}</loc>
-            <lastmod>${c?.updatedAt}</lastmod>
-            <changefreq>monthly</changefreq>
-            <priority>1.0</priority>
-        </url>
-    `;
-        })
-        .join("")
-    }
-    ${
-      Array.isArray(allCategories) &&
-      allCategories
-        .filter((cat) => !allContainers.some((c) => c?.slug === `/${cat.slug}`)) // ? ignore categories that has corresponding container
-        .map((c) => {
-          const slug =
-            c.locale === "sv" ? `/${c.slug}` : `/${c.locale}/${c.slug}`;
-          return `
-        <url>
-            <loc>${env.CANONICAL_URL}${slug}</loc>
             <lastmod>${c?.updatedAt}</lastmod>
             <changefreq>monthly</changefreq>
             <priority>1.0</priority>

@@ -27,12 +27,11 @@ export const MODULE_LIST_DATA_FRAGMENT = gql`
 `;
 
 export const CATEGORY_FRAGMENT = gql`
-  fragment Category on dataportal_Digg_ICategory {
-    id
-    name
+  fragment Category on dataportal_Digg_Parent {
+    heading
+    preamble
     slug
-    updatedAt
-    locale
+    name
   }
 `;
 
@@ -62,7 +61,7 @@ export const CONTAINER_FRAGMENT = gql`
     parent {
       ...Parent
     }
-    categories {
+    category {
       ...Category
     }
     blocks {
@@ -76,8 +75,8 @@ export const CONTAINER_FRAGMENT = gql`
     }
   }
   ${MODULE_LIST_DATA_FRAGMENT}
-  ${CATEGORY_FRAGMENT}
   ${PARENT_FRAGMENT}
+  ${CATEGORY_FRAGMENT}
 `;
 
 export const PUBLICATION_FRAGMENT = gql`

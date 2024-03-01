@@ -23,6 +23,7 @@ import {
   ModuleQueryVariables,
   MultiContainersQuery,
   MultiContainersQueryVariables,
+  ParentFragment,
   PublicationDataFragment,
   PublicationQuery,
   PublicationQueryVariables,
@@ -65,19 +66,15 @@ const logGqlErrors = (error: any) => {
 };
 
 const getRelatedContainers = async (
-  categories: CategoryFragment[],
+  category: CategoryFragment,
   locale: string,
 ) => {
-  const relatedCategories = categories.map((c) => c.slug);
-
-  if (categories.length > 0) {
+  if (category) {
     const result = await client.query<RelatedQuery, RelatedQueryVariables>({
       query: RELATED_CONTAINER_QUERY,
       variables: {
         filter: {
-          locale,
-          categories: relatedCategories,
-          limit: 50,
+          category: { locale, slug: category.slug, limit: 50 },
         },
       },
       fetchPolicy: "no-cache",
@@ -96,10 +93,9 @@ const getRelatedContainers = async (
 /* #region types */
 export interface MultiContainerResponse {
   type: "MultiContainer";
-  category?: ContainerData_Dataportal_Digg_Container_Fragment;
   container?: ContainerData_Dataportal_Digg_Container_Fragment;
   related?: RelatedContainerFragment[];
-  parent?: DiggLink;
+  parent?: ParentFragment;
 }
 
 export interface PublicationResponse extends PublicationDataFragment {
@@ -208,7 +204,7 @@ export const getMultiContainer = async (
     >({
       query: CONTAINER_MULTI_QUERY,
       variables: {
-        category: { categories: [slugs[0]], locale },
+        category: { slug: slugs[0], locale },
         container: {
           slug,
           locale,
@@ -218,21 +214,20 @@ export const getMultiContainer = async (
       },
       fetchPolicy: "no-cache",
     });
-
     if (error || errors) {
       console.error({ error, errors });
     }
-    const container = data.container[0] || null;
-    const categoryContainers = data.category;
-    const category =
-      categoryContainers[0]?.categories?.find((c) => c?.slug === slugs[0]) ||
-      null;
+
+    const container = data.container[0];
     const related = container
-      ? await getRelatedContainers(container.categories, locale)
+      ? await getRelatedContainers(
+          container.category as CategoryFragment,
+          locale,
+        )
       : null;
 
-    if (!container && !category) {
-      console.warn(`No container or category found for: ${slug}`);
+    if (!container) {
+      console.warn(`No container found for: ${slug}`);
       return notFound(revalidate);
     }
 
@@ -243,7 +238,6 @@ export const getMultiContainer = async (
         type: "MultiContainer",
         container,
         related,
-        category,
       },
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
