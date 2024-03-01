@@ -35,7 +35,6 @@ export interface Dataportal_QueryCategoryArgs {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  taxonomy?: InputMaybe<Scalars['String']['input']>;
 }
 
 export interface Dataportal_QueryContainerArgs {

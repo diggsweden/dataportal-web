@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 import {
   BLOCK_FRAGMENT,
-  CATEGORY_FRAGMENT,
   CONTAINER_FRAGMENT,
   MODULE_FRAGMENT,
   PUBLICATION_FRAGMENT,
@@ -14,8 +13,6 @@ export const ROOT_AGGREGATE_QUERY = gql`
     $newsTag: [String!]!
     $eventsTag: [String!]!
     $examplesTag: [String!]!
-    $areaSlug: String!
-    $themeSlug: String!
     $state: dataportal_ContainerState!
   ) {
     container: dataportal_Digg_Containers(
@@ -38,14 +35,7 @@ export const ROOT_AGGREGATE_QUERY = gql`
     ) {
       ...PublicationData
     }
-    areas: dataportal_Digg_Categories(filter: { taxonomy: $areaSlug }) {
-      ...Category
-    }
-    themes: dataportal_Digg_Categories(filter: { taxonomy: $themeSlug }) {
-      ...Category
-    }
   }
-  ${CATEGORY_FRAGMENT}
   ${PUBLICATION_FRAGMENT}
   ${CONTAINER_FRAGMENT}
   ${BLOCK_FRAGMENT}
