@@ -177,7 +177,7 @@ table tbody td {
 
 /* General styling for mark */
 mark {
-  @apply bg-red-400;
+  @apply bg-pink-200;
 }
 
 /* General styling for focus */
