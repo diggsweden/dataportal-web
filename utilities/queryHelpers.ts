@@ -12,7 +12,7 @@ import { TOOL_QUERY } from "@/graphql/toolQuery";
 import { SEARCH_QUERY } from "@/graphql/searchQuery";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
-  CategoryFragment,
+  ContainerGroupFragment,
   ContainerData_Dataportal_Digg_Container_Fragment,
   FormDataFragment,
   FormQuery,
@@ -66,15 +66,15 @@ const logGqlErrors = (error: any) => {
 };
 
 const getRelatedContainers = async (
-  category: CategoryFragment,
+  containerGroup: ContainerGroupFragment,
   locale: string,
 ) => {
-  if (category) {
+  if (containerGroup) {
     const result = await client.query<RelatedQuery, RelatedQueryVariables>({
       query: RELATED_CONTAINER_QUERY,
       variables: {
         filter: {
-          category: { locale, slug: category.slug, limit: 50 },
+          containerGroup: { locale, slug: containerGroup.slug, limit: 50 },
         },
       },
       fetchPolicy: "no-cache",
@@ -204,7 +204,7 @@ export const getMultiContainer = async (
     >({
       query: CONTAINER_MULTI_QUERY,
       variables: {
-        category: { slug: slugs[0], locale },
+        containerGroup: { slug: slugs[0], locale },
         container: {
           slug,
           locale,
@@ -221,7 +221,7 @@ export const getMultiContainer = async (
     const container = data.container[0];
     const related = container
       ? await getRelatedContainers(
-          container.category as CategoryFragment,
+          container.containerGroup as ContainerGroupFragment,
           locale,
         )
       : null;

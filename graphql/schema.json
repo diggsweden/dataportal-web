@@ -1246,7 +1246,7 @@
             "deprecationReason": null
           },
           {
-            "name": "category",
+            "name": "containerGroup",
             "description": null,
             "args": [],
             "type": {
@@ -3051,7 +3051,7 @@
             "deprecationReason": null
           },
           {
-            "name": "category",
+            "name": "containerGroup",
             "description": null,
             "args": [],
             "type": {
@@ -4075,7 +4075,7 @@
             "deprecationReason": null
           },
           {
-            "name": "category",
+            "name": "containerGroup",
             "description": null,
             "args": [],
             "type": {
@@ -5176,7 +5176,7 @@
             "deprecationReason": null
           },
           {
-            "name": "category",
+            "name": "containerGroup",
             "description": null,
             "args": [],
             "type": {
@@ -5869,7 +5869,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "ID",
                 "ofType": null
               }
             },
@@ -6370,7 +6370,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "category",
+            "name": "containerGroup",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",

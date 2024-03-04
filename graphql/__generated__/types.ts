@@ -38,7 +38,7 @@ export interface Dataportal_QueryCategoryArgs {
 }
 
 export interface Dataportal_QueryContainerArgs {
-  category?: InputMaybe<Dataportal_QueryCategoryArgs>;
+  containerGroup?: InputMaybe<Dataportal_QueryCategoryArgs>;
   id?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;

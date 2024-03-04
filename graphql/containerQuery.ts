@@ -20,10 +20,10 @@ export const CONTAINER_QUERY = gql`
 
 export const CONTAINER_MULTI_QUERY = gql`
   query MultiContainers(
-    $category: dataportal_QueryContainerArgs
+    $containerGroup: dataportal_QueryContainerArgs
     $container: dataportal_QueryContainerArgs
   ) {
-    category: dataportal_Digg_Containers(filter: $category) {
+    containerGroup: dataportal_Digg_Containers(filter: $containerGroup) {
       ...ContainerData
     }
     container: dataportal_Digg_Containers(filter: $container) {

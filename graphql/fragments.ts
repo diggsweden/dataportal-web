@@ -26,8 +26,8 @@ export const MODULE_LIST_DATA_FRAGMENT = gql`
   }
 `;
 
-export const CATEGORY_FRAGMENT = gql`
-  fragment Category on dataportal_Digg_Parent {
+export const CONTAINER_GROUP_FRAGMENT = gql`
+  fragment ContainerGroup on dataportal_Digg_Parent {
     heading
     preamble
     slug
@@ -61,8 +61,8 @@ export const CONTAINER_FRAGMENT = gql`
     parent {
       ...Parent
     }
-    category {
-      ...Category
+    containerGroup {
+      ...ContainerGroup
     }
     blocks {
       ...BlockData
@@ -76,7 +76,7 @@ export const CONTAINER_FRAGMENT = gql`
   }
   ${MODULE_LIST_DATA_FRAGMENT}
   ${PARENT_FRAGMENT}
-  ${CATEGORY_FRAGMENT}
+  ${CONTAINER_GROUP_FRAGMENT}
 `;
 
 export const PUBLICATION_FRAGMENT = gql`
