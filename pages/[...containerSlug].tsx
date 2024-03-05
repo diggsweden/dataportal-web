@@ -5,18 +5,14 @@ import { getMultiContainer, MultiContainerResponse } from "@/utilities";
 import { ContainerPage } from "@/components/content/ContainerPage";
 import { LandingPage } from "@/components/content/LandingPage";
 
-export const Page: FC<MultiContainerResponse> = ({
-  container,
-  related,
-  category,
-}) => {
+export const Page: FC<MultiContainerResponse> = ({ container, related }) => {
   const router = useRouter();
 
   if (container) {
     return container.landingPage ? (
       <LandingPage {...container} />
     ) : (
-      <ContainerPage {...container} related={related} category={category} />
+      <ContainerPage {...container} related={related} />
     );
   }
 
