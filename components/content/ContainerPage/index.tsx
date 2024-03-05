@@ -77,7 +77,6 @@ const getLinks = () => {
 
 interface ContainerPageProps extends IContainer {
   related?: RelatedContainerFragment[];
-  category?: IContainer;
 }
 
 export const highlightCode = () => {

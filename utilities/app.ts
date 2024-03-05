@@ -24,7 +24,6 @@ export type DataportalPageProps =
 
 type ResolvedPage = {
   heading?: string | null;
-  parentHeading?: string | null;
   preamble?: string | null;
   heroImage?: PublicationDataFragment["image"] | ImageFragment | null;
   seo?: SeoDataFragment | null;

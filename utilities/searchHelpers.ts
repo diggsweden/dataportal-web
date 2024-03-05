@@ -15,7 +15,7 @@ export const getSearchHit = (
       case "dataportal_Digg_Container":
         return {
           url: `/${r.hit.slug}`,
-          title: r.hit?.heading ?? r.hit?.name,
+          title: r.hit.heading ?? r.hit.name,
           description: r.highlights
             ?.map((c) => {
               return c?.value;
@@ -34,7 +34,7 @@ export const getSearchHit = (
             : t("routes|good-examples$path");
         return {
           url: `/${basePath}/${r.hit.slug}`,
-          title: r.hit?.heading ?? r.hit?.name,
+          title: r.hit?.heading ?? r.hit.name,
           description: r.highlights
             ?.map((c) => {
               return c?.value;
