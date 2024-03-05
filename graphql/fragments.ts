@@ -26,15 +26,6 @@ export const MODULE_LIST_DATA_FRAGMENT = gql`
   }
 `;
 
-export const CONTAINER_GROUP_FRAGMENT = gql`
-  fragment ContainerGroup on dataportal_Digg_Parent {
-    heading
-    preamble
-    slug
-    name
-  }
-`;
-
 export const PARENT_FRAGMENT = gql`
   fragment Parent on dataportal_Digg_Parent {
     heading
@@ -58,12 +49,6 @@ export const CONTAINER_FRAGMENT = gql`
     createdAt
     slug
     landingPage
-    parent {
-      ...Parent
-    }
-    containerGroup {
-      ...ContainerGroup
-    }
     blocks {
       ...BlockData
       ... on dataportal_Digg_ModuleList {
@@ -74,14 +59,32 @@ export const CONTAINER_FRAGMENT = gql`
       ...SeoData
     }
   }
+
   ${MODULE_LIST_DATA_FRAGMENT}
-  ${PARENT_FRAGMENT}
-  ${CONTAINER_GROUP_FRAGMENT}
 `;
 
 export const PUBLICATION_FRAGMENT = gql`
   fragment PublicationData on dataportal_Digg_IPublication {
-    ...ContainerData
+    id
+    name
+    locale
+    heading
+    preamble
+    image {
+      ...MediaType
+    }
+    updatedAt
+    createdAt
+    slug
+    blocks {
+      ...BlockData
+      ... on dataportal_Digg_ModuleList {
+        ...ModuleListData
+      }
+    }
+    seo {
+      ...SeoData
+    }
     tags {
       value
     }
@@ -89,7 +92,7 @@ export const PUBLICATION_FRAGMENT = gql`
     startDate
     endDate
   }
-  ${CONTAINER_FRAGMENT}
+  ${MODULE_LIST_DATA_FRAGMENT}
 `;
 
 export const TOOL_FRAGMENT = gql`

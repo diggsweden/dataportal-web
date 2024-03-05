@@ -12,7 +12,6 @@ import { TOOL_QUERY } from "@/graphql/toolQuery";
 import { SEARCH_QUERY } from "@/graphql/searchQuery";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
-  ContainerGroupFragment,
   ContainerData_Dataportal_Digg_Container_Fragment,
   FormDataFragment,
   FormQuery,
@@ -66,7 +65,7 @@ const logGqlErrors = (error: any) => {
 };
 
 const getRelatedContainers = async (
-  containerGroup: ContainerGroupFragment,
+  containerGroup: ParentFragment,
   locale: string,
 ) => {
   if (containerGroup) {
@@ -95,7 +94,7 @@ export interface MultiContainerResponse {
   type: "MultiContainer";
   container?: ContainerData_Dataportal_Digg_Container_Fragment;
   related?: RelatedContainerFragment[];
-  parent?: ParentFragment;
+  parent?: ParentFragment | null;
 }
 
 export interface PublicationResponse extends PublicationDataFragment {
@@ -221,7 +220,7 @@ export const getMultiContainer = async (
     const container = data.container[0];
     const related = container
       ? await getRelatedContainers(
-          container.containerGroup as ContainerGroupFragment,
+          container.containerGroup as ParentFragment,
           locale,
         )
       : null;
