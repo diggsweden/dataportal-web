@@ -113,7 +113,7 @@ export interface GoodExampleResponse extends GoodExampleDataFragment {
   related?: GoodExampleDataFragment[];
 }
 export interface NewsItemListResponse {
-  type?: "PublicationList";
+  type: "PublicationList";
   heading: string;
   listItems: NewsItemDataFragment[] | GoodExampleDataFragment[];
   seo?: SeoDataFragment;
@@ -123,7 +123,7 @@ export interface NewsItemListResponse {
 }
 
 export interface GoodExampleListResponse {
-  type?: "PublicationList";
+  type: "PublicationList";
   heading: string;
   listItems: GoodExampleDataFragment[];
   seo?: SeoDataFragment;
@@ -133,7 +133,7 @@ export interface GoodExampleListResponse {
 }
 
 export interface ToolListResponse {
-  type?: "ToolList";
+  type: "ToolList";
   listItems: ToolDataFragment[];
   seo?: SeoDataFragment;
   basePath?: string;
@@ -312,7 +312,7 @@ export const getNewsList = async (
     return {
       props: {
         type: "PublicationList",
-        listItems: Array.isArray(publications) ? publications : [],
+        listItems: publications || [],
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || "",
@@ -385,7 +385,7 @@ export const getGoodExamplesList = async (
     return {
       props: {
         type: "PublicationList",
-        listItems: Array.isArray(publications) ? publications : [],
+        listItems: publications || [],
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || "",
@@ -450,7 +450,7 @@ export const getToolsList = async (opts?: ToolistOptions) => {
     return {
       props: {
         type: "ToolList",
-        listItems: Array.isArray(tools) ? tools : [],
+        listItems: tools || [],
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
@@ -530,7 +530,7 @@ export const getNewsItem = async (
       NewsItemQueryVariables
     >({
       query: NEWS_ITEM_QUERY,
-      variables: { filter: { limit: 3, locale } },
+      variables: { filter: { limit: 4, locale } },
       fetchPolicy: "no-cache",
     });
 
@@ -541,9 +541,9 @@ export const getNewsItem = async (
         type: "Publication",
         ...publication,
         related:
-          relatedPublicationResult?.data?.dataportal_Digg_News_Items.filter(
-            (pub) => pub?.id !== publication.id,
-          ) || [],
+          relatedPublicationResult?.data?.dataportal_Digg_News_Items
+            .filter((pub) => pub?.id !== publication.id)
+            .slice(0, 3) || [],
       } as NewsItemResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
@@ -598,7 +598,7 @@ export const getGoodExample = async (
       GoodExampleQueryVariables
     >({
       query: GOOD_EXAMPLE_QUERY,
-      variables: { filter: { limit: 3, locale } },
+      variables: { filter: { limit: 4, locale } },
       fetchPolicy: "no-cache",
     });
 
@@ -609,9 +609,9 @@ export const getGoodExample = async (
         type: "Publication",
         ...publication,
         related:
-          relatedPublicationResult?.data?.dataportal_Digg_Good_Examples.filter(
-            (pub) => pub?.id !== publication.id,
-          ) || [],
+          relatedPublicationResult?.data?.dataportal_Digg_Good_Examples
+            .filter((pub) => pub?.id !== publication.id)
+            .slice(0, 3) || [],
       } as GoodExampleResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }

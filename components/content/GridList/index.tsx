@@ -11,11 +11,7 @@ import {
 import { Toolteaser } from "../Tool";
 
 interface ListProps {
-  items:
-    | NewsItemDataFragment[]
-    | GoodExampleDataFragment[]
-    | ToolDataFragment[]
-    | any[];
+  items: (ToolDataFragment | NewsItemDataFragment | GoodExampleDataFragment)[];
   heading?: string;
   showMoreLink?: {
     slug: string;
