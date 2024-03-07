@@ -65,7 +65,7 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
         if (attribs.class === "infoblock") {
           return (
             <div
-              className={`!my-lg border border-l-[6px] border-green-600 bg-white p-lg ${attribs.class}`}
+              className={`!my-lg border border-l-[6px] border-primary p-lg ${attribs.class}`}
             >
               {domToReact(children as DOMNode[], options)}
             </div>
@@ -75,7 +75,7 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
         if (attribs.class === "border") {
           return (
             <div
-              className={`!my-lg border border-l-[6px] border-primary p-lg ${attribs.class}`}
+              className={`!my-lg border border-l-[6px] border-green-600 bg-white p-lg ${attribs.class}`}
             >
               {domToReact(children as DOMNode[], options)}
             </div>
