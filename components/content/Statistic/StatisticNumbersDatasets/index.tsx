@@ -22,7 +22,7 @@ export const StatisticNumbersDatasets = () => {
             });
         });
     }
-  });
+  }, []);
 
   if (/* isIE do wee still need this */ false) {
     return <></>;
