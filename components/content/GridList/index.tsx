@@ -14,7 +14,8 @@ interface ListProps {
   items:
     | NewsItemDataFragment[]
     | GoodExampleDataFragment[]
-    | ToolDataFragment[];
+    | ToolDataFragment[]
+    | any[];
   heading?: string;
   showMoreLink?: {
     slug: string;

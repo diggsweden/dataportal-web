@@ -4,6 +4,7 @@ import {
   CONTAINER_FRAGMENT,
   SEO_FRAGMENT,
   MODULE_FRAGMENT,
+  PARENT_FRAGMENT,
 } from "./fragments";
 
 export const CONTAINER_QUERY = gql`
@@ -12,6 +13,7 @@ export const CONTAINER_QUERY = gql`
       ...ContainerData
     }
   }
+  ${PARENT_FRAGMENT}
   ${CONTAINER_FRAGMENT}
   ${BLOCK_FRAGMENT}
   ${SEO_FRAGMENT}
@@ -30,6 +32,7 @@ export const CONTAINER_MULTI_QUERY = gql`
       ...ContainerData
     }
   }
+  ${PARENT_FRAGMENT}
   ${CONTAINER_FRAGMENT}
   ${BLOCK_FRAGMENT}
   ${SEO_FRAGMENT}

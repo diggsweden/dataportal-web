@@ -8,14 +8,18 @@ import { Pagination } from "@/components/global/Pagination";
 import { useRouter, NextRouter } from "next/router";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import {
-  PublicationDataFragment,
+  GoodExampleDataFragment,
+  NewsItemDataFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Button } from "@/components/global/Button";
 
 interface ListPageProps {
-  listItems?: ToolDataFragment[] | PublicationDataFragment[];
+  listItems:
+    | ToolDataFragment[]
+    | NewsItemDataFragment[]
+    | GoodExampleDataFragment[];
   heading: string;
 }
 interface Keyword {
@@ -69,10 +73,11 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
   }
 
   function filteredItems() {
-    if (activeFilter.id === "0" || listType !== "dataportal_Digg_Tool") {
+    if (activeFilter.id === "0") {
       return itemsOnPage;
     } else {
-      return (itemsOnPage as ToolDataFragment[]).filter((item) => {
+      return itemsOnPage.filter((item) => {
+        if (!item.keywords) return false;
         return item.keywords.some(
           (keywordObj) => String(keywordObj.id) === activeFilter.id,
         );
@@ -106,7 +111,7 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
             )}
           </div>
         )}
-        <GridList items={filteredItems()} />
+        <GridList items={filteredItems() || []} />
         {list.length > 12 && (
           <div className="flex justify-center">
             <Pagination
