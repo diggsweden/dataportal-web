@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
-import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "@/graphql/__generated__/operations";
+import { ContainerDataFragment } from "@/graphql/__generated__/operations";
 import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
 import { checkLang, isIE, linkBase } from "@/utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
@@ -75,7 +75,7 @@ const getLinks = () => {
   return menuItems;
 };
 
-interface ContainerPageProps extends IContainer {
+interface ContainerPageProps extends ContainerDataFragment {
   related?: RelatedContainerFragment[];
 }
 
@@ -131,7 +131,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
     highlightCode();
 
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
-    if (parent) {
+    if (parent && parent.heading && parent.slug) {
       crumbs.push({
         name: parent.heading,
         link: { ...linkBase, link: parent.slug },

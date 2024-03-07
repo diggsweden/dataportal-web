@@ -21,7 +21,6 @@ interface ESFacetField {
   values: ESFacetFieldValue[];
 }
 
-
 interface HitSpecification {
   path?: string;
   titleResource?: string;
@@ -55,7 +54,7 @@ interface SearchResult {
 interface SearchHit {
   entryId?: string;
   title: string;
-  url?: string;
+  url: string;
   description?: string;
   info?: { [facet: string]: string[] };
   metadata?: { [facet: string]: string[] };

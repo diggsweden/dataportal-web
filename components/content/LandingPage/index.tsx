@@ -3,8 +3,11 @@ import { usePathname } from "next/navigation";
 import { FC, useContext, useEffect } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { ContainerData_Dataportal_Digg_Container_Fragment } from "@/graphql/__generated__/operations";
-import { PublicationDataFragment as IPublication } from "@/graphql/__generated__/operations";
+import {
+  ContainerDataFragment,
+  GoodExampleDataFragment,
+  NewsItemDataFragment,
+} from "@/graphql/__generated__/operations";
 import { GridList } from "@/components/content/GridList";
 import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentBlock";
 import { BlockList } from "@/components/content/blocks/BlockList";
@@ -20,11 +23,10 @@ import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import useTranslation from "next-translate/useTranslation";
 import { SettingsContext } from "@/providers/SettingsProvider";
 
-export interface LandingPageProps
-  extends ContainerData_Dataportal_Digg_Container_Fragment {
-  news?: IPublication[];
-  example?: IPublication[];
-  event?: IPublication;
+export interface LandingPageProps extends ContainerDataFragment {
+  news?: NewsItemDataFragment[];
+  example?: GoodExampleDataFragment[];
+  // event?: IPublication;
 }
 
 const DynamicStatisticGraph = dynamic(
@@ -75,7 +77,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
 
   useEffect(() => {
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
-    if (parent) {
+    if (parent && parent.heading && parent.slug) {
       crumbs.push({
         name: parent.heading,
         link: { ...linkBase, link: parent.slug },
@@ -111,6 +113,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
           <>
             {news && (
               <GridList
+                className="!my-xl md:!my-2xl"
                 items={news}
                 showMoreLink={{
                   title: t("pages|news$view-all"),
@@ -121,6 +124,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
             )}
             {example && (
               <GridList
+                className="!my-xl md:!my-2xl"
                 items={example}
                 showMoreLink={{
                   title: t("pages|good-examples$view-all"),

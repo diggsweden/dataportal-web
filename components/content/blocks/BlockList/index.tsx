@@ -1,8 +1,10 @@
 import React from "react";
 import {
-  ContainerData_Dataportal_Digg_Container_Fragment,
   ModuleListDataFragment,
   FaqFragment,
+  ContainerDataFragment,
+  NewsItemDataFragment,
+  GoodExampleDataFragment,
 } from "@/graphql/__generated__/operations";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentBlock";
@@ -13,7 +15,9 @@ import { FormPage } from "@/components/content/FormPage";
 
 interface blockListProps {
   blocks:
-    | ContainerData_Dataportal_Digg_Container_Fragment["blocks"]
+    | ContainerDataFragment["blocks"]
+    | NewsItemDataFragment["blocks"]
+    | GoodExampleDataFragment["blocks"]
     | ModuleDataFragment["blocks"];
   className?: string;
   landingPage?: boolean;

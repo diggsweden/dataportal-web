@@ -1,22 +1,27 @@
 import {
+  GoodExampleDataFragment,
   ImageFragment,
-  PublicationDataFragment,
+  NewsItemDataFragment,
 } from "@/graphql/__generated__/operations";
 import { SeoDataFragment } from "@/graphql/__generated__/operations";
 import {
   FormResponse,
+  GoodExampleListResponse,
+  GoodExampleResponse,
   ModuleResponse,
   MultiContainerResponse,
-  PublicationListResponse,
-  PublicationResponse,
+  NewsItemListResponse,
+  NewsItemResponse,
   RootAggregateResponse,
   ToolListResponse,
 } from "@/utilities/queryHelpers";
 
 export type DataportalPageProps =
   | MultiContainerResponse
-  | PublicationListResponse
-  | PublicationResponse
+  | NewsItemListResponse
+  | NewsItemResponse
+  | GoodExampleListResponse
+  | GoodExampleResponse
   | RootAggregateResponse
   | FormResponse
   | ModuleResponse
@@ -25,7 +30,11 @@ export type DataportalPageProps =
 type ResolvedPage = {
   heading?: string | null;
   preamble?: string | null;
-  heroImage?: PublicationDataFragment["image"] | ImageFragment | null;
+  heroImage?:
+    | GoodExampleDataFragment["image"]
+    | NewsItemDataFragment["image"]
+    | ImageFragment
+    | null;
   seo?: SeoDataFragment | null;
 };
 
