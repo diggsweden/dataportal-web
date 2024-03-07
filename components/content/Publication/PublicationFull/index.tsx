@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import {
   GoodExampleResponse,
+  isExternalLink,
   linkBase,
   NewsItemResponse,
   slugify,
@@ -14,6 +15,7 @@ import DateIcon from "@/assets/icons/date.svg";
 import GoodExampleIcon from "@/assets/icons/godaExempel.svg";
 import DataIcon from "@/assets/icons/data.svg";
 import ExternalIcon from "@/assets/icons/external-link.svg";
+import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 import KeywordsIcon from "@/assets/icons/keywords.svg";
 import useTranslation from "next-translate/useTranslation";
 import { highlightCode } from "@/components/content/ContainerPage";
@@ -106,7 +108,11 @@ export const PublicationFull: React.FC<
                           key={index}
                           href={item.link}
                           label={item.title}
-                          icon={ExternalIcon}
+                          icon={
+                            isExternalLink(item.link)
+                              ? ExternalIcon
+                              : ArrowRightIcon
+                          }
                           iconPosition="right"
                           size={"xs"}
                           variant={"pink"}
