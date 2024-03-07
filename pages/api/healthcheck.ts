@@ -1,8 +1,8 @@
 import { client } from "../../graphql/client";
-import { PUBLICATION_QUERY } from "../../graphql/publicationQuery";
+import { NEWS_ITEM_QUERY } from "../../graphql/publicationQuery";
 import {
-  PublicationQuery,
-  PublicationQueryVariables,
+  NewsItemQuery,
+  NewsItemQueryVariables,
 } from "../../graphql/__generated__/operations";
 
 const HEALTHCHECK_SECRET = process.env.HEALTHCHECK_SECRET;
@@ -22,11 +22,8 @@ export default async function handler(req: any, res: any) {
 
   try {
     //perform request to start page query
-    const result = await client.query<
-      PublicationQuery,
-      PublicationQueryVariables
-    >({
-      query: PUBLICATION_QUERY,
+    const result = await client.query<NewsItemQuery, NewsItemQueryVariables>({
+      query: NEWS_ITEM_QUERY,
       variables: {
         filter: { limit: 3 },
       },

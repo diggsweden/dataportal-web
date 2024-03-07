@@ -7,12 +7,14 @@ import {
 import { ROOT_AGGREGATE_QUERY } from "@/graphql/aggregateQuery";
 import { FORM_QUERY } from "@/graphql/formQuery";
 import { MODULE_QUERY } from "@/graphql/moduleQuery";
-import { PUBLICATION_QUERY } from "@/graphql/publicationQuery";
+import {
+  GOOD_EXAMPLE_QUERY,
+  NEWS_ITEM_QUERY,
+} from "@/graphql/publicationQuery";
 import { TOOL_QUERY } from "@/graphql/toolQuery";
 import { SEARCH_QUERY } from "@/graphql/searchQuery";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
-  ContainerData_Dataportal_Digg_Container_Fragment,
   FormDataFragment,
   FormQuery,
   FormQueryVariables,
@@ -23,9 +25,12 @@ import {
   MultiContainersQuery,
   MultiContainersQueryVariables,
   ParentFragment,
-  PublicationDataFragment,
-  PublicationQuery,
-  PublicationQueryVariables,
+  NewsItemDataFragment,
+  NewsItemQuery,
+  NewsItemQueryVariables,
+  GoodExampleDataFragment,
+  GoodExampleQuery,
+  GoodExampleQueryVariables,
   RelatedContainerFragment,
   RelatedQuery,
   RelatedQueryVariables,
@@ -36,6 +41,7 @@ import {
   ToolDataFragment,
   ToolQuery,
   ToolQueryVariables,
+  ContainerDataFragment,
 } from "@/graphql/__generated__/operations";
 
 /**
@@ -92,20 +98,34 @@ const getRelatedContainers = async (
 /* #region types */
 export interface MultiContainerResponse {
   type: "MultiContainer";
-  container?: ContainerData_Dataportal_Digg_Container_Fragment;
+  container?: ContainerDataFragment;
   related?: RelatedContainerFragment[];
   parent?: ParentFragment | null;
 }
 
-export interface PublicationResponse extends PublicationDataFragment {
+export interface NewsItemResponse extends NewsItemDataFragment {
   type: "Publication";
-  related?: PublicationDataFragment[];
+  related?: NewsItemDataFragment[];
 }
 
-export interface PublicationListResponse {
-  type?: "PublicationList";
+export interface GoodExampleResponse extends GoodExampleDataFragment {
+  type: "Publication";
+  related?: GoodExampleDataFragment[];
+}
+export interface NewsItemListResponse {
+  type: "PublicationList";
   heading: string;
-  listItems: PublicationDataFragment[];
+  listItems: NewsItemDataFragment[] | GoodExampleDataFragment[];
+  seo?: SeoDataFragment;
+  basePath?: string;
+  preamble?: string;
+  heroImage?: ImageFragment | null;
+}
+
+export interface GoodExampleListResponse {
+  type: "PublicationList";
+  heading: string;
+  listItems: GoodExampleDataFragment[];
   seo?: SeoDataFragment;
   basePath?: string;
   preamble?: string;
@@ -113,7 +133,7 @@ export interface PublicationListResponse {
 }
 
 export interface ToolListResponse {
-  type?: "ToolList";
+  type: "ToolList";
   listItems: ToolDataFragment[];
   seo?: SeoDataFragment;
   basePath?: string;
@@ -122,12 +142,11 @@ export interface ToolListResponse {
   heroImage?: ImageFragment | null;
 }
 
-export interface RootAggregateResponse
-  extends ContainerData_Dataportal_Digg_Container_Fragment {
+export interface RootAggregateResponse extends ContainerDataFragment {
   type: "RootAggregate";
-  news?: PublicationDataFragment;
-  examples?: PublicationDataFragment;
-  events?: PublicationDataFragment;
+  news?: NewsItemDataFragment;
+  examples?: GoodExampleDataFragment;
+  // events?: PublicationDataFragment;
 }
 
 export interface FormResponse extends FormDataFragment {
@@ -143,8 +162,9 @@ export interface ModuleResponse extends ModuleDataFragment {
 
 export interface ContentSearchResponse {
   entries:
-    | PublicationDataFragment
-    | ContainerData_Dataportal_Digg_Container_Fragment
+    | NewsItemDataFragment
+    | GoodExampleDataFragment
+    | ContainerDataFragment
     | null;
   nrOfHits: number;
 }
@@ -203,7 +223,7 @@ export const getMultiContainer = async (
     >({
       query: CONTAINER_MULTI_QUERY,
       variables: {
-        containerGroup: { slug: slugs[0], locale },
+        containerGroup: { containerGroup: { slug }, locale },
         container: {
           slug,
           locale,
@@ -253,10 +273,9 @@ export const getMultiContainer = async (
  *
  * @param {Array<String>} slug
  * @param {string} locale
- * @returns {PublicationListResponse} nextjs staticprops
+ * @returns {NewsItemListResponse} nextjs staticprops
  */
-export const getPublicationsList = async (
-  tags: string[],
+export const getNewsList = async (
   locale: string,
   opts?: PublicationListOptions,
 ) => {
@@ -266,41 +285,40 @@ export const getPublicationsList = async (
 
   try {
     const { data, error } = await client.query<
-      PublicationQuery,
-      PublicationQueryVariables
+      NewsItemQuery,
+      NewsItemQueryVariables
     >({
-      query: PUBLICATION_QUERY,
+      query: NEWS_ITEM_QUERY,
       variables: {
         filter: {
           locale,
           state: Dataportal_ContainerState.Live,
-          tags: tags,
           limit: 1000,
         },
       },
       fetchPolicy: "no-cache",
     });
 
-    const publications = data?.dataportal_Digg_Publications;
+    const publications = data?.dataportal_Digg_News_Items;
 
     if (error) {
       console.error(error);
     }
 
     if (!publications) {
-      console.warn(`No publications found with tags: '${tags.join(",")}'`);
+      console.warn(`No news found`);
     }
 
     return {
       props: {
         type: "PublicationList",
-        listItems: Array.isArray(publications) ? publications : [],
+        listItems: publications || [],
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || "",
         preamble: preamble || null,
         heroImage: heroImage || null,
-      } as PublicationListResponse,
+      } as NewsItemListResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
@@ -315,7 +333,7 @@ export const getPublicationsList = async (
         basePath: basePath || null,
         heading: heading || "",
         heroImage: heroImage || null,
-      } as PublicationListResponse,
+      } as NewsItemListResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
@@ -328,7 +346,80 @@ export const getPublicationsList = async (
  *
  * @param {Array<String>} slug
  * @param {string} locale
- * @returns {PublicationListResponse} nextjs staticprops
+ * @returns {GoodExampleListResponse} nextjs staticprops
+ */
+export const getGoodExamplesList = async (
+  locale: string,
+  opts?: PublicationListOptions,
+) => {
+  // If nextjs should check for changes on the server
+  const revalidate = true;
+  const { seo, basePath, heading, preamble, heroImage } = opts || {};
+
+  try {
+    const { data, error } = await client.query<
+      GoodExampleQuery,
+      GoodExampleQueryVariables
+    >({
+      query: GOOD_EXAMPLE_QUERY,
+      variables: {
+        filter: {
+          locale,
+          state: Dataportal_ContainerState.Live,
+          limit: 1000,
+        },
+      },
+      fetchPolicy: "no-cache",
+    });
+
+    const publications = data?.dataportal_Digg_Good_Examples;
+
+    if (error) {
+      console.error(error);
+    }
+
+    if (!publications) {
+      console.warn(`No good examples found`);
+    }
+
+    return {
+      props: {
+        type: "PublicationList",
+        listItems: publications || [],
+        seo: seo || null,
+        basePath: basePath || null,
+        heading: heading || "",
+        preamble: preamble || null,
+        heroImage: heroImage || null,
+      } as GoodExampleListResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
+    };
+  } catch (error: any) {
+    logGqlErrors(error);
+    return {
+      props: {
+        type: "PublicationList",
+        listItems: [],
+        seo: seo || null,
+        basePath: basePath || null,
+        heading: heading || "",
+        heroImage: heroImage || null,
+      } as GoodExampleListResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
+    };
+  }
+};
+
+/**
+ * Get a list of publications from strapi
+ *
+ * @param {Array<String>} slug
+ * @param {string} locale
+ * @returns {ToolListResponse} nextjs staticprops
  */
 export const getToolsList = async (opts?: ToolistOptions) => {
   // If nextjs should check for changes on the server
@@ -359,7 +450,7 @@ export const getToolsList = async (opts?: ToolistOptions) => {
     return {
       props: {
         type: "ToolList",
-        listItems: Array.isArray(tools) ? tools : [],
+        listItems: tools || [],
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
@@ -395,24 +486,24 @@ export const getToolsList = async (opts?: ToolistOptions) => {
  * @param {string} locale
  * @returns nextjs staticprops
  */
-export const getPublication = async (
+export const getNewsItem = async (
   slug: string,
   locale: string,
   opts: PublicationQueryOptions = { revalidate: true },
 ) => {
-  const { state, secret, revalidate, tags } = opts;
+  const { state, secret, revalidate } = opts;
+
   try {
     const mainPublicationResult = await client.query<
-      PublicationQuery,
-      PublicationQueryVariables
+      NewsItemQuery,
+      NewsItemQueryVariables
     >({
-      query: PUBLICATION_QUERY,
+      query: NEWS_ITEM_QUERY,
       variables: {
         filter: {
           slug,
           limit: 1,
           locale,
-          tags: tags || [],
           ...(secret ? { previewSecret: secret } : {}),
           ...(state ? { state } : {}),
         },
@@ -422,7 +513,7 @@ export const getPublication = async (
 
     const publication =
       mainPublicationResult && mainPublicationResult.data
-        ? mainPublicationResult.data.dataportal_Digg_Publications[0]
+        ? mainPublicationResult.data.dataportal_Digg_News_Items[0]
         : undefined;
 
     if (mainPublicationResult && mainPublicationResult.error) {
@@ -430,18 +521,16 @@ export const getPublication = async (
     }
 
     if (!publication) {
-      console.warn(`No publication found with slug: '${slug}'`);
+      console.warn(`No news found with slug: '${slug}'`);
       return notFound(revalidate);
     }
 
-    const relatedTags = publication.tags.map((tag) => tag?.value || "");
-
     const relatedPublicationResult = await client.query<
-      PublicationQuery,
-      PublicationQueryVariables
+      NewsItemQuery,
+      NewsItemQueryVariables
     >({
-      query: PUBLICATION_QUERY,
-      variables: { filter: { limit: 3, locale, tags: relatedTags } },
+      query: NEWS_ITEM_QUERY,
+      variables: { filter: { limit: 4, locale } },
       fetchPolicy: "no-cache",
     });
 
@@ -452,10 +541,78 @@ export const getPublication = async (
         type: "Publication",
         ...publication,
         related:
-          relatedPublicationResult?.data?.dataportal_Digg_Publications.filter(
-            (pub) => pub?.id !== publication.id,
-          ) || [],
-      } as PublicationResponse,
+          relatedPublicationResult?.data?.dataportal_Digg_News_Items
+            .filter((pub) => pub?.id !== publication.id)
+            .slice(0, 3) || [],
+      } as NewsItemResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
+    };
+  } catch (error: any) {
+    logGqlErrors(error);
+    return notFound(revalidate);
+  }
+};
+
+export const getGoodExample = async (
+  slug: string,
+  locale: string,
+  opts: PublicationQueryOptions = { revalidate: true },
+) => {
+  const { state, secret, revalidate } = opts;
+  try {
+    const mainPublicationResult = await client.query<
+      GoodExampleQuery,
+      GoodExampleQueryVariables
+    >({
+      query: GOOD_EXAMPLE_QUERY,
+      variables: {
+        filter: {
+          slug,
+          limit: 1,
+          locale,
+          ...(secret ? { previewSecret: secret } : {}),
+          ...(state ? { state } : {}),
+        },
+      },
+      fetchPolicy: "no-cache",
+    });
+
+    const publication =
+      mainPublicationResult && mainPublicationResult.data
+        ? mainPublicationResult.data.dataportal_Digg_Good_Examples[0]
+        : undefined;
+
+    if (mainPublicationResult && mainPublicationResult.error) {
+      console.error(mainPublicationResult.error);
+    }
+
+    if (!publication) {
+      console.warn(`No good example found with slug: '${slug}'`);
+      return notFound(revalidate);
+    }
+
+    const relatedPublicationResult = await client.query<
+      GoodExampleQuery,
+      GoodExampleQueryVariables
+    >({
+      query: GOOD_EXAMPLE_QUERY,
+      variables: { filter: { limit: 4, locale } },
+      fetchPolicy: "no-cache",
+    });
+
+    // console.log(relatedPublicationResult.data.dataportal_Digg_Publications);
+
+    return {
+      props: {
+        type: "Publication",
+        ...publication,
+        related:
+          relatedPublicationResult?.data?.dataportal_Digg_Good_Examples
+            .filter((pub) => pub?.id !== publication.id)
+            .slice(0, 3) || [],
+      } as GoodExampleResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
@@ -471,29 +628,6 @@ export const getRootAggregate = async (
   opts: QueryOptions = { revalidate: true },
 ) => {
   const { state, secret, revalidate } = opts;
-  // todo - add localization to translate files
-  const getLocalizedVariables = (locale: string) => {
-    const swedishVars = {
-      newsTag: ["Nyhet"],
-      examplesTag: ["Goda exempel"],
-      eventsTag: ["Event"],
-    };
-
-    switch (locale) {
-      case "sv":
-        return swedishVars;
-      case "en":
-        return {
-          newsTag: ["News"],
-          examplesTag: ["Good examples"],
-          eventsTag: ["Event"],
-        };
-      default:
-        return swedishVars;
-    }
-  };
-
-  const { newsTag, examplesTag, eventsTag } = getLocalizedVariables(locale);
 
   try {
     const { data, error } = await client.query<
@@ -503,9 +637,6 @@ export const getRootAggregate = async (
       query: ROOT_AGGREGATE_QUERY,
       variables: {
         locale,
-        newsTag,
-        examplesTag,
-        eventsTag,
         state: state || Dataportal_ContainerState.Live,
         ...(secret ? { previewSecret: secret } : {}),
       },
@@ -524,7 +655,7 @@ export const getRootAggregate = async (
 
     const news = data.news || null;
     const example = data.examples || null;
-    const event = data.events[0] || null;
+    // const event = data.events[0] || null;
 
     // The value of the `props` key will be
     //  passed to the `Page` component
@@ -534,7 +665,7 @@ export const getRootAggregate = async (
         type: "RootAggregate",
         news,
         example,
-        event,
+        // event,
       },
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
@@ -569,8 +700,7 @@ export const querySearch = async (
     let cl = clientQuery ? browserclient : client;
 
     const searchResult = await cl.query<
-      | ContainerData_Dataportal_Digg_Container_Fragment
-      | PublicationDataFragment,
+      ContainerDataFragment | GoodExampleDataFragment | NewsItemDataFragment,
       SearchQueryVariables
     >({
       query: SEARCH_QUERY,

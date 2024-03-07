@@ -4,25 +4,32 @@ import { PublicationTeaser } from "@/components/content/Publication/PublicationT
 import { ButtonLink } from "@/components/global/Button";
 import { Heading } from "@/components/global/Typography/Heading";
 import {
-  PublicationDataFragment,
+  GoodExampleDataFragment,
+  NewsItemDataFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
 import { Toolteaser } from "../Tool";
 
 interface ListProps {
-  items: PublicationDataFragment[] | ToolDataFragment[];
+  items: (ToolDataFragment | NewsItemDataFragment | GoodExampleDataFragment)[];
   heading?: string;
   showMoreLink?: {
     slug: string;
     title: string;
   };
+  className?: string;
 }
 
-export const GridList: FC<ListProps> = ({ items, heading, showMoreLink }) => {
+export const GridList: FC<ListProps> = ({
+  items,
+  heading,
+  showMoreLink,
+  className,
+}) => {
   const { t } = useTranslation();
 
   return (
-    <div className="mb-lg md:mb-xl">
+    <div className={`mb-lg md:mb-xl ${className ? className : ""}`}>
       <div
         className={`mb-lg flex items-center md:mb-xl ${
           items.length <= 3 ? "justify-between" : "gap-sm"
@@ -49,12 +56,10 @@ export const GridList: FC<ListProps> = ({ items, heading, showMoreLink }) => {
             <li key={idx}>
               {(() => {
                 switch (item.__typename) {
-                  case "dataportal_Digg_Publication":
-                    return <PublicationTeaser publication={item} />;
                   case "dataportal_Digg_Tool":
                     return <Toolteaser tools={item} />;
                   default:
-                    return null;
+                    return <PublicationTeaser publication={item} />;
                 }
               })()}
             </li>

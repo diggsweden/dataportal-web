@@ -1,9 +1,9 @@
-import { getPublicationsList, populateSeo } from "@/utilities";
+import { getGoodExamplesList, populateSeo } from "@/utilities";
 import { GetStaticProps } from "next";
 import { ListPage } from "@/components/content/ListPage";
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  return await getPublicationsList(["Goda exempel"], locale || "sv", {
+  return await getGoodExamplesList(locale || "sv", {
     seo: {
       ...populateSeo,
       title: "Goda exempel - Sveriges Dataportal",

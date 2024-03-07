@@ -1,13 +1,19 @@
 import { GetServerSideProps } from "next/types";
 import { client, CONTAINER_QUERY } from "../graphql";
-import { PUBLICATION_QUERY } from "../graphql/publicationQuery";
 import {
-  ContainerData_Dataportal_Digg_Container_Fragment,
+  GOOD_EXAMPLE_QUERY,
+  NEWS_ITEM_QUERY,
+} from "../graphql/publicationQuery";
+import {
+  ContainerDataFragment,
   ContainersQuery,
   ContainersQueryVariables,
-  PublicationDataFragment,
-  PublicationQuery,
-  PublicationQueryVariables,
+  GoodExampleDataFragment,
+  GoodExampleQuery,
+  GoodExampleQueryVariables,
+  NewsItemDataFragment,
+  NewsItemQuery,
+  NewsItemQueryVariables,
 } from "../graphql/__generated__/operations";
 import { SettingsUtil } from "../env";
 import { HttpsProxyAgent } from "https-proxy-agent";
@@ -29,32 +35,22 @@ const Sitemap = () => {
 };
 
 /**
- * @param container
- * @returns true if container is dataportal_Digg_Publication
- */
-const isPublication = (
-  container:
-    | ContainerData_Dataportal_Digg_Container_Fragment
-    | PublicationDataFragment
-    | null,
-): container is PublicationDataFragment => {
-  return container?.__typename === "dataportal_Digg_Publication";
-};
-
-/**
  * Prepends paths based on locale and containerType
  * @param c
  * @returns a correctly formatted slug
  */
 const slug = (
   c:
-    | ContainerData_Dataportal_Digg_Container_Fragment
-    | PublicationDataFragment
+    | ContainerDataFragment
+    | NewsItemDataFragment
+    | GoodExampleDataFragment
     | null,
 ) => {
   const slug = c?.locale === "sv" ? c?.slug : `/${c?.locale}${c?.slug}`;
-  if (isPublication(c)) {
-    return `/aktuellt${slug}`;
+  if (c?.__typename === "dataportal_Digg_News_Item") {
+    return `/nyheter${slug}`;
+  } else if (c?.__typename === "dataportal_Digg_Good_Example") {
+    return `/goda-exempel${slug}`;
   } else {
     return slug;
   }
@@ -113,10 +109,11 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   const datasets: any[] = await getDatasets();
 
-  const allContainers: (ContainerData_Dataportal_Digg_Container_Fragment | null)[] =
-    [];
+  const allContainers: (ContainerDataFragment | null)[] = [];
 
-  const allPublications: (PublicationDataFragment | null)[] = [];
+  const allNewsItems: (NewsItemDataFragment | null)[] = [];
+
+  const allGoodExamples: (GoodExampleDataFragment | null)[] = [];
 
   locales &&
     (await Promise.all(
@@ -131,27 +128,40 @@ export const getServerSideProps: GetServerSideProps = async ({
           variables: { filter: { locale, limit: 9999 } },
         });
 
-        const publicationResult = await client.query<
-          PublicationQuery,
-          PublicationQueryVariables
+        const newsResult = await client.query<
+          NewsItemQuery,
+          NewsItemQueryVariables
         >({
-          query: PUBLICATION_QUERY,
+          query: NEWS_ITEM_QUERY,
+          variables: { filter: { locale, limit: 9999 } },
+        });
+
+        const goodExampleResult = await client.query<
+          GoodExampleQuery,
+          GoodExampleQueryVariables
+        >({
+          query: GOOD_EXAMPLE_QUERY,
           variables: { filter: { locale, limit: 9999 } },
         });
 
         const containers = containerResult?.data?.dataportal_Digg_Containers;
-        const publications =
-          publicationResult?.data?.dataportal_Digg_Publications;
+        const news = newsResult?.data?.dataportal_Digg_News_Items;
+        const goodExamples =
+          goodExampleResult?.data?.dataportal_Digg_Good_Examples;
 
         if (containerResult?.error) {
           console.error(containerResult?.error);
         }
-        if (publicationResult?.error) {
-          console.error(publicationResult.error);
+        if (newsResult?.error) {
+          console.error(newsResult.error);
+        }
+        if (goodExampleResult?.error) {
+          console.error(goodExampleResult.error);
         }
 
         containers && allContainers.push(...containers);
-        publications && allPublications.push(...publications);
+        news && allNewsItems.push(...news);
+        goodExamples && allGoodExamples.push(...goodExamples);
       }),
     ));
 
@@ -198,13 +208,28 @@ export const getServerSideProps: GetServerSideProps = async ({
         .join("")
     }
     ${
-      Array.isArray(allPublications) &&
-      allPublications
-        .map((c) => {
+      Array.isArray(allNewsItems) &&
+      allNewsItems
+        .map((n) => {
           return `
         <url>
-            <loc>${env.CANONICAL_URL}${slug(c)}</loc>
-            <lastmod>${c?.updatedAt}</lastmod>
+            <loc>${env.CANONICAL_URL}${slug(n)}</loc>
+            <lastmod>${n?.updatedAt}</lastmod>
+            <changefreq>monthly</changefreq>
+            <priority>1.0</priority>
+        </url>
+    `;
+        })
+        .join("")
+    }
+    ${
+      Array.isArray(allGoodExamples) &&
+      allGoodExamples
+        .map((g) => {
+          return `
+        <url>
+            <loc>${env.CANONICAL_URL}${slug(g)}</loc>
+            <lastmod>${g?.updatedAt}</lastmod>
             <changefreq>monthly</changefreq>
             <priority>1.0</priority>
         </url>

@@ -27,13 +27,24 @@ export const getSearchHit = (
             })
             .join(" "),
         } as SearchHit;
-      case "dataportal_Digg_Publication":
-        const basePath =
-          r.hit.tags && r.hit.tags[0].value === "Nyhet"
-            ? t("routes|news$path")
-            : t("routes|good-examples$path");
+      case "dataportal_Digg_News_Item":
         return {
-          url: `/${basePath}/${r.hit.slug}`,
+          url: `/${t("routes|news$path")}/${r.hit.slug}`,
+          title: r.hit?.heading ?? r.hit.name,
+          description: r.highlights
+            ?.map((c) => {
+              return c?.value;
+            })
+            .join(" "),
+          descriptionLang: r.highlights
+            ?.map((c) => {
+              return c?.value;
+            })
+            .join(" "),
+        } as SearchHit;
+      case "dataportal_Digg_Good_Example":
+        return {
+          url: `/${t("routes|good-examples$path")}/${r.hit.slug}`,
           title: r.hit?.heading ?? r.hit.name,
           description: r.highlights
             ?.map((c) => {

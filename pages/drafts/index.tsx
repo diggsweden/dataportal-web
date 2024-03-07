@@ -3,7 +3,7 @@ import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
   DataportalPageProps,
   getMultiContainer,
-  getPublication,
+  getNewsItem,
   getRootAggregate,
 } from "@/utilities";
 
@@ -19,7 +19,7 @@ const getQuery = async (
   isPublication: boolean,
 ) => {
   if (isPublication)
-    return getPublication(slug, locale, {
+    return getNewsItem(slug, locale, {
       state: Dataportal_ContainerState.Preview,
       secret,
       revalidate: false,
