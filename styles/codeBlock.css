@@ -1,7 +1,7 @@
 /* Code blocks styling */
 code[class*="language-"],
 pre[class*="language-"] {
-  @apply hyphens-none whitespace-pre break-normal bg-none text-left font-ubuntu text-md tracking-normal text-white;
+  @apply hyphens-none whitespace-pre break-normal bg-none text-left font-ubuntu text-md tracking-normal text-blackOpaque3;
   -moz-tab-size: 4;
   -o-tab-size: 4;
   tab-size: 4;
@@ -25,7 +25,7 @@ pre[class*="language-"] {
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-  @apply bg-brown-900;
+  @apply bg-white;
 }
 
 /* Inline code */
@@ -41,7 +41,7 @@ pre[class*="language-"] {
 }
 
 .token.punctuation {
-  @apply text-brown-200;
+  @apply text-blackOpaque3;
 }
 
 .token.namespace {
@@ -53,7 +53,7 @@ pre[class*="language-"] {
 .token.constant,
 .token.symbol,
 .token.deleted {
-  @apply text-brown-100;
+  @apply text-blackOpaque3;
 }
 
 .token.selector,
@@ -64,7 +64,7 @@ pre[class*="language-"] {
 .token.char,
 .token.builtin,
 .token.inserted {
-  @apply text-orange-600;
+  @apply text-pink-600;
 }
 
 .token.operator,
@@ -76,7 +76,7 @@ pre[class*="language-"] {
 }
 
 .token.string {
-  @apply text-green-500;
+  @apply text-green-600;
 }
 
 .token.atrule,
@@ -120,7 +120,7 @@ div.code-toolbar {
 }
 
 .line-numbers .line-numbers-rows {
-  @apply pointer-events-none absolute -left-md top-none w-xl -translate-x-full border-r-2 border-r-primary pr-sm;
+  @apply pointer-events-none absolute -left-md top-none w-xl -translate-x-full border-r-2 border-r-orange-600 pr-sm;
 
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -134,13 +134,13 @@ div.code-toolbar {
 }
 
 .line-numbers-rows > span:before {
-  @apply block text-right text-brown-100;
+  @apply block text-right text-blackOpaque3;
   content: counter(linenumber);
 }
 
 div.code-toolbar pre {
-  @apply focus-visible:outline-dashed focus-visible:outline-[3px] group-focus-visible:outline-dashed group-focus-visible:outline-[3px]
-   focus-visible:outline-primary group-focus-visible:outline-primary focus-visible:outline-offset-2 group-focus-visible:outline-offset-2;
+  @apply focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-primary
+   group-focus-visible:outline-dashed group-focus-visible:outline-[3px] group-focus-visible:outline-offset-2 group-focus-visible:outline-primary;
 }
 
 div.code-toolbar > .toolbar {
@@ -148,8 +148,8 @@ div.code-toolbar > .toolbar {
 }
 
 div.code-toolbar > .toolbar button {
-  @apply focus-visible:outline-dashed focus-visible:outline-[3px] group-focus-visible:outline-dashed group-focus-visible:outline-[3px] 
-  focus-visible:outline-white group-focus-visible:outline-white z-20 cursor-pointer bg-brown-600 p-sm hover:bg-primary;
+  @apply z-20 cursor-pointer bg-brown-600 p-sm 
+  hover:bg-primary focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-blackOpaque3 group-focus-visible:outline-dashed group-focus-visible:outline-[3px] group-focus-visible:outline-blackOpaque3;
 }
 
 div.code-toolbar > .toolbar span {
