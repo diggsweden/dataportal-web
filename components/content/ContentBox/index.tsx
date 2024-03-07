@@ -12,7 +12,7 @@ export const ContentBox: FC<PropsWithChildren<ContentBoxProps>> = ({
   children,
 }) => {
   return (
-    <div className="my-xl max-w-xl space-y-lg bg-white p-xl md:my-2xl md:space-y-xl md:p-2xl">
+    <div className="!my-xl max-w-xl space-y-lg bg-white p-xl md:!my-2xl md:space-y-xl md:p-2xl">
       <Heading level={2} size={"lg"} className="text-center text-primary">
         {heading}
       </Heading>

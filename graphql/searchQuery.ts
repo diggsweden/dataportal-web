@@ -3,7 +3,8 @@ import {
   BLOCK_FRAGMENT,
   CONTAINER_FRAGMENT,
   MODULE_FRAGMENT,
-  PUBLICATION_FRAGMENT,
+  GOOD_EXAMPLE_FRAGMENT,
+  NEWS_ITEM_FRAGMENT,
   SEO_FRAGMENT,
 } from "./fragments";
 
@@ -15,7 +16,8 @@ export const SEARCH_HIT_FRAGMENT = gql`
     }
     hit {
       ...ContainerData
-      ...PublicationData
+      ...NewsItemData
+      ...GoodExampleData
     }
   }
 `;
@@ -32,7 +34,8 @@ export const SEARCH_QUERY = gql`
   ${BLOCK_FRAGMENT}
   ${SEO_FRAGMENT}
   ${MODULE_FRAGMENT}
-  ${PUBLICATION_FRAGMENT}
+  ${NEWS_ITEM_FRAGMENT}
+  ${GOOD_EXAMPLE_FRAGMENT}
   ${CONTAINER_FRAGMENT}
   ${SEARCH_HIT_FRAGMENT}
 `;

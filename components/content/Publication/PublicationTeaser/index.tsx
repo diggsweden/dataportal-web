@@ -2,37 +2,32 @@ import useTranslation from "next-translate/useTranslation";
 import React, { FC } from "react";
 import { CustomImage } from "@/components/global/CustomImage";
 import ArrowIcon from "@/assets/icons/arrowRight.svg";
-import { PublicationDataFragment as Publication } from "@/graphql/__generated__/operations";
+import {
+  GoodExampleDataFragment,
+  NewsItemDataFragment,
+} from "@/graphql/__generated__/operations";
 import { Heading } from "@/components/global/Typography/Heading";
 import Link from "next/link";
 import { formatDate } from "@/utilities/dateHelper";
 
 interface PublicationTeaserProps {
-  publication: Publication;
+  publication: GoodExampleDataFragment | NewsItemDataFragment;
 }
 
 export const PublicationTeaser: FC<PublicationTeaserProps> = ({
   publication,
 }) => {
-  const { createdAt, tags, heading, slug, image } = publication;
-  const { t, lang } = useTranslation();
-  const tag = tags[0].value;
+  const { createdAt, heading, slug, image, __typename } = publication;
+  const { lang } = useTranslation();
 
-  function getUrlWithTag(tag: string) {
-    const cleanString = tag
-      .toLowerCase()
-      .trim()
-      .replace(/[^\w\s-]/g, "")
-      .replace(/[\s_-]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-    return cleanString === "nyhet"
-      ? "/nyheter" + slug
-      : "/" + cleanString + slug;
-  }
+  const type =
+    __typename === "dataportal_Digg_News_Item"
+      ? { url: `/nyheter${slug}`, name: "Nyhet" }
+      : { url: `/goda-exempel${slug}`, name: "Goda Exempel" };
 
   return (
     <Link
-      href={getUrlWithTag(tag)}
+      href={type.url}
       className="group flex h-full flex-col justify-between no-underline"
     >
       <div>
@@ -43,8 +38,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
         />
         <div className="px-md pt-lg text-sm text-textPrimary">
           <span className="text-textSecondary">
-            {tag ? tag : t("pages|listpage$fallback-tag")} |{" "}
-            {formatDate(lang, createdAt)}
+            {type.name} | {formatDate(lang, createdAt)}
           </span>
           <Heading className="pb-md pt-sm" level={3} size={"sm"}>
             {heading}

@@ -4,7 +4,6 @@ import {
   CONTAINER_FRAGMENT,
   SEO_FRAGMENT,
   MODULE_FRAGMENT,
-  PARENT_FRAGMENT,
 } from "./fragments";
 
 export const CONTAINER_QUERY = gql`
@@ -29,16 +28,9 @@ export const CONTAINER_MULTI_QUERY = gql`
     }
     container: dataportal_Digg_Containers(filter: $container) {
       ...ContainerData
-      parent {
-        ...Parent
-      }
-      containerGroup {
-        ...Parent
-      }
     }
   }
   ${CONTAINER_FRAGMENT}
-  ${PARENT_FRAGMENT}
   ${BLOCK_FRAGMENT}
   ${SEO_FRAGMENT}
   ${MODULE_FRAGMENT}
