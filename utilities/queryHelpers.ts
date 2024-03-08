@@ -1,9 +1,4 @@
-import {
-  browserclient,
-  client,
-  CONTAINER_MULTI_QUERY,
-  RELATED_CONTAINER_QUERY,
-} from "@/graphql";
+import { browserclient, client, CONTAINER_MULTI_QUERY } from "@/graphql";
 import { ROOT_AGGREGATE_QUERY } from "@/graphql/aggregateQuery";
 import { FORM_QUERY } from "@/graphql/formQuery";
 import { MODULE_QUERY } from "@/graphql/moduleQuery";
@@ -31,9 +26,6 @@ import {
   GoodExampleDataFragment,
   GoodExampleQuery,
   GoodExampleQueryVariables,
-  RelatedContainerFragment,
-  RelatedQuery,
-  RelatedQueryVariables,
   RootAggregateQuery,
   RootAggregateQueryVariables,
   SearchQueryVariables,
@@ -70,36 +62,11 @@ const logGqlErrors = (error: any) => {
   }
 };
 
-const getRelatedContainers = async (
-  containerGroup: ParentFragment,
-  locale: string,
-) => {
-  if (containerGroup) {
-    const result = await client.query<RelatedQuery, RelatedQueryVariables>({
-      query: RELATED_CONTAINER_QUERY,
-      variables: {
-        filter: {
-          containerGroup: { locale, slug: containerGroup.slug, limit: 50 },
-        },
-      },
-      fetchPolicy: "no-cache",
-    });
-
-    if (result.error || result.errors) return null;
-
-    return result.data.containers || [];
-  } else {
-    return null;
-  }
-};
-
-/* #endregion */
-
 /* #region types */
 export interface MultiContainerResponse {
   type: "MultiContainer";
   container?: ContainerDataFragment;
-  related?: RelatedContainerFragment[];
+  related?: ContainerDataFragment[];
   parent?: ParentFragment | null;
 }
 
@@ -223,7 +190,7 @@ export const getMultiContainer = async (
     >({
       query: CONTAINER_MULTI_QUERY,
       variables: {
-        containerGroup: { containerGroup: { slug }, locale },
+        containerGroup: { containerGroup: { slug: `/${slugs[0]}` }, locale },
         container: {
           slug,
           locale,
@@ -238,12 +205,6 @@ export const getMultiContainer = async (
     }
 
     const container = data.container[0];
-    const related = container
-      ? await getRelatedContainers(
-          container.containerGroup as ParentFragment,
-          locale,
-        )
-      : null;
 
     if (!container) {
       console.warn(`No container found for: ${slug}`);
@@ -256,7 +217,7 @@ export const getMultiContainer = async (
       props: {
         type: "MultiContainer",
         container,
-        related,
+        related: data.containerGroup,
       },
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }

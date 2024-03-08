@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { ContainerDataFragment } from "@/graphql/__generated__/operations";
-import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
 import { checkLang, isIE, linkBase } from "@/utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { BlockList } from "@/components/content/blocks/BlockList";
@@ -76,7 +75,7 @@ const getLinks = () => {
 };
 
 interface ContainerPageProps extends ContainerDataFragment {
-  related?: RelatedContainerFragment[];
+  related?: ContainerDataFragment[];
 }
 
 export const highlightCode = () => {
@@ -109,7 +108,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 
   const { appRenderKey } = useContext(SettingsContext);
 
-  const hasRelatedContent = related && related.length > 2;
+  const hasRelatedContent = related && related.length > 1;
 
   useEffect(() => {
     const newMenuItems = getLinks();

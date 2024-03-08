@@ -1,17 +1,17 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
+import { FC, useEffect, useState } from "react";
+import { ContainerDataFragment } from "@/graphql/__generated__/operations";
 import { Button } from "@/components/global/Button";
 import CloseCrossIcon from "@/assets/icons/closeCross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { usePathname } from "next/navigation";
 
 interface ContainerDpDwnProps {
-  related: RelatedContainerFragment[];
+  related: ContainerDataFragment[];
   parent?: string;
 }
 
-export const ContainerNav: React.FC<ContainerDpDwnProps> = ({ related }) => {
+export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
   const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
   const [vw, setVw] = useState(0);
@@ -42,7 +42,7 @@ export const ContainerNav: React.FC<ContainerDpDwnProps> = ({ related }) => {
         <Button
           iconPosition="left"
           icon={expanded ? CloseCrossIcon : HamburgerIcon}
-          label={related[0].name}
+          label={related[0].heading}
           onClick={() => setExpanded(!expanded)}
           className={`!button--large relative z-40 w-full md:w-[320px] xl:hidden`}
         />

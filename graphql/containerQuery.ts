@@ -38,19 +38,3 @@ export const CONTAINER_MULTI_QUERY = gql`
   ${SEO_FRAGMENT}
   ${MODULE_FRAGMENT}
 `;
-
-export const RELATED_CONTAINER = gql`
-  fragment RelatedContainer on dataportal_Digg_Container {
-    name
-    slug
-  }
-`;
-
-export const RELATED_CONTAINER_QUERY = gql`
-  query Related($filter: dataportal_QueryContainerArgs) {
-    containers: dataportal_Digg_Containers(filter: $filter) {
-      ...RelatedContainer
-    }
-  }
-  ${RELATED_CONTAINER}
-`;
