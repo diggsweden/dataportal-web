@@ -17,7 +17,7 @@ interface PublicationTeaserProps {
 export const PublicationTeaser: FC<PublicationTeaserProps> = ({
   publication,
 }) => {
-  const { createdAt, heading, slug, image, __typename } = publication;
+  const { publishedAt, heading, slug, image, __typename } = publication;
   const { lang } = useTranslation();
 
   const type =
@@ -38,7 +38,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
         />
         <div className="px-md pt-lg text-sm text-textPrimary">
           <span className="text-textSecondary">
-            {type.name} | {formatDate(lang, createdAt)}
+            {type.name} | {formatDate(lang, publishedAt)}
           </span>
           <Heading className="pb-md pt-sm" level={3} size={"sm"}>
             {heading}
