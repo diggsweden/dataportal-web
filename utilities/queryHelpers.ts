@@ -190,7 +190,11 @@ export const getMultiContainer = async (
     >({
       query: CONTAINER_MULTI_QUERY,
       variables: {
-        containerGroup: { containerGroup: { slug: `/${slugs[0]}` }, locale },
+        containerGroup: {
+          containerGroup: { slug: `/${slugs[0]}` },
+          locale,
+          limit: 50,
+        },
         container: {
           slug,
           locale,
