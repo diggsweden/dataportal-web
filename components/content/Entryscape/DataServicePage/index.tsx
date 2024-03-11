@@ -238,11 +238,11 @@ export const DataServicePage: React.FC<{
           </div>
 
           {/* Right column */}
-          <div className="mb-lg w-full pt-none lg:mb-none lg:max-w-[296px]">
+          <div className="mb-lg box-border h-fit w-full  max-w-md bg-white p-md lg:mb-none lg:max-w-[296px]">
             <Heading
               level={2}
               size={"sm"}
-              className="mb-md text-textSecondary md:mb-lg"
+              className="mb-md font-strong text-textSecondary md:mb-lg"
             >
               {t("pages|dataservicepage$api")}
             </Heading>

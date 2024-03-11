@@ -190,7 +190,11 @@ export const getMultiContainer = async (
     >({
       query: CONTAINER_MULTI_QUERY,
       variables: {
-        containerGroup: { containerGroup: { slug: `/${slugs[0]}` }, locale },
+        containerGroup: {
+          containerGroup: { slug: `/${slugs[0]}` },
+          locale,
+          limit: 50,
+        },
         container: {
           slug,
           locale,
@@ -217,7 +221,7 @@ export const getMultiContainer = async (
       props: {
         type: "MultiContainer",
         container,
-        related: data.containerGroup,
+        related: data.containerGroup || [],
       },
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }

@@ -314,12 +314,12 @@ export const SpecificationPage: FC<{
           </div>
 
           {/* Right column */}
-          <div className="pt-xl lg:w-[296px] lg:pt-none">
+          <div className="h-fit w-full max-w-md bg-white p-md lg:w-[296px]">
             <div className="min-w-296px">
               <Heading
                 level={2}
                 size={"sm"}
-                className="mb-sm text-textSecondary md:mb-md"
+                className="mb-sm font-strong text-textSecondary md:mb-md"
               >
                 {t("pages|specification_page$about_specification")}
               </Heading>

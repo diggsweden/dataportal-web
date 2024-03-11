@@ -111,16 +111,30 @@
   @apply w-full p-lg !important;
 }
 
-.esbRowControl {
+/* .esbRowControl {
   @apply absolute -right-none m-lg flex w-fit items-center justify-items-end place-self-end !important;
-}
+} */
 
 .esbRowHead .esbRowControl > button {
   @apply m-none flex h-[44px] w-full items-center justify-evenly gap-sm rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary shadow-none hover:bg-brown-100 hover:no-underline focus-visible:no-underline focus-visible:shadow-none !important;
 }
 
-.btn-link::before {
-  content: attr(Title);
+.esbExpandButton[aria-expanded="false"]::before {
+  content: attr(Open);
+}
+
+.esbExpandButton[aria-expanded="false"]::after {
+  content: url("../assets/icons/chevronDown.svg");
+  @apply h-[24px] w-[24px];
+}
+
+.esbExpandButton[aria-expanded="true"]::before {
+  content: attr(Close);
+}
+
+.esbExpandButton[aria-expanded="true"]::after {
+  content: url("../assets/icons/chevronUp.svg");
+  @apply h-[24px] w-[24px];
 }
 
 .btn-link {

@@ -38,7 +38,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
         };
     }
     addScripts();
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     setBreadcrumb &&
@@ -390,17 +390,6 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                 rowhead: '{{conceptLink}}',
                 click: ''
               },     
-              {
-                block: 'infoHeadBlock',
-                extends: 'template',
-                template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}${t(
-                  "pages|concept_page$about_concept",
-                )}{{/ifprop}}' +
-
-                '{{#ifprop "rdf:type" uri="skos:ConceptScheme"}}${t(
-                  "pages|concept_page$about_terminology",
-                )}{{/ifprop}}'
-              },
             ],
           }];
 
@@ -449,13 +438,16 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
         </div>
 
         {/* Right column */}
-        <div className="mb-lg w-full pt-none lg:mb-none lg:max-w-[296px]">
+        <div className="mb-lg h-fit w-full max-w-md bg-white p-md lg:mb-none lg:max-w-[296px]">
           <Heading
             level={2}
             size={"sm"}
-            className="mb-sm text-textSecondary md:mb-md"
+            className="mb-sm font-strong text-textSecondary md:mb-md"
           >
-            <span data-entryscape="infoHeadBlock" />
+            {pathname.startsWith("/terminology") ||
+            pathname.startsWith("/externalterminology")
+              ? t("pages|concept_page$about_terminology")
+              : t("pages|concept_page$about_concept")}
           </Heading>
           <span
             className="text-sm text-textSecondary"
