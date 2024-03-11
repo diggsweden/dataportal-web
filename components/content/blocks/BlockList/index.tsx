@@ -12,7 +12,7 @@ import { TextBlock } from "@/components/content/blocks/TextBlock";
 import { AccordionBlock } from "@/components/content/blocks/AccordionBlock";
 import { MediaBlock } from "@/components/content/blocks/MediaBlock";
 import { FormPage } from "@/components/content/FormPage";
-
+import { QuoteBlock } from "@/components/content/blocks/QuoteBlock";
 interface blockListProps {
   blocks:
     | ContainerDataFragment["blocks"]
@@ -78,6 +78,8 @@ export const BlockList: React.FC<blockListProps> = ({
         switch (block.__typename) {
           case "dataportal_Digg_Text":
             return <TextBlock {...block} key={`${id}-${index}`} />;
+          case "dataportal_Digg_Quote":
+            return <QuoteBlock {...block} key={`${id}-${index}`} />;
           case "dataportal_Digg_Media":
             return <MediaBlock {...block} key={`${id}-${index}`} />;
           case "dataportal_Digg_Faq":
