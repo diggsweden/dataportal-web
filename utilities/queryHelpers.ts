@@ -217,7 +217,7 @@ export const getMultiContainer = async (
       props: {
         type: "MultiContainer",
         container,
-        related: data.containerGroup,
+        related: data.containerGroup || [],
       },
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
