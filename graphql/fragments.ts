@@ -248,6 +248,16 @@ export const FAQ_FRAGMENT = gql`
   }
 `;
 
+export const QUOTE_FRAGMENT = gql`
+  fragment Quote on dataportal_Digg_Quote {
+    quote
+    author
+    image {
+      ...Image
+    }
+  }
+`;
+
 export const MEDIA_FRAGMENT = gql`
   fragment Media on dataportal_Digg_Media {
     heading
@@ -336,6 +346,10 @@ export const BLOCK_FRAGMENT = gql`
     ... on dataportal_Digg_FormBlock {
       ...FormBlock
     }
+
+    ... on dataportal_Digg_Quote {
+      ...Quote
+    }
   }
   ${LINK_FRAGMENT}
   ${FAQ_FRAGMENT}
@@ -348,4 +362,5 @@ export const BLOCK_FRAGMENT = gql`
   ${FORM_BLOCK_FRAGMENT}
   ${FORM_ELEMENT_FRAGMENT}
   ${CHOICE_FRAGMENT}
+  ${QUOTE_FRAGMENT}
 `;
