@@ -48,7 +48,7 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
               {heading}
             </Heading>
           </div>
-          <p className="text-sm">{preamble}</p>
+          <p className="line-clamp-3 text-sm">{preamble}</p>
         </div>
         <span
           onClick={(e) => {

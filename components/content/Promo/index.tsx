@@ -32,7 +32,9 @@ export const Promo: FC<PromoProps> = ({
       href={slug}
       className="group flex h-full flex-col bg-white text-brown-900 no-underline"
     >
-      {image && <CustomImage image={image} className="h-[152px]" />}
+      {image && (
+        <CustomImage image={image} className="h-[152px] w-full object-cover" />
+      )}
       <div className="flex h-full flex-col p-lg">
         <Heading
           level={heading ? 3 : 2}
