@@ -57,7 +57,7 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
   });
 
   return (
-    <div id="navBox" className="w-fit overflow-auto">
+    <div className="w-fit">
       <Heading
         level={2}
         size={"xs"}
