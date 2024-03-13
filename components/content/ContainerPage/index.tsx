@@ -165,7 +165,10 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
           )}
           <div className="flex w-full flex-col items-start justify-end gap-xl lg:flex-row-reverse">
             {menuItems.length > 2 && (
-              <div id="stickyNav" className="w-full">
+              <div
+                id="stickyNav"
+                className="w-full overflow-y-scroll lg:sticky lg:top-[76px] lg:max-h-[calc(100vh-152px)]"
+              >
                 <StickyNav
                   menuHeading={t("common|content-menu-heading")}
                   menuItems={menuItems}
