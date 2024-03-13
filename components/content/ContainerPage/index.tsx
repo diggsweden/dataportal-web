@@ -106,8 +106,6 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   const { trackPageView } = useMatomo();
   const { t } = useTranslation("common");
 
-  const { appRenderKey } = useContext(SettingsContext);
-
   const hasRelatedContent = related && related.length > 1;
 
   useEffect(() => {
@@ -123,7 +121,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
     ) {
       !isIE && setMenuItems(newMenuItems);
     }
-  }, [menuItems, pathname, appRenderKey]);
+  }, [menuItems, pathname]);
 
   useEffect(() => {
     //Highlights code using prismjs
