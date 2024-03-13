@@ -11,7 +11,6 @@ import {
 import {
   click,
   DataportalPageProps,
-  generateRandomKey,
   keyUp,
   linkBase,
   resolvePage,
@@ -86,8 +85,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
   });
 
-  const appRenderKey = generateRandomKey(16);
-
   useEffect(() => {
     if (typeof window !== "undefined") {
       let clienthost = window?.location?.host || "";
@@ -132,7 +129,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
           ...defaultSettings,
           env,
           setBreadcrumb,
-          appRenderKey,
           matomoSiteId: reactenv("MATOMO_SITE_ID"),
         }}
       >
