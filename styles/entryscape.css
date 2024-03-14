@@ -20,8 +20,17 @@
 
 .rdformsLabel,
 .information-container .title {
-  @apply mb-sm min-w-fit border-none p-none font-ubuntu text-sm font-strong text-textSecondary !outline-offset-2
+  @apply mb-sm min-w-fit gap-xs border-none p-none font-ubuntu text-sm font-strong text-textSecondary !outline-offset-2 
   focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-primary !important;
+}
+
+.information-container .title span,
+.info .description p {
+  @apply inline-flex gap-sm;
+}
+
+.info .description .renderedMarkdown {
+  @apply flex flex-col gap-sm;
 }
 
 .rdformsRepeatedValue {
@@ -98,6 +107,60 @@
   @apply flex items-center gap-xs;
 }
 
+.swagger-ui .dialog-ux {
+  @apply fixed bottom-none left-none right-none top-none z-40 bg-brownOpaque5 !important;
+}
+
+.swagger-ui .dialog-ux .moadal-ux {
+  @apply relative !important;
+}
+
+.modal-dialog-ux {
+  @apply absolute left-1/2 top-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2 bg-white bg-white;
+}
+
+.modal-ux-inner {
+  @apply space-y-md p-lg;
+}
+
+.modal-ux-inner .modal-ux-header {
+  @apply flex items-center justify-between gap-lg border-b border-brown-200 pb-sm text-lg;
+}
+
+.modal-ux-inner .modal-ux-header button svg {
+  @apply hidden;
+}
+
+.modal-ux-inner .modal-ux-header button {
+  @apply flex items-center justify-center;
+}
+
+.modal-ux-inner .modal-ux-header button::after {
+  content: url("../assets/icons/closeCross.svg");
+}
+
+.modal-ux-inner .modal-ux-content h4,
+.modal-ux-inner .modal-ux-content h4 > code {
+  @apply mb-sm text-md font-strong !important;
+}
+
+.modal-ux-inner .modal-ux-content .wrapper {
+  @apply mt-xs text-sm;
+}
+
+.modal-ux-inner .modal-ux-content .wrapper label {
+  @apply mt-md font-strong;
+}
+
+.modal-ux-inner .modal-ux-content .wrapper input {
+  @apply hover:outline-out focus-visible:outline-out active:outline-out my-sm rounded-sm border 
+  border-brown-600 px-md hover:outline-brown-800 focus-visible:outline-brown-800 active:outline-brown-800;
+}
+
+.modal-ux-inner .modal-ux-content .auth-btn-wrapper {
+  @apply mt-md flex justify-start gap-lg;
+}
+
 .esbRow,
 .esbRowExpand {
   @apply bg-white shadow-none !important;
@@ -110,10 +173,6 @@
 .esbRowMain {
   @apply w-full p-lg !important;
 }
-
-/* .esbRowControl {
-  @apply absolute -right-none m-lg flex w-fit items-center justify-items-end place-self-end !important;
-} */
 
 .esbRowHead .esbRowControl > button {
   @apply m-none flex h-[44px] w-full items-center justify-evenly gap-sm rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary shadow-none hover:bg-brown-100 hover:no-underline focus-visible:no-underline focus-visible:shadow-none !important;
@@ -158,19 +217,48 @@
 }
 
 .response-col_description {
-  @apply max-w-lg p-none md:p-sm;
+  @apply mr-auto max-w-lg space-y-sm p-none md:p-sm;
 }
 
-.responses-header td {
-  @apply my-md font-strong;
+.responses-header td,
+.parameters th {
+  @apply p-md font-strong;
+}
+
+.response > td,
+.parameters tbody td {
+  @apply mb-md space-y-sm px-md py-sm !important;
 }
 
 .response-col_status {
-  @apply flex;
+  @apply flex font-strong;
+}
+
+.response-col_links {
+  @apply ml-auto w-fit align-top !important;
 }
 
 .microlight {
-  @apply bg-white p-md;
+  @apply whitespace-pre-wrap bg-[#fefefe] p-md text-sm !important;
+}
+
+.content-type-wrapper .content-type {
+  @apply w-fit px-sm py-xs pr-xl;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("../assets/icons/chevronDown.svg");
+  background-repeat: no-repeat;
+  background-position: right 5px center;
+  background-size: 24px;
+}
+
+.microlight code {
+  @apply text-sm !important;
+}
+
+.microlight span[style="color: rgb(162, 252, 162);"] {
+  @apply text-[#258659] !important;
 }
 
 .responses-inner h4 {
@@ -200,41 +288,36 @@
 }
 
 .opblock-summary {
-  @apply flex items-center;
+  @apply relative flex items-center gap-md px-md py-sm;
 }
 
 .swagger-ui .opblock-get,
-.opblock-get tr,
-.opblock-summary-get button {
+.opblock-get tr {
   @apply bg-[#cce2fa];
 }
 
 .swagger-ui .opblock-post,
-.opblock-post tr,
-.opblock-summary-post button {
+.opblock-post tr {
   @apply bg-[#c8ebd9];
 }
 
 .swagger-ui .opblock-put,
-.opblock-put tr,
-.opblock-summary-put button {
+.opblock-put tr {
   @apply bg-[#fadebf];
 }
 
 .swagger-ui .opblock-patch,
-.opblock-patch tr,
-.opblock-summary-patch button {
+.opblock-patch tr {
   @apply bg-[#e3eeed];
 }
 
 .swagger-ui .opblock-delete,
-.opblock-delete tr,
-.opblock-summary-delete button {
+.opblock-delete tr {
   @apply bg-[#fad5d3];
 }
 
 .opblock-summary-method {
-  @apply rounded-md px-lg py-xs text-md text-white !important;
+  @apply w-full max-w-[80px] py-xs text-center text-md font-strong text-white !important;
 }
 
 .swagger-ui .btn-group {
@@ -299,7 +382,7 @@
 
 .opblock-section-header,
 .view-line-link {
-  @apply px-md py-lg;
+  @apply px-md py-sm;
 }
 
 .opblock-get .opblock-section-header,
@@ -385,7 +468,13 @@
   @apply flex flex-col gap-xs break-words;
 }
 
-.swagger-ui .info a {
+.swagger-ui a.nostyle {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: inherit;
+}
+
+.swagger-ui .info a:not(.nostyle) {
   @apply break-words text-green-600 hover:text-brown-800;
 }
 
@@ -400,19 +489,95 @@
   @apply font-ubuntu text-sm;
 }
 
+.operation-tag-content > span:not(:last-child) .opblock {
+  @apply border-b-2 border-white !important;
+}
+
+.opblock-tag-section.is-open {
+  @apply mb-md !important;
+}
+
 .opblock-tag {
-  @apply flex cursor-pointer justify-between bg-[#d8d8d8] p-md text-textPrimary [&_svg]:fill-textPrimary;
+  @apply mb-xs flex cursor-pointer items-center justify-between bg-[#d8d8d8] p-md text-textPrimary [&_svg]:fill-textPrimary;
+}
+
+.opblock-deprecated {
+  background-color: #f8f8f8;
+}
+
+.opblock-deprecated .opblock-summary {
+  background-color: #ebebeb;
+}
+
+.opblock-deprecated .opblock-summary-method {
+  background-color: #5e5e5e;
+}
+
+.opblock-deprecated .table-container,
+.opblock-deprecated .responses-inner {
+  @apply p-none;
+}
+
+.opblock-deprecated .table-container thead,
+.opblock-deprecated .responses-inner thead {
+  @apply bg-white;
+}
+
+.opblock-section-header .opblock-title span {
+  @apply text-md !important;
+}
+
+.opblock-deprecated .opblock-title_normal {
+  @apply p-md;
+}
+
+.opblock-description-wrapper {
+  @apply mb-lg p-md;
+}
+
+.opblock-deprecated .opblock-section-header {
+  @apply hidden;
+}
+
+.opblock-summary-path__deprecated {
+  @apply line-through;
 }
 
 .opblock-summary-control {
-  @apply relative flex w-full items-center p-md text-left;
+  @apply relative flex w-full items-center gap-lg text-left;
 }
 
 .opblock-summary-control .opblock-summary-path {
-  @apply max-w-fit px-md pr-xl text-left md:pr-none;
+  @apply break-keep text-left underline underline-offset-4;
 }
-.opblock-summary-control svg {
-  @apply absolute right-md ml-sm min-w-fit;
+
+.opblock-summary-control svg,
+.expand-operation svg {
+  @apply hidden;
+}
+
+.expand-operation {
+  @apply flex items-center;
+}
+
+.opblock-summary-control[aria-expanded="false"]::after {
+  content: url("../assets/icons/chevronDown.svg");
+  @apply ml-auto h-[24px] w-[24px];
+}
+
+.opblock-summary-control[aria-expanded="true"]::after {
+  content: url("../assets/icons/chevronUp.svg");
+  @apply ml-auto h-[24px] w-[24px];
+}
+
+.expand-operation[aria-expanded="false"]::after {
+  content: url("../assets/icons/chevronDown.svg");
+  @apply ml-auto h-[24px] w-[24px];
+}
+
+.expand-operation[aria-expanded="true"]::after {
+  content: url("../assets/icons/chevronUp.svg");
+  @apply ml-auto h-[24px] w-[24px];
 }
 
 .curl-command .copy-to-clipboard,
@@ -433,20 +598,12 @@
   @apply relative mb-xl;
 }
 
-.response-col_status {
-  @apply mr-md font-strong;
-}
-
-.microlight {
-  @apply whitespace-pre-wrap;
-}
-
 .download-contents {
   @apply absolute bottom-[10px] right-[50px]  flex h-[30px] cursor-pointer items-center bg-white px-sm pt-xs text-center text-textPrimary opacity-70 hover:opacity-90;
 }
 
 .opblock-summary .copy-to-clipboard {
-  @apply absolute right-[42px] hidden h-[30px] cursor-pointer items-center bg-brownOpaque5 hover:bg-textPrimary focus:bg-primary;
+  @apply absolute right-2xl hidden h-[30px] cursor-pointer bg-brown-600 hover:bg-pink-600 !important;
 }
 
 .opblock-summary:hover > .copy-to-clipboard {
@@ -454,15 +611,11 @@
 }
 
 .opblock-summary-control .opblock-summary-description {
-  @apply mr-md hidden w-full  text-left text-[10px] text-sm lg:block;
+  @apply mr-md hidden text-left text-sm md:block;
 }
 
 #operations-default-datasetQuery {
   @apply relative;
-}
-
-.opblock-summary-method {
-  @apply text-lg font-strong;
 }
 
 .opblock-section-header {
@@ -485,6 +638,7 @@
 }
 
 .entryscape a:not(.noUnderline),
+.entryscape a:not(.nostyle),
 .information-container a {
   @apply block w-fit break-all text-sm text-green-600 underline;
 }

@@ -220,10 +220,10 @@ export const DataSetExploreApiPage: React.FC<{
           </Heading>
 
           {/* Refers to dataset - datset */}
-          <span className="break-words text-sm lg:text-md">{entry.title}</span>
+          <span className="text-sm lg:text-md">{entry.title}</span>
         </div>
 
-        <div className="my-lg h-[1px] break-words border border-brown-600 opacity-20"></div>
+        <div className="my-lg h-[1px] border border-brown-600 opacity-20"></div>
 
         {/* Tabs navigation */}
         <nav className="mb-lg">
