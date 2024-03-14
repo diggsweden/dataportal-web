@@ -77,7 +77,7 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
     <nav
       id="sidebar"
       ref={ref}
-      className={`absolute right-none top-[136px] z-50 -mb-[136px] h-[calc(100%-136px)] w-full
+      className={`absolute right-none top-[136px] z-50 -mb-[136px] h-[calc(100%-136px)] w-full translate-x-full
       overflow-y-scroll bg-white transition-transform duration-300 ease-in-out md:w-[300px]`}
       aria-label="Sidebar"
     >
