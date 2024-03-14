@@ -58,13 +58,29 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
       window.removeEventListener("resize", () => setVw(window.innerWidth));
   });
 
+  useEffect(() => {
+    const sidebar = document.getElementById("sidebar");
+    if (sidebar) {
+      if (openSideBar) {
+        sidebar.classList.remove("hidden");
+        setTimeout(() => {
+          sidebar.classList.add("translate-x-none");
+        }, 1);
+      } else {
+        sidebar.classList.remove("translate-x-none");
+        setTimeout(() => {
+          sidebar.classList.add("hidden");
+        }, 300);
+      }
+    }
+  }, [openSideBar]);
+
   return (
     <nav
+      id="sidebar"
       ref={ref}
-      className={`absolute right-none top-[136px] z-50 -mb-[136px] h-[calc(100%-136px)] w-full
-       overflow-y-scroll bg-white transition-all duration-300 ease-in-out md:w-[300px] ${
-         openSideBar ? "" : "translate-x-full"
-       }`}
+      className={`absolute right-none top-[136px] z-50 -mb-[136px] h-[calc(100%-136px)] w-full translate-x-full 
+       overflow-y-scroll bg-white transition-transform duration-300 ease-in-out md:w-[300px]`}
       aria-label="Sidebar"
     >
       <ul className="w-full list-none">
