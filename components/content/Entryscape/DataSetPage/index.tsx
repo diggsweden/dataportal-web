@@ -132,7 +132,7 @@ export const DataSetPage: React.FC = () => {
 
           function getApiExploreUrl(entryid,apientryid)
           {
-            return '${lang}/${t(
+            return '/${lang}/${t(
               "routes|datasets$path",
             )}/${cid}_'+entryid+'/${name}/apiexplore/'+apientryid;
           }          
