@@ -33,7 +33,11 @@ export const Promo: FC<PromoProps> = ({
       className="group flex h-full flex-col bg-white text-brown-900 no-underline"
     >
       {image && (
-        <CustomImage image={image} className="h-[152px] w-full object-cover" />
+        <CustomImage
+          image={image}
+          sizes="(max-width: 640px) 100vw, (max-width: 1080px) 50vw, (max-width: 1200px) 33vw, 20vw"
+          className="h-[152px] w-full object-cover"
+        />
       )}
       <div className="flex h-full flex-col p-lg">
         <Heading
