@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { highlightCode } from "@/components/content/ContainerPage";
 import { Container } from "@/components/layout/Container";
@@ -7,9 +7,14 @@ import Link from "next/link";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import Image from "next/image";
 import fortroendemodellImage from "@/assets/logos/fortroendemodellen.png";
+import { SettingsContext } from "@/providers/SettingsProvider";
+import { linkBase } from "@/utilities";
+import { usePathname } from "next/navigation";
 
 export const FortroendeEndPage: FC<ModuleDataFragment> = ({ blocks }) => {
   const [heading, setHeading] = useState<string | null>(null);
+  const { setBreadcrumb } = useContext(SettingsContext);
+  const pathname = usePathname();
 
   const getHeading = () => {
     if (blocks[0].__typename === "dataportal_Digg_Text") {
@@ -27,6 +32,24 @@ export const FortroendeEndPage: FC<ModuleDataFragment> = ({ blocks }) => {
 
     setHeading(getHeading());
   }, []);
+
+  // Temporary breadcrumbs for förtroendemodellen
+  useEffect(() => {
+    setBreadcrumb &&
+      setBreadcrumb({
+        name: "Förtroendemärkning",
+        crumbs: [
+          { name: "start", link: { ...linkBase, link: "/" } },
+          {
+            name: "Förtroendemodellen",
+            link: {
+              ...linkBase,
+              link: "/fortroendemodellen",
+            },
+          },
+        ],
+      });
+  }, [pathname]);
 
   return (
     <Container className="space-y-xl">
