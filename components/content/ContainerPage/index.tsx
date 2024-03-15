@@ -109,14 +109,12 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   const hasRelatedContent = related && related.length > 1;
 
   useEffect(() => {
-    const newMenuItems = getLinks();
-
-    setMenuItems(newMenuItems);
-  }, [pathname]);
-
-  useEffect(() => {
     //Highlights code using prismjs
     highlightCode();
+
+    //Creates anchorlinks for the content menu
+    const newMenuItems = getLinks();
+    setMenuItems(newMenuItems);
 
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
     if (parent && parent.heading && parent.slug) {
