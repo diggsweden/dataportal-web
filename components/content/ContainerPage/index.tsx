@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { ContainerDataFragment } from "@/graphql/__generated__/operations";
-import { checkLang, isIE, linkBase } from "@/utilities";
+import { checkLang, linkBase } from "@/utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import { Heading } from "@/components/global/Typography/Heading";
@@ -109,23 +109,12 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   const hasRelatedContent = related && related.length > 1;
 
   useEffect(() => {
-    const newMenuItems = getLinks();
-
-    // Make sure that the state needs to be updated
-    if (
-      (menuItems[0] &&
-        newMenuItems[0] &&
-        menuItems[0].id !== newMenuItems[0].id) ||
-      (menuItems[0] && !newMenuItems[0]) ||
-      (!menuItems[0] && newMenuItems[0])
-    ) {
-      !isIE && setMenuItems(newMenuItems);
-    }
-  }, [menuItems, pathname]);
-
-  useEffect(() => {
     //Highlights code using prismjs
     highlightCode();
+
+    //Creates anchorlinks for the content menu
+    const newMenuItems = getLinks();
+    setMenuItems(newMenuItems);
 
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
     if (parent && parent.heading && parent.slug) {
