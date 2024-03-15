@@ -19,10 +19,7 @@ export const FortroendeIntroPage: FC<ModuleDataFragment> = ({ blocks }) => {
     setBreadcrumb &&
       setBreadcrumb({
         name: "Förtroendemodellen",
-        crumbs: [
-          { name: "start", link: { ...linkBase, link: "/" } },
-          { name: "Offentlig AI", link: { ...linkBase, link: "/offentligai" } },
-        ],
+        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
       });
   }, [pathname]);
 
