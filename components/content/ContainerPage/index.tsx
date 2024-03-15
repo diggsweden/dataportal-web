@@ -111,17 +111,8 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   useEffect(() => {
     const newMenuItems = getLinks();
 
-    // Make sure that the state needs to be updated
-    if (
-      (menuItems[0] &&
-        newMenuItems[0] &&
-        menuItems[0].id !== newMenuItems[0].id) ||
-      (menuItems[0] && !newMenuItems[0]) ||
-      (!menuItems[0] && newMenuItems[0])
-    ) {
-      !isIE && setMenuItems(newMenuItems);
-    }
-  }, [menuItems, pathname]);
+    setMenuItems(newMenuItems);
+  }, [pathname]);
 
   useEffect(() => {
     //Highlights code using prismjs
