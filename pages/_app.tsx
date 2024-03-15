@@ -141,7 +141,9 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
             <CookieBanner />
             <div
               id="top"
-              className={`relative h-screen min-h-screen md:h-auto`}
+              className={`relative h-screen min-h-screen md:h-auto ${
+                openSideBar ? "overflow-y-hidden md:overflow-y-visible" : ""
+              }`}
             >
               <SkipToContent text={t("common|skiptocontent")} />
               <Header
