@@ -91,9 +91,9 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalconcept/") > -1)
               if(isTerm)
-                return "/externalterminology/" + path;
+                return "/${lang}/externalterminology/" + path;
               else
-                return "/externalconcept/" + path;
+                return "/${lang}/externalconcept/" + path;
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/concepts/") > -1)
             {
@@ -105,13 +105,13 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               entryPath = resourceUri.replace("https://dataportal.se/concepts","");
 
               if(isTerm)
-                return "/terminology" + entryPath;
+                return "/${lang}/terminology" + entryPath;
               else
-                return "/concepts" + entryPath;
+                return "/${lang}/concepts" + entryPath;
             }
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalterminology/") > -1)                            
-              return "/externalconcept/" + path;
+              return "/${lang}/externalconcept/" + path;
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/terminology/") > -1)    
             {
@@ -122,7 +122,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               else
               entryPath = resourceUri.replace("https://dataportal.se/concepts","");
 
-              return "/concepts" + entryPath;
+              return "/${lang}/concepts" + entryPath;
             }
 
             return resourceUri;

@@ -90,23 +90,26 @@ export const Hero: FC<HeroProps> = ({
                   } md mt-lg flex flex-wrap justify-center gap-md md:flex-row`}
                 >
                   <ButtonLink
-                    href={`${lang}/datasets?q=&f=`}
+                    href={`/datasets?q=&f=`}
                     label={t("common|all-data-api")}
                     size="sm"
+                    locale={lang}
                     icon={ArrowRightIcon}
                     iconPosition="right"
                   />
                   <ButtonLink
-                    href={`/${lang}/concepts?q=&f=`}
+                    href={`/concepts?q=&f=`}
                     label={t("common|all-concepts")}
                     size="sm"
+                    locale={lang}
                     icon={ArrowRightIcon}
                     iconPosition="right"
                   />
                   <ButtonLink
-                    href={`/${lang}/specifications?q=&f=`}
+                    href={`/specifications?q=&f=`}
                     label={t("common|all-specs")}
                     size="sm"
+                    locale={lang}
                     icon={ArrowRightIcon}
                     iconPosition="right"
                   />

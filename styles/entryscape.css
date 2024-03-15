@@ -153,8 +153,8 @@
 }
 
 .modal-ux-inner .modal-ux-content .wrapper input {
-  @apply hover:outline-out focus-visible:outline-out active:outline-out my-sm rounded-sm border 
-  border-brown-600 px-md hover:outline-brown-800 focus-visible:outline-brown-800 active:outline-brown-800;
+  @apply my-sm rounded-sm border border-brown-600 px-md hover:outline-offset-2 
+  hover:outline-brown-800 focus-visible:outline-offset-2 focus-visible:outline-brown-800 active:outline-offset-2 active:outline-brown-800;
 }
 
 .modal-ux-inner .modal-ux-content .auth-btn-wrapper {
@@ -643,12 +643,9 @@
   @apply block w-fit break-all text-sm text-green-600 underline;
 }
 
-.entryscape a:not(.noUnderline) {
-  @apply text-green-600 !important;
-}
-
 .entryscape a:hover,
-.information-container a:hover {
+.information-container a:hover,
+.entryscape a.noUnderline {
   @apply no-underline !important;
 }
 

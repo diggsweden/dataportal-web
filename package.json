@@ -30,7 +30,7 @@
     "https-proxy-agent": "^5.0.1",
     "lucene": "^2.1.1",
     "meilisearch": "^0.27.0",
-    "next": "13.4.12",
+    "next": "13.5.1",
     "next-absolute-url": "^1.2.2",
     "next-translate": "^2.6.2",
     "node-fetch": "^3.2.10",
