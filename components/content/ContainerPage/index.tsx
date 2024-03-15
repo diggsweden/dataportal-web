@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { ContainerDataFragment } from "@/graphql/__generated__/operations";
-import { checkLang, isIE, linkBase } from "@/utilities";
+import { checkLang, linkBase } from "@/utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import { Heading } from "@/components/global/Typography/Heading";
