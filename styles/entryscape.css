@@ -116,11 +116,11 @@
 }
 
 .modal-dialog-ux {
-  @apply absolute left-1/2 top-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2 bg-white bg-white;
+  @apply absolute left-1/2 top-1/2 w-full max-w-md -translate-x-1/2  -translate-y-1/2;
 }
 
 .modal-ux-inner {
-  @apply space-y-md p-lg;
+  @apply mx-lg space-y-md bg-white p-lg;
 }
 
 .modal-ux-inner .modal-ux-header {

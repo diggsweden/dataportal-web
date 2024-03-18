@@ -98,7 +98,7 @@ export const PublicationFull: React.FC<
                   className="mb-md flex text-textSecondary"
                 >
                   <DataIcon className="mr-sm" />
-                  API:er och datamängd
+                  API:er och datamängder
                 </Heading>
                 <ul className="ml-lg flex flex-wrap gap-sm pl-md">
                   {type.apiAndDataset.map((item, index) => (

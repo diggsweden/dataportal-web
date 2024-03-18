@@ -3,6 +3,8 @@ import { Heading } from "@/components/global/Typography/Heading";
 import { Button, ButtonLink } from "@/components/global/Button";
 import ArrowIcon from "@/assets/icons/arrowRight.svg";
 import { HtmlParser } from "../Typography/HtmlParser";
+import { isExternalLink } from "@/utilities";
+import ExternalIcon from "@/assets/icons/external-link.svg";
 
 interface ModalProps {
   heading: string;
@@ -34,14 +36,14 @@ export const Modal: FC<ModalProps> = ({
   return (
     <>
       <div
-        className={`absolute left-none top-none z-40 !mt-none h-full w-full bg-brownOpaque5 
+        className={`fixed bottom-none left-none right-none top-none z-40 overflow-hidden bg-brownOpaque5 
         ${modalOpen ? "visible" : "hidden"}`}
         onClick={() => setModalOpen(false)}
       />
       <div
         ref={ref}
-        className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] max-w-md  -translate-x-1/2 -translate-y-1/2 
-        overflow-scroll bg-white p-xl shadow-2xl ${
+        className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] w-4/5 max-w-md -translate-x-1/2 -translate-y-1/2  
+        overflow-scroll bg-white p-xl shadow-2xl md:w-auto ${
           modalOpen ? "visible" : "hidden"
         }`}
         onClick={(e) => {
@@ -84,7 +86,7 @@ export const Modal: FC<ModalProps> = ({
               href={href}
               onClick={onClick}
               label={confirmBtn}
-              icon={ArrowIcon}
+              icon={!isExternalLink(href) ? ArrowIcon : ExternalIcon}
               iconPosition="right"
               className="min-w-[50px] justify-center"
             />
