@@ -2,6 +2,7 @@ import React from "react";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
   DataportalPageProps,
+  getGoodExample,
   getMultiContainer,
   getNewsItem,
   getRootAggregate,
@@ -16,14 +17,23 @@ const getQuery = async (
   slug: string,
   locale: string,
   secret: string,
-  isPublication: boolean,
+  type: string,
 ) => {
-  if (isPublication)
-    return getNewsItem(slug, locale, {
+  if (type === "news-item") {
+    return await getNewsItem(slug, locale, {
       state: Dataportal_ContainerState.Preview,
       secret,
       revalidate: false,
     });
+  }
+
+  if (type === "good-example") {
+    return await getGoodExample(slug, locale, {
+      state: Dataportal_ContainerState.Preview,
+      secret,
+      revalidate: false,
+    });
+  }
 
   switch (slug) {
     case "/":
@@ -61,9 +71,9 @@ const Draft: React.FC<DataportalPageProps> = (props) => render(props);
 export const getServerSideProps = async ({ query, locale }: any) => {
   const slug = (query?.slug as string) || "";
   const secret = (query?.secret as string) || "";
-  const isPublication = (query?.type as string) === "publication";
+  const type = query?.type as string;
   // Get external data from the file system, API, DB, etc.
-  return await getQuery(slug, locale || "sv", secret, isPublication);
+  return await getQuery(slug, locale || "sv", secret, type);
 };
 
 export default Draft;
