@@ -181,6 +181,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         defaultESEntry.entrystore = new ESJS.EntryStore(
           `https://${entrystoreUrl}/store`,
         );
+        defaultESEntry.entrystore.getREST().disableJSONP();
+        defaultESEntry.entrystore.getREST().disableCredentials();
+
         var util = new ESJS.EntryStoreUtil(defaultESEntry.entrystore);
         const es = defaultESEntry.entrystore;
 

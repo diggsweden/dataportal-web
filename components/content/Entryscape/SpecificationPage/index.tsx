@@ -223,18 +223,26 @@ export const SpecificationPage: FC<{
                 template: 'prof:ResourceDescriptor',
                 expandTooltip: '${t("pages|datasetpage$view_more")}',
                 unexpandTooltip: '${t("pages|datasetpage$view_less")}',
+                expandButton: false,
                 listbody: '<div class="specification__resource--body">{{body}}</div>',
                 listplaceholder: '<div class="alert alert-info" role="alert">Denna specifikation har inga resurser.</div>',
                 rowhead:
                 '<span>{{text}}</span>' + 
                   '<span class="block mb-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
                   '<div>{{ text content="\${skos:definition}" }}</div>' +
-                  '<a href="{{resourceURI}}" tabindex="-1"><button class="button button--primary button--large text-white">${t(
-                    "pages|specification_page$specification_download",
-                  )}' +
-                  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
-                  '<path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18V15H6V18H18V15H20V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6Z" fill="#FFFFFF"/>' +
-                  '</svg></button></a>',
+                  '<div class="flex justify-between items-end md:items-center mt-md md:mt-lg gap-lg">' +
+                    '<a href="{{resourceURI}}" tabindex="-1">' +
+                      '<button class="button button--primary button--large text-white">${t(
+                        "pages|specification_page$specification_download",
+                      )}' +
+                        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                        '<path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18V15H6V18H18V15H20V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6Z" fill="#FFFFFF"/>' +
+                        '</svg>' +
+                    '</button>' +
+                    '</a>' +
+                    '<button open="{{expandTooltip}}" close="{{unexpandTooltip}}" class="esbExpandButton button button--secondary button--large h-fit text-nowrap">' +
+                    '</button>' +
+                  '</div>', 
               },
             ],
           }];

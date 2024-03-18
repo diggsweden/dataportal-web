@@ -98,14 +98,13 @@ export const PublicationFull: React.FC<
                   className="mb-md flex text-textSecondary"
                 >
                   <DataIcon className="mr-sm" />
-                  API:er och dataset
+                  API:er och datamängder
                 </Heading>
-                <div className="ml-lg flex flex-wrap gap-sm pl-md">
+                <ul className="ml-lg flex flex-wrap gap-sm pl-md">
                   {type.apiAndDataset.map((item, index) => (
-                    <>
+                    <li key={`apiAndDataset-${index}`} className="flex">
                       {item.link ? (
                         <ButtonLink
-                          key={index}
                           href={item.link}
                           label={item.title}
                           icon={
@@ -118,16 +117,13 @@ export const PublicationFull: React.FC<
                           variant={"pink"}
                         />
                       ) : (
-                        <span
-                          className="button--pink button--xs hover:bg-pink-200"
-                          key={index}
-                        >
+                        <span className="button--pink button--xs hover:bg-pink-200">
                           {item.title}
                         </span>
                       )}
-                    </>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             ) : null}
 

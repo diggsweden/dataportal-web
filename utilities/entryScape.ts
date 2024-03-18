@@ -291,6 +291,8 @@ export class EntryScape {
     return new Promise<any>((resolve) => {
       let result: any[] = [];
       const es = new ESJS.EntryStore(this.entryscapeUrl);
+      es.getREST().disableJSONP();
+      es.getREST().disableCredentials();
       const maxRequestUriLength: number = 1500; //for batching request, max URI length is actually 2083 (IE), but keep it safe
       let resTmp: string[] = [];
       let requestPromises: Promise<any>[] = [];
@@ -508,6 +510,8 @@ export class EntryScape {
       let lang = request.language || "sv";
 
       const es = new ESJS.EntryStore(this.entryscapeUrl);
+      es.getREST().disableJSONP();
+      es.getREST().disableCredentials();
 
       let esQuery = es.newSolrQuery();
       let searchList: any;
