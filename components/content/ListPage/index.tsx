@@ -78,7 +78,7 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
 
   useEffect(() => {
     if (activeFilter.id === "0") {
-      setFilterList(listItems.slice(startIndex, endIndex));
+      setFilterList(listItems);
     } else {
       setFilterList(
         listItems.filter((item) => {
@@ -96,7 +96,7 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
       <Container>
         {heading && (
           <Heading level={2} size={"md"}>
-            {`${list.length} ${heading}`}
+            {`${filterList.length} ${heading}`}
           </Heading>
         )}
         <div className="mt-xl flex flex-wrap gap-md">
@@ -113,11 +113,11 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
             />
           ))}
         </div>
-        <GridList items={filterList} />
-        {list.length > listItemsPerPage && (
+        <GridList items={filterList.slice(startIndex, endIndex)} />
+        {filterList.length > listItemsPerPage && (
           <div className="flex justify-center">
             <Pagination
-              totalResults={list.length || 0}
+              totalResults={filterList.length || 0}
               itemsPerPage={listItemsPerPage}
               pageNumber={parseInt(router.query.page as string)}
               changePage={changePage}
