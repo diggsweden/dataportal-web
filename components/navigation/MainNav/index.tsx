@@ -55,7 +55,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         aria-label="Dataportal logo"
         onClick={() => setOpenSideBar(false)}
       >
-        {env.ENTRYSCAPE_SPECS_PATH.includes("sandbox") ? (
+        {env.envName === "sandbox" ? (
           <DataportalTestLogo />
         ) : (
           <DataportalLogo

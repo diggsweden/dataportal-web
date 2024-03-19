@@ -47,6 +47,7 @@ const filterContactAndLandingPage = [
   "dcat:contactPoint",
   "dcat:landingPage",
   "http://data.europa.eu/r5r/applicableLegislation",
+  "http://xmlns.com/foaf/0.1/page",
 ];
 
 export const DataSetPage: React.FC = () => {
