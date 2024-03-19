@@ -49,12 +49,12 @@
   @apply flex flex-col items-center;
 }
 
-.totMQA .esbInlineDiv#_ebh_14,
+.totMQA .esbInlineDiv#_ebh_4,
 .catalogMQA .esbInlineDiv#_ebh_3 {
   @apply overflow-x-hidden !important;
 }
 
-.totMQA .esbInlineDiv#_ebh_14 > div,
+.totMQA .esbInlineDiv#_ebh_4 > div,
 .catalogMQA .esbInlineDiv#_ebh_3 > div {
   @apply min-w-[350px] overflow-x-hidden !important;
 }
@@ -98,11 +98,15 @@
 }
 
 .totMQA a {
-  @apply no-underline hover:underline focus-visible:underline !important;
+  @apply no-underline hover:underline focus-visible:underline decoration-textSecondary !important;
+}
+
+.totMQA a:hover > .esbScoreContainer span {
+  color: initial;
 }
 
 .totMQA .esbInlineHeading {
-  @apply m-none mb-sm text-md font-strong md:mb-md md:text-lg !important;
+  @apply m-none mb-sm text-md font-strong md:mb-none md:text-lg !important;
 }
 
 .totMQA .esbRowLink {
@@ -110,7 +114,7 @@
 }
 
 .totMQA .esbRowLink > .esbRowMain {
-  @apply flex flex-col md:flex-row !important;
+  @apply flex flex-col md:flex-row md:items-center !important;
 }
 
 /* Styling for total MQA list pagination */
