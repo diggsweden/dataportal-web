@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import React, { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { CustomImage } from "@/components/global/CustomImage";
 import ArrowIcon from "@/assets/icons/arrowRight.svg";
 import {
@@ -19,11 +19,16 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
 }) => {
   const { publishedAt, heading, slug, image, __typename } = publication;
   const { lang } = useTranslation();
+  const [date, setDate] = useState("");
 
   const type =
     __typename === "dataportal_Digg_News_Item"
       ? { url: `/nyheter${slug}`, name: "Nyhet" }
       : { url: `/goda-exempel${slug}`, name: "Goda Exempel" };
+
+  useEffect(() => {
+    setDate(formatDate(lang, publishedAt));
+  }, []);
 
   return (
     <Link
@@ -37,9 +42,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
           className="h-[184px] w-full object-cover md:h-[240px] lg:h-[184px]"
         />
         <div className="px-md pt-lg text-sm text-textPrimary">
-          <span className="text-textSecondary">
-            {type.name} | {formatDate(lang, publishedAt)}
-          </span>
+          <span className="text-textSecondary">{`${type.name} | ${date}`}</span>
           <Heading className="pb-md pt-sm" level={3} size={"sm"}>
             {heading}
           </Heading>

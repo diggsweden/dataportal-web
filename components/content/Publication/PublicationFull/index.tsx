@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import {
   GoodExampleResponse,
@@ -41,6 +41,7 @@ export const PublicationFull: React.FC<
   const { trackPageView } = useMatomo();
   const pathname = usePathname();
   const { setBreadcrumb } = useContext(SettingsContext);
+  const [date, setDate] = useState("");
 
   useEffect(() => {
     //Highlights code using prismjs
@@ -61,6 +62,8 @@ export const PublicationFull: React.FC<
         name: publication.heading,
         crumbs: crumbs,
       });
+
+    setDate(formatDateWithTime(lang, publication.publishedAt));
 
     // Matomo tracking
     trackPageView({ documentTitle: publication.name });
@@ -140,9 +143,7 @@ export const PublicationFull: React.FC<
                 <DateIcon className="mr-sm" />
                 {t("common|published-date")}
               </Heading>
-              <p className="ml-lg pl-md">
-                {formatDateWithTime(lang, publication.publishedAt)}
-              </p>
+              <p className="ml-lg pl-md">{date}</p>
             </div>
 
             {publication.keywords && publication.keywords.length > 0 ? (
