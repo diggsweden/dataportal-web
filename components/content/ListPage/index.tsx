@@ -60,7 +60,7 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
   }, [pathname]);
 
   const changePage = (page: number) => {
-    page !== 1 ? router.push(`?page=${page}`) : router.push("");
+    page !== 1 ? router.replace(`?page=${page}`) : router.replace("");
   };
 
   useEffect(() => {
@@ -88,6 +88,7 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
           );
         }),
       );
+      router.query.page && router.replace("");
     }
   }, [setActiveFilter, activeFilter, pathname, listItems]);
 
