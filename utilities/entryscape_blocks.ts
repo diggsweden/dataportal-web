@@ -187,7 +187,7 @@ export const exploreApiLink = (cid: string, eid: string, t: Translate) => `
           el.appendChild(svgIcon);
           label.innerHTML = '${t("pages|datasetpage$explore-api")}'
           el.setAttribute('href', getApiExploreUrl('${eid}',entryId))
-          el.setAttribute('class', 'explore-api-btn noUnderline') 
+          el.setAttribute('class', 'explore-api-btn noUnderline mt-md md:mt-none') 
         }
       }
     },
