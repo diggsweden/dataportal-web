@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import {
   GoodExampleResponse,
@@ -25,9 +25,9 @@ import { SettingsContext } from "@/providers/SettingsProvider";
 import { Preamble } from "@/components/global/Typography/Preamble";
 import { ButtonLink } from "@/components/global/Button";
 
-export const PublicationFull: React.FC<
-  NewsItemResponse | GoodExampleResponse
-> = ({ ...publication }) => {
+export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
+  ...publication
+}) => {
   const type =
     publication.__typename === "dataportal_Digg_News_Item"
       ? { name: "Nyheter", publisher: null, apiAndDataset: null }
