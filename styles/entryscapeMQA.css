@@ -98,7 +98,7 @@
 }
 
 .totMQA a {
-  @apply no-underline hover:underline focus-visible:underline decoration-textSecondary !important;
+  @apply no-underline decoration-textSecondary hover:underline focus-visible:underline !important;
 }
 
 .totMQA a:hover > .esbScoreContainer span {
