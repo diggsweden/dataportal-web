@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import {
   GoodExampleResponse,
@@ -25,9 +25,9 @@ import { SettingsContext } from "@/providers/SettingsProvider";
 import { Preamble } from "@/components/global/Typography/Preamble";
 import { ButtonLink } from "@/components/global/Button";
 
-export const PublicationFull: React.FC<
-  NewsItemResponse | GoodExampleResponse
-> = ({ ...publication }) => {
+export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
+  ...publication
+}) => {
   const type =
     publication.__typename === "dataportal_Digg_News_Item"
       ? { name: "Nyheter", publisher: null, apiAndDataset: null }
@@ -41,6 +41,7 @@ export const PublicationFull: React.FC<
   const { trackPageView } = useMatomo();
   const pathname = usePathname();
   const { setBreadcrumb } = useContext(SettingsContext);
+  const [date, setDate] = useState("");
 
   useEffect(() => {
     //Highlights code using prismjs
@@ -61,6 +62,8 @@ export const PublicationFull: React.FC<
         name: publication.heading,
         crumbs: crumbs,
       });
+
+    setDate(formatDateWithTime(lang, publication.publishedAt));
 
     // Matomo tracking
     trackPageView({ documentTitle: publication.name });
@@ -136,9 +139,7 @@ export const PublicationFull: React.FC<
                 <DateIcon className="mr-sm" />
                 {t("common|published-date")}
               </Heading>
-              <p className="ml-lg pl-md">
-                {formatDateWithTime(lang, publication.publishedAt)}
-              </p>
+              <p className="ml-lg pl-md">{date}</p>
             </div>
 
             {publication.keywords && publication.keywords.length > 0 ? (
