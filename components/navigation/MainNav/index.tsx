@@ -1,15 +1,18 @@
 import useTranslation from "next-translate/useTranslation";
 import { FC, useEffect, useState } from "react";
+import { useContext } from "react";
 import Link from "next/link.js";
 import { Button, ButtonLink } from "@/components/global/Button";
 import { mainNav } from "@/utilities/menuData";
 import DataportalLogo from "@/assets/logos/sveriges_dataportal_logo.svg";
+import DataportalTestLogo from "@/assets/logos/dataportalTest.svg";
 import CloseCrossIcon from "@/assets/icons/closeCross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { usePathname } from "next/navigation";
 import { SearchInput } from "@/components/content/Search/SearchInput";
 import SearchIcon from "@/assets/icons/search.svg";
 import { useClickoutside } from "@/hooks/useClickoutside";
+import { SettingsContext } from "@/providers/SettingsProvider";
 interface MainNavData {
   title: string;
   promoted: boolean;
@@ -33,7 +36,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
   const ref = useClickoutside(() => setOpenSearch(false));
-
+  const { env } = useContext(SettingsContext);
   useEffect(() => {
     let enMenu;
     if (isEn) {
@@ -52,13 +55,17 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         aria-label="Dataportal logo"
         onClick={() => setOpenSideBar(false)}
       >
-        <DataportalLogo
-          className={`${
-            openSearch
-              ? "hidden lg:block"
-              : "h-[32px] w-[160px] md:h-[44px] md:w-[248px]"
-          } `}
-        />
+        {env.envName === "sandbox" ? (
+          <DataportalTestLogo />
+        ) : (
+          <DataportalLogo
+            className={`${
+              openSearch
+                ? "hidden lg:block"
+                : "h-[32px] w-[160px] md:h-[44px] md:w-[248px]"
+            }`}
+          />
+        )}
       </Link>
       <div className="flex w-full flex-row items-center justify-end space-x-md">
         <nav

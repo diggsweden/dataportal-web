@@ -666,7 +666,7 @@
 }
 
 .conceptDetail a {
-  @apply mb-none w-fit text-md text-green-600 !important;
+  @apply mb-none w-fit text-md text-green-600 hover:text-green-600 !important;
 }
 
 .conceptDetail .entryList {

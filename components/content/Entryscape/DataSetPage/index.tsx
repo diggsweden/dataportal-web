@@ -47,6 +47,7 @@ const filterContactAndLandingPage = [
   "dcat:contactPoint",
   "dcat:landingPage",
   "http://data.europa.eu/r5r/applicableLegislation",
+  "http://xmlns.com/foaf/0.1/page",
 ];
 
 export const DataSetPage: React.FC = () => {
@@ -269,6 +270,7 @@ export const DataSetPage: React.FC = () => {
                 block: 'accessServiceCustom',
                 extends: 'template',
                 relation: 'dcat:accessService',
+                class: 'mt-md md:mt-none',
                 template: 
                 '<button class="button--primary button--large flex items-center !no-underline">' +
                   '{{link class="linkInBtn noUnderline" namedclick="dataservice-link" content="${t(
@@ -304,14 +306,14 @@ export const DataSetPage: React.FC = () => {
                     "pages|datasetpage$no_title",
                   )}</span>"}}</span>' +                  
                   '<div class="flex justify-between items-end md:items-center mt-md md:mt-lg gap-lg">' +
-                    '<div class="flex flex-col md:flex-row gap-md md:gap-lg">' +
+                    '<div class="flex flex-col md:flex-row md:gap-x-lg">' +
                     '{{distributionAccessCustom}}' +
+                    '{{#ifprop "dcat:accessService"}}{{accessServiceCustom}}{{/ifprop}}' +
                     '{{exploreApiLink}}' +
                     '</div>' +
                     '<button open="{{expandTooltip}}" close="{{unexpandTooltip}}" class="esbExpandButton button button--secondary button--large h-fit text-nowrap">' +
                     '</button>' +
-                  '</div>' +
-                  '{{#ifprop "dcat:accessService"}}{{accessServiceCustom}}{{/ifprop}}',
+                  '</div>',
                   rowexpand: '{{#ifprop "dcat:downloadURL"}}' +
                   '{{#ifprop "dcat:downloadURL" min="2"}}' +
                   '<h3 class="rdformsLabel !mt-none">${t(

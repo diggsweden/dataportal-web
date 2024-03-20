@@ -647,7 +647,7 @@ export class EntryScape {
       else
         queryUrl = queryUrl.replace(
           "&query=",
-          `&query=(metadata.object.literal:(${query})+OR+metadata.predicate.literal_t.3f2ae919:(${gramQuery})+OR+metadata.predicate.literal_t.feda1d30:(${gramQuery})+OR+metadata.predicate.literal_t.a6424133:(${gramQuery}))+AND+`,
+          `&query=(metadata.object.literal:(${query})+OR+metadata.predicate.literal_t.8d3b7b43:(${gramQuery})+OR+metadata.predicate.literal_t.07d92ae6:(${gramQuery})+OR+metadata.predicate.literal_t.7e090ea1:(${gramQuery}))+AND+`,
         );
 
       fetch(queryUrl).then((response) => {
