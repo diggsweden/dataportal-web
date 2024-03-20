@@ -15,7 +15,6 @@ const HEALTHCHECK_SECRET = process.env.HEALTHCHECK_SECRET;
  * @returns status: "pass" or status: "fail"
  */
 export default async function handler(req: any, res: any) {
-
   // Check to see that there is a secret set as env variable HEALTHCHECK_SECRET.
   if (!HEALTHCHECK_SECRET) {
     return res
