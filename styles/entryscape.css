@@ -186,7 +186,7 @@
 }
 
 .highlight-code .microlight {
-  @apply max-h-[500px] overflow-y-scroll;
+  @apply max-h-[500px] overflow-y-auto;
 }
 
 .swagger-ui td,
