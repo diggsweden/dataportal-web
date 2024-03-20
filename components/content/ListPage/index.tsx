@@ -100,9 +100,10 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
             {`${filterList.length} ${heading}`}
           </Heading>
         )}
-        <div className="mt-xl flex flex-wrap gap-md">
-          {keywordList.length > 1 &&
-            keywordList.map((keyword, idx) => (
+
+        {keywordList.length > 1 && (
+          <div className="mt-xl flex flex-wrap gap-md">
+            {keywordList.map((keyword, idx) => (
               <Button
                 variant="plain"
                 key={idx}
@@ -114,7 +115,8 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
                 }`}
               />
             ))}
-        </div>
+          </div>
+        )}
         <GridList items={filterList.slice(startIndex, endIndex)} />
         {filterList.length > listItemsPerPage && (
           <div className="flex justify-center">
