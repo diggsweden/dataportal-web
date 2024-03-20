@@ -51,7 +51,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
       <ul
         className={`absolute flex-col bg-white md:w-[320px] xl:static xl:flex xl:h-full xl:w-[200px] xl:bg-transparent ${
           expanded
-            ? "-bottom-sm z-40 h-fit max-h-[calc(100svh-292px)] w-full translate-y-full overflow-y-scroll md:max-h-[calc(100vh-292px)]"
+            ? "-bottom-sm z-40 h-fit max-h-[calc(100svh-292px)] w-full translate-y-full overflow-y-auto md:max-h-[calc(100vh-292px)]"
             : "hidden"
         }`}
       >
