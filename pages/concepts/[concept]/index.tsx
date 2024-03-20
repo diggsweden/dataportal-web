@@ -28,6 +28,7 @@ export default function Concept() {
       entryUri={entryUri}
       entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
       fetchMore={false}
+      isConcept={true}
     >
       <ConceptPage {...(typeof curi === "string" ? { curi } : {})} />
     </EntrystoreProvider>

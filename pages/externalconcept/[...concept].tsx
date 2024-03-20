@@ -26,6 +26,7 @@ export default function Concept() {
       entryUri={entryUri}
       entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
       fetchMore={false}
+      isConcept={true}
     >
       <ConceptPage scheme={scheme} curi={curi} />
     </EntrystoreProvider>

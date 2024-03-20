@@ -51,8 +51,8 @@ const DynamicStatistic = dynamic(
 );
 
 const contentBoxLinks = [
-  { label: "Tipsa om dataanvändning", href: "/anvand-data" },
-  { label: "Begär ut data", href: "/datasamverkan" },
+  { label: "Bidra till Sveriges dataportal", href: "/om-oss" },
+  { label: "Hitta datasamverkan", href: "/datasamverkan" },
   {
     label: "Delta i communityt",
     href: "https://community.dataportal.se/",
@@ -136,7 +136,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
 
             <ContentBox
               heading="Var med och delta"
-              description="På Sveriges dataportal synliggörs data från en rad olika typer av organisationer och sektorer. Data hämtas via länkar för nedladdning eller efterfrågas hos respektive organisation som ansvarar för sina egna datamängder."
+              description="På Sveriges dataportal kan du som delar eller använder data, eller på andra sätt vill att data ska bli en strategisk resurs för bred samhällsnytta, delta på olika sätt. Här kan du ha dialoger med andra, bidra med innehåll eller kanske hitta en framtida samverkanspart."
             >
               <div className="flex flex-wrap justify-center gap-md lg:gap-xl">
                 {contentBoxLinks.map((link, idx: number) => (

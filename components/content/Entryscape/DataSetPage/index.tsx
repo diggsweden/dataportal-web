@@ -16,6 +16,7 @@ import {
 } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
+import { Preamble } from "@/components/global/Typography/Preamble";
 
 const filterCatalogProperties = [
   "dcat:keyword",
@@ -269,6 +270,7 @@ export const DataSetPage: React.FC = () => {
                 block: 'accessServiceCustom',
                 extends: 'template',
                 relation: 'dcat:accessService',
+                class: 'mt-md md:mt-none',
                 template: 
                 '<button class="button--primary button--large flex items-center !no-underline">' +
                   '{{link class="linkInBtn noUnderline" namedclick="dataservice-link" content="${t(
@@ -304,14 +306,14 @@ export const DataSetPage: React.FC = () => {
                     "pages|datasetpage$no_title",
                   )}</span>"}}</span>' +                  
                   '<div class="flex justify-between items-end md:items-center mt-md md:mt-lg gap-lg">' +
-                    '<div class="flex flex-col md:flex-row gap-md md:gap-lg">' +
+                    '<div class="flex flex-col md:flex-row md:gap-x-lg">' +
                     '{{distributionAccessCustom}}' +
+                    '{{#ifprop "dcat:accessService"}}{{accessServiceCustom}}{{/ifprop}}' +
                     '{{exploreApiLink}}' +
                     '</div>' +
                     '<button open="{{expandTooltip}}" close="{{unexpandTooltip}}" class="esbExpandButton button button--secondary button--large h-fit text-nowrap">' +
                     '</button>' +
-                  '</div>' +
-                  '{{#ifprop "dcat:accessService"}}{{accessServiceCustom}}{{/ifprop}}',
+                  '</div>',
                   rowexpand: '{{#ifprop "dcat:downloadURL"}}' +
                   '{{#ifprop "dcat:downloadURL" min="2"}}' +
                   '<h3 class="rdformsLabel !mt-none">${t(
@@ -389,19 +391,9 @@ export const DataSetPage: React.FC = () => {
           {/* Left column */}
           <div className="mb-lg flex w-full max-w-md flex-col gap-lg lg:mb-xl">
             {/* Publisher */}
-            <script
-              type="text/x-entryscape-handlebar"
-              data-entryscape="true"
-              data-entryscape-component="template"
-              className="preamble"
-              dangerouslySetInnerHTML={{
-                __html: `        
-                <span class="text-lg text-textSecondary">
-                {{text relation="dcterms:publisher"}} 
-                </span>                            
-                                `,
-              }}
-            />
+            {entry.publisher && (
+              <Preamble className="mb-lg">{entry.publisher}</Preamble>
+            )}
 
             {/* Indicators */}
             <div
@@ -512,7 +504,8 @@ export const DataSetPage: React.FC = () => {
                           relationinverse="dcat:dataset" 
                           onecol=true 
                           template="dcat:OnlyCatalog"                               
-                          filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi"
+                          filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi
+                          "
                           }}
                         `,
                 }}
