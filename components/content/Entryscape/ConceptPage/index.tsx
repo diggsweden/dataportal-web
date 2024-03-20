@@ -8,6 +8,7 @@ import Head from "next/head";
 import { hemvist, linkBase } from "@/utilities";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
+import { Preamble } from "@/components/global/Typography/Preamble";
 
 export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
   curi,
@@ -87,7 +88,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               path = tmp[0] + '/' + tmp[1];
             }
             else
-              path = resourceUri;              
+              path = resourceUri;           
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalconcept/") > -1)
               if(isTerm)
@@ -109,7 +110,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               else
                 return "/${lang}/concepts" + entryPath;
             }
-
+            
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalterminology/") > -1)                            
               return "/${lang}/externalconcept/" + path;
 
@@ -124,7 +125,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
 
               return "/${lang}/concepts" + entryPath;
             }
-
+            
             return resourceUri;
           }
 
@@ -285,7 +286,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                     node.firstElementChild.appendChild(el);
 
                     var ruri = getLocalizedValue(entry.getAllMetadata(),'skos:inScheme','${lang}');                                             
-
+                    
                     if(ruri)
                       util.getEntryByResourceURI(ruri).then((e) => {                              
                         var label = getLocalizedValue(e.getAllMetadata(),'dcterms:title','${lang}'); 
@@ -297,7 +298,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                   }
                 },
                 loadEntry:true
-              },  
+              },
               {
                 block: 'terminology',
                 extends: 'template',
@@ -309,9 +310,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                 block: 'conceptBlock',
                 class: 'conceptDetail',
                 extends: 'template',
-                template: '{{#ifprop "dcterms:description"}}<span class="preamble">{{ text content="\${dcterms:description}" }}</span>{{/ifprop}}' +
-                          '{{#ifprop "skos:definition"}}<span class="preamble">{{ text content="\${skos:definition}" }}</span>{{/ifprop}}' +
-
+                template:
                   '{{#ifprop "skos:altLabel"}}<div><h2>${t(
                     "pages|concept_page$alternativ_term",
                   )}</h2><span>{{ text content="\${skos:altLabel}" }}</span></div>{{/ifprop}}' +
@@ -429,6 +428,19 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
       <div className="mb-lg flex flex-col gap-xl md:mb-xl lg:flex-row lg:gap-2xl">
         {/* Left column */}
         <div className="flex w-full max-w-md flex-col">
+          {entry.publisher ? (
+            <Preamble className="mb-lg">{entry.publisher}</Preamble>
+          ) : entry.termPublisher ? (
+            <Preamble className="mb-lg">{entry.termPublisher}</Preamble>
+          ) : null}
+
+          {entry.description !== "" && (
+            <p className="mb-lg text-textSecondary">{entry.description}</p>
+          )}
+          {entry.definition !== "" && (
+            <p className="mb-lg text-textSecondary">{entry.definition}</p>
+          )}
+
           <div
             className="flex flex-col gap-lg"
             data-entryscape="conceptBlock"

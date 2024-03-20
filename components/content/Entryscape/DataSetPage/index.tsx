@@ -16,6 +16,7 @@ import {
 } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
+import { Preamble } from "@/components/global/Typography/Preamble";
 
 const filterCatalogProperties = [
   "dcat:keyword",
@@ -391,19 +392,9 @@ export const DataSetPage: React.FC = () => {
           {/* Left column */}
           <div className="mb-lg flex w-full max-w-md flex-col gap-lg lg:mb-xl">
             {/* Publisher */}
-            <script
-              type="text/x-entryscape-handlebar"
-              data-entryscape="true"
-              data-entryscape-component="template"
-              className="preamble"
-              dangerouslySetInnerHTML={{
-                __html: `        
-                <span class="text-lg text-textSecondary">
-                {{text relation="dcterms:publisher"}} 
-                </span>                            
-                                `,
-              }}
-            />
+            {entry.publisher && (
+              <Preamble className="mb-lg">{entry.publisher}</Preamble>
+            )}
 
             {/* Indicators */}
             <div
@@ -514,7 +505,8 @@ export const DataSetPage: React.FC = () => {
                           relationinverse="dcat:dataset" 
                           onecol=true 
                           template="dcat:OnlyCatalog"                               
-                          filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi"
+                          filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi
+                          "
                           }}
                         `,
                 }}

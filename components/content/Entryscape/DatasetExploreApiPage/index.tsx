@@ -12,6 +12,7 @@ import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 import { linkBase, customIndicators } from "@/utilities";
 import { CustomLink } from "@/components/global/CustomLink";
+import { Preamble } from "@/components/global/Typography/Preamble";
 
 const ApiExplorer = dynamic(
   () =>
@@ -203,7 +204,9 @@ export const DataSetExploreApiPage: React.FC<{
 
         <div className="mb-md flex w-full flex-col gap-lg lg:mb-lg">
           {/* Publisher */}
-          <span className="text-lg text-textSecondary">{entry.publisher}</span>
+          {entry.publisher && (
+            <Preamble className="mb-lg">{entry.publisher}</Preamble>
+          )}
 
           {/* Indicators */}
           <div

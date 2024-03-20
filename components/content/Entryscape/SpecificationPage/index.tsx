@@ -8,13 +8,14 @@ import Head from "next/head";
 import { hemvist, keyword, linkBase } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
+import { Preamble } from "@/components/global/Typography/Preamble";
 
 export const SpecificationPage: FC<{
   curi?: string;
   scheme?: string;
 }> = ({ curi, scheme }) => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
-  const { title } = useContext(EntrystoreContext);
+  const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
@@ -40,13 +41,13 @@ export const SpecificationPage: FC<{
   }, []);
 
   useEffect(() => {
-    trackPageView({ documentTitle: title });
+    trackPageView({ documentTitle: entry.title });
   }, [pathname]);
 
   useEffect(() => {
     setBreadcrumb &&
       setBreadcrumb({
-        name: title,
+        name: entry.title,
         crumbs: [
           { name: "start", link: { ...linkBase, link: "/" } },
           {
@@ -58,7 +59,7 @@ export const SpecificationPage: FC<{
           },
         ],
       });
-  }, [pathname, title]);
+  }, [pathname, entry.title]);
 
   const addScripts = () => {
     if (typeof window !== "undefined") {
@@ -268,29 +269,28 @@ export const SpecificationPage: FC<{
   return (
     <Container>
       <Head>
-        <title>{title ? `${title} - Sveriges dataportal` : "test"}</title>
-        <meta property="og:title" content={`${title} - Sveriges dataportal`} />
-        <meta name="twitter:title" content={`${title} - Sveriges dataportal`} />
+        <title>
+          {entry.title ? `${entry.title} - Sveriges dataportal` : "test"}
+        </title>
+        <meta
+          property="og:title"
+          content={`${entry.title} - Sveriges dataportal`}
+        />
+        <meta
+          name="twitter:title"
+          content={`${entry.title} - Sveriges dataportal`}
+        />
       </Head>
       <div>
         <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
-          {title}
+          {entry.title}
         </Heading>
         <div className="flex flex-col gap-xl md:mb-xl lg:flex-row lg:gap-2xl">
           {/* Left column */}
           <div className="flex w-full max-w-md flex-col">
-            <script
-              type="text/x-entryscape-handlebar"
-              data-entryscape="true"
-              data-entryscape-component="template"
-              dangerouslySetInnerHTML={{
-                __html: `
-                          <span class="text-lg text-textSecondary">
-                            {{text relation="dcterms:publisher"}} 
-                          <span>
-                          `,
-              }}
-            ></script>
+            {entry.publisher && (
+              <Preamble className="mb-lg">{entry.publisher}</Preamble>
+            )}
 
             <span
               className="mb-lg mt-md !font-ubuntu text-lg text-textSecondary md:mb-xl md:mt-lg"
