@@ -101,18 +101,19 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
           </Heading>
         )}
         <div className="mt-xl flex flex-wrap gap-md">
-          {keywordList.map((keyword, idx) => (
-            <Button
-              variant="plain"
-              key={idx}
-              onClick={() => setActiveFilter(keyword)}
-              label={keyword.value}
-              className={`${
-                keyword.id === activeFilter.id &&
-                "hover-none bg-pink-200 font-strong text-blackOpaque3 hover:bg-pink-200"
-              }`}
-            />
-          ))}
+          {keywordList.length > 1 &&
+            keywordList.map((keyword, idx) => (
+              <Button
+                variant="plain"
+                key={idx}
+                onClick={() => setActiveFilter(keyword)}
+                label={keyword.value}
+                className={`${
+                  keyword.id === activeFilter.id &&
+                  "hover-none bg-pink-200 font-strong text-blackOpaque3 hover:bg-pink-200"
+                }`}
+              />
+            ))}
         </div>
         <GridList items={filterList.slice(startIndex, endIndex)} />
         {filterList.length > listItemsPerPage && (
