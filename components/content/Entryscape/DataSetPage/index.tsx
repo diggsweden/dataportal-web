@@ -271,9 +271,10 @@ export const DataSetPage: React.FC = () => {
                 block: 'accessServiceCustom',
                 extends: 'template',
                 relation: 'dcat:accessService',
-                class: 'mt-md md:mt-none',
+                class: 'border-t border-brown-600 pt-md flex flex-col',
                 template: 
-                '<button class="button--primary button--large flex items-center !no-underline">' +
+                '{{view rdformsid="dcat:endpointDescription,dcat:dcterms:type_ds"}}' +
+                '<button class="button--primary button--large flex items-center !no-underline w-fit">' +
                   '{{link class="linkInBtn noUnderline" namedclick="dataservice-link" content="${t(
                     "pages|datasetpage$read_about_api",
                   )}"}}' +
@@ -291,7 +292,8 @@ export const DataSetPage: React.FC = () => {
                 registry: false,
                 expandButton: false,
                 hl: 2,
-                listbody: '<div class="formats">{{body}}</div>',
+                listbody: 
+                '<div class="formats">{{body}}</div>',
                 listplaceholder: '<div class="alert alert-info" role="alert">${t(
                   "pages|datasetpage$no_data",
                 )}</div>',
@@ -309,7 +311,6 @@ export const DataSetPage: React.FC = () => {
                   '<div class="flex justify-between items-end md:items-center mt-md md:mt-lg gap-lg">' +
                     '<div class="flex flex-col md:flex-row md:gap-x-lg">' +
                     '{{distributionAccessCustom}}' +
-                    '{{#ifprop "dcat:accessService"}}{{accessServiceCustom}}{{/ifprop}}' +
                     '{{exploreApiLink}}' +
                     '</div>' +
                     '<button open="{{expandTooltip}}" close="{{unexpandTooltip}}" class="esbExpandButton button button--secondary button--large h-fit text-nowrap">' +
@@ -323,7 +324,8 @@ export const DataSetPage: React.FC = () => {
                   '{{fileList2 directlabel="inherit:registry"}}' +
                   '{{/ifprop}}' +
                   '{{/ifprop}}' +
-                  '{{view rdformsid="dcat:Distribution" filterpredicates="dcat:downloadURL,dcterms:title,dcat:accessService"}}'
+                  '{{view rdformsid="dcat:Distribution" filterpredicates="dcat:downloadURL,dcterms:title,dcat:accessService"}}' +
+                  '{{#ifprop "dcat:accessService"}}{{accessServiceCustom}}{{/ifprop}}' 
               },
               {
                 block: 'aboutDataset',
