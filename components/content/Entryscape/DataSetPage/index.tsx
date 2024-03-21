@@ -273,15 +273,15 @@ export const DataSetPage: React.FC = () => {
                 relation: 'dcat:accessService',
                 template: 
                 '<span class="border-t border-brown-600 pt-md flex flex-col">' +
-                '{{view rdformsid="dcat:endpointDescription,dcat:dcterms:type_ds"}}' +
-                '<button class="button--primary button--large flex items-center !no-underline w-fit">' +
-                  '{{link class="linkInBtn noUnderline" namedclick="dataservice-link" content="${t(
-                    "pages|datasetpage$read_about_api",
-                  )}"}}' +
-                  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
-                  '<path d="M4.08008 11V13H16.0801L10.5801 18.5L12.0001 19.92L19.9201 12L12.0001 4.08002L10.5801 5.50002L16.0801 11H4.08008Z" fill="#6E615A"/>' +
-                  '</svg>' +
-                '</button>' +    
+                  '{{view rdformsid="dcat:endpointDescription,dcat:dcterms:type_ds"}}' +
+                  '<button class="button--primary button--large flex items-center !no-underline w-fit">' +
+                    '{{link class="linkInBtn noUnderline" namedclick="dataservice-link" content="${t(
+                      "pages|datasetpage$read_about_api",
+                    )}"}}' +
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                    '<path d="M4.08008 11V13H16.0801L10.5801 18.5L12.0001 19.92L19.9201 12L12.0001 4.08002L10.5801 5.50002L16.0801 11H4.08008Z" fill="#6E615A"/>' +
+                    '</svg>' +
+                  '</button>' +    
                 '</span>'      
               },
               {
