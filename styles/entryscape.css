@@ -11,7 +11,7 @@
 }
 
 .rdformsRow {
-  @apply mb-md inline-grid w-full p-none md:mb-lg !important;
+  @apply mb-md inline-flex w-full flex-col p-none md:mb-lg !important;
 }
 
 .rdformsRow .rdformsRow {

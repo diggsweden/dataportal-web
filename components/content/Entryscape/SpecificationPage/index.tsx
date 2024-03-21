@@ -322,8 +322,8 @@ export const SpecificationPage: FC<{
           </div>
 
           {/* Right column */}
-          <div className="h-fit w-full max-w-md bg-white p-md lg:w-[296px]">
-            <div className="min-w-296px">
+          <div className="h-fit w-full max-w-md bg-white p-md lg:max-w-[296px]">
+            <div className="w-full">
               <Heading
                 level={2}
                 size={"sm"}

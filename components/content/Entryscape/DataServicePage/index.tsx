@@ -254,7 +254,7 @@ export const DataServicePage: React.FC<{
               data-entryscape-component="template"
               dangerouslySetInnerHTML={{
                 __html: `
-                        <div class="lg:w-[296px]">
+                        <div class="lg:w-full">
                           {{viewMetadata 
                               template="dcat:DataService"
                               filterpredicates="dcterms:title,dcterms:publisher,dcat:endpointURL"
