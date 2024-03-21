@@ -194,7 +194,8 @@ input[type="radio"] {
 }
 
 .explore-api-btn {
-  @apply button--primary button--large button flex items-center gap-sm bg-brown-600 no-underline hover:bg-brown-800 [&_span]:text-white !important;
+  @apply button--primary button--large button mt-md flex items-center gap-sm 
+  bg-brown-600 no-underline hover:bg-brown-800 md:mt-none [&_span]:text-white !important;
 }
 
 /* SWAGGER UI */
