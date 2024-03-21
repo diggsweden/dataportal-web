@@ -63,7 +63,7 @@ export const FileFormatBadge: FC<FileFormatBadgeProps> = ({ badgeName }) => {
       className = "bc-3";
       break;
 
-    case "WMS":
+    case "application/vnd.ogc.wms_xml":
       text = "wms";
       className = "bc-3";
       break;
