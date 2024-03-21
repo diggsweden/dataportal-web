@@ -15,6 +15,13 @@ const HEALTHCHECK_SECRET = process.env.HEALTHCHECK_SECRET;
  * @returns status: "pass" or status: "fail"
  */
 export default async function handler(req: any, res: any) {
+  // Check to see that there is a secret set as env variable HEALTHCHECK_SECRET.
+  if (!HEALTHCHECK_SECRET) {
+    return res
+      .status(401)
+      .json({ message: "No HEALTHCHECK_SECRET environment variable found" });
+  }
+
   // Check for secret to confirm this is a valid request
   if (HEALTHCHECK_SECRET && req.query.secret !== HEALTHCHECK_SECRET) {
     return res.status(401).json({ message: "Invalid token" });

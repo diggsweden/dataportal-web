@@ -72,7 +72,7 @@ export const FormNav: React.FC<ContainerDpDwnProps> = ({
         className={`absolute w-full flex-col bg-white md:w-[328px] lg:static lg:flex lg:h-full lg:w-fit 
         lg:bg-transparent ${
           expanded
-            ? `-bottom-sm z-40 h-fit max-h-[calc(100svh-292px)] translate-y-full overflow-y-scroll 
+            ? `-bottom-sm z-40 h-fit max-h-[calc(100svh-292px)] translate-y-full overflow-y-auto 
             shadow-2xl md:max-h-[calc(100svh-248px)]`
             : "hidden"
         }`}
