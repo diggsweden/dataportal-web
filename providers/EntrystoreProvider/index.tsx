@@ -203,6 +203,13 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
 
+              // const datasets = await es
+              //   .newSolrQuery()
+              //   .rdfType(["dcat:Dataset", "dcat:DataService"])
+              //   .uriProperty("dcterms:conformsTo", resourceURI);
+
+              // console.log("datasets", datasets);
+
               //the getLocalizedValue function might fetch from network, so start all IO with promises
               valuePromises.push(
                 getLocalizedValue(graph, "dcterms:title", nextLang, es, {
@@ -239,10 +246,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 );
               }
               if (isConcept && !fetchMore) {
-                const term = graph
-                  .find(resourceURI, "skos:inScheme")[0]
-                  .getValue();
-                const termEntry = await util.getEntryByResourceURI(term);
+                const termEntry = await util.getEntryByResourceURI(
+                  graph.findFirstValue(resourceURI, "skos:inScheme"),
+                );
                 const termGraph = termEntry.getAllMetadata();
 
                 valuePromises.push(
@@ -298,6 +304,17 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
 
+              // const maybeSpecs = graph
+              //   .find(null, "dcterms:conformsTo")
+              //   .map((stmt: any) => stmt.getValue());
+
+              // const specs = await es
+              //   .newSolrQuery()
+              //   .rdfType(["dcterms:Standard", "prof:Profile"])
+              //   .resource(maybeSpecs);
+
+              // console.log("specs", specs);
+
               //the getLocalizedValue function might fetch from network, so start all IO with promises
               valuePromises.push(
                 getLocalizedValue(graph, "dcterms:title", nextLang, es, {
@@ -334,10 +351,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 );
               }
               if (isConcept && !fetchMore) {
-                const term = graph
-                  .find(resourceURI, "skos:inScheme")[0]
-                  .getValue();
-                const termEntry = await util.getEntryByResourceURI(term);
+                const termEntry = await util.getEntryByResourceURI(
+                  graph.findFirstValue(resourceURI, "skos:inScheme"),
+                );
                 const termGraph = termEntry.getAllMetadata();
 
                 valuePromises.push(
