@@ -516,6 +516,8 @@ export class EntryScape {
       let esQuery = es.newSolrQuery();
       let searchList: any;
 
+      const term = "http://www.w3.org/2004/02/skos/core#Concept";
+
       if (request.fetchFacets) {
         if (
           this.facetSpecification &&
@@ -644,11 +646,29 @@ export class EntryScape {
           "&query=",
           `&query=(title:(${titleQ}))+AND+`,
         );
-      else
+      else {
+        const termSearch = request.esRdfTypes && request.esRdfTypes[0] === term;
+        const prefLabel = es
+          .newSolrQuery()
+          .literalProperty("skos:prefLabel", query).properties[0].md5;
+        const altLabel = es
+          .newSolrQuery()
+          .literalProperty("skos:altLabel", query).properties[0].md5;
+        const hiddenLabel = es
+          .newSolrQuery()
+          .literalProperty("skos:hiddenLabel", query).properties[0].md5;
+
         queryUrl = queryUrl.replace(
           "&query=",
-          `&query=(metadata.object.literal:(${query})+OR+metadata.predicate.literal_t.8d3b7b43:(${gramQuery})+OR+metadata.predicate.literal_t.07d92ae6:(${gramQuery})+OR+metadata.predicate.literal_t.7e090ea1:(${gramQuery}))+AND+`,
+          `&query=(metadata.object.literal:(${query})+OR+metadata.predicate.literal_t.${
+            termSearch ? prefLabel : "3f2ae919"
+          }:(${gramQuery})+OR+metadata.predicate.literal_t.${
+            termSearch ? altLabel : "feda1d30"
+          }:(${gramQuery})+OR+metadata.predicate.literal_t.${
+            termSearch ? hiddenLabel : "a6424133"
+          }:(${gramQuery}))+AND+`,
         );
+      }
 
       fetch(queryUrl).then((response) => {
         response.json().then((data) => {
