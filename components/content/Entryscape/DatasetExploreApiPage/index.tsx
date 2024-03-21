@@ -290,7 +290,7 @@ export const DataSetExploreApiPage: React.FC<{
 
                   <CustomLink
                     className="!mb-lg text-brown-800"
-                    href={`mailto:${entry.contact.email}`}
+                    href={`${entry.contact.email}`}
                   >
                     {entry.contact.name}
                   </CustomLink>
