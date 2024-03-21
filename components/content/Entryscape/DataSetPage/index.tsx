@@ -271,16 +271,18 @@ export const DataSetPage: React.FC = () => {
                 block: 'accessServiceCustom',
                 extends: 'template',
                 relation: 'dcat:accessService',
-                class: 'mt-md md:mt-none',
                 template: 
-                '<button class="button--primary button--large flex items-center !no-underline">' +
-                  '{{link class="linkInBtn noUnderline" namedclick="dataservice-link" content="${t(
-                    "pages|datasetpage$read_about_api",
-                  )}"}}' +
-                  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
-                  '<path d="M4.08008 11V13H16.0801L10.5801 18.5L12.0001 19.92L19.9201 12L12.0001 4.08002L10.5801 5.50002L16.0801 11H4.08008Z" fill="#6E615A"/>' +
-                  '</svg>' +
-                '</button>'          
+                '<span class="border-t border-brown-600 pt-md flex flex-col">' +
+                  '{{view rdformsid="dcat:endpointDescription,dcat:dcterms:type_ds"}}' +
+                  '<button class="button--primary button--large flex items-center !no-underline w-fit">' +
+                    '{{link class="linkInBtn noUnderline" namedclick="dataservice-link" content="${t(
+                      "pages|datasetpage$read_about_api",
+                    )}"}}' +
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                    '<path d="M4.08008 11V13H16.0801L10.5801 18.5L12.0001 19.92L19.9201 12L12.0001 4.08002L10.5801 5.50002L16.0801 11H4.08008Z" fill="#6E615A"/>' +
+                    '</svg>' +
+                  '</button>' +    
+                '</span>'      
               },
               {
                 block: 'distributionListCustom',
@@ -291,7 +293,8 @@ export const DataSetPage: React.FC = () => {
                 registry: false,
                 expandButton: false,
                 hl: 2,
-                listbody: '<div class="formats">{{body}}</div>',
+                listbody: 
+                '<div class="formats">{{body}}</div>',
                 listplaceholder: '<div class="alert alert-info" role="alert">${t(
                   "pages|datasetpage$no_data",
                 )}</div>',
@@ -309,7 +312,6 @@ export const DataSetPage: React.FC = () => {
                   '<div class="flex justify-between items-end md:items-center mt-md md:mt-lg gap-lg">' +
                     '<div class="flex flex-col md:flex-row md:gap-x-lg">' +
                     '{{distributionAccessCustom}}' +
-                    '{{#ifprop "dcat:accessService"}}{{accessServiceCustom}}{{/ifprop}}' +
                     '{{exploreApiLink}}' +
                     '</div>' +
                     '<button open="{{expandTooltip}}" close="{{unexpandTooltip}}" class="esbExpandButton button button--secondary button--large h-fit text-nowrap">' +
@@ -323,7 +325,8 @@ export const DataSetPage: React.FC = () => {
                   '{{fileList2 directlabel="inherit:registry"}}' +
                   '{{/ifprop}}' +
                   '{{/ifprop}}' +
-                  '{{view rdformsid="dcat:Distribution" filterpredicates="dcat:downloadURL,dcterms:title,dcat:accessService"}}'
+                  '{{view rdformsid="dcat:Distribution" filterpredicates="dcat:downloadURL,dcterms:title,dcat:accessService"}}' +
+                  '{{#ifprop "dcat:accessService"}}{{accessServiceCustom}}{{/ifprop}}' 
               },
               {
                 block: 'aboutDataset',
