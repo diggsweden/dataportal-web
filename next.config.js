@@ -90,6 +90,8 @@ const nextConfig = nextTranslate({
     deviceSizes: [640, 828, 1080, 1200, 1920, 3840],
     imageSizes: [128, 256, 384],
     dangerouslyAllowSVG: true,
+    path: "/_next/image",
+    loader: "default",
   },
 
   async headers() {
