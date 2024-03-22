@@ -14,8 +14,6 @@ interface CustomImageProps {
 const isNextStatic = (url: string) =>
   typeof url != "string" || !url.startsWith("/uploads");
 
-const imageWidths = [128, 256, 384, 640, 828, 1080, 1200, 1920, 3840];
-
 export const CustomImage: FC<CustomImageProps> = ({
   image,
   sizes,
@@ -46,7 +44,7 @@ export const CustomImage: FC<CustomImageProps> = ({
         sizes={
           sizes
             ? sizes
-            : `(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw`
+            : "(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw"
         }
         loading="lazy"
       />
@@ -57,21 +55,17 @@ export const CustomImage: FC<CustomImageProps> = ({
     ? image.url
     : (env("MEDIA_BASE_URL") || "") + image.url;
 
-  const srcset = imageWidths
-    .map((w) => `${src}?w=${w}&q=${75} ${w}w`)
-    .join(", ");
-
   return (
-    <picture>
-      <source srcSet={srcset} type={image.mime} sizes={sizes} />
-      <img
-        className={className}
-        src={`${src}?w=${384}&q=${75}`}
-        width={image.width || ""}
-        height={image.height || ""}
-        alt={image.alt || ""}
-        loading="lazy"
-      />
-    </picture>
+    <Image
+      src={src}
+      width={Number(image.width) || 384}
+      height={Number(image.height) || 200}
+      className={className ? className : ""}
+      alt={image.alt || ""}
+      sizes={
+        sizes || "(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw"
+      }
+      priority
+    />
   );
 };
