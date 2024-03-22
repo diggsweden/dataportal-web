@@ -86,7 +86,11 @@ const nextConfig = nextTranslate({
   staticPageGenerationTimeout: 240,
 
   images: {
-    domains: [process.env.IMAGE_DOMAIN || "localhost", "bcdn.screen9.com"],
+    domains: [
+      process.env.IMAGE_DOMAIN || "localhost",
+      "bcdn.screen9.com",
+      "dev.beta.strapi.dataportal.dev1.se",
+    ],
     deviceSizes: [640, 828, 1080, 1200, 1920, 3840],
     imageSizes: [128, 256, 384],
     dangerouslyAllowSVG: true,
