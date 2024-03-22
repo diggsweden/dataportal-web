@@ -30,7 +30,7 @@ export const CustomImage: FC<CustomImageProps> = ({
         alt={"image not found"}
         className={className}
         sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw"
-        priority
+        loading="lazy"
       />
     );
   }
@@ -48,7 +48,7 @@ export const CustomImage: FC<CustomImageProps> = ({
             ? sizes
             : `(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw`
         }
-        priority
+        loading="lazy"
       />
     );
   }
@@ -70,8 +70,7 @@ export const CustomImage: FC<CustomImageProps> = ({
         width={image.width || ""}
         height={image.height || ""}
         alt={image.alt || ""}
-        /* @ts-ignore */
-        fetchpriority="high"
+        loading="lazy"
       />
     </picture>
   );
