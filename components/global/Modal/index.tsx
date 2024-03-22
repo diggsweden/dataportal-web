@@ -43,7 +43,7 @@ export const Modal: FC<ModalProps> = ({
       <div
         ref={ref}
         className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] w-4/5 max-w-md -translate-x-1/2 -translate-y-1/2  
-        overflow-scroll bg-white p-xl shadow-2xl md:w-auto ${
+        overflow-auto bg-white p-xl shadow-2xl md:w-auto ${
           modalOpen ? "visible" : "hidden"
         }`}
         onClick={(e) => {

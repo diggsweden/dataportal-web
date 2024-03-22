@@ -686,7 +686,7 @@
 }
 
 .concept_hierarchy {
-  @apply overflow-scroll bg-white py-md;
+  @apply overflow-auto bg-white py-md;
 }
 
 .concept_hierarchy svg {
