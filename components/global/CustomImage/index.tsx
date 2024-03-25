@@ -9,6 +9,7 @@ interface CustomImageProps {
   image: ImageInterface | null;
   sizes?: string;
   className?: string;
+  priority?: boolean;
 }
 
 const isNextStatic = (url: string) =>
@@ -18,6 +19,7 @@ export const CustomImage: FC<CustomImageProps> = ({
   image,
   sizes,
   className,
+  priority = false,
 }) => {
   if (!image) {
     return (
@@ -36,6 +38,7 @@ export const CustomImage: FC<CustomImageProps> = ({
   if (isNextStatic(image.url)) {
     return (
       <Image
+        key={image.url}
         src={image.url}
         width={image.width || 384}
         height={image.height || 200}
@@ -46,7 +49,7 @@ export const CustomImage: FC<CustomImageProps> = ({
             ? sizes
             : "(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw"
         }
-        loading="lazy"
+        priority={priority}
       />
     );
   }
@@ -57,6 +60,7 @@ export const CustomImage: FC<CustomImageProps> = ({
 
   return (
     <Image
+      key={src}
       src={src}
       width={Number(image.width) || 384}
       height={Number(image.height) || 200}
@@ -65,7 +69,7 @@ export const CustomImage: FC<CustomImageProps> = ({
       sizes={
         sizes || "(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw"
       }
-      priority
+      priority={priority}
     />
   );
 };
