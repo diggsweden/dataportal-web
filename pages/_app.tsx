@@ -121,11 +121,8 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
 
   useEffect(() => {
     asPath.includes("#") && onHash(asPath);
-  }, [pathname]);
-
-  useEffect(() => {
     setImageHero(heroImage);
-  }, []);
+  }, [pathname]);
 
   return (
     <ApolloProvider client={client}>
