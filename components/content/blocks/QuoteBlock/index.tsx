@@ -18,6 +18,7 @@ export const QuoteBlock: FC<QuoteFragment> = ({ quote, author, image }) => {
       {image && (
         <CustomImage
           sizes="(max-width: 640px) 10vw, 100px"
+          width={128}
           image={image || {}}
           className="h-[50px] max-w-[50px] rounded-full object-cover md:h-[100px] md:max-w-[100px] lg:h-[130px] lg:max-w-[130px]"
         />

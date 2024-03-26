@@ -10,18 +10,18 @@ interface CustomImageProps {
   sizes?: string;
   className?: string;
   priority?: boolean;
+  width?: number;
 }
 
 const isNextStatic = (url: string) =>
   typeof url != "string" || !url.startsWith("/uploads");
-
-const imageWidths = [384, 640, 1080, 1200, 1920];
 
 export const CustomImage: FC<CustomImageProps> = ({
   image,
   sizes,
   className,
   priority = false,
+  width,
 }) => {
   if (!image) {
     return (
@@ -60,21 +60,16 @@ export const CustomImage: FC<CustomImageProps> = ({
     ? image.url
     : (env("MEDIA_BASE_URL") || "") + image.url;
 
-  const srcset = imageWidths
-    .map((w) => `${src}?w=${w}&q=${75} ${w}w`)
-    .join(", ");
-
   return (
-    <picture>
-      <source srcSet={srcset} type={image.mime} sizes={sizes} />
-      <img
-        className={className}
-        src={`${src}?w=${384}&q=${75}`}
-        width={image.width || ""}
-        height={image.height || ""}
-        alt={image.alt || ""}
-        loading="lazy"
-      />
-    </picture>
+    <Image
+      key={src}
+      src={`${src}?w=${width || 384}&q=${75}`}
+      width={Number(image.width) || 384}
+      height={Number(image.height) || 200}
+      className={className ? className : ""}
+      alt={image.alt || ""}
+      unoptimized={true}
+      priority={priority}
+    />
   );
 };
