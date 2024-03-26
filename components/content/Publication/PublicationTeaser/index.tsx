@@ -34,6 +34,8 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
     <Link
       href={type.url}
       className="group flex h-full flex-col justify-between no-underline"
+      scroll={false}
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
     >
       <div>
         <CustomImage

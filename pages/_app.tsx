@@ -143,7 +143,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
             <CookieBanner />
             <div
               id="top"
-              className={`relative h-screen min-h-screen overflow-x-hidden md:h-auto md:overflow-x-visible ${
+              className={`relative h-screen min-h-screen md:h-auto md:overflow-x-visible ${
                 openSideBar ? "overflow-y-hidden md:overflow-y-visible" : ""
               }`}
             >
