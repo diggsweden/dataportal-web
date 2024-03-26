@@ -35,7 +35,6 @@ export const Promo: FC<PromoProps> = ({
       {image && (
         <CustomImage
           image={image}
-          width={384}
           sizes="(max-width: 640px) 100vw, (max-width: 1080px) 50vw, (max-width: 1200px) 33vw, 20vw"
           className="min-h-[152px] w-full object-cover"
         />
