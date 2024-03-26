@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
-import { ContainerData_Dataportal_Digg_Container_Fragment as IContainer } from "@/graphql/__generated__/operations";
-import { RelatedContainerFragment } from "@/graphql/__generated__/operations";
-import { checkLang, isIE, linkBase } from "@/utilities";
+import { ContainerDataFragment } from "@/graphql/__generated__/operations";
+import { checkLang, linkBase } from "@/utilities";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import { Heading } from "@/components/global/Typography/Heading";
@@ -52,7 +51,7 @@ const getLinks = () => {
     document.querySelector("#content") || document.createElement("div");
 
   const hTags = Array.prototype.slice.call(
-    cont.querySelectorAll("h2") || document.createElement("div"),
+    cont.querySelectorAll(".textBlock h2") || document.createElement("div"),
     0,
   );
 
@@ -75,10 +74,8 @@ const getLinks = () => {
   return menuItems;
 };
 
-interface ContainerPageProps extends IContainer {
-  related?: RelatedContainerFragment[];
-  domain?: DiggDomain;
-  category?: IContainer;
+interface ContainerPageProps extends ContainerDataFragment {
+  related?: ContainerDataFragment[];
 }
 
 export const highlightCode = () => {
@@ -98,14 +95,10 @@ export const highlightCode = () => {
 export const ContainerPage: React.FC<ContainerPageProps> = ({
   heading,
   image,
-  category,
-  domains,
   preamble,
   blocks,
-  slug,
-  name,
   related,
-  domain,
+  parent,
 }) => {
   const [menuItems, setMenuItems] = useState<Anchorlink[] | []>([]);
   const { setBreadcrumb } = useContext(SettingsContext);
@@ -113,60 +106,38 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   const { trackPageView } = useMatomo();
   const { t } = useTranslation("common");
 
-  const { appRenderKey } = useContext(SettingsContext);
-
-  const hasRelatedContent = related && related.length > 2;
-  const categoryLadingPage = slug.split("/").join("") === category?.slug;
-
-  useEffect(() => {
-    const newMenuItems = getLinks();
-
-    // Make sure that the state needs to be updated
-    if (
-      (menuItems[0] &&
-        newMenuItems[0] &&
-        menuItems[0].id !== newMenuItems[0].id) ||
-      (menuItems[0] && !newMenuItems[0]) ||
-      (!menuItems[0] && newMenuItems[0])
-    ) {
-      !isIE && setMenuItems(newMenuItems);
-    }
-  }, [menuItems, pathname, appRenderKey]);
+  const hasRelatedContent = related && related.length > 1;
 
   useEffect(() => {
     //Highlights code using prismjs
     highlightCode();
 
+    //Creates anchorlinks for the content menu
+    const newMenuItems = getLinks();
+    setMenuItems(newMenuItems);
+
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
-    if (domain) {
+    if (parent && parent.heading && parent.slug) {
       crumbs.push({
-        name: domains[0].name,
-        link: { ...linkBase, link: `/${domains[0].slug}` },
-      });
-    }
-    if (category && !categoryLadingPage) {
-      crumbs.push({
-        name: category.name,
-        link: { ...linkBase, link: category.slug },
+        name: parent.heading,
+        link: { ...linkBase, link: parent.slug },
       });
     }
 
     setBreadcrumb &&
       setBreadcrumb({
-        name: name,
+        name: heading,
         crumbs: crumbs,
       });
 
     // Matomo tracking
-    trackPageView({ documentTitle: name });
+    trackPageView({ documentTitle: heading });
   }, [pathname]);
 
   return (
     <Container>
       <article className="flex w-full flex-col gap-md lg:gap-xl xl:flex-row">
-        {hasRelatedContent && (
-          <ContainerNav related={related} domain={domain} />
-        )}
+        {hasRelatedContent && <ContainerNav related={related} />}
         <div className="flex w-full flex-col">
           {!image && heading && (
             <Heading
@@ -181,7 +152,10 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
           )}
           <div className="flex w-full flex-col items-start justify-end gap-xl lg:flex-row-reverse">
             {menuItems.length > 2 && (
-              <div id="stickyNav" className="w-full">
+              <div
+                id="stickyNav"
+                className="w-full overflow-y-auto lg:sticky lg:top-[76px] lg:max-h-[calc(100vh-152px)]"
+              >
                 <StickyNav
                   menuHeading={t("common|content-menu-heading")}
                   menuItems={menuItems}

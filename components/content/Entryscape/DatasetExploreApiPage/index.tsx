@@ -12,6 +12,7 @@ import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 import { linkBase, customIndicators } from "@/utilities";
 import { CustomLink } from "@/components/global/CustomLink";
+import { Preamble } from "@/components/global/Typography/Preamble";
 
 const ApiExplorer = dynamic(
   () =>
@@ -203,7 +204,9 @@ export const DataSetExploreApiPage: React.FC<{
 
         <div className="mb-md flex w-full flex-col gap-lg lg:mb-lg">
           {/* Publisher */}
-          <span className="text-lg text-textSecondary">{entry.publisher}</span>
+          {entry.publisher && (
+            <Preamble className="mb-lg">{entry.publisher}</Preamble>
+          )}
 
           {/* Indicators */}
           <div
@@ -220,10 +223,10 @@ export const DataSetExploreApiPage: React.FC<{
           </Heading>
 
           {/* Refers to dataset - datset */}
-          <span className="break-words text-sm lg:text-md">{entry.title}</span>
+          <span className="text-sm lg:text-md">{entry.title}</span>
         </div>
 
-        <div className="my-lg h-[1px] break-words border border-brown-600 opacity-20"></div>
+        <div className="my-lg h-[1px] border border-brown-600 opacity-20"></div>
 
         {/* Tabs navigation */}
         <nav className="mb-lg">
@@ -287,7 +290,7 @@ export const DataSetExploreApiPage: React.FC<{
 
                   <CustomLink
                     className="!mb-lg text-brown-800"
-                    href={`mailto:${entry.contact.email}`}
+                    href={`${entry.contact.email}`}
                   >
                     {entry.contact.name}
                   </CustomLink>

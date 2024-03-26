@@ -35,12 +35,11 @@ export const FortroendeModulePage: FC<ModuleDataFragment> = ({ blocks }) => {
         name: heading!,
         crumbs: [
           { name: "start", link: { ...linkBase, link: "/" } },
-          { name: "Offentlig AI", link: { ...linkBase, link: "/offentligai" } },
           {
             name: "Förtroendemodellen",
             link: {
               ...linkBase,
-              link: "/offentligai/fortroendemodellen",
+              link: "/fortroendemodellen",
             },
           },
         ],

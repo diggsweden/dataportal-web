@@ -18,6 +18,7 @@ const buttonVariants = cva(["button"], {
       primary: ["button--primary"],
       secondary: ["button--secondary"],
       plain: ["button--plain"],
+      pink: ["button--pink"],
       filter: ["button--filter"],
     },
   },

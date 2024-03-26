@@ -155,9 +155,15 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             indexOrder: 0,
           },
           {
+            resource: "http://purl.org/dc/terms/type",
+            type: ESType.uri,
+            related: true,
+            indexOrder: 1,
+          },
+          {
             resource: "http://purl.org/dc/terms/publisher",
             type: ESType.uri,
-            indexOrder: 1,
+            indexOrder: 2,
           },
           {
             resource: "http://purl.org/dc/terms/format",
@@ -176,18 +182,12 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             indexOrder: 4,
           },
           {
-            resource: "http://purl.org/dc/terms/type",
-            type: ESType.uri,
-            related: true,
-            indexOrder: 5,
-          },
-          {
             resource: "http://purl.org/dc/terms/license",
             type: ESType.uri,
             dcatProperty: "dcterms:license",
             dcatType: "choice",
             dcatFilterEnabled: false,
-            indexOrder: 6,
+            indexOrder: 5,
           },
           {
             resource: "http://data.europa.eu/r5r/applicableLegislation",
@@ -195,7 +195,7 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             dcatProperty: "dcatap:applicableLegislation",
             dcatType: "choice",
             dcatFilterEnabled: false,
-            indexOrder: 7,
+            indexOrder: 6,
           },
         ],
       },
@@ -346,7 +346,7 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
 
                 <SearchForm
                   search={search}
-                  searchMode={"datasets"}
+                  searchMode={searchType}
                   query={query}
                   setQuery={setQuery}
                 />

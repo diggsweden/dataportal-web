@@ -26,14 +26,12 @@ export const MODULE_LIST_DATA_FRAGMENT = gql`
   }
 `;
 
-export const CATEGORY_FRAGMENT = gql`
-  fragment Category on dataportal_Digg_ICategory {
-    id
-    name
+export const PARENT_FRAGMENT = gql`
+  fragment Parent on dataportal_Digg_Parent {
+    heading
+    preamble
     slug
-    taxonomy
-    updatedAt
-    locale
+    name
   }
 `;
 
@@ -50,16 +48,41 @@ export const CONTAINER_FRAGMENT = gql`
     updatedAt
     createdAt
     slug
-    domains {
-      name
-      slug
+    landingPage
+    blocks {
+      ...BlockData
+      ... on dataportal_Digg_ModuleList {
+        ...ModuleListData
+      }
     }
-    categories {
-      ...Category
+    parent {
+      ...Parent
     }
-    tags {
-      value
+    containerGroup {
+      ...Parent
     }
+    seo {
+      ...SeoData
+    }
+  }
+  ${PARENT_FRAGMENT}
+  ${MODULE_LIST_DATA_FRAGMENT}
+`;
+
+export const GOOD_EXAMPLE_FRAGMENT = gql`
+  fragment GoodExampleData on dataportal_Digg_IGood_Example {
+    id
+    name
+    locale
+    heading
+    preamble
+    publisher
+    image {
+      ...MediaType
+    }
+    updatedAt
+    createdAt
+    slug
     blocks {
       ...BlockData
       ... on dataportal_Digg_ModuleList {
@@ -69,19 +92,62 @@ export const CONTAINER_FRAGMENT = gql`
     seo {
       ...SeoData
     }
+    keywords {
+      value
+      id
+    }
+    apiAndDataset {
+      title
+      link
+    }
+    publishedAt
   }
   ${MODULE_LIST_DATA_FRAGMENT}
-  ${CATEGORY_FRAGMENT}
 `;
 
-export const PUBLICATION_FRAGMENT = gql`
-  fragment PublicationData on dataportal_Digg_IPublication {
-    ...ContainerData
+export const NEWS_ITEM_FRAGMENT = gql`
+  fragment NewsItemData on dataportal_Digg_INews_Item {
+    id
+    name
+    locale
+    heading
+    preamble
+    image {
+      ...MediaType
+    }
+    updatedAt
+    createdAt
+    slug
+    blocks {
+      ...BlockData
+      ... on dataportal_Digg_ModuleList {
+        ...ModuleListData
+      }
+    }
+    seo {
+      ...SeoData
+    }
+    keywords {
+      value
+      id
+    }
     publishedAt
-    startDate
-    endDate
   }
-  ${CONTAINER_FRAGMENT}
+  ${MODULE_LIST_DATA_FRAGMENT}
+`;
+
+export const TOOL_FRAGMENT = gql`
+  fragment ToolData on dataportal_Digg_ITool {
+    heading
+    preamble
+    link
+    domainLabel
+    description
+    keywords {
+      value
+      id
+    }
+  }
 `;
 
 export const FORM_INPUT_FRAGMENT = gql`
@@ -156,6 +222,11 @@ export const LINK_FRAGMENT = gql`
     title
     description
     linktype
+    customPreamble
+    showPreamble
+    image {
+      ...MediaType
+    }
   }
 `;
 
@@ -173,6 +244,16 @@ export const FAQ_FRAGMENT = gql`
     question
     answer {
       markdown
+    }
+  }
+`;
+
+export const QUOTE_FRAGMENT = gql`
+  fragment Quote on dataportal_Digg_Quote {
+    quote
+    author
+    image {
+      ...Image
     }
   }
 `;
@@ -199,6 +280,8 @@ export const TEXT_FRAGMENT = gql`
 export const RELATED_CONTENT_FRAGMENT = gql`
   fragment RelatedContent on dataportal_Digg_RelatedContent {
     id
+    heading
+    showMoreLink
     links {
       ...Link
     }
@@ -263,6 +346,10 @@ export const BLOCK_FRAGMENT = gql`
     ... on dataportal_Digg_FormBlock {
       ...FormBlock
     }
+
+    ... on dataportal_Digg_Quote {
+      ...Quote
+    }
   }
   ${LINK_FRAGMENT}
   ${FAQ_FRAGMENT}
@@ -275,4 +362,5 @@ export const BLOCK_FRAGMENT = gql`
   ${FORM_BLOCK_FRAGMENT}
   ${FORM_ELEMENT_FRAGMENT}
   ${CHOICE_FRAGMENT}
+  ${QUOTE_FRAGMENT}
 `;

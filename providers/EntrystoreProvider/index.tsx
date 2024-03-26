@@ -15,6 +15,7 @@ export interface EntrystoreProviderProps {
   entryUri?: string;
   entrystoreUrl: string | "admin.dataportal.se";
   fetchMore: boolean;
+  isConcept?: boolean;
 }
 
 export interface ESEntry {
@@ -24,6 +25,8 @@ export interface ESEntry {
   title: string;
   description: string;
   publisher: string;
+  termPublisher: string;
+  definition: string;
   contact?: ESContact;
 }
 
@@ -39,6 +42,8 @@ const defaultESEntry: ESEntry = {
   title: "",
   description: "",
   publisher: "",
+  termPublisher: "",
+  definition: "",
 };
 
 export const EntrystoreContext = createContext<ESEntry>(defaultESEntry);
@@ -57,6 +62,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
   entryUri,
   entrystoreUrl,
   fetchMore,
+  isConcept,
 }) => {
   const [state, setState] = useState(defaultESEntry);
   const { lang: nextLang } = useTranslation("common");
@@ -181,9 +187,11 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         defaultESEntry.entrystore = new ESJS.EntryStore(
           `https://${entrystoreUrl}/store`,
         );
+        defaultESEntry.entrystore.getREST().disableJSONP();
+        defaultESEntry.entrystore.getREST().disableCredentials();
+
         var util = new ESJS.EntryStoreUtil(defaultESEntry.entrystore);
         const es = defaultESEntry.entrystore;
-
         //we have entryUri
         if (entryUri) {
           util
@@ -212,10 +220,13 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               valuePromises.push(
                 getLocalizedValue(graph, "dcterms:description", nextLang, es),
               );
-              if (fetchMore) {
-                valuePromises.push(
-                  getLocalizedValue(graph, "dcterms:publisher", nextLang, es),
-                );
+              valuePromises.push(
+                getLocalizedValue(graph, "dcterms:publisher", nextLang, es),
+              );
+              valuePromises.push(
+                getLocalizedValue(graph, "skos:definition", nextLang, es),
+              );
+              if (fetchMore && !isConcept) {
                 valuePromises.push(
                   getLocalizedValue(graph, "dcat:contactPoint", nextLang, es, {
                     uriTypeName: "http://www.w3.org/2006/vcard/ns#fn",
@@ -227,20 +238,40 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                   }),
                 );
               }
+              if (isConcept && !fetchMore) {
+                const term = graph
+                  .find(resourceURI, "skos:inScheme")[0]
+                  .getValue();
+                const termEntry = await util.getEntryByResourceURI(term);
+                const termGraph = termEntry.getAllMetadata();
+
+                valuePromises.push(
+                  getLocalizedValue(
+                    termGraph,
+                    "dcterms:publisher",
+                    nextLang,
+                    es,
+                  ),
+                );
+              }
               //wait for all values to be fetched
               let results = await Promise.all(valuePromises);
 
               if (results && results.length > 0) {
                 defaultESEntry.title = results[0] || results[1];
                 defaultESEntry.description = results[2];
-                if (fetchMore) {
-                  defaultESEntry.publisher = results[3];
-                  if (results[4] || results[5]) {
+                defaultESEntry.publisher = results[3];
+                defaultESEntry.definition = results[4];
+                if (fetchMore && !isConcept) {
+                  if (results[5] || results[6]) {
                     defaultESEntry.contact = {
-                      name: results[4],
-                      email: parseEmail(results[5]),
+                      name: results[5],
+                      email: parseEmail(results[6]),
                     };
                   }
+                }
+                if (isConcept && !fetchMore) {
+                  defaultESEntry.termPublisher = results[5];
                 }
               }
 
@@ -284,10 +315,13 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               valuePromises.push(
                 getLocalizedValue(graph, "dcterms:description", nextLang, es),
               );
-              if (fetchMore) {
-                valuePromises.push(
-                  getLocalizedValue(graph, "dcterms:publisher", nextLang, es),
-                );
+              valuePromises.push(
+                getLocalizedValue(graph, "dcterms:publisher", nextLang, es),
+              );
+              valuePromises.push(
+                getLocalizedValue(graph, "skos:definition", nextLang, es),
+              );
+              if (fetchMore && !isConcept) {
                 valuePromises.push(
                   getLocalizedValue(graph, "dcat:contactPoint", nextLang, es, {
                     uriTypeName: "http://www.w3.org/2006/vcard/ns#fn",
@@ -299,20 +333,40 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                   }),
                 );
               }
+              if (isConcept && !fetchMore) {
+                const term = graph
+                  .find(resourceURI, "skos:inScheme")[0]
+                  .getValue();
+                const termEntry = await util.getEntryByResourceURI(term);
+                const termGraph = termEntry.getAllMetadata();
+
+                valuePromises.push(
+                  getLocalizedValue(
+                    termGraph,
+                    "dcterms:publisher",
+                    nextLang,
+                    es,
+                  ),
+                );
+              }
               //wait for all values to be fetched
               let results = await Promise.all(valuePromises);
 
               if (results && results.length > 0) {
                 defaultESEntry.title = results[0] || results[1];
                 defaultESEntry.description = results[2];
-                if (fetchMore) {
-                  defaultESEntry.publisher = results[3];
-                  if (results[4] || results[5]) {
+                defaultESEntry.publisher = results[3];
+                defaultESEntry.definition = results[4];
+                if (fetchMore && !isConcept) {
+                  if (results[5] || results[6]) {
                     defaultESEntry.contact = {
-                      name: results[4],
-                      email: parseEmail(results[5]),
+                      name: results[5],
+                      email: parseEmail(results[6]),
                     };
                   }
+                }
+                if (isConcept && !fetchMore) {
+                  defaultESEntry.termPublisher = results[5];
                 }
               }
 

@@ -48,12 +48,11 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
         name: "Förtroendemodellen utveckling",
         crumbs: [
           { name: "start", link: { ...linkBase, link: "/" } },
-          { name: "Offentlig AI", link: { ...linkBase, link: "/offentligai" } },
           {
             name: "Förtroendemodellen",
             link: {
               ...linkBase,
-              link: "/offentligai/fortroendemodellen",
+              link: "/fortroendemodellen",
             },
           },
         ],

@@ -112,6 +112,10 @@ body {
   .button--plain.active {
     @apply outline outline-2 outline-brown-600 [&_svg]:rotate-180;
   }
+  .button--pink {
+    @apply bg-pink-200 text-textPrimary hover:bg-brown-200 focus-visible:bg-brown-200 group-hover:bg-brown-200 group-focus:bg-brown-200 
+    [&_path]:fill-brown-600;
+  }
   .button--filter {
     @apply bg-brown-800 text-white [&_path]:fill-white;
   }
@@ -177,7 +181,7 @@ table tbody td {
 
 /* General styling for mark */
 mark {
-  @apply bg-red-400;
+  @apply bg-pink-200;
 }
 
 /* General styling for focus */
@@ -190,14 +194,46 @@ input[type="radio"] {
 }
 
 .explore-api-btn {
-  @apply button--primary button--large button bg-brown-600 no-underline hover:bg-brown-800 [&_span]:text-white !important;
+  @apply button--primary button--large button mt-md flex items-center gap-sm 
+  bg-brown-600 no-underline hover:bg-brown-800 md:mt-none [&_span]:text-white !important;
 }
 
 /* SWAGGER UI */
 
 .opblock-section-header button {
-  @apply button--secondary button--small md:button--large;
+  @apply button--secondary button--small;
 }
 .opblock-section-header .try-out .cancel {
   @apply border-red-600 text-red-600;
+}
+
+.auth-wrapper {
+  @apply flex justify-end;
+}
+
+.auth-wrapper .btn {
+  @apply button button--primary button--large [&_svg]:fill-white !important;
+}
+
+.authorization__btn {
+  @apply flex items-center;
+}
+
+.auth-wrapper .btn.unlocked::after {
+  content: url("../assets/icons/lockOpenWhite.svg");
+  @apply h-[24px] w-[24px];
+}
+
+.authorization__btn.unlocked::after {
+  content: url("../assets/icons/lockOpenBrown.svg");
+  @apply h-[24px] w-[24px];
+}
+
+.auth-wrapper .btn.unlocked svg,
+.authorization__btn.unlocked svg {
+  @apply hidden;
+}
+
+.modal-ux-inner .modal-ux-content .auth-btn-wrapper .btn-done {
+  @apply button--secondary;
 }

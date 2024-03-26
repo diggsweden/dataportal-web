@@ -1,8 +1,10 @@
 import React from "react";
 import {
-  ContainerData_Dataportal_Digg_Container_Fragment,
   ModuleListDataFragment,
   FaqFragment,
+  ContainerDataFragment,
+  NewsItemDataFragment,
+  GoodExampleDataFragment,
 } from "@/graphql/__generated__/operations";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentBlock";
@@ -10,12 +12,15 @@ import { TextBlock } from "@/components/content/blocks/TextBlock";
 import { AccordionBlock } from "@/components/content/blocks/AccordionBlock";
 import { MediaBlock } from "@/components/content/blocks/MediaBlock";
 import { FormPage } from "@/components/content/FormPage";
-
+import { QuoteBlock } from "@/components/content/blocks/QuoteBlock";
 interface blockListProps {
   blocks:
-    | ContainerData_Dataportal_Digg_Container_Fragment["blocks"]
+    | ContainerDataFragment["blocks"]
+    | NewsItemDataFragment["blocks"]
+    | GoodExampleDataFragment["blocks"]
     | ModuleDataFragment["blocks"];
   className?: string;
+  landingPage?: boolean;
 }
 
 /**
@@ -53,7 +58,11 @@ const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
   );
 };
 
-export const BlockList: React.FC<blockListProps> = ({ blocks, className }) => {
+export const BlockList: React.FC<blockListProps> = ({
+  blocks,
+  className,
+  landingPage,
+}) => {
   return (
     <div
       className={`mb-lg space-y-xl md:mb-xl md:space-y-xl ${
@@ -69,6 +78,8 @@ export const BlockList: React.FC<blockListProps> = ({ blocks, className }) => {
         switch (block.__typename) {
           case "dataportal_Digg_Text":
             return <TextBlock {...block} key={`${id}-${index}`} />;
+          case "dataportal_Digg_Quote":
+            return <QuoteBlock {...block} key={`${id}-${index}`} />;
           case "dataportal_Digg_Media":
             return <MediaBlock {...block} key={`${id}-${index}`} />;
           case "dataportal_Digg_Faq":
@@ -78,7 +89,7 @@ export const BlockList: React.FC<blockListProps> = ({ blocks, className }) => {
               <RelatedContentBlock
                 {...block}
                 key={`${id}-${index}`}
-                inline={true}
+                landingPage={landingPage}
               />
             );
           case "dataportal_Digg_ModuleList":

@@ -35,12 +35,10 @@ export interface Dataportal_QueryCategoryArgs {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  taxonomy?: InputMaybe<Scalars['String']['input']>;
 }
 
 export interface Dataportal_QueryContainerArgs {
-  categories?: InputMaybe<Array<Scalars['String']['input']>>;
-  domains?: InputMaybe<Array<Scalars['String']['input']>>;
+  containerGroup?: InputMaybe<Dataportal_QueryCategoryArgs>;
   id?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -49,12 +47,6 @@ export interface Dataportal_QueryContainerArgs {
   slug?: InputMaybe<Scalars['String']['input']>;
   state?: InputMaybe<Dataportal_ContainerState>;
   tags?: InputMaybe<Array<Scalars['String']['input']>>;
-}
-
-export interface Dataportal_QueryDomainArgs {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  locale?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
 }
 
 export interface Dataportal_QuerySearchArgs {

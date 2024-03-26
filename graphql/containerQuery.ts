@@ -4,6 +4,7 @@ import {
   CONTAINER_FRAGMENT,
   SEO_FRAGMENT,
   MODULE_FRAGMENT,
+  PARENT_FRAGMENT,
 } from "./fragments";
 
 export const CONTAINER_QUERY = gql`
@@ -12,6 +13,7 @@ export const CONTAINER_QUERY = gql`
       ...ContainerData
     }
   }
+  ${PARENT_FRAGMENT}
   ${CONTAINER_FRAGMENT}
   ${BLOCK_FRAGMENT}
   ${SEO_FRAGMENT}
@@ -20,34 +22,19 @@ export const CONTAINER_QUERY = gql`
 
 export const CONTAINER_MULTI_QUERY = gql`
   query MultiContainers(
-    $category: dataportal_QueryContainerArgs
+    $containerGroup: dataportal_QueryContainerArgs
     $container: dataportal_QueryContainerArgs
   ) {
-    category: dataportal_Digg_Containers(filter: $category) {
+    containerGroup: dataportal_Digg_Containers(filter: $containerGroup) {
       ...ContainerData
     }
     container: dataportal_Digg_Containers(filter: $container) {
       ...ContainerData
     }
   }
+  ${PARENT_FRAGMENT}
   ${CONTAINER_FRAGMENT}
   ${BLOCK_FRAGMENT}
   ${SEO_FRAGMENT}
   ${MODULE_FRAGMENT}
-`;
-
-export const RELATED_CONTAINER = gql`
-  fragment RelatedContainer on dataportal_Digg_Container {
-    name
-    slug
-  }
-`;
-
-export const RELATED_CONTAINER_QUERY = gql`
-  query Related($filter: dataportal_QueryContainerArgs) {
-    containers: dataportal_Digg_Containers(filter: $filter) {
-      ...RelatedContainer
-    }
-  }
-  ${RELATED_CONTAINER}
 `;

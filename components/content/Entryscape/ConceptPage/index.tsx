@@ -5,9 +5,10 @@ import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { hemvist, linkBase, preambleBlock } from "@/utilities";
+import { hemvist, linkBase } from "@/utilities";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
+import { Preamble } from "@/components/global/Typography/Preamble";
 
 export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
   curi,
@@ -38,7 +39,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
         };
     }
     addScripts();
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     setBreadcrumb &&
@@ -87,13 +88,13 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               path = tmp[0] + '/' + tmp[1];
             }
             else
-              path = resourceUri;              
+              path = resourceUri;           
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalconcept/") > -1)
               if(isTerm)
-                return "/externalterminology/" + path;
+                return "/${lang}/externalterminology/" + path;
               else
-                return "/externalconcept/" + path;
+                return "/${lang}/externalconcept/" + path;
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/concepts/") > -1)
             {
@@ -105,13 +106,13 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               entryPath = resourceUri.replace("https://dataportal.se/concepts","");
 
               if(isTerm)
-                return "/terminology" + entryPath;
+                return "/${lang}/terminology" + entryPath;
               else
-                return "/concepts" + entryPath;
+                return "/${lang}/concepts" + entryPath;
             }
-
+            
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalterminology/") > -1)                            
-              return "/externalconcept/" + path;
+              return "/${lang}/externalconcept/" + path;
 
             if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/terminology/") > -1)    
             {
@@ -122,9 +123,9 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               else
               entryPath = resourceUri.replace("https://dataportal.se/concepts","");
 
-              return "/concepts" + entryPath;
+              return "/${lang}/concepts" + entryPath;
             }
-
+            
             return resourceUri;
           }
 
@@ -174,7 +175,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               {
                 regex:new RegExp('(\/*\/terminology\/)(.+)'),
                 uri:'https://${
-                  env.ENTRYSCAPE_TERMS_PATH.includes("sandbox")
+                  env.ENTRYSCAPE_TERMS_PATH.startsWith("sandbox")
                     ? "www-sandbox.dataportal.se"
                     : "dataportal.se"
                 }/concepts/${curi}',
@@ -183,7 +184,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               {
                 regex:new RegExp('(\/*\/concepts\/)(.+)'),
                 uri:'https://${
-                  env.ENTRYSCAPE_TERMS_PATH.includes("sandbox")
+                  env.ENTRYSCAPE_TERMS_PATH.startsWith("sandbox")
                     ? "www-sandbox.dataportal.se"
                     : "dataportal.se"
                 }/concepts/${curi}',
@@ -215,7 +216,6 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               }],
             blocks: [
               ${hemvist(t)},
-              ${preambleBlock},
               {
                 block: 'terminologyButton',
                 extends: 'template',
@@ -286,7 +286,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                     node.firstElementChild.appendChild(el);
 
                     var ruri = getLocalizedValue(entry.getAllMetadata(),'skos:inScheme','${lang}');                                             
-
+                    
                     if(ruri)
                       util.getEntryByResourceURI(ruri).then((e) => {                              
                         var label = getLocalizedValue(e.getAllMetadata(),'dcterms:title','${lang}'); 
@@ -298,7 +298,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                   }
                 },
                 loadEntry:true
-              },  
+              },
               {
                 block: 'terminology',
                 extends: 'template',
@@ -310,9 +310,10 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                 block: 'conceptBlock',
                 class: 'conceptDetail',
                 extends: 'template',
-                template: '{{#ifprop "skos:altLabel"}}<div><h2>${t(
-                  "pages|concept_page$alternativ_term",
-                )}</h2><span>{{ text content="\${skos:altLabel}" }}</span></div>{{/ifprop}}' +
+                template:
+                  '{{#ifprop "skos:altLabel"}}<div><h2>${t(
+                    "pages|concept_page$alternativ_term",
+                  )}</h2><span>{{ text content="\${skos:altLabel}" }}</span></div>{{/ifprop}}' +
 
                 '{{#ifprop "skos:example"}}<div><h2>${t(
                   "pages|concept_page$example",
@@ -388,17 +389,6 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                 rowhead: '{{conceptLink}}',
                 click: ''
               },     
-              {
-                block: 'infoHeadBlock',
-                extends: 'template',
-                template: '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}${t(
-                  "pages|concept_page$about_concept",
-                )}{{/ifprop}}' +
-
-                '{{#ifprop "rdf:type" uri="skos:ConceptScheme"}}${t(
-                  "pages|concept_page$about_terminology",
-                )}{{/ifprop}}'
-              },
             ],
           }];
 
@@ -438,7 +428,19 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
       <div className="mb-lg flex flex-col gap-xl md:mb-xl lg:flex-row lg:gap-2xl">
         {/* Left column */}
         <div className="flex w-full max-w-md flex-col">
-          <span data-entryscape="preambleBlock" />
+          {entry.publisher ? (
+            <Preamble className="mb-lg">{entry.publisher}</Preamble>
+          ) : entry.termPublisher ? (
+            <Preamble className="mb-lg">{entry.termPublisher}</Preamble>
+          ) : null}
+
+          {entry.description !== "" && (
+            <p className="mb-lg text-textSecondary">{entry.description}</p>
+          )}
+          {entry.definition !== "" && (
+            <p className="mb-lg text-textSecondary">{entry.definition}</p>
+          )}
+
           <div
             className="flex flex-col gap-lg"
             data-entryscape="conceptBlock"
@@ -448,13 +450,16 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
         </div>
 
         {/* Right column */}
-        <div className="mb-lg w-full pt-none lg:mb-none lg:max-w-[296px]">
+        <div className="mb-lg h-fit w-full max-w-md bg-white p-md lg:mb-none lg:max-w-[296px]">
           <Heading
             level={2}
             size={"sm"}
-            className="mb-sm text-textSecondary md:mb-md"
+            className="mb-sm font-strong text-textSecondary md:mb-md"
           >
-            <span data-entryscape="infoHeadBlock" />
+            {pathname.startsWith("/terminology") ||
+            pathname.startsWith("/externalterminology")
+              ? t("pages|concept_page$about_terminology")
+              : t("pages|concept_page$about_concept")}
           </Heading>
           <span
             className="text-sm text-textSecondary"

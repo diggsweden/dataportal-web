@@ -291,6 +291,8 @@ export class EntryScape {
     return new Promise<any>((resolve) => {
       let result: any[] = [];
       const es = new ESJS.EntryStore(this.entryscapeUrl);
+      es.getREST().disableJSONP();
+      es.getREST().disableCredentials();
       const maxRequestUriLength: number = 1500; //for batching request, max URI length is actually 2083 (IE), but keep it safe
       let resTmp: string[] = [];
       let requestPromises: Promise<any>[] = [];
@@ -508,9 +510,13 @@ export class EntryScape {
       let lang = request.language || "sv";
 
       const es = new ESJS.EntryStore(this.entryscapeUrl);
+      es.getREST().disableJSONP();
+      es.getREST().disableCredentials();
 
       let esQuery = es.newSolrQuery();
       let searchList: any;
+
+      const term = "http://www.w3.org/2004/02/skos/core#Concept";
 
       if (request.fetchFacets) {
         if (
@@ -640,11 +646,29 @@ export class EntryScape {
           "&query=",
           `&query=(title:(${titleQ}))+AND+`,
         );
-      else
+      else {
+        const termSearch = request.esRdfTypes && request.esRdfTypes[0] === term;
+        const prefLabel = es
+          .newSolrQuery()
+          .literalProperty("skos:prefLabel", query).properties[0].md5;
+        const altLabel = es
+          .newSolrQuery()
+          .literalProperty("skos:altLabel", query).properties[0].md5;
+        const hiddenLabel = es
+          .newSolrQuery()
+          .literalProperty("skos:hiddenLabel", query).properties[0].md5;
+
         queryUrl = queryUrl.replace(
           "&query=",
-          `&query=(metadata.object.literal:(${query})+OR+metadata.predicate.literal_t.3f2ae919:(${gramQuery})+OR+metadata.predicate.literal_t.feda1d30:(${gramQuery})+OR+metadata.predicate.literal_t.a6424133:(${gramQuery}))+AND+`,
+          `&query=(metadata.object.literal:(${query})+OR+metadata.predicate.literal.${
+            termSearch ? prefLabel : "3f2ae919"
+          }:(${gramQuery})+OR+metadata.predicate.literal.${
+            termSearch ? altLabel : "feda1d30"
+          }:(${gramQuery})+OR+metadata.predicate.literal.${
+            termSearch ? hiddenLabel : "a6424133"
+          }:(${gramQuery}))+AND+`,
         );
+      }
 
       fetch(queryUrl).then((response) => {
         response.json().then((data) => {

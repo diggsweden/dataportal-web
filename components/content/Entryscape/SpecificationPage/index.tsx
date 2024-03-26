@@ -5,16 +5,17 @@ import { SettingsContext } from "@/providers/SettingsProvider";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { hemvist, linkBase } from "@/utilities";
+import { hemvist, keyword, linkBase } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
+import { Preamble } from "@/components/global/Typography/Preamble";
 
 export const SpecificationPage: FC<{
   curi?: string;
   scheme?: string;
 }> = ({ curi, scheme }) => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
-  const { title } = useContext(EntrystoreContext);
+  const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
   const { pathname } = useRouter() || {};
   const { trackPageView } = useMatomo();
@@ -40,13 +41,13 @@ export const SpecificationPage: FC<{
   }, []);
 
   useEffect(() => {
-    trackPageView({ documentTitle: title });
+    trackPageView({ documentTitle: entry.title });
   }, [pathname]);
 
   useEffect(() => {
     setBreadcrumb &&
       setBreadcrumb({
-        name: title,
+        name: entry.title,
         crumbs: [
           { name: "start", link: { ...linkBase, link: "/" } },
           {
@@ -58,7 +59,7 @@ export const SpecificationPage: FC<{
           },
         ],
       });
-  }, [pathname, title]);
+  }, [pathname, entry.title]);
 
   const addScripts = () => {
     if (typeof window !== "undefined") {
@@ -102,9 +103,9 @@ export const SpecificationPage: FC<{
 
               if(resourceUri.includes('https://www-sandbox.dataportal.se/specifications'))
               entryPath = resourceUri.replace("https://www-sandbox.dataportal.se/specifications","");
-
+              
               else
-              entryPath = resourceUri.replace("https://dataportal.se/","");
+              entryPath = resourceUri.replace("https://dataportal.se/specifications","");
                 return "/specifications" + entryPath;
             }
 
@@ -151,7 +152,7 @@ export const SpecificationPage: FC<{
               {
                 regex:new RegExp('(\/*\/specifications\/)(.+)'),
                 uri:'https://${
-                  env.ENTRYSCAPE_TERMS_PATH.includes("sandbox")
+                  env.ENTRYSCAPE_SPECS_PATH.startsWith("sandbox")
                     ? "www-sandbox.dataportal.se"
                     : "dataportal.se"
                 }/specifications/${curi}',
@@ -171,17 +172,27 @@ export const SpecificationPage: FC<{
               adms: 'http://www.w3.org/ns/adms#',
               prof: 'http://www.w3.org/ns/dx/prof/',
             },
+            collections: [
+              {
+                type: 'facet',
+                name: 'theme',
+                label: 'Theme',
+                property: 'dcat:theme',
+                nodetype: 'uri',
+                templatesource: 'dcat:theme-isa',
+              }
+            ],
             itemstore: {
               bundles: [
                 'dcat',
                 'https://${
-                  env.ENTRYSCAPE_SPECS_PATH
-                    ? env.ENTRYSCAPE_SPECS_PATH
+                  env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
+                    ? "sandbox.editera.dataportal.se"
                     : "editera.dataportal.se"
                 }/theme/templates/adms.json',
                 'https://${
-                  env.ENTRYSCAPE_SPECS_PATH
-                    ? env.ENTRYSCAPE_SPECS_PATH
+                  env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
+                    ? "sandbox.editera.dataportal.se"
                     : "editera.dataportal.se"
                 }/theme/templates/prof.json',
               ],
@@ -201,10 +212,11 @@ export const SpecificationPage: FC<{
                 label: 'Keyword',
                 property: 'dcat:keyword',
                 nodetype: 'literal',
-              }],
-
+              }
+            ],
             blocks: [
               ${hemvist(t)},
+              ${keyword(t)},
               {
                 block: 'resourceDescriptors2',
                 extends: 'list',
@@ -212,15 +224,26 @@ export const SpecificationPage: FC<{
                 template: 'prof:ResourceDescriptor',
                 expandTooltip: '${t("pages|datasetpage$view_more")}',
                 unexpandTooltip: '${t("pages|datasetpage$view_less")}',
+                expandButton: false,
                 listbody: '<div class="specification__resource--body">{{body}}</div>',
                 listplaceholder: '<div class="alert alert-info" role="alert">Denna specifikation har inga resurser.</div>',
                 rowhead:
-                '<span class="">{{text}}</span>' + 
+                '<span>{{text}}</span>' + 
                   '<span class="block mb-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
                   '<div>{{ text content="\${skos:definition}" }}</div>' +
-                  '<a href="{{resourceURI}}"><button class="button button--primary button--large text-white" tabIndex="-1">${t(
-                    "pages|specification_page$download",
-                  )} {{prop "prof:hasRole" class="type" render="label"}}</button></a>',
+                  '<div class="flex justify-between items-end md:items-center mt-md md:mt-lg gap-lg">' +
+                    '<a href="{{resourceURI}}" tabindex="-1">' +
+                      '<button class="button button--primary button--large text-white">${t(
+                        "pages|specification_page$specification_download",
+                      )}' +
+                        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                        '<path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18V15H6V18H18V15H20V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6Z" fill="#FFFFFF"/>' +
+                        '</svg>' +
+                    '</button>' +
+                    '</a>' +
+                    '<button open="{{expandTooltip}}" close="{{unexpandTooltip}}" class="esbExpandButton button button--secondary button--large h-fit text-nowrap">' +
+                    '</button>' +
+                  '</div>', 
               },
             ],
           }];
@@ -246,29 +269,28 @@ export const SpecificationPage: FC<{
   return (
     <Container>
       <Head>
-        <title>{title ? `${title} - Sveriges dataportal` : "test"}</title>
-        <meta property="og:title" content={`${title} - Sveriges dataportal`} />
-        <meta name="twitter:title" content={`${title} - Sveriges dataportal`} />
+        <title>
+          {entry.title ? `${entry.title} - Sveriges dataportal` : "test"}
+        </title>
+        <meta
+          property="og:title"
+          content={`${entry.title} - Sveriges dataportal`}
+        />
+        <meta
+          name="twitter:title"
+          content={`${entry.title} - Sveriges dataportal`}
+        />
       </Head>
       <div>
         <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
-          {title}
+          {entry.title}
         </Heading>
-        <div className="flex flex-col gap-xl lg:flex-row lg:gap-2xl">
+        <div className="flex flex-col gap-xl md:mb-xl lg:flex-row lg:gap-2xl">
           {/* Left column */}
           <div className="flex w-full max-w-md flex-col">
-            <script
-              type="text/x-entryscape-handlebar"
-              data-entryscape="true"
-              data-entryscape-component="template"
-              dangerouslySetInnerHTML={{
-                __html: `
-                          <span class="text-lg text-textSecondary">
-                            {{text relation="dcterms:publisher"}} 
-                          <span>
-                          `,
-              }}
-            ></script>
+            {entry.publisher && (
+              <Preamble className="mb-lg">{entry.publisher}</Preamble>
+            )}
 
             <span
               className="mb-lg mt-md !font-ubuntu text-lg text-textSecondary md:mb-xl md:mt-lg"
@@ -284,7 +306,7 @@ export const SpecificationPage: FC<{
               data-entryscape-rdftype="prof:ResourceDescriptor"
             ></div>
 
-            <div className="contact__publisher hbbr mt-md md:mt-lg">
+            <div className="contact__publisher mt-md md:mt-lg">
               <Heading level={3} size={"sm"}>
                 {t("pages|datasetpage$contact-publisher")}
               </Heading>
@@ -300,21 +322,26 @@ export const SpecificationPage: FC<{
           </div>
 
           {/* Right column */}
-          <div className="pt-xl lg:w-[296px] lg:pt-none">
-            <div className="min-w-296px">
+          <div className="h-fit w-full max-w-md bg-white p-md lg:max-w-[296px]">
+            <div className="w-full">
               <Heading
                 level={2}
                 size={"sm"}
-                className="mb-sm text-textSecondary md:mb-md"
+                className="mb-sm font-strong text-textSecondary md:mb-md"
               >
                 {t("pages|specification_page$about_specification")}
               </Heading>
               <span data-entryscape="hemvist" />
+              <div data-entryscape="keyword" />
+              <div
+                data-entryscape-dialog
+                data-entryscape-rdformsid="dcat:contactPoint"
+              />
 
               <div
                 data-entryscape="view"
                 data-entryscape-rdformsid="prof:Profile"
-                data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev"
+                data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev,dcat:keyword"
               ></div>
             </div>
           </div>

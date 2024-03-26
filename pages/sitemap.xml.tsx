@@ -1,23 +1,25 @@
 import { GetServerSideProps } from "next/types";
 import { client, CONTAINER_QUERY } from "../graphql";
-import { PUBLICATION_QUERY } from "../graphql/publicationQuery";
 import {
-  CategoriesQuery,
-  CategoriesQueryVariables,
-  CategoryFragment,
-  ContainerData_Dataportal_Digg_Container_Fragment,
+  GOOD_EXAMPLE_QUERY,
+  NEWS_ITEM_QUERY,
+} from "../graphql/publicationQuery";
+import {
+  ContainerDataFragment,
   ContainersQuery,
   ContainersQueryVariables,
-  PublicationDataFragment,
-  PublicationQuery,
-  PublicationQueryVariables,
+  GoodExampleDataFragment,
+  GoodExampleQuery,
+  GoodExampleQueryVariables,
+  NewsItemDataFragment,
+  NewsItemQuery,
+  NewsItemQueryVariables,
 } from "../graphql/__generated__/operations";
 import { SettingsUtil } from "../env";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import nodeFetch from "node-fetch";
 import fetchEnhanced from "fetch-enhanced";
 import url from "url";
-import { CATEGORY_QUERY } from "../graphql/domainQuery";
 
 const proxyfetch = fetchEnhanced(nodeFetch);
 
@@ -33,38 +35,24 @@ const Sitemap = () => {
 };
 
 /**
- * @param container
- * @returns true if container is dataportal_Digg_Publication
- */
-const isPublication = (
-  container:
-    | ContainerData_Dataportal_Digg_Container_Fragment
-    | PublicationDataFragment
-    | null,
-): container is PublicationDataFragment => {
-  return container?.__typename === "dataportal_Digg_Publication";
-};
-
-/**
  * Prepends paths based on locale and containerType
  * @param c
  * @returns a correctly formatted slug
  */
 const slug = (
   c:
-    | ContainerData_Dataportal_Digg_Container_Fragment
-    | PublicationDataFragment
+    | ContainerDataFragment
+    | NewsItemDataFragment
+    | GoodExampleDataFragment
     | null,
 ) => {
   const slug = c?.locale === "sv" ? c?.slug : `/${c?.locale}${c?.slug}`;
-  if (isPublication(c)) {
-    return `/aktuellt${slug}`;
+  if (c?.__typename === "dataportal_Digg_News_Item") {
+    return `/nyheter${slug}`;
+  } else if (c?.__typename === "dataportal_Digg_Good_Example") {
+    return `/goda-exempel${slug}`;
   } else {
-    const domain = c?.domains && c.domains[0];
-    if (domain && `/${domain.slug}` === slug) return slug;
-    const domainSlug =
-      c?.domains && c.domains.length > 0 ? "/" + c.domains[0].slug : "";
-    return domainSlug + slug;
+    return slug;
   }
 };
 
@@ -121,13 +109,12 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   const datasets: any[] = await getDatasets();
 
-  const allContainers: (
-    | ContainerData_Dataportal_Digg_Container_Fragment
-    | PublicationDataFragment
-    | null
-  )[] = [];
+  const allContainers: (ContainerDataFragment | null)[] = [];
 
-  const allCategories: CategoryFragment[] = [];
+  const allNewsItems: (NewsItemDataFragment | null)[] = [];
+
+  const allGoodExamples: (GoodExampleDataFragment | null)[] = [];
+
   locales &&
     (await Promise.all(
       // Get all containers in all locales
@@ -141,37 +128,40 @@ export const getServerSideProps: GetServerSideProps = async ({
           variables: { filter: { locale, limit: 9999 } },
         });
 
-        const PublicationResult = await client.query<
-          PublicationQuery,
-          PublicationQueryVariables
+        const newsResult = await client.query<
+          NewsItemQuery,
+          NewsItemQueryVariables
         >({
-          query: PUBLICATION_QUERY,
+          query: NEWS_ITEM_QUERY,
           variables: { filter: { locale, limit: 9999 } },
         });
 
-        const categoryResult = await client.query<
-          CategoriesQuery,
-          CategoriesQueryVariables
+        const goodExampleResult = await client.query<
+          GoodExampleQuery,
+          GoodExampleQueryVariables
         >({
-          query: CATEGORY_QUERY,
+          query: GOOD_EXAMPLE_QUERY,
           variables: { filter: { locale, limit: 9999 } },
         });
 
         const containers = containerResult?.data?.dataportal_Digg_Containers;
-        const Publication =
-          PublicationResult?.data?.dataportal_Digg_Publications;
-        const categories = categoryResult.data.categories;
+        const news = newsResult?.data?.dataportal_Digg_News_Items;
+        const goodExamples =
+          goodExampleResult?.data?.dataportal_Digg_Good_Examples;
 
         if (containerResult?.error) {
           console.error(containerResult?.error);
         }
-        if (PublicationResult?.error) {
-          console.error(PublicationResult.error);
+        if (newsResult?.error) {
+          console.error(newsResult.error);
+        }
+        if (goodExampleResult?.error) {
+          console.error(goodExampleResult.error);
         }
 
         containers && allContainers.push(...containers);
-        Publication && allContainers.push(...Publication);
-        categories && allCategories.push(...categories);
+        news && allNewsItems.push(...news);
+        goodExamples && allGoodExamples.push(...goodExamples);
       }),
     ));
 
@@ -180,18 +170,9 @@ export const getServerSideProps: GetServerSideProps = async ({
     "/datasets?p=1&amp;q=&amp;s=2&amp;t=20&amp;f=&amp;rt=dataset%24esterms_IndependentDataService%24esterms_ServedByDataService&amp;c=false",
     "/concepts?p=1&amp;q=&amp;s=2&amp;t=20&amp;f=&amp;rt=term&amp;c=false",
     "/specifications?p=1&amp;q=&amp;s=2&amp;t=20&amp;f=&amp;rt=spec_standard%24spec_profile&amp;c=false",
-    "/aktuellt",
     "/statistik",
     "/en/statistics",
-    "/offentligai/inspiration",
-    "/offentligai/nyheter",
-    "/offentligai/event",
-    "/data/inspiration",
-    "/data/nyheter",
-    "/data/event",
-    "/oppen-kallkod/inspiration",
-    "/oppen-kallkod/nyheter",
-    "/oppen-kallkod/event",
+    "/metadatakvalitet",
   ];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -227,16 +208,28 @@ export const getServerSideProps: GetServerSideProps = async ({
         .join("")
     }
     ${
-      Array.isArray(allCategories) &&
-      allCategories
-        .filter((cat) => !allContainers.some((c) => c?.slug === `/${cat.slug}`)) // ? ignore categories that has corresponding container
-        .map((c) => {
-          const slug =
-            c.locale === "sv" ? `/${c.slug}` : `/${c.locale}/${c.slug}`;
+      Array.isArray(allNewsItems) &&
+      allNewsItems
+        .map((n) => {
           return `
         <url>
-            <loc>${env.CANONICAL_URL}${slug}</loc>
-            <lastmod>${c?.updatedAt}</lastmod>
+            <loc>${env.CANONICAL_URL}${slug(n)}</loc>
+            <lastmod>${n?.updatedAt}</lastmod>
+            <changefreq>monthly</changefreq>
+            <priority>1.0</priority>
+        </url>
+    `;
+        })
+        .join("")
+    }
+    ${
+      Array.isArray(allGoodExamples) &&
+      allGoodExamples
+        .map((g) => {
+          return `
+        <url>
+            <loc>${env.CANONICAL_URL}${slug(g)}</loc>
+            <lastmod>${g?.updatedAt}</lastmod>
             <changefreq>monthly</changefreq>
             <priority>1.0</priority>
         </url>

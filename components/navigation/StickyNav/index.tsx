@@ -24,17 +24,6 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
   const [latestActiveItem, setLatestActiveItem] = useState<WatchedItem | null>(
     null,
   );
-  const [fixedNav, setFixedNav] = useState<{
-    top: boolean;
-    bottom: boolean;
-    bottomPosition: string;
-  }>({
-    top: false,
-    bottom: false,
-    bottomPosition: "",
-  });
-
-  const [width, setWidth] = useState<string>("");
   let timer = useRef(0);
 
   const watch = () => {
@@ -67,51 +56,8 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
     };
   });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const stickyNav = document.getElementById("stickyNav");
-      const content = document.getElementById("content");
-      const navBox = document.getElementById("navBox");
-
-      if (navBox && stickyNav && content) {
-        const navRect = stickyNav.getBoundingClientRect();
-        const contentRect = content.getBoundingClientRect();
-        const navBoxRect = navBox.getBoundingClientRect();
-
-        setFixedNav({
-          top: contentRect.top < 77 && window.scrollY <= contentRect.height,
-          bottom: contentRect.height - navBoxRect.height + 192 < window.scrollY,
-          bottomPosition: `${contentRect.height - navBoxRect.height}px`,
-        });
-
-        if (!fixedNav.top) {
-          setWidth(`${navRect.width}px`);
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [fixedNav]);
-
   return (
-    <div
-      id="navBox"
-      className={`w-fit overflow-auto ${
-        fixedNav.top && !fixedNav.bottom
-          ? `lg:fixed lg:top-[76px] lg:max-h-[calc(100vh-152px)]`
-          : fixedNav.bottom
-          ? "lg:relative lg:max-h-[calc(100vh-152px)]"
-          : "static"
-      }`}
-      style={{
-        top: fixedNav.bottom ? fixedNav.bottomPosition : "",
-        maxWidth: width,
-      }}
-    >
+    <div className="w-fit">
       <Heading
         level={2}
         size={"xs"}

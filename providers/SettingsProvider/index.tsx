@@ -5,7 +5,6 @@ import { BreadcrumbProps } from "@/components/navigation/BreadCrumb";
 interface SettingsContext extends DataportalSettings {
   env: EnvSettings;
   setBreadcrumb?: React.Dispatch<React.SetStateAction<BreadcrumbProps>>;
-  appRenderKey: string;
 }
 export const extractSettings = (diggSettings: {
   items: { key: string; value: string }[];
@@ -35,7 +34,6 @@ export const defaultSettings: SettingsContext = {
   pageNotFoundText: "",
   noScriptContent: "",
   matomoSiteId: "-1",
-  appRenderKey: "",
 };
 
 export const SettingsContext =

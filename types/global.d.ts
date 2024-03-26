@@ -91,10 +91,3 @@ type CSPDirective =
   | "require-trusted-types-for"
   | "trusted-types"
   | "upgrade-insecure-requests";
-
-type DiggDomain =
-  | "offentligai"
-  | "data"
-  | "oppen-kallkod"
-  | "open-source"
-  | "datasamverkan";

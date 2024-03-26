@@ -59,35 +59,6 @@ class MyDocument extends Document {
             type="text/javascript"
             src="/__ENV.js"
           />
-
-          <link
-            rel="preload"
-            href="/fonts/Ubuntu/Ubuntu-Regular.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
-          <link
-            rel="preload"
-            href="/fonts/Ubuntu/Ubuntu-Regular.woff"
-            as="font"
-            type="font/woff"
-            crossOrigin="anonymous"
-          />
-          <link
-            rel="preload"
-            href="/fonts/Ubuntu/Ubuntu-Bold.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
-          <link
-            rel="preload"
-            href="/fonts/Ubuntu/Ubuntu-Bold.woff"
-            as="font"
-            type="font/woff"
-            crossOrigin="anonymous"
-          />
           <link
             rel="preconnect"
             href="https://editera.dataportal.se"

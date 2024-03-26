@@ -53,7 +53,7 @@ export const FormGeneratePDF: FC<Props> = ({ formDataArray, blocks }) => {
         modalOpen={showModal}
         setModalOpen={setShowModal}
         confirmBtn={t("common|yes")}
-        href={"/offentligai/fortroendemodellen/success"}
+        href={"/fortroendemodellen/success"}
       />
 
       {/* Hidden iframe used only for printing */}

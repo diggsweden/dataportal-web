@@ -2,8 +2,8 @@ import { FC } from "react";
 import Image from "next/image";
 import { FooterNav } from "@/components/navigation/FooterNav";
 import { Container } from "@/components/layout/Container";
-import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
+import { CustomLink } from "@/components/global/CustomLink";
 
 type FooterProps = {
   openSideBar: boolean;
@@ -25,13 +25,13 @@ export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
             <div className="mr-lg">
               <span className="font-strong">Sveriges dataportal </span>
               <span>{t("common|managed-and-developed-by")}</span>
-              <Link
+              <CustomLink
                 aria-label="Digg - Myndigheten för digital förvaltning"
                 href={"https://digg.se/"}
-                className="focus--red min-w-min text-green-600"
+                className="min-w-min text-green-600 hover:no-underline [&_path]:fill-green-600"
               >
                 Digg - Myndigheten för digital förvaltning
-              </Link>
+              </CustomLink>
             </div>
             <Image
               src={"/images/europeiskaunionen.png"}

@@ -11,7 +11,6 @@ import {
 import {
   click,
   DataportalPageProps,
-  generateRandomKey,
   keyUp,
   linkBase,
   resolvePage,
@@ -63,7 +62,7 @@ export const initBreadcrumb = {
  */
 const onHash = (pathWithHash: string) => {
   const hashIndex = pathWithHash.indexOf("#");
-  const hash = pathWithHash.substring(hashIndex);
+  const hash = pathWithHash.substring(hashIndex + 1);
   skipToElement(hash);
 };
 
@@ -79,15 +78,13 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     pageProps as DataportalPageProps,
     lang,
     t,
-    pathname,
   );
+  const [imageHero, setImageHero] = useState(heroImage);
 
   const [breadcrumbState, setBreadcrumb] = useState<BreadcrumbProps>({
     name: heading || "",
     crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
   });
-
-  const appRenderKey = generateRandomKey(16);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -112,17 +109,19 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
 
   let searchProps = null;
 
-  if (pathname === "/" || pageProps.domain === "data") {
+  if (pathname === "/" || pathname === `/${t("routes|search-api$path")}`) {
     searchProps = {
       destination: `/${lang}/datasets`,
       placeholder: t("pages|startpage$search_placeholder"),
     };
   }
 
-  let conditionalPreamble = pageProps.domain === "data" ? null : preamble;
+  let conditionalPreamble =
+    pathname === `/${t("routes|search-api$path")}` ? null : preamble;
 
   useEffect(() => {
     asPath.includes("#") && onHash(asPath);
+    setImageHero(heroImage);
   }, [pathname]);
 
   return (
@@ -132,7 +131,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
           ...defaultSettings,
           env,
           setBreadcrumb,
-          appRenderKey,
           matomoSiteId: reactenv("MATOMO_SITE_ID"),
         }}
       >
@@ -145,8 +143,8 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
             <CookieBanner />
             <div
               id="top"
-              className={`relative h-screen min-h-screen overflow-hidden md:h-auto ${
-                openSideBar ? "overflow-y-hidden" : "overflow-y-scroll"
+              className={`relative h-screen min-h-screen overflow-x-hidden md:h-auto md:overflow-x-visible ${
+                openSideBar ? "overflow-y-hidden md:overflow-y-visible" : ""
               }`}
             >
               <SkipToContent text={t("common|skiptocontent")} />
@@ -170,11 +168,11 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   openSideBar ? "2xl:w-[calc(100vw-300px)]" : "w-full"
                 }`}
               >
-                {heroImage && (
+                {imageHero && (
                   <Hero
                     heading={heading}
                     preamble={conditionalPreamble}
-                    image={heroImage}
+                    image={imageHero}
                     search={searchProps}
                   />
                 )}

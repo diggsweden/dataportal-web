@@ -1,8 +1,8 @@
 import { client } from "../../graphql/client";
-import { PUBLICATION_QUERY } from "../../graphql/publicationQuery";
+import { NEWS_ITEM_QUERY } from "../../graphql/publicationQuery";
 import {
-  PublicationQuery,
-  PublicationQueryVariables,
+  NewsItemQuery,
+  NewsItemQueryVariables,
 } from "../../graphql/__generated__/operations";
 
 const HEALTHCHECK_SECRET = process.env.HEALTHCHECK_SECRET;
@@ -15,6 +15,13 @@ const HEALTHCHECK_SECRET = process.env.HEALTHCHECK_SECRET;
  * @returns status: "pass" or status: "fail"
  */
 export default async function handler(req: any, res: any) {
+  // Check to see that there is a secret set as env variable HEALTHCHECK_SECRET.
+  if (!HEALTHCHECK_SECRET) {
+    return res
+      .status(401)
+      .json({ message: "No HEALTHCHECK_SECRET environment variable found" });
+  }
+
   // Check for secret to confirm this is a valid request
   if (HEALTHCHECK_SECRET && req.query.secret !== HEALTHCHECK_SECRET) {
     return res.status(401).json({ message: "Invalid token" });
@@ -22,11 +29,8 @@ export default async function handler(req: any, res: any) {
 
   try {
     //perform request to start page query
-    const result = await client.query<
-      PublicationQuery,
-      PublicationQueryVariables
-    >({
-      query: PUBLICATION_QUERY,
+    const result = await client.query<NewsItemQuery, NewsItemQueryVariables>({
+      query: NEWS_ITEM_QUERY,
       variables: {
         filter: { limit: 3 },
       },

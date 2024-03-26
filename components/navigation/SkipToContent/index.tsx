@@ -39,7 +39,7 @@ export const SkipToContent: FC<{ text: string }> = ({ text }) => {
  * @param ev the clickEvent that occurs
  */
 export const skipToElement = (id: string) => {
-  const element = document.querySelector(id);
+  const element = document.getElementById(id);
 
   if (!element) return;
   element.scrollIntoView();

@@ -4,31 +4,35 @@ import { PublicationTeaser } from "@/components/content/Publication/PublicationT
 import { ButtonLink } from "@/components/global/Button";
 import { Heading } from "@/components/global/Typography/Heading";
 import {
-  ContainerDataFragment,
-  PublicationDataFragment,
+  GoodExampleDataFragment,
+  NewsItemDataFragment,
+  ToolDataFragment,
 } from "@/graphql/__generated__/operations";
+import { Toolteaser } from "../Tool";
 
-interface PublicationListProps {
-  publications: PublicationDataFragment[] | ContainerDataFragment[];
+interface ListProps {
+  items: (ToolDataFragment | NewsItemDataFragment | GoodExampleDataFragment)[];
   heading?: string;
   showMoreLink?: {
     slug: string;
     title: string;
   };
+  className?: string;
 }
 
-export const PublicationList: FC<PublicationListProps> = ({
-  publications,
+export const GridList: FC<ListProps> = ({
+  items,
   heading,
   showMoreLink,
+  className,
 }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="my-lg md:my-xl">
+    <div className={`mb-lg md:mb-xl ${className ? className : ""}`}>
       <div
         className={`mb-lg flex items-center md:mb-xl ${
-          publications.length <= 3 ? "justify-between" : "gap-sm"
+          items.length <= 3 ? "justify-between" : "gap-sm"
         } text-2xl`}
       >
         {heading && (
@@ -36,7 +40,7 @@ export const PublicationList: FC<PublicationListProps> = ({
             {heading}
           </Heading>
         )}
-        {showMoreLink && (
+        {showMoreLink && showMoreLink.slug && (
           <ButtonLink
             size="sm"
             href={showMoreLink.slug}
@@ -45,16 +49,24 @@ export const PublicationList: FC<PublicationListProps> = ({
           />
         )}
       </div>
-      {publications.length > 0 ? (
+
+      {items.length > 0 ? (
         <ul className="gap-4 grid grid-cols-1 gap-xl md:grid-cols-2 lg:grid-cols-3">
-          {publications.map((publication, idx) => (
+          {items.map((item, idx) => (
             <li key={idx}>
-              <PublicationTeaser publication={publication} />
+              {(() => {
+                switch (item.__typename) {
+                  case "dataportal_Digg_Tool":
+                    return <Toolteaser tools={item} />;
+                  default:
+                    return <PublicationTeaser publication={item} />;
+                }
+              })()}
             </li>
           ))}
         </ul>
       ) : (
-        <span>{t("pages|listpage$no-articles")}</span>
+        <span>{t("pages|listpage$no-content")}</span>
       )}
     </div>
   );
