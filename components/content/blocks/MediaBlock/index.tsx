@@ -40,8 +40,9 @@ const renderMedia = (
         <figure className="border-b border-brown-200 pb-sm">
           <CustomImage
             image={media}
+            width={640}
             className="pb-sm"
-            /* sizes="(max-width: 640px) 70vw, (max-width: 1200px) 60vw, (max-width: 1920px) 30vw, 25vw" */
+            sizes="(max-width: 640px) 80vw, (max-width: 1200px) 60vw, (max-width: 1920px) 30vw, 25vw"
           />
           {mediaDescription && (
             <figcaption className="text-brown-600">
