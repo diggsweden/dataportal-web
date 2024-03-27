@@ -81,6 +81,12 @@ export const Pagination: FC<Pagination> = ({
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  useEffect(() => {
+    if (pageNumber) {
+      setCurrentPage(isNaN(pageNumber) ? 1 : pageNumber);
+    }
+  }, [pageNumber]);
+
   return (
     <div
       className={`${

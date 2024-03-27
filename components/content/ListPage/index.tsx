@@ -92,6 +92,13 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
     }
   }, [setActiveFilter, activeFilter, pathname, listItems]);
 
+  useEffect(() => {
+    setActiveFilter({
+      value: "Alla",
+      id: "0",
+    });
+  }, [heading]);
+
   return (
     <div id="news-list" className="mb-lg md:mb-xl">
       <Container>
