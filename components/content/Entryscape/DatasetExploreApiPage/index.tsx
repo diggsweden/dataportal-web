@@ -6,7 +6,6 @@ import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import useTranslation from "next-translate/useTranslation";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { useRouter } from "next/router";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
@@ -27,7 +26,7 @@ export const DataSetExploreApiPage: React.FC<{
   dataSet: string | string[] | undefined;
   apieid: string | string[] | undefined;
 }> = ({ dataSet, apieid }) => {
-  const { pathname, query } = useRouter() || {};
+  const { query } = useRouter() || {};
   const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];
   const eid = ids[1];
@@ -37,7 +36,6 @@ export const DataSetExploreApiPage: React.FC<{
 
   const [toggleTabs, setToggleTabs] = useState(1);
   const tab = toggleTabs === 1;
-  const { trackPageView } = useMatomo();
   let postscribe: any;
 
   //Toggle between tabs
@@ -67,12 +65,6 @@ export const DataSetExploreApiPage: React.FC<{
   useEffect(() => {
     addScriptsDistribution();
   }, []);
-
-  useEffect(() => {
-    trackPageView({
-      documentTitle: `${t("routes|api_explore$title")} - ${apieid}`,
-    });
-  }, [pathname]);
 
   useEffect(() => {
     setBreadcrumb &&

@@ -1,11 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import { useRouter } from "next/router";
 import Head from "next/head";
 import useTranslation from "next-translate/useTranslation";
 import { ApiIndexContext } from "@/providers/ApiIndexContext";
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import Link from "next/link";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import {
   customIndicators,
@@ -25,8 +23,6 @@ export const DataServicePage: React.FC<{
   const { findDetection } = useContext(ApiIndexContext);
   const { env, setBreadcrumb } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
-  const { asPath } = useRouter() || {};
-  const { trackPageView } = useMatomo();
   const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];
   const eid = ids[1];
@@ -66,10 +62,6 @@ export const DataServicePage: React.FC<{
   useEffect(() => {
     addScripts();
   }, []);
-
-  useEffect(() => {
-    trackPageView({ documentTitle: Array.isArray(name) ? name[0] : name });
-  }, [asPath]);
 
   const addScripts = () => {
     if (typeof window !== "undefined") {

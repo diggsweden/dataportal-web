@@ -19,7 +19,6 @@ import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 import KeywordsIcon from "@/assets/icons/keywords.svg";
 import useTranslation from "next-translate/useTranslation";
 import { highlightCode } from "@/components/content/ContainerPage";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { usePathname } from "next/navigation";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { Preamble } from "@/components/global/Typography/Preamble";
@@ -38,7 +37,6 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
         };
 
   const { t, lang } = useTranslation();
-  const { trackPageView } = useMatomo();
   const pathname = usePathname();
   const { setBreadcrumb } = useContext(SettingsContext);
   const [date, setDate] = useState("");
@@ -64,9 +62,6 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
       });
 
     setDate(formatDateWithTime(lang, publication.publishedAt));
-
-    // Matomo tracking
-    trackPageView({ documentTitle: publication.name });
   }, [pathname]);
 
   return (

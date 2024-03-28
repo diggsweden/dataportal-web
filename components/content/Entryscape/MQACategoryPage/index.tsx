@@ -4,11 +4,9 @@ import { usePathname } from "next/navigation";
 import { FC, useContext, useEffect } from "react";
 import { linkBase } from "@/utilities";
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 
 export const MQACategoryPage: FC = () => {
   const entry = useContext(EntrystoreContext);
-  const { trackPageView } = useMatomo();
   const { env, setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
   const ids = pathname.split("/");
@@ -40,8 +38,6 @@ export const MQACategoryPage: FC = () => {
           },
         ],
       });
-
-    trackPageView({ documentTitle: entry.title });
   }, [pathname, entry.title]);
 
   /* This is kept for when the pathname url should be improved */

@@ -2,7 +2,6 @@ import { FC, useContext, useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { linkBase, querySearch } from "@/utilities";
 import { useRouter } from "next/router";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import Link from "next/link";
 import { SearchHitFragment } from "@/graphql/__generated__/operations";
@@ -24,9 +23,6 @@ export const SearchContentPage: FC<SearchProps> = () => {
   const { pathname, query: routerQuery } = router || {};
   const { t, lang } = useTranslation("common");
   const [query, setQuery] = useState((routerQuery?.q as string) || "");
-  const [trackedQuery, setTrackedQuery] = useState("");
-  const { trackEvent } = useMatomo();
-  const { trackPageView } = useMatomo();
   const pageNumber = parseInt(routerQuery?.p as string) || 1;
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [searchRequest, setSearchRequest] = useState<SearchRequest>({
@@ -82,14 +78,6 @@ export const SearchContentPage: FC<SearchProps> = () => {
     }
   };
 
-  const trackSearchHitClick = (url: string) => {
-    trackEvent({
-      category: `Sidor från en webbplatssökning`,
-      name: `Content: Webbplatssökning`,
-      action: `Url: ${url}, sökfras: ${searchRequest?.query}, typ: Content`,
-    });
-  };
-
   const highlightWords = (text: string) => {
     if (!text) return;
 
@@ -105,17 +93,6 @@ export const SearchContentPage: FC<SearchProps> = () => {
       <span dangerouslySetInnerHTML={{ __html: highlightedText.join("") }} />
     );
   };
-
-  useEffect(() => {
-    setTrackedQuery(query || "");
-    if (!!(query && trackedQuery !== query && searchResult?.count === 0)) {
-      trackEvent({
-        category: `Sökord utan resultat - Typ: Content`,
-        action: query || "",
-        name: `Content: Inga sökträffar`,
-      });
-    }
-  }, [searchResult]);
 
   useEffect(() => {
     const count = searchResult?.count || -1;
@@ -150,7 +127,6 @@ export const SearchContentPage: FC<SearchProps> = () => {
         name: t("common|search-content"),
         crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
       });
-    trackPageView({ documentTitle: t("routes|search$title") });
   }, [pathname]);
 
   useEffect(() => {
@@ -245,7 +221,6 @@ export const SearchContentPage: FC<SearchProps> = () => {
                       }`}
                       onClick={() => {
                         saveCurrentScrollPos();
-                        trackSearchHitClick(cleanDoubleSlash(hit.url!) || "");
                       }}
                       className="group no-underline"
                     >
