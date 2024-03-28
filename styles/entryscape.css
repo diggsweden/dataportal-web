@@ -737,3 +737,8 @@
 .eachprop__unexpandbutton {
   @apply px-sm py-xs font-strong hover:bg-brown-200 focus-visible:bg-brown-200 !important;
 }
+
+.esbLayerLegend__button span,
+.fa-chevron-up:before {
+  @apply text-sm text-textPrimary;
+}
