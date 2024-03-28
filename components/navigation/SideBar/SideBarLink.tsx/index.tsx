@@ -155,20 +155,20 @@ const SideBarLink: FC<
     return (
       <>
         <button
-          className="focus--in focus--underline group inline-flex w-full cursor-pointer flex-row gap-md p-md pr-xl text-brown-600"
+          className="focus--in focus--underline group inline-flex w-full cursor-pointer flex-row gap-md p-md text-brown-600"
           onClick={() => setOpen(!open)}
           tabIndex={openSideBar ? 0 : -1}
         >
           <Icon className={open ? "[&_path]:fill-pink-600" : ""} />
           <span
-            className={`underline-offset-4 group-hover:underline ${
+            className={`mr-auto underline-offset-4 group-hover:underline ${
               open && "font-strong text-brown-900"
             }`}
           >
             {label}
           </span>
           <ChevronRightIcon
-            className={`absolute right-md ${
+            className={`${
               open
                 ? "rotate-90 transition-all duration-300 ease-in-out [&_path]:fill-pink-600"
                 : "rotate-0 transition-all duration-300 ease-in-out"

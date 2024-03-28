@@ -58,35 +58,19 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
       window.removeEventListener("resize", () => setVw(window.innerWidth));
   });
 
-  useEffect(() => {
-    const sidebar = document.getElementById("sidebar");
-    if (sidebar) {
-      if (openSideBar) {
-        sidebar.classList.remove("hidden");
-        sidebar.classList.remove("translate-x-full");
-        setTimeout(() => {
-          sidebar.classList.remove("hidden");
-        }, 300);
-      } else {
-        sidebar.classList.add("translate-x-full");
-        setTimeout(() => {
-          sidebar.classList.add("hidden");
-        }, 300);
-      }
-    }
-  }, [openSideBar]);
-
   return (
     <nav
       id="sidebar"
+      role="menu"
       ref={ref}
-      className={`absolute right-none top-[136px] z-50 -mb-[136px] h-[calc(100%-136px)] w-full translate-x-full
-      overflow-y-auto bg-white transition-transform duration-300 ease-in-out md:w-[300px]`}
+      className={`absolute right-none top-[136px] z-50 -mb-[136px] h-[calc(100%-136px)] overflow-y-auto 
+      overflow-x-hidden bg-white transition-all duration-300 ease-in-out md:overflow-y-visible
+      ${openSideBar ? "w-full md:w-[300px]" : "w-none"}`}
       aria-label="Sidebar"
     >
-      <ul className="w-full list-none">
+      <ul className="w-full list-none whitespace-nowrap md:w-[300px]">
         {menu.map((menu: NavSideData, idx: number) => (
-          <li key={idx}>
+          <li key={idx} className="whitespace-nowrap">
             {menu.href ? (
               <SideBarLink
                 level="1"
