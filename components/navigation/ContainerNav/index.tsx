@@ -42,7 +42,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
         <Button
           iconPosition="left"
           icon={expanded ? CloseCrossIcon : HamburgerIcon}
-          label={related[0].heading}
+          label={related[0].name}
           onClick={() => setExpanded(!expanded)}
           className={`!button--large relative z-40 w-full md:w-[320px] xl:hidden`}
         />

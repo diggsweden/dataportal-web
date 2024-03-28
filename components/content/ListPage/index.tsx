@@ -97,6 +97,8 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
       value: "Alla",
       id: "0",
     });
+
+    router.query.page = "1";
   }, [heading]);
 
   return (
