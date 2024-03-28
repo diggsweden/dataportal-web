@@ -127,6 +127,8 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
 
         <Button
           id="sidebarBtn"
+          aria-expanded={openSideBar}
+          aria-haspopup="menu"
           variant="plain"
           icon={openSideBar ? CloseCrossIcon : HamburgerIcon}
           iconPosition="left"
