@@ -79,7 +79,9 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   add("style-src-attr", `'self' 'unsafe-inline'`);
   add(
     "connect-src",
-    `'self' https://* http://127.0.0.1:1300/ ${reactEnv("APOLLO_URL") || ""}`,
+    `'self' https://* http://127.0.0.1:1300/ ${
+      reactEnv("APOLLO_URL") || ""
+    } https://* webbanalys.digg.se`,
   );
 
   // return the object in a formatted value (this won't work on IE11 without a polyfill!)
