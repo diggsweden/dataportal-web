@@ -34,10 +34,13 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
     <Link
       href={type.url}
       className="group flex h-full flex-col justify-between no-underline"
+      scroll={false}
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
     >
       <div>
         <CustomImage
           image={image}
+          width={384}
           sizes="(max-width: 640px) 100vw, (max-width: 1080px) 50vw, (max-width: 1200px) 33vw, 20vw"
           className="h-[184px] w-full object-cover md:h-[240px] lg:h-[184px]"
         />

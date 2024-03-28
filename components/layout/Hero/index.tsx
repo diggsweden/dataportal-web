@@ -47,10 +47,12 @@ export const Hero: FC<HeroProps> = ({
       {image && (
         <div className="absolute left-none top-none h-full w-full">
           <CustomImage
+            width={1920}
             image={image}
-            sizes="90vw"
+            sizes="(max-width: 640px) 90vw, (max-width: 1200px) 90vw, 90vw"
             className="h-full w-full object-cover"
             aria-label="Hero image"
+            priority={true}
           />
         </div>
       )}

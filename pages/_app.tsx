@@ -79,6 +79,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     lang,
     t,
   );
+  const [imageHero, setImageHero] = useState(heroImage);
 
   const [breadcrumbState, setBreadcrumb] = useState<BreadcrumbProps>({
     name: heading || "",
@@ -120,6 +121,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
 
   useEffect(() => {
     asPath.includes("#") && onHash(asPath);
+    setImageHero(heroImage);
   }, [pathname]);
 
   return (
@@ -141,7 +143,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
             <CookieBanner />
             <div
               id="top"
-              className={`relative h-screen min-h-screen md:h-auto ${
+              className={`relative h-screen min-h-screen overflow-x-hidden md:h-auto md:overflow-x-visible ${
                 openSideBar ? "overflow-y-hidden md:overflow-y-visible" : ""
               }`}
             >
@@ -166,11 +168,11 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   openSideBar ? "2xl:w-[calc(100vw-300px)]" : "w-full"
                 }`}
               >
-                {heroImage && (
+                {imageHero && (
                   <Hero
                     heading={heading}
                     preamble={conditionalPreamble}
-                    image={heroImage}
+                    image={imageHero}
                     search={searchProps}
                   />
                 )}

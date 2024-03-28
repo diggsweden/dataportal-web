@@ -660,11 +660,11 @@ export class EntryScape {
 
         queryUrl = queryUrl.replace(
           "&query=",
-          `&query=(metadata.object.literal:(${query})+OR+metadata.predicate.literal_t.${
+          `&query=(metadata.object.literal:(${query})+OR+metadata.predicate.literal.${
             termSearch ? prefLabel : "3f2ae919"
-          }:(${gramQuery})+OR+metadata.predicate.literal_t.${
+          }:(${gramQuery})+OR+metadata.predicate.literal.${
             termSearch ? altLabel : "feda1d30"
-          }:(${gramQuery})+OR+metadata.predicate.literal_t.${
+          }:(${gramQuery})+OR+metadata.predicate.literal.${
             termSearch ? hiddenLabel : "a6424133"
           }:(${gramQuery}))+AND+`,
         );

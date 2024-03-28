@@ -35,6 +35,7 @@ export const Promo: FC<PromoProps> = ({
       {image && (
         <CustomImage
           image={image}
+          width={384}
           sizes="(max-width: 640px) 100vw, (max-width: 1080px) 50vw, (max-width: 1200px) 33vw, 20vw"
           className="h-[152px] w-full object-cover"
         />
@@ -43,12 +44,12 @@ export const Promo: FC<PromoProps> = ({
         <Heading
           level={heading ? 3 : 2}
           size="sm"
-          className={ingress ? "" : "pb-lg"}
+          className={ingress ? "mb-sm" : "mb-lg"}
         >
           {title}
         </Heading>
         {ingress && (
-          <p className="mb-lg line-clamp-3 pt-sm text-brown-600">{ingress}</p>
+          <p className="mb-lg line-clamp-3 text-brown-600">{ingress}</p>
         )}
         <span className="button button--small button--primary focus--none mt-auto">
           {t("read-more")}

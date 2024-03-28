@@ -64,6 +64,9 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
       if (openSideBar) {
         sidebar.classList.remove("hidden");
         sidebar.classList.remove("translate-x-full");
+        setTimeout(() => {
+          sidebar.classList.remove("hidden");
+        }, 300);
       } else {
         sidebar.classList.add("translate-x-full");
         setTimeout(() => {
