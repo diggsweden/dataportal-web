@@ -5,12 +5,12 @@ import { CustomImage } from "@/components/global/CustomImage";
 
 export const QuoteBlock: FC<QuoteFragment> = ({ quote, author, image }) => {
   return (
-    <blockquote className="flex max-w-md flex-col-reverse items-center gap-lg md:flex-row lg:gap-xl">
-      <div className="flex h-fit w-full gap-lg text-md font-normal text-pink-600 md:text-lg lg:text-xl">
+    <blockquote className="flex max-w-md flex-col items-center gap-lg md:flex-row lg:gap-xl">
+      <div className="flex h-fit w-full gap-lg text-xl font-normal text-pink-600">
         <QuoteIcon className="flex w-full max-w-[40px]" />
         <div className="mt-sm flex w-full flex-col space-y-md divide-y md:mt-xs">
           <span>{quote}</span>
-          <span className="border-brown-200 pt-md text-md text-brown-600 md:text-lg">
+          <span className="border-brown-200 pt-md text-md text-brown-600">
             {author}
           </span>
         </div>
