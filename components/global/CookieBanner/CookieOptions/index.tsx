@@ -55,29 +55,29 @@ export const CookieOptions: React.FC<CookieOptionsProps> = ({
       {keys.map((key, index) => (
         <div key={key + index}>
           <div className="mb-xs flex items-center">
-            <label className="font-strong" htmlFor={key}>
+            <label className="inline-flex gap-sm font-strong" htmlFor={key}>
               {cookieSettings[key].label}
-            </label>
-            <label className="relative ml-sm inline-flex cursor-pointer items-center">
-              <input
-                className="peer sr-only"
-                ref={setInputRefs(index)}
-                aria-describedby={`label-${key}`}
-                type="checkbox"
-                name={key}
-                id={key}
-                checked={cookieSettings[key].accepted}
-                onChange={() => {
-                  setCookieSettings({
-                    ...cookieSettings,
-                    [key]: {
-                      ...cookieSettings[key],
-                      accepted: !cookieSettings[key].accepted,
-                    },
-                  });
-                }}
-              />
-              <Toggle />
+              <span className="relative inline-flex cursor-pointer items-center">
+                <input
+                  className="peer sr-only"
+                  ref={setInputRefs(index)}
+                  aria-describedby={`label-${key}`}
+                  type="checkbox"
+                  name={key}
+                  id={key}
+                  checked={cookieSettings[key].accepted}
+                  onChange={() => {
+                    setCookieSettings({
+                      ...cookieSettings,
+                      [key]: {
+                        ...cookieSettings[key],
+                        accepted: !cookieSettings[key].accepted,
+                      },
+                    });
+                  }}
+                />
+                <Toggle />
+              </span>
             </label>
           </div>
 
