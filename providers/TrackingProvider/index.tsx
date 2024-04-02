@@ -1,47 +1,39 @@
-import { createInstance, MatomoProvider } from "@datapunt/matomo-tracker-react";
-import React, { useContext, useState } from "react";
-import { SettingsContext } from "@/providers/SettingsProvider";
+import {
+  useState,
+  createContext,
+  Dispatch,
+  SetStateAction,
+  ReactNode,
+  FC,
+} from "react";
 
 export interface ITrackingContext {
   activateMatomo: Boolean;
-  setActivation: React.Dispatch<React.SetStateAction<Boolean>>;
+  setActivation: Dispatch<SetStateAction<Boolean>>;
 }
 
 export interface ITrackingContextProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
   initalActivation: Boolean;
 }
 
 /* eslint-disable no-unused-vars */
-export const TrackingContext = React.createContext<ITrackingContext>({
+export const TrackingContext = createContext<ITrackingContext>({
   activateMatomo: false,
-  setActivation: (value: React.SetStateAction<Boolean>) => {},
+  setActivation: (value: SetStateAction<Boolean>) => {},
 });
 /* eslint-enable no-unused-vars */
 
-export const TrackingProvider: React.FC<ITrackingContextProps> = ({
+export const TrackingProvider: FC<ITrackingContextProps> = ({
   initalActivation,
   children,
 }) => {
   const [activate, setActivation] = useState(initalActivation);
-  const { matomoSiteId } = useContext(SettingsContext);
   return (
     <TrackingContext.Provider
       value={{ activateMatomo: activate, setActivation }}
     >
-      {activate && matomoSiteId ? (
-        // @ts-ignore
-        <MatomoProvider
-          value={createInstance({
-            urlBase: "https://webbanalys.digg.se",
-            siteId: parseInt(matomoSiteId),
-          })}
-        >
-          {children}
-        </MatomoProvider>
-      ) : (
-        <>{children}</>
-      )}
+      {children}
     </TrackingContext.Provider>
   );
 };

@@ -9,7 +9,6 @@ import { decode } from "qss";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { useScript } from "@/hooks/useScript";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 import Head from "next/head";
 import { Container } from "@/components/layout/Container";
 import { ESRdfType, ESType } from "@/utilities/entryScape";
@@ -39,7 +38,6 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
     "sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM",
     "anonymous",
   );
-  const { trackPageView } = useMatomo();
 
   const clearCurrentScrollPos = () => {
     if (typeof localStorage != "undefined") {
@@ -77,8 +75,6 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
         name: pageTitle,
         crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
       });
-
-    trackPageView({ documentTitle: pageTitle });
   }, [pathname]);
 
   const specsPathResover = (hitMeta: any) => {

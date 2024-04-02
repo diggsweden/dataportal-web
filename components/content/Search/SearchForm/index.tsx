@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, FC } from "react";
 import { SearchContextData } from "@/providers/SearchProvider";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { SearchMode } from "@/components/content/Search/SearchFilters";
 import useTranslation from "next-translate/useTranslation";
 import { SearchInput } from "@/components/content/Search/SearchInput";
@@ -9,7 +8,7 @@ interface SearchFormProps {
   search: SearchContextData;
   searchMode: SearchMode;
   query: string;
-  setQuery: React.Dispatch<React.SetStateAction<string>>;
+  setQuery: Dispatch<SetStateAction<string>>;
 }
 
 /**
@@ -18,14 +17,12 @@ interface SearchFormProps {
  * @param {*} { search, searchType, query, setQuery }
  * @returns a form with a text input
  */
-export const SearchForm: React.FC<SearchFormProps> = ({
+export const SearchForm: FC<SearchFormProps> = ({
   search,
   searchMode,
   query,
   setQuery,
 }) => {
-  const [trackedQuery, setTrackedQuery] = useState("");
-  const { trackEvent } = useMatomo();
   const { t } = useTranslation();
 
   const placeholder = t(`pages|${searchMode}$search`);
@@ -35,17 +32,6 @@ export const SearchForm: React.FC<SearchFormProps> = ({
       localStorage.setItem(`ScrollposY_${location.search}`, "0");
     }
   };
-
-  useEffect(() => {
-    setTrackedQuery(query || "");
-    if (!!(query && trackedQuery !== query && search.result.count === 0)) {
-      trackEvent({
-        category: `Sökord utan resultat - Typ: ${searchMode}`,
-        action: query || "",
-        name: `${searchMode}: Inga sökträffar`,
-      });
-    }
-  }, [search.result]);
 
   const submitSearch = (newQuery: string) => {
     search

@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useContext } from "react";
 import generateCSP from "@/utilities/generateCsp";
 import { defaultSettings } from "@/providers/SettingsProvider";
 import Head from "next/head";
@@ -7,9 +7,11 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { SeoDataFragment } from "@/graphql/__generated__/operations";
 import reactenv from "@beam-australia/react-env";
+import { TrackingContext } from "@/providers/TrackingProvider";
 
 export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
   const [env] = useState<EnvSettings>(SettingsUtil.create());
+  const { activateMatomo } = useContext(TrackingContext);
   const pathname = usePathname();
   const { locale } = useRouter();
   const { title, description, image, robotsFollow, robotsIndex } = seo || {};
@@ -78,6 +80,22 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
       <meta name="theme-color" content={"#171A21"} />
       <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
       <meta name="apple-mobile-web-app-status-bar" />
+      {/* Matomo Tag Manager */}
+      {activateMatomo && (
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+                var _mtm = window._mtm = window._mtm || [];
+                _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+                (function() {
+                  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                  g.async=true; g.src='https://webbanalys.digg.se/js/container_hV6fNi9j.js'; s.parentNode.insertBefore(g,s);
+                })();
+              `,
+          }}
+        />
+      )}
+      {/* End Matomo Tag Manager */}
       <link
         rel="icon"
         type="image/png"

@@ -2,7 +2,6 @@ import useTranslation from "next-translate/useTranslation";
 import { FC, useContext, useEffect } from "react";
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { SettingsContext } from "@/providers/SettingsProvider";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { hemvist, keyword, linkBase } from "@/utilities";
@@ -18,7 +17,6 @@ export const SpecificationPage: FC<{
   const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
   const { pathname } = useRouter() || {};
-  const { trackPageView } = useMatomo();
 
   /**
    * Async load scripts requiered for EntryScape blocks,
@@ -39,10 +37,6 @@ export const SpecificationPage: FC<{
     }
     addScripts();
   }, []);
-
-  useEffect(() => {
-    trackPageView({ documentTitle: entry.title });
-  }, [pathname]);
 
   useEffect(() => {
     setBreadcrumb &&

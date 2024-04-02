@@ -4,11 +4,9 @@ import { Container } from "@/components/layout/Container";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { linkBase } from "@/utilities";
 import { usePathname } from "next/navigation";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 
 export const MQAPage: FC = () => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
-  const { trackPageView } = useMatomo();
   const pathname = usePathname();
   const pageTitle = "Metadatakvalitet per katalog";
 
@@ -40,8 +38,6 @@ export const MQAPage: FC = () => {
         name: pageTitle,
         crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
       });
-
-    trackPageView({ documentTitle: pageTitle });
   }, [pathname]);
 
   return (
