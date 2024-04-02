@@ -431,12 +431,18 @@ export const DataSetPage: React.FC = () => {
                 data-entryscape-registry="true"
               />
 
-              {/* Dataset map */}
+              {/* Dataset maps */}
               <div
                 className="dataset__map"
                 data-entryscape="view"
                 data-entryscape-rdformsid="dcat:dcterms:spatial_bb_da"
-                data-entryscape-label="false"
+                data-entryscape-label="true"
+              ></div>
+
+              <div
+                className="dataset__map"
+                data-entryscape="autoVisualizations"
+                data-entryscape-include-auto-visualizations="true"
               ></div>
 
               {/* Questions  or comments */}
