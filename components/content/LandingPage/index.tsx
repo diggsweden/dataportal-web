@@ -1,4 +1,3 @@
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { usePathname } from "next/navigation";
 import { FC, useContext, useEffect } from "react";
 import Link from "next/link";
@@ -65,7 +64,6 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
 
   const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
-  const { trackPageView } = useMatomo();
   const { t, lang } = useTranslation();
 
   const topPromos =
@@ -89,8 +87,6 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
         name: heading,
         crumbs: crumbs,
       });
-
-    trackPageView({ documentTitle: heading });
   }, [pathname]);
 
   return (

@@ -1,6 +1,5 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { Container } from "@/components/layout/Container";
 import { GridList } from "@/components/content/GridList";
 import { linkBase } from "@/utilities";
@@ -30,7 +29,6 @@ interface Keyword {
 }
 
 export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
-  const { trackPageView } = useMatomo();
   const { setBreadcrumb } = useContext(SettingsContext);
   const list = Array.isArray(listItems) ? listItems : [];
   const pathname = usePathname();
@@ -55,8 +53,6 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
         name: heading,
         crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
       });
-
-    trackPageView({ documentTitle: heading });
   }, [pathname]);
 
   const changePage = (page: number) => {

@@ -3,7 +3,6 @@ import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { SettingsContext } from "@/providers/SettingsProvider";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { Button } from "@/components/global/Button";
 import Head from "next/head";
 import {
@@ -56,7 +55,6 @@ export const DataSetPage: React.FC = () => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
-  const { trackPageView } = useMatomo();
   const { dataSet, name } = query || {};
   const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];
@@ -103,10 +101,6 @@ export const DataSetPage: React.FC = () => {
       addScripts();
     }
   }, [postscribe]);
-
-  useEffect(() => {
-    trackPageView({ documentTitle: Array.isArray(name) ? name[0] : name });
-  }, [pathname]);
 
   useEffect(() => {
     (() => {
@@ -437,12 +431,18 @@ export const DataSetPage: React.FC = () => {
                 data-entryscape-registry="true"
               />
 
-              {/* Dataset map */}
+              {/* Dataset maps */}
               <div
                 className="dataset__map"
                 data-entryscape="view"
                 data-entryscape-rdformsid="dcat:dcterms:spatial_bb_da"
-                data-entryscape-label="false"
+                data-entryscape-label="true"
+              ></div>
+
+              <div
+                className="dataset__map"
+                data-entryscape="autoVisualizations"
+                data-entryscape-include-auto-visualizations="true"
               ></div>
 
               {/* Questions  or comments */}

@@ -2,7 +2,6 @@ import { FC, useContext, useEffect, useRef, useState } from "react";
 import { FormDataFragment as IForm } from "@/graphql/__generated__/operations";
 import { FormNav } from "@/components/navigation/FormNav";
 import useTranslation from "next-translate/useTranslation";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { usePathname } from "next/navigation";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { FormTypes } from "@/types/form";
@@ -23,7 +22,6 @@ type Props = IForm & {
 };
 
 export const FormPage: FC<Props> = ({ elements, module }) => {
-  const { trackPageView } = useMatomo();
   const { t } = useTranslation();
   const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
@@ -57,8 +55,6 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
           },
         ],
       });
-
-    trackPageView({ documentTitle: "Fortroendemodellen utveckling" });
   }, [pathname]);
 
   useEffect(() => {

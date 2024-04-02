@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { ContainerDataFragment } from "@/graphql/__generated__/operations";
 import { checkLang, linkBase } from "@/utilities";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { BlockList } from "@/components/content/blocks/BlockList";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
@@ -103,7 +102,6 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   const [menuItems, setMenuItems] = useState<Anchorlink[] | []>([]);
   const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
-  const { trackPageView } = useMatomo();
   const { t } = useTranslation("common");
 
   const hasRelatedContent = related && related.length > 1;
@@ -129,9 +127,6 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
         name: heading,
         crumbs: crumbs,
       });
-
-    // Matomo tracking
-    trackPageView({ documentTitle: heading });
   }, [pathname]);
 
   return (

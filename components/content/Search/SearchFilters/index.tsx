@@ -322,25 +322,25 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                   return (
                     <div key={value.title} className="relative max-w-fit">
                       <input
-                        tabIndex={-1}
                         id="hvd_only"
                         name="API"
                         type="checkbox"
-                        className="peer/api-only sr-only"
+                        className="peer/hvd-only sr-only"
                         checked={search.request.facetValues?.some(
                           (t) => t.title == ESRdfType.hvd,
                         )}
                         onChange={() => doSearch(key, facetValues[0])}
                       />
                       <label
-                        tabIndex={0}
-                        className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl focus-visible:bg-whiteOpaque5 md:pr-xl"
+                        className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl 
+                        peer-checked:after:translate-x-full peer-focus-visible/hvd-only:bg-whiteOpaque5 peer-focus-visible/hvd-only:outline-dashed peer-focus-visible/hvd-only:outline-[3px] 
+                        peer-focus-visible/hvd-only:outline-offset-2 peer-focus-visible/hvd-only:outline-primary md:pr-xl"
                         htmlFor="hvd_only"
                       >
                         {t(`resources|${key}`)}
                       </label>
-                      <CheckboxIcon className="pointer-events-none absolute right-md top-1/4 peer-checked/api-only:hidden" />
-                      <CheckboxCheckedIcon className="pointer-events-none absolute right-md top-1/4 hidden peer-checked/api-only:block" />
+                      <CheckboxIcon className="pointer-events-none absolute right-md top-1/4 peer-checked/hvd-only:hidden" />
+                      <CheckboxCheckedIcon className="pointer-events-none absolute right-md top-1/4 hidden peer-checked/hvd-only:block" />
                     </div>
                   );
                 }
@@ -348,7 +348,6 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
           {searchMode == "datasets" && (
             <div className="relative max-w-fit">
               <input
-                tabIndex={-1}
                 id="api_only"
                 name="API"
                 type="checkbox"
@@ -401,8 +400,9 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                 }}
               />
               <label
-                tabIndex={0}
-                className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl focus-visible:bg-whiteOpaque5"
+                className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl 
+                peer-checked:after:translate-x-full peer-focus-visible/api-only:bg-whiteOpaque5 peer-focus-visible/api-only:outline-dashed 
+                peer-focus-visible/api-only:outline-[3px] peer-focus-visible/api-only:outline-offset-2 peer-focus-visible/api-only:outline-primary md:pr-xl"
                 htmlFor="api_only"
               >
                 API

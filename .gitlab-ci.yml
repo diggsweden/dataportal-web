@@ -37,7 +37,7 @@ stages:
 image:build:release:
   stage: build
   rules:
-    - if: $CI_COMMIT_BRANCH == "stage-beta"
+    - if: $CI_COMMIT_BRANCH == "dev"
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
@@ -73,7 +73,7 @@ image:build:tagged:
 
 update:deploy:branch:
   rules:
-    - if: '$CI_COMMIT_BRANCH == "stage-beta"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
   variables:
     WEBTAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
     AUTHOR: $CI_COMMIT_AUTHOR
@@ -95,11 +95,10 @@ update:deploy:tag:
     project: digg/deploy-dataportal
     branch: main
 
-
 cloc:
   dependencies: []
   rules:
-    - if: '$CI_COMMIT_BRANCH == "stage-beta"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
   stage: test
   image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/node:18-alpine
   before_script:
@@ -109,10 +108,9 @@ cloc:
     - cloc src --json -out cloc.json
   artifacts:
     paths:
-    - cloc.json
+      - cloc.json
     when: always
     expire_in: 1 day
-
 
 container_scanning:
   stage: test
@@ -129,7 +127,7 @@ container_scanning:
       - gl-dependency-scanning-report.json
       - gl-sbom-report.cdx.json
   rules:
-    - if: '$CI_COMMIT_BRANCH == "stage-beta"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
 
 code_quality:
   variables:
@@ -166,7 +164,7 @@ nodejs-scan-sast:
       - gl-nodejs-report.json
 
 gemnasium-dependency_scanning:
-  rules:  # override rules to not require lockfile to be committed
+  rules: # override rules to not require lockfile to be committed
     - when: on_success
   after_script: cp gl-dependency-scanning-report.json gl-dependency-node-scanning-report.json
   artifacts:
@@ -175,7 +173,7 @@ gemnasium-dependency_scanning:
 
 dd:upload:cloc:
   rules:
-    - if: '$CI_COMMIT_BRANCH == "stage-beta"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
   image: maibornwolff/dd-import:latest
   needs:
     - job: cloc
@@ -217,7 +215,7 @@ dd:upload:nodejs:sast:scanning:
 dt-import-sbom-scan:
   extends: .dt-upload
   rules:
-    - if: '$CI_COMMIT_BRANCH == "stage-beta"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
   needs:
     - job: container_scanning
       artifacts: true
