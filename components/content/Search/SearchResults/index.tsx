@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, FC, Dispatch, SetStateAction } from "react";
 import { SearchMode } from "@/components/content/Search/SearchFilters";
 import { FileFormatBadge } from "@/components/global/FileFormatBadge";
 import { clearLocalStorage } from "@/utilities";
@@ -54,8 +54,8 @@ const clearCurrentScrollPos = () => {
  *
  * @param {*} { search } Context from the SearchProvider
  */
-const SortingOptions: React.FC<{
-  setCompact: React.Dispatch<React.SetStateAction<boolean>>;
+const SortingOptions: FC<{
+  setCompact: Dispatch<SetStateAction<boolean>>;
   isCompact: boolean;
   search: SearchContextData;
 }> = ({ search, setCompact, isCompact }) => {
@@ -154,7 +154,7 @@ const SortingOptions: React.FC<{
  * @returns a list of links
  * @param {boolean} showSorting disable or enable filters
  */
-export const SearchResults: React.FC<SearchResultsProps> = ({
+export const SearchResults: FC<SearchResultsProps> = ({
   search,
   searchMode,
 }) => {

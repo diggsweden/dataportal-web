@@ -1,4 +1,4 @@
-import React from "react";
+import { Dispatch, SetStateAction, FC } from "react";
 import { SearchContextData } from "@/providers/SearchProvider";
 import { SearchMode } from "@/components/content/Search/SearchFilters";
 import useTranslation from "next-translate/useTranslation";
@@ -8,7 +8,7 @@ interface SearchFormProps {
   search: SearchContextData;
   searchMode: SearchMode;
   query: string;
-  setQuery: React.Dispatch<React.SetStateAction<string>>;
+  setQuery: Dispatch<SetStateAction<string>>;
 }
 
 /**
@@ -17,7 +17,7 @@ interface SearchFormProps {
  * @param {*} { search, searchType, query, setQuery }
  * @returns a form with a text input
  */
-export const SearchForm: React.FC<SearchFormProps> = ({
+export const SearchForm: FC<SearchFormProps> = ({
   search,
   searchMode,
   query,

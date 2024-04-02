@@ -38,8 +38,6 @@ export const SpecificationPage: FC<{
     addScripts();
   }, []);
 
-  useEffect(() => {}, [pathname]);
-
   useEffect(() => {
     setBreadcrumb &&
       setBreadcrumb({
