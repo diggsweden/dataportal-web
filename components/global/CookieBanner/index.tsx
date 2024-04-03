@@ -25,13 +25,13 @@ export type CookieProperties = {
 export const CookieBanner: FC = () => {
   const { store, set } = useContext(LocalStoreContext);
   const { setActivation } = useContext(TrackingContext);
-  const { t } = useTranslation("routes");
+  const { t, lang } = useTranslation();
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const initialCookieSetting: CookieSetting = {
     analytic: {
-      label: t("cookies$analytic-heading"),
-      description: t("cookies$analytic-description"),
+      label: t("routes|cookies$analytic-heading"),
+      description: t("routes|cookies$analytic-description"),
       accepted: true,
     },
   };
@@ -44,12 +44,16 @@ export const CookieBanner: FC = () => {
   }, [cookieSettings]);
 
   useEffect(() => {
+    setCookieSettings(initialCookieSetting);
+  }, [lang]);
+
+  useEffect(() => {
     store.cookieSettings?.analytic?.accepted && setActivation(true);
   }, [store.cookieSettings?.analytic?.accepted]);
 
   const necessaryCookieText: NecessaryCookies = {
-    heading: t("cookies$necessary-heading"),
-    description: t("cookies$necessary-description"),
+    heading: t("routes|cookies$necessary-heading"),
+    description: t("routes|cookies$necessary-description"),
   };
 
   return store.cookieSettings &&
@@ -59,14 +63,14 @@ export const CookieBanner: FC = () => {
       aria-label="Cookie Banner"
     >
       <Container>
-        <div className="mb-lg">{t("cookies$cookie-text")}</div>
+        <div className="mb-lg">{t("routes|cookies$cookie-text")}</div>
 
         <Link
-          href={`/${t("cookies$path")}` || "/"}
+          href={`/${t("routes|cookies$path")}` || "/"}
           passHref
           className="text-green-600"
         >
-          {t("cookies$link-title")}
+          {t("routes|cookies$link-title")}
         </Link>
 
         <form
@@ -78,7 +82,9 @@ export const CookieBanner: FC = () => {
         >
           {settingsOpen && (
             <CookieOptions
-              cookieSettingsHeading={t("cookies$customize-cookies-heading")}
+              cookieSettingsHeading={t(
+                "routes|cookies$customize-cookies-heading",
+              )}
               cookieSettings={cookieSettings}
               setCookieSettings={setCookieSettings}
               necessaryCookieText={necessaryCookieText}
@@ -92,8 +98,8 @@ export const CookieBanner: FC = () => {
               }}
             >
               {settingsOpen
-                ? t("cookies$cookie-setting-open")
-                : t("cookies$cookie-setting")}
+                ? t("routes|cookies$cookie-setting-open")
+                : t("routes|cookies$cookie-setting")}
             </Button>
             {!settingsOpen && (
               <Button
@@ -103,7 +109,7 @@ export const CookieBanner: FC = () => {
                   setSettingsOpen(!settingsOpen);
                 }}
               >
-                {t("cookies$settings-heading")}
+                {t("routes|cookies$settings-heading")}
               </Button>
             )}
           </div>

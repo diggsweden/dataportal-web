@@ -13,8 +13,6 @@ import {
   defaultSettings,
 } from "@/providers/SettingsProvider";
 import { LocalStoreProvider } from "@/providers/LocalStoreProvider";
-import { TrackingProvider } from "@/providers/TrackingProvider";
-
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage;
@@ -30,9 +28,7 @@ class MyDocument extends Document {
               <ApolloProvider client={client}>
                 <SettingsProvider value={{ ...defaultSettings, env }}>
                   <LocalStoreProvider>
-                    <TrackingProvider initalActivation={false}>
-                      <App {...props} />
-                    </TrackingProvider>
+                    <App {...props} />
                   </LocalStoreProvider>
                 </SettingsProvider>
               </ApolloProvider>
@@ -59,6 +55,7 @@ class MyDocument extends Document {
             type="text/javascript"
             src="/__ENV.js"
           />
+
           <link
             rel="preconnect"
             href="https://editera.dataportal.se"

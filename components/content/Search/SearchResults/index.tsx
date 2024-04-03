@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
+import { useEffect, useState, FC, Dispatch, SetStateAction } from "react";
 import { SearchMode } from "@/components/content/Search/SearchFilters";
 import { FileFormatBadge } from "@/components/global/FileFormatBadge";
 import { clearLocalStorage } from "@/utilities";
@@ -55,8 +54,8 @@ const clearCurrentScrollPos = () => {
  *
  * @param {*} { search } Context from the SearchProvider
  */
-const SortingOptions: React.FC<{
-  setCompact: React.Dispatch<React.SetStateAction<boolean>>;
+const SortingOptions: FC<{
+  setCompact: Dispatch<SetStateAction<boolean>>;
   isCompact: boolean;
   search: SearchContextData;
 }> = ({ search, setCompact, isCompact }) => {
@@ -155,12 +154,11 @@ const SortingOptions: React.FC<{
  * @returns a list of links
  * @param {boolean} showSorting disable or enable filters
  */
-export const SearchResults: React.FC<SearchResultsProps> = ({
+export const SearchResults: FC<SearchResultsProps> = ({
   search,
   searchMode,
 }) => {
   const [isCompact, setCompact] = useState(false);
-  const { trackEvent } = useMatomo();
   const { t } = useTranslation();
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
   const searchKey = typeof location != "undefined" ? location.search : "server";
@@ -168,14 +166,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     typeof localStorage != "undefined"
       ? localStorage.getItem(`ScrollposY_${searchKey}`)
       : "0";
-
-  const trackSearchHitClick = (url: string) => {
-    trackEvent({
-      category: `Sidor från en webbplatssökning`,
-      name: `${searchMode}: Webbplatssökning`,
-      action: `Url: ${url}, sökfras: ${search.request.query}, typ: ${searchMode}`,
-    });
-  };
 
   useEffect(() => {
     clearLocalStorage("ScrollposY_", `ScrollposY_${searchKey}`);
@@ -241,7 +231,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                     }`}
                     onClick={() => {
                       saveCurrentScrollPos();
-                      trackSearchHitClick(hit.url || "");
                     }}
                     className="group block no-underline"
                   >
