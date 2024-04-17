@@ -497,11 +497,11 @@ export const DataSetPage: React.FC = () => {
               </Heading>
               {entry.publisher && (
                 <>
-                  <h4 className="text-sm font-strong text-brown-600">
+                  <h4 className="pb-sm text-sm font-strong text-brown-600">
                     {t("pages|datasetpage$mqa-catalog")}
                   </h4>
                   <Link
-                    className="text-sm text-green-600 underline-offset-2 hover:no-underline"
+                    className="pb-md text-sm text-green-600 underline-offset-2 hover:no-underline"
                     href={`/metadatakvalitet/katalog/_quality/${cid}`}
                   >
                     {entry.publisher}
