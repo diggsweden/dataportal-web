@@ -40,6 +40,7 @@ const filterAllExceptContactAndLandingPage = [
   "dcterms:temporal",
   "dcterms:accrualPeriodicity",
   "dcterms:accessRights",
+  "dcterms:conformsTo",
 ];
 
 const filterContactAndLandingPage = [
