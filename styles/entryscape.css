@@ -640,7 +640,7 @@
 .entryscape a:not(.noUnderline),
 .entryscape a:not(.nostyle),
 .information-container a {
-  @apply block w-fit break-all text-sm text-green-600 underline;
+  @apply block w-fit break-all text-sm text-green-600 underline hover:text-brown-900;
 }
 
 .entryscape a:hover,

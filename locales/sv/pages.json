@@ -160,7 +160,8 @@
     "category": "Kategori",
     "contact-publisher": "Har du frågor eller synpunkter?",
     "contact-publisher-text": "Kontakta publicerande organisation för frågor, synpunkter och önskemål kring informationen på den här sidan. ",
-    "contact-publisher-text2": "Du kan även vända dig till dataportalens "
+    "contact-publisher-text2": "Du kan även vända dig till dataportalens ",
+    "download-metadata-as": "Ladda ner metadata som"
   },
   "dataservicepage": {
     "api": "Om API"
