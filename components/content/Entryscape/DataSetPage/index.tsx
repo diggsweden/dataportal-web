@@ -41,6 +41,7 @@ const filterAllExceptContactAndLandingPage = [
   "dcterms:temporal",
   "dcterms:accrualPeriodicity",
   "dcterms:accessRights",
+  "dcterms:conformsTo",
 ];
 
 const filterContactAndLandingPage = [
@@ -495,7 +496,7 @@ export const DataSetPage: React.FC = () => {
               >
                 {t("pages|datasetpage$catalog")}
               </Heading>
-              {entry.publisher && (
+              {entry.mqaCatalog && (
                 <>
                   <h4 className="pb-sm text-sm font-strong text-brown-600">
                     {t("pages|datasetpage$mqa-catalog")}
@@ -504,7 +505,7 @@ export const DataSetPage: React.FC = () => {
                     className="pb-md text-sm text-green-600 underline-offset-2 hover:no-underline"
                     href={`/metadatakvalitet/katalog/_quality/${cid}`}
                   >
-                    {entry.publisher}
+                    {entry.mqaCatalog}
                   </Link>
                 </>
               )}
