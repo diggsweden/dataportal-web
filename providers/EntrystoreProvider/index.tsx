@@ -28,6 +28,7 @@ export interface ESEntry {
   termPublisher: string;
   definition: string;
   contact?: ESContact;
+  mqaCatalog?: string;
 }
 
 export interface ESContact {
@@ -286,6 +287,10 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         }
         //we have contextID and entryId,
         else if (cid && eid) {
+          let mqaCataog = es.getEntryURI(cid, "_quality");
+          const mqaEntry = await es.getEntry(mqaCataog);
+          const mqaMetadata = await mqaEntry.getAllMetadata();
+
           let entryURI = "";
           entryURI = es.getEntryURI(cid, eid);
           //fetch entry from entryscape https://entrystore.org/js/stable/doc/
@@ -333,6 +338,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                   }),
                 );
               }
+              valuePromises.push(
+                getLocalizedValue(mqaMetadata, "dcterms:title", nextLang, es),
+              );
               if (isConcept && !fetchMore) {
                 const term = graph
                   .find(resourceURI, "skos:inScheme")[0]
@@ -357,6 +365,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 defaultESEntry.description = results[2];
                 defaultESEntry.publisher = results[3];
                 defaultESEntry.definition = results[4];
+                defaultESEntry.mqaCatalog = results[5];
                 if (fetchMore && !isConcept) {
                   if (results[5] || results[6]) {
                     defaultESEntry.contact = {

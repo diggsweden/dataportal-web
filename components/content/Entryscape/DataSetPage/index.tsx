@@ -16,6 +16,7 @@ import {
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Preamble } from "@/components/global/Typography/Preamble";
+import Link from "next/link";
 
 const filterCatalogProperties = [
   "dcat:keyword",
@@ -40,6 +41,7 @@ const filterAllExceptContactAndLandingPage = [
   "dcterms:temporal",
   "dcterms:accrualPeriodicity",
   "dcterms:accessRights",
+  "dcterms:conformsTo",
 ];
 
 const filterContactAndLandingPage = [
@@ -124,7 +126,7 @@ export const DataSetPage: React.FC = () => {
                 ? env.ENTRYSCAPE_DATASETS_PATH
                 : "admin.dataportal.se"
             }\/store'          
-          };          
+          };  
 
           function getApiExploreUrl(entryid,apientryid)
           {
@@ -494,6 +496,19 @@ export const DataSetPage: React.FC = () => {
               >
                 {t("pages|datasetpage$catalog")}
               </Heading>
+              {entry.mqaCatalog && (
+                <>
+                  <h4 className="pb-sm text-sm font-strong text-brown-600">
+                    {t("pages|datasetpage$mqa-catalog")}
+                  </h4>
+                  <Link
+                    className="pb-md text-sm text-green-600 underline-offset-2 hover:no-underline"
+                    href={`/metadatakvalitet/katalog/_quality/${cid}`}
+                  >
+                    {entry.mqaCatalog}
+                  </Link>
+                </>
+              )}
               <div />
 
               {/* Catalog */}
@@ -523,7 +538,7 @@ export const DataSetPage: React.FC = () => {
                 data-entryscape-block="template"
                 dangerouslySetInnerHTML={{
                   __html: `
-                      <a class="text-white noUnderline" tabindex="-1" href="{{metadataURI}}?recursive=dcat">
+                      <a class="text-white noUnderline mt-sm" tabindex="-1" href="{{metadataURI}}?recursive=dcat">
                       <button class="button--primary button--large text-white flex items-center !no-underline">
                       ${t("pages|datasetpage$rdf")}
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
