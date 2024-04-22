@@ -55,7 +55,7 @@ const renderMedia = (
       return (
         <figure className="border-b border-brown-200 pb-sm">
           <div className="pb-sm">
-            <VideoPlayer media={media} url={url} />
+            <VideoPlayer media={media} />
           </div>
           {mediaDescription && (
             <figcaption className="text-brown-600">
