@@ -486,13 +486,13 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                           </a>
 
                           <a
-                            href="{{ metadataURI }}?format=text/turtle"
+                            href="{{ metadataURI }}?format=text/turtle&recursive=conceptscheme"
                           >
                            ${t("pages|datasetpage$download-metadata-as")} TURTLE
                           </a>
 
                           <a
-                            href="{{ metadataURI }}?format=text/n-triples"
+                            href="{{ metadataURI }}?format=text/n-triples&recursive=conceptscheme"
                           >
                            ${t(
                              "pages|datasetpage$download-metadata-as",
@@ -500,7 +500,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                           </a>
 
                           <a
-                            href="{{ metadataURI }}?format=application/ld+json"
+                            href="{{ metadataURI }}?format=application/ld+json&recursive=conceptscheme"
                           >
                            ${t(
                              "pages|datasetpage$download-metadata-as",
