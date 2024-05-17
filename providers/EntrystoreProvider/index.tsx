@@ -7,6 +7,11 @@ import { SettingsUtil } from "@/env/SettingsUtil";
 //unfortunate hack to get a entrystore class instance, script is inserted in head
 declare var ESJS: any;
 
+type ConformsTo = {
+  title: string;
+  url: string;
+};
+
 export interface EntrystoreProviderProps {
   env: EnvSettings;
   eid?: string;
@@ -28,6 +33,7 @@ export interface ESEntry {
   termPublisher: string;
   definition: string;
   contact?: ESContact;
+  conformsTo?: ConformsTo[];
 }
 
 export interface ESContact {
@@ -44,6 +50,7 @@ const defaultESEntry: ESEntry = {
   publisher: "",
   termPublisher: "",
   definition: "",
+  conformsTo: [],
 };
 
 export const EntrystoreContext = createContext<ESEntry>(defaultESEntry);
@@ -239,10 +246,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 );
               }
               if (isConcept && !fetchMore) {
-                const term = graph
-                  .find(resourceURI, "skos:inScheme")[0]
-                  .getValue();
-                const termEntry = await util.getEntryByResourceURI(term);
+                const termEntry = await util.getEntryByResourceURI(
+                  graph.findFirstValue(resourceURI, "skos:inScheme"),
+                );
                 const termGraph = termEntry.getAllMetadata();
 
                 valuePromises.push(
@@ -254,6 +260,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                   ),
                 );
               }
+
               //wait for all values to be fetched
               let results = await Promise.all(valuePromises);
 
@@ -289,7 +296,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
           let entryURI = "";
           entryURI = es.getEntryURI(cid, eid);
           //fetch entry from entryscape https://entrystore.org/js/stable/doc/
+
           es.getEntry(entryURI)
+
             .then(async (entry: any) => {
               defaultESEntry.entry = entry;
               if (!entry) return;
@@ -298,12 +307,37 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
 
+              const maybeSpecs = graph
+                .find(null, "dcterms:conformsTo")
+                .map((stmt: any) => stmt.getValue());
+
+              const findSpec = await es
+                .newSolrQuery()
+                .resource(maybeSpecs, null)
+                .rdfType(["dcterms:Standard", "prof:Profile"])
+                .getEntries();
+
+              const specArr = await Promise.all(
+                findSpec.map(async (spec: any) => {
+                  return {
+                    title: await getLocalizedValue(
+                      spec.getAllMetadata(),
+                      "dcterms:title",
+                      nextLang,
+                      es,
+                    ),
+                    url: spec.getResourceURI(),
+                  };
+                }),
+              );
+
               //the getLocalizedValue function might fetch from network, so start all IO with promises
               valuePromises.push(
                 getLocalizedValue(graph, "dcterms:title", nextLang, es, {
                   resourceURI,
                 }),
               );
+
               valuePromises.push(
                 getLocalizedValue(
                   graph,
@@ -334,10 +368,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 );
               }
               if (isConcept && !fetchMore) {
-                const term = graph
-                  .find(resourceURI, "skos:inScheme")[0]
-                  .getValue();
-                const termEntry = await util.getEntryByResourceURI(term);
+                const termEntry = await util.getEntryByResourceURI(
+                  graph.findFirstValue(resourceURI, "skos:inScheme"),
+                );
                 const termGraph = termEntry.getAllMetadata();
 
                 valuePromises.push(
@@ -357,6 +390,8 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 defaultESEntry.description = results[2];
                 defaultESEntry.publisher = results[3];
                 defaultESEntry.definition = results[4];
+                defaultESEntry.conformsTo = specArr || null;
+
                 if (fetchMore && !isConcept) {
                   if (results[5] || results[6]) {
                     defaultESEntry.contact = {
