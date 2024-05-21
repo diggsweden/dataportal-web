@@ -241,7 +241,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                           )
                         }
                       >
-                        <div className="absolute z-10 mr-lg mt-sm w-full overflow-y-auto bg-white shadow-md md:max-w-[330px]">
+                        <div className="absolute z-10 mr-lg mt-sm max-h-[600px] w-full overflow-y-auto bg-white shadow-md md:max-w-[330px]">
                           {searchMode == "datasets" && ( //only render on searchpage
                             <>
                               {isLicense ? (
