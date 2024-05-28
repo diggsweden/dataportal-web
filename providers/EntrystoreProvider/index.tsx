@@ -400,7 +400,6 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 defaultESEntry.definition = results[4];
                 defaultESEntry.mqaCatalog = results[5];
                 defaultESEntry.conformsTo = specArr || null;
-               
 
                 if (fetchMore && !isConcept) {
                   if (results[5] || results[6]) {
