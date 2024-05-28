@@ -490,7 +490,7 @@ export const DataSetPage: React.FC = () => {
 
               {/* About dataset */}
               <div data-entryscape="aboutDataset" />
-              {entry.conformsTo && (
+              {entry.conformsTo && entry.conformsTo.length > 0 && (
                 <div>
                   <span className="rdformsLabel">
                     {t("pages|datasetpage$related_specifications")}
