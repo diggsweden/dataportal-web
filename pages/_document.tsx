@@ -57,6 +57,12 @@ class MyDocument extends Document {
           />
 
           <link
+            type="text/css"
+            rel="stylesheet"
+            href="https://cdn.screen9.com/players/amber-player.css"
+          ></link>
+
+          <link
             rel="preconnect"
             href="https://editera.dataportal.se"
             crossOrigin="anonymous"

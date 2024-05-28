@@ -327,7 +327,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                     "pages|concept_page$no_superior_concept",
                   )}</span></div>{{/ifprop}}' + 
 
-                  '{{#ifprop "skos:narrower"}}<div><h2>${t(
+                  '{{#ifprop "skos:narrower"}}<div class="totMQA"><h2>${t(
                     "pages|concept_page$subordinate_concepts",
                   )}</h2>{{/ifprop}}' +
                   '{{#ifprop "skos:narrower"}}{{narrowerList}}</div>{{/ifprop}}' +
@@ -464,44 +464,47 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
 
           <span className="text-md" data-entryscape="terminology" />
           <span data-entryscape="terminologyButton" />
+          {/* Download formats */}
           <script
             type="text/x-entryscape-handlebar"
             data-entryscape="true"
             data-entryscape-component="template"
             dangerouslySetInnerHTML={{
               __html: `
-                       <div class="terminilogy__download-wrapper">
-                          <h3 class="text-md">
-                          ${t("pages|concept_page$download_concept")}
+                       <div class="mt-lg" >
+                          <h3 class="text-md !mt-none">
+                          ${t("pages|datasetpage$download_link")}
                           </h3>
 
-                        <div class="text-md"">
+                        <div class="text-md flex flex-col gap-xs">
                           <a
-                            class="terminology__download-link"
                             href="{{ metadataURI}}"
                           >
-                            RDF/XML
+                           ${t(
+                             "pages|datasetpage$download-metadata-as",
+                           )} RDF/XML
                           </a>
 
                           <a
-                            class="terminology__download-link"
                             href="{{ metadataURI }}?format=text/turtle"
                           >
-                            TURTLE
+                           ${t("pages|datasetpage$download-metadata-as")} TURTLE
                           </a>
 
                           <a
-                            class="terminology__download-link"
                             href="{{ metadataURI }}?format=text/n-triples"
                           >
-                            N-TRIPLES
+                           ${t(
+                             "pages|datasetpage$download-metadata-as",
+                           )} N-TRIPLES
                           </a>
 
                           <a
-                            class="terminology__download-link"
                             href="{{ metadataURI }}?format=application/ld+json"
                           >
-                            JSON-LD
+                           ${t(
+                             "pages|datasetpage$download-metadata-as",
+                           )} JSON-LD
                           </a>
                         </div>
                         </div>
