@@ -211,6 +211,29 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
 
+              const datasets = await es
+                .newSolrQuery()
+                .rdfType(["dcat:Dataset", "dcat:DataService"])
+                .uriProperty("dcterms:conformsTo", resourceURI)
+                .getEntries();
+
+              const datasetArr = await Promise.all(
+                datasets.map(async (ds: any) => {
+                  const title = await getLocalizedValue(
+                    ds.getAllMetadata(),
+                    "dcterms:title",
+                    nextLang,
+                    es,
+                  );
+                  return {
+                    title: title,
+                    url: `/${es.getContextId(
+                      ds.getEntryInfo().getMetadataURI(),
+                    )}_${ds.getId()}/${title.toLowerCase().replace(/ /g, "-")}`,
+                  };
+                }),
+              );
+
               //the getLocalizedValue function might fetch from network, so start all IO with promises
               valuePromises.push(
                 getLocalizedValue(graph, "dcterms:title", nextLang, es, {
@@ -270,6 +293,8 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 defaultESEntry.description = results[2];
                 defaultESEntry.publisher = results[3];
                 defaultESEntry.definition = results[4];
+                defaultESEntry.conformsTo = datasetArr || null;
+
                 if (fetchMore && !isConcept) {
                   if (results[5] || results[6]) {
                     defaultESEntry.contact = {

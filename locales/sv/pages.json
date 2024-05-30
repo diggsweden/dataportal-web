@@ -245,6 +245,7 @@
     "scheme_download": "Ladda ner schema",
     "guidance_download": "Ladda ner guidance",
     "specification_download": "Ladda ner specifikation",
+    "related_datasets": "Relaterade datamängder",
     "download": "Ladda ner"
   },
   "explore-api-page": {
