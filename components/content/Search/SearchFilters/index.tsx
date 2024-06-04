@@ -197,6 +197,11 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
     });
   };
 
+  function updateFilters() {
+    search.updateFacetStats();
+    setShowFilter(!showFilter);
+  }
+
   return (
     <div id="SearchFilters">
       <Button
@@ -207,7 +212,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
         aria-label={
           showFilter ? t("common|hide-filter") : t("common|show-filter")
         }
-        onClick={() => setShowFilter(!showFilter)}
+        onClick={() => updateFilters()}
         label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
       />
 

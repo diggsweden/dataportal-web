@@ -18,7 +18,7 @@ export const getLocalizedValue = (
   options?: { resourceURI?: string },
 ) => {
   let val = "";
-  let fallbackLang = "sv";
+  const fallbackLang = "en";
 
   const stmts = metadataGraph.find(options?.resourceURI, prop);
   if (stmts.length > 0) {
@@ -27,9 +27,9 @@ export const getLocalizedValue = (
       obj[stmts[s].getLanguage() || ""] = stmts[s].getValue();
     }
 
-    if (typeof obj[lang] != "undefined") {
+    if (typeof obj[lang] !== "undefined") {
       val = obj[lang];
-    } else if (obj[fallbackLang] && fallbackLang != lang) {
+    } else if (lang === "sv" && typeof obj[fallbackLang] !== "undefined") {
       val = obj[fallbackLang];
     } else {
       val = Object.entries(obj)[0][1] as string;

@@ -65,6 +65,11 @@ export const DataSetPage: React.FC = () => {
   const postscribe = hasWindow && (window as any).postscribe;
   const [showText, setShowText] = useState(false);
   const [descriptionHeight, setDescriptionHeight] = useState(0);
+  const [showAllSpecs, setShowAllSpecs] = useState(false);
+  const relatedSpecs = showAllSpecs
+    ? entry.conformsTo
+    : entry.conformsTo?.slice(0, 4);
+
   /**
    * Async load scripts requiered for EntryScape blocks,
    * or else blocks wont have access to DOM
@@ -485,6 +490,35 @@ export const DataSetPage: React.FC = () => {
 
               {/* About dataset */}
               <div data-entryscape="aboutDataset" />
+              {entry.conformsTo && entry.conformsTo.length > 0 && (
+                <div>
+                  <span className="rdformsLabel">
+                    {t("pages|datasetpage$related_specifications")}
+                  </span>
+                  {relatedSpecs?.map((spec, idx) => (
+                    <a
+                      className="fit mb-sm block text-sm text-green-600 hover:no-underline"
+                      key={idx}
+                      href={spec.url}
+                    >
+                      {spec.title}
+                    </a>
+                  ))}
+                  {entry.conformsTo?.length > 4 && (
+                    <Button
+                      size={"xs"}
+                      className="mt-xs px-sm py-xs !font-strong text-brown-600"
+                      variant={"plain"}
+                      label={
+                        showAllSpecs
+                          ? t("pages|datasetpage$view_less")
+                          : t("pages|datasetpage$view_more")
+                      }
+                      onClick={() => setShowAllSpecs(!showAllSpecs)}
+                    />
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Catalog informaton wrapper */}

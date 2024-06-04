@@ -327,7 +327,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                     "pages|concept_page$no_superior_concept",
                   )}</span></div>{{/ifprop}}' + 
 
-                  '{{#ifprop "skos:narrower"}}<div><h2>${t(
+                  '{{#ifprop "skos:narrower"}}<div class="totMQA"><h2>${t(
                     "pages|concept_page$subordinate_concepts",
                   )}</h2>{{/ifprop}}' +
                   '{{#ifprop "skos:narrower"}}{{narrowerList}}</div>{{/ifprop}}' +

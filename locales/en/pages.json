@@ -154,6 +154,7 @@
     "fileformat": "other file format",
     "rdf": "Download metadata as RDF",
     "view_more": "View more",
+    "related_specifications": "Related specifications",
     "view_less": "View less",
     "dataservice": "Dataservice",
     "keyword": "Keywords",
@@ -161,6 +162,7 @@
     "contact-publisher": "Do you have questions or comments?",
     "contact-publisher-text": "Contact the publishing organization for questions, comments and requests regarding the information on this page. ",
     "contact-publisher-text2": "You can also go to the data portal ",
+    "mqa-catalog": "MQA catalog",
     "download-metadata-as": "Download metadata as"
   },
   "dataservicepage": {
@@ -234,6 +236,7 @@
     "scheme_download": "Download schema",
     "guidance_download": "Download guidance",
     "specification_download": "Download specification",
+    "related_datasets": "Related datasets",
     "download": "Download"
   },
   "explore-api-page": {
