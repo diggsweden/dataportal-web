@@ -154,6 +154,7 @@
     "fileformat": "övrigt filformat",
     "rdf": "Ladda ner metadata som RDF",
     "view_more": "Visa mer",
+    "related_specifications": "Relaterade specifikationer",
     "view_less": "Visa mindre",
     "dataservice": "Dataservice",
     "keyword": "Nyckelord",
@@ -161,6 +162,7 @@
     "contact-publisher": "Har du frågor eller synpunkter?",
     "contact-publisher-text": "Kontakta publicerande organisation för frågor, synpunkter och önskemål kring informationen på den här sidan. ",
     "contact-publisher-text2": "Du kan även vända dig till dataportalens ",
+    "mqa-catalog": "Katalogens metadatakvalitet",
     "download-metadata-as": "Ladda ner metadata som"
   },
   "dataservicepage": {
@@ -243,6 +245,7 @@
     "scheme_download": "Ladda ner schema",
     "guidance_download": "Ladda ner guidance",
     "specification_download": "Ladda ner specifikation",
+    "related_datasets": "Relaterade datamängder",
     "download": "Ladda ner"
   },
   "explore-api-page": {
