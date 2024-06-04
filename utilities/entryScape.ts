@@ -195,7 +195,7 @@ export class EntryScape {
               facetSpec && facetSpec.indexOrder ? facetSpec.indexOrder : 0,
           };
 
-          f.values.splice(0, 500).forEach((fvalue: ESFacetFieldValue) => {
+          f.values.splice(0, 1000).forEach((fvalue: ESFacetFieldValue) => {
             if (
               !valueswhitelist ||
               (valueswhitelist &&
@@ -529,7 +529,7 @@ export class EntryScape {
               fSpec.type == ESType.literal ||
               fSpec.type == ESType.literal_s
             ) {
-              esQuery.facetLimit(500);
+              esQuery.facetLimit(1000);
               esQuery.literalFacet(
                 fSpec.resource,
                 fSpec.related ? true : false,

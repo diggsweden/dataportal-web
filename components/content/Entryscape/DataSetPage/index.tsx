@@ -532,11 +532,11 @@ export const DataSetPage: React.FC = () => {
               </Heading>
               {entry.mqaCatalog && (
                 <>
-                  <h4 className="pb-sm text-sm font-strong text-brown-600">
+                  <h4 className="pb-xs text-sm font-strong text-brown-600">
                     {t("pages|datasetpage$mqa-catalog")}
                   </h4>
                   <Link
-                    className="pb-md text-sm text-green-600 underline-offset-2 hover:no-underline"
+                    className="text-sm text-green-600 underline-offset-2 hover:no-underline"
                     href={`/metadatakvalitet/katalog/_quality/${cid}`}
                   >
                     {entry.mqaCatalog}
@@ -572,7 +572,7 @@ export const DataSetPage: React.FC = () => {
                 dangerouslySetInnerHTML={{
                   __html: `
                        <div>
-                          <h3 class="text-md !mt-none">
+                          <h3 class="text-md !mt-[12px]">
                           ${t("pages|datasetpage$download_link")}
                           </h3>
 
