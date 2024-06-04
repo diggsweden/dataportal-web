@@ -144,7 +144,7 @@
 
 /* Styling for MQA catalog searh bar */
 .form-control {
-  @apply mt-xl h-[50px] rounded-[0px] border-none !text-blackOpaque3 shadow-none outline outline-1 outline-offset-2 lg:max-w-[620px] !important;
+  @apply mt-xl h-[50px] rounded-[0px] border-none !text-blackOpaque3 shadow-none outline outline-1 outline-offset-2 !important;
 }
 
 .form-control:focus-visible,
