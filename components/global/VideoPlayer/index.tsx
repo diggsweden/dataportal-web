@@ -1,67 +1,84 @@
-import { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MediaType_Dataportal_Digg_Video_Fragment as IVideo } from "@/graphql/__generated__/operations";
-import ReactPlayer from "react-player";
-import PlayIcon from "@/assets/icons/play.svg";
 
-interface VideoProps {
-  media: IVideo;
-  url: string;
-}
+export const VideoPlayer: React.FC<{ media: IVideo }> = ({ media }) => {
+  const containerid = `video_screen9_${media.screen9.id}`;
+  let player: any;
 
-export const VideoPlayer: FC<VideoProps> = ({ media, url }) => {
-  const [windowLoaded, setWindowLoaded] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [urlState, setUrlState] = useState(`${url}#t=10`);
+  const useScript = (src: string) => {
+    const [status, setStatus] = useState(src ? "loading" : "idle");
 
-  const thumbnail = media.screen9.meta.poster.thumbnail;
+    useEffect(() => {
+      if (!src) {
+        setStatus("idle");
+        return;
+      }
+
+      const existingScript = document.querySelector(`script[src="${src}"]`);
+
+      if (!existingScript) {
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        script.setAttribute("data-status", "loading");
+        document.body.appendChild(script);
+
+        const setAttributeFromEvent = (event: any) => {
+          script.setAttribute(
+            "data-status",
+            event.type === "load" ? "ready" : "error",
+          );
+        };
+
+        script.addEventListener("load", setAttributeFromEvent);
+        script.addEventListener("error", setAttributeFromEvent);
+      } else {
+        setStatus(existingScript.getAttribute("data-status") || "error");
+      }
+
+      const setStateFromEvent = (event: any) => {
+        setStatus(event.type === "load" ? "ready" : "error");
+      };
+
+      const script =
+        existingScript || document.querySelector(`script[src="${src}"]`);
+      script?.addEventListener("load", setStateFromEvent);
+      script?.addEventListener("error", setStateFromEvent);
+
+      return () => {
+        script?.removeEventListener("load", setStateFromEvent);
+        script?.removeEventListener("error", setStateFromEvent);
+      };
+    }, [src]);
+
+    return status;
+  };
+
+  const status = useScript("https://cdn.screen9.com/players/amber-player.js");
 
   useEffect(() => {
-    if (typeof window !== undefined) {
-      setWindowLoaded(true);
+    if (status === "ready" && media.screen9?.id) {
+      const options = {
+        mediaid: media.screen9.id,
+        containerid,
+        token: process.env.NEXT_PUBLIC_SCREEN9_API_TOKEN,
+      };
+      player = new (window as any).screen9.Player(options);
     }
-  }, []);
-
-  useEffect(() => {
-    if (isPlaying) {
-      setUrlState(`${url}#t=0`);
-    }
-  }, [isPlaying]);
+    return () => {
+      if (player) {
+        player.dispose();
+        const script = document.querySelector(
+          `script[src="https://cdn.screen9.com/players/amber-player.js"]`,
+        );
+        script && script.remove();
+      }
+    };
+  }, [status]);
 
   return (
-    <div
-      className={`group relative ${
-        isPlaying ? "cursor-default" : "cursor-pointer"
-      }`}
-      onClick={() => {
-        setIsPlaying(true);
-        if (!thumbnail) {
-          setUrlState(`${url}#t=0`);
-        }
-      }}
-    >
-      {windowLoaded && (
-        <>
-          <ReactPlayer
-            id={media.screen9.id}
-            url={thumbnail ? url : urlState}
-            controls={isPlaying}
-            playing={isPlaying}
-            playsinline={true}
-            onPlay={() => !thumbnail && setUrlState(`${url}#t=0`)}
-            light={thumbnail}
-            width={"100%"}
-            height={"100%"}
-          />
-          <button
-            aria-label="Play video"
-            className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full group-hover:opacity-70 ${
-              isPlaying ? "hidden group-hover:bg-none" : "block"
-            }}`}
-          >
-            <PlayIcon className={`${isPlaying ? "hidden" : "block"}`} />
-          </button>
-        </>
-      )}
-    </div>
+    <video id={containerid} className="video-js vjs-fluid" controls playsInline>
+      Video
+    </video>
   );
 };

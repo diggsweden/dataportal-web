@@ -197,6 +197,11 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
     });
   };
 
+  function updateFilters() {
+    search.updateFacetStats();
+    setShowFilter(!showFilter);
+  }
+
   return (
     <div id="SearchFilters">
       <Button
@@ -207,7 +212,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
         aria-label={
           showFilter ? t("common|hide-filter") : t("common|show-filter")
         }
-        onClick={() => setShowFilter(!showFilter)}
+        onClick={() => updateFilters()}
         label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
       />
 
@@ -241,28 +246,30 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                           )
                         }
                       >
-                        <div className="absolute z-10 mr-lg mt-sm w-full overflow-y-auto bg-white shadow-md md:max-w-[330px]">
-                          {searchMode == "datasets" && ( //only render on searchpage
-                            <>
-                              {isLicense ? (
-                                <MarkAll
-                                  search={search}
-                                  toggleKey={key}
-                                  title={t(`filters|allchecktext$${key}`)}
-                                />
-                              ) : (
-                                <FilterSearch
-                                  filterKey={key}
-                                  filter={inputFilter}
-                                  setFilter={setInputFilter}
-                                  fetchMore={() =>
-                                    shouldFetchMore &&
-                                    search.fetchMoreFacets(key)
-                                  }
-                                />
-                              )}
-                            </>
-                          )}
+                        <div className="absolute z-10 mr-lg mt-sm max-h-[600px] w-full overflow-y-auto bg-white shadow-md md:max-w-[330px]">
+                          {searchMode == "datasets" ||
+                            (searchMode == "specifications" && (
+                              //only render on searchpage
+                              <>
+                                {isLicense ? (
+                                  <MarkAll
+                                    search={search}
+                                    toggleKey={key}
+                                    title={t(`filters|allchecktext$${key}`)}
+                                  />
+                                ) : (
+                                  <FilterSearch
+                                    filterKey={key}
+                                    filter={inputFilter}
+                                    setFilter={setInputFilter}
+                                    fetchMore={() =>
+                                      shouldFetchMore &&
+                                      search.fetchMoreFacets(key)
+                                    }
+                                  />
+                                )}
+                              </>
+                            ))}
 
                           {facetValues.map(
                             (facetValue: SearchFacetValue, index: number) => {

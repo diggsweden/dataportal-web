@@ -81,7 +81,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "connect-src",
     `'self' https://* http://127.0.0.1:1300/ ${
       reactEnv("APOLLO_URL") || ""
-    } https://* webbanalys.digg.se`,
+    } https://* webbanalys.digg.se http://statsapi.screen9.com/sessions`,
   );
 
   // return the object in a formatted value (this won't work on IE11 without a polyfill!)
