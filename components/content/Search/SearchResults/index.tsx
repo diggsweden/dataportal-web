@@ -234,6 +234,15 @@ export const SearchResults: FC<SearchResultsProps> = ({
                     }}
                     className="group block no-underline"
                   >
+                    <Heading
+                      level={3}
+                      size="sm"
+                      className="focus--underline mb-sm font-normal text-green-600 group-hover:underline"
+                      lang={hit.titleLang}
+                    >
+                      {hit.title}
+                    </Heading>
+
                     {hit.metadata &&
                       search.allFacets &&
                       !search.loadingFacets &&
@@ -249,15 +258,6 @@ export const SearchResults: FC<SearchResultsProps> = ({
                           )}
                         </span>
                       )}
-
-                    <Heading
-                      level={3}
-                      size="sm"
-                      className="focus--underline mb-sm font-normal text-green-600 group-hover:underline"
-                      lang={hit.titleLang}
-                    >
-                      {hit.title}
-                    </Heading>
 
                     {isCompact && hit.descriptionLang && (
                       <p className="mb-xs">{hit.description}</p>

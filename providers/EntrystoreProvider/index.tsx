@@ -7,7 +7,7 @@ import { SettingsUtil } from "@/env/SettingsUtil";
 //unfortunate hack to get a entrystore class instance, script is inserted in head
 declare var ESJS: any;
 
-type ConformsTo = {
+type RelationObj = {
   title: string;
   url: string;
 };
@@ -33,7 +33,8 @@ export interface ESEntry {
   termPublisher: string;
   definition: string;
   contact?: ESContact;
-  conformsTo?: ConformsTo[];
+  conformsTo?: RelationObj[];
+  hasResource?: RelationObj[];
   mqaCatalog?: string;
 }
 
@@ -52,6 +53,7 @@ const defaultESEntry: ESEntry = {
   termPublisher: "",
   definition: "",
   conformsTo: [],
+  hasResource: [],
 };
 
 export const EntrystoreContext = createContext<ESEntry>(defaultESEntry);
@@ -217,6 +219,12 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 .uriProperty("dcterms:conformsTo", resourceURI)
                 .getEntries();
 
+              const hasResource = await es
+                .newSolrQuery()
+                .rdfType(["dcterms:Standard", "prof:Profile"])
+                .uriProperty("prof:hasResource", resourceURI)
+                .getEntries();
+
               const datasetArr = await Promise.all(
                 datasets.map(async (ds: any) => {
                   const title = await getLocalizedValue(
@@ -230,6 +238,25 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                     url: `/${es.getContextId(
                       ds.getEntryInfo().getMetadataURI(),
                     )}_${ds.getId()}/${title.toLowerCase().replace(/ /g, "-")}`,
+                  };
+                }),
+              );
+
+              const resourceArr = await Promise.all(
+                hasResource.map(async (spec: any) => {
+                  const title = await getLocalizedValue(
+                    spec.getAllMetadata(),
+                    "dcterms:title",
+                    nextLang,
+                    es,
+                  );
+                  return {
+                    title: title,
+                    url: `/${es.getContextId(
+                      spec.getEntryInfo().getMetadataURI(),
+                    )}_${spec.getId()}/${title
+                      .toLowerCase()
+                      .replace(/ /g, "-")}`,
                   };
                 }),
               );
@@ -294,6 +321,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 defaultESEntry.publisher = results[3];
                 defaultESEntry.definition = results[4];
                 defaultESEntry.conformsTo = datasetArr || null;
+                defaultESEntry.hasResource = resourceArr || null;
 
                 if (fetchMore && !isConcept) {
                   if (results[5] || results[6]) {
