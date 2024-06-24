@@ -252,11 +252,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                   );
                   return {
                     title: title,
-                    url: `/${es.getContextId(
-                      spec.getEntryInfo().getMetadataURI(),
-                    )}_${spec.getId()}/${title
-                      .toLowerCase()
-                      .replace(/ /g, "-")}`,
+                    url: spec.getResourceURI(),
                   };
                 }),
               );
