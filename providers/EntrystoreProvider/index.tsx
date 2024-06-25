@@ -341,11 +341,14 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 .find(null, "dcterms:conformsTo")
                 .map((stmt: any) => stmt.getValue());
 
-              const findSpec = await es
-                .newSolrQuery()
-                .resource(maybeSpecs, null)
-                .rdfType(["dcterms:Standard", "prof:Profile"])
-                .getEntries();
+              const findSpec =
+                maybeSpecs.length > 0
+                  ? await es
+                      .newSolrQuery()
+                      .resource(maybeSpecs, null)
+                      .rdfType(["dcterms:Standard", "prof:Profile"])
+                      .getEntries()
+                  : [];
 
               const specArr = await Promise.all(
                 findSpec.map(async (spec: any) => {
