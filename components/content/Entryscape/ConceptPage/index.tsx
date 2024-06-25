@@ -8,6 +8,7 @@ import { hemvist, linkBase } from "@/utilities";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 import { Preamble } from "@/components/global/Typography/Preamble";
+import Link from "next/link";
 
 export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
   curi,
@@ -461,7 +462,25 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
             className="text-sm text-textSecondary"
             data-entryscape="hemvist"
           />
-
+          {entry.hasResource && entry.hasResource?.length > 0 && (
+            <div>
+              <Heading
+                className="!text-[14px] font-strong text-textSecondary"
+                level={3}
+              >
+                {t("pages|datasetpage$related_specifications")}
+              </Heading>
+              {entry.hasResource.map(({ title, url }, idx) => (
+                <Link
+                  className="block !text-[14px] text-green-600 hover:no-underline"
+                  key={idx}
+                  href={url}
+                >
+                  {title}
+                </Link>
+              ))}
+            </div>
+          )}
           <span className="text-md" data-entryscape="terminology" />
           <span data-entryscape="terminologyButton" />
           {/* Download formats */}

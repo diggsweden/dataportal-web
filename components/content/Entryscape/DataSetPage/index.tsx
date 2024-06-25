@@ -50,6 +50,7 @@ const filterContactAndLandingPage = [
   "dcat:landingPage",
   "http://data.europa.eu/r5r/applicableLegislation",
   "http://xmlns.com/foaf/0.1/page",
+  "http://data.europa.eu/r5r/hvdCategory",
 ];
 
 export const DataSetPage: React.FC = () => {

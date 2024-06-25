@@ -154,7 +154,7 @@
     "fileformat": "other file format",
     "rdf": "Download metadata as RDF",
     "view_more": "View more",
-    "related_specifications": "Related specifications",
+    "related_specifications": "Specification",
     "view_less": "View less",
     "dataservice": "Dataservice",
     "keyword": "Keywords",
@@ -235,7 +235,7 @@
     "resource_specification": "Resource",
     "scheme_download": "Download schema",
     "guidance_download": "Download guidance",
-    "specification_download": "Download specification",
+    "specification_download": "Access URL",
     "related_datasets": "Related datasets",
     "download": "Download"
   },
