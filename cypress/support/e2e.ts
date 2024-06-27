@@ -16,5 +16,9 @@
 // Import commands.js using ES2015 syntax:
 import "./commands";
 
+// Import graphql mock.
+import "cypress-graphql-mock-network";
+// import "cypress-graphql-mock-network";
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

@@ -1,0 +1,612 @@
+directive @defer(label: String, if: Boolean! = true) on FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+type dataportal__Service {
+  """
+  The sdl representing the federated service capabilities. Includes federation directives, removes federation types, and includes rest of full schema after schema directives have been applied
+  """
+  sdl: String
+}
+
+"""The publicationstate of a container, either preview or live"""
+enum dataportal_ContainerState {
+  preview
+  live
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar dataportal_DateTime
+
+type dataportal_Digg_Container implements dataportal_Digg_IContainer & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  name: String!
+  heading: String!
+  preamble: String
+  landingPage: Boolean
+  parent: dataportal_Digg_Parent
+  containerGroup: dataportal_Digg_Parent
+  image: dataportal_Digg_Image
+  seo: dataportal_Digg_SEO
+  blocks: [dataportal_Digg_IBlock!]!
+  slug: String!
+}
+
+type dataportal_Digg_Faq implements dataportal_Digg_IBlock & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  question: String!
+  answer: dataportal_Digg_RichText!
+}
+
+type dataportal_Digg_File implements dataportal_Digg_IMediaBase {
+  name: String
+  alt: String
+  description: String
+  url: String!
+  mime: String!
+  ext: String
+
+  """Data from screen9 media"""
+  screen9: dataportal_JSON
+}
+
+type dataportal_Digg_Form implements dataportal_Digg_IForm & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+
+  """A unique identifier"""
+  identifier: String!
+
+  """The building blocks of the form"""
+  elements: [dataportal_Digg_IFormElement!]!
+}
+
+type dataportal_Digg_FormBlock implements dataportal_Digg_IBlock & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  elements: [dataportal_Digg_IFormElement!]!
+}
+
+type dataportal_Digg_FormCheckbox implements dataportal_Digg_IFormInput & dataportal_Digg_IFormElement & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  title: String!
+
+  """Info about the specific input field"""
+  info: String
+
+  """If the specific input field should be required or not"""
+  required: Boolean!
+  choices: [dataportal_Digg_FormChoice!]!
+}
+
+type dataportal_Digg_FormChoice {
+  label: String!
+
+  """Text corresponding to if the choice is active"""
+  popup: String
+}
+
+type dataportal_Digg_FormDescription implements dataportal_Digg_IFormElement & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  title: String!
+  text: dataportal_Digg_RichText!
+}
+
+type dataportal_Digg_FormDropdown implements dataportal_Digg_IFormInput & dataportal_Digg_IFormElement & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  title: String!
+
+  """Info about the specific input field"""
+  info: String
+
+  """If the specific input field should be required or not"""
+  required: Boolean!
+  items: [String!]!
+}
+
+type dataportal_Digg_FormPageBreak implements dataportal_Digg_IFormElement & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  title: String!
+}
+
+type dataportal_Digg_FormRadio implements dataportal_Digg_IFormInput & dataportal_Digg_IFormElement & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  title: String!
+
+  """Info about the specific input field"""
+  info: String
+
+  """If the specific input field should be required or not"""
+  required: Boolean!
+  choices: [dataportal_Digg_FormChoice!]!
+}
+
+type dataportal_Digg_FormText implements dataportal_Digg_IFormInput & dataportal_Digg_IFormElement & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  title: String!
+
+  """Info about the specific input field"""
+  info: String
+
+  """If the specific input field should be required or not"""
+  required: Boolean!
+}
+
+type dataportal_Digg_FormTextArea implements dataportal_Digg_IFormInput & dataportal_Digg_IFormElement & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  title: String!
+
+  """Info about the specific input field"""
+  info: String
+
+  """If the specific input field should be required or not"""
+  required: Boolean!
+}
+
+type dataportal_Digg_Good_Example implements dataportal_Digg_IGood_Example & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  name: String!
+  heading: String!
+  publisher: String!
+  preamble: String
+  image: dataportal_Digg_Image
+  seo: dataportal_Digg_SEO
+  blocks: [dataportal_Digg_IBlock!]!
+  slug: String!
+  keywords: [dataportal_Digg_Keyword!]
+  apiAndDataset: [dataportal_Digg_Tag!]
+  publishedAt: dataportal_DateTime!
+}
+
+interface dataportal_Digg_IBlock {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+}
+
+interface dataportal_Digg_IContainer {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  name: String!
+  heading: String!
+  preamble: String
+  landingPage: Boolean
+  parent: dataportal_Digg_Parent
+  containerGroup: dataportal_Digg_Parent
+  image: dataportal_Digg_Image
+  seo: dataportal_Digg_SEO
+  blocks: [dataportal_Digg_IBlock!]!
+  slug: String!
+}
+
+interface dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+}
+
+interface dataportal_Digg_IForm {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+
+  """A unique identifier"""
+  identifier: String!
+
+  """The building blocks of the form"""
+  elements: [dataportal_Digg_IFormElement!]!
+}
+
+interface dataportal_Digg_IFormElement {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  title: String!
+}
+
+interface dataportal_Digg_IFormInput {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  title: String!
+
+  """Info about the specific input field"""
+  info: String
+
+  """If the specific input field should be required or not"""
+  required: Boolean!
+}
+
+interface dataportal_Digg_IGood_Example {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  name: String!
+  heading: String!
+  publisher: String!
+  preamble: String
+  image: dataportal_Digg_Image
+  seo: dataportal_Digg_SEO
+  blocks: [dataportal_Digg_IBlock!]!
+  slug: String!
+  keywords: [dataportal_Digg_Keyword!]
+  apiAndDataset: [dataportal_Digg_Tag!]
+  publishedAt: dataportal_DateTime!
+}
+
+type dataportal_Digg_Image implements dataportal_Digg_IMediaBase {
+  name: String
+  alt: String
+  description: String
+  url: String!
+  mime: String!
+  ext: String
+
+  """Data from screen9 media"""
+  screen9: dataportal_JSON
+  width: Int
+  height: Int
+}
+
+interface dataportal_Digg_IMediaBase {
+  name: String
+  alt: String
+  description: String
+  url: String!
+  mime: String!
+  ext: String
+
+  """Data from screen9 media"""
+  screen9: dataportal_JSON
+}
+
+interface dataportal_Digg_IModule {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  identifier: String!
+  blocks: [dataportal_Digg_IBlock!]!
+}
+
+interface dataportal_Digg_INews_Item {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  name: String!
+  heading: String!
+  preamble: String
+  image: dataportal_Digg_Image
+  seo: dataportal_Digg_SEO
+  blocks: [dataportal_Digg_IBlock!]!
+  slug: String!
+  keywords: [dataportal_Digg_Keyword!]
+  publishedAt: dataportal_DateTime!
+}
+
+interface dataportal_Digg_ITool {
+  heading: String!
+  preamble: String!
+  link: String!
+  domainLabel: String!
+  description: String
+  keywords: [dataportal_Digg_Keyword!]
+  promoted: Boolean!
+}
+
+type dataportal_Digg_Keyword {
+  id: ID!
+  value: String!
+}
+
+type dataportal_Digg_Link {
+  title: String
+  description: String
+  slug: String!
+  linktype: dataportal_LinkType!
+  customPreamble: String
+  showPreamble: Boolean
+  image: dataportal_Digg_Image
+}
+
+type dataportal_Digg_Media implements dataportal_Digg_IBlock & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  heading: String
+  description: String
+  media: dataportal_Digg_MediaType!
+}
+
+"""A mediatype of image, video or file"""
+union dataportal_Digg_MediaType = dataportal_Digg_Image | dataportal_Digg_Video | dataportal_Digg_File
+
+type dataportal_Digg_Module implements dataportal_Digg_IModule & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  identifier: String!
+  blocks: [dataportal_Digg_IBlock!]!
+}
+
+type dataportal_Digg_ModuleList implements dataportal_Digg_IBlock & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  modules: [dataportal_Digg_IModule!]!
+}
+
+type dataportal_Digg_News_Item implements dataportal_Digg_INews_Item & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  name: String!
+  heading: String!
+  preamble: String
+  image: dataportal_Digg_Image
+  seo: dataportal_Digg_SEO
+  blocks: [dataportal_Digg_IBlock!]!
+  slug: String!
+  keywords: [dataportal_Digg_Keyword!]
+  publishedAt: dataportal_DateTime!
+}
+
+type dataportal_Digg_Parent {
+  heading: String
+  preamble: String
+  slug: String
+  name: String
+}
+
+type dataportal_Digg_Quote implements dataportal_Digg_IBlock & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  quote: String!
+  author: String!
+  image: dataportal_Digg_Image
+}
+
+type dataportal_Digg_RelatedContent implements dataportal_Digg_IBlock & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  heading: String
+  showMoreLink: String
+  links: [dataportal_Digg_Link!]!
+}
+
+type dataportal_Digg_RichText {
+  """AST JSON"""
+  raw: String
+  html: String
+  markdown: String
+  text: String
+}
+
+"""A type enumerating all types from a search result"""
+union dataportal_Digg_SearchableTypes = dataportal_Digg_Container | dataportal_Digg_Good_Example | dataportal_Digg_News_Item
+
+type dataportal_Digg_SearchHighlight {
+  name: String
+  value: String
+}
+
+type dataportal_Digg_SearchHit {
+  highlights: [dataportal_Digg_SearchHighlight]
+  hit: dataportal_Digg_SearchableTypes
+}
+
+type dataportal_Digg_SearchResult {
+  totalNrOfHits: Int
+  hits: [dataportal_Digg_SearchHit]
+}
+
+type dataportal_Digg_SEO {
+  title: String
+  description: String
+  lang: String
+  image: dataportal_Digg_Image
+
+  """Allow robots to index this content"""
+  robotsIndex: Boolean
+
+  """Allow robots to crawl this content"""
+  robotsFollow: Boolean
+}
+
+type dataportal_Digg_Tag {
+  title: String!
+  link: String
+}
+
+type dataportal_Digg_Text implements dataportal_Digg_IBlock & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  heading: String
+  body: dataportal_Digg_RichText!
+}
+
+type dataportal_Digg_Tool implements dataportal_Digg_ITool {
+  heading: String!
+  preamble: String!
+  link: String!
+  domainLabel: String!
+  description: String
+  keywords: [dataportal_Digg_Keyword!]
+  promoted: Boolean!
+}
+
+type dataportal_Digg_Video implements dataportal_Digg_IMediaBase {
+  name: String
+  alt: String
+  description: String
+  url: String!
+  mime: String!
+  ext: String
+
+  """Data from screen9 media"""
+  screen9: dataportal_JSON
+}
+
+type dataportal_Error {
+  code: String!
+  message: String
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar dataportal_JSON
+
+enum dataportal_LinkType {
+  INTERNAL
+  EXTERNAL
+  DOCUMENT
+}
+
+input dataportal_QueryCategoryArgs {
+  limit: Int
+  locale: String
+  slug: String
+}
+
+input dataportal_QueryContainerArgs {
+  limit: Int
+  id: Int
+  slug: String
+  locale: String
+
+  """secret to be able to access containers that are in preview state"""
+  previewSecret: String
+  state: dataportal_ContainerState
+  containerGroup: dataportal_QueryCategoryArgs
+}
+
+input dataportal_QuerySearchArgs {
+  limit: Int
+  offset: Int
+  query: String
+  locale: String
+  getHighlights: Boolean
+  highlightsLength: Int
+  highlightPreText: String
+  highlightPostText: String
+}
+
+type Query {
+  dataportal_Digg_Containers(filter: dataportal_QueryContainerArgs): [dataportal_Digg_Container]!
+  dataportal_Digg_Good_Examples(filter: dataportal_QueryContainerArgs): [dataportal_Digg_Good_Example]!
+  dataportal_Digg_News_Items(filter: dataportal_QueryContainerArgs): [dataportal_Digg_News_Item]!
+  dataportal_Digg_Tools(filter: dataportal_QueryContainerArgs): [dataportal_Digg_Tool]!
+  dataportal_Digg_Search(filter: dataportal_QuerySearchArgs): dataportal_Digg_SearchResult
+  dataportal_Digg_Module(identifier: String!, locale: String): dataportal_Digg_Module!
+  dataportal_Digg_Form(identifier: String!, locale: String): dataportal_Digg_Form!
+}
