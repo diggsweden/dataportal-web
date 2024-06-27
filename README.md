@@ -113,3 +113,23 @@ To test locally in the sandbox environment, set the sandbox.editera URL on lines
 Line 6: ENTRYSCAPE_SPECS_PATH="editera.dataportal.se"
 Line 7: ENTRYSCAPE_TERMS_PATH="editera.dataportal.se"
 Line 12: ENTRYSCAPE_CONCEPT_STATS_URL="https://editera.dataportal.se/stats/entityData.json"
+
+
+## E2E Test with Cypress
+https://www.cypress.io/
+
+Run all tests
+```
+yarn cypress run
+```
+
+Run a specific test
+```
+yarn cypress run --spec "cypress/e2e/YOUR_TEST_FILE.cy.js"
+```
+
+To use the cypress GUI run the following command.
+```
+yarn cypress open
+```
+This can be used to debug and view your tests in a user interface.
