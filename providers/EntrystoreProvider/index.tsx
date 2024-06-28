@@ -7,6 +7,11 @@ import { SettingsUtil } from "@/env/SettingsUtil";
 //unfortunate hack to get a entrystore class instance, script is inserted in head
 declare var ESJS: any;
 
+type RelationObj = {
+  title: string;
+  url: string;
+};
+
 export interface EntrystoreProviderProps {
   env: EnvSettings;
   eid?: string;
@@ -28,6 +33,9 @@ export interface ESEntry {
   termPublisher: string;
   definition: string;
   contact?: ESContact;
+  conformsTo?: RelationObj[];
+  hasResource?: RelationObj[];
+  mqaCatalog?: string;
 }
 
 export interface ESContact {
@@ -44,6 +52,8 @@ const defaultESEntry: ESEntry = {
   publisher: "",
   termPublisher: "",
   definition: "",
+  conformsTo: [],
+  hasResource: [],
 };
 
 export const EntrystoreContext = createContext<ESEntry>(defaultESEntry);
@@ -203,6 +213,50 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
 
+              const datasets = await es
+                .newSolrQuery()
+                .rdfType(["dcat:Dataset", "dcat:DataService"])
+                .uriProperty("dcterms:conformsTo", resourceURI)
+                .getEntries();
+
+              const hasResource = await es
+                .newSolrQuery()
+                .rdfType(["dcterms:Standard", "prof:Profile"])
+                .uriProperty("prof:hasResource", resourceURI)
+                .getEntries();
+
+              const datasetArr = await Promise.all(
+                datasets.map(async (ds: any) => {
+                  const title = await getLocalizedValue(
+                    ds.getAllMetadata(),
+                    "dcterms:title",
+                    nextLang,
+                    es,
+                  );
+                  return {
+                    title: title,
+                    url: `/${es.getContextId(
+                      ds.getEntryInfo().getMetadataURI(),
+                    )}_${ds.getId()}/${title.toLowerCase().replace(/ /g, "-")}`,
+                  };
+                }),
+              );
+
+              const resourceArr = await Promise.all(
+                hasResource.map(async (spec: any) => {
+                  const title = await getLocalizedValue(
+                    spec.getAllMetadata(),
+                    "dcterms:title",
+                    nextLang,
+                    es,
+                  );
+                  return {
+                    title: title,
+                    url: spec.getResourceURI(),
+                  };
+                }),
+              );
+
               //the getLocalizedValue function might fetch from network, so start all IO with promises
               valuePromises.push(
                 getLocalizedValue(graph, "dcterms:title", nextLang, es, {
@@ -239,10 +293,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 );
               }
               if (isConcept && !fetchMore) {
-                const term = graph
-                  .find(resourceURI, "skos:inScheme")[0]
-                  .getValue();
-                const termEntry = await util.getEntryByResourceURI(term);
+                const termEntry = await util.getEntryByResourceURI(
+                  graph.findFirstValue(resourceURI, "skos:inScheme"),
+                );
                 const termGraph = termEntry.getAllMetadata();
 
                 valuePromises.push(
@@ -254,6 +307,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                   ),
                 );
               }
+
               //wait for all values to be fetched
               let results = await Promise.all(valuePromises);
 
@@ -262,6 +316,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 defaultESEntry.description = results[2];
                 defaultESEntry.publisher = results[3];
                 defaultESEntry.definition = results[4];
+                defaultESEntry.conformsTo = datasetArr || null;
+                defaultESEntry.hasResource = resourceArr || null;
+
                 if (fetchMore && !isConcept) {
                   if (results[5] || results[6]) {
                     defaultESEntry.contact = {
@@ -286,10 +343,16 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         }
         //we have contextID and entryId,
         else if (cid && eid) {
+          let mqaCataog = es.getEntryURI(cid, "_quality");
+          const mqaEntry = await es.getEntry(mqaCataog);
+          const mqaMetadata = await mqaEntry.getAllMetadata();
+
           let entryURI = "";
           entryURI = es.getEntryURI(cid, eid);
           //fetch entry from entryscape https://entrystore.org/js/stable/doc/
+
           es.getEntry(entryURI)
+
             .then(async (entry: any) => {
               defaultESEntry.entry = entry;
               if (!entry) return;
@@ -298,12 +361,40 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
 
+              const maybeSpecs = graph
+                .find(null, "dcterms:conformsTo")
+                .map((stmt: any) => stmt.getValue());
+
+              const findSpec =
+                maybeSpecs.length > 0
+                  ? await es
+                      .newSolrQuery()
+                      .resource(maybeSpecs, null)
+                      .rdfType(["dcterms:Standard", "prof:Profile"])
+                      .getEntries()
+                  : [];
+
+              const specArr = await Promise.all(
+                findSpec.map(async (spec: any) => {
+                  return {
+                    title: await getLocalizedValue(
+                      spec.getAllMetadata(),
+                      "dcterms:title",
+                      nextLang,
+                      es,
+                    ),
+                    url: spec.getResourceURI(),
+                  };
+                }),
+              );
+
               //the getLocalizedValue function might fetch from network, so start all IO with promises
               valuePromises.push(
                 getLocalizedValue(graph, "dcterms:title", nextLang, es, {
                   resourceURI,
                 }),
               );
+
               valuePromises.push(
                 getLocalizedValue(
                   graph,
@@ -333,11 +424,13 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                   }),
                 );
               }
+              valuePromises.push(
+                getLocalizedValue(mqaMetadata, "dcterms:title", nextLang, es),
+              );
               if (isConcept && !fetchMore) {
-                const term = graph
-                  .find(resourceURI, "skos:inScheme")[0]
-                  .getValue();
-                const termEntry = await util.getEntryByResourceURI(term);
+                const termEntry = await util.getEntryByResourceURI(
+                  graph.findFirstValue(resourceURI, "skos:inScheme"),
+                );
                 const termGraph = termEntry.getAllMetadata();
 
                 valuePromises.push(
@@ -357,6 +450,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 defaultESEntry.description = results[2];
                 defaultESEntry.publisher = results[3];
                 defaultESEntry.definition = results[4];
+                defaultESEntry.mqaCatalog = results[5];
+                defaultESEntry.conformsTo = specArr || null;
+
                 if (fetchMore && !isConcept) {
                   if (results[5] || results[6]) {
                     defaultESEntry.contact = {

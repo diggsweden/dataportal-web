@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { useRouter } from "next/router";
@@ -8,6 +8,7 @@ import { hemvist, keyword, linkBase } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Preamble } from "@/components/global/Typography/Preamble";
+import { Button } from "@/components/global/Button";
 
 export const SpecificationPage: FC<{
   curi?: string;
@@ -17,6 +18,10 @@ export const SpecificationPage: FC<{
   const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
   const { pathname } = useRouter() || {};
+  const [showAllDatasets, setShowAllDatasets] = useState(false);
+  const relatedDatasets = showAllDatasets
+    ? entry.conformsTo
+    : entry.conformsTo?.slice(0, 4);
 
   /**
    * Async load scripts requiered for EntryScape blocks,
@@ -231,7 +236,7 @@ export const SpecificationPage: FC<{
                         "pages|specification_page$specification_download",
                       )}' +
                         '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
-                        '<path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18V15H6V18H18V15H20V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6Z" fill="#FFFFFF"/>' +
+                        '<path d="M4.08008 11V13H16.0801L10.5801 18.5L12.0001 19.92L19.9201 12L12.0001 4.08002L10.5801 5.50002L16.0801 11H4.08008Z" fill="#6E615A"/>' +
                         '</svg>' +
                     '</button>' +
                     '</a>' +
@@ -338,6 +343,35 @@ export const SpecificationPage: FC<{
                 data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev,dcat:keyword"
               ></div>
             </div>
+            {entry.conformsTo && entry.conformsTo.length > 0 && (
+              <div>
+                <span className="rdformsLabel">
+                  {t("pages|specification_page$related_datasets")}
+                </span>
+                {relatedDatasets?.map((ds, idx) => (
+                  <a
+                    className="fit mb-sm block text-sm text-green-600 hover:no-underline"
+                    key={idx}
+                    href={`/datasets${ds.url}`}
+                  >
+                    {ds.title}
+                  </a>
+                ))}
+                {entry.conformsTo?.length > 4 && (
+                  <Button
+                    size={"xs"}
+                    className="mt-xs px-sm py-xs !font-strong text-brown-600"
+                    variant={"plain"}
+                    label={
+                      showAllDatasets
+                        ? t("pages|datasetpage$view_less")
+                        : t("pages|datasetpage$view_more")
+                    }
+                    onClick={() => setShowAllDatasets(!showAllDatasets)}
+                  />
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
