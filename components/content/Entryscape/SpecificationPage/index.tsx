@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect } from "react";
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { useRouter } from "next/router";
@@ -8,7 +8,6 @@ import { hemvist, keyword, linkBase } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Preamble } from "@/components/global/Typography/Preamble";
-import { Button } from "@/components/global/Button";
 
 export const SpecificationPage: FC<{
   curi?: string;
@@ -18,10 +17,10 @@ export const SpecificationPage: FC<{
   const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
   const { pathname } = useRouter() || {};
-  const [showAllDatasets, setShowAllDatasets] = useState(false);
-  const relatedDatasets = showAllDatasets
-    ? entry.conformsTo
-    : entry.conformsTo?.slice(0, 4);
+  // const [showAllDatasets, setShowAllDatasets] = useState(false);
+  // const relatedDatasets = showAllDatasets
+  //   ? entry.conformsTo
+  //   : entry.conformsTo?.slice(0, 4);
 
   /**
    * Async load scripts requiered for EntryScape blocks,
@@ -343,7 +342,7 @@ export const SpecificationPage: FC<{
                 data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev,dcat:keyword"
               ></div>
             </div>
-            {entry.conformsTo && entry.conformsTo.length > 0 && (
+            {/* {entry.conformsTo && entry.conformsTo.length > 0 && (
               <div>
                 <span className="rdformsLabel">
                   {t("pages|specification_page$related_datasets")}
@@ -371,7 +370,7 @@ export const SpecificationPage: FC<{
                   />
                 )}
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>
