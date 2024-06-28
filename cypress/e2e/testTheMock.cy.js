@@ -13,7 +13,6 @@ beforeEach(() => {
   });
 
   it("test Mock data", () => {
-
     cy.mockNetworkAdd({
       Query: () => ({
         Dataportal_Digg_Containers: () => ({
