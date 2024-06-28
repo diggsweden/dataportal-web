@@ -8,6 +8,7 @@ import { hemvist, linkBase } from "@/utilities";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
 import { Preamble } from "@/components/global/Typography/Preamble";
+import Link from "next/link";
 
 export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
   curi,
@@ -327,7 +328,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                     "pages|concept_page$no_superior_concept",
                   )}</span></div>{{/ifprop}}' + 
 
-                  '{{#ifprop "skos:narrower"}}<div><h2>${t(
+                  '{{#ifprop "skos:narrower"}}<div class="totMQA"><h2>${t(
                     "pages|concept_page$subordinate_concepts",
                   )}</h2>{{/ifprop}}' +
                   '{{#ifprop "skos:narrower"}}{{narrowerList}}</div>{{/ifprop}}' +
@@ -461,47 +462,68 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
             className="text-sm text-textSecondary"
             data-entryscape="hemvist"
           />
-
+          {entry.hasResource && entry.hasResource?.length > 0 && (
+            <div>
+              <Heading
+                className="!text-[14px] font-strong text-textSecondary"
+                level={3}
+              >
+                {t("pages|datasetpage$related_specifications")}
+              </Heading>
+              {entry.hasResource.map(({ title, url }, idx) => (
+                <Link
+                  className="block !text-[14px] text-green-600 hover:no-underline"
+                  key={idx}
+                  href={url}
+                >
+                  {title}
+                </Link>
+              ))}
+            </div>
+          )}
           <span className="text-md" data-entryscape="terminology" />
           <span data-entryscape="terminologyButton" />
+          {/* Download formats */}
           <script
             type="text/x-entryscape-handlebar"
             data-entryscape="true"
             data-entryscape-component="template"
             dangerouslySetInnerHTML={{
               __html: `
-                       <div class="terminilogy__download-wrapper">
-                          <h3 class="text-md">
-                          ${t("pages|concept_page$download_concept")}
+                       <div class="mt-lg" >
+                          <h3 class="text-md !mt-none">
+                          ${t("pages|datasetpage$download_link")}
                           </h3>
 
-                        <div class="text-md"">
+                        <div class="text-md flex flex-col gap-xs">
                           <a
-                            class="terminology__download-link"
                             href="{{ metadataURI}}"
                           >
-                            RDF/XML
+                           ${t(
+                             "pages|datasetpage$download-metadata-as",
+                           )} RDF/XML
                           </a>
 
                           <a
-                            class="terminology__download-link"
-                            href="{{ metadataURI }}?format=text/turtle"
+                            href="{{ metadataURI }}?format=text/turtle&recursive=conceptscheme"
                           >
-                            TURTLE
+                           ${t("pages|datasetpage$download-metadata-as")} TURTLE
                           </a>
 
                           <a
-                            class="terminology__download-link"
-                            href="{{ metadataURI }}?format=text/n-triples"
+                            href="{{ metadataURI }}?format=text/n-triples&recursive=conceptscheme"
                           >
-                            N-TRIPLES
+                           ${t(
+                             "pages|datasetpage$download-metadata-as",
+                           )} N-TRIPLES
                           </a>
 
                           <a
-                            class="terminology__download-link"
-                            href="{{ metadataURI }}?format=application/ld+json"
+                            href="{{ metadataURI }}?format=application/ld+json&recursive=conceptscheme"
                           >
-                            JSON-LD
+                           ${t(
+                             "pages|datasetpage$download-metadata-as",
+                           )} JSON-LD
                           </a>
                         </div>
                         </div>

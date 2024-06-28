@@ -46,7 +46,6 @@ export interface Dataportal_QueryContainerArgs {
   previewSecret?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   state?: InputMaybe<Dataportal_ContainerState>;
-  tags?: InputMaybe<Array<Scalars['String']['input']>>;
 }
 
 export interface Dataportal_QuerySearchArgs {

@@ -10,6 +10,10 @@
   @apply m-none mb-sm text-lg font-normal md:mb-md md:text-xl !important;
 }
 
+.esbListHead-grid > h3:last-child {
+  @apply hidden md:block;
+}
+
 .catalogMQA > .esbChartsContainer--grid > h2 {
   @apply mb-lg text-xl font-normal md:mb-xl md:text-2xl !important;
 }
@@ -136,4 +140,19 @@
 
 .totMQA .entryPagination {
   @apply pb-none pt-lg md:pt-xl;
+}
+
+/* Styling for MQA catalog searh bar */
+.form-control {
+  @apply mt-xl h-[50px] rounded-[0px] border-none !text-blackOpaque3 shadow-none outline outline-1 outline-offset-2 !important;
+}
+
+.form-control:focus-visible,
+.form-control:focus,
+.form-control:hover {
+  @apply outline-2 !important;
+}
+
+.form-control::placeholder {
+  @apply text-brown-600 !important;
 }

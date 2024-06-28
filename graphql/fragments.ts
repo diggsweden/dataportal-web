@@ -288,6 +288,27 @@ export const RELATED_CONTENT_FRAGMENT = gql`
   }
 `;
 
+export const PROMOTED_CONTENT_FRAGMENT = gql`
+  fragment PromotedContent on dataportal_Digg_PromotedContent {
+    id
+    heading
+    preamble
+    externalLink
+    buttonText
+    image {
+      ...Image
+    }
+    container {
+      slug
+      title
+      preamble
+      image {
+        ...Image
+      }
+    }
+  }
+`;
+
 export const FORM_BLOCK_FRAGMENT = gql`
   fragment FormBlock on dataportal_Digg_FormBlock {
     elements {
@@ -343,6 +364,10 @@ export const BLOCK_FRAGMENT = gql`
       ...RelatedContent
     }
 
+    ... on dataportal_Digg_PromotedContent {
+      ...PromotedContent
+    }
+
     ... on dataportal_Digg_FormBlock {
       ...FormBlock
     }
@@ -355,6 +380,7 @@ export const BLOCK_FRAGMENT = gql`
   ${FAQ_FRAGMENT}
   ${TEXT_FRAGMENT}
   ${RELATED_CONTENT_FRAGMENT}
+  ${PROMOTED_CONTENT_FRAGMENT}
   ${MEDIA_FRAGMENT}
   ${MEDIA_BASE_FRAGMENT}
   ${MEDIA_TYPE_FRAGMENT}
