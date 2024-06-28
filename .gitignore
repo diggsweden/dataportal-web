@@ -61,5 +61,9 @@ __ENV.js
 !.yarn/sdks
 !.yarn/versions
 
-#meilisearch
+# meilisearch
 **/data.ms
+
+# Cypress
+cypress/screenshots/
+cypress/screenshots/*
