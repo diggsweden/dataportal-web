@@ -17,10 +17,11 @@
   },
   "dependencies": {
     "@alfalab/winston3-logstash-transport": "^1.3.0",
-    "@apollo/client": "^3.6.9",
+    "@apollo/client": "^3.10.8",
     "@beam-australia/react-env": "^3.1.1",
     "@types/node-fetch": "^2.6.2",
     "@types/swagger-ui-react": "^4.11.0",
+    "apollo-link-logger": "^2.0.1",
     "class-variance-authority": "^0.7.0",
     "fetch-enhanced": "^8.1.1",
     "focus-trap-react": "^10.0.0",

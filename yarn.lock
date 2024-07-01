@@ -40,24 +40,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:^3.6.9":
-  version: 3.8.8
-  resolution: "@apollo/client@npm:3.8.8"
+"@apollo/client@npm:^3.10.8":
+  version: 3.10.8
+  resolution: "@apollo/client@npm:3.10.8"
   dependencies:
     "@graphql-typed-document-node/core": "npm:^3.1.1"
+    "@wry/caches": "npm:^1.0.0"
     "@wry/equality": "npm:^0.5.6"
     "@wry/trie": "npm:^0.5.0"
     graphql-tag: "npm:^2.12.6"
     hoist-non-react-statics: "npm:^3.3.2"
     optimism: "npm:^0.18.0"
     prop-types: "npm:^15.7.2"
+    rehackt: "npm:^0.1.0"
     response-iterator: "npm:^0.2.6"
     symbol-observable: "npm:^4.0.0"
     ts-invariant: "npm:^0.10.3"
     tslib: "npm:^2.3.0"
     zen-observable-ts: "npm:^1.2.5"
   peerDependencies:
-    graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+    graphql: ^15.0.0 || ^16.0.0
     graphql-ws: ^5.5.5
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -71,7 +73,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 06a95d3cfd8da09172b67c0d704edd35c160fa98599526ac9d6d870c7a612e4bd342a7286bb01151775bb5d5c495d1e7987626c00d178acb85fe58c30ff25403
+  checksum: c5e16747f4b11e3e7994cf5b44e68b51fd2ab5ac4a3721344d421c0f58dd8d6c65854ff1178a2bf7c8f42e59b7d053e73ef64ea365c3f6f2b0d1a10fcbf9124c
   languageName: node
   linkType: hard
 
@@ -4963,6 +4965,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"apollo-link-logger@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "apollo-link-logger@npm:2.0.1"
+  peerDependencies:
+    "@apollo/client": ^3.0.0
+  checksum: 26350067308f1f1ae0c8240c4c62b1e8ecf469448504c15580ede1989dcae08b2efc2b676cf8ede85d2571f0167d397993022ae714e78eff29c68327e4aac1b9
+  languageName: node
+  linkType: hard
+
 "apollo-link@npm:^1.2.14, apollo-link@npm:^1.2.3":
   version: 1.2.14
   resolution: "apollo-link@npm:1.2.14"
@@ -6822,7 +6833,7 @@ __metadata:
   resolution: "dataportal-web@workspace:."
   dependencies:
     "@alfalab/winston3-logstash-transport": "npm:^1.3.0"
-    "@apollo/client": "npm:^3.6.9"
+    "@apollo/client": "npm:^3.10.8"
     "@beam-australia/react-env": "npm:^3.1.1"
     "@graphql-codegen/add": "npm:^5.0.0"
     "@graphql-codegen/cli": "npm:5.0.0"
@@ -6844,6 +6855,7 @@ __metadata:
     "@types/react-vis": "npm:^1.11.14"
     "@types/swagger-ui-react": "npm:^4.11.0"
     apollo: "npm:^2.34.0"
+    apollo-link-logger: "npm:^2.0.1"
     autoprefixer: "npm:^10.4.16"
     class-variance-authority: "npm:^0.7.0"
     cypress: "npm:^13.12.0"
@@ -13581,6 +13593,21 @@ __metadata:
   bin:
     regjsparser: bin/parser
   checksum: be7757ef76e1db10bf6996001d1021048b5fb12f5cb470a99b8cf7f3ff943f0f0e2291c0dcdbb418b458ddc4ac10e48680a822b69ef487a0284c8b6b77beddc3
+  languageName: node
+  linkType: hard
+
+"rehackt@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "rehackt@npm:0.1.0"
+  peerDependencies:
+    "@types/react": "*"
+    react: "*"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    react:
+      optional: true
+  checksum: c81adead82c165dffc574cbf9e1de3605522782a56b48df48b68d53d45c4d8c9253df3790109335bf97072424e54ad2423bb9544ca3a985fa91995dda43452fc
   languageName: node
   linkType: hard
 
