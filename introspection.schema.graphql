@@ -37,6 +37,20 @@ type dataportal_Digg_Container implements dataportal_Digg_IContainer & dataporta
   slug: String!
 }
 
+type dataportal_Digg_ContainerMeta implements dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  title: String!
+  description: String
+  preamble: String
+  image: dataportal_Digg_Image
+  slug: String!
+}
+
 type dataportal_Digg_Faq implements dataportal_Digg_IBlock & dataportal_Digg_IEntity {
   id: ID!
 
@@ -453,6 +467,21 @@ type dataportal_Digg_Parent {
   preamble: String
   slug: String
   name: String
+}
+
+type dataportal_Digg_PromotedContent implements dataportal_Digg_IBlock & dataportal_Digg_IEntity {
+  id: ID!
+
+  """two-letter lang"""
+  locale: String!
+  updatedAt: dataportal_DateTime!
+  createdAt: dataportal_DateTime!
+  heading: String
+  preamble: String
+  externalLink: String
+  buttonText: String
+  image: dataportal_Digg_Image
+  container: dataportal_Digg_ContainerMeta
 }
 
 type dataportal_Digg_Quote implements dataportal_Digg_IBlock & dataportal_Digg_IEntity {

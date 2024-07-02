@@ -6854,6 +6854,7 @@ __metadata:
     fetch-enhanced: "npm:^8.1.1"
     focus-trap-react: "npm:^10.0.0"
     graphql: "npm:16.8.1"
+    graphql-mock-network: "npm:^1.0.2"
     html-react-parser: "npm:^5.0.11"
     https-proxy-agent: "npm:^5.0.1"
     husky: "npm:^8.0.3"

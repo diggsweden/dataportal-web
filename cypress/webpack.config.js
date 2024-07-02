@@ -1,9 +1,9 @@
 module.exports = {
-  mode: 'development',
-  devtool: 'eval-source-map',
+  mode: "development",
+  devtool: "eval-source-map",
   resolve: {
-    mainFields: ['browser', 'main', 'module'],
-    extensions: ['.ts', '.js', '.json'],
+    mainFields: ["browser", "main", "module"],
+    extensions: [".ts", ".js", ".json"],
   },
   module: {
     rules: [
@@ -12,7 +12,7 @@ module.exports = {
         exclude: [/node_modules/],
         use: [
           {
-            loader: 'ts-loader',
+            loader: "ts-loader",
             options: {
               transpileOnly: true,
             },

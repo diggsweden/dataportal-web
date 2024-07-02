@@ -1,16 +1,16 @@
-const webpack = require('@cypress/webpack-preprocessor');
+const webpack = require("@cypress/webpack-preprocessor");
 
-module.exports = on => {
+module.exports = (on) => {
   on(
-    'file:preprocessor',
+    "file:preprocessor",
     webpack({
-      webpackOptions: require('../webpack.config'),
-    })
+      webpackOptions: require("../webpack.config"),
+    }),
   );
 
-  on('before:browser:launch', (browser = {}, args) => {
-    if (browser.name === 'chrome') {
-      args.push('--disable-site-isolation-trials');
+  on("before:browser:launch", (browser = {}, args) => {
+    if (browser.name === "chrome") {
+      args.push("--disable-site-isolation-trials");
       return args;
     }
   });

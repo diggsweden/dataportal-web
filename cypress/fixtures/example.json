@@ -1,5 +1,20 @@
-{
-  "name": "Using fixtures to represent data",
-  "email": "hello@cypress.io",
-  "body": "Fixtures are a great way to mock data for responses to routes"
-}
+[
+  {
+    "name": "AI-verktyg och textdata i staten",
+    "id": "15",
+    "heading": "AI-verktyg och textdata i staten",
+    "slug": "/ai-verktyg-och-textdata-i-staten"
+  },
+  {
+    "name": "Skogsstyrelsen - Så jobbar vi med innovation och AI",
+    "id": "4",
+    "heading": "Skogsstyrelsen - Så jobbar vi med innovation och AI",
+    "slug": "/skogsstyrelsen-sa-jobbar-vi-med-innovation-och-ai"
+  },
+  {
+    "name": "Skatteverket - Företagsregistrering",
+    "id": "5",
+    "heading": "Skatteverket - Företagsregistrering",
+    "slug": "/skatteverket-foretagsregistrering"
+  }
+]
