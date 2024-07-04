@@ -17,7 +17,8 @@
     "noUnusedLocals": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "types": ["cypress", "cy-verify-downloads"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
