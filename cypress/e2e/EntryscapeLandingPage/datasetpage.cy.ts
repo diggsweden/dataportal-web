@@ -8,7 +8,7 @@ beforeEach(() => {
 });
 
 describe("Check dataset page", () => {
-  it("Verify start page has a search form", () => {
+  it("Verify dataset page route and check data", () => {
     // Go to dataset search page.
     cy.visit("/sv/datasets");
 
