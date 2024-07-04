@@ -9,7 +9,7 @@ beforeEach(() => {
 
 describe("Check concept page", () => {
   it("Verify concept page route and check data", () => {
-    // Go to dataset search page.
+    // Go to concept search page.
     cy.visit("/sv/concepts");
 
     // Type a search query and click search.
@@ -22,7 +22,7 @@ describe("Check concept page", () => {
       .first()
       .click();
 
-    // Check for heading, preamble and svg icons
+    // Check for headings and preamble
     cy.get("h1").should("exist");
     cy.get("p").should("exist");
     cy.get("h2").should("contain", "Underordnade begrepp");
