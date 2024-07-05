@@ -36,7 +36,12 @@
 //   }
 // }
 
+// Check for dowloaded files
+require("cy-verify-downloads").addCustomCommand();
+
+// eslint-disable-next-line no-unused-vars
 declare namespace Cypress {
+  // eslint-disable-next-line no-unused-vars
   interface ResolvedConfigOptions {
     hideXHRInCommandLog?: boolean;
   }
