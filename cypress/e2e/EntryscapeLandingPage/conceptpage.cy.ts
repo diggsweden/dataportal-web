@@ -30,7 +30,7 @@ describe("Search concepts", () => {
       .click()
       .then(() => {
         cy.reload();
-        cy.get("ul.search-result-list", { timeout: 10000 })
+        cy.get("ul.search-result-list", { timeout: 6000 })
           .find("li")
           .first()
           .click();
