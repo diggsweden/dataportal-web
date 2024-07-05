@@ -12,7 +12,7 @@ describe("Search concepts", () => {
    * Verify that the search page is accessible and that the search for concepts gives results.
    */
   it("Verify concepts search result", () => {
-    // Gg to searchpage
+    // Go to searchpage
     cy.visit("/sv/concepts");
 
     // verify H1 text
