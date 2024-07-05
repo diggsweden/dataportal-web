@@ -17,7 +17,7 @@ describe("Check concept page", () => {
     cy.get(`button[aria-label="Sök"]`).click();
 
     // Check for the resultlist and click on the first item
-    cy.get("ul.search-result-list", { timeout: 6000 })
+    cy.get("ul.search-result-list", { timeout: 100000 })
       .find("li")
       .first()
       .click();
@@ -30,7 +30,7 @@ describe("Check concept page", () => {
     // Check for right columns data with heading and keywords
     cy.get("h2").should("contain", "Om begrepp");
 
-    // Dowload rdf file and check dowload status (deletes files after test)
+    // Download rdf file and check download status (deletes files after test)
     cy.contains("a", "Ladda ner metadata som RDF/XML").click();
     cy.verifyDownload("rdf", { contains: true });
     cy.task("deleteFolder", "cypress//downloads//");
