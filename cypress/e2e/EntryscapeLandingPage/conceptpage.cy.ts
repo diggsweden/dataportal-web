@@ -7,22 +7,36 @@ beforeEach(() => {
   });
 });
 
-describe("Check concept page", () => {
-  it("Verify concept page route and check data", () => {
-    // Go to concept search page.
+describe("Search concepts", () => {
+  /**
+   * Verify that the search page is accessible and that the search for concepts gives results.
+   */
+  it("Verify concepts search result", () => {
+    // Gg to searchpage
     cy.visit("/sv/concepts");
 
-    // Type a search query and click search.
+    // verify H1 text
+    cy.get("h1").contains("Sök begrepp");
+
+    // Verify that the search field is present and contains correct placeholder text.
+    cy.get("input#search-field")
+      .invoke("attr", "placeholder")
+      .should("contain", "Sök begrepp");
+
+    // Type a search query and click search + find first result and click.
     cy.get("input#search-field").type("data");
-    cy.get(`button[aria-label="Sök"]`).click();
 
-    // Check for the resultlist and click on the first item
-    cy.get("ul.search-result-list", { timeout: 100000 })
-      .find("li")
-      .first()
-      .click();
+    cy.get(`button[aria-label="Sök"]`)
+      .click()
+      .then(() => {
+        cy.reload();
+        cy.get("ul.search-result-list", { timeout: 10000 })
+          .find("li")
+          .first()
+          .click();
+      });
 
-    // Check for headings and preamble
+    // Check for headings and preamble on concept page
     cy.get("h1").should("exist");
     cy.get("p").should("exist");
     cy.get("h2").should("contain", "Underordnade begrepp");
