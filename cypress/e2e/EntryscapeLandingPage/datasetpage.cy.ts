@@ -9,18 +9,29 @@ beforeEach(() => {
 
 describe("Check dataset page", () => {
   it("Verify dataset page route and check data", () => {
-    // Go to dataset search page.
+    // Go to searchpage
     cy.visit("/sv/datasets");
 
-    // Type a search query and click search.
-    cy.get("input#search-field").type("api");
-    cy.get(`button[aria-label="Sök"]`).click();
+    // verify H1 text
+    cy.get("h1").contains("Sök data & API:er");
 
-    // Check for the resultlist and click on the first item
-    cy.get("ul.search-result-list", { timeout: 6000 })
-      .find("li")
-      .first()
-      .click();
+    // Verify that the search field is present and contains correct placeholder text.
+    cy.get("input#search-field")
+      .invoke("attr", "placeholder")
+      .should("contain", "Sök Data & Api:er");
+
+    // Type a search query and click search + find first result and click.
+    cy.get("input#search-field").type("api");
+
+    cy.get(`button[aria-label="Sök"]`)
+      .click()
+      .then(() => {
+        cy.reload();
+        cy.get("ul.search-result-list", { timeout: 6000 })
+          .find("li")
+          .first()
+          .click();
+      });
 
     // Check for heading, preamble, community box and svg icons
     cy.get("h1").should("exist");
