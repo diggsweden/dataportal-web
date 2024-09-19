@@ -54,7 +54,7 @@ export const Hero: FC<HeroProps> = ({
             aria-label="Hero image"
             priority={true}
           />
-          <div className="inset-0 absolute top-none h-full w-full bg-blackOpaque3 opacity-30"></div>
+          <div className="inset-0 absolute top-none h-full w-full bg-blackOpaque3 opacity-10"></div>
         </div>
       )}
 
