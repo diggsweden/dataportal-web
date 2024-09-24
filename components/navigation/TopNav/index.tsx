@@ -51,6 +51,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
                   locale={`${menu.title === "language" ? "" : lang}`}
                   onClick={() => setOpenSideBar(false)}
                   icon={menu.icon}
+                  hrefLang={lang === "sv" ? "en" : "sv"}
                   iconPosition="left"
                   label={t(`routes|${menu.title}$title`)}
                   size={"sm"}
