@@ -52,7 +52,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
     <div className="flex flex-row items-center justify-between">
       <Link
         href={`${t(`common|${"lang-path"}`)}`}
-        aria-label="Dataportal logo"
+        aria-label="Dataportal logga länk till startsida"
         onClick={() => setOpenSideBar(false)}
       >
         {env.envName === "sandbox" ? (
