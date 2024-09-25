@@ -112,6 +112,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                   : "w-none overflow-hidden"
               }`}
               action={`/${lang}/search`}
+              role={"search"}
             >
               <SearchInput
                 id="header-search"
