@@ -82,6 +82,7 @@ export const Hero: FC<HeroProps> = ({
                   className="datapage-form"
                   method="GET"
                   action={search.destination}
+                  role={"search"}
                 >
                   <SearchInput
                     id="start-search"

@@ -46,6 +46,7 @@ export const SearchForm: FC<SearchFormProps> = ({
   return (
     <div className="my-lg max-w-md md:my-xl">
       <form
+        role={"search"}
         onSubmit={(e) => {
           clearCurrentScrollPos();
           e.preventDefault();
