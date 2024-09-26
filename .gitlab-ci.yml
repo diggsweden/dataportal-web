@@ -10,7 +10,6 @@ include:
 workflow:
   rules:
     - if: $CI_COMMIT_BRANCH
-    - if: $CI_COMMIT_TAG
 variables:
   DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
@@ -25,14 +24,6 @@ stages:
   - build
   - deploy
   - test
-
-.dt-upload:
-  stage: .post
-  image: docker:20.10.16-dind
-  services:
-    - name: docker:20.10.16-dind
-  before_script:
-    - apk add --update curl
 
 image:build:release:
   stage: build
@@ -50,44 +41,11 @@ image:build:release:
     - cat $DOCKER_AUTH_CONFIG > /kaniko/.docker/config.json
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile Dockerfile $KANIKO_CACHE_ARGS --destination $IMAGE:$TAG
 
-image:build:tagged:
-  stage: build
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - node_modules/
-      - .next/cache/
-  rules:
-    - if: $CI_COMMIT_TAG
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
-  before_script:
-    - echo APOLLO_URL=$APOLLO_URL >> .env.production
-    - echo REACT_APP_APOLLO_URL=$REACT_APP_APOLLO_URL >> .env.production
-    - echo IMAGE_DOMAIN=$IMAGE_DOMAIN >> .env.production
-  script:
-    - mkdir -p /kaniko/.docker
-    - cat $DOCKER_AUTH_CONFIG > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile Dockerfile $KANIKO_CACHE_ARGS --destination $IMAGE:$CI_COMMIT_TAG
-
 update:deploy:branch:
   rules:
     - if: '$CI_COMMIT_BRANCH == "dev"'
   variables:
     WEBTAG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
-    AUTHOR: $CI_COMMIT_AUTHOR
-    MESSAGE: $CI_COMMIT_MESSAGE
-  stage: deploy
-  trigger:
-    project: digg/deploy-dataportal
-    branch: main
-
-update:deploy:tag:
-  rules:
-    - if: $CI_COMMIT_TAG
-  variables:
-    WEBTAG: $CI_COMMIT_TAG
     AUTHOR: $CI_COMMIT_AUTHOR
     MESSAGE: $CI_COMMIT_MESSAGE
   stage: deploy
@@ -170,75 +128,3 @@ gemnasium-dependency_scanning:
   artifacts:
     paths:
       - gl-dependency-node-scanning-report.json
-
-dd:upload:cloc:
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "dev"'
-  image: maibornwolff/dd-import:latest
-  needs:
-    - job: cloc
-      artifacts: true
-  stage: .post
-  variables:
-    DD_FILE_NAME: "cloc.json"
-  script:
-    - dd-import-languages.sh
-
-dd:upload:nodejs:dependency:scanning:
-  image: maibornwolff/dd-import:latest
-  needs:
-    - job: gemnasium-dependency_scanning
-      artifacts: true
-  stage: .post
-  variables:
-    GIT_STRATEGY: none
-    DD_TEST_NAME: "GitLab Dependency Scanning Report"
-    DD_TEST_TYPE_NAME: "GitLab Dependency Scanning Report"
-    DD_FILE_NAME: "gl-dependency-node-scanning-report.json"
-  script:
-    - dd-reimport-findings.sh
-
-dd:upload:nodejs:sast:scanning:
-  image: maibornwolff/dd-import:latest
-  needs:
-    - job: nodejs-scan-sast
-      artifacts: true
-  stage: .post
-  variables:
-    GIT_STRATEGY: none
-    DD_TEST_NAME: "GitLab SAST Report"
-    DD_TEST_TYPE_NAME: "GitLab SAST Report"
-    DD_FILE_NAME: "gl-nodejs-report.json"
-  script:
-    - dd-reimport-findings.sh
-
-dt-import-sbom-scan:
-  extends: .dt-upload
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "dev"'
-  needs:
-    - job: container_scanning
-      artifacts: true
-  script:
-    - |
-      curl -X "POST" "$DT_URL" \
-        -H "application/json; charset=utf8" \
-        -H "X-Api-Key: $DT_API_KEY" \
-        -F "autoCreate=true" \
-        -F "projectName=$CI_PROJECT_NAME" \
-        -F "projectVersion=$CI_COMMIT_BRANCH" \
-        -F "bom=@gl-sbom-report.cdx.json"
-
-dd:upload:container:dependency:scanning:
-  image: maibornwolff/dd-import:latest
-  needs:
-    - job: container_scanning
-      artifacts: true
-  stage: .post
-  variables:
-    GIT_STRATEGY: none
-    DD_TEST_NAME: "GitLab Container Scan"
-    DD_TEST_TYPE_NAME: "GitLab Container Scan"
-    DD_FILE_NAME: "gl-container-scanning-report.json"
-  script:
-    - dd-reimport-findings.sh
