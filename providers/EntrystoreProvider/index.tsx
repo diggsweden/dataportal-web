@@ -234,6 +234,34 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 }),
               );
 
+              // const relatedDatasets = await es
+              //   .newSolrQuery()
+              //   .uriProperty("dcterms:conformsTo", resourceURI)
+              //   .list()
+              //   .getAllEntries();
+
+              // const relatedDatasetsGetURI = relatedDatasets.map((s: any) =>
+              //   s.getResourceURI(),
+              // );
+
+              // const conformsToEntries = await util.loadEntriesByResourceURIs(
+              //   relatedDatasetsGetURI,
+              //   undefined,
+              //   true,
+              // );
+              // const datasetsArray = conformsToEntries.filter((s: any) => s);
+
+              // const datasetentry = relatedDatasets[0];
+              // const cid = datasetentry.getContext().getId();
+              // const eid = datasetentry.getId();
+              // const title = datasetentry
+              //   .getAllMetadata()
+              //   .findFirstValue(datasetentry, "dcterms:title");
+              // const testUrl = `https://www.dataportal.se/dataservice/${cid}_${eid}/${title}`;
+
+              // // eslint-disable-next-line no-console
+              // console.log(es);
+
               //the getLocalizedValue function might fetch from network, so start all IO with promises
               valuePromises.push(
                 getLocalizedValue(graph, "dcterms:title", nextLang, es, {
@@ -337,18 +365,31 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
 
-              const maybeSpecs = graph
-                .find(null, "dcterms:conformsTo")
+              const conformsToURIs = graph
+                .find(resourceURI, "dcterms:conformsTo")
                 .map((stmt: any) => stmt.getValue());
+              const util = new ESJS.EntryStoreUtil(
+                new ESJS.EntryStore(`https://editera.dataportal.se/store`),
+              );
 
-              const findSpec = await es
-                .newSolrQuery()
-                .resource(maybeSpecs, null)
-                .rdfType(["dcterms:Standard", "prof:Profile"])
-                .getEntries();
+              const conformsToEntries = await util.loadEntriesByResourceURIs(
+                conformsToURIs,
+                undefined,
+                true,
+              );
+              const specfications = conformsToEntries.filter((s: any) => s);
+              const extractHREF = (s: any) => {
+                if (s.getResourceURI().startsWith("https://dataportal.se"))
+                  return s.getResourceURI();
+                return `https://dataportal.se/externalspecification/${s.getResourceURI()}`;
+              };
+
+              const specificationHREF = specfications.map((s: any) =>
+                extractHREF(s),
+              );
 
               const specArr = await Promise.all(
-                findSpec.map(async (spec: any) => {
+                conformsToEntries.map(async (spec: any) => {
                   return {
                     title: await getLocalizedValue(
                       spec.getAllMetadata(),
@@ -356,7 +397,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                       nextLang,
                       es,
                     ),
-                    url: spec.getResourceURI(),
+                    url: specificationHREF[0],
                   };
                 }),
               );
