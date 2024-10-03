@@ -244,6 +244,14 @@ export const SearchResults: FC<SearchResultsProps> = ({
                     </Heading>
 
                     {hit.metadata &&
+                      hit.metadata["organisation_literal"] &&
+                      hit.metadata["organisation_literal"].length > 0 && (
+                        <span className="organisation font-strong">
+                          {hit.metadata["organisation_literal"][0]}
+                        </span>
+                      )}
+
+                    {hit.metadata &&
                       search.allFacets &&
                       !search.loadingFacets &&
                       hit.metadata["inScheme_resource"] &&
@@ -273,13 +281,6 @@ export const SearchResults: FC<SearchResultsProps> = ({
                           hit.metadata["theme_literal"].length > 0 && (
                             <span className="category">
                               {hit.metadata["theme_literal"].join(",  ")}
-                            </span>
-                          )}
-                        {hit.metadata &&
-                          hit.metadata["organisation_literal"] &&
-                          hit.metadata["organisation_literal"].length > 0 && (
-                            <span className="organisation">
-                              {" | " + hit.metadata["organisation_literal"][0]}
                             </span>
                           )}
                       </div>
