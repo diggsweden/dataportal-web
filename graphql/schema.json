@@ -3472,6 +3472,11 @@
             "kind": "OBJECT",
             "name": "dataportal_Digg_Text",
             "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "dataportal_Digg_Video",
+            "ofType": null
           }
         ]
       },
@@ -3877,6 +3882,11 @@
           {
             "kind": "OBJECT",
             "name": "dataportal_Digg_Text",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "dataportal_Digg_Video",
             "ofType": null
           }
         ]
@@ -4645,11 +4655,6 @@
           {
             "kind": "OBJECT",
             "name": "dataportal_Digg_Image",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "dataportal_Digg_Video",
             "ofType": null
           }
         ]
@@ -5516,6 +5521,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "video_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -5537,7 +5554,7 @@
       {
         "kind": "UNION",
         "name": "dataportal_Digg_MediaType",
-        "description": "A mediatype of image, video or file",
+        "description": "A mediatype of image or file",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -5551,11 +5568,6 @@
           {
             "kind": "OBJECT",
             "name": "dataportal_Digg_Image",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "dataportal_Digg_Video",
             "ofType": null
           }
         ]
@@ -7076,13 +7088,17 @@
         "description": null,
         "fields": [
           {
-            "name": "alt",
+            "name": "createdAt",
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "dataportal_DateTime",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -7100,7 +7116,7 @@
             "deprecationReason": null
           },
           {
-            "name": "ext",
+            "name": "heading",
             "description": null,
             "args": [],
             "type": {
@@ -7112,8 +7128,24 @@
             "deprecationReason": null
           },
           {
-            "name": "mime",
+            "name": "id",
             "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "locale",
+            "description": "two-letter lang",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -7128,31 +7160,7 @@
             "deprecationReason": null
           },
           {
-            "name": "name",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "screen9",
-            "description": "Data from screen9 media",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "dataportal_JSON",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "url",
+            "name": "updatedAt",
             "description": null,
             "args": [],
             "type": {
@@ -7160,9 +7168,21 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "dataportal_DateTime",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "video_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -7172,7 +7192,12 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "dataportal_Digg_IMediaBase",
+            "name": "dataportal_Digg_IBlock",
+            "ofType": null
+          },
+          {
+            "kind": "INTERFACE",
+            "name": "dataportal_Digg_IEntity",
             "ofType": null
           }
         ],
