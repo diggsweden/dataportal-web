@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { MediaType_Dataportal_Digg_Video_Fragment as IVideo } from "@/graphql/__generated__/operations";
 
-export const VideoPlayer: React.FC<{ media: IVideo }> = ({ media }) => {
-  const containerid = `video_screen9_${media.screen9.id}`;
+export const VideoPlayer: React.FC<{ video_id: string }> = ({ video_id }) => {
+  const containerid = `video_screen9_${video_id}`;
   let player: any;
 
   const useScript = (src: string) => {
@@ -57,9 +56,9 @@ export const VideoPlayer: React.FC<{ media: IVideo }> = ({ media }) => {
   const status = useScript("https://cdn.screen9.com/players/amber-player.js");
 
   useEffect(() => {
-    if (status === "ready" && media.screen9?.id) {
+    if (status === "ready" && video_id) {
       const options = {
-        mediaid: media.screen9.id,
+        mediaid: video_id,
         containerid,
         token: process.env.NEXT_PUBLIC_SCREEN9_API_TOKEN,
       };
