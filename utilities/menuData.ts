@@ -141,6 +141,12 @@ const mainNav: NavData[] = [
     icon: nyheterIcon,
   },
   {
+    title: "faq",
+    promoted: false,
+    inEn: false,
+    icon: delaDataIcon,
+  },
+  {
     title: "community",
     promoted: false,
     inEn: true,
