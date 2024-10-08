@@ -197,17 +197,21 @@ export const IMAGE_FRAGMENT = gql`
   }
 `;
 
+// Video
+export const VIDEO_FRAGMENT = gql`
+  fragment Video on dataportal_Digg_Video {
+    heading
+    description
+    video_id
+  }
+`;
+
 // Union
 export const MEDIA_TYPE_FRAGMENT = gql`
   fragment MediaType on dataportal_Digg_MediaType {
     ... on dataportal_Digg_Image {
       ...Image
     }
-
-    ... on dataportal_Digg_Video {
-      ...MediaBase
-    }
-
     ... on dataportal_Digg_File {
       ...MediaBase
     }
@@ -360,6 +364,9 @@ export const BLOCK_FRAGMENT = gql`
       ...Media
     }
 
+    ... on dataportal_Digg_Video {
+      ...Video
+    }
     ... on dataportal_Digg_RelatedContent {
       ...RelatedContent
     }
@@ -385,6 +392,7 @@ export const BLOCK_FRAGMENT = gql`
   ${MEDIA_BASE_FRAGMENT}
   ${MEDIA_TYPE_FRAGMENT}
   ${IMAGE_FRAGMENT}
+  ${VIDEO_FRAGMENT}
   ${FORM_BLOCK_FRAGMENT}
   ${FORM_ELEMENT_FRAGMENT}
   ${CHOICE_FRAGMENT}
