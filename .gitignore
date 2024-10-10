@@ -52,6 +52,9 @@ yarn-error.log*
 
 __ENV.js
 
+# Cypress
+cypress/screenshots
+
 # yarn
 .pnp.*
 .yarn/*
