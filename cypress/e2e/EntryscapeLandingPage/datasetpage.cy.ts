@@ -21,7 +21,7 @@ describe("Check dataset page", () => {
       .should("contain", "Sök Data & Api:er");
 
     // Type a search query and click search + find first result and click.
-    cy.get("input#search-field").type("api");
+    cy.get("input#search-field", { timeout: 6000 }).type("api");
 
     cy.get(`button[aria-label="Sök"]`)
       .click()
@@ -54,8 +54,8 @@ describe("Check dataset page", () => {
       });
 
     // Confirm that it opened and find first label
-    cy.get("#listExpand-1", { timeout: 10000 }).should("be.visible");
-    cy.get("#listExpand-1").within(() => {
+    cy.get("#listExpand-0", { timeout: 10000 }).should("be.visible");
+    cy.get("#listExpand-0").within(() => {
       cy.get(".rdformsLabel").should("exist");
     });
 
