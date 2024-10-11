@@ -40,7 +40,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "script-src",
     `'self' ${
       nonce ? `'nonce-${nonce}'` : ""
-    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se *.entryscape.com *.dataportal.se *.beta.dataportal.digikube.dgstage.se *.dataportal.dev1.se`,
+    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se https://webbanalys-dashboard.digg.se *.entryscape.com *.dataportal.se *.beta.dataportal.digikube.dgstage.se *.dataportal.dev1.se`,
     { prodOnly: true },
   );
   add(
@@ -81,7 +81,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "connect-src",
     `'self' https://* http://127.0.0.1:1300/ ${
       reactEnv("APOLLO_URL") || ""
-    } https://* webbanalys.digg.se http://statsapi.screen9.com/sessions`,
+    } https://* webbanalys.digg.se webbanalys-dashboard.digg.se statsapi.screen9.com`,
   );
 
   // return the object in a formatted value (this won't work on IE11 without a polyfill!)
