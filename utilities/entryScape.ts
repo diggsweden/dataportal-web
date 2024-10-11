@@ -723,7 +723,6 @@ export class EntryScape {
               path: "/datasets/",
               descriptionResource: "dcterms:description",
             };
-
             let hit = {
               entryId: child.getId(),
               title: getLocalizedValue(
@@ -736,6 +735,9 @@ export class EntryScape {
                 metaData,
                 hitSpecification.descriptionResource || "dcterms:description",
                 lang,
+                {
+                  resourceURI,
+                },
               ),
               esEntry: child,
               metadata: await this.getMetaValues(child, dcat),
