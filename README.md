@@ -110,6 +110,6 @@ The key for this frontend application has read access only to DIGG screen9 accou
 
 To test locally in the sandbox environment, set the sandbox.editera URL on lines 6, 7, and 12 in Settings.Dev.ts
 
-Line 6: ENTRYSCAPE_SPECS_PATH="editera.dataportal.se"
+Line 6: ENTRYSCAPE_SPECS_PATH="admin.dataportal.se"
 Line 7: ENTRYSCAPE_TERMS_PATH="editera.dataportal.se"
 Line 12: ENTRYSCAPE_CONCEPT_STATS_URL="https://editera.dataportal.se/stats/entityData.json"
