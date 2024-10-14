@@ -234,34 +234,6 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 }),
               );
 
-              // const relatedDatasets = await es
-              //   .newSolrQuery()
-              //   .uriProperty("dcterms:conformsTo", resourceURI)
-              //   .list()
-              //   .getAllEntries();
-
-              // const relatedDatasetsGetURI = relatedDatasets.map((s: any) =>
-              //   s.getResourceURI(),
-              // );
-
-              // const conformsToEntries = await util.loadEntriesByResourceURIs(
-              //   relatedDatasetsGetURI,
-              //   undefined,
-              //   true,
-              // );
-              // const datasetsArray = conformsToEntries.filter((s: any) => s);
-
-              // const datasetentry = relatedDatasets[0];
-              // const cid = datasetentry.getContext().getId();
-              // const eid = datasetentry.getId();
-              // const title = datasetentry
-              //   .getAllMetadata()
-              //   .findFirstValue(datasetentry, "dcterms:title");
-              // const testUrl = `https://www.dataportal.se/dataservice/${cid}_${eid}/${title}`;
-
-              // // eslint-disable-next-line no-console
-              // console.log(es);
-
               //the getLocalizedValue function might fetch from network, so start all IO with promises
               valuePromises.push(
                 getLocalizedValue(graph, "dcterms:title", nextLang, es, {
