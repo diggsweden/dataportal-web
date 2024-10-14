@@ -40,7 +40,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "script-src",
     `'self' ${
       nonce ? `'nonce-${nonce}'` : ""
-    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se https://webbanalys-dashboard.digg.se *.entryscape.com *.dataportal.se *.beta.dataportal.digikube.dgstage.se *.dataportal.dev1.se`,
+    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se https://webbanalys-dashboard.digg.se *.entryscape.com *.dataportal.se *.beta.dataportal.digikube.dgstage.se *.dataportal.dev1.se, 'report-sample' 'self' https://webbanalys-dashboard.digg.se/js/container_hV6fNi9j_preview.js https://webbanalys.digg.se/js/container_hV6fNi9j.js`,
     { prodOnly: true },
   );
   add(
@@ -55,7 +55,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "font-src",
     `'self' data: https://static.entryscape.com https://static.cdn.entryscape.com`,
   );
-  add("base-uri", `'self'`);
+  add("base-uri", `'self' https://webbanalys-dashboard.digg.se/`);
   add("manifest-src", `'self'`);
   add("form-action", `'self'`);
   add(
@@ -79,7 +79,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   add("style-src-attr", `'self' 'unsafe-inline'`);
   add(
     "connect-src",
-    `'self' https://* http://127.0.0.1:1300/ ${
+    `'self' https://* http://127.0.0.1:1300/ https://admin.dataportal.se https://editera.dataportal.se https://webbanalys.digg.se ${
       reactEnv("APOLLO_URL") || ""
     } https://* webbanalys.digg.se webbanalys-dashboard.digg.se statsapi.screen9.com`,
   );
