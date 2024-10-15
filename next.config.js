@@ -36,7 +36,7 @@ const baseHeaders = [
 const csp = [
   {
     key: "Content-Security-Policy",
-    value: `script-src 'self' 'unsafe-inline' 'unsafe-eval' 'report-sample' https://webbanalys-dashboard.digg.se/js/container_hV6fNi9j_preview.js https://webbanalys.digg.se/js/container_hV6fNi9j.js; base-uri 'self' https://webbanalys-dashboard.digg.se/; connect-src 'self' https://admin.dataportal.se https://editera.dataportal.se https://webbanalys.digg.se; frame-ancestors 'none';`,
+    value: `script-src 'self' 'unsafe-inline' 'unsafe-eval' 'report-sample' https://webbanalys-dashboard.digg.se/js/container_hV6fNi9j_preview.js https://webbanalys.digg.se/js/container_hV6fNi9j.js http://webbanalys.digg.se; base-uri 'self' https://webbanalys-dashboard.digg.se/; connect-src 'self' http://webbanalys.digg.se https://admin.dataportal.se https://editera.dataportal.se https://webbanalys.digg.se; frame-ancestors 'none';`,
   },
 ];
 
