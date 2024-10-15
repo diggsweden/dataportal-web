@@ -41,7 +41,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   add("default-src", `'self'`, { prodOnly: true });
   add("manifest-src", `'self'`, { prodOnly: true });
   add("object-src", `'none'`, { prodOnly: true });
-  add("script-src", scriptSrc, { prodOnly: true });
+  add("script-src", scriptSrc, { prodOnly: false });
 
   add(
     "script-src-attr",
