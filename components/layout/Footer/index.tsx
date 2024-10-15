@@ -37,7 +37,7 @@ export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
               src={"/images/europeiskaunionen.png"}
               width={200}
               height={42}
-              alt="SV Finansieras av Europeiska unionen logo"
+              alt="Europeiska unionen logotyp. Dataportalen finansieras av Europeiska unionen, NextGenerationEU."
             />
           </div>
         </Container>

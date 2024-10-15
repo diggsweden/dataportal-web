@@ -123,6 +123,10 @@
     "path": "resultat-och-uppföljning",
     "title": "Resultat och uppföljning"
   },
+  "faq": {
+    "path": "vanliga-fragor-och-svar",
+    "title": "Vanliga frågor och svar"
+  },
   "metadata": {
     "path": "metadatakvalitet",
     "title": "Metadatakvalitet per katalog"

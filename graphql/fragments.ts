@@ -197,17 +197,21 @@ export const IMAGE_FRAGMENT = gql`
   }
 `;
 
+// Video
+export const VIDEO_FRAGMENT = gql`
+  fragment Video on dataportal_Digg_Video {
+    heading
+    description
+    video_id
+  }
+`;
+
 // Union
 export const MEDIA_TYPE_FRAGMENT = gql`
   fragment MediaType on dataportal_Digg_MediaType {
     ... on dataportal_Digg_Image {
       ...Image
     }
-
-    ... on dataportal_Digg_Video {
-      ...MediaBase
-    }
-
     ... on dataportal_Digg_File {
       ...MediaBase
     }
@@ -288,6 +292,27 @@ export const RELATED_CONTENT_FRAGMENT = gql`
   }
 `;
 
+export const PROMOTED_CONTENT_FRAGMENT = gql`
+  fragment PromotedContent on dataportal_Digg_PromotedContent {
+    id
+    heading
+    preamble
+    externalLink
+    buttonText
+    image {
+      ...Image
+    }
+    container {
+      slug
+      title
+      preamble
+      image {
+        ...Image
+      }
+    }
+  }
+`;
+
 export const FORM_BLOCK_FRAGMENT = gql`
   fragment FormBlock on dataportal_Digg_FormBlock {
     elements {
@@ -339,8 +364,15 @@ export const BLOCK_FRAGMENT = gql`
       ...Media
     }
 
+    ... on dataportal_Digg_Video {
+      ...Video
+    }
     ... on dataportal_Digg_RelatedContent {
       ...RelatedContent
+    }
+
+    ... on dataportal_Digg_PromotedContent {
+      ...PromotedContent
     }
 
     ... on dataportal_Digg_FormBlock {
@@ -355,10 +387,12 @@ export const BLOCK_FRAGMENT = gql`
   ${FAQ_FRAGMENT}
   ${TEXT_FRAGMENT}
   ${RELATED_CONTENT_FRAGMENT}
+  ${PROMOTED_CONTENT_FRAGMENT}
   ${MEDIA_FRAGMENT}
   ${MEDIA_BASE_FRAGMENT}
   ${MEDIA_TYPE_FRAGMENT}
   ${IMAGE_FRAGMENT}
+  ${VIDEO_FRAGMENT}
   ${FORM_BLOCK_FRAGMENT}
   ${FORM_ELEMENT_FRAGMENT}
   ${CHOICE_FRAGMENT}

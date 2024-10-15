@@ -80,6 +80,10 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
       <meta name="theme-color" content={"#171A21"} />
       <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
       <meta name="apple-mobile-web-app-status-bar" />
+      <meta
+        name="google-site-verification"
+        content="w0YYxJ7mqlvbxEYUahNuFqQEgViod8_jgBykWc3TYzE"
+      />
       {/* Matomo Tag Manager */}
       {activateMatomo && (
         <script

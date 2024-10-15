@@ -11,8 +11,10 @@ import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentB
 import { TextBlock } from "@/components/content/blocks/TextBlock";
 import { AccordionBlock } from "@/components/content/blocks/AccordionBlock";
 import { MediaBlock } from "@/components/content/blocks/MediaBlock";
+import { VideoBlock } from "@/components/content/blocks/VideoBlock";
 import { FormPage } from "@/components/content/FormPage";
 import { QuoteBlock } from "@/components/content/blocks/QuoteBlock";
+import { PromotedContentBlock } from "@/components/content/blocks/PromotedContentBlock";
 interface blockListProps {
   blocks:
     | ContainerDataFragment["blocks"]
@@ -82,6 +84,10 @@ export const BlockList: React.FC<blockListProps> = ({
             return <QuoteBlock {...block} key={`${id}-${index}`} />;
           case "dataportal_Digg_Media":
             return <MediaBlock {...block} key={`${id}-${index}`} />;
+          case "dataportal_Digg_Video":
+            return <VideoBlock {...block} key={`${id}-${index}`} />;
+          case "dataportal_Digg_PromotedContent":
+            return <PromotedContentBlock {...block} key={`${id}-${index}`} />;
           case "dataportal_Digg_Faq":
             return handleFaqs(blocks, index);
           case "dataportal_Digg_RelatedContent":

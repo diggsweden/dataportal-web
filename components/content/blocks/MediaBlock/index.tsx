@@ -8,7 +8,6 @@ import { Heading } from "@/components/global/Typography/Heading";
 import Link from "next/link";
 import DocumentIcon from "@/assets/icons/document.svg";
 import PDFIcon from "@/assets/icons/PDF.svg";
-import { VideoPlayer } from "@/components/global/VideoPlayer";
 
 export const handleUrl = ({ screen9, url, __typename }: MediaBaseFragment) => {
   const documentBaseUrl = env("DOCUMENT_BASE_URL");
@@ -51,20 +50,6 @@ const renderMedia = (
           )}
         </figure>
       );
-    case "dataportal_Digg_Video":
-      return (
-        <figure className="border-b border-brown-200 pb-sm">
-          <div className="pb-sm">
-            <VideoPlayer media={media} />
-          </div>
-          {mediaDescription && (
-            <figcaption className="text-brown-600">
-              {checkLang(mediaDescription)}
-            </figcaption>
-          )}
-        </figure>
-      );
-
     case "dataportal_Digg_File":
       return (
         <Link

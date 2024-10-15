@@ -195,7 +195,7 @@ export class EntryScape {
               facetSpec && facetSpec.indexOrder ? facetSpec.indexOrder : 0,
           };
 
-          f.values.splice(0, take).forEach((fvalue: ESFacetFieldValue) => {
+          f.values.splice(0, 1000).forEach((fvalue: ESFacetFieldValue) => {
             if (
               !valueswhitelist ||
               (valueswhitelist &&
@@ -525,12 +525,19 @@ export class EntryScape {
           this.facetSpecification.facets.length > 0
         ) {
           this.facetSpecification.facets.forEach((fSpec) => {
-            if (fSpec.type == ESType.literal || fSpec.type == ESType.literal_s)
+            if (
+              fSpec.type == ESType.literal ||
+              fSpec.type == ESType.literal_s
+            ) {
+              esQuery.facetLimit(1000);
               esQuery.literalFacet(
                 fSpec.resource,
                 fSpec.related ? true : false,
               );
-            else if (fSpec.type == ESType.uri || fSpec.type == ESType.wildcard)
+            } else if (
+              fSpec.type == ESType.uri ||
+              fSpec.type == ESType.wildcard
+            )
               esQuery.uriFacet(fSpec.resource, fSpec.related ? true : false);
           });
         }
@@ -716,7 +723,6 @@ export class EntryScape {
               path: "/datasets/",
               descriptionResource: "dcterms:description",
             };
-
             let hit = {
               entryId: child.getId(),
               title: getLocalizedValue(
@@ -729,6 +735,9 @@ export class EntryScape {
                 metaData,
                 hitSpecification.descriptionResource || "dcterms:description",
                 lang,
+                {
+                  resourceURI,
+                },
               ),
               esEntry: child,
               metadata: await this.getMetaValues(child, dcat),

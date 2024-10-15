@@ -180,6 +180,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
             event.preventDefault();
             submitSearch(query);
           }}
+          role={"search"}
         >
           <SearchInput
             autoFocus
