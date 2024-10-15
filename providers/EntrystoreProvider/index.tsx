@@ -361,21 +361,31 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
 
-              const maybeSpecs = graph
-                .find(null, "dcterms:conformsTo")
+              const conformsToURIs = graph
+                .find(resourceURI, "dcterms:conformsTo")
                 .map((stmt: any) => stmt.getValue());
+              const util = new ESJS.EntryStoreUtil(
+                new ESJS.EntryStore(`https://editera.dataportal.se/store`),
+              );
 
-              const findSpec =
-                maybeSpecs.length > 0
-                  ? await es
-                      .newSolrQuery()
-                      .resource(maybeSpecs, null)
-                      .rdfType(["dcterms:Standard", "prof:Profile"])
-                      .getEntries()
-                  : [];
+              const conformsToEntries = await util.loadEntriesByResourceURIs(
+                conformsToURIs,
+                undefined,
+                true,
+              );
+              const specfications = conformsToEntries.filter((s: any) => s);
+              const extractHREF = (s: any) => {
+                if (s.getResourceURI().startsWith("https://dataportal.se"))
+                  return s.getResourceURI();
+                return `https://dataportal.se/externalspecification/${s.getResourceURI()}`;
+              };
+
+              const specificationHREF = specfications.map((s: any) =>
+                extractHREF(s),
+              );
 
               const specArr = await Promise.all(
-                findSpec.map(async (spec: any) => {
+                conformsToEntries.map(async (spec: any) => {
                   return {
                     title: await getLocalizedValue(
                       spec.getAllMetadata(),
@@ -383,7 +393,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                       nextLang,
                       es,
                     ),
-                    url: spec.getResourceURI(),
+                    url: specificationHREF[0],
                   };
                 }),
               );
