@@ -9,7 +9,7 @@ const baseHeaders = [
   },
   {
     key: "X-Frame-Options",
-    value: "DENY",
+    value: "SAMEORIGIN",
   },
   {
     key: "X-XSS-Protection",
@@ -29,14 +29,14 @@ const baseHeaders = [
   },
   {
     key: "Access-Control-Allow-Origin",
-    value: "https://www.dataportal.se",
+    value: "https://www.dataportal.se https://webbanalys.digg.se",
   },
 ];
 
 const csp = [
   {
     key: "Content-Security-Policy",
-    value: `script-src 'self' 'unsafe-inline' 'unsafe-eval' 'report-sample' https://webbanalys-dashboard.digg.se/js/container_hV6fNi9j_preview.js https://webbanalys.digg.se/js/container_hV6fNi9j.js http://webbanalys.digg.se; base-uri 'self' https://webbanalys-dashboard.digg.se/; connect-src 'self' http://webbanalys.digg.se https://admin.dataportal.se https://editera.dataportal.se https://webbanalys.digg.se; frame-ancestors 'none';`,
+    value: `frame-ancestors 'none';`,
   },
 ];
 
