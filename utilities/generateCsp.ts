@@ -45,6 +45,11 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     { prodOnly: true },
   );
   add(
+    "script-src-elem",
+    `'self' 'unsafe-inline' https://webbanalys.digg.se https://webbanalys-dashboard.digg.se`,
+    { prodOnly: true },
+  );
+  add(
     "script-src-attr",
     `'unsafe-hashes' 'sha256-dYUMUtU0sGsXCiI6XuVhMNdPUHRSW7RGVl5bz5LjpAI=' 'sha256-VBX8ceLcK+xMdfMO8F4EoCjmT8IQqXqmpv70AnAzpAc='`,
   );
