@@ -40,7 +40,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "script-src",
     `'self' ${
       nonce ? `'nonce-${nonce}'` : ""
-    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se *.entryscape.com *.dataportal.se *.beta.dataportal.digikube.dgstage.se *.dataportal.dev1.se`,
+    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se https://webbanalys-dashboard.digg.se *.entryscape.com *.dataportal.se *.beta.dataportal.digikube.dgstage.se *.dataportal.dev1.se`,
     { prodOnly: true },
   );
   add(
@@ -53,9 +53,9 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   );
   add(
     "font-src",
-    `'self' data: https://static.entryscape.com https://static.cdn.entryscape.com`,
+    `'self' data: https://static.entryscape.com https://static.cdn.entryscape.com https://webbanalys-dashboard.digg.se`,
   );
-  add("base-uri", `'self'`);
+  add("base-uri", `'self' https://webbanalys-dashboard.digg.se`);
   add("manifest-src", `'self'`);
   add("form-action", `'self'`);
   add(
@@ -70,18 +70,18 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   );
   add(
     "style-src",
-    `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`,
+    `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css https://webbanalys-dashboard.digg.se`,
   );
   add(
     "style-src-elem",
-    `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`,
+    `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css https://webbanalys-dashboard.digg.se`,
   );
   add("style-src-attr", `'self' 'unsafe-inline'`);
   add(
     "connect-src",
     `'self' https://* http://127.0.0.1:1300/ ${
       reactEnv("APOLLO_URL") || ""
-    } https://* webbanalys.digg.se http://statsapi.screen9.com/sessions`,
+    } https://* webbanalys.digg.se statsapi.screen9.com`,
   );
 
   // return the object in a formatted value (this won't work on IE11 without a polyfill!)
