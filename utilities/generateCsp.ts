@@ -45,6 +45,11 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     { prodOnly: true },
   );
   add(
+    "script-src-elem",
+    `'self' 'unsafe-inline' https://webbanalys.digg.se https://webbanalys-dashboard.digg.se`,
+    { prodOnly: true },
+  );
+  add(
     "script-src-attr",
     `'unsafe-hashes' 'sha256-dYUMUtU0sGsXCiI6XuVhMNdPUHRSW7RGVl5bz5LjpAI=' 'sha256-VBX8ceLcK+xMdfMO8F4EoCjmT8IQqXqmpv70AnAzpAc='`,
   );
@@ -82,7 +87,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "connect-src",
     `'self' https://* http://127.0.0.1:1300/ https://admin.dataportal.se https://editera.dataportal.se https://webbanalys.digg.se ${
       reactEnv("APOLLO_URL") || ""
-    } https://* webbanalys.digg.se statsapi.screen9.com`,
+    } https://* webbanalys.digg.se statsapi.screen9.com https://webbanalys-dashboard.digg.se/`,
   );
 
   // Return the object in a formatted value
