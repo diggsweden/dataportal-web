@@ -283,6 +283,15 @@ export const SearchResults: FC<SearchResultsProps> = ({
                               {hit.metadata["theme_literal"].join(",  ")}
                             </span>
                           )}
+                        {hit.metadata &&
+                          hit.metadata["organisation_literal"] &&
+                          hit.metadata["organisation_literal"].length > 0 && (
+                            <span className="organisation">
+                              {(hit.metadata["theme_literal"].length > 0
+                                ? " | "
+                                : "") + hit.metadata["organisation_literal"][0]}
+                            </span>
+                          )}
                       </div>
                       <div className="formats space-x-md">
                         {hit.metadata &&
