@@ -87,7 +87,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "connect-src",
     `'self' https://* http://127.0.0.1:1300/ https://admin.dataportal.se https://editera.dataportal.se https://webbanalys.digg.se ${
       reactEnv("APOLLO_URL") || ""
-    } https://* webbanalys.digg.se statsapi.screen9.com https://webbanalys-dashboard.digg.se/`,
+    } https://* webbanalys.digg.se statsapi.screen9.com`,
   );
 
   // Return the object in a formatted value
