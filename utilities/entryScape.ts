@@ -3,8 +3,10 @@ import {
   DCATData,
   getEntryLang,
   getLocalizedValue,
+  resourcesSearch,
   listChoices,
   slugify,
+  getLocalizedMetadataValue,
 } from "@/utilities";
 import { Translate } from "next-translate";
 import { SearchSortOrder } from "@/providers/SearchProvider";
@@ -68,6 +70,7 @@ export class EntryScape {
   facetSpecification: FacetSpecification;
   lang: string;
   t: Translate;
+  entryStore: any;
 
   constructor(
     entryscapeUrl: string,
@@ -91,6 +94,19 @@ export class EntryScape {
     this.t = t;
 
     ESJS.namespaces.add("esterms", "http://entryscape.com/terms/");
+
+    // Initialize the EntryStore instance
+    this.entryStore = new ESJS.EntryStore(this.entryscapeUrl);
+    this.entryStore.getREST().disableJSONP();
+    this.entryStore.getREST().disableCredentials();
+  }
+
+  /**
+   * Get the EntryStore instance
+   * @returns EntryStore instance
+   */
+  private getEntryStore(): any {
+    return this.entryStore;
   }
 
   /**
@@ -246,14 +262,14 @@ export class EntryScape {
                 if (entry) {
                   const meta = entry.getAllMetadata();
 
-                  let title = getLocalizedValue(
+                  let title = getLocalizedMetadataValue(
                     meta,
                     "http://xmlns.com/foaf/0.1/name",
                     this.lang,
                   );
 
                   if (!title)
-                    title = getLocalizedValue(
+                    title = getLocalizedMetadataValue(
                       meta,
                       "http://purl.org/dc/terms/title",
                       this.lang,
@@ -290,9 +306,7 @@ export class EntryScape {
   getResources(resources: string[]): Promise<any> {
     return new Promise<any>((resolve) => {
       let result: any[] = [];
-      const es = new ESJS.EntryStore(this.entryscapeUrl);
-      es.getREST().disableJSONP();
-      es.getREST().disableCredentials();
+      const es = this.getEntryStore();
       const maxRequestUriLength: number = 1500; //for batching request, max URI length is actually 2083 (IE), but keep it safe
       let resTmp: string[] = [];
       let requestPromises: Promise<any>[] = [];
@@ -302,7 +316,7 @@ export class EntryScape {
           resTmp.push(resources.splice(0, 1)[0]);
         }
 
-        requestPromises.push(this.resourcesSearch(resTmp, es));
+        requestPromises.push(resourcesSearch(resTmp, es));
         resTmp = [];
       }
 
@@ -317,46 +331,30 @@ export class EntryScape {
   }
 
   /**
-   * Make SolrSearch and retrive entries from entryscape
-   * Does not handle to large resource arrays, can leed to request URI errors,
-   * use in batches, see {getResources}-method
-   *
-   * @param resources
-   * @param es
-   */
-  resourcesSearch(resources: string[], es: any): Promise<any> {
-    return new Promise<any>((resolve) => {
-      let esQuery = es.newSolrQuery();
-      esQuery
-        .resource(resources, null)
-        .getEntries(0)
-        .then((children: any) => {
-          resolve(children);
-        });
-    });
-  }
-
-  /**
    * Get metadata values from EntryScape entry
    * @param es EntryScape entry
    * @param dcat DCAT metadata object
    */
   async getMetaValues(
-    es: any,
+    entry: any,
     dcat?: DCATData | undefined,
   ): Promise<{ [key: string]: string[] }> {
     return new Promise<{ [key: string]: string[] }>(async (resolve) => {
       let values: { [key: string]: string[] } = {};
 
-      if (es) {
-        let metadata = es.getAllMetadata();
+      if (entry) {
+        let metadata = entry.getAllMetadata();
+        const es = this.getEntryStore();
 
-        values["organisation_literal"] = metadata
-          .find(null, "http://www.w3.org/ns/dcat#keyword")
-          .filter((f: any) => f.getLanguage() == undefined)
-          .map((f: any) => {
-            return f.getValue();
-          });
+        // Get the publisher value using getAsyncLocalizedValue
+        const publisherValue = await getLocalizedValue(
+          metadata,
+          "dcterms:publisher",
+          this.lang,
+          es,
+        );
+
+        values["organisation_literal"] = publisherValue ? [publisherValue] : [];
 
         // ***** THEMES
         //get UI specification for themes
@@ -509,9 +507,7 @@ export class EntryScape {
       this.luceneFriendlyQuery(query);
       let lang = request.language || "sv";
 
-      const es = new ESJS.EntryStore(this.entryscapeUrl);
-      es.getREST().disableJSONP();
-      es.getREST().disableCredentials();
+      const es = this.getEntryStore();
 
       let esQuery = es.newSolrQuery();
       let searchList: any;
@@ -725,13 +721,13 @@ export class EntryScape {
             };
             let hit = {
               entryId: child.getId(),
-              title: getLocalizedValue(
+              title: getLocalizedMetadataValue(
                 metaData,
                 hitSpecification.titleResource || "dcterms:title",
                 lang,
                 { resourceURI },
               ),
-              description: getLocalizedValue(
+              description: getLocalizedMetadataValue(
                 metaData,
                 hitSpecification.descriptionResource || "dcterms:description",
                 lang,
