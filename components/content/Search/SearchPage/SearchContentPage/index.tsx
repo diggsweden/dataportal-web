@@ -195,6 +195,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
               setQuery(e.target.value);
             }}
             key={searchRequest?.query ? "loaded" : "not loaded"}
+            ariaLabel={t("pages|content$search")}
           />
         </form>
 

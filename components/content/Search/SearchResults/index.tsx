@@ -203,11 +203,13 @@ export const SearchResults: FC<SearchResultsProps> = ({
     <div id="search-result" className="my-lg md:my-xl">
       <div className="mb-lg flex flex-col-reverse justify-between md:flex-row">
         <Heading level={2} size="md" className="search-result-header">
-          {search.loadingHits && <span>{t("common|loading")}</span>}
-          {!search.loadingHits &&
-            search.result &&
-            (search.result.count || 0) >= 0 &&
-            `${search.result.count} ${t("pages|search$dataset-hits")}`}
+          <span aria-live="polite" role="status">
+            {search.loadingHits && `${t("common|loading")}...`}
+            {!search.loadingHits &&
+              search.result &&
+              (search.result.count || 0) >= 0 &&
+              `${search.result.count} ${t("pages|search$dataset-hits")}`}
+          </span>
         </Heading>
 
         {searchMode == "datasets" && (
@@ -224,7 +226,10 @@ export const SearchResults: FC<SearchResultsProps> = ({
           <ul className="search-result-list space-y-xl">
             {search.result.hits &&
               search.result.hits.map((hit, index) => (
-                <li className="max-w-lg" key={index}>
+                <li
+                  className="max-w-lg focus-within:outline-dashed focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-primary"
+                  key={index}
+                >
                   <Link
                     href={`${hit.url}#ref=${
                       window ? window.location.search : ""
@@ -232,7 +237,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
                     onClick={() => {
                       saveCurrentScrollPos();
                     }}
-                    className="group block no-underline"
+                    className="focus--none group block no-underline"
                   >
                     <Heading
                       level={3}
@@ -242,66 +247,64 @@ export const SearchResults: FC<SearchResultsProps> = ({
                     >
                       {hit.title}
                     </Heading>
-
-                    {hit.metadata &&
-                      hit.metadata["organisation_literal"] &&
-                      hit.metadata["organisation_literal"].length > 0 && (
-                        <span className="organisation font-strong">
-                          {hit.metadata["organisation_literal"][0]}
-                        </span>
-                      )}
-
-                    {hit.metadata &&
-                      search.allFacets &&
-                      !search.loadingFacets &&
-                      hit.metadata["inScheme_resource"] &&
-                      search.getFacetValueTitle(
-                        "http://www.w3.org/2004/02/skos/core#inScheme",
-                        hit.metadata["inScheme_resource"][0],
-                      ) && (
-                        <span>
-                          {search.getFacetValueTitle(
-                            "http://www.w3.org/2004/02/skos/core#inScheme",
-                            hit.metadata["inScheme_resource"][0],
-                          )}
-                        </span>
-                      )}
-
-                    {isCompact && hit.descriptionLang && (
-                      <p className="mb-xs">{hit.description}</p>
+                  </Link>
+                  {hit.metadata &&
+                    search.allFacets &&
+                    !search.loadingFacets &&
+                    hit.metadata["inScheme_resource"] &&
+                    search.getFacetValueTitle(
+                      "http://www.w3.org/2004/02/skos/core#inScheme",
+                      hit.metadata["inScheme_resource"][0],
+                    ) && (
+                      <span>
+                        {search.getFacetValueTitle(
+                          "http://www.w3.org/2004/02/skos/core#inScheme",
+                          hit.metadata["inScheme_resource"][0],
+                        )}
+                      </span>
                     )}
 
-                    <div
-                      className={
-                        !isCompact ? "flex items-baseline space-x-md" : "block"
-                      }
-                    >
-                      <div className="mb-xs text-sm font-strong text-textSecondary">
-                        {hit.metadata &&
-                          hit.metadata["theme_literal"].length > 0 && (
-                            <span className="category">
-                              {hit.metadata["theme_literal"].join(",  ")}
-                            </span>
-                          )}
-                      </div>
-                      <div className="formats space-x-md">
-                        {hit.metadata &&
-                          hit.metadata["format_literal"] &&
-                          hit.metadata["format_literal"].map(
-                            (m: string, index: number) => (
-                              <FileFormatBadge key={index} badgeName={m} />
-                            ),
-                          )}
-                        {isHVD(hit.esEntry._metadata._graph) && (
-                          <span
-                            className={`bg-green-200 px-sm py-xs text-sm uppercase`}
-                          >
-                            {t("common|high-value-dataset")}
+                  {isCompact && hit.descriptionLang && (
+                    <p className="mb-xs">{hit.description}</p>
+                  )}
+
+                  <div
+                    className={
+                      !isCompact ? "flex items-baseline space-x-md" : "block"
+                    }
+                  >
+                    <div className="mb-xs text-sm font-strong text-textSecondary">
+                      {hit.metadata &&
+                        hit.metadata["theme_literal"].length > 0 && (
+                          <span className="category">
+                            {hit.metadata["theme_literal"].join(",  ")}
                           </span>
                         )}
-                      </div>
+                      {hit.metadata &&
+                        hit.metadata["organisation_literal"] &&
+                        hit.metadata["organisation_literal"].length > 0 && (
+                          <span className="organisation">
+                            {" | " + hit.metadata["organisation_literal"][0]}
+                          </span>
+                        )}
                     </div>
-                  </Link>
+                    <div className="formats space-x-md">
+                      {hit.metadata &&
+                        hit.metadata["format_literal"] &&
+                        hit.metadata["format_literal"].map(
+                          (m: string, index: number) => (
+                            <FileFormatBadge key={index} badgeName={m} />
+                          ),
+                        )}
+                      {isHVD(hit.esEntry._metadata._graph) && (
+                        <span
+                          className={`bg-green-200 px-sm py-xs text-sm uppercase`}
+                        >
+                          {t("common|high-value-dataset")}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </li>
               ))}
           </ul>

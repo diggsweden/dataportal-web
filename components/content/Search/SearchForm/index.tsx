@@ -57,12 +57,13 @@ export const SearchForm: FC<SearchFormProps> = ({
           autoFocus
           id="search-field"
           placeholder={placeholder}
-          isLoading={search.loadingFacets}
+          isLoading={search.loadingHits}
           query={query}
           setQuery={setQuery}
           submitSearch={submitSearch}
           value={query}
           key={search.request.query ? "loaded" : "not loaded"}
+          ariaLabel={placeholder}
         />
       </form>
     </div>
