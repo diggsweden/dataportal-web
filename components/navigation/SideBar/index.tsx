@@ -61,12 +61,12 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
   return (
     <nav
       id="sidebar"
-      role="menu"
+      role="navigation"
       ref={ref}
       className={`absolute right-none top-[136px] z-50 -mb-[136px] h-[calc(100%-136px)] overflow-y-auto 
       overflow-x-hidden bg-white transition-all duration-300 ease-in-out md:overflow-y-visible
       ${openSideBar ? "w-full md:w-[300px]" : "w-none"}`}
-      aria-label="Sidebar"
+      aria-label={t("common|menu-sidebar")}
     >
       <ul className="w-full list-none whitespace-nowrap md:w-[300px]">
         {menu.map((menu: NavSideData, idx: number) => (

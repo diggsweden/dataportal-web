@@ -158,6 +158,13 @@ const SideBarLink: FC<
           className="focus--in focus--underline group inline-flex w-full cursor-pointer flex-row gap-md p-md text-brown-600"
           onClick={() => setOpen(!open)}
           tabIndex={openSideBar ? 0 : -1}
+          aria-expanded={open}
+          aria-controls={`submenu-${label.replace(/\s+/g, "-").toLowerCase()}`}
+          aria-label={
+            open
+              ? `${t("common|close")} ${t("common|menu-submenu")} ${label}`
+              : `${t("common|open")} ${t("common|menu-submenu")} ${label}`
+          }
         >
           <Icon className={open ? "[&_path]:fill-pink-600" : ""} />
           <span
@@ -176,7 +183,10 @@ const SideBarLink: FC<
           />
         </button>
         {open && (
-          <ul className="flex flex-col">
+          <ul
+            id={`submenu-${label.replace(/\s+/g, "-").toLowerCase()}`}
+            className="flex flex-col"
+          >
             {list.map((menu, idx: number) => (
               <li key={idx} className="group relative overflow-y-hidden">
                 <MenuLink
