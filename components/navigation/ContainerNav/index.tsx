@@ -5,6 +5,7 @@ import { Button } from "@/components/global/Button";
 import CloseCrossIcon from "@/assets/icons/closeCross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
 
 interface ContainerDpDwnProps {
   related: ContainerDataFragment[];
@@ -15,6 +16,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
   const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
   const [vw, setVw] = useState(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     window.addEventListener("resize", () => setVw(window.innerWidth));
@@ -32,7 +34,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
   };
 
   return (
-    <nav className="relative" aria-label="Container main">
+    <nav className="relative" aria-label="Container navigation">
       {expanded && (
         <div className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden" />
       )}
@@ -45,15 +47,24 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
           label={related[0].name}
           onClick={() => setExpanded(!expanded)}
           className={`!button--large relative z-40 w-full md:w-[320px] xl:hidden`}
+          aria-expanded={expanded}
+          aria-controls="container-nav"
+          aria-label={
+            expanded
+              ? `${t("common|close")} ${related[0].name}`
+              : `${t("common|open")} ${related[0].name}`
+          }
         />
       )}
 
       <ul
+        id="container-nav"
         className={`absolute flex-col bg-white md:w-[320px] xl:static xl:flex xl:h-full xl:w-[200px] xl:bg-transparent ${
           expanded
             ? "-bottom-sm z-40 h-fit max-h-[calc(100svh-292px)] w-full translate-y-full overflow-y-auto md:max-h-[calc(100vh-292px)]"
             : "hidden"
         }`}
+        aria-label={`${related[0].name} navigation`}
       >
         {related.map(({ name, slug }) => {
           return (
