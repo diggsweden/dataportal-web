@@ -89,6 +89,7 @@ export const Hero: FC<HeroProps> = ({
                     placeholder={search.placeholder}
                     query={query}
                     setQuery={setQuery}
+                    ariaLabel={search.placeholder}
                   />
                 </form>
                 <div
