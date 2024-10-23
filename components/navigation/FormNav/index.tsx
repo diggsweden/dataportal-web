@@ -52,6 +52,7 @@ export const FormNav: React.FC<ContainerDpDwnProps> = ({
       ref={ref}
       className={`relative row-start-1 mb-lg flex h-fit w-full lg:col-span-1 lg:col-start-1 
       lg:row-span-2 lg:mb-xl ${className ? className : ""}`}
+      aria-label={t("common|menu-form")}
     >
       {expanded && (
         <div className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden" />

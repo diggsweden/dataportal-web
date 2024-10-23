@@ -23,6 +23,7 @@
     "@types/swagger-ui-react": "^4.11.0",
     "class-variance-authority": "^0.7.0",
     "fetch-enhanced": "^8.1.1",
+    "focus-trap": "^7.6.0",
     "focus-trap-react": "^10.0.0",
     "graphql": "16.8.1",
     "html-react-parser": "^5.0.11",

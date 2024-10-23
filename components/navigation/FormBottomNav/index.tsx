@@ -60,7 +60,10 @@ export const FormBottomNav: FC<Props> = ({
   };
 
   return (
-    <nav className="z-40 space-y-lg pt-xl md:space-y-xl">
+    <nav
+      className="z-40 space-y-lg pt-xl md:space-y-xl"
+      aria-label={t("common|menu-form-bottom")}
+    >
       <div className={`flex ${page === 1 ? "justify-end" : "justify-between"}`}>
         {page > 1 && (
           <Button

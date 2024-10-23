@@ -12,11 +12,11 @@ export interface BreadcrumbProps {
 }
 
 export const Breadcrumb: FC<BreadcrumbProps> = ({ crumbs, name }) => {
-  const { lang } = useTranslation();
+  const { t, lang } = useTranslation();
 
   return (
     <Container>
-      <nav className="mb-lg py-md md:mb-xl" aria-label="breadcrumb">
+      <nav className="mb-lg py-md md:mb-xl" aria-label={t("common|breadcrumb")}>
         {crumbs.length > 0 && (
           <ul className="flex flex-wrap items-center gap-md">
             {crumbs.map((crumb, index) => {

@@ -1,9 +1,10 @@
-import { FC } from "react";
+import { FC, useRef } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import { mainNav } from "@/utilities/menuData";
 import SideBarLink from "@/components/navigation/SideBar/SideBarLink.tsx";
 import { useClickoutside } from "@/hooks/useClickoutside";
+import { createFocusTrap, FocusTrap } from "focus-trap";
 
 interface NavSideData {
   title: string;
@@ -24,6 +25,7 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
   const { t, lang } = useTranslation();
   const [vw, setVw] = useState(0);
   const isEn = lang === "en";
+  const trapRef = useRef<FocusTrap | null>(null);
   const ref = useClickoutside(
     () => (vw < 1200 ? setOpenSideBar(false) : null),
     ["#sidebarBtn"],
@@ -58,15 +60,38 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
       window.removeEventListener("resize", () => setVw(window.innerWidth));
   });
 
+  useEffect(() => {
+    if (openSideBar && vw < 600 && ref.current) {
+      trapRef.current = createFocusTrap(ref.current, {
+        escapeDeactivates: false,
+        allowOutsideClick: true,
+      });
+      trapRef.current.activate();
+    }
+
+    return () => {
+      if (trapRef.current) {
+        trapRef.current.deactivate();
+      }
+    };
+  }, [openSideBar, vw]);
+
+  const handleEscape = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape" && openSideBar && vw < 768) {
+      setOpenSideBar(false);
+    }
+  };
+
   return (
     <nav
       id="sidebar"
-      role="menu"
+      role="navigation"
       ref={ref}
       className={`absolute right-none top-[136px] z-50 -mb-[136px] h-[calc(100%-136px)] overflow-y-auto 
       overflow-x-hidden bg-white transition-all duration-300 ease-in-out md:overflow-y-visible
       ${openSideBar ? "w-full md:w-[300px]" : "w-none"}`}
-      aria-label="Sidebar"
+      aria-label={t("common|menu-sidebar")}
+      onKeyDown={handleEscape}
     >
       <ul className="w-full list-none whitespace-nowrap md:w-[300px]">
         {menu.map((menu: NavSideData, idx: number) => (

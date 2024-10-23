@@ -32,6 +32,9 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
               size="sm"
               href={showMoreLink}
               label={t("news$view-all")}
+              aria-label={`${t("news$view-all")} ${
+                heading ? `- ${heading}` : ""
+              }`}
               variant="secondary"
             />
           )}

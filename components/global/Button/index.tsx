@@ -118,7 +118,6 @@ const ButtonLink: FC<
   return (
     <Link
       href={href}
-      aria-label={label ? label : href}
       className={cx(buttonVariants({ variant, size }), className)}
       locale={locale}
       {...rest}

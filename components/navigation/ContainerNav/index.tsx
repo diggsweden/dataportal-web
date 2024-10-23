@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { ContainerDataFragment } from "@/graphql/__generated__/operations";
 import { Button } from "@/components/global/Button";
 import CloseCrossIcon from "@/assets/icons/closeCross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
+import { createFocusTrap, FocusTrap } from "focus-trap";
 
 interface ContainerDpDwnProps {
   related: ContainerDataFragment[];
@@ -15,13 +17,45 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
   const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
   const [vw, setVw] = useState(0);
+  const { t } = useTranslation();
+  const navRef = useRef<HTMLUListElement>(null);
+  const trapRef = useRef<FocusTrap | null>(null);
 
   useEffect(() => {
-    window.addEventListener("resize", () => setVw(window.innerWidth));
-
-    return () =>
-      window.removeEventListener("resize", () => setVw(window.innerWidth));
+    const handleResize = () => setVw(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Set initial value
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    if (expanded && vw < 1124 && navRef.current) {
+      trapRef.current = createFocusTrap(navRef.current, {
+        escapeDeactivates: false,
+        allowOutsideClick: true,
+      });
+      trapRef.current.activate();
+    }
+
+    return () => {
+      if (trapRef.current) {
+        trapRef.current.deactivate();
+      }
+    };
+  }, [expanded, vw]);
+
+  const handleToggle = () => {
+    if (expanded) {
+      trapRef.current?.deactivate();
+    }
+    setExpanded(!expanded);
+  };
+
+  const handleEscape = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape" && expanded) {
+      handleToggle();
+    }
+  };
 
   const isActive = (url: string) => {
     if (url === related[0].slug || url.endsWith(related[0].slug)) {
@@ -32,7 +66,12 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
   };
 
   return (
-    <nav className="relative" aria-label="Container main">
+    <nav
+      ref={navRef}
+      className="relative"
+      aria-label={t("common|menu-container")}
+      onKeyDown={handleEscape}
+    >
       {expanded && (
         <div className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden" />
       )}
@@ -43,17 +82,26 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
           iconPosition="left"
           icon={expanded ? CloseCrossIcon : HamburgerIcon}
           label={related[0].name}
-          onClick={() => setExpanded(!expanded)}
+          onClick={handleToggle}
           className={`!button--large relative z-40 w-full md:w-[320px] xl:hidden`}
+          aria-expanded={expanded}
+          aria-controls="container-nav"
+          aria-label={
+            expanded
+              ? `${t("common|close")} ${related[0].name}`
+              : `${t("common|open")} ${related[0].name}`
+          }
         />
       )}
 
       <ul
+        id="container-nav"
         className={`absolute flex-col bg-white md:w-[320px] xl:static xl:flex xl:h-full xl:w-[200px] xl:bg-transparent ${
           expanded
             ? "-bottom-sm z-40 h-fit max-h-[calc(100svh-292px)] w-full translate-y-full overflow-y-auto md:max-h-[calc(100vh-292px)]"
             : "hidden"
         }`}
+        aria-label={`${related[0].name} navigation`}
       >
         {related.map(({ name, slug }) => {
           return (
@@ -65,19 +113,19 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
             >
               <Link
                 href={slug}
-                className={`inline-flex w-full px-md py-sm no-underline ${
+                className={`focus--in inline-flex w-full px-md py-sm no-underline ${
                   isActive(slug)
                     ? "cursor-default"
                     : "focus--underline hover:underline"
                 }`}
                 aria-disabled={isActive(slug)}
                 onClick={() => {
-                  setExpanded(false);
+                  handleToggle();
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    setExpanded(false);
+                    handleToggle();
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }
                 }}
