@@ -3,7 +3,7 @@ import { EnvSettings } from "./EnvSettings";
 
 export class Settings_Prod extends EnvSettings {
   ENTRYSCAPE_DATASETS_PATH = "admin.dataportal.se";
-  ENTRYSCAPE_SPECS_PATH = "editera.dataportal.se";
+  ENTRYSCAPE_SPECS_PATH = "admin.dataportal.se";
   ENTRYSCAPE_TERMS_PATH = "editera.dataportal.se";
   ENTRYSCAPE_MQA_PATH = "admin.dataportal.se";
 
