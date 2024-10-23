@@ -70,7 +70,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
       <div className="flex w-full flex-row items-center justify-end space-x-md">
         <nav
           className="hidden flex-row items-center gap-sm xl:flex"
-          aria-label="Main"
+          aria-label={t("common|menu-main")}
         >
           {menues.map((menu: MainNavData, idx: number) => (
             <ButtonLink

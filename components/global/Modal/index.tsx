@@ -1,10 +1,11 @@
-import { FC, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Button, ButtonLink } from "@/components/global/Button";
 import ArrowIcon from "@/assets/icons/arrowRight.svg";
 import { HtmlParser } from "../Typography/HtmlParser";
 import { isExternalLink } from "@/utilities";
 import ExternalIcon from "@/assets/icons/external-link.svg";
+import { createFocusTrap, FocusTrap } from "focus-trap";
 
 interface ModalProps {
   heading: string;
@@ -33,10 +34,34 @@ export const Modal: FC<ModalProps> = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const modalType = type === "tools";
+  const trapRef = useRef<FocusTrap | null>(null);
+
+  useEffect(() => {
+    if (modalOpen && ref.current) {
+      trapRef.current = createFocusTrap(ref.current, {
+        escapeDeactivates: false,
+        allowOutsideClick: true,
+      });
+      trapRef.current.activate();
+    }
+
+    return () => {
+      if (trapRef.current) {
+        trapRef.current.deactivate();
+      }
+    };
+  }, [modalOpen]);
+
+  const handleEscape = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape" && modalOpen) {
+      setModalOpen(false);
+    }
+  };
+
   return (
     <>
       <div
-        className={`fixed bottom-none left-none right-none top-none z-40 overflow-hidden bg-brownOpaque5 
+        className={`fixed inset-none z-40 overflow-hidden bg-brownOpaque5 
         ${modalOpen ? "visible" : "hidden"}`}
         onClick={() => setModalOpen(false)}
       />
@@ -46,15 +71,11 @@ export const Modal: FC<ModalProps> = ({
         overflow-auto bg-white p-xl shadow-2xl md:w-auto ${
           modalOpen ? "visible" : "hidden"
         }`}
-        onClick={(e) => {
-          if (e.currentTarget !== e.target) {
-            setModalOpen(false);
-          }
-        }}
+        onKeyDown={handleEscape}
       >
         {heading && (
           <Heading
-            level={3}
+            level={1}
             size={modalType ? "md" : "sm"}
             className={text ? "font-thin" : "pb-lg"}
           >
@@ -80,6 +101,7 @@ export const Modal: FC<ModalProps> = ({
             className="min-w-[50px] justify-center hover:bg-brown-200"
             variant={"secondary"}
             label={closeBtn}
+            aria-label={`${closeBtn} modal ${heading}`}
           />
           {href ? (
             <ButtonLink
@@ -95,6 +117,7 @@ export const Modal: FC<ModalProps> = ({
               onClick={onClick}
               label={confirmBtn}
               className="min-w-[50px] justify-center"
+              aria-label={`${confirmBtn} modal ${heading}`}
             />
           )}
         </div>
