@@ -46,7 +46,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   );
   add(
     "script-src-elem",
-    `'self' 'unsafe-inline' https://webbanalys.digg.se https://webbanalys-dashboard.digg.se`,
+    `'self' 'unsafe-inline' https://webbanalys.digg.se https://webbanalys-dashboard.digg.se https://entrystore.org/js/4.15.0-dev/entrystore.js`,
     { prodOnly: true },
   );
   add(
