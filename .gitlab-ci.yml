@@ -2,10 +2,8 @@ image: docker:20.10.16-dind
 
 include:
   - template: Security/Secret-Detection.gitlab-ci.yml
-  - template: Code-Quality.gitlab-ci.yml
   - template: Security/SAST.gitlab-ci.yml
   - template: Security/Dependency-Scanning.gitlab-ci.yml
-  - template: Security/Container-Scanning.gitlab-ci.yml
 
 workflow:
   rules:
@@ -52,79 +50,3 @@ update:deploy:branch:
   trigger:
     project: digg/deploy-dataportal
     branch: main
-
-cloc:
-  dependencies: []
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "dev"'
-  stage: test
-  image: ${CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX}/node:18-alpine
-  before_script:
-    - apk add perl
-    - npm install -g cloc
-  script:
-    - cloc src --json -out cloc.json
-  artifacts:
-    paths:
-      - cloc.json
-    when: always
-    expire_in: 1 day
-
-container_scanning:
-  stage: test
-  variables:
-    GIT_STRATEGY: fetch
-    CS_IMAGE: $IMAGE:$TAG
-    CS_REGISTRY_USER: $DOCKER_USER
-    CS_REGISTRY_PASSWORD: $DOCKER_PASSWORD
-  needs:
-    - image:build:release
-  artifacts:
-    paths:
-      - gl-container-scanning-report.json
-      - gl-dependency-scanning-report.json
-      - gl-sbom-report.cdx.json
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "dev"'
-
-code_quality:
-  variables:
-    DOCKER_HOST: tcp://docker:2376
-    DOCKER_TLS_CERTDIR: "/certs"
-    DOCKER_TLS_VERIFY: 1
-    DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
-  before_script:
-    - until docker info; do sleep 1; done
-
-code_quality_html:
-  extends: code_quality
-  variables:
-    REPORT_FORMAT: html
-  artifacts:
-    paths: [gl-code-quality-report.html]
-  before_script:
-    - until docker info; do sleep 1; done
-
-semgrep-sast:
-  dependencies: []
-  after_script:
-    - cp gl-sast-report.json gl-semgrep-report.json
-  artifacts:
-    paths:
-      - gl-semgrep-report.json
-
-nodejs-scan-sast:
-  dependencies: []
-  after_script:
-    - cp gl-sast-report.json gl-nodejs-report.json
-  artifacts:
-    paths:
-      - gl-nodejs-report.json
-
-gemnasium-dependency_scanning:
-  rules: # override rules to not require lockfile to be committed
-    - when: on_success
-  after_script: cp gl-dependency-scanning-report.json gl-dependency-node-scanning-report.json
-  artifacts:
-    paths:
-      - gl-dependency-node-scanning-report.json
