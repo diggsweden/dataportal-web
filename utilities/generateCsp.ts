@@ -46,8 +46,8 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   );
   add(
     "script-src-elem",
-    `'self' 'unsafe-inline' https://webbanalys.digg.se https://webbanalys-dashboard.digg.se https://entrystore.org/js/4.15.0-dev/entrystore.js https://static.cdn.entryscape.com/blocks-ext/1/opendata/opendata-sv.js`,
-    { prodOnly: true },
+    `'self' 'unsafe-inline' https://webbanalys.digg.se https://webbanalys-dashboard.digg.se https://entrystore.org/js/4.15.0-dev/entrystore.js *.static.cdn.entryscape.com static.cdn.entryscape.com`,
+    { prodOnly: false },
   );
   add(
     "script-src-attr",
