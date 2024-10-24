@@ -22,6 +22,7 @@ export interface EntrystoreProviderProps {
   entrystoreUrl: string | "admin.dataportal.se";
   fetchMore: boolean;
   isConcept?: boolean;
+  hasResourceUri?: string;
 }
 
 export interface ESEntry {
@@ -74,6 +75,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
   entrystoreUrl,
   fetchMore,
   isConcept,
+  hasResourceUri,
 }) => {
   const [state, setState] = useState(defaultESEntry);
   const { lang: nextLang } = useTranslation("common");
@@ -138,8 +140,11 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
 
               const hasResource = await es
                 .newSolrQuery()
+                .uriProperty(
+                  "http://www.w3.org/ns/dx/prof/hasResource",
+                  hasResourceUri || entryUri,
+                )
                 .rdfType(["dcterms:Standard", "prof:Profile"])
-                .uriProperty("prof:hasResource", resourceURI)
                 .getEntries();
 
               const datasetArr = await Promise.all(
