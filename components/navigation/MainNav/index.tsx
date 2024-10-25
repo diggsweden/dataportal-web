@@ -81,7 +81,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
       <div className="flex w-full flex-row items-center justify-end space-x-md">
         <nav
           className="hidden flex-row items-center gap-sm xl:flex"
-          aria-label="Main"
+          aria-label={t("common|menu-main")}
         >
           {menues.map((menu: MainNavData, idx: number) => (
             <ButtonLink
@@ -142,13 +142,16 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         <Button
           id="sidebarBtn"
           aria-expanded={openSideBar}
-          aria-haspopup="menu"
+          aria-controls="sidebar"
           variant="plain"
           icon={openSideBar ? CloseCrossIcon : HamburgerIcon}
           iconPosition="left"
           onClick={() => setOpenSideBar(!openSideBar)}
           label={t("common|menu")}
           className={`button--large ${openSideBar ? "active" : ""}`}
+          aria-label={
+            openSideBar ? t("common|menu-close") : t("common|menu-open")
+          }
         />
       </div>
     </div>

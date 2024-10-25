@@ -45,6 +45,9 @@ export const GridList: FC<ListProps> = ({
             size="sm"
             href={showMoreLink.slug}
             label={showMoreLink.title}
+            aria-label={`${showMoreLink.title} ${
+              heading ? `- ${heading}` : ""
+            }`}
             variant="secondary"
           />
         )}
