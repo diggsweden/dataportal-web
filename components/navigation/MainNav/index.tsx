@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useContext } from "react";
 import Link from "next/link.js";
 import { Button, ButtonLink } from "@/components/global/Button";
@@ -36,6 +36,8 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
   const ref = useClickoutside(() => setOpenSearch(false));
+  const formRef = useRef<HTMLFormElement>(null);
+
   const { env } = useContext(SettingsContext);
   useEffect(() => {
     let enMenu;
@@ -47,6 +49,15 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
       setMenues(enMenu);
     }
   }, [isEn]);
+
+  const handleSearchButtonClick = () => {
+    setOpenSearch(!openSearch);
+    // Use setTimeout to ensure the form is rendered before trying to focus
+    setTimeout(() => {
+      const input = formRef.current?.querySelector("input");
+      input?.focus();
+    }, 0);
+  };
 
   return (
     <div className="flex flex-row items-center justify-between">
@@ -94,14 +105,15 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           {!openSearch ? (
             <Button
               variant="plain"
-              aria-label="Search"
-              onClick={() => setOpenSearch(!openSearch)}
+              aria-label={t("common|search-content")}
+              onClick={handleSearchButtonClick}
               icon={SearchIcon}
               iconPosition="left"
               className="w-[44px] cursor-pointer p-[10px]"
             />
           ) : (
             <form
+              ref={formRef}
               className={`transition-width max-w-[274px] text-sm duration-100 md:w-[274px] [&_div]:mr-none [&_div_div_button]:p-[10px] hover:first:[&_div_div_button]:bg-brown-200  ${
                 openSearch
                   ? `w-full ${
@@ -117,6 +129,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
               <SearchInput
                 id="header-search"
                 placeholder={t("common|search")}
+                ariaLabel={t("common|search-content")}
                 query={query}
                 setQuery={setQuery}
                 type="small"

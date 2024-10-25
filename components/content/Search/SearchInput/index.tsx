@@ -9,6 +9,7 @@ import SpinnerIcon from "@/assets/icons/spinner.svg";
 interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   id: string;
   placeholder: string;
+  ariaLabel: string;
   query: string;
   setQuery: Dispatch<SetStateAction<string>>;
   isLoading?: boolean;
@@ -19,6 +20,7 @@ interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
 export const SearchInput: FC<SearchInputProps> = ({
   id,
   placeholder,
+  ariaLabel,
   query,
   isLoading,
   submitSearch,
@@ -39,8 +41,8 @@ export const SearchInput: FC<SearchInputProps> = ({
         autoComplete="off"
         placeholder={placeholder}
         value={query}
-        type={type}
         onChange={(e) => setQuery(e.target.value)}
+        aria-label={ariaLabel}
         {...props}
       />
       <div className="absolute mr-xs flex h-[44px]">
@@ -54,6 +56,7 @@ export const SearchInput: FC<SearchInputProps> = ({
               submitSearch && submitSearch("");
               setQuery("");
             }}
+            aria-label={t("common|clear-search")}
           />
         )}
         <Button
@@ -61,6 +64,7 @@ export const SearchInput: FC<SearchInputProps> = ({
           label={type !== "small" ? t("common|search") : ""}
           icon={isLoading ? SpinnerIcon : SearchIcon}
           iconPosition="left"
+          aria-label={ariaLabel}
         />
       </div>
     </div>
