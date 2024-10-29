@@ -78,48 +78,36 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
   }, [pathname]);
 
   const specsPathResover = (hitMeta: any) => {
-    let resourceUri = hitMeta.getResourceURI();
-    let path: string;
-
-    if (resourceUri.includes("://")) {
-      let tmp = resourceUri.split("://");
-      path = tmp[0] + "/" + tmp[1];
-    } else path = resourceUri;
+    const resourceUri = hitMeta.getResourceURI();
 
     if (resourceUri && !resourceUri.includes("dataportal.se")) {
-      return `/externalspecification/${path}`;
+      return `/externalspecification?resource=${encodeURIComponent(
+        resourceUri,
+      )}`;
     } else {
-      if (
-        path.startsWith("https/dataportal.se/specifications") ||
-        path.startsWith("https/www-sandbox.dataportal.se/specifications")
-      )
-        path = path.slice(path.lastIndexOf("dataportal.se/") + 13);
-
-      return path;
+      // Handle internal specifications
+      if (resourceUri.includes("dataportal.se/specifications")) {
+        return resourceUri.slice(
+          resourceUri.lastIndexOf("dataportal.se/") + 13,
+        );
+      }
+      return resourceUri;
     }
   };
 
   const termsPathResover = (hitMeta: any) => {
     const resourceUri = hitMeta.getResourceURI();
 
-    let path: string;
-
-    if (resourceUri.indexOf("://") > -1) {
-      var tmp = resourceUri.split("://");
-      path = tmp[0] + "/" + tmp[1];
-    } else path = resourceUri;
-
     if (resourceUri && !resourceUri.includes("dataportal.se")) {
-      return `/externalconcept/${path}`;
+      return `/externalconcept?resource=${encodeURIComponent(resourceUri)}`;
     } else {
       //NDP-343
-      if (
-        path.startsWith("https/dataportal.se/concepts") ||
-        path.startsWith("https/www-sandbox.dataportal.se/concepts")
-      )
-        path = path.slice(path.lastIndexOf("dataportal.se/") + 13);
-
-      return path;
+      if (resourceUri.includes("dataportal.se/concepts")) {
+        return resourceUri.slice(
+          resourceUri.lastIndexOf("dataportal.se/") + 13,
+        );
+      }
+      return resourceUri;
     }
   };
 

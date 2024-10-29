@@ -1,12 +1,8 @@
-import { GetServerSideProps } from "next/types";
-
-export default function Specification() {
-  return null;
-}
+import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const specification = (params?.specification as string[]) || [];
-  const scheme = specification[0];
+  const terminology = (params?.terminology as string[]) || [];
+  const scheme = terminology[0];
 
   if (scheme != "http" && scheme != "https") {
     return {
@@ -15,15 +11,19 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   }
 
   // Reconstruct the original URI and redirect to the new format
-  const curi = specification.slice(1).join("/");
+  const curi = terminology.slice(1).join("/");
   const entryUri = `${scheme}://${curi}`;
 
   return {
     redirect: {
-      destination: `/externalspecification?resource=${encodeURIComponent(
+      destination: `/externalterminology?resource=${encodeURIComponent(
         entryUri,
       )}`,
       permanent: true,
     },
   };
 };
+
+export default function Terminology() {
+  return null;
+}

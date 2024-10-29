@@ -10,10 +10,10 @@ import { Heading } from "@/components/global/Typography/Heading";
 import { Preamble } from "@/components/global/Typography/Preamble";
 import { Button } from "@/components/global/Button";
 
-export const SpecificationPage: FC<{
-  curi?: string;
-  scheme?: string;
-}> = ({ curi, scheme }) => {
+export const SpecificationPage: FC<{ curi?: string; uri?: string }> = ({
+  curi,
+  uri,
+}) => {
   const { env, setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
@@ -64,7 +64,7 @@ export const SpecificationPage: FC<{
     if (typeof window !== "undefined") {
       const postscribe = (window as any).postscribe;
 
-      if (curi) {
+      if (curi || uri) {
         postscribe(
           "#scriptsPlaceholder",
 
@@ -82,7 +82,12 @@ export const SpecificationPage: FC<{
           <script>
 
           function getDataportalUri(resourceUri, isTerm){
+            if (!resourceUri || !window?.location?.pathname) {
+              return resourceUri;
+            }
 
+            const currentPath = window.location.pathname;
+            const encodedResourceUri = encodeURIComponent(resourceUri);
             var path = '';                      
 
             if(resourceUri.indexOf('://') > -1)
@@ -93,10 +98,10 @@ export const SpecificationPage: FC<{
             else
               path = resourceUri;              
 
-            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalspecification/") > -1)
-              return "/externalspecification/" + path;
+            if(currentPath.includes("/externalspecification"))
+              return "/externalspecification?resource=" + encodedResourceUri;
 
-            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/specifications/") > -1)
+            if(currentPath.includes("/specifications/"))
             {
               let entryPath = '';
 
@@ -144,8 +149,8 @@ export const SpecificationPage: FC<{
             page_language: '${lang}',            
             routes: [
               {
-                regex:new RegExp('(\/*\/externalspecification\/)(.+)'),
-                uri:'${scheme}://${curi}',
+                regex:new RegExp('(\/*\/externalspecification)(.+)'),
+                uri:'${decodeURIComponent(uri as string)}',
                 page_language: '${lang}'
               },                
               {

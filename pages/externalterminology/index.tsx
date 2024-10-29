@@ -8,42 +8,31 @@ import { GetServerSideProps } from "next";
 
 export default function Terminology() {
   const { env } = useContext(SettingsContext);
-  const { query } = useRouter() || {};
-  const { concept } = query || {};
-  const paths = [...(concept ? (concept as string[]) : [])];
-  const scheme = paths.shift();
-  const curi = paths.join("/");
-  const entryUri = `${scheme}://${curi}`;
+  const { resource } = useRouter().query;
+
   const postscribeStatus = useScript(
     "/postscribe.min.js",
     "sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM",
     "anonymous",
   );
-  return postscribeStatus === "ready" && paths.length > 0 ? (
+
+  if (postscribeStatus !== "ready" || !resource) return null;
+
+  return (
     <EntrystoreProvider
       env={env}
-      entryUri={entryUri}
+      entryUri={decodeURIComponent(resource as string)}
       entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
       fetchMore={false}
     >
-      <ConceptPage scheme={scheme} curi={curi} />
+      <ConceptPage uri={resource as string} />
     </EntrystoreProvider>
-  ) : (
-    <></>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const concept = (params?.concept as string[]) || [];
-  const scheme = concept[0];
-
-  if (scheme != "http" && scheme != "https") {
-    return {
-      notFound: true,
-    };
-  }
-
-  return {
-    props: {},
-  };
-};
+export const getServerSideProps: GetServerSideProps = async ({
+  query: { resource },
+}) => ({
+  notFound: !resource,
+  props: {},
+});
