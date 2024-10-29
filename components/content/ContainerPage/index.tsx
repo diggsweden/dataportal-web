@@ -149,7 +149,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
             {menuItems.length > 2 && (
               <div
                 id="stickyNav"
-                className="w-full overflow-y-auto lg:sticky lg:top-[76px] lg:max-h-[calc(100vh-152px)]"
+                className="w-full overflow-y-auto lg:sticky lg:top-[4.75rem] lg:max-h-[calc(100vh-9.5rem)]"
               >
                 <StickyNav
                   menuHeading={t("common|content-menu-heading")}

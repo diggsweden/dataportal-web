@@ -115,7 +115,7 @@ export const Statistic: React.FC = () => {
 
   return (
     <>
-      <div className="bg-white p-xl">
+      <div className="block bg-white p-xl">
         <Heading level={3} size="sm" className="mb-lg">
           {t("statistic$top-organizations")}
         </Heading>
@@ -140,7 +140,7 @@ export const Statistic: React.FC = () => {
         </ol>
       </div>
 
-      <div className="bg-white p-xl">
+      <div className="block bg-white p-xl">
         <Heading level={3} size="sm" className="mb-lg">
           {t("statistic$top-categories")}
         </Heading>

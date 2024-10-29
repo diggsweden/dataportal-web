@@ -20,7 +20,7 @@ code[class*="language-"] ::selection {
 
 /* Code blocks */
 pre[class*="language-"] {
-  @apply min-h-[82px] overflow-auto p-lg pl-md pr-2xl;
+  @apply min-h-[5.125rem] overflow-auto p-lg pl-md pr-2xl;
 }
 
 :not(pre) > code[class*="language-"],
@@ -110,7 +110,7 @@ pre[class*="language-"] {
 }
 
 pre[class*="language-"].line-numbers {
-  @apply relative pl-[60px];
+  @apply relative pl-[3.75rem];
   counter-reset: linenumber;
 }
 
@@ -148,12 +148,12 @@ div.code-toolbar > .toolbar {
 }
 
 div.code-toolbar > .toolbar button {
-  @apply z-20 cursor-pointer bg-brown-600 p-sm 
-  hover:bg-primary focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-blackOpaque3 group-focus-visible:outline-dashed group-focus-visible:outline-[3px] group-focus-visible:outline-blackOpaque3;
+  @apply z-20 cursor-pointer bg-brown-600 p-sm hover:bg-primary focus-visible:outline-dashed focus-visible:outline-[3px] 
+  focus-visible:outline-blackOpaque3 group-focus-visible:outline-dashed group-focus-visible:outline-[3px] group-focus-visible:outline-blackOpaque3;
 }
 
 div.code-toolbar > .toolbar span {
-  @apply inline-block h-[24px] w-[24px] bg-brown-100 p-sm text-[0];
+  @apply inline-block h-[1.5rem] w-[1.5rem] bg-brown-100 p-sm text-[0];
 }
 
 div.code-toolbar > .toolbar button[data-copy-state="copy"] > span {

@@ -83,7 +83,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
           icon={expanded ? CloseCrossIcon : HamburgerIcon}
           label={related[0].name}
           onClick={handleToggle}
-          className={`!button--large relative z-40 w-full md:w-[320px] xl:hidden`}
+          className={`!button--large relative z-40 w-full md:w-[20rem] xl:hidden`}
           aria-expanded={expanded}
           aria-controls="container-nav"
           aria-label={
@@ -96,9 +96,9 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
 
       <ul
         id="container-nav"
-        className={`absolute flex-col bg-white md:w-[320px] xl:static xl:flex xl:h-full xl:w-[200px] xl:bg-transparent ${
+        className={`absolute flex-col bg-white md:w-[20rem] xl:static xl:flex xl:h-full xl:w-[200px] xl:bg-transparent ${
           expanded
-            ? "-bottom-sm z-40 h-fit max-h-[calc(100svh-292px)] w-full translate-y-full overflow-y-auto md:max-h-[calc(100vh-292px)]"
+            ? "-bottom-sm z-40 h-fit max-h-[calc(100svh-18.25rem)] w-full translate-y-full overflow-y-auto md:max-h-[calc(100vh-18.25rem)]"
             : "hidden"
         }`}
         aria-label={`${related[0].name} navigation`}
@@ -120,12 +120,12 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
                 }`}
                 aria-disabled={isActive(slug)}
                 onClick={() => {
-                  handleToggle();
+                  setExpanded(false);
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    handleToggle();
+                    setExpanded(false);
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }
                 }}

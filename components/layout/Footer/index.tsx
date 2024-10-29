@@ -16,12 +16,12 @@ export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
     <footer className="mt-xl border-t-2 border-brown-600 bg-white py-xl">
       <div
         className={`transition-all duration-300 ease-in-out ${
-          openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
+          openSideBar ? "xl:w-[calc(100vw-18.75rem)]" : "w-full"
         }`}
       >
         <Container className="space-y-xl md:space-y-2xl">
           <FooterNav setOpenSideBar={setOpenSideBar} />
-          <div className="flex flex-col justify-between gap-xl align-top md:flex-row md:gap-none">
+          <div className="flex flex-col justify-between space-y-xl align-top md:flex-row md:gap-none">
             <div className="mr-lg">
               <span className="font-strong">Sveriges dataportal </span>
               <span>{t("common|managed-and-developed-by")}</span>
@@ -37,6 +37,7 @@ export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
               src={"/images/europeiskaunionen.png"}
               width={200}
               height={42}
+              className="h-[2.625rem] w-[12.5rem]"
               alt="Europeiska unionen logotyp. Dataportalen finansieras av Europeiska unionen, NextGenerationEU."
             />
           </div>

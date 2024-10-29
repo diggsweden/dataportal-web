@@ -2,6 +2,7 @@ import React, {
   FC,
   HTMLAttributes,
   PropsWithChildren,
+  useContext,
   useEffect,
   useState,
 } from "react";
@@ -12,6 +13,7 @@ import { usePathname } from "next/navigation";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import NavPixelsImage from "@/assets/icons/navPixels.svg";
 import ChevronRightIcon from "@/assets/icons/chevronRight.svg";
+import { SettingsContext } from "@/providers/SettingsProvider";
 
 const sideBarLinkVariants = cva(
   [
@@ -32,6 +34,7 @@ const sideBarLinkVariants = cva(
 
 type MenuLinkProps = VariantProps<typeof sideBarLinkVariants> & {
   Icon?: any;
+  iconSize: number;
   href: string;
   label: string;
   className?: string;
@@ -44,6 +47,7 @@ const MenuLink: FC<MenuLinkProps> = ({
   className,
   label,
   Icon,
+  iconSize,
   variant,
   tabIndex,
   setOpenSideBar,
@@ -60,7 +64,7 @@ const MenuLink: FC<MenuLinkProps> = ({
     <Link
       className={cx(
         sideBarLinkVariants({ variant }),
-        "focus--in focus--underline",
+        "focus--in focus--underline whitespace-normal",
         isActive && "bg-pink-100",
         className,
       )}
@@ -73,9 +77,11 @@ const MenuLink: FC<MenuLinkProps> = ({
         {Icon && (
           <Icon
             viewBox="0 0 24 24"
-            width={24}
-            height={24}
-            className={isActive ? "[&_path]:fill-pink-600" : ""}
+            width={1.5 * iconSize}
+            height={1.5 * iconSize}
+            className={`flex-shrink-0 ${
+              isActive ? "[&_path]:fill-pink-600" : ""
+            }`}
           />
         )}
         <span
@@ -89,8 +95,8 @@ const MenuLink: FC<MenuLinkProps> = ({
           <ExternalLinkIcon
             className="absolute right-md [&_path]:fill-brown-400"
             viewBox="0 0 24 24"
-            width={24}
-            height={24}
+            width={1.5 * iconSize}
+            height={1.5 * iconSize}
           />
         )}
       </>
@@ -104,6 +110,7 @@ type SideBarLinkProps = VariantProps<typeof sideBarLinkVariants> & {
   href?: string;
   label: string;
   list?: any[];
+  variant?: "external" | "internal";
   openSideBar?: boolean;
   setOpenSideBar: Function;
 };
@@ -113,16 +120,17 @@ const SideBarLink: FC<
 > = ({
   level,
   href,
-  className,
   icon,
   label,
   list,
+  variant,
   openSideBar,
   setOpenSideBar,
 }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const Icon = icon;
+  const { iconSize } = useContext(SettingsContext);
   const pathname = usePathname();
   const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
 
@@ -145,7 +153,8 @@ const SideBarLink: FC<
         href={href}
         label={label}
         Icon={Icon}
-        className={className}
+        iconSize={iconSize}
+        variant={variant}
         tabIndex={openSideBar ? 0 : -1}
         setOpenSideBar={setOpenSideBar}
       />
@@ -155,7 +164,10 @@ const SideBarLink: FC<
     return (
       <>
         <button
-          className="focus--in focus--underline group inline-flex w-full cursor-pointer flex-row gap-md p-md text-brown-600"
+          className={`focus--in focus--underline group flex w-full cursor-pointer flex-row items-center
+            gap-md whitespace-normal p-md text-left text-brown-600 ${
+              open && "font-strong text-brown-900"
+            }`}
           onClick={() => setOpen(!open)}
           tabIndex={openSideBar ? 0 : -1}
           aria-expanded={open}
@@ -166,7 +178,12 @@ const SideBarLink: FC<
               : `${t("common|open")} ${t("common|menu-submenu")} ${label}`
           }
         >
-          <Icon className={open ? "[&_path]:fill-pink-600" : ""} />
+          <Icon
+            width={1.5 * iconSize}
+            height={1.5 * iconSize}
+            viewBox="0 0 24 24"
+            className={`flex-shrink-0 ${open ? "[&_path]:fill-pink-600" : ""}`}
+          />
           <span
             className={`mr-auto underline-offset-4 group-hover:underline ${
               open && "font-strong text-brown-900"
@@ -175,7 +192,10 @@ const SideBarLink: FC<
             {label}
           </span>
           <ChevronRightIcon
-            className={`${
+            width={1.5 * iconSize}
+            height={1.5 * iconSize}
+            viewBox="0 0 24 24"
+            className={`flex-shrink-0 ${
               open
                 ? "rotate-90 transition-all duration-300 ease-in-out [&_path]:fill-pink-600"
                 : "rotate-0 transition-all duration-300 ease-in-out"
@@ -192,7 +212,8 @@ const SideBarLink: FC<
                 <MenuLink
                   href={`/${t(`routes|${menu.title}$path`)}`}
                   label={t(`routes|${menu.title}$title`)}
-                  className={`pl-[48px] ${className}`}
+                  className={`pl-[3rem]`}
+                  iconSize={iconSize}
                   tabIndex={openSideBar ? 0 : -1}
                   setOpenSideBar={setOpenSideBar}
                 />

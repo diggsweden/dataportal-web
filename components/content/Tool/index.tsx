@@ -54,7 +54,12 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
                   {domainLabel}
                 </span>
                 {isExternalLink(link) ? (
-                  <ExternalLinkIcon className="translate-x-0 transform transition-transform duration-500 group-hover:translate-x-1/3" />
+                  <>
+                    <ExternalLinkIcon className="translate-x-0 transform transition-transform duration-500 group-hover:translate-x-1/3" />
+                    <span className="sr-only">
+                      {t("common|open-in-new-tab")}
+                    </span>
+                  </>
                 ) : (
                   <InternalLinkIcon className="translate-x-0 transform transition-transform duration-500 group-hover:translate-x-1/3" />
                 )}
