@@ -41,13 +41,13 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
         </div>
       )}
       <ul
-        className={`grid grid-flow-row gap-lg md:auto-rows-min md:grid-cols-2 ${
+        className={`flex flex-col space-y-lg md:grid md:grid-flow-row md:auto-rows-min md:grid-cols-2 md:gap-lg ${
           landingPage ? "lg:grid-cols-3" : "max-w-md"
         } ${heading ? "mt-xl" : ""}`}
       >
         {links.map((link: PromoProps, idx: number) => {
           return (
-            <li key={idx}>
+            <li key={idx} className="block">
               <Promo {...link} heading={heading} />
             </li>
           );

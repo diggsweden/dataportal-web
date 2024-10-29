@@ -3,9 +3,11 @@ import {
   PropsWithChildren,
   ButtonHTMLAttributes,
   AnchorHTMLAttributes,
+  useContext,
 } from "react";
 import { cx, cva, VariantProps } from "class-variance-authority";
 import Link from "next/link";
+import { SettingsContext } from "@/providers/SettingsProvider";
 
 const buttonVariants = cva(["button"], {
   variants: {
@@ -37,21 +39,22 @@ type IconLabelProps = {
 
 const IconLabel: FC<IconLabelProps> = ({ icon, label, size, iconPosition }) => {
   const Icon = icon;
+  const { iconSize } = useContext(SettingsContext);
 
   return (
     <>
       {iconPosition === "left" && (
         <Icon
-          height={size === "lg" ? 24 : 16}
-          width={size === "lg" ? 24 : 16}
+          height={size === "lg" ? `${1.5 * iconSize}` : `${1 * iconSize}`}
+          width={size === "lg" ? `${1.5 * iconSize}` : `${1 * iconSize}`}
           viewBox="0 0 24 24"
         />
       )}
       {label && <span>{label}</span>}
       {iconPosition === "right" && (
         <Icon
-          height={size === "lg" ? 24 : 16}
-          width={size === "lg" ? 24 : 16}
+          height={size === "lg" ? `${1.5 * iconSize}` : `${1 * iconSize}`}
+          width={size === "lg" ? `${1.5 * iconSize}` : `${1 * iconSize}`}
           viewBox="0 0 24 24"
         />
       )}

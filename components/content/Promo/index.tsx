@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { Heading } from "@/components/global/Typography/Heading";
 import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
@@ -7,6 +7,7 @@ import Link from "next/link";
 import { isExternalLink } from "@/utilities";
 import { CustomImage } from "@/components/global/CustomImage";
 import { LinkFragment } from "@/graphql/__generated__/operations";
+import { SettingsContext } from "@/providers/SettingsProvider";
 export interface PromoProps extends LinkFragment {
   heading?: string | null;
 }
@@ -21,6 +22,8 @@ export const Promo: FC<PromoProps> = ({
   heading,
 }) => {
   const { t } = useTranslation("common");
+  const { iconSize } = useContext(SettingsContext);
+
   const ingress = showPreamble
     ? customPreamble
       ? customPreamble
@@ -54,9 +57,22 @@ export const Promo: FC<PromoProps> = ({
         <span className="button button--small button--primary focus--none mt-auto">
           {t("read-more")}
           {isExternalLink(slug) ? (
-            <ExternalLinkIcon height={16} width={16} viewBox="0 0 24 24" />
+            <>
+              <ExternalLinkIcon
+                height={iconSize}
+                width={iconSize}
+                viewBox="0 0 24 24"
+                className="flex-shrink-0"
+              />
+              <span className="sr-only">{t("common|open-in-new-tab")}</span>
+            </>
           ) : (
-            <ArrowRightIcon height={16} width={16} viewBox="0 0 24 24" />
+            <ArrowRightIcon
+              height={iconSize}
+              width={iconSize}
+              viewBox="0 0 24 24"
+              className="flex-shrink-0"
+            />
           )}
         </span>
       </div>

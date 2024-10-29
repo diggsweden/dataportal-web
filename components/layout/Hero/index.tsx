@@ -60,9 +60,9 @@ export const Hero: FC<HeroProps> = ({
 
       {/* Content on top of the overlay */}
       <Container>
-        <div className="relative z-10 text-center text-white">
+        <div className="relative z-10">
           <div
-            className={`${isFrontpage && search && "mx-auto"} ${
+            className={`${isFrontpage && search && "mx-auto text-center"} ${
               search ? "text-brown-100" : "bg-white p-xl"
             } max-w-md`}
           >

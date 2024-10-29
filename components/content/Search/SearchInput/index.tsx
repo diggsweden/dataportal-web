@@ -45,7 +45,7 @@ export const SearchInput: FC<SearchInputProps> = ({
         aria-label={ariaLabel}
         {...props}
       />
-      <div className="absolute mr-xs flex h-[44px]">
+      <div className="absolute mr-xs flex h-[2.75rem]">
         {query && (
           <Button
             type="reset"

@@ -175,7 +175,7 @@
 }
 
 .esbRowHead .esbRowControl > button {
-  @apply m-none flex h-[44px] w-full items-center justify-evenly gap-sm rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary shadow-none hover:bg-brown-100 hover:no-underline focus-visible:no-underline focus-visible:shadow-none !important;
+  @apply m-none flex h-[2.75rem] w-full items-center justify-evenly gap-sm rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary shadow-none hover:bg-brown-100 hover:no-underline focus-visible:no-underline focus-visible:shadow-none !important;
 }
 
 .esbExpandButton[aria-expanded="false"]::before {
@@ -184,7 +184,7 @@
 
 .esbExpandButton[aria-expanded="false"]::after {
   content: url("../assets/icons/chevronDown.svg");
-  @apply h-[24px] w-[24px];
+  @apply h-[1.5rem] w-[1.5rem];
 }
 
 .esbExpandButton[aria-expanded="true"]::before {
@@ -193,7 +193,7 @@
 
 .esbExpandButton[aria-expanded="true"]::after {
   content: url("../assets/icons/chevronUp.svg");
-  @apply h-[24px] w-[24px];
+  @apply h-[1.5rem] w-[1.5rem];
 }
 
 .btn-link {
@@ -562,22 +562,22 @@
 
 .opblock-summary-control[aria-expanded="false"]::after {
   content: url("../assets/icons/chevronDown.svg");
-  @apply ml-auto h-[24px] w-[24px];
+  @apply ml-auto h-[1.5rem] w-[1.5rem];
 }
 
 .opblock-summary-control[aria-expanded="true"]::after {
   content: url("../assets/icons/chevronUp.svg");
-  @apply ml-auto h-[24px] w-[24px];
+  @apply ml-auto h-[1.5rem] w-[1.5rem];
 }
 
 .expand-operation[aria-expanded="false"]::after {
   content: url("../assets/icons/chevronDown.svg");
-  @apply ml-auto h-[24px] w-[24px];
+  @apply ml-auto h-[1.5rem] w-[1.5rem];
 }
 
 .expand-operation[aria-expanded="true"]::after {
   content: url("../assets/icons/chevronUp.svg");
-  @apply ml-auto h-[24px] w-[24px];
+  @apply ml-auto h-[1.5rem] w-[1.5rem];
 }
 
 .curl-command .copy-to-clipboard,

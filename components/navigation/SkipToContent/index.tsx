@@ -24,8 +24,8 @@ export const SkipToContent: FC<{ text: string }> = ({ text }) => {
   return (
     <Button
       tabIndex={0}
-      className={`focus--white focus--outline focus--in absolute left-none top-none z-50 w-[276px] 
-        -translate-x-full justify-center bg-brown-900 !py-[15px] text-brown-100 focus-visible:translate-x-none`}
+      className={`focus--white focus--outline focus--in absolute left-none top-none z-50 w-[17.25rem] 
+        -translate-x-full justify-center bg-brown-900 !py-[0.9375rem] text-brown-100 focus-visible:translate-x-none`}
       onClick={skipToContent}
       label={text}
     />
