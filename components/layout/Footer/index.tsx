@@ -21,7 +21,7 @@ export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
       >
         <Container className="space-y-xl md:space-y-2xl">
           <FooterNav setOpenSideBar={setOpenSideBar} />
-          <div className="flex flex-col justify-between space-y-xl align-top md:flex-row md:gap-none">
+          <div className="flex flex-col justify-between gap-xl align-top md:flex-row md:gap-none">
             <div className="mr-lg">
               <span className="font-strong">Sveriges dataportal </span>
               <span>{t("common|managed-and-developed-by")}</span>

@@ -64,7 +64,7 @@ const BodyVariant: FC<PropsWithChildren<BodyProps>> = ({
   return (
     <CustomTag className={cx(bodyVariants({ variant }), className)}>
       {variant === "blockquote" && (
-        <QuoteIcon className="col-start-1 !h-[40px] !w-[40px]" />
+        <QuoteIcon className="col-start-1 !h-[40px] !w-[40px] flex-shrink-0" />
       )}
       {children}
     </CustomTag>
