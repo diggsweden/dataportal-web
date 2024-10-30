@@ -23,7 +23,7 @@ export const PromotedContentBlock: FC<PromotedContentFragment> = ({
     <div className="bg-white p-lg md:flex">
       {img && (
         <CustomImage
-          className="max-h-[340px] object-cover md:w-[45%]"
+          className="max-h-[21.25rem] object-cover md:w-[45%]"
           image={img}
         />
       )}

@@ -202,7 +202,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
                 <DynamicStatisticGraph />
                 <DynamicStatisticNumbers />
               </div>
-              <div className="flex flex-col items-start space-y-xl md:grid md:grid-cols-2 md:gap-xl">
+              <div className="flex flex-col items-start gap-xl md:grid md:grid-cols-2">
                 <DynamicStatistic />
               </div>
             </section>

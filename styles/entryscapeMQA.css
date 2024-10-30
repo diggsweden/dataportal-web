@@ -60,7 +60,7 @@
 
 .totMQA .esbInlineDiv#_ebh_4 > div,
 .catalogMQA .esbInlineDiv#_ebh_3 > div {
-  @apply min-w-[350px] overflow-x-hidden !important;
+  @apply min-w-[21.875rem] overflow-x-hidden !important;
 }
 
 .totMQA .esbScoreCardsContainer--flex,
@@ -74,7 +74,7 @@
 }
 .totMQA .esbScoreCardsContainer--flex > div,
 .catalogMQA .esbScoreCardsContainer--flex > div {
-  @apply w-full md:w-1/2 lg:w-full lg:min-w-[250px];
+  @apply w-full md:w-1/2 lg:w-full lg:min-w-[15.625rem];
 }
 
 .totMQA .esbRadarChartContainer,
@@ -144,7 +144,7 @@
 
 /* Styling for MQA catalog searh bar */
 .form-control {
-  @apply mt-xl h-[50px] rounded-[0px] border-none !text-blackOpaque3 shadow-none outline outline-1 outline-offset-2 !important;
+  @apply mt-xl h-[3.125rem] rounded-sm border-none !text-blackOpaque3 shadow-none outline outline-1 outline-offset-2 !important;
 }
 
 .form-control:focus-visible,

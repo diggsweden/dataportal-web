@@ -74,7 +74,7 @@ const renderImage = (props: any) => {
 const renderQuote = (children: any) => {
   return (
     <blockquote className="grid grid-cols-[40px_auto] gap-lg text-xl font-normal text-pink-600 [&_p]:col-start-2">
-      <QuoteIcon className="col-start-1 flex w-[40px]" />
+      <QuoteIcon className="col-start-1 flex w-[40px] flex-shrink-0" />
       {children}
     </blockquote>
   );

@@ -41,7 +41,7 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
         </div>
       )}
       <ul
-        className={`flex flex-col space-y-lg md:grid md:grid-flow-row md:auto-rows-min md:grid-cols-2 md:gap-lg ${
+        className={`flex flex-col gap-lg md:grid md:grid-flow-row md:auto-rows-min md:grid-cols-2 ${
           landingPage ? "lg:grid-cols-3" : "max-w-md"
         } ${heading ? "mt-xl" : ""}`}
       >

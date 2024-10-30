@@ -28,7 +28,7 @@ export const FooterNav: FC<FooterNavProps> = ({ setOpenSideBar }) => {
   return (
     <nav
       aria-label={t("common|menu-footer")}
-      className="flex flex-col space-y-xl lg:grid lg:grid-cols-2 lg:gap-xl"
+      className="flex flex-col gap-xl lg:grid lg:grid-cols-2"
     >
       {footerNav.map((footer: FooterNavData, idx: number) => (
         <div key={idx} className="flex flex-col gap-sm">

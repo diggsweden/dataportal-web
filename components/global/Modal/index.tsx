@@ -98,7 +98,7 @@ export const Modal: FC<ModalProps> = ({
         <div className="flex justify-between gap-lg">
           <Button
             onClick={() => setModalOpen(false)}
-            className="min-w-[50px] justify-center hover:bg-brown-200"
+            className="min-w-[3.125rem] justify-center hover:bg-brown-200"
             variant={"secondary"}
             label={closeBtn}
             aria-label={`${closeBtn} modal ${heading}`}
@@ -110,13 +110,13 @@ export const Modal: FC<ModalProps> = ({
               label={confirmBtn}
               icon={!isExternalLink(href) ? ArrowIcon : ExternalIcon}
               iconPosition="right"
-              className="min-w-[50px] justify-center"
+              className="min-w-[3.125rem] justify-center"
             />
           ) : (
             <Button
               onClick={onClick}
               label={confirmBtn}
-              className="min-w-[50px] justify-center"
+              className="min-w-[3.125rem] justify-center"
               aria-label={`${confirmBtn} modal ${heading}`}
             />
           )}
