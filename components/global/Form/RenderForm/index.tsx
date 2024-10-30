@@ -24,7 +24,7 @@ const PopOver: FC<{ text: string }> = (text) => {
         onClick={() => setVisible(!visible)}
         variant={"plain"}
         size={"xs"}
-        className="mb-xs w-[195px] justify-between"
+        className="mb-xs w-[12.188rem] justify-between"
       />
       <p
         className={`text-sm text-textSecondary ${

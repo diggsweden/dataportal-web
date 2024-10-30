@@ -589,7 +589,7 @@ export const DataSetPage: React.FC = () => {
                 dangerouslySetInnerHTML={{
                   __html: `
                        <div>
-                          <h3 class="text-md !mt-[12px]">
+                          <h3 class="text-md !mt-[0.75rem]">
                           ${t("pages|datasetpage$download_link")}
                           </h3>
 

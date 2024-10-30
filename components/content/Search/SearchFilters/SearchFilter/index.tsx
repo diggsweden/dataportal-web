@@ -1,8 +1,9 @@
 import FocusTrap from "focus-trap-react";
 import useTranslation from "next-translate/useTranslation";
-import { FC, PropsWithChildren, useEffect, useState } from "react";
+import { FC, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { useClickoutside } from "@/hooks/useClickoutside";
 import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
+import { SettingsContext } from "@/providers/SettingsProvider";
 
 export interface SearchFilterProps {
   title: string | null;
@@ -16,6 +17,7 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [trapFocus, setTrapFocus] = useState(false);
+  const { iconSize } = useContext(SettingsContext);
   const ref = useClickoutside(() => handleOpen(false));
   const { t } = useTranslation("common");
 
@@ -43,10 +45,14 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
           onClick={() => handleOpen(!open)}
           className={`${
             open && "active"
-          } button button--secondary button--large md:button--small w-full justify-between md:justify-start md:py-[4px]`}
+          } button button--secondary button--large md:button--small w-full justify-between md:justify-start md:py-[0.25rem]`}
         >
           {title || t("open")}
-          <ChevronDownIcon />
+          <ChevronDownIcon
+            height={iconSize * 1.5}
+            width={iconSize * 1.5}
+            viewBox="0 0 24 24"
+          />
         </button>
         <div className={open ? "relative block md:static" : "hidden"}>
           {children}

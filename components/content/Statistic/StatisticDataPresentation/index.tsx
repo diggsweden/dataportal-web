@@ -12,7 +12,7 @@ export class StatisticDataPresentation extends React.Component<StatisticDataPres
 
   render() {
     return (
-      <div className="w-full bg-white px-lg py-[50px] text-center first:mb-lg">
+      <div className="w-full bg-white px-lg py-[3.125rem] text-center first:mb-lg">
         <span className="block break-words text-2xl text-primary">
           {this.props.dataNumber || 0}
         </span>

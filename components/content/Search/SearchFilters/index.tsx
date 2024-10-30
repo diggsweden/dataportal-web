@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { ESRdfType, ESType } from "@/utilities/entryScape";
 import useTranslation from "next-translate/useTranslation";
 import { SearchContextData } from "@/providers/SearchProvider";
@@ -11,6 +11,7 @@ import { Button } from "@/components/global/Button";
 import { TextInput } from "@/components/global/Form/TextInput";
 import CheckboxIcon from "@/assets/icons/checkbox.svg";
 import CheckboxCheckedIcon from "@/assets/icons/checkboxChecked.svg";
+import { SettingsContext } from "@/providers/SettingsProvider";
 
 interface SearchFilterProps {
   showFilter: boolean;
@@ -155,6 +156,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
   setShowFilter,
 }) => {
   const { t } = useTranslation();
+  const { iconSize } = useContext(SettingsContext);
   const [inputFilter, setInputFilter] = useState<InputFilter>({});
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
   const containHVD = !search.request.facetValues?.find(
@@ -246,7 +248,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                           )
                         }
                       >
-                        <div className="absolute z-10 mr-lg mt-sm max-h-[600px] w-full overflow-y-auto bg-white shadow-md md:max-w-[330px]">
+                        <div className="absolute z-10 mr-lg mt-sm max-h-[600px] w-full overflow-y-auto bg-white shadow-md md:max-w-[20.625rem]">
                           {searchMode == "datasets" ||
                             (searchMode == "specifications" && (
                               //only render on searchpage
@@ -290,9 +292,17 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                                     {selected(key, facetValue)}
                                     <span className="absolute right-md">
                                       {selected(key, facetValue) ? (
-                                        <CheckboxCheckedIcon />
+                                        <CheckboxCheckedIcon
+                                          height={iconSize * 1.5}
+                                          width={iconSize * 1.5}
+                                          viewBox="0 0 24 24"
+                                        />
                                       ) : (
-                                        <CheckboxIcon />
+                                        <CheckboxIcon
+                                          height={iconSize * 1.5}
+                                          width={iconSize * 1.5}
+                                          viewBox="0 0 24 24"
+                                        />
                                       )}
                                     </span>
                                   </button>
@@ -346,8 +356,18 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                       >
                         {t(`resources|${key}`)}
                       </label>
-                      <CheckboxIcon className="pointer-events-none absolute right-md top-1/4 peer-checked/hvd-only:hidden" />
-                      <CheckboxCheckedIcon className="pointer-events-none absolute right-md top-1/4 hidden peer-checked/hvd-only:block" />
+                      <CheckboxIcon
+                        height={iconSize * 1.5}
+                        width={iconSize * 1.5}
+                        viewBox="0 0 24 24"
+                        className="pointer-events-none absolute right-sm top-1/4 peer-checked/hvd-only:hidden"
+                      />
+                      <CheckboxCheckedIcon
+                        height={iconSize * 1.5}
+                        width={iconSize * 1.5}
+                        viewBox="0 0 24 24"
+                        className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/hvd-only:block"
+                      />
                     </div>
                   );
                 }
@@ -414,8 +434,18 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
               >
                 API
               </label>
-              <CheckboxIcon className="pointer-events-none absolute right-md top-1/4 peer-checked/api-only:hidden" />
-              <CheckboxCheckedIcon className="pointer-events-none absolute right-md top-1/4 hidden peer-checked/api-only:block" />
+              <CheckboxIcon
+                height={iconSize * 1.5}
+                width={iconSize * 1.5}
+                viewBox="0 0 24 24"
+                className="pointer-events-none absolute right-sm top-1/4 peer-checked/api-only:hidden"
+              />
+              <CheckboxCheckedIcon
+                height={iconSize * 1.5}
+                width={iconSize * 1.5}
+                viewBox="0 0 24 24"
+                className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/api-only:block"
+              />
             </div>
           )}
         </ul>

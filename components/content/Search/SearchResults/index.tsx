@@ -67,6 +67,8 @@ const SortingOptions: FC<{
         size="sm"
         variant="plain"
         className="order-3 md:order-none"
+        icon={isCompact ? ListIcon : DetailedListIcon}
+        iconPosition="left"
         aria-label={
           isCompact
             ? t("pages|search$detailed-list-active")
@@ -80,7 +82,6 @@ const SortingOptions: FC<{
           });
         }}
       >
-        {isCompact ? <ListIcon /> : <DetailedListIcon />}
         <span className="hidden md:block">
           {isCompact
             ? t("pages|search$compact-list")
