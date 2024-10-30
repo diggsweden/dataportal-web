@@ -232,9 +232,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
                   key={index}
                 >
                   <Link
-                    href={`${hit.url}#ref=${
-                      window ? window.location.search : ""
-                    }`}
+                    href={hit.url}
                     onClick={() => {
                       saveCurrentScrollPos();
                     }}

@@ -205,14 +205,14 @@ export const hemvist = (t: Translate) => `
     block: 'hemvist',
     loadEntry: true,
     run: function(node, data, items, entry) {
-      
+      const currentPath = window.location.pathname;
       var resourceURI = entry.getResourceURI();
       var linkTitle = '${t("pages|concept_page$concept_adress")}';
 
-      if(window.location.pathname.indexOf("/terminology/") > -1 || window.location.pathname.indexOf("/externalterminology/") > -1)
+      if(currentPath.includes("/terminology/") || currentPath.includes("/externalterminology"))
         linkTitle = '${t("pages|concept_page$term_adress")}';
 
-      if(window.location.pathname.indexOf("/specifications/") > -1 || window.location.pathname.indexOf("/externalspecification/") > -1)
+      if(currentPath.includes("/specifications/") || currentPath.includes("/externalspecification"))
         linkTitle = '${t("pages|specification_page$address")}';
       
       if (resourceURI.indexOf('https://dataportal.se/') === 0 || resourceURI.indexOf('https://www-sandbox.dataportal.se/') === 0) {
