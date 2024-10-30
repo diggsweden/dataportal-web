@@ -14,7 +14,7 @@ export const SpecificationPage: FC<{
   curi?: string;
   scheme?: string;
 }> = ({ curi, scheme }) => {
-  const { env, setBreadcrumb } = useContext(SettingsContext);
+  const { env, setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
   const { pathname } = useRouter() || {};
@@ -235,7 +235,11 @@ export const SpecificationPage: FC<{
                       '<button class="button button--primary button--large text-white">${t(
                         "pages|specification_page$specification_download",
                       )}' +
-                        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                        '<svg xmlns="http://www.w3.org/2000/svg" width="${
+                          1.5 * iconSize
+                        }" height="${
+                          1.5 * iconSize
+                        }" viewBox="0 0 24 24" fill="none" class="flex-shrink-0">' +
                         '<path d="M4.08008 11V13H16.0801L10.5801 18.5L12.0001 19.92L19.9201 12L12.0001 4.08002L10.5801 5.50002L16.0801 11H4.08008Z" fill="#6E615A"/>' +
                         '</svg>' +
                     '</button>' +

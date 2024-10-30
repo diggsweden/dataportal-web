@@ -15,7 +15,7 @@ const bodyVariants = cva(["text-md"], {
       a: ["[&_svg]:mb-[2px] [&_svg]:ml-xs [&_svg]:inline-block"],
       blockquote: [
         `grid grid-cols-[40px_auto] [&_p]:col-start-2 gap-lg [&_a]:text-xl [&_p]:text-xl text-pink-600 
-        break-auto overflow-x-auto [&_path]:fill-primary [&_svg]:w-[24px] [&_svg]:h-[24px] !my-lg md:!my-xl`,
+        break-auto overflow-x-auto [&_path]:fill-primary [&_svg]:w-[1.5rem] [&_svg]:h-[1.5rem] !my-lg md:!my-xl`,
       ],
     },
   },

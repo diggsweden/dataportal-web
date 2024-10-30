@@ -29,7 +29,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
   }
 
   return (
-    <div className="flex h-[32px] flex-row items-center justify-end">
+    <div className="flex flex-row items-center justify-end">
       <nav aria-label={t("common|menu-service")}>
         <ul className="flex flex-row space-x-xs">
           {topNav.map((menu: TopNavData, idx: number) => (

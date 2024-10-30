@@ -87,13 +87,13 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
       id="sidebar"
       role="navigation"
       ref={ref}
-      className={`absolute right-none top-[136px] z-50 -mb-[136px] h-[calc(100%-136px)] overflow-y-auto 
+      className={`absolute right-none top-[8.5rem] z-50 -mb-[8.5rem] h-[calc(100%-8.5rem)] overflow-y-auto 
       overflow-x-hidden bg-white transition-all duration-300 ease-in-out md:overflow-y-visible
-      ${openSideBar ? "w-full md:w-[300px]" : "w-none"}`}
+      ${openSideBar ? "w-full md:w-[18.75rem]" : "w-none"}`}
       aria-label={t("common|menu-sidebar")}
       onKeyDown={handleEscape}
     >
-      <ul className="w-full list-none whitespace-nowrap md:w-[300px]">
+      <ul className="w-full list-none whitespace-nowrap md:w-[18.75rem]">
         {menu.map((menu: NavSideData, idx: number) => (
           <li key={idx} className="whitespace-nowrap">
             {menu.href ? (

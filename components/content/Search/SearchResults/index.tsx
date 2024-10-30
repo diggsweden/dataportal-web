@@ -62,7 +62,7 @@ const SortingOptions: FC<{
   const { t } = useTranslation();
 
   return (
-    <div className="mb-lg flex items-center gap-md md:mb-none">
+    <div className="mb-lg flex flex-wrap items-center gap-md md:mb-none">
       <Button
         size="sm"
         variant="plain"
@@ -265,7 +265,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
                     )}
 
                   {isCompact && hit.descriptionLang && (
-                    <p className="mb-xs">{hit.description}</p>
+                    <p className="mb-xs break-words">{hit.description}</p>
                   )}
 
                   <div
@@ -283,7 +283,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
                       {hit.metadata &&
                         hit.metadata["organisation_literal"] &&
                         hit.metadata["organisation_literal"].length > 0 && (
-                          <span className="organisation">
+                          <span className="organisation break-words">
                             {" | " + hit.metadata["organisation_literal"][0]}
                           </span>
                         )}

@@ -73,14 +73,14 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
             className={`${
               openSearch
                 ? "hidden lg:block"
-                : "h-[32px] w-[160px] md:h-[44px] md:w-[248px]"
+                : "min-w-0 max-h-[2rem] w-full max-w-[10rem] md:h-[2.75rem] md:w-[15.5rem]"
             }`}
           />
         )}
       </Link>
-      <div className="flex w-full flex-row items-center justify-end space-x-md">
+      <div className="flex flex-row items-center justify-end space-x-md">
         <nav
-          className="hidden flex-row items-center gap-sm xl:flex"
+          className="hidden flex-row items-center space-x-sm xl:flex"
           aria-label={t("common|menu-main")}
         >
           {menues.map((menu: MainNavData, idx: number) => (
@@ -109,12 +109,12 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
               onClick={handleSearchButtonClick}
               icon={SearchIcon}
               iconPosition="left"
-              className="w-[44px] cursor-pointer p-[10px]"
+              className="w-[2.75rem] cursor-pointer p-[0.625rem]"
             />
           ) : (
             <form
               ref={formRef}
-              className={`transition-width max-w-[274px] text-sm duration-100 md:w-[274px] [&_div]:mr-none [&_div_div_button]:p-[10px] hover:first:[&_div_div_button]:bg-brown-200  ${
+              className={`transition-width max-w-[17.125rem] text-sm duration-100 md:w-[17.125rem] [&_div]:mr-none [&_div_div_button]:p-[0.625rem] hover:first:[&_div_div_button]:bg-brown-200  ${
                 openSearch
                   ? `w-full ${
                       query
@@ -133,7 +133,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                 query={query}
                 setQuery={setQuery}
                 type="small"
-                className="focus-i-n !h-[44px] border-none !bg-brown-100 pr-[90px] hover:outline-0"
+                className="focus-in !h-[2.75rem] border-none !bg-brown-100 pr-[5.625rem] hover:outline-0"
               />
             </form>
           )}

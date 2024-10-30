@@ -165,7 +165,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
               <div
                 id="siteWrapper"
                 className={`transition-all duration-300 ease-in-out ${
-                  openSideBar ? "2xl:w-[calc(100vw-300px)]" : "w-full"
+                  openSideBar ? "2xl:w-[calc(100vw-18.75rem)]" : "w-full"
                 }`}
               >
                 {imageHero && (
@@ -183,7 +183,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
 
                 <main
                   id="main"
-                  className={`mt-lg min-h-[calc(100vh-744px)] pb-lg md:mt-xl md:pb-xl lg:min-h-[calc(100vh-612px)]`}
+                  className={`mt-lg min-h-[calc(100vh-46.5rem)] pb-lg md:mt-xl md:pb-xl lg:min-h-[calc(100vh-38.25rem)]`}
                 >
                   {/*{(pageProps as DataportalPageProps).type === "MultiContainer" ||*/}
                   {/*  ((pageProps as DataportalPageProps).type ===*/}

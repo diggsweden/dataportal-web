@@ -13,10 +13,12 @@ export class StatisticDataPresentation extends React.Component<StatisticDataPres
   render() {
     return (
       <div className="w-full bg-white px-lg py-[50px] text-center first:mb-lg">
-        <span className="block text-2xl text-primary">
+        <span className="block break-words text-2xl text-primary">
           {this.props.dataNumber || 0}
         </span>
-        <span className="block text-md">{this.props.dataText || ""}</span>
+        <span className="block hyphens-auto text-md">
+          {this.props.dataText || ""}
+        </span>
       </div>
     );
   }

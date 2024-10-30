@@ -81,7 +81,7 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
             <Link
               href={`#${item.id}`}
               onClick={(e) => handleClick(e, item.id)}
-              className={`focus--in flex cursor-pointer p-sm pl-lg text-sm no-underline underline-offset-4 hover:underline ${
+              className={`focus--in flex cursor-pointer hyphens-auto p-sm pl-lg text-sm no-underline underline-offset-4 hover:underline ${
                 activeItemId === item.id
                   ? "border-l-[3px] border-pink-600 pl-[18px] font-strong"
                   : "focus--underline border-l border-brown-200 font-normal"
