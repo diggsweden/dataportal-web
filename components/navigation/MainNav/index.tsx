@@ -11,7 +11,7 @@ import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { usePathname } from "next/navigation";
 import { SearchInput } from "@/components/content/Search/SearchInput";
 import SearchIcon from "@/assets/icons/search.svg";
-import { useClickOutside } from "@/hooks/useClickOutside";
+import { useClickoutside } from "@/hooks/useClickoutside";
 import { SettingsContext } from "@/providers/SettingsProvider";
 interface MainNavData {
   title: string;
@@ -35,7 +35,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
-  const ref = useClickOutside<HTMLDivElement>(() => setOpenSearch(false));
+  const ref = useClickoutside<HTMLDivElement>(() => setOpenSearch(false));
   const formRef = useRef<HTMLFormElement>(null);
 
   const { env } = useContext(SettingsContext);
