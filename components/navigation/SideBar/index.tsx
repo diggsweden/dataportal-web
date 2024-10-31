@@ -3,7 +3,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 import { mainNav } from "@/utilities/menuData";
 import SideBarLink from "@/components/navigation/SideBar/SideBarLink.tsx";
-import { useClickOutside } from "@/hooks/useClickOutside";
+import { useClickoutside } from "@/hooks/useClickoutside";
 import { createFocusTrap, FocusTrap } from "focus-trap";
 
 interface NavSideData {
@@ -26,7 +26,7 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
   const [vw, setVw] = useState(0);
   const isEn = lang === "en";
   const trapRef = useRef<FocusTrap | null>(null);
-  const ref = useClickOutside(
+  const ref = useClickoutside(
     () => (vw < 1200 ? setOpenSideBar(false) : null),
     ["#sidebarBtn"],
   );

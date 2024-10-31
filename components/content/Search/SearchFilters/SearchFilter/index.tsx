@@ -1,7 +1,7 @@
 import FocusTrap from "focus-trap-react";
 import useTranslation from "next-translate/useTranslation";
 import { FC, PropsWithChildren, useContext, useEffect, useState } from "react";
-import { useClickOutside } from "@/hooks/useClickOutside";
+import { useClickoutside } from "@/hooks/useClickoutside";
 import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
 import { SettingsContext } from "@/providers/SettingsProvider";
 
@@ -18,7 +18,7 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
   const [open, setOpen] = useState(false);
   const [trapFocus, setTrapFocus] = useState(false);
   const { iconSize } = useContext(SettingsContext);
-  const ref = useClickOutside<HTMLDivElement>(() => handleOpen(false));
+  const ref = useClickoutside<HTMLDivElement>(() => handleOpen(false));
   const { t } = useTranslation("common");
 
   const handleOpen = (value: boolean) => {
