@@ -60,6 +60,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
         id={filterKey}
         name={filterKey}
         placeholder={t("search$filtersearch")}
+        aria-placeholder=" "
         className="focus--in border-none"
         value={filter[filterKey] || ""}
         onChange={(e) => (
@@ -72,6 +73,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
         height={24}
         width={24}
         className="absolute right-sm [&_path]:fill-brown-500"
+        aria-hidden="true"
       />
     </div>
   );
