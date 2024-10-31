@@ -222,9 +222,13 @@ export const DataSetExploreApiPage: React.FC<{
 
         {/* Tabs navigation */}
         <nav className="mb-lg">
-          <ul className="flex gap-xl">
-            <li>
+          <ul role="tablist" className="flex gap-xl">
+            <li role="presentation">
               <button
+                role="tab"
+                aria-selected={tab}
+                aria-controls="panel-api-contract"
+                id="tab-api-contract"
                 className={
                   tab
                     ? "text-md underline decoration-2 underline-offset-4	 lg:text-lg"
@@ -235,8 +239,12 @@ export const DataSetExploreApiPage: React.FC<{
                 {t("pages|explore-api-page$api-contract")}
               </button>
             </li>
-            <li>
+            <li role="presentation">
               <button
+                role="tab"
+                aria-selected={!tab}
+                aria-controls="panel-information"
+                id="tab-information"
                 className={
                   !tab
                     ? "text-md underline decoration-2	underline-offset-4 lg:text-lg"
@@ -252,11 +260,21 @@ export const DataSetExploreApiPage: React.FC<{
 
         {/* Tabs */}
         <div>
-          <div className={tab ? "block" : "hidden"}>
+          <div
+            role="tabpanel"
+            id="panel-api-contract"
+            aria-labelledby="tab-api-contract"
+            className={tab ? "block" : "hidden"}
+          >
             <ApiExplorer env={env} contextId={cid} entryId={apieid as string} />
           </div>
 
-          <div className={!tab ? "block" : "hidden"}>
+          <div
+            role="tabpanel"
+            id="panel-information"
+            aria-labelledby="tab-information"
+            className={!tab ? "block" : "hidden"}
+          >
             <div className="mb-xl" data-entryscape="view"></div>
 
             <div className="max-w-md bg-pink-200 p-md [&_h2]:mb-xs [&_h2]:text-md [&_h2]:text-textSecondary [&_h2]:lg:text-lg [&_p]:mb-lg [&_p]:text-sm [&_p]:text-textPrimary [&_p]:lg:text-md">

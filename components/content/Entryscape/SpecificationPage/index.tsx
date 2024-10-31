@@ -236,8 +236,8 @@ export const SpecificationPage: FC<{ curi?: string; uri?: string }> = ({
                   '<span class="block mb-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
                   '<div>{{ text content="\${skos:definition}" }}</div>' +
                   '<div class="flex justify-between items-end md:items-center mt-md md:mt-lg gap-lg">' +
-                    '<a href="{{resourceURI}}" tabindex="-1">' +
-                      '<button class="button button--primary button--large text-white">${t(
+                    '<a href="{{resourceURI}}">' +
+                      '<span class="button button--primary button--large text-white">${t(
                         "pages|specification_page$specification_download",
                       )}' +
                         '<svg xmlns="http://www.w3.org/2000/svg" width="${
@@ -247,7 +247,7 @@ export const SpecificationPage: FC<{ curi?: string; uri?: string }> = ({
                         }" viewBox="0 0 24 24" fill="none" class="flex-shrink-0">' +
                         '<path d="M4.08008 11V13H16.0801L10.5801 18.5L12.0001 19.92L19.9201 12L12.0001 4.08002L10.5801 5.50002L16.0801 11H4.08008Z" fill="#6E615A"/>' +
                         '</svg>' +
-                    '</button>' +
+                    '</span>' +
                     '</a>' +
                     '<button open="{{expandTooltip}}" close="{{unexpandTooltip}}" class="esbExpandButton button button--secondary button--large h-fit text-nowrap">' +
                     '</button>' +
