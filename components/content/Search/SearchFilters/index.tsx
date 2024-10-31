@@ -32,6 +32,7 @@ interface FilterSearchProps {
   filterKey: string;
   filter: InputFilter;
   setFilter: React.Dispatch<React.SetStateAction<InputFilter>>;
+  title: string;
   fetchMore: () => void;
 }
 
@@ -40,6 +41,7 @@ export type SearchMode = "content" | "datasets" | "concepts" | "specifications";
 
 const FilterSearch: React.FC<FilterSearchProps> = ({
   filterKey,
+  title,
   filter,
   setFilter,
   fetchMore,
@@ -54,14 +56,12 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
 
   return (
     <div className="relative flex items-center">
-      <label htmlFor={filterKey} className="sr-only">
-        {t("search$filtersearch")}
-      </label>
       <TextInput
         id={filterKey}
         name={filterKey}
         placeholder={t("search$filtersearch")}
         className="focus--in border-none"
+        aria-label={`${t("search$filtersearch")} ${title}`}
         value={filter[filterKey] || ""}
         onChange={(e) => (
           clearCurrentScrollPos(),
@@ -264,6 +264,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                                     filterKey={key}
                                     filter={inputFilter}
                                     setFilter={setInputFilter}
+                                    title={value.title}
                                     fetchMore={() =>
                                       shouldFetchMore &&
                                       search.fetchMoreFacets(key)
