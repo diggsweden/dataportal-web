@@ -54,6 +54,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         href={`${t(`common|${"lang-path"}`)}`}
         aria-label="Dataportal logo"
         onClick={() => setOpenSideBar(false)}
+        className="forced-colors-visible"
       >
         {env.envName === "sandbox" ? (
           <DataportalTestLogo />

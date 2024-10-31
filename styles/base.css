@@ -237,3 +237,14 @@ input[type="radio"] {
 .modal-ux-inner .modal-ux-content .auth-btn-wrapper .btn-done {
   @apply button--secondary;
 }
+
+@media (forced-colors: active) {
+  .forced-colors-visible {
+    forced-color-adjust: none;
+  }
+
+  .forced-colors-visible svg path,
+  .forced-colors-visible svg rect {
+    fill: CanvasText !important;
+  }
+}
