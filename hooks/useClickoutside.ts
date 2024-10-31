@@ -1,6 +1,6 @@
 import { useEffect, useRef, RefObject } from "react";
 
-export const useClickOutside = <T extends HTMLElement>(
+export const useClickoutside = <T extends HTMLElement>(
   onClickOutside: () => void,
   excludedSelectors: string[] = [],
   existingRef?: RefObject<T>,

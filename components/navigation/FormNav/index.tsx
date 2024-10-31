@@ -1,6 +1,6 @@
 import useTranslation from "next-translate/useTranslation";
 import { Dispatch, RefObject, useEffect, useRef, useState } from "react";
-import { useClickOutside } from "@/hooks/useClickOutside";
+import { useClickoutside } from "@/hooks/useClickoutside";
 import { Button } from "@/components/global/Button";
 import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
 import ChevronUpIcon from "@/assets/icons/chevronUp.svg";
@@ -27,7 +27,7 @@ export const FormNav: React.FC<ContainerDpDwnProps> = ({
   const { t } = useTranslation("common");
   const [vw, setVw] = useState(0);
   const navRef = useRef<HTMLUListElement>(null);
-  useClickOutside(() => setExpanded(false), [], navRef);
+  useClickoutside(() => setExpanded(false), [], navRef);
   const trapRef = useRef<FocusTrap | null>(null);
 
   useEffect(() => {

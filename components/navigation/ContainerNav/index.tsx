@@ -7,7 +7,7 @@ import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import { createFocusTrap, FocusTrap } from "focus-trap";
-import { useClickOutside } from "@/hooks/useClickOutside";
+import { useClickoutside } from "@/hooks/useClickoutside";
 
 interface ContainerDpDwnProps {
   related: ContainerDataFragment[];
@@ -20,7 +20,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
   const [vw, setVw] = useState(0);
   const { t } = useTranslation();
   const navRef = useRef<HTMLUListElement>(null);
-  useClickOutside(() => setExpanded(false), [], navRef);
+  useClickoutside(() => setExpanded(false), [], navRef);
   const trapRef = useRef<FocusTrap | null>(null);
 
   useEffect(() => {
