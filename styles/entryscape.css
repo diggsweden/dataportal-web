@@ -582,7 +582,7 @@
 
 .curl-command .copy-to-clipboard,
 .highlight-code .copy-to-clipboard {
-  @apply absolute bottom-[10px] right-[10px] flex h-[30px] w-[30px] items-center justify-center bg-white opacity-70 hover:opacity-90;
+  @apply absolute bottom-[0.625rem] right-[0.625rem] flex h-[30px] w-[30px] items-center justify-center bg-white opacity-70 hover:opacity-90;
 }
 
 .copy-to-clipboard button {
@@ -603,7 +603,7 @@
 }
 
 .opblock-summary .copy-to-clipboard {
-  @apply absolute right-2xl hidden h-[30px] cursor-pointer bg-brown-600 hover:bg-pink-600 !important;
+  @apply absolute right-[3rem] hidden h-[30px] cursor-pointer bg-brown-600 hover:bg-pink-600 !important;
 }
 
 .opblock-summary:hover > .copy-to-clipboard {
@@ -611,7 +611,7 @@
 }
 
 .opblock-summary-control .opblock-summary-description {
-  @apply mr-md hidden text-left text-sm md:block;
+  @apply mr-xl hidden text-left text-sm md:block;
 }
 
 #operations-default-datasetQuery {
