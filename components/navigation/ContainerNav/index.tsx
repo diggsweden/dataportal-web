@@ -7,6 +7,7 @@ import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import { createFocusTrap, FocusTrap } from "focus-trap";
+import { useClickOutside } from "@/hooks/useClickOutside";
 
 interface ContainerDpDwnProps {
   related: ContainerDataFragment[];
@@ -19,6 +20,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
   const [vw, setVw] = useState(0);
   const { t } = useTranslation();
   const navRef = useRef<HTMLUListElement>(null);
+  useClickOutside(() => setExpanded(false), [], navRef);
   const trapRef = useRef<FocusTrap | null>(null);
 
   useEffect(() => {
@@ -73,7 +75,10 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
       onKeyDown={handleEscape}
     >
       {expanded && (
-        <div className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden" />
+        <div
+          className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden"
+          onClick={() => setExpanded(false)}
+        />
       )}
 
       {/* This is added so a user can tab through the page when the button is not visible */}

@@ -1,10 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, RefObject } from "react";
 
-export const useClickoutside = (
+export const useClickOutside = <T extends HTMLElement>(
   onClickOutside: () => void,
   excludedSelectors: string[] = [],
+  existingRef?: RefObject<T>,
 ) => {
-  const ref = useRef() as any;
+  const defaultRef = useRef() as RefObject<T>;
+  const ref = existingRef || defaultRef;
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -22,7 +24,8 @@ export const useClickoutside = (
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, [onClickOutside, excludedSelectors]);
+  }, [onClickOutside, excludedSelectors, ref]);
 
+  // Return the ref if no existing ref was provided
   return ref;
 };
