@@ -1,6 +1,8 @@
 {
   "accessibility-report": "Tillgänglighetsredogörelse",
   "about": "Om portalen",
+  "available-filters": "Tillgängliga filter",
+  "filter-options": "Filteralternativ",
   "beta": "BETA",
   "beta-text1": "Sveriges dataportal utvecklas löpande. Skicka gärna dina ",
   "beta-link-text": "synpunkter",
@@ -16,6 +18,8 @@
   "content-menu-heading": "Innehåll på sidan",
   "clear-search": "Rensa sökfält",
   "clear-filters": "Rensa filter",
+  "close-filter": "Stäng filterlista",
+  "open-filter": "Öppna filterlista",
   "close": "Stäng",
   "close_menu": "Meny",
   "close_search": "Sök",

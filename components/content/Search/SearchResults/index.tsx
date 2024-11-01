@@ -160,6 +160,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
   searchMode,
 }) => {
   const [isCompact, setCompact] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState<string>("");
   const { t } = useTranslation();
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
   const searchKey = typeof location != "undefined" ? location.search : "server";
@@ -195,6 +196,17 @@ export const SearchResults: FC<SearchResultsProps> = ({
     }
   };
 
+  // Track both result count and filter changes
+  useEffect(() => {
+    if (search.loadingHits) {
+      setLastUpdate(t("common|loading"));
+    } else if (search.result) {
+      const count = search.result.count || 0;
+      const message = `${count} ${t("pages|search$dataset-hits")}`;
+      setLastUpdate(message);
+    }
+  }, [search.loadingHits, search.result?.count, search.request.facetValues, t]);
+
   function isHVD(dataset: object) {
     const isHvd = Object.values(dataset).map((ds) => ds.hasOwnProperty(hvd));
     return isHvd.includes(true);
@@ -204,13 +216,18 @@ export const SearchResults: FC<SearchResultsProps> = ({
     <div id="search-result" className="my-lg md:my-xl">
       <div className="mb-lg flex flex-col-reverse justify-between md:flex-row">
         <Heading level={2} size="md" className="search-result-header">
-          <span aria-live="polite" role="status">
+          {/* Visual display of the count */}
+          <span aria-hidden="true">
             {search.loadingHits && `${t("common|loading")}...`}
             {!search.loadingHits &&
               search.result &&
               (search.result.count || 0) >= 0 &&
               `${search.result.count} ${t("pages|search$dataset-hits")}`}
           </span>
+          {/* Screen reader announcement */}
+          <div aria-live="polite" className="sr-only" role="status">
+            {lastUpdate}
+          </div>
         </Heading>
 
         {searchMode == "datasets" && (

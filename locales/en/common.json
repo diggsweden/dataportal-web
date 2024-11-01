@@ -1,6 +1,8 @@
 {
   "accessibility-report": "Accessibility report",
   "about": "About",
+  "available-filters": "Available filters",
+  "filter-options": "Filter options",
   "beta": "BETA",
   "beta-text1": "We are constantly developing Sveriges dataportal. Please send your ",
   "beta-link-text": "opinions",
@@ -9,6 +11,8 @@
   "change-lang": "sv",
   "clear-search": "Clear search field",
   "clear-filters": "Clear filters",
+  "close-filter": "Close filter list",
+  "open-filter": "Open filter list",
   "close": "Close",
   "close_menu": "Menu",
   "close_search": "Search",
