@@ -10,11 +10,13 @@ import fortroendemodellImage from "@/assets/logos/fortroendemodellen.png";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { linkBase } from "@/utilities";
 import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
 
 export const FortroendeEndPage: FC<ModuleDataFragment> = ({ blocks }) => {
   const [heading, setHeading] = useState<string | null>(null);
   const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   const getHeading = () => {
     if (blocks[0].__typename === "dataportal_Digg_Text") {
@@ -28,7 +30,7 @@ export const FortroendeEndPage: FC<ModuleDataFragment> = ({ blocks }) => {
 
   useEffect(() => {
     //Highlight code blocks using prismjs
-    highlightCode();
+    highlightCode(t);
 
     setHeading(getHeading());
   }, []);

@@ -43,7 +43,7 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
 
   useEffect(() => {
     //Highlights code using prismjs
-    highlightCode();
+    highlightCode(t);
 
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
 

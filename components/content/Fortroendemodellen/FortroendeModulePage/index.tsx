@@ -7,10 +7,12 @@ import { Heading } from "@/components/global/Typography/Heading";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import { usePathname } from "next/navigation";
 import { linkBase } from "@/utilities";
+import useTranslation from "next-translate/useTranslation";
 
 export const FortroendeModulePage: FC<ModuleDataFragment> = ({ blocks }) => {
   const [heading, setHeading] = useState<string | null>(null);
   const { setBreadcrumb } = useContext(SettingsContext);
+  const { t } = useTranslation();
   const pathname = usePathname();
 
   const getHeading = () => {
@@ -25,7 +27,7 @@ export const FortroendeModulePage: FC<ModuleDataFragment> = ({ blocks }) => {
 
   useEffect(() => {
     //Highlight code blocks using prismjs
-    highlightCode();
+    highlightCode(t);
     setHeading(getHeading());
   }, []);
 

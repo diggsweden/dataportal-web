@@ -10,6 +10,7 @@ import { StickyNav } from "@/components/navigation/StickyNav";
 import useTranslation from "next-translate/useTranslation";
 import { usePathname } from "next/navigation";
 import { Preamble } from "@/components/global/Typography/Preamble";
+import { Translate } from "next-translate";
 
 /**
  * Uses prismjs to style codeblock
@@ -77,18 +78,76 @@ interface ContainerPageProps extends ContainerDataFragment {
   related?: ContainerDataFragment[];
 }
 
-export const highlightCode = () => {
-  highlightCodeBlock();
+export const highlightCode = (t: Translate) => {
+  highlightCodeBlock().then(() => {
+    // Adds line numbers to codeBlocks
+    const pres = Array.prototype.slice.call(
+      document.getElementsByTagName("pre"),
+    );
+    pres.forEach((pre) => {
+      pre.classList.add("line-numbers");
+      pre.setAttribute("role", "region");
+      pre.setAttribute("aria-label", t("code-block"));
+    });
 
-  // Adds lang attribute to codeBlocks
-  const codeWrappers = Array.prototype.slice.call(
-    document.getElementsByClassName("code-toolbar"),
-  );
-  codeWrappers.map((codeWrapper) => codeWrapper.setAttribute("lang", "en"));
+    // Set timeout to allow for prismjs to load before adding new code
+    setTimeout(() => {
+      // Adds lang attribute to codeBlocks
+      const codeWrappers = Array.prototype.slice.call(
+        document.getElementsByClassName("code-toolbar"),
+      );
+      codeWrappers.map((codeWrapper) => codeWrapper.setAttribute("lang", "en"));
 
-  // Adds line numbers to codeBlocks
-  const pres = Array.prototype.slice.call(document.getElementsByTagName("pre"));
-  pres.map((pre) => pre.classList.add("line-numbers"));
+      // Add new code to set aria-labels
+      const copyButtons = document.querySelectorAll(
+        ".copy-to-clipboard-button",
+      );
+      copyButtons.forEach((button) => {
+        // Create a live region for announcements
+        const liveRegion = document.createElement("div");
+        liveRegion.setAttribute("aria-live", "polite");
+        liveRegion.className = "sr-only";
+        button.parentElement?.appendChild(liveRegion);
+
+        // Set initial aria-label
+        button.setAttribute("aria-label", t("copy-code"));
+
+        // Add mutation observer to watch for data-copy-state changes
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            if (mutation.attributeName === "data-copy-state") {
+              const state = (mutation.target as HTMLElement).getAttribute(
+                "data-copy-state",
+              );
+              let ariaLabel = t("copy-code");
+
+              switch (state) {
+                case "copy-success":
+                  ariaLabel = t("code-copied-successfully");
+                  break;
+                case "copy-error":
+                  ariaLabel = t("code-copy-failed");
+                  break;
+              }
+
+              (mutation.target as HTMLElement).setAttribute(
+                "aria-label",
+                ariaLabel,
+              );
+
+              // Clear and update live region to trigger announcement
+              liveRegion.textContent = "";
+              setTimeout(() => {
+                liveRegion.textContent = ariaLabel;
+              }, 100);
+            }
+          });
+        });
+
+        observer.observe(button, { attributes: true });
+      });
+    }, 100);
+  });
 };
 
 export const ContainerPage: React.FC<ContainerPageProps> = ({
@@ -108,7 +167,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 
   useEffect(() => {
     //Highlights code using prismjs
-    highlightCode();
+    highlightCode(t);
 
     //Creates anchorlinks for the content menu
     const newMenuItems = getLinks();
