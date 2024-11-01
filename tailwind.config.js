@@ -103,7 +103,7 @@ module.exports = {
       strong: 500,
     },
     fontSize: {
-      sm: ["0.875rem", { lineHeight: "1.25rem" }], // 14px/20px
+      sm: ["0.9375rem", { lineHeight: "1.25rem" }], // 15px/20px
       md: ["1rem", { lineHeight: "1.5rem" }], // 16px/24px
       lg: ["1.25rem", { lineHeight: "1.75rem" }], // 20px/28px
       xl: ["1.75rem", { lineHeight: "2.25rem" }], // 28px/36px
