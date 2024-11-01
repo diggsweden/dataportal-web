@@ -466,14 +466,14 @@ export const ConceptPage: FC<{ curi?: string; uri?: string }> = ({
           {entry.hasResource && entry.hasResource?.length > 0 && (
             <div>
               <Heading
-                className="!text-[0.875rem] font-strong text-textSecondary"
+                className="!text-[0.9375rem] font-strong text-textSecondary"
                 level={3}
               >
                 {t("pages|datasetpage$related_specifications")}
               </Heading>
               {entry.hasResource.map(({ title, url }, idx) => (
                 <Link
-                  className="block !text-[0.875rem] text-green-600 hover:no-underline"
+                  className="block !text-[0.9375rem] text-green-600 hover:no-underline"
                   key={idx}
                   href={url}
                 >
