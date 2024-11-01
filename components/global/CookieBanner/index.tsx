@@ -74,7 +74,6 @@ export const CookieBanner: FC = () => {
         </Link>
 
         <form
-          id="cookie-form"
           className="mt-lg"
           onSubmit={(e) => {
             e.preventDefault();
