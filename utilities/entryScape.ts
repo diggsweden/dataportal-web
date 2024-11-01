@@ -36,6 +36,7 @@ export enum ESRdfType {
   esterms_ServedByDataService = "esterms:ServedByDataService",
   hvd = "http://data.europa.eu/eli/reg_impl/2023/138/oj",
   agent = "http://xmlns.com/foaf/0.1/Agent",
+  national_data = "http://purl.org/dc/terms/subject",
 }
 
 /* eslint-enable no-unused-vars */

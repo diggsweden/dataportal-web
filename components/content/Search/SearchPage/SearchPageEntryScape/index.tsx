@@ -181,6 +181,14 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             dcatFilterEnabled: false,
             indexOrder: 6,
           },
+          {
+            resource: "http://purl.org/dc/terms/subject",
+            type: ESType.uri,
+            dcatProperty: "dcterms:subject",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 7,
+          },
         ],
       },
       initRequest: {

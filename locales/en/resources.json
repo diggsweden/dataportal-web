@@ -6,6 +6,7 @@
   "http://purl.org/dc/terms/accessRights": "Access",
   "http://purl.org/dc/terms/license": "License",
   "http://data.europa.eu/r5r/applicableLegislation": "High-value dataset",
+  "http://purl.org/dc/terms/subject": "National basic data",
 
   "https://dataportal.se/concepts/licensecategories/otherlicense": "Other licenses",
   "https://dataportal.se/concepts/licensecategories/nolicense": "License missing",
