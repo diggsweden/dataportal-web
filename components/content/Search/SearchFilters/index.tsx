@@ -282,7 +282,11 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                           <ul role="listbox" aria-multiselectable="true">
                             {facetValues.map(
                               (facetValue: SearchFacetValue, index: number) => (
-                                <li key={index} role="option">
+                                <li
+                                  key={index}
+                                  role="option"
+                                  aria-selected={selected(key, facetValue)}
+                                >
                                   <button
                                     className={`focus--in group relative flex w-full items-center break-all py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
                                       selected(key, facetValue) && "font-strong"
