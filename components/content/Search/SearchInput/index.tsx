@@ -38,7 +38,6 @@ export const SearchInput: FC<SearchInputProps> = ({
       <TextInput
         id={id}
         name="q"
-        autoComplete="off"
         placeholder={placeholder}
         value={query}
         onChange={(e) => setQuery(e.target.value)}

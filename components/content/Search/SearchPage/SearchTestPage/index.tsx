@@ -39,7 +39,6 @@ export const SearchTestPage: React.FC = () => {
           <input
             autoFocus
             id="search-field"
-            autoComplete="off"
             name="q"
             value={searchWord}
             onChange={(event) => setSearchWord(event.target.value)}
