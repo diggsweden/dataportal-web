@@ -66,7 +66,7 @@ const SortingOptions: FC<{
       <Button
         size="sm"
         variant="plain"
-        className="order-3 md:order-none"
+        className="hidden md:order-none md:block"
         icon={isCompact ? ListIcon : DetailedListIcon}
         iconPosition="left"
         aria-label={
@@ -81,13 +81,12 @@ const SortingOptions: FC<{
             setCompact(!isCompact);
           });
         }}
-      >
-        <span className="hidden md:block">
-          {isCompact
+        label={
+          isCompact
             ? t("pages|search$compact-list")
-            : t("pages|search$detailed-list")}
-        </span>
-      </Button>
+            : t("pages|search$detailed-list")
+        }
+      />
 
       <Select
         id="sort"
@@ -145,6 +144,27 @@ const SortingOptions: FC<{
           {t("pages|search$numberofhits-100")}
         </option>
       </Select>
+
+      {/* For mobile only */}
+      <Button
+        size="sm"
+        variant="plain"
+        className="md:hidden"
+        icon={isCompact ? ListIcon : DetailedListIcon}
+        iconPosition="left"
+        aria-label={
+          isCompact
+            ? t("pages|search$detailed-list-active")
+            : t("pages|search$detailed-list")
+        }
+        onClick={() => {
+          clearCurrentScrollPos();
+          search.set({ compact: isCompact }).then(() => {
+            search.setStateToLocation();
+            setCompact(!isCompact);
+          });
+        }}
+      />
     </div>
   );
 };
