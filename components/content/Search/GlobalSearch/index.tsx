@@ -49,7 +49,6 @@ export const GlobalSearch = forwardRef<HTMLInputElement, GlobalSearchProps>(
             ref={ref}
             id="search-field"
             // submitLabel={t("common|search")}
-            autoComplete="off"
             name="q"
             type="text"
             placeholder={t(`common|search`)}
