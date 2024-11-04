@@ -23,7 +23,7 @@ export const SearchPageSelector: React.FC<SearchTabsProps> = ({ query }) => {
           href={`/datasets?q=${query ? query : ""}&f=`}
           label={t("search$datasets")}
           locale={lang}
-          className={`whitespace-nowrap ${
+          className={`focus--in whitespace-nowrap ${
             pathname === "/datasets"
               ? "bg-pink-200 font-strong text-textPrimary"
               : ""
@@ -37,7 +37,7 @@ export const SearchPageSelector: React.FC<SearchTabsProps> = ({ query }) => {
           href={`/concepts?q=${query ? query : ""}&f=`}
           label={t("search$concepts")}
           locale={lang}
-          className={`whitespace-nowrap ${
+          className={`focus--in whitespace-nowrap ${
             pathname === "/concepts"
               ? "bg-pink-200 font-strong text-textPrimary"
               : ""
@@ -51,7 +51,7 @@ export const SearchPageSelector: React.FC<SearchTabsProps> = ({ query }) => {
           href={`/specifications?q=${query ? query : ""}&f=`}
           label={t("search$specifications")}
           locale={lang}
-          className={`whitespace-nowrap ${
+          className={`focus--in whitespace-nowrap ${
             pathname === "/specifications"
               ? "bg-pink-200 font-strong text-textPrimary"
               : ""
@@ -65,7 +65,7 @@ export const SearchPageSelector: React.FC<SearchTabsProps> = ({ query }) => {
           href={`/search?q=${query ? query : ""}&f=`}
           label={t("search$content")}
           locale={lang}
-          className={`whitespace-nowrap ${
+          className={`focus--in whitespace-nowrap ${
             pathname === "/search"
               ? "bg-pink-200 font-strong text-textPrimary"
               : ""
