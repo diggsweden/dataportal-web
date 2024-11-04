@@ -73,6 +73,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
         height={24}
         width={24}
         className="absolute right-sm [&_path]:fill-brown-500"
+        aria-hidden="true"
       />
     </div>
   );
@@ -205,7 +206,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
   }
 
   return (
-    <div id="SearchFilters">
+    <div id="SearchFilters" role="region" aria-label={t("common|filter")}>
       <Button
         variant="plain"
         size="sm"
@@ -214,12 +215,18 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
         aria-label={
           showFilter ? t("common|hide-filter") : t("common|show-filter")
         }
+        aria-expanded={showFilter}
+        aria-controls="filter-content"
         onClick={() => updateFilters()}
         label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
       />
 
-      <div className={showFilter ? "block" : "hidden"}>
-        <ul className="mb-lg mt-md flex flex-col flex-wrap gap-md md:flex-row">
+      <div id="filter-content" className={showFilter ? "block" : "hidden"}>
+        <ul
+          className="mb-lg mt-md flex flex-col flex-wrap gap-md md:flex-row"
+          role="list"
+          aria-label={t("common|available-filters")}
+        >
           {search.allFacets &&
             Object.entries(search.allFacets)
               .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
@@ -238,60 +245,65 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
 
                 if (key !== hvd) {
                   return (
-                    <li key={"box" + value.title + idx}>
+                    <li key={"box" + value.title + idx} role="listitem">
                       <SearchFilter
-                        title={
-                          value.title +
-                          FindFilters(
-                            value.facetValues,
-                            search.request.facetValues,
-                          )
-                        }
+                        title={value.title}
+                        usedFilters={FindFilters(
+                          value.facetValues,
+                          search.request.facetValues,
+                        )}
                       >
                         <div className="absolute z-10 mr-lg mt-sm max-h-[600px] w-full overflow-y-auto bg-white shadow-md md:max-w-[20.625rem]">
-                          {searchMode == "datasets" ||
-                            (searchMode == "specifications" && (
-                              //only render on searchpage
-                              <>
-                                {isLicense ? (
-                                  <MarkAll
-                                    search={search}
-                                    toggleKey={key}
-                                    title={t(`filters|allchecktext$${key}`)}
-                                  />
-                                ) : (
-                                  <FilterSearch
-                                    filterKey={key}
-                                    filter={inputFilter}
-                                    setFilter={setInputFilter}
-                                    title={value.title}
-                                    fetchMore={() =>
-                                      shouldFetchMore &&
-                                      search.fetchMoreFacets(key)
-                                    }
-                                  />
-                                )}
-                              </>
-                            ))}
-
-                          {facetValues.map(
-                            (facetValue: SearchFacetValue, index: number) => {
-                              if (facetValue.count > 0)
-                                return (
+                          {(searchMode == "datasets" ||
+                            searchMode == "specifications") && (
+                            //only render on searchpage
+                            <>
+                              {isLicense ? (
+                                <MarkAll
+                                  search={search}
+                                  toggleKey={key}
+                                  title={t(`filters|allchecktext$${key}`)}
+                                />
+                              ) : (
+                                <FilterSearch
+                                  filterKey={key}
+                                  filter={inputFilter}
+                                  setFilter={setInputFilter}
+                                  title={value.title}
+                                  fetchMore={() =>
+                                    shouldFetchMore &&
+                                    search.fetchMoreFacets(key)
+                                  }
+                                />
+                              )}
+                            </>
+                          )}
+                          {/* List of filter options within this category */}
+                          <ul role="listbox" aria-multiselectable="true">
+                            {facetValues.map(
+                              (facetValue: SearchFacetValue, index: number) => (
+                                <li
+                                  key={index}
+                                  role="option"
+                                  aria-selected={selected(key, facetValue)}
+                                >
                                   <button
-                                    aria-pressed={selected(key, facetValue)}
-                                    key={index}
-                                    className={`group relative flex w-full items-center break-all py-md pl-md pr-xl text-left hover:bg-brown-100 ${
+                                    className={`focus--in group relative flex w-full items-center break-all py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
                                       selected(key, facetValue) && "font-strong"
                                     }`}
                                     onClick={() => {
                                       doSearch(key, facetValue);
                                     }}
+                                    role="checkbox"
+                                    aria-checked={selected(key, facetValue)}
                                   >
                                     {facetValue.title || facetValue.resource} (
-                                    {facetValue.count}){" "}
-                                    {selected(key, facetValue)}
-                                    <span className="absolute right-md">
+                                    {facetValue.count})
+                                    {/* Decorative checkbox icon */}
+                                    <span
+                                      className="absolute right-md"
+                                      aria-hidden="true"
+                                    >
                                       {selected(key, facetValue) ? (
                                         <CheckboxCheckedIcon
                                           height={iconSize * 1.5}
@@ -307,9 +319,10 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                                       )}
                                     </span>
                                   </button>
-                                );
-                            },
-                          )}
+                                </li>
+                              ),
+                            )}
+                          </ul>
 
                           {value.facetValues.length > value.show && (
                             <Button
@@ -469,6 +482,9 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                       size="xs"
                       key={index}
                       label={facetValue.title || facetValue.resource}
+                      aria-label={`${t("common|clear-filters")} ${
+                        facetValue.title || facetValue.resource
+                      }`}
                       icon={CloseIcon}
                       iconPosition="right"
                       className="w-full justify-between py-md text-left font-strong md:w-auto md:py-[2px]"

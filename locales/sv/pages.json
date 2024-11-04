@@ -60,6 +60,8 @@
   },
   "search": {
     "search": "Sök data",
+    "search-tabs": "Söktabbar navigering",
+    "search-type-navigation": "Söktyp navigering",
     "dataset-hits": "resultat",
     "concept-hits": "resultat",
     "specification-hits": "resultat",

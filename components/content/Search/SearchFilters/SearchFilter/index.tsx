@@ -7,11 +7,13 @@ import { SettingsContext } from "@/providers/SettingsProvider";
 
 export interface SearchFilterProps {
   title: string | null;
+  usedFilters?: string;
   defaultValue?: boolean;
 }
 
 export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
   title,
+  usedFilters,
   defaultValue,
   children,
 }) => {
@@ -42,12 +44,17 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
         <button
           aria-haspopup={true}
           aria-expanded={open}
+          aria-label={`${
+            open ? t("close-filter") : t("open-filter")
+          } ${title} ${
+            usedFilters ? ` - ${usedFilters} ${t("active-filters")}` : ""
+          }`}
           onClick={() => handleOpen(!open)}
           className={`${
             open && "active"
           } button button--secondary button--large md:button--small w-full justify-between md:justify-start md:py-[0.25rem]`}
         >
-          {title || t("open")}
+          {`${title} ${usedFilters || ""}` || t("open")}
           <ChevronDownIcon
             height={iconSize * 1.5}
             width={iconSize * 1.5}
