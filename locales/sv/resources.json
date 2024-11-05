@@ -6,6 +6,7 @@
   "http://purl.org/dc/terms/accessRights": "Åtkomsträttigheter",
   "http://purl.org/dc/terms/license": "Licens",
   "http://data.europa.eu/r5r/applicableLegislation": "Värdefulla datamängder",
+  "http://purl.org/dc/terms/subject": "Nationella grunddata",
 
   "https://dataportal.se/concepts/licensecategories/otherlicense": "Övriga licenser",
   "https://dataportal.se/concepts/licensecategories/nolicense": "Saknar licens",

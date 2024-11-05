@@ -99,7 +99,7 @@ export const DataServicePage: React.FC<{
             },
 
             blocks: [
-              ${customIndicators},
+              ${customIndicators(t)},
               ${exploreApiLink},
               ${keyword(t)},
               ${theme(t)},            

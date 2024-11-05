@@ -153,7 +153,7 @@ export const DataSetExploreApiPage: React.FC<{
             ],
 
             blocks: [
-              ${customIndicators},   
+              ${customIndicators(t)},   
           ]
           }]
           </script>              

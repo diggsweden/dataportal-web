@@ -189,7 +189,7 @@ export const DataSetPage: React.FC = () => {
             ],
 
             blocks: [
-              ${customIndicators},
+              ${customIndicators(t)},
               ${exploreApiLink(cid, eid, t)},
               ${keyword(t)},
               ${theme(t)},

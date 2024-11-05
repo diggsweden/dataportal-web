@@ -183,6 +183,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
   const [lastUpdate, setLastUpdate] = useState<string>("");
   const { t } = useTranslation();
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
+  const national = "http://purl.org/dc/terms/subject";
   const searchKey = typeof location != "undefined" ? location.search : "server";
   const posY =
     typeof localStorage != "undefined"
@@ -230,6 +231,13 @@ export const SearchResults: FC<SearchResultsProps> = ({
   function isHVD(dataset: object) {
     const isHvd = Object.values(dataset).map((ds) => ds.hasOwnProperty(hvd));
     return isHvd.includes(true);
+  }
+
+  function isNational(dataset: object) {
+    const isNational = Object.values(dataset).map((ds) =>
+      ds.hasOwnProperty(national),
+    );
+    return isNational.includes(true);
   }
 
   return (
@@ -337,6 +345,13 @@ export const SearchResults: FC<SearchResultsProps> = ({
                           className={`bg-green-200 px-sm py-xs text-sm uppercase`}
                         >
                           {t("common|high-value-dataset")}
+                        </span>
+                      )}
+                      {isNational(hit.esEntry._metadata._graph) && (
+                        <span
+                          className={`bg-green-200 px-sm py-xs text-sm uppercase`}
+                        >
+                          {t("common|national-dataset")}
                         </span>
                       )}
                     </div>
