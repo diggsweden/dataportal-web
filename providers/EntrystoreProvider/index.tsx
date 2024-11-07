@@ -135,6 +135,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               const datasets = await es
                 .newSolrQuery()
                 .rdfType(["dcat:Dataset", "dcat:DataService"])
+                .publicRead(true)
                 .uriProperty("dcterms:conformsTo", resourceURI)
                 .getEntries();
 
@@ -145,6 +146,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                   hasResourceUri || entryUri,
                 )
                 .rdfType(["dcterms:Standard", "prof:Profile"])
+                .publicRead(true)
                 .getEntries();
 
               const datasetArr = await Promise.all(
