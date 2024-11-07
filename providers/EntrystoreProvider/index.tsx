@@ -173,6 +173,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
   const resourcesSearch = (resources: string[], es: any): Promise<any> => {
     return new Promise<any>((resolve) => {
       let esQuery = es.newSolrQuery();
+      esQuery.publicRead(true);
       esQuery
         .resource(resources, null)
         .getEntries(0)
@@ -216,12 +217,14 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               const datasets = await es
                 .newSolrQuery()
                 .rdfType(["dcat:Dataset", "dcat:DataService"])
+                .publicRead(true)
                 .uriProperty("dcterms:conformsTo", resourceURI)
                 .getEntries();
 
               const hasResource = await es
                 .newSolrQuery()
                 .rdfType(["dcterms:Standard", "prof:Profile"])
+                .publicRead(true)
                 .uriProperty("prof:hasResource", resourceURI)
                 .getEntries();
 
@@ -371,6 +374,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                       .newSolrQuery()
                       .resource(maybeSpecs, null)
                       .rdfType(["dcterms:Standard", "prof:Profile"])
+                      .publicRead(true)
                       .getEntries()
                   : [];
 
