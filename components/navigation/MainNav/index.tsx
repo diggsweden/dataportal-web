@@ -74,7 +74,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
             className={`${
               openSearch
                 ? "hidden lg:block"
-                : "max-h-[2rem] w-full min-w-0 max-w-[10rem] md:h-[2.75rem] md:w-[15.5rem]"
+                : "min-w-0 max-h-[2rem] w-full max-w-[10rem] md:h-[2.75rem] md:w-[15.5rem]"
             }`}
           />
         )}
