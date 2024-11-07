@@ -66,7 +66,7 @@ const SortingOptions: FC<{
       <Button
         size="sm"
         variant="plain"
-        className="hidden md:order-none md:block"
+        className="hidden md:order-none md:flex"
         icon={isCompact ? ListIcon : DetailedListIcon}
         iconPosition="left"
         aria-label={
@@ -272,16 +272,13 @@ export const SearchResults: FC<SearchResultsProps> = ({
           <ul className="search-result-list space-y-xl">
             {search.result.hits &&
               search.result.hits.map((hit, index) => (
-                <li
-                  className="max-w-lg focus-within:outline-dashed focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-primary"
-                  key={index}
-                >
+                <li className="group relative max-w-lg" key={index}>
                   <Link
                     href={hit.url}
                     onClick={() => {
                       saveCurrentScrollPos();
                     }}
-                    className="focus--none group block no-underline"
+                    className="focus--none before:focus--outline before:focus--out before:focus--primary block no-underline before:absolute before:inset-none"
                   >
                     <Heading
                       level={3}

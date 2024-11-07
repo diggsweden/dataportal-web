@@ -47,7 +47,10 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
       >
         {links.map((link: PromoProps, idx: number) => {
           return (
-            <li key={idx} className="block">
+            <li
+              key={idx}
+              className="group relative flex h-full flex-col bg-white text-brown-900"
+            >
               <Promo {...link} heading={heading} />
             </li>
           );

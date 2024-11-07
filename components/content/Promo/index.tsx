@@ -31,10 +31,7 @@ export const Promo: FC<PromoProps> = ({
     : null;
 
   return (
-    <Link
-      href={slug}
-      className="group flex h-full flex-col bg-white text-brown-900 no-underline"
-    >
+    <>
       {image && (
         <CustomImage
           image={image}
@@ -44,17 +41,22 @@ export const Promo: FC<PromoProps> = ({
         />
       )}
       <div className="flex h-full flex-col p-lg">
-        <Heading
-          level={heading ? 3 : 2}
-          size="sm"
-          className={ingress ? "mb-sm" : "mb-lg"}
+        <Link
+          href={slug}
+          className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
         >
-          {title}
-        </Heading>
+          <Heading
+            level={heading ? 3 : 2}
+            size="sm"
+            className={ingress ? "mb-sm" : "mb-lg"}
+          >
+            {title}
+          </Heading>
+        </Link>
         {ingress && (
           <p className="mb-lg line-clamp-3 text-brown-600">{ingress}</p>
         )}
-        <span className="button button--small button--primary focus--none mt-auto">
+        <span className="button button--small button--primary focus--none mt-auto group-focus-within:bg-brown-800">
           {t("read-more")}
           {isExternalLink(slug) ? (
             <>
@@ -76,6 +78,6 @@ export const Promo: FC<PromoProps> = ({
           )}
         </span>
       </div>
-    </Link>
+    </>
   );
 };
