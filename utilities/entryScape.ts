@@ -511,6 +511,7 @@ export class EntryScape {
       const es = this.getEntryStore();
 
       let esQuery = es.newSolrQuery();
+      esQuery.publicRead(true);
       let searchList: any;
 
       const term = "http://www.w3.org/2004/02/skos/core#Concept";
@@ -654,12 +655,15 @@ export class EntryScape {
         const termSearch = request.esRdfTypes && request.esRdfTypes[0] === term;
         const prefLabel = es
           .newSolrQuery()
+          .publicRead(true)
           .literalProperty("skos:prefLabel", query).properties[0].md5;
         const altLabel = es
           .newSolrQuery()
+          .publicRead(true)
           .literalProperty("skos:altLabel", query).properties[0].md5;
         const hiddenLabel = es
           .newSolrQuery()
+          .publicRead(true)
           .literalProperty("skos:hiddenLabel", query).properties[0].md5;
 
         queryUrl = queryUrl.replace(

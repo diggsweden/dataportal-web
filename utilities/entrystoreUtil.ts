@@ -113,6 +113,7 @@ export const getLocalizedValue = async (
 export const resourcesSearch = (resources: string[], es: any): Promise<any> => {
   return new Promise<any>((resolve) => {
     let esQuery = es.newSolrQuery();
+    esQuery.publicRead(true);
     esQuery
       .resource(resources, null)
       .getEntries(0)
