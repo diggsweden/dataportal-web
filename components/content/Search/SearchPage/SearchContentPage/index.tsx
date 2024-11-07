@@ -216,7 +216,7 @@ export const SearchContentPage: FC<SearchProps> = () => {
             <ul className="search-result-list space-y-lg md:space-y-xl">
               {searchResult.hits &&
                 searchResult.hits.map((hit: SearchHit, index: number) => (
-                  <li className="max-w-lg" key={index}>
+                  <li className="group relative max-w-lg" key={index}>
                     <Link
                       href={`${cleanDoubleSlash(hit.url!)}#ref=${
                         window ? window.location.search : ""
@@ -224,21 +224,20 @@ export const SearchContentPage: FC<SearchProps> = () => {
                       onClick={() => {
                         saveCurrentScrollPos();
                       }}
-                      className="group no-underline"
+                      className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
                     >
                       <Heading
                         level={3}
                         size="sm"
-                        className={`focus--underline focus--outline focus--primary focus--out mb-sm font-normal 
-                        text-green-600 group-hover:underline`}
+                        className={`mb-sm font-normal text-green-600 group-focus-within:underline group-hover:underline`}
                         lang={hit.titleLang}
                       >
                         {highlightWords(hit.title)}
                       </Heading>
-                      {hit.description && (
-                        <p>{highlightWords(hit.description)}</p>
-                      )}
                     </Link>
+                    {hit.description && (
+                      <p>{highlightWords(hit.description)}</p>
+                    )}
                   </li>
                 ))}
             </ul>

@@ -31,12 +31,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
   }, []);
 
   return (
-    <Link
-      href={type.url}
-      className="group flex h-full flex-col justify-between no-underline"
-      scroll={false}
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-    >
+    <>
       <div>
         <CustomImage
           image={image}
@@ -46,15 +41,22 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
         />
         <div className="px-md pt-lg text-sm text-textPrimary">
           <span className="text-textSecondary">{`${type.name} | ${date}`}</span>
-          <Heading className="pb-md pt-sm" level={3} size={"sm"}>
-            {heading}
-          </Heading>
+          <Link
+            href={type.url}
+            className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
+            scroll={false}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            <Heading className="pb-md pt-sm" level={3} size={"sm"}>
+              {heading}
+            </Heading>
+          </Link>
         </div>
       </div>
 
-      <span className="button button--small button--plain focus--none">
+      <span className="button button--small button--plain focus--none group-focus-within:bg-brown-200">
         Läs mer <ArrowIcon height={16} width={16} viewBox="0 0 24 24" />
       </span>
-    </Link>
+    </>
   );
 };

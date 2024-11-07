@@ -106,8 +106,8 @@ body {
     @apply bg-brown-600 text-white [&_path]:fill-white [&_svg]:rotate-180;
   }
   .button--plain {
-    @apply bg-transparent text-brown-600 hover:bg-brown-200 focus-visible:bg-brown-200 group-hover:bg-brown-200 group-focus:bg-brown-200 
-    [&_path]:fill-brown-600;
+    @apply bg-transparent text-brown-600 hover:bg-brown-200 focus-visible:bg-brown-200 group-focus:bg-brown-200 
+    [&:not(.no-group-hover)]:group-hover:bg-brown-200 [&_path]:fill-brown-600;
   }
   .button--plain.active {
     @apply outline outline-2 outline-brown-600 [&_svg]:rotate-180;

@@ -20,11 +20,8 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
   const { t } = useTranslation("common");
   return (
     <div className="h-full">
-      <div
-        className="group flex h-full flex-col justify-between gap-lg bg-white p-lg focus-within:outline-dashed 
-      focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-primary"
-      >
-        <div className="flex flex-col-reverse gap-sm">
+      <div className="flex h-full flex-col justify-between gap-lg bg-white p-lg">
+        <div className="flex h-full flex-col-reverse gap-sm">
           <Button
             variant="plain"
             size="sm"
@@ -35,36 +32,34 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
               setShowModal(true);
             }}
             label={t("preview")}
-            className="focus--none"
+            className="focus--none no-group-hover z-20"
             aria-label={`${t("preview")} ${t("support-tools")} - ${heading}`}
           />
-          <div className="flex flex-col gap-sm">
-            <Link
-              href={link}
-              className="focus--none flex flex-col gap-sm no-underline focus-visible:underline"
-            >
-              <div className="flex items-center justify-between [&_svg_path]:fill-red-400 group-hover:[&_svg_path]:fill-green-600">
-                <span
-                  className={`px-sm py-[2px] text-sm ${
-                    !isExternalLink(link)
-                      ? "bg-brown-800  text-white"
-                      : "bg-brown-200 text-brown-900"
-                  }`}
-                >
-                  {domainLabel}
-                </span>
-                {isExternalLink(link) ? (
-                  <>
-                    <ExternalLinkIcon className="translate-x-0 transform transition-transform duration-500 group-hover:translate-x-1/3" />
-                    <span className="sr-only">
-                      {t("common|open-in-new-tab")}
-                    </span>
-                  </>
-                ) : (
-                  <InternalLinkIcon className="translate-x-0 transform transition-transform duration-500 group-hover:translate-x-1/3" />
-                )}
-              </div>
-              <div>
+          <div className="flex h-full flex-col gap-sm">
+            <div className="flex items-center justify-between gap-sm [&_svg_path]:fill-red-400 group-hover:[&_svg_path]:fill-green-600">
+              <span
+                className={`px-sm py-[2px] text-sm ${
+                  !isExternalLink(link)
+                    ? "bg-brown-800  text-white"
+                    : "bg-brown-200 text-brown-900"
+                }`}
+              >
+                {domainLabel}
+              </span>
+              {isExternalLink(link) ? (
+                <>
+                  <ExternalLinkIcon className="flex-shrink-0 transform transition-transform duration-500 group-hover:translate-x-1/3" />
+                  <span className="sr-only">{t("common|open-in-new-tab")}</span>
+                </>
+              ) : (
+                <InternalLinkIcon className="flex-shrink-0 transform transition-transform duration-500 group-hover:translate-x-1/3" />
+              )}
+            </div>
+            <div>
+              <Link
+                href={link}
+                className="link-focus before:focus--outline before:focus--out before:focus--primary focus--none z-10 flex flex-col gap-sm no-underline before:absolute before:inset-none focus-visible:underline"
+              >
                 <Heading
                   className="text-green-600 group-hover:underline"
                   level={3}
@@ -72,9 +67,9 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
                 >
                   {heading}
                 </Heading>
-              </div>
-            </Link>
-            <p className="line-clamp-3 text-sm">{preamble}</p>
+              </Link>
+            </div>
+            <p className="line-clamp-3 flex-grow text-sm">{preamble}</p>
           </div>
         </div>
       </div>
