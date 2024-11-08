@@ -291,6 +291,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               const util = new ESJS.EntryStoreUtil(
                 new ESJS.EntryStore(`https://editera.dataportal.se/store`),
               );
+              util.loadOnlyPublicEntries(true);
 
               const conformsToEntries = await util.loadEntriesByResourceURIs(
                 conformsToURIs,
