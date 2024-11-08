@@ -4,7 +4,9 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import {
   ContainerDataFragment,
+  GoodExampleBlockItemFragment,
   GoodExampleDataFragment,
+  NewsBlockItemFragment,
   NewsItemDataFragment,
 } from "@/graphql/__generated__/operations";
 import { GridList } from "@/components/content/GridList";
@@ -16,7 +18,12 @@ import { Preamble } from "@/components/global/Typography/Preamble";
 import { ContentBox } from "@/components/content/ContentBox";
 import { dataCategories } from "@/utilities/dataCategories";
 import { ButtonLink } from "@/components/global/Button";
-import { isExternalLink, linkBase } from "@/utilities";
+import {
+  isExternalLink,
+  linkBase,
+  toGoodExamplePreview,
+  toNewsPreview,
+} from "@/utilities";
 import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import useTranslation from "next-translate/useTranslation";
@@ -73,6 +80,9 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
     blocks[0];
   const content = topPromos ? blocks.slice(1) : blocks;
 
+  const newsPreviews = news?.map(toNewsPreview);
+  const examplePreviews = example?.map(toGoodExamplePreview);
+
   useEffect(() => {
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
     if (parent && parent.heading && parent.slug) {
@@ -110,7 +120,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
             {news && (
               <GridList
                 className="!my-xl md:!my-2xl"
-                items={news}
+                items={newsPreviews as NewsBlockItemFragment[]}
                 showMoreLink={{
                   title: t("pages|news$view-all"),
                   slug: t("routes|news$path"),
@@ -121,7 +131,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
             {example && (
               <GridList
                 className="!my-xl md:!my-2xl"
-                items={example}
+                items={examplePreviews as GoodExampleBlockItemFragment[]}
                 showMoreLink={{
                   title: t("pages|good-examples$view-all"),
                   slug: t("routes|good-examples$path"),

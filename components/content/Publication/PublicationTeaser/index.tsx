@@ -3,26 +3,25 @@ import { FC, useEffect, useState } from "react";
 import { CustomImage } from "@/components/global/CustomImage";
 import ArrowIcon from "@/assets/icons/arrowRight.svg";
 import {
-  GoodExampleDataFragment,
-  NewsItemDataFragment,
+  GoodExampleBlockItemFragment,
+  NewsBlockItemFragment,
 } from "@/graphql/__generated__/operations";
 import { Heading } from "@/components/global/Typography/Heading";
 import Link from "next/link";
 import { formatDate } from "@/utilities/dateHelper";
 
 interface PublicationTeaserProps {
-  publication: GoodExampleDataFragment | NewsItemDataFragment;
+  publication: GoodExampleBlockItemFragment | NewsBlockItemFragment;
 }
 
 export const PublicationTeaser: FC<PublicationTeaserProps> = ({
   publication,
 }) => {
-  const { publishedAt, heading, slug, image, __typename } = publication;
+  const { heading, publishedAt, slug, image, __typename } = publication;
   const { lang } = useTranslation();
   const [date, setDate] = useState("");
-
   const type =
-    __typename === "dataportal_Digg_News_Item"
+    __typename === "dataportal_Digg_NewsItem_Preview"
       ? { url: `/nyheter${slug}`, name: "Nyhet" }
       : { url: `/goda-exempel${slug}`, name: "Goda Exempel" };
 

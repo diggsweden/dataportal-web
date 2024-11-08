@@ -5,6 +5,7 @@ import {
   ContainerDataFragment,
   NewsItemDataFragment,
   GoodExampleDataFragment,
+  StartPageDataFragment,
 } from "@/graphql/__generated__/operations";
 import { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { RelatedContentBlock } from "@/components/content/blocks/RelatedContentBlock";
@@ -15,12 +16,15 @@ import { VideoBlock } from "@/components/content/blocks/VideoBlock";
 import { FormPage } from "@/components/content/FormPage";
 import { QuoteBlock } from "@/components/content/blocks/QuoteBlock";
 import { PromotedContentBlock } from "@/components/content/blocks/PromotedContentBlock";
+import { GridList } from "../../GridList";
+import useTranslation from "next-translate/useTranslation";
 interface blockListProps {
   blocks:
     | ContainerDataFragment["blocks"]
     | NewsItemDataFragment["blocks"]
     | GoodExampleDataFragment["blocks"]
-    | ModuleDataFragment["blocks"];
+    | ModuleDataFragment["blocks"]
+    | StartPageDataFragment["blocks"];
   className?: string;
   landingPage?: boolean;
 }
@@ -65,6 +69,14 @@ export const BlockList: React.FC<blockListProps> = ({
   className,
   landingPage,
 }) => {
+  const { t } = useTranslation();
+
+  const getUniqueKey = (block: any, index: number) => {
+    const blockId = block?.id || "";
+    const blockType = block?.__typename || "";
+    return `block-${blockType}-${blockId}-${index}`;
+  };
+
   return (
     <div
       className={`mb-lg space-y-xl md:mb-xl md:space-y-xl ${
@@ -75,26 +87,30 @@ export const BlockList: React.FC<blockListProps> = ({
         if (block == null) {
           return;
         }
-        const { id } = block || {};
 
         switch (block.__typename) {
           case "dataportal_Digg_Text":
-            return <TextBlock {...block} key={`${id}-${index}`} />;
+            return <TextBlock {...block} key={getUniqueKey(block, index)} />;
           case "dataportal_Digg_Quote":
-            return <QuoteBlock {...block} key={`${id}-${index}`} />;
+            return <QuoteBlock {...block} key={getUniqueKey(block, index)} />;
           case "dataportal_Digg_Media":
-            return <MediaBlock {...block} key={`${id}-${index}`} />;
+            return <MediaBlock {...block} key={getUniqueKey(block, index)} />;
           case "dataportal_Digg_Video":
-            return <VideoBlock {...block} key={`${id}-${index}`} />;
+            return <VideoBlock {...block} key={getUniqueKey(block, index)} />;
           case "dataportal_Digg_PromotedContent":
-            return <PromotedContentBlock {...block} key={`${id}-${index}`} />;
+            return (
+              <PromotedContentBlock
+                {...block}
+                key={getUniqueKey(block, index)}
+              />
+            );
           case "dataportal_Digg_Faq":
             return handleFaqs(blocks, index);
           case "dataportal_Digg_RelatedContent":
             return (
               <RelatedContentBlock
                 {...block}
-                key={`${id}-${index}`}
+                key={getUniqueKey(block, index)}
                 landingPage={landingPage}
               />
             );
@@ -109,16 +125,43 @@ export const BlockList: React.FC<blockListProps> = ({
           case "dataportal_Digg_FormBlock":
             return (
               <FormPage
-                key={block.id}
+                key={getUniqueKey(block, index)}
                 elements={block.elements}
                 id={block.id}
                 identifier={block.id}
                 __typename="dataportal_Digg_Form"
               />
             );
+
+          case "dataportal_Digg_NewsBlock":
+            return (
+              <GridList
+                key={getUniqueKey(block, index)}
+                className="!my-xl md:!my-2xl"
+                items={block.items}
+                showMoreLink={{
+                  title: t("pages|news$view-all"),
+                  slug: t("routes|news$path"),
+                }}
+                heading={block.heading || t("pages|startpage$news")}
+              />
+            );
+          case "dataportal_Digg_GoodExampleBlock":
+            return (
+              <GridList
+                key={getUniqueKey(block, index)}
+                className="!my-xl md:!my-2xl"
+                items={block.items}
+                showMoreLink={{
+                  title: t("pages|good-examples$view-all"),
+                  slug: t("routes|good-examples$path"),
+                }}
+                heading={block.heading || t("pages|startpage$good-examples")}
+              />
+            );
           default:
             return (
-              <div key={id}>
+              <div key={getUniqueKey(block, index)}>
                 <h2>
                   <>{(block as any)?.__typename} Not found</>
                 </h2>
