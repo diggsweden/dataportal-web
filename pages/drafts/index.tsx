@@ -62,8 +62,9 @@ const render = (props: DataportalPageProps) => {
       return <Page {...props} />;
     case "Publication":
       return <PublicationFull {...props} />;
-    case "PublicationList":
-      return <ListPage {...props} />;
+    // We don't have a preview for list pages
+    // case "PublicationList":
+    //   return <ListPage {...props} />;
     default:
       return null;
   }
