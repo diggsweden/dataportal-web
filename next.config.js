@@ -29,7 +29,8 @@ const baseHeaders = [
   },
   {
     key: "Access-Control-Allow-Origin",
-    value: "https://www.dataportal.se https://webbanalys.digg.se",
+    value:
+      "https://www.dataportal.se https://webbanalys.digg.se https://cdn.screen9.com",
   },
 ];
 

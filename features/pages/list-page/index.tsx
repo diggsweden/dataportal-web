@@ -8,8 +8,8 @@ import { Container } from "@/components/layout/container";
 import { Pagination } from "@/components/pagination";
 import { Heading } from "@/components/typography/heading";
 import {
-  GoodExampleDataFragment,
-  NewsItemDataFragment,
+  GoodExampleBlockItemFragment,
+  NewsBlockItemFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
@@ -18,8 +18,8 @@ import { linkBase } from "@/utilities";
 interface ListPageProps {
   listItems: (
     | ToolDataFragment
-    | NewsItemDataFragment
-    | GoodExampleDataFragment
+    | NewsBlockItemFragment
+    | GoodExampleBlockItemFragment
   )[];
   heading: string;
   type: string;
@@ -40,7 +40,11 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
   const endIndex = startIndex + listItemsPerPage;
   const [filterList, setFilterList] =
     useState<
-      (ToolDataFragment | NewsItemDataFragment | GoodExampleDataFragment)[]
+      (
+        | ToolDataFragment
+        | NewsBlockItemFragment
+        | GoodExampleBlockItemFragment
+      )[]
     >(listItems);
   const [keywordList, setKeywordList] = useState<Keyword[]>([]);
   const [activeFilter, setActiveFilter] = useState<Keyword>({

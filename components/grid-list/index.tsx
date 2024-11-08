@@ -6,13 +6,17 @@ import { Heading } from "@/components/typography/heading";
 import { PublicationTeaser } from "@/features/publication/publication-teaser";
 import { Toolteaser } from "@/features/tool";
 import {
-  GoodExampleDataFragment,
-  NewsItemDataFragment,
+  GoodExampleBlockItemFragment,
+  NewsBlockItemFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
 
 interface ListProps {
-  items: (ToolDataFragment | NewsItemDataFragment | GoodExampleDataFragment)[];
+  items: (
+    | ToolDataFragment
+    | GoodExampleBlockItemFragment
+    | NewsBlockItemFragment
+  )[];
   heading?: string;
   showMoreLink?: {
     slug: string;
@@ -64,7 +68,7 @@ export const GridList: FC<ListProps> = ({
               {(() => {
                 switch (item.__typename) {
                   case "dataportal_Digg_Tool":
-                    return <Toolteaser tools={item} />;
+                    return <Toolteaser tools={item as ToolDataFragment} />;
                   default:
                     return <PublicationTeaser publication={item} />;
                 }
