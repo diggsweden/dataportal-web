@@ -13,9 +13,9 @@ EntryScape Registry is a solution for managing a registry of data catalogs and r
 
 ## Requirements
 
-![node-current](https://img.shields.io/badge/node-18.18.0-green)
-![npm-current](https://img.shields.io/badge/npm-9.8.1-green)
-![nextjs-current](https://img.shields.io/badge/nextjs-13.0.2-green)
+![node-current](https://img.shields.io/badge/node-22-green)
+![npm-current](https://img.shields.io/badge/npm-10-green)
+![nextjs-current](https://img.shields.io/badge/nextjs-13-green)
 
 ## Development
 
