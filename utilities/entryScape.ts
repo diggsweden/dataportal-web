@@ -9,6 +9,7 @@ import {
   getPublisherNames,
   getTemplateChoices,
   getLocalizedChoiceLabel,
+  getFacetNames,
 } from "@/utilities";
 import { Translate } from "next-translate";
 import { SearchSortOrder } from "@/providers/SearchProvider";
@@ -16,7 +17,7 @@ import { SearchSortOrder } from "@/providers/SearchProvider";
 import { EntryStore, EntryStoreUtil } from "@entryscape/entrystore-js";
 // @ts-ignore
 import { namespaces } from "@entryscape/rdfjson";
-import { publisherCache } from "./publisherCache";
+import { publisherCache, entryCache } from "./localCache";
 //const tokenize = require('edge-ngrams')()
 
 //#region ES members
@@ -103,8 +104,7 @@ export class EntryScape {
     // Initialize the EntryStore instance
     this.entryStore = new EntryStore(this.entryscapeUrl);
     this.entryStoreUtil = new EntryStoreUtil(this.entryStore);
-    // this.entryStore.getREST().disableJSONP();
-    // this.entryStore.getREST().disableCredentials();
+    this.entryStoreUtil.loadOnlyPublicEntries(true);
   }
 
   /**
@@ -140,6 +140,17 @@ export class EntryScape {
       );
 
       if (facetSpec) {
+        if (
+          facetSpec.dcatType !== "choice" &&
+          facetSpec.dcatProperty !== "dcterms:publisher"
+        ) {
+          await getFacetNames(
+            f.values.map((v) => v.name),
+            this.entryStoreUtil,
+            facetSpec,
+          );
+        }
+
         facets[f.predicate] = {
           title: this.t(f.predicate),
           name: f.name,
@@ -174,6 +185,8 @@ export class EntryScape {
               } else if (facetSpec?.dcatProperty === "dcterms:publisher") {
                 // Use cached publisher name without making new requests
                 displayName = publisherCache.getValue(value.name) || value.name;
+              } else {
+                displayName = entryCache.getValue(value.name) || value.name;
               }
 
               return {
@@ -461,7 +474,7 @@ export class EntryScape {
 
     // Set query text
     if (query) {
-      esQuery.all(`*${query}*`);
+      esQuery.all(`${query}`);
     }
 
     try {
@@ -478,7 +491,7 @@ export class EntryScape {
         ?.values?.map((v: any) => v.name);
 
       if (publisherUris) {
-        await getPublisherNames(publisherUris, es, esu);
+        await getPublisherNames(publisherUris, esu);
       }
 
       // Process children sequentially to maintain order

@@ -15,6 +15,7 @@ declare module "@entryscape/entrystore-js" {
       all: boolean,
       asyncCallType?: any,
     ): Promise<Entry[]>;
+    loadOnlyPublicEntries(all: boolean): void;
   }
 
   export class SolrQuery {
