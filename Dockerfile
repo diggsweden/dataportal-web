@@ -1,11 +1,11 @@
-FROM node:18-alpine as base
+FROM node:22-alpine as base
 WORKDIR /base
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn/releases ./.yarn/releases
 COPY .yarn/plugins ./.yarn/plugins
 RUN yarn install
 
-FROM node:18-alpine as builder
+FROM node:22-alpine as builder
 WORKDIR /build
 ARG delete_file
 COPY . .
@@ -13,7 +13,7 @@ COPY --from=base /base ./
 RUN if [[ -z "$delete_file" ]] ; then echo "No files removed" ; else rm ./$delete_file ; fi
 RUN yarn build
 
-FROM node:18-alpine as production
+FROM node:22-alpine as production
 ENV NODE_ENV=production
 
 WORKDIR /app
