@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { Component, createContext } from "react";
 import { EntryScape, ESRdfType, ESType } from "@/utilities/entryScape";
 import { decode, encode } from "qss";
 import { DCATData, fetchDCATMeta } from "@/utilities";
@@ -71,17 +71,17 @@ export const defaultSearchSettings: SearchContextData = {
     page: 0,
   },
   result: { hits: [], facets: {}, count: -1 },
-  set: () => new Promise<void>((resolve) => {}),
+  set: async () => {},
   toggleFacet: () => new Promise<void>((resolve) => {}),
   fetchMoreFacets: () => new Promise<void>((resolve) => {}),
-  fetchAllFacets: () => new Promise<void>((resolve) => {}),
-  searchInFacets: () => new Promise<void>((resolve) => {}),
+  fetchAllFacets: async () => {},
+  searchInFacets: async () => {},
   showMoreFacets: () => {},
   updateFacetStats: () => new Promise<void>((resolve) => {}),
   facetSelected: () => false,
   facetHasSelectedValues: () => false,
   getFacetValueTitle: () => "",
-  doSearch: () => new Promise<void>((resolve) => {}),
+  doSearch: async () => {},
   setStateToLocation: () => {},
   sortAllFacets: () => {},
   parseLocationToState: () => new Promise<Boolean>((resolve) => {}),
@@ -104,75 +104,15 @@ export const SearchContext = createContext<SearchContextData>(
 /**
  * SearchProvider component
  */
-class SearchProvider extends React.Component<
-  SearchProviderProps,
-  SearchContextData
-> {
-  private postscribe: any;
-
+class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
   constructor(props: SearchProviderProps) {
     super(props);
-
-    if (this.props.initRequest) {
-      this.state = {
-        ...defaultSearchSettings,
-        request: {
-          ...this.props.initRequest,
-        },
-      };
-    } else {
-      this.state = {
-        ...defaultSearchSettings,
-      };
-    }
-  }
-
-  addScripts() {
-    if (typeof window !== "undefined") {
-      let reactThis = this;
-
-      this.postscribe = (window as any).postscribe;
-
-      this.postscribe(
-        "#scriptsPlaceholder",
-        ` 
-        <script
-         src="https://entrystore.org/js/4.15.0-dev/entrystore.js"
-         crossorigin="anonymous"></script>
-        `,
-        {
-          done: function () {
-            if (reactThis.state && reactThis.state.fetchAllFacetsOnMount) {
-              reactThis.parseLocationToState().then((anyParsed) => {
-                if (anyParsed) {
-                  reactThis
-                    .set({
-                      fetchFacets: true,
-                    })
-                    .then(() => {
-                      reactThis.fetchAllFacets().finally(() => {
-                        reactThis.doSearch().finally(() => {});
-                      });
-                    });
-                }
-              });
-            } else {
-              reactThis.parseLocationToState().then((anyParsed) => {
-                if (anyParsed) {
-                  reactThis
-                    .set({
-                      fetchFacets: true,
-                    })
-                    .then(() => {
-                      reactThis.doSearch(false, false);
-                    });
-                }
-              });
-            }
-          },
-        },
-      );
-    }
+    this.state = {
+      ...defaultSearchSettings,
+      request: {
+        ...props.initRequest,
+      },
+    };
   }
 
   /**
@@ -182,28 +122,31 @@ class SearchProvider extends React.Component<
    * handles browser history (back/forward)
    */
   async componentDidMount() {
-    let reactThis = this;
-
     if (hasWindow) {
       await this.fetchDCATMeta();
+      if (this.state.fetchAllFacetsOnMount) {
+        const anyParsed = await this.parseLocationToState();
+        if (anyParsed) {
+          await this.set({ fetchFacets: true });
+          await this.fetchAllFacets();
+          await this.doSearch();
+        }
+      } else {
+        const anyParsed = await this.parseLocationToState();
+        if (anyParsed) {
+          await this.set({ fetchFacets: true });
+          await this.doSearch(false, false);
+        }
+      }
 
-      this.addScripts();
-
-      //handles back/forward button, we need to make a new search when the URL has changed
-      window.addEventListener("popstate", () => {
-        reactThis.parseLocationToState().then((anyParsed) => {
-          if (anyParsed) {
-            reactThis
-              .set({
-                fetchFacets: true,
-              })
-              .then(() => {
-                reactThis.fetchAllFacets().finally(() => {
-                  reactThis.doSearch(false, false);
-                });
-              });
-          }
-        });
+      // Handle browser navigation
+      window.addEventListener("popstate", async () => {
+        const anyParsed = await this.parseLocationToState();
+        if (anyParsed) {
+          await this.set({ fetchFacets: true });
+          await this.fetchAllFacets();
+          await this.doSearch(false, false);
+        }
       });
     }
   }
@@ -211,25 +154,22 @@ class SearchProvider extends React.Component<
   /**
    * Set/Store state in provider component
    */
-  set = (req: SearchRequest) => {
-    return new Promise<void>((resolve) => {
+  set = async (req: Partial<SearchRequest>): Promise<void> => {
+    await new Promise<void>((resolve) => {
       this.setState(
         {
-          ...this.state,
           request: {
             ...this.state.request,
             ...req,
           },
         },
-        () => {
-          resolve();
-        },
+        resolve,
       );
     });
   };
 
   fetchDCATMeta = async (): Promise<void> => {
-    let dcatmeta = await fetchDCATMeta(
+    const dcatmeta = await fetchDCATMeta(
       "https://static.infra.entryscape.com/blocks-ext/1/opendata/dcat-ap_se2.json",
     );
 
@@ -245,115 +185,86 @@ class SearchProvider extends React.Component<
    * For each selected group of facets - make a search WITHOUT that group of facets selected.
    * This is for accurate facets count
    */
-  updateFacetStatsGrouped = () => {
-    return new Promise<void>((resolve) => {
-      const { t, lang } = this.props.i18n;
-      //only continue if we have allFacets and a SearchResult
-      if (
-        this.state.allFacets &&
-        this.state.result &&
-        this.state.result.facets
-      ) {
-        let entryScape = new EntryScape(
-          this.props.entryscapeUrl || "https://admin.dataportal.se/store",
-          lang,
-          t,
-          this.props.facetSpecification,
-          this.props.hitSpecifications,
-        );
+  updateFacetStatsGrouped = async (): Promise<void> => {
+    const { t, lang } = this.props.i18n;
 
-        var facetValues = this.state.request.facetValues as SearchFacetValue[];
+    // Only continue if we have allFacets and a SearchResult
+    if (!this.state.allFacets || !this.state.result?.facets) {
+      return;
+    }
 
-        if (facetValues) {
-          //Fetch counts for each group of facets
-          let groupedFacets = Array.from(facetValues).reduce(function (
-            acc: { [facet: string]: SearchFacetValue[] },
-            obj: SearchFacetValue,
-          ) {
-            var key = obj.facet;
+    const entryScape = new EntryScape(
+      this.props.entryscapeUrl || "https://admin.dataportal.se/store",
+      lang,
+      t,
+      this.props.facetSpecification,
+      this.props.hitSpecifications,
+    );
 
-            if (!acc[key]) acc[key] = [];
+    const facetValues = this.state.request.facetValues as SearchFacetValue[];
+    if (!facetValues?.length) {
+      return;
+    }
 
-            acc[key].push(obj);
-            return acc;
-          }, {});
+    // Fetch counts for each group of facets
+    const groupedFacets = facetValues.reduce(
+      (acc: { [facet: string]: SearchFacetValue[] }, obj) => {
+        const key = obj.facet;
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(obj);
+        return acc;
+      },
+      {},
+    );
 
-          let searchPromises: Promise<any>[] = [];
+    if (!Object.keys(groupedFacets).length) {
+      return;
+    }
 
-          //iterate all facets by type, make one search for every facet group, updateing the facet count in allFacets
-          if (groupedFacets && Object.entries(groupedFacets).length > 0) {
-            for (let group in groupedFacets) {
-              let facetsNotInGroup: SearchFacetValue[] = facetValues.filter(
-                (f) => f.facet !== group,
-              );
+    try {
+      const searchPromises = Object.keys(groupedFacets).map(async (group) => {
+        const facetsNotInGroup = facetValues.filter((f) => f.facet !== group);
 
-              searchPromises.push(
-                entryScape
-                  .solrSearch({
-                    ...this.state.request,
-                    takeFacets: 100,
-                    fetchFacets: true,
-                    facetValues: facetsNotInGroup,
-                    take: 0,
-                  })
-                  .then((res) => {
-                    //fetch metafacets
-                    if (res.esFacets) {
-                      //set array allFacets state
-                      this.setState(
-                        () => {
-                          const allFacets = this.state.allFacets as {
-                            [facet: string]: SearchFacet;
-                          };
+        const res = await entryScape.solrSearch({
+          ...this.state.request,
+          takeFacets: 100,
+          fetchFacets: true,
+          facetValues: facetsNotInGroup,
+          take: 0,
+        });
 
-                          //check every instance in allFacet for hitcounts in current SearchResult
-                          Object.entries(allFacets).forEach(([k, v]) => {
-                            if (k == group) {
-                              let esFacetsInGroup = res.esFacets!.find(
-                                (f) => f.predicate == group,
-                              );
+        if (!res.esFacets) return;
 
-                              v.facetValues.forEach((f) => {
-                                if (esFacetsInGroup && esFacetsInGroup.values) {
-                                  var resultFacetValue =
-                                    esFacetsInGroup!.values.find(
-                                      (fv) => fv.name == f.resource,
-                                    );
+        await new Promise<void>((resolve) => {
+          this.setState(() => {
+            const allFacets = { ...this.state.allFacets } as {
+              [facet: string]: SearchFacet;
+            };
 
-                                  if (resultFacetValue) {
-                                    f.count = resultFacetValue.count || 0;
-                                  }
-                                  // else
-                                  //    f.count = 0;
-                                }
-                              });
-                              //Sort facet values according to count, TODO: Parameterize
-                              // v.facetValues.sort((a,b) =>
-                              //   b.count - a.count
-                              // );
-                            }
-                          });
-                          return {
-                            ...this.state,
-                            allFacets: allFacets,
-                          };
-                        },
-                        () => {},
-                      );
-                    }
-                  }),
-              );
+            const esFacetsInGroup = res.esFacets?.find(
+              (f) => f.predicate === group,
+            );
+
+            if (allFacets[group] && esFacetsInGroup?.values) {
+              allFacets[group].facetValues.forEach((f) => {
+                const resultFacetValue = esFacetsInGroup.values.find(
+                  (fv) => fv.name === f.resource,
+                );
+                f.count = resultFacetValue?.count || 0;
+              });
             }
 
-            Promise.all(searchPromises).then(() => {
-              resolve();
-            });
-          } else resolve();
-        } else resolve();
-      } else {
-        resolve();
-      }
-    });
+            return {
+              allFacets,
+            };
+          }, resolve);
+        });
+      });
+
+      await Promise.all(searchPromises);
+    } catch (error) {
+      console.error("Error in updateFacetStatsGrouped:", error);
+    }
   };
 
   /**
@@ -546,141 +457,89 @@ class SearchProvider extends React.Component<
    *
    * Will cache and fetch from localStorage, cache expires in 5 mins
    */
-  fetchAllFacets = () => {
+  fetchAllFacets = async (): Promise<void> => {
     const { t, lang } = this.props.i18n;
-    return new Promise<void>((resolve) => {
-      let wasCached = false;
-      let store_cache_key = `${this.state.request.language || ""}_${
-        this.state.request.esRdfTypes
-          ? this.state.request.esRdfTypes[0].toString()
-          : ""
-      }_facets-cache`;
-      let store_cache_key_stamp = `${this.state.request.language || ""}_${
-        this.state.request.esRdfTypes
-          ? this.state.request.esRdfTypes[0].toString()
-          : ""
-      }_facets-cache-ts`;
+    const store_cache_key = `${this.state.request.language || ""}_${
+      this.state.request.esRdfTypes
+        ? this.state.request.esRdfTypes[0].toString()
+        : ""
+    }_facets-cache`;
+    const store_cache_key_stamp = `${this.state.request.language || ""}_${
+      this.state.request.esRdfTypes
+        ? this.state.request.esRdfTypes[0].toString()
+        : ""
+    }_facets-cache-ts`;
 
-      this.setState({
-        ...this.state,
-        loadingFacets: true,
+    this.setState({ loadingFacets: true });
+
+    // Check cache
+    if (hasLocalStore && hasWindow) {
+      const ls_AllFacets = localStorage.getItem(store_cache_key);
+      const ls_Stamp = localStorage.getItem(store_cache_key_stamp);
+
+      if (ls_AllFacets && ls_Stamp) {
+        const allFacets = JSON.parse(ls_AllFacets) as {
+          [facet: string]: SearchFacet;
+        };
+        const stampAllFacets = new Date(JSON.parse(ls_Stamp));
+        const diff = (new Date().getTime() - stampAllFacets.getTime()) / 60000;
+
+        if (diff > 5) {
+          // Cache expired, remove it
+          localStorage.removeItem(store_cache_key);
+          localStorage.removeItem(store_cache_key_stamp);
+        } else {
+          // Use cached data
+          this.setState({ allFacets });
+          return;
+        }
+      }
+    }
+
+    try {
+      const entryScape = new EntryScape(
+        this.props.entryscapeUrl || "https://admin.dataportal.se/store",
+        lang,
+        t,
+        this.props.facetSpecification,
+        this.props.hitSpecifications,
+      );
+
+      const res = await entryScape.solrSearch({
+        query: "*",
+        fetchFacets: true,
+        take: 1,
+        takeFacets: this.state.request.takeFacets || 30,
       });
 
-      if (hasLocalStore && hasWindow && window.localStorage[store_cache_key]) {
-        let ls_AllFacets = window.localStorage.getItem(store_cache_key);
-        let ls_Stamp = window.localStorage.getItem(store_cache_key_stamp);
-
-        let allFacets = ls_AllFacets
-          ? (JSON.parse(ls_AllFacets) as { [facet: string]: SearchFacet })
-          : null;
-        let stampAllFacets = ls_Stamp
-          ? (JSON.parse(ls_Stamp) as Date)
-          : new Date("1982-04-22 03:04");
-
-        //validate cache date
-        let diff =
-          (new Date(Date.now()).getTime() -
-            new Date(stampAllFacets).getTime()) /
-          60000;
-
-        //cache stamp invalid, clear facets
-        if (diff > 5) {
-          window.localStorage.removeItem(store_cache_key);
-        }
-        //cache stamp valid
-        else {
-          //found in cache, use cached
-          if (allFacets) {
-            this.setState(
-              {
-                ...this.state,
-                allFacets: allFacets,
-              },
-              () => {
-                wasCached = true;
-                resolve();
-              },
-            );
-          }
-        }
-      }
-
-      if (!wasCached) {
-        let entryScape = new EntryScape(
-          this.props.entryscapeUrl || "https://admin.dataportal.se/store",
-          lang,
-          t,
-          this.props.facetSpecification,
-          this.props.hitSpecifications,
+      if (res.esFacets) {
+        const facets = await entryScape.getFacets(
+          res.esFacets,
+          this.state.dcatmeta,
         );
 
-        entryScape
-          .solrSearch({
-            query: "*",
-            fetchFacets: true,
-            take: 1,
-            //facetValues:this.state.request.facetValues || [],
-            takeFacets: this.state.request.takeFacets || 30,
-          })
-          .then((res) => {
-            if (res.esFacets) {
-              entryScape
-                .getFacets(res.esFacets, 30, this.state.dcatmeta)
-                .then((r) => {
-                  if (r) {
-                    this.setState(
-                      {
-                        ...this.state,
-                        allFacets: r,
-                      },
-                      () => {
-                        if (hasLocalStore && hasWindow) {
-                          window.localStorage.setItem(
-                            store_cache_key,
-                            JSON.stringify(r),
-                          );
-                          window.localStorage.setItem(
-                            store_cache_key_stamp,
-                            JSON.stringify(new Date(Date.now())),
-                          );
-                        }
-                        resolve();
-                      },
-                    );
-                  } else {
-                    this.setState(
-                      {
-                        ...this.state,
-                        request: this.state.request,
-                        loadingFacets: false,
-                      },
-                      () => {
-                        resolve();
-                      },
-                    );
-                  }
-                });
-            } else {
-              this.setState(
-                {
-                  ...this.state,
-                  loadingFacets: false,
-                },
-                () => {
-                  resolve();
-                },
-              );
-            }
-          })
-          .catch(() => {
-            this.setState({
-              ...this.state,
-              loadingFacets: false,
-            });
-            resolve();
+        if (facets) {
+          this.setState({ allFacets: facets });
+
+          if (hasLocalStore && hasWindow) {
+            localStorage.setItem(store_cache_key, JSON.stringify(facets));
+            localStorage.setItem(
+              store_cache_key_stamp,
+              JSON.stringify(new Date()),
+            );
+          }
+        } else {
+          this.setState({
+            request: this.state.request,
+            loadingFacets: false,
           });
+        }
       }
-    });
+    } catch (error) {
+      console.error("Failed to fetch all facets:", error);
+    } finally {
+      this.setState({ loadingFacets: false });
+    }
   };
 
   /**
@@ -690,106 +549,84 @@ class SearchProvider extends React.Component<
    * TODO: Is now hardcoded to RDF: http://xmlns.com/foaf/0.1/Agent and URI estypes. Meaning only works for organisations for now.
    *
    */
-  searchInFacets = (query: string, facetkey: string) => {
+  searchInFacets = async (query: string, facetkey: string): Promise<void> => {
     const { t, lang } = this.props.i18n;
-    return new Promise<void>((resolve) => {
-      let store_cache_key = `${this.state.request.language || ""}_${
-        this.state.request.esRdfTypes
-          ? this.state.request.esRdfTypes[0].toString()
-          : ""
-      }_facets-cache`;
-      let store_cache_key_stamp = `${this.state.request.language || ""}_${
-        this.state.request.esRdfTypes
-          ? this.state.request.esRdfTypes[0].toString()
-          : ""
-      }_facets-cache-ts`;
+    const store_cache_key = `${this.state.request.language || ""}_${
+      this.state.request.esRdfTypes
+        ? this.state.request.esRdfTypes[0].toString()
+        : ""
+    }_facets-cache`;
+    const store_cache_key_stamp = `${store_cache_key}-ts`;
 
-      this.setState({
-        ...this.state,
-        loadingFacets: true,
-      });
-      var facets = this.state.allFacets;
+    this.setState({ loadingFacets: true });
 
-      let entryScape = new EntryScape(
-        this.props.entryscapeUrl || "https://admin.dataportal.se/store",
-        lang,
-        t,
-        undefined,
-        {
-          "http://xmlns.com/foaf/0.1/Agent": {
-            path: ``,
-            titleResource: "http://xmlns.com/foaf/0.1/name",
-            descriptionResource: "",
-          },
+    const facets = { ...this.state.allFacets };
+
+    const entryScape = new EntryScape(
+      this.props.entryscapeUrl || "https://admin.dataportal.se/store",
+      lang,
+      t,
+      undefined, // Optional configuration
+      {
+        "http://xmlns.com/foaf/0.1/Agent": {
+          path: ``,
+          titleResource: "http://xmlns.com/foaf/0.1/name",
+          descriptionResource: "",
         },
-      );
+      },
+    );
 
-      entryScape
-        .solrSearch({
-          titleQuery: query && query.length > 0 ? query : "*",
-          fetchFacets: false,
-          take: 100,
-          page: 0,
-          esRdfTypes: [ESRdfType.agent],
-        })
-        .then((res) => {
-          if (res && res.hits) {
-            res.hits.forEach((h) => {
-              if (
-                facets[facetkey] &&
-                facets[facetkey].facetValues &&
-                h.title &&
-                !facets[facetkey].facetValues.some(
-                  (f) => f.title?.toLowerCase() == h.title.toLowerCase(),
-                )
-              ) {
-                var newValue: SearchFacetValue = {
-                  count: -1,
-                  title: h.title.trim(),
-                  resource: h.esEntry.getResourceURI(),
-                  facet: facetkey,
-                  facetType: ESType.uri,
-                  facetValueString: "",
-                  related: false,
-                };
+    try {
+      const res = await entryScape.solrSearch({
+        titleQuery: query && query.length > 0 ? query : "*",
+        fetchFacets: false,
+        take: 100,
+        page: 0,
+        esRdfTypes: [ESRdfType.agent],
+      });
 
-                newValue.facetValueString = `${facetkey}||${newValue.resource}||${newValue.related}||${ESType.uri}||${facets[facetkey].title}||${newValue.title}`;
+      if (res?.hits) {
+        res.hits.forEach((h) => {
+          if (
+            facets[facetkey] &&
+            facets[facetkey].facetValues &&
+            h.title &&
+            !facets[facetkey].facetValues.some(
+              (f) => f.title?.toLowerCase() === h.title.toLowerCase(),
+            )
+          ) {
+            const newValue: SearchFacetValue = {
+              count: -1,
+              title: h.title.trim(),
+              resource: h.esEntry.getResourceURI(),
+              facet: facetkey,
+              facetType: ESType.uri,
+              facetValueString: "",
+              related: false,
+            };
 
-                (facets[facetkey].facetValues as SearchFacetValue[]).push(
-                  newValue,
-                );
-              }
-            });
+            newValue.facetValueString = `${facetkey}||${newValue.resource}||${newValue.related}||${ESType.uri}||${facets[facetkey].title}||${newValue.title}`;
+            facets[facetkey].facetValues.push(newValue);
           }
-          this.setState(
-            {
-              allFacets: facets,
-            },
-            () => {
-              if (hasLocalStore && hasWindow) {
-                window.localStorage.setItem(
-                  store_cache_key,
-                  JSON.stringify(facets),
-                );
-                window.localStorage.setItem(
-                  store_cache_key_stamp,
-                  JSON.stringify(new Date(Date.now())),
-                );
-              }
-
-              this.mergeAllFacetsAndResult();
-              resolve();
-            },
-          );
-        })
-        .catch(() => {
-          this.setState({
-            ...this.state,
-            loadingFacets: false,
-          });
-          resolve();
         });
-    });
+      }
+
+      this.setState({ allFacets: facets });
+
+      if (hasLocalStore && hasWindow) {
+        window.localStorage.setItem(store_cache_key, JSON.stringify(facets));
+        window.localStorage.setItem(
+          store_cache_key_stamp,
+          JSON.stringify(new Date()),
+        );
+      }
+
+      await this.mergeAllFacetsAndResult();
+    } catch (error) {
+      console.error("Error searching in facets:", error);
+    } finally {
+      this.setState({ loadingFacets: false });
+    }
   };
 
   /**
@@ -817,49 +654,31 @@ class SearchProvider extends React.Component<
   /**
    * Toggles facetvalue as selected/not selected in current SearchRequest
    */
-  toggleFacet = (facetValue: SearchFacetValue) => {
-    return new Promise<void>((resolve) => {
-      this.setState({
-        ...this.state,
-        loadingFacets: true,
-      });
+  toggleFacet = async (facetValue: SearchFacetValue) => {
+    this.setState({ loadingFacets: true });
 
-      var facetValues = this.state.request.facetValues as SearchFacetValue[];
+    const facetValues = this.state.request.facetValues || [];
 
-      var existing = facetValues.filter(
-        (v: SearchFacetValue) =>
-          v.facet == facetValue.facet &&
-          v.resource == facetValue.resource &&
-          v.title == facetValue.title,
-      );
+    const existing = facetValues.filter(
+      (v: SearchFacetValue) =>
+        v.facet == facetValue.facet &&
+        v.resource == facetValue.resource &&
+        v.related == facetValue.related,
+    );
 
-      //existed - remove from array
-      if (existing && existing.length > 0) {
-        facetValues = facetValues.filter((v: SearchFacetValue) => {
-          return (
-            v.facet + v.resource !== facetValue.facet + facetValue.resource
-          );
-        });
-      }
-      //did not exist, add to array
-      else {
-        facetValues.push(facetValue);
-      }
-      this.setState(
-        {
-          ...this.state,
-          loadingFacets: false,
-          request: {
-            ...this.state.request,
-            facetValues: facetValues,
-            page: 0,
-          },
-        },
-        () => {
-          resolve();
-        },
-      );
+    let newFacetValues: SearchFacetValue[];
+    if (existing.length > 0) {
+      newFacetValues = facetValues.filter((v) => !existing.includes(v));
+    } else {
+      newFacetValues = [...facetValues, facetValue];
+    }
+
+    await this.set({
+      facetValues: newFacetValues,
+      page: 0,
     });
+
+    this.setState({ loadingFacets: false });
   };
 
   /**
@@ -932,229 +751,209 @@ class SearchProvider extends React.Component<
    *
    * Returns true if any values was parsed
    */
-  parseLocationToState = () => {
-    return new Promise<Boolean>((resolve) => {
-      let fetchResults = false;
+  parseLocationToState = async (): Promise<boolean> => {
+    if (!hasWindow || !history || !window.location.search) {
+      return false;
+    }
 
-      if (hasWindow && history && window.location.search) {
-        var qs = decode(window.location.search.substring(1)) as any;
+    let fetchResults = false;
+    const qs = decode(window.location.search.substring(1)) as any;
 
-        let querytext =
-          qs.q && qs.q.toString().length > 0 ? qs.q.toString() : "";
-        let page = qs.p && qs.p.toString().length > 0 ? qs.p.toString() : null;
-        let queryfacets: SearchFacetValue[] = [];
-        let rdftypes: ESRdfType[] = [];
-        let take = qs.t && qs.t.toString().length > 0 ? qs.t.toString() : 20;
-        let compact = qs.c && qs.c == true ? true : false;
+    // Parse query parameters
+    const querytext = qs.q?.toString().length > 0 ? qs.q.toString() : "";
+    const page = qs.p?.toString().length > 0 ? qs.p.toString() : null;
+    const take = qs.t?.toString().length > 0 ? qs.t.toString() : 20;
+    const compact = qs.c === true;
+    const sortOrder: SearchSortOrder =
+      (qs.s as SearchSortOrder) || SearchSortOrder.score_desc;
 
-        let sortOrder: SearchSortOrder =
-          (qs.s as SearchSortOrder) || SearchSortOrder.score_desc;
+    // Parse RDF types
+    const rdftypes: ESRdfType[] = [];
+    if (qs.rt?.length > 0) {
+      qs.rt.split("$").forEach((e: string) => {
+        const rdf = ESRdfType[e as keyof typeof ESRdfType];
+        if (rdf) rdftypes.push(rdf);
+      });
+    }
 
-        if (qs.rt && qs.rt.length > 0) {
-          qs.rt.split("$").forEach((e: string) => {
-            let rdf = ESRdfType[e as keyof typeof ESRdfType];
-            if (rdf) rdftypes.push(rdf);
-          });
+    // Parse facets
+    const queryfacets: SearchFacetValue[] = [];
+    if (qs.f?.length > 0) {
+      const locationfacets = qs.f.indexOf("$") > -1 ? qs.f.split("$") : [qs.f];
+
+      locationfacets.forEach((f: string) => {
+        if (!f.includes("||")) return;
+
+        const facetstring = f.split("||");
+        if (facetstring.length !== 6) return;
+
+        let facetType = ESType.unknown;
+        switch (facetstring[3]) {
+          case "literal":
+            facetType = ESType.literal;
+            break;
+          case "literal_s":
+            facetType = ESType.literal_s;
+            break;
+          case "uri":
+            facetType = ESType.uri;
+            break;
+          case "wildcard":
+            facetType = ESType.wildcard;
+            break;
         }
 
-        //check if facets set in url
-        if (qs.f && qs.f.length > 0) {
-          let locationfacets = [];
-          //array of facets
-          if (qs.f.indexOf("$") > -1) {
-            locationfacets = qs.f.split("$");
-          } else {
-            locationfacets.push(qs.f);
-          }
+        queryfacets.push({
+          count: 0,
+          facetType,
+          facet: facetstring[0],
+          facetValueString: f,
+          related: facetstring[2] === "true",
+          resource: facetstring[1],
+          title: facetstring[5],
+        });
+      });
+    }
 
-          //each facet should have format: http://purl.org/etc..||https://www.geodata.se/etc....||true||l||Organisationer||Trafikverket
-          if (locationfacets && locationfacets.length > 0) {
-            locationfacets.forEach((f: string) => {
-              let facetstring: string[] = [];
+    await new Promise<void>((resolve) => {
+      this.setState((state) => {
+        const newState = { ...state };
 
-              if (f.indexOf("||") > -1) {
-                facetstring = f.split("||");
-
-                if (facetstring.length === 6) {
-                  let facetType = ESType.unknown;
-
-                  switch (facetstring[3]) {
-                    case "literal":
-                      facetType = ESType.literal;
-                      break;
-                    case "literal_s":
-                      facetType = ESType.literal_s;
-                      break;
-                    case "uri":
-                      facetType = ESType.uri;
-                      break;
-                    case "wildcard":
-                      facetType = ESType.wildcard;
-                      break;
-                  }
-
-                  queryfacets.push({
-                    count: 0,
-                    facetType: facetType,
-                    facet: facetstring[0],
-                    facetValueString: `${facetstring[0]}||${facetstring[1]}||${facetstring[2]}||${facetstring[3]}||${facetstring[4]}||${facetstring[5]}`,
-                    related: facetstring[2] == "true",
-                    resource: facetstring[1],
-                    title: facetstring[5],
-                  });
-                }
-              }
-            });
-          }
+        if (querytext) {
+          fetchResults = true;
+          newState.request.query = decodeURIComponent(
+            querytext.replace(/\+/g, "%20"),
+          );
         }
 
-        this.setState(
-          (state) => {
-            if (querytext) {
-              fetchResults = true;
-              state.request.query = decodeURIComponent(
-                querytext.replace(/\+/g, "%20"),
-              );
-            }
+        if (page && page > 0) {
+          fetchResults = true;
+          newState.request.page = page - 1;
+        }
 
-            if (page && page > 0) {
-              fetchResults = true;
-              state.request.page = page - 1;
-            }
+        if (queryfacets.length) {
+          fetchResults = true;
+          newState.request.facetValues = queryfacets;
+        }
 
-            if (queryfacets) {
-              fetchResults = true;
-              state.request.facetValues = queryfacets;
-            }
+        if (take) {
+          fetchResults = true;
+          newState.request.take = take;
+        }
 
-            if (take) {
-              fetchResults = true;
-              state.request.take = take;
-            }
+        if (sortOrder) {
+          fetchResults = true;
+          newState.request.sortOrder = sortOrder;
+        }
 
-            if (sortOrder) {
-              fetchResults = true;
-              state.request.sortOrder = sortOrder;
-            }
+        if (rdftypes.length) {
+          fetchResults = true;
+          newState.request.esRdfTypes = rdftypes;
+        }
 
-            if (rdftypes && rdftypes.length > 0) {
-              fetchResults = true;
-              state.request.esRdfTypes = rdftypes;
-            }
+        newState.request.compact = compact;
 
-            state.request.compact = compact;
-
-            return {
-              ...state,
-            };
-          },
-          () => {
-            resolve(fetchResults);
-          },
-        );
-      }
+        return newState;
+      }, resolve);
     });
+
+    return fetchResults;
   };
 
   /**
    * Perform search against EntryStore, will use state SearchRequest
    */
-  doSearch = (
+  doSearch = async (
     appendHits: Boolean = false,
     setStateToLocation: Boolean = true,
     reSortOnDone: Boolean = true,
-  ) => {
+  ): Promise<void> => {
     const { t, lang } = this.props.i18n;
-    return new Promise<void>((resolve) => {
-      this.setState({
-        ...this.state,
-        loadingHits: true,
-        loadingFacets: true,
-      });
 
-      if (setStateToLocation) this.setStateToLocation();
+    this.setState({
+      loadingHits: true,
+      loadingFacets: true,
+    });
 
-      let entryScape = new EntryScape(
+    if (setStateToLocation) {
+      this.setStateToLocation();
+    }
+
+    try {
+      const entryScape = new EntryScape(
         this.props.entryscapeUrl || "https://admin.dataportal.se/store",
         lang,
         t,
         this.props.facetSpecification,
         this.props.hitSpecifications,
       );
-      entryScape
-        .solrSearch(this.state.request, this.state.dcatmeta)
-        .then((res) => {
-          let hits: SearchHit[] = res.hits || [];
 
-          if (appendHits) {
-            if (
-              this.state.result &&
-              this.state.result.hits &&
-              (this.state.result.hits as SearchHit[])
-            )
-              hits = (this.state.result.hits as SearchHit[]).concat(hits);
-          }
+      const res = await entryScape.solrSearch(
+        this.state.request,
+        this.state.dcatmeta,
+      );
+      let hits: SearchHit[] = res.hits || [];
 
-          res.pages = res.count
-            ? Math.ceil(res.count / (this.state.request.take || 20))
-            : 0;
+      if (appendHits && this.state.result?.hits) {
+        hits = [...this.state.result.hits, ...hits];
+      }
 
-          //rerender so hits is available to consumers
+      res.pages = res.count
+        ? Math.ceil(res.count / (this.state.request.take || 20))
+        : 0;
+
+      await new Promise<void>((resolve) => {
+        this.setState(
+          {
+            loadingHits: false,
+            result: {
+              ...this.state.result,
+              hits,
+              count: res.count,
+              pages: res.pages,
+              error: res.error,
+            },
+          },
+          resolve,
+        );
+      });
+
+      if (res.esFacets) {
+        const facets = await entryScape.getFacets(
+          res.esFacets,
+          this.state.dcatmeta,
+        );
+
+        await new Promise<void>((resolve) => {
           this.setState(
             {
-              ...this.state,
+              loadingFacets: false,
               loadingHits: false,
               result: {
                 ...this.state.result,
-                hits: hits,
-                count: res.count,
-                pages: res.pages,
-                error: res.error,
-              },
-              request: {
-                ...this.state.request,
+                facets,
               },
             },
-            () => {
-              //fetch metafacets
-              if (res.esFacets) {
-                entryScape
-                  .getFacets(
-                    res.esFacets,
-                    this.state.request.takeFacets || 5,
-                    this.state.dcatmeta,
-                  )
-                  .then((res) => {
-                    this.setState(
-                      {
-                        ...this.state,
-                        loadingFacets: false,
-                        loadingHits: false,
-                        result: {
-                          ...this.state.result,
-                          facets: res,
-                        },
-                      },
-                      () => {
-                        this.mergeAllFacetsAndResult().then(() => {
-                          this.updateFacetStatsGrouped().then(() => {
-                            if (reSortOnDone) this.sortAllFacets();
-
-                            resolve();
-                          });
-                        });
-                      },
-                    );
-                  });
-              } else {
-                if (reSortOnDone) this.sortAllFacets();
-
-                resolve();
-              }
-            },
+            resolve,
           );
         });
-    });
+
+        await this.mergeAllFacetsAndResult();
+        await this.updateFacetStatsGrouped();
+
+        if (reSortOnDone) {
+          this.sortAllFacets();
+        }
+      } else if (reSortOnDone) {
+        this.sortAllFacets();
+      }
+    } catch (error) {
+      console.error("Error in doSearch:", error);
+      this.setState({
+        loadingHits: false,
+        loadingFacets: false,
+      });
+    }
   };
 
   /**
