@@ -361,9 +361,11 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                         name="API"
                         type="checkbox"
                         className="peer/hvd-only sr-only"
-                        checked={search.request.facetValues?.some(
-                          (t) => t.title == ESRdfType.hvd,
-                        )}
+                        checked={
+                          search.request.facetValues?.some(
+                            (t) => t.title == ESRdfType.hvd,
+                          ) || false
+                        }
                         onChange={() => doSearch(key, facetValues[0])}
                       />
                       <label
@@ -396,9 +398,11 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                         name="National"
                         type="checkbox"
                         className="peer/national-only sr-only"
-                        checked={search.request.facetValues?.some(
-                          (t) => t.facet == ESRdfType.national_data,
-                        )}
+                        checked={
+                          search.request.facetValues?.some(
+                            (t) => t.facet == ESRdfType.national_data,
+                          ) || false
+                        }
                         onChange={() => doSearch(key, facetValues[0])}
                       />
                       <label
