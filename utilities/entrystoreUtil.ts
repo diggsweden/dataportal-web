@@ -12,7 +12,7 @@
  */
 
 import { EntryStore, EntryStoreUtil } from "@entryscape/entrystore-js";
-import { publisherCache } from "./publisherCache";
+import { entryCache, publisherCache } from "./localCache";
 
 export const getLocalizedMetadataValue = (
   metadataGraph: any,
@@ -118,10 +118,62 @@ export const getSimplifiedLocalizedValue = (
   return (svValue || enValue || values[0])?.getValue() || "";
 };
 
+export const getFacetNames = async (
+  facetValues: string[],
+  esu: EntryStoreUtil,
+  facetSpec: any,
+) => {
+  const cache = entryCache.get();
+  // Filter out null values and already cached URIs
+  const uniqueUris = Array.from(new Set(facetValues)).filter(
+    (uri): uri is string => uri !== null && !cache.has(uri),
+  );
+
+  if (uniqueUris.length === 0) {
+    return cache;
+  }
+
+  try {
+    // Load all entries in one batch with a single request
+    const entries = await esu.loadEntriesByResourceURIs(
+      uniqueUris,
+      null,
+      true,
+      facetSpec.predicate,
+    );
+
+    // Process all entries at once
+    entries.forEach(async (entry: any) => {
+      if (entry) {
+        const metadata = entry.getMetadata();
+        const uri = entry.getResourceURI();
+        const name =
+          getSimplifiedLocalizedValue(metadata, "dcterms:title") ||
+          getSimplifiedLocalizedValue(metadata, "foaf:name") ||
+          undefined;
+
+        cache.set(uri, name);
+      }
+    });
+
+    // Cache any URIs that weren't found
+    uniqueUris.forEach((uri) => {
+      if (!cache.has(uri)) {
+        cache.set(uri, uri);
+      }
+    });
+
+    return cache;
+  } catch (error) {
+    console.error("Error fetching publisher names:", error);
+    uniqueUris.forEach((uri) => cache.set(uri, uri));
+    return cache;
+  }
+};
+
 // Helper function to get publisher name from URI
 export const getPublisherNames = async (
   publisherUris: string[],
-  es: EntryStore,
   esu: EntryStoreUtil,
 ) => {
   const cache = publisherCache.get();
