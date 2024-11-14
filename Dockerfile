@@ -1,4 +1,6 @@
 FROM node:22-alpine as base
+# Install Yarn globally
+RUN corepack enable && corepack prepare yarn@4.5.1 --activate
 WORKDIR /base
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn/releases ./.yarn/releases
