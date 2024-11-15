@@ -11,6 +11,14 @@
  * @param lang
  */
 
+import {
+  EntryStoreUtil,
+  Metadata,
+  MetadataValue,
+} from "@entryscape/entrystore-js";
+import { entryCache } from "./localCache";
+import { Choice, ChoiceTemplate, DCATData } from "./dcatUtils";
+
 export const getLocalizedMetadataValue = (
   metadataGraph: any,
   prop: any,
@@ -101,6 +109,110 @@ export const getLocalizedValue = async (
 
   return val;
 };
+
+export const getSimplifiedLocalizedValue = (
+  metadata: Metadata,
+  property: string,
+) => {
+  const values = metadata.find(null, property);
+  // Try to find Swedish value first
+  const svValue = values.find((v: MetadataValue) => v.getLanguage() === "sv");
+  // Fall back to English if no Swedish
+  const enValue = values.find((v: MetadataValue) => v.getLanguage() === "en");
+  // Fall back to first value if neither Swedish nor English
+  return (svValue || enValue || values[0])?.getValue() || "";
+};
+
+export const getUriNames = async (
+  facetValues: string[],
+  esu: EntryStoreUtil,
+  property?: string,
+) => {
+  const cache = entryCache.get();
+  // Filter out null values and already cached URIs
+  const uniqueUris = Array.from(new Set(facetValues)).filter(
+    (uri): uri is string => uri !== null && !cache.has(uri),
+  );
+
+  if (uniqueUris.length === 0) {
+    return cache;
+  }
+
+  try {
+    // Load all entries in one batch with a single request
+    const entries = await esu.loadEntriesByResourceURIs(
+      uniqueUris,
+      null,
+      true,
+      property,
+    );
+
+    // TODO: This is not efficient, we need to find another way in handling this
+    // Process all entries at once
+    entries.forEach((entry: any) => {
+      if (entry) {
+        const metadata = entry.getMetadata();
+        const uri = entry.getResourceURI();
+        const name =
+          getSimplifiedLocalizedValue(metadata, "dcterms:title") ||
+          getSimplifiedLocalizedValue(metadata, "foaf:name") ||
+          getSimplifiedLocalizedValue(metadata, "skos:prefLabel") ||
+          getSimplifiedLocalizedValue(metadata, "rdfs:label") ||
+          uri;
+
+        cache.set(uri, name);
+      }
+    });
+
+    // Cache any URIs that weren't found
+    uniqueUris.forEach((uri) => {
+      if (!cache.has(uri)) {
+        cache.set(uri, uri);
+      }
+    });
+
+    return cache;
+  } catch (error) {
+    console.error("Error fetching URI names:", error);
+    uniqueUris.forEach((uri) => cache.set(uri, uri));
+    return cache;
+  }
+};
+
+/**
+ * Get template choices from DCAT metadata
+ * @param dcatMeta
+ * @param propertyUri
+ * @param id
+ * @returns
+ */
+export function getTemplateChoices(
+  dcatMeta: DCATData,
+  propertyUri: string,
+  id?: string,
+) {
+  // Find all templates with matching property URI
+  const template = dcatMeta.templates.find(
+    (t): t is ChoiceTemplate =>
+      t.property === propertyUri && t.type === "choice" && (!id || t.id === id),
+  );
+
+  return template?.choices || [];
+}
+
+/**
+ * Get localized choice label from template choices
+ * @param choice
+ * @param lang
+ * @returns
+ */
+export function getLocalizedChoiceLabel(choice: Choice, lang: string) {
+  return (
+    choice.label[lang as keyof typeof choice.label] ||
+    choice.label["en"] ||
+    choice.value
+  );
+}
 
 /**
  * Make SolrSearch and retrive entries from entryscape
