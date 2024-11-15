@@ -209,8 +209,6 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
     setShowFilter(!showFilter);
   }
 
-  console.log(search.allFacets);
-
   const groupedFacets = useMemo(() => {
     const grouped: { [key: string]: { [key: string]: SearchFacet } } = {};
 
