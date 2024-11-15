@@ -1,6 +1,4 @@
 FROM node:22-alpine as base
-# Install Yarn globally
-RUN corepack enable && corepack prepare yarn@4.5.1 --activate
 WORKDIR /base
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn/releases ./.yarn/releases
@@ -34,6 +32,7 @@ COPY --from=builder /build/.env.production ./.env.production
 COPY --from=builder /build/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV SKIP_YARN_COREPACK_CHECK 0
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
