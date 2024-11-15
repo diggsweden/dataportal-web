@@ -131,7 +131,6 @@ export class EntryScape {
     dcat: DCATData,
   ): Promise<{ [key: string]: SearchFacet }> {
     let facets: { [key: string]: SearchFacet } = {};
-    let returnFacets: { [key: string]: SearchFacet } = {};
 
     for (const f of metaFacets) {
       // Find the corresponding facet specification
@@ -140,13 +139,14 @@ export class EntryScape {
       );
 
       if (facetSpec) {
-        facets[f.predicate] = {
+        facets[f.name] = {
           title: this.t(f.predicate),
           name: f.name,
           predicate: f.predicate,
           indexOrder: facetSpec.indexOrder,
           count: f.valueCount,
           show: 25,
+          group: facetSpec.group,
           facetValues: f.values
             .filter((value: ESFacetFieldValue) => {
               if (!facetSpec?.dcatFilterEnabled) return true;
@@ -192,10 +192,9 @@ export class EntryScape {
               };
             }),
         };
-        returnFacets[f.predicate] = facets[f.predicate];
       }
     }
-    return returnFacets;
+    return facets;
   }
 
   /**

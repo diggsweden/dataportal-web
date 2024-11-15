@@ -33,6 +33,7 @@ interface FacetSpecification {
 }
 
 interface FacetSpecificationItem {
+  group: string;
   resource: string;
   indexOrder: number;
   type: ESType;
@@ -72,6 +73,7 @@ interface SearchFacet {
   facetValues: SearchFacetValue[];
   lastFetched?: number;
   count: number;
+  group: string;
   indexOrder: number;
 }
 

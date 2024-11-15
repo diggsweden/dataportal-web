@@ -125,12 +125,22 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
       facetSpecification: {
         facets: [
           {
+            resource: "http://purl.org/dc/terms/license",
+            type: ESType.uri,
+            dcatProperty: "dcterms:license",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 5,
+            group: "access",
+          },
+          {
             resource: "http://www.w3.org/ns/dcat#theme",
             type: ESType.uri,
             dcatProperty: "dcat:theme",
             dcatType: "choice",
             dcatFilterEnabled: true,
             indexOrder: 0,
+            group: "type",
           },
           {
             resource: "http://purl.org/dc/terms/type",
@@ -140,12 +150,15 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             related: true,
             dcatType: "choice",
             indexOrder: 1,
+            maschineName: "publishertype",
+            group: "type",
           },
           {
             resource: "http://purl.org/dc/terms/publisher",
             dcatProperty: "dcterms:publisher",
             type: ESType.uri,
             indexOrder: 2,
+            group: "type",
           },
           {
             resource: "http://purl.org/dc/terms/format",
@@ -154,6 +167,7 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             dcatType: "choice",
             dcatFilterEnabled: true,
             indexOrder: 3,
+            group: "distribution",
           },
           {
             resource: "http://purl.org/dc/terms/accrualPeriodicity",
@@ -163,15 +177,9 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             dcatType: "choice",
             dcatFilterEnabled: true,
             indexOrder: 4,
+            group: "distribution",
           },
-          {
-            resource: "http://purl.org/dc/terms/license",
-            type: ESType.uri,
-            dcatProperty: "dcterms:license",
-            dcatType: "choice",
-            dcatFilterEnabled: false,
-            indexOrder: 5,
-          },
+
           {
             resource: "http://data.europa.eu/r5r/applicableLegislation",
             type: ESType.uri,
@@ -179,6 +187,7 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             dcatType: "choice",
             dcatFilterEnabled: false,
             indexOrder: 6,
+            group: "distribution",
           },
           {
             resource: "http://purl.org/dc/terms/subject",
@@ -187,6 +196,7 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             dcatType: "choice",
             dcatFilterEnabled: false,
             indexOrder: 7,
+            group: "distribution",
           },
         ],
       },
@@ -228,12 +238,14 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             dcatType: "choice",
             dcatFilterEnabled: true,
             indexOrder: 0,
+            group: "group1",
           },
           {
             resource: "http://purl.org/dc/terms/publisher",
             dcatProperty: "dcterms:publisher",
             type: ESType.uri,
             indexOrder: 1,
+            group: "group1",
           },
         ],
       },
@@ -262,6 +274,7 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             type: ESType.uri,
             dcatProperty: "dcterms:type",
             indexOrder: 0,
+            group: "group1",
           },
         ],
       },

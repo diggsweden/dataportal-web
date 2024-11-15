@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo } from "react";
 import { ESRdfType, ESType } from "@/utilities/entryScape";
 import useTranslation from "next-translate/useTranslation";
 import { SearchContextData } from "@/providers/SearchProvider";
@@ -209,6 +209,22 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
     setShowFilter(!showFilter);
   }
 
+  console.log(search.allFacets);
+
+  const groupedFacets = useMemo(() => {
+    const grouped: { [key: string]: { [key: string]: SearchFacet } } = {};
+
+    Object.entries(search.allFacets || {}).forEach(([key, facet]) => {
+      const group = facet.group || "default";
+      if (!grouped[group]) {
+        grouped[group] = {};
+      }
+      grouped[group][key] = facet;
+    });
+
+    return grouped;
+  }, [search.allFacets]);
+
   return (
     <div id="SearchFilters" role="region" aria-label={t("common|filter")}>
       <Button
@@ -226,218 +242,173 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
       />
 
       <div id="filter-content" className={showFilter ? "block" : "hidden"}>
-        <ul
-          className="mb-lg mt-md flex flex-col flex-wrap gap-md md:flex-row"
-          role="list"
-          aria-label={t("common|available-filters")}
-        >
-          {search.allFacets &&
-            Object.entries(search.allFacets)
-              .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
-              .map(([key, value], idx: number) => {
-                const isLicense = false; // Removed for now. key.includes('license');
-                const shouldFetchMore = value.show <= value.count;
-                const show = (value && value.show) || 20;
-                const facetValues = inputFilter[key]
-                  ? value?.facetValues.filter(
-                      (v) =>
-                        v.title
-                          ?.toLowerCase()
-                          .includes(inputFilter[key].toLowerCase()),
-                    )
-                  : value?.facetValues.slice(0, show);
+        {/* Group the facets and render them by group */}
+        {Object.entries(groupedFacets).map(([groupName, groupFacets]) => (
+          <div key={groupName} className="mb-lg">
+            {groupName !== "default" && (
+              <h2 className="mb-md text-lg font-strong">
+                {t(`filters|group$${groupName}`)}
+              </h2>
+            )}
+            <ul
+              className="flex flex-col flex-wrap gap-md md:flex-row"
+              role="list"
+              aria-label={t("common|available-filters")}
+            >
+              {Object.entries(groupFacets)
+                .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
+                .map(([key, value], idx: number) => {
+                  const isLicense = false;
+                  const shouldFetchMore = value.show <= value.count;
+                  const show = (value && value.show) || 20;
+                  const facetValues = inputFilter[key]
+                    ? value?.facetValues.filter(
+                        (v) =>
+                          v.title
+                            ?.toLowerCase()
+                            .includes(inputFilter[key].toLowerCase()),
+                      )
+                    : value?.facetValues.slice(0, show);
 
-                if (key !== hvd && key !== national) {
-                  return (
-                    <li key={"box" + value.title + idx} role="listitem">
-                      <SearchFilter
-                        title={value.title}
-                        usedFilters={FindFilters(
-                          value.facetValues,
-                          search.request.facetValues,
-                        )}
-                      >
-                        <div className="absolute z-10 mr-lg mt-sm max-h-[600px] w-full overflow-y-auto bg-white shadow-md md:max-w-[20.625rem]">
-                          {(searchMode == "datasets" ||
-                            searchMode == "specifications") && (
-                            //only render on searchpage
-                            <>
-                              {isLicense ? (
-                                <MarkAll
-                                  search={search}
-                                  toggleKey={key}
-                                  title={t(`filters|allchecktext$${key}`)}
-                                />
-                              ) : (
-                                <FilterSearch
-                                  filterKey={key}
-                                  filter={inputFilter}
-                                  setFilter={setInputFilter}
-                                  title={value.title}
-                                  fetchMore={() =>
-                                    shouldFetchMore &&
-                                    search.fetchMoreFacets(key)
-                                  }
-                                />
-                              )}
-                            </>
+                  if (key !== hvd && key !== national) {
+                    return (
+                      <li key={`${value.title}-${idx}`} role="listitem">
+                        <SearchFilter
+                          title={value.title}
+                          usedFilters={FindFilters(
+                            value.facetValues,
+                            search.request.facetValues,
                           )}
-                          {/* List of filter options within this category */}
-                          <ul role="listbox" aria-multiselectable="true">
-                            {facetValues.map(
-                              (facetValue: SearchFacetValue, index: number) => (
-                                <li
-                                  key={index}
-                                  role="option"
-                                  aria-selected={selected(key, facetValue)}
-                                >
-                                  <button
-                                    className={`focus--in group relative flex w-full items-center break-words py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
-                                      selected(key, facetValue) && "font-strong"
-                                    }`}
-                                    onClick={() => {
-                                      doSearch(key, facetValue);
-                                    }}
-                                    role="checkbox"
-                                    aria-checked={selected(key, facetValue)}
-                                  >
-                                    {facetValue.title || facetValue.resource} (
-                                    {facetValue.count})
-                                    {/* Decorative checkbox icon */}
-                                    <span
-                                      className="absolute right-md"
-                                      aria-hidden="true"
-                                    >
-                                      {selected(key, facetValue) ? (
-                                        <CheckboxCheckedIcon
-                                          height={iconSize * 1.5}
-                                          width={iconSize * 1.5}
-                                          viewBox="0 0 24 24"
-                                        />
-                                      ) : (
-                                        <CheckboxIcon
-                                          height={iconSize * 1.5}
-                                          width={iconSize * 1.5}
-                                          viewBox="0 0 24 24"
-                                        />
-                                      )}
-                                    </span>
-                                  </button>
-                                </li>
-                              ),
+                        >
+                          <div className="absolute z-10 mr-lg mt-sm max-h-[600px] w-full overflow-y-auto bg-white shadow-md md:max-w-[20.625rem]">
+                            {(searchMode == "datasets" ||
+                              searchMode == "specifications") && (
+                              //only render on searchpage
+                              <>
+                                {isLicense ? (
+                                  <MarkAll
+                                    search={search}
+                                    toggleKey={key}
+                                    title={t(`filters|allchecktext$${key}`)}
+                                  />
+                                ) : (
+                                  <FilterSearch
+                                    filterKey={key}
+                                    filter={inputFilter}
+                                    setFilter={setInputFilter}
+                                    title={value.title}
+                                    fetchMore={() =>
+                                      shouldFetchMore &&
+                                      search.fetchMoreFacets(key)
+                                    }
+                                  />
+                                )}
+                              </>
                             )}
-                          </ul>
+                            {/* List of filter options within this category */}
+                            <ul role="listbox" aria-multiselectable="true">
+                              {facetValues.map(
+                                (
+                                  facetValue: SearchFacetValue,
+                                  index: number,
+                                ) => (
+                                  <li
+                                    key={index}
+                                    role="option"
+                                    aria-selected={selected(key, facetValue)}
+                                  >
+                                    <button
+                                      className={`focus--in group relative flex w-full items-center break-words py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
+                                        selected(key, facetValue) &&
+                                        "font-strong"
+                                      }`}
+                                      onClick={() => {
+                                        doSearch(key, facetValue);
+                                      }}
+                                      role="checkbox"
+                                      aria-checked={selected(key, facetValue)}
+                                    >
+                                      {facetValue.title || facetValue.resource}{" "}
+                                      ({facetValue.count})
+                                      {/* Decorative checkbox icon */}
+                                      <span
+                                        className="absolute right-md"
+                                        aria-hidden="true"
+                                      >
+                                        {selected(key, facetValue) ? (
+                                          <CheckboxCheckedIcon
+                                            height={iconSize * 1.5}
+                                            width={iconSize * 1.5}
+                                            viewBox="0 0 24 24"
+                                          />
+                                        ) : (
+                                          <CheckboxIcon
+                                            height={iconSize * 1.5}
+                                            width={iconSize * 1.5}
+                                            viewBox="0 0 24 24"
+                                          />
+                                        )}
+                                      </span>
+                                    </button>
+                                  </li>
+                                ),
+                              )}
+                            </ul>
 
-                          {value.facetValues.length > value.show && (
-                            <Button
-                              variant="secondary"
-                              size="sm"
-                              className="mx-sm my-md"
-                              onClick={() => {
-                                search.fetchMoreFacets(key);
-                              }}
-                              disabled={search.loadingFacets}
-                              label={
-                                search.loadingFacets
-                                  ? t("common|loading")
-                                  : t("common|load-more")
-                              }
-                            />
-                          )}
-                          {facetValues.length == 0 && (
-                            <div className="p-md">
-                              {t("pages|search$nohits")}
-                            </div>
-                          )}
-                        </div>
-                      </SearchFilter>
-                    </li>
-                  );
-                } else if (key === hvd) {
-                  return (
-                    <div key={value.title} className="relative max-w-fit">
-                      <input
-                        id="hvd_only"
-                        name="API"
-                        type="checkbox"
-                        className="peer/hvd-only sr-only"
-                        checked={
-                          search.request.facetValues?.some(
-                            (t) => t.title == ESRdfType.hvd,
-                          ) || false
-                        }
-                        onChange={() => doSearch(key, facetValues[0])}
-                      />
-                      <label
-                        className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl 
-                        peer-checked:after:translate-x-full peer-focus-visible/hvd-only:bg-whiteOpaque5 peer-focus-visible/hvd-only:outline-dashed peer-focus-visible/hvd-only:outline-[3px] 
-                        peer-focus-visible/hvd-only:outline-offset-2 peer-focus-visible/hvd-only:outline-primary md:pr-xl"
-                        htmlFor="hvd_only"
-                      >
-                        {t(`resources|${key}`)}
-                      </label>
-                      <CheckboxIcon
-                        height={iconSize * 1.5}
-                        width={iconSize * 1.5}
-                        viewBox="0 0 24 24"
-                        className="pointer-events-none absolute right-sm top-1/4 peer-checked/hvd-only:hidden"
-                      />
-                      <CheckboxCheckedIcon
-                        height={iconSize * 1.5}
-                        width={iconSize * 1.5}
-                        viewBox="0 0 24 24"
-                        className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/hvd-only:block"
-                      />
-                    </div>
-                  );
-                } else if (key === national) {
-                  return (
-                    <div key={value.title} className="relative max-w-fit">
-                      <input
-                        id="national_only"
-                        name="National"
-                        type="checkbox"
-                        className="peer/national-only sr-only"
-                        checked={
-                          search.request.facetValues?.some(
-                            (t) => t.facet == ESRdfType.national_data,
-                          ) || false
-                        }
-                        onChange={() => doSearch(key, facetValues[0])}
-                      />
-                      <label
-                        className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl 
-                      peer-checked:after:translate-x-full peer-focus-visible/national-only:bg-whiteOpaque5 peer-focus-visible/national-only:outline-dashed peer-focus-visible/national-only:outline-[3px] 
-                      peer-focus-visible/national-only:outline-offset-2 peer-focus-visible/national-only:outline-primary md:pr-xl"
-                        htmlFor="national_only"
-                      >
-                        {t(`resources|${key}`)}
-                      </label>
-                      <CheckboxIcon
-                        height={iconSize * 1.5}
-                        width={iconSize * 1.5}
-                        viewBox="0 0 24 24"
-                        className="pointer-events-none absolute right-sm top-1/4 peer-checked/national-only:hidden"
-                      />
-                      <CheckboxCheckedIcon
-                        height={iconSize * 1.5}
-                        width={iconSize * 1.5}
-                        viewBox="0 0 24 24"
-                        className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/national-only:block"
-                      />
-                    </div>
-                  );
+                            {value.facetValues.length > value.show && (
+                              <Button
+                                variant="secondary"
+                                size="sm"
+                                className="mx-sm my-md"
+                                onClick={() => {
+                                  search.fetchMoreFacets(key);
+                                }}
+                                disabled={search.loadingFacets}
+                                label={
+                                  search.loadingFacets
+                                    ? t("common|loading")
+                                    : t("common|load-more")
+                                }
+                              />
+                            )}
+                            {facetValues.length == 0 && (
+                              <div className="p-md">
+                                {t("pages|search$nohits")}
+                              </div>
+                            )}
+                          </div>
+                        </SearchFilter>
+                      </li>
+                    );
+                  }
+                  return null;
+                })}
+            </ul>
+          </div>
+        ))}
+
+        {searchMode == "datasets" && (
+          <>
+            <div className="relative max-w-fit">
+              <input
+                id="api_only"
+                name="API"
+                type="checkbox"
+                className="peer/api-only sr-only"
+                checked={
+                  search.request.esRdfTypes?.some(
+                    (t) => t == ESRdfType.esterms_ServedByDataService,
+                  ) &&
+                  search.request.esRdfTypes?.some(
+                    (t) => t == ESRdfType.esterms_IndependentDataService,
+                  ) &&
+                  !search.request.esRdfTypes?.some(
+                    (t) => t == ESRdfType.dataset,
+                  )
                 }
-              })}
-          {searchMode == "datasets" && (
-            <>
-              <div className="relative max-w-fit">
-                <input
-                  id="api_only"
-                  name="API"
-                  type="checkbox"
-                  className="peer/api-only sr-only"
-                  checked={
+                onChange={() => {
+                  clearCurrentScrollPos();
+                  if (
                     search.request.esRdfTypes?.some(
                       (t) => t == ESRdfType.esterms_ServedByDataService,
                     ) &&
@@ -447,67 +418,53 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                     !search.request.esRdfTypes?.some(
                       (t) => t == ESRdfType.dataset,
                     )
+                  ) {
+                    search
+                      .set({
+                        esRdfTypes: [
+                          ESRdfType.dataset,
+                          ESRdfType.esterms_IndependentDataService,
+                          ESRdfType.esterms_ServedByDataService,
+                        ],
+                        query: query,
+                      })
+                      .then(() => search.doSearch());
+                  } else {
+                    search
+                      .set({
+                        esRdfTypes: [
+                          ESRdfType.esterms_IndependentDataService,
+                          ESRdfType.esterms_ServedByDataService,
+                        ],
+                        query: query,
+                      })
+                      .then(() => search.doSearch());
                   }
-                  onChange={() => {
-                    clearCurrentScrollPos();
-                    if (
-                      search.request.esRdfTypes?.some(
-                        (t) => t == ESRdfType.esterms_ServedByDataService,
-                      ) &&
-                      search.request.esRdfTypes?.some(
-                        (t) => t == ESRdfType.esterms_IndependentDataService,
-                      ) &&
-                      !search.request.esRdfTypes?.some(
-                        (t) => t == ESRdfType.dataset,
-                      )
-                    ) {
-                      search
-                        .set({
-                          esRdfTypes: [
-                            ESRdfType.dataset,
-                            ESRdfType.esterms_IndependentDataService,
-                            ESRdfType.esterms_ServedByDataService,
-                          ],
-                          query: query,
-                        })
-                        .then(() => search.doSearch());
-                    } else {
-                      search
-                        .set({
-                          esRdfTypes: [
-                            ESRdfType.esterms_IndependentDataService,
-                            ESRdfType.esterms_ServedByDataService,
-                          ],
-                          query: query,
-                        })
-                        .then(() => search.doSearch());
-                    }
-                  }}
-                />
-                <label
-                  className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl 
-                peer-checked:after:translate-x-full peer-focus-visible/api-only:bg-whiteOpaque5 peer-focus-visible/api-only:outline-dashed 
-                peer-focus-visible/api-only:outline-[3px] peer-focus-visible/api-only:outline-offset-2 peer-focus-visible/api-only:outline-primary md:pr-xl"
-                  htmlFor="api_only"
-                >
-                  API
-                </label>
-                <CheckboxIcon
-                  height={iconSize * 1.5}
-                  width={iconSize * 1.5}
-                  viewBox="0 0 24 24"
-                  className="pointer-events-none absolute right-sm top-1/4 peer-checked/api-only:hidden"
-                />
-                <CheckboxCheckedIcon
-                  height={iconSize * 1.5}
-                  width={iconSize * 1.5}
-                  viewBox="0 0 24 24"
-                  className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/api-only:block"
-                />
-              </div>
-            </>
-          )}
-        </ul>
+                }}
+              />
+              <label
+                className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl 
+              peer-checked:after:translate-x-full peer-focus-visible/api-only:bg-whiteOpaque5 peer-focus-visible/api-only:outline-dashed 
+              peer-focus-visible/api-only:outline-[3px] peer-focus-visible/api-only:outline-offset-2 peer-focus-visible/api-only:outline-primary md:pr-xl"
+                htmlFor="api_only"
+              >
+                API
+              </label>
+              <CheckboxIcon
+                height={iconSize * 1.5}
+                width={iconSize * 1.5}
+                viewBox="0 0 24 24"
+                className="pointer-events-none absolute right-sm top-1/4 peer-checked/api-only:hidden"
+              />
+              <CheckboxCheckedIcon
+                height={iconSize * 1.5}
+                width={iconSize * 1.5}
+                viewBox="0 0 24 24"
+                className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/api-only:block"
+              />
+            </div>
+          </>
+        )}
       </div>
       {search.request.facetValues && search.request.facetValues.length > 0 && (
         <div className="mt-lg flex flex-col justify-between gap-md md:flex-row md:items-baseline">
