@@ -512,28 +512,28 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
         takeFacets: this.state.request.takeFacets || 30,
       });
 
-      if (res.esFacets) {
-        const facets = await entryScape.getFacets(
-          res.esFacets,
-          this.state.dcatmeta,
-        );
+      if (!res.esFacets || !this.state.dcatmeta) return;
 
-        if (facets) {
-          this.setState({ allFacets: facets });
+      const facets = await entryScape.getFacets(
+        res.esFacets,
+        this.state.dcatmeta,
+      );
 
-          if (hasLocalStore && hasWindow) {
-            localStorage.setItem(store_cache_key, JSON.stringify(facets));
-            localStorage.setItem(
-              store_cache_key_stamp,
-              JSON.stringify(new Date()),
-            );
-          }
-        } else {
-          this.setState({
-            request: this.state.request,
-            loadingFacets: false,
-          });
+      if (facets) {
+        this.setState({ allFacets: facets });
+
+        if (hasLocalStore && hasWindow) {
+          localStorage.setItem(store_cache_key, JSON.stringify(facets));
+          localStorage.setItem(
+            store_cache_key_stamp,
+            JSON.stringify(new Date()),
+          );
         }
+      } else {
+        this.setState({
+          request: this.state.request,
+          loadingFacets: false,
+        });
       }
     } catch (error) {
       console.error("Failed to fetch all facets:", error);
@@ -918,7 +918,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
         );
       });
 
-      if (res.esFacets) {
+      if (res.esFacets && this.state.dcatmeta) {
         const facets = await entryScape.getFacets(
           res.esFacets,
           this.state.dcatmeta,

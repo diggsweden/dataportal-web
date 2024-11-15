@@ -11,8 +11,13 @@
  * @param lang
  */
 
-import { EntryStore, EntryStoreUtil } from "@entryscape/entrystore-js";
-import { entryCache, publisherCache } from "./localCache";
+import {
+  EntryStoreUtil,
+  Metadata,
+  MetadataValue,
+} from "@entryscape/entrystore-js";
+import { entryCache } from "./localCache";
+import { Choice, ChoiceTemplate, DCATData } from "./dcatUtils";
 
 export const getLocalizedMetadataValue = (
   metadataGraph: any,
@@ -106,22 +111,22 @@ export const getLocalizedValue = async (
 };
 
 export const getSimplifiedLocalizedValue = (
-  metadata: any,
+  metadata: Metadata,
   property: string,
 ) => {
   const values = metadata.find(null, property);
   // Try to find Swedish value first
-  const svValue = values.find((v: any) => v.getLanguage() === "sv");
+  const svValue = values.find((v: MetadataValue) => v.getLanguage() === "sv");
   // Fall back to English if no Swedish
-  const enValue = values.find((v: any) => v.getLanguage() === "en");
+  const enValue = values.find((v: MetadataValue) => v.getLanguage() === "en");
   // Fall back to first value if neither Swedish nor English
   return (svValue || enValue || values[0])?.getValue() || "";
 };
 
-export const getFacetNames = async (
+export const getUriNames = async (
   facetValues: string[],
   esu: EntryStoreUtil,
-  facetSpec: any,
+  property?: string,
 ) => {
   const cache = entryCache.get();
   // Filter out null values and already cached URIs
@@ -139,59 +144,7 @@ export const getFacetNames = async (
       uniqueUris,
       null,
       true,
-      facetSpec.predicate,
-    );
-
-    // Process all entries at once
-    entries.forEach(async (entry: any) => {
-      if (entry) {
-        const metadata = entry.getMetadata();
-        const uri = entry.getResourceURI();
-        const name =
-          getSimplifiedLocalizedValue(metadata, "dcterms:title") ||
-          getSimplifiedLocalizedValue(metadata, "foaf:name") ||
-          undefined;
-
-        cache.set(uri, name);
-      }
-    });
-
-    // Cache any URIs that weren't found
-    uniqueUris.forEach((uri) => {
-      if (!cache.has(uri)) {
-        cache.set(uri, uri);
-      }
-    });
-
-    return cache;
-  } catch (error) {
-    console.error("Error fetching publisher names:", error);
-    uniqueUris.forEach((uri) => cache.set(uri, uri));
-    return cache;
-  }
-};
-
-// Helper function to get publisher name from URI
-export const getPublisherNames = async (
-  publisherUris: string[],
-  esu: EntryStoreUtil,
-) => {
-  const cache = publisherCache.get();
-  // Filter out null values and already cached URIs
-  const uniqueUris = Array.from(new Set(publisherUris)).filter(
-    (uri): uri is string => uri !== null && !cache.has(uri),
-  );
-
-  if (uniqueUris.length === 0) {
-    return cache;
-  }
-  try {
-    // Load all entries in one batch with a single request
-    const entries = await esu.loadEntriesByResourceURIs(
-      publisherUris,
-      null,
-      true,
-      "publisher",
+      property,
     );
 
     // TODO: This is not efficient, we need to find another way in handling this
@@ -201,11 +154,11 @@ export const getPublisherNames = async (
         const metadata = entry.getMetadata();
         const uri = entry.getResourceURI();
         const name =
-          getSimplifiedLocalizedValue(metadata, "foaf:name") ||
           getSimplifiedLocalizedValue(metadata, "dcterms:title") ||
+          getSimplifiedLocalizedValue(metadata, "foaf:name") ||
           getSimplifiedLocalizedValue(metadata, "skos:prefLabel") ||
           getSimplifiedLocalizedValue(metadata, "rdfs:label") ||
-          undefined;
+          uri;
 
         cache.set(uri, name);
       }
@@ -220,7 +173,7 @@ export const getPublisherNames = async (
 
     return cache;
   } catch (error) {
-    console.error("Error fetching publisher names:", error);
+    console.error("Error fetching URI names:", error);
     uniqueUris.forEach((uri) => cache.set(uri, uri));
     return cache;
   }
@@ -234,13 +187,13 @@ export const getPublisherNames = async (
  * @returns
  */
 export function getTemplateChoices(
-  dcatMeta: any,
+  dcatMeta: DCATData,
   propertyUri: string,
   id?: string,
 ) {
   // Find all templates with matching property URI
   const template = dcatMeta.templates.find(
-    (t: any) =>
+    (t): t is ChoiceTemplate =>
       t.property === propertyUri && t.type === "choice" && (!id || t.id === id),
   );
 
@@ -253,8 +206,12 @@ export function getTemplateChoices(
  * @param lang
  * @returns
  */
-export function getLocalizedChoiceLabel(choice: any, lang: string) {
-  return choice.label[lang] || choice.label["en"] || choice.value;
+export function getLocalizedChoiceLabel(choice: Choice, lang: string) {
+  return (
+    choice.label[lang as keyof typeof choice.label] ||
+    choice.label["en"] ||
+    choice.value
+  );
 }
 
 /**

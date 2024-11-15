@@ -38,15 +38,16 @@ declare module "@entryscape/entrystore-js" {
     literalProperty(
       predicate: string,
       object: string | string[],
-      modifier?: boolean | string,
+      modifier?: boolean | string | null,
       indexType?: "ngram" | "text" | "string",
-      related?: boolean,
+      related?: Boolean,
     ): this;
+
     uriProperty(
       predicate: string,
       object: string | string[],
-      modifier?: boolean | string,
-      related?: boolean,
+      modifier?: boolean | string | null,
+      related?: Boolean,
     ): this;
 
     // Query behavior modifiers
@@ -78,6 +79,9 @@ declare module "@entryscape/entrystore-js" {
 
   export class Entry {
     getMetadata(): Metadata;
+    getAllMetadata(): Metadata;
+    getContext(): Context;
+    getId(): string;
     getResourceURI(): string;
   }
 
@@ -93,5 +97,6 @@ declare module "@entryscape/entrystore-js" {
 
   export interface Context {
     getResourceURI(): string;
+    getId(): string;
   }
 }
