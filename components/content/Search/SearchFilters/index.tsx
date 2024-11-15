@@ -292,7 +292,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                                   aria-selected={selected(key, facetValue)}
                                 >
                                   <button
-                                    className={`focus--in group relative flex w-full items-center break-all py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
+                                    className={`focus--in group relative flex w-full items-center break-words py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
                                       selected(key, facetValue) && "font-strong"
                                     }`}
                                     onClick={() => {
@@ -361,9 +361,11 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                         name="API"
                         type="checkbox"
                         className="peer/hvd-only sr-only"
-                        checked={search.request.facetValues?.some(
-                          (t) => t.title == ESRdfType.hvd,
-                        )}
+                        checked={
+                          search.request.facetValues?.some(
+                            (t) => t.title == ESRdfType.hvd,
+                          ) || false
+                        }
                         onChange={() => doSearch(key, facetValues[0])}
                       />
                       <label
@@ -396,9 +398,11 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                         name="National"
                         type="checkbox"
                         className="peer/national-only sr-only"
-                        checked={search.request.facetValues?.some(
-                          (t) => t.facet == ESRdfType.national_data,
-                        )}
+                        checked={
+                          search.request.facetValues?.some(
+                            (t) => t.facet == ESRdfType.national_data,
+                          ) || false
+                        }
                         onChange={() => doSearch(key, facetValues[0])}
                       />
                       <label
