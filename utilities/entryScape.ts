@@ -6,18 +6,18 @@ import {
   listChoices,
   slugify,
   getLocalizedMetadataValue,
-  getPublisherNames,
   getTemplateChoices,
   getLocalizedChoiceLabel,
-  getFacetNames,
+  getUriNames,
+  Choice,
 } from "@/utilities";
 import { Translate } from "next-translate";
 import { SearchSortOrder } from "@/providers/SearchProvider";
 // @ts-ignore
-import { EntryStore, EntryStoreUtil } from "@entryscape/entrystore-js";
+import { EntryStore, EntryStoreUtil, Entry } from "@entryscape/entrystore-js";
 // @ts-ignore
 import { namespaces } from "@entryscape/rdfjson";
-import { publisherCache, entryCache } from "./localCache";
+import { entryCache } from "./localCache";
 //const tokenize = require('edge-ngrams')()
 
 //#region ES members
@@ -111,11 +111,11 @@ export class EntryScape {
    * Get the EntryStore instance
    * @returns EntryStore instance
    */
-  private getEntryStore(): any {
+  private getEntryStore(): EntryStore {
     return this.entryStore;
   }
 
-  private getEntryStoreUtil(): any {
+  private getEntryStoreUtil(): EntryStoreUtil {
     return this.entryStoreUtil;
   }
 
@@ -128,7 +128,7 @@ export class EntryScape {
    */
   async getFacets(
     metaFacets: ESFacetField[],
-    dcat?: DCATData | undefined,
+    dcat: DCATData,
   ): Promise<{ [key: string]: SearchFacet }> {
     let facets: { [key: string]: SearchFacet } = {};
     let returnFacets: { [key: string]: SearchFacet } = {};
@@ -140,17 +140,6 @@ export class EntryScape {
       );
 
       if (facetSpec) {
-        if (
-          facetSpec.dcatType !== "choice" &&
-          facetSpec.dcatProperty !== "dcterms:publisher"
-        ) {
-          await getFacetNames(
-            f.values.map((v) => v.name),
-            this.entryStoreUtil,
-            facetSpec,
-          );
-        }
-
         facets[f.predicate] = {
           title: this.t(f.predicate),
           name: f.name,
@@ -159,17 +148,19 @@ export class EntryScape {
           count: f.valueCount,
           show: 25,
           facetValues: f.values
-            .filter((value: any) => {
+            .filter((value: ESFacetFieldValue) => {
               if (!facetSpec?.dcatFilterEnabled) return true;
 
-              const choices = getTemplateChoices(
+              const choices: Choice[] = getTemplateChoices(
                 dcat,
                 facetSpec.dcatProperty,
                 facetSpec.dcatId,
               );
-              return choices.some((choice: any) => choice.value === value.name);
+              return choices.some(
+                (choice: Choice) => choice.value === value.name,
+              );
             })
-            .map((value: any) => {
+            .map((value: ESFacetFieldValue) => {
               let displayName = value.name;
 
               if (facetSpec?.dcatType === "choice") {
@@ -178,13 +169,12 @@ export class EntryScape {
                   facetSpec.dcatProperty,
                   facetSpec.dcatId,
                 );
-                const choice = choices.find((c: any) => c.value === value.name);
+                const choice = choices.find(
+                  (c: Choice) => c.value === value.name,
+                );
                 if (choice) {
                   displayName = getLocalizedChoiceLabel(choice, this.lang);
                 }
-              } else if (facetSpec?.dcatProperty === "dcterms:publisher") {
-                // Use cached publisher name without making new requests
-                displayName = publisherCache.getValue(value.name) || value.name;
               } else {
                 displayName = entryCache.getValue(value.name) || value.name;
               }
@@ -247,7 +237,7 @@ export class EntryScape {
    * @param dcat DCAT metadata object
    */
   async getMetaValues(
-    entry: any,
+    entry: Entry,
     dcat?: DCATData,
   ): Promise<{ [key: string]: string[] }> {
     const values: { [key: string]: string[] } = {};
@@ -258,9 +248,9 @@ export class EntryScape {
       try {
         const publisherUri = metadata.findFirstValue(null, "dcterms:publisher");
 
-        const publisherName = publisherCache.getValue(publisherUri);
+        const publisherName = entryCache.getValue(publisherUri);
 
-        values["organisation_literal"] = publisherName || publisherUri;
+        values["organisation_literal"] = [publisherName || publisherUri];
       } catch (error) {
         console.error("Error fetching publisher value:", error);
       }
@@ -315,10 +305,13 @@ export class EntryScape {
           .find(null, "http://purl.org/dc/terms/format")
           .map((f: any) => this.t(f.getValue()));
       }
+      const inSchemeUris = metadata.findFirstValue(
+        null,
+        "http://www.w3.org/2004/02/skos/core#inScheme",
+      );
+      const inSchemeName = entryCache.getValue(inSchemeUris);
 
-      values["inScheme_resource"] = metadata
-        .find(null, "http://www.w3.org/2004/02/skos/core#inScheme")
-        .map((f: any) => f.getValue());
+      values["inScheme_resource"] = [inSchemeName || ""];
 
       values["modified"] = metadata
         .find(null, "http://purl.org/dc/terms/modified")
@@ -372,7 +365,6 @@ export class EntryScape {
     let query = this.luceneFriendlyQuery(request.query || "*");
     const lang = request.language || "sv";
     const es = this.getEntryStore();
-    const esu = this.getEntryStoreUtil();
 
     let esQuery = es.newSolrQuery();
     esQuery.publicRead(true);
@@ -459,15 +451,10 @@ export class EntryScape {
       }
     }
 
-    // Handle pagination
-    const page = request.page || 0;
-    const offset = page > 0 ? page * (request.take || 20) : 0;
-
     const searchList = esQuery
       .limit(request.take || 20)
       .rdfType(request.esRdfTypes || [ESRdfType.dataset])
       .publicRead(true)
-      .offset(offset || 0)
       .list();
 
     query = this.luceneFriendlyQuery(query);
@@ -482,16 +469,24 @@ export class EntryScape {
       let metaFacets;
 
       if (request.fetchFacets) {
-        // searchList.setFacets(data.facetFields);
         metaFacets = searchList.getFacets();
       }
 
-      const publisherUris = metaFacets
-        .find((f: any) => f.predicate === "http://purl.org/dc/terms/publisher")
-        ?.values?.map((v: any) => v.name);
+      // Process facet values if they are not type choices
+      if (metaFacets) {
+        for (const fg of metaFacets) {
+          const facetSpec = this.facetSpecification?.facets?.find(
+            (spec) => spec.resource === fg.predicate,
+          );
 
-      if (publisherUris) {
-        await getPublisherNames(publisherUris, esu);
+          if (facetSpec && facetSpec.dcatType !== "choice") {
+            await getUriNames(
+              fg.values.map((v: SearchFacet) => v.name),
+              this.getEntryStoreUtil(),
+              facetSpec?.dcatProperty,
+            );
+          }
+        }
       }
 
       // Process children sequentially to maintain order

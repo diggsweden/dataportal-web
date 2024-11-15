@@ -292,17 +292,8 @@ export const SearchResults: FC<SearchResultsProps> = ({
                   {hit.metadata &&
                     search.allFacets &&
                     !search.loadingFacets &&
-                    hit.metadata["inScheme_resource"] &&
-                    search.getFacetValueTitle(
-                      "http://www.w3.org/2004/02/skos/core#inScheme",
-                      hit.metadata["inScheme_resource"][0],
-                    ) && (
-                      <span>
-                        {search.getFacetValueTitle(
-                          "http://www.w3.org/2004/02/skos/core#inScheme",
-                          hit.metadata["inScheme_resource"][0],
-                        )}
-                      </span>
+                    hit.metadata["inScheme_resource"] && (
+                      <span>{hit.metadata["inScheme_resource"]}</span>
                     )}
 
                   {isCompact && hit.descriptionLang && (
