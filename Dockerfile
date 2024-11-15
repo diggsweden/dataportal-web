@@ -32,6 +32,7 @@ COPY --from=builder /build/.env.production ./.env.production
 COPY --from=builder /build/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV SKIP_YARN_COREPACK_CHECK 0
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
