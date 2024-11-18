@@ -58,7 +58,7 @@ export const DataSetPage: React.FC = () => {
   const { env, setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
-  const { dataSet, name } = query || {};
+  const { dataSet } = query || {};
   const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];
   const eid = ids[1];
@@ -138,7 +138,7 @@ export const DataSetPage: React.FC = () => {
           {
             return '/${lang}/${t(
               "routes|datasets$path",
-            )}/${cid}_'+entryid+'/${name}/apiexplore/'+apientryid;
+            )}/${cid}_'+entryid+'/apiexplore/'+apientryid;
           }          
           
           window.__entryscape_config = [{
