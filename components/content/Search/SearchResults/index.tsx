@@ -316,7 +316,8 @@ export const SearchResults: FC<SearchResultsProps> = ({
                         )}
                       {hit.metadata && hit.metadata["organisation_literal"] && (
                         <span className="organisation break-words">
-                          {" | " + hit.metadata["organisation_literal"]}
+                          {hit.metadata["theme_literal"].length > 0 && " | "}
+                          {hit.metadata["organisation_literal"]}
                         </span>
                       )}
                     </div>
