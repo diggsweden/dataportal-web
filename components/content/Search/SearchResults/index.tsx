@@ -240,6 +240,17 @@ export const SearchResults: FC<SearchResultsProps> = ({
     return isNational.includes(true);
   }
 
+  const SearchResultSkeleton = () => (
+    <div className="animate-pulse space-y-lg">
+      <div className="rounded h-lg w-1/4 bg-green-600" />
+      <div className="flex flex-col gap-sm">
+        <div className="rounded h-md w-3/4 bg-textPrimary" />
+        <div className="rounded h-md w-3/4 bg-textPrimary" />
+        <div className="rounded h-sm w-2/4 bg-textSecondary" />
+      </div>
+    </div>
+  );
+
   return (
     <div id="search-result" className="my-lg md:my-xl">
       <div className="mb-lg flex flex-col-reverse justify-between md:flex-row">
@@ -267,7 +278,13 @@ export const SearchResults: FC<SearchResultsProps> = ({
         )}
       </div>
 
-      {search.result && (
+      {search.loadingHits && search.result.hits!.length === 0 ? (
+        <div className="space-y-xl">
+          {[...Array(5)].map((_, index) => (
+            <SearchResultSkeleton key={index} />
+          ))}
+        </div>
+      ) : (
         <div>
           <ul className="search-result-list space-y-xl">
             {search.result.hits &&

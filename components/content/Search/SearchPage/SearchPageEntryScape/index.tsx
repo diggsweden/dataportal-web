@@ -151,14 +151,14 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
             dcatType: "choice",
             indexOrder: 1,
             maschineName: "publishertype",
-            group: "type",
+            group: "actor",
           },
           {
             resource: "http://purl.org/dc/terms/publisher",
             dcatProperty: "dcterms:publisher",
             type: ESType.uri,
             indexOrder: 2,
-            group: "type",
+            group: "actor",
           },
           {
             resource: "http://purl.org/dc/terms/format",
@@ -366,11 +366,19 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
                 setShowFilter={setShowFilter}
               />
               <noscript>{t("common|no-js-text")}</noscript>
-              <SearchResults
-                showSorting={showFilter}
-                search={search}
-                searchMode="datasets"
-              />
+              <div
+                className={
+                  search.result.hits && search.result.hits.length === 0
+                    ? "min-h-[800px]"
+                    : " "
+                }
+              >
+                <SearchResults
+                  showSorting={showFilter}
+                  search={search}
+                  searchMode="datasets"
+                />
+              </div>
             </Container>
           )}
         </SearchContext.Consumer>

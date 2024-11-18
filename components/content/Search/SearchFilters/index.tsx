@@ -178,30 +178,31 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
     return search.facetSelected(key, facetValue.resource);
   };
 
-  const doSearch = (key: string, facetValue: SearchFacetValue) => {
+  const doSearch = async (key: string, facetValue: SearchFacetValue) => {
     clearCurrentScrollPos();
-    search.toggleFacet(facetValue).then(async () => {
-      if (search.facetSelected(key, "*")) {
-        let wildcardFacet: SearchFacetValue = {
-          count: -1,
-          facet: key,
-          facetType: ESType.wildcard,
-          related: false,
-          facetValueString: "",
-          resource: "*",
-          title: t(`filters|allchecktext$${key}`),
-        };
-        await search.toggleFacet(wildcardFacet);
-      }
 
-      search.doSearch(false, true, false).then(() => {
-        if (selected(key, facetValue)) {
-          search.sortAllFacets(key);
-        } else {
-          search.sortAllFacets();
-        }
-      });
-    });
+    await search.toggleFacet(facetValue);
+
+    if (search.facetSelected(key, "*")) {
+      let wildcardFacet: SearchFacetValue = {
+        count: -1,
+        facet: key,
+        facetType: ESType.wildcard,
+        related: false,
+        facetValueString: "",
+        resource: "*",
+        title: t(`filters|allchecktext$${key}`),
+      };
+      await search.toggleFacet(wildcardFacet);
+    }
+
+    await search.doSearch(false, true, false);
+
+    if (selected(key, facetValue)) {
+      search.sortAllFacets(key);
+    } else {
+      search.sortAllFacets();
+    }
   };
 
   function updateFilters() {
@@ -237,10 +238,10 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
         aria-controls="filter-content"
         onClick={() => updateFilters()}
         label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
+        disabled={search.loadingFacets}
       />
 
       <div id="filter-content" className={showFilter ? "block" : "hidden"}>
-        {/* Group the facets and render them by group */}
         {Object.entries(groupedFacets).map(([groupName, groupFacets]) => (
           <div key={groupName} className="mb-lg">
             {groupName !== "default" && (
@@ -442,8 +443,8 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
               />
               <label
                 className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl 
-              peer-checked:after:translate-x-full peer-focus-visible/api-only:bg-whiteOpaque5 peer-focus-visible/api-only:outline-dashed 
-              peer-focus-visible/api-only:outline-[3px] peer-focus-visible/api-only:outline-offset-2 peer-focus-visible/api-only:outline-primary md:pr-xl"
+                  peer-checked:after:translate-x-full peer-focus-visible/api-only:bg-whiteOpaque5 peer-focus-visible/api-only:outline-dashed 
+                  peer-focus-visible/api-only:outline-[3px] peer-focus-visible/api-only:outline-offset-2 peer-focus-visible/api-only:outline-primary md:pr-xl"
                 htmlFor="api_only"
               >
                 API

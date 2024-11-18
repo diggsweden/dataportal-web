@@ -139,7 +139,7 @@ export class EntryScape {
       );
 
       if (facetSpec) {
-        facets[f.name] = {
+        facets[f.predicate] = {
           title: this.t(f.predicate),
           name: f.name,
           predicate: f.predicate,
@@ -368,21 +368,24 @@ export class EntryScape {
     let esQuery = es.newSolrQuery();
     esQuery.publicRead(true);
 
-    // Handle facet specifications
-    if (
-      request.fetchFacets &&
-      this.facetSpecification &&
-      this.facetSpecification.facets &&
-      this.facetSpecification.facets.length > 0
-    ) {
-      this.facetSpecification.facets.forEach((fSpec) => {
-        if (fSpec.type == ESType.literal || fSpec.type == ESType.literal_s) {
-          esQuery.facetLimit(1000);
-          esQuery.literalFacet(fSpec.resource, fSpec.related ? true : false);
-        } else if (fSpec.type == ESType.uri || fSpec.type == ESType.wildcard) {
-          esQuery.uriFacet(fSpec.resource, fSpec.related ? true : false);
-        }
-      });
+    // Only set up facets if explicitly requested
+    if (request.fetchFacets) {
+      if (
+        this.facetSpecification?.facets &&
+        this.facetSpecification.facets.length > 0
+      ) {
+        this.facetSpecification.facets.forEach((fSpec) => {
+          if (fSpec.type == ESType.literal || fSpec.type == ESType.literal_s) {
+            esQuery.facetLimit(1000);
+            esQuery.literalFacet(fSpec.resource, fSpec.related ? true : false);
+          } else if (
+            fSpec.type == ESType.uri ||
+            fSpec.type == ESType.wildcard
+          ) {
+            esQuery.uriFacet(fSpec.resource, fSpec.related ? true : false);
+          }
+        });
+      }
     }
 
     // Handle facet values
