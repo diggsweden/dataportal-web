@@ -274,8 +274,6 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
   sortAllFacets = (excludedFacet: string = "") => {
     let allFacets = this.state.allFacets as { [facet: string]: SearchFacet };
 
-    console.log("excluded facet:", excludedFacet);
-
     //check every instance in allFacet for hitcounts in current SearchResult
     Object.entries(allFacets).forEach(([key, facet]) => {
       if (excludedFacet !== key) {

@@ -9,9 +9,11 @@ import TrashIcon from "@/assets/icons/trash.svg";
 import SearchIcon from "@/assets/icons/search.svg";
 import { Button } from "@/components/global/Button";
 import { TextInput } from "@/components/global/Form/TextInput";
-import CheckboxIcon from "@/assets/icons/checkbox.svg";
-import CheckboxCheckedIcon from "@/assets/icons/checkboxChecked.svg";
 import { SettingsContext } from "@/providers/SettingsProvider";
+import {
+  SearchCheckboxFilter,
+  SearchCheckboxFilterIcon,
+} from "./SearchCheckboxFilter/SearchCheckboxFilter";
 
 interface SearchFilterProps {
   showFilter: boolean;
@@ -241,13 +243,22 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
         disabled={search.loadingFacets}
       />
 
-      <div id="filter-content" className={showFilter ? "block" : "hidden"}>
+      <div
+        id="filter-content"
+        className={`mt-lg border-t border-brown-400 pt-lg ${
+          showFilter ? "block" : "hidden"
+        }`}
+      >
         {Object.entries(groupedFacets).map(([groupName, groupFacets]) => (
-          <div key={groupName} className="mb-lg">
+          <div
+            id="group-container"
+            key={groupName}
+            className="mb-lg items-center md:flex"
+          >
             {groupName !== "default" && (
-              <h2 className="mb-md text-lg font-strong">
-                {t(`filters|group$${groupName}`)}
-              </h2>
+              <h4 className="mb-sm mr-md text-sm text-textSecondary md:mb-none">
+                {t(`filters|group$${groupName}`)}:
+              </h4>
             )}
             <ul
               className="flex flex-col flex-wrap gap-md md:flex-row"
@@ -334,19 +345,10 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                                         className="absolute right-md"
                                         aria-hidden="true"
                                       >
-                                        {selected(key, facetValue) ? (
-                                          <CheckboxCheckedIcon
-                                            height={iconSize * 1.5}
-                                            width={iconSize * 1.5}
-                                            viewBox="0 0 24 24"
-                                          />
-                                        ) : (
-                                          <CheckboxIcon
-                                            height={iconSize * 1.5}
-                                            width={iconSize * 1.5}
-                                            viewBox="0 0 24 24"
-                                          />
-                                        )}
+                                        <SearchCheckboxFilterIcon
+                                          isChecked={selected(key, facetValue)}
+                                          iconSize={iconSize}
+                                        />
                                       </span>
                                     </button>
                                   </li>
@@ -379,35 +381,43 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                         </SearchFilter>
                       </li>
                     );
+                  } else if (key === hvd) {
+                    return (
+                      <SearchCheckboxFilter
+                        key={key}
+                        id="hvd_only"
+                        name="API"
+                        checked={search.request.facetValues?.some(
+                          (t) => t.title == ESRdfType.hvd,
+                        )}
+                        onChange={() => doSearch(key, facetValues[0])}
+                        label={t(`resources|${key}`)}
+                        iconSize={iconSize}
+                      />
+                    );
+                  } else if (key === national) {
+                    return (
+                      <SearchCheckboxFilter
+                        key={key}
+                        id="national_only"
+                        name="National"
+                        checked={search.request.facetValues?.some(
+                          (t) => t.facet == ESRdfType.national_data,
+                        )}
+                        onChange={() => doSearch(key, facetValues[0])}
+                        label={t(`resources|${key}`)}
+                        iconSize={iconSize}
+                      />
+                    );
                   }
-                  return null;
                 })}
-            </ul>
-          </div>
-        ))}
 
-        {searchMode == "datasets" && (
-          <>
-            <div className="relative max-w-fit">
-              <input
-                id="api_only"
-                name="API"
-                type="checkbox"
-                className="peer/api-only sr-only"
-                checked={
-                  search.request.esRdfTypes?.some(
-                    (t) => t == ESRdfType.esterms_ServedByDataService,
-                  ) &&
-                  search.request.esRdfTypes?.some(
-                    (t) => t == ESRdfType.esterms_IndependentDataService,
-                  ) &&
-                  !search.request.esRdfTypes?.some(
-                    (t) => t == ESRdfType.dataset,
-                  )
-                }
-                onChange={() => {
-                  clearCurrentScrollPos();
-                  if (
+              {searchMode == "datasets" && groupName == "distribution" && (
+                <SearchCheckboxFilter
+                  key="api_only"
+                  id="api_only"
+                  name="API"
+                  checked={
                     search.request.esRdfTypes?.some(
                       (t) => t == ESRdfType.esterms_ServedByDataService,
                     ) &&
@@ -417,60 +427,56 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                     !search.request.esRdfTypes?.some(
                       (t) => t == ESRdfType.dataset,
                     )
-                  ) {
-                    search
-                      .set({
-                        esRdfTypes: [
-                          ESRdfType.dataset,
-                          ESRdfType.esterms_IndependentDataService,
-                          ESRdfType.esterms_ServedByDataService,
-                        ],
-                        query: query,
-                      })
-                      .then(() => search.doSearch());
-                  } else {
-                    search
-                      .set({
-                        esRdfTypes: [
-                          ESRdfType.esterms_IndependentDataService,
-                          ESRdfType.esterms_ServedByDataService,
-                        ],
-                        query: query,
-                      })
-                      .then(() => search.doSearch());
                   }
-                }}
-              />
-              <label
-                className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl 
-                  peer-checked:after:translate-x-full peer-focus-visible/api-only:bg-whiteOpaque5 peer-focus-visible/api-only:outline-dashed 
-                  peer-focus-visible/api-only:outline-[3px] peer-focus-visible/api-only:outline-offset-2 peer-focus-visible/api-only:outline-primary md:pr-xl"
-                htmlFor="api_only"
-              >
-                API
-              </label>
-              <CheckboxIcon
-                height={iconSize * 1.5}
-                width={iconSize * 1.5}
-                viewBox="0 0 24 24"
-                className="pointer-events-none absolute right-sm top-1/4 peer-checked/api-only:hidden"
-              />
-              <CheckboxCheckedIcon
-                height={iconSize * 1.5}
-                width={iconSize * 1.5}
-                viewBox="0 0 24 24"
-                className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/api-only:block"
-              />
-            </div>
-          </>
-        )}
+                  onChange={() => {
+                    clearCurrentScrollPos();
+                    if (
+                      search.request.esRdfTypes?.some(
+                        (t) => t == ESRdfType.esterms_ServedByDataService,
+                      ) &&
+                      search.request.esRdfTypes?.some(
+                        (t) => t == ESRdfType.esterms_IndependentDataService,
+                      ) &&
+                      !search.request.esRdfTypes?.some(
+                        (t) => t == ESRdfType.dataset,
+                      )
+                    ) {
+                      search
+                        .set({
+                          esRdfTypes: [
+                            ESRdfType.dataset,
+                            ESRdfType.esterms_IndependentDataService,
+                            ESRdfType.esterms_ServedByDataService,
+                          ],
+                          query: query,
+                        })
+                        .then(() => search.doSearch());
+                    } else {
+                      search
+                        .set({
+                          esRdfTypes: [
+                            ESRdfType.esterms_IndependentDataService,
+                            ESRdfType.esterms_ServedByDataService,
+                          ],
+                          query: query,
+                        })
+                        .then(() => search.doSearch());
+                    }
+                  }}
+                  label="API"
+                  iconSize={iconSize}
+                />
+              )}
+            </ul>
+          </div>
+        ))}
       </div>
       {search.request.facetValues && search.request.facetValues.length > 0 && (
         <div className="mt-lg flex flex-col justify-between gap-md md:flex-row md:items-baseline">
-          <div className="flex flex-col flex-wrap gap-sm md:flex-row md:gap-md">
+          <div className="flex flex-col flex-wrap gap-sm md:flex-row md:items-center md:gap-md">
             {(containHVD || containNational) && (
               <span className="text-textSecondary">
-                {t("common|active-filters")}
+                {t("common|active-filters")}:
               </span>
             )}
 

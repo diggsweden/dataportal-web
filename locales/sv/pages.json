@@ -108,7 +108,13 @@
     "detailed-list-active": "Detaljerad lista aktiv",
     "compact-list": "Kompakt lista",
     "compact-list-active": "Kompakt lista aktiv",
-    "pagination-next-txt": "Nästa"
+    "pagination-next-txt": "Nästa",
+    "group": {
+      "access": "Åtkomst",
+      "type": "Typ av data",
+      "actor": "Aktörer",
+      "distribution": "Distribution"
+    }
   },
   "datasets": {
     "search": "Sök Data & Api:er",

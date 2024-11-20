@@ -3,7 +3,7 @@ module.exports = {
   defaultLocale: "sv",
   localeDetection: false,
   pages: {
-    "*": ["common", "pages", "resources", "routes"],
+    "*": ["common", "pages", "resources", "routes", "filters"],
   },
   nsSeparator: "|",
   keySeparator: "$",

@@ -252,7 +252,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
   );
 
   return (
-    <div id="search-result" className="my-lg md:my-xl">
+    <div id="search-result" className="my-lg pt-xl md:my-xl">
       <div className="mb-lg flex flex-col-reverse justify-between md:flex-row">
         <Heading level={2} size="md" className="search-result-header">
           {/* Visual display of the count */}
