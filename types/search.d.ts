@@ -37,7 +37,8 @@ interface FacetSpecificationItem {
   indexOrder: number;
   type: ESType;
   related?: boolean;
-  dcatProperty?: string;
+  dcatProperty: string;
+  dcatId?: string;
   dcatType?: string;
   dcatFilterEnabled?: boolean;
 }

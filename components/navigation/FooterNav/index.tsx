@@ -1,8 +1,9 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { Heading } from "@/components/global/Typography/Heading";
 import { footerNav } from "@/utilities/menuData";
 import Link from "next/link";
+import { SettingsContext } from "@/providers/SettingsProvider";
 
 interface FooterNavItem {
   title: string;
@@ -22,14 +23,16 @@ interface FooterNavProps {
 
 export const FooterNav: FC<FooterNavProps> = ({ setOpenSideBar }) => {
   const { t } = useTranslation();
+  const { iconSize } = useContext(SettingsContext);
+
   return (
     <nav
-      aria-label="Footer"
+      aria-label={t("common|menu-footer")}
       className="flex flex-col gap-xl lg:grid lg:grid-cols-2"
     >
       {footerNav.map((footer: FooterNavData, idx: number) => (
         <div key={idx} className="flex flex-col gap-sm">
-          <Heading size={"sm"} level={2}>
+          <Heading size={"sm"} level={2} className="!text-lg">
             {t(`common|${footer.title}`)}
           </Heading>
           <ul className="space-y-sm">
@@ -48,8 +51,8 @@ export const FooterNav: FC<FooterNavProps> = ({ setOpenSideBar }) => {
                       : link.title}
                     <link.icon
                       className="mb-[2px] ml-xs inline-block [&_path]:fill-green-600"
-                      width={16}
-                      height={16}
+                      width={iconSize}
+                      height={iconSize}
                       viewBox="0 0 24 24"
                     />
                   </Link>

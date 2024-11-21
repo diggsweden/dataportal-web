@@ -32,19 +32,25 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
               size="sm"
               href={showMoreLink}
               label={t("news$view-all")}
+              aria-label={`${t("news$view-all")} ${
+                heading ? `- ${heading}` : ""
+              }`}
               variant="secondary"
             />
           )}
         </div>
       )}
       <ul
-        className={`grid grid-flow-row gap-lg md:auto-rows-min md:grid-cols-2 ${
+        className={`flex flex-col gap-lg md:grid md:grid-flow-row md:auto-rows-min md:grid-cols-2 ${
           landingPage ? "lg:grid-cols-3" : "max-w-md"
         } ${heading ? "mt-xl" : ""}`}
       >
         {links.map((link: PromoProps, idx: number) => {
           return (
-            <li key={idx}>
+            <li
+              key={idx}
+              className="group relative flex h-full flex-col bg-white text-brown-900"
+            >
               <Promo {...link} heading={heading} />
             </li>
           );

@@ -10,11 +10,11 @@ import { Heading } from "@/components/global/Typography/Heading";
 import { Preamble } from "@/components/global/Typography/Preamble";
 import { Button } from "@/components/global/Button";
 
-export const SpecificationPage: FC<{
-  curi?: string;
-  scheme?: string;
-}> = ({ curi, scheme }) => {
-  const { env, setBreadcrumb } = useContext(SettingsContext);
+export const SpecificationPage: FC<{ curi?: string; uri?: string }> = ({
+  curi,
+  uri,
+}) => {
+  const { env, setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
   const { pathname } = useRouter() || {};
@@ -64,7 +64,7 @@ export const SpecificationPage: FC<{
     if (typeof window !== "undefined") {
       const postscribe = (window as any).postscribe;
 
-      if (curi) {
+      if (curi || uri) {
         postscribe(
           "#scriptsPlaceholder",
 
@@ -82,7 +82,12 @@ export const SpecificationPage: FC<{
           <script>
 
           function getDataportalUri(resourceUri, isTerm){
+            if (!resourceUri || !window?.location?.pathname) {
+              return resourceUri;
+            }
 
+            const currentPath = window.location.pathname;
+            const encodedResourceUri = encodeURIComponent(resourceUri);
             var path = '';                      
 
             if(resourceUri.indexOf('://') > -1)
@@ -93,10 +98,10 @@ export const SpecificationPage: FC<{
             else
               path = resourceUri;              
 
-            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalspecification/") > -1)
-              return "/externalspecification/" + path;
+            if(currentPath.includes("/externalspecification"))
+              return "/externalspecification?resource=" + encodedResourceUri;
 
-            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/specifications/") > -1)
+            if(currentPath.includes("/specifications/"))
             {
               let entryPath = '';
 
@@ -144,8 +149,8 @@ export const SpecificationPage: FC<{
             page_language: '${lang}',            
             routes: [
               {
-                regex:new RegExp('(\/*\/externalspecification\/)(.+)'),
-                uri:'${scheme}://${curi}',
+                regex:new RegExp('(\/*\/externalspecification)(.+)'),
+                uri:'${decodeURIComponent(uri as string)}',
                 page_language: '${lang}'
               },                
               {
@@ -231,14 +236,18 @@ export const SpecificationPage: FC<{
                   '<span class="block mb-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
                   '<div>{{ text content="\${skos:definition}" }}</div>' +
                   '<div class="flex justify-between items-end md:items-center mt-md md:mt-lg gap-lg">' +
-                    '<a href="{{resourceURI}}" tabindex="-1">' +
-                      '<button class="button button--primary button--large text-white">${t(
+                    '<a href="{{resourceURI}}">' +
+                      '<span class="button button--primary button--large text-white">${t(
                         "pages|specification_page$specification_download",
                       )}' +
-                        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                        '<svg xmlns="http://www.w3.org/2000/svg" width="${
+                          1.5 * iconSize
+                        }" height="${
+                          1.5 * iconSize
+                        }" viewBox="0 0 24 24" fill="none" class="flex-shrink-0">' +
                         '<path d="M4.08008 11V13H16.0801L10.5801 18.5L12.0001 19.92L19.9201 12L12.0001 4.08002L10.5801 5.50002L16.0801 11H4.08008Z" fill="#6E615A"/>' +
                         '</svg>' +
-                    '</button>' +
+                    '</span>' +
                     '</a>' +
                     '<button open="{{expandTooltip}}" close="{{unexpandTooltip}}" class="esbExpandButton button button--secondary button--large h-fit text-nowrap">' +
                     '</button>' +

@@ -2,16 +2,23 @@ const lucene = require("lucene");
 import {
   DCATData,
   getEntryLang,
-  getLocalizedValue,
+  resourcesSearch,
   listChoices,
   slugify,
+  getLocalizedMetadataValue,
+  getTemplateChoices,
+  getLocalizedChoiceLabel,
+  getUriNames,
+  Choice,
 } from "@/utilities";
 import { Translate } from "next-translate";
 import { SearchSortOrder } from "@/providers/SearchProvider";
+// @ts-ignore
+import { EntryStore, EntryStoreUtil, Entry } from "@entryscape/entrystore-js";
+// @ts-ignore
+import { namespaces } from "@entryscape/rdfjson";
+import { entryCache } from "./localCache";
 //const tokenize = require('edge-ngrams')()
-
-//unfortunate hack to get a entrystore class instance, script is inserted in head
-declare var ESJS: any;
 
 //#region ES members
 
@@ -34,6 +41,7 @@ export enum ESRdfType {
   esterms_ServedByDataService = "esterms:ServedByDataService",
   hvd = "http://data.europa.eu/eli/reg_impl/2023/138/oj",
   agent = "http://xmlns.com/foaf/0.1/Agent",
+  national_data = "http://purl.org/dc/terms/subject",
 }
 
 /* eslint-enable no-unused-vars */
@@ -68,7 +76,8 @@ export class EntryScape {
   facetSpecification: FacetSpecification;
   lang: string;
   t: Translate;
-
+  entryStore: EntryStore;
+  entryStoreUtil: EntryStoreUtil;
   constructor(
     entryscapeUrl: string,
     lang: string,
@@ -90,7 +99,24 @@ export class EntryScape {
     this.lang = lang || "sv";
     this.t = t;
 
-    ESJS.namespaces.add("esterms", "http://entryscape.com/terms/");
+    namespaces.add("esterms", "http://entryscape.com/terms/");
+
+    // Initialize the EntryStore instance
+    this.entryStore = new EntryStore(this.entryscapeUrl);
+    this.entryStoreUtil = new EntryStoreUtil(this.entryStore);
+    this.entryStoreUtil.loadOnlyPublicEntries(true);
+  }
+
+  /**
+   * Get the EntryStore instance
+   * @returns EntryStore instance
+   */
+  private getEntryStore(): EntryStore {
+    return this.entryStore;
+  }
+
+  private getEntryStoreUtil(): EntryStoreUtil {
+    return this.entryStoreUtil;
   }
 
   /**
@@ -100,185 +126,76 @@ export class EntryScape {
    *
    * @param metaFacets
    */
-  getFacets(
+  async getFacets(
     metaFacets: ESFacetField[],
-    take: number,
-    dcat?: DCATData | undefined,
+    dcat: DCATData,
   ): Promise<{ [key: string]: SearchFacet }> {
-    return new Promise<{ [key: string]: SearchFacet }>((resolve) => {
-      let literalFacets: { [key: string]: SearchFacet } = {};
-      let uriFacets: { [key: string]: SearchFacet } = {};
-      let returnFacets: { [key: string]: SearchFacet } = {};
-      let resources: string[] = [];
+    let facets: { [key: string]: SearchFacet } = {};
+    let returnFacets: { [key: string]: SearchFacet } = {};
 
-      metaFacets.forEach(async (f: ESFacetField) => {
-        //check for facetspecification set in UI
-        var facetSpec = this.facetSpecification
-          ? this.facetSpecification.facets?.find(
-              (spec) => spec.resource == f.predicate,
-            )
-          : null;
+    for (const f of metaFacets) {
+      // Find the corresponding facet specification
+      const facetSpec = this.facetSpecification?.facets?.find(
+        (spec) => spec.resource === f.predicate,
+      );
 
-        //filters returned facet values
-        let valueswhitelist: string[] | undefined = undefined;
+      if (facetSpec) {
+        facets[f.predicate] = {
+          title: this.t(f.predicate),
+          name: f.name,
+          predicate: f.predicate,
+          indexOrder: facetSpec.indexOrder,
+          count: f.valueCount,
+          show: 25,
+          facetValues: f.values
+            .filter((value: ESFacetFieldValue) => {
+              if (!facetSpec?.dcatFilterEnabled) return true;
 
-        //if UI requested to filter facet values, to only show values that exists in DCAT metadata spec.
-        if (
-          facetSpec &&
-          facetSpec.dcatProperty &&
-          dcat &&
-          dcat.templates &&
-          facetSpec.dcatFilterEnabled
-        )
-          valueswhitelist = await listChoices(facetSpec!.dcatProperty, dcat!);
+              const choices: Choice[] = getTemplateChoices(
+                dcat,
+                facetSpec.dcatProperty,
+                facetSpec.dcatId,
+              );
+              return choices.some(
+                (choice: Choice) => choice.value === value.name,
+              );
+            })
+            .map((value: ESFacetFieldValue) => {
+              let displayName = value.name;
 
-        //literal types, add to response directly
-        if (
-          f.type == ESType.literal ||
-          f.type == ESType.literal_s ||
-          f.type == ESType.wildcard
-        ) {
-          literalFacets[f.predicate] = {
-            name: f.name,
-            facetValues: [],
-            show: 25,
-            predicate: f.predicate,
-            title: this.t(f.predicate),
-            count: f.valueCount,
-            indexOrder:
-              facetSpec && facetSpec.indexOrder ? facetSpec.indexOrder : 0,
-          };
+              if (facetSpec?.dcatType === "choice") {
+                const choices = getTemplateChoices(
+                  dcat,
+                  facetSpec.dcatProperty,
+                  facetSpec.dcatId,
+                );
+                const choice = choices.find(
+                  (c: Choice) => c.value === value.name,
+                );
+                if (choice) {
+                  displayName = getLocalizedChoiceLabel(choice, this.lang);
+                }
+              } else {
+                displayName = entryCache.getValue(value.name) || value.name;
+              }
 
-          f.values.splice(0, take).forEach((fvalue: ESFacetFieldValue) => {
-            if (
-              !valueswhitelist ||
-              (valueswhitelist &&
-                valueswhitelist.some(
-                  (w) => w.includes(fvalue.name.trim()) && fvalue.name,
-                ))
-            ) {
-              var newValue: SearchFacetValue = {
-                count: fvalue.count,
-                title: fvalue.name.trim(),
-                resource: fvalue.name.trim(),
+              return {
+                count: value.count,
                 facet: f.predicate,
                 facetType: f.type,
-                facetValueString: "",
-                related: f.name.startsWith("related."),
+                facetValueString: `${f.predicate}||${value.name}||${
+                  facetSpec.related || false
+                }||${f.type}||${this.t(f.predicate)}||${displayName}`,
+                related: facetSpec.related || false,
+                resource: value.name,
+                title: displayName,
               };
-
-              newValue.facetValueString = `${f.predicate}||${
-                newValue.resource
-              }||${newValue.related}||${f.type}||${
-                literalFacets[f.predicate].title
-              }||${newValue.title}`;
-
-              (
-                literalFacets[f.predicate].facetValues as SearchFacetValue[]
-              ).push(newValue);
-            }
-          });
-
-          returnFacets[f.predicate] = literalFacets[f.predicate];
-        }
-
-        //uri types, concat resourceURIs for fetching from backend
-        if (f.type == ESType.uri) {
-          uriFacets[f.predicate] = {
-            name: f.name,
-            facetValues: [],
-            show: 25,
-            predicate: f.predicate,
-            title: this.t(f.predicate),
-            count: f.valueCount,
-            indexOrder:
-              facetSpec && facetSpec.indexOrder ? facetSpec.indexOrder : 0,
-          };
-
-          f.values.splice(0, 1000).forEach((fvalue: ESFacetFieldValue) => {
-            if (
-              !valueswhitelist ||
-              (valueswhitelist &&
-                valueswhitelist.some(
-                  (w) => w.includes(fvalue.name.trim()) && fvalue.name,
-                ))
-            )
-              if (!resources.includes(fvalue.name)) {
-                resources.push(fvalue.name);
-
-                var newValue: SearchFacetValue = {
-                  count: fvalue.count,
-                  title: this.t(fvalue.name),
-                  resource: fvalue.name,
-                  facet: f.predicate,
-                  facetType: f.type,
-                  facetValueString: "",
-                  related: f.name.startsWith("related."),
-                };
-
-                newValue.facetValueString = `${f.predicate}||${
-                  newValue.resource
-                }||${newValue.related}||${f.type}||${
-                  uriFacets[f.predicate].title
-                }||${newValue.title}`;
-
-                (uriFacets[f.predicate].facetValues as SearchFacetValue[]).push(
-                  newValue,
-                );
-              }
-          });
-
-          returnFacets[f.predicate] = uriFacets[f.predicate];
-        }
-      });
-
-      //found resources for retrieval
-      if (resources && resources.length > 0) {
-        this.getResources(resources).then((res) => {
-          // eslint-disable-next-line no-unused-vars
-          Object.entries(uriFacets).forEach(([_, value]) => {
-            value.facetValues.forEach((f) => {
-              if (f && f.title == f.resource) {
-                let entry = res.find(
-                  (entry: any) => entry.getResourceURI() == f.resource,
-                );
-
-                if (entry) {
-                  const meta = entry.getAllMetadata();
-
-                  let title = getLocalizedValue(
-                    meta,
-                    "http://xmlns.com/foaf/0.1/name",
-                    this.lang,
-                  );
-
-                  if (!title)
-                    title = getLocalizedValue(
-                      meta,
-                      "http://purl.org/dc/terms/title",
-                      this.lang,
-                    );
-
-                  f.title = title || f.resource;
-                  f.title = f.title!.trim();
-                }
-              }
-            });
-          });
-
-          // eslint-disable-next-line no-unused-vars
-          Object.entries(returnFacets).forEach(([_, value]) => {
-            value.facetValues.forEach((f) => {
-              //f.facetValueString = `${value.title}||${f.title}`
-              f.facetValueString = `${value.predicate}||${f.resource}||${f.related}||${f.facetType}||${value.title}||${f.title}`;
-            });
-          });
-          resolve(returnFacets);
-        });
-      } else {
-        resolve(returnFacets);
+            }),
+        };
+        returnFacets[f.predicate] = facets[f.predicate];
       }
-    });
+    }
+    return returnFacets;
   }
 
   /**
@@ -287,53 +204,31 @@ export class EntryScape {
    *
    * @param resources
    */
-  getResources(resources: string[]): Promise<any> {
-    return new Promise<any>((resolve) => {
-      let result: any[] = [];
-      const es = new ESJS.EntryStore(this.entryscapeUrl);
-      es.getREST().disableJSONP();
-      es.getREST().disableCredentials();
-      const maxRequestUriLength: number = 1500; //for batching request, max URI length is actually 2083 (IE), but keep it safe
-      let resTmp: string[] = [];
-      let requestPromises: Promise<any>[] = [];
+  async getResources(resources: string[]): Promise<any> {
+    const result: any[] = [];
+    const es = this.getEntryStore();
+    const maxRequestUriLength = 1500;
+    const requestPromises: Promise<any>[] = [];
 
-      while (resources.length) {
-        while (resTmp.join(" OR ").length < maxRequestUriLength) {
-          resTmp.push(resources.splice(0, 1)[0]);
-        }
-
-        requestPromises.push(this.resourcesSearch(resTmp, es));
-        resTmp = [];
+    while (resources.length) {
+      const resTmp = [];
+      while (
+        resTmp.join(" OR ").length < maxRequestUriLength &&
+        resources.length > 0
+      ) {
+        resTmp.push(resources.splice(0, 1)[0]);
       }
+      requestPromises.push(resourcesSearch(resTmp, es));
+    }
 
-      Promise.all(requestPromises).then((r: any[]) => {
-        if (r && r.length > 0) {
-          result = Array.prototype.concat(...r);
-        }
-
-        resolve(result);
-      });
+    const responses = await Promise.all(requestPromises);
+    responses.forEach((response) => {
+      if (response && response.length > 0) {
+        result.push(...response);
+      }
     });
-  }
 
-  /**
-   * Make SolrSearch and retrive entries from entryscape
-   * Does not handle to large resource arrays, can leed to request URI errors,
-   * use in batches, see {getResources}-method
-   *
-   * @param resources
-   * @param es
-   */
-  resourcesSearch(resources: string[], es: any): Promise<any> {
-    return new Promise<any>((resolve) => {
-      let esQuery = es.newSolrQuery();
-      esQuery
-        .resource(resources, null)
-        .getEntries(0)
-        .then((children: any) => {
-          resolve(children);
-        });
-    });
+    return result;
   }
 
   /**
@@ -342,102 +237,88 @@ export class EntryScape {
    * @param dcat DCAT metadata object
    */
   async getMetaValues(
-    es: any,
-    dcat?: DCATData | undefined,
+    entry: Entry,
+    dcat?: DCATData,
   ): Promise<{ [key: string]: string[] }> {
-    return new Promise<{ [key: string]: string[] }>(async (resolve) => {
-      let values: { [key: string]: string[] } = {};
+    const values: { [key: string]: string[] } = {};
 
-      if (es) {
-        let metadata = es.getAllMetadata();
+    if (entry) {
+      const metadata = entry.getAllMetadata();
 
-        values["organisation_literal"] = metadata
-          .find(null, "http://www.w3.org/ns/dcat#keyword")
-          .filter((f: any) => f.getLanguage() == undefined)
-          .map((f: any) => {
-            return f.getValue();
-          });
+      try {
+        const publisherUri = metadata.findFirstValue(null, "dcterms:publisher");
 
-        // ***** THEMES
-        //get UI specification for themes
-        var themeFacetSpec = this.facetSpecification
-          ? this.facetSpecification.facets?.find(
-              (spec) => spec.resource == "http://www.w3.org/ns/dcat#theme",
-            )
-          : null;
+        const publisherName = entryCache.getValue(publisherUri);
 
-        //check facetspec if only DCAT themes should be returned
-        if (
-          themeFacetSpec &&
-          themeFacetSpec.dcatFilterEnabled &&
-          themeFacetSpec.dcatProperty
-        ) {
-          var whitelist = await listChoices("dcat:theme", dcat!);
-          values["theme_literal"] = [];
-          let entries = metadata.find(null, "http://www.w3.org/ns/dcat#theme");
+        values["organisation_literal"] = [publisherName || publisherUri];
+      } catch (error) {
+        console.error("Error fetching publisher value:", error);
+      }
 
-          entries.forEach((f: any) => {
-            let resource = f.getValue();
-            if (whitelist.some((w) => w == resource))
-              values["theme_literal"].push(this.t(resource));
-          });
-        } else {
+      let themeFacetSpec = this.facetSpecification?.facets?.find(
+        (spec) => spec.resource === "http://www.w3.org/ns/dcat#theme",
+      );
+
+      if (
+        themeFacetSpec &&
+        themeFacetSpec.dcatFilterEnabled &&
+        themeFacetSpec.dcatProperty
+      ) {
+        try {
+          const whitelist = await listChoices("dcat:theme", dcat!);
           values["theme_literal"] = metadata
             .find(null, "http://www.w3.org/ns/dcat#theme")
-            .map((f: any) => {
-              return this.t(f.getValue());
-            });
+            .map((f: any) => f.getValue())
+            .filter((value: string) => whitelist.includes(value))
+            .map((value: string) => this.t(value));
+        } catch (error) {
+          console.error("Error fetching themes:", error);
         }
+      } else {
+        values["theme_literal"] = metadata
+          .find(null, "http://www.w3.org/ns/dcat#theme")
+          .map((f: any) => this.t(f.getValue()));
+      }
 
-        // ****** FORMATS
-        //get UI specification for formats
-        var formatFacetSpec = this.facetSpecification
-          ? this.facetSpecification.facets?.find(
-              (spec) => spec.resource == "http://purl.org/dc/terms/format",
-            )
-          : null;
+      // Similar approach for formats
+      let formatFacetSpec = this.facetSpecification?.facets?.find(
+        (spec) => spec.resource === "http://purl.org/dc/terms/format",
+      );
 
-        //check facetspec if only DCAT formats should be returned
-        if (
-          formatFacetSpec &&
-          formatFacetSpec.dcatFilterEnabled &&
-          formatFacetSpec.dcatProperty
-        ) {
-          var whitelist = await listChoices("dcterms:format", dcat!);
-          values["format_literal"] = [];
-          let entries = metadata.find(null, "http://purl.org/dc/terms/format");
-
-          entries.forEach((f: any) => {
-            let resource = f.getValue();
-            if (whitelist.some((w) => w == resource))
-              values["format_literal"].push(this.t(resource));
-          });
-        } else {
+      if (
+        formatFacetSpec &&
+        formatFacetSpec.dcatFilterEnabled &&
+        formatFacetSpec.dcatProperty
+      ) {
+        try {
+          const whitelist = await listChoices("dcterms:format", dcat!);
           values["format_literal"] = metadata
             .find(null, "http://purl.org/dc/terms/format")
-            .map((f: any) => {
-              return this.t(f.getValue());
-            });
+            .map((f: any) => f.getValue())
+            .filter((value: string) => whitelist.includes(value))
+            .map((value: string) => this.t(value));
+        } catch (error) {
+          console.error("Error fetching formats:", error);
         }
-
-        values["inScheme_resource"] = metadata
-          .find(null, "http://www.w3.org/2004/02/skos/core#inScheme")
-          .map((f: any) => {
-            return f.getValue();
-          });
-
-        values["modified"] = metadata
-          .find(null, "http://purl.org/dc/terms/modified")
-          .map((f: any) => {
-            return f.getValue();
-          });
-
-        //theme needs to be translated
-        //if(values['theme_literal'])
-        //values['theme_literal'] = i18next.t('facetvalues|'+values['theme_literal']);
+      } else {
+        values["format_literal"] = metadata
+          .find(null, "http://purl.org/dc/terms/format")
+          .map((f: any) => this.t(f.getValue()));
       }
-      resolve(values);
-    });
+      const inSchemeUris = metadata.findFirstValue(
+        null,
+        "http://www.w3.org/2004/02/skos/core#inScheme",
+      );
+      const inSchemeName = entryCache.getValue(inSchemeUris);
+
+      values["inScheme_resource"] = [inSchemeName || ""];
+
+      values["modified"] = metadata
+        .find(null, "http://purl.org/dc/terms/modified")
+        .map((f: any) => f.getValue());
+    }
+
+    return values;
   }
 
   /**
@@ -448,47 +329,25 @@ export class EntryScape {
    * @param query RAW query input
    */
   luceneFriendlyQuery(query: string): string {
-    let q = "";
+    if (query === "AND" || query === "NOT" || query === "OR") return "*";
 
-    if (query == "AND" || query == "NOT" || query == "OR") return "*";
-
-    if (query && (query.startsWith("AND ") || query.startsWith("AND+"))) {
-      query = query.substring(4, query.length);
-    }
-
-    if (query && (query.startsWith("OR ") || query.startsWith("OR+"))) {
-      query = query.substring(3, query.length);
-    }
-
-    if (query && (query.startsWith("NOT ") || query.startsWith("NOT+"))) {
-      query = query.substring(4, query.length);
-    }
-
-    let ast = {};
     try {
-      ast = lucene.parse(query);
-      q = lucene.toString(ast);
-      q = q.replace(/\~ /g, "~");
+      const ast = lucene.parse(query);
+      let q = lucene.toString(ast);
+      q = q.replace(/\\~ /g, "~");
+      q = q.replace(/\+\-/g, "");
+      q = q.replace(/ NOT \-/g, " NOT ");
+      q = q.replace(/ AND NOT /g, "+NOT+");
+      q = q.replace(/ OR NOT /g, "+NOT+");
+      q = q.replace(/ OR /g, "+OR+");
+      q = q.replace(/ AND /g, "+AND+");
+      q = q.replace(/ NOT /g, "+-");
+      if (q.indexOf('"') === -1) q = q.replace(/ /g, "+AND+");
+      if (q.length === 0) q = "*";
+      return q;
     } catch (err) {
-      //could not parse as lucene, remove all special chars and trim
-      q = query.replace(/([\!\*\-\+\&\|\(\)\[\]\{\}\^\~\?\:\"])/g, "").trim();
-      q = q.replace(/\s+/g, " "); //removes mulitple whitespaces
+      return query.replace(/[\!\*\-\+\&\|\(\)\[\]\{\}\^\\~\?\:\"]/g, "").trim();
     }
-
-    q = q.replace(/\+\-/g, "");
-    q = q.replace(/ NOT \-/g, " NOT ");
-    q = q.replace(/ AND NOT /g, "+NOT+");
-    q = q.replace(/ OR NOT /g, "+NOT+");
-    q = q.replace(/ OR /g, "+OR+");
-    q = q.replace(/ AND /g, "+AND+");
-    q = q.replace(/ NOT /g, "+-");
-    //q = q.replace(/ NOT \-/g,"");
-
-    if (q.indexOf('"') == -1) q = q.replace(/ /g, "+AND+");
-
-    if (q.length == 0) q = "*";
-
-    return q;
   }
 
   /**
@@ -498,285 +357,207 @@ export class EntryScape {
    *
    * @returns {Promise<SearchResult>}
    */
-  solrSearch(
+  async solrSearch(
     request: SearchRequest,
-    dcat?: DCATData | undefined,
+    dcat?: DCATData,
   ): Promise<SearchResult> {
-    return new Promise<SearchResult>((resolve) => {
-      let hits: SearchHit[] = [];
-      let query = request.query || "*";
+    const hits: SearchHit[] = [];
+    let query = this.luceneFriendlyQuery(request.query || "*");
+    const lang = request.language || "sv";
+    const es = this.getEntryStore();
 
-      this.luceneFriendlyQuery(query);
-      let lang = request.language || "sv";
+    let esQuery = es.newSolrQuery();
+    esQuery.publicRead(true);
 
-      const es = new ESJS.EntryStore(this.entryscapeUrl);
-      es.getREST().disableJSONP();
-      es.getREST().disableCredentials();
-
-      let esQuery = es.newSolrQuery();
-      let searchList: any;
-
-      const term = "http://www.w3.org/2004/02/skos/core#Concept";
-
-      if (request.fetchFacets) {
-        if (
-          this.facetSpecification &&
-          this.facetSpecification.facets &&
-          this.facetSpecification.facets.length > 0
-        ) {
-          this.facetSpecification.facets.forEach((fSpec) => {
-            if (
-              fSpec.type == ESType.literal ||
-              fSpec.type == ESType.literal_s
-            ) {
-              esQuery.facetLimit(1000);
-              esQuery.literalFacet(
-                fSpec.resource,
-                fSpec.related ? true : false,
-              );
-            } else if (
-              fSpec.type == ESType.uri ||
-              fSpec.type == ESType.wildcard
-            )
-              esQuery.uriFacet(fSpec.resource, fSpec.related ? true : false);
-          });
+    // Handle facet specifications
+    if (
+      request.fetchFacets &&
+      this.facetSpecification &&
+      this.facetSpecification.facets &&
+      this.facetSpecification.facets.length > 0
+    ) {
+      this.facetSpecification.facets.forEach((fSpec) => {
+        if (fSpec.type == ESType.literal || fSpec.type == ESType.literal_s) {
+          esQuery.facetLimit(1000);
+          esQuery.literalFacet(fSpec.resource, fSpec.related ? true : false);
+        } else if (fSpec.type == ESType.uri || fSpec.type == ESType.wildcard) {
+          esQuery.uriFacet(fSpec.resource, fSpec.related ? true : false);
         }
-      }
+      });
+    }
 
-      //if request has facetValues object, add facets to query
-      if (request.facetValues && request.facetValues.length > 0) {
-        //group by facet type (if many selected within same facet group)
-        let groupedFacets = Array.from(request.facetValues).reduce(function (
-          acc: { [facet: string]: SearchFacetValue[] },
-          obj: SearchFacetValue,
-        ) {
-          var key = obj.facet;
-
+    // Handle facet values
+    if (request.facetValues && request.facetValues.length > 0) {
+      const groupedFacets = Array.from(request.facetValues).reduce(
+        (acc: { [facet: string]: SearchFacetValue[] }, obj) => {
+          const key = obj.facet;
           if (!acc[key]) acc[key] = [];
-
           acc[key].push(obj);
           return acc;
-        }, {});
+        },
+        {},
+      );
 
-        //iterate groups and add facets within each, will be "OR" between facets in group, and "AND" between groups
-        Object.entries(groupedFacets).forEach(([key, fvalue]) => {
-          if (fvalue && fvalue.length > 0)
-            switch (fvalue[0].facetType) {
-              case ESType.literal:
-              case ESType.literal_s:
-                esQuery.literalProperty(
-                  key,
-                  fvalue.map((f) => {
-                    return f.title;
-                  }),
-                  null,
-                  "string",
-                  fvalue[0].related,
-                );
-                break;
-              case ESType.uri:
-              case ESType.wildcard:
+      Object.entries(groupedFacets).forEach(([key, fvalue]) => {
+        if (fvalue?.length > 0) {
+          switch (fvalue[0].facetType) {
+            case ESType.literal:
+            case ESType.literal_s:
+              esQuery.literalProperty(
+                key,
+                fvalue.map((f) => f.resource), // Changed from f.title to f.resource
+                null,
+                "string",
+                fvalue[0].related,
+              );
+              break;
+            case ESType.uri:
+            case ESType.wildcard:
+              // Special case for National basic data because all subjects might not be National basic data
+              if (fvalue[0].facet === "http://purl.org/dc/terms/subject") {
                 esQuery.uriProperty(
                   key,
-                  fvalue.map((f) => {
-                    return f.resource;
-                  }),
+                  "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/*",
                   null,
                   fvalue[0].related,
                 );
                 break;
-            }
-        });
-      }
+              }
 
-      if (request.sortOrder)
-        switch (request.sortOrder) {
-          case SearchSortOrder.modified_asc:
-            esQuery.sort("modified+asc");
-            break;
-          case SearchSortOrder.modified_desc:
-            esQuery.sort("metadata.predicate.literal_s.3e2f60da+desc");
-            break;
-          case SearchSortOrder.score_desc:
-            esQuery.sort("score+desc");
-            break;
-        }
-
-      let page = request.page || 0;
-      let offset = page > 0 ? page * (request.take || 20) : 0;
-
-      esQuery
-        .limit(request.take || 20)
-        .rdfType(request.esRdfTypes || [ESRdfType.dataset]) //we will use dataset as default if no resource type is defined
-        .publicRead(true)
-        .offset(offset || 0);
-
-      searchList = esQuery.list();
-
-      let queryUrl = searchList.getQuery().getQuery();
-
-      //let q = this.luceneFriendlyQuery(query);//modifiedQuery.join("+AND+");
-      let titleQ = request.titleQuery
-        ? this.luceneFriendlyQuery(request.titleQuery)
-        : undefined;
-
-      /*
-      För titeln (dcterms:title, dvs http://purl.org/dc/terms/title):
-      metadata.predicate.literal_t.3f2ae919
-
-      För beskrivningen (dcterms:description):
-      metadata.predicate.literal_t.feda1d30
-
-      För nyckelord (dcat:keyword):
-      metadata.predicate.literal_t.a6424133
-
-      För att få fram hashen gör jag:
-      echo -n http://www.w3.org/ns/dcat#keyword | md5sum | cut -c1-8
-       */
-
-      let gram = query.split(" ").reduce((memo: string[], token) => {
-        let tmpMemo: string[] = [];
-        if (token.length > 4)
-          tmpMemo = [...tmpMemo, token.substr(0, token.length - 2) + "*"];
-        else tmpMemo = [...tmpMemo, token];
-
-        memo.push(`${tmpMemo.join("+AND+")}`);
-        return memo;
-      }, []);
-
-      query = this.luceneFriendlyQuery(query);
-      let gramQuery = this.luceneFriendlyQuery(gram.join(" ")); //modifiedQuery.join("+AND+");
-
-      //set query text
-      if (titleQ)
-        queryUrl = queryUrl.replace(
-          "&query=",
-          `&query=(title:(${titleQ}))+AND+`,
-        );
-      else {
-        const termSearch = request.esRdfTypes && request.esRdfTypes[0] === term;
-        const prefLabel = es
-          .newSolrQuery()
-          .literalProperty("skos:prefLabel", query).properties[0].md5;
-        const altLabel = es
-          .newSolrQuery()
-          .literalProperty("skos:altLabel", query).properties[0].md5;
-        const hiddenLabel = es
-          .newSolrQuery()
-          .literalProperty("skos:hiddenLabel", query).properties[0].md5;
-
-        queryUrl = queryUrl.replace(
-          "&query=",
-          `&query=(metadata.object.literal:(${query})+OR+metadata.predicate.literal.${
-            termSearch ? prefLabel : "3f2ae919"
-          }:(${gramQuery})+OR+metadata.predicate.literal.${
-            termSearch ? altLabel : "feda1d30"
-          }:(${gramQuery})+OR+metadata.predicate.literal.${
-            termSearch ? hiddenLabel : "a6424133"
-          }:(${gramQuery}))+AND+`,
-        );
-      }
-
-      fetch(queryUrl).then((response) => {
-        response.json().then((data) => {
-          //if backend error return empty result and error message
-          if (data.error) {
-            resolve({
-              error: data.error,
-              hits: [],
-              count: 0,
-              facets: {},
-              esFacets: [],
-            });
+              esQuery.uriProperty(
+                key,
+                fvalue.map((f) => f.resource),
+                null,
+                fvalue[0].related,
+              );
+              break;
           }
+        }
+      });
+    }
 
-          let children = ESJS.factory.extractSearchResults(
-            data,
-            searchList,
-            es,
+    // Handle sort order
+    if (request.sortOrder) {
+      switch (request.sortOrder) {
+        case SearchSortOrder.modified_asc:
+          esQuery.sort("modified+asc");
+          break;
+        case SearchSortOrder.modified_desc:
+          esQuery.sort("metadata.predicate.literal_s.3e2f60da+desc");
+          break;
+        case SearchSortOrder.score_desc:
+          esQuery.sort("score+desc");
+          break;
+      }
+    }
+
+    const searchList = esQuery
+      .limit(request.take || 20)
+      .rdfType(request.esRdfTypes || [ESRdfType.dataset])
+      .publicRead(true)
+      .list();
+
+    query = this.luceneFriendlyQuery(query);
+
+    // Set query text
+    if (query) {
+      esQuery.all(`${query}`);
+    }
+
+    try {
+      const children = await searchList.getEntries(request.page || 0);
+      let metaFacets;
+
+      if (request.fetchFacets) {
+        metaFacets = searchList.getFacets();
+      }
+
+      // Process facet values if they are not type choices
+      if (metaFacets) {
+        for (const fg of metaFacets) {
+          const facetSpec = this.facetSpecification?.facets?.find(
+            (spec) => spec.resource === fg.predicate,
           );
 
-          //facets must be retrieved explicitly if requested
-          if (request.fetchFacets) {
-            searchList.setFacets(data.facetFields);
-            var metaFacets = searchList.getFacets();
-          }
-
-          //construct SearchHit-array
-          children.forEach(async (child: any) => {
-            let hitSpecification: HitSpecification = {
-              descriptionResource: "blaa",
-              path: "hmm",
-              titleResource: "blaa",
-            };
-
-            const metaData = child.getAllMetadata();
-            const resourceURI = child.getResourceURI();
-            const context = child.getContext();
-            const rdfType = metaData.findFirstValue(
-              child.getResourceURI(),
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          if (facetSpec && facetSpec.dcatType !== "choice") {
+            await getUriNames(
+              fg.values.map((v: SearchFacet) => v.name),
+              this.getEntryStoreUtil(),
+              facetSpec?.dcatProperty,
             );
+          }
+        }
+      }
 
-            hitSpecification = this.hitSpecifications[rdfType] || {
-              titleResource: "dcterms:title",
-              path: "/datasets/",
-              descriptionResource: "dcterms:description",
-            };
+      // Process children sequentially to maintain order
+      for (const child of children) {
+        const metaData = child.getAllMetadata();
+        const resourceURI = child.getResourceURI();
+        const context = child.getContext();
+        const rdfType = metaData.findFirstValue(
+          child.getResourceURI(),
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        );
 
-            let hit = {
-              entryId: child.getId(),
-              title: getLocalizedValue(
-                metaData,
-                hitSpecification.titleResource || "dcterms:title",
-                lang,
-                { resourceURI },
-              ),
-              description: getLocalizedValue(
-                metaData,
-                hitSpecification.descriptionResource || "dcterms:description",
-                lang,
-              ),
-              esEntry: child,
-              metadata: await this.getMetaValues(child, dcat),
-              url: "",
+        let hitSpecification: HitSpecification = {
+          descriptionResource: "blaa",
+          path: "hmm",
+          titleResource: "blaa",
+        };
 
-              titleLang: getEntryLang(
-                metaData,
-                hitSpecification.titleResource || "dcterms:title",
-                lang,
-              ),
-              descriptionLang: getEntryLang(
-                metaData,
-                hitSpecification.descriptionResource || "dcterms:description",
-                lang,
-              ),
-            };
+        hitSpecification = this.hitSpecifications[rdfType] || {
+          titleResource: "dcterms:title",
+          path: "/datasets/",
+          descriptionResource: "dcterms:description",
+        };
 
-            if (hitSpecification.pathResolver) {
-              hit.url = hitSpecification.pathResolver(child);
-            } else {
-              hit.url = `${
-                hitSpecification.path || "datamangd"
-              }${context.getId()}_${hit.entryId}/${slugify(hit.title)}`;
-            }
+        const hit = {
+          entryId: child.getId(),
+          title: getLocalizedMetadataValue(
+            metaData,
+            hitSpecification.titleResource || "dcterms:title",
+            lang,
+            { resourceURI },
+          ),
+          description: getLocalizedMetadataValue(
+            metaData,
+            hitSpecification.descriptionResource || "dcterms:description",
+            lang,
+            { resourceURI },
+          ),
+          esEntry: child,
+          metadata: await this.getMetaValues(child, dcat),
+          url: "",
+          titleLang: getEntryLang(
+            metaData,
+            hitSpecification.titleResource || "dcterms:title",
+            lang,
+          ),
+          descriptionLang: getEntryLang(
+            metaData,
+            hitSpecification.descriptionResource || "dcterms:description",
+            lang,
+          ),
+        };
 
-            hit.description =
-              hit.description && hit.description.length > 250
-                ? `${(hit.description + "").substr(0, 250)}...`
-                : hit.description;
+        hit.url = hitSpecification.pathResolver
+          ? hitSpecification.pathResolver(child)
+          : `${hitSpecification.path || "datamangd"}${context.getId()}_${
+              hit.entryId
+            }/${slugify(hit.title)}`;
 
-            hits.push(hit);
-          });
+        hits.push(hit);
+      }
 
-          resolve({
-            hits: hits,
-            count: searchList.getSize(),
-            facets: {},
-            esFacets: metaFacets,
-          });
-        });
-      });
-    });
+      return {
+        hits,
+        count: searchList.getSize(),
+        facets: {},
+        esFacets: metaFacets,
+      };
+    } catch (error) {
+      console.error("Error in solrSearch:", error);
+      throw error;
+    }
   }
 }

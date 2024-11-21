@@ -106,8 +106,8 @@ body {
     @apply bg-brown-600 text-white [&_path]:fill-white [&_svg]:rotate-180;
   }
   .button--plain {
-    @apply bg-transparent text-brown-600 hover:bg-brown-200 focus-visible:bg-brown-200 group-hover:bg-brown-200 group-focus:bg-brown-200 
-    [&_path]:fill-brown-600;
+    @apply bg-transparent text-brown-600 hover:bg-brown-200 focus-visible:bg-brown-200 group-focus:bg-brown-200 
+    [&:not(.no-group-hover)]:group-hover:bg-brown-200 [&_path]:fill-brown-600;
   }
   .button--plain.active {
     @apply outline outline-2 outline-brown-600 [&_svg]:rotate-180;
@@ -120,13 +120,13 @@ body {
     @apply bg-brown-800 text-white [&_path]:fill-white;
   }
   .button--xs {
-    @apply gap-sm px-md py-[2px] text-sm;
+    @apply gap-sm px-md py-[0.125rem] text-sm;
   }
   .button--small {
-    @apply gap-sm px-md py-[6px] text-sm;
+    @apply gap-sm px-md py-[0.375rem] text-sm;
   }
   .button--large {
-    @apply gap-sm px-md py-[10px] text-md;
+    @apply gap-sm px-md py-[0.625rem] text-md;
   }
 }
 
@@ -221,12 +221,12 @@ input[type="radio"] {
 
 .auth-wrapper .btn.unlocked::after {
   content: url("../assets/icons/lockOpenWhite.svg");
-  @apply h-[24px] w-[24px];
+  @apply h-[1.5rem] w-[1.5rem];
 }
 
 .authorization__btn.unlocked::after {
   content: url("../assets/icons/lockOpenBrown.svg");
-  @apply h-[24px] w-[24px];
+  @apply h-[1.5rem] w-[1.5rem];
 }
 
 .auth-wrapper .btn.unlocked svg,
@@ -236,4 +236,15 @@ input[type="radio"] {
 
 .modal-ux-inner .modal-ux-content .auth-btn-wrapper .btn-done {
   @apply button--secondary;
+}
+
+@media (forced-colors: active) {
+  .forced-colors-visible {
+    forced-color-adjust: none;
+  }
+
+  .forced-colors-visible svg path,
+  .forced-colors-visible svg rect {
+    fill: CanvasText !important;
+  }
 }

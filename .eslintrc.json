@@ -5,6 +5,7 @@
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "react-hooks/exhaustive-deps": "off",
     "@next/next/no-sync-scripts": "off",
+    "cypress": "off",
     "comma-dangle": "off",
     "@typescript-eslint/comma-dangle": "off",
     "no-unused-vars": 2,

@@ -2,9 +2,9 @@
 # Sveriges dataportal webbklient – [dataportal.se](https://www.dataportal.se)
 På Sveriges dataportal synliggörs data från en rad olika typer av organisationer och sektorer. Här finns enbart information om datamängder, dvs. metadata. Data hämtas i sin tur via länkar för nedladdning eller efterfrågas hos respektive organisation som ansvarar för sina egna datamängder.
 ## Versionskrav
-![node-current](https://img.shields.io/badge/node-16.13.2-green)
-![npm-current](https://img.shields.io/badge/npm-8.1.2-green)
-![nextjs-current](https://img.shields.io/badge/nextjs-13.0.2-green)
+![node-current](https://img.shields.io/badge/node-22-green)
+![npm-current](https://img.shields.io/badge/npm-10-green)
+![nextjs-current](https://img.shields.io/badge/nextjs-13-green)
 
 ## EntryScape
 [<img alt="Entryscape logotype" src="https://entryscape.com/wp-content/uploads/2023/01/Entryscape-by-Metasolutions-w385px-Retina-2.png" width="191" height="42">](https://entryscape.com/sv)

@@ -46,6 +46,7 @@ export const SearchForm: FC<SearchFormProps> = ({
   return (
     <div className="my-lg max-w-md md:my-xl">
       <form
+        role={"search"}
         onSubmit={(e) => {
           clearCurrentScrollPos();
           e.preventDefault();
@@ -56,12 +57,13 @@ export const SearchForm: FC<SearchFormProps> = ({
           autoFocus
           id="search-field"
           placeholder={placeholder}
-          isLoading={search.loadingFacets}
+          isLoading={search.loadingHits}
           query={query}
           setQuery={setQuery}
           submitSearch={submitSearch}
           value={query}
           key={search.request.query ? "loaded" : "not loaded"}
+          ariaLabel={placeholder}
         />
       </form>
     </div>

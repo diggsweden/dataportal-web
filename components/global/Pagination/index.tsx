@@ -101,7 +101,7 @@ export const Pagination: FC<Pagination> = ({
         {t("common|of")} <span className="font-strong"> {totalResults} </span>
         {t("pages|search$results")}
       </span>
-      <div className="flex items-center">
+      <div className="flex flex-wrap items-center">
         <button
           tabIndex={currentPage === 1 ? -1 : 0}
           onClick={() => changePageNumber(currentPage - 1)}

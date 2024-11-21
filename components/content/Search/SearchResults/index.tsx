@@ -62,11 +62,13 @@ const SortingOptions: FC<{
   const { t } = useTranslation();
 
   return (
-    <div className="mb-lg flex items-center gap-md md:mb-none">
+    <div className="mb-lg flex flex-wrap items-center gap-md md:mb-none">
       <Button
         size="sm"
         variant="plain"
-        className="order-3 md:order-none"
+        className="hidden md:order-none md:flex"
+        icon={isCompact ? ListIcon : DetailedListIcon}
+        iconPosition="left"
         aria-label={
           isCompact
             ? t("pages|search$detailed-list-active")
@@ -79,14 +81,12 @@ const SortingOptions: FC<{
             setCompact(!isCompact);
           });
         }}
-      >
-        {isCompact ? <ListIcon /> : <DetailedListIcon />}
-        <span className="hidden md:block">
-          {isCompact
+        label={
+          isCompact
             ? t("pages|search$compact-list")
-            : t("pages|search$detailed-list")}
-        </span>
-      </Button>
+            : t("pages|search$detailed-list")
+        }
+      />
 
       <Select
         id="sort"
@@ -144,6 +144,27 @@ const SortingOptions: FC<{
           {t("pages|search$numberofhits-100")}
         </option>
       </Select>
+
+      {/* For mobile only */}
+      <Button
+        size="sm"
+        variant="plain"
+        className="md:hidden"
+        icon={isCompact ? ListIcon : DetailedListIcon}
+        iconPosition="left"
+        aria-label={
+          isCompact
+            ? t("pages|search$detailed-list-active")
+            : t("pages|search$detailed-list")
+        }
+        onClick={() => {
+          clearCurrentScrollPos();
+          search.set({ compact: isCompact }).then(() => {
+            search.setStateToLocation();
+            setCompact(!isCompact);
+          });
+        }}
+      />
     </div>
   );
 };
@@ -159,8 +180,10 @@ export const SearchResults: FC<SearchResultsProps> = ({
   searchMode,
 }) => {
   const [isCompact, setCompact] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState<string>("");
   const { t } = useTranslation();
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
+  const national = "http://purl.org/dc/terms/subject";
   const searchKey = typeof location != "undefined" ? location.search : "server";
   const posY =
     typeof localStorage != "undefined"
@@ -194,20 +217,45 @@ export const SearchResults: FC<SearchResultsProps> = ({
     }
   };
 
+  // Track both result count and filter changes
+  useEffect(() => {
+    if (search.loadingHits) {
+      setLastUpdate(t("common|loading"));
+    } else if (search.result) {
+      const count = search.result.count || 0;
+      const message = `${count} ${t("pages|search$dataset-hits")}`;
+      setLastUpdate(message);
+    }
+  }, [search.loadingHits, search.result?.count, search.request.facetValues, t]);
+
   function isHVD(dataset: object) {
     const isHvd = Object.values(dataset).map((ds) => ds.hasOwnProperty(hvd));
     return isHvd.includes(true);
+  }
+
+  function isNational(dataset: object) {
+    const isNational = Object.values(dataset).map((ds) =>
+      ds.hasOwnProperty(national),
+    );
+    return isNational.includes(true);
   }
 
   return (
     <div id="search-result" className="my-lg md:my-xl">
       <div className="mb-lg flex flex-col-reverse justify-between md:flex-row">
         <Heading level={2} size="md" className="search-result-header">
-          {search.loadingHits && <span>{t("common|loading")}</span>}
-          {!search.loadingHits &&
-            search.result &&
-            (search.result.count || 0) >= 0 &&
-            `${search.result.count} ${t("pages|search$dataset-hits")}`}
+          {/* Visual display of the count */}
+          <span aria-hidden="true">
+            {search.loadingHits && `${t("common|loading")}...`}
+            {!search.loadingHits &&
+              search.result &&
+              (search.result.count || 0) >= 0 &&
+              `${search.result.count} ${t("pages|search$dataset-hits")}`}
+          </span>
+          {/* Screen reader announcement */}
+          <div aria-live="polite" className="sr-only" role="status">
+            {lastUpdate}
+          </div>
         </Heading>
 
         {searchMode == "datasets" && (
@@ -224,15 +272,13 @@ export const SearchResults: FC<SearchResultsProps> = ({
           <ul className="search-result-list space-y-xl">
             {search.result.hits &&
               search.result.hits.map((hit, index) => (
-                <li className="max-w-lg" key={index}>
+                <li className="group relative max-w-lg" key={index}>
                   <Link
-                    href={`${hit.url}#ref=${
-                      window ? window.location.search : ""
-                    }`}
+                    href={hit.url}
                     onClick={() => {
                       saveCurrentScrollPos();
                     }}
-                    className="group block no-underline"
+                    className="focus--none before:focus--outline before:focus--out before:focus--primary block no-underline before:absolute before:inset-none"
                   >
                     <Heading
                       level={3}
@@ -242,65 +288,63 @@ export const SearchResults: FC<SearchResultsProps> = ({
                     >
                       {hit.title}
                     </Heading>
-
-                    {hit.metadata &&
-                      search.allFacets &&
-                      !search.loadingFacets &&
-                      hit.metadata["inScheme_resource"] &&
-                      search.getFacetValueTitle(
-                        "http://www.w3.org/2004/02/skos/core#inScheme",
-                        hit.metadata["inScheme_resource"][0],
-                      ) && (
-                        <span>
-                          {search.getFacetValueTitle(
-                            "http://www.w3.org/2004/02/skos/core#inScheme",
-                            hit.metadata["inScheme_resource"][0],
-                          )}
-                        </span>
-                      )}
-
-                    {isCompact && hit.descriptionLang && (
-                      <p className="mb-xs">{hit.description}</p>
+                  </Link>
+                  {hit.metadata &&
+                    search.allFacets &&
+                    !search.loadingFacets &&
+                    hit.metadata["inScheme_resource"] && (
+                      <span>{hit.metadata["inScheme_resource"]}</span>
                     )}
 
-                    <div
-                      className={
-                        !isCompact ? "flex items-baseline space-x-md" : "block"
-                      }
-                    >
-                      <div className="mb-xs text-sm font-strong text-textSecondary">
-                        {hit.metadata &&
-                          hit.metadata["theme_literal"].length > 0 && (
-                            <span className="category">
-                              {hit.metadata["theme_literal"].join(",  ")}
-                            </span>
-                          )}
-                        {hit.metadata &&
-                          hit.metadata["organisation_literal"] &&
-                          hit.metadata["organisation_literal"].length > 0 && (
-                            <span className="organisation">
-                              {" | " + hit.metadata["organisation_literal"][0]}
-                            </span>
-                          )}
-                      </div>
-                      <div className="formats space-x-md">
-                        {hit.metadata &&
-                          hit.metadata["format_literal"] &&
-                          hit.metadata["format_literal"].map(
-                            (m: string, index: number) => (
-                              <FileFormatBadge key={index} badgeName={m} />
-                            ),
-                          )}
-                        {isHVD(hit.esEntry._metadata._graph) && (
-                          <span
-                            className={`bg-green-200 px-sm py-xs text-sm uppercase`}
-                          >
-                            {t("common|high-value-dataset")}
+                  {isCompact && hit.descriptionLang && (
+                    <p className="mb-xs line-clamp-4 break-words md:line-clamp-2">
+                      {hit.description}
+                    </p>
+                  )}
+
+                  <div
+                    className={
+                      !isCompact ? "flex items-baseline space-x-md" : "block"
+                    }
+                  >
+                    <div className="mb-xs text-sm font-strong text-textSecondary">
+                      {hit.metadata &&
+                        hit.metadata["theme_literal"].length > 0 && (
+                          <span className="category">
+                            {hit.metadata["theme_literal"].join(",  ")}
                           </span>
                         )}
-                      </div>
+                      {hit.metadata && hit.metadata["organisation_literal"] && (
+                        <span className="organisation break-words">
+                          {hit.metadata["theme_literal"].length > 0 && " | "}
+                          {hit.metadata["organisation_literal"]}
+                        </span>
+                      )}
                     </div>
-                  </Link>
+                    <div className="formats space-x-md">
+                      {hit.metadata &&
+                        hit.metadata["format_literal"] &&
+                        hit.metadata["format_literal"].map(
+                          (m: string, index: number) => (
+                            <FileFormatBadge key={index} badgeName={m} />
+                          ),
+                        )}
+                      {isHVD(hit.esEntry._metadata._graph) && (
+                        <span
+                          className={`bg-green-200 px-sm py-xs text-sm uppercase`}
+                        >
+                          {t("common|high-value-dataset")}
+                        </span>
+                      )}
+                      {isNational(hit.esEntry._metadata._graph) && (
+                        <span
+                          className={`bg-green-200 px-sm py-xs text-sm uppercase`}
+                        >
+                          {t("common|national-dataset")}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </li>
               ))}
           </ul>

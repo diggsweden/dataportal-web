@@ -1,4 +1,5 @@
 import reactEnv from "@beam-australia/react-env";
+
 interface Options {
   prodOnly?: boolean;
 }
@@ -40,8 +41,13 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
     "script-src",
     `'self' ${
       nonce ? `'nonce-${nonce}'` : ""
-    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se *.entryscape.com *.dataportal.se *.beta.dataportal.digikube.dgstage.se *.dataportal.dev1.se`,
+    } 'strict-dynamic' 'unsafe-eval' 'unsafe-inline' https://webbanalys.digg.se https://webbanalys-dashboard.digg.se *.entryscape.com *.dataportal.se *.beta.dataportal.digikube.dgstage.se *.dataportal.dev1.se`,
     { prodOnly: true },
+  );
+  add(
+    "script-src-elem",
+    `'self' 'unsafe-inline' https://admin.dataportal.se https://editera.dataportal.se https://webbanalys.digg.se https://webbanalys-dashboard.digg.se https://entrystore.org/js/4.15.0-dev/entrystore.js *.static.cdn.entryscape.com static.cdn.entryscape.com https://cdn.screen9.com/players/amber-player.js`,
+    { prodOnly: false },
   );
   add(
     "script-src-attr",
@@ -53,9 +59,9 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   );
   add(
     "font-src",
-    `'self' data: https://static.entryscape.com https://static.cdn.entryscape.com`,
+    `'self' data: https://static.entryscape.com https://static.cdn.entryscape.com https://webbanalys-dashboard.digg.se`,
   );
-  add("base-uri", `'self'`);
+  add("base-uri", `'self' https://webbanalys-dashboard.digg.se`);
   add("manifest-src", `'self'`);
   add("form-action", `'self'`);
   add(
@@ -70,21 +76,21 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   );
   add(
     "style-src",
-    `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`,
+    `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css https://webbanalys-dashboard.digg.se`,
   );
   add(
     "style-src-elem",
-    `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css`,
+    `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css https://webbanalys-dashboard.digg.se`,
   );
   add("style-src-attr", `'self' 'unsafe-inline'`);
   add(
     "connect-src",
-    `'self' https://* http://127.0.0.1:1300/ ${
+    `'self' https://* http://127.0.0.1:1300/ https://admin.dataportal.se https://editera.dataportal.se https://webbanalys.digg.se ${
       reactEnv("APOLLO_URL") || ""
-    } https://* webbanalys.digg.se http://statsapi.screen9.com/sessions`,
+    } https://* webbanalys.digg.se statsapi.screen9.com geo-inspire.trafikverket.se`,
   );
 
-  // return the object in a formatted value (this won't work on IE11 without a polyfill!)
+  // Return the object in a formatted value
   return Object.entries(policy)
     .map(([key, value]) => `${key} ${value.join(" ")}`)
     .join("; ");

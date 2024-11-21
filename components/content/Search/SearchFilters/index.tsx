@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { ESRdfType, ESType } from "@/utilities/entryScape";
 import useTranslation from "next-translate/useTranslation";
 import { SearchContextData } from "@/providers/SearchProvider";
@@ -11,6 +11,7 @@ import { Button } from "@/components/global/Button";
 import { TextInput } from "@/components/global/Form/TextInput";
 import CheckboxIcon from "@/assets/icons/checkbox.svg";
 import CheckboxCheckedIcon from "@/assets/icons/checkboxChecked.svg";
+import { SettingsContext } from "@/providers/SettingsProvider";
 
 interface SearchFilterProps {
   showFilter: boolean;
@@ -31,6 +32,7 @@ interface FilterSearchProps {
   filterKey: string;
   filter: InputFilter;
   setFilter: React.Dispatch<React.SetStateAction<InputFilter>>;
+  title: string;
   fetchMore: () => void;
 }
 
@@ -39,6 +41,7 @@ export type SearchMode = "content" | "datasets" | "concepts" | "specifications";
 
 const FilterSearch: React.FC<FilterSearchProps> = ({
   filterKey,
+  title,
   filter,
   setFilter,
   fetchMore,
@@ -53,14 +56,12 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
 
   return (
     <div className="relative flex items-center">
-      <label htmlFor={filterKey} className="sr-only">
-        {t("search$filtersearch")}
-      </label>
       <TextInput
         id={filterKey}
         name={filterKey}
         placeholder={t("search$filtersearch")}
         className="focus--in border-none"
+        aria-label={`${t("search$filtersearch")} ${title}`}
         value={filter[filterKey] || ""}
         onChange={(e) => (
           clearCurrentScrollPos(),
@@ -72,6 +73,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
         height={24}
         width={24}
         className="absolute right-sm [&_path]:fill-brown-500"
+        aria-hidden="true"
       />
     </div>
   );
@@ -155,10 +157,15 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
   setShowFilter,
 }) => {
   const { t } = useTranslation();
+  const { iconSize } = useContext(SettingsContext);
   const [inputFilter, setInputFilter] = useState<InputFilter>({});
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
   const containHVD = !search.request.facetValues?.find(
     (d) => d.facet === hvd && search.request.facetValues?.length === 1,
+  );
+  const national = "http://purl.org/dc/terms/subject";
+  const containNational = !search.request.facetValues?.find(
+    (d) => d.facet === national && search.request.facetValues?.length === 1,
   );
 
   const clearCurrentScrollPos = () => {
@@ -203,7 +210,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
   }
 
   return (
-    <div id="SearchFilters">
+    <div id="SearchFilters" role="region" aria-label={t("common|filter")}>
       <Button
         variant="plain"
         size="sm"
@@ -212,12 +219,18 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
         aria-label={
           showFilter ? t("common|hide-filter") : t("common|show-filter")
         }
+        aria-expanded={showFilter}
+        aria-controls="filter-content"
         onClick={() => updateFilters()}
         label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
       />
 
-      <div className={showFilter ? "block" : "hidden"}>
-        <ul className="mb-lg mt-md flex flex-col flex-wrap gap-md md:flex-row">
+      <div id="filter-content" className={showFilter ? "block" : "hidden"}>
+        <ul
+          className="mb-lg mt-md flex flex-col flex-wrap gap-md md:flex-row"
+          role="list"
+          aria-label={t("common|available-filters")}
+        >
           {search.allFacets &&
             Object.entries(search.allFacets)
               .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
@@ -234,71 +247,86 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                     )
                   : value?.facetValues.slice(0, show);
 
-                if (key !== hvd) {
+                if (key !== hvd && key !== national) {
                   return (
-                    <li key={"box" + value.title + idx}>
+                    <li key={"box" + value.title + idx} role="listitem">
                       <SearchFilter
-                        title={
-                          value.title +
-                          FindFilters(
-                            value.facetValues,
-                            search.request.facetValues,
-                          )
-                        }
+                        title={value.title}
+                        usedFilters={FindFilters(
+                          value.facetValues,
+                          search.request.facetValues,
+                        )}
                       >
-                        <div className="absolute z-10 mr-lg mt-sm max-h-[600px] w-full overflow-y-auto bg-white shadow-md md:max-w-[330px]">
-                          {searchMode == "datasets" ||
-                            (searchMode == "specifications" && (
-                              //only render on searchpage
-                              <>
-                                {isLicense ? (
-                                  <MarkAll
-                                    search={search}
-                                    toggleKey={key}
-                                    title={t(`filters|allchecktext$${key}`)}
-                                  />
-                                ) : (
-                                  <FilterSearch
-                                    filterKey={key}
-                                    filter={inputFilter}
-                                    setFilter={setInputFilter}
-                                    fetchMore={() =>
-                                      shouldFetchMore &&
-                                      search.fetchMoreFacets(key)
-                                    }
-                                  />
-                                )}
-                              </>
-                            ))}
-
-                          {facetValues.map(
-                            (facetValue: SearchFacetValue, index: number) => {
-                              if (facetValue.count > 0)
-                                return (
+                        <div className="absolute z-10 mr-lg mt-sm max-h-[600px] w-full overflow-y-auto bg-white shadow-md md:max-w-[20.625rem]">
+                          {(searchMode == "datasets" ||
+                            searchMode == "specifications") && (
+                            //only render on searchpage
+                            <>
+                              {isLicense ? (
+                                <MarkAll
+                                  search={search}
+                                  toggleKey={key}
+                                  title={t(`filters|allchecktext$${key}`)}
+                                />
+                              ) : (
+                                <FilterSearch
+                                  filterKey={key}
+                                  filter={inputFilter}
+                                  setFilter={setInputFilter}
+                                  title={value.title}
+                                  fetchMore={() =>
+                                    shouldFetchMore &&
+                                    search.fetchMoreFacets(key)
+                                  }
+                                />
+                              )}
+                            </>
+                          )}
+                          {/* List of filter options within this category */}
+                          <ul role="listbox" aria-multiselectable="true">
+                            {facetValues.map(
+                              (facetValue: SearchFacetValue, index: number) => (
+                                <li
+                                  key={index}
+                                  role="option"
+                                  aria-selected={selected(key, facetValue)}
+                                >
                                   <button
-                                    aria-pressed={selected(key, facetValue)}
-                                    key={index}
-                                    className={`group relative flex w-full items-center break-all py-md pl-md pr-xl text-left hover:bg-brown-100 ${
+                                    className={`focus--in group relative flex w-full items-center break-words py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
                                       selected(key, facetValue) && "font-strong"
                                     }`}
                                     onClick={() => {
                                       doSearch(key, facetValue);
                                     }}
+                                    role="checkbox"
+                                    aria-checked={selected(key, facetValue)}
                                   >
                                     {facetValue.title || facetValue.resource} (
-                                    {facetValue.count}){" "}
-                                    {selected(key, facetValue)}
-                                    <span className="absolute right-md">
+                                    {facetValue.count})
+                                    {/* Decorative checkbox icon */}
+                                    <span
+                                      className="absolute right-md"
+                                      aria-hidden="true"
+                                    >
                                       {selected(key, facetValue) ? (
-                                        <CheckboxCheckedIcon />
+                                        <CheckboxCheckedIcon
+                                          height={iconSize * 1.5}
+                                          width={iconSize * 1.5}
+                                          viewBox="0 0 24 24"
+                                        />
                                       ) : (
-                                        <CheckboxIcon />
+                                        <CheckboxIcon
+                                          height={iconSize * 1.5}
+                                          width={iconSize * 1.5}
+                                          viewBox="0 0 24 24"
+                                        />
                                       )}
                                     </span>
                                   </button>
-                                );
-                            },
-                          )}
+                                </li>
+                              ),
+                            )}
+                          </ul>
 
                           {value.facetValues.length > value.show && (
                             <Button
@@ -325,7 +353,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                       </SearchFilter>
                     </li>
                   );
-                } else {
+                } else if (key === hvd) {
                   return (
                     <div key={value.title} className="relative max-w-fit">
                       <input
@@ -333,9 +361,11 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                         name="API"
                         type="checkbox"
                         className="peer/hvd-only sr-only"
-                        checked={search.request.facetValues?.some(
-                          (t) => t.title == ESRdfType.hvd,
-                        )}
+                        checked={
+                          search.request.facetValues?.some(
+                            (t) => t.title == ESRdfType.hvd,
+                          ) || false
+                        }
                         onChange={() => doSearch(key, facetValues[0])}
                       />
                       <label
@@ -346,33 +376,68 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                       >
                         {t(`resources|${key}`)}
                       </label>
-                      <CheckboxIcon className="pointer-events-none absolute right-md top-1/4 peer-checked/hvd-only:hidden" />
-                      <CheckboxCheckedIcon className="pointer-events-none absolute right-md top-1/4 hidden peer-checked/hvd-only:block" />
+                      <CheckboxIcon
+                        height={iconSize * 1.5}
+                        width={iconSize * 1.5}
+                        viewBox="0 0 24 24"
+                        className="pointer-events-none absolute right-sm top-1/4 peer-checked/hvd-only:hidden"
+                      />
+                      <CheckboxCheckedIcon
+                        height={iconSize * 1.5}
+                        width={iconSize * 1.5}
+                        viewBox="0 0 24 24"
+                        className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/hvd-only:block"
+                      />
+                    </div>
+                  );
+                } else if (key === national) {
+                  return (
+                    <div key={value.title} className="relative max-w-fit">
+                      <input
+                        id="national_only"
+                        name="National"
+                        type="checkbox"
+                        className="peer/national-only sr-only"
+                        checked={
+                          search.request.facetValues?.some(
+                            (t) => t.facet == ESRdfType.national_data,
+                          ) || false
+                        }
+                        onChange={() => doSearch(key, facetValues[0])}
+                      />
+                      <label
+                        className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl 
+                      peer-checked:after:translate-x-full peer-focus-visible/national-only:bg-whiteOpaque5 peer-focus-visible/national-only:outline-dashed peer-focus-visible/national-only:outline-[3px] 
+                      peer-focus-visible/national-only:outline-offset-2 peer-focus-visible/national-only:outline-primary md:pr-xl"
+                        htmlFor="national_only"
+                      >
+                        {t(`resources|${key}`)}
+                      </label>
+                      <CheckboxIcon
+                        height={iconSize * 1.5}
+                        width={iconSize * 1.5}
+                        viewBox="0 0 24 24"
+                        className="pointer-events-none absolute right-sm top-1/4 peer-checked/national-only:hidden"
+                      />
+                      <CheckboxCheckedIcon
+                        height={iconSize * 1.5}
+                        width={iconSize * 1.5}
+                        viewBox="0 0 24 24"
+                        className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/national-only:block"
+                      />
                     </div>
                   );
                 }
               })}
           {searchMode == "datasets" && (
-            <div className="relative max-w-fit">
-              <input
-                id="api_only"
-                name="API"
-                type="checkbox"
-                className="peer/api-only sr-only"
-                checked={
-                  search.request.esRdfTypes?.some(
-                    (t) => t == ESRdfType.esterms_ServedByDataService,
-                  ) &&
-                  search.request.esRdfTypes?.some(
-                    (t) => t == ESRdfType.esterms_IndependentDataService,
-                  ) &&
-                  !search.request.esRdfTypes?.some(
-                    (t) => t == ESRdfType.dataset,
-                  )
-                }
-                onChange={() => {
-                  clearCurrentScrollPos();
-                  if (
+            <>
+              <div className="relative max-w-fit">
+                <input
+                  id="api_only"
+                  name="API"
+                  type="checkbox"
+                  className="peer/api-only sr-only"
+                  checked={
                     search.request.esRdfTypes?.some(
                       (t) => t == ESRdfType.esterms_ServedByDataService,
                     ) &&
@@ -382,62 +447,91 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                     !search.request.esRdfTypes?.some(
                       (t) => t == ESRdfType.dataset,
                     )
-                  ) {
-                    search
-                      .set({
-                        esRdfTypes: [
-                          ESRdfType.dataset,
-                          ESRdfType.esterms_IndependentDataService,
-                          ESRdfType.esterms_ServedByDataService,
-                        ],
-                        query: query,
-                      })
-                      .then(() => search.doSearch());
-                  } else {
-                    search
-                      .set({
-                        esRdfTypes: [
-                          ESRdfType.esterms_IndependentDataService,
-                          ESRdfType.esterms_ServedByDataService,
-                        ],
-                        query: query,
-                      })
-                      .then(() => search.doSearch());
                   }
-                }}
-              />
-              <label
-                className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl 
+                  onChange={() => {
+                    clearCurrentScrollPos();
+                    if (
+                      search.request.esRdfTypes?.some(
+                        (t) => t == ESRdfType.esterms_ServedByDataService,
+                      ) &&
+                      search.request.esRdfTypes?.some(
+                        (t) => t == ESRdfType.esterms_IndependentDataService,
+                      ) &&
+                      !search.request.esRdfTypes?.some(
+                        (t) => t == ESRdfType.dataset,
+                      )
+                    ) {
+                      search
+                        .set({
+                          esRdfTypes: [
+                            ESRdfType.dataset,
+                            ESRdfType.esterms_IndependentDataService,
+                            ESRdfType.esterms_ServedByDataService,
+                          ],
+                          query: query,
+                        })
+                        .then(() => search.doSearch());
+                    } else {
+                      search
+                        .set({
+                          esRdfTypes: [
+                            ESRdfType.esterms_IndependentDataService,
+                            ESRdfType.esterms_ServedByDataService,
+                          ],
+                          query: query,
+                        })
+                        .then(() => search.doSearch());
+                    }
+                  }}
+                />
+                <label
+                  className="button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl 
                 peer-checked:after:translate-x-full peer-focus-visible/api-only:bg-whiteOpaque5 peer-focus-visible/api-only:outline-dashed 
                 peer-focus-visible/api-only:outline-[3px] peer-focus-visible/api-only:outline-offset-2 peer-focus-visible/api-only:outline-primary md:pr-xl"
-                htmlFor="api_only"
-              >
-                API
-              </label>
-              <CheckboxIcon className="pointer-events-none absolute right-md top-1/4 peer-checked/api-only:hidden" />
-              <CheckboxCheckedIcon className="pointer-events-none absolute right-md top-1/4 hidden peer-checked/api-only:block" />
-            </div>
+                  htmlFor="api_only"
+                >
+                  API
+                </label>
+                <CheckboxIcon
+                  height={iconSize * 1.5}
+                  width={iconSize * 1.5}
+                  viewBox="0 0 24 24"
+                  className="pointer-events-none absolute right-sm top-1/4 peer-checked/api-only:hidden"
+                />
+                <CheckboxCheckedIcon
+                  height={iconSize * 1.5}
+                  width={iconSize * 1.5}
+                  viewBox="0 0 24 24"
+                  className="pointer-events-none absolute right-sm top-1/4 hidden peer-checked/api-only:block"
+                />
+              </div>
+            </>
           )}
         </ul>
       </div>
       {search.request.facetValues && search.request.facetValues.length > 0 && (
         <div className="mt-lg flex flex-col justify-between gap-md md:flex-row md:items-baseline">
           <div className="flex flex-col flex-wrap gap-sm md:flex-row md:gap-md">
-            {containHVD && (
+            {(containHVD || containNational) && (
               <span className="text-textSecondary">
                 {t("common|active-filters")}
               </span>
             )}
+
             {search.request &&
               search.request.facetValues &&
               (search.request.facetValues as SearchFacetValue[]).map(
                 (facetValue: SearchFacetValue, index: number) =>
-                  facetValue.facet !== hvd && (
+                  facetValue.facet !== hvd &&
+                  facetValue.facet !== national && (
                     <Button
                       variant="filter"
                       size="xs"
                       key={index}
                       label={facetValue.title || facetValue.resource}
+                      aria-label={`${t("common|clear-filters")} ${
+                        facetValue.title || facetValue.resource
+                      }`}
                       icon={CloseIcon}
                       iconPosition="right"
                       className="w-full justify-between py-md text-left font-strong md:w-auto md:py-[2px]"

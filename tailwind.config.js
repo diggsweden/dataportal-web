@@ -20,10 +20,10 @@ module.exports = {
       "2xl": "1200px",
     },
     maxWidth: {
-      sm: 160,
-      md: 620,
-      lg: 960,
-      xl: 1140,
+      sm: "10rem", // 160px
+      md: "38.75rem", // 620px
+      lg: "60rem", // 960px
+      xl: "71.25rem", // 1140px
       fit: "fit-content",
     },
     colors: {
@@ -41,7 +41,7 @@ module.exports = {
         600: "#6E615A",
         500: "#99908B",
         400: "#B6AFAD",
-        200: "#DBD7D6",
+        200: "#E2DFDF",
         100: "#F0EFEE",
       },
       green: {
@@ -73,12 +73,12 @@ module.exports = {
     },
     spacing: {
       none: "0",
-      xs: "4px",
-      sm: "8px",
-      md: "12px",
-      lg: "20px",
-      xl: "40px",
-      "2xl": "80px",
+      xs: "0.25rem", // 4px
+      sm: "0.5rem", // 8px
+      md: "0.75rem", // 12px
+      lg: "1.25rem", // 20px
+      xl: "2.5rem", // 40px
+      "2xl": "5rem", // 80px
     },
     container: ({ theme }) => ({
       center: true,
@@ -103,7 +103,7 @@ module.exports = {
       strong: 500,
     },
     fontSize: {
-      sm: ["0.875rem", { lineHeight: "1.25rem" }], // 14px/20px
+      sm: ["0.9375rem", { lineHeight: "1.25rem" }], // 15px/20px
       md: ["1rem", { lineHeight: "1.5rem" }], // 16px/24px
       lg: ["1.25rem", { lineHeight: "1.75rem" }], // 20px/28px
       xl: ["1.75rem", { lineHeight: "2.25rem" }], // 28px/36px

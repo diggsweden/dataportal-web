@@ -13,9 +13,9 @@ EntryScape Registry is a solution for managing a registry of data catalogs and r
 
 ## Requirements
 
-![node-current](https://img.shields.io/badge/node-18.18.0-green)
-![npm-current](https://img.shields.io/badge/npm-9.8.1-green)
-![nextjs-current](https://img.shields.io/badge/nextjs-13.0.2-green)
+![node-current](https://img.shields.io/badge/node-22-green)
+![npm-current](https://img.shields.io/badge/npm-10-green)
+![nextjs-current](https://img.shields.io/badge/nextjs-13-green)
 
 ## Development
 
@@ -110,6 +110,26 @@ The key for this frontend application has read access only to DIGG screen9 accou
 
 To test locally in the sandbox environment, set the sandbox.editera URL on lines 6, 7, and 12 in Settings.Dev.ts
 
-Line 6: ENTRYSCAPE_SPECS_PATH="editera.dataportal.se"
+Line 6: ENTRYSCAPE_SPECS_PATH="admin.dataportal.se"
 Line 7: ENTRYSCAPE_TERMS_PATH="editera.dataportal.se"
 Line 12: ENTRYSCAPE_CONCEPT_STATS_URL="https://editera.dataportal.se/stats/entityData.json"
+
+
+## E2E Test with Cypress
+https://www.cypress.io/
+
+Run all tests
+```
+yarn cypress run
+```
+
+Run a specific test
+```
+yarn cypress run --spec "cypress/e2e/YOUR_TEST_FILE.cy.js"
+```
+
+To use the cypress GUI run the following command.
+```
+yarn cypress open
+```
+This can be used to debug and view your tests in a user interface.

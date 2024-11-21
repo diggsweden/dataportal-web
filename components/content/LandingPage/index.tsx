@@ -185,7 +185,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
             </ContentBox>
 
             <section id="statistics" className="my-xl">
-              <div className="mb-2xl flex items-end justify-between">
+              <div className="mb-2xl flex flex-col justify-between gap-sm md:flex-row md:items-end">
                 <Heading level={2} size={"lg"}>
                   {t("pages|statistic$statistic-numbers")}
                 </Heading>
@@ -202,7 +202,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
                 <DynamicStatisticGraph />
                 <DynamicStatisticNumbers />
               </div>
-              <div className="grid items-start gap-xl md:grid-cols-2">
+              <div className="flex flex-col items-start gap-xl md:grid md:grid-cols-2">
                 <DynamicStatistic />
               </div>
             </section>

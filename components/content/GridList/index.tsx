@@ -45,6 +45,9 @@ export const GridList: FC<ListProps> = ({
             size="sm"
             href={showMoreLink.slug}
             label={showMoreLink.title}
+            aria-label={`${showMoreLink.title} ${
+              heading ? `- ${heading}` : ""
+            }`}
             variant="secondary"
           />
         )}
@@ -53,7 +56,10 @@ export const GridList: FC<ListProps> = ({
       {items.length > 0 ? (
         <ul className="gap-4 grid grid-cols-1 gap-xl md:grid-cols-2 lg:grid-cols-3">
           {items.map((item, idx) => (
-            <li key={idx}>
+            <li
+              key={idx}
+              className="group relative flex h-full flex-col justify-between no-underline"
+            >
               {(() => {
                 switch (item.__typename) {
                   case "dataportal_Digg_Tool":

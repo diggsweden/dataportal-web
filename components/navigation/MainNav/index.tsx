@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useContext } from "react";
 import Link from "next/link.js";
 import { Button, ButtonLink } from "@/components/global/Button";
@@ -35,7 +35,9 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
   const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
   const { t, lang } = useTranslation();
   const isEn = lang === "en";
-  const ref = useClickoutside(() => setOpenSearch(false));
+  const ref = useClickoutside<HTMLDivElement>(() => setOpenSearch(false));
+  const formRef = useRef<HTMLFormElement>(null);
+
   const { env } = useContext(SettingsContext);
   useEffect(() => {
     let enMenu;
@@ -48,12 +50,22 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
     }
   }, [isEn]);
 
+  const handleSearchButtonClick = () => {
+    setOpenSearch(!openSearch);
+    // Use setTimeout to ensure the form is rendered before trying to focus
+    setTimeout(() => {
+      const input = formRef.current?.querySelector("input");
+      input?.focus();
+    }, 0);
+  };
+
   return (
     <div className="flex flex-row items-center justify-between">
       <Link
         href={`${t(`common|${"lang-path"}`)}`}
-        aria-label="Dataportal logo"
+        aria-label="Dataportal logga länk till startsida"
         onClick={() => setOpenSideBar(false)}
+        className="forced-colors-visible"
       >
         {env.envName === "sandbox" ? (
           <DataportalTestLogo />
@@ -62,15 +74,15 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
             className={`${
               openSearch
                 ? "hidden lg:block"
-                : "h-[32px] w-[160px] md:h-[44px] md:w-[248px]"
+                : "min-w-0 max-h-[2rem] w-full max-w-[10rem] md:max-h-[2.75rem] md:max-w-[15.5rem]"
             }`}
           />
         )}
       </Link>
-      <div className="flex w-full flex-row items-center justify-end space-x-md">
+      <div className="flex flex-row items-center justify-end space-x-md">
         <nav
-          className="hidden flex-row items-center gap-sm xl:flex"
-          aria-label="Main"
+          className="hidden flex-row items-center space-x-sm xl:flex"
+          aria-label={t("common|menu-main")}
         >
           {menues.map((menu: MainNavData, idx: number) => (
             <ButtonLink
@@ -94,15 +106,16 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           {!openSearch ? (
             <Button
               variant="plain"
-              aria-label="Search"
-              onClick={() => setOpenSearch(!openSearch)}
+              aria-label={t("common|search-content")}
+              onClick={handleSearchButtonClick}
               icon={SearchIcon}
               iconPosition="left"
-              className="w-[44px] cursor-pointer p-[10px]"
+              className="w-[2.75rem] cursor-pointer p-[0.625rem]"
             />
           ) : (
             <form
-              className={`transition-width max-w-[274px] text-sm duration-100 md:w-[274px] [&_div]:mr-none [&_div_div_button]:p-[10px] hover:first:[&_div_div_button]:bg-brown-200  ${
+              ref={formRef}
+              className={`transition-width max-w-[17.125rem] text-sm duration-100 md:w-[17.125rem] [&_div]:mr-none [&_div_div_button]:p-[0.625rem] hover:first:[&_div_div_button]:bg-brown-200  ${
                 openSearch
                   ? `w-full ${
                       query
@@ -112,14 +125,16 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                   : "w-none overflow-hidden"
               }`}
               action={`/${lang}/search`}
+              role={"search"}
             >
               <SearchInput
                 id="header-search"
                 placeholder={t("common|search")}
+                ariaLabel={t("common|search-content")}
                 query={query}
                 setQuery={setQuery}
                 type="small"
-                className="focus-i-n !h-[44px] border-none !bg-brown-100 pr-[90px] hover:outline-0"
+                className="focus-in !h-[2.75rem] border-none !bg-brown-100 pr-[5.625rem] hover:outline-0"
               />
             </form>
           )}
@@ -128,13 +143,16 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
         <Button
           id="sidebarBtn"
           aria-expanded={openSideBar}
-          aria-haspopup="menu"
+          aria-controls="sidebar"
           variant="plain"
           icon={openSideBar ? CloseCrossIcon : HamburgerIcon}
           iconPosition="left"
           onClick={() => setOpenSideBar(!openSideBar)}
           label={t("common|menu")}
           className={`button--large ${openSideBar ? "active" : ""}`}
+          aria-label={
+            openSideBar ? t("common|menu-close") : t("common|menu-open")
+          }
         />
       </div>
     </div>

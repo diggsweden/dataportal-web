@@ -18,7 +18,7 @@ export class StatisticListItem extends React.Component<StatisticListItemProps> {
         <div className="flex w-full justify-between">
           <Link
             href={this.props.listUrl || "#"}
-            className="mr-sm text-green-600"
+            className="mr-sm hyphens-auto text-green-600"
           >
             {this.props.listText}
           </Link>

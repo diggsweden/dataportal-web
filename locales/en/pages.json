@@ -60,6 +60,8 @@
   },
   "search": {
     "search": "Search data",
+    "search-tabs": "Search tabs navigation",
+    "search-type-navigation": "Search type navigation",
     "dataset-hits": "results ",
     "concept-hits": "results",
     "specification-hits": "results",

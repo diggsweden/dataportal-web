@@ -19,10 +19,12 @@
     "@alfalab/winston3-logstash-transport": "^1.3.0",
     "@apollo/client": "^3.6.9",
     "@beam-australia/react-env": "^3.1.1",
+    "@entryscape/entrystore-js": "^4.14.3",
     "@types/node-fetch": "^2.6.2",
     "@types/swagger-ui-react": "^4.11.0",
     "class-variance-authority": "^0.7.0",
     "fetch-enhanced": "^8.1.1",
+    "focus-trap": "^7.6.0",
     "focus-trap-react": "^10.0.0",
     "graphql": "16.8.1",
     "html-react-parser": "^5.0.11",
@@ -67,6 +69,8 @@
     "@types/react-vis": "^1.11.14",
     "apollo": "^2.34.0",
     "autoprefixer": "^10.4.16",
+    "cy-verify-downloads": "^0.2.4",
+    "cypress": "^13.12.0",
     "eslint": "8.56.0",
     "eslint-config-next": "13.0.2",
     "eslint-plugin-prettier": "^5.0.0",
@@ -77,12 +81,12 @@
     "prettier": "3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.9",
     "sass": "^1.56.1",
-    "tailwindcss": "^3.3.6",
+    "tailwindcss": "^3.4.14",
     "typescript": "5.3.3"
   },
   "engines": {
     "npm": ">=8.1.2",
     "node": ">=18"
   },
-  "packageManager": "yarn@4.0.1"
+  "packageManager": "yarn@4.5.1"
 }

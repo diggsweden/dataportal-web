@@ -55,7 +55,7 @@ const filterContactAndLandingPage = [
 
 export const DataSetPage: React.FC = () => {
   const { pathname, query } = useRouter() || {};
-  const { env, setBreadcrumb } = useContext(SettingsContext);
+  const { env, setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
   const { dataSet, name } = query || {};
@@ -189,7 +189,7 @@ export const DataSetPage: React.FC = () => {
             ],
 
             blocks: [
-              ${customIndicators},
+              ${customIndicators(t)},
               ${exploreApiLink(cid, eid, t)},
               ${keyword(t)},
               ${theme(t)},
@@ -221,24 +221,32 @@ export const DataSetPage: React.FC = () => {
                     "pages|datasetpage$several_links",
                   )}{{/ifprop}}' +
                   '{{#ifprop "dcat:downloadURL" min="2" invert="true"}}' +
-                    '<a href="{{prop "dcat:downloadURL"}}" tabindex="-1" class="text-white noUnderline">' +
-                      '<button class="button--primary button--large text-white flex items-center !no-underline">' +
+                    '<a href="{{prop "dcat:downloadURL"}}" class="text-white noUnderline">' +
+                      '<span class="button--primary button--large text-white flex items-center !no-underline">' +
                         '${t("pages|datasetpage$download_link")}' +
-                        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                        '<svg xmlns="http://www.w3.org/2000/svg" width="${
+                          1.5 * iconSize
+                        }" height="${
+                          1.5 * iconSize
+                        }" viewBox="0 0 24 24" fill="none" class="flex-shrink-0">' +
                         '<path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18V15H6V18H18V15H20V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6Z" fill="#6E615A"/>' +
                         '</svg>' +
-                      '</button>' +
+                      '</span>' +
                     '</a>' +
                   '{{/ifprop}}' +
                 '{{/ifprop}}' +
                 '{{#ifprop "dcat:downloadURL" invert="true"}}' +
-                  '<a href="{{prop "dcat:accessURL"}}" tabindex="-1" class="text-white noUnderline">' +
-                    '<button class="button--primary button--large text-white flex items-center !no-underline">' +
+                  '<a href="{{prop "dcat:accessURL"}}" class="text-white noUnderline">' +
+                    '<span class="button--primary button--large text-white flex items-center !no-underline">' +
                       '${t("pages|datasetpage$download_link_adress")}' +
-                      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                      '<svg xmlns="http://www.w3.org/2000/svg" width="${
+                        1.5 * iconSize
+                      }" height="${
+                        1.5 * iconSize
+                      }" viewBox="0 0 24 24" fill="none" class="flex-shrink-0">' +
                       '<path d="M14 3V5H17.59L7.76 14.83L9.17 16.24L19 6.41V10H21V3M19 19H5V5H12V3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V12H19V19Z" fill="#6E615A"/>' +
                       '</svg>' +
-                    '</button>' +
+                    '</span>' +
                   '</a>' +
                 '{{/ifprop}}',
               },
@@ -255,13 +263,17 @@ export const DataSetPage: React.FC = () => {
                     '{{#eachprop "dcat:downloadURL"}}' +
                     '<div class="flex flex-col md:flex-row gap-md md:gap-lg md:justify-between md:items-center">' +
                       '<span class="text-md">{{labelish}}</span>' +
-                      '<a class="text-white noUnderline mr-xs" tabindex="-1" href="{{value}}">' +
-                        '<button class="button--primary button--small md:button--large text-white flex items-center !no-underline">' +
+                      '<a class="text-white noUnderline mr-xs" href="{{value}}">' +
+                        '<span class="button--primary button--small md:button--large text-white flex items-center !no-underline">' +
                           '${t("pages|datasetpage$download_link")}' +
-                          '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                          '<svg xmlns="http://www.w3.org/2000/svg" width="${
+                            1.5 * iconSize
+                          }" height="${
+                            1.5 * iconSize
+                          }" viewBox="0 0 24 24" fill="none" class="flex-shrink-0">' +
                             '<path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18V15H6V18H18V15H20V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6Z" fill="#F0EFEE"/>' +
                           '</svg>' +  
-                        '</button>' +
+                        '</span>' +
                       '</a>' +
                     '</div>' +
                   '{{/eachprop}}' +
@@ -280,7 +292,11 @@ export const DataSetPage: React.FC = () => {
                     '{{link class="linkInBtn noUnderline" namedclick="dataservice-link" content="${t(
                       "pages|datasetpage$read_about_api",
                     )}"}}' +
-                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="${
+                      1.5 * iconSize
+                    }" height="${
+                      1.5 * iconSize
+                    }" viewBox="0 0 24 24" fill="none" class="flex-shrink-0">' +
                     '<path d="M4.08008 11V13H16.0801L10.5801 18.5L12.0001 19.92L19.9201 12L12.0001 4.08002L10.5801 5.50002L16.0801 11H4.08008Z" fill="#6E615A"/>' +
                     '</svg>' +
                   '</button>' +    
@@ -478,7 +494,7 @@ export const DataSetPage: React.FC = () => {
             </div>
           </div>
           {/* Right column */}
-          <div className="mb-lg w-full max-w-md space-y-lg pt-none lg:mb-none lg:max-w-[296px]">
+          <div className="mb-lg w-full max-w-md space-y-lg pt-none lg:mb-none lg:max-w-[18.5rem]">
             {/* About dataset - wrapper  */}
             <div className="box-border w-full bg-white p-md">
               <Heading
@@ -573,7 +589,7 @@ export const DataSetPage: React.FC = () => {
                 dangerouslySetInnerHTML={{
                   __html: `
                        <div>
-                          <h3 class="text-md !mt-[12px]">
+                          <h3 class="text-md !mt-[0.75rem]">
                           ${t("pages|datasetpage$download_link")}
                           </h3>
 

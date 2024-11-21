@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { createContext, useEffect, useState } from "react";
 import { EnvSettings } from "@/env/EnvSettings";
 import { SettingsUtil } from "@/env/SettingsUtil";
+import { getLocalizedValue } from "@/utilities";
 
 //unfortunate hack to get a entrystore class instance, script is inserted in head
 declare var ESJS: any;
@@ -21,6 +22,7 @@ export interface EntrystoreProviderProps {
   entrystoreUrl: string | "admin.dataportal.se";
   fetchMore: boolean;
   isConcept?: boolean;
+  hasResourceUri?: string;
 }
 
 export interface ESEntry {
@@ -73,6 +75,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
   entrystoreUrl,
   fetchMore,
   isConcept,
+  hasResourceUri,
 }) => {
   const [state, setState] = useState(defaultESEntry);
   const { lang: nextLang } = useTranslation("common");
@@ -96,90 +99,6 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         },
       );
     }
-  };
-
-  /**
-   * Search graph for localized value from meta graph
-   *
-   * Supports uri-types (will fetch uri and display foaf:name, if any)
-   * TODO: support
-   *
-   * value type retrieve order:
-   * 1. exists in sent in lang
-   * 2. exists in fallback lang (en)
-   * 3. take first
-   *
-   * @param metadataGraph
-   * @param prop
-   * @param lang
-   */
-  const getLocalizedValue = async (
-    metadataGraph: any,
-    prop: any,
-    lang: string,
-    es: any,
-    options: { uriTypeName?: string; resourceURI?: string } = {
-      uriTypeName: "foaf:name",
-    },
-  ) => {
-    let val = "";
-    const fallbackLang = "en";
-    const { uriTypeName, resourceURI } = options;
-
-    const stmts = metadataGraph.find(resourceURI, prop);
-    if (stmts.length > 0) {
-      const obj: any = {};
-      for (let s = 0; s < stmts.length; s++) {
-        let stType = stmts[s].getType();
-        let stValue = stmts[s].getValue();
-
-        if (stType && stType == "uri" && !stValue.includes("mailto:")) {
-          let res = await resourcesSearch([stValue], es);
-          if (res && res.length > 0) {
-            let meta = res[0].getAllMetadata();
-
-            if (meta)
-              obj[stmts[s].getLanguage() || ""] = getLocalizedValue(
-                meta,
-                uriTypeName || "foaf:name",
-                nextLang,
-                es,
-                { resourceURI },
-              );
-          } else obj[stmts[s].getLanguage() || ""] = stValue;
-        } else obj[stmts[s].getLanguage() || ""] = stValue;
-      }
-
-      if (typeof obj[lang] != "undefined") {
-        val = obj[lang];
-      } else if (obj[fallbackLang] && fallbackLang != lang) {
-        val = obj[fallbackLang];
-      } else {
-        val = Object.entries(obj)[0][1] as string;
-      }
-    }
-
-    return val;
-  };
-
-  /**
-   * Make SolrSearch and retrive entries from entryscape
-   * Does not handle to large resource arrays, can leed to request URI errors,
-   * use in batches
-   *
-   * @param resources
-   * @param es
-   */
-  const resourcesSearch = (resources: string[], es: any): Promise<any> => {
-    return new Promise<any>((resolve) => {
-      let esQuery = es.newSolrQuery();
-      esQuery
-        .resource(resources, null)
-        .getEntries(0)
-        .then((children: any) => {
-          resolve(children);
-        });
-    });
   };
 
   const parseEmail = (mailStr: string) => {
@@ -216,13 +135,18 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               const datasets = await es
                 .newSolrQuery()
                 .rdfType(["dcat:Dataset", "dcat:DataService"])
+                .publicRead(true)
                 .uriProperty("dcterms:conformsTo", resourceURI)
                 .getEntries();
 
               const hasResource = await es
                 .newSolrQuery()
+                .uriProperty(
+                  "http://www.w3.org/ns/dx/prof/hasResource",
+                  hasResourceUri || entryUri,
+                )
                 .rdfType(["dcterms:Standard", "prof:Profile"])
-                .uriProperty("prof:hasResource", resourceURI)
+                .publicRead(true)
                 .getEntries();
 
               const datasetArr = await Promise.all(
@@ -361,21 +285,32 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               const resourceURI = entry.getResourceURI();
               const valuePromises: Promise<string>[] = [];
 
-              const maybeSpecs = graph
-                .find(null, "dcterms:conformsTo")
+              const conformsToURIs = graph
+                .find(resourceURI, "dcterms:conformsTo")
                 .map((stmt: any) => stmt.getValue());
+              const util = new ESJS.EntryStoreUtil(
+                new ESJS.EntryStore(`https://editera.dataportal.se/store`),
+              );
+              util.loadOnlyPublicEntries(true);
 
-              const findSpec =
-                maybeSpecs.length > 0
-                  ? await es
-                      .newSolrQuery()
-                      .resource(maybeSpecs, null)
-                      .rdfType(["dcterms:Standard", "prof:Profile"])
-                      .getEntries()
-                  : [];
+              const conformsToEntries = await util.loadEntriesByResourceURIs(
+                conformsToURIs,
+                undefined,
+                true,
+              );
+              const specfications = conformsToEntries.filter((s: any) => s);
+              const extractHREF = (s: any) => {
+                if (s.getResourceURI().startsWith("https://dataportal.se"))
+                  return s.getResourceURI();
+                return `https://dataportal.se/externalspecification/${s.getResourceURI()}`;
+              };
+
+              const specificationHREF = specfications.map((s: any) =>
+                extractHREF(s),
+              );
 
               const specArr = await Promise.all(
-                findSpec.map(async (spec: any) => {
+                conformsToEntries.map(async (spec: any) => {
                   return {
                     title: await getLocalizedValue(
                       spec.getAllMetadata(),
@@ -383,7 +318,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                       nextLang,
                       es,
                     ),
-                    url: spec.getResourceURI(),
+                    url: specificationHREF[0],
                   };
                 }),
               );
@@ -404,7 +339,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 ),
               );
               valuePromises.push(
-                getLocalizedValue(graph, "dcterms:description", nextLang, es),
+                getLocalizedValue(graph, "dcterms:description", nextLang, es, {
+                  resourceURI,
+                }),
               );
               valuePromises.push(
                 getLocalizedValue(graph, "dcterms:publisher", nextLang, es),

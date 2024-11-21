@@ -45,7 +45,7 @@ export const Hero: FC<HeroProps> = ({
       }`}
     >
       {image && (
-        <div className="absolute left-none top-none h-full w-full">
+        <div className="inset-0 absolute h-full w-full">
           <CustomImage
             width={1920}
             image={image}
@@ -54,13 +54,17 @@ export const Hero: FC<HeroProps> = ({
             aria-label="Hero image"
             priority={true}
           />
+          <div className="inset-0 absolute top-none h-full w-full bg-blackOpaque3 opacity-10"></div>
         </div>
       )}
+
+      {/* Content on top of the overlay */}
       <Container>
         <div className="relative z-10">
           <div
-            className={`${isFrontpage && search && "mx-auto text-center"}
-            ${search ? "text-brown-100" : "bg-white p-xl"} max-w-md`}
+            className={`${isFrontpage && search && "mx-auto text-center"} ${
+              search ? "text-brown-100" : "bg-white p-xl"
+            } max-w-md`}
           >
             {heading && (
               <Heading level={1} size="lg" className="mb-none">
@@ -73,17 +77,19 @@ export const Hero: FC<HeroProps> = ({
               </Preamble>
             )}
             {search && (
-              <div id="SearchHero" className="mt-xl" aria-label="Hero search">
+              <div id="SearchHero" className="mt-xl">
                 <form
                   className="datapage-form"
                   method="GET"
                   action={search.destination}
+                  role={"search"}
                 >
                   <SearchInput
                     id="start-search"
                     placeholder={search.placeholder}
                     query={query}
                     setQuery={setQuery}
+                    ariaLabel={search.placeholder}
                   />
                 </form>
                 <div

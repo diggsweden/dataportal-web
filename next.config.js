@@ -9,7 +9,7 @@ const baseHeaders = [
   },
   {
     key: "X-Frame-Options",
-    value: "DENY",
+    value: "SAMEORIGIN",
   },
   {
     key: "X-XSS-Protection",
@@ -29,7 +29,7 @@ const baseHeaders = [
   },
   {
     key: "Access-Control-Allow-Origin",
-    value: "https://www.dataportal.se",
+    value: "https://www.dataportal.se https://webbanalys.digg.se",
   },
 ];
 

@@ -16,7 +16,7 @@ export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
     <footer className="mt-xl border-t-2 border-brown-600 bg-white py-xl">
       <div
         className={`transition-all duration-300 ease-in-out ${
-          openSideBar ? "xl:w-[calc(100vw-300px)]" : "w-full"
+          openSideBar ? "xl:w-[calc(100vw-18.75rem)]" : "w-full"
         }`}
       >
         <Container className="space-y-xl md:space-y-2xl">
@@ -37,7 +37,8 @@ export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
               src={"/images/europeiskaunionen.png"}
               width={200}
               height={42}
-              alt="SV Finansieras av Europeiska unionen logo"
+              className="h-[2.625rem] w-[12.5rem]"
+              alt="Europeiska unionen logotyp. Dataportalen finansieras av Europeiska unionen, NextGenerationEU."
             />
           </div>
         </Container>

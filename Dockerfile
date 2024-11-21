@@ -1,21 +1,19 @@
-FROM node:18-alpine as base
+FROM node:22-alpine as base
 WORKDIR /base
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn/releases ./.yarn/releases
 COPY .yarn/plugins ./.yarn/plugins
 RUN yarn install
 
-FROM node:18-alpine as builder
+FROM node:22-alpine as builder
 WORKDIR /build
 ARG delete_file
 COPY . .
 COPY --from=base /base ./
-RUN ls ./
 RUN if [[ -z "$delete_file" ]] ; then echo "No files removed" ; else rm ./$delete_file ; fi
-RUN ls ./
 RUN yarn build
 
-FROM node:18-alpine as production
+FROM node:22-alpine as production
 ENV NODE_ENV=production
 
 WORKDIR /app
@@ -34,6 +32,7 @@ COPY --from=builder /build/.env.production ./.env.production
 COPY --from=builder /build/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV SKIP_YARN_COREPACK_CHECK 0
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]

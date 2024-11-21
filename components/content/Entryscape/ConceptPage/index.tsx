@@ -10,9 +10,9 @@ import { Container } from "@/components/layout/Container";
 import { Preamble } from "@/components/global/Typography/Preamble";
 import Link from "next/link";
 
-export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
+export const ConceptPage: FC<{ curi?: string; uri?: string }> = ({
   curi,
-  scheme,
+  uri,
 }) => {
   let postscribe: any;
   const { env, setBreadcrumb } = useContext(SettingsContext);
@@ -58,7 +58,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
     if (typeof window !== "undefined") {
       postscribe = (window as any).postscribe;
 
-      if (curi) {
+      if (curi || uri) {
         postscribe(
           "#scriptsPlaceholder",
           `                     
@@ -74,9 +74,13 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
           </script>
 
           <script> 
-          
-          function getDataportalUri(resourceUri, isTerm){
 
+          function getDataportalUri(resourceUri, isTerm){
+            if (!resourceUri || !window?.location?.pathname) {
+              return resourceUri;
+            }
+            const currentPath = window.location.pathname;
+            const encodedResourceUri = encodeURIComponent(resourceUri);
             var path = '';                      
 
             if(resourceUri.indexOf('://') > -1)
@@ -87,13 +91,10 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
             else
               path = resourceUri;           
 
-            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalconcept/") > -1)
-              if(isTerm)
-                return "/${lang}/externalterminology/" + path;
-              else
-                return "/${lang}/externalconcept/" + path;
+            if(currentPath.includes("/externalconcept"))
+              return isTerm ? "/${lang}/externalterminology?resource=" + encodedResourceUri : "/${lang}/externalconcept?resource=" + encodedResourceUri;
 
-            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/concepts/") > -1)
+            if(currentPath.includes("/concepts/"))
             {
               let entryPath = '';
               if(resourceUri.includes('https://www-sandbox.dataportal.se/concepts'))
@@ -108,10 +109,10 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                 return "/${lang}/concepts" + entryPath;
             }
             
-            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/externalterminology/") > -1)                            
-              return "/${lang}/externalconcept/" + path;
+            if(currentPath.includes("/externalterminology"))                            
+              return "/${lang}/externalconcept?resource=" + encodedResourceUri;
 
-            if(resourceUri && window && window.location.pathname && window.location.pathname.indexOf("/terminology/") > -1)    
+            if(currentPath.includes("/terminology"))    
             {
               let entryPath = '';
               if(resourceUri.includes('https://www-sandbox.dataportal.se/concepts'))
@@ -160,13 +161,13 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
             page_language: '${lang}',
             routes: [              
               {
-                regex:new RegExp('(\/*\/externalconcept\/)(.+)'),
-                uri:'${scheme}://${curi}',
+                regex:new RegExp('(\/*\/externalconcept)(.+)'),
+                uri:'${decodeURIComponent(uri as string)}',
                 page_language: '${lang}'
               },             
               {
-                regex:new RegExp('(\/*\/externalterminology\/)(.+)'),
-                uri:'${scheme}://${curi}',
+                regex:new RegExp('(\/*\/externalterminology)(.+)'),
+                uri:'${decodeURIComponent(uri as string)}',
                 page_language: '${lang}'
               },         
               {
@@ -252,9 +253,9 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               },
               {
                 block: 'conceptLink',                     
-                run: function(node,a2,a3,entry) {                     
+                run: function(node,a2,a3,entry) {  
                   if(node && node.firstElementChild && entry)
-                  {
+                  {                                 
                     var el = document.createElement('a');
 
                     //node.firstElementChild.setAttribute('class', 'entryscape-list-item')  
@@ -273,7 +274,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
               },
               {
                 block: 'termLink',                     
-                run: function(node,a2,a3,entry) {                                        
+                run: function(node,a2,a3,entry) {                                      
                   if(node && node.firstElementChild && entry)
                   {
                     var el = document.createElement('a');
@@ -328,7 +329,7 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
                     "pages|concept_page$no_superior_concept",
                   )}</span></div>{{/ifprop}}' + 
 
-                  '{{#ifprop "skos:narrower"}}<div class="totMQA"><h2>${t(
+                  '{{#ifprop "skos:narrower"}}<div class="totConcepts"><h2>${t(
                     "pages|concept_page$subordinate_concepts",
                   )}</h2>{{/ifprop}}' +
                   '{{#ifprop "skos:narrower"}}{{narrowerList}}</div>{{/ifprop}}' +
@@ -465,14 +466,14 @@ export const ConceptPage: FC<{ curi?: string; scheme?: string }> = ({
           {entry.hasResource && entry.hasResource?.length > 0 && (
             <div>
               <Heading
-                className="!text-[14px] font-strong text-textSecondary"
+                className="!text-[0.9375rem] font-strong text-textSecondary"
                 level={3}
               >
                 {t("pages|datasetpage$related_specifications")}
               </Heading>
               {entry.hasResource.map(({ title, url }, idx) => (
                 <Link
-                  className="block !text-[14px] text-green-600 hover:no-underline"
+                  className="block !text-[0.9375rem] text-green-600 hover:no-underline"
                   key={idx}
                   href={url}
                 >

@@ -12,26 +12,37 @@ import { Label } from "@/components/global/Form/Label";
 import { Button } from "@/components/global/Button";
 import { RadioInput } from "@/components/global/Form/RadioInput";
 
-const PopOver: FC<{ text: string }> = (text) => {
+const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
   const [visible, setVisible] = useState(false);
+  const popoverId = `popover-${title.replace(/\s+/g, "-")}`;
 
   return (
-    <div className="my-sm" aria-haspopup={visible}>
+    <div className="my-sm">
       <Button
+        id={`${popoverId}-button`}
         icon={visible ? ChevronUpIcon : ChevronDownIcon}
         iconPosition="right"
         label={visible ? "Stäng mer information" : "Visa mer information"}
         onClick={() => setVisible(!visible)}
+        aria-expanded={visible}
+        aria-controls={popoverId}
+        aria-label={
+          visible
+            ? `Dölj mer information om ${title}`
+            : `Visa mer information om ${title}`
+        }
         variant={"plain"}
         size={"xs"}
-        className="mb-xs w-[195px] justify-between"
+        className="mb-xs w-[12.188rem] justify-between"
       />
       <p
+        id={popoverId}
+        aria-labelledby={`${popoverId}-button`}
         className={`text-sm text-textSecondary ${
           visible ? "visible" : "hidden"
         }`}
       >
-        {HtmlParser(text)}
+        {HtmlParser({ text })}
       </p>
     </div>
   );
@@ -105,7 +116,7 @@ const FormItem = (
       return (
         <>
           {addLabel(item.number, Type, ID, item.title)}
-          {item.info !== null && PopOver({ text: item.info })}
+          {item.info && PopOver({ text: item.info, title: item.title })}
           <TextInput
             id={`${Type}${ID}`}
             placeholder={t("form$placeholder-text")}
@@ -121,7 +132,7 @@ const FormItem = (
       return (
         <>
           {addLabel(item.number, Type, ID, item.title)}
-          {item.info !== null && PopOver({ text: item.info })}
+          {item.info && PopOver({ text: item.info, title: item.title })}
           <Textarea
             name={`${Type}${ID}`}
             id={`${Type}${ID}`}
@@ -156,7 +167,7 @@ const FormItem = (
               {item.number === -1 ? "Old:" : `${item.number}. ${item.title}`}
             </legend>
 
-            {item.info && PopOver({ text: item.info })}
+            {item.info && PopOver({ text: item.info, title: item.title })}
 
             {item.choices.map((choice) => {
               return (
