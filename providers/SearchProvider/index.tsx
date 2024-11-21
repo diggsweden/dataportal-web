@@ -23,6 +23,7 @@ export interface SearchProviderProps {
   initRequest: SearchRequest;
   i18n?: any;
   children?: React.ReactNode;
+  fetchHitsWithFacets?: boolean;
 }
 
 /* eslint-disable no-unused-vars */
@@ -42,13 +43,13 @@ export interface SearchContextData {
   facetHasSelectedValues: (key: string) => boolean;
   getFacetValueTitle: (key: string, valueKey: string) => string | null;
   doSearch: (
-    appendHits?: Boolean,
-    setStateToLocation?: Boolean,
-    reSortOnDone?: Boolean,
+    appendHits?: boolean,
+    setStateToLocation?: boolean,
+    reSortOnDone?: boolean,
   ) => Promise<void>;
   setStateToLocation: () => void;
   sortAllFacets: (excludeFacet?: string) => void;
-  parseLocationToState: () => Promise<Boolean>;
+  parseLocationToState: () => Promise<boolean>;
   request: SearchRequest;
   result: SearchResult;
   loadingHits: boolean;
@@ -56,6 +57,10 @@ export interface SearchContextData {
   fetchAllFacetsOnMount: boolean;
   dcatmeta?: DCATData;
   allFacets: { [facet: string]: SearchFacet };
+  /**
+   * Enable this if you need to fetch facets to display facet info in search results.
+   */
+  fetchHitsWithFacets: boolean;
 }
 
 /**
@@ -84,10 +89,11 @@ export const defaultSearchSettings: SearchContextData = {
   doSearch: async () => {},
   setStateToLocation: () => {},
   sortAllFacets: () => {},
-  parseLocationToState: () => new Promise<Boolean>((resolve) => {}),
+  parseLocationToState: () => new Promise<boolean>((resolve) => {}),
   loadingHits: false,
   loadingFacets: false,
   fetchAllFacetsOnMount: true,
+  fetchHitsWithFacets: false,
   dcatmeta: undefined,
   allFacets: {},
 };
@@ -133,7 +139,54 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       request: {
         ...props.initRequest,
       },
+      fetchHitsWithFacets: props.fetchHitsWithFacets || false,
     };
+  }
+
+  /**
+   * Initial load of search results and facets
+   */
+  initialLoad = async () => {
+    const loadTasks = [this.doSearch(false, true, false, true)];
+
+    if (this.state.fetchAllFacetsOnMount) {
+      loadTasks.push(this.fetchAllFacets());
+    }
+
+    await Promise.all(loadTasks);
+    await this.set({ fetchFacets: true });
+
+    if (this.state.fetchHitsWithFacets) {
+      await this.doSearch(false, false);
+    }
+  };
+
+  /**
+   * On component mount - Modified to split initial load with parallel loading
+   */
+  async componentDidMount() {
+    if (!hasWindow) return;
+
+    try {
+      await this.fetchDCATMeta();
+      const anyParsed = await this.parseLocationToState();
+
+      if (!anyParsed) return;
+
+      await this.initialLoad();
+
+      // Handle browser navigation
+      window.addEventListener("popstate", async () => {
+        const anyParsed = await this.parseLocationToState();
+        if (anyParsed) {
+          await this.set({ fetchFacets: true });
+          await this.fetchAllFacets();
+          await this.doSearch(false, false);
+        }
+      });
+    } catch (error) {
+      console.error("Error in componentDidMount:", error);
+    }
   }
 
   // Update EntryScape instance when language changes
@@ -149,41 +202,6 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       );
     }
   }
-
-  /**
-   * On component mount
-   *
-   * Fetches first batch of facets and store in state (if fetchAllFacetsOnMount = true)
-   * handles browser history (back/forward)
-   */
-  async componentDidMount() {
-    if (hasWindow) {
-      await this.fetchDCATMeta();
-
-      const anyParsed = await this.parseLocationToState();
-      if (anyParsed) {
-        // Execute search immediately
-        await this.doSearch(false, false, false);
-
-        // Then fetch facets if needed
-        if (this.state.fetchAllFacetsOnMount) {
-          await this.fetchAllFacets();
-        }
-      }
-
-      // Handle browser navigation
-      window.addEventListener("popstate", async () => {
-        const anyParsed = await this.parseLocationToState();
-        if (anyParsed) {
-          await this.doSearch(false, false, false);
-          if (this.state.fetchAllFacetsOnMount) {
-            await this.fetchAllFacets();
-          }
-        }
-      });
-    }
-  }
-
   /**
    * Set/Store state in provider component
    */
@@ -850,96 +868,118 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
   };
 
   /**
-   * Perform search against EntryStore, will use state SearchRequest
+   * Modified doSearch to support hits-only initial request
    */
   doSearch = async (
-    appendHits: Boolean = false,
-    setStateToLocation: Boolean = true,
-    reSortOnDone: Boolean = true,
+    appendHits = false,
+    setStateToLocation = true,
+    reSortOnDone = true,
+    hitsOnly = false,
   ): Promise<void> => {
-    this.setState({ loadingHits: true });
+    this.setState({
+      loadingHits: true,
+      loadingFacets: !hitsOnly,
+    });
 
     if (setStateToLocation) {
       this.setStateToLocation();
     }
 
     try {
-      // Separate search request without facets
+      // Modify request for hits-only
       const searchRequest = {
         ...this.state.request,
-        fetchFacets: false, // Disable facet fetching for initial search
+        fetchFacets: !hitsOnly,
       };
 
-      // Execute search immediately
-      const searchResults = await this.entryScape.solrSearch(
+      const searchResult = await this.entryScape.solrSearch(
         searchRequest,
         this.state.dcatmeta,
       );
 
-      let hits: SearchHit[] = searchResults.hits || [];
+      const hits =
+        appendHits && this.state.result?.hits
+          ? [...this.state.result.hits, ...(searchResult.hits || [])]
+          : searchResult.hits || [];
 
-      if (appendHits && this.state.result?.hits) {
-        hits = [...this.state.result.hits, ...hits];
-      }
+      const pages = searchResult.count
+        ? Math.ceil(searchResult.count / (this.state.request.take || 20))
+        : 0;
 
-      // Update UI with search results immediately
-      this.setState({
+      // Batch state update for hits
+      await this.batchStateUpdate({
         loadingHits: false,
         result: {
           ...this.state.result,
           hits,
-          count: searchResults.count,
-          pages: Math.ceil(
-            searchResults.count! / (this.state.request.take || 20),
-          ),
-          error: searchResults.error,
+          count: searchResult.count,
+          pages,
+          error: searchResult.error,
         },
       });
 
-      // Then fetch facets in the background if needed
-      if (this.state.request.fetchFacets) {
-        this.setState({ loadingFacets: true });
-
-        const facetRequest = {
-          ...this.state.request,
-          fetchFacets: true,
-          take: 1, // Minimize result set since we only need facets
-        };
-
-        const facetResults = await this.entryScape.solrSearch(
-          facetRequest,
-          this.state.dcatmeta,
-        );
-
-        if (facetResults.esFacets) {
-          const facets = await this.entryScape.getFacets(
-            facetResults.esFacets,
-            this.state.dcatmeta!,
-          );
-
-          this.setState({
-            loadingFacets: false,
-            allFacets: facets,
-          });
-
-          await this.mergeAllFacetsAndResult();
-          await this.updateFacetStatsGrouped();
-
-          if (reSortOnDone) {
-            this.sortAllFacets();
-          }
-        }
+      // Process facets if not hits-only request
+      if (!hitsOnly && searchResult.esFacets && this.state.dcatmeta) {
+        await this.processFacets(searchResult.esFacets, reSortOnDone);
       }
     } catch (error) {
       console.error("Error in doSearch:", error);
       this.setState({
         loadingHits: false,
         loadingFacets: false,
+      });
+    }
+  };
+
+  /**
+   * Helper method for batched state updates
+   */
+  private batchStateUpdate = (
+    updates: Partial<SearchContextData>,
+  ): Promise<void> => {
+    return new Promise((resolve) => {
+      this.setState(
+        (prevState) => ({
+          ...prevState,
+          ...updates,
+        }),
+        resolve,
+      );
+    });
+  };
+
+  /**
+   * Separate facet processing logic
+   */
+  private processFacets = async (
+    esFacets: any[],
+    reSortOnDone: boolean,
+  ): Promise<void> => {
+    try {
+      const facets = await this.entryScape.getFacets(
+        esFacets,
+        this.state.dcatmeta!,
+      );
+
+      await this.batchStateUpdate({
+        loadingFacets: false,
         result: {
           ...this.state.result,
-          error: "Search failed",
+          facets,
         },
       });
+
+      await Promise.all([
+        this.mergeAllFacetsAndResult(),
+        this.updateFacetStatsGrouped(),
+      ]);
+
+      if (reSortOnDone) {
+        this.sortAllFacets();
+      }
+    } catch (error) {
+      console.error("Error processing facets:", error);
+      this.setState({ loadingFacets: false });
     }
   };
 
@@ -998,6 +1038,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       loadingFacets: this.state.loadingFacets,
       fetchAllFacetsOnMount: true,
       allFacets: this.state.allFacets,
+      fetchHitsWithFacets: this.state.fetchHitsWithFacets,
     };
 
     return (
