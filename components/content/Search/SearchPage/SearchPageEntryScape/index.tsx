@@ -8,7 +8,6 @@ import SearchProvider, {
 import { decode } from "qss";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { useScript } from "@/hooks/useScript";
 import Head from "next/head";
 import { Container } from "@/components/layout/Container";
 import { ESRdfType, ESType } from "@/utilities/entryScape";
@@ -33,11 +32,6 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
   const [query, setQuery] = useState("");
   const [showFilter, setShowFilter] = useState(false);
   const [showTip, setShowTip] = useState(false);
-  const postscribeStatus = useScript(
-    "/postscribe.min.js",
-    "sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM",
-    "anonymous",
-  );
 
   const clearCurrentScrollPos = () => {
     if (typeof localStorage != "undefined") {
@@ -140,12 +134,16 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
           },
           {
             resource: "http://purl.org/dc/terms/type",
+            dcatProperty: "dcterms:type",
+            dcatId: "adms:publishertype",
             type: ESType.uri,
             related: true,
+            dcatType: "choice",
             indexOrder: 1,
           },
           {
             resource: "http://purl.org/dc/terms/publisher",
+            dcatProperty: "dcterms:publisher",
             type: ESType.uri,
             indexOrder: 2,
           },
@@ -159,6 +157,7 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
           },
           {
             resource: "http://purl.org/dc/terms/accrualPeriodicity",
+            dcatId: "dcat:dcterms:accrualPeriodicity_da",
             type: ESType.uri,
             dcatProperty: "dcterms:accrualPeriodicity",
             dcatType: "choice",
@@ -232,6 +231,7 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
           },
           {
             resource: "http://purl.org/dc/terms/publisher",
+            dcatProperty: "dcterms:publisher",
             type: ESType.uri,
             indexOrder: 1,
           },
@@ -260,6 +260,7 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
           {
             resource: "http://www.w3.org/2004/02/skos/core#inScheme",
             type: ESType.uri,
+            dcatProperty: "dcterms:type",
             indexOrder: 0,
           },
         ],
@@ -286,83 +287,81 @@ export const SearchPageEntryScape: FC<SearchProps> = ({ searchType }) => {
         />
       </Head>
 
-      {postscribeStatus === "ready" && (
-        <SearchProvider
-          entryscapeUrl={
-            searchProviderSettings[
-              searchType as keyof typeof searchProviderSettings
-            ].entryscapeUrl
-          }
-          hitSpecifications={
-            searchProviderSettings[
-              searchType as keyof typeof searchProviderSettings
-            ].hitSpecifications
-          }
-          facetSpecification={
-            searchProviderSettings[
-              searchType as keyof typeof searchProviderSettings
-            ].facetSpecification
-          }
-          initRequest={
-            searchProviderSettings[
-              searchType as keyof typeof searchProviderSettings
-            ].initRequest
-          }
-        >
-          <SearchContext.Consumer>
-            {(search) => (
-              <Container>
-                <div className="flex max-w-md items-end justify-between">
-                  <Heading level={1} size="lg" className="mb-none">
-                    {pageTitle}
-                  </Heading>
+      <SearchProvider
+        entryscapeUrl={
+          searchProviderSettings[
+            searchType as keyof typeof searchProviderSettings
+          ].entryscapeUrl
+        }
+        hitSpecifications={
+          searchProviderSettings[
+            searchType as keyof typeof searchProviderSettings
+          ].hitSpecifications
+        }
+        facetSpecification={
+          searchProviderSettings[
+            searchType as keyof typeof searchProviderSettings
+          ].facetSpecification
+        }
+        initRequest={
+          searchProviderSettings[
+            searchType as keyof typeof searchProviderSettings
+          ].initRequest
+        }
+      >
+        <SearchContext.Consumer>
+          {(search) => (
+            <Container>
+              <div className="flex max-w-md items-end justify-between">
+                <Heading level={1} size="lg" className="mb-none">
+                  {pageTitle}
+                </Heading>
 
-                  {searchType === "datasets" && (
-                    <Button
-                      aria-expanded={showTip}
-                      variant="plain"
-                      size="sm"
-                      icon={ChevronDownIcon}
-                      iconPosition="right"
-                      className={showTip ? "active" : " "}
-                      onClick={() => {
-                        clearCurrentScrollPos();
-                        setShowTip(!showTip);
-                      }}
-                      label={t("pages|search$search-tips")}
-                    />
-                  )}
-                </div>
+                {searchType === "datasets" && (
+                  <Button
+                    aria-expanded={showTip}
+                    variant="plain"
+                    size="sm"
+                    icon={ChevronDownIcon}
+                    iconPosition="right"
+                    className={showTip ? "active" : " "}
+                    onClick={() => {
+                      clearCurrentScrollPos();
+                      setShowTip(!showTip);
+                    }}
+                    label={t("pages|search$search-tips")}
+                  />
+                )}
+              </div>
 
-                {searchType === "datasets" && <SearchTips showTip={showTip} />}
+              {searchType === "datasets" && <SearchTips showTip={showTip} />}
 
-                <SearchForm
-                  search={search}
-                  searchMode={searchType}
-                  query={query}
-                  setQuery={setQuery}
-                />
+              <SearchForm
+                search={search}
+                searchMode={searchType}
+                query={query}
+                setQuery={setQuery}
+              />
 
-                <SearchPageSelector query={query} />
+              <SearchPageSelector query={query} />
 
-                <SearchFilters
-                  showFilter={showFilter}
-                  searchMode={searchType}
-                  search={search}
-                  query={query}
-                  setShowFilter={setShowFilter}
-                />
-                <noscript>{t("common|no-js-text")}</noscript>
-                <SearchResults
-                  showSorting={showFilter}
-                  search={search}
-                  searchMode="datasets"
-                />
-              </Container>
-            )}
-          </SearchContext.Consumer>
-        </SearchProvider>
-      )}
+              <SearchFilters
+                showFilter={showFilter}
+                searchMode={searchType}
+                search={search}
+                query={query}
+                setShowFilter={setShowFilter}
+              />
+              <noscript>{t("common|no-js-text")}</noscript>
+              <SearchResults
+                showSorting={showFilter}
+                search={search}
+                searchMode="datasets"
+              />
+            </Container>
+          )}
+        </SearchContext.Consumer>
+      </SearchProvider>
     </div>
   );
 };
