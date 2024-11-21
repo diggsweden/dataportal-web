@@ -1,7 +1,6 @@
 import { useEffect, useState, FC, Dispatch, SetStateAction } from "react";
 import { SearchMode } from "@/components/content/Search/SearchFilters";
 import { FileFormatBadge } from "@/components/global/FileFormatBadge";
-import { clearLocalStorage } from "@/utilities";
 import useTranslation from "next-translate/useTranslation";
 import { SearchSortOrder, SearchContextData } from "@/providers/SearchProvider";
 import Link from "next/link";
@@ -34,20 +33,23 @@ const searchFocus = () => {
   }
 };
 
-const saveCurrentScrollPos = () => {
-  if (typeof localStorage != "undefined" && typeof location != "undefined") {
-    localStorage.setItem(
-      `ScrollposY_${location.search}`,
-      JSON.stringify(window.scrollY),
-    );
-  }
-};
+const SCROLL_POS_PREFIX = "ScrollPosY_" as const;
 
-const clearCurrentScrollPos = () => {
-  if (typeof localStorage != "undefined" && typeof location != "undefined") {
-    localStorage.setItem(`ScrollposY_${location.search}`, "0");
-  }
-};
+function getScrollKey(search: string): string {
+  return `${SCROLL_POS_PREFIX}${search}`;
+}
+
+function saveCurrentScrollPos(): void {
+  if (typeof window === "undefined") return;
+  const key = getScrollKey(window.location.search);
+  localStorage.setItem(key, window.scrollY.toString());
+}
+
+function clearCurrentScrollPos(): void {
+  if (typeof window === "undefined") return;
+  const key = getScrollKey(window.location.search);
+  localStorage.removeItem(key);
+}
 
 /**
  * Adds sorting options to the search-results
@@ -184,22 +186,24 @@ export const SearchResults: FC<SearchResultsProps> = ({
   const { t } = useTranslation();
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
   const national = "http://purl.org/dc/terms/subject";
-  const searchKey = typeof location != "undefined" ? location.search : "server";
-  const posY =
-    typeof localStorage != "undefined"
-      ? localStorage.getItem(`ScrollposY_${searchKey}`)
-      : "0";
 
   useEffect(() => {
-    clearLocalStorage("ScrollposY_", `ScrollposY_${searchKey}`);
-  }, [searchKey]);
+    // Restore scroll position only after results are loaded
+    if (!search.loadingHits && search.result.hits!.length > 0) {
+      const scrollKey = getScrollKey(window.location.search);
+      const savedPosition = localStorage.getItem(scrollKey);
 
+      if (savedPosition) {
+        window.scrollTo(0, parseInt(savedPosition, 10));
+        localStorage.removeItem(scrollKey); // Clear after restoring
+      }
+    }
+  }, [search.loadingHits, search.result.hits]);
+
+  // Set compact view state
   useEffect(() => {
-    const count = search.result.count || -1;
-    count > 0 && posY && posY != "0" && window.scrollTo(0, parseInt(posY, 10));
-    if (search.request.compact && search.request.compact) setCompact(false);
-    else setCompact(true);
-  });
+    setCompact(!search.request.compact);
+  }, [search.request.compact]);
 
   const changePage = (page: number) => {
     if (search.result.pages || 0 > 1) {
@@ -310,7 +314,9 @@ export const SearchResults: FC<SearchResultsProps> = ({
                     search.allFacets &&
                     !search.loadingFacets &&
                     hit.metadata["inScheme_resource"] && (
-                      <span>{hit.metadata["inScheme_resource"]}</span>
+                      <span className="inScheme_resource">
+                        {hit.metadata["inScheme_resource"]}
+                      </span>
                     )}
 
                   {isCompact && hit.descriptionLang && (
