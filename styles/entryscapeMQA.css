@@ -101,8 +101,7 @@
   @apply space-y-lg;
 }
 
-.totMQA a,
-.totConcepts a {
+.totMQA a {
   @apply no-underline decoration-textSecondary hover:underline focus-visible:underline !important;
 }
 
@@ -131,18 +130,21 @@
   @apply rounded-sm !important;
 }
 .totMQA .page-link:not(:disabled),
-.totConcepts .page-link:not(:disabled) {
+.totConcepts .page-link:not(:disabled),
+.totTerminology .page-link:not(:disabled) {
   @apply border-none bg-white text-brown-900 shadow-none hover:bg-brown-200 focus-visible:bg-brown-200
   focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:-outline-offset-2 focus-visible:outline-primary !important;
 }
 
 .totMQA .page-link[disabled="true"],
-.totConcepts .page-link[disabled="true"] {
+.totConcepts .page-link[disabled="true"],
+.totTerminology .page-link[disabled="true"] {
   @apply border-none bg-white text-brown-400 !important;
 }
 
 .totMQA .entryPagination,
-.totConcepts .entryPagination {
+.totConcepts .entryPagination,
+.totTerminology .entryPagination {
   @apply pb-none pt-lg md:pt-xl;
 }
 

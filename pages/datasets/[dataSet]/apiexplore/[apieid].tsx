@@ -2,7 +2,6 @@ import { DataSetExploreApiPage } from "@/components/content/Entryscape/DatasetEx
 // export default DataSetExploreApiPage;
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { useScript } from "@/hooks/useScript";
 import { ApiIndexProvider } from "@/providers/ApiIndexContext";
 import EntrystoreProvider from "@/providers/EntrystoreProvider";
 import { SettingsContext } from "@/providers/SettingsProvider";
@@ -15,24 +14,18 @@ export default function ExploreApiPage() {
   const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];
   const eid = ids[1];
-  const postscribeStatus = useScript(
-    "/postscribe.min.js",
-    "sha384-1nPAWyZS0cvGLWSoWOrkTZAy8Xq8g6llEe985qo5NRPAeDi+F9h9U+0R8v56XWCM",
-    "anonymous",
-  );
-  return postscribeStatus === "ready" ? (
+
+  return (
     <ApiIndexProvider apiIndexFileUrl={env.API_DETECTION_PATH}>
       <EntrystoreProvider
         env={env}
         cid={cid}
         eid={eid}
         entrystoreUrl={env.ENTRYSCAPE_DATASETS_PATH}
-        fetchMore={true}
+        pageType="apiexplore"
       >
         <DataSetExploreApiPage dataSet={dataSet} apieid={apieid} />
       </EntrystoreProvider>
     </ApiIndexProvider>
-  ) : (
-    <></>
   );
 }

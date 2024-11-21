@@ -15,7 +15,8 @@ export abstract class EnvSettings {
 
   abstract ENTRYSCAPE_BLOCKS_URL: string;
 
-  abstract ENTRYSCAPE_MQA_URL: string;
+  abstract ENTRYSCAPE_MQA_SV_URL: string;
+  abstract ENTRYSCAPE_MQA_EN_URL: string;
 
   abstract ENTRYSCAPE_OPENDATA_SV_URL: string;
 

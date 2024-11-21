@@ -3,7 +3,6 @@ export * from "./checkers";
 export * from "./checkLang";
 export * from "./dcatUtils";
 export * from "./detectBrowser";
-export * from "./entryscape_blocks";
 export * from "./entrystoreUtil";
 export * from "./generateCsp";
 export * from "./keyFocus";

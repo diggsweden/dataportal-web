@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { ApiExplorerProps } from "@/components/content/Entryscape/ApiExploring";
-
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import useTranslation from "next-translate/useTranslation";
 import { SettingsContext } from "@/providers/SettingsProvider";
@@ -9,9 +8,10 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { Heading } from "@/components/global/Typography/Heading";
 import { Container } from "@/components/layout/Container";
-import { linkBase, customIndicators } from "@/utilities";
+import { linkBase } from "@/utilities";
 import { CustomLink } from "@/components/global/CustomLink";
 import { Preamble } from "@/components/global/Typography/Preamble";
+import { useEntryScapeBlocks } from "@/hooks/useEntryScapeBlocks";
 
 const ApiExplorer = dynamic(
   () =>
@@ -31,40 +31,26 @@ export const DataSetExploreApiPage: React.FC<{
   const cid = ids[0];
   const eid = ids[1];
   const { t, lang } = useTranslation();
-  const { env, setBreadcrumb } = useContext(SettingsContext);
+  const { env, setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
 
   const [toggleTabs, setToggleTabs] = useState(1);
   const tab = toggleTabs === 1;
-  let postscribe: any;
 
   //Toggle between tabs
   const toggleTab = (index: any) => {
     setToggleTabs(index);
   };
 
-  /**
-   * Async load scripts requiered for EntryScape blocks,
-   * or else blocks wont have access to DOM
-   */
-  useEffect(() => {
-    //we need to reload the page when using the back/forward buttons to a blocks rendered page
-    if (typeof window !== "undefined") {
-      //check if refering search params is set to hash
-      if (
-        window.location &&
-        window.location.hash &&
-        window.location.hash.includes("ref=?")
-      )
-        window.onpopstate = () => {
-          window.location.reload();
-        };
-    }
-  }, []);
-
-  useEffect(() => {
-    addScriptsDistribution();
-  }, []);
+  useEntryScapeBlocks({
+    entrystoreBase: entry.entrystore.getBaseURI(),
+    env: entry.env,
+    lang,
+    iconSize,
+    pageType: "apiexplore",
+    context: entry.context,
+    esId: entry.esId,
+  });
 
   useEffect(() => {
     setBreadcrumb &&
@@ -88,92 +74,6 @@ export const DataSetExploreApiPage: React.FC<{
         ],
       });
   }, [entry]);
-
-  const addScriptsDistribution = () => {
-    if (typeof window !== "undefined") {
-      postscribe = (window as any).postscribe;
-
-      if (apieid && cid) {
-        postscribe(
-          "#scriptsPlaceholder",
-          ` 
-          <script>
-          var __entryscape_plugin_config = {
-            entrystore_base: 'https:\/\/${
-              env.ENTRYSCAPE_DATASETS_PATH
-                ? env.ENTRYSCAPE_DATASETS_PATH
-                : "admin.dataportal.se"
-            }\/store'          
-          };
-          window.__entryscape_config = [{
-
-            block: 'config',
-            page_language: '${lang}',
-            entry: '${apieid}', 
-            context: '${cid}',
-            clicks: {"dataservice-link":"/dataservice/\${context}_\${entry}/"},
-            namespaces:{
-              esterms: 'http://entryscape.com/terms/',
-              peu: 'http://publications.europa.eu/resource/authority/'
-            },
-
-            collections: [
-              {
-                type: 'facet',
-                name: 'format',
-                label: 'Format',
-                property: 'dcterms:format',
-                related: false,
-                nodetype: 'literal',
-                searchIndextype: 'string',
-                limit: 7,
-                options: {
-                  pdf: ['PDF', 'application/pdf'],
-                  html: ['text/html', 'application/xhtml+xml', 'HTML'],
-                  xml: ['application/xml', 'text/xml', 'XML'],
-                  json: ['application/json', 'application/ld+json', 'application/json-ld', 'application/json+zip'],
-                  csv: ['text/csv', 'CSV', '.csv', 'application/zip+csv', 'text/csv+zip'],
-                  text: ['text/plain', '.txt'],
-                  rdf: ['application/rdf+xml', 'application/sparql-query'],
-                  zip: ['ZIP', 'application/zip', 'application/x-zip-compressed'],
-                  image: ['jpg', 'image/jpeg', 'image/jpg', 'image/png', 'tiff', 'image/tiff'],
-                  atom: ['application/atom+xml'],
-                  wfs: ['application/vnd.ogc.wfs_xml', 'application/gml+xml', 'wfs'],
-                  wms: ['application/vnd.ogc.wms_xml', 'application/vnd.iso.19139+xml', 'WMS'],
-                  wmts: ['application/vnd.ogc.wmts_xml'],
-                  wcs: ['application/vnd.ogc.wcs_xml'],
-                  kml: ['application/vnd.google-earth.kml+xml'],
-                  geojson: ['application/vnd.geo+json'],
-                  shp: ['application/x-shapefile', 'application/x-shp'],
-                  xls: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', '.xlsx', '.xls'],
-                  ods: ['application/vnd.oasis.opendocument.spreadsheet'],
-                  '${t("pages|datasetpage$fileformat")}': null,
-                },
-              },
-            ],
-
-            blocks: [
-              ${customIndicators(t)},   
-          ]
-          }]
-          </script>              
-
-          <script src="${
-            lang == "sv"
-              ? env.ENTRYSCAPE_OPENDATA_SV_URL
-              : env.ENTRYSCAPE_OPENDATA_EN_URL
-          }"></script>
-          <script src="${
-            env.ENTRYSCAPE_BLOCKS_URL
-          }"></script>                       
-          `,
-          {
-            done: function () {},
-          },
-        );
-      }
-    }
-  };
 
   return (
     <Container>
