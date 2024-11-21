@@ -4,7 +4,6 @@ import {
   getEntryLang,
   resourcesSearch,
   listChoices,
-  slugify,
   getLocalizedMetadataValue,
   getTemplateChoices,
   getLocalizedChoiceLabel,
@@ -546,7 +545,7 @@ export class EntryScape {
           ? hitSpecification.pathResolver(child)
           : `${hitSpecification.path || "datamangd"}${context.getId()}_${
               hit.entryId
-            }/${slugify(hit.title)}`;
+            }`;
 
         hits.push(hit);
       }
