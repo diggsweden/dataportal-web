@@ -245,7 +245,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
   }
 
   const SearchResultSkeleton = () => (
-    <div className="animate-pulse space-y-lg">
+    <div className="animate-pulse space-y-lg opacity-50">
       <div className="rounded h-lg w-1/4 bg-green-600" />
       <div className="flex flex-col gap-sm">
         <div className="rounded h-md w-3/4 bg-textPrimary" />
@@ -256,7 +256,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
   );
 
   return (
-    <div id="search-result" className="my-lg pt-xl md:my-xl">
+    <div id="search-result" className="my-lg py-xl md:my-xl">
       <div className="mb-lg flex flex-col-reverse justify-between md:flex-row">
         <Heading level={2} size="md" className="search-result-header">
           {/* Visual display of the count */}

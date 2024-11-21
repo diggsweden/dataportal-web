@@ -105,14 +105,49 @@ export const SearchContext = createContext<SearchContextData>(
  * SearchProvider component
  */
 class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
+  private entryScape: EntryScape;
+  private getCacheKeys(request: SearchRequest) {
+    const cacheKeyBase = `${request.language || ""}_${
+      request.esRdfTypes?.[0] || ""
+    }`;
+    return {
+      data: `${cacheKeyBase}_facets-cache`,
+      timestamp: `${cacheKeyBase}_facets-cache-ts`,
+    };
+  }
+
   constructor(props: SearchProviderProps) {
     super(props);
+    const { t, lang } = props.i18n;
+
+    this.entryScape = new EntryScape(
+      props.entryscapeUrl || "https://admin.dataportal.se/store",
+      lang,
+      t,
+      props.facetSpecification,
+      props.hitSpecifications,
+    );
+
     this.state = {
       ...defaultSearchSettings,
       request: {
         ...props.initRequest,
       },
     };
+  }
+
+  // Update EntryScape instance when language changes
+  componentDidUpdate(prevProps: SearchProviderProps) {
+    if (prevProps.i18n.lang !== this.props.i18n.lang) {
+      const { t, lang } = this.props.i18n;
+      this.entryScape = new EntryScape(
+        this.props.entryscapeUrl || "https://admin.dataportal.se/store",
+        lang,
+        t,
+        this.props.facetSpecification,
+        this.props.hitSpecifications,
+      );
+    }
   }
 
   /**
@@ -173,7 +208,6 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
 
     if (dcatmeta && dcatmeta.templates && dcatmeta.templates.length > 0) {
       this.setState({
-        ...this.state,
         dcatmeta: dcatmeta,
       });
     }
@@ -184,20 +218,10 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
    * This is for accurate facets count
    */
   updateFacetStatsGrouped = async (): Promise<void> => {
-    const { t, lang } = this.props.i18n;
-
     // Only continue if we have allFacets and a SearchResult
     if (!this.state.allFacets || !this.state.result?.facets) {
       return;
     }
-
-    const entryScape = new EntryScape(
-      this.props.entryscapeUrl || "https://admin.dataportal.se/store",
-      lang,
-      t,
-      this.props.facetSpecification,
-      this.props.hitSpecifications,
-    );
 
     const facetValues = this.state.request.facetValues as SearchFacetValue[];
     if (!facetValues?.length) {
@@ -223,7 +247,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       const searchPromises = Object.keys(groupedFacets).map(async (group) => {
         const facetsNotInGroup = facetValues.filter((f) => f.facet !== group);
 
-        const res = await entryScape.solrSearch({
+        const res = await this.entryScape.solrSearch({
           ...this.state.request,
           takeFacets: 100,
           fetchFacets: true,
@@ -441,85 +465,74 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
    * Will cache and fetch from localStorage, cache expires in 5 mins
    */
   fetchAllFacets = async (): Promise<void> => {
-    const { t, lang } = this.props.i18n;
-    const store_cache_key = `${this.state.request.language || ""}_${
-      this.state.request.esRdfTypes
-        ? this.state.request.esRdfTypes[0].toString()
-        : ""
-    }_facets-cache`;
-    const store_cache_key_stamp = `${this.state.request.language || ""}_${
-      this.state.request.esRdfTypes
-        ? this.state.request.esRdfTypes[0].toString()
-        : ""
-    }_facets-cache-ts`;
+    const { request, dcatmeta } = this.state;
+    const CACHE_KEYS = this.getCacheKeys(request);
+
+    const CACHE_EXPIRY_MINS = 5;
 
     this.setState({ loadingFacets: true });
 
-    // Check cache
-    if (hasLocalStore && hasWindow) {
-      const ls_AllFacets = localStorage.getItem(store_cache_key);
-      const ls_Stamp = localStorage.getItem(store_cache_key_stamp);
+    try {
+      // Check cache if browser environment
+      if (hasWindow && hasLocalStore) {
+        const cachedData = localStorage.getItem(CACHE_KEYS.data);
+        const cachedTimestamp = localStorage.getItem(CACHE_KEYS.timestamp);
 
-      if (ls_AllFacets && ls_Stamp) {
-        const allFacets = JSON.parse(ls_AllFacets) as {
-          [facet: string]: SearchFacet;
-        };
-        const stampAllFacets = new Date(JSON.parse(ls_Stamp));
-        const diff = (new Date().getTime() - stampAllFacets.getTime()) / 60000;
+        if (cachedData && cachedTimestamp) {
+          const allFacets = JSON.parse(cachedData) as {
+            [facet: string]: SearchFacet;
+          };
+          const cacheAge =
+            (Date.now() - new Date(JSON.parse(cachedTimestamp)).getTime()) /
+            60000;
 
-        if (diff > 5) {
-          // Cache expired, remove it
-          localStorage.removeItem(store_cache_key);
-          localStorage.removeItem(store_cache_key_stamp);
-        } else {
-          // Use cached data
-          this.setState({ allFacets, loadingFacets: false });
-          return;
+          if (cacheAge <= CACHE_EXPIRY_MINS) {
+            this.setState({ allFacets, loadingFacets: false });
+            return;
+          }
+
+          // Clear expired cache
+          localStorage.removeItem(CACHE_KEYS.data);
+          localStorage.removeItem(CACHE_KEYS.timestamp);
         }
       }
-    }
 
-    try {
-      const entryScape = new EntryScape(
-        this.props.entryscapeUrl || "https://admin.dataportal.se/store",
-        lang,
-        t,
-        this.props.facetSpecification,
-        this.props.hitSpecifications,
-      );
-
-      const res = await entryScape.solrSearch({
+      const searchResult = await this.entryScape.solrSearch({
         query: "*",
         fetchFacets: true,
         take: 1,
-        takeFacets: this.state.request.takeFacets || 30,
+        takeFacets: request.takeFacets || 30,
       });
 
-      if (!res.esFacets || !this.state.dcatmeta) return;
+      if (!searchResult.esFacets || !dcatmeta) {
+        throw new Error("Missing required facets or DCAT metadata");
+      }
 
-      const facets = await entryScape.getFacets(
-        res.esFacets,
-        this.state.dcatmeta,
+      const facets = await this.entryScape.getFacets(
+        searchResult.esFacets,
+        dcatmeta,
       );
 
-      if (facets) {
-        this.setState({ allFacets: facets });
+      if (!facets) {
+        throw new Error("Failed to process facets");
+      }
 
-        if (hasLocalStore && hasWindow) {
-          localStorage.setItem(store_cache_key, JSON.stringify(facets));
+      this.setState({ allFacets: facets });
+
+      // Cache results if browser environment
+      if (hasWindow && hasLocalStore) {
+        try {
+          localStorage.setItem(CACHE_KEYS.data, JSON.stringify(facets));
           localStorage.setItem(
-            store_cache_key_stamp,
+            CACHE_KEYS.timestamp,
             JSON.stringify(new Date()),
           );
+        } catch (cacheError) {
+          console.warn("Failed to cache facets:", cacheError);
         }
-      } else {
-        this.setState({
-          request: this.state.request,
-          loadingFacets: false,
-        });
       }
     } catch (error) {
-      console.error("Failed to fetch all facets:", error);
+      console.error("Failed to fetch facets:", error);
     } finally {
       this.setState({ loadingFacets: false });
     }
@@ -533,32 +546,25 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
    *
    */
   searchInFacets = async (query: string, facetkey: string): Promise<void> => {
-    const { t, lang } = this.props.i18n;
-    const store_cache_key = `${this.state.request.language || ""}_${
-      this.state.request.esRdfTypes
-        ? this.state.request.esRdfTypes[0].toString()
-        : ""
-    }_facets-cache`;
-    const store_cache_key_stamp = `${store_cache_key}-ts`;
+    const { request } = this.state;
+    const CACHE_KEYS = this.getCacheKeys(request);
 
     const facets = { ...this.state.allFacets };
 
-    const entryScape = new EntryScape(
-      this.props.entryscapeUrl || "https://admin.dataportal.se/store",
-      lang,
-      t,
-      undefined, // Optional configuration
-      {
-        "http://xmlns.com/foaf/0.1/Agent": {
-          path: ``,
-          titleResource: "http://xmlns.com/foaf/0.1/name",
-          descriptionResource: "",
-        },
+    // Store original specifications
+    const originalSpecs = { ...this.entryScape.hitSpecifications };
+
+    // Update specifications for this search
+    this.entryScape.hitSpecifications = {
+      "http://xmlns.com/foaf/0.1/Agent": {
+        path: ``,
+        titleResource: "http://xmlns.com/foaf/0.1/name",
+        descriptionResource: "",
       },
-    );
+    };
 
     try {
-      const res = await entryScape.solrSearch({
+      const res = await this.entryScape.solrSearch({
         titleQuery: query && query.length > 0 ? query : "*",
         fetchFacets: false,
         take: 100,
@@ -595,9 +601,9 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       this.setState({ allFacets: facets });
 
       if (hasLocalStore && hasWindow) {
-        window.localStorage.setItem(store_cache_key, JSON.stringify(facets));
+        window.localStorage.setItem(CACHE_KEYS.data, JSON.stringify(facets));
         window.localStorage.setItem(
-          store_cache_key_stamp,
+          CACHE_KEYS.timestamp,
           JSON.stringify(new Date()),
         );
       }
@@ -607,6 +613,8 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       console.error("Error searching in facets:", error);
     } finally {
       this.setState({ loadingFacets: false });
+      // Restore original specifications
+      this.entryScape.hitSpecifications = originalSpecs;
     }
   };
 
@@ -849,8 +857,6 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     setStateToLocation: Boolean = true,
     reSortOnDone: Boolean = true,
   ): Promise<void> => {
-    const { t, lang } = this.props.i18n;
-
     this.setState({ loadingHits: true });
 
     if (setStateToLocation) {
@@ -858,14 +864,6 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     }
 
     try {
-      const entryScape = new EntryScape(
-        this.props.entryscapeUrl || "https://admin.dataportal.se/store",
-        lang,
-        t,
-        this.props.facetSpecification,
-        this.props.hitSpecifications,
-      );
-
       // Separate search request without facets
       const searchRequest = {
         ...this.state.request,
@@ -873,7 +871,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       };
 
       // Execute search immediately
-      const searchResults = await entryScape.solrSearch(
+      const searchResults = await this.entryScape.solrSearch(
         searchRequest,
         this.state.dcatmeta,
       );
@@ -885,7 +883,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       }
 
       // Update UI with search results immediately
-      await this.setState({
+      this.setState({
         loadingHits: false,
         result: {
           ...this.state.result,
@@ -908,24 +906,26 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
           take: 1, // Minimize result set since we only need facets
         };
 
-        const facetResults = await entryScape.solrSearch(
+        const facetResults = await this.entryScape.solrSearch(
           facetRequest,
           this.state.dcatmeta,
         );
 
         if (facetResults.esFacets) {
-          const facets = await entryScape.getFacets(
+          const facets = await this.entryScape.getFacets(
             facetResults.esFacets,
             this.state.dcatmeta!,
           );
 
-          await this.setState({
+          this.setState({
             loadingFacets: false,
             allFacets: facets,
           });
 
+          await this.mergeAllFacetsAndResult();
+          await this.updateFacetStatsGrouped();
+
           if (reSortOnDone) {
-            await this.mergeAllFacetsAndResult();
             this.sortAllFacets();
           }
         }
