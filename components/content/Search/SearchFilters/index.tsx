@@ -4,8 +4,6 @@ import useTranslation from "next-translate/useTranslation";
 import { SearchContextData } from "@/providers/SearchProvider";
 import { SearchFilter } from "@/components/content/Search/SearchFilters/SearchFilter";
 import FilterIcon from "@/assets/icons/filter.svg";
-import CloseIcon from "@/assets/icons/closeCross.svg";
-import TrashIcon from "@/assets/icons/trash.svg";
 import SearchIcon from "@/assets/icons/search.svg";
 import { Button } from "@/components/global/Button";
 import { TextInput } from "@/components/global/Form/TextInput";
@@ -14,6 +12,7 @@ import {
   SearchCheckboxFilter,
   SearchCheckboxFilterIcon,
 } from "./SearchCheckboxFilter/SearchCheckboxFilter";
+import { SearchActiveFilters } from "./SearchActiveFilters";
 
 interface SearchFilterProps {
   showFilter: boolean;
@@ -161,14 +160,6 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
   const { t } = useTranslation();
   const { iconSize } = useContext(SettingsContext);
   const [inputFilter, setInputFilter] = useState<InputFilter>({});
-  const hvd = "http://data.europa.eu/r5r/applicableLegislation";
-  const containHVD = !search.request.facetValues?.find(
-    (d) => d.facet === hvd && search.request.facetValues?.length === 1,
-  );
-  const national = "http://purl.org/dc/terms/subject";
-  const containNational = !search.request.facetValues?.find(
-    (d) => d.facet === national && search.request.facetValues?.length === 1,
-  );
 
   const clearCurrentScrollPos = () => {
     if (typeof localStorage != "undefined" && typeof location != "undefined") {
@@ -225,6 +216,60 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
 
     return grouped;
   }, [search.allFacets]);
+
+  const hvd = "http://data.europa.eu/r5r/applicableLegislation";
+  const national = "http://purl.org/dc/terms/subject";
+
+  const activeCheckboxFilters = useMemo(() => {
+    const filters = [];
+
+    // HVD filter
+    if (search.request.facetValues?.some((t) => t.title === ESRdfType.hvd)) {
+      filters.push({
+        id: "hvd_only",
+        label: t(`resources|${hvd}`),
+        facetValue: search.request.facetValues.find(
+          (t) => t.title === ESRdfType.hvd,
+        ),
+      });
+    }
+
+    // National filter
+    if (
+      search.request.facetValues?.some(
+        (t) => t.facet === ESRdfType.national_data,
+      )
+    ) {
+      filters.push({
+        id: "national_only",
+        label: t(`resources|${national}`),
+        facetValue: search.request.facetValues.find(
+          (t) => t.facet === ESRdfType.national_data,
+        ),
+      });
+    }
+
+    // API only filter
+    if (
+      searchMode === "datasets" &&
+      search.request.esRdfTypes?.some(
+        (t) => t === ESRdfType.esterms_ServedByDataService,
+      ) &&
+      search.request.esRdfTypes?.some(
+        (t) => t === ESRdfType.esterms_IndependentDataService,
+      ) &&
+      !search.request.esRdfTypes?.some((t) => t === ESRdfType.dataset)
+    ) {
+      filters.push({
+        id: "api_only",
+        label: "API",
+        // Special handling for API filter since it uses esRdfTypes
+        isApiFilter: true,
+      });
+    }
+
+    return filters;
+  }, [search.request.facetValues, search.request.esRdfTypes, searchMode]);
 
   return (
     <div id="SearchFilters" role="region" aria-label={t("common|filter")}>
@@ -387,8 +432,8 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                         key={key}
                         id="hvd_only"
                         name="API"
-                        checked={search.request.facetValues?.some(
-                          (t) => t.title == ESRdfType.hvd,
+                        checked={activeCheckboxFilters.some(
+                          (filter) => filter.id === "hvd_only",
                         )}
                         onChange={() => doSearch(key, facetValues[0])}
                         label={t(`resources|${key}`)}
@@ -401,8 +446,8 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                         key={key}
                         id="national_only"
                         name="National"
-                        checked={search.request.facetValues?.some(
-                          (t) => t.facet == ESRdfType.national_data,
+                        checked={activeCheckboxFilters.some(
+                          (filter) => filter.id === "national_only",
                         )}
                         onChange={() => doSearch(key, facetValues[0])}
                         label={t(`resources|${key}`)}
@@ -417,28 +462,14 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                   key="api_only"
                   id="api_only"
                   name="API"
-                  checked={
-                    search.request.esRdfTypes?.some(
-                      (t) => t == ESRdfType.esterms_ServedByDataService,
-                    ) &&
-                    search.request.esRdfTypes?.some(
-                      (t) => t == ESRdfType.esterms_IndependentDataService,
-                    ) &&
-                    !search.request.esRdfTypes?.some(
-                      (t) => t == ESRdfType.dataset,
-                    )
-                  }
+                  checked={activeCheckboxFilters.some(
+                    (filter) => filter.id === "api_only",
+                  )}
                   onChange={() => {
                     clearCurrentScrollPos();
                     if (
-                      search.request.esRdfTypes?.some(
-                        (t) => t == ESRdfType.esterms_ServedByDataService,
-                      ) &&
-                      search.request.esRdfTypes?.some(
-                        (t) => t == ESRdfType.esterms_IndependentDataService,
-                      ) &&
-                      !search.request.esRdfTypes?.some(
-                        (t) => t == ESRdfType.dataset,
+                      activeCheckboxFilters.some(
+                        (filter) => filter.id === "api_only",
                       )
                     ) {
                       search
@@ -471,64 +502,13 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
           </div>
         ))}
       </div>
-      {search.request.facetValues && search.request.facetValues.length > 0 && (
-        <div className="mt-lg flex flex-col justify-between gap-md md:flex-row md:items-baseline">
-          <div className="flex flex-col flex-wrap gap-sm md:flex-row md:items-center md:gap-md">
-            {(containHVD || containNational) && (
-              <span className="text-textSecondary">
-                {t("common|active-filters")}:
-              </span>
-            )}
 
-            {search.request &&
-              search.request.facetValues &&
-              (search.request.facetValues as SearchFacetValue[]).map(
-                (facetValue: SearchFacetValue, index: number) =>
-                  facetValue.facet !== hvd &&
-                  facetValue.facet !== national && (
-                    <Button
-                      variant="filter"
-                      size="xs"
-                      key={index}
-                      label={facetValue.title || facetValue.resource}
-                      aria-label={`${t("common|clear-filters")} ${
-                        facetValue.title || facetValue.resource
-                      }`}
-                      icon={CloseIcon}
-                      iconPosition="right"
-                      className="w-full justify-between py-md text-left font-strong md:w-auto md:py-[2px]"
-                      onClick={() => {
-                        clearCurrentScrollPos();
-                        search.toggleFacet(facetValue).then(() => {
-                          search.doSearch();
-                        });
-                      }}
-                    />
-                  ),
-              )}
-          </div>
-          <div
-            className={
-              search.request?.facetValues &&
-              search.request.facetValues.length >= 2
-                ? "block whitespace-nowrap"
-                : "hidden"
-            }
-          >
-            <Button
-              variant="plain"
-              size="sm"
-              icon={TrashIcon}
-              iconPosition="left"
-              onClick={() => {
-                clearCurrentScrollPos();
-                search.set({ facetValues: [] }).then(() => search.doSearch());
-              }}
-              label={t("common|clear-filters")}
-            />
-          </div>
-        </div>
-      )}
+      <SearchActiveFilters
+        search={search}
+        query={query}
+        searchMode={searchMode}
+        activeCheckboxFilters={activeCheckboxFilters}
+      />
     </div>
   );
 };
