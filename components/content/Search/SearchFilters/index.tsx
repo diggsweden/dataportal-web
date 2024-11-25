@@ -285,7 +285,9 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
         aria-controls="filter-content"
         onClick={() => updateFilters()}
         label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
-        disabled={search.loadingFacets}
+        disabled={
+          search.loadingFacets && Object.keys(groupedFacets).length === 0
+        }
       />
 
       <div
