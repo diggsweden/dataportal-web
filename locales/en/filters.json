@@ -4,8 +4,8 @@
   },
   "theme-input-label": "Search within filters",
   "group": {
-    "access": "Access",
-    "type": "Data type",
+    "access": "Availability",
+    "type": "Type of data",
     "actor": "Actors",
     "distribution": "Distribution"
   }

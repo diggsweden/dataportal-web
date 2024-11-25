@@ -93,5 +93,6 @@
   "http://publications.europa.eu/resource/authority/frequency/BIENNIAL": "Biennial",
   "http://publications.europa.eu/resource/authority/frequency/WEEKLY": "Weekly",
   "http://publications.europa.eu/resource/authority/frequency/ANNUAL": "Annual",
-  "http://purl.org/cld/freq/Annual": "Annual"
+  "http://purl.org/cld/freq/Annual": "Annual",
+  "api": "API/Data service"
 }
