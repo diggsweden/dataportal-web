@@ -4,7 +4,6 @@ import {
   getEntryLang,
   resourcesSearch,
   listChoices,
-  slugify,
   getLocalizedMetadataValue,
   getTemplateChoices,
   getLocalizedChoiceLabel,
@@ -131,7 +130,6 @@ export class EntryScape {
     dcat: DCATData,
   ): Promise<{ [key: string]: SearchFacet }> {
     let facets: { [key: string]: SearchFacet } = {};
-    let returnFacets: { [key: string]: SearchFacet } = {};
 
     for (const f of metaFacets) {
       // Find the corresponding facet specification
@@ -147,6 +145,7 @@ export class EntryScape {
           indexOrder: facetSpec.indexOrder,
           count: f.valueCount,
           show: 25,
+          group: facetSpec.group,
           facetValues: f.values
             .filter((value: ESFacetFieldValue) => {
               if (!facetSpec?.dcatFilterEnabled) return true;
@@ -192,10 +191,9 @@ export class EntryScape {
               };
             }),
         };
-        returnFacets[f.predicate] = facets[f.predicate];
       }
     }
-    return returnFacets;
+    return facets;
   }
 
   /**
@@ -369,21 +367,24 @@ export class EntryScape {
     let esQuery = es.newSolrQuery();
     esQuery.publicRead(true);
 
-    // Handle facet specifications
-    if (
-      request.fetchFacets &&
-      this.facetSpecification &&
-      this.facetSpecification.facets &&
-      this.facetSpecification.facets.length > 0
-    ) {
-      this.facetSpecification.facets.forEach((fSpec) => {
-        if (fSpec.type == ESType.literal || fSpec.type == ESType.literal_s) {
-          esQuery.facetLimit(1000);
-          esQuery.literalFacet(fSpec.resource, fSpec.related ? true : false);
-        } else if (fSpec.type == ESType.uri || fSpec.type == ESType.wildcard) {
-          esQuery.uriFacet(fSpec.resource, fSpec.related ? true : false);
-        }
-      });
+    // Only set up facets if explicitly requested
+    if (request.fetchFacets) {
+      if (
+        this.facetSpecification?.facets &&
+        this.facetSpecification.facets.length > 0
+      ) {
+        this.facetSpecification.facets.forEach((fSpec) => {
+          if (fSpec.type == ESType.literal || fSpec.type == ESType.literal_s) {
+            esQuery.facetLimit(1000);
+            esQuery.literalFacet(fSpec.resource, fSpec.related ? true : false);
+          } else if (
+            fSpec.type == ESType.uri ||
+            fSpec.type == ESType.wildcard
+          ) {
+            esQuery.uriFacet(fSpec.resource, fSpec.related ? true : false);
+          }
+        });
+      }
     }
 
     // Handle facet values
@@ -544,7 +545,7 @@ export class EntryScape {
           ? hitSpecification.pathResolver(child)
           : `${hitSpecification.path || "datamangd"}${context.getId()}_${
               hit.entryId
-            }/${slugify(hit.title)}`;
+            }`;
 
         hits.push(hit);
       }

@@ -200,58 +200,62 @@ export const SearchContentPage: FC<SearchProps> = () => {
         </form>
 
         <SearchPageSelector query={query} />
-
-        <div id="search-result" className="my-lg md:my-xl">
-          <div className="mb-lg md:mb-xl">
-            <Heading level={2} size="md">
-              {loading && <span>{t("common|loading")}</span>}
-              {!loading &&
-                searchResult &&
-                (searchResult.count || 0) >= 0 &&
-                `${searchResult.count} ${t("pages|search$content-hits")}`}
-            </Heading>
-          </div>
-
-          {searchResult && (
-            <ul className="search-result-list space-y-lg md:space-y-xl">
-              {searchResult.hits &&
-                searchResult.hits.map((hit: SearchHit, index: number) => (
-                  <li className="group relative max-w-lg" key={index}>
-                    <Link
-                      href={`${cleanDoubleSlash(hit.url!)}#ref=${
-                        window ? window.location.search : ""
-                      }`}
-                      onClick={() => {
-                        saveCurrentScrollPos();
-                      }}
-                      className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
-                    >
-                      <Heading
-                        level={3}
-                        size="sm"
-                        className={`mb-sm font-normal text-green-600 group-focus-within:underline group-hover:underline`}
-                        lang={hit.titleLang}
-                      >
-                        {highlightWords(hit.title)}
-                      </Heading>
-                    </Link>
-                    {hit.description && (
-                      <p>{highlightWords(hit.description)}</p>
-                    )}
-                  </li>
-                ))}
-            </ul>
-          )}
-        </div>
-        {searchResult?.hits && (
-          <Pagination
-            totalResults={searchResult?.count || 0}
-            itemsPerPage={PER_PAGE}
-            pageNumber={pageNumber}
-            changePage={changePage}
-          />
-        )}
       </Container>
+
+      <div className="bg-white">
+        <Container>
+          <div id="search-result" className="my-lg py-xl md:my-xl">
+            <div className="mb-lg md:mb-xl">
+              <Heading level={2} size="md">
+                {loading && <span>{t("common|loading")}</span>}
+                {!loading &&
+                  searchResult &&
+                  (searchResult.count || 0) >= 0 &&
+                  `${searchResult.count} ${t("pages|search$content-hits")}`}
+              </Heading>
+            </div>
+
+            {searchResult && (
+              <ul className="search-result-list space-y-lg md:space-y-xl">
+                {searchResult.hits &&
+                  searchResult.hits.map((hit: SearchHit, index: number) => (
+                    <li className="group relative max-w-lg" key={index}>
+                      <Link
+                        href={`${cleanDoubleSlash(hit.url!)}#ref=${
+                          window ? window.location.search : ""
+                        }`}
+                        onClick={() => {
+                          saveCurrentScrollPos();
+                        }}
+                        className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
+                      >
+                        <Heading
+                          level={3}
+                          size="sm"
+                          className={`mb-sm font-normal text-green-600 group-focus-within:underline group-hover:underline`}
+                          lang={hit.titleLang}
+                        >
+                          {highlightWords(hit.title)}
+                        </Heading>
+                      </Link>
+                      {hit.description && (
+                        <p>{highlightWords(hit.description)}</p>
+                      )}
+                    </li>
+                  ))}
+              </ul>
+            )}
+          </div>
+          {searchResult?.hits && (
+            <Pagination
+              totalResults={searchResult?.count || 0}
+              itemsPerPage={PER_PAGE}
+              pageNumber={pageNumber}
+              changePage={changePage}
+            />
+          )}
+        </Container>
+      </div>
     </div>
   );
 };
