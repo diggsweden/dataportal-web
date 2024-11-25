@@ -91,5 +91,6 @@
   "http://publications.europa.eu/resource/authority/frequency/BIENNIAL": "Vartannat år",
   "http://publications.europa.eu/resource/authority/frequency/WEEKLY": "Veckovis",
   "http://publications.europa.eu/resource/authority/frequency/ANNUAL": "Årlig",
-  "http://purl.org/cld/freq/Annual": "Årlig"
+  "http://purl.org/cld/freq/Annual": "Årlig",
+   "api": "API/Datatjänst"
 }

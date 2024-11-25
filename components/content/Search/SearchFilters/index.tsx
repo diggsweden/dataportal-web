@@ -262,7 +262,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
     ) {
       filters.push({
         id: "api_only",
-        label: "API",
+        label: t(`resources|api`),
         // Special handling for API filter since it uses esRdfTypes
         isApiFilter: true,
       });
@@ -433,7 +433,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                       <SearchCheckboxFilter
                         key={key}
                         id="hvd_only"
-                        name="API"
+                        name="hvd"
                         checked={activeCheckboxFilters.some(
                           (filter) => filter.id === "hvd_only",
                         )}
@@ -496,7 +496,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                         .then(() => search.doSearch());
                     }
                   }}
-                  label="API"
+                  label={t(`resources|api`)}
                   iconSize={iconSize}
                 />
               )}
