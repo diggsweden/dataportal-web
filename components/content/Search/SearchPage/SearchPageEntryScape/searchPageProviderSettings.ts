@@ -259,7 +259,6 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
         language: lang,
         takeFacets: 30,
       },
-      fetchHitsWithFacets: true,
     },
   } as Record<string, SearchProviderConfig>;
 }

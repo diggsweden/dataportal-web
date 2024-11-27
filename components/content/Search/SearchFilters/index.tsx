@@ -375,7 +375,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
                                     aria-selected={selected(key, facetValue)}
                                   >
                                     <button
-                                      className={`focus--in group relative flex w-full items-center break-words py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
+                                      className={`focus--in group relative flex w-full items-center break-all py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
                                         selected(key, facetValue) &&
                                         "font-strong"
                                       }`}
