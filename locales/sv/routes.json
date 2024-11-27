@@ -1,4 +1,8 @@
 {
+  "about-us": {
+    "path": "om-oss",
+    "title": "Om oss"
+  },
   "about-website": {
     "path": "om-webbplatsen",
     "title": "Om webbplatsen"
@@ -7,133 +11,13 @@
     "path": "om-webbplatsen/tillganglighet",
     "title": "Tillgänglighet"
   },
-  "register-data": {
-    "path": "registrera-data",
-    "title": "Registrera data"
-  },
-  "projects": {
-    "path": "inspiration",
-    "title": "Inspiration"
-  },
-  "projectsubmit": {
-    "path": "tipsaoss",
-    "title": "Tipsa oss"
-  },
-  "datasets": {
-    "path": "datasets",
-    "title": "Sök data & API:er"
-  },
-  "specifications": {
-    "path": "specifications",
-    "title": "Sök specifikationer"
-  },
-  "concepts": {
-    "path": "concepts",
-    "title": "Sök begrepp"
-  },
-  "dataservices": {
-    "path": "dataservice",
-    "title": "api"
-  },
-  "events": {
-    "path": "event",
-    "title": "Events"
-  },
-  "news": {
-    "path": "nyheter",
-    "title": "Nyheter"
-  },
-  "good-examples": {
-    "path": "goda-exempel",
-    "title": "Goda exempel"
-  },
-  "start": {
-    "path": "",
-    "title": "Sveriges dataportal"
-  },
-  "statistics": {
-    "path": "statistik",
-    "title": "Statistik"
-  },
-  "about-us": {
-    "path": "om-oss",
-    "title": "Om oss"
-  },
   "api_explore": {
     "path": "apiexplore",
     "title": "Utforska API"
   },
-  "search": {
-    "path": "search",
-    "title": "Sök innehåll"
-  },
-  "search-api": {
-    "path": "data-apier",
-    "title": "Data & API:er"
-  },
-  "data-collaboration": {
-    "path": "datasamverkan",
-    "title": "Datasamverkan"
-  },
-  "shara-data-benefits": {
-    "path": "nyttor-med-datadelning",
-    "title": "Nyttor med datadelning"
-  },
-  "legislation": {
-    "path": "lagstiftning",
-    "title": "Lagstiftning"
-  },
-  "governance": {
-    "path": "styrning",
-    "title": "Styrning"
-  },
-  "share-data": {
-    "path": "dela-data",
-    "title": "Kom igång med att dela din data"
-  },
-  "support-tools": {
-    "path": "stod-och-verktyg",
-    "title": "Stöd och verktyg"
-  },
-  "home-text": {
-    "path": "sv",
-    "title": "Hem"
-  },
-  "why-share-data": {
-    "path": "varfor-dela-data",
-    "title": "Varför dela data"
-  },
-  "language": {
-    "path": "en",
-    "title": "English"
-  },
-  "educations": {
-    "path": "utbildningar",
-    "title": "Utbildningar"
-  },
-  "strategies": {
-    "path": "strategier",
-    "title": "Strategier"
-  },
-  "principles": {
-    "path": "principer",
-    "title": "Principer"
-  },
-  "results": {
-    "path": "resultat-och-uppföljning",
-    "title": "Resultat och uppföljning"
-  },
-  "faq": {
-    "path": "vanliga-fragor-och-svar",
-    "title": "Vanliga frågor och svar"
-  },
-  "metadata": {
-    "path": "metadatakvalitet",
-    "title": "Metadatakvalitet per katalog"
-  },
-  "open-data-charter": {
-    "path": "uppfoljning-open-data-charter",
-    "title": "Uppföljning Open data charter"
+  "concepts": {
+    "path": "concepts",
+    "title": "Sök begrepp"
   },
   "cookies": {
     "analytic-heading": "Analytiska kakor",
@@ -147,5 +31,125 @@
     "cookie-text": "På dataportal.se använder vi kakor (cookies) för att webbplatsen ska fungera på ett bra sätt för dig. Med hjälp av webbanalys och anonymiserad data vidareutvecklas webbplatsen ytterligare. Genom att surfa vidare godkänner du att vi använder kakor.",
     "cookie-setting": "Spara och godkänn alla kakor",
     "cookie-setting-open": "Spara och godkänn"
+  },
+  "data-collaboration": {
+    "path": "datasamverkan",
+    "title": "Datasamverkan"
+  },
+  "data-lighthouse": {
+    "path": "datafyren",
+    "title": "Datafyren"
+  },
+  "dataservices": {
+    "path": "dataservice",
+    "title": "api"
+  },
+  "datasets": {
+    "path": "datasets",
+    "title": "Sök data & API:er"
+  },
+  "educations": {
+    "path": "utbildningar",
+    "title": "Utbildningar"
+  },
+  "european-data-areas": {
+    "path": "europeiska-dataomroden",
+    "title": "Europeiska dataområden"
+  },
+  "events": {
+    "path": "event",
+    "title": "Events"
+  },
+  "faq": {
+    "path": "vanliga-fragor-och-svar",
+    "title": "Vanliga frågor och svar"
+  },
+  "good-examples": {
+    "path": "goda-exempel",
+    "title": "Goda exempel"
+  },
+  "governance": {
+    "path": "styrning",
+    "title": "Styrning"
+  },
+  "home-text": {
+    "path": "sv",
+    "title": "Hem"
+  },
+  "language": {
+    "path": "en",
+    "title": "English"
+  },
+  "legislation": {
+    "path": "lagstiftning",
+    "title": "Lagstiftning"
+  },
+  "metadata": {
+    "path": "metadatakvalitet",
+    "title": "Metadatakvalitet per katalog"
+  },
+  "news": {
+    "path": "nyheter",
+    "title": "Nyheter"
+  },
+  "open-data-charter": {
+    "path": "uppfoljning-open-data-charter",
+    "title": "Uppföljning Open data charter"
+  },
+  "principles": {
+    "path": "principer",
+    "title": "Principer"
+  },
+  "projects": {
+    "path": "inspiration",
+    "title": "Inspiration"
+  },
+  "projectsubmit": {
+    "path": "tipsaoss",
+    "title": "Tipsa oss"
+  },
+  "register-data": {
+    "path": "registrera-data",
+    "title": "Registrera data"
+  },
+  "results": {
+    "path": "resultat-och-uppföljning",
+    "title": "Resultat och uppföljning"
+  },
+  "search": {
+    "path": "search",
+    "title": "Sök innehåll"
+  },
+  "search-api": {
+    "path": "data-apier",
+    "title": "Data & API:er"
+  },
+  "shara-data-benefits": {
+    "path": "nyttor-med-datadelning",
+    "title": "Nyttor med datadelning"
+  },
+  "share-data": {
+    "path": "dela-data",
+    "title": "Kom igång med att dela din data"
+  },
+  "specifications": {
+    "path": "specifications",
+    "title": "Sök specifikationer"
+  },
+  "start": {
+    "path": "",
+    "title": "Sveriges dataportal"
+  },
+  "statistics": {
+    "path": "statistik",
+    "title": "Statistik"
+  },
+  "support-tools": {
+    "path": "stod-och-verktyg",
+    "title": "Stöd och verktyg"
+  },
+  "why-share-data": {
+    "path": "varfor-dela-data",
+    "title": "Varför dela data"
   }
 }
