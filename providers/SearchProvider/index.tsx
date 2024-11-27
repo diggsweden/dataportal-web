@@ -93,7 +93,7 @@ export const defaultSearchSettings: SearchContextData = {
   loadingHits: false,
   loadingFacets: false,
   fetchAllFacetsOnMount: true,
-  fetchHitsWithFacets: false,
+  fetchHitsWithFacets: true,
   dcatmeta: undefined,
   allFacets: {},
 };
@@ -139,7 +139,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       request: {
         ...props.initRequest,
       },
-      fetchHitsWithFacets: props.fetchHitsWithFacets || false,
+      fetchHitsWithFacets: props.fetchHitsWithFacets || true,
     };
   }
 
