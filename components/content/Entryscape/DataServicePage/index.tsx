@@ -5,15 +5,11 @@ import { ApiIndexContext } from "@/providers/ApiIndexContext";
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import Link from "next/link";
 import { SettingsContext } from "@/providers/SettingsProvider";
-import {
-  customIndicators,
-  exploreApiLink,
-  keyword,
-  linkBase,
-  theme,
-} from "@/utilities";
+import { linkBase } from "@/utilities";
 import { Container } from "@/components/layout/Container";
 import { Heading } from "@/components/global/Typography/Heading";
+import { useEntryScapeBlocks } from "@/hooks/useEntryScapeBlocks";
+import { Preamble } from "@/components/global/Typography/Preamble";
 
 export const DataServicePage: React.FC<{
   dataSet: string | string[] | undefined;
@@ -21,31 +17,23 @@ export const DataServicePage: React.FC<{
 }> = ({ dataSet, name }) => {
   const { lang, t } = useTranslation();
   const { findDetection } = useContext(ApiIndexContext);
-  const { env, setBreadcrumb } = useContext(SettingsContext);
+  const { setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];
   const eid = ids[1];
-  let postscribe: any;
 
-  /**
-   * Async load scripts requiered for EntryScape blocks,
-   * or else blocks won't have access to DOM
-   */
+  useEntryScapeBlocks({
+    entrystoreBase: entry.entrystore.getBaseURI(),
+    env: entry.env,
+    lang,
+    iconSize,
+    pageType: "dataservice",
+    context: entry.context,
+    esId: entry.esId,
+  });
+
   useEffect(() => {
-    //we need to reload the page when using the back/forward buttons to a blocks rendered page
-    if (typeof window !== "undefined") {
-      //check if reffereing search params is set to hash
-      if (
-        window.location &&
-        window.location.hash &&
-        window.location.hash.includes("ref=?")
-      )
-        window.onpopstate = () => {
-          window.location.reload();
-        };
-    }
-
     setBreadcrumb &&
       setBreadcrumb({
         name: entry.title || "",
@@ -58,71 +46,6 @@ export const DataServicePage: React.FC<{
         ],
       });
   }, [entry.title]);
-
-  useEffect(() => {
-    addScripts();
-  }, []);
-
-  const addScripts = () => {
-    if (typeof window !== "undefined") {
-      postscribe = (window as any).postscribe;
-
-      if (eid && cid) {
-        postscribe(
-          "#scriptsPlaceholder",
-          ` 
-          <script>
-          var __entryscape_plugin_config = {
-            entrystore_base: 'https:\/\/${
-              env.ENTRYSCAPE_DATASETS_PATH
-                ? env.ENTRYSCAPE_DATASETS_PATH
-                : "admin.dataportal.se"
-            }\/store'          
-          };
-
-          function getApiExploreUrl(entryid,apientryid)
-          {
-            return '/${t(
-              "routes|dataservices$path",
-            )}/${cid}_'+entryid+'/${name}/apiexplore/'+apientryid
-          }
-
-          window.__entryscape_config = [{
-
-            block: 'config',
-            page_language: '${lang}',
-            entry: '${eid}', 
-            context: '${cid}',
-            namespaces:{
-              esterms: 'http://entryscape.com/terms/',
-              peu: 'http://publications.europa.eu/resource/authority/'
-            },
-
-            blocks: [
-              ${customIndicators(t)},
-              ${exploreApiLink},
-              ${keyword(t)},
-              ${theme(t)},            
-            ]
-          }]
-          </script>              
-
-          <script src="${
-            lang == "sv"
-              ? env.ENTRYSCAPE_OPENDATA_SV_URL
-              : env.ENTRYSCAPE_OPENDATA_EN_URL
-          }"></script>
-          <script src="${
-            env.ENTRYSCAPE_BLOCKS_URL
-          }"></script>                       
-          `,
-          {
-            done: function () {},
-          },
-        );
-      }
-    }
-  };
 
   return (
     <Container>
@@ -145,20 +68,7 @@ export const DataServicePage: React.FC<{
         <div className="gap-2xl lg:flex">
           {/* Left column */}
           <div className="flex flex-col gap-lg">
-            {/* Publisher */}
-            <script
-              type="text/x-entryscape-handlebar"
-              data-entryscape="true"
-              data-entryscape-component="template"
-              dangerouslySetInnerHTML={{
-                __html: `
-                <span class="text-lg text-textSecondary">
-                {{text relation="dcterms:publisher"}} 
-                </span> 
-                      `,
-              }}
-            />
-
+            {entry.publisher && <Preamble>{entry.publisher}</Preamble>}
             {/* Indicators */}
             <div
               data-entryscape="customIndicators"
@@ -166,32 +76,16 @@ export const DataServicePage: React.FC<{
             />
 
             {/* Description */}
-            <script
-              type="text/x-entryscape-handlebar"
-              data-entryscape="true"
-              data-entryscape-component="template"
-              dangerouslySetInnerHTML={{
-                __html: `
-                  <div class="description text-md">{{text content="\${dcterms:description}"}}</div>
-                  `,
-              }}
-            />
+            <span className="!font-ubuntu text-lg text-textSecondary">
+              {entry.description}
+            </span>
 
             <div className="bg-white p-lg">
-              <script
-                type="text/x-entryscape-handlebar"
-                data-entryscape="true"
-                data-entryscape-component="template"
-                dangerouslySetInnerHTML={{
-                  __html: `                        
-                      <div class="dataservice__access">
-                        {{viewMetadata 
-                            template="dcat:DataService"
-                            filterpredicates="dcterms:title,dcterms:publisher,dcterms:type,dcterms:license,dcterms:accessRights,dcat:landingPage,foaf:page"
-                          }}
-                      </div>
-                      `,
-                }}
+              <div
+                data-entryscape="view"
+                data-entryscape-rdformsid="dcat:DataService"
+                data-entryscape-filterpredicates="dcterms:title,dcterms:publisher,dcterms:type,dcterms:license,dcterms:accessRights,dcat:landingPage,foaf:page"
+                className="dataservice__access"
               />
 
               {findDetection(cid, eid) && (
@@ -230,7 +124,7 @@ export const DataServicePage: React.FC<{
           </div>
 
           {/* Right column */}
-          <div className="mb-lg box-border h-fit w-full  max-w-md bg-white p-md lg:mb-none lg:max-w-[296px]">
+          <div className="mb-lg box-border h-fit w-full max-w-md flex-shrink-0 bg-white p-md lg:mb-none lg:max-w-[296px]">
             <Heading
               level={2}
               size={"sm"}
@@ -240,20 +134,12 @@ export const DataServicePage: React.FC<{
             </Heading>
             {/* About dataservice */}
             <div data-entryscape="aboutDaservice" className="mb-lg" />
-            <script
-              type="text/x-entryscape-handlebar"
-              data-entryscape="true"
-              data-entryscape-component="template"
-              dangerouslySetInnerHTML={{
-                __html: `
-                        <div class="lg:w-full">
-                          {{viewMetadata 
-                              template="dcat:DataService"
-                              filterpredicates="dcterms:title,dcterms:publisher,dcat:endpointURL"
-                            }}
-                        </div>
-                      `,
-              }}
+
+            <div
+              data-entryscape="view"
+              data-entryscape-rdformsid="dcat:DataService"
+              data-entryscape-filterpredicates="dcterms:title,dcterms:publisher,dcat:endpointURL"
+              className="lg:w-full"
             />
           </div>
         </div>

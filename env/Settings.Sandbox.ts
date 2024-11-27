@@ -22,8 +22,10 @@ export class Settings_Sandbox extends EnvSettings {
   ENTRYSCAPE_BLOCKS_URL =
     "https://static.cdn.entryscape.com/blocks/0.20/app.js";
 
-  ENTRYSCAPE_MQA_URL =
+  ENTRYSCAPE_MQA_SV_URL =
     "https://static.cdn.entryscape.com/blocks-ext/1/opendata/mqa-sv.js";
+  ENTRYSCAPE_MQA_EN_URL =
+    "https://static.cdn.entryscape.com/blocks-ext/1/opendata/mqa-en.js";
 
   ENTRYSCAPE_OPENDATA_SV_URL =
     "https://static.entryscape.com/blocks/0.20/ext/opendata-sv.js";
