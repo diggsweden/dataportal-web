@@ -88,12 +88,27 @@ const mainNav: NavData[] = [
     title: "educations",
     promoted: false,
     icon: education,
+    children: [
+      {
+        title: "educations",
+        inEn: false,
+      },
+      {
+        title: "data-lighthouse",
+        inEn: false,
+      },
+    ],
   },
   {
     title: "data-collaboration",
     promoted: false,
     inEn: false,
     icon: datasamverkanIcon,
+  },
+  {
+    title: "european-data-areas",
+    inEn: false,
+    icon: globeIcon,
   },
   {
     title: "why-share-data",
@@ -106,10 +121,6 @@ const mainNav: NavData[] = [
       },
       {
         title: "legislation",
-        inEn: false,
-      },
-      {
-        title: "strategies",
         inEn: false,
       },
       {

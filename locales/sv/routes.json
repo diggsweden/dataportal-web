@@ -111,9 +111,13 @@
     "path": "utbildningar",
     "title": "Utbildningar"
   },
-  "strategies": {
-    "path": "strategier",
-    "title": "Strategier"
+  "data-lighthouse": {
+    "path": "datafyren",
+    "title": "Datafyren"
+  },
+  "european-data-areas": {
+    "path": "europeiska-dataomroden",
+    "title": "Europeiska dataområden"
   },
   "principles": {
     "path": "principer",
