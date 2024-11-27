@@ -1,4 +1,8 @@
 {
+  "about-us": {
+    "path": "about-us",
+    "title": "About us"
+  },
   "about-website": {
     "path": "about-this-website",
     "title": "About website"
@@ -7,65 +11,13 @@
     "path": "about-this-website/accessibility",
     "title": "Accessibility"
   },
-  "register-data": {
-    "path": "register-data",
-    "title": "Register data"
-  },
-  "projects": {
-    "path": "inspiration",
-    "title": "Inspiration"
-  },
-  "projectsubmit": {
-    "path": "tipsaoss",
-    "title": "Tipsa oss"
-  },
-  "datasets": {
-    "path": "datasets",
-    "title": "Search data & APIs"
-  },
-  "specifications": {
-    "path": "specifications",
-    "title": "Search specifications"
-  },
-  "concepts": {
-    "path": "concepts",
-    "title": "Search concepts"
-  },
-  "dataservices": {
-    "path": "dataservice",
-    "title": "api"
-  },
-  "events": {
-    "path": "events",
-    "title": "Events"
-  },
-  "statistics": {
-    "path": "statistics",
-    "title": "Statistics"
-  },
-  "about-us": {
-    "path": "about-us",
-    "title": "About us"
-  },
   "api_explore": {
     "path": "apiexplore",
     "title": "Explore API"
   },
-  "search": {
-    "path": "search",
-    "title": "Search for content"
-  },
-  "search-api": {
-    "path": "data-apis",
-    "title": "Data & API:s"
-  },
-  "home-text": {
-    "path": "en",
-    "title": "Home"
-  },
-  "language": {
-    "path": "sv",
-    "title": "Svenska"
+  "concepts": {
+    "path": "concepts",
+    "title": "Search concepts"
   },
   "cookies": {
     "analytic-heading": "Analytical cookies",
@@ -80,28 +32,76 @@
     "cookie-setting": "Save and accept all cookies",
     "cookie-setting-open": "Save and accept"
   },
+  "data-collaboration": {
+    "path": "",
+    "title": "Data collaboration"
+  },
+  "dataservices": {
+    "path": "dataservice",
+    "title": "api"
+  },
+  "datasets": {
+    "path": "datasets",
+    "title": "Search data & APIs"
+  },
+  "educations": {
+    "path": "",
+    "title": "Education"
+  },
+  "events": {
+    "path": "events",
+    "title": "Events"
+  },
   "good-examples": {
     "path": "",
     "title": "Good exaples"
+  },
+  "home-text": {
+    "path": "en",
+    "title": "Home"
+  },
+  "language": {
+    "path": "sv",
+    "title": "Svenska"
   },
   "news": {
     "path": "",
     "title": "News"
   },
-  "support-tools": {
-    "path": "",
-    "title": "Support and tools"
+  "projects": {
+    "path": "inspiration",
+    "title": "Inspiration"
+  },
+  "projectsubmit": {
+    "path": "tipsaoss",
+    "title": "Tipsa oss"
+  },
+  "register-data": {
+    "path": "register-data",
+    "title": "Register data"
+  },
+  "search": {
+    "path": "search",
+    "title": "Search for content"
+  },
+  "search-api": {
+    "path": "data-apis",
+    "title": "Data & API:s"
   },
   "share-data": {
     "path": "",
     "title": "Share data"
   },
-  "data-collaboration": {
-    "path": "",
-    "title": "Data collaboration"
+  "specifications": {
+    "path": "specifications",
+    "title": "Search specifications"
   },
-  "educations": {
+  "statistics": {
+    "path": "statistics",
+    "title": "Statistics"
+  },
+  "support-tools": {
     "path": "",
-    "title": "Education"
+    "title": "Support and tools"
   }
 }
