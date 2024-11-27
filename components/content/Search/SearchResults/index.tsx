@@ -293,7 +293,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
           <ul className="search-result-list space-y-xl">
             {search.result.hits &&
               search.result.hits.map((hit, index) => (
-                <li className="group relative max-w-lg" key={index}>
+                <li className="group relative max-w-lg space-y-sm" key={index}>
                   <Link
                     href={hit.url}
                     onClick={() => {
@@ -313,11 +313,18 @@ export const SearchResults: FC<SearchResultsProps> = ({
                   {hit.metadata &&
                     search.allFacets &&
                     !search.loadingFacets &&
-                    hit.metadata["inScheme_resource"] && (
+                    hit.metadata["inScheme_resource"] &&
+                    hit.metadata["inScheme_resource"][0] !== "" && (
                       <span className="inScheme_resource">
-                        {hit.metadata["inScheme_resource"]}
+                        {hit.metadata["inScheme_resource"][0]}
                       </span>
                     )}
+
+                  {hit.metadata && hit.metadata["organisation_literal"] && (
+                    <span className="organisation break-words text-sm font-strong text-textSecondary">
+                      {hit.metadata["organisation_literal"]}
+                    </span>
+                  )}
 
                   {isCompact && hit.descriptionLang && (
                     <p className="mb-xs line-clamp-4 break-words md:line-clamp-2">
@@ -327,7 +334,9 @@ export const SearchResults: FC<SearchResultsProps> = ({
 
                   <div
                     className={
-                      !isCompact ? "flex items-baseline space-x-md" : "block"
+                      !isCompact
+                        ? "flex items-baseline space-x-md"
+                        : "block space-y-sm"
                     }
                   >
                     <div className="mb-xs text-sm font-strong text-textSecondary">
@@ -337,12 +346,6 @@ export const SearchResults: FC<SearchResultsProps> = ({
                             {hit.metadata["theme_literal"].join(",  ")}
                           </span>
                         )}
-                      {hit.metadata && hit.metadata["organisation_literal"] && (
-                        <span className="organisation break-words">
-                          {hit.metadata["theme_literal"].length > 0 && " | "}
-                          {hit.metadata["organisation_literal"]}
-                        </span>
-                      )}
                     </div>
                     <div className="formats space-x-md">
                       {hit.metadata &&
