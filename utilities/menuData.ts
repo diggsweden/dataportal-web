@@ -87,17 +87,8 @@ const mainNav: NavData[] = [
   {
     title: "educations",
     promoted: false,
+    inEn: false,
     icon: education,
-    children: [
-      {
-        title: "educations",
-        inEn: false,
-      },
-      {
-        title: "data-lighthouse",
-        inEn: false,
-      },
-    ],
   },
   {
     title: "data-collaboration",
