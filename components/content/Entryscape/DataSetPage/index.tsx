@@ -276,9 +276,9 @@ export const DataSetPage: React.FC = () => {
                     </Heading>
                     <Link
                       className="text-sm text-green-600 underline-offset-2 hover:no-underline"
-                      href={`/metadatakvalitet/katalog/_quality/${entry.context}`}
+                      href={entry.mqaCatalog.url}
                     >
-                      {entry.mqaCatalog}
+                      {entry.mqaCatalog.title}
                     </Link>
                   </div>
                 )}

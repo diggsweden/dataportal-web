@@ -60,7 +60,7 @@ export interface ESEntry {
   relatedConcepts?: Array<{ title: string; url: string }>;
   relatedDatasets?: Array<{ title: string; url: string }>;
   keywords?: Array<string>;
-  mqaCatalog?: string;
+  mqaCatalog?: { title: string; url: string } | null;
 }
 
 export interface ESContact {
@@ -211,6 +211,8 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
           entryData.downloadFormats = getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
           );
+          entryData.mqaCatalog = await getRelatedMQA(entry);
+
           break;
         case "dataservice":
           break;
@@ -296,6 +298,21 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
     });
 
     return datasetArray;
+  };
+
+  const getRelatedMQA = async (entry: Entry) => {
+    try {
+      const mqa = es.getEntryURI(entry.getContext().getId(), "_quality");
+      const mqaEntry = await es.getEntry(mqa);
+      const mqaMetadata = mqaEntry.getAllMetadata();
+      const title = getSimplifiedLocalizedValue(mqaMetadata, "dcterms:title");
+      const url = `/metadatakvalitet/katalog/_quality/${entry
+        .getContext()
+        .getId()}`;
+      return { title, url };
+    } catch (error) {
+      return null;
+    }
   };
 
   const getDownloadFormats = (baseUri: string) => {
