@@ -1,62 +1,173 @@
 {
-  "startpage": {
-    "heading": "Sveriges Dataportal för ökad innovationskraft",
-    "preamble": "Dataportalen är till för er som har data, för er som redan använder och utvecklar kring data, såväl som för er som precis har börjat fundera på hur den samlade kraften i vår data kan förflytta samhället framåt.",
-    "search_placeholder": "Sök data och API:er",
-    "seo_description": "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor",
-    "seo_title": "Sveriges Dataportal",
-    "search_title_1": "Sök och utforska data i Sverige",
-    "explore_datasets": "Utforska data och API:er",
-    "explore_concepts": "Utforska begrepp och terminologier",
-    "explore_specs": "Utforska specifikationer av informations- och datamodeller",
-    "search_datasets_format": "Sök datamängder inom kategorin {{category}}",
-    "datasets_by_category": "Data efter kategorier",
-    "social_meta_title": "Sveriges Dataportal",
-    "social_meta_description": "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor",
-    "data-api-header": "Data och API:er",
-    "open-source-header": "Öppen källkod",
-    "public-ai-header": "Offentlig AI",
-    "news": "Nyheter",
-    "good-examples": "Goda exempel"
-  },
   "ai": {
     "heading": "Offentlig AI",
-    "preamble": "AI i praktiken – ett konkret stöd till offentlig sektor.",
+    "preamble": "AI i praktiken - ett konkret stöd till offentlig sektor.",
     "model": "Förtroendemodellen",
     "model_description": "Självutvärderingsverktyg för att bidra till transparens om AI-system",
     "inspiration_description": "Goda exempel från offentlig förvaltning"
+  },
+  "concept_page": {
+    "about_concept": "Om begrepp",
+    "about_terminology": "Om terminologi",
+    "superior_concept": "Överordnade begrepp",
+    "no_superior_concept": "Har inga överordnade begrepp",
+    "subordinate_concepts": "Underordnade begrepp",
+    "no_subordinate_concepts": "Har inga underordnade begrepp",
+    "related_concepts": "Relaterade begrepp",
+    "no_related_concepts": "Har inga relaterade begrepp",
+    "visualization_concepts": "Visualisering av underordnade begrepp",
+    "terminology_concept": "Terminologi",
+    "download_concept": "Nedladdning",
+    "number_of_concepts": "Antal begrepp inom terminologin",
+    "first_level_concepts": "Begrepp i terminologins första nivå",
+    "preferred_term": "Föredragen term",
+    "alternativ_term": "Alternativ term",
+    "hidden_term": "Dold term",
+    "example": "Exempel",
+    "historical_note": "Historisk anmärkning",
+    "editorial_note": "Redaktionell anmärkning ",
+    "note": "Anmärkning",
+    "exact_match": "Har exakt motsvarande begrepp",
+    "close_match": "Har snarlikt motsvarande begrepp ",
+    "related_match": "Har relaterat motsvarande begrepp",
+    "superior_match": "Har överordnat motsvarande begrepp",
+    "subordinate_match": "Har underordnat motsvarande begrepp",
+    "concept_adress": "Adress för begrepp",
+    "term_adress": "Adress för terminologi"
+  },
+  "concepts": {
+    "search": "Sök begrepp",
+    "concepts": "begrepp",
+    "social_meta_title": "Sök begrepp",
+    "social_meta_description": "Begrepp på Sveriges Dataportal"
+  },
+  "content": {
+    "search": "Sök webbplatsinnehåll",
+    "content": "Webbplatsinnehåll",
+    "social_meta_title": "Sök webbplatsinnehåll",
+    "social_meta_description": "Webbplatsinnehåll på Sveriges dataportal"
   },
   "data": {
     "heading": "Data för ökad innovationskraft",
     "preamble": "Data är en strategisk resurs för samhällets utveckling. Det är en väg till transparens, innovation och tillväxt som skapas av medborgarna, näringslivet, akademin och myndigheter tillsammans. Här kan du utforska data och API:er, begrepp och terminologier samt specifikationer (informations- och datamodeller)"
   },
-  "os": {
-    "heading": "Öppen källkod",
-    "preamble": "Öppen källkod - även kallad open source och öppen programvara - ökar betydligt innovationstakten då aktörer kan samutveckla, anpassa och bygga vidare på befintliga lösningar."
+  "datasetpage": {
+    "explore-api": "Utforska API",
+    "about-dataset": "Om datamängd",
+    "download-dataset": "Hämta datamängd",
+    "catalog": "Hämtad från katalog",
+    "use-data": "Använd data",
+    "download_link_adress": "Åtkomst",
+    "download_link": "Ladda ner",
+    "several_links": "Datat har flertalet länkar för nedladdning",
+    "several_links_header": "Dataresursen består av följande filer",
+    "no_title": "Ingen titel given",
+    "no_data": "Denna datamängd har inga dataresurser",
+    "read_about_api": "Läs mer om API",
+    "fileformat": "övrigt filformat",
+    "rdf": "Ladda ner metadata som RDF",
+    "view_more": "Visa mer",
+    "related_specifications": "Specifikation",
+    "view_less": "Visa mindre",
+    "dataservice": "Dataservice",
+    "keyword": "Nyckelord",
+    "category": "Kategori",
+    "contact-publisher": "Har du frågor eller synpunkter?",
+    "contact-publisher-text": "Kontakta publicerande organisation för frågor, synpunkter och önskemål kring informationen på den här sidan. ",
+    "contact-publisher-text2": "Du kan även vända dig till dataportalens ",
+    "mqa": "Metadatakvalitet",
+    "mqa-catalog": "Metadata kvalitetkatalog",
+    "download-metadata-as": "Ladda ner metadata som"
   },
-  "listpage": {
-    "no-content": "Det finns inget innehåll att visa för tillfället.",
-    "fallback-tag": "Nyhet"
+  "datasets": {
+    "search": "Sök Data & Api:er",
+    "datasets": "datamängder",
+    "social_meta_title": "Sök data & API:er",
+    "social_meta_description": "Data & API:er på Sveriges Dataportal"
   },
-  "statistic": {
-    "statistic-header": "Statistik på dataportalen",
-    "dataset-numbers": "Data per månad",
-    "statistic-numbers": "Portalen i siffror",
-    "top-organizations": "Organisationer med flest datamängder",
-    "top-categories": "Kategorier med flest datamängder",
-    "statistic-link": "Beskrivning av statistik",
-    "statistic-page-text": "Statistiken som visualiseras på startsidan presenteras här i textform.  Statistiken visar mängden data på Sveriges Dataportal per månad, topp 5 gällande datamängder för organisationer och kategorier.",
-    "statistic-page-header": "Statistik",
-    "statistic-page-numberofdatasets": "Antal data på dataportalen idag: ",
-    "statistic-page-seotitle": "Statistik - Sveriges Dataportal",
-    "statistic-page-link": "statistik",
-    "social_meta_title": "Statistik på dataportalen",
-    "social_meta_description": "Statistiken som visualiseras på startsidan presenteras här i textform"
+  "dataservicepage": {
+    "api": "Om API"
+  },
+  "explore-api-page": {
+    "explore-api": "Utforska API",
+    "belongs-to-dataset": "Tillhör datamängd",
+    "access-to-api": "Åtkomst till API",
+    "access-to-api-txt": "På dataportalen tillhandahålls både API:er som är helt öppna och de som kräver en API-nyckel.",
+    "open-apis": "API:er som är öppna",
+    "open-apis-txt": "För API:er som är öppna går det att direkt göra anrop till och utforska datamängden.",
+    "api-key": "API:er som kräver API-nyckel",
+    "api-key-txt": "Vissa API:er måste låsas upp med en API-nyckel för att möjliggöra att kunna göra anrop och utforska datamängden. För att få tillgång till en API-nyckel behöver utgivaren kontaktas.",
+    "contact-publisher": "Kontakt till utgivare",
+    "api-contract": "API-kontrakt"
+  },
+  "form": {
+    "placeholder-text": "Fyll i ditt svar",
+    "clear-all-text": "Rensa alla svar",
+    "clear-confirm-text": "Är du säker på att du vill rensa alla svar?",
+    "upload-json-file": "Ladda upp sparade svar",
+    "next-section-text": "Nästa avsnitt",
+    "previous-section-text": "Föregående avsnitt",
+    "save-form": "Spara era svar på din dator",
+    "generate-pdf-text": "Generera PDF",
+    "form-continue-text": "Vill du gå vidare?",
+    "start-evaluation-text": "Starta utvärdering",
+    "go-back-text": "Tillbaka"
+  },
+  "good-examples": {
+    "text": "goda exempel",
+    "title": "Goda exempel",
+    "view-all": "Visa alla",
+    "social_meta_title": "Goda exempel - Sveriges Dataportal",
+    "social_meta_description": "Goda exempel på Sveriges Dataportal"
   },
   "highlight": {
     "highlight-header": "Sveriges Dataportal för ökad innovationskraft",
     "highlight-text": "Data är en nationell resurs för samhällets, näringslivets och den offentliga sektorns utveckling. Det är en väg till transparens, innovation och tillväxt som gynnar hela samhället som skapas av medborgarna, näringslivet och myndigheter tillsammans.",
     "highlight-text2": "Sveriges Dataportal är ett nav som samordnar och tillgängliggör data som tillhandahålls av offentliga, privata och civilsamhällsorganisationer. Här finns enbart informationen om datamängderna. Själva datamängderna hämtas eller efterfrågas via länkar för åtkomst hos den organisation som ansvarar för den."
+  },
+  "listpage": {
+    "no-content": "Det finns inget innehåll att visa för tillfället.",
+    "fallback-tag": "Nyhet"
+  },
+  "news": {
+    "text": "nyheter",
+    "title": "Nyheter",
+    "view-all": "Visa alla",
+    "social_meta_title": "Nyheter - Sveriges Dataportal",
+    "social_meta_description": "Nyheter på Sveriges Dataportal"
+  },
+  "notfoundpage": {
+    "heading": "404 - Sidan hittades inte",
+    "body": "Vi kunde tyvärr inte hitta sidan du letade efter. Den kan ha blivit borttagen eller så har du skrivit in en felaktig länk.",
+    "startpage": "Startsidan",
+    "search-data": "Sök data"
+  },
+  "organisation_page": {
+    "org-type": "Organisationstyp",
+    "org-no": "Organisationens id",
+    "download_link": "Ladda ned metadata",
+    "all-data": "Antal datamängder",
+    "view-all-data": "Visa alla datamängder",
+    "view-all-spec": "Visa alla specifikationer",
+    "open-data": "Öppna datamängder",
+    "protected-data": "Skyddade datamängder",
+    "api-data": "Datamängder med API",
+    "hvd-data": "Värdefulla datamängder",
+    "fee-data": "Avgiftsbelagda datamängder",
+    "spec-data": "Datamängder som följer specifikation",
+    "contact": "Kontakt",
+    "view-all-concepts": "Visa alla begrepp"
+  },
+  "os": {
+    "heading": "Öppen källkod",
+    "preamble": "Öppen källkod - även kallad open source och öppen programvara - ökar betydligt innovationstakten då aktörer kan samutveckla, anpassa och bygga vidare på befintliga lösningar."
+  },
+  "redirect": {
+    "pagenotfound_header": "Oj, sidan kan inte hittas!",
+    "pagenotfound-text": "Det kan bero på att oppnadata.se flyttade till dataportal.se den 23 september 2020. Förhoppningsvis kan de här länkarna hjälpa dig att hitta det du söker.",
+    "pagenotfound-label": "Sveriges Dataportal",
+    "pagenotfound-link": "Startsidan",
+    "pagenotfound-link2": "Sök data"
   },
   "search": {
     "search": "Sök data",
@@ -110,137 +221,6 @@
     "compact-list-active": "Kompakt lista aktiv",
     "pagination-next-txt": "Nästa"
   },
-  "datasets": {
-    "search": "Sök Data & Api:er",
-    "datasets": "datamängder",
-    "social_meta_title": "Sök data & API:er",
-    "social_meta_description": "Data & API:er på Sveriges Dataportal"
-  },
-  "concepts": {
-    "search": "Sök begrepp",
-    "concepts": "begrepp",
-    "social_meta_title": "Sök begrepp",
-    "social_meta_description": "Begrepp på Sveriges Dataportal"
-  },
-  "specifications": {
-    "search": "Sök specifikationer",
-    "specifications": "specifikationer",
-    "social_meta_title": "Sök specifikationer",
-    "social_meta_description": "Specifikationer på Sveriges Dataportal"
-  },
-  "content": {
-    "search": "Sök webbplatsinnehåll",
-    "content": "Webbplatsinnehåll",
-    "social_meta_title": "Sök webbplatsinnehåll",
-    "social_meta_description": "Webbplatsinnehåll på Sveriges dataportal"
-  },
-  "notfoundpage": {
-    "heading": "404 - Sidan hittades inte",
-    "body": "Vi kunde tyvärr inte hitta sidan du letade efter. Den kan ha blivit borttagen eller så har du skrivit in en felaktig länk.",
-    "startpage": "Startsidan",
-    "search-data": "Sök data"
-  },
-  "datasetpage": {
-    "explore-api": "Utforska API",
-    "about-dataset": "Om datamängd",
-    "download-dataset": "Hämta datamängd",
-    "catalog": "Hämtad från katalog",
-    "use-data": "Använd data",
-    "download_link_adress": "Åtkomst",
-    "download_link": "Ladda ner",
-    "several_links": "Datat har flertalet länkar för nedladdning",
-    "several_links_header": "Dataresursen består av följande filer",
-    "no_title": "Ingen titel given",
-    "no_data": "Denna datamängd har inga dataresurser",
-    "read_about_api": "Läs mer om API",
-    "fileformat": "övrigt filformat",
-    "rdf": "Ladda ner metadata som RDF",
-    "view_more": "Visa mer",
-    "related_specifications": "Specifikation",
-    "view_less": "Visa mindre",
-    "dataservice": "Dataservice",
-    "keyword": "Nyckelord",
-    "category": "Kategori",
-    "contact-publisher": "Har du frågor eller synpunkter?",
-    "contact-publisher-text": "Kontakta publicerande organisation för frågor, synpunkter och önskemål kring informationen på den här sidan. ",
-    "contact-publisher-text2": "Du kan även vända dig till dataportalens ",
-    "mqa": "Metadatakvalitet",
-    "mqa-catalog": "Metadata kvalitetkatalog",
-    "download-metadata-as": "Ladda ner metadata som"
-  },
-  "dataservicepage": {
-    "api": "Om API"
-  },
-  "news": {
-    "text": "nyheter",
-    "title": "Nyheter",
-    "view-all": "Visa alla",
-    "social_meta_title": "Nyheter - Sveriges Dataportal",
-    "social_meta_description": "Nyheter på Sveriges Dataportal"
-  },
-  "good-examples": {
-    "text": "goda exempel",
-    "title": "Goda exempel",
-    "view-all": "Visa alla",
-    "social_meta_title": "Goda exempel - Sveriges Dataportal",
-    "social_meta_description": "Goda exempel på Sveriges Dataportal"
-  },
-  "redirect": {
-    "pagenotfound_header": "Oj, sidan kan inte hittas!",
-    "pagenotfound-text": "Det kan bero på att oppnadata.se flyttade till dataportal.se den 23 september 2020. Förhoppningsvis kan de här länkarna hjälpa dig att hitta det du söker.",
-    "pagenotfound-label": "Sveriges Dataportal",
-    "pagenotfound-link": "Startsidan",
-    "pagenotfound-link2": "Sök data"
-  },
-  "concept_page": {
-    "superior_concept": "Överordnade begrepp",
-    "no_superior_concept": "Har inga överordnade begrepp",
-
-    "subordinate_concepts": "Underordnade begrepp",
-    "no_subordinate_concepts": "Har inga underordnade begrepp",
-
-    "related_concepts": "Relaterade begrepp",
-    "no_related_concepts": "Har inga relaterade begrepp",
-
-    "visualization_concepts": "Visualisering av underordnade begrepp",
-    "terminology_concept": "Terminologi",
-
-    "download_concept": "Nedladdning",
-
-    "number_of_concepts": "Antal begrepp inom terminologin",
-
-    "first_level_concepts": "Begrepp i terminologins första nivå",
-
-    "preferred_term": "Föredragen term",
-    "alternativ_term": "Alternativ term",
-    "hidden_term": "Dold term",
-
-    "example": "Exempel",
-
-    "historical_note": "Historisk anmärkning",
-
-    "editorial_note": "Redaktionell anmärkning ",
-
-    "note": "Anmärkning",
-
-    "exact_match": "Har exakt motsvarande begrepp",
-
-    "close_match": "Har snarlikt motsvarande begrepp ",
-
-    "related_match": "Har relaterat motsvarande begrepp",
-
-    "superior_match": "Har överordnat motsvarande begrepp",
-
-    "subordinate_match": "Har underordnat motsvarande begrepp",
-
-    "about_concept": "Om begrepp",
-
-    "about_terminology": "Om terminologi",
-
-    "concept_adress": "Adress för begrepp",
-
-    "term_adress": "Adress för terminologi"
-  },
   "specification_page": {
     "address": "Adress för specifikation",
     "about_specification": "Om specifikation",
@@ -251,45 +231,45 @@
     "related_datasets": "Relaterade datamängder",
     "download": "Ladda ner"
   },
-  "explore-api-page": {
-    "explore-api": "Utforska API",
-    "belongs-to-dataset": "Tillhör datamängd",
-    "access-to-api": "Åtkomst till API",
-    "access-to-api-txt": "På dataportalen tillhandahålls både API:er som är helt öppna och de som kräver en API-nyckel.",
-    "open-apis": "API:er som är öppna",
-    "open-apis-txt": "För API:er som är öppna går det att direkt göra anrop till och utforska datamängden.",
-    "api-key": "API:er som kräver API-nyckel",
-    "api-key-txt": "Vissa API:er måste låsas upp med en API-nyckel för att möjliggöra att kunna göra anrop och utforska datamängden. För att få tillgång till en API-nyckel behöver utgivaren kontaktas.",
-    "contact-publisher": "Kontakt till utgivare",
-    "api-contract": "API-kontrakt"
+  "specifications": {
+    "search": "Sök specifikationer",
+    "specifications": "specifikationer",
+    "social_meta_title": "Sök specifikationer",
+    "social_meta_description": "Specifikationer på Sveriges Dataportal"
   },
-  "organisation_page": {
-    "org-type": "Organisationstyp",
-    "org-no": "Organisationens id",
-    "download_link": "Ladda ned metadata",
-    "all-data": "Antal datamängder",
-    "view-all-data": "Visa alla datamängder",
-    "view-all-spec": "Visa alla specifikationer",
-    "open-data": "Öppna datamängder",
-    "protected-data": "Skyddade datamängder",
-    "api-data": "Datamängder med API",
-    "hvd-data": "Värdefulla datamängder",
-    "fee-data": "Avgiftsbelagda datamängder",
-    "spec-data": "Datamängder som följer specifikation",
-    "contact": "Kontakt",
-    "view-all-concepts": "Visa alla begrepp"
+  "startpage": {
+    "heading": "Sveriges Dataportal för ökad innovationskraft",
+    "preamble": "Dataportalen är till för er som har data, för er som redan använder och utvecklar kring data, såväl som för er som precis har börjat fundera på hur den samlade kraften i vår data kan förflytta samhället framåt.",
+    "search_placeholder": "Sök data och API:er",
+    "seo_description": "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor",
+    "seo_title": "Sveriges Dataportal",
+    "search_title_1": "Sök och utforska data i Sverige",
+    "explore_datasets": "Utforska data och API:er",
+    "explore_concepts": "Utforska begrepp och terminologier",
+    "explore_specs": "Utforska specifikationer av informations- och datamodeller",
+    "search_datasets_format": "Sök datamängder inom kategorin {{category}}",
+    "datasets_by_category": "Data efter kategorier",
+    "social_meta_title": "Sveriges Dataportal",
+    "social_meta_description": "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor",
+    "data-api-header": "Data och API:er",
+    "open-source-header": "Öppen källkod",
+    "public-ai-header": "Offentlig AI",
+    "news": "Nyheter",
+    "good-examples": "Goda exempel"
   },
-  "form": {
-    "placeholder-text": "Fyll i ditt svar",
-    "clear-all-text": "Rensa alla svar",
-    "clear-confirm-text": "Är du säker på att du vill rensa alla svar?",
-    "upload-json-file": "Ladda upp sparade svar",
-    "next-section-text": "Nästa avsnitt",
-    "previous-section-text": "Föregående avsnitt",
-    "save-form": "Spara era svar på din dator",
-    "generate-pdf-text": "Generera PDF",
-    "form-continue-text": "Vill du gå vidare?",
-    "start-evaluation-text": "Starta utvärdering",
-    "go-back-text": "Tillbaka"
+  "statistic": {
+    "statistic-header": "Statistik på dataportalen",
+    "dataset-numbers": "Data per månad",
+    "statistic-numbers": "Portalen i siffror",
+    "top-organizations": "Organisationer med flest datamängder",
+    "top-categories": "Kategorier med flest datamängder",
+    "statistic-link": "Beskrivning av statistik",
+    "statistic-page-text": "Statistiken som visualiseras på startsidan presenteras här i textform.  Statistiken visar mängden data på Sveriges Dataportal per månad, topp 5 gällande datamängder för organisationer och kategorier.",
+    "statistic-page-header": "Statistik",
+    "statistic-page-numberofdatasets": "Antal data på dataportalen idag: ",
+    "statistic-page-seotitle": "Statistik - Sveriges Dataportal",
+    "statistic-page-link": "statistik",
+    "social_meta_title": "Statistik på dataportalen",
+    "social_meta_description": "Statistiken som visualiseras på startsidan presenteras här i textform"
   }
 }
