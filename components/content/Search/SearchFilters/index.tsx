@@ -62,7 +62,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
         name={filterKey}
         placeholder={t("search$filtersearch")}
         className="focus--in border-none"
-        aria-label={`${t("search$filtersearch")} ${title}`}
+        aria-label={title}
         value={filter[filterKey] || ""}
         onChange={(e) => (
           clearCurrentScrollPos(),
