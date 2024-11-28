@@ -35,8 +35,8 @@ interface NavTopData {
 
 interface NavFooterItem {
   title: string;
-  icon: any;
-  type?: "internal" | "external" | "email";
+  icon?: any;
+  type?: "internal" | "external" | "email" | "cookie";
   href?: string;
 }
 
@@ -177,6 +177,10 @@ const footerNav: NavFooterData[] = [
         href: "https://community.dataportal.se/category/4/feedback-p%C3%A5-dataportal-se",
         type: "external",
         icon: externalLinkIcon,
+      },
+      {
+        title: "cookie-settings",
+        type: "cookie",
       },
       {
         title: "info@digg.se",

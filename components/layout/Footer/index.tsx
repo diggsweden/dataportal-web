@@ -8,9 +8,14 @@ import { CustomLink } from "@/components/global/CustomLink";
 type FooterProps = {
   openSideBar: boolean;
   setOpenSideBar: Function;
+  setSettingsOpen: Function;
 };
 
-export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
+export const Footer: FC<FooterProps> = ({
+  openSideBar,
+  setOpenSideBar,
+  setSettingsOpen,
+}) => {
   const { t } = useTranslation();
   return (
     <footer className="mt-xl border-t-2 border-brown-600 bg-white py-xl">
@@ -20,7 +25,10 @@ export const Footer: FC<FooterProps> = ({ openSideBar, setOpenSideBar }) => {
         }`}
       >
         <Container className="space-y-xl md:space-y-2xl">
-          <FooterNav setOpenSideBar={setOpenSideBar} />
+          <FooterNav
+            setSettingsOpen={setSettingsOpen}
+            setOpenSideBar={setOpenSideBar}
+          />
           <div className="flex flex-col justify-between gap-xl align-top md:flex-row md:gap-none">
             <div className="mr-lg">
               <span className="font-strong">Sveriges dataportal </span>

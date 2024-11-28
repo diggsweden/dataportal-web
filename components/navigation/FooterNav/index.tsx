@@ -4,11 +4,12 @@ import { Heading } from "@/components/global/Typography/Heading";
 import { footerNav } from "@/utilities/menuData";
 import Link from "next/link";
 import { SettingsContext } from "@/providers/SettingsProvider";
+import { LocalStoreContext } from "@/providers/LocalStoreProvider";
 
 interface FooterNavItem {
   title: string;
-  icon: any;
-  type?: "internal" | "external" | "email";
+  icon?: any;
+  type?: "internal" | "external" | "email" | "cookie";
   href?: string;
 }
 
@@ -19,11 +20,16 @@ interface FooterNavData {
 
 interface FooterNavProps {
   setOpenSideBar: Function;
+  setSettingsOpen: Function;
 }
 
-export const FooterNav: FC<FooterNavProps> = ({ setOpenSideBar }) => {
+export const FooterNav: FC<FooterNavProps> = ({
+  setOpenSideBar,
+  setSettingsOpen,
+}) => {
   const { t } = useTranslation();
   const { iconSize } = useContext(SettingsContext);
+  const { set } = useContext(LocalStoreContext);
 
   return (
     <nav
@@ -49,13 +55,25 @@ export const FooterNav: FC<FooterNavProps> = ({ setOpenSideBar }) => {
                     {link.type === "external"
                       ? t(`common|${link.title}`)
                       : link.title}
-                    <link.icon
-                      className="mb-[2px] ml-xs inline-block [&_path]:fill-green-600"
-                      width={iconSize}
-                      height={iconSize}
-                      viewBox="0 0 24 24"
-                    />
+                    {link.icon && (
+                      <link.icon
+                        className="mb-[2px] ml-xs inline-block [&_path]:fill-green-600"
+                        width={iconSize}
+                        height={iconSize}
+                        viewBox="0 0 24 24"
+                      />
+                    )}
                   </Link>
+                ) : link.type === "cookie" ? (
+                  <button
+                    onClick={() => {
+                      set({ cookieSettings: {} });
+                      setSettingsOpen(true);
+                    }}
+                    className="cursor-pointer underline underline-offset-4 hover:no-underline"
+                  >
+                    {t(`common|${link.title}`)}
+                  </button>
                 ) : (
                   <Link
                     href={`/${t(`routes|${link.title}$path`)}`}
