@@ -78,7 +78,7 @@ export const listChoices = async (
 };
 
 export const fetchDCATMeta = async (
-  dcatUrl: string,
+  dcatUrl?: string,
 ): Promise<DCATData | undefined> => {
   return new Promise<DCATData | undefined>((resolve) => {
     const processDCAT = async () => {

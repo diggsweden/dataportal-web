@@ -164,7 +164,8 @@
     "contact-publisher": "Do you have questions or comments?",
     "contact-publisher-text": "Contact the publishing organization for questions, comments and requests regarding the information on this page. ",
     "contact-publisher-text2": "You can also go to the data portal ",
-    "mqa-catalog": "MQA catalog",
+    "mqa": "Metadata quality",
+    "mqa-catalog": "Metadata quality catalog",
     "download-metadata-as": "Download metadata as"
   },
   "dataservicepage": {
@@ -252,6 +253,22 @@
     "api-key-txt": "There are APIs that need to be unlocked with an API key to enable you to make calls and explore the amount of data. To get access to an API key you need to contact the publisher. ",
     "contact-publisher": "Contact to publisher",
     "api-contract": "API Contract"
+  },
+  "organisation_page": {
+    "org-type": "Organisation type",
+    "org-no": "Organisation number",
+    "download_link": "Download metadata",
+    "all-data": "Total datasets",
+    "view-all-data": "View all datasets",
+    "view-all-spec": "View all specifications",
+    "open-data": "Open datasets",
+    "protected-data": "Protected datasets",
+    "api-data": "Datasets with API",
+    "hvd-data": "High value datasets",
+    "fee-data": "Fee-based datasets",
+    "spec-data": "Datasets that follow specifications",
+    "contact": "Contact",
+    "view-all-concepts": "View all concepts"
   },
   "form": {
     "placeholder-text": "Enter your answer here",

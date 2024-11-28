@@ -164,7 +164,8 @@
     "contact-publisher": "Har du frågor eller synpunkter?",
     "contact-publisher-text": "Kontakta publicerande organisation för frågor, synpunkter och önskemål kring informationen på den här sidan. ",
     "contact-publisher-text2": "Du kan även vända dig till dataportalens ",
-    "mqa-catalog": "Katalogens metadatakvalitet",
+    "mqa": "Metadatakvalitet",
+    "mqa-catalog": "Metadata kvalitetkatalog",
     "download-metadata-as": "Ladda ner metadata som"
   },
   "dataservicepage": {
@@ -261,6 +262,22 @@
     "api-key-txt": "Vissa API:er måste låsas upp med en API-nyckel för att möjliggöra att kunna göra anrop och utforska datamängden. För att få tillgång till en API-nyckel behöver utgivaren kontaktas.",
     "contact-publisher": "Kontakt till utgivare",
     "api-contract": "API-kontrakt"
+  },
+  "organisation_page": {
+    "org-type": "Organisationstyp",
+    "org-no": "Organisationens id",
+    "download_link": "Ladda ned metadata",
+    "all-data": "Antal datamängder",
+    "view-all-data": "Visa alla datamängder",
+    "view-all-spec": "Visa alla specifikationer",
+    "open-data": "Öppna datamängder",
+    "protected-data": "Skyddade datamängder",
+    "api-data": "Datamängder med API",
+    "hvd-data": "Värdefulla datamängder",
+    "fee-data": "Avgiftsbelagda datamängder",
+    "spec-data": "Datamängder som följer specifikation",
+    "contact": "Kontakt",
+    "view-all-concepts": "Visa alla begrepp"
   },
   "form": {
     "placeholder-text": "Fyll i ditt svar",
