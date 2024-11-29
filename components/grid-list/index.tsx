@@ -8,7 +8,7 @@ import {
   NewsItemDataFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
-import { Toolteaser } from "../../features/tool";
+import { Toolteaser } from "@/features/tool";
 
 interface ListProps {
   items: (ToolDataFragment | NewsItemDataFragment | GoodExampleDataFragment)[];
