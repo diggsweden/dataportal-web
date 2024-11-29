@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { SettingsContext } from "@/providers/SettingsProvider";
-import { EntrystoreProvider } from "@/providers/EntrystoreProvider";
-import { ConceptPage } from "@/components/content/Entryscape/ConceptPage";
+import { SettingsContext } from "@/providers/settings-provider";
+import { EntrystoreProvider } from "@/providers/entrystore-provider";
+import { ConceptPage } from "@/features/entryscape/concept-page";
 import { GetServerSideProps } from "next";
 
 export default function Terminology() {

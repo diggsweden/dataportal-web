@@ -11,8 +11,8 @@ import { SettingsUtil } from "../env";
 import {
   SettingsProvider,
   defaultSettings,
-} from "@/providers/SettingsProvider";
-import { LocalStoreProvider } from "@/providers/LocalStoreProvider";
+} from "@/providers/settings-provider";
+import { LocalStoreProvider } from "@/providers/local-store-provider";
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage;

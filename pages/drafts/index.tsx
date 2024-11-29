@@ -9,9 +9,9 @@ import {
 } from "@/utilities";
 
 import Page from "../[...containerSlug]";
-import { ListPage } from "@/components/content/ListPage";
-import { PublicationFull } from "@/components/content/Publication/PublicationFull";
-import { ContainerPage } from "@/components/content/ContainerPage";
+import { ListPage } from "@/features/pages/list-page";
+import { PublicationFull } from "@/features/publication/publication-full";
+import { ContainerPage } from "@/features/pages/container-page";
 
 const getQuery = async (
   slug: string,

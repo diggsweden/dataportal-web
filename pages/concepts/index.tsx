@@ -1,8 +1,8 @@
 import { NextPage } from "next";
-import { SearchPageEntryScape } from "@/components/content/Search/SearchPage/SearchPageEntryScape";
+import { SearchPageEntryscape } from "@/features/search/search-page/search-page-entryscape";
 
 const ConceptsPage: NextPage = () => (
-  <SearchPageEntryScape searchType="concepts" />
+  <SearchPageEntryscape searchType="concepts" />
 );
 
 export default ConceptsPage;

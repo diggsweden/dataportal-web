@@ -1,4 +1,4 @@
-import { FormPage } from "@/components/content/FormPage";
+import { FormPage } from "@/features/pages/form-page";
 import { getForm, getModule, populateSeo } from "@/utilities";
 
 export async function getStaticProps({ locale }: any) {

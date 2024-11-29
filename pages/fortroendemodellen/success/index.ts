@@ -1,4 +1,4 @@
-import { FortroendeEndPage } from "@/components/content/Fortroendemodellen/FortroendeEndPage";
+import { FortroendeEndPage } from "@/features/fortroendemodellen/fortroende-end-page";
 import { getModule, populateSeo } from "@/utilities";
 
 export async function getStaticProps({ locale }: any) {

@@ -1,14 +1,14 @@
 import { FC, useState } from "react";
-import { Heading } from "@/components/global/Typography/Heading";
+import { Heading } from "@/components/typography/heading";
 import { checkLang } from "@/utilities";
 import useTranslation from "next-translate/useTranslation";
-import { CustomImage } from "@/components/global/CustomImage";
+import { CustomImage } from "@/components/custom-image";
 import { ImageFragment } from "@/graphql/__generated__/operations";
-import { Container } from "@/components/layout/Container";
+import { Container } from "@/components/layout/container";
 import { useRouter } from "next/router";
-import { SearchInput } from "@/components/content/Search/SearchInput";
-import { Preamble } from "@/components/global/Typography/Preamble";
-import { ButtonLink } from "@/components/global/Button";
+import { SearchInput } from "@/features/search/search-input";
+import { Preamble } from "@/components/typography/preamble";
+import { ButtonLink } from "@/components/button";
 import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 
 interface HeroProps {

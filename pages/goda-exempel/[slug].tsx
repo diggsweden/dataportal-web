@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from "next/types";
 import { getGoodExample } from "@/utilities";
-import { PublicationFull } from "@/components/content/Publication/PublicationFull";
+import { PublicationFull } from "@/features/publication/publication-full";
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   const slug = ("/" + params?.slug) as string;

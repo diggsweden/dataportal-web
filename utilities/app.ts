@@ -14,7 +14,7 @@ import {
   NewsItemResponse,
   RootAggregateResponse,
   ToolListResponse,
-} from "@/utilities/queryHelpers";
+} from "@/utilities/query-helpers";
 
 export type DataportalPageProps =
   | MultiContainerResponse

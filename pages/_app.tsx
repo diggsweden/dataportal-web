@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { ApolloProvider } from "@apollo/client";
-import { LocalStore, LocalStoreProvider } from "@/providers/LocalStoreProvider";
-import { TrackingProvider } from "@/providers/TrackingProvider";
+import {
+  LocalStore,
+  LocalStoreProvider,
+} from "@/providers/local-store-provider";
+import { TrackingProvider } from "@/providers/tracking-provider";
 import {
   defaultSettings,
   SettingsProvider,
-} from "@/providers/SettingsProvider";
+} from "@/providers/settings-provider";
 import {
   click,
   DataportalPageProps,
@@ -19,23 +22,23 @@ import { EnvSettings, SettingsUtil } from "@/env";
 import { client } from "@/graphql";
 import reactenv from "@beam-australia/react-env";
 import { Settings_Sandbox } from "@/env/Settings.Sandbox";
-import { SideBar } from "@/components/navigation/SideBar";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { CookieBanner } from "@/components/global/CookieBanner";
+import { Sidebar } from "@/components/navigation/sidebar";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { CookieBanner } from "@/components/cookie-banner";
 import "@/styles/main.css";
 import {
   Breadcrumb,
   BreadcrumbProps,
-} from "@/components/navigation/BreadCrumb";
+} from "@/components/navigation/breadcrumb";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { Hero } from "@/components/layout/Hero";
-import { MetaData } from "@/components/global/MetaData";
+import { Hero } from "@/components/layout/hero";
+import { MetaData } from "@/components/meta-data";
 import {
   SkipToContent,
   skipToElement,
-} from "@/components/navigation/SkipToContent";
+} from "@/components/navigation/skip-to-content";
 import { useRouter } from "next/router";
 
 const GetCookiesAccepted = () => {
@@ -156,7 +159,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 setOpenSideBar={setOpenSideBar}
                 openSideBar={openSideBar}
               />
-              <SideBar
+              <Sidebar
                 openSideBar={openSideBar}
                 setOpenSideBar={setOpenSideBar}
               />

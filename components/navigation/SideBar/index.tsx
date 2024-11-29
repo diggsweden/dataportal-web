@@ -1,9 +1,9 @@
 import { FC, useRef } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
-import { mainNav } from "@/utilities/menuData";
-import SideBarLink from "@/components/navigation/SideBar/SideBarLink.tsx";
-import { useClickoutside } from "@/hooks/useClickoutside";
+import { mainNav } from "@/utilities/menu-data";
+import { SidebarLink } from "@/components/navigation/sidebar/sidebar-link";
+import { useClickOutside } from "@/hooks/use-click-outside";
 import { createFocusTrap, FocusTrap } from "focus-trap";
 
 interface NavSideData {
@@ -20,13 +20,13 @@ interface NavSideProps {
   setOpenSideBar: Function;
 }
 
-export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
+export const Sidebar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
   const [menu, setMenu] = useState<any>([]);
   const { t, lang } = useTranslation();
   const [vw, setVw] = useState(0);
   const isEn = lang === "en";
   const trapRef = useRef<FocusTrap | null>(null);
-  const ref = useClickoutside(
+  const ref = useClickOutside(
     () => (vw < 1200 ? setOpenSideBar(false) : null),
     ["#sidebarBtn"],
   );
@@ -97,7 +97,7 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
         {menu.map((menu: NavSideData, idx: number) => (
           <li key={idx} className="whitespace-nowrap">
             {menu.href ? (
-              <SideBarLink
+              <SidebarLink
                 level="1"
                 icon={menu.icon}
                 href={menu.href}
@@ -107,7 +107,7 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
                 setOpenSideBar={setOpenSideBar}
               />
             ) : menu.children ? (
-              <SideBarLink
+              <SidebarLink
                 level="2"
                 icon={menu.icon}
                 list={menu.children}
@@ -116,7 +116,7 @@ export const SideBar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
                 setOpenSideBar={setOpenSideBar}
               />
             ) : (
-              <SideBarLink
+              <SidebarLink
                 level="1"
                 href={`/${t(`routes|${menu.title}$path`)}`}
                 icon={menu.icon}

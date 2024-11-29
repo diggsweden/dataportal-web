@@ -3,7 +3,7 @@ import Link from "next/link";
 import { checkLang } from "@/utilities";
 import { FC } from "react";
 import HomeIcon from "@/assets/icons/home.svg";
-import { Container } from "@/components/layout/Container";
+import { Container } from "@/components/layout/container";
 import BreadcrumbDividerIcon from "@/assets/icons/breadcrumbDivider.svg";
 
 export interface BreadcrumbProps {

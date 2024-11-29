@@ -2,8 +2,8 @@ import { FC } from "react";
 import { GetStaticPaths } from "next/types";
 import { useRouter } from "next/navigation";
 import { getMultiContainer, MultiContainerResponse } from "@/utilities";
-import { ContainerPage } from "@/components/content/ContainerPage";
-import { LandingPage } from "@/components/content/LandingPage";
+import { ContainerPage } from "@/features/pages/container-page";
+import { LandingPage } from "@/features/pages/landing-page";
 
 export const Page: FC<MultiContainerResponse> = ({ container, related }) => {
   const router = useRouter();
