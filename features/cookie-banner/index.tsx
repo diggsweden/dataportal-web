@@ -5,7 +5,7 @@ import { LocalStoreContext } from "@/providers/local-store-provider";
 import Link from "next/link";
 import { Button } from "@/components/button";
 import { Container } from "@/components/layout/container";
-import { CookieOptions } from "@/components/cookie-banner/cookie-options";
+import { CookieOptions } from "@/features/cookie-banner/cookie-options";
 
 export type CookieSetting = {
   [key: string]: CookieProperties;
