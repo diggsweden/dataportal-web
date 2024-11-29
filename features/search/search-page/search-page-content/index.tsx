@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import { SearchHitFragment } from "@/graphql/__generated__/operations";
-import { getSearchHit } from "@/utilities/search-helpers";
+import { getSearchHit } from "@/features/search/utils/search-helpers";
 import { Heading } from "@/components/typography/heading";
 import { Container } from "@/components/layout/container";
 import { SearchPageSelector } from "@/features/search/search-page-selector";
