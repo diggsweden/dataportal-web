@@ -1,5 +1,5 @@
 import React from "react";
-import { CookieSetting, NecessaryCookies } from "@/components/cookie-banner";
+import { CookieSetting, NecessaryCookies } from "@/features/cookie-banner";
 import { useEffect, useRef } from "react";
 import { Heading } from "@/components/typography/heading";
 import { Toggle } from "@/components/form/toggle";

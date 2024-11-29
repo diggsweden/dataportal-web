@@ -25,7 +25,7 @@ import { Settings_Sandbox } from "@/env/Settings.Sandbox";
 import { Sidebar } from "@/components/navigation/sidebar";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { CookieBanner } from "@/components/cookie-banner";
+import { CookieBanner } from "@/features/cookie-banner";
 import "@/styles/main.css";
 import {
   Breadcrumb,

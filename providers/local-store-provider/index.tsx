@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useStateCallback } from "@/hooks/use-state-callback";
-import { CookieSetting } from "@/components/cookie-banner";
+import { CookieSetting } from "@/features/cookie-banner";
 
 export interface LocalStore {
   cookieSettings?: CookieSetting;
