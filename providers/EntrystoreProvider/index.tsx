@@ -362,7 +362,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
       ),
       url: termUri.startsWith("https://dataportal.se")
         ? new URL(termUri).pathname.replace("concepts", "terminology")
-        : `/externalterminology?resource=${termUri}`,
+        : `/${lang}/externalterminology?resource=${termUri}`,
     };
   };
 
