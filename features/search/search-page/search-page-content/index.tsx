@@ -17,7 +17,7 @@ interface SearchProps {
   activeLink?: string;
 }
 
-export const SearchContentPage: FC<SearchProps> = () => {
+export const SearchPageContent: FC<SearchProps> = () => {
   const router = useRouter() || {};
   const { setBreadcrumb } = useContext(SettingsContext);
   const { pathname, query: routerQuery } = router || {};
