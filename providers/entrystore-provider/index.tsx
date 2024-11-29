@@ -349,8 +349,6 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
     const termUri = metadata.findFirstValue(null, "skos:inScheme");
     const termEntry = await esu.getEntryByResourceURI(termUri);
 
-    console.log("termEntry", termUri);
-
     return {
       title: getSimplifiedLocalizedValue(
         termEntry.getAllMetadata(),
