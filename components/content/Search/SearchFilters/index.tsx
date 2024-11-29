@@ -303,7 +303,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
             className="mb-lg items-center md:flex"
           >
             {groupName !== "default" && (
-              <h4 className="mb-sm mr-md text-sm text-textSecondary md:mb-none">
+              <h4 className="mb-sm mr-md shrink-0 text-sm text-textSecondary md:mb-none md:w-[120px]">
                 {t(`filters|group$${groupName}`)}:
               </h4>
             )}
