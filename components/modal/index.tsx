@@ -15,8 +15,8 @@ interface ModalProps {
   onClick?: () => void;
   modalOpen: boolean;
   setModalOpen: (_param: boolean) => void;
-  closeBtn: string;
-  confirmBtn: string;
+  closeBtn?: string;
+  confirmBtn?: string;
   description?: string | null;
   href?: string;
   type?: "tools";
@@ -98,13 +98,15 @@ export const Modal: FC<ModalProps> = ({
         )}
 
         <div className="flex justify-between gap-lg">
-          <Button
-            onClick={() => setModalOpen(false)}
-            className="min-w-[3.125rem] justify-center hover:bg-brown-200"
-            variant={"secondary"}
-            label={closeBtn}
-            aria-label={`${closeBtn} modal ${heading}`}
-          />
+          {closeBtn && (
+            <Button
+              onClick={() => setModalOpen(false)}
+              className="min-w-[3.125rem] justify-center hover:bg-brown-200"
+              variant={"secondary"}
+              label={closeBtn}
+              aria-label={`${closeBtn} modal ${heading}`}
+            />
+          )}
           {href ? (
             <ButtonLink
               href={href}
@@ -114,14 +116,14 @@ export const Modal: FC<ModalProps> = ({
               iconPosition="right"
               className="min-w-[3.125rem] justify-center"
             />
-          ) : (
+          ) : confirmBtn ? (
             <Button
               onClick={onClick}
               label={confirmBtn}
               className="min-w-[3.125rem] justify-center"
               aria-label={`${confirmBtn} modal ${heading}`}
             />
-          )}
+          ) : null}
         </div>
       </div>
     </>

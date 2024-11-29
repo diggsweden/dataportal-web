@@ -117,6 +117,21 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   esu.loadOnlyPublicEntries(true);
   let entry = {} as Entry;
 
+  // Add background class based on page type
+  useEffect(() => {
+    const body = document.querySelector("#top");
+
+    if (pageType === "organisation") {
+      body?.classList.add("organisation-background");
+    }
+
+    return () => {
+      if (pageType === "organisation") {
+        body?.classList.remove("organisation-background");
+      }
+    };
+  }, [pageType]);
+
   useEffect(() => {
     fetchEntry();
   }, []);
@@ -245,8 +260,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           entryData.contact = {
             name: metadata.findFirstValue(null, "foaf:name"),
             email:
-              metadata.findFirstValue(null, "foaf:homepage") ||
-              metadata.findFirstValue(null, "foaf:mbox"),
+              metadata.findFirstValue(null, "foaf:mbox") ||
+              metadata.findFirstValue(null, "foaf:homepage"),
           };
 
           entryData.downloadFormats = getDownloadFormats(
@@ -368,8 +383,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
             metadata.findFirstValue(null, "foaf:name"),
           )}`,
         },
-        terms: { total: 0, link: "" },
-        concepts: { total: 0, link: "" },
+        terms: { total: 0, termsInfo: [] },
       };
 
       const esTerms = new EntryStore(
@@ -406,29 +420,38 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           .uriFacet("dcterms:accessRights")
           .uriFacet("rdf:type")
           .uriFacet("http://data.europa.eu/r5r/hvdCategory")
-          .uriFacet("org:classification")
+          .uriFacet("https://www.w3.org/ns/org#classification")
           .uriFacet("dcterms:conformsTo")
           .list();
 
         await datasetCounts.getEntries();
 
         rawFacets = datasetCounts.getFacets();
-
         if (rawFacets.length > 0) {
-          const openDataFacet = rawFacets.find(
+          const dataAccessFacet = rawFacets.find(
             (f) => f.predicate === "http://purl.org/dc/terms/accessRights",
           );
-          const openData =
-            openDataFacet?.values?.find(
-              (v: any) =>
-                v.name ===
-                "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
-            )?.count || 0;
+          const openData = dataAccessFacet?.values?.find(
+            (v: any) =>
+              v.name ===
+              "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+          );
 
-          data.datasets.dataInfo[0].total = openData;
+          data.datasets.dataInfo[0].total = openData?.count || 0;
 
-          const protectedData = datasetCounts.getSize() - openData;
-          data.datasets.dataInfo[1].total = protectedData;
+          const protectedDataValues = dataAccessFacet?.values?.filter(
+            (v: any) =>
+              v.name ===
+                "http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC" ||
+              v.name ===
+                "http://publications.europa.eu/resource/authority/access-right/RESTRICTED",
+          );
+          const protectedDataCount = protectedDataValues?.reduce(
+            (sum: number, v: any) => sum + v.count,
+            0,
+          );
+
+          data.datasets.dataInfo[1].total = protectedDataCount;
 
           const apiDataFacet = rawFacets.find(
             (f) =>
@@ -449,7 +472,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
           const feeDataFacet = rawFacets.find(
             (f: any) =>
-              f.predicate === "http://www.w3.org/ns/org#classification",
+              f.predicate === "https://www.w3.org/ns/org#classification",
           );
           const feeData = feeDataFacet?.valueCount || 0;
           data.datasets.dataInfo[4].total = feeData;
@@ -501,20 +524,10 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           .list();
 
         const termsList = await terms.getEntries();
-        let termUris: { title: string; uri: string }[] = [];
 
         if (termsList?.length > 0) {
-          termUris = termsList
-            .map((t) => ({
-              title: getSimplifiedLocalizedValue(
-                t.getAllMetadata(),
-                "dcterms:title",
-              ),
-              uri: t.getResourceURI(),
-            }))
-            .filter((t) => t.title && t.uri);
-
-          data.terms = termsList
+          data.terms.total = terms.getSize();
+          data.terms.termsInfo = termsList
             .map((t) => ({
               title: getSimplifiedLocalizedValue(
                 t.getAllMetadata(),
@@ -528,40 +541,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
                 : `/${lang}/externalterminology?resource=${t.getResourceURI()}`,
             }))
             .filter((t) => t.title && t.url);
-
-          if (termUris.length > 0) {
-            const concepts = esTerms
-              .newSolrQuery()
-              .publicRead(true)
-              .rdfType("skos:Concept")
-              .uriProperty(
-                "skos:inScheme",
-                termUris.map((t) => t.uri),
-              )
-              .list();
-
-            await concepts.getEntries();
-
-            const conceptsTotal = concepts.getSize();
-
-            if (conceptsTotal > 0) {
-              const termFilters = termUris
-                .map(
-                  (term) =>
-                    `http%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23inScheme%7C%7C${encodeURIComponent(
-                      term.uri,
-                    )}%7C%7Cfalse%7C%7Curi%7C%7CTerminologier%7C%7C${encodeURIComponent(
-                      term.title,
-                    )}`,
-                )
-                .join("$");
-
-              data.concepts = {
-                total: conceptsTotal,
-                link: `/concepts?p=1&q=&s=2&t=20&f=${termFilters}&rt=term&c=false`,
-              };
-            }
-          }
         }
       } catch (error) {
         console.error("Error fetching terms:", error);
@@ -576,7 +555,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   const getRelatedMQA = async (entry: Entry) => {
     try {
       const mqa = es.getEntryURI(entry.getContext().getId(), "_quality");
-      const mqaEntry = await esu.getEntryByResourceURI(mqa);
+      const mqaEntry = await es.getEntry(mqa);
       const mqaMetadata = mqaEntry.getAllMetadata();
       const title = getSimplifiedLocalizedValue(mqaMetadata, "dcterms:title");
       const url = `/metadatakvalitet/katalog/_quality/${entry

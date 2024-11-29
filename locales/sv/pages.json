@@ -156,7 +156,10 @@
     "fee-data": "Avgiftsbelagda datamängder",
     "spec-data": "Datamängder som följer specifikation",
     "contact": "Kontakt",
-    "view-all-concepts": "Visa alla begrepp"
+    "view-all-concepts": "Visa alla begrepp",
+    "data-info": "Information om datamängderna",
+    "no-contact": "Inga kontaktuppgifter har angets",
+    "data-info-more": "Lorem ipsum dolor sit amet consectetur. Vitae aenean integer rhoncus enim urna. Eget eu semper ridiculus adipiscing ante enim. Adipiscing id ut sed sed sagittis faucibus nisl. Mi sem praesent id tempus vitae sagittis amet. Et ornare a duis sit odio scelerisque. Sed enim dolor massa dignissim ut. Platea quis proin purus auctor cursus semper dictum ultrices arcu."
   },
   "os": {
     "heading": "Öppen källkod",

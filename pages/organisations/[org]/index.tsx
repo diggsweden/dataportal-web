@@ -9,15 +9,14 @@ export default function ExploreApiPage() {
   const { query } = useRouter() || {};
   const { org } = query || {};
   const ids = (typeof org === "string" && org.split("_")) || [];
-  const cid = ids[0];
-  const eid = ids[1];
+  const eid = ids.pop() || "";
+  const cid = ids.join("_");
 
   return (
     <EntrystoreProvider
       env={env}
       cid={cid}
       eid={eid}
-      // entryUri={`https://${env.ENTRYSCAPE_DATASETS_PATH}/store/${ids}`}
       entrystoreUrl={env.ENTRYSCAPE_DATASETS_PATH}
       pageType="organisation"
     >

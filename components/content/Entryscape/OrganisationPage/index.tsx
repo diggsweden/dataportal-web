@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { EntrystoreContext } from "@/providers/EntrystoreProvider";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
@@ -10,16 +10,18 @@ import { Heading } from "@/components/global/Typography/Heading";
 import Link from "next/link";
 import InfoIcon from "@/assets/icons/dela-data.svg";
 import DiamondIcon from "@/assets/icons/diamond.svg";
-import { ButtonLink } from "@/components/global/Button";
+import { Button, ButtonLink } from "@/components/global/Button";
 import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 import SpecListIcon from "@/assets/icons/specList.svg";
 import HoldingHandsIcon from "@/assets/icons/holdingHands.svg";
 import { CustomLink } from "@/components/global/CustomLink";
+import { Modal } from "@/components/global/Modal";
 export const OrganisationPage: FC = () => {
   const { pathname } = useRouter() || {};
   const { setBreadcrumb } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { t } = useTranslation();
+  const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
     setBreadcrumb &&
@@ -62,7 +64,7 @@ export const OrganisationPage: FC = () => {
 
         <div className="mb-lg gap-2xl md:mb-xl lg:flex">
           {/* Left column */}
-          <div className="mb-lg flex w-full max-w-md flex-shrink-0 flex-col gap-xl lg:mb-xl">
+          <div className="mb-xl flex w-full max-w-md flex-shrink-0 flex-col gap-xl">
             {/* Description */}
             {entry.description !== "" && (
               <p className="mb-lg">{entry.description}</p>
@@ -75,12 +77,28 @@ export const OrganisationPage: FC = () => {
                 size={"md"}
                 className="mb-lg inline-flex items-center gap-[0.625rem]"
               >
-                {t("common|datasets")} <InfoIcon className="mt-[2px]" />
+                {t("common|datasets")}
+                <Button
+                  variant="plain"
+                  className="rounded-full"
+                  aria-label={t("pages|organisation_page$data-info")}
+                  icon={InfoIcon}
+                  iconPosition="left"
+                  onClick={() => setShowInfo(!showInfo)}
+                />
               </Heading>
+              <Modal
+                modalOpen={showInfo}
+                setModalOpen={setShowInfo}
+                onClick={() => setShowInfo(false)}
+                heading={t("pages|organisation_page$data-info")}
+                description={t("pages|organisation_page$data-info-more")}
+                confirmBtn={t("common|close")}
+              />
               <div className="box-border flex w-full flex-col items-center gap-xl rounded-lg bg-white p-xl md:items-end">
                 <div className="flex w-full flex-col items-center py-lg md:flex-row">
                   <div className="flex flex-shrink-0 flex-col items-center gap-sm">
-                    <DiamondIcon />
+                    <DiamondIcon className="flex-shrink-0" />
                     <span className="text-xl text-primary md:text-2xl">
                       {entry.organisationData.datasets.total || 0}
                     </span>
@@ -129,7 +147,7 @@ export const OrganisationPage: FC = () => {
                 </Heading>
                 <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
                   <div className="flex flex-col items-center gap-sm md:flex-row md:gap-lg">
-                    <SpecListIcon />
+                    <SpecListIcon className="flex-shrink-0" />
                     <span className="inline-flex items-center gap-sm">
                       <span className="text-xl text-textSecondary md:text-2xl">
                         {entry.organisationData.specifications.total}
@@ -150,17 +168,26 @@ export const OrganisationPage: FC = () => {
             )}
 
             {/* Terminology wrapper */}
-            {entry.organisationData?.terms?.length > 0 && (
+            {entry.organisationData?.terms?.termsInfo?.length > 0 && (
               <div>
                 <Heading level={2} size={"md"} className="mb-lg">
                   {t("common|term-with-concept")}
                 </Heading>
                 <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
-                  <div className="flex flex-col items-center gap-sm md:flex-row md:gap-lg">
-                    <HoldingHandsIcon />
-                    <div className="inline-flex flex-col gap-sm">
-                      {entry.organisationData?.terms?.length > 0 &&
-                        entry.organisationData.terms.map(
+                  <div className="flex w-full flex-col items-center gap-sm md:flex-row md:gap-lg">
+                    <HoldingHandsIcon className="flex-shrink-0" />
+
+                    <div className="flex w-full flex-col gap-xl md:flex-row">
+                      <span className="inline-flex items-center justify-center gap-sm">
+                        <span className="text-xl text-textSecondary md:text-2xl">
+                          {entry.organisationData.terms.total}
+                        </span>
+                        <span className="text-textSecondary">
+                          {t("common|terminologies")}
+                        </span>
+                      </span>
+                      <div className="flex flex-col justify-center gap-sm">
+                        {entry.organisationData.terms.termsInfo.map(
                           (term: any, idx: number) => (
                             <Link
                               key={idx}
@@ -171,36 +198,9 @@ export const OrganisationPage: FC = () => {
                             </Link>
                           ),
                         )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            )}
-
-            {/* Concepts wrapper */}
-            {entry.organisationData?.concepts?.total > 0 && (
-              <div>
-                <Heading level={2} size={"md"} className="mb-lg">
-                  {t("common|concepts")}
-                </Heading>
-                <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
-                  <div className="flex flex-col items-center gap-sm md:flex-row md:gap-lg">
-                    <HoldingHandsIcon />
-                    <span className="inline-flex items-center gap-sm">
-                      <span className="text-xl text-textSecondary md:text-2xl">
-                        {entry.organisationData.concepts.total}
-                      </span>
-                      <span className="text-textSecondary">
-                        {t("common|concepts")}
-                      </span>
-                    </span>
-                  </div>
-                  <ButtonLink
-                    href={entry.organisationData.concepts.link}
-                    label={t("pages|organisation_page$view-all-concepts")}
-                    icon={ArrowRightIcon}
-                    iconPosition="right"
-                  />
                 </div>
               </div>
             )}
@@ -218,38 +218,51 @@ export const OrganisationPage: FC = () => {
                 {`${t("common|about")} ${entry.title}`}
               </Heading>
 
-              <div className="space-y-lg">
-                {entry.contact && entry.contact.email && (
-                  <div>
-                    <Heading
-                      className="font-strong text-textSecondary"
-                      level={3}
-                      size={"xxs"}
-                    >
-                      {t("pages|organisation_page$contact")}
-                    </Heading>
+              <div className="space-y-lg text-sm">
+                <div>
+                  <Heading
+                    className="font-strong text-textSecondary"
+                    level={3}
+                    size={"xxs"}
+                  >
+                    {t("pages|organisation_page$contact")}
+                  </Heading>
+                  {entry.contact && entry.contact.email ? (
                     <CustomLink
-                      className="text-sm text-green-600 hover:no-underline"
+                      className="text-green-600 hover:no-underline"
                       href={entry.contact.email}
                     >
                       {entry.contact.name}
                     </CustomLink>
-                  </div>
-                )}
+                  ) : (
+                    <p>{t("pages|organisation_page$no-contact")}</p>
+                  )}
+                </div>
 
-                <p className="font-strong text-textSecondary">{`${t(
-                  "pages|organisation_page$org-type",
-                )}: ${entry.organisationData.orgType}`}</p>
+                <div>
+                  <Heading
+                    className="font-strong text-textSecondary"
+                    level={3}
+                    size={"xxs"}
+                  >
+                    {t("pages|organisation_page$org-type")}
+                  </Heading>
+                  <p>{entry.organisationData.orgType}</p>
+                </div>
 
                 {entry.organisationData.orgNo && (
-                  <p className="font-strong text-textSecondary">
-                    {`${t("pages|organisation_page$org-no")}: ${
+                  <Heading
+                    className="font-strong text-textSecondary"
+                    level={3}
+                    size={"xxs"}
+                  >
+                    {`${t("pages|organisation_page$org-no")} ${
                       entry.organisationData.orgNo
                     }`}
-                  </p>
+                  </Heading>
                 )}
 
-                {entry.mqaCatalog && entry.mqaCatalog.url && (
+                {entry.mqaCatalog && (
                   <div>
                     <Heading
                       className="font-strong text-textSecondary"
@@ -259,7 +272,7 @@ export const OrganisationPage: FC = () => {
                       {t("pages|datasetpage$mqa")}
                     </Heading>
                     <Link
-                      className="text-sm text-green-600 hover:no-underline"
+                      className="text-green-600 hover:no-underline"
                       href={entry.mqaCatalog.url}
                     >
                       {entry.mqaCatalog.title}
