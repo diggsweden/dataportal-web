@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { EntrystoreProvider } from "@/providers/EntrystoreProvider";
-import { SettingsContext } from "@/providers/SettingsProvider";
-import { DataServicePage } from "@/components/content/Entryscape/DataServicePage";
+import { EntrystoreProvider } from "@/providers/entrystore-provider";
+import { SettingsContext } from "@/providers/settings-provider";
+import { DataServicePage } from "@/features/entryscape/data-service-page";
 
 export default function ExploreApiPage() {
   const { env } = useContext(SettingsContext);

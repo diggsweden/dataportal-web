@@ -1,4 +1,4 @@
-import { getSimplifiedLocalizedValue } from "@/utilities/entrystoreUtil";
+import { getSimplifiedLocalizedValue } from "@/utilities/entrystore-utils";
 import { Entry } from "@entryscape/entrystore-js";
 import { Translate } from "next-translate";
 

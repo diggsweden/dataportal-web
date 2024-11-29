@@ -1,6 +1,6 @@
 import { getGoodExamplesList, populateSeo } from "@/utilities";
 import { GetStaticProps } from "next";
-import { ListPage } from "@/components/content/ListPage";
+import { ListPage } from "@/features/pages/list-page";
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return await getGoodExamplesList(locale || "sv", {

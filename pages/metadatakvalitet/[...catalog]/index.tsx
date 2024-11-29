@@ -1,6 +1,6 @@
-import { MQACategoryPage } from "@/components/content/Entryscape/MQACategoryPage";
-import EntrystoreProvider from "@/providers/EntrystoreProvider";
-import { SettingsContext } from "@/providers/SettingsProvider";
+import { MQACategoryPage } from "@/features/entryscape/mqa-category-page";
+import EntrystoreProvider from "@/providers/entrystore-provider";
+import { SettingsContext } from "@/providers/settings-provider";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 

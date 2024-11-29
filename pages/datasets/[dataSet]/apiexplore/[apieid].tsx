@@ -1,10 +1,10 @@
-import { DataSetExploreApiPage } from "@/components/content/Entryscape/DatasetExploreApiPage";
+import { DataSetExploreApiPage } from "@/features/entryscape/dataset-explore-api-page";
 // export default DataSetExploreApiPage;
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { ApiIndexProvider } from "@/providers/ApiIndexContext";
-import EntrystoreProvider from "@/providers/EntrystoreProvider";
-import { SettingsContext } from "@/providers/SettingsProvider";
+import { ApiIndexProvider } from "@/providers/api-index-context";
+import EntrystoreProvider from "@/providers/entrystore-provider";
+import { SettingsContext } from "@/providers/settings-provider";
 
 export default function ExploreApiPage() {
   const { env } = useContext(SettingsContext);

@@ -21,6 +21,6 @@
       "types": ["cypress", "cy-verify-downloads"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/navigation/sidebar/sidebar-link"],
   "exclude": ["node_modules"]
 }

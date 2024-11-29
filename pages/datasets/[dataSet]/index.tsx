@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { ApiIndexProvider } from "@/providers/ApiIndexContext";
-import EntrystoreProvider from "@/providers/EntrystoreProvider";
-import { SettingsContext } from "@/providers/SettingsProvider";
-import { DataSetPage } from "@/components/content/Entryscape/DataSetPage";
+import { ApiIndexProvider } from "@/providers/api-index-context";
+import EntrystoreProvider from "@/providers/entrystore-provider";
+import { SettingsContext } from "@/providers/settings-provider";
+import { DatasetPage } from "@/features/entryscape/dataset-page";
 
 export default function DataSet() {
   const { env } = useContext(SettingsContext);
@@ -23,7 +23,7 @@ export default function DataSet() {
         entrystoreUrl={env.ENTRYSCAPE_DATASETS_PATH}
         pageType="dataset"
       >
-        <DataSetPage />
+        <DatasetPage />
       </EntrystoreProvider>
     </ApiIndexProvider>
   );

@@ -1,9 +1,9 @@
 import { FC } from "react";
 import Image from "next/image";
-import { FooterNav } from "@/components/navigation/FooterNav";
-import { Container } from "@/components/layout/Container";
+import { FooterNav } from "@/components/navigation/footer-nav";
+import { Container } from "@/components/layout/container";
 import useTranslation from "next-translate/useTranslation";
-import { CustomLink } from "@/components/global/CustomLink";
+import { CustomLink } from "@/components/custom-link";
 
 type FooterProps = {
   openSideBar: boolean;

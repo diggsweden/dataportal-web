@@ -1,7 +1,7 @@
-import { Heading } from "@/components/global/Typography/Heading";
-import { Preamble } from "@/components/global/Typography/Preamble";
-import { Container } from "@/components/layout/Container";
-import { SettingsContext } from "@/providers/SettingsProvider";
+import { Heading } from "@/components/typography/heading";
+import { Preamble } from "@/components/typography/preamble";
+import { Container } from "@/components/layout/container";
+import { SettingsContext } from "@/providers/settings-provider";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { FC, useContext, useEffect } from "react";

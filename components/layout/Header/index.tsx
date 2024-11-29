@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
-import MainNav from "@/components/navigation/MainNav";
-import TopNav from "@/components/navigation/TopNav";
+import MainNav from "@/components/navigation/main-nav";
+import TopNav from "@/components/navigation/top-nav";
 
 type HeaderProps = {
   setOpenSideBar: Function;
