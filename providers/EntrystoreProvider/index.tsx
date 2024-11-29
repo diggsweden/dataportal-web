@@ -53,6 +53,7 @@ export interface ESEntry {
   contact?: ESContact;
   conformsTo?: RelationObj[];
   hasResource?: RelationObj[];
+  organisationData?: RelationObj | null;
   address: string;
   downloadFormats?: Array<{ title: string; url: string }>;
   relatedSpecifications?: Array<{ title: string; url: string }>;
@@ -195,6 +196,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         address: resourceUri,
         description,
         publisher,
+        organisationData: null,
         loading: false,
       };
 
@@ -212,7 +214,20 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
             entry.getEntryInfo().getMetadataURI(),
           );
           entryData.mqaCatalog = await getRelatedMQA(entry);
-
+          if (publisherUri) {
+            const publisherEntry =
+              await esu.getEntryByResourceURI(publisherUri);
+            const ID = publisherEntry.getEntryInfo().getId();
+            const contextID = publisherEntry.getContext().getId();
+            publisher = getSimplifiedLocalizedValue(
+              publisherEntry.getAllMetadata(),
+              "foaf:name",
+            );
+            entryData.organisationData = {
+              url: `/organisations/${contextID}_${ID}`,
+              title: publisher,
+            };
+          }
           break;
         case "dataservice":
           break;
@@ -340,8 +355,6 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
     const termUri = metadata.findFirstValue(null, "skos:inScheme");
     const termEntry = await esu.getEntryByResourceURI(termUri);
 
-    console.log("termEntry", termUri);
-
     return {
       title: getSimplifiedLocalizedValue(
         termEntry.getAllMetadata(),
@@ -349,7 +362,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
       ),
       url: termUri.startsWith("https://dataportal.se")
         ? new URL(termUri).pathname.replace("concepts", "terminology")
-        : `/${lang}/externalterminology?resource=${termUri}`,
+        : `/externalterminology?resource=${termUri}`,
     };
   };
 

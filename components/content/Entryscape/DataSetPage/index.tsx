@@ -81,13 +81,23 @@ export const DataSetPage: React.FC = () => {
         <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {entry.title}
         </Heading>
-
         <div className="mb-lg gap-2xl md:mb-xl lg:flex">
           {/* Left column */}
           <div className="mb-lg flex w-full max-w-md flex-col gap-lg lg:mb-xl">
             {/* Publisher */}
-            {entry.publisher && (
-              <Preamble className="mb-lg">{entry.publisher}</Preamble>
+            {entry.organisationData && entry.organisationData.url ? (
+              <Link
+                className="mb-lg hover:!no-underline"
+                href={entry.organisationData.url}
+              >
+                <Preamble className="!text-green-600">
+                  {entry.organisationData.title}
+                </Preamble>
+              </Link>
+            ) : (
+              entry.publisher && (
+                <Preamble className="mb-lg">{entry.publisher}</Preamble>
+              )
             )}
 
             {/* Indicators */}
