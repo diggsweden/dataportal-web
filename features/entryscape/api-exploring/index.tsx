@@ -1,7 +1,8 @@
+import dynamic from "next/dynamic";
 import React, { useContext } from "react";
+
 import { EnvSettings } from "@/env/EnvSettings";
 import { ApiIndexContext } from "@/providers/api-index-context";
-import dynamic from "next/dynamic";
 
 export interface ApiExplorerProps {
   env: EnvSettings;

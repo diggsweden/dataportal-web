@@ -1,6 +1,6 @@
-import { FC } from "react";
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
+import { FC } from "react";
 
 interface SearchTipsProps {
   showTip: boolean;

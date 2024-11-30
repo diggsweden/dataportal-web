@@ -1,14 +1,15 @@
-import React, { FC, useState } from "react";
-import Info from "@/assets/icons/stod-verktyg.svg";
-import { ToolDataFragment as Tool } from "@/graphql/__generated__/operations";
-import { Heading } from "@/components/typography/heading";
 import Link from "next/link";
-import { Modal } from "@/components/modal";
-import { isExternalLink } from "@/utilities";
+import useTranslation from "next-translate/useTranslation";
+import React, { FC, useState } from "react";
+
 import InternalLinkIcon from "@/assets/icons/arrowRight.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
-import useTranslation from "next-translate/useTranslation";
+import Info from "@/assets/icons/stod-verktyg.svg";
 import { Button } from "@/components/button";
+import { Modal } from "@/components/modal";
+import { Heading } from "@/components/typography/heading";
+import { ToolDataFragment as Tool } from "@/graphql/__generated__/operations";
+import { isExternalLink } from "@/utilities";
 
 interface ToolsTeaserProps {
   tools: Tool;

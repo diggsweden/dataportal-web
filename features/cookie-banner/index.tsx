@@ -1,11 +1,12 @@
+import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 import React, { FC, useContext, useEffect, useState } from "react";
-import { TrackingContext } from "@/providers/tracking-provider";
-import { LocalStoreContext } from "@/providers/local-store-provider";
-import Link from "next/link";
+
 import { Button } from "@/components/button";
 import { Container } from "@/components/layout/container";
 import { CookieOptions } from "@/features/cookie-banner/cookie-options";
+import { LocalStoreContext } from "@/providers/local-store-provider";
+import { TrackingContext } from "@/providers/tracking-provider";
 
 export type CookieSetting = {
   [key: string]: CookieProperties;

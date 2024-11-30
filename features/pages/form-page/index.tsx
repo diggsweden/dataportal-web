@@ -1,20 +1,30 @@
-import { FC, useContext, useEffect, useRef, useState } from "react";
-import { FormDataFragment as IForm } from "@/graphql/__generated__/operations";
-import { FormNav } from "@/components/navigation/form-nav";
-import useTranslation from "next-translate/useTranslation";
 import { usePathname } from "next/navigation";
-import { ModuleDataFragment } from "@/graphql/__generated__/operations";
-import { FormTypes } from "@/types/form";
-import { GetLocalstorageData, handleScroll } from "@/utilities/form-utils";
+import useTranslation from "next-translate/useTranslation";
+import {
+  ChangeEvent,
+  FC,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
 import { Button } from "@/components/button";
-import { Heading } from "@/components/typography/heading";
-import { RenderForm } from "@/components/form/render-form";
-import { FormBottomNav } from "@/components/navigation/form-bottom-nav";
 import { FormGeneratePDF } from "@/components/form/form-generate-pdf";
-import { ProgressBar } from "@/components/progress-bar";
+import { RenderForm } from "@/components/form/render-form";
 import { Container } from "@/components/layout/container";
-import { linkBase } from "@/utilities";
+import { FormBottomNav } from "@/components/navigation/form-bottom-nav";
+import { FormNav } from "@/components/navigation/form-nav";
+import { ProgressBar } from "@/components/progress-bar";
+import { Heading } from "@/components/typography/heading";
+import {
+  ModuleDataFragment,
+  FormDataFragment as IForm,
+} from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
+import { FormTypes } from "@/types/form";
+import { linkBase } from "@/utilities";
+import { GetLocalstorageData, handleScroll } from "@/utilities/form-utils";
 
 type Props = IForm & {
   elements: IForm["elements"];
@@ -175,7 +185,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
 
   //Update the fields when data is changed in the form. Handles all types of fields.
   const UpdateFormDataArray = (
-    e: React.ChangeEvent<any>,
+    e: ChangeEvent<any>,
     fieldToUpdate: FormTypes,
     pageIndex: number,
     imgData: { fileName: string; base64: string } | null = null,

@@ -1,11 +1,11 @@
-import React from "react";
+import { Component } from "react";
 
 interface StatisticDataPresentationProps {
   dataText?: string;
   dataNumber?: number;
 }
 
-export class StatisticDataPresentation extends React.Component<StatisticDataPresentationProps> {
+export class StatisticDataPresentation extends Component<StatisticDataPresentationProps> {
   constructor(props: StatisticDataPresentationProps) {
     super(props);
   }

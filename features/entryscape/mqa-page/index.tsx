@@ -1,11 +1,12 @@
+import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
 import { FC, useContext, useEffect } from "react";
-import { Heading } from "@/components/typography/heading";
+
 import { Container } from "@/components/layout/container";
+import { Heading } from "@/components/typography/heading";
+import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
-import { usePathname } from "next/navigation";
-import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
-import useTranslation from "next-translate/useTranslation";
 
 export const MQAPage: FC = () => {
   const { env, setBreadcrumb } = useContext(SettingsContext);

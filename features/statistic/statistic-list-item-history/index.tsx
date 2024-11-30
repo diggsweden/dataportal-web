@@ -1,11 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 
 interface StatisticListItemHistoryProps {
   listText?: any;
   listNumber?: number;
 }
 
-export class StatisticListItemHistory extends React.Component<StatisticListItemHistoryProps> {
+export class StatisticListItemHistory extends Component<StatisticListItemHistoryProps> {
   constructor(props: StatisticListItemHistoryProps) {
     super(props);
   }

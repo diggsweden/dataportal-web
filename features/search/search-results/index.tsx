@@ -1,18 +1,20 @@
-import { useEffect, useState, FC, Dispatch, SetStateAction } from "react";
-import { SearchMode } from "@/features/search/search-filters";
-import { FileFormatBadge } from "@/components/file-format-badge";
+import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
+import { useEffect, useState, FC, Dispatch, SetStateAction } from "react";
+
+import ListIcon from "@/assets/icons/list.svg";
+import DetailedListIcon from "@/assets/icons/listDetailed.svg";
+import { Button } from "@/components/button";
+import { FileFormatBadge } from "@/components/file-format-badge";
+import { Select } from "@/components/form/select";
+import { Pagination } from "@/components/pagination";
+import { Heading } from "@/components/typography/heading";
+import { SearchMode } from "@/features/search/search-filters";
 import {
   SearchSortOrder,
   SearchContextData,
 } from "@/providers/search-provider";
-import Link from "next/link";
-import { Heading } from "@/components/typography/heading";
-import { Button } from "@/components/button";
-import ListIcon from "@/assets/icons/list.svg";
-import DetailedListIcon from "@/assets/icons/listDetailed.svg";
-import { Select } from "@/components/form/select";
-import { Pagination } from "@/components/pagination";
+import { SearchHit } from "@/types/search";
 
 interface SearchResultsProps {
   search: SearchContextData;
@@ -236,13 +238,15 @@ export const SearchResults: FC<SearchResultsProps> = ({
   }, [search.loadingHits, search.result?.count, search.request.facetValues, t]);
 
   function isHVD(dataset: object) {
-    const isHvd = Object.values(dataset).map((ds) => ds.hasOwnProperty(hvd));
+    const isHvd = Object.values(dataset).map((ds) =>
+      Object.prototype.hasOwnProperty.call(ds, hvd),
+    );
     return isHvd.includes(true);
   }
 
   function isNational(dataset: object) {
     const isNational = Object.values(dataset).map((ds) =>
-      ds.hasOwnProperty(national),
+      Object.prototype.hasOwnProperty.call(ds, national),
     );
     return isNational.includes(true);
   }
@@ -295,7 +299,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
         <div>
           <ul className="search-result-list space-y-xl">
             {search.result.hits &&
-              search.result.hits.map((hit, index) => (
+              search.result.hits.map((hit: SearchHit, index: number) => (
                 <li className="group relative max-w-lg space-y-sm" key={index}>
                   <Link
                     href={hit.url}

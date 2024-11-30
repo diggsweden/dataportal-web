@@ -1,9 +1,12 @@
-import { Button } from "@/components/button";
-import { ESRdfType } from "@/utilities/entryscape/entryscape";
 import useTranslation from "next-translate/useTranslation";
+
 import CloseIcon from "@/assets/icons/closeCross.svg";
 import TrashIcon from "@/assets/icons/trash.svg";
+import { Button } from "@/components/button";
 import { SearchContextData } from "@/providers/search-provider";
+import { SearchFacetValue } from "@/types/search";
+import { ESRdfType } from "@/utilities/entryscape/entryscape";
+
 import { SearchMode } from "../index";
 
 interface SearchActiveFiltersProps {

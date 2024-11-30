@@ -1,8 +1,9 @@
 import FocusTrap from "focus-trap-react";
 import useTranslation from "next-translate/useTranslation";
 import { FC, PropsWithChildren, useContext, useEffect, useState } from "react";
-import { useClickOutside } from "@/hooks/use-click-outside";
+
 import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
+import { useClickOutside } from "@/hooks/use-click-outside";
 import { SettingsContext } from "@/providers/settings-provider";
 
 export interface SearchFilterProps {

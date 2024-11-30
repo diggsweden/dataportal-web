@@ -1,17 +1,19 @@
-import { FC, useContext, useEffect, useState } from "react";
-import useTranslation from "next-translate/useTranslation";
-import { linkBase, querySearch } from "@/utilities";
-import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
-import { SearchHitFragment } from "@/graphql/__generated__/operations";
-import { getSearchHit } from "@/features/search/utils/search-helpers";
-import { Heading } from "@/components/typography/heading";
+import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
+import { FC, useContext, useEffect, useState } from "react";
+
 import { Container } from "@/components/layout/container";
-import { SearchPageSelector } from "@/features/search/search-page-selector";
-import { SearchInput } from "@/features/search/search-input";
 import { Pagination } from "@/components/pagination";
+import { Heading } from "@/components/typography/heading";
+import { SearchInput } from "@/features/search/search-input";
+import { SearchPageSelector } from "@/features/search/search-page-selector";
+import { getSearchHit } from "@/features/search/utils/search-helpers";
+import { SearchHitFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
+import { SearchHit, SearchRequest, SearchResult } from "@/types/search";
+import { linkBase, querySearch } from "@/utilities";
 
 interface SearchProps {
   activeLink?: string;

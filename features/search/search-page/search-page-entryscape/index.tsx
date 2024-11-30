@@ -1,19 +1,21 @@
-import { FC, useContext, useEffect, useState, useMemo } from "react";
-import { SearchForm } from "@/features/search/search-form";
-import { SettingsContext } from "@/providers/settings-provider";
-import SearchProvider, { SearchContext } from "@/providers/search-provider";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import Head from "next/head";
-import { Container } from "@/components/layout/container";
-import SearchFilters from "@/features/search/search-filters";
-import SearchResults from "@/features/search/search-results";
-import { Heading } from "@/components/typography/heading";
-import { Button } from "@/components/button";
-import { SearchTips } from "@/features/search/search-tips";
-import { SearchPageSelector } from "@/features/search/search-page-selector";
+import { FC, useContext, useEffect, useState, useMemo } from "react";
+
 import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
+import { Button } from "@/components/button";
+import { Container } from "@/components/layout/container";
+import { Heading } from "@/components/typography/heading";
+import { SearchFilters } from "@/features/search/search-filters";
+import { SearchForm } from "@/features/search/search-form";
+import { SearchPageSelector } from "@/features/search/search-page-selector";
+import { SearchResults } from "@/features/search/search-results";
+import { SearchTips } from "@/features/search/search-tips";
+import SearchProvider, { SearchContext } from "@/providers/search-provider";
+import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
+
 import { createSearchProviderSettings } from "./search-page-provider-settings";
 
 interface SearchProps {

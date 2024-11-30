@@ -1,26 +1,27 @@
-import { usePathname } from "next/navigation";
-import { FC, useContext, useEffect } from "react";
-import Link from "next/link";
 import dynamic from "next/dynamic";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
+import { FC, useContext, useEffect } from "react";
+
+import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
+import ExternalLinkIcon from "@/assets/icons/external-link.svg";
+import { BlockList } from "@/components/blocks/block-list";
+import { RelatedContentBlock } from "@/components/blocks/related-content-block";
+import { ButtonLink } from "@/components/button";
+import { ContentBox } from "@/components/content-box";
+import { GridList } from "@/components/grid-list";
+import { Container } from "@/components/layout/container";
+import { Heading } from "@/components/typography/heading";
+import { Preamble } from "@/components/typography/preamble";
 import {
   ContainerDataFragment,
   GoodExampleDataFragment,
   NewsItemDataFragment,
 } from "@/graphql/__generated__/operations";
-import { GridList } from "@/components/grid-list";
-import { RelatedContentBlock } from "@/components/blocks/related-content-block";
-import { BlockList } from "@/components/blocks/block-list";
-import { Heading } from "@/components/typography/heading";
-import { Container } from "@/components/layout/container";
-import { Preamble } from "@/components/typography/preamble";
-import { ContentBox } from "@/components/content-box";
-import { dataCategories } from "@/utilities/data-categories";
-import { ButtonLink } from "@/components/button";
-import { isExternalLink, linkBase } from "@/utilities";
-import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
-import ExternalLinkIcon from "@/assets/icons/external-link.svg";
-import useTranslation from "next-translate/useTranslation";
 import { SettingsContext } from "@/providers/settings-provider";
+import { isExternalLink, linkBase } from "@/utilities";
+import { dataCategories } from "@/utilities/data-categories";
 
 export interface LandingPageProps extends ContainerDataFragment {
   news?: NewsItemDataFragment[];

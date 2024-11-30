@@ -1,10 +1,11 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "@/providers/settings-provider";
+
+import { Heading } from "@/components/typography/heading";
 import { EnvSettings } from "@/env";
 import { StatisticListItem } from "@/features/statistic/statistic-list-item";
 import { getNumbersData } from "@/features/statistic/statistic-numbers";
-import { Heading } from "@/components/typography/heading";
+import { SettingsContext } from "@/providers/settings-provider";
 
 interface StatisticState {
   children?: React.ReactNode;

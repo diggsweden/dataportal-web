@@ -1,10 +1,9 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "@/providers/settings-provider";
-import { StatisticListItemHistory } from "@/features/statistic/statistic-list-item-history";
-import { Heading } from "@/components/typography/heading";
 
-// import { isIE } from 'react-device-detect';
+import { Heading } from "@/components/typography/heading";
+import { StatisticListItemHistory } from "@/features/statistic/statistic-list-item-history";
+import { SettingsContext } from "@/providers/settings-provider";
 
 interface StatisticState {
   children?: React.ReactNode;
@@ -64,31 +63,27 @@ export const StatisticGraphNumbers: React.FC = () => {
     }
   }, []);
 
-  if (/* isIE do we still need this? */ false) {
-    return <></>;
-  } else {
-    return (
-      <div>
-        <Heading level={2} className="mb-lg md:mb-xl">
-          {t("statistic$dataset-numbers")}
-        </Heading>
-        <div className="bg-white p-xl">
-          <ol className="list-decimal space-y-lg pl-lg">
-            {stats.yList &&
-              stats.yList
-                .slice(0, stats.topItemsToShow)
-                .map((item: any, index: any) => {
-                  return (
-                    <StatisticListItemHistory
-                      key={"cat-" + index}
-                      listText={stats.xList && stats.xList[index]}
-                      listNumber={item}
-                    />
-                  );
-                })}
-          </ol>
-        </div>
+  return (
+    <div>
+      <Heading level={2} className="mb-lg md:mb-xl">
+        {t("statistic$dataset-numbers")}
+      </Heading>
+      <div className="bg-white p-xl">
+        <ol className="list-decimal space-y-lg pl-lg">
+          {stats.yList &&
+            stats.yList
+              .slice(0, stats.topItemsToShow)
+              .map((item: any, index: any) => {
+                return (
+                  <StatisticListItemHistory
+                    key={"cat-" + index}
+                    listText={stats.xList && stats.xList[index]}
+                    listNumber={item}
+                  />
+                );
+              })}
+        </ol>
       </div>
-    );
-  }
+    </div>
+  );
 };

@@ -1,10 +1,11 @@
-import { Container } from "@/components/layout/container";
-import { SettingsContext } from "@/providers/settings-provider";
 import { usePathname } from "next/navigation";
 import { FC, useContext, useEffect } from "react";
-import { linkBase } from "@/utilities";
-import { EntrystoreContext } from "@/providers/entrystore-provider";
+
+import { Container } from "@/components/layout/container";
 import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
+import { EntrystoreContext } from "@/providers/entrystore-provider";
+import { SettingsContext } from "@/providers/settings-provider";
+import { linkBase } from "@/utilities";
 
 export const MQACategoryPage: FC = () => {
   const entry = useContext(EntrystoreContext);

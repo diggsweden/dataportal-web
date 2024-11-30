@@ -1,8 +1,9 @@
-import { Dispatch, SetStateAction, FC } from "react";
-import { SearchContextData } from "@/providers/search-provider";
-import { SearchMode } from "@/features/search/search-filters";
 import useTranslation from "next-translate/useTranslation";
+import { Dispatch, SetStateAction, FC } from "react";
+
+import { SearchMode } from "@/features/search/search-filters";
 import { SearchInput } from "@/features/search/search-input";
+import { SearchContextData } from "@/providers/search-provider";
 
 interface SearchFormProps {
   search: SearchContextData;
