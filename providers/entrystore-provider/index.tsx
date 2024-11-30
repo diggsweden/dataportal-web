@@ -162,7 +162,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 publisherUri,
               );
             }
-          } catch (error) {}
+          } catch (error) {
+            console.error("Failed to fetch publisher:", error);
+          }
         } else {
           try {
             const specification = metadata.findFirstValue(
@@ -192,7 +194,9 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                 }
               }
             }
-          } catch (error) {}
+          } catch (error) {
+            console.error("Failed to fetch publisher:", error);
+          }
         }
       }
 

@@ -1,4 +1,18 @@
-const lucene = require("lucene");
+import { EntryStore, EntryStoreUtil, Entry } from "@entryscape/entrystore-js";
+// @ts-ignore
+import { namespaces } from "@entryscape/rdfjson";
+import { Translate } from "next-translate";
+
+import { SearchSortOrder } from "@/providers/search-provider";
+import {
+  HitSpecification,
+  FacetSpecification,
+  SearchFacet,
+  SearchFacetValue,
+  SearchHit,
+  SearchRequest,
+  SearchResult,
+} from "@/types/search";
 import {
   DCATData,
   getEntryLang,
@@ -10,13 +24,10 @@ import {
   getUriNames,
   Choice,
 } from "@/utilities";
-import { Translate } from "next-translate";
-import { SearchSortOrder } from "@/providers/search-provider";
-// @ts-ignore
-import { EntryStore, EntryStoreUtil, Entry } from "@entryscape/entrystore-js";
-// @ts-ignore
-import { namespaces } from "@entryscape/rdfjson";
+
 import { entryCache } from "../local-cache";
+
+const lucene = require("lucene");
 //const tokenize = require('edge-ngrams')()
 
 //#region ES members
@@ -333,7 +344,9 @@ export class Entryscape {
       const ast = lucene.parse(query);
       let q = lucene.toString(ast);
       q = q.replace(/\\~ /g, "~");
+      // eslint-disable-next-line no-useless-escape
       q = q.replace(/\+\-/g, "");
+      // eslint-disable-next-line no-useless-escape
       q = q.replace(/ NOT \-/g, " NOT ");
       q = q.replace(/ AND NOT /g, "+NOT+");
       q = q.replace(/ OR NOT /g, "+NOT+");
@@ -344,6 +357,7 @@ export class Entryscape {
       if (q.length === 0) q = "*";
       return q;
     } catch (err) {
+      // eslint-disable-next-line no-useless-escape
       return query.replace(/[\!\*\-\+\&\|\(\)\[\]\{\}\^\\~\?\:\"]/g, "").trim();
     }
   }

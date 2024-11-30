@@ -1,12 +1,24 @@
+import withTranslation from "next-translate/withTranslation";
+import { decode, encode } from "qss";
 import React, { Component, createContext } from "react";
+
+import {
+  HitSpecification,
+  FacetSpecification,
+  SearchFacetValue,
+  SearchFacet,
+  SearchRequest,
+  SearchResult,
+  SearchHit,
+  ESFacetFieldValue,
+  ESFacetField,
+} from "@/types/search";
+import { DCATData, fetchDCATMeta } from "@/utilities";
 import {
   Entryscape,
   ESRdfType,
   ESType,
 } from "@/utilities/entryscape/entryscape";
-import { decode, encode } from "qss";
-import { DCATData, fetchDCATMeta } from "@/utilities";
-import withTranslation from "next-translate/withTranslation";
 
 /* eslint-disable no-unused-vars */
 export enum SearchSortOrder {
@@ -286,13 +298,13 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
             };
 
             const esFacetsInGroup = res.esFacets?.find(
-              (f) => f.predicate === group,
+              (f: ESFacetField) => f.predicate === group,
             );
 
             if (allFacets[group] && esFacetsInGroup?.values) {
-              allFacets[group].facetValues.forEach((f) => {
+              allFacets[group].facetValues.forEach((f: SearchFacetValue) => {
                 const resultFacetValue = esFacetsInGroup.values.find(
-                  (fv) => fv.name === f.resource,
+                  (fv: ESFacetFieldValue) => fv.name === f.resource,
                 );
                 f.count = resultFacetValue?.count || 0;
               });
@@ -595,7 +607,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       });
 
       if (res?.hits) {
-        res.hits.forEach((h) => {
+        res.hits.forEach((h: SearchHit) => {
           if (
             facets[facetkey] &&
             facets[facetkey].facetValues &&

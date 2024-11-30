@@ -142,7 +142,7 @@ export const ApiIndexProvider: React.FC<ApiIndexProviderProps> = ({
           });
       });
 
-    const parsedResult = result.join(",").replace(/\'/g, "").split(",");
+    const parsedResult = result.join(",").replace(/'/g, "").split(",");
     (window as any).__es_has_apis = parsedResult;
   };
 
