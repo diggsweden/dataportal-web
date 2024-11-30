@@ -1,16 +1,18 @@
+import { usePathname } from "next/navigation";
+import { Translate } from "next-translate";
+import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "@/providers/settings-provider";
-import { ContainerDataFragment } from "@/graphql/__generated__/operations";
-import { checkLang, linkBase } from "@/utilities";
+
 import { BlockList } from "@/components/blocks/block-list";
-import { Heading } from "@/components/typography/heading";
 import { Container } from "@/components/layout/container";
 import { ContainerNav } from "@/components/navigation/container-nav";
 import { StickyNav } from "@/components/navigation/sticky-nav";
-import useTranslation from "next-translate/useTranslation";
-import { usePathname } from "next/navigation";
+import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { Translate } from "next-translate";
+import { ContainerDataFragment } from "@/graphql/__generated__/operations";
+import { SettingsContext } from "@/providers/settings-provider";
+import { Anchorlink } from "@/types/global";
+import { checkLang, linkBase } from "@/utilities";
 
 /**
  * Uses prismjs to style codeblock

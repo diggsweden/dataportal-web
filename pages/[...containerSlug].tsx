@@ -1,9 +1,10 @@
-import { FC } from "react";
-import { GetStaticPaths } from "next/types";
 import { useRouter } from "next/navigation";
-import { getMultiContainer, MultiContainerResponse } from "@/utilities";
+import { GetStaticPaths } from "next/types";
+import { FC } from "react";
+
 import { ContainerPage } from "@/features/pages/container-page";
 import { LandingPage } from "@/features/pages/landing-page";
+import { getMultiContainer, MultiContainerResponse } from "@/utilities";
 
 export const Page: FC<MultiContainerResponse> = ({ container, related }) => {
   const router = useRouter();
@@ -32,5 +33,3 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: "blocking",
   };
 };
-
-export default Page;

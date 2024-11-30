@@ -1,12 +1,13 @@
+import { createFocusTrap, FocusTrap } from "focus-trap";
 import Link from "next/link";
-import { FC, useEffect, useRef, useState } from "react";
-import { ContainerDataFragment } from "@/graphql/__generated__/operations";
-import { Button } from "@/components/button";
-import CloseCrossIcon from "@/assets/icons/closeCross.svg";
-import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { createFocusTrap, FocusTrap } from "focus-trap";
+import { FC, KeyboardEvent, useEffect, useRef, useState } from "react";
+
+import CloseCrossIcon from "@/assets/icons/closeCross.svg";
+import HamburgerIcon from "@/assets/icons/hamburger.svg";
+import { Button } from "@/components/button";
+import { ContainerDataFragment } from "@/graphql/__generated__/operations";
 import { useClickOutside } from "@/hooks/use-click-outside";
 
 interface ContainerDpDwnProps {
@@ -53,7 +54,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
     setExpanded(!expanded);
   };
 
-  const handleEscape = (e: React.KeyboardEvent) => {
+  const handleEscape = (e: KeyboardEvent) => {
     if (e.key === "Escape" && expanded) {
       handleToggle();
     }

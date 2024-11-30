@@ -1,14 +1,15 @@
-import Arrow from "@/assets/icons/chevronRight.svg";
 import useTranslation from "next-translate/useTranslation";
 import { useState, useEffect, Dispatch, FC } from "react";
-type Pagination = {
+
+import Arrow from "@/assets/icons/chevronRight.svg";
+interface PaginationProps {
   totalResults: number | any;
   itemsPerPage: number;
   pageNumber: number | undefined;
   changePage: Dispatch<number>;
-};
+}
 
-export const Pagination: FC<Pagination> = ({
+export const Pagination: FC<PaginationProps> = ({
   totalResults,
   itemsPerPage,
   pageNumber,

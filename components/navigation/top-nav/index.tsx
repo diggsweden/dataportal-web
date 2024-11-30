@@ -1,9 +1,9 @@
-import { FC } from "react";
-import useTranslation from "next-translate/useTranslation";
-import { useEffect, useState } from "react";
-import { topNav } from "@/utilities/menu-data";
-import { ButtonLink } from "@/components/button";
 import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
+import { FC, useEffect, useState } from "react";
+
+import { ButtonLink } from "@/components/button";
+import { topNav } from "@/utilities/menu-data";
 
 interface TopNavData {
   title: string;

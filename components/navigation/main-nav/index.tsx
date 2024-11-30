@@ -1,18 +1,19 @@
-import useTranslation from "next-translate/useTranslation";
-import { FC, useEffect, useRef, useState } from "react";
-import { useContext } from "react";
 import Link from "next/link.js";
-import { Button, ButtonLink } from "@/components/button";
-import { mainNav } from "@/utilities/menu-data";
-import DataportalLogo from "@/assets/logos/sveriges_dataportal_logo.svg";
-import DataportalTestLogo from "@/assets/logos/dataportalTest.svg";
+import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
+import { FC, useEffect, useRef, useState, useContext } from "react";
+
 import CloseCrossIcon from "@/assets/icons/closeCross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
-import { usePathname } from "next/navigation";
-import { SearchInput } from "@/features/search/search-input";
 import SearchIcon from "@/assets/icons/search.svg";
+import DataportalTestLogo from "@/assets/logos/dataportalTest.svg";
+import DataportalLogo from "@/assets/logos/sveriges_dataportal_logo.svg";
+import { Button, ButtonLink } from "@/components/button";
+import { SearchInput } from "@/features/search/search-input";
 import { useClickOutside } from "@/hooks/use-click-outside";
 import { SettingsContext } from "@/providers/settings-provider";
+import { mainNav } from "@/utilities/menu-data";
+
 interface MainNavData {
   title: string;
   promoted: boolean;

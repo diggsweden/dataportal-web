@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { EnvSettings, SettingsUtil } from "@/env";
-import { BreadcrumbProps } from "@/components/navigation/breadcrumb";
+import React, { useEffect, useState, createContext } from "react";
 
-interface SettingsContext extends DataportalSettings {
+import { BreadcrumbProps } from "@/components/navigation/breadcrumbs";
+import { EnvSettings, SettingsUtil } from "@/env";
+import { DataportalSettings } from "@/types/global";
+
+interface SettingsContextProps extends DataportalSettings {
+  noScriptContent: string;
   env: EnvSettings;
   setBreadcrumb?: React.Dispatch<React.SetStateAction<BreadcrumbProps>>;
   iconSize: number;
+  siteName: string;
+  pageNotFoundHeading: string;
+  pageNotFoundText: string;
 }
+
 export const extractSettings = (diggSettings: {
   items: { key: string; value: string }[];
 }): DataportalSettings => {
@@ -28,7 +35,7 @@ export const extractSettings = (diggSettings: {
   };
 };
 
-export const defaultSettings: SettingsContext = {
+export const defaultSettings: SettingsContextProps = {
   env: SettingsUtil.getDefault(),
   siteName: "Sveriges Dataportal",
   pageNotFoundHeading: "",
@@ -39,10 +46,10 @@ export const defaultSettings: SettingsContext = {
 };
 
 export const SettingsContext =
-  React.createContext<SettingsContext>(defaultSettings);
+  createContext<SettingsContextProps>(defaultSettings);
 
 export const SettingsProvider: React.FunctionComponent<{
-  value: SettingsContext;
+  value: SettingsContextProps;
   children: React.ReactNode;
 }> = ({ value, children }) => {
   const [iconSize, setIconSize] = useState(16);

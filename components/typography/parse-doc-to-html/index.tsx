@@ -11,7 +11,7 @@ const renderTextAndImages = (field: TextArea) => {
 
     if (matches) {
       matches.forEach((match) => {
-        let imgString = match.replace(/[\[\]]/g, "");
+        let imgString = match.replace(/[[\]]/g, "");
         //if image does not exist in the images object, return.
         if (!field.images[imgString]) {
           return;

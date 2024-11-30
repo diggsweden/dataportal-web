@@ -1,6 +1,7 @@
-import { getNewsList, populateSeo } from "@/utilities";
 import { GetStaticProps } from "next/types";
+
 import { ListPage } from "@/features/pages/list-page";
+import { getNewsList, populateSeo } from "@/utilities";
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return await getNewsList(locale || "sv", {

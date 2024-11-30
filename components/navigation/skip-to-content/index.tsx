@@ -1,6 +1,6 @@
-import { ButtonLink } from "@/components/button";
-
 import { FC, MouseEvent } from "react";
+
+import { ButtonLink } from "@/components/button";
 
 export const skipToContent = (e: MouseEvent<HTMLAnchorElement>) => {
   e.preventDefault();

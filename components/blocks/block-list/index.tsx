@@ -1,20 +1,22 @@
 import React from "react";
+
+import { AccordionBlock } from "@/components/blocks/accordion-block";
+import { MediaBlock } from "@/components/blocks/media-block";
+import { PromotedContentBlock } from "@/components/blocks/promoted-content-block";
+import { QuoteBlock } from "@/components/blocks/quote-block";
+import { RelatedContentBlock } from "@/components/blocks/related-content-block";
+import { TextBlock } from "@/components/blocks/text-block";
+import { VideoBlock } from "@/components/blocks/video-block";
+import { FormPage } from "@/features/pages/form-page";
 import {
+  ModuleDataFragment,
   ModuleListDataFragment,
   FaqFragment,
   ContainerDataFragment,
   NewsItemDataFragment,
   GoodExampleDataFragment,
 } from "@/graphql/__generated__/operations";
-import { ModuleDataFragment } from "@/graphql/__generated__/operations";
-import { RelatedContentBlock } from "@/components/blocks/related-content-block";
-import { TextBlock } from "@/components/blocks/text-block";
-import { AccordionBlock } from "@/components/blocks/accordion-block";
-import { MediaBlock } from "@/components/blocks/media-block";
-import { VideoBlock } from "@/components/blocks/video-block";
-import { FormPage } from "@/features/pages/form-page";
-import { QuoteBlock } from "@/components/blocks/quote-block";
-import { PromotedContentBlock } from "@/components/blocks/promoted-content-block";
+
 interface blockListProps {
   blocks:
     | ContainerDataFragment["blocks"]
@@ -98,7 +100,7 @@ export const BlockList: React.FC<blockListProps> = ({
                 landingPage={landingPage}
               />
             );
-          case "dataportal_Digg_ModuleList":
+          case "dataportal_Digg_ModuleList": {
             const typedBlock = block as ModuleListDataFragment;
             return (
               typedBlock.modules &&
@@ -106,6 +108,7 @@ export const BlockList: React.FC<blockListProps> = ({
                 <BlockList {...module} key={module.identifier} />
               ))
             );
+          }
           case "dataportal_Digg_FormBlock":
             return (
               <FormPage

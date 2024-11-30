@@ -1,13 +1,16 @@
-import { MediaFragment } from "@/graphql/__generated__/operations";
-import { checkLang } from "@/utilities";
 import env from "@beam-australia/react-env";
-import { MediaBaseFragment } from "@/graphql/__generated__/operations";
-import { isExternalLink } from "@/utilities";
-import { CustomImage } from "@/components/custom-image";
-import { Heading } from "@/components/typography/heading";
 import Link from "next/link";
+import { FC } from "react";
+
 import DocumentIcon from "@/assets/icons/document.svg";
 import PDFIcon from "@/assets/icons/PDF.svg";
+import { CustomImage } from "@/components/custom-image";
+import { Heading } from "@/components/typography/heading";
+import {
+  MediaBaseFragment,
+  MediaFragment,
+} from "@/graphql/__generated__/operations";
+import { isExternalLink, checkLang } from "@/utilities";
 
 export const handleUrl = ({ screen9, url, __typename }: MediaBaseFragment) => {
   const documentBaseUrl = env("DOCUMENT_BASE_URL");
@@ -67,7 +70,7 @@ const renderMedia = (
   }
 };
 
-export const MediaBlock: React.FC<MediaFragment> = ({
+export const MediaBlock: FC<MediaFragment> = ({
   heading,
   description,
   media,

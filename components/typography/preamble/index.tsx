@@ -1,5 +1,5 @@
-import React, { FC, HTMLAttributes, PropsWithChildren } from "react";
 import { cva, VariantProps } from "class-variance-authority";
+import React, { FC, HTMLAttributes, PropsWithChildren } from "react";
 
 const preabmle = cva(["text-lg"], {
   variants: {

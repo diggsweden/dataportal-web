@@ -1,7 +1,8 @@
 import { FC } from "react";
+
 import QuoteIcon from "@/assets/icons/quote.svg";
-import { QuoteFragment } from "@/graphql/__generated__/operations";
 import { CustomImage } from "@/components/custom-image";
+import { QuoteFragment } from "@/graphql/__generated__/operations";
 
 export const QuoteBlock: FC<QuoteFragment> = ({ quote, author, image }) => {
   return (

@@ -1,5 +1,6 @@
-import NextErrorComponent, { ErrorProps } from "next/error";
 import { NextPage } from "next";
+import NextErrorComponent, { ErrorProps } from "next/error";
+
 import serverLogger from "../utilities/logger";
 
 interface AppErrorProps extends ErrorProps {

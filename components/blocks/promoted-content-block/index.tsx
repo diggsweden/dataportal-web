@@ -1,10 +1,12 @@
-import { FC } from "react";
-import { Heading } from "@/components/typography/heading";
 import useTranslation from "next-translate/useTranslation";
-import { PromotedContentFragment } from "@/graphql/__generated__/operations";
-import { CustomImage } from "@/components/custom-image";
-import { ButtonLink } from "@/components/button";
+import { FC } from "react";
+
 import Arrow from "@/assets/icons/arrowRight.svg";
+import { ButtonLink } from "@/components/button";
+import { CustomImage } from "@/components/custom-image";
+import { Heading } from "@/components/typography/heading";
+import { PromotedContentFragment } from "@/graphql/__generated__/operations";
+
 export const PromotedContentBlock: FC<PromotedContentFragment> = ({
   heading,
   externalLink,

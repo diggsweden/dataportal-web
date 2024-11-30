@@ -1,7 +1,8 @@
 import { FC } from "react";
-import { TextFragment } from "@/graphql/__generated__/operations";
+
 import { Heading } from "@/components/typography/heading";
 import { HtmlParser } from "@/components/typography/html-parser";
+import { TextFragment } from "@/graphql/__generated__/operations";
 
 export const TextBlock: FC<TextFragment> = ({ heading, text }) => {
   return (

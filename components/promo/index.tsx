@@ -1,13 +1,15 @@
+import Link from "next/link";
+import useTranslation from "next-translate/useTranslation";
 import { FC, useContext } from "react";
-import { Heading } from "@/components/typography/heading";
+
 import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
-import useTranslation from "next-translate/useTranslation";
-import Link from "next/link";
-import { isExternalLink } from "@/utilities";
 import { CustomImage } from "@/components/custom-image";
+import { Heading } from "@/components/typography/heading";
 import { LinkFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
+import { isExternalLink } from "@/utilities";
+
 export interface PromoProps extends LinkFragment {
   heading?: string | null;
 }

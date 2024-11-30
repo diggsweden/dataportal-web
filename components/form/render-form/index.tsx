@@ -1,16 +1,17 @@
-import { FormTypes } from "@/types/form";
 import { Translate } from "next-translate";
 import useTranslation from "next-translate/useTranslation";
 import React, { FC, useCallback, useState } from "react";
-import { Heading } from "@/components/typography/heading";
-import { HtmlParser } from "@/components/typography/html-parser";
+
 import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
 import ChevronUpIcon from "@/assets/icons/chevronUp.svg";
+import { Button } from "@/components/button";
+import { Label } from "@/components/form/label";
+import { RadioInput } from "@/components/form/radio-input";
 import { TextInput } from "@/components/form/text-input";
 import { Textarea } from "@/components/form/textarea";
-import { Label } from "@/components/form/label";
-import { Button } from "@/components/button";
-import { RadioInput } from "@/components/form/radio-input";
+import { Heading } from "@/components/typography/heading";
+import { HtmlParser } from "@/components/typography/html-parser";
+import { FormTypes } from "@/types/form";
 
 const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
   const [visible, setVisible] = useState(false);

@@ -1,11 +1,12 @@
-import { isMailLink } from "@/utilities";
 import { cx } from "class-variance-authority";
 import Link from "next/link";
-import { FC, LinkHTMLAttributes, PropsWithChildren, useContext } from "react";
-import MailIcon from "@/assets/icons/mail.svg";
-import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import useTranslation from "next-translate/useTranslation";
+import { FC, LinkHTMLAttributes, PropsWithChildren, useContext } from "react";
+
+import ExternalLinkIcon from "@/assets/icons/external-link.svg";
+import MailIcon from "@/assets/icons/mail.svg";
 import { SettingsContext } from "@/providers/settings-provider";
+import { isMailLink } from "@/utilities";
 
 type CustomLinkProps = {
   href: string;
