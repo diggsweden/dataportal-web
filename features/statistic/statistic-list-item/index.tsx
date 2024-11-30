@@ -2,9 +2,9 @@ import Link from "next/link";
 import { Component } from "react";
 
 interface StatisticListItemProps {
-  listText?: any;
+  listText?: string;
   listNumber?: number;
-  listUrl?: any;
+  listUrl?: string;
 }
 
 export class StatisticListItem extends Component<StatisticListItemProps> {

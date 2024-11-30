@@ -3,7 +3,7 @@ import { useState, useEffect, Dispatch, FC } from "react";
 
 import Arrow from "@/assets/icons/chevronRight.svg";
 interface PaginationProps {
-  totalResults: number | any;
+  totalResults: number;
   itemsPerPage: number;
   pageNumber: number | undefined;
   changePage: Dispatch<number>;
@@ -116,12 +116,12 @@ export const Pagination: FC<PaginationProps> = ({
           <span className="sr-only">{t("pages|search$prev-page")}</span>
           <Arrow className="rotate-180" />
         </button>
-        {pagination().map((value: any, idx: number) => (
+        {pagination().map((value: number | string, idx: number) => (
           <button
             onClick={
               value === "..." || value === currentPage
                 ? () => null
-                : () => changePageNumber(value)
+                : () => changePageNumber(value as number)
             }
             tabIndex={value === "..." || value === currentPage ? -1 : 0}
             key={idx}

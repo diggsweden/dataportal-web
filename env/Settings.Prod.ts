@@ -1,5 +1,5 @@
 import { generateRandomKey } from "../utilities";
-import { EnvSettings } from "./EnvSettings";
+import { EnvSettings } from "./env-settings";
 
 export class Settings_Prod extends EnvSettings {
   ENTRYSCAPE_DATASETS_PATH = "admin.dataportal.se";

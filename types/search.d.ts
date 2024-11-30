@@ -2,8 +2,8 @@ import { SearchSortOrder } from "@/providers/search-provider";
 import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
 
 //unfortunate hack to get a entrystore class instance, script is inserted in head
-// eslint-disable-next-line no-unused-vars
-declare var ESJS: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare let ESJS: any;
 
 //#region ES members
 
@@ -29,8 +29,7 @@ export interface HitSpecification {
   path?: string;
   titleResource?: string;
   descriptionResource?: string;
-  // eslint-disable-next-line no-unused-vars
-  pathResolver?: (hit: any) => string;
+  pathResolver?: (_hit: ESEntry) => string;
 }
 
 export interface FacetSpecification {
@@ -65,7 +64,7 @@ export interface SearchHit {
   description?: string;
   info?: { [facet: string]: string[] };
   metadata?: { [facet: string]: string[] };
-  esEntry?: any;
+  esEntry?: ESEntry;
   titleLang?: string;
   descriptionLang?: string;
 }
@@ -89,7 +88,7 @@ export interface SearchFacetValue {
   facetType: ESType;
   count: number;
   facetValueString: string;
-  related: Boolean;
+  related: boolean;
 }
 
 export interface SearchRequest {
@@ -103,5 +102,5 @@ export interface SearchRequest {
   takeFacets?: number;
   esRdfTypes?: ESRdfType[];
   sortOrder?: SearchSortOrder;
-  compact?: Boolean;
+  compact?: boolean;
 }

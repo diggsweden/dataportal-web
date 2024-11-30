@@ -4,24 +4,15 @@ import { FC, useRef, useEffect, useState, KeyboardEvent } from "react";
 
 import { SidebarLink } from "@/components/navigation/sidebar/sidebar-link";
 import { useClickOutside } from "@/hooks/use-click-outside";
-import { mainNav } from "@/utilities/menu-data";
-
-interface NavSideData {
-  title: string;
-  promoted: boolean;
-  inEn?: boolean;
-  icon?: any;
-  href?: string;
-  children?: NavSideData[];
-}
+import { mainNav, NavData } from "@/utilities/menu-data";
 
 interface NavSideProps {
   openSideBar: boolean;
-  setOpenSideBar: Function;
+  setOpenSideBar: (_param: boolean) => void;
 }
 
 export const Sidebar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
-  const [menu, setMenu] = useState<any>([]);
+  const [menu, setMenu] = useState<NavData[]>([]);
   const { t, lang } = useTranslation();
   const [vw, setVw] = useState(0);
   const isEn = lang === "en";
@@ -94,7 +85,7 @@ export const Sidebar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
       onKeyDown={handleEscape}
     >
       <ul className="w-full list-none whitespace-nowrap md:w-[18.75rem]">
-        {menu.map((menu: NavSideData, idx: number) => (
+        {menu.map((menu: NavData, idx: number) => (
           <li key={idx} className="whitespace-nowrap">
             {menu.href ? (
               <SidebarLink

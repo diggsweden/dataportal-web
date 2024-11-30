@@ -80,11 +80,10 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
       });
     }
 
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: heading,
-        crumbs: crumbs,
-      });
+    setBreadcrumb?.({
+      name: heading,
+      crumbs: crumbs,
+    });
   }, [pathname]);
 
   return (

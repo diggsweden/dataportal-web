@@ -1,12 +1,8 @@
 import { FC, LabelHTMLAttributes, PropsWithChildren } from "react";
 
-interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {}
-
-export const Label: FC<PropsWithChildren<LabelProps>> = ({
-  children,
-  className,
-  ...props
-}) => (
+export const Label: FC<
+  PropsWithChildren<LabelHTMLAttributes<HTMLLabelElement>>
+> = ({ children, className, ...props }) => (
   <label
     {...props}
     className={`cursor-pointer text-sm font-strong ${

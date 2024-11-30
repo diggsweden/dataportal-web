@@ -1,8 +1,9 @@
 import { FC, InputHTMLAttributes } from "react";
 
-interface RadioInputProps extends InputHTMLAttributes<HTMLInputElement> {}
-
-export const RadioInput: FC<RadioInputProps> = ({ className, ...props }) => (
+export const RadioInput: FC<InputHTMLAttributes<HTMLInputElement>> = ({
+  className,
+  ...props
+}) => (
   <input
     type="radio"
     {...props}

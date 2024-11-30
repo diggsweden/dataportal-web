@@ -14,7 +14,7 @@ interface ModalProps {
   text?: string;
   onClick?: () => void;
   modalOpen: boolean;
-  setModalOpen: Function;
+  setModalOpen: (_param: boolean) => void;
   closeBtn: string;
   confirmBtn: string;
   description?: string | null;

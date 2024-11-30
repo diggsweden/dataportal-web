@@ -12,30 +12,31 @@ import shareData from "@/assets/icons/shareData.svg";
 import stodVerktygIcon from "@/assets/icons/stod-verktyg.svg";
 import education from "@/assets/icons/stod-verktyg.svg";
 import results from "@/assets/icons/stod-verktyg.svg";
+import { AddIcon } from "@/types/global";
 
 interface NavItem {
   title: string;
   inEn: boolean;
 }
 
-interface NavData {
+export interface NavData {
   title: string;
   promoted?: boolean;
   inEn?: boolean;
-  icon?: any;
+  icon?: AddIcon;
   href?: string;
   children?: NavItem[];
 }
 
 interface NavTopData {
   title: string;
-  icon: any;
+  icon: AddIcon;
   href?: string;
 }
 
 interface NavFooterItem {
   title: string;
-  icon?: any;
+  icon?: AddIcon;
   type?: "internal" | "external" | "email" | "cookie";
   href?: string;
 }

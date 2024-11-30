@@ -24,7 +24,7 @@ interface SearchResultsProps {
 }
 
 const searchFocus = () => {
-  let content = document.querySelector("#search-result");
+  const content = document.querySelector("#search-result");
   if (!content) return;
 
   const focusable = content.querySelectorAll<HTMLElement>(

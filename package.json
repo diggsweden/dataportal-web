@@ -67,6 +67,7 @@
     "@types/react-dom": "^18.2.17",
     "@types/react-truncate": "^2.3.7",
     "@types/react-vis": "^1.11.14",
+    "@typescript-eslint/eslint-plugin": "^8.16.0",
     "@typescript-eslint/parser": "^8.16.0",
     "apollo": "^2.34.0",
     "autoprefixer": "^10.4.16",

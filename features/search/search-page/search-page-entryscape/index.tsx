@@ -66,11 +66,10 @@ export const SearchPageEntryscape: FC<SearchProps> = ({ searchType }) => {
   const pageTitle = t(`routes|${searchType}$title`);
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: pageTitle,
-        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-      });
+    setBreadcrumb?.({
+      name: pageTitle,
+      crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+    });
   }, [pathname]);
 
   const searchProviderSettings = useMemo(

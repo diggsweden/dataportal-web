@@ -54,9 +54,11 @@ export const skipToElement = (id: string) => {
  */
 export const startFromTop = () => {
   if (typeof window !== "undefined") {
-    // Dirty solution to prevent smooth scrolling
+    // Temporarily disable smooth scrolling
     const html = document.querySelector("html");
-    html && (html.style.scrollBehavior = "auto");
+    if (html instanceof HTMLElement) {
+      html.style.scrollBehavior = "auto";
+    }
 
     // Scroll to top
     window.scroll({
@@ -64,8 +66,9 @@ export const startFromTop = () => {
       left: 0,
       behavior: "auto",
     });
-
-    // Todo: find a better solution for handling scrollbehaviour
-    html && (html.style.scrollBehavior = "smooth");
+    // Restore smooth scrolling
+    if (html instanceof HTMLElement) {
+      html.style.scrollBehavior = "smooth";
+    }
   }
 };

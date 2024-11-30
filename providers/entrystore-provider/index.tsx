@@ -8,8 +8,8 @@ import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import React, { createContext, useEffect, useState } from "react";
 
-import { EnvSettings } from "@/env/EnvSettings";
-import { SettingsUtil } from "@/env/SettingsUtil";
+import { EnvSettings } from "@/env/env-settings";
+import { SettingsUtil } from "@/env/settings-util";
 import { getSimplifiedLocalizedValue } from "@/utilities";
 
 type RelationObj = {
@@ -290,7 +290,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
       .uriProperty("dcterms:conformsTo", entry.getResourceURI())
       .getEntries();
 
-    const datasetArray = datasets.map((ds: any) => {
+    const datasetArray = datasets.map((ds: Entry) => {
       return {
         title: getSimplifiedLocalizedValue(
           ds.getAllMetadata(),
@@ -315,7 +315,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         .getContext()
         .getId()}`;
       return { title, url };
-    } catch (error) {
+    } catch {
       return null;
     }
   };
@@ -365,7 +365,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
       if (pageType === "dataset") {
         const specifications = metadata
           .find(entry.getResourceURI(), "dcterms:conformsTo")
-          .map((stmt: any) => stmt.getValue());
+          .map((stmt: { getValue: () => string }) => stmt.getValue());
 
         const resourceEntries = await esu.loadEntriesByResourceURIs(
           specifications,
@@ -374,8 +374,8 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
         );
 
         return resourceEntries
-          .filter((e: any) => e)
-          .map((e: any) => ({
+          .filter((e: Entry) => e)
+          .map((e: Entry) => ({
             title: getSimplifiedLocalizedValue(
               e.getAllMetadata(),
               "dcterms:title",
@@ -396,8 +396,8 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
           .getEntries();
 
         return specifications
-          .filter((e: any) => e)
-          .map((e: any) => ({
+          .filter((e: Entry) => e)
+          .map((e: Entry) => ({
             title: getSimplifiedLocalizedValue(
               e.getAllMetadata(),
               "dcterms:title",
@@ -418,7 +418,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
     return entry
       .getAllMetadata()
       .find(null, "dcat:keyword")
-      .map((k: any) => k.getValue());
+      .map((k: { getValue: () => string }) => k.getValue());
   };
 
   const parseEmail = (email: string) => {

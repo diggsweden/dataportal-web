@@ -57,28 +57,23 @@ const addLabel = (number: number, Type: string, ID: number, title: string) => {
   );
 };
 
-/* eslint-disable no-unused-vars */
 interface Props {
   UpdateFormDataArray: (
-    e: React.ChangeEvent<any>,
-    data: FormTypes,
-    pageIndex: number,
+    _e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    _data: FormTypes,
+    _pageIndex: number,
   ) => void;
   formDataArray: Array<FormTypes>;
   pageIndex: number;
 }
 
-/* eslint-enable no-unused-vars */
-
 const FormItem = (
   item: FormTypes,
   UpdateFormDataArray: (
-    /* eslint-disable no-unused-vars */
-    e: React.ChangeEvent<any>,
-    data: FormTypes,
-    pageIndex: number,
-    imgData?: { fileName: string; base64: string } | null,
-    /* eslint-enable no-unused-vars */
+    _e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    _data: FormTypes,
+    _pageIndex: number,
+    _imgData?: { fileName: string; base64: string } | null,
   ) => void,
   pageIndex: number,
   t: Translate,
@@ -102,10 +97,15 @@ const FormItem = (
             `[${file.name}]` +
             curVal.substring(curTarget.selectionEnd);
           curTarget.value = newVal;
-          UpdateFormDataArray(e, item, pageIndex, {
-            fileName: file.name,
-            base64,
-          });
+          UpdateFormDataArray(
+            e as unknown as React.ChangeEvent<HTMLTextAreaElement>,
+            item,
+            pageIndex,
+            {
+              fileName: file.name,
+              base64,
+            },
+          );
         }
       };
     },

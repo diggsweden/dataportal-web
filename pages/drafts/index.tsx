@@ -1,3 +1,5 @@
+import { ParsedUrlQuery } from "querystring";
+
 import React from "react";
 
 import { ContainerPage } from "@/features/pages/container-page";
@@ -69,7 +71,13 @@ const render = (props: DataportalPageProps) => {
 
 const Draft: React.FC<DataportalPageProps> = (props) => render(props);
 
-export const getServerSideProps = async ({ query, locale }: any) => {
+export const getServerSideProps = async ({
+  query,
+  locale,
+}: {
+  query: ParsedUrlQuery;
+  locale: string;
+}) => {
   const slug = (query?.slug as string) || "";
   const secret = (query?.secret as string) || "";
   const type = query?.type as string;

@@ -15,11 +15,10 @@ const NotFound: FC = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: t("notfoundpage$heading"),
-        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-      });
+    setBreadcrumb?.({
+      name: t("notfoundpage$heading"),
+      crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+    });
   }, [pathname, setBreadcrumb]);
 
   return (

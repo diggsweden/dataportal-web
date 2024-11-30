@@ -1,7 +1,7 @@
 import { FortroendeModulePage } from "@/features/fortroendemodellen/fortroende-module-page";
 import { getModule, populateSeo } from "@/utilities";
 
-export async function getStaticProps({ locale }: any) {
+export async function getStaticProps({ locale }: { locale: string }) {
   return await getModule("fortroende-infor-utveckling", locale, {
     seo: {
       ...populateSeo,

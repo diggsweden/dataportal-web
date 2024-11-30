@@ -37,17 +37,16 @@ export const ConceptPage: FC<{ curi?: string; uri?: string }> = ({
   });
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: entry.title,
-        crumbs: [
-          { name: "start", link: { ...linkBase, link: "/" } },
-          {
-            name: t("routes|concepts$title"),
-            link: { ...linkBase, link: `/${t("routes|concepts$path")}?q=&f=` },
-          },
-        ],
-      });
+    setBreadcrumb?.({
+      name: entry.title,
+      crumbs: [
+        { name: "start", link: { ...linkBase, link: "/" } },
+        {
+          name: t("routes|concepts$title"),
+          link: { ...linkBase, link: `/${t("routes|concepts$path")}?q=&f=` },
+        },
+      ],
+    });
   }, [pathname, entry.title]);
 
   return (

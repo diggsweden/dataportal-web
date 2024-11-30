@@ -9,12 +9,17 @@ export const useClickOutside = <T extends HTMLElement>(
   const ref = existingRef || defaultRef;
 
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
+    const handleClickOutside = (event: MouseEvent) => {
       const isExcluded = excludedSelectors.some(
-        (selector) => document.querySelector(selector)?.contains(event.target),
+        (selector) =>
+          document.querySelector(selector)?.contains(event.target as Node),
       );
 
-      if (ref.current && !ref.current.contains(event.target) && !isExcluded) {
+      if (
+        ref.current &&
+        !ref.current.contains(event.target as Node) &&
+        !isExcluded
+      ) {
         onClickOutside();
       }
     };

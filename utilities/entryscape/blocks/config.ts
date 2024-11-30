@@ -1,11 +1,13 @@
-import { EnvSettings } from "@/env/EnvSettings";
 import { Translate } from "next-translate";
-import { specificationBlocks } from "./specification";
-import { conceptBlocks } from "./concept";
-import { terminologyBlocks } from "./terminology";
-import { datasetBlocks } from "./datasets";
-import { dataserviceBlocks } from "./dataservice";
+
+import { EnvSettings } from "@/env/env-settings";
+
 import { apiexploreBlocks } from "./apiexplore";
+import { conceptBlocks } from "./concept";
+import { dataserviceBlocks } from "./dataservice";
+import { datasetBlocks } from "./datasets";
+import { specificationBlocks } from "./specification";
+import { terminologyBlocks } from "./terminology";
 
 interface CreateBlocksConfigProps {
   entrystoreBase: string;

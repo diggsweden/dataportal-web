@@ -51,20 +51,19 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
 
   // Temporary breadcrumbs for förtroendemodellen
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: "Förtroendemodellen utveckling",
-        crumbs: [
-          { name: "start", link: { ...linkBase, link: "/" } },
-          {
-            name: "Förtroendemodellen",
-            link: {
-              ...linkBase,
-              link: "/fortroendemodellen",
-            },
+    setBreadcrumb?.({
+      name: "Förtroendemodellen utveckling",
+      crumbs: [
+        { name: "start", link: { ...linkBase, link: "/" } },
+        {
+          name: "Förtroendemodellen",
+          link: {
+            ...linkBase,
+            link: "/fortroendemodellen",
           },
-        ],
-      });
+        },
+      ],
+    });
   }, [pathname]);
 
   useEffect(() => {
@@ -85,14 +84,14 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
       return;
     }
     let currentPage: Array<FormTypes> = [];
-    let pageArray: Array<Array<FormTypes>> = [];
+    const pageArray: Array<Array<FormTypes>> = [];
     setFormSteps([]);
 
     //Make sure that nessecary fields exists and have default values
     initializeFields(data);
 
     //Split the data into pages
-    var checkTopHeading = true;
+    let checkTopHeading = true;
     data.forEach((item, i) => {
       //If first element is a description, we don't want to add it to our data array
       if (i === 0 && item.__typename === "dataportal_Digg_FormDescription") {
@@ -185,7 +184,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
 
   //Update the fields when data is changed in the form. Handles all types of fields.
   const UpdateFormDataArray = (
-    e: ChangeEvent<any>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     fieldToUpdate: FormTypes,
     pageIndex: number,
     imgData: { fileName: string; base64: string } | null = null,
@@ -195,12 +194,12 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
     if (fieldToUpdate.__typename === "dataportal_Digg_FormChoice") {
       setFormDataArray((prev) => {
         //Find the index of the correct object by finding the choice with the same ID as the data (only for radio buttons)
-        let itemIndex = prev[pageIndex].findIndex(
+        const itemIndex = prev[pageIndex].findIndex(
           (item) =>
             "choices" in item &&
             item.choices.some((choice) => choice.ID === fieldToUpdate.ID),
         );
-        let foundObj = prev[pageIndex][itemIndex];
+        const foundObj = prev[pageIndex][itemIndex];
         if (foundObj && "choices" in foundObj) {
           foundObj.selected = fieldToUpdate;
         }
@@ -208,10 +207,10 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
       });
     } else {
       setFormDataArray((prev) => {
-        let itemIndex = prev[pageIndex].findIndex(
+        const itemIndex = prev[pageIndex].findIndex(
           (item) => item.ID === fieldToUpdate.ID,
         );
-        let foundObj = prev[pageIndex][itemIndex];
+        const foundObj = prev[pageIndex][itemIndex];
         if ("value" in foundObj) {
           if (imgData) {
             checkForImage(foundObj, imgData);

@@ -9,6 +9,7 @@ import {
 } from "react";
 
 import { SettingsContext } from "@/providers/settings-provider";
+import { AddIcon } from "@/types/global";
 
 const buttonVariants = cva(["button"], {
   variants: {
@@ -32,7 +33,7 @@ const buttonVariants = cva(["button"], {
 });
 
 type IconLabelProps = {
-  icon?: any;
+  icon?: AddIcon;
   size?: "xs" | "sm" | "lg";
   label?: string;
   iconPosition?: "left" | "right";
@@ -44,18 +45,18 @@ const IconLabel: FC<IconLabelProps> = ({ icon, label, size, iconPosition }) => {
 
   return (
     <>
-      {iconPosition === "left" && (
+      {iconPosition === "left" && Icon && (
         <Icon
-          height={size === "lg" ? `${1.5 * iconSize}` : `${1 * iconSize}`}
-          width={size === "lg" ? `${1.5 * iconSize}` : `${1 * iconSize}`}
+          height={size === "lg" ? 1.5 * iconSize : iconSize}
+          width={size === "lg" ? 1.5 * iconSize : iconSize}
           viewBox="0 0 24 24"
         />
       )}
       {label && <span>{label}</span>}
-      {iconPosition === "right" && (
+      {iconPosition === "right" && Icon && (
         <Icon
-          height={size === "lg" ? `${1.5 * iconSize}` : `${1 * iconSize}`}
-          width={size === "lg" ? `${1.5 * iconSize}` : `${1 * iconSize}`}
+          height={size === "lg" ? 1.5 * iconSize : iconSize}
+          width={size === "lg" ? 1.5 * iconSize : iconSize}
           viewBox="0 0 24 24"
         />
       )}
@@ -64,7 +65,7 @@ const IconLabel: FC<IconLabelProps> = ({ icon, label, size, iconPosition }) => {
 };
 
 type ButtonProps = VariantProps<typeof buttonVariants> & {
-  icon?: any;
+  icon?: AddIcon;
   iconPosition?: "left" | "right";
   label?: string;
 };
@@ -99,7 +100,7 @@ const Button: FC<
 };
 
 type ButtonLinkProps = VariantProps<typeof buttonVariants> & {
-  icon?: any;
+  icon?: AddIcon;
   iconPosition?: "left" | "right";
   label?: string;
   href: string;

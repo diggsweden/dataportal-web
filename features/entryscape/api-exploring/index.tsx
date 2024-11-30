@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import React, { useContext } from "react";
 
-import { EnvSettings } from "@/env/EnvSettings";
+import { EnvSettings } from "@/env/env-settings";
 import { ApiIndexContext } from "@/providers/api-index-context";
 
 export interface ApiExplorerProps {
@@ -15,6 +15,7 @@ export const ApiExplorer: React.FC<ApiExplorerProps> = (props) => {
     () =>
       import("swagger-ui-react").then(
         (c) => c.default,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (e) => e as any,
       ),
     { ssr: false },
@@ -23,7 +24,7 @@ export const ApiExplorer: React.FC<ApiExplorerProps> = (props) => {
   const apiIndexContext = useContext(ApiIndexContext);
 
   const getAPiDetectionUrl = () => {
-    var detection = apiIndexContext.findDetection(
+    const detection = apiIndexContext.findDetection(
       props.contextId,
       props.entryId,
     );
@@ -36,7 +37,7 @@ export const ApiExplorer: React.FC<ApiExplorerProps> = (props) => {
   return (
     <div lang="en">
       {apiIndexContext.findDetection(props.contextId, props.entryId) && (
-        // @ts-ignore
+        // @ts-expect-error not typable.
         <SwaggerUI url={getAPiDetectionUrl()} />
       )}
     </div>

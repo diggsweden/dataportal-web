@@ -1,3 +1,4 @@
+import { I18n } from "next-translate";
 import withTranslation from "next-translate/withTranslation";
 import { decode, encode } from "qss";
 import React, { Component, createContext } from "react";
@@ -10,7 +11,6 @@ import {
   SearchRequest,
   SearchResult,
   SearchHit,
-  ESFacetFieldValue,
   ESFacetField,
 } from "@/types/search";
 import { DCATData, fetchDCATMeta } from "@/utilities";
@@ -37,7 +37,7 @@ export interface SearchProviderProps {
   hitSpecifications?: { [key: string]: HitSpecification };
   facetSpecification?: FacetSpecification;
   initRequest: SearchRequest;
-  i18n?: any;
+  i18n: I18n;
   children?: React.ReactNode;
   fetchHitsWithFacets?: boolean;
 }
@@ -93,19 +93,19 @@ export const defaultSearchSettings: SearchContextData = {
   },
   result: { hits: [], facets: {}, count: -1 },
   set: async () => {},
-  toggleFacet: () => new Promise<void>((resolve) => {}),
-  fetchMoreFacets: () => new Promise<void>((resolve) => {}),
+  toggleFacet: () => new Promise<void>(() => {}),
+  fetchMoreFacets: () => new Promise<void>(() => {}),
   fetchAllFacets: async () => {},
   searchInFacets: async () => {},
   showMoreFacets: () => {},
-  updateFacetStats: () => new Promise<void>((resolve) => {}),
+  updateFacetStats: () => new Promise<void>(() => {}),
   facetSelected: () => false,
   facetHasSelectedValues: () => false,
   getFacetValueTitle: () => "",
   doSearch: async () => {},
   setStateToLocation: () => {},
   sortAllFacets: () => {},
-  parseLocationToState: () => new Promise<boolean>((resolve) => {}),
+  parseLocationToState: () => new Promise<boolean>(() => {}),
   loadingHits: false,
   loadingFacets: false,
   fetchAllFacetsOnMount: true,
@@ -140,7 +140,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
 
   constructor(props: SearchProviderProps) {
     super(props);
-    const { t, lang } = props.i18n;
+    const { t, lang } = props.i18n!;
 
     this.entryScape = new Entryscape(
       props.entryscapeUrl || "https://admin.dataportal.se/store",
@@ -298,13 +298,13 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
             };
 
             const esFacetsInGroup = res.esFacets?.find(
-              (f: ESFacetField) => f.predicate === group,
+              (f) => f.predicate === group,
             );
 
             if (allFacets[group] && esFacetsInGroup?.values) {
               allFacets[group].facetValues.forEach((f: SearchFacetValue) => {
                 const resultFacetValue = esFacetsInGroup.values.find(
-                  (fv: ESFacetFieldValue) => fv.name === f.resource,
+                  (fv) => fv.name === f.resource,
                 );
                 f.count = resultFacetValue?.count || 0;
               });
@@ -330,14 +330,14 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
    * @param excludedFacet is for resorting all but facets within that group
    */
   sortAllFacets = (excludedFacet: string = "") => {
-    let allFacets = this.state.allFacets as { [facet: string]: SearchFacet };
+    const allFacets = this.state.allFacets as { [facet: string]: SearchFacet };
 
     //check every instance in allFacet for hitcounts in current SearchResult
     Object.entries(allFacets).forEach(([key, facet]) => {
       if (excludedFacet !== key) {
         //iterate sorted array and make sure selected items appear first
-        let tmpArr: SearchFacetValue[] = [];
-        let tmpArrSelected: SearchFacetValue[] = [];
+        const tmpArr: SearchFacetValue[] = [];
+        const tmpArrSelected: SearchFacetValue[] = [];
 
         facet.facetValues.forEach((f) => {
           if (this.facetSelected(f.facet, f.resource)) {
@@ -386,7 +386,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
               //does allFacet exist in result with values
               if (facets[k] && facets[k].facetValues) {
                 v.facetValues.forEach((f) => {
-                  var resultFacetValue = facets[k].facetValues.find(
+                  const resultFacetValue = facets[k].facetValues.find(
                     (fv) => fv.resource === f.resource, // fv.title === f.title && fv.resource === f.resource
                   );
 
@@ -450,9 +450,9 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
    */
   facetHasSelectedValues = (key: string) => {
     if (this.state.allFacets && this.state.result && this.state.result.facets) {
-      var facetValues = this.state.request.facetValues as SearchFacetValue[];
+      const facetValues = this.state.request.facetValues as SearchFacetValue[];
 
-      var existing = facetValues.filter(
+      const existing = facetValues.filter(
         (v: SearchFacetValue) => v.facet == key,
       );
 
@@ -469,22 +469,23 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
    * Get title for facetvalue in facet with key
    */
   getFacetValueTitle = (key: string, valueKey: string) => {
-    var title = null;
+    let title = null;
 
     if (this.state.allFacets) {
-      var existing = Object.entries(this.state.allFacets).filter(([v]) => {
+      const existing = Object.entries(this.state.allFacets).filter(([v]) => {
         return v == key;
       });
 
       //existed
       if (existing && existing.length > 0) {
         if (existing && existing.length > 0) {
-          // eslint-disable-next-line no-unused-vars
+          // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
           existing.forEach(([_, facValue]) => {
-            facValue.facetValues &&
+            if (facValue.facetValues) {
               facValue.facetValues.forEach((f) => {
                 if (f.resource == valueKey) title = f.title || "";
               });
+            }
           });
         }
       }
@@ -709,32 +710,32 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
    */
   setStateToLocation = () => {
     if (hasWindow && history) {
-      let rdftypes: string[] = [];
+      const rdftypes: string[] = [];
 
-      let query =
+      const query =
         this.state.request && this.state.request.query
           ? this.state.request.query
           : "";
 
-      let page =
+      const page =
         this.state.request && this.state.request.page
           ? this.state.request.page + 1
           : "1";
 
-      let take =
+      const take =
         this.state.request && this.state.request.take
           ? this.state.request.take
           : 20;
 
-      let compact =
+      const compact =
         this.state.request && this.state.request.compact ? true : false;
 
-      let sortOrder =
+      const sortOrder =
         this.state.request.sortOrder && this.state.request.sortOrder
           ? (this.state.request.sortOrder as SearchSortOrder)
           : SearchSortOrder.score_desc;
 
-      let facets =
+      const facets =
         this.state.request && this.state.request.facetValues
           ? Object.values(this.state.request.facetValues).map(
               (fval: SearchFacetValue) => fval.facetValueString,
@@ -750,7 +751,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
         });
       }
 
-      let newurl =
+      const newurl =
         window.location.protocol +
         "//" +
         window.location.host +
@@ -780,6 +781,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     }
 
     let fetchResults = false;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const qs = decode(window.location.search.substring(1)) as any;
 
     // Parse query parameters
@@ -968,7 +970,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
    * Separate facet processing logic
    */
   private processFacets = async (
-    esFacets: any[],
+    esFacets: ESFacetField[],
     reSortOnDone: boolean,
   ): Promise<void> => {
     try {

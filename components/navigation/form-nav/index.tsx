@@ -66,7 +66,9 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
   }, [expanded, vw]);
 
   useEffect(() => {
-    forceUpdate && setCurActive(pageNames[forceUpdate]);
+    if (forceUpdate) {
+      setCurActive(pageNames[forceUpdate]);
+    }
   }, [forceUpdate]);
 
   const handleClick = (pageName: string) => {

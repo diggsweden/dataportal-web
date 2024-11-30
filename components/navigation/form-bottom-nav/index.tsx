@@ -43,7 +43,7 @@ export const FormBottomNav: FC<Props> = ({
 
   const clearForm = () => {
     //Clear the "Value" field on all objects that has the Value field.
-    let tmpArr = formDataArray.map((item) => {
+    const tmpArr = formDataArray.map((item) => {
       item.forEach((data) => {
         if ("value" in data) {
           data.value = "";

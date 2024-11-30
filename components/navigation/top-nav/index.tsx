@@ -3,16 +3,17 @@ import useTranslation from "next-translate/useTranslation";
 import { FC, useEffect, useState } from "react";
 
 import { ButtonLink } from "@/components/button";
+import { AddIcon } from "@/types/global";
 import { topNav } from "@/utilities/menu-data";
 
 interface TopNavData {
   title: string;
-  icon: any;
+  icon: AddIcon;
   href?: string;
 }
 
 interface TopNavProps {
-  setOpenSideBar: Function;
+  setOpenSideBar: (_param: boolean) => void;
 }
 
 const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
@@ -38,7 +39,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
                 <ButtonLink
                   variant="plain"
                   href={menu.href}
-                  icon={menu.icon}
+                  icon={menu.icon ? menu.icon : undefined}
                   iconPosition="left"
                   label={t(`common|${menu.title}`)}
                   size={"sm"}
