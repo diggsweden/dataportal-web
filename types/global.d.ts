@@ -4,6 +4,13 @@ import { Dataportal_LinkType } from "@/graphql/__generated__/types";
 
 export type FlexDirection = "column" | "row";
 
+type AddIcon = React.ComponentType<{
+  className?: string;
+  width?: number;
+  height?: number;
+  viewBox?: string;
+}>;
+
 type MenuItem = {
   link: string;
   name: string;

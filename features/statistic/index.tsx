@@ -7,20 +7,26 @@ import { StatisticListItem } from "@/features/statistic/statistic-list-item";
 import { getNumbersData } from "@/features/statistic/statistic-numbers";
 import { SettingsContext } from "@/providers/settings-provider";
 
+interface ThemeItem {
+  label: string;
+  serie: number;
+  value: string;
+}
+
 interface StatisticState {
   children?: React.ReactNode;
   labels?: string[];
-  series?: any;
-  values?: any;
+  series?: number[];
+  values?: string[];
   publisherCount?: number;
   datasetCount?: number;
   concepts?: number;
   terminologies?: number;
   specifications?: number;
   labelsTheme?: string[];
-  seriesTheme?: string[];
+  seriesTheme?: number[];
   valuesTheme?: string[];
-  toSort?: any;
+  toSort: ThemeItem[];
   topItemsToShow: number;
   screenWidth: number;
 }
@@ -36,17 +42,18 @@ export const getStatistics = async (env: EnvSettings, lang: string) => {
     url = env.ENTRYSCAPE_THEME_STATS_URL;
   }
 
-  const toSort: any[] = [];
+  const toSort: ThemeItem[] = [];
 
   // * Fetch data
   const themeStatsResponse = await fetch(url);
 
   // ! Log if there is an error
-  !themeStatsResponse.ok &&
+  if (!themeStatsResponse.ok) {
     console.error({
       status: themeStatsResponse.status,
       text: themeStatsResponse.statusText,
     });
+  }
 
   const getThemeStats = async () => {
     if (!themeStatsResponse.ok) return {};
@@ -54,7 +61,7 @@ export const getStatistics = async (env: EnvSettings, lang: string) => {
     const data = await themeStatsResponse.json();
 
     for (let i = 0; i < data.labels.length; i++) {
-      let item = {
+      const item = {
         label: data.labels[i],
         serie: data.series[i],
         value: data.values[i],
@@ -63,14 +70,12 @@ export const getStatistics = async (env: EnvSettings, lang: string) => {
       toSort.push(item);
     }
 
-    toSort.sort(function (a: any, b: any) {
-      return b.serie - a.serie;
-    });
+    toSort.sort((a, b) => b.serie - a.serie);
 
     return {
-      labelsTheme: toSort.map((item: any) => item.label),
-      seriesTheme: toSort.map((item: any) => item.serie),
-      valuesTheme: toSort.map((item: any) => item.value),
+      labelsTheme: toSort.map((item: ThemeItem) => item.label),
+      seriesTheme: toSort.map((item: ThemeItem) => item.serie),
+      valuesTheme: toSort.map((item: ThemeItem) => item.value),
       toSort,
     };
   };
@@ -122,22 +127,23 @@ export const Statistic: React.FC = () => {
         </Heading>
 
         <ol key={"toplist-organisation"} className="list-decimal pl-lg">
-          {stats.series
-            .slice(0, stats.topItemsToShow)
-            .map((item: any, index: any) => {
-              return (
-                <StatisticListItem
-                  key={"org-" + index}
-                  listText={stats.labels && stats.labels[index]}
-                  listNumber={item}
-                  listUrl={`/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${
-                    stats.values && encodeURIComponent(stats.values[index])
-                  }%7C%7Cfalse%7C%7Curi%7C%7COrganisationer%7C%7C${
-                    stats.labels && stats.labels[index]
-                  }`}
-                />
-              );
-            })}
+          {stats.series &&
+            stats.series
+              .slice(0, stats.topItemsToShow)
+              .map((item: number, index: number) => {
+                return (
+                  <StatisticListItem
+                    key={"org-" + index}
+                    listText={stats.labels && stats.labels[index]}
+                    listNumber={item}
+                    listUrl={`/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${
+                      stats.values && encodeURIComponent(stats.values[index])
+                    }%7C%7Cfalse%7C%7Curi%7C%7COrganisationer%7C%7C${
+                      stats.labels && stats.labels[index]
+                    }`}
+                  />
+                );
+              })}
         </ol>
       </div>
 
@@ -150,7 +156,7 @@ export const Statistic: React.FC = () => {
           {stats.seriesTheme &&
             stats.seriesTheme
               .slice(0, stats.topItemsToShow)
-              .map((item: any, index: any) => {
+              .map((item: number, index: number) => {
                 return (
                   <StatisticListItem
                     key={"cat-" + index}

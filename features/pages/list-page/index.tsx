@@ -49,15 +49,13 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
   });
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: heading,
-        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-      });
+    setBreadcrumb?.({
+      name: heading,
+      crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+    });
   }, [pathname]);
-
   const changePage = (page: number) => {
-    page !== 1 ? router.replace(`?page=${page}`) : router.replace("");
+    router.replace(page !== 1 ? `?page=${page}` : "");
   };
 
   useEffect(() => {
@@ -65,7 +63,9 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
     list.map((item) => {
       if (item.keywords) {
         item.keywords.map((keyword: Keyword) => {
-          !keywords.some((i) => i.id === keyword.id) && keywords.push(keyword);
+          if (!keywords.some((i) => i.id === keyword.id)) {
+            keywords.push(keyword);
+          }
         });
       }
     });
@@ -85,7 +85,9 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
           );
         }),
       );
-      router.query.page && router.replace("");
+      if (router.query.page) {
+        router.replace("");
+      }
     }
   }, [setActiveFilter, activeFilter, pathname, listItems]);
 

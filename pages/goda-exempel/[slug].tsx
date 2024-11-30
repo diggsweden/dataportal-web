@@ -3,13 +3,17 @@ import { GetStaticPaths, GetStaticProps } from "next/types";
 import { PublicationFull } from "@/features/publication/publication-full";
 import { getGoodExample } from "@/utilities";
 
-export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
-  const slug = ("/" + params?.slug) as string;
-  return (await getGoodExample(slug, locale || "sv")) as any;
+export const getStaticProps: GetStaticProps = async (context) => {
+  const slug = `/${context.params?.slug}` as string;
+  const result = await getGoodExample(slug, context.locale || "sv");
+  if ("notFound" in result) {
+    return { notFound: true };
+  }
+  return result;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths: any[] = [];
+  const paths: string[] = [];
 
   return {
     paths,

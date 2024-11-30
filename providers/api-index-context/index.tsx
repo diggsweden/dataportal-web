@@ -54,11 +54,11 @@ export const ApiIndexProvider: React.FC<ApiIndexProviderProps> = ({
     contextid: string,
     containerEntryId: string,
   ): ApiIndexItem[] => {
-    let result: ApiIndexItem[] = [];
+    const result: ApiIndexItem[] = [];
 
     if (contextid && containerEntryId && detections && detections.length > 0) {
       //any detections in sent in context
-      var tmp = detections.filter((d) => {
+      const tmp = detections.filter((d) => {
         return d.contextId == contextid && d.entryId == containerEntryId;
       });
       if (tmp && tmp.length > 0)
@@ -80,7 +80,7 @@ export const ApiIndexProvider: React.FC<ApiIndexProviderProps> = ({
 
     if (contextid && entryid && detections && detections.length > 0) {
       //any detections in sent in context
-      var tmp = detections.filter((d) => {
+      const tmp = detections.filter((d) => {
         return d.contextId === contextid;
       });
       if (tmp && tmp.length > 0)
@@ -88,7 +88,7 @@ export const ApiIndexProvider: React.FC<ApiIndexProviderProps> = ({
         tmp.forEach((t) => {
           if (t.detections) {
             //get any matching context and entry
-            var existing =
+            const existing =
               t.detections.filter((d) => {
                 return d.entryId == entryid && d.allowOrigin != null;
               }) ?? [];
@@ -130,19 +130,20 @@ export const ApiIndexProvider: React.FC<ApiIndexProviderProps> = ({
   }, [detections]);
 
   const getApiDetectionString = () => {
-    let result: string[] = [];
+    const result: string[] = [];
 
     if (detections && detections.length > 0)
       detections.forEach((l) => {
         if (l.detections && l.detections.length > 0)
           l.detections.forEach((det) => {
-            var tmp = `'${l.contextId}_${det.entryId}'`;
+            const tmp = `'${l.contextId}_${det.entryId}'`;
             if (!result.includes(tmp) && det.allowOrigin != null)
               result.push(tmp);
           });
       });
 
     const parsedResult = result.join(",").replace(/'/g, "").split(",");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).__es_has_apis = parsedResult;
   };
 

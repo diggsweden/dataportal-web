@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { FC, useEffect, useState } from "react";
 
-export const VideoPlayer: React.FC<{ video_id: string }> = ({ video_id }) => {
+export const VideoPlayer: FC<{ video_id: string }> = ({ video_id }) => {
   const containerid = `video_screen9_${video_id}`;
   let player: any;
 
@@ -70,7 +71,9 @@ export const VideoPlayer: React.FC<{ video_id: string }> = ({ video_id }) => {
         const script = document.querySelector(
           `script[src="https://cdn.screen9.com/players/amber-player.js"]`,
         );
-        script && script.remove();
+        if (script) {
+          script.remove();
+        }
       }
     };
   }, [status]);

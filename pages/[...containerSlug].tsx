@@ -1,3 +1,5 @@
+import { ParsedUrlQuery } from "querystring";
+
 import { useRouter } from "next/navigation";
 import { GetStaticPaths } from "next/types";
 import { FC } from "react";
@@ -21,12 +23,18 @@ export const Page: FC<MultiContainerResponse> = ({ container, related }) => {
   return null;
 };
 
-export async function getStaticProps({ params, locale }: any) {
-  return await getMultiContainer(params?.containerSlug, locale);
+export async function getStaticProps({
+  params,
+  locale,
+}: {
+  params: ParsedUrlQuery;
+  locale: string;
+}) {
+  return await getMultiContainer(params?.containerSlug as string[], locale);
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths: any[] = [];
+  const paths: string[] = [];
 
   return {
     paths,

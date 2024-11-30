@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 interface StatisticListItemHistoryProps {
-  listText?: any;
+  listText?: string;
   listNumber?: number;
 }
 

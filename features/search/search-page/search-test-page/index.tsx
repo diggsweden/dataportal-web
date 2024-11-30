@@ -2,8 +2,10 @@ import { MeiliSearch } from "meilisearch";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 
+import { SearchHit } from "@/types/search";
+
 export const SearchTestPage: React.FC = () => {
-  const [hits, setHits] = useState<any[]>();
+  const [hits, setHits] = useState<SearchHit[]>();
   const [searchWord, setSearchWord] = useState("");
 
   const client = new MeiliSearch({
@@ -17,6 +19,7 @@ export const SearchTestPage: React.FC = () => {
     const search = async () => {
       index
         .search(searchWord, { attributesToHighlight: ["*"] })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .then((result: any) => {
           setHits(result.hits);
         });
@@ -46,6 +49,7 @@ export const SearchTestPage: React.FC = () => {
           ></input>
           <ul>
             {hits &&
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               hits.map((r: any, index: number) => (
                 <li key={index}>{r.name}</li>
               ))}

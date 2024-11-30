@@ -21,7 +21,7 @@ import {
   skipToElement,
 } from "@/components/navigation/skip-to-content";
 import { EnvSettings, SettingsUtil } from "@/env";
-import { Settings_Sandbox } from "@/env/Settings.Sandbox";
+import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { CookieBanner } from "@/features/cookie-banner";
 import { client } from "@/graphql";
 import {
@@ -94,7 +94,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      let clienthost = window?.location?.host || "";
+      const clienthost = window?.location?.host || "";
 
       //if host is run from sandbox, load that environment and disable matomo
       if (clienthost?.includes("sandbox")) {
@@ -122,11 +122,13 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     };
   }
 
-  let conditionalPreamble =
+  const conditionalPreamble =
     pathname === `/${t("routes|search-api$path")}` ? null : preamble;
 
   useEffect(() => {
-    asPath.includes("#") && onHash(asPath);
+    if (asPath.includes("#")) {
+      onHash(asPath);
+    }
     setImageHero(heroImage);
   }, [pathname]);
 

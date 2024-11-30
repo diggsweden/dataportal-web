@@ -1,7 +1,7 @@
 import { FormPage } from "@/features/pages/form-page";
 import { getForm, getModule, populateSeo } from "@/utilities";
 
-export async function getStaticProps({ locale }: any) {
+export async function getStaticProps({ locale }: { locale: string }) {
   const p1 = await getForm("fortroendemodellen", locale);
   const p2 = await getModule("fortroende-generate-text", locale, {
     seo: {

@@ -8,8 +8,8 @@ import { FooterNav } from "@/components/navigation/footer-nav";
 
 type FooterProps = {
   openSideBar: boolean;
-  setOpenSideBar: Function;
-  setSettingsOpen: Function;
+  setOpenSideBar: (_param: boolean) => void;
+  setSettingsOpen: (_param: boolean) => void;
 };
 
 export const Footer: FC<FooterProps> = ({

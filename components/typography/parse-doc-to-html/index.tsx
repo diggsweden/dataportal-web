@@ -11,12 +11,12 @@ const renderTextAndImages = (field: TextArea) => {
 
     if (matches) {
       matches.forEach((match) => {
-        let imgString = match.replace(/[[\]]/g, "");
+        const imgString = match.replace(/[[\]]/g, "");
         //if image does not exist in the images object, return.
         if (!field.images[imgString]) {
           return;
         }
-        let base64img = field.images[imgString];
+        const base64img = field.images[imgString];
         string = string.replace(match, `<img src="${base64img}" alt="test" />`);
       });
     }

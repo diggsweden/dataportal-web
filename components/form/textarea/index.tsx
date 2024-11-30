@@ -1,8 +1,9 @@
 import { FC, TextareaHTMLAttributes } from "react";
 
-interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {}
-
-export const Textarea: FC<TextareaProps> = ({ className, ...props }) => (
+export const Textarea: FC<TextareaHTMLAttributes<HTMLTextAreaElement>> = ({
+  className,
+  ...props
+}) => (
   <textarea
     {...props}
     className={`hover:outline-out focus-visible:outline-out active:outline-out h-[10.5rem] w-full rounded-sm

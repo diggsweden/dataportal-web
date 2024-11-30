@@ -48,6 +48,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
       PER_PAGE,
       pageNumber && pageNumber > 1 ? (pageNumber - 1) * PER_PAGE : 0,
       true,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     )) as any;
 
     const hits: SearchHit[] = result?.dataportal_Digg_Search?.hits
@@ -98,7 +99,9 @@ export const SearchPageContent: FC<SearchProps> = () => {
 
   useEffect(() => {
     const count = searchResult?.count || -1;
-    count > 0 && posY && posY != "0" && window.scrollTo(0, parseInt(posY, 10));
+    if (count > 0 && posY && posY !== "0") {
+      window.scrollTo(0, parseInt(posY, 10));
+    }
   });
 
   useEffect(() => {
@@ -124,11 +127,10 @@ export const SearchPageContent: FC<SearchProps> = () => {
   }, [searchRequest]);
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: t("common|search-content"),
-        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-      });
+    setBreadcrumb?.({
+      name: t("common|search-content"),
+      crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+    });
   }, [pathname]);
 
   useEffect(() => {

@@ -9,7 +9,12 @@ import { footerNav } from "@/utilities/menu-data";
 
 interface FooterNavItem {
   title: string;
-  icon?: any;
+  icon?: React.ComponentType<{
+    className?: string;
+    width?: number;
+    height?: number;
+    viewBox?: string;
+  }>;
   type?: "internal" | "external" | "email" | "cookie";
   href?: string;
 }
@@ -20,8 +25,8 @@ interface FooterNavData {
 }
 
 interface FooterNavProps {
-  setOpenSideBar: Function;
-  setSettingsOpen: Function;
+  setOpenSideBar: (_param: boolean) => void;
+  setSettingsOpen: (_param: boolean) => void;
 }
 
 export const FooterNav: FC<FooterNavProps> = ({

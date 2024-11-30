@@ -22,20 +22,19 @@ export const MQACategoryPage: FC = () => {
   });
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: entry.title,
-        crumbs: [
-          { name: "start", link: { ...linkBase, link: "/" } },
-          {
-            name: "Metadatakvalitet per katalog",
-            link: {
-              ...linkBase,
-              link: `/metadatakvalitet`,
-            },
+    setBreadcrumb?.({
+      name: entry.title,
+      crumbs: [
+        { name: "start", link: { ...linkBase, link: "/" } },
+        {
+          name: "Metadatakvalitet per katalog",
+          link: {
+            ...linkBase,
+            link: `/metadatakvalitet`,
           },
-        ],
-      });
+        },
+      ],
+    });
   }, [pathname, entry.title]);
 
   return (

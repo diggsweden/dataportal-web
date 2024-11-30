@@ -15,6 +15,8 @@ import ChevronRightIcon from "@/assets/icons/chevronRight.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import NavPixelsImage from "@/assets/icons/navPixels.svg";
 import { SettingsContext } from "@/providers/settings-provider";
+import { AddIcon } from "@/types/global";
+import { NavData } from "@/utilities/menu-data";
 
 const sidebarLinkVariants = cva(
   [
@@ -34,13 +36,13 @@ const sidebarLinkVariants = cva(
 );
 
 type MenuLinkProps = VariantProps<typeof sidebarLinkVariants> & {
-  Icon?: any;
+  Icon?: AddIcon;
   iconSize: number;
   href: string;
   label: string;
   className?: string;
   tabIndex?: number;
-  setOpenSideBar: Function;
+  setOpenSideBar: (_param: boolean) => void;
 };
 
 const MenuLink: FC<MenuLinkProps> = ({
@@ -107,13 +109,13 @@ const MenuLink: FC<MenuLinkProps> = ({
 
 type SideBarLinkProps = VariantProps<typeof sidebarLinkVariants> & {
   level: "1" | "2";
-  icon?: any;
+  icon?: AddIcon;
   href?: string;
   label: string;
-  list?: any[];
+  list?: NavData[];
   variant?: "external" | "internal";
   openSideBar?: boolean;
-  setOpenSideBar: Function;
+  setOpenSideBar: (_param: boolean) => void;
 };
 
 export const SidebarLink: FC<
@@ -179,12 +181,16 @@ export const SidebarLink: FC<
               : `${t("common|open")} ${t("common|menu-submenu")} ${label}`
           }
         >
-          <Icon
-            width={1.5 * iconSize}
-            height={1.5 * iconSize}
-            viewBox="0 0 24 24"
-            className={`flex-shrink-0 ${open ? "[&_path]:fill-pink-600" : ""}`}
-          />
+          {Icon && (
+            <Icon
+              width={1.5 * iconSize}
+              height={1.5 * iconSize}
+              viewBox="0 0 24 24"
+              className={`flex-shrink-0 ${
+                open ? "[&_path]:fill-pink-600" : ""
+              }`}
+            />
+          )}
           <span
             className={`mr-auto underline-offset-4 group-hover:underline ${
               open && "font-strong text-brown-900"

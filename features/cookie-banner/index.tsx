@@ -25,7 +25,8 @@ export type CookieProperties = {
 
 export const CookieBanner: FC<{
   settingsOpen: boolean;
-  setSettingsOpen: Function;
+  // eslint-disable-next-line no-unused-vars
+  setSettingsOpen: (value: boolean) => void;
 }> = ({ settingsOpen, setSettingsOpen }) => {
   const { store, set } = useContext(LocalStoreContext);
   const { setActivation } = useContext(TrackingContext);
@@ -51,7 +52,9 @@ export const CookieBanner: FC<{
   }, [lang]);
 
   useEffect(() => {
-    store.cookieSettings?.analytic?.accepted && setActivation(true);
+    if (store.cookieSettings?.analytic?.accepted) {
+      setActivation(true);
+    }
   }, [store.cookieSettings?.analytic?.accepted]);
 
   const necessaryCookieText: NecessaryCookies = {

@@ -1,7 +1,8 @@
-import { useEffect } from "react";
-import { EnvSettings } from "@/env/EnvSettings";
-import { createBlocksConfig } from "@/utilities/entryscape/blocks/config";
 import useTranslation from "next-translate/useTranslation";
+import { useEffect } from "react";
+
+import { EnvSettings } from "@/env/env-settings";
+import { createBlocksConfig } from "@/utilities/entryscape/blocks/config";
 
 interface BlocksConfig {
   entrystoreBase: string;
@@ -55,8 +56,11 @@ export const useEntryScapeBlocks = ({
 
   useEffect(() => {
     // Create the ready promise if it doesn't exist
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (!(window as any).__entryscape_blocks_ready) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).__entryscape_blocks_ready = new Promise((resolve) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).__entryscape_blocks_resolve = resolve;
       });
     }
@@ -76,9 +80,10 @@ export const useEntryScapeBlocks = ({
           esId,
         });
 
-        (window as any).__entryscape_config = (
-          (window as any).__entryscape_config || []
-        ).concat(newConfig);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).__entryscape_config =
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ((window as any).__entryscape_config || []).concat(newConfig);
 
         if (pageType !== "mqa") {
           await loadScript(
@@ -97,9 +102,12 @@ export const useEntryScapeBlocks = ({
         await loadScript(env.ENTRYSCAPE_BLOCKS_URL);
 
         // Wait for blocks to be ready
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await (window as any).__entryscape_blocks_ready;
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((window as any).__entryscape_blocks) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (window as any).__entryscape_blocks.init();
         }
       } catch (error) {
@@ -110,8 +118,11 @@ export const useEntryScapeBlocks = ({
     initializeBlocks();
 
     return () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).__entryscape_config = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if ((window as any).__entryscape_blocks?.clear) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).__entryscape_blocks.clear();
       }
     };

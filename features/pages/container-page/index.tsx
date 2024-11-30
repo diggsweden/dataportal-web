@@ -20,26 +20,27 @@ import { checkLang, linkBase } from "@/utilities";
 export const highlightCodeBlock = async () => {
   // ? Fix to get <br/> as line-breaks
   (await import("prismjs")).hooks.add("before-highlight", function (env) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     env.code = (env as any).element.innerText;
   });
   // * init prismjs
   (await import("prismjs")).highlightAll();
   // ? Await all plugins and components to fix hydration issue
-  await require("prismjs/plugins/line-numbers/prism-line-numbers");
-  await require("prismjs/components/prism-markup-templating");
-  await require("prismjs/components/prism-csharp");
-  await require("prismjs/components/prism-json");
-  await require("prismjs/components/prism-javascript");
-  await require("prismjs/components/prism-css");
-  await require("prismjs/components/prism-php");
-  await require("prismjs/components/prism-ruby");
-  await require("prismjs/components/prism-python");
-  await require("prismjs/components/prism-java");
-  await require("prismjs/components/prism-c");
-  await require("prismjs/components/prism-cpp");
-  await require("prismjs/plugins/line-numbers/prism-line-numbers");
-  await require("prismjs/plugins/toolbar/prism-toolbar");
-  await require("prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard");
+  await import("prismjs/plugins/line-numbers/prism-line-numbers");
+  await import("prismjs/components/prism-markup-templating");
+  await import("prismjs/components/prism-csharp");
+  await import("prismjs/components/prism-json");
+  await import("prismjs/components/prism-javascript");
+  await import("prismjs/components/prism-css");
+  await import("prismjs/components/prism-php");
+  await import("prismjs/components/prism-ruby");
+  await import("prismjs/components/prism-python");
+  await import("prismjs/components/prism-java");
+  await import("prismjs/components/prism-c");
+  await import("prismjs/components/prism-cpp");
+  await import("prismjs/plugins/line-numbers/prism-line-numbers");
+  await import("prismjs/plugins/toolbar/prism-toolbar");
+  await import("prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard");
 };
 
 /**
@@ -58,13 +59,19 @@ const getLinks = () => {
   );
 
   // Set only if there are more than 2 elements
-  hTags.length > 2 &&
+  if (hTags.length > 2) {
     hTags.forEach((element: HTMLElement) => {
-      // filter swedish charachters and whitespaces from anchor
-      let chars: any = { å: "a", ä: "a", ö: "o", " ": "_", ".": "" };
+      // filter swedish characters and whitespaces from anchor
+      const chars: Record<string, string> = {
+        å: "a",
+        ä: "a",
+        ö: "o",
+        " ": "_",
+        ".": "",
+      };
       const id = `${element.innerText
         .toLowerCase()
-        .replace(/[åäö\s\.]/g, (m: any) => chars[m])}`;
+        .replace(/[åäö\s.]/g, (m: string) => chars[m])}`;
       // Get the sibling element and give it the id
       element.id = `${id}`;
       menuItems.push({
@@ -72,6 +79,7 @@ const getLinks = () => {
         text: element.textContent,
       } as Anchorlink);
     });
+  }
 
   return menuItems;
 };
@@ -183,11 +191,10 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
       });
     }
 
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: heading,
-        crumbs: crumbs,
-      });
+    setBreadcrumb?.({
+      name: heading,
+      crumbs: crumbs,
+    });
   }, [pathname]);
 
   return (

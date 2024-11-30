@@ -18,16 +18,18 @@ export const getNumbersData = async (env: EnvSettings) => {
   const conceptStatsResponse = await fetch(ESConceptStatsUrl);
 
   // ! Log if there is an error
-  !orgStatsResponse.ok &&
+  if (!orgStatsResponse.ok) {
     console.error({
       status: orgStatsResponse.status,
       text: orgStatsResponse.statusText,
     });
-  !conceptStatsResponse.ok &&
+  }
+  if (!conceptStatsResponse.ok) {
     console.error({
       status: conceptStatsResponse.status,
       text: conceptStatsResponse.statusText,
     });
+  }
 
   const orgStats = orgStatsResponse.ok ? await orgStatsResponse.json() : {};
   const { series } = orgStats;

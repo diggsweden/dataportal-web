@@ -12,24 +12,15 @@ import { Button, ButtonLink } from "@/components/button";
 import { SearchInput } from "@/features/search/search-input";
 import { useClickOutside } from "@/hooks/use-click-outside";
 import { SettingsContext } from "@/providers/settings-provider";
-import { mainNav } from "@/utilities/menu-data";
-
-interface MainNavData {
-  title: string;
-  promoted: boolean;
-  inEn?: boolean;
-  icon?: any;
-  href?: string;
-  children?: MainNavData[];
-}
+import { mainNav, NavData } from "@/utilities/menu-data";
 
 interface MainNavProps {
-  setOpenSideBar: Function;
+  setOpenSideBar: (_param: boolean) => void;
   openSideBar: boolean;
 }
 
 const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
-  const [menues, setMenues] = useState<any>([]);
+  const [menues, setMenues] = useState<NavData[]>([]);
   const [openSearch, setOpenSearch] = useState<boolean>(false);
   const [query, setQuery] = useState("");
   const pathname = usePathname();
@@ -85,7 +76,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           className="hidden flex-row items-center space-x-sm xl:flex"
           aria-label={t("common|menu-main")}
         >
-          {menues.map((menu: MainNavData, idx: number) => (
+          {menues.map((menu: NavData, idx: number) => (
             <ButtonLink
               variant="plain"
               key={idx}

@@ -39,11 +39,10 @@ export const StatisticPage: FC = () => {
   const { setBreadcrumb } = useContext(SettingsContext);
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: t("statistic$statistic-page-header"),
-        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-      });
+    setBreadcrumb?.({
+      name: t("statistic$statistic-page-header"),
+      crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+    });
   }, [pathname]);
 
   return (

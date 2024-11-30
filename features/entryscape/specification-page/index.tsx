@@ -43,20 +43,19 @@ export const SpecificationPage: FC<{ curi?: string; uri?: string }> = ({
   });
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: entry.title,
-        crumbs: [
-          { name: "start", link: { ...linkBase, link: "/" } },
-          {
-            name: t("routes|specifications$title"),
-            link: {
-              ...linkBase,
-              link: `/${t("routes|specifications$path")}?q=&f=`,
-            },
+    setBreadcrumb?.({
+      name: entry.title,
+      crumbs: [
+        { name: "start", link: { ...linkBase, link: "/" } },
+        {
+          name: t("routes|specifications$title"),
+          link: {
+            ...linkBase,
+            link: `/${t("routes|specifications$path")}?q=&f=`,
           },
-        ],
-      });
+        },
+      ],
+    });
   }, [pathname, entry.title]);
 
   return (

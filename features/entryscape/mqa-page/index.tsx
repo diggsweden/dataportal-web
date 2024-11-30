@@ -23,11 +23,10 @@ export const MQAPage: FC = () => {
     esId: "",
   });
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: pageTitle,
-        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-      });
+    setBreadcrumb?.({
+      name: pageTitle,
+      crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+    });
   }, [pathname]);
 
   return (

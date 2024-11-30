@@ -105,8 +105,11 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
               ? "!mb-md"
               : "!mt-md md:!mt-lg !mb-md";
           return (
-            // @ts-ignore
-            <Heading level={level} size={size} className={className}>
+            <Heading
+              level={level as 1 | 2 | 3 | 4 | 5}
+              size={size}
+              className={className}
+            >
               {domToReact(children as DOMNode[], options)}
             </Heading>
           );

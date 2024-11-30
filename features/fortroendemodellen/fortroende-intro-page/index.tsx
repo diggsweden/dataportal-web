@@ -1,13 +1,14 @@
+import { usePathname } from "next/navigation";
 import { FC, useContext, useEffect } from "react";
-import { ModuleDataFragment } from "@/graphql/__generated__/operations";
+
+import ArrowIcon from "@/assets/icons/arrowRight.svg";
+import { BlockList } from "@/components/blocks/block-list";
+import { ButtonLink } from "@/components/button";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
-import { usePathname } from "next/navigation";
-import { ButtonLink } from "@/components/button";
-import { BlockList } from "@/components/blocks/block-list";
-import ArrowIcon from "@/assets/icons/arrowRight.svg";
-import { linkBase } from "@/utilities";
+import { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
+import { linkBase } from "@/utilities";
 
 export const FortroendeIntroPage: FC<ModuleDataFragment> = ({ blocks }) => {
   const { setBreadcrumb } = useContext(SettingsContext);
@@ -16,11 +17,10 @@ export const FortroendeIntroPage: FC<ModuleDataFragment> = ({ blocks }) => {
   const extraInfo = blocks.slice(1);
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: "Förtroendemodellen",
-        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-      });
+    setBreadcrumb?.({
+      name: "Förtroendemodellen",
+      crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+    });
   }, [pathname]);
 
   return (

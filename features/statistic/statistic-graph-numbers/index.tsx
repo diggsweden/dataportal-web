@@ -7,12 +7,11 @@ import { SettingsContext } from "@/providers/settings-provider";
 
 interface StatisticState {
   children?: React.ReactNode;
-  x?: any;
-  y?: any;
+  x?: number[];
+  y?: number[];
   xList: string[];
-  yList: string[];
-
-  toSort?: any;
+  yList: number[];
+  toSort: Array<{ x: string; y: number }>;
   topItemsToShow: number;
   screenWidth: number;
 }
@@ -41,7 +40,7 @@ export const StatisticGraphNumbers: React.FC = () => {
         .then((response) => response.json())
         .then((data) => {
           for (let i = 0; i < data.length; i++) {
-            let item = {
+            const item = {
               x: data[i].x.toString().substring(0, 7),
               y: data[i].y,
             };
@@ -55,8 +54,8 @@ export const StatisticGraphNumbers: React.FC = () => {
           setStats((prev) => {
             return {
               ...prev,
-              xList: stats.toSort.map((item: any) => item.x),
-              yList: stats.toSort.map((item: any) => item.y),
+              xList: stats.toSort.map((item) => item.x),
+              yList: stats.toSort.map((item) => item.y),
             };
           });
         });
@@ -73,7 +72,7 @@ export const StatisticGraphNumbers: React.FC = () => {
           {stats.yList &&
             stats.yList
               .slice(0, stats.topItemsToShow)
-              .map((item: any, index: any) => {
+              .map((item: number, index: number) => {
                 return (
                   <StatisticListItemHistory
                     key={"cat-" + index}

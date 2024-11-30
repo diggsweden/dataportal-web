@@ -42,17 +42,16 @@ export const DatasetPage: React.FC = () => {
   });
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: entry.title,
-        crumbs: [
-          { name: "start", link: { ...linkBase, link: "/" } },
-          {
-            name: t("routes|datasets$title"),
-            link: { ...linkBase, link: `/${t("routes|datasets$path")}?q=&f=` },
-          },
-        ],
-      });
+    setBreadcrumb?.({
+      name: entry.title,
+      crumbs: [
+        { name: "start", link: { ...linkBase, link: "/" } },
+        {
+          name: t("routes|datasets$title"),
+          link: { ...linkBase, link: `/${t("routes|datasets$path")}?q=&f=` },
+        },
+      ],
+    });
   }, [pathname, entry]);
 
   useEffect(() => {

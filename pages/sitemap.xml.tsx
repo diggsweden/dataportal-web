@@ -69,14 +69,14 @@ const getDatasets = async () => {
   const proxy_pass = process.env.HTTP_PROXY_PASS;
 
   if (proxy_url && proxy_url.length > 0) {
-    let proxy_uri = url.parse(proxy_url);
+    const proxy_uri = url.parse(proxy_url);
 
     //add auth to proxy if set in env
     if (proxy_user && proxy_pass) {
       proxy_uri.auth = `${proxy_user}:${proxy_pass}`;
     }
 
-    let proxy = new HttpsProxyAgent(proxy_uri);
+    const proxy = new HttpsProxyAgent(proxy_uri);
 
     const response = await proxyfetch(env.ENTRYSCAPE_SITEMAP_JSON_URL, {
       agent: proxy,
@@ -109,6 +109,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   res,
   locales,
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const datasets: any[] = await getDatasets();
 
   const allContainers: (ContainerDataFragment | null)[] = [];
@@ -117,8 +118,8 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const allGoodExamples: (GoodExampleDataFragment | null)[] = [];
 
-  locales &&
-    (await Promise.all(
+  if (locales) {
+    await Promise.all(
       // Get all containers in all locales
       locales.map(async (locale) => {
         // Get external data from the file system, API, DB, etc.
@@ -161,11 +162,18 @@ export const getServerSideProps: GetServerSideProps = async ({
           console.error(goodExampleResult.error);
         }
 
-        containers && allContainers.push(...containers);
-        news && allNewsItems.push(...news);
-        goodExamples && allGoodExamples.push(...goodExamples);
+        if (containers) {
+          allContainers.push(...containers);
+        }
+        if (news) {
+          allNewsItems.push(...news);
+        }
+        if (goodExamples) {
+          allGoodExamples.push(...goodExamples);
+        }
       }),
-    ));
+    );
+  }
 
   const staticPaths = [
     "",

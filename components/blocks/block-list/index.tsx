@@ -119,15 +119,17 @@ export const BlockList: React.FC<blockListProps> = ({
                 __typename="dataportal_Digg_Form"
               />
             );
-          default:
+          default: {
+            const unknownBlock = block as { __typename: string; id: string };
             return (
-              <div key={id}>
+              <div key={unknownBlock.id}>
                 <h2>
-                  <>{(block as any)?.__typename} Not found</>
+                  <>{unknownBlock.__typename} Not found</>
                 </h2>
-                <pre>{JSON.stringify(block, null, 2)}</pre>
+                <pre>{JSON.stringify(unknownBlock, null, 2)}</pre>
               </div>
             );
+          }
         }
       })}
     </div>

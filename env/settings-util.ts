@@ -1,9 +1,10 @@
-import { Settings_Dev } from "./Settings.Dev";
-import { Settings_Sandbox } from "./Settings.Sandbox";
-import { Settings_Prod } from "./Settings.Prod";
-import { Settings_Test } from "./Settings.Test";
-import { EnvSettings } from "./EnvSettings";
 import env from "@beam-australia/react-env";
+
+import { EnvSettings } from "./env-settings";
+import { Settings_Dev } from "./settings.dev";
+import { Settings_Prod } from "./settings.prod";
+import { Settings_Sandbox } from "./settings.sandbox";
+import { Settings_Test } from "./settings.test";
 
 /**
  * Utility for non secret application runtime settings.

@@ -44,7 +44,7 @@ export const LocalStoreProvider: React.FC<{ children: React.ReactNode }> = ({
       return;
     }
 
-    let json = JSON.parse(data) as LocalStore;
+    const json = JSON.parse(data) as LocalStore;
     if (!json) return;
 
     setStore(json);
