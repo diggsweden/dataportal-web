@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
-import { useStateCallback } from "@/hooks/use-state-callback";
+import React, { createContext, useEffect } from "react";
+
 import { CookieSetting } from "@/features/cookie-banner";
+import { useStateCallback } from "@/hooks/use-state-callback";
 
 export interface LocalStore {
   cookieSettings?: CookieSetting;
@@ -22,7 +23,7 @@ const defaultSettings: LocalStoreContextData = {
 };
 
 export const LocalStoreContext =
-  React.createContext<LocalStoreContextData>(defaultSettings);
+  createContext<LocalStoreContextData>(defaultSettings);
 
 export interface LocalStoreProviderState {
   store: LocalStore;
