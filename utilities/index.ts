@@ -4,7 +4,6 @@ export * from "./check-lang";
 export * from "./dcat-utils";
 export * from "./detect-browser";
 export * from "./entrystore-utils";
-export * from "./generate-csp";
 export * from "./key-focus";
 export * from "./key-generator";
 export * from "./local-storage-helpers";

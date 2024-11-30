@@ -1,14 +1,4 @@
 import { browserclient, client, CONTAINER_MULTI_QUERY } from "@/graphql";
-import { ROOT_AGGREGATE_QUERY } from "@/graphql/aggregateQuery";
-import { FORM_QUERY } from "@/graphql/formQuery";
-import { MODULE_QUERY } from "@/graphql/moduleQuery";
-import {
-  GOOD_EXAMPLE_QUERY,
-  NEWS_ITEM_QUERY,
-} from "@/graphql/publicationQuery";
-import { TOOL_QUERY } from "@/graphql/toolQuery";
-import { SEARCH_QUERY } from "@/graphql/searchQuery";
-import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
   FormDataFragment,
   FormQuery,
@@ -35,6 +25,16 @@ import {
   ToolQueryVariables,
   ContainerDataFragment,
 } from "@/graphql/__generated__/operations";
+import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
+import { ROOT_AGGREGATE_QUERY } from "@/graphql/aggregateQuery";
+import { FORM_QUERY } from "@/graphql/formQuery";
+import { MODULE_QUERY } from "@/graphql/moduleQuery";
+import {
+  GOOD_EXAMPLE_QUERY,
+  NEWS_ITEM_QUERY,
+} from "@/graphql/publicationQuery";
+import { SEARCH_QUERY } from "@/graphql/searchQuery";
+import { TOOL_QUERY } from "@/graphql/toolQuery";
 
 /**
  * ? Better comments: https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
