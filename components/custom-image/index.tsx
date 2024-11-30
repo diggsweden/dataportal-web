@@ -1,9 +1,10 @@
 import env from "@beam-australia/react-env";
+import Image from "next/image";
 import { FC } from "react";
+
+import noImage from "@/assets/logos/noImage.png";
 import { ImageFragment as ImageInterface } from "@/graphql/__generated__/operations";
 import { isExternalLink } from "@/utilities";
-import Image from "next/image";
-import noImage from "@/assets/logos/noImage.png";
 
 interface CustomImageProps {
   image: ImageInterface | null;

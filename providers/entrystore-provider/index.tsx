@@ -1,15 +1,16 @@
-import useTranslation from "next-translate/useTranslation";
-import { useRouter } from "next/router";
-import React, { createContext, useEffect, useState } from "react";
-import { EnvSettings } from "@/env/EnvSettings";
-import { SettingsUtil } from "@/env/SettingsUtil";
-import { getSimplifiedLocalizedValue } from "@/utilities";
 import {
   Entry,
   EntryStore,
   EntryStoreUtil,
   Metadata,
 } from "@entryscape/entrystore-js";
+import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
+import React, { createContext, useEffect, useState } from "react";
+
+import { EnvSettings } from "@/env/EnvSettings";
+import { SettingsUtil } from "@/env/SettingsUtil";
+import { getSimplifiedLocalizedValue } from "@/utilities";
 
 type RelationObj = {
   title: string;
@@ -428,5 +429,3 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
     </EntrystoreContext.Provider>
   );
 };
-
-export default EntrystoreProvider;

@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
+
 import { SpecificationPage } from "@/features/entryscape/specification-page";
+import { EntrystoreProvider } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
-import EntrystoreProvider from "@/providers/entrystore-provider";
 
 export default function Specification() {
   const { env } = useContext(SettingsContext);

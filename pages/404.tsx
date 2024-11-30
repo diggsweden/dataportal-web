@@ -1,12 +1,13 @@
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
+import { FC, useContext, useEffect } from "react";
+
+import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { Container } from "@/components/layout/container";
 import { SettingsContext } from "@/providers/settings-provider";
-import useTranslation from "next-translate/useTranslation";
-import Link from "next/link";
-import { FC, useContext, useEffect } from "react";
 import { linkBase } from "@/utilities";
-import { usePathname } from "next/navigation";
 
 const NotFound: FC = () => {
   const { t, lang } = useTranslation("pages");

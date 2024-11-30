@@ -1,8 +1,9 @@
-import { FC } from "react";
-import { PromoProps, Promo } from "@/components/promo";
-import { ButtonLink } from "@/components/button";
-import { Heading } from "@/components/typography/heading";
 import useTranslation from "next-translate/useTranslation";
+import { FC } from "react";
+
+import { ButtonLink } from "@/components/button";
+import { PromoProps, Promo } from "@/components/promo";
+import { Heading } from "@/components/typography/heading";
 import { RelatedContentFragment } from "@/graphql/__generated__/operations";
 
 interface RelatedContentProps extends RelatedContentFragment {

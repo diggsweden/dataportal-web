@@ -1,6 +1,7 @@
-import { getToolsList, populateSeo } from "@/utilities";
 import { GetStaticProps } from "next";
+
 import { ListPage } from "@/features/pages/list-page";
+import { getToolsList, populateSeo } from "@/utilities";
 export const getStaticProps: GetStaticProps = async () => {
   return await getToolsList({
     seo: {

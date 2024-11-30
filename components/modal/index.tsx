@@ -1,11 +1,13 @@
-import { FC, useEffect, useRef } from "react";
-import { Heading } from "@/components/typography/heading";
-import { Button, ButtonLink } from "@/components/button";
-import ArrowIcon from "@/assets/icons/arrowRight.svg";
-import { HtmlParser } from "../typography/html-parser";
-import { isExternalLink } from "@/utilities";
-import ExternalIcon from "@/assets/icons/external-link.svg";
 import { createFocusTrap, FocusTrap } from "focus-trap";
+import { FC, useEffect, useRef, KeyboardEvent } from "react";
+
+import ArrowIcon from "@/assets/icons/arrowRight.svg";
+import ExternalIcon from "@/assets/icons/external-link.svg";
+import { Button, ButtonLink } from "@/components/button";
+import { Heading } from "@/components/typography/heading";
+import { isExternalLink } from "@/utilities";
+
+import { HtmlParser } from "../typography/html-parser";
 
 interface ModalProps {
   heading: string;
@@ -52,7 +54,7 @@ export const Modal: FC<ModalProps> = ({
     };
   }, [modalOpen]);
 
-  const handleEscape = (e: React.KeyboardEvent) => {
+  const handleEscape = (e: KeyboardEvent) => {
     if (e.key === "Escape" && modalOpen) {
       setModalOpen(false);
     }

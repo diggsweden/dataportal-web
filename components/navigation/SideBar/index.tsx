@@ -1,10 +1,10 @@
-import { FC, useRef } from "react";
+import { createFocusTrap, FocusTrap } from "focus-trap";
 import useTranslation from "next-translate/useTranslation";
-import { useEffect, useState } from "react";
-import { mainNav } from "@/utilities/menu-data";
+import { FC, useRef, useEffect, useState, KeyboardEvent } from "react";
+
 import { SidebarLink } from "@/components/navigation/sidebar/sidebar-link";
 import { useClickOutside } from "@/hooks/use-click-outside";
-import { createFocusTrap, FocusTrap } from "focus-trap";
+import { mainNav } from "@/utilities/menu-data";
 
 interface NavSideData {
   title: string;
@@ -76,7 +76,7 @@ export const Sidebar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
     };
   }, [openSideBar, vw]);
 
-  const handleEscape = (e: React.KeyboardEvent) => {
+  const handleEscape = (e: KeyboardEvent) => {
     if (e.key === "Escape" && openSideBar && vw < 768) {
       setOpenSideBar(false);
     }

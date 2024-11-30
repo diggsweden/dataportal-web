@@ -1,9 +1,9 @@
-import { client } from "../../graphql/client";
-import { NEWS_ITEM_QUERY } from "../../graphql/publicationQuery";
 import {
   NewsItemQuery,
   NewsItemQueryVariables,
 } from "../../graphql/__generated__/operations";
+import { client } from "../../graphql/client";
+import { NEWS_ITEM_QUERY } from "../../graphql/publicationQuery";
 
 const HEALTHCHECK_SECRET = process.env.HEALTHCHECK_SECRET;
 

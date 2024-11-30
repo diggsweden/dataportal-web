@@ -1,3 +1,7 @@
+import { cx, cva, VariantProps } from "class-variance-authority";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
 import React, {
   FC,
   HTMLAttributes,
@@ -6,13 +10,10 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { cx, cva, VariantProps } from "class-variance-authority";
-import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
-import { usePathname } from "next/navigation";
+
+import ChevronRightIcon from "@/assets/icons/chevronRight.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import NavPixelsImage from "@/assets/icons/navPixels.svg";
-import ChevronRightIcon from "@/assets/icons/chevronRight.svg";
 import { SettingsContext } from "@/providers/settings-provider";
 
 const sidebarLinkVariants = cva(

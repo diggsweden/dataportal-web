@@ -1,17 +1,19 @@
-import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
-import { checkLang } from "@/utilities";
+import useTranslation from "next-translate/useTranslation";
 import { FC } from "react";
+
+import BreadcrumbDividerIcon from "@/assets/icons/breadcrumbDivider.svg";
 import HomeIcon from "@/assets/icons/home.svg";
 import { Container } from "@/components/layout/container";
-import BreadcrumbDividerIcon from "@/assets/icons/breadcrumbDivider.svg";
+import type { Breadcrumb } from "@/types/global";
+import { checkLang } from "@/utilities";
 
 export interface BreadcrumbProps {
   name: string;
   crumbs: Breadcrumb[];
 }
 
-export const Breadcrumb: FC<BreadcrumbProps> = ({ crumbs, name }) => {
+export const Breadcrumbs: FC<BreadcrumbProps> = ({ crumbs, name }) => {
   const { t, lang } = useTranslation();
 
   return (

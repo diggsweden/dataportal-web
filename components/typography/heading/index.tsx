@@ -1,5 +1,5 @@
-import React, { FC, HTMLAttributes, PropsWithChildren } from "react";
 import { cx, cva, VariantProps } from "class-variance-authority";
+import React, { FC, HTMLAttributes, PropsWithChildren } from "react";
 
 const headingVariants = cva(["text-wrap"], {
   variants: {
@@ -23,7 +23,7 @@ type HeadingProps = VariantProps<typeof headingVariants> & {
 export const Heading: FC<
   PropsWithChildren<HeadingProps & HTMLAttributes<HTMLElement>>
 > = ({ size, level, className, children }) => {
-  const CustomTag = `h${level}` as keyof JSX.IntrinsicElements;
+  const CustomTag = `h${level}` as keyof React.JSX.IntrinsicElements;
   return (
     <CustomTag className={cx(headingVariants({ size }), className)}>
       {children}

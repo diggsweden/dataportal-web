@@ -1,9 +1,9 @@
-import { DataSetExploreApiPage } from "@/features/entryscape/dataset-explore-api-page";
-// export default DataSetExploreApiPage;
 import { useRouter } from "next/router";
 import { useContext } from "react";
+
+import { DataSetExploreApiPage } from "@/features/entryscape/dataset-explore-api-page";
 import { ApiIndexProvider } from "@/providers/api-index-context";
-import EntrystoreProvider from "@/providers/entrystore-provider";
+import { EntrystoreProvider } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 
 export default function ExploreApiPage() {

@@ -1,15 +1,16 @@
-import { FC, useState } from "react";
-import { Heading } from "@/components/typography/heading";
-import { checkLang } from "@/utilities";
-import useTranslation from "next-translate/useTranslation";
-import { CustomImage } from "@/components/custom-image";
-import { ImageFragment } from "@/graphql/__generated__/operations";
-import { Container } from "@/components/layout/container";
 import { useRouter } from "next/router";
-import { SearchInput } from "@/features/search/search-input";
-import { Preamble } from "@/components/typography/preamble";
-import { ButtonLink } from "@/components/button";
+import useTranslation from "next-translate/useTranslation";
+import { FC, useState } from "react";
+
 import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
+import { ButtonLink } from "@/components/button";
+import { CustomImage } from "@/components/custom-image";
+import { Container } from "@/components/layout/container";
+import { Heading } from "@/components/typography/heading";
+import { Preamble } from "@/components/typography/preamble";
+import { SearchInput } from "@/features/search/search-input";
+import { ImageFragment } from "@/graphql/__generated__/operations";
+import { checkLang } from "@/utilities";
 
 interface HeroProps {
   heading?: string | null;

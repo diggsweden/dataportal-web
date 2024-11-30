@@ -1,21 +1,31 @@
+import { createFocusTrap, FocusTrap } from "focus-trap";
 import useTranslation from "next-translate/useTranslation";
-import { Dispatch, RefObject, useEffect, useRef, useState } from "react";
-import { useClickOutside } from "@/hooks/use-click-outside";
-import { Button } from "@/components/button";
+import {
+  Dispatch,
+  FC,
+  KeyboardEvent,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
 import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
 import ChevronUpIcon from "@/assets/icons/chevronUp.svg";
+import { Button } from "@/components/button";
+import { useClickOutside } from "@/hooks/use-click-outside";
 import { handleScroll } from "@/utilities/form-utils";
-import { createFocusTrap, FocusTrap } from "focus-trap";
 
 interface ContainerDpDwnProps {
   pageNames: string[];
-  setPage: Dispatch<React.SetStateAction<number>>;
+  setPage: Dispatch<SetStateAction<number>>;
   scrollRef: RefObject<HTMLSpanElement>;
   className?: string;
   forceUpdate?: number;
 }
 
-export const FormNav: React.FC<ContainerDpDwnProps> = ({
+export const FormNav: FC<ContainerDpDwnProps> = ({
   pageNames,
   className,
   setPage,
@@ -77,7 +87,7 @@ export const FormNav: React.FC<ContainerDpDwnProps> = ({
     setExpanded(!expanded);
   };
 
-  const handleEscape = (e: React.KeyboardEvent) => {
+  const handleEscape = (e: KeyboardEvent) => {
     if (e.key === "Escape" && expanded) {
       handleToggle();
     }

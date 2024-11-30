@@ -1,6 +1,5 @@
-import { FormTypes } from "@/types/form";
-import useTranslation from "next-translate/useTranslation";
 import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
 import {
   Dispatch,
   FC,
@@ -9,15 +8,17 @@ import {
   useRef,
   useState,
 } from "react";
+
 import ArrowLeftIcon from "@/assets/icons/arrowLeft.svg";
 import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 import { Button } from "@/components/button";
+import { Modal } from "@/components/modal";
+import { FormTypes } from "@/types/form";
 import {
   GenerateJsonFile,
   ImportFromJsonFile,
   handleScroll,
 } from "@/utilities/form-utils";
-import { Modal } from "@/components/modal";
 
 type Props = {
   setPage: Dispatch<SetStateAction<number>>;

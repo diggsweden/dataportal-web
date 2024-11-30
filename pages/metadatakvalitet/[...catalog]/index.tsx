@@ -1,8 +1,9 @@
-import { MQACategoryPage } from "@/features/entryscape/mqa-category-page";
-import EntrystoreProvider from "@/providers/entrystore-provider";
-import { SettingsContext } from "@/providers/settings-provider";
 import { useRouter } from "next/router";
 import { useContext } from "react";
+
+import { MQACategoryPage } from "@/features/entryscape/mqa-category-page";
+import { EntrystoreProvider } from "@/providers/entrystore-provider";
+import { SettingsContext } from "@/providers/settings-provider";
 
 export default function MqaCategoryPage() {
   const { env } = useContext(SettingsContext);

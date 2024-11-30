@@ -1,9 +1,12 @@
+import url from "url";
+
+import fetchEnhanced from "fetch-enhanced";
+import { HttpsProxyAgent } from "https-proxy-agent";
 import { GetServerSideProps } from "next/types";
+import nodeFetch from "node-fetch";
+
+import { SettingsUtil } from "../env";
 import { client, CONTAINER_QUERY } from "../graphql";
-import {
-  GOOD_EXAMPLE_QUERY,
-  NEWS_ITEM_QUERY,
-} from "../graphql/publicationQuery";
 import {
   ContainerDataFragment,
   ContainersQuery,
@@ -15,11 +18,10 @@ import {
   NewsItemQuery,
   NewsItemQueryVariables,
 } from "../graphql/__generated__/operations";
-import { SettingsUtil } from "../env";
-import { HttpsProxyAgent } from "https-proxy-agent";
-import nodeFetch from "node-fetch";
-import fetchEnhanced from "fetch-enhanced";
-import url from "url";
+import {
+  GOOD_EXAMPLE_QUERY,
+  NEWS_ITEM_QUERY,
+} from "../graphql/publicationQuery";
 
 const proxyfetch = fetchEnhanced(nodeFetch);
 

@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { Heading } from "@/components/typography/heading";
-import { FC, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import { FC, useEffect, useRef, useState, MouseEvent } from "react";
+
+import { Heading } from "@/components/typography/heading";
+import { Anchorlink } from "@/types/global";
 
 interface StickyNavProps {
   menuItems: Anchorlink[];
@@ -52,7 +54,7 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
     return () => clearInterval(interval);
   }, [isLargeScreen, menuItems]);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  const handleClick = (e: MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
     if (element) {

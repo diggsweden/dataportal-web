@@ -1,13 +1,14 @@
-import { FC } from "react";
-import { Heading } from "@/components/typography/heading";
-import BodyVariant from "@/components/typography/body-variant";
 import parse, {
   Element,
   HTMLReactParserOptions,
   domToReact,
   DOMNode,
 } from "html-react-parser";
+import { FC } from "react";
+
 import { CustomImage } from "@/components/custom-image";
+import BodyVariant from "@/components/typography/body-variant";
+import { Heading } from "@/components/typography/heading";
 import { ImageFragment } from "@/graphql/__generated__/operations";
 
 export const HtmlParser: FC<{ text: string }> = ({ text }) => {

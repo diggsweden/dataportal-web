@@ -1,10 +1,11 @@
-import { FC, useContext } from "react";
-import useTranslation from "next-translate/useTranslation";
-import { Heading } from "@/components/typography/heading";
-import { footerNav } from "@/utilities/menu-data";
 import Link from "next/link";
-import { SettingsContext } from "@/providers/settings-provider";
+import useTranslation from "next-translate/useTranslation";
+import { FC, useContext } from "react";
+
+import { Heading } from "@/components/typography/heading";
 import { LocalStoreContext } from "@/providers/local-store-provider";
+import { SettingsContext } from "@/providers/settings-provider";
+import { footerNav } from "@/utilities/menu-data";
 
 interface FooterNavItem {
   title: string;

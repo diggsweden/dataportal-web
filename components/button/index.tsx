@@ -1,3 +1,5 @@
+import { cx, cva, VariantProps } from "class-variance-authority";
+import Link from "next/link";
 import {
   FC,
   PropsWithChildren,
@@ -5,8 +7,7 @@ import {
   AnchorHTMLAttributes,
   useContext,
 } from "react";
-import { cx, cva, VariantProps } from "class-variance-authority";
-import Link from "next/link";
+
 import { SettingsContext } from "@/providers/settings-provider";
 
 const buttonVariants = cva(["button"], {

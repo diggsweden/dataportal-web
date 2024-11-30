@@ -1,4 +1,5 @@
 import { FC, PropsWithChildren } from "react";
+
 import { Heading } from "@/components/typography/heading";
 
 type ContentBoxProps = {

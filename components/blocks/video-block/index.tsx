@@ -1,9 +1,11 @@
-import { VideoFragment } from "@/graphql/__generated__/operations";
-import { checkLang } from "@/utilities";
+import { FC } from "react";
+
 import { Heading } from "@/components/typography/heading";
 import { VideoPlayer } from "@/components/video-player";
+import { VideoFragment } from "@/graphql/__generated__/operations";
+import { checkLang } from "@/utilities";
 
-export const VideoBlock: React.FC<VideoFragment> = ({
+export const VideoBlock: FC<VideoFragment> = ({
   heading,
   description,
   video_id,

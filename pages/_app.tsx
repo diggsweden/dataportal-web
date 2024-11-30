@@ -1,16 +1,38 @@
-import { useEffect, useState } from "react";
+import { ApolloProvider } from "@apollo/client";
+import reactenv from "@beam-australia/react-env";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
-import { ApolloProvider } from "@apollo/client";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
+import { useEffect, useState } from "react";
+
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
+import { Hero } from "@/components/layout/hero";
+import { MetaData } from "@/components/meta-data";
+import {
+  Breadcrumbs,
+  BreadcrumbProps,
+} from "@/components/navigation/breadcrumbs";
+import { Sidebar } from "@/components/navigation/sidebar";
+import {
+  SkipToContent,
+  skipToElement,
+} from "@/components/navigation/skip-to-content";
+import { EnvSettings, SettingsUtil } from "@/env";
+import { Settings_Sandbox } from "@/env/Settings.Sandbox";
+import { CookieBanner } from "@/features/cookie-banner";
+import { client } from "@/graphql";
 import {
   LocalStore,
   LocalStoreProvider,
 } from "@/providers/local-store-provider";
-import { TrackingProvider } from "@/providers/tracking-provider";
 import {
   defaultSettings,
   SettingsProvider,
 } from "@/providers/settings-provider";
+import { TrackingProvider } from "@/providers/tracking-provider";
 import {
   click,
   DataportalPageProps,
@@ -18,28 +40,8 @@ import {
   linkBase,
   resolvePage,
 } from "@/utilities";
-import { EnvSettings, SettingsUtil } from "@/env";
-import { client } from "@/graphql";
-import reactenv from "@beam-australia/react-env";
-import { Settings_Sandbox } from "@/env/Settings.Sandbox";
-import { Sidebar } from "@/components/navigation/sidebar";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { CookieBanner } from "@/features/cookie-banner";
+
 import "@/styles/main.css";
-import {
-  Breadcrumb,
-  BreadcrumbProps,
-} from "@/components/navigation/breadcrumb";
-import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
-import { Hero } from "@/components/layout/hero";
-import { MetaData } from "@/components/meta-data";
-import {
-  SkipToContent,
-  skipToElement,
-} from "@/components/navigation/skip-to-content";
-import { useRouter } from "next/router";
 
 const GetCookiesAccepted = () => {
   try {
@@ -185,7 +187,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 )}
 
                 {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
-                  <Breadcrumb {...breadcrumbState} />
+                  <Breadcrumbs {...breadcrumbState} />
                 )}
 
                 <main

@@ -1,8 +1,10 @@
-import React, { FC, PropsWithChildren } from "react";
 import { cx, cva, VariantProps } from "class-variance-authority";
-import { isExternalLink } from "@/utilities";
 import Link from "next/link";
+import React, { FC, PropsWithChildren } from "react";
+
 import QuoteIcon from "@/assets/icons/quote.svg";
+import { isExternalLink } from "@/utilities";
+
 import { CustomLink } from "../../custom-link";
 
 const bodyVariants = cva(["text-md"], {
@@ -59,7 +61,7 @@ const BodyVariant: FC<PropsWithChildren<BodyProps>> = ({
     );
   }
 
-  const CustomTag = variant as keyof JSX.IntrinsicElements;
+  const CustomTag = variant as keyof React.JSX.IntrinsicElements;
 
   return (
     <CustomTag className={cx(bodyVariants({ variant }), className)}>

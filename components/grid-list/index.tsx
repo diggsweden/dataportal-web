@@ -1,14 +1,15 @@
-import { FC } from "react";
 import useTranslation from "next-translate/useTranslation";
-import { PublicationTeaser } from "@/features/publication/publication-teaser";
+import { FC } from "react";
+
 import { ButtonLink } from "@/components/button";
 import { Heading } from "@/components/typography/heading";
+import { PublicationTeaser } from "@/features/publication/publication-teaser";
+import { Toolteaser } from "@/features/tool";
 import {
   GoodExampleDataFragment,
   NewsItemDataFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
-import { Toolteaser } from "@/features/tool";
 
 interface ListProps {
   items: (ToolDataFragment | NewsItemDataFragment | GoodExampleDataFragment)[];
