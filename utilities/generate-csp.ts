@@ -1,5 +1,7 @@
 import reactEnv from "@beam-australia/react-env";
 
+import { CSPDirective } from "@/types/global";
+
 interface Options {
   prodOnly?: boolean;
 }

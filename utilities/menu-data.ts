@@ -8,8 +8,8 @@ import godaExempelIcon from "@/assets/icons/godaExempel.svg";
 import homeIcon from "@/assets/icons/home.svg";
 import mailIcon from "@/assets/icons/mail.svg";
 import nyheterIcon from "@/assets/icons/nyheter.svg";
-import stodVerktygIcon from "@/assets/icons/stod-verktyg.svg";
 import shareData from "@/assets/icons/shareData.svg";
+import stodVerktygIcon from "@/assets/icons/stod-verktyg.svg";
 import education from "@/assets/icons/stod-verktyg.svg";
 import results from "@/assets/icons/stod-verktyg.svg";
 

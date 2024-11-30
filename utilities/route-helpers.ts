@@ -1,5 +1,8 @@
 import useTranslation from "next-translate/useTranslation";
 
+import { Dataportal_LinkType } from "@/graphql/__generated__/types";
+import { Breadcrumb, DiggLink } from "@/types/global";
+
 /**
  * Make @param str URL-friendly
  * @param str eg "detta är en rubrik - 1"
@@ -51,7 +54,7 @@ export const SearchDatasetsPagePath = (
 // Used to satisfy typescript condition for DiggLink
 export const linkBase: DiggLink = {
   __typename: "dataportal_Digg_Link",
-  linktype: "INTERNAL",
+  linktype: "INTERNAL" as Dataportal_LinkType,
   link: "",
   title: "",
   description: "",

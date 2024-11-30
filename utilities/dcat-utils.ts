@@ -53,46 +53,52 @@ export const listChoices = async (
   property: string,
   dcatMeta: DCATData,
 ): Promise<string[]> => {
-  return new Promise<string[]>(async (resolve) => {
-    let result: string[] = [];
+  return new Promise<string[]>((resolve) => {
+    const processChoices = async () => {
+      let result: string[] = [];
 
-    if (property && dcatMeta) {
-      let matchingNodes = dcatMeta.templates.filter(
-        (d) => d.type == "choice" && d.property == property,
-      );
+      if (property && dcatMeta) {
+        let matchingNodes = dcatMeta.templates.filter(
+          (d) => d.type == "choice" && d.property == property,
+        );
 
-      if (matchingNodes && matchingNodes.length > 0) {
-        matchingNodes.forEach((m) => {
-          (m as ChoiceTemplate).choices.forEach((c) => {
-            result.push(c.value);
+        if (matchingNodes && matchingNodes.length > 0) {
+          matchingNodes.forEach((m) => {
+            (m as ChoiceTemplate).choices.forEach((c) => {
+              result.push(c.value);
+            });
           });
-        });
+        }
       }
-    }
 
-    resolve(result);
+      resolve(result);
+    };
+    processChoices();
   });
 };
 
 export const fetchDCATMeta = async (
   dcatUrl: string,
 ): Promise<DCATData | undefined> => {
-  return new Promise<DCATData | undefined>(async (resolve) => {
-    let dcatFileUrl =
-      dcatUrl ||
-      "https://static.infra.entryscape.com/blocks-ext/1/opendata/dcat-ap_se2.json";
+  return new Promise<DCATData | undefined>((resolve) => {
+    const processDCAT = async () => {
+      let dcatFileUrl =
+        dcatUrl ||
+        "https://static.infra.entryscape.com/blocks-ext/1/opendata/dcat-ap_se2.json";
 
-    if (dcatFileUrl && dcatFileUrl.length > 0) {
-      await fetch(dcatFileUrl, {
-        mode: "cors",
-      })
-        .then((response) => response.json())
-        .then((d: DCATData) => {
-          if (d && d.templates.length > 0) resolve(d);
+      if (dcatFileUrl && dcatFileUrl.length > 0) {
+        await fetch(dcatFileUrl, {
+          mode: "cors",
         })
-        .catch(() => {
-          resolve(undefined);
-        });
-    } else resolve(undefined);
+          .then((response) => response.json())
+          .then((d: DCATData) => {
+            if (d && d.templates.length > 0) resolve(d);
+          })
+          .catch(() => {
+            resolve(undefined);
+          });
+      } else resolve(undefined);
+    };
+    processDCAT();
   });
 };

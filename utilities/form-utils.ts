@@ -5,9 +5,10 @@ import {
   RefObject,
   SetStateAction,
 } from "react";
+
+import { ParseDocToHtml } from "@/components/typography/parse-doc-to-html";
 import { FormDataFragment } from "@/graphql/__generated__/operations";
 import { FormTypes } from "@/types/form";
-import { ParseDocToHtml } from "@/components/typography/parse-doc-to-html";
 
 /* Import json */
 export const ImportFromJsonFile = (

@@ -16,8 +16,9 @@ import {
   Metadata,
   MetadataValue,
 } from "@entryscape/entrystore-js";
-import { entryCache } from "./local-cache";
+
 import { Choice, ChoiceTemplate, DCATData } from "./dcat-utils";
+import { entryCache } from "./local-cache";
 
 export const getLocalizedMetadataValue = (
   metadataGraph: any,
