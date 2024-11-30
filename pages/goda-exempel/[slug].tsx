@@ -4,7 +4,7 @@ import { PublicationFull } from "@/features/publication/publication-full";
 import { getGoodExample } from "@/utilities";
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const slug = `/${context.params?.slug}` as string;
+  const slug = `/${context.params?.slug}`;
   const result = await getGoodExample(slug, context.locale || "sv");
   if ("notFound" in result) {
     return { notFound: true };
