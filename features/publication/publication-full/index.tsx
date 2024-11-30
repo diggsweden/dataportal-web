@@ -1,5 +1,21 @@
+import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
 import { FC, useContext, useEffect, useState } from "react";
+
+import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
+import DataIcon from "@/assets/icons/data.svg";
+import DateIcon from "@/assets/icons/date.svg";
+import ExternalIcon from "@/assets/icons/external-link.svg";
+import GoodExampleIcon from "@/assets/icons/godaExempel.svg";
+import KeywordsIcon from "@/assets/icons/keywords.svg";
 import { BlockList } from "@/components/blocks/block-list";
+import { ButtonLink } from "@/components/button";
+import { GridList } from "@/components/grid-list";
+import { Container } from "@/components/layout/container";
+import { Heading } from "@/components/typography/heading";
+import { Preamble } from "@/components/typography/preamble";
+import { highlightCode } from "@/features/pages/container-page";
+import { SettingsContext } from "@/providers/settings-provider";
 import {
   GoodExampleResponse,
   isExternalLink,
@@ -7,22 +23,7 @@ import {
   NewsItemResponse,
   slugify,
 } from "@/utilities";
-import { Container } from "@/components/layout/container";
-import { GridList } from "@/components/grid-list";
 import { formatDateWithTime } from "@/utilities/date-helper";
-import { Heading } from "@/components/typography/heading";
-import DateIcon from "@/assets/icons/date.svg";
-import GoodExampleIcon from "@/assets/icons/godaExempel.svg";
-import DataIcon from "@/assets/icons/data.svg";
-import ExternalIcon from "@/assets/icons/external-link.svg";
-import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
-import KeywordsIcon from "@/assets/icons/keywords.svg";
-import useTranslation from "next-translate/useTranslation";
-import { highlightCode } from "@/features/pages/container-page";
-import { usePathname } from "next/navigation";
-import { SettingsContext } from "@/providers/settings-provider";
-import { Preamble } from "@/components/typography/preamble";
-import { ButtonLink } from "@/components/button";
 
 export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
   ...publication

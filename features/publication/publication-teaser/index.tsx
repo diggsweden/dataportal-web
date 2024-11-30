@@ -1,13 +1,14 @@
+import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 import { FC, useEffect, useState } from "react";
-import { CustomImage } from "@/components/custom-image";
+
 import ArrowIcon from "@/assets/icons/arrowRight.svg";
+import { CustomImage } from "@/components/custom-image";
+import { Heading } from "@/components/typography/heading";
 import {
   GoodExampleDataFragment,
   NewsItemDataFragment,
 } from "@/graphql/__generated__/operations";
-import { Heading } from "@/components/typography/heading";
-import Link from "next/link";
 import { formatDate } from "@/utilities/date-helper";
 
 interface PublicationTeaserProps {

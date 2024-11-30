@@ -1,18 +1,21 @@
-import React, { useContext, useState, useMemo } from "react";
-import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
 import useTranslation from "next-translate/useTranslation";
-import { SearchContextData } from "@/providers/search-provider";
-import { SearchFilter } from "@/features/search/search-filters/search-filter";
+import React, { useContext, useState, useMemo, FC } from "react";
+
 import FilterIcon from "@/assets/icons/filter.svg";
 import SearchIcon from "@/assets/icons/search.svg";
 import { Button } from "@/components/button";
 import { TextInput } from "@/components/form/text-input";
+import { SearchFilter } from "@/features/search/search-filters/search-filter";
+import { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
+import { SearchFacet, SearchFacetValue } from "@/types/search";
+import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
+
+import { SearchActiveFilters } from "./search-active-filters";
 import {
   SearchCheckboxFilter,
   SearchCheckboxFilterIcon,
 } from "./search-checkbox-filter";
-import { SearchActiveFilters } from "./search-active-filters";
 
 interface SearchFilterProps {
   showFilter: boolean;
@@ -80,7 +83,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({
   );
 };
 
-const MarkAll: React.FC<MarkAllProps> = ({ search, toggleKey, title }) => {
+const MarkAll: FC<MarkAllProps> = ({ search, toggleKey, title }) => {
   return (
     <div className="filter-checkall">
       <button
@@ -91,7 +94,8 @@ const MarkAll: React.FC<MarkAllProps> = ({ search, toggleKey, title }) => {
           await search.set({
             facetValues: search.request.facetValues
               ? search.request.facetValues.filter(
-                  (f) => f.facet != toggleKey || f.facetType == ESType.wildcard,
+                  (f: SearchFacetValue) =>
+                    f.facet != toggleKey || f.facetType == ESType.wildcard,
                 )
               : [],
           });
@@ -224,12 +228,16 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
     const filters = [];
 
     // HVD filter
-    if (search.request.facetValues?.some((t) => t.title === ESRdfType.hvd)) {
+    if (
+      search.request.facetValues?.some(
+        (t: SearchFacetValue) => t.title === ESRdfType.hvd,
+      )
+    ) {
       filters.push({
         id: "hvd_only",
         label: t(`resources|${hvd}`),
         facetValue: search.request.facetValues.find(
-          (t) => t.title === ESRdfType.hvd,
+          (t: SearchFacetValue) => t.title === ESRdfType.hvd,
         ),
       });
     }
@@ -237,14 +245,14 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
     // National filter
     if (
       search.request.facetValues?.some(
-        (t) => t.facet === ESRdfType.national_data,
+        (t: SearchFacetValue) => t.facet === ESRdfType.national_data,
       )
     ) {
       filters.push({
         id: "national_only",
         label: t(`resources|${national}`),
         facetValue: search.request.facetValues.find(
-          (t) => t.facet === ESRdfType.national_data,
+          (t: SearchFacetValue) => t.facet === ESRdfType.national_data,
         ),
       });
     }
@@ -253,12 +261,14 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
     if (
       searchMode === "datasets" &&
       search.request.esRdfTypes?.some(
-        (t) => t === ESRdfType.esterms_ServedByDataService,
+        (t: ESRdfType) => t === ESRdfType.esterms_ServedByDataService,
       ) &&
       search.request.esRdfTypes?.some(
-        (t) => t === ESRdfType.esterms_IndependentDataService,
+        (t: ESRdfType) => t === ESRdfType.esterms_IndependentDataService,
       ) &&
-      !search.request.esRdfTypes?.some((t) => t === ESRdfType.dataset)
+      !search.request.esRdfTypes?.some(
+        (t: ESRdfType) => t === ESRdfType.dataset,
+      )
     ) {
       filters.push({
         id: "api_only",

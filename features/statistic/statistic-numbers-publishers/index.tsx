@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+
 import { SettingsContext } from "@/providers/settings-provider";
 
 export const StatisticNumbersPublishers = () => {
@@ -24,9 +25,5 @@ export const StatisticNumbersPublishers = () => {
     }
   });
 
-  if (/* isIE do we still need this? */ false) {
-    return <></>;
-  } else {
-    return <span className="text-lg">{state.publishers}</span>;
-  }
+  return <span className="text-lg">{state.publishers}</span>;
 };

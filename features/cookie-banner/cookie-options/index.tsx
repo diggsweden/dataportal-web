@@ -1,8 +1,8 @@
-import React from "react";
-import { CookieSetting, NecessaryCookies } from "@/features/cookie-banner";
-import { useEffect, useRef } from "react";
-import { Heading } from "@/components/typography/heading";
+import React, { useEffect, useRef } from "react";
+
 import { Toggle } from "@/components/form/toggle";
+import { Heading } from "@/components/typography/heading";
+import { CookieSetting, NecessaryCookies } from "@/features/cookie-banner";
 
 export interface CookieOptionsProps {
   cookieSettingsHeading: string;

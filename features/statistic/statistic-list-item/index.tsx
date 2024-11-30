@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import { Component } from "react";
 
 interface StatisticListItemProps {
   listText?: any;
@@ -7,7 +7,7 @@ interface StatisticListItemProps {
   listUrl?: any;
 }
 
-export class StatisticListItem extends React.Component<StatisticListItemProps> {
+export class StatisticListItem extends Component<StatisticListItemProps> {
   constructor(props: StatisticListItemProps) {
     super(props);
   }

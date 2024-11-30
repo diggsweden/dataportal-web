@@ -1,18 +1,19 @@
-import { FC, useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Container } from "@/components/layout/container";
-import { GridList } from "@/components/grid-list";
-import { linkBase } from "@/utilities";
-import { Pagination } from "@/components/pagination";
 import { useRouter, NextRouter } from "next/router";
-import { SettingsContext } from "@/providers/settings-provider";
+import { FC, useContext, useEffect, useState } from "react";
+
+import { Button } from "@/components/button";
+import { GridList } from "@/components/grid-list";
+import { Container } from "@/components/layout/container";
+import { Pagination } from "@/components/pagination";
+import { Heading } from "@/components/typography/heading";
 import {
   GoodExampleDataFragment,
   NewsItemDataFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
-import { Heading } from "@/components/typography/heading";
-import { Button } from "@/components/button";
+import { SettingsContext } from "@/providers/settings-provider";
+import { linkBase } from "@/utilities";
 
 interface ListPageProps {
   listItems: (

@@ -1,6 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
 import React, { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "@/providers/settings-provider";
 import {
   FlexibleXYPlot,
   VerticalBarSeries,
@@ -8,6 +7,8 @@ import {
   XAxis,
   YAxis,
 } from "react-vis";
+
+import { SettingsContext } from "@/providers/settings-provider";
 
 interface StatisticGraphState {
   useCanvas?: boolean;

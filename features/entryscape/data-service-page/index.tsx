@@ -1,15 +1,16 @@
-import React, { useContext, useEffect } from "react";
 import Head from "next/head";
-import useTranslation from "next-translate/useTranslation";
-import { ApiIndexContext } from "@/providers/api-index-context";
-import { EntrystoreContext } from "@/providers/entrystore-provider";
 import Link from "next/link";
-import { SettingsContext } from "@/providers/settings-provider";
-import { linkBase } from "@/utilities";
+import useTranslation from "next-translate/useTranslation";
+import React, { useContext, useEffect } from "react";
+
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
-import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
 import { Preamble } from "@/components/typography/preamble";
+import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
+import { ApiIndexContext } from "@/providers/api-index-context";
+import { EntrystoreContext } from "@/providers/entrystore-provider";
+import { SettingsContext } from "@/providers/settings-provider";
+import { linkBase } from "@/utilities";
 
 export const DataServicePage: React.FC<{
   dataSet: string | string[] | undefined;

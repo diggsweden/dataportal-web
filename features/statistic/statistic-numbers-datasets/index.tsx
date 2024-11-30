@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+
 import { SettingsContext } from "@/providers/settings-provider";
 
 export const StatisticNumbersDatasets = () => {
@@ -24,9 +25,5 @@ export const StatisticNumbersDatasets = () => {
     }
   }, []);
 
-  if (/* isIE do wee still need this */ false) {
-    return <></>;
-  } else {
-    return <span className="text-lg font-strong"> {state.datasets}</span>;
-  }
+  return <span className="text-lg font-strong"> {state.datasets}</span>;
 };

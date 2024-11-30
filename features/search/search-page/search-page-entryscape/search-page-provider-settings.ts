@@ -1,6 +1,6 @@
-import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
 import { EnvSettings } from "@/env";
 import { SearchSortOrder } from "@/providers/search-provider";
+import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
 
 interface FacetConfig {
   resource: string;

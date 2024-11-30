@@ -1,15 +1,16 @@
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { FC, useContext, useEffect } from "react";
-import { SettingsContext } from "@/providers/settings-provider";
-import { EntrystoreContext } from "@/providers/entrystore-provider";
-import { useRouter } from "next/router";
-import Head from "next/head";
-import { linkBase } from "@/utilities";
-import { Heading } from "@/components/typography/heading";
+
 import { Container } from "@/components/layout/container";
+import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import Link from "next/link";
 import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
+import { EntrystoreContext } from "@/providers/entrystore-provider";
+import { SettingsContext } from "@/providers/settings-provider";
+import { linkBase } from "@/utilities";
 
 export const ConceptPage: FC<{ curi?: string; uri?: string }> = ({
   curi,

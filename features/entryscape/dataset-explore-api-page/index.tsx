@@ -1,17 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { ApiExplorerProps } from "@/features/entryscape/api-exploring";
-import { EntrystoreContext } from "@/providers/entrystore-provider";
-import useTranslation from "next-translate/useTranslation";
-import { SettingsContext } from "@/providers/settings-provider";
-import { useRouter } from "next/router";
 import Head from "next/head";
-import { Heading } from "@/components/typography/heading";
-import { Container } from "@/components/layout/container";
-import { linkBase } from "@/utilities";
+import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
+import React, { useContext, useEffect, useState } from "react";
+
 import { CustomLink } from "@/components/custom-link";
+import { Container } from "@/components/layout/container";
+import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
+import { ApiExplorerProps } from "@/features/entryscape/api-exploring";
 import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
+import { EntrystoreContext } from "@/providers/entrystore-provider";
+import { SettingsContext } from "@/providers/settings-provider";
+import { linkBase } from "@/utilities";
 
 const ApiExplorer = dynamic(
   () =>
