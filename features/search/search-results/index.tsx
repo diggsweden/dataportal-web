@@ -176,12 +176,6 @@ const SortingOptions: FC<{
   );
 };
 
-/**
- * @param {SearchContextData} { search } the context of the SearchProvider
- * @param {SearchMode} { searchMode } typ of search, data | begrepp | specifikation
- * @returns a list of links
- * @param {boolean} showSorting disable or enable filters
- */
 export const SearchResults: FC<SearchResultsProps> = ({
   search,
   searchMode,
