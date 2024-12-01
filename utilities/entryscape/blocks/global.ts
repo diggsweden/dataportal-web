@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Entry } from "@entryscape/entrystore-js";
 import { Translate } from "next-translate";
 
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 export const customIndicators = (t: Translate, iconSize: number) => {
   return [
     {
@@ -76,9 +78,11 @@ export const customIndicators = (t: Translate, iconSize: number) => {
       block: "customLicenseIndicator",
       loadEntry: true,
       run: function (node: any, data: any, items: any, entry: Entry) {
-        var v = entry.getAllMetadata().findFirstValue(null, "dcterms:license");
+        const v = entry
+          .getAllMetadata()
+          .findFirstValue(null, "dcterms:license");
         if (v.indexOf("http://creativecommons.org/") === 0) {
-          var variant;
+          let variant;
           if (v === "http://creativecommons.org/publicdomain/zero/1.0/") {
             variant = "zero";
           } else if (v.indexOf("http://creativecommons.org/licenses/") === 0) {
@@ -172,12 +176,12 @@ export const exploreApiLink = (
       block: "exploreApiLinkRun",
       run: function (node: any, a2: any, a3: any, entry: Entry) {
         if (node && node.firstElementChild) {
-          var showExploreApi = false;
-          var entryId = entry.getId();
-          var contextId = cid;
+          let showExploreApi = false;
+          const entryId = entry.getId();
+          const contextId = cid;
 
           if ((window as any).__es_has_apis)
-            for (var a in (window as any).__es_has_apis) {
+            for (const a in (window as any).__es_has_apis) {
               if (
                 (window as any).__es_has_apis[a] ===
                 contextId + "_" + entryId
@@ -185,9 +189,9 @@ export const exploreApiLink = (
                 showExploreApi = true;
             }
           if (showExploreApi) {
-            var el = document.createElement("a");
-            var label = document.createElement("span");
-            var svgIcon = document.createElementNS(
+            const el = document.createElement("a");
+            const label = document.createElement("span");
+            const svgIcon = document.createElementNS(
               "http://www.w3.org/2000/svg",
               "svg",
             );
@@ -234,8 +238,8 @@ export const hemvist = (t: Translate) => {
     loadEntry: true,
     run: function (node: any, data: any, items: any, entry: Entry) {
       const currentPath = window.location.pathname;
-      var resourceURI = entry.getResourceURI();
-      var linkTitle = t("pages|concept_page$concept_adress");
+      const resourceURI = entry.getResourceURI();
+      let linkTitle = t("pages|concept_page$concept_adress");
 
       if (
         currentPath.includes("/terminology/") ||

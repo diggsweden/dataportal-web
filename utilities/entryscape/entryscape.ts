@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EntryStore, EntryStoreUtil, Entry } from "@entryscape/entrystore-js";
-// @ts-ignore
+// @ts-expect-error unknown namespace.
 import { namespaces } from "@entryscape/rdfjson";
+// @ts-expect-error unknown namespace.
+import lucene from "lucene";
 import { Translate } from "next-translate";
 
 import { SearchSortOrder } from "@/providers/search-provider";
@@ -26,9 +29,6 @@ import {
 } from "@/utilities";
 
 import { entryCache } from "../local-cache";
-
-const lucene = require("lucene");
-//const tokenize = require('edge-ngrams')()
 
 //#region ES members
 
@@ -140,7 +140,7 @@ export class Entryscape {
     metaFacets: ESFacetField[],
     dcat: DCATData,
   ): Promise<{ [key: string]: SearchFacet }> {
-    let facets: { [key: string]: SearchFacet } = {};
+    const facets: { [key: string]: SearchFacet } = {};
 
     for (const f of metaFacets) {
       // Find the corresponding facet specification
@@ -264,7 +264,7 @@ export class Entryscape {
         console.error("Error fetching publisher value:", error);
       }
 
-      let themeFacetSpec = this.facetSpecification?.facets?.find(
+      const themeFacetSpec = this.facetSpecification?.facets?.find(
         (spec) => spec.resource === "http://www.w3.org/ns/dcat#theme",
       );
 
@@ -290,7 +290,7 @@ export class Entryscape {
       }
 
       // Similar approach for formats
-      let formatFacetSpec = this.facetSpecification?.facets?.find(
+      const formatFacetSpec = this.facetSpecification?.facets?.find(
         (spec) => spec.resource === "http://purl.org/dc/terms/format",
       );
 
@@ -356,7 +356,7 @@ export class Entryscape {
       if (q.indexOf('"') === -1) q = q.replace(/ /g, "+AND+");
       if (q.length === 0) q = "*";
       return q;
-    } catch (err) {
+    } catch {
       // eslint-disable-next-line no-useless-escape
       return query.replace(/[\!\*\-\+\&\|\(\)\[\]\{\}\^\\~\?\:\"]/g, "").trim();
     }
@@ -378,7 +378,7 @@ export class Entryscape {
     const lang = request.language || "sv";
     const es = this.getEntryStore();
 
-    let esQuery = es.newSolrQuery();
+    const esQuery = es.newSolrQuery();
     esQuery.publicRead(true);
 
     // Only set up facets if explicitly requested

@@ -53,7 +53,7 @@ export const SearchInput: FC<SearchInputProps> = ({
             icon={CloseIcon}
             iconPosition="right"
             onClick={() => {
-              submitSearch && submitSearch("");
+              submitSearch?.("");
               setQuery("");
             }}
             aria-label={t("common|clear-search")}
