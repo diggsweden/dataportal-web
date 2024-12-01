@@ -10,8 +10,6 @@ import mailIcon from "@/assets/icons/mail.svg";
 import nyheterIcon from "@/assets/icons/nyheter.svg";
 import shareData from "@/assets/icons/shareData.svg";
 import stodVerktygIcon from "@/assets/icons/stod-verktyg.svg";
-import education from "@/assets/icons/stod-verktyg.svg";
-import results from "@/assets/icons/stod-verktyg.svg";
 import { AddIcon } from "@/types/global";
 
 interface NavItem {
@@ -89,7 +87,7 @@ const mainNav: NavData[] = [
     title: "educations",
     promoted: false,
     inEn: false,
-    icon: education,
+    icon: stodVerktygIcon,
   },
   {
     title: "data-collaboration",
@@ -125,7 +123,7 @@ const mainNav: NavData[] = [
     title: "results",
     promoted: false,
     inEn: false,
-    icon: results,
+    icon: stodVerktygIcon,
     children: [
       {
         title: "metadata",
