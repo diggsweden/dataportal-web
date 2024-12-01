@@ -249,15 +249,15 @@ export const SearchPageContent: FC<SearchProps> = () => {
                   ))}
               </ul>
             )}
+            {searchResult?.hits && (
+              <Pagination
+                totalResults={searchResult?.count || 0}
+                itemsPerPage={PER_PAGE}
+                pageNumber={pageNumber}
+                changePage={changePage}
+              />
+            )}
           </div>
-          {searchResult?.hits && (
-            <Pagination
-              totalResults={searchResult?.count || 0}
-              itemsPerPage={PER_PAGE}
-              pageNumber={pageNumber}
-              changePage={changePage}
-            />
-          )}
         </Container>
       </div>
     </div>

@@ -40,18 +40,22 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
     const watchScroll = () => {
       if (isScrolling.current) return;
 
-      for (const item of menuItems) {
-        const element = document.getElementById(item.id);
-        if (element && isInView(element)) {
-          setActiveItemId(item.id);
-          history.replaceState(null, "", `#${item.id}`);
-          break;
+      requestAnimationFrame(() => {
+        for (const item of menuItems) {
+          const element = document.getElementById(item.id);
+          if (element && isInView(element)) {
+            setActiveItemId(item.id);
+            history.replaceState(null, "", `#${item.id}`);
+            break;
+          }
         }
-      }
+      });
     };
 
-    const interval = setInterval(watchScroll, 100);
-    return () => clearInterval(interval);
+    window.addEventListener("scroll", watchScroll, { passive: true });
+    watchScroll();
+
+    return () => window.removeEventListener("scroll", watchScroll);
   }, [isLargeScreen, menuItems]);
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>, id: string) => {
