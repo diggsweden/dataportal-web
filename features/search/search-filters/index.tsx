@@ -100,7 +100,7 @@ const MarkAll: FC<MarkAllProps> = ({ search, toggleKey, title }) => {
               : [],
           });
 
-          let wildcardFacet: SearchFacetValue = {
+          const wildcardFacet: SearchFacetValue = {
             count: -1,
             facet: toggleKey,
             facetType: ESType.wildcard,
@@ -181,7 +181,7 @@ export const SearchFilters: React.FC<SearchFilterProps> = ({
     await search.toggleFacet(facetValue);
 
     if (search.facetSelected(key, "*")) {
-      let wildcardFacet: SearchFacetValue = {
+      const wildcardFacet: SearchFacetValue = {
         count: -1,
         facet: key,
         facetType: ESType.wildcard,

@@ -6,71 +6,99 @@ import noImage from "@/assets/logos/noImage.png";
 import { ImageFragment as ImageInterface } from "@/graphql/__generated__/operations";
 import { isExternalLink } from "@/utilities";
 
+/**
+ * Props for the CustomImage component
+ * @interface CustomImageProps
+ */
 interface CustomImageProps {
+  /** The image object containing url, width, height, and alt text */
   image: ImageInterface | null;
+  /** Responsive image sizes attribute */
   sizes?: string;
+  /** Additional CSS classes */
   className?: string;
+  /** Whether to prioritize image loading */
   priority?: boolean;
+  /** Desired image width */
   width?: number;
+  /** Image quality (1-100) */
+  quality?: number;
 }
 
-const isNextStatic = (url: string) =>
-  typeof url != "string" || !url.startsWith("/uploads");
+/** Default dimensions and quality settings */
+const DEFAULT_WIDTH = 384;
+const DEFAULT_HEIGHT = 200;
+const DEFAULT_QUALITY = 75;
+const DEFAULT_SIZES =
+  "(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw";
 
+/**
+ * Checks if the image URL is a Next.js static asset
+ * @param url - The image URL to check
+ * @returns boolean indicating if the URL is a Next.js static asset
+ */
+const isNextStatic = (url: string) => !url.startsWith("/uploads");
+
+/**
+ * Generates the complete image URL with width and quality parameters
+ * @param imageUrl - The base image URL
+ * @param width - Desired image width
+ * @param quality - Desired image quality
+ * @returns The complete image URL with parameters
+ */
+const getImageUrl = (imageUrl: string, width: number, quality: number) => {
+  if (isExternalLink(imageUrl)) return imageUrl;
+  const baseUrl = env("MEDIA_BASE_URL") || "";
+  return `${baseUrl}${imageUrl}?w=${width}&q=${quality}`;
+};
+
+/**
+ * A custom Image component that handles various image sources and formats
+ * Supports external images, Next.js static assets, and dynamic images with optimization
+ * Falls back to a placeholder image when no image is provided
+ */
 export const CustomImage: FC<CustomImageProps> = ({
   image,
-  sizes,
-  className,
+  sizes = DEFAULT_SIZES,
+  className = "",
   priority = false,
-  width,
+  width = DEFAULT_WIDTH,
+  quality = DEFAULT_QUALITY,
 }) => {
   if (!image) {
     return (
       <Image
         src={noImage}
-        width={384}
-        height={200}
-        alt={"image not found"}
+        width={DEFAULT_WIDTH}
+        height={DEFAULT_HEIGHT}
+        alt="image not found"
         className={className}
-        sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw"
+        sizes={sizes}
         loading="lazy"
       />
     );
   }
 
+  const imageProps = {
+    width: Number(image.width) || DEFAULT_WIDTH,
+    height: Number(image.height) || DEFAULT_HEIGHT,
+    className,
+    alt: image.alt || "",
+    sizes,
+    priority,
+  };
+
   if (isNextStatic(image.url)) {
-    return (
-      <Image
-        key={image.url}
-        src={image.url}
-        width={image.width || 384}
-        height={image.height || 200}
-        className={className}
-        alt={image.alt || ""}
-        sizes={
-          sizes
-            ? sizes
-            : "(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 20vw"
-        }
-        priority={priority}
-      />
-    );
+    // eslint-disable-next-line jsx-a11y/alt-text
+    return <Image src={image.url} {...imageProps} />;
   }
 
-  const src = isExternalLink(image.url)
-    ? image.url
-    : (env("MEDIA_BASE_URL") || "") + image.url;
-
   return (
+    // eslint-disable-next-line jsx-a11y/alt-text
     <Image
-      key={src}
-      src={`${src}?w=${width || 384}&q=${75}`}
-      width={Number(image.width) || 384}
-      height={Number(image.height) || 200}
-      className={className ? className : ""}
-      alt={image.alt || ""}
-      unoptimized={true}
-      priority={priority}
+      src={getImageUrl(image.url, width, quality)}
+      {...imageProps}
+      unoptimized
     />
   );
 };
