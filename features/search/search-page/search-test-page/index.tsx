@@ -1,10 +1,10 @@
 import { MeiliSearch } from "meilisearch";
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { SearchHit } from "@/types/search";
 
-export const SearchTestPage: React.FC = () => {
+export const SearchTestPage: FC = () => {
   const [hits, setHits] = useState<SearchHit[]>();
   const [searchWord, setSearchWord] = useState("");
 

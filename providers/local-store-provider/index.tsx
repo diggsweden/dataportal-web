@@ -1,4 +1,4 @@
-import React, { createContext, useEffect } from "react";
+import { createContext, FC, ReactNode, useEffect } from "react";
 
 import { CookieSetting } from "@/features/cookie-banner";
 import { useStateCallback } from "@/hooks/use-state-callback";
@@ -29,7 +29,7 @@ export interface LocalStoreProviderState {
   store: LocalStore;
 }
 
-export const LocalStoreProvider: React.FC<{ children: React.ReactNode }> = ({
+export const LocalStoreProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const storeName = "digg-store";

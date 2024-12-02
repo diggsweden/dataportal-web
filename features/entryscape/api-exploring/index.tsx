@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import React, { useContext } from "react";
+import { FC, useContext } from "react";
 
 import { EnvSettings } from "@/env/env-settings";
 import { ApiIndexContext } from "@/providers/api-index-context";
@@ -10,7 +10,7 @@ export interface ApiExplorerProps {
   entryId: string;
 }
 
-export const ApiExplorer: React.FC<ApiExplorerProps> = (props) => {
+export const ApiExplorer: FC<ApiExplorerProps> = (props) => {
   const SwaggerUI = dynamic(
     () =>
       import("swagger-ui-react").then(

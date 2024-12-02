@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 
 import { AccordionBlock } from "@/components/blocks/accordion-block";
 import { MediaBlock } from "@/components/blocks/media-block";
@@ -62,7 +62,7 @@ const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
   );
 };
 
-export const BlockList: React.FC<blockListProps> = ({
+export const BlockList: FC<blockListProps> = ({
   blocks,
   className,
   landingPage,

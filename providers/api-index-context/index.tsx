@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { createContext, FC, ReactNode, useEffect, useState } from "react";
 
 export interface ApiIndexProviderProps {
   apiIndexFileUrl: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 /* eslint-disable no-unused-vars */
@@ -41,9 +41,9 @@ const defaultApiData: ApiIndex = {
   loading: false,
 };
 
-export const ApiIndexContext = React.createContext<ApiIndex>(defaultApiData);
+export const ApiIndexContext = createContext<ApiIndex>(defaultApiData);
 
-export const ApiIndexProvider: React.FC<ApiIndexProviderProps> = ({
+export const ApiIndexProvider: FC<ApiIndexProviderProps> = ({
   apiIndexFileUrl,
   children,
 }) => {

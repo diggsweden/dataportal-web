@@ -6,7 +6,7 @@ import {
 } from "@entryscape/entrystore-js";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import React, { createContext, useEffect, useState } from "react";
+import { createContext, FC, ReactNode, useEffect, useState } from "react";
 
 import { EnvSettings } from "@/env/env-settings";
 import { SettingsUtil } from "@/env/settings-util";
@@ -21,7 +21,7 @@ export interface EntrystoreProviderProps {
   env: EnvSettings;
   eid?: string;
   cid?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
   entryUri?: string;
   entrystoreUrl: string | "admin.dataportal.se";
   isConcept?: boolean;
@@ -94,7 +94,7 @@ export const EntrystoreContext = createContext<ESEntry>(defaultESEntry);
  *
  * setting properties in the provider state (eg. title)
  */
-export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
+export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   children,
   cid,
   eid,

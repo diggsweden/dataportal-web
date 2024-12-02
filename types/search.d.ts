@@ -1,10 +1,6 @@
 import { SearchSortOrder } from "@/providers/search-provider";
 import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
 
-//unfortunate hack to get a entrystore class instance, script is inserted in head
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare let ESJS: any;
-
 //#region ES members
 
 export interface ESEntryField {

@@ -1,6 +1,6 @@
 import { Translate } from "next-translate";
 import useTranslation from "next-translate/useTranslation";
-import React, { FC, useCallback, useState } from "react";
+import { ChangeEvent, DragEvent, FC, useCallback, useState } from "react";
 
 import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
 import ChevronUpIcon from "@/assets/icons/chevronUp.svg";
@@ -59,7 +59,7 @@ const addLabel = (number: number, Type: string, ID: number, title: string) => {
 
 interface Props {
   UpdateFormDataArray: (
-    _e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    _e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     _data: FormTypes,
     _pageIndex: number,
   ) => void;
@@ -70,7 +70,7 @@ interface Props {
 const FormItem = (
   item: FormTypes,
   UpdateFormDataArray: (
-    _e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    _e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     _data: FormTypes,
     _pageIndex: number,
     _imgData?: { fileName: string; base64: string } | null,
@@ -80,37 +80,34 @@ const FormItem = (
 ) => {
   const { ID, __typename: Type } = item;
 
-  const handleImageDrop = useCallback(
-    (e: React.DragEvent<HTMLTextAreaElement>) => {
-      e.preventDefault();
-      const curTarget = e.currentTarget;
-      const file = e.dataTransfer.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
+  const handleImageDrop = useCallback((e: DragEvent<HTMLTextAreaElement>) => {
+    e.preventDefault();
+    const curTarget = e.currentTarget;
+    const file = e.dataTransfer.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
 
-      reader.onload = () => {
-        const base64 = reader.result;
-        if (typeof base64 === "string" && base64.includes("image")) {
-          const curVal = curTarget.value;
-          const newVal =
-            curVal.substring(0, curTarget.selectionStart) +
-            `[${file.name}]` +
-            curVal.substring(curTarget.selectionEnd);
-          curTarget.value = newVal;
-          UpdateFormDataArray(
-            e as unknown as React.ChangeEvent<HTMLTextAreaElement>,
-            item,
-            pageIndex,
-            {
-              fileName: file.name,
-              base64,
-            },
-          );
-        }
-      };
-    },
-    [],
-  );
+    reader.onload = () => {
+      const base64 = reader.result;
+      if (typeof base64 === "string" && base64.includes("image")) {
+        const curVal = curTarget.value;
+        const newVal =
+          curVal.substring(0, curTarget.selectionStart) +
+          `[${file.name}]` +
+          curVal.substring(curTarget.selectionEnd);
+        curTarget.value = newVal;
+        UpdateFormDataArray(
+          e as unknown as ChangeEvent<HTMLTextAreaElement>,
+          item,
+          pageIndex,
+          {
+            fileName: file.name,
+            base64,
+          },
+        );
+      }
+    };
+  }, []);
 
   switch (Type) {
     case "dataportal_Digg_FormText":

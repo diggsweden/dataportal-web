@@ -1,7 +1,7 @@
 import { I18n } from "next-translate";
 import withTranslation from "next-translate/withTranslation";
 import { decode, encode } from "qss";
-import React, { Component, createContext } from "react";
+import { Component, createContext, ReactNode } from "react";
 
 import {
   HitSpecification,
@@ -38,7 +38,7 @@ export interface SearchProviderProps {
   facetSpecification?: FacetSpecification;
   initRequest: SearchRequest;
   i18n: I18n;
-  children?: React.ReactNode;
+  children?: ReactNode;
   fetchHitsWithFacets?: boolean;
 }
 

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import React, { useContext, useEffect } from "react";
+import { FC, useContext, useEffect } from "react";
 
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
@@ -12,7 +12,7 @@ import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
 
-export const DataServicePage: React.FC<{
+export const DataServicePage: FC<{
   dataSet: string | string[] | undefined;
   name: string | string[] | undefined;
 }> = ({ dataSet, name }) => {

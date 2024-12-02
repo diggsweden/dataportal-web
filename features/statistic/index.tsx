@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import React, { useContext, useEffect, useState } from "react";
+import { FC, ReactNode, useContext, useEffect, useState } from "react";
 
 import { Heading } from "@/components/typography/heading";
 import { EnvSettings } from "@/env";
@@ -14,7 +14,7 @@ interface ThemeItem {
 }
 
 interface StatisticState {
-  children?: React.ReactNode;
+  children?: ReactNode;
   labels?: string[];
   series?: number[];
   values?: string[];
@@ -89,7 +89,7 @@ export const getStatistics = async (env: EnvSettings, lang: string) => {
 };
 
 //Statistic
-export const Statistic: React.FC = () => {
+export const Statistic: FC = () => {
   const { env } = useContext(SettingsContext);
   const { t, lang } = useTranslation("pages");
 

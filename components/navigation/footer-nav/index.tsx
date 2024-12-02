@@ -1,6 +1,6 @@
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext } from "react";
+import { ComponentType, FC, useContext } from "react";
 
 import { Heading } from "@/components/typography/heading";
 import { LocalStoreContext } from "@/providers/local-store-provider";
@@ -9,7 +9,7 @@ import { footerNav } from "@/utilities/menu-data";
 
 interface FooterNavItem {
   title: string;
-  icon?: React.ComponentType<{
+  icon?: ComponentType<{
     className?: string;
     width?: number;
     height?: number;
