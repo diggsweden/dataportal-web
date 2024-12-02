@@ -133,14 +133,21 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
       const resourceUri = entry.getResourceURI();
 
       const title =
-        getSimplifiedLocalizedValue(metadata, "dcterms:title") ||
-        getSimplifiedLocalizedValue(metadata, "skos:prefLabel");
+        getSimplifiedLocalizedValue(metadata, "dcterms:title", resourceUri) ||
+        getSimplifiedLocalizedValue(metadata, "skos:prefLabel", resourceUri);
 
       const description =
-        getSimplifiedLocalizedValue(metadata, "skos:definition") ||
-        getSimplifiedLocalizedValue(metadata, "dcterms:description");
+        getSimplifiedLocalizedValue(metadata, "skos:definition", resourceUri) ||
+        getSimplifiedLocalizedValue(
+          metadata,
+          "dcterms:description",
+          resourceUri,
+        );
 
-      const publisherUri = metadata.findFirstValue(null, "dcterms:publisher");
+      const publisherUri = metadata.findFirstValue(
+        resourceUri,
+        "dcterms:publisher",
+      );
 
       let publisher = "";
       if (pageType !== "mqa") {
@@ -152,6 +159,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
               publisher = getSimplifiedLocalizedValue(
                 publisherEntry.getAllMetadata(),
                 "foaf:name",
+                publisherUri,
               );
             }
           } catch (error) {
@@ -180,6 +188,7 @@ export const EntrystoreProvider: React.FC<EntrystoreProviderProps> = ({
                     publisher = getSimplifiedLocalizedValue(
                       publisherEntry.getAllMetadata(),
                       "foaf:name",
+                      publisherUri,
                     );
                   }
                 }
