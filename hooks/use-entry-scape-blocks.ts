@@ -20,6 +20,7 @@ interface BlocksConfig {
     | "terminology"
     | "dataservice"
     | "apiexplore"
+    | "organisation"
     | "mqa";
 }
 

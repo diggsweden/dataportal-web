@@ -92,7 +92,7 @@ module.exports = {
     borderRadius: {
       sm: "0",
       md: "0",
-      lg: "0",
+      lg: "1.25rem",
       full: "9999px",
     },
     fontFamily: {

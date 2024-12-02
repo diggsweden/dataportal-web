@@ -68,6 +68,10 @@
     "path": "",
     "title": "News"
   },
+  "organisations": {
+    "path": "organisations",
+    "title": "Search organisations"
+  },
   "projects": {
     "path": "inspiration",
     "title": "Inspiration"

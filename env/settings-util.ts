@@ -24,6 +24,7 @@ export class SettingsUtil {
   public static getCurrent(): EnvSettings {
     if (!SettingsUtil.current) {
       this.current = this.getDefault();
+      // eslint-disable-next-line no-console
       console.log("Missing runtimeconfig, creating default");
     }
 
@@ -35,7 +36,7 @@ export class SettingsUtil {
    *
    */
   public static create(): EnvSettings {
-    let envName = env("RUNTIME_ENV") || "prod"; //always default to prod
+    const envName = env("RUNTIME_ENV") || "prod"; //always default to prod
 
     switch (envName) {
       case "dev":

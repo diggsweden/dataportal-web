@@ -96,6 +96,10 @@
     "path": "uppfoljning-open-data-charter",
     "title": "Uppföljning Open data charter"
   },
+  "organisations": {
+    "path": "organisations",
+    "title": "Sök organisationer"
+  },
   "principles": {
     "path": "principer",
     "title": "Principer"

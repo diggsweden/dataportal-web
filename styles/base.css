@@ -53,6 +53,10 @@ body {
   );
 }
 
+.organisation-background {
+  background: rgba(181, 175, 173, 0.2);
+}
+
 @layer base {
   a {
     @apply text-md underline underline-offset-4;
