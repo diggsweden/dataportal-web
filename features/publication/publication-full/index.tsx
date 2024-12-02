@@ -56,11 +56,10 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
       },
     });
 
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: publication.heading,
-        crumbs: crumbs,
-      });
+    setBreadcrumb?.({
+      name: publication.heading,
+      crumbs: crumbs,
+    });
 
     setDate(formatDateWithTime(lang, publication.publishedAt));
   }, [pathname]);
