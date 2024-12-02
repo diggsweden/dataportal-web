@@ -9,7 +9,7 @@ import {
 } from "@/utilities";
 
 import Page from "../[...containerSlug]";
-import { ListPage } from "@/components/content/ListPage";
+// import { ListPage } from "@/components/content/ListPage";
 import { PublicationFull } from "@/components/content/Publication/PublicationFull";
 import { ContainerPage } from "@/components/content/ContainerPage";
 
@@ -59,8 +59,9 @@ const render = (props: DataportalPageProps) => {
       return <Page {...props} />;
     case "Publication":
       return <PublicationFull {...props} />;
-    case "PublicationList":
-      return <ListPage {...props} />;
+    // We don't have a preview for list pages
+    // case "PublicationList":
+    //   return <ListPage {...props} />;
     default:
       return null;
   }

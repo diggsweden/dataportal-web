@@ -7,8 +7,8 @@ import { Pagination } from "@/components/global/Pagination";
 import { useRouter, NextRouter } from "next/router";
 import { SettingsContext } from "@/providers/SettingsProvider";
 import {
-  GoodExampleDataFragment,
-  NewsItemDataFragment,
+  GoodExampleBlockItemFragment,
+  NewsBlockItemFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
 import { Heading } from "@/components/global/Typography/Heading";
@@ -17,8 +17,8 @@ import { Button } from "@/components/global/Button";
 interface ListPageProps {
   listItems: (
     | ToolDataFragment
-    | NewsItemDataFragment
-    | GoodExampleDataFragment
+    | NewsBlockItemFragment
+    | GoodExampleBlockItemFragment
   )[];
   heading: string;
   type: string;
@@ -39,7 +39,11 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
   const endIndex = startIndex + listItemsPerPage;
   const [filterList, setFilterList] =
     useState<
-      (ToolDataFragment | NewsItemDataFragment | GoodExampleDataFragment)[]
+      (
+        | ToolDataFragment
+        | NewsBlockItemFragment
+        | GoodExampleBlockItemFragment
+      )[]
     >(listItems);
   const [keywordList, setKeywordList] = useState<Keyword[]>([]);
   const [activeFilter, setActiveFilter] = useState<Keyword>({
