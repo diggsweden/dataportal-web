@@ -1,4 +1,12 @@
-import React, { useEffect, useState, createContext } from "react";
+import {
+  useEffect,
+  useState,
+  createContext,
+  Dispatch,
+  SetStateAction,
+  FC,
+  ReactNode,
+} from "react";
 
 import { BreadcrumbProps } from "@/components/navigation/breadcrumbs";
 import { EnvSettings, SettingsUtil } from "@/env";
@@ -7,7 +15,7 @@ import { DataportalSettings } from "@/types/global";
 interface SettingsContextProps extends DataportalSettings {
   noScriptContent: string;
   env: EnvSettings;
-  setBreadcrumb?: React.Dispatch<React.SetStateAction<BreadcrumbProps>>;
+  setBreadcrumb?: Dispatch<SetStateAction<BreadcrumbProps>>;
   iconSize: number;
   siteName: string;
   pageNotFoundHeading: string;
@@ -48,9 +56,9 @@ export const defaultSettings: SettingsContextProps = {
 export const SettingsContext =
   createContext<SettingsContextProps>(defaultSettings);
 
-export const SettingsProvider: React.FunctionComponent<{
+export const SettingsProvider: FC<{
   value: SettingsContextProps;
-  children: React.ReactNode;
+  children: ReactNode;
 }> = ({ value, children }) => {
   const [iconSize, setIconSize] = useState(16);
 

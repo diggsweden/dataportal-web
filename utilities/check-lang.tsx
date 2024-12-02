@@ -1,8 +1,8 @@
-import React from "react";
+import { ReactNode } from "react";
 
 export interface IHeading {
   lang: string;
-  node: React.ReactNode;
+  node: ReactNode;
 }
 
 const en = "{en:";

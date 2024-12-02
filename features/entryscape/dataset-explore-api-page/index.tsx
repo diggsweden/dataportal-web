@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import React, { useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 
 import { CustomLink } from "@/components/custom-link";
 import { Container } from "@/components/layout/container";
@@ -18,12 +18,12 @@ const ApiExplorer = dynamic(
   () =>
     import("@/features/entryscape/api-exploring").then(
       (c) => c.ApiExplorer,
-      (e) => e as React.FC<ApiExplorerProps>,
+      (e) => e as FC<ApiExplorerProps>,
     ),
   { ssr: false },
 );
 
-export const DataSetExploreApiPage: React.FC<{
+export const DataSetExploreApiPage: FC<{
   dataSet: string | string[] | undefined;
   apieid: string | string[] | undefined;
 }> = ({ dataSet, apieid }) => {
@@ -39,7 +39,7 @@ export const DataSetExploreApiPage: React.FC<{
   const tab = toggleTabs === 1;
 
   //Toggle between tabs
-  const toggleTab = (index: any) => {
+  const toggleTab = (index: number) => {
     setToggleTabs(index);
   };
 

@@ -1,6 +1,6 @@
 import { ParsedUrlQuery } from "querystring";
 
-import React from "react";
+import { FC } from "react";
 
 import { ContainerPage } from "@/features/pages/container-page";
 import { ListPage } from "@/features/pages/list-page";
@@ -69,7 +69,7 @@ const render = (props: DataportalPageProps) => {
   }
 };
 
-const Draft: React.FC<DataportalPageProps> = (props) => render(props);
+const Draft: FC<DataportalPageProps> = (props) => render(props);
 
 export const getServerSideProps = async ({
   query,

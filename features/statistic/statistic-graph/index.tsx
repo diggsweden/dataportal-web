@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import useTranslation from "next-translate/useTranslation";
-import React, { useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import {
   FlexibleXYPlot,
   VerticalBarSeries,
@@ -19,7 +20,7 @@ interface StatisticGraphState {
   datasets?: number;
 }
 
-export const StatisticGraph: React.FC = () => {
+export const StatisticGraph: FC = () => {
   const { env } = useContext(SettingsContext);
 
   const { t } = useTranslation();
@@ -41,10 +42,10 @@ export const StatisticGraph: React.FC = () => {
       )
         .then((response) => response.json())
         .then((data) => {
-          let list: { x: any; y: any }[] = [];
+          const list: { x: any; y: any }[] = [];
 
           for (let i = 0; i < data.length; i++) {
-            let item = {
+            const item = {
               x: data[i].x.toString().substring(2, 7),
               y: data[i].y,
             };

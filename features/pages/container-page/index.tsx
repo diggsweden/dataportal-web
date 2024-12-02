@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { usePathname } from "next/navigation";
 import { Translate } from "next-translate";
 import useTranslation from "next-translate/useTranslation";
+import { Environment } from "prismjs";
 import React, { useContext, useEffect, useState } from "react";
 
 import { BlockList } from "@/components/blocks/block-list";
@@ -19,28 +21,31 @@ import { checkLang, linkBase } from "@/utilities";
  */
 export const highlightCodeBlock = async () => {
   // ? Fix to get <br/> as line-breaks
-  (await import("prismjs")).hooks.add("before-highlight", function (env) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    env.code = (env as any).element.innerText;
-  });
+  (await require("prismjs")).hooks.add(
+    "before-highlight",
+    function (env: Environment) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      env.code = (env.element as HTMLElement).innerText;
+    },
+  );
   // * init prismjs
-  (await import("prismjs")).highlightAll();
+  (await require("prismjs")).highlightAll();
   // ? Await all plugins and components to fix hydration issue
-  await import("prismjs/plugins/line-numbers/prism-line-numbers");
-  await import("prismjs/components/prism-markup-templating");
-  await import("prismjs/components/prism-csharp");
-  await import("prismjs/components/prism-json");
-  await import("prismjs/components/prism-javascript");
-  await import("prismjs/components/prism-css");
-  await import("prismjs/components/prism-php");
-  await import("prismjs/components/prism-ruby");
-  await import("prismjs/components/prism-python");
-  await import("prismjs/components/prism-java");
-  await import("prismjs/components/prism-c");
-  await import("prismjs/components/prism-cpp");
-  await import("prismjs/plugins/line-numbers/prism-line-numbers");
-  await import("prismjs/plugins/toolbar/prism-toolbar");
-  await import("prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard");
+  await require("prismjs/plugins/line-numbers/prism-line-numbers");
+  await require("prismjs/components/prism-markup-templating");
+  await require("prismjs/components/prism-csharp");
+  await require("prismjs/components/prism-json");
+  await require("prismjs/components/prism-javascript");
+  await require("prismjs/components/prism-css");
+  await require("prismjs/components/prism-php");
+  await require("prismjs/components/prism-ruby");
+  await require("prismjs/components/prism-python");
+  await require("prismjs/components/prism-java");
+  await require("prismjs/components/prism-c");
+  await require("prismjs/components/prism-cpp");
+  await require("prismjs/plugins/line-numbers/prism-line-numbers");
+  await require("prismjs/plugins/toolbar/prism-toolbar");
+  await require("prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard");
 };
 
 /**

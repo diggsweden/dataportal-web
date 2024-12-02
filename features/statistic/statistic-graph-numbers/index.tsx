@@ -1,12 +1,12 @@
 import useTranslation from "next-translate/useTranslation";
-import React, { useContext, useEffect, useState } from "react";
+import { FC, ReactNode, useContext, useEffect, useState } from "react";
 
 import { Heading } from "@/components/typography/heading";
 import { StatisticListItemHistory } from "@/features/statistic/statistic-list-item-history";
 import { SettingsContext } from "@/providers/settings-provider";
 
 interface StatisticState {
-  children?: React.ReactNode;
+  children?: ReactNode;
   x?: number[];
   y?: number[];
   xList: string[];
@@ -16,7 +16,7 @@ interface StatisticState {
   screenWidth: number;
 }
 
-export const StatisticGraphNumbers: React.FC = () => {
+export const StatisticGraphNumbers: FC = () => {
   const { env } = useContext(SettingsContext);
   const { t } = useTranslation("pages");
 

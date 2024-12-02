@@ -1,10 +1,12 @@
 /// <reference types="@digg/design-system/lib/emotion-extention" />
 
+import { ComponentType } from "react";
+
 import { Dataportal_LinkType } from "@/graphql/__generated__/types";
 
 export type FlexDirection = "column" | "row";
 
-type AddIcon = React.ComponentType<{
+type AddIcon = ComponentType<{
   className?: string;
   width?: number;
   height?: number;

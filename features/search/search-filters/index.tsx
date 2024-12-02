@@ -1,5 +1,12 @@
 import useTranslation from "next-translate/useTranslation";
-import React, { useContext, useState, useMemo, FC } from "react";
+import {
+  FC,
+  useContext,
+  useState,
+  useMemo,
+  Dispatch,
+  SetStateAction,
+} from "react";
 
 import FilterIcon from "@/assets/icons/filter.svg";
 import SearchIcon from "@/assets/icons/search.svg";
@@ -22,7 +29,7 @@ interface SearchFilterProps {
   search: SearchContextData;
   searchMode: SearchMode;
   query: string;
-  setShowFilter: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowFilter: Dispatch<SetStateAction<boolean>>;
   showTip?: boolean;
 }
 
@@ -35,7 +42,7 @@ interface MarkAllProps {
 interface FilterSearchProps {
   filterKey: string;
   filter: InputFilter;
-  setFilter: React.Dispatch<React.SetStateAction<InputFilter>>;
+  setFilter: Dispatch<SetStateAction<InputFilter>>;
   title: string;
   fetchMore: () => void;
 }
@@ -43,7 +50,7 @@ interface FilterSearchProps {
 type InputFilter = { [key: string]: string };
 export type SearchMode = "content" | "datasets" | "concepts" | "specifications";
 
-const FilterSearch: React.FC<FilterSearchProps> = ({
+const FilterSearch: FC<FilterSearchProps> = ({
   filterKey,
   title,
   filter,
@@ -147,14 +154,14 @@ const FindFilters = (
 /**
  * Controls for filtering searchhits
  *
- * @param {boolean} showFilter disable or enable filters
- * @param {SearchContextData} search context for handling searchstate
- * @param {SearchMode} searchMode
- * @param {string} query
+ * @param showFilter disable or enable filters
+ * @param search context for handling searchstate
+ * @param searchMode
+ * @param query
  * @param setShowFilter
  * @returns JSX-elements of selects and checkboxes
  */
-export const SearchFilters: React.FC<SearchFilterProps> = ({
+export const SearchFilters: FC<SearchFilterProps> = ({
   showFilter,
   search,
   searchMode,
