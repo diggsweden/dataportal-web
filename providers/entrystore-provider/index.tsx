@@ -384,6 +384,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           )}`,
         },
         terms: { total: 0, termsInfo: [] },
+        orgClassification: metadata.findFirstValue(null, "org:classification"),
+        orgNumber: metadata.findFirstValue(null, "dcterms:identifier"),
       };
 
       const esTerms = new EntryStore(
@@ -393,9 +395,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       const dcatMeta = await fetchDCATMeta();
 
       if (dcatMeta && dcatMeta.templates.length > 0) {
-        const publisherTypeUri = entry
-          .getAllMetadata()
-          .findFirstValue(null, "dcterms:type");
+        const publisherTypeUri = metadata.findFirstValue(null, "dcterms:type");
 
         const orgTypeChoices = getTemplateChoices(
           dcatMeta,
@@ -420,13 +420,14 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           .uriFacet("dcterms:accessRights")
           .uriFacet("rdf:type")
           .uriFacet("http://data.europa.eu/r5r/hvdCategory")
-          .uriFacet("https://www.w3.org/ns/org#classification")
+          .uriFacet("schema:offers")
           .uriFacet("dcterms:conformsTo")
           .list();
 
         await datasetCounts.getEntries();
 
         rawFacets = datasetCounts.getFacets();
+
         if (rawFacets.length > 0) {
           const dataAccessFacet = rawFacets.find(
             (f) => f.predicate === "http://purl.org/dc/terms/accessRights",
@@ -471,8 +472,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           data.datasets.dataInfo[3].total = hvdData;
 
           const feeDataFacet = rawFacets.find(
-            (f: any) =>
-              f.predicate === "https://www.w3.org/ns/org#classification",
+            (f: any) => f.predicate === "http://schema.org/offers",
           );
           const feeData = feeDataFacet?.valueCount || 0;
           data.datasets.dataInfo[4].total = feeData;

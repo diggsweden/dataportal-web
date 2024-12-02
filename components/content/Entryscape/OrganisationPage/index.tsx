@@ -247,19 +247,23 @@ export const OrganisationPage: FC = () => {
                   >
                     {t("pages|organisation_page$org-type")}
                   </Heading>
-                  <p>{entry.organisationData.orgType}</p>
+                  <p>
+                    {entry.organisationData.orgType ||
+                      t("pages|organisation_page$no-org-type")}
+                  </p>
                 </div>
 
-                {entry.organisationData.orgNo && (
-                  <Heading
-                    className="font-strong text-textSecondary"
-                    level={3}
-                    size={"xxs"}
-                  >
-                    {`${t("pages|organisation_page$org-no")} ${
-                      entry.organisationData.orgNo
-                    }`}
-                  </Heading>
+                {entry.organisationData.orgNumber && (
+                  <div>
+                    <Heading
+                      className="font-strong text-textSecondary"
+                      level={3}
+                      size={"xxs"}
+                    >
+                      {t("pages|organisation_page$org-no")}
+                    </Heading>
+                    <p>{entry.organisationData.orgClassification}</p>
+                  </div>
                 )}
 
                 {entry.mqaCatalog && (
