@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Search graph for localized value from meta graph
  *
@@ -79,13 +80,13 @@ export const getLocalizedValue = async (
   if (stmts.length > 0) {
     const obj: any = {};
     for (let s = 0; s < stmts.length; s++) {
-      let stType = stmts[s].getType();
-      let stValue = stmts[s].getValue();
+      const stType = stmts[s].getType();
+      const stValue = stmts[s].getValue();
 
       if (stType && stType == "uri" && !stValue.includes("mailto:")) {
-        let res = await resourcesSearch([stValue], es);
+        const res = await resourcesSearch([stValue], es);
         if (res && res.length > 0) {
-          let meta = res[0].getAllMetadata();
+          const meta = res[0].getAllMetadata();
 
           if (meta)
             obj[stmts[s].getLanguage() || ""] = await getLocalizedValue(
@@ -226,7 +227,7 @@ export function getLocalizedChoiceLabel(choice: Choice, lang: string) {
  */
 export const resourcesSearch = (resources: string[], es: any): Promise<any> => {
   return new Promise<any>((resolve) => {
-    let esQuery = es.newSolrQuery();
+    const esQuery = es.newSolrQuery();
     esQuery.publicRead(true);
     esQuery
       .resource(resources, null)
@@ -239,7 +240,7 @@ export const resourcesSearch = (resources: string[], es: any): Promise<any> => {
 
 export const getEntryLang = (metadataGraph: any, prop: any, lang: string) => {
   let val = "";
-  let fallbackLang = "sv";
+  const fallbackLang = "sv";
 
   const stmts = metadataGraph.find(null, prop);
   if (stmts.length > 0) {
