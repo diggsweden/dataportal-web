@@ -146,71 +146,71 @@ export const OrganisationPage: FC = () => {
 
             {/* Specifications wrapper */}
             {entry.organisationData?.specifications.total &&
-              entry.organisationData?.specifications.total > 0 && (
-                <div>
-                  <Heading level={2} size={"md"} className="mb-lg">
-                    {t("common|specifications")}
-                  </Heading>
-                  <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
-                    <div className="flex flex-col items-center gap-sm md:flex-row md:gap-lg">
-                      <SpecListIcon className="flex-shrink-0" />
-                      <span className="inline-flex items-center gap-sm">
-                        <span className="text-xl text-textSecondary md:text-2xl">
-                          {entry.organisationData.specifications.total}
-                        </span>
-                        <span className="text-textSecondary">
-                          {t("common|specifications")}
-                        </span>
+            entry.organisationData?.specifications.total > 0 ? (
+              <div>
+                <Heading level={2} size={"md"} className="mb-lg">
+                  {t("common|specifications")}
+                </Heading>
+                <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
+                  <div className="flex flex-col items-center gap-sm md:flex-row md:gap-lg">
+                    <SpecListIcon className="flex-shrink-0" />
+                    <span className="inline-flex items-center gap-sm">
+                      <span className="text-xl text-textSecondary md:text-2xl">
+                        {entry.organisationData.specifications.total}
                       </span>
-                    </div>
-                    <ButtonLink
-                      href={entry.organisationData.specifications.link}
-                      label={t("pages|organisation_page$view-all-spec")}
-                      icon={ArrowRightIcon}
-                      iconPosition="right"
-                    />
+                      <span className="text-textSecondary">
+                        {t("common|specifications")}
+                      </span>
+                    </span>
                   </div>
+                  <ButtonLink
+                    href={entry.organisationData.specifications.link}
+                    label={t("pages|organisation_page$view-all-spec")}
+                    icon={ArrowRightIcon}
+                    iconPosition="right"
+                  />
                 </div>
-              )}
+              </div>
+            ) : null}
 
             {/* Terminology wrapper */}
             {entry.organisationData?.terms?.termsInfo?.length &&
-              entry.organisationData?.terms?.termsInfo?.length > 0 && (
-                <div>
-                  <Heading level={2} size={"md"} className="mb-lg">
-                    {t("common|term-with-concept")}
-                  </Heading>
-                  <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
-                    <div className="flex w-full flex-col items-center gap-sm md:flex-row md:gap-lg">
-                      <HoldingHandsIcon className="flex-shrink-0" />
+            entry.organisationData?.terms?.termsInfo?.length > 0 ? (
+              <div>
+                <Heading level={2} size={"md"} className="mb-lg">
+                  {t("common|term-with-concept")}
+                </Heading>
+                <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
+                  <div className="flex w-full flex-col items-center gap-sm md:flex-row md:gap-lg">
+                    <HoldingHandsIcon className="flex-shrink-0" />
 
-                      <div className="flex w-full flex-col gap-xl md:flex-row">
-                        <span className="inline-flex items-center justify-center gap-sm">
-                          <span className="text-xl text-textSecondary md:text-2xl">
-                            {entry.organisationData.terms.total}
-                          </span>
-                          <span className="text-textSecondary">
-                            {t("common|terminologies")}
-                          </span>
+                    <div className="flex w-full flex-col gap-xl md:flex-row">
+                      <span className="inline-flex items-center justify-center gap-sm">
+                        <span className="text-xl text-textSecondary md:text-2xl">
+                          {entry.organisationData.terms.total}
                         </span>
-                        <div className="flex flex-col justify-center gap-sm">
-                          {entry.organisationData?.terms?.termsInfo.map(
-                            (term: TermInfo, idx: number) => (
-                              <Link
-                                key={idx}
-                                href={term.url}
-                                className="text-sm text-green-600 hover:no-underline"
-                              >
-                                {term.title}
-                              </Link>
-                            ),
-                          )}
-                        </div>
+                        <span className="text-textSecondary">
+                          {t("common|terminologies")}
+                        </span>
+                      </span>
+                      <div className="flex flex-col justify-center gap-sm">
+                        {entry.organisationData?.terms?.termsInfo.map(
+                          (term: TermInfo, idx: number) => (
+                            <Link
+                              key={idx}
+                              href={term.url}
+                              className="text-sm text-green-600 hover:no-underline"
+                            >
+                              {term.title}
+                            </Link>
+                          ),
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
-              )}
+              </div>
+            ) : null}
           </div>
 
           {/* Right column */}
