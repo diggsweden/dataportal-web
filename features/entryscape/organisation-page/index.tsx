@@ -1,21 +1,27 @@
-import React, { FC, useContext, useEffect, useState } from "react";
-import { EntrystoreContext } from "@/providers/EntrystoreProvider";
+import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { SettingsContext } from "@/providers/SettingsProvider";
-import Head from "next/head";
-import { linkBase } from "@/utilities";
-import { Container } from "@/components/layout/Container";
-import { Heading } from "@/components/global/Typography/Heading";
-import Link from "next/link";
+import React, { FC, useContext, useEffect, useState } from "react";
+
+import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
 import InfoIcon from "@/assets/icons/dela-data.svg";
 import DiamondIcon from "@/assets/icons/diamond.svg";
-import { Button, ButtonLink } from "@/components/global/Button";
-import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
-import SpecListIcon from "@/assets/icons/specList.svg";
 import HoldingHandsIcon from "@/assets/icons/holdingHands.svg";
-import { CustomLink } from "@/components/global/CustomLink";
-import { Modal } from "@/components/global/Modal";
+import SpecListIcon from "@/assets/icons/specList.svg";
+import { Button, ButtonLink } from "@/components/button";
+import { CustomLink } from "@/components/custom-link";
+import { Container } from "@/components/layout/container";
+import { Modal } from "@/components/modal";
+import { Heading } from "@/components/typography/heading";
+import {
+  DatasetInfo,
+  EntrystoreContext,
+  TermInfo,
+} from "@/providers/entrystore-provider";
+import { SettingsContext } from "@/providers/settings-provider";
+import { linkBase } from "@/utilities";
+
 export const OrganisationPage: FC = () => {
   const { pathname } = useRouter() || {};
   const { setBreadcrumb } = useContext(SettingsContext);
@@ -24,20 +30,19 @@ export const OrganisationPage: FC = () => {
   const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: entry.title,
-        crumbs: [
-          { name: "start", link: { ...linkBase, link: "/" } },
-          {
-            name: t("routes|organisations$title"),
-            link: {
-              ...linkBase,
-              link: `/${t("routes|organisations$path")}?q=&f=`,
-            },
+    setBreadcrumb?.({
+      name: entry.title,
+      crumbs: [
+        { name: "start", link: { ...linkBase, link: "/" } },
+        {
+          name: t("routes|organisations$title"),
+          link: {
+            ...linkBase,
+            link: `/${t("routes|organisations$path")}?q=&f=`,
           },
-        ],
-      });
+        },
+      ],
+    });
   }, [pathname, entry]);
 
   return (
@@ -100,10 +105,10 @@ export const OrganisationPage: FC = () => {
                   <div className="flex flex-shrink-0 flex-col items-center gap-sm">
                     <DiamondIcon className="flex-shrink-0" />
                     <span className="text-xl text-primary md:text-2xl">
-                      {entry.organisationData.datasets.total || 0}
+                      {entry.organisationData?.datasets.total || 0}
                     </span>
                     <span className="text-center text-sm text-textSecondary">
-                      {entry.organisationData.datasets.totTitle}
+                      {entry.organisationData?.datasets.totTitle}
                     </span>
                   </div>
                   <span
@@ -111,8 +116,8 @@ export const OrganisationPage: FC = () => {
                     md:h-[11.125rem] md:w-none md:border-b-0 md:border-r-2 md:pl-[2rem] md:pt-none"
                   />
                   <div className="grid grid-cols-2 gap-x-sm gap-y-xl">
-                    {entry.organisationData.datasets.dataInfo.map(
-                      (data: any, idx: number) => (
+                    {entry.organisationData?.datasets.dataInfo.map(
+                      (data: DatasetInfo, idx: number) => (
                         <div
                           key={idx}
                           className="flex flex-col items-center gap-sm"
@@ -128,9 +133,9 @@ export const OrganisationPage: FC = () => {
                     )}
                   </div>
                 </div>
-                {entry.organisationData.datasets.link && (
+                {entry.organisationData?.datasets.link && (
                   <ButtonLink
-                    href={entry.organisationData.datasets.link}
+                    href={entry.organisationData?.datasets.link}
                     label={t("pages|organisation_page$view-all-data")}
                     icon={ArrowRightIcon}
                     iconPosition="right"
@@ -140,70 +145,72 @@ export const OrganisationPage: FC = () => {
             </div>
 
             {/* Specifications wrapper */}
-            {entry.organisationData.specifications.total > 0 && (
-              <div>
-                <Heading level={2} size={"md"} className="mb-lg">
-                  {t("common|specifications")}
-                </Heading>
-                <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
-                  <div className="flex flex-col items-center gap-sm md:flex-row md:gap-lg">
-                    <SpecListIcon className="flex-shrink-0" />
-                    <span className="inline-flex items-center gap-sm">
-                      <span className="text-xl text-textSecondary md:text-2xl">
-                        {entry.organisationData.specifications.total}
-                      </span>
-                      <span className="text-textSecondary">
-                        {t("common|specifications")}
-                      </span>
-                    </span>
-                  </div>
-                  <ButtonLink
-                    href={entry.organisationData.specifications.link}
-                    label={t("pages|organisation_page$view-all-spec")}
-                    icon={ArrowRightIcon}
-                    iconPosition="right"
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Terminology wrapper */}
-            {entry.organisationData?.terms?.termsInfo?.length > 0 && (
-              <div>
-                <Heading level={2} size={"md"} className="mb-lg">
-                  {t("common|term-with-concept")}
-                </Heading>
-                <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
-                  <div className="flex w-full flex-col items-center gap-sm md:flex-row md:gap-lg">
-                    <HoldingHandsIcon className="flex-shrink-0" />
-
-                    <div className="flex w-full flex-col gap-xl md:flex-row">
-                      <span className="inline-flex items-center justify-center gap-sm">
+            {entry.organisationData?.specifications.total &&
+              entry.organisationData?.specifications.total > 0 && (
+                <div>
+                  <Heading level={2} size={"md"} className="mb-lg">
+                    {t("common|specifications")}
+                  </Heading>
+                  <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
+                    <div className="flex flex-col items-center gap-sm md:flex-row md:gap-lg">
+                      <SpecListIcon className="flex-shrink-0" />
+                      <span className="inline-flex items-center gap-sm">
                         <span className="text-xl text-textSecondary md:text-2xl">
-                          {entry.organisationData.terms.total}
+                          {entry.organisationData.specifications.total}
                         </span>
                         <span className="text-textSecondary">
-                          {t("common|terminologies")}
+                          {t("common|specifications")}
                         </span>
                       </span>
-                      <div className="flex flex-col justify-center gap-sm">
-                        {entry.organisationData.terms.termsInfo.map(
-                          (term: any, idx: number) => (
-                            <Link
-                              key={idx}
-                              href={term.url}
-                              className="text-sm text-green-600 hover:no-underline"
-                            >
-                              {term.title}
-                            </Link>
-                          ),
-                        )}
+                    </div>
+                    <ButtonLink
+                      href={entry.organisationData.specifications.link}
+                      label={t("pages|organisation_page$view-all-spec")}
+                      icon={ArrowRightIcon}
+                      iconPosition="right"
+                    />
+                  </div>
+                </div>
+              )}
+
+            {/* Terminology wrapper */}
+            {entry.organisationData?.terms?.termsInfo?.length &&
+              entry.organisationData?.terms?.termsInfo?.length > 0 && (
+                <div>
+                  <Heading level={2} size={"md"} className="mb-lg">
+                    {t("common|term-with-concept")}
+                  </Heading>
+                  <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
+                    <div className="flex w-full flex-col items-center gap-sm md:flex-row md:gap-lg">
+                      <HoldingHandsIcon className="flex-shrink-0" />
+
+                      <div className="flex w-full flex-col gap-xl md:flex-row">
+                        <span className="inline-flex items-center justify-center gap-sm">
+                          <span className="text-xl text-textSecondary md:text-2xl">
+                            {entry.organisationData.terms.total}
+                          </span>
+                          <span className="text-textSecondary">
+                            {t("common|terminologies")}
+                          </span>
+                        </span>
+                        <div className="flex flex-col justify-center gap-sm">
+                          {entry.organisationData?.terms?.termsInfo.map(
+                            (term: TermInfo, idx: number) => (
+                              <Link
+                                key={idx}
+                                href={term.url}
+                                className="text-sm text-green-600 hover:no-underline"
+                              >
+                                {term.title}
+                              </Link>
+                            ),
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
           </div>
 
           {/* Right column */}
@@ -248,12 +255,12 @@ export const OrganisationPage: FC = () => {
                     {t("pages|organisation_page$org-type")}
                   </Heading>
                   <p>
-                    {entry.organisationData.orgType ||
+                    {entry.organisationData?.orgType ||
                       t("pages|organisation_page$no-org-type")}
                   </p>
                 </div>
 
-                {entry.organisationData.orgNumber && (
+                {entry.organisationData?.orgNumber && (
                   <div>
                     <Heading
                       className="font-strong text-textSecondary"
@@ -262,7 +269,7 @@ export const OrganisationPage: FC = () => {
                     >
                       {t("pages|organisation_page$org-no")}
                     </Heading>
-                    <p>{entry.organisationData.orgClassification}</p>
+                    <p>{entry.organisationData?.orgClassification}</p>
                   </div>
                 )}
 

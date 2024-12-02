@@ -15,7 +15,6 @@ export interface TextTemplate {
 }
 
 export interface GroupTemplate {
-  constraints: any;
   id: string;
   label: { sv: string; en: string };
   items: [TextTemplate | GroupTemplate | ChoiceTemplate | ExtensionTemplate];
@@ -55,10 +54,10 @@ export const listChoices = async (
 ): Promise<string[]> => {
   return new Promise<string[]>((resolve) => {
     const processChoices = async () => {
-      let result: string[] = [];
+      const result: string[] = [];
 
       if (property && dcatMeta) {
-        let matchingNodes = dcatMeta.templates.filter(
+        const matchingNodes = dcatMeta.templates.filter(
           (d) => d.type == "choice" && d.property == property,
         );
 
@@ -82,7 +81,7 @@ export const fetchDCATMeta = async (
 ): Promise<DCATData | undefined> => {
   return new Promise<DCATData | undefined>((resolve) => {
     const processDCAT = async () => {
-      let dcatFileUrl =
+      const dcatFileUrl =
         dcatUrl ||
         "https://static.infra.entryscape.com/blocks-ext/1/opendata/dcat-ap_se2.json";
 

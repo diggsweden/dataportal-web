@@ -10,11 +10,27 @@ import { createContext, FC, ReactNode, useEffect, useState } from "react";
 
 import { EnvSettings } from "@/env/env-settings";
 import { SettingsUtil } from "@/env/settings-util";
-import { getSimplifiedLocalizedValue } from "@/utilities/entrystore-utils";
+import { ESFacetField, ESFacetFieldValue } from "@/types/search";
+import { Choice, fetchDCATMeta } from "@/utilities";
+import {
+  getLocalizedChoiceLabel,
+  getSimplifiedLocalizedValue,
+  getTemplateChoices,
+} from "@/utilities/entrystore-utils";
 
 type RelationObj = {
   title: string;
   url: string;
+};
+
+export type TermInfo = {
+  title: string;
+  url: string;
+};
+
+export type DatasetInfo = {
+  title: string;
+  total: number;
 };
 
 export interface EntrystoreProviderProps {
@@ -40,6 +56,26 @@ type PageType =
   | "apiexplore"
   | "mqa";
 
+export type OrganisationData = {
+  datasets: {
+    total: number;
+    totTitle: string;
+    dataInfo: Array<DatasetInfo>;
+    link: string;
+  };
+  specifications: {
+    total: number;
+    link: string;
+  };
+  terms: {
+    total: number;
+    termsInfo: Array<TermInfo>;
+  };
+  orgClassification: string;
+  orgType: string;
+  orgNumber: string;
+};
+
 export interface ESEntry {
   env: EnvSettings;
   entrystore: EntryStore;
@@ -63,7 +99,7 @@ export interface ESEntry {
   relatedDatasets?: Array<{ title: string; url: string }>;
   keywords?: Array<string>;
   mqaCatalog?: { title: string; url: string } | null;
-  organisationData?: any;
+  organisationData?: OrganisationData;
 }
 
 export interface ESContact {
@@ -357,7 +393,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     metadata: Metadata,
   ) => {
     try {
-      const data: any = {
+      const data: OrganisationData = {
         datasets: {
           total: 0,
           totTitle: t("pages|organisation_page$all-data"),
@@ -386,6 +422,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         terms: { total: 0, termsInfo: [] },
         orgClassification: metadata.findFirstValue(null, "org:classification"),
         orgNumber: metadata.findFirstValue(null, "dcterms:identifier"),
+        orgType: "",
       };
 
       const esTerms = new EntryStore(
@@ -401,14 +438,14 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           dcatMeta,
           "dcterms:type",
           "adms:publishertype",
-        ).find((c: any) => c.value === publisherTypeUri);
+        ).find((c: Choice) => c.value === publisherTypeUri);
 
         if (orgTypeChoices) {
           data.orgType = getLocalizedChoiceLabel(orgTypeChoices, lang);
         }
       }
 
-      let rawFacets: any[] = [];
+      let rawFacets: ESFacetField[] = [];
 
       // Fetch dataset counts
       try {
@@ -433,7 +470,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
             (f) => f.predicate === "http://purl.org/dc/terms/accessRights",
           );
           const openData = dataAccessFacet?.values?.find(
-            (v: any) =>
+            (v: ESFacetFieldValue) =>
               v.name ===
               "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
           );
@@ -441,18 +478,18 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           data.datasets.dataInfo[0].total = openData?.count || 0;
 
           const protectedDataValues = dataAccessFacet?.values?.filter(
-            (v: any) =>
+            (v: ESFacetFieldValue) =>
               v.name ===
                 "http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC" ||
               v.name ===
                 "http://publications.europa.eu/resource/authority/access-right/RESTRICTED",
           );
           const protectedDataCount = protectedDataValues?.reduce(
-            (sum: number, v: any) => sum + v.count,
+            (sum: number, v: ESFacetFieldValue) => sum + v.count,
             0,
           );
 
-          data.datasets.dataInfo[1].total = protectedDataCount;
+          data.datasets.dataInfo[1].total = protectedDataCount || 0;
 
           const apiDataFacet = rawFacets.find(
             (f) =>
@@ -460,19 +497,20 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           );
           const apiData =
             apiDataFacet?.values?.find(
-              (v: any) =>
+              (v: ESFacetFieldValue) =>
                 v.name === "http://entryscape.com/terms/ServedByDataService",
             )?.count || 0;
           data.datasets.dataInfo[2].total = apiData;
 
           const hvdDataFacet = rawFacets.find(
-            (f: any) => f.predicate === "http://data.europa.eu/r5r/hvdCategory",
+            (f: ESFacetField) =>
+              f.predicate === "http://data.europa.eu/r5r/hvdCategory",
           );
           const hvdData = hvdDataFacet?.valueCount || 0;
           data.datasets.dataInfo[3].total = hvdData;
 
           const feeDataFacet = rawFacets.find(
-            (f: any) => f.predicate === "http://schema.org/offers",
+            (f: ESFacetField) => f.predicate === "http://schema.org/offers",
           );
           const feeData = feeDataFacet?.valueCount || 0;
           data.datasets.dataInfo[4].total = feeData;
@@ -500,12 +538,14 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           );
           const specificationData = rawFacets
             ?.find((f) => f.predicate === "http://purl.org/dc/terms/conformsTo")
-            ?.values?.filter((v: any) => specificationUris.includes(v.name))
-            ?.reduce((acc: any, v: any) => acc + v.count, 0);
+            ?.values?.filter((v: ESFacetFieldValue) =>
+              specificationUris.includes(v.name),
+            )
+            ?.reduce((acc: number, v: ESFacetFieldValue) => acc + v.count, 0);
 
           data.specifications.total = specifications.getSize();
 
-          if (specificationData > 0) {
+          if (specificationData && specificationData > 0) {
             data.datasets.dataInfo[5].total = specificationData;
           }
         }
