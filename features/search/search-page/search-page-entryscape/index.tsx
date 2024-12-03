@@ -30,6 +30,7 @@ export const SearchPageEntryscape: FC<SearchProps> = ({ searchType }) => {
   const [query, setQuery] = useState("");
   const [showFilter, setShowFilter] = useState(false);
   const [showTip, setShowTip] = useState(false);
+  const router = useRouter();
 
   const clearCurrentScrollPos = () => {
     if (typeof localStorage != "undefined") {
@@ -91,7 +92,7 @@ export const SearchPageEntryscape: FC<SearchProps> = ({ searchType }) => {
         />
       </Head>
 
-      <SearchProvider {...searchProviderSettings[searchType]}>
+      <SearchProvider router={router} {...searchProviderSettings[searchType]}>
         <SearchContext.Consumer>
           {(search) => (
             <>

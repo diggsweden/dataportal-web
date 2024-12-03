@@ -1,6 +1,7 @@
+import { useRouter } from "next/router";
 import { I18n } from "next-translate";
 import withTranslation from "next-translate/withTranslation";
-import { decode, encode } from "qss";
+import { decode } from "qss";
 import { Component, createContext, ReactNode } from "react";
 
 import {
@@ -40,6 +41,7 @@ export interface SearchProviderProps {
   i18n: I18n;
   children?: ReactNode;
   fetchHitsWithFacets?: boolean;
+  router: ReturnType<typeof useRouter>;
 }
 
 /* eslint-disable no-unused-vars */
@@ -178,7 +180,19 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
   };
 
   /**
-   * On component mount - Modified to split initial load with parallel loading
+   * Handle browser back/forward navigation
+   */
+  private handlePopState = async () => {
+    const anyParsed = await this.parseLocationToState();
+    if (anyParsed) {
+      await this.set({ fetchFacets: true });
+      await this.fetchAllFacets();
+      await this.doSearch(false, false);
+    }
+  };
+
+  /**
+   * On component mount - Modified to handle browser navigation
    */
   async componentDidMount() {
     if (!hasWindow) return;
@@ -191,17 +205,17 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
 
       await this.initialLoad();
 
-      // Handle browser navigation
-      window.addEventListener("popstate", async () => {
-        const anyParsed = await this.parseLocationToState();
-        if (anyParsed) {
-          await this.set({ fetchFacets: true });
-          await this.fetchAllFacets();
-          await this.doSearch(false, false);
-        }
-      });
+      // Add event listener for browser navigation
+      window.addEventListener("popstate", this.handlePopState);
     } catch (error) {
       console.error("Error in componentDidMount:", error);
+    }
+  }
+
+  componentWillUnmount() {
+    if (hasWindow) {
+      // Remove event listener for browser navigation
+      window.removeEventListener("popstate", this.handlePopState);
     }
   }
 
@@ -709,65 +723,45 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
    * Save current request state to Location
    */
   setStateToLocation = () => {
-    if (hasWindow && history) {
-      const rdftypes: string[] = [];
+    if (!hasWindow) return;
 
-      const query =
-        this.state.request && this.state.request.query
-          ? this.state.request.query
-          : "";
+    const rdftypes: string[] = [];
 
-      const page =
-        this.state.request && this.state.request.page
-          ? this.state.request.page + 1
-          : "1";
+    const query = this.state.request?.query || "";
+    const page = this.state.request?.page ? this.state.request.page + 1 : "1";
+    const take = this.state.request?.take || 20;
+    const compact = this.state.request?.compact || false;
+    const sortOrder =
+      this.state.request?.sortOrder || SearchSortOrder.score_desc;
 
-      const take =
-        this.state.request && this.state.request.take
-          ? this.state.request.take
-          : 20;
+    const facets =
+      this.state.request?.facetValues?.map(
+        (fval: SearchFacetValue) => fval.facetValueString,
+      ) || [];
 
-      const compact =
-        this.state.request && this.state.request.compact ? true : false;
+    if (this.state.request.esRdfTypes) {
+      const getKeyFromValue = (value: string) =>
+        Object.entries(ESRdfType).filter((item) => item[1] === value)[0][0];
 
-      const sortOrder =
-        this.state.request.sortOrder && this.state.request.sortOrder
-          ? (this.state.request.sortOrder as SearchSortOrder)
-          : SearchSortOrder.score_desc;
-
-      const facets =
-        this.state.request && this.state.request.facetValues
-          ? Object.values(this.state.request.facetValues).map(
-              (fval: SearchFacetValue) => fval.facetValueString,
-            )
-          : [];
-
-      if (this.state.request.esRdfTypes) {
-        const getKeyFromValue = (value: string) =>
-          Object.entries(ESRdfType).filter((item) => item[1] === value)[0][0];
-
-        this.state.request.esRdfTypes!.forEach((e) => {
-          rdftypes.push(getKeyFromValue(e));
-        });
-      }
-
-      const newurl =
-        window.location.protocol +
-        "//" +
-        window.location.host +
-        window.location.pathname +
-        "?" +
-        encode({
-          p: page,
-          q: query,
-          s: sortOrder,
-          t: take,
-          f: facets.join("$"),
-          rt: rdftypes.join("$"),
-          c: compact,
-        });
-      window.history.pushState({ path: newurl }, "", newurl);
+      this.state.request.esRdfTypes.forEach((e) => {
+        rdftypes.push(getKeyFromValue(e));
+      });
     }
+
+    const searchParams = new URLSearchParams({
+      p: page.toString(),
+      q: query,
+      s: sortOrder.toString(),
+      t: take.toString(),
+      f: facets.join("$"),
+      rt: rdftypes.join("$"),
+      c: compact.toString(),
+    });
+
+    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+
+    // Use the router from props
+    this.props.router.replace(newUrl, undefined, { shallow: true });
   };
 
   /**
