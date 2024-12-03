@@ -2,5 +2,11 @@
   "allchecktext": {
     "http://purl.org/dc/terms/license": "All with license"
   },
-  "theme-input-label": "Search within filters"
+  "theme-input-label": "Search within filters",
+  "group": {
+    "access": "Availability",
+    "type": "Type of data",
+    "actor": "Actors",
+    "distribution": "Distribution"
+  }
 }

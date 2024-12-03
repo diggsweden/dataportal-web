@@ -46,7 +46,7 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   );
   add(
     "script-src-elem",
-    `'self' 'unsafe-inline' https://admin.dataportal.se https://editera.dataportal.se https://webbanalys.digg.se https://webbanalys-dashboard.digg.se https://entrystore.org/js/4.15.0-dev/entrystore.js *.static.cdn.entryscape.com static.cdn.entryscape.com https://cdn.screen9.com/players/amber-player.js`,
+    `'self' 'unsafe-inline' dataportal.se *.dataportal.se https://webbanalys.digg.se https://webbanalys-dashboard.digg.se https://entrystore.org/js/4.15.0-dev/entrystore.js *.entryscape.com static.cdn.entryscape.com https://cdn.screen9.com/players/amber-player.js`,
     { prodOnly: false },
   );
   add(

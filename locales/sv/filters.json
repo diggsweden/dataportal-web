@@ -2,5 +2,11 @@
   "allchecktext": {
     "http://purl.org/dc/terms/license": "Alla med licens"
   },
-  "theme-input-label": "Sök inom filter"
+  "theme-input-label": "Sök inom filter",
+  "group": {
+    "access": "Tillgänglighet",
+    "type": "Typ av data",
+    "actor": "Aktörer",
+    "distribution": "Distribution"
+  }
 }

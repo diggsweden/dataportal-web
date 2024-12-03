@@ -35,8 +35,8 @@ interface NavTopData {
 
 interface NavFooterItem {
   title: string;
-  icon: any;
-  type?: "internal" | "external" | "email";
+  icon?: any;
+  type?: "internal" | "external" | "email" | "cookie";
   href?: string;
 }
 
@@ -87,6 +87,7 @@ const mainNav: NavData[] = [
   {
     title: "educations",
     promoted: false,
+    inEn: false,
     icon: education,
   },
   {
@@ -94,6 +95,11 @@ const mainNav: NavData[] = [
     promoted: false,
     inEn: false,
     icon: datasamverkanIcon,
+  },
+  {
+    title: "european-data-areas",
+    inEn: false,
+    icon: globeIcon,
   },
   {
     title: "why-share-data",
@@ -106,10 +112,6 @@ const mainNav: NavData[] = [
       },
       {
         title: "legislation",
-        inEn: false,
-      },
-      {
-        title: "strategies",
         inEn: false,
       },
       {
@@ -175,6 +177,10 @@ const footerNav: NavFooterData[] = [
         href: "https://community.dataportal.se/category/4/feedback-p%C3%A5-dataportal-se",
         type: "external",
         icon: externalLinkIcon,
+      },
+      {
+        title: "cookie-settings",
+        type: "cookie",
       },
       {
         title: "info@digg.se",

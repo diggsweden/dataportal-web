@@ -113,8 +113,9 @@ export const getLocalizedValue = async (
 export const getSimplifiedLocalizedValue = (
   metadata: Metadata,
   property: string,
+  resourceURI?: string,
 ) => {
-  const values = metadata.find(null, property);
+  const values = metadata.find(resourceURI || null, property);
   // Try to find Swedish value first
   const svValue = values.find((v: MetadataValue) => v.getLanguage() === "sv");
   // Fall back to English if no Swedish

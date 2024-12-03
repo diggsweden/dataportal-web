@@ -22,11 +22,13 @@ export type CookieProperties = {
   accepted: boolean;
 };
 
-export const CookieBanner: FC = () => {
+export const CookieBanner: FC<{
+  settingsOpen: boolean;
+  setSettingsOpen: Function;
+}> = ({ settingsOpen, setSettingsOpen }) => {
   const { store, set } = useContext(LocalStoreContext);
   const { setActivation } = useContext(TrackingContext);
   const { t, lang } = useTranslation();
-  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const initialCookieSetting: CookieSetting = {
     analytic: {

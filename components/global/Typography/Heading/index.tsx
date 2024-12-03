@@ -8,6 +8,7 @@ const headingVariants = cva(["text-wrap"], {
       md: ["text-lg md:text-xl"],
       sm: ["text-md md:text-lg"],
       xs: ["text-sm md:text-md"],
+      xxs: ["text-sm mb-sm"],
     },
   },
   defaultVariants: {

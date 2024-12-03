@@ -4,7 +4,11 @@ declare module "@entryscape/entrystore-js" {
     facetLimit(limit: number): this;
     getBaseURI(): string;
     getContextById(id: string): Context;
+    getEntryURI(cid: string, eid: string): string;
     newSolrQuery(): SolrQuery;
+    getEntry(uri: string): Promise<Entry>;
+    getContextId(uri: string): string;
+    getContext(uri: string): Context;
   }
 
   export class EntryStoreUtil {
@@ -16,6 +20,7 @@ declare module "@entryscape/entrystore-js" {
       asyncCallType?: any,
     ): Promise<Entry[]>;
     loadOnlyPublicEntries(all: boolean): void;
+    getEntryByResourceURI(uri: string): Promise<Entry>;
   }
 
   export class SolrQuery {
@@ -83,6 +88,7 @@ declare module "@entryscape/entrystore-js" {
     getContext(): Context;
     getId(): string;
     getResourceURI(): string;
+    getEntryInfo(): EntryInfo;
   }
 
   export class Metadata {
@@ -98,5 +104,6 @@ declare module "@entryscape/entrystore-js" {
   export interface Context {
     getResourceURI(): string;
     getId(): string;
+    getEntryURI(): string;
   }
 }

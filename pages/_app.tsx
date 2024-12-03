@@ -72,6 +72,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   const { t, lang } = useTranslation();
   // Put shared props into state to persist between pages that doesn't use getStaticProps
   const [env, setEnv] = useState<EnvSettings>(SettingsUtil.create());
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [matomoActivated, setMatomoActivated] = useState<boolean>(true);
   const [openSideBar, setOpenSideBar] = useState(false);
   const { seo, heading, heroImage, preamble } = resolvePage(
@@ -140,7 +141,10 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
           >
             <MetaData seo={seo} />
             <div id="scriptsPlaceholder" />
-            <CookieBanner />
+            <CookieBanner
+              settingsOpen={settingsOpen}
+              setSettingsOpen={setSettingsOpen}
+            />
             <div
               id="top"
               className={`relative h-[100dvh] md:h-full ${
@@ -192,6 +196,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 </main>
               </div>
               <Footer
+                setSettingsOpen={setSettingsOpen}
                 setOpenSideBar={setOpenSideBar}
                 openSideBar={openSideBar}
               />
