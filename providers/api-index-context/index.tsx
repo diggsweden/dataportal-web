@@ -5,17 +5,14 @@ export interface ApiIndexProviderProps {
   children?: ReactNode;
 }
 
-/* eslint-disable no-unused-vars */
 export interface ApiIndex {
-  list: (contextid: string, entryid: string) => ApiIndexItem[] | undefined;
+  list: (_contextid: string, _entryid: string) => ApiIndexItem[] | undefined;
   findDetection: (
-    contextid: string,
-    entryid: string,
+    _contextid: string,
+    _entryid: string,
   ) => ApiSpecDetection | undefined;
   loading: boolean;
 }
-
-/* eslint-enable no-unused-vars */
 
 export interface ApiIndexItem {
   contextId: string;
