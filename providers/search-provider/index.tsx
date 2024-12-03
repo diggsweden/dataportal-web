@@ -185,6 +185,8 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
   private handlePopState = async () => {
     const anyParsed = await this.parseLocationToState();
     if (anyParsed) {
+      await this.set({ fetchFacets: true });
+      await this.fetchAllFacets();
       await this.doSearch(false, false);
     }
   };
