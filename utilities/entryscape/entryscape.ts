@@ -21,11 +21,12 @@ import {
   getEntryLang,
   resourcesSearch,
   listChoices,
-  getLocalizedMetadataValue,
   getTemplateChoices,
   getLocalizedChoiceLabel,
   getUriNames,
   Choice,
+  getLocalizedValue,
+  fetchDCATMeta,
 } from "@/utilities";
 
 import { entryCache } from "../local-cache";
@@ -159,6 +160,7 @@ export class Entryscape {
           group: facetSpec.group,
           facetValues: f.values
             .filter((value: ESFacetFieldValue) => {
+              if (!value.name || value.name.trim() === "") return false;
               if (!facetSpec?.dcatFilterEnabled) return true;
 
               const choices: Choice[] = getTemplateChoices(
@@ -247,16 +249,20 @@ export class Entryscape {
    */
   async getMetaValues(
     entry: Entry,
+    path: string,
     dcat?: DCATData,
   ): Promise<{ [key: string]: string[] }> {
     const values: { [key: string]: string[] } = {};
 
-    if (entry) {
+    if (entry && path !== "/organisations/") {
       const metadata = entry.getAllMetadata();
 
       try {
-        const publisherUri = metadata.findFirstValue(null, "dcterms:publisher");
-
+        const publisherUri = getLocalizedValue(
+          metadata,
+          "dcterms:publisher",
+          entry.getResourceURI(),
+        );
         const publisherName = entryCache.getValue(publisherUri);
 
         values["organisation_literal"] = [publisherName || publisherUri];
@@ -325,6 +331,29 @@ export class Entryscape {
       values["modified"] = metadata
         .find(null, "http://purl.org/dc/terms/modified")
         .map((f: any) => f.getValue());
+    } else {
+      const metadata = entry.getAllMetadata();
+
+      try {
+        const publisherTypeUri = metadata.findFirstValue(null, "dcterms:type");
+        const dcatMeta = await fetchDCATMeta();
+
+        if (dcatMeta) {
+          const orgTypeChoices = getTemplateChoices(
+            dcatMeta,
+            "dcterms:type",
+            "adms:publishertype",
+          ).find((c: Choice) => c.value === publisherTypeUri);
+
+          if (orgTypeChoices) {
+            values["organisation_type"] = [
+              getLocalizedChoiceLabel(orgTypeChoices, this.lang),
+            ];
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching organisation type:", error);
+      }
     }
 
     return values;
@@ -380,6 +409,15 @@ export class Entryscape {
 
     const esQuery = es.newSolrQuery();
     esQuery.publicRead(true);
+
+    // Handle filters
+    if (request.filters && request.filters.length > 0) {
+      request.filters.forEach((filter) => {
+        if (filter.property === "uri") {
+          esQuery.uriProperty(filter.key, filter.values);
+        }
+      });
+    }
 
     // Only set up facets if explicitly requested
     if (request.fetchFacets) {
@@ -496,7 +534,12 @@ export class Entryscape {
 
           if (facetSpec && facetSpec.dcatType !== "choice") {
             await getUriNames(
-              fg.values.map((v: SearchFacet) => v.name),
+              fg.values
+                .filter(
+                  (v: SearchFacet) =>
+                    v.name?.toLocaleLowerCase().startsWith("http"),
+                )
+                .map((v: SearchFacet) => v.name),
               this.getEntryStoreUtil(),
               facetSpec?.dcatProperty,
             );
@@ -528,20 +571,22 @@ export class Entryscape {
 
         const hit = {
           entryId: child.getId(),
-          title: getLocalizedMetadataValue(
+          title: getLocalizedValue(
             metaData,
             hitSpecification.titleResource || "dcterms:title",
-            lang,
-            { resourceURI },
+            resourceURI,
           ),
-          description: getLocalizedMetadataValue(
+          description: getLocalizedValue(
             metaData,
             hitSpecification.descriptionResource || "dcterms:description",
-            lang,
-            { resourceURI },
+            resourceURI,
           ),
           esEntry: child,
-          metadata: await this.getMetaValues(child, dcat),
+          metadata: await this.getMetaValues(
+            child,
+            hitSpecification.path || "",
+            dcat,
+          ),
           url: "",
           titleLang: getEntryLang(
             metaData,

@@ -1,3 +1,4 @@
+import { createFocusTrap, FocusTrap } from "focus-trap";
 import useTranslation from "next-translate/useTranslation";
 import {
   FC,
@@ -6,8 +7,13 @@ import {
   useMemo,
   Dispatch,
   SetStateAction,
+  useRef,
+  useEffect,
 } from "react";
 
+import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
+import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
+import CrossIcon from "@/assets/icons/cross.svg";
 import FilterIcon from "@/assets/icons/filter.svg";
 import SearchIcon from "@/assets/icons/search.svg";
 import { Button } from "@/components/button";
@@ -48,7 +54,12 @@ interface FilterSearchProps {
 }
 
 type InputFilter = { [key: string]: string };
-export type SearchMode = "content" | "datasets" | "concepts" | "specifications";
+export type SearchMode =
+  | "content"
+  | "datasets"
+  | "concepts"
+  | "specifications"
+  | "organisations";
 
 const FilterSearch: FC<FilterSearchProps> = ({
   filterKey,
@@ -171,6 +182,31 @@ export const SearchFilters: FC<SearchFilterProps> = ({
   const { t } = useTranslation();
   const { iconSize } = useContext(SettingsContext);
   const [inputFilter, setInputFilter] = useState<InputFilter>({});
+  const ref = useRef<HTMLDivElement>(null);
+  const trapRef = useRef<FocusTrap | null>(null);
+
+  useEffect(() => {
+    if (showFilter && ref.current && window.innerWidth < 600) {
+      trapRef.current = createFocusTrap(ref.current, {
+        escapeDeactivates: false,
+        allowOutsideClick: true,
+      });
+      trapRef.current.activate();
+    }
+
+    if (showFilter && window.innerWidth < 600) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      if (trapRef.current) {
+        trapRef.current.deactivate();
+      }
+      document.body.style.overflow = "auto";
+    };
+  }, [showFilter]);
 
   const clearCurrentScrollPos = () => {
     if (typeof localStorage != "undefined" && typeof location != "undefined") {
@@ -213,6 +249,21 @@ export const SearchFilters: FC<SearchFilterProps> = ({
     search.updateFacetStats();
     setShowFilter(!showFilter);
   }
+
+  const MobileButton = ({ className }: { className?: string }) => {
+    return (
+      <Button
+        variant="secondary"
+        size="sm"
+        iconSize={iconSize * 1.5}
+        icon={showFilter ? CrossIcon : FilterIcon}
+        iconPosition="left"
+        label={showFilter ? t("common|close-filter") : t("common|show-filter")}
+        onClick={() => updateFilters()}
+        className={`md:hidden ${className ? className : ""}`}
+      />
+    );
+  };
 
   const groupedFacets = useMemo(() => {
     const grouped: { [key: string]: { [key: string]: SearchFacet } } = {};
@@ -290,10 +341,17 @@ export const SearchFilters: FC<SearchFilterProps> = ({
 
   return (
     <div id="SearchFilters" role="region" aria-label={t("common|filter")}>
+      <div
+        className={`fixed inset-none z-40 overflow-hidden bg-brownOpaque5 md:hidden 
+        ${showFilter ? "visible" : "hidden"}`}
+        onClick={() => setShowFilter(false)}
+      />
+
       <Button
         variant="plain"
         size="sm"
-        icon={FilterIcon}
+        icon={showFilter ? ChevronUpIcon : ChevronDownIcon}
+        iconSize={iconSize * 1.5}
         iconPosition="left"
         aria-label={
           showFilter ? t("common|hide-filter") : t("common|show-filter")
@@ -302,224 +360,259 @@ export const SearchFilters: FC<SearchFilterProps> = ({
         aria-controls="filter-content"
         onClick={() => updateFilters()}
         label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
+        className="hidden items-center py-xs md:flex"
         disabled={
           search.loadingFacets && Object.keys(groupedFacets).length === 0
         }
       />
 
+      <MobileButton className="my-xl" />
+
       <div
+        ref={ref}
         id="filter-content"
-        className={`mt-lg border-t border-brown-400 pt-lg ${
+        className={`bg-pink-50 fixed inset-md z-50 w-auto border-t border-brown-400 md:static md:mt-xl md:bg-transparent md:pt-[1.875rem] ${
           showFilter ? "block" : "hidden"
         }`}
       >
-        {Object.entries(groupedFacets).map(([groupName, groupFacets]) => (
-          <div
-            id="group-container"
-            key={groupName}
-            className="mb-lg items-center md:flex"
-          >
-            {groupName !== "default" && (
-              <h4 className="mb-sm mr-md shrink-0 text-sm text-textSecondary md:mb-none md:w-[120px]">
-                {t(`filters|group$${groupName}`)}:
-              </h4>
-            )}
-            <ul
-              className="flex flex-col flex-wrap gap-md md:flex-row"
-              role="list"
-              aria-label={t("common|available-filters")}
+        <div className="flex h-full flex-col space-y-lg overflow-y-auto overscroll-contain p-lg md:gap-none md:space-y-sm md:p-none">
+          <MobileButton className="mb-lg" />
+
+          {Object.entries(groupedFacets).map(([groupName, groupFacets]) => (
+            <div
+              id="group-container"
+              key={groupName}
+              className="mb-md items-center border-b border-dashed border-brown-500 pb-lg md:!mb-sm md:flex md:border-none md:pb-none"
             >
-              {Object.entries(groupFacets)
-                .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
-                .map(([key, value], idx: number) => {
-                  const isLicense = false;
-                  const shouldFetchMore = value.show <= value.count;
-                  const show = (value && value.show) || 20;
-                  const facetValues = inputFilter[key]
-                    ? value?.facetValues.filter(
-                        (v) =>
-                          v.title
-                            ?.toLowerCase()
-                            .includes(inputFilter[key].toLowerCase()),
-                      )
-                    : value?.facetValues.slice(0, show);
-
-                  if (key !== hvd && key !== national) {
-                    return (
-                      <li key={`${value.title}-${idx}`} role="listitem">
-                        <SearchFilter
-                          title={value.title}
-                          usedFilters={FindFilters(
-                            value.facetValues,
-                            search.request.facetValues,
-                          )}
-                        >
-                          <div className="absolute z-10 mr-lg mt-sm max-h-[600px] w-full overflow-y-auto bg-white shadow-md md:max-w-[20.625rem]">
-                            {(searchMode == "datasets" ||
-                              searchMode == "specifications") && (
-                              //only render on searchpage
-                              <>
-                                {isLicense ? (
-                                  <MarkAll
-                                    search={search}
-                                    toggleKey={key}
-                                    title={t(`filters|allchecktext$${key}`)}
-                                  />
-                                ) : (
-                                  <FilterSearch
-                                    filterKey={key}
-                                    filter={inputFilter}
-                                    setFilter={setInputFilter}
-                                    title={value.title}
-                                    fetchMore={() =>
-                                      shouldFetchMore &&
-                                      search.fetchMoreFacets(key)
-                                    }
-                                  />
-                                )}
-                              </>
-                            )}
-                            {/* List of filter options within this category */}
-                            <ul role="listbox" aria-multiselectable="true">
-                              {facetValues.map(
-                                (
-                                  facetValue: SearchFacetValue,
-                                  index: number,
-                                ) => (
-                                  <li
-                                    key={index}
-                                    role="option"
-                                    aria-selected={selected(key, facetValue)}
-                                  >
-                                    <button
-                                      className={`focus--in group relative flex w-full items-center break-all py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
-                                        selected(key, facetValue) &&
-                                        "font-strong"
-                                      }`}
-                                      onClick={() => {
-                                        doSearch(key, facetValue);
-                                      }}
-                                      role="checkbox"
-                                      aria-checked={selected(key, facetValue)}
-                                    >
-                                      {facetValue.title || facetValue.resource}{" "}
-                                      ({facetValue.count})
-                                      {/* Decorative checkbox icon */}
-                                      <span
-                                        className="absolute right-md"
-                                        aria-hidden="true"
-                                      >
-                                        <SearchCheckboxFilterIcon
-                                          isChecked={selected(key, facetValue)}
-                                          iconSize={iconSize}
-                                        />
-                                      </span>
-                                    </button>
-                                  </li>
-                                ),
-                              )}
-                            </ul>
-
-                            {value.facetValues.length > value.show && (
-                              <Button
-                                variant="secondary"
-                                size="sm"
-                                className="mx-sm my-md"
-                                onClick={() => {
-                                  search.fetchMoreFacets(key);
-                                }}
-                                disabled={search.loadingFacets}
-                                label={
-                                  search.loadingFacets
-                                    ? t("common|loading")
-                                    : t("common|load-more")
-                                }
-                              />
-                            )}
-                            {facetValues.length == 0 && (
-                              <div className="p-md">
-                                {t("pages|search$nohits")}
-                              </div>
-                            )}
-                          </div>
-                        </SearchFilter>
-                      </li>
-                    );
-                  } else if (key === hvd) {
-                    return (
-                      <SearchCheckboxFilter
-                        key={key}
-                        id="hvd_only"
-                        name="hvd"
-                        checked={activeCheckboxFilters.some(
-                          (filter) => filter.id === "hvd_only",
-                        )}
-                        onChange={() => doSearch(key, facetValues[0])}
-                        label={t(`resources|${key}`)}
-                        iconSize={iconSize}
-                      />
-                    );
-                  } else if (key === national) {
-                    return (
-                      <SearchCheckboxFilter
-                        key={key}
-                        id="national_only"
-                        name="National"
-                        checked={activeCheckboxFilters.some(
-                          (filter) => filter.id === "national_only",
-                        )}
-                        onChange={() => doSearch(key, facetValues[0])}
-                        label={t(`resources|${key}`)}
-                        iconSize={iconSize}
-                      />
-                    );
-                  }
-                })}
-
-              {searchMode == "datasets" && groupName == "distribution" && (
-                <SearchCheckboxFilter
-                  key="api_only"
-                  id="api_only"
-                  name="API"
-                  checked={activeCheckboxFilters.some(
-                    (filter) => filter.id === "api_only",
-                  )}
-                  onChange={() => {
-                    clearCurrentScrollPos();
-                    if (
-                      activeCheckboxFilters.some(
-                        (filter) => filter.id === "api_only",
-                      )
-                    ) {
-                      search
-                        .set({
-                          esRdfTypes: [
-                            ESRdfType.dataset,
-                            ESRdfType.esterms_IndependentDataService,
-                            ESRdfType.esterms_ServedByDataService,
-                          ],
-                          query: query,
-                        })
-                        .then(() => search.doSearch());
-                    } else {
-                      search
-                        .set({
-                          esRdfTypes: [
-                            ESRdfType.esterms_IndependentDataService,
-                            ESRdfType.esterms_ServedByDataService,
-                          ],
-                          query: query,
-                        })
-                        .then(() => search.doSearch());
-                    }
-                  }}
-                  label={t(`resources|api`)}
-                  iconSize={iconSize}
-                />
+              {groupName !== "default" && (
+                <h4 className="mb-sm mr-md shrink-0 text-sm text-textSecondary md:mb-none md:w-[120px]">
+                  {t(`filters|group$${groupName}`)}:
+                </h4>
               )}
-            </ul>
+              <ul
+                className="flex w-full flex-row flex-wrap gap-md"
+                role="list"
+                aria-label={t("common|available-filters")}
+              >
+                {Object.entries(groupFacets)
+                  .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
+                  .map(([key, value], idx: number) => {
+                    const isLicense = false;
+                    const shouldFetchMore = value.show <= value.count;
+                    const show = (value && value.show) || 20;
+                    const facetValues = inputFilter[key]
+                      ? value?.facetValues.filter(
+                          (v) =>
+                            v.title
+                              ?.toLowerCase()
+                              .includes(inputFilter[key].toLowerCase()),
+                        )
+                      : value?.facetValues.slice(0, show);
+
+                    if (key !== hvd && key !== national) {
+                      return (
+                        <li
+                          key={`${value.title}-${idx}`}
+                          role="listitem"
+                          className="w-full md:w-auto"
+                        >
+                          <SearchFilter
+                            title={value.title}
+                            usedFilters={FindFilters(
+                              value.facetValues,
+                              search.request.facetValues,
+                            )}
+                          >
+                            <div className="absolute z-10 mr-lg mt-sm max-h-[200px] w-full overflow-y-auto overscroll-contain border border-brown-200 bg-white shadow-md md:max-h-[600px] md:max-w-[20.625rem]">
+                              {(searchMode == "datasets" ||
+                                searchMode == "specifications" ||
+                                searchMode == "organisations") && (
+                                //only render on searchpage
+                                <>
+                                  {isLicense ? (
+                                    <MarkAll
+                                      search={search}
+                                      toggleKey={key}
+                                      title={t(`filters|allchecktext$${key}`)}
+                                    />
+                                  ) : (
+                                    <FilterSearch
+                                      filterKey={key}
+                                      filter={inputFilter}
+                                      setFilter={setInputFilter}
+                                      title={value.title}
+                                      fetchMore={() =>
+                                        shouldFetchMore &&
+                                        search.fetchMoreFacets(key)
+                                      }
+                                    />
+                                  )}
+                                </>
+                              )}
+                              {/* List of filter options within this category */}
+                              <ul role="listbox" aria-multiselectable="true">
+                                {facetValues
+                                  // .filter((v) => v.count > 0)
+                                  .map(
+                                    (
+                                      facetValue: SearchFacetValue,
+                                      index: number,
+                                    ) => (
+                                      <li
+                                        key={index}
+                                        role="option"
+                                        aria-selected={selected(
+                                          key,
+                                          facetValue,
+                                        )}
+                                      >
+                                        <button
+                                          className={`focus--in group relative flex w-full items-center break-all py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
+                                            selected(key, facetValue) &&
+                                            "font-strong"
+                                          }`}
+                                          onClick={() => {
+                                            doSearch(key, facetValue);
+                                          }}
+                                          role="checkbox"
+                                          aria-checked={selected(
+                                            key,
+                                            facetValue,
+                                          )}
+                                        >
+                                          {facetValue.title ||
+                                            facetValue.resource}{" "}
+                                          ({facetValue.count})
+                                          {/* Decorative checkbox icon */}
+                                          <span
+                                            className="absolute right-md mt-[0.375rem]"
+                                            aria-hidden="true"
+                                          >
+                                            <SearchCheckboxFilterIcon
+                                              isChecked={selected(
+                                                key,
+                                                facetValue,
+                                              )}
+                                              iconSize={iconSize}
+                                            />
+                                          </span>
+                                        </button>
+                                      </li>
+                                    ),
+                                  )}
+                              </ul>
+
+                              {value.facetValues.length > value.show && (
+                                <Button
+                                  variant="secondary"
+                                  size="sm"
+                                  className="mx-sm my-md"
+                                  onClick={() => {
+                                    search.fetchMoreFacets(key);
+                                  }}
+                                  disabled={search.loadingFacets}
+                                  label={
+                                    search.loadingFacets
+                                      ? t("common|loading")
+                                      : t("common|load-more")
+                                  }
+                                />
+                              )}
+                              {facetValues.length == 0 && (
+                                <div className="p-md">
+                                  {t("pages|search$nohits")}
+                                </div>
+                              )}
+                            </div>
+                          </SearchFilter>
+                        </li>
+                      );
+                    } else if (key === hvd) {
+                      return (
+                        <SearchCheckboxFilter
+                          key={key}
+                          id="hvd_only"
+                          name="hvd"
+                          checked={activeCheckboxFilters.some(
+                            (filter) => filter.id === "hvd_only",
+                          )}
+                          onChange={() => doSearch(key, facetValues[0])}
+                          label={t(`resources|${key}`)}
+                          iconSize={iconSize}
+                        />
+                      );
+                    } else if (key === national) {
+                      return (
+                        <SearchCheckboxFilter
+                          key={key}
+                          id="national_only"
+                          name="National"
+                          checked={activeCheckboxFilters.some(
+                            (filter) => filter.id === "national_only",
+                          )}
+                          onChange={() => doSearch(key, facetValues[0])}
+                          label={t(`resources|${key}`)}
+                          iconSize={iconSize}
+                        />
+                      );
+                    }
+                  })}
+
+                {searchMode == "datasets" && groupName == "distribution" && (
+                  <SearchCheckboxFilter
+                    key="api_only"
+                    id="api_only"
+                    name="API"
+                    checked={activeCheckboxFilters.some(
+                      (filter) => filter.id === "api_only",
+                    )}
+                    onChange={() => {
+                      clearCurrentScrollPos();
+                      if (
+                        activeCheckboxFilters.some(
+                          (filter) => filter.id === "api_only",
+                        )
+                      ) {
+                        search
+                          .set({
+                            esRdfTypes: [
+                              ESRdfType.dataset,
+                              ESRdfType.esterms_IndependentDataService,
+                              ESRdfType.esterms_ServedByDataService,
+                            ],
+                            query: query,
+                          })
+                          .then(() => search.doSearch());
+                      } else {
+                        search
+                          .set({
+                            esRdfTypes: [
+                              ESRdfType.esterms_IndependentDataService,
+                              ESRdfType.esterms_ServedByDataService,
+                            ],
+                            query: query,
+                          })
+                          .then(() => search.doSearch());
+                      }
+                    }}
+                    label={t(`resources|api`)}
+                    iconSize={iconSize}
+                  />
+                )}
+              </ul>
+            </div>
+          ))}
+          {/* Mobile active filters */}
+          <div className="md:hidden">
+            <SearchActiveFilters
+              search={search}
+              query={query}
+              searchMode={searchMode}
+              activeCheckboxFilters={activeCheckboxFilters}
+            />
           </div>
-        ))}
+          <MobileButton className="!mt-xl" />
+        </div>
       </div>
 
       <SearchActiveFilters

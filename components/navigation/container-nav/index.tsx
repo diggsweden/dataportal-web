@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import { FC, KeyboardEvent, useEffect, useRef, useState } from "react";
 
-import CloseCrossIcon from "@/assets/icons/closeCross.svg";
+import CrossIcon from "@/assets/icons/cross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { Button } from "@/components/button";
 import { ContainerDataFragment } from "@/graphql/__generated__/operations";
@@ -86,7 +86,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
       {vw < 1124 && (
         <Button
           iconPosition="left"
-          icon={expanded ? CloseCrossIcon : HamburgerIcon}
+          icon={expanded ? CrossIcon : HamburgerIcon}
           label={related[0].name}
           onClick={handleToggle}
           className={`!button--large relative z-40 w-full md:w-[20rem] xl:hidden`}

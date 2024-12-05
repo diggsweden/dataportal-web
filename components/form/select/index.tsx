@@ -1,6 +1,6 @@
 import { FC, InputHTMLAttributes, PropsWithChildren, useContext } from "react";
 
-import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
+import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import { SettingsContext } from "@/providers/settings-provider";
 
 interface SelectProps extends InputHTMLAttributes<HTMLSelectElement> {

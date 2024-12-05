@@ -206,9 +206,9 @@ export const SearchPageContent: FC<SearchProps> = () => {
         <SearchPageSelector query={query} />
       </Container>
 
-      <div className="bg-white">
+      <div className="mt-xl bg-white py-xl">
         <Container>
-          <div id="search-result" className="my-lg py-xl md:my-xl">
+          <div id="search-result" className="my-lg">
             <div className="mb-lg md:mb-xl">
               <Heading level={2} size="md">
                 {loading && <span>{t("common|loading")}</span>}

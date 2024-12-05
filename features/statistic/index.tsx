@@ -123,7 +123,7 @@ export const Statistic: FC = () => {
     <>
       <div className="block bg-white p-xl">
         <Heading level={3} size="sm" className="mb-lg">
-          {t("statistic$top-organizations")}
+          {t("statistic$top-organisations")}
         </Heading>
 
         <ol key={"toplist-organisation"} className="list-decimal pl-lg">

@@ -99,4 +99,9 @@ export interface SearchRequest {
   esRdfTypes?: ESRdfType[];
   sortOrder?: SearchSortOrder;
   compact?: boolean;
+  filters?: {
+    key: string;
+    property: ESType;
+    values: string[];
+  }[];
 }

@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 import { Dispatch, FC, InputHTMLAttributes, SetStateAction } from "react";
 
-import CloseIcon from "@/assets/icons/closeCross.svg";
+import CrossIcon from "@/assets/icons/cross.svg";
 import SearchIcon from "@/assets/icons/search.svg";
 import SpinnerIcon from "@/assets/icons/spinner.svg";
 import { Button } from "@/components/button";
@@ -50,7 +50,7 @@ export const SearchInput: FC<SearchInputProps> = ({
           <Button
             type="reset"
             variant="plain"
-            icon={CloseIcon}
+            icon={CrossIcon}
             iconPosition="right"
             onClick={() => {
               submitSearch?.("");
