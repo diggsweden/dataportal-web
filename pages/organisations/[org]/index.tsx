@@ -5,7 +5,7 @@ import { OrganisationPage } from "@/features/entryscape/organisation-page";
 import { EntrystoreProvider } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 
-export default function ExploreApiPage() {
+export default function Organisation() {
   const { env } = useContext(SettingsContext);
   const { query } = useRouter() || {};
   const { org } = query || {};
