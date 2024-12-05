@@ -22,7 +22,7 @@ import { SearchFilter } from "@/features/search/search-filters/search-filter";
 import { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { SearchFacet, SearchFacetValue } from "@/types/search";
-import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
+import { ESRdfType, ESType, checkBoxFilterConfigs } from "@/utilities/entryscape/entryscape";
 
 import { SearchActiveFilters } from "./search-active-filters";
 import {
@@ -541,49 +541,22 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                           </SearchFilter>
                         </li>
                       );
-                    } else if (key === hvd) {
+                    } else {
+                      const filterConfig = checkBoxFilterConfigs[key];
                       return (
                         <SearchCheckboxFilter
                           key={key}
-                          id="hvd_only"
-                          name="hvd"
+                          id={filterConfig.id}
+                          name={filterConfig.name}
                           checked={activeCheckboxFilters.some(
-                            (filter) => filter.id === "hvd_only",
+                            (filter) => filter.id === filterConfig.id,
                           )}
                           onChange={() => doSearch(key, facetValues[0])}
                           label={t(`resources|${key}`)}
                           iconSize={iconSize}
                         />
                       );
-                    } else if (key === national) {
-                      return (
-                        <SearchCheckboxFilter
-                          key={key}
-                          id="national_only"
-                          name="National"
-                          checked={activeCheckboxFilters.some(
-                            (filter) => filter.id === "national_only",
-                          )}
-                          onChange={() => doSearch(key, facetValues[0])}
-                          label={t(`resources|${key}`)}
-                          iconSize={iconSize}
-                        />
-                      );
-                    } else if (key === spec) {
-                      return (
-                        <SearchCheckboxFilter
-                        key={key}
-                        id="spec_only"
-                        name="Specification"
-                        checked={activeCheckboxFilters.some(
-                          (filter) => filter.id === "spec_only",
-                        )}
-                        onChange={() => doSearch(key, facetValues[0])}
-                        label={t(`resources|${key}`)}
-                        iconSize={iconSize}
-                      />
-                      );
-                    } 
+                    }
                   })}
 
                 {searchMode == "datasets" && groupName == "distribution" && (

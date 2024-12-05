@@ -56,6 +56,24 @@ export enum ESRdfType {
   spec = "http://purl.org/dc/terms/conformsTo",
 }
 
+export const checkBoxFilterConfigs: Record<
+  string,
+  { id: string; name: string }
+> = {
+  "http://data.europa.eu/r5r/applicableLegislation": {
+    id: "hvd_only",
+    name: "hvd",
+  },
+  "http://purl.org/dc/terms/subject": {
+    id: "national_only",
+    name: "National",
+  },
+  "http://purl.org/dc/terms/conformsTo": {
+    id: "spec_only",
+    name: "Specification",
+  },
+};
+
 /* eslint-enable no-unused-vars */
 
 export interface ESEntryField {
