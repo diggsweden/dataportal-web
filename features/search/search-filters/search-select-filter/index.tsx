@@ -13,8 +13,7 @@ interface SelectProps {
   label: string;
   value?: string;
   options: { value: string; label: string }[];
-  // eslint-disable-next-line no-unused-vars
-  onChange: (value: { target: { value: string } }) => void;
+  onChange: (_value: { target: { value: string } }) => void;
 }
 
 export const SearchSelectFilter: FC<SelectProps> = ({
