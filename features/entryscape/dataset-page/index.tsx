@@ -87,12 +87,10 @@ export const DatasetPage: FC = () => {
             {/* Publisher */}
             {entry.organisationLink && entry.organisationLink.url ? (
               <Link
-                className="mb-lg hover:!no-underline"
+                className="hover:!no-underline text-green-600 text-lg"
                 href={entry.organisationLink.url}
               >
-                <Preamble className="!text-green-600">
-                  {entry.organisationLink.title}
-                </Preamble>
+                {entry.organisationLink.title}
               </Link>
             ) : (
               entry.publisher && (

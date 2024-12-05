@@ -26,7 +26,6 @@ export const Heading: FC<
   const CustomTag = `h${level}` as keyof React.JSX.IntrinsicElements;
   return (
     <CustomTag className={cx(headingVariants({ size }), className)}>
-      {/* @ts-expect-error - React children type mismatch with custom heading element */}
       {children}
     </CustomTag>
   );
