@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 import { FC, useContext, useState } from "react";
 
-import CloseIcon from "@/assets/icons/closeCross.svg";
+import CrossIcon from "@/assets/icons/cross.svg";
 import PlusIcon from "@/assets/icons/plus.svg";
 import { HtmlParser } from "@/components/typography/html-parser";
 import { FaqFragment as IFaq } from "@/graphql/__generated__/operations";
@@ -38,7 +38,7 @@ export const AccordionBlock: FC<AccordionBlockProps> = ({
           {question}
         </span>
         {open ? (
-          <CloseIcon
+          <CrossIcon
             width={iconSize * 1.5}
             height={iconSize * 1.5}
             viewBox="0 0 24 24"

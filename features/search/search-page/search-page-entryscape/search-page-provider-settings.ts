@@ -34,6 +34,11 @@ interface SearchProviderConfig {
     language: string;
     takeFacets: number;
     sortOrder?: SearchSortOrder;
+    filters?: {
+      key: string;
+      property: ESType;
+      values: string[];
+    }[];
   };
 }
 interface ResourceMeta {
@@ -229,6 +234,62 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
         esRdfTypes: [ESRdfType.spec_standard, ESRdfType.spec_profile],
         language: lang,
         takeFacets: 30,
+      },
+    },
+    organisations: {
+      entryscapeUrl: env.ENTRYSCAPE_DATASETS_PATH
+        ? `https://${env.ENTRYSCAPE_DATASETS_PATH}/store`
+        : "https://admin.dataportal.se/store",
+      hitSpecifications: {
+        "http://xmlns.com/foaf/0.1/Agent": {
+          path: `/organisations/`,
+          titleResource: "foaf:name",
+          descriptionResource: "dcterms:description",
+        },
+      },
+      facetSpecification: {
+        facets: [
+          {
+            resource: "http://purl.org/dc/terms/type",
+            dcatProperty: "dcterms:type",
+            dcatId: "adms:publishertype",
+            type: ESType.uri,
+            dcatType: "choice",
+            indexOrder: 1,
+            maschineName: "publishertype",
+            group: "actor",
+          },
+          {
+            resource: "http://xmlns.com/foaf/0.1/name",
+            dcatProperty: "foaf:name",
+            type: ESType.literal,
+            indexOrder: 2,
+            group: "actor",
+          },
+        ],
+      },
+      initRequest: {
+        esRdfTypes: [ESRdfType.agent],
+        language: lang,
+        takeFacets: 30,
+        filters: [
+          {
+            key: "dcterms:type",
+            property: "uri",
+            values: [
+              "http://purl.org/adms/publishertype/Academia-ScientificOrganisation",
+              "http://purl.org/adms/publishertype/Company",
+              "http://purl.org/adms/publishertype/IndustryConsortium",
+              "http://purl.org/adms/publishertype/LocalAuthority",
+              "http://purl.org/adms/publishertype/NationalAuthority",
+              "http://purl.org/adms/publishertype/NonGovernmentalOrganisation",
+              "http://purl.org/adms/publishertype/Non-ProfitOrganisation",
+              "http://purl.org/adms/publishertype/RegionalAuthority",
+              "http://purl.org/adms/publishertype/StandardisationBody",
+              "http://purl.org/adms/publishertype/SupraNationalAuthority",
+            ],
+          },
+        ],
       },
     },
     concepts: {

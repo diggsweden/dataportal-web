@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import { FC, useEffect, useRef, useState, useContext } from "react";
 
-import CloseCrossIcon from "@/assets/icons/closeCross.svg";
+import CrossIcon from "@/assets/icons/cross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import SearchIcon from "@/assets/icons/search.svg";
 import DataportalTestLogo from "@/assets/logos/dataportalTest.svg";
@@ -137,7 +137,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           aria-expanded={openSideBar}
           aria-controls="sidebar"
           variant="plain"
-          icon={openSideBar ? CloseCrossIcon : HamburgerIcon}
+          icon={openSideBar ? CrossIcon : HamburgerIcon}
           iconPosition="left"
           onClick={() => setOpenSideBar(!openSideBar)}
           label={t("common|menu")}

@@ -14,7 +14,7 @@ import { ESFacetField, ESFacetFieldValue } from "@/types/search";
 import { Choice, fetchDCATMeta } from "@/utilities";
 import {
   getLocalizedChoiceLabel,
-  getSimplifiedLocalizedValue,
+  getLocalizedValue,
   getTemplateChoices,
 } from "@/utilities/entrystore-utils";
 
@@ -187,17 +187,13 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       const resourceUri = entry.getResourceURI();
 
       const title =
-        getSimplifiedLocalizedValue(metadata, "dcterms:title", resourceUri) ||
-        getSimplifiedLocalizedValue(metadata, "skos:prefLabel", resourceUri) ||
-        getSimplifiedLocalizedValue(metadata, "foaf:name", resourceUri);
+        getLocalizedValue(metadata, "dcterms:title", resourceUri) ||
+        getLocalizedValue(metadata, "skos:prefLabel", resourceUri) ||
+        getLocalizedValue(metadata, "foaf:name", resourceUri);
 
       const description =
-        getSimplifiedLocalizedValue(metadata, "skos:definition", resourceUri) ||
-        getSimplifiedLocalizedValue(
-          metadata,
-          "dcterms:description",
-          resourceUri,
-        );
+        getLocalizedValue(metadata, "skos:definition", resourceUri) ||
+        getLocalizedValue(metadata, "dcterms:description", resourceUri);
 
       const publisherUri = metadata.findFirstValue(
         resourceUri,
@@ -210,8 +206,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           try {
             const publisherEntry =
               await esu.getEntryByResourceURI(publisherUri);
+
             if (publisherEntry) {
-              publisher = getSimplifiedLocalizedValue(
+              publisher = getLocalizedValue(
                 publisherEntry.getAllMetadata(),
                 "foaf:name",
                 publisherUri,
@@ -240,7 +237,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
                   const publisherEntry =
                     await esu.getEntryByResourceURI(publisherUri);
                   if (publisherEntry) {
-                    publisher = getSimplifiedLocalizedValue(
+                    publisher = getLocalizedValue(
                       publisherEntry.getAllMetadata(),
                       "foaf:name",
                       publisherUri,
@@ -351,12 +348,12 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     const contactPoint = metadata.findFirstValue(null, "dcat:contactPoint");
 
     const contactEntry = await esu.getEntryByResourceURI(contactPoint);
-    const name = getSimplifiedLocalizedValue(
+    const name = getLocalizedValue(
       contactEntry.getAllMetadata(),
       "http://www.w3.org/2006/vcard/ns#fn",
     );
     const email = parseEmail(
-      getSimplifiedLocalizedValue(
+      getLocalizedValue(
         contactEntry.getAllMetadata(),
         "http://www.w3.org/2006/vcard/ns#hasEmail",
       ),
@@ -375,10 +372,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
     const datasetArray = datasets.map((ds: Entry) => {
       return {
-        title: getSimplifiedLocalizedValue(
-          ds.getAllMetadata(),
-          "dcterms:title",
-        ),
+        title: getLocalizedValue(ds.getAllMetadata(), "dcterms:title"),
         url: `/${lang}/datasets/${es.getContextId(
           ds.getEntryInfo().getMetadataURI(),
         )}_${ds.getId()}`,
@@ -570,10 +564,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           data.terms.total = terms.getSize();
           data.terms.termsInfo = termsList
             .map((t) => ({
-              title: getSimplifiedLocalizedValue(
-                t.getAllMetadata(),
-                "dcterms:title",
-              ),
+              title: getLocalizedValue(t.getAllMetadata(), "dcterms:title"),
               url: t.getResourceURI().startsWith("https://dataportal.se")
                 ? new URL(t.getResourceURI()).pathname.replace(
                     "concepts",
@@ -598,7 +589,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       const mqa = es.getEntryURI(entry.getContext().getId(), "_quality");
       const mqaEntry = await es.getEntry(mqa);
       const mqaMetadata = mqaEntry.getAllMetadata();
-      const title = getSimplifiedLocalizedValue(mqaMetadata, "dcterms:title");
+      const title = getLocalizedValue(mqaMetadata, "dcterms:title");
       const url = `/metadatakvalitet/katalog/_quality/${entry
         .getContext()
         .getId()}`;
@@ -634,10 +625,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     const termEntry = await esu.getEntryByResourceURI(termUri);
 
     return {
-      title: getSimplifiedLocalizedValue(
-        termEntry.getAllMetadata(),
-        "dcterms:title",
-      ),
+      title: getLocalizedValue(termEntry.getAllMetadata(), "dcterms:title"),
       url: termUri.startsWith("https://dataportal.se")
         ? new URL(termUri).pathname.replace("concepts", "terminology")
         : `/${lang}/externalterminology?resource=${termUri}`,
@@ -664,10 +652,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         return resourceEntries
           .filter((e: Entry) => e)
           .map((e: Entry) => ({
-            title: getSimplifiedLocalizedValue(
-              e.getAllMetadata(),
-              "dcterms:title",
-            ),
+            title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
             url: e.getResourceURI().startsWith("https://dataportal.se")
               ? new URL(e.getResourceURI()).pathname
               : `/${lang}/externalspecification?resource=${e.getResourceURI()}`,
@@ -686,10 +671,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         return specifications
           .filter((e: Entry) => e)
           .map((e: Entry) => ({
-            title: getSimplifiedLocalizedValue(
-              e.getAllMetadata(),
-              "dcterms:title",
-            ),
+            title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
             url: e.getResourceURI().startsWith("https://dataportal.se")
               ? new URL(e.getResourceURI()).pathname
               : `/${lang}/externalspecification?resource=${e.getResourceURI()}`,

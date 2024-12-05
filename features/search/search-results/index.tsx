@@ -1,12 +1,18 @@
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import { useEffect, useState, FC, Dispatch, SetStateAction } from "react";
+import {
+  useEffect,
+  useState,
+  FC,
+  Dispatch,
+  SetStateAction,
+  useContext,
+} from "react";
 
 import ListIcon from "@/assets/icons/list.svg";
 import DetailedListIcon from "@/assets/icons/listDetailed.svg";
 import { Button } from "@/components/button";
 import { FileFormatBadge } from "@/components/file-format-badge";
-import { Select } from "@/components/form/select";
 import { Pagination } from "@/components/pagination";
 import { Heading } from "@/components/typography/heading";
 import { SearchMode } from "@/features/search/search-filters";
@@ -14,7 +20,10 @@ import {
   SearchSortOrder,
   SearchContextData,
 } from "@/providers/search-provider";
+import { SettingsContext } from "@/providers/settings-provider";
 import { SearchHit } from "@/types/search";
+
+import { SearchSelectFilter } from "../search-filters/search-select-filter";
 
 interface SearchResultsProps {
   search: SearchContextData;
@@ -67,9 +76,10 @@ const SortingOptions: FC<{
   search: SearchContextData;
 }> = ({ search, setCompact, isCompact }) => {
   const { t } = useTranslation();
+  const { iconSize } = useContext(SettingsContext);
 
   return (
-    <div className="mb-lg flex flex-wrap items-center gap-md md:mb-none">
+    <div className="mb-lg flex flex-wrap items-center justify-between gap-md md:mb-none">
       <Button
         size="sm"
         variant="plain"
@@ -95,68 +105,12 @@ const SortingOptions: FC<{
         }
       />
 
-      <Select
-        id="sort"
-        label={t("pages|search$sort")}
-        value={search.request.sortOrder}
-        onChange={(event) => {
-          event.preventDefault();
-          clearCurrentScrollPos();
-          search
-            .set({
-              page: 0,
-              sortOrder: parseInt(event.target.value),
-            })
-            .then(() => search.doSearch());
-        }}
-      >
-        <option
-          aria-selected={search.request.sortOrder == SearchSortOrder.score_desc}
-          value={SearchSortOrder.score_desc}
-        >
-          {t("pages|search$relevance")}
-        </option>
-
-        <option
-          aria-selected={
-            search.request.sortOrder == SearchSortOrder.modified_desc
-          }
-          value={SearchSortOrder.modified_desc}
-        >
-          {t("pages|search$date")}
-        </option>
-      </Select>
-
-      <Select
-        id="hits"
-        label={t("pages|search$numberofhits")}
-        value={search.request.take}
-        onChange={(event) => {
-          event?.preventDefault();
-          clearCurrentScrollPos();
-          search
-            .set({
-              take: parseInt(event.target.value),
-            })
-            .then(() => search.doSearch());
-        }}
-      >
-        <option aria-selected={search.request.take == 20} value="20">
-          {t("pages|search$numberofhits-20")}
-        </option>
-        <option aria-selected={search.request.take == 50} value="50">
-          {t("pages|search$numberofhits-50")}
-        </option>
-        <option aria-selected={search.request.take == 100} value="100">
-          {t("pages|search$numberofhits-100")}
-        </option>
-      </Select>
-
       {/* For mobile only */}
       <Button
         size="sm"
         variant="plain"
-        className="md:hidden"
+        iconSize={iconSize * 1.5}
+        className="px-none md:hidden"
         icon={isCompact ? ListIcon : DetailedListIcon}
         iconPosition="left"
         aria-label={
@@ -164,6 +118,7 @@ const SortingOptions: FC<{
             ? t("pages|search$detailed-list-active")
             : t("pages|search$detailed-list")
         }
+        label={t("pages|search$list")}
         onClick={() => {
           clearCurrentScrollPos();
           search.set({ compact: isCompact }).then(() => {
@@ -172,6 +127,52 @@ const SortingOptions: FC<{
           });
         }}
       />
+
+      <div className="flex items-center gap-md">
+        <SearchSelectFilter
+          id="sort"
+          label={t("pages|search$sort")}
+          value={search.request.sortOrder?.toString()}
+          options={[
+            {
+              value: SearchSortOrder.score_desc.toString(),
+              label: t("pages|search$relevance"),
+            },
+            {
+              value: SearchSortOrder.modified_desc.toString(),
+              label: t("pages|search$date"),
+            },
+          ]}
+          onChange={(event) => {
+            clearCurrentScrollPos();
+            search
+              .set({
+                page: 0,
+                sortOrder: parseInt(event.target.value),
+              })
+              .then(() => search.doSearch());
+          }}
+        />
+
+        <SearchSelectFilter
+          id="hits"
+          label={t("pages|search$numberofhits")}
+          value={search.request.take?.toString()}
+          options={[
+            { value: "20", label: t("pages|search$numberofhits-20") },
+            { value: "50", label: t("pages|search$numberofhits-50") },
+            { value: "100", label: t("pages|search$numberofhits-100") },
+          ]}
+          onChange={(event) => {
+            clearCurrentScrollPos();
+            search
+              .set({
+                take: parseInt(event.target.value),
+              })
+              .then(() => search.doSearch());
+          }}
+        />
+      </div>
     </div>
   );
 };
@@ -249,17 +250,24 @@ export const SearchResults: FC<SearchResultsProps> = ({
     <div className="animate-pulse space-y-lg opacity-50">
       <div className="rounded h-lg w-1/4 bg-green-600" />
       <div className="flex flex-col gap-sm">
+        <div className="rounded my-xs h-sm w-1/3 bg-textSecondary" />
         <div className="rounded h-md w-3/4 bg-textPrimary" />
         <div className="rounded h-md w-3/4 bg-textPrimary" />
-        <div className="rounded h-sm w-2/4 bg-textSecondary" />
+        {searchMode === "datasets" && (
+          <div className="rounded h-sm w-2/4 bg-textSecondary" />
+        )}
       </div>
     </div>
   );
 
   return (
-    <div id="search-result" className="my-lg py-xl md:my-xl">
-      <div className="mb-lg flex flex-col-reverse justify-between md:flex-row">
-        <Heading level={2} size="md" className="search-result-header">
+    <div id="search-result" className="md:my-lg">
+      <div className="mb-lg flex flex-col justify-between md:flex-row">
+        <Heading
+          level={2}
+          size="md"
+          className="search-result-header mb-md text-xl"
+        >
           {/* Visual display of the count */}
           <span aria-hidden="true">
             {search.loadingHits && `${t("common|loading")}...`}
@@ -274,7 +282,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
           </div>
         </Heading>
 
-        {searchMode == "datasets" && (
+        {searchMode !== "content" && (
           <SortingOptions
             setCompact={setCompact}
             isCompact={isCompact}
@@ -316,14 +324,23 @@ export const SearchResults: FC<SearchResultsProps> = ({
                     !search.loadingFacets &&
                     hit.metadata["inScheme_resource"] &&
                     hit.metadata["inScheme_resource"][0] !== "" && (
-                      <span className="inScheme_resource">
+                      <span className="inScheme_resource text-sm font-strong text-textSecondary">
                         {hit.metadata["inScheme_resource"][0]}
                       </span>
                     )}
 
                   {hit.metadata && hit.metadata["organisation_literal"] && (
-                    <span className="organisation break-words text-sm font-strong text-textSecondary">
+                    <span className="break-words text-sm font-strong text-textSecondary">
                       {hit.metadata["organisation_literal"]}
+                    </span>
+                  )}
+
+                  {hit.metadata && hit.metadata["organisation_type"] && (
+                    <span className="text-sm text-textSecondary">
+                      {"Typ: "}
+                      <span className="break-words font-strong">
+                        {hit.metadata["organisation_type"]}
+                      </span>
                     </span>
                   )}
 
@@ -342,13 +359,14 @@ export const SearchResults: FC<SearchResultsProps> = ({
                   >
                     <div className="mb-xs text-sm font-strong text-textSecondary">
                       {hit.metadata &&
+                        hit.metadata["theme_literal"] &&
                         hit.metadata["theme_literal"].length > 0 && (
                           <span className="category">
                             {hit.metadata["theme_literal"].join(",  ")}
                           </span>
                         )}
                     </div>
-                    <div className="formats space-x-md">
+                    <div className="formats flex w-full flex-wrap gap-md">
                       {hit.metadata &&
                         hit.metadata["format_literal"] &&
                         hit.metadata["format_literal"].map(

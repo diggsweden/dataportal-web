@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { FC, useContext, useEffect, useState, useMemo } from "react";
 
-import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
+import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import { Button } from "@/components/button";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
@@ -20,7 +20,7 @@ import { createSearchProviderSettings } from "./search-page-provider-settings";
 
 interface SearchProps {
   activeLink?: string;
-  searchType: "datasets" | "concepts" | "specifications";
+  searchType: "datasets" | "concepts" | "specifications" | "organisations";
 }
 
 export const SearchPageEntryscape: FC<SearchProps> = ({ searchType }) => {
@@ -140,7 +140,7 @@ export const SearchPageEntryscape: FC<SearchProps> = ({ searchType }) => {
               </Container>
 
               <noscript>{t("common|no-js-text")}</noscript>
-              <div className="bg-white">
+              <div className="mt-xl bg-white py-xl">
                 <Container>
                   <div
                     className={
@@ -152,7 +152,7 @@ export const SearchPageEntryscape: FC<SearchProps> = ({ searchType }) => {
                     <SearchResults
                       showSorting={showFilter}
                       search={search}
-                      searchMode="datasets"
+                      searchMode={searchType}
                     />
                   </div>
                 </Container>

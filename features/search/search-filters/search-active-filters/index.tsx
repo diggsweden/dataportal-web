@@ -1,6 +1,6 @@
 import useTranslation from "next-translate/useTranslation";
 
-import CloseIcon from "@/assets/icons/closeCross.svg";
+import CrossIcon from "@/assets/icons/cross.svg";
 import TrashIcon from "@/assets/icons/trash.svg";
 import { Button } from "@/components/button";
 import { SearchContextData } from "@/providers/search-provider";
@@ -45,12 +45,11 @@ export function SearchActiveFilters({
   if (!hasActiveFilters()) return null;
 
   return (
-    <div className="mt-lg flex min-h-xl flex-col gap-md md:flex-row md:items-center">
-      <div className="flex flex-col flex-wrap gap-sm md:flex-row md:items-center md:gap-md">
-        <span className="text-textSecondary">
-          {t("common|active-filters")}:
-        </span>
-
+    <div className="mt-lg flex flex-col gap-md md:flex-row md:items-center">
+      <span className="w-[7.5rem] text-textSecondary">
+        {t("common|active-filters")}:
+      </span>
+      <div className="flex flex-row flex-wrap gap-md md:items-center">
         {search.request.facetValues?.map(
           (facetValue: SearchFacetValue, index: number) =>
             facetValue.facet !==
@@ -64,9 +63,9 @@ export function SearchActiveFilters({
                 aria-label={`${t("common|clear-filters")} ${
                   facetValue.title || facetValue.resource
                 }`}
-                icon={CloseIcon}
+                icon={CrossIcon}
                 iconPosition="right"
-                className="w-full justify-between py-md text-left font-strong md:w-auto md:py-[2px]"
+                className="w-fit justify-between py-xs text-left font-strong md:py-[2px]"
                 onClick={() => {
                   clearCurrentScrollPos();
                   search.toggleFacet(facetValue).then(() => {
@@ -84,9 +83,9 @@ export function SearchActiveFilters({
             size="xs"
             label={filter.label}
             aria-label={`${t("common|clear-filters")} ${filter.label}`}
-            icon={CloseIcon}
+            icon={CrossIcon}
             iconPosition="right"
-            className="w-full justify-between py-md text-left font-strong md:w-auto md:py-[2px]"
+            className="w-fit justify-between py-xs text-left font-strong md:py-[2px]"
             onClick={() => {
               clearCurrentScrollPos();
               if (filter.isApiFilter) {
@@ -112,8 +111,8 @@ export function SearchActiveFilters({
 
       {((search.request.facetValues &&
         search.request.facetValues.length >= 2) ||
-        activeCheckboxFilters.length > 2) && (
-        <div className="block whitespace-nowrap">
+        activeCheckboxFilters.length >= 2) && (
+        <div className="mt-lg block whitespace-nowrap md:mt-none">
           <Button
             variant="plain"
             size="sm"
@@ -136,6 +135,7 @@ export function SearchActiveFilters({
                 .then(() => search.doSearch());
             }}
             label={t("common|clear-filters")}
+            className="[&_svg]:h-[1.5rem] [&_svg]:w-[1.5rem]"
           />
         </div>
       )}

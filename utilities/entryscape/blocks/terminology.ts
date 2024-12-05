@@ -2,7 +2,7 @@
 import { Entry } from "@entryscape/entrystore-js";
 import { Translate } from "next-translate";
 
-import { getSimplifiedLocalizedValue } from "@/utilities/entrystore-utils";
+import { getLocalizedValue } from "@/utilities/entrystore-utils";
 
 export const terminologyBlocks = (t: Translate, lang: string) => [
   {
@@ -16,7 +16,7 @@ export const terminologyBlocks = (t: Translate, lang: string) => [
         node.firstElementChild.appendChild(el);
 
         const ruri = entry.getResourceURI();
-        const label = getSimplifiedLocalizedValue(
+        const label = getLocalizedValue(
           entry.getAllMetadata(),
           "skos:prefLabel",
         );

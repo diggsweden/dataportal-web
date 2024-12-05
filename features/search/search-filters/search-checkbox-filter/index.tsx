@@ -46,14 +46,14 @@ export function SearchCheckboxFilter({
         id={id}
         name={name}
         type="checkbox"
-        className={`peer/${id} sr-only`}
+        className="peer sr-only"
         checked={!!checked}
         onChange={onChange}
       />
       <label
         className={`button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl 
-          peer-checked:after:translate-x-full peer-focus-visible/${id}:bg-whiteOpaque5 peer-focus-visible/${id}:outline-dashed peer-focus-visible/${id}:outline-[3px] 
-          peer-focus-visible/${id}:outline-offset-2 peer-focus-visible/${id}:outline-primary md:pr-xl`}
+          peer-checked:after:translate-x-full peer-focus-visible:bg-whiteOpaque5 peer-focus-visible:outline-dashed peer-focus-visible:outline-[3px] 
+          peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary md:pr-xl`}
         htmlFor={id}
       >
         {label}

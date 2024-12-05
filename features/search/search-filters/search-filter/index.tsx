@@ -2,7 +2,7 @@ import FocusTrap from "focus-trap-react";
 import useTranslation from "next-translate/useTranslation";
 import { FC, PropsWithChildren, useContext, useEffect, useState } from "react";
 
-import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
+import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import { useClickOutside } from "@/hooks/use-click-outside";
 import { SettingsContext } from "@/providers/settings-provider";
 
@@ -53,7 +53,7 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
           onClick={() => handleOpen(!open)}
           className={`${
             open && "active"
-          } button button--secondary button--large md:button--small w-full justify-between md:justify-start md:py-[0.25rem]`}
+          } button button--secondary button--small w-fit py-xs md:justify-start`}
         >
           {`${title} ${usedFilters || ""}` || t("open")}
           <ChevronDownIcon
