@@ -71,7 +71,7 @@ export const StatisticNumbers = () => {
         dataNumber={state.datasetCount}
       />
       <StatisticDataPresentation
-        dataText={t("search$organization")}
+        dataText={t("search$organisations")}
         dataNumber={state.publisherCount}
       />
     </div>

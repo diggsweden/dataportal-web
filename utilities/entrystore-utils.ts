@@ -21,98 +21,7 @@ import {
 import { Choice, ChoiceTemplate, DCATData } from "./dcat-utils";
 import { entryCache } from "./local-cache";
 
-export const getLocalizedMetadataValue = (
-  metadataGraph: any,
-  prop: any,
-  lang: string,
-  options?: { resourceURI?: string },
-) => {
-  let val = "";
-  const fallbackLang = "en";
-
-  const stmts = metadataGraph.find(options?.resourceURI, prop);
-  if (stmts.length > 0) {
-    const obj: any = {};
-    for (let s = 0; s < stmts.length; s++) {
-      obj[stmts[s].getLanguage() || ""] = stmts[s].getValue();
-    }
-
-    if (typeof obj[lang] !== "undefined") {
-      val = obj[lang];
-    } else if (lang === "sv" && typeof obj[fallbackLang] !== "undefined") {
-      val = obj[fallbackLang];
-    } else {
-      val = Object.entries(obj)[0][1] as string;
-    }
-  }
-
-  return val;
-};
-
-/**
- * Search graph for localized value from meta graph
- *
- * Supports uri-types (will fetch uri and display foaf:name, if any)
- * TODO: support
- *
- * value type retrieve order:
- * 1. exists in sent in lang
- * 2. exists in fallback lang (en)
- * 3. take first
- *
- * @param metadataGraph
- * @param prop
- * @param lang
- */
-export const getLocalizedValue = async (
-  metadataGraph: any,
-  prop: any,
-  lang: string,
-  es: any,
-  options: { uriTypeName?: string; resourceURI?: string } = {
-    uriTypeName: "foaf:name",
-  },
-) => {
-  let val = "";
-  const fallbackLang = "en";
-  const { uriTypeName, resourceURI } = options;
-  const stmts = metadataGraph.find(resourceURI, prop);
-  if (stmts.length > 0) {
-    const obj: any = {};
-    for (let s = 0; s < stmts.length; s++) {
-      const stType = stmts[s].getType();
-      const stValue = stmts[s].getValue();
-
-      if (stType && stType == "uri" && !stValue.includes("mailto:")) {
-        const res = await resourcesSearch([stValue], es);
-        if (res && res.length > 0) {
-          const meta = res[0].getAllMetadata();
-
-          if (meta)
-            obj[stmts[s].getLanguage() || ""] = await getLocalizedValue(
-              meta,
-              uriTypeName || "foaf:name",
-              lang,
-              es,
-              { resourceURI },
-            );
-        } else obj[stmts[s].getLanguage() || ""] = stValue;
-      } else obj[stmts[s].getLanguage() || ""] = stValue;
-    }
-
-    if (typeof obj[lang] != "undefined") {
-      val = obj[lang];
-    } else if (obj[fallbackLang] && fallbackLang != lang) {
-      val = obj[fallbackLang];
-    } else {
-      val = Object.entries(obj)[0][1] as string;
-    }
-  }
-
-  return val;
-};
-
-export const getSimplifiedLocalizedValue = (
+export const getLocalizedValue = (
   metadata: Metadata,
   property: string,
   resourceURI?: string,
@@ -134,7 +43,7 @@ export const getUriNames = async (
   const cache = entryCache.get();
   // Filter out null values and already cached URIs
   const uniqueUris = Array.from(new Set(facetValues)).filter(
-    (uri): uri is string => uri !== null && !cache.has(uri),
+    (uri): uri is string => uri !== null && uri !== "" && !cache.has(uri),
   );
 
   if (uniqueUris.length === 0) {
@@ -157,10 +66,10 @@ export const getUriNames = async (
         const metadata = entry.getMetadata();
         const uri = entry.getResourceURI();
         const name =
-          getSimplifiedLocalizedValue(metadata, "dcterms:title") ||
-          getSimplifiedLocalizedValue(metadata, "foaf:name") ||
-          getSimplifiedLocalizedValue(metadata, "skos:prefLabel") ||
-          getSimplifiedLocalizedValue(metadata, "rdfs:label") ||
+          getLocalizedValue(metadata, "dcterms:title", uri) ||
+          getLocalizedValue(metadata, "foaf:name", uri) ||
+          getLocalizedValue(metadata, "skos:prefLabel", uri) ||
+          getLocalizedValue(metadata, "rdfs:label", uri) ||
           uri;
 
         cache.set(uri, name);

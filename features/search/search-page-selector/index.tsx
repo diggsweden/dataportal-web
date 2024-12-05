@@ -24,8 +24,9 @@ interface SearchTabsProps {
  */
 const SEARCH_TABS = [
   { path: "/datasets", translationKey: "search$datasets" },
-  { path: "/concepts", translationKey: "search$concepts" },
   { path: "/specifications", translationKey: "search$specifications" },
+  { path: "/concepts", translationKey: "search$concepts" },
+  { path: "/organisations", translationKey: "search$organisations" },
   { path: "/search", translationKey: "search$content" },
 ] as const;
 
@@ -45,21 +46,19 @@ export function SearchPageSelector({ query }: SearchTabsProps) {
   return (
     <nav aria-label={t("search$search-type-navigation")}>
       <div
-        className="mb-lg flex gap-md overflow-x-scroll md:overflow-x-visible"
+        className="mb-lg flex flex-wrap gap-sm md:gap-md"
         role="tablist"
         aria-label={t("search$search-tabs")}
       >
         {SEARCH_TABS.map(({ path, translationKey }) => (
           <ButtonLink
             key={path}
-            variant="plain"
+            variant="light"
             href={`${path}?q=${query || ""}&f=`}
             label={t(translationKey)}
             locale={lang}
-            className={`focus--in whitespace-nowrap ${
-              pathname === path
-                ? "bg-pink-200 font-strong text-textPrimary"
-                : ""
+            className={`button--large focus--in whitespace-nowrap rounded-t-md ${
+              pathname === path ? "active" : ""
             }`}
             role="tab"
             aria-selected={pathname === path}

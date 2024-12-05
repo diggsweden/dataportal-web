@@ -11,8 +11,8 @@ import {
   useState,
 } from "react";
 
-import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
-import ChevronUpIcon from "@/assets/icons/chevronUp.svg";
+import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
+import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
 import { Button } from "@/components/button";
 import { useClickOutside } from "@/hooks/use-click-outside";
 import { handleScroll } from "@/utilities/form-utils";

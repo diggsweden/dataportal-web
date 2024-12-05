@@ -2,8 +2,8 @@ import { Translate } from "next-translate";
 import useTranslation from "next-translate/useTranslation";
 import { ChangeEvent, DragEvent, FC, useCallback, useState } from "react";
 
-import ChevronDownIcon from "@/assets/icons/chevronDown.svg";
-import ChevronUpIcon from "@/assets/icons/chevronUp.svg";
+import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
+import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
 import { Button } from "@/components/button";
 import { Label } from "@/components/form/label";
 import { RadioInput } from "@/components/form/radio-input";
