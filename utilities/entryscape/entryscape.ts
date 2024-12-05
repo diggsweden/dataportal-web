@@ -53,6 +53,7 @@ export enum ESRdfType {
   hvd = "http://data.europa.eu/eli/reg_impl/2023/138/oj",
   agent = "http://xmlns.com/foaf/0.1/Agent",
   national_data = "http://purl.org/dc/terms/subject",
+  spec = "http://purl.org/dc/terms/conformsTo",
 }
 
 /* eslint-enable no-unused-vars */

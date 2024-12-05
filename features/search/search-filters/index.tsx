@@ -281,6 +281,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
 
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
   const national = "http://purl.org/dc/terms/subject";
+  const spec = "http://purl.org/dc/terms/conformsTo";
 
   const activeCheckboxFilters = useMemo(() => {
     const filters = [];
@@ -311,6 +312,19 @@ export const SearchFilters: FC<SearchFilterProps> = ({
         label: t(`resources|${national}`),
         facetValue: search.request.facetValues.find(
           (t: SearchFacetValue) => t.facet === ESRdfType.national_data,
+        ),
+      });
+    }
+
+    // Specification filter
+    if (
+        search.request.facetValues?.some((t: SearchFacetValue) => t.facet === ESRdfType.spec)
+    ) {
+      filters.push({
+        id: "spec_only",
+        label: t(`resources|${spec}`),
+        facetValue: search.request.facetValues.find(
+          (t) => t.facet === ESRdfType.spec,
         ),
       });
     }
@@ -409,7 +423,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                         )
                       : value?.facetValues.slice(0, show);
 
-                    if (key !== hvd && key !== national) {
+                    if (key !== hvd && key !== national && key !== spec) {
                       return (
                         <li
                           key={`${value.title}-${idx}`}
@@ -555,7 +569,21 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                           iconSize={iconSize}
                         />
                       );
-                    }
+                    } else if (key === spec) {
+                      return (
+                        <SearchCheckboxFilter
+                        key={key}
+                        id="spec_only"
+                        name="Specification"
+                        checked={activeCheckboxFilters.some(
+                          (filter) => filter.id === "spec_only",
+                        )}
+                        onChange={() => doSearch(key, facetValues[0])}
+                        label={t(`resources|${key}`)}
+                        iconSize={iconSize}
+                      />
+                      );
+                    } 
                   })}
 
                 {searchMode == "datasets" && groupName == "distribution" && (

@@ -64,6 +64,7 @@ const BodyVariant: FC<PropsWithChildren<BodyProps>> = ({
   const CustomTag = variant as keyof React.JSX.IntrinsicElements;
 
   return (
+    // @ts-expect-error
     <CustomTag className={cx(bodyVariants({ variant }), className)}>
       {variant === "blockquote" && (
         <QuoteIcon className="col-start-1 !h-[40px] !w-[40px] flex-shrink-0" />

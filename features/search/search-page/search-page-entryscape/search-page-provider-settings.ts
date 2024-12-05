@@ -179,6 +179,15 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             indexOrder: 7,
             group: "type",
           },
+          {
+            resource: "http://purl.org/dc/terms/conformsTo",
+            type: ESType.uri,
+            dcatProperty: "dcterms:conformsTo",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 8,
+            group: "type",
+          },
         ],
       },
       initRequest: {
