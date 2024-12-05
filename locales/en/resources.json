@@ -21,7 +21,6 @@
   "http://purl.org/dc/terms/license": "License",
   "http://purl.org/dc/terms/publisher": "Organisation",
   "http://purl.org/dc/terms/subject": "National basic data",
-  "http://purl.org/dc/terms/conformsTo": "Follows specification",
   "http://purl.org/dc/terms/type": "Organisation type",
   "http://www.w3.org/2004/02/skos/core#inScheme": "Terminologies",
   "http://www.w3.org/ns/dcat#theme": "Theme",
