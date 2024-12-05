@@ -21,7 +21,6 @@
   "http://purl.org/dc/terms/license": "Licens",
   "http://purl.org/dc/terms/publisher": "Organisation",
   "http://purl.org/dc/terms/subject": "Nationella grunddata",
-  "http://purl.org/dc/terms/conformsTo": "Följer specifikation",
   "http://purl.org/dc/terms/type": "Organisationstyp",
   "http://www.w3.org/2004/02/skos/core#inScheme": "Terminologier",
   "http://www.w3.org/ns/dcat#theme": "Kategori",
