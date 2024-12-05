@@ -1,4 +1,10 @@
-import React from "react";
+import { ParsedUrlQuery } from "querystring";
+
+import { FC } from "react";
+
+import { ContainerPage } from "@/features/pages/container-page";
+import { ListPage } from "@/features/pages/list-page";
+import { PublicationFull } from "@/features/publication/publication-full";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
   DataportalPageProps,
@@ -8,10 +14,7 @@ import {
   getRootAggregate,
 } from "@/utilities";
 
-import Page from "../[...containerSlug]";
-import { ListPage } from "@/components/content/ListPage";
-import { PublicationFull } from "@/components/content/Publication/PublicationFull";
-import { ContainerPage } from "@/components/content/ContainerPage";
+import { Page } from "../[...containerSlug]";
 
 const getQuery = async (
   slug: string,
@@ -66,9 +69,15 @@ const render = (props: DataportalPageProps) => {
   }
 };
 
-const Draft: React.FC<DataportalPageProps> = (props) => render(props);
+const Draft: FC<DataportalPageProps> = (props) => render(props);
 
-export const getServerSideProps = async ({ query, locale }: any) => {
+export const getServerSideProps = async ({
+  query,
+  locale,
+}: {
+  query: ParsedUrlQuery;
+  locale: string;
+}) => {
   const slug = (query?.slug as string) || "";
   const secret = (query?.secret as string) || "";
   const type = query?.type as string;

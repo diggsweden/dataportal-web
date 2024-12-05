@@ -1,25 +1,27 @@
-import { getSimplifiedLocalizedValue } from "@/utilities/entrystoreUtil";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Entry } from "@entryscape/entrystore-js";
 import { Translate } from "next-translate";
+
+import { getLocalizedValue } from "@/utilities/entrystore-utils";
 
 export const terminologyBlocks = (t: Translate, lang: string) => [
   {
     block: "conceptLink",
     run: function (node: any, a2: any, a3: any, entry: Entry) {
       if (node && node.firstElementChild && entry) {
-        var el = document.createElement("a");
+        const el = document.createElement("a");
 
         node.setAttribute("class", "entryscape");
 
         node.firstElementChild.appendChild(el);
 
-        var ruri = entry.getResourceURI();
-        var label = getSimplifiedLocalizedValue(
+        const ruri = entry.getResourceURI();
+        const label = getLocalizedValue(
           entry.getAllMetadata(),
           "skos:prefLabel",
         );
         el.innerHTML = label;
-        var dpUri = getDataportalUri(ruri, lang);
+        const dpUri = getDataportalUri(ruri, lang);
         el.setAttribute("href", dpUri);
       }
     },

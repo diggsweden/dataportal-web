@@ -4,6 +4,7 @@ module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
+    "./features/**/*.{js,ts,jsx,tsx}",
   ],
   darkMode: "media",
   theme: {
@@ -57,6 +58,7 @@ module.exports = {
         400: "#E6BDB8",
         200: "#F3DEDB",
         100: "#FBF2F0",
+        50: "#FDF8F7",
       },
       orange: {
         600: "#CE8034",
@@ -90,8 +92,8 @@ module.exports = {
     }),
     borderRadius: {
       sm: "0",
-      md: "0",
-      lg: "0",
+      md: "0.5rem", // 8px
+      lg: "1.25rem", // 20px
       full: "9999px",
     },
     fontFamily: {

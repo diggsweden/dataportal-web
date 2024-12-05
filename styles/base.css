@@ -53,6 +53,10 @@ body {
   );
 }
 
+.organisation-background {
+  background: rgba(181, 175, 173, 0.2);
+}
+
 @layer base {
   a {
     @apply text-md underline underline-offset-4;
@@ -104,6 +108,13 @@ body {
   }
   .button--secondary.active {
     @apply bg-brown-600 text-white [&_path]:fill-white [&_svg]:rotate-180;
+  }
+  .button--light {
+    @apply bg-brown-200 text-brown-600 hover:bg-textSecondary focus-visible:bg-textSecondary hover:text-brown-100 focus-visible:text-brown-100
+    group-hover:bg-textSecondary group-hover:text-brown-100 group-focus:bg-textSecondary group-focus:text-brown-100 [&_path]:fill-brown-600;
+  }
+  .button--light.active {
+    @apply bg-textSecondary text-brown-100 [&_path]:fill-brown-100;
   }
   .button--plain {
     @apply bg-transparent text-brown-600 hover:bg-brown-200 focus-visible:bg-brown-200 group-focus:bg-brown-200 

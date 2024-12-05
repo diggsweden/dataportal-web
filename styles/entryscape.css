@@ -136,7 +136,7 @@
 }
 
 .modal-ux-inner .modal-ux-header button::after {
-  content: url("../assets/icons/closeCross.svg");
+  content: url("../assets/icons/cross.svg");
 }
 
 .modal-ux-inner .modal-ux-content h4,
@@ -183,7 +183,7 @@
 }
 
 .esbExpandButton[aria-expanded="false"]::after {
-  content: url("../assets/icons/chevronDown.svg");
+  content: url("../assets/icons/chevron-down.svg");
   @apply h-[1.5rem] w-[1.5rem];
 }
 
@@ -192,7 +192,7 @@
 }
 
 .esbExpandButton[aria-expanded="true"]::after {
-  content: url("../assets/icons/chevronUp.svg");
+  content: url("../assets/icons/chevron-up.svg");
   @apply h-[1.5rem] w-[1.5rem];
 }
 
@@ -247,7 +247,7 @@
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-  background-image: url("../assets/icons/chevronDown.svg");
+  background-image: url("../assets/icons/chevron-down.svg");
   background-repeat: no-repeat;
   background-position: right 5px center;
   background-size: 24px;
@@ -561,22 +561,22 @@
 }
 
 .opblock-summary-control[aria-expanded="false"]::after {
-  content: url("../assets/icons/chevronDown.svg");
+  content: url("../assets/icons/chevron-down.svg");
   @apply ml-auto h-[1.5rem] w-[1.5rem];
 }
 
 .opblock-summary-control[aria-expanded="true"]::after {
-  content: url("../assets/icons/chevronUp.svg");
+  content: url("../assets/icons/chevron-up.svg");
   @apply ml-auto h-[1.5rem] w-[1.5rem];
 }
 
 .expand-operation[aria-expanded="false"]::after {
-  content: url("../assets/icons/chevronDown.svg");
+  content: url("../assets/icons/chevron-down.svg");
   @apply ml-auto h-[1.5rem] w-[1.5rem];
 }
 
 .expand-operation[aria-expanded="true"]::after {
-  content: url("../assets/icons/chevronUp.svg");
+  content: url("../assets/icons/chevron-up.svg");
   @apply ml-auto h-[1.5rem] w-[1.5rem];
 }
 

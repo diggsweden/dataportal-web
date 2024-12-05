@@ -1,9 +1,10 @@
-import { GetServerSideProps } from "next/types";
 import { useRouter } from "next/router";
+import { GetServerSideProps } from "next/types";
 import { useContext } from "react";
-import { SettingsContext } from "@/providers/SettingsProvider";
-import EntrystoreProvider from "@/providers/EntrystoreProvider";
-import { SpecificationPage } from "@/components/content/Entryscape/SpecificationPage";
+
+import { SpecificationPage } from "@/features/entryscape/specification-page";
+import { EntrystoreProvider } from "@/providers/entrystore-provider";
+import { SettingsContext } from "@/providers/settings-provider";
 
 export default function Specification() {
   const { env } = useContext(SettingsContext);
