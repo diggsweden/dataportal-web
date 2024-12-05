@@ -52,6 +52,7 @@ type PageType =
   | "specification"
   | "dataset"
   | "dataservice"
+  | "dataseries"
   | "organisation"
   | "apiexplore"
   | "mqa";
