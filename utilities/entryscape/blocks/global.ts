@@ -241,16 +241,10 @@ export const hemvist = (t: Translate) => {
       const resourceURI = entry.getResourceURI();
       let linkTitle = t("pages|concept_page$concept_adress");
 
-      if (
-        currentPath.includes("/terminology/") ||
-        currentPath.includes("/externalterminology")
-      )
+      if (currentPath.includes("/terminology/"))
         linkTitle = t("pages|concept_page$term_adress");
 
-      if (
-        currentPath.includes("/specifications/") ||
-        currentPath.includes("/externalspecification")
-      )
+      if (currentPath.includes("/specifications/"))
         linkTitle = t("pages|specification_page$address");
 
       if (

@@ -19,8 +19,6 @@ interface HitSpecification {
   path: string;
   titleResource: string;
   descriptionResource: string;
-  // eslint-disable-next-line no-unused-vars
-  pathResolver?: (hitMeta: ResourceMeta) => string;
 }
 
 interface SearchProviderConfig {
@@ -42,49 +40,6 @@ interface SearchProviderConfig {
     }[];
   };
 }
-interface ResourceMeta {
-  getResourceURI: () => string;
-}
-
-interface PathResolverConfig {
-  externalPath: string;
-  internalPath: string;
-  domainLength: number;
-}
-
-function createPathResolver(config: PathResolverConfig) {
-  return (hitMeta: ResourceMeta) => {
-    const resourceUri = hitMeta.getResourceURI();
-
-    if (!resourceUri) return "";
-
-    if (!resourceUri.includes("dataportal.se")) {
-      return `${config.externalPath}?resource=${encodeURIComponent(
-        resourceUri,
-      )}`;
-    }
-
-    if (resourceUri.includes(config.internalPath)) {
-      return resourceUri.slice(
-        resourceUri.lastIndexOf("dataportal.se/") + config.domainLength,
-      );
-    }
-
-    return resourceUri;
-  };
-}
-
-const specsPathResolver = createPathResolver({
-  externalPath: "/externalspecification",
-  internalPath: "dataportal.se/specifications",
-  domainLength: 13,
-});
-
-const termsPathResolver = createPathResolver({
-  externalPath: "/externalconcept",
-  internalPath: "dataportal.se/concepts",
-  domainLength: 13,
-});
 
 export function createSearchProviderSettings(env: EnvSettings, lang: string) {
   return {
@@ -161,7 +116,6 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             indexOrder: 4,
             group: "distribution",
           },
-
           {
             resource: "http://data.europa.eu/r5r/applicableLegislation",
             type: ESType.uri,
@@ -202,13 +156,11 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           path: `/specifications/`,
           titleResource: "dcterms:title",
           descriptionResource: "dcterms:description",
-          pathResolver: specsPathResolver,
         },
         "http://purl.org/dc/terms/Standard": {
           path: `/specifications/`,
           titleResource: "dcterms:title",
           descriptionResource: "dcterms:description",
-          pathResolver: specsPathResolver,
         },
       },
       facetSpecification: {
@@ -291,7 +243,6 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           path: `/concepts/`,
           titleResource: "http://www.w3.org/2004/02/skos/core#prefLabel",
           descriptionResource: "http://www.w3.org/2004/02/skos/core#definition",
-          pathResolver: termsPathResolver,
         },
       },
       facetSpecification: {

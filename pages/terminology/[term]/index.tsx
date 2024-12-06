@@ -8,11 +8,11 @@ import { ConceptPage } from "@/features/entryscape/concept-page";
 import { EntrystoreProvider } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 
-export default function Concept() {
+export default function Terminology() {
   const { env } = useContext(SettingsContext);
   const { query } = useRouter() || {};
-  const { concept } = query || {};
-  const ids = (typeof concept === "string" && concept.split("_")) || [];
+  const { term } = query || {};
+  const ids = (typeof term === "string" && term.split("_")) || [];
   const eid = ids.pop() || "";
   const cid = ids.join("_");
 
@@ -22,7 +22,7 @@ export default function Concept() {
       cid={cid}
       eid={eid}
       entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
-      pageType="concept"
+      pageType="terminology"
     >
       <ConceptPage />
     </EntrystoreProvider>
@@ -31,13 +31,9 @@ export default function Concept() {
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const env = SettingsUtil.create();
-  const { concept } = params || {};
+  const { term } = params || {};
 
-  if (
-    typeof concept === "string" &&
-    /\d/.test(concept) &&
-    concept.includes("_")
-  ) {
+  if (typeof term === "string" && /\d/.test(term) && term.includes("_")) {
     return { props: {} };
   }
 
@@ -48,15 +44,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     );
     const esu = new EntryStoreUtil(es);
     const entryUri = env.ENTRYSCAPE_TERMS_PATH.includes("sandbox")
-      ? `https://www-sandbox.dataportal.se/concepts/${concept}`
-      : `https://dataportal.se/concepts/${concept}`;
+      ? `https://www-sandbox.dataportal.se/concepts/${term}`
+      : `https://dataportal.se/concepts/${term}`;
 
     const entry = await esu.getEntryByResourceURI(entryUri);
 
     if (entry) {
       return {
         redirect: {
-          destination: `/concepts/${entry
+          destination: `/terminology/${entry
             .getContext()
             .getId()}_${entry.getId()}`,
           permanent: true, // This creates a 301 redirect

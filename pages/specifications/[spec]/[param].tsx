@@ -3,41 +3,31 @@ import { GetServerSideProps } from "next";
 
 import { SettingsUtil } from "@/env";
 
-export default function Terminology() {
+export default function Specification() {
   return null;
 }
 
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-  locale,
-}) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const env = SettingsUtil.create();
-  const terminology = (params?.terminology as string[]) || [];
-  const scheme = terminology[0];
-
-  if (scheme != "http" && scheme != "https") {
-    return {
-      notFound: true,
-    };
-  }
-
-  // Reconstruct the original URI and redirect to the new format
-  const curi = terminology.slice(1).join("/");
-  const entryUri = `${scheme}://${curi}`;
+  const { spec, param } = params || {};
+  const curi = `${spec}/${param}`;
 
   try {
     const es = new EntryStore(
-      `https://${env.ENTRYSCAPE_TERMS_PATH}/store` ||
+      `https://${env.ENTRYSCAPE_SPECS_PATH}/store` ||
         "https://admin.dataportal.se/store",
     );
     const esu = new EntryStoreUtil(es);
+    const entryUri = env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
+      ? `https://www-sandbox.dataportal.se/specifications/${curi}`
+      : `https://dataportal.se/specifications/${curi}`;
 
     const entry = await esu.getEntryByResourceURI(entryUri);
 
     if (entry) {
       return {
         redirect: {
-          destination: `/${locale}/terminology/${entry
+          destination: `/specifications/${entry
             .getContext()
             .getId()}_${entry.getId()}`,
           permanent: true, // This creates a 301 redirect

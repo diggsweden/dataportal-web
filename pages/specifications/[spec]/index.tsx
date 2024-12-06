@@ -4,59 +4,57 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 
 import { SettingsUtil } from "@/env";
-import { ConceptPage } from "@/features/entryscape/concept-page";
+import { SpecificationPage } from "@/features/entryscape/specification-page";
 import { EntrystoreProvider } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 
-export default function Concept() {
+export default function Specification() {
   const { env } = useContext(SettingsContext);
   const { query } = useRouter() || {};
-  const { concept } = query || {};
-  const ids = (typeof concept === "string" && concept.split("_")) || [];
+  const { spec } = query || {};
+  const ids = (typeof spec === "string" && spec.split("_")) || [];
   const eid = ids.pop() || "";
   const cid = ids.join("_");
 
-  return (
-    <EntrystoreProvider
-      env={env}
-      cid={cid}
-      eid={eid}
-      entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
-      pageType="concept"
-    >
-      <ConceptPage />
-    </EntrystoreProvider>
-  );
+  if (eid && cid) {
+    return (
+      <EntrystoreProvider
+        env={env}
+        cid={cid}
+        eid={eid}
+        entrystoreUrl={env.ENTRYSCAPE_SPECS_PATH}
+        pageType="specification"
+      >
+        <SpecificationPage />
+      </EntrystoreProvider>
+    );
+  }
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const env = SettingsUtil.create();
-  const { concept } = params || {};
+  const { spec } = params || {};
 
-  if (
-    typeof concept === "string" &&
-    /\d/.test(concept) &&
-    concept.includes("_")
-  ) {
+  if (typeof spec === "string" && /\d/.test(spec) && spec.includes("_")) {
     return { props: {} };
   }
 
   try {
     const es = new EntryStore(
-      `https://${env.ENTRYSCAPE_TERMS_PATH}/store` ||
+      `https://${env.ENTRYSCAPE_SPECS_PATH}/store` ||
         "https://admin.dataportal.se/store",
     );
     const esu = new EntryStoreUtil(es);
-    const entryUri = env.ENTRYSCAPE_TERMS_PATH.includes("sandbox")
-      ? `https://www-sandbox.dataportal.se/concepts/${concept}`
-      : `https://dataportal.se/concepts/${concept}`;
+    const entryUri = env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
+      ? `https://www-sandbox.dataportal.se/specifications/${spec}`
+      : `https://dataportal.se/specifications/${spec}`;
 
     const entry = await esu.getEntryByResourceURI(entryUri);
 
     if (entry) {
       return {
         redirect: {
-          destination: `/concepts/${entry
+          destination: `/specifications/${entry
             .getContext()
             .getId()}_${entry.getId()}`,
           permanent: true, // This creates a 301 redirect
