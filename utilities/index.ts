@@ -3,7 +3,7 @@ export * from "./checkers";
 export * from "./check-lang";
 export * from "./dcat-utils";
 export * from "./detect-browser";
-export * from "./entrystore-utils";
+export * from "./entrystore/entrystore-helpers";
 export * from "./key-focus";
 export * from "./key-generator";
 export * from "./local-storage-helpers";

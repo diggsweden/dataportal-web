@@ -6,8 +6,8 @@ import TrashIcon from "@/assets/icons/trash.svg";
 import { Button } from "@/components/button";
 import { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
+import { ESRdfType } from "@/types/entrystore-core";
 import { SearchFacetValue } from "@/types/search";
-import { ESRdfType } from "@/utilities/entryscape/entryscape";
 
 import { SearchMode } from "../index";
 

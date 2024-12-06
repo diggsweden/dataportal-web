@@ -4,6 +4,7 @@ import withTranslation from "next-translate/withTranslation";
 import { decode, encode } from "qss";
 import { Component, createContext, ReactNode } from "react";
 
+import { ESRdfType, ESType } from "@/types/entrystore-core";
 import {
   HitSpecification,
   FacetSpecification,
@@ -15,11 +16,7 @@ import {
   ESFacetField,
 } from "@/types/search";
 import { DCATData, fetchDCATMeta } from "@/utilities";
-import {
-  Entryscape,
-  ESRdfType,
-  ESType,
-} from "@/utilities/entryscape/entryscape";
+import { EntrystoreService } from "@/utilities/entrystore/entrystore.service";
 
 /* eslint-disable no-unused-vars */
 export enum SearchSortOrder {
@@ -44,29 +41,27 @@ export interface SearchProviderProps {
   router: ReturnType<typeof useRouter>;
 }
 
-/* eslint-disable no-unused-vars */
-
 /**
  * Interface for data stored in provider state
  */
 export interface SearchContextData {
-  set: (req: Partial<SearchRequest>) => Promise<void>;
-  toggleFacet: (facetValue: SearchFacetValue) => Promise<void>;
-  fetchMoreFacets: (facetkey: string) => Promise<void>;
+  set: (_req: Partial<SearchRequest>) => Promise<void>;
+  toggleFacet: (_facetValue: SearchFacetValue) => Promise<void>;
+  fetchMoreFacets: (_facetkey: string) => Promise<void>;
   fetchAllFacets: () => Promise<void>;
-  searchInFacets: (query: string, facetkey: string) => Promise<void>;
-  showMoreFacets: (facetkey: string) => void;
+  searchInFacets: (_query: string, _facetkey: string) => Promise<void>;
+  showMoreFacets: (_facetkey: string) => void;
   updateFacetStats: () => Promise<void>;
-  facetSelected: (key: string, value: string) => boolean;
-  facetHasSelectedValues: (key: string) => boolean;
-  getFacetValueTitle: (key: string, valueKey: string) => string | null;
+  facetSelected: (_key: string, _value: string) => boolean;
+  facetHasSelectedValues: (_key: string) => boolean;
+  getFacetValueTitle: (_key: string, _valueKey: string) => string | null;
   doSearch: (
-    appendHits?: boolean,
-    setStateToLocation?: boolean,
-    reSortOnDone?: boolean,
+    _appendHits?: boolean,
+    _setStateToLocation?: boolean,
+    _reSortOnDone?: boolean,
   ) => Promise<void>;
   setStateToLocation: () => void;
-  sortAllFacets: (excludeFacet?: string) => void;
+  sortAllFacets: (_excludeFacet?: string) => void;
   parseLocationToState: () => Promise<boolean>;
   request: SearchRequest;
   result: SearchResult;
@@ -129,7 +124,7 @@ export const SearchContext = createContext<SearchContextData>(
  * SearchProvider component
  */
 class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
-  private entryScape: Entryscape;
+  private entrystoreService: EntrystoreService;
   private getCacheKeys(request: SearchRequest) {
     const cacheKeyBase = `${request.language || ""}_${
       request.esRdfTypes?.[0] || ""
@@ -144,13 +139,13 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     super(props);
     const { t, lang } = props.i18n!;
 
-    this.entryScape = new Entryscape(
-      props.entryscapeUrl || "https://admin.dataportal.se/store",
-      lang,
-      t,
-      props.facetSpecification,
-      props.hitSpecifications,
-    );
+    this.entrystoreService = EntrystoreService.getInstance({
+      baseUrl: props.entryscapeUrl || "https://admin.dataportal.se/store",
+      lang: lang,
+      t: t,
+      facetSpecification: props.facetSpecification,
+      hitSpecifications: props.hitSpecifications,
+    });
 
     this.state = {
       ...defaultSearchSettings,
@@ -223,13 +218,14 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
   componentDidUpdate(prevProps: SearchProviderProps) {
     if (prevProps.i18n.lang !== this.props.i18n.lang) {
       const { t, lang } = this.props.i18n;
-      this.entryScape = new Entryscape(
-        this.props.entryscapeUrl || "https://admin.dataportal.se/store",
-        lang,
-        t,
-        this.props.facetSpecification,
-        this.props.hitSpecifications,
-      );
+      this.entrystoreService = EntrystoreService.getInstance({
+        baseUrl:
+          this.props.entryscapeUrl || "https://admin.dataportal.se/store",
+        lang: lang,
+        t: t,
+        facetSpecification: this.props.facetSpecification,
+        hitSpecifications: this.props.hitSpecifications,
+      });
     }
   }
   /**
@@ -295,7 +291,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       const searchPromises = Object.keys(groupedFacets).map(async (group) => {
         const facetsNotInGroup = facetValues.filter((f) => f.facet !== group);
 
-        const res = await this.entryScape.solrSearch({
+        const res = await this.entrystoreService.solrSearch({
           ...this.state.request,
           takeFacets: 100,
           fetchFacets: true,
@@ -546,7 +542,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
         }
       }
 
-      const searchResult = await this.entryScape.solrSearch({
+      const searchResult = await this.entrystoreService.solrSearch({
         query: "*",
         fetchFacets: true,
         take: 1,
@@ -557,7 +553,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
         throw new Error("Missing required facets or DCAT metadata");
       }
 
-      const facets = await this.entryScape.getFacets(
+      const facets = await this.entrystoreService.getFacets(
         searchResult.esFacets,
         dcatmeta,
       );
@@ -601,10 +597,10 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     const facets = { ...this.state.allFacets };
 
     // Store original specifications
-    const originalSpecs = { ...this.entryScape.hitSpecifications };
+    const originalSpecs = { ...this.entrystoreService.hitSpecifications };
 
     // Update specifications for this search
-    this.entryScape.hitSpecifications = {
+    this.entrystoreService.hitSpecifications = {
       "http://xmlns.com/foaf/0.1/Agent": {
         path: ``,
         titleResource: "http://xmlns.com/foaf/0.1/name",
@@ -613,7 +609,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     };
 
     try {
-      const res = await this.entryScape.solrSearch({
+      const res = await this.entrystoreService.solrSearch({
         titleQuery: query && query.length > 0 ? query : "*",
         fetchFacets: false,
         take: 100,
@@ -663,7 +659,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     } finally {
       this.setState({ loadingFacets: false });
       // Restore original specifications
-      this.entryScape.hitSpecifications = originalSpecs;
+      this.entrystoreService.hitSpecifications = originalSpecs;
     }
   };
 
@@ -904,7 +900,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
         fetchFacets: !hitsOnly,
       };
 
-      const searchResult = await this.entryScape.solrSearch(
+      const searchResult = await this.entrystoreService.solrSearch(
         searchRequest,
         this.state.dcatmeta,
       );
@@ -968,7 +964,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     reSortOnDone: boolean,
   ): Promise<void> => {
     try {
-      const facets = await this.entryScape.getFacets(
+      const facets = await this.entrystoreService.getFacets(
         esFacets,
         this.state.dcatmeta!,
       );

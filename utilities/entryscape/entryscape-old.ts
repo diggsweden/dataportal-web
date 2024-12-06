@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable */ 
+// @ts-nocheck
 import { EntryStore, EntryStoreUtil, Entry } from "@entryscape/entrystore-js";
 // @ts-expect-error unknown namespace.
 import { namespaces } from "@entryscape/rdfjson";
@@ -29,7 +30,7 @@ import {
   fetchDCATMeta,
 } from "@/utilities";
 
-import { entryCache } from "../local-cache";
+import { entryCache } from "../entrystore/local-cache";
 
 //#region ES members
 

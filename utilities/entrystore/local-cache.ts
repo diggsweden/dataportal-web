@@ -1,6 +1,6 @@
 class EntryCacheManager {
   private static instance: EntryCacheManager;
-  private cache: Map<string, any>;
+  private cache: Map<string, string>;
 
   private constructor() {
     this.cache = new Map<string, string>();
