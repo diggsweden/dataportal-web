@@ -76,7 +76,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   const { asPath } = useRouter();
   const { t, lang } = useTranslation();
   // Put shared props into state to persist between pages that doesn't use getStaticProps
-  const [env, setEnv] = useState<EnvSettings>(SettingsUtil.create());
+  const [env, setEnv] = useState<EnvSettings | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [matomoActivated, setMatomoActivated] = useState<boolean>(true);
   const [openSideBar, setOpenSideBar] = useState(false);
@@ -94,13 +94,13 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const clienthost = window?.location?.host || "";
-
+      const isSandbox = window.location.host.includes("sandbox");
       //if host is run from sandbox, load that environment and disable matomo
-      if (clienthost?.includes("sandbox")) {
+      if (isSandbox) {
         setEnv(new Settings_Sandbox());
-        //disable matomo
         setMatomoActivated(false);
+      } else {
+        setEnv(SettingsUtil.create());
       }
     }
     document.documentElement.classList.add("no-focus-outline");
@@ -131,6 +131,10 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     }
     setImageHero(heroImage);
   }, [pathname]);
+
+  if (!env) {
+    return null;
+  }
 
   return (
     <ApolloProvider client={client}>
