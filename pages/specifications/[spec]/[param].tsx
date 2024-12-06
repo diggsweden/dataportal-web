@@ -7,7 +7,10 @@ export default function Specification() {
   return null;
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  locale,
+}) => {
   const env = SettingsUtil.create();
   const { spec, param } = params || {};
   const curi = `${spec}/${param}`;
@@ -27,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     if (entry) {
       return {
         redirect: {
-          destination: `/specifications/${entry
+          destination: `/${locale}/specifications/${entry
             .getContext()
             .getId()}_${entry.getId()}`,
           permanent: true, // This creates a 301 redirect

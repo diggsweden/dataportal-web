@@ -29,7 +29,10 @@ export default function Terminology() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  locale,
+}) => {
   const env = SettingsUtil.create();
   const { term } = params || {};
 
@@ -52,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     if (entry) {
       return {
         redirect: {
-          destination: `/terminology/${entry
+          destination: `/${locale}/terminology/${entry
             .getContext()
             .getId()}_${entry.getId()}`,
           permanent: true, // This creates a 301 redirect
