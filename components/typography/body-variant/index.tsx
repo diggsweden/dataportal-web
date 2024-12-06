@@ -64,7 +64,6 @@ const BodyVariant: FC<PropsWithChildren<BodyProps>> = ({
   const CustomTag = variant as ElementType;
 
   return (
-    // @ts-expect-error - React children type mismatch with custom body element
     <CustomTag className={cx(bodyVariants({ variant }), className)}>
       {variant === "blockquote" && <QuoteIcon className="w-xl flex-shrink-0" />}
       {children}
