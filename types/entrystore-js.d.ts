@@ -10,6 +10,7 @@ declare module "@entryscape/entrystore-js" {
     getEntry(_uri: string): Promise<Entry>;
     getContextId(_uri: string): string;
     getContext(_uri: string): Context;
+    getREST(): REST;
   }
 
   export class EntryStoreUtil {

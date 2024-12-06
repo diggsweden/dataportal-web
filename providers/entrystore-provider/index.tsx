@@ -149,6 +149,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   const es = new EntryStore(
     `https://${entrystoreUrl}/store` || "https://admin.dataportal.se/store",
   );
+  // TODO: Uncomment this when cors error is fixed
+  // es.getREST().disableJSONP();
   const esu = new EntryStoreUtil(es);
   esu.loadOnlyPublicEntries(true);
   let entry = {} as Entry;

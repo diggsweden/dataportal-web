@@ -34,6 +34,7 @@ interface SearchProviderConfig {
     language: string;
     takeFacets: number;
     sortOrder?: SearchSortOrder;
+    // Values to exclude from search
     filters?: {
       key: string;
       property: ESType;
@@ -276,18 +277,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           {
             key: "dcterms:type",
             property: "uri",
-            values: [
-              "http://purl.org/adms/publishertype/Academia-ScientificOrganisation",
-              "http://purl.org/adms/publishertype/Company",
-              "http://purl.org/adms/publishertype/IndustryConsortium",
-              "http://purl.org/adms/publishertype/LocalAuthority",
-              "http://purl.org/adms/publishertype/NationalAuthority",
-              "http://purl.org/adms/publishertype/NonGovernmentalOrganisation",
-              "http://purl.org/adms/publishertype/Non-ProfitOrganisation",
-              "http://purl.org/adms/publishertype/RegionalAuthority",
-              "http://purl.org/adms/publishertype/StandardisationBody",
-              "http://purl.org/adms/publishertype/SupraNationalAuthority",
-            ],
+            values: ["http://purl.org/adms/publishertype/PrivateIndividual(s)"],
           },
         ],
       },
