@@ -4,8 +4,8 @@ import CrossIcon from "@/assets/icons/cross.svg";
 import TrashIcon from "@/assets/icons/trash.svg";
 import { Button } from "@/components/button";
 import { SearchContextData } from "@/providers/search-provider";
+import { ESRdfType } from "@/types/entrystore-core";
 import { SearchFacetValue } from "@/types/search";
-import { ESRdfType } from "@/utilities/entryscape/entryscape";
 
 import { SearchMode } from "../index";
 

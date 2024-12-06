@@ -22,8 +22,8 @@ export default function Concept() {
       env={env}
       entryUri={entryUri}
       entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
-      hasResourceUri={hasResourceUri}
       pageType="terminology"
+      hasResourceUri={hasResourceUri}
     >
       <ConceptPage curi={curi as string} />
     </EntrystoreProvider>

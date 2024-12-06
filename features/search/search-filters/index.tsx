@@ -21,8 +21,8 @@ import { TextInput } from "@/components/form/text-input";
 import { SearchFilter } from "@/features/search/search-filters/search-filter";
 import { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
+import { ESRdfType, ESType } from "@/types/entrystore-core";
 import { SearchFacet, SearchFacetValue } from "@/types/search";
-import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
 
 import { SearchActiveFilters } from "./search-active-filters";
 import {
@@ -371,7 +371,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
       <div
         ref={ref}
         id="filter-content"
-        className={`bg-pink-50 fixed inset-md z-50 w-auto border-t border-brown-400 md:static md:mt-xl md:bg-transparent md:pt-[1.875rem] ${
+        className={`fixed inset-md z-50 w-auto border-t border-brown-400 bg-pink-50 md:static md:mt-xl md:bg-transparent md:pt-[1.875rem] ${
           showFilter ? "block" : "hidden"
         }`}
       >

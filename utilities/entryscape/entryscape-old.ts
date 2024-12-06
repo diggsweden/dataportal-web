@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable */
+// @ts-nocheck
 import { EntryStore, EntryStoreUtil, Entry } from "@entryscape/entrystore-js";
 // @ts-expect-error unknown namespace.
 import { namespaces } from "@entryscape/rdfjson";
@@ -29,51 +30,11 @@ import {
   fetchDCATMeta,
 } from "@/utilities";
 
-import { entryCache } from "../local-cache";
+import { entryCache } from "../entrystore/local-cache";
 
 //#region ES members
 
 /* eslint-disable no-unused-vars */
-
-export enum ESType {
-  unknown = "unknown",
-  literal_s = "literal_s",
-  literal = "literal",
-  uri = "uri",
-  wildcard = "wildcard",
-}
-
-export enum ESRdfType {
-  dataset = "http://www.w3.org/ns/dcat#Dataset",
-  spec_profile = "http://www.w3.org/ns/dx/prof/Profile",
-  spec_standard = "http://purl.org/dc/terms/Standard",
-  term = "http://www.w3.org/2004/02/skos/core#Concept",
-  esterms_IndependentDataService = "esterms:IndependentDataService",
-  esterms_ServedByDataService = "esterms:ServedByDataService",
-  hvd = "http://data.europa.eu/eli/reg_impl/2023/138/oj",
-  agent = "http://xmlns.com/foaf/0.1/Agent",
-  national_data = "http://purl.org/dc/terms/subject",
-}
-
-/* eslint-enable no-unused-vars */
-
-export interface ESEntryField {
-  value: string;
-  type: ESType;
-}
-
-export interface ESFacetFieldValue {
-  name: string;
-  count: number;
-}
-
-export interface ESFacetField {
-  name: string;
-  predicate: string;
-  type: ESType;
-  valueCount: number;
-  values: ESFacetFieldValue[];
-}
 
 //#endregion
 
