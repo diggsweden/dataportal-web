@@ -100,7 +100,7 @@ export interface ESEntry {
   keywords?: Array<string>;
   mqaCatalog?: { title: string; url: string } | null;
   organisationData?: OrganisationData;
-  organisationLink?: RelationObj | null;
+  organisationLink?: string | null;
 }
 
 export interface ESContact {
@@ -284,10 +284,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           );
           entryData.mqaCatalog = await getRelatedMQA(entry);
           if (publisherUri && publisherEntry) {
-            entryData.organisationLink = {
-              url: `/organisations/${publisherEntry.getContext().getId()}_${publisherEntry.getId()}`,
-              title: publisher,
-            };
+            entryData.organisationLink = `/organisations/${publisherEntry.getContext().getId()}_${publisherEntry.getId()}`
           }
           break;
         case "dataservice":

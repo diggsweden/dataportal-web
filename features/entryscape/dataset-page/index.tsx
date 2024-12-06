@@ -85,12 +85,12 @@ export const DatasetPage: FC = () => {
           {/* Left column */}
           <div className="mb-lg flex w-full max-w-md flex-col gap-lg lg:mb-xl">
             {/* Publisher */}
-            {entry.organisationLink && entry.organisationLink.url ? (
+            {entry.organisationLink ? (
               <Link
-                className="hover:!no-underline text-green-600 text-lg"
-                href={entry.organisationLink.url}
+                className="text-lg text-green-600 hover:!no-underline"
+                href={entry.organisationLink}
               >
-                {entry.organisationLink.title}
+                {entry.publisher}
               </Link>
             ) : (
               entry.publisher && (
