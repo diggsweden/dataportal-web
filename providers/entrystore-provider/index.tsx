@@ -100,6 +100,7 @@ export interface ESEntry {
   keywords?: Array<string>;
   mqaCatalog?: { title: string; url: string } | null;
   organisationData?: OrganisationData;
+  organisationLink?: string | null;
 }
 
 export interface ESContact {
@@ -200,12 +201,12 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       );
 
       let publisher = "";
+      let publisherEntry: Entry | null = null;
+
       if (pageType !== "mqa") {
         if (publisherUri) {
           try {
-            const publisherEntry =
-              await esu.getEntryByResourceURI(publisherUri);
-
+            publisherEntry = await esu.getEntryByResourceURI(publisherUri);
             if (publisherEntry) {
               publisher = getLocalizedValue(
                 publisherEntry.getAllMetadata(),
@@ -233,14 +234,18 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
                 );
 
                 if (publisherUri) {
-                  const publisherEntry =
-                    await esu.getEntryByResourceURI(publisherUri);
-                  if (publisherEntry) {
-                    publisher = getLocalizedValue(
-                      publisherEntry.getAllMetadata(),
-                      "foaf:name",
-                      publisherUri,
-                    );
+                  try {
+                    publisherEntry =
+                      await esu.getEntryByResourceURI(publisherUri);
+                    if (publisherEntry) {
+                      publisher = getLocalizedValue(
+                        publisherEntry.getAllMetadata(),
+                        "foaf:name",
+                        publisherUri,
+                      );
+                    }
+                  } catch (error) {
+                    console.error("Failed to fetch publisher:", error);
                   }
                 }
               }
@@ -260,6 +265,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         address: resourceUri,
         description,
         publisher,
+        organisationLink: null,
         loading: false,
       };
 
@@ -277,7 +283,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
             entry.getEntryInfo().getMetadataURI(),
           );
           entryData.mqaCatalog = await getRelatedMQA(entry);
-
+          if (publisherUri && publisherEntry) {
+            entryData.organisationLink = `/organisations/${publisherEntry.getContext().getId()}_${publisherEntry.getId()}`
+          }
           break;
         case "dataservice":
           break;
