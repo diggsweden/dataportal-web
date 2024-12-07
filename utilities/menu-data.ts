@@ -1,6 +1,6 @@
 import communityIcon from "@/assets/icons/community.svg";
+import dataCollaborationIcon from "@/assets/icons/data-collaboration.svg";
 import dataIcon from "@/assets/icons/data.svg";
-import datasamverkanIcon from "@/assets/icons/datasamverkan.svg";
 import externalLinkIcon from "@/assets/icons/external-link.svg";
 import globeIcon from "@/assets/icons/globe.svg";
 import homeIcon from "@/assets/icons/home.svg";
@@ -93,7 +93,7 @@ const mainNav: NavData[] = [
     title: "data-collaboration",
     promoted: false,
     inEn: false,
-    icon: datasamverkanIcon,
+    icon: dataCollaborationIcon,
   },
   {
     title: "european-data-areas",
