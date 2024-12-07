@@ -1,7 +1,7 @@
 import { createFocusTrap, FocusTrap } from "focus-trap";
 import { FC, useEffect, useRef, KeyboardEvent } from "react";
 
-import ArrowIcon from "@/assets/icons/arrowRight.svg";
+import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ExternalIcon from "@/assets/icons/external-link.svg";
 import { Button, ButtonLink } from "@/components/button";
 import { Heading } from "@/components/typography/heading";
@@ -112,7 +112,7 @@ export const Modal: FC<ModalProps> = ({
               href={href}
               onClick={onClick}
               label={confirmBtn}
-              icon={!isExternalLink(href) ? ArrowIcon : ExternalIcon}
+              icon={!isExternalLink(href) ? ArrowRightIcon : ExternalIcon}
               iconPosition="right"
               className="min-w-[3.125rem] justify-center"
             />
