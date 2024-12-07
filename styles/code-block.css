@@ -162,11 +162,11 @@ div.code-toolbar > .toolbar button[data-copy-state="copy"] > span {
 }
 
 div.code-toolbar > .toolbar button[data-copy-state="copy-success"] > span {
-  -webkit-mask: url("../assets/icons/checkCircle.svg") no-repeat 50% 50%;
-  mask: url("../assets/icons/checkCircle.svg") no-repeat 50% 50%;
+  -webkit-mask: url("../assets/icons/check-circle.svg") no-repeat 50% 50%;
+  mask: url("../assets/icons/check-circle.svg") no-repeat 50% 50%;
 }
 
 div.code-toolbar > .toolbar button[data-copy-state="copy-error"] > span {
-  -webkit-mask: url("../assets/icons/alertError.svg") no-repeat 50% 50%;
-  mask: url("../assets/icons/alertError.svg") no-repeat 50% 50%;
+  -webkit-mask: url("../assets/icons/alert-error.svg") no-repeat 50% 50%;
+  mask: url("../assets/icons/alert-error.svg") no-repeat 50% 50%;
 }

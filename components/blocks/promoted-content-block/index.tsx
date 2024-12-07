@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 import { FC } from "react";
 
-import Arrow from "@/assets/icons/arrowRight.svg";
+import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { ButtonLink } from "@/components/button";
 import { CustomImage } from "@/components/custom-image";
 import { Heading } from "@/components/typography/heading";
@@ -45,7 +45,7 @@ export const PromotedContentBlock: FC<PromotedContentFragment> = ({
             label={btnText}
             href={link}
             iconPosition="right"
-            icon={Arrow}
+            icon={ArrowRightIcon}
           />
         )}
       </div>

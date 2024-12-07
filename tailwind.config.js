@@ -8,11 +8,6 @@ module.exports = {
   ],
   darkMode: "media",
   theme: {
-    extend: {
-      backgroundImage: {
-        "nav-pattern": 'url("/assets/icons/navPixels.svg")',
-      },
-    },
     screens: {
       sm: "0px",
       md: "600px",

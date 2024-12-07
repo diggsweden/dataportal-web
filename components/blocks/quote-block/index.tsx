@@ -7,13 +7,11 @@ import { QuoteFragment } from "@/graphql/__generated__/operations";
 export const QuoteBlock: FC<QuoteFragment> = ({ quote, author, image }) => {
   return (
     <blockquote className="flex max-w-md flex-col items-center gap-lg md:flex-row lg:gap-xl">
-      <div className="flex h-fit w-full gap-lg text-xl font-normal text-pink-600">
-        <QuoteIcon className="flex w-full max-w-[40px] flex-shrink-0" />
+      <div className="flex h-fit w-full gap-lg text-lg font-normal text-textSecondary md:text-xl">
+        <QuoteIcon className="flex w-xl flex-shrink-0" />
         <div className="mt-sm flex w-full flex-col space-y-md divide-y md:mt-xs">
           <span className="hyphens-auto">{quote}</span>
-          <span className="border-brown-200 pt-md text-md text-brown-600">
-            {author}
-          </span>
+          <span className="border-brown-200 pt-md text-md">{author}</span>
         </div>
       </div>
       {image && (

@@ -1,5 +1,5 @@
+import CheckboxCheckedIcon from "@/assets/icons/checkbox-checked.svg";
 import CheckboxIcon from "@/assets/icons/checkbox.svg";
-import CheckboxCheckedIcon from "@/assets/icons/checkboxChecked.svg";
 
 interface SearchCheckboxFilterProps {
   id: string;
@@ -24,9 +24,9 @@ export function SearchCheckboxFilterIcon({
   const Icon = isChecked ? CheckboxCheckedIcon : CheckboxIcon;
   return (
     <Icon
-      height={iconSize * 1.5}
-      width={iconSize * 1.5}
-      viewBox="0 0 24 24"
+      height={iconSize}
+      width={iconSize}
+      viewBox="0 0 16 16"
       className={className}
     />
   );
@@ -41,7 +41,7 @@ export function SearchCheckboxFilter({
   iconSize,
 }: SearchCheckboxFilterProps) {
   return (
-    <div className="relative max-w-fit">
+    <div className="relative w-fit">
       <input
         id={id}
         name={name}
@@ -51,9 +51,9 @@ export function SearchCheckboxFilter({
         onChange={onChange}
       />
       <label
-        className={`button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer pr-xl 
-          peer-checked:after:translate-x-full peer-focus-visible:bg-whiteOpaque5 peer-focus-visible:outline-dashed peer-focus-visible:outline-[3px] 
-          peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary md:pr-xl`}
+        className={`button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer 
+          pr-xl peer-focus-visible:bg-whiteOpaque5 peer-focus-visible:outline-dashed 
+          peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary md:pr-xl`}
         htmlFor={id}
       >
         {label}
@@ -61,7 +61,7 @@ export function SearchCheckboxFilter({
       <SearchCheckboxFilterIcon
         isChecked={checked}
         iconSize={iconSize}
-        className="pointer-events-none absolute right-sm top-1/4"
+        className="pointer-events-none absolute right-md top-1/2 -translate-y-1/2"
       />
     </div>
   );
