@@ -14,11 +14,10 @@ import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
 
 export const DatasetPage: FC = () => {
-  const { pathname, query } = useRouter() || {};
+  const { pathname } = useRouter() || {};
   const { setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
-  const { dataSet } = query || {};
   const [showText, setShowText] = useState(false);
   const [descriptionHeight, setDescriptionHeight] = useState(0);
   const [showAllSpecs, setShowAllSpecs] = useState(false);
@@ -34,7 +33,6 @@ export const DatasetPage: FC = () => {
     entrystoreBase: entry.entrystore.getBaseURI(),
     env: entry.env,
     lang,
-    curi: dataSet as string,
     iconSize,
     pageType: "dataset",
     context: entry.context,

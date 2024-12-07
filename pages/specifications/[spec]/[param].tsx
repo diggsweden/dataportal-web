@@ -13,6 +13,7 @@ export const getServerSideProps = async (
     pathPrefix: "/specifications",
     redirectPath: "/specifications",
     entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
-    paramName: "specification",
+    paramName: "spec",
+    secondParamName: "param",
   });
 };

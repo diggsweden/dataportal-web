@@ -1,32 +1,21 @@
-import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
-import { useContext } from "react";
+import { GetServerSidePropsContext } from "next/types";
 
-import { ConceptPage } from "@/features/entryscape/concept-page";
-import { EntrystoreProvider } from "@/providers/entrystore-provider";
-import { SettingsContext } from "@/providers/settings-provider";
+import { handleEntryStoreRedirect } from "@/utilities/entryscape/entrystore-redirect";
 
 export default function Terminology() {
-  const { env } = useContext(SettingsContext);
-  const { resource } = useRouter().query;
-
-  if (!resource) return null;
-
-  return (
-    <EntrystoreProvider
-      env={env}
-      entryUri={decodeURIComponent(resource as string)}
-      entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
-      pageType="terminology"
-    >
-      <ConceptPage uri={resource as string} />
-    </EntrystoreProvider>
-  );
+  return null;
 }
 
-export const getServerSideProps: GetServerSideProps = async ({
-  query: { resource },
-}) => ({
-  notFound: !resource,
-  props: {},
-});
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  return handleEntryStoreRedirect(
+    context,
+    {
+      pathPrefix: "/concepts",
+      redirectPath: "/terminology",
+      entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
+    },
+    context.query.resource as string,
+  );
+};

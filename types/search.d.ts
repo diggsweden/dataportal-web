@@ -25,7 +25,6 @@ export interface HitSpecification {
   path?: string;
   titleResource?: string;
   descriptionResource?: string;
-  pathResolver?: (_hit: ESEntry) => string;
 }
 
 export interface FacetSpecification {
