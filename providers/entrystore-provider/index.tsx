@@ -76,6 +76,11 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     t,
   });
 
+  // TODO: Uncomment this when cors error is fixed
+  // es.getREST().disableJSONP();
+
+  entrystoreService.getEntryStoreUtil().loadOnlyPublicEntries(true);
+
   // Add background class based on page type
   useEffect(() => {
     const body = document.querySelector("#top");

@@ -95,6 +95,10 @@ export class EntrystoreService {
     return this.entryStore;
   }
 
+  public getEntryStoreUtil(): EntryStoreUtil {
+    return this.entryStoreUtil;
+  }
+
   public get hitSpecifications(): { [key: string]: HitSpecification } {
     return this._hitSpecifications;
   }
