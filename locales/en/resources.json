@@ -16,6 +16,7 @@
   "http://publications.europa.eu/resource/authority/data-theme/TRAN": "Transport",
   "http://purl.org/dc/terms/accessRights": "Access",
   "http://purl.org/dc/terms/accrualPeriodicity": "Update frequency",
+  "http://purl.org/dc/terms/conformsTo": "Follows specification",
   "http://purl.org/dc/terms/format": "Format",
   "http://purl.org/dc/terms/license": "License",
   "http://purl.org/dc/terms/publisher": "Organisation",

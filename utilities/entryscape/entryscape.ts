@@ -51,9 +51,28 @@ export enum ESRdfType {
   esterms_IndependentDataService = "esterms:IndependentDataService",
   esterms_ServedByDataService = "esterms:ServedByDataService",
   hvd = "http://data.europa.eu/eli/reg_impl/2023/138/oj",
-  agent = "http://xmlns.com/foaf/0.1/Agent",
   national_data = "http://purl.org/dc/terms/subject",
+  agent = "http://xmlns.com/foaf/0.1/Agent",
+  spec = "http://purl.org/dc/terms/conformsTo",
 }
+
+export const checkBoxFilterConfigs: Record<
+  string,
+  { id: string; name: string }
+> = {
+  "http://data.europa.eu/r5r/applicableLegislation": {
+    id: "hvd_only",
+    name: "hvd",
+  },
+  "http://purl.org/dc/terms/conformsTo": {
+    id: "spec_only",
+    name: "Specification",
+  },
+  "http://purl.org/dc/terms/subject": {
+    id: "national_only",
+    name: "National data",
+  },
+};
 
 /* eslint-enable no-unused-vars */
 
@@ -478,7 +497,6 @@ export class Entryscape {
                 );
                 break;
               }
-
               esQuery.uriProperty(
                 key,
                 fvalue.map((f) => f.resource),
@@ -533,7 +551,6 @@ export class Entryscape {
           const facetSpec = this.facetSpecification?.facets?.find(
             (spec) => spec.resource === fg.predicate,
           );
-
           if (facetSpec && facetSpec.dcatType !== "choice") {
             await getUriNames(
               fg.values
