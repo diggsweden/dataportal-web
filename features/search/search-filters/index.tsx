@@ -22,7 +22,11 @@ import { SearchFilter } from "@/features/search/search-filters/search-filter";
 import { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { SearchFacet, SearchFacetValue } from "@/types/search";
-import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
+import {
+  checkBoxFilterConfigs,
+  ESRdfType,
+  ESType,
+} from "@/utilities/entryscape/entryscape";
 
 import { SearchActiveFilters } from "./search-active-filters";
 import {
@@ -280,7 +284,8 @@ export const SearchFilters: FC<SearchFilterProps> = ({
   }, [search.allFacets]);
 
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
-  const national = "http://purl.org/dc/terms/subject";
+  const national_data = "http://purl.org/dc/terms/subject";
+  const specifications = "http://purl.org/dc/terms/conformsTo";
 
   const activeCheckboxFilters = useMemo(() => {
     const filters = [];
@@ -308,9 +313,24 @@ export const SearchFilters: FC<SearchFilterProps> = ({
     ) {
       filters.push({
         id: "national_only",
-        label: t(`resources|${national}`),
+        label: t(`resources|${national_data}`),
         facetValue: search.request.facetValues.find(
           (t: SearchFacetValue) => t.facet === ESRdfType.national_data,
+        ),
+      });
+    }
+
+    // Specification filter
+    if (
+      search.request.facetValues?.some(
+        (t: SearchFacetValue) => t.facet === ESRdfType.spec,
+      )
+    ) {
+      filters.push({
+        id: "spec_only",
+        label: t(`resources|${specifications}`),
+        facetValue: search.request.facetValues.find(
+          (t) => t.facet === ESRdfType.spec,
         ),
       });
     }
@@ -409,7 +429,11 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                         )
                       : value?.facetValues.slice(0, show);
 
-                    if (key !== hvd && key !== national) {
+                    if (
+                      key !== hvd &&
+                      key !== national_data &&
+                      key !== specifications
+                    ) {
                       return (
                         <li
                           key={`${value.title}-${idx}`}
@@ -527,7 +551,25 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                           </SearchFilter>
                         </li>
                       );
-                    } else if (key === hvd) {
+                    } else {
+                      const filterConfig = checkBoxFilterConfigs[key];
+                      return (
+                        <SearchCheckboxFilter
+                          key={key}
+                          id={filterConfig.id}
+                          name={filterConfig.name}
+                          checked={activeCheckboxFilters.some(
+                            (filter) => filter.id === filterConfig.id,
+                          )}
+                          onChange={() => doSearch(key, facetValues[0])}
+                          label={t(`resources|${key}`)}
+                          iconSize={iconSize}
+                        />
+                      );
+                    }
+
+                    /* 
+                     else if (key === hvd) {
                       return (
                         <SearchCheckboxFilter
                           key={key}
@@ -555,7 +597,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                           iconSize={iconSize}
                         />
                       );
-                    }
+                    } */
                   })}
 
                 {searchMode == "datasets" && groupName == "distribution" && (
