@@ -59,7 +59,6 @@ export class EntrystoreService {
   // ============================================================================
   // Class Setup and Configuration
   // ============================================================================
-  private static instance: EntrystoreService;
   private entryStore: EntryStore;
   private entryStoreUtil: EntryStoreUtil;
   private t: Translate;
@@ -85,10 +84,7 @@ export class EntrystoreService {
   }
 
   public static getInstance(config: EntryStoreConfig): EntrystoreService {
-    if (!EntrystoreService.instance) {
-      EntrystoreService.instance = new EntrystoreService(config);
-    }
-    return EntrystoreService.instance;
+    return new EntrystoreService(config);
   }
 
   public getEntryStore(): EntryStore {
@@ -163,7 +159,7 @@ export class EntrystoreService {
     if (request.filters && request.filters.length > 0) {
       request.filters.forEach((filter) => {
         if (filter.property === "uri") {
-          esQuery.uriProperty(filter.key, filter.values);
+          esQuery.uriProperty(filter.key, filter.values, "not");
         }
       });
     }
