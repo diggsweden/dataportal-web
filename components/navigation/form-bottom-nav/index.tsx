@@ -9,8 +9,8 @@ import {
   useState,
 } from "react";
 
-import ArrowLeftIcon from "@/assets/icons/arrowLeft.svg";
-import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
+import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
+import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { Button } from "@/components/button";
 import { Modal } from "@/components/modal";
 import { FormTypes } from "@/types/form";

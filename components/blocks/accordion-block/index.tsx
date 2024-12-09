@@ -24,7 +24,7 @@ export const AccordionBlock: FC<AccordionBlockProps> = ({
     <div title={question}>
       <button
         id={`accordion-${idx}`}
-        className="group inline-flex w-full flex-row items-center justify-between gap-md py-lg text-start"
+        className="group inline-flex w-full flex-row items-center justify-between gap-md hyphens-auto py-lg text-start"
         onClick={() => setOpen(!open)}
         aria-label={
           open
@@ -34,24 +34,16 @@ export const AccordionBlock: FC<AccordionBlockProps> = ({
         aria-expanded={open}
         aria-controls={`section-${idx}`}
       >
-        <span className="max-w-[calc(100%-36px)] text-lg underline-offset-4 group-hover:underline">
+        <span className="text-lg underline-offset-4 group-hover:underline">
           {question}
         </span>
-        {open ? (
-          <CrossIcon
-            width={iconSize * 1.5}
-            height={iconSize * 1.5}
-            viewBox="0 0 24 24"
-            className="[&_path]:fill-green-600"
-          />
-        ) : (
-          <PlusIcon
-            width={iconSize * 1.5}
-            height={iconSize * 1.5}
-            viewBox="0 0 24 24"
-            className="[&_path]:fill-green-600"
-          />
-        )}
+        <span className="flex-shrink-0 text-green-600">
+          {open ? (
+            <CrossIcon width={iconSize * 1.5} height={iconSize * 1.5} />
+          ) : (
+            <PlusIcon width={iconSize * 1.5} height={iconSize * 1.5} />
+          )}
+        </span>
       </button>
       {open && (
         <div

@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import React, { FC, useContext, useEffect, useState } from "react";
 
-import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
-import InfoIcon from "@/assets/icons/dela-data.svg";
+import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import DiamondIcon from "@/assets/icons/diamond.svg";
-import HoldingHandsIcon from "@/assets/icons/holdingHands.svg";
-import SpecListIcon from "@/assets/icons/specList.svg";
+import HoldingHandsIcon from "@/assets/icons/holding-hands.svg";
+import ListBlockIcon from "@/assets/icons/list-block.svg";
+import QuestionCircleIcon from "@/assets/icons/question-circle.svg";
 import { Button, ButtonLink } from "@/components/button";
 import { CustomLink } from "@/components/custom-link";
 import { Container } from "@/components/layout/container";
@@ -24,7 +24,7 @@ import { linkBase } from "@/utilities";
 
 export const OrganisationPage: FC = () => {
   const { pathname } = useRouter() || {};
-  const { setBreadcrumb } = useContext(SettingsContext);
+  const { setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { t } = useTranslation();
   const [showInfo, setShowInfo] = useState(false);
@@ -85,9 +85,9 @@ export const OrganisationPage: FC = () => {
                 {t("common|datasets")}
                 <Button
                   variant="plain"
-                  className="rounded-full"
+                  className="rounded-full !p-xs"
                   aria-label={t("pages|organisation_page$data-info")}
-                  icon={InfoIcon}
+                  icon={QuestionCircleIcon}
                   iconPosition="left"
                   onClick={() => setShowInfo(!showInfo)}
                 />
@@ -103,7 +103,12 @@ export const OrganisationPage: FC = () => {
               <div className="box-border flex w-full flex-col items-center gap-xl rounded-lg bg-white p-xl md:items-end">
                 <div className="flex w-full flex-col items-center py-lg md:flex-row">
                   <div className="flex flex-shrink-0 flex-col items-center gap-sm">
-                    <DiamondIcon className="flex-shrink-0" />
+                    <DiamondIcon
+                      className="flex-shrink-0 text-primary"
+                      height={iconSize * 3}
+                      width={iconSize * 3}
+                      viewBox={`0 0 ${iconSize * 1.5} ${iconSize * 1.5}`}
+                    />
                     <span className="text-xl text-primary md:text-2xl">
                       {entry.organisationData?.datasets.total || 0}
                     </span>
@@ -152,15 +157,18 @@ export const OrganisationPage: FC = () => {
                   {t("common|specifications")}
                 </Heading>
                 <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
-                  <div className="flex flex-col items-center gap-sm md:flex-row md:gap-lg">
-                    <SpecListIcon className="flex-shrink-0" />
+                  <div className="flex flex-col items-center gap-sm text-textSecondary md:flex-row md:gap-lg">
+                    <ListBlockIcon
+                      className="flex-shrink-0"
+                      height={iconSize * 3}
+                      width={iconSize * 3}
+                      viewBox={`0 0 ${iconSize * 1.5} ${iconSize * 1.5}`}
+                    />
                     <span className="inline-flex items-center gap-sm">
-                      <span className="text-xl text-textSecondary md:text-2xl">
+                      <span className="text-xl md:text-2xl">
                         {entry.organisationData.specifications.total}
                       </span>
-                      <span className="text-textSecondary">
-                        {t("common|specifications")}
-                      </span>
+                      <span>{t("common|specifications")}</span>
                     </span>
                   </div>
                   <ButtonLink
@@ -181,17 +189,20 @@ export const OrganisationPage: FC = () => {
                   {t("common|term-with-concept")}
                 </Heading>
                 <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
-                  <div className="flex w-full flex-col items-center gap-sm md:flex-row md:gap-lg">
-                    <HoldingHandsIcon className="flex-shrink-0" />
+                  <div className="flex w-full flex-col items-center gap-sm text-textSecondary md:flex-row md:gap-lg">
+                    <HoldingHandsIcon
+                      className="flex-shrink-0"
+                      height={iconSize * 3}
+                      width={iconSize * 3}
+                      viewBox={`0 0 ${iconSize * 1.5} ${iconSize * 1.5}`}
+                    />
 
                     <div className="flex w-full flex-col gap-xl md:flex-row">
                       <span className="inline-flex items-center justify-center gap-sm">
-                        <span className="text-xl text-textSecondary md:text-2xl">
+                        <span className="text-xl md:text-2xl">
                           {entry.organisationData.terms.total}
                         </span>
-                        <span className="text-textSecondary">
-                          {t("common|terminologies")}
-                        </span>
+                        <span>{t("common|terminologies")}</span>
                       </span>
                       <div className="flex flex-col justify-center gap-sm">
                         {entry.organisationData?.terms?.termsInfo.map(

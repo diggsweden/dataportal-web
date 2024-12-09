@@ -114,6 +114,8 @@ export class Entryscape {
 
     // Initialize the EntryStore instance
     this.entryStore = new EntryStore(this.entryscapeUrl);
+    // TODO: Uncomment this when cors error is fixed
+    // this.entryStore.getREST().disableJSONP();
     this.entryStoreUtil = new EntryStoreUtil(this.entryStore);
     this.entryStoreUtil.loadOnlyPublicEntries(true);
   }
@@ -414,7 +416,7 @@ export class Entryscape {
     if (request.filters && request.filters.length > 0) {
       request.filters.forEach((filter) => {
         if (filter.property === "uri") {
-          esQuery.uriProperty(filter.key, filter.values);
+          esQuery.uriProperty(filter.key, filter.values, "not");
         }
       });
     }
@@ -600,11 +602,9 @@ export class Entryscape {
           ),
         };
 
-        hit.url = hitSpecification.pathResolver
-          ? hitSpecification.pathResolver(child)
-          : `${hitSpecification.path || "datamangd"}${context.getId()}_${
-              hit.entryId
-            }`;
+        hit.url = `${hitSpecification.path || "datamangd"}${context.getId()}_${
+          hit.entryId
+        }`;
 
         hits.push(hit);
       }

@@ -2,7 +2,7 @@ import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 import { FC } from "react";
 
-import BreadcrumbDividerIcon from "@/assets/icons/breadcrumbDivider.svg";
+import BreadcrumbDividerIcon from "@/assets/icons/breadcrumb-divider.svg";
 import HomeIcon from "@/assets/icons/home.svg";
 import { Container } from "@/components/layout/container";
 import type { Breadcrumb } from "@/types/global";
@@ -40,7 +40,7 @@ export const Breadcrumbs: FC<BreadcrumbProps> = ({ crumbs, name }) => {
                     )}
                   </Link>
                   {index !== crumbs.length && (
-                    <BreadcrumbDividerIcon className="" />
+                    <BreadcrumbDividerIcon className="text-brown-400" />
                   )}
                 </li>
               );

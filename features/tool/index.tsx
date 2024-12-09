@@ -2,9 +2,9 @@ import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 import React, { FC, useState } from "react";
 
-import InternalLinkIcon from "@/assets/icons/arrowRight.svg";
+import InternalLinkIcon from "@/assets/icons/arrow-right.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
-import Info from "@/assets/icons/stod-verktyg.svg";
+import InfoCircleIcon from "@/assets/icons/info-circle.svg";
 import { Button } from "@/components/button";
 import { Modal } from "@/components/modal";
 import { Heading } from "@/components/typography/heading";
@@ -26,7 +26,7 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
           <Button
             variant="plain"
             size="sm"
-            icon={Info}
+            icon={InfoCircleIcon}
             iconPosition="left"
             onClick={(e) => {
               e.preventDefault();
@@ -37,7 +37,7 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
             aria-label={`${t("preview")} ${t("support-tools")} - ${heading}`}
           />
           <div className="flex h-full flex-col gap-sm">
-            <div className="flex items-center justify-between gap-sm [&_svg_path]:fill-red-400 group-hover:[&_svg_path]:fill-green-600">
+            <div className="flex items-center justify-between gap-sm">
               <span
                 className={`px-sm py-[2px] text-sm ${
                   !isExternalLink(link)
@@ -47,14 +47,18 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
               >
                 {domainLabel}
               </span>
-              {isExternalLink(link) ? (
-                <>
-                  <ExternalLinkIcon className="flex-shrink-0 transform transition-transform duration-500 group-hover:translate-x-1/3" />
-                  <span className="sr-only">{t("common|open-in-new-tab")}</span>
-                </>
-              ) : (
-                <InternalLinkIcon className="flex-shrink-0 transform transition-transform duration-500 group-hover:translate-x-1/3" />
-              )}
+              <span className="text-red-400 hover:text-green-600 group-hover:text-green-600">
+                {isExternalLink(link) ? (
+                  <>
+                    <ExternalLinkIcon className="flex-shrink-0 transform  transition-transform duration-500 group-hover:translate-x-1/3" />
+                    <span className="sr-only">
+                      {t("common|open-in-new-tab")}
+                    </span>
+                  </>
+                ) : (
+                  <InternalLinkIcon className="flex-shrink-0 transform transition-transform duration-500 group-hover:translate-x-1/3" />
+                )}
+              </span>
             </div>
             <div>
               <Link
