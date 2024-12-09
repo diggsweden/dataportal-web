@@ -101,8 +101,6 @@ export const getUriNames = async (
     // TODO: This is not efficient, we need to find another way in handling this
     // Process all entries at once
     entries.forEach((entry: any) => {
-      console.log(entry);
-
       if (entry) {
         const metadata = entry.getMetadata();
         const uri = entry.getResourceURI();
