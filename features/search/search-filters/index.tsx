@@ -281,7 +281,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
     });
 
     return grouped;
-  }, [search.allFacets]);
+  }, [searchMode, search.allFacets]);
 
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
   const national_data = "http://purl.org/dc/terms/subject";
