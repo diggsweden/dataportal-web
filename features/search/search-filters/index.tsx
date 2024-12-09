@@ -151,7 +151,7 @@ const FindFilters = (
 ) => {
   if (!checkedFilters) return "";
 
-  const allTitles = categoryFilters.map((item) => item.title);
+  const allTitles = categoryFilters.map((item) => item.title);    
   const checkedTitles = checkedFilters.map((item) => item.title);
   const union = allTitles.filter((x) => checkedTitles.includes(x));
 
@@ -280,7 +280,6 @@ export const SearchFilters: FC<SearchFilterProps> = ({
   }, [search.allFacets]);
 
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
-  const national = "http://purl.org/dc/terms/subject";
   const spec = "http://purl.org/dc/terms/conformsTo";
 
   const activeCheckboxFilters = useMemo(() => {
@@ -297,21 +296,6 @@ export const SearchFilters: FC<SearchFilterProps> = ({
         label: t(`resources|${hvd}`),
         facetValue: search.request.facetValues.find(
           (t: SearchFacetValue) => t.title === ESRdfType.hvd,
-        ),
-      });
-    }
-
-    // National filter
-    if (
-      search.request.facetValues?.some(
-        (t: SearchFacetValue) => t.facet === ESRdfType.national_data,
-      )
-    ) {
-      filters.push({
-        id: "national_only",
-        label: t(`resources|${national}`),
-        facetValue: search.request.facetValues.find(
-          (t: SearchFacetValue) => t.facet === ESRdfType.national_data,
         ),
       });
     }
@@ -423,7 +407,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                         )
                       : value?.facetValues.slice(0, show);
 
-                    if (key !== hvd && key !== national && key !== spec) {
+                    if (key !== hvd && key !== spec) {
                       return (
                         <li
                           key={`${value.title}-${idx}`}
@@ -462,7 +446,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                     />
                                   )}
                                 </>
-                              )}
+                              )}                              
                               {/* List of filter options within this category */}
                               <ul role="listbox" aria-multiselectable="true">
                                 {facetValues
