@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable */ 
+// @ts-nocheck
 import { EntryStore, EntryStoreUtil, Entry } from "@entryscape/entrystore-js";
 // @ts-expect-error unknown namespace.
 import { namespaces } from "@entryscape/rdfjson";
@@ -29,7 +30,7 @@ import {
   fetchDCATMeta,
 } from "@/utilities";
 
-import { entryCache } from "../local-cache";
+import { entryCache } from "../entrystore/local-cache";
 
 //#region ES members
 
@@ -181,6 +182,13 @@ export class Entryscape {
           group: facetSpec.group,
           facetValues: f.values
             .filter((value: ESFacetFieldValue) => {
+              if (
+                facetSpec.resource === "http://purl.org/dc/terms/subject" &&
+                value.name.startsWith(
+                  "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/",
+                )
+              )
+                return true;
               if (!value.name || value.name.trim() === "") return false;
               if (!facetSpec?.dcatFilterEnabled) return true;
 
@@ -551,6 +559,7 @@ export class Entryscape {
           const facetSpec = this.facetSpecification?.facets?.find(
             (spec) => spec.resource === fg.predicate,
           );
+
           if (facetSpec && facetSpec.dcatType !== "choice") {
             await getUriNames(
               fg.values

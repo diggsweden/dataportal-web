@@ -21,12 +21,12 @@ import { TextInput } from "@/components/form/text-input";
 import { SearchFilter } from "@/features/search/search-filters/search-filter";
 import { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
-import { SearchFacet, SearchFacetValue } from "@/types/search";
 import {
   checkBoxFilterConfigs,
   ESRdfType,
   ESType,
-} from "@/utilities/entryscape/entryscape";
+} from "@/types/entrystore-core";
+import { SearchFacet, SearchFacetValue } from "@/types/search";
 
 import { SearchActiveFilters } from "./search-active-filters";
 import {
@@ -281,7 +281,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
     });
 
     return grouped;
-  }, [search.allFacets]);
+  }, [searchMode, search.allFacets]);
 
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
   const national_data = "http://purl.org/dc/terms/subject";

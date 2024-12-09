@@ -1,6 +1,6 @@
 import { EnvSettings } from "@/env";
 import { SearchSortOrder } from "@/providers/search-provider";
-import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
+import { ESRdfType, ESType } from "@/types/entrystore-core";
 
 interface FacetConfig {
   resource: string;
@@ -129,8 +129,6 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             resource: "http://purl.org/dc/terms/subject",
             type: ESType.uri,
             dcatProperty: "dcterms:subject",
-            dcatType: "choice",
-            dcatFilterEnabled: false,
             indexOrder: 7,
             group: "type",
           },
@@ -150,6 +148,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           ESRdfType.dataset,
           ESRdfType.esterms_IndependentDataService,
           ESRdfType.esterms_ServedByDataService,
+          // ESRdfType.dataset_series,
         ],
         takeFacets: 30,
         language: lang,
