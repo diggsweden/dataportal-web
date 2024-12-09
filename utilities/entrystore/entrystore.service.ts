@@ -345,11 +345,9 @@ export class EntrystoreService {
           ),
         };
 
-        hit.url = hitSpecification.pathResolver
-          ? hitSpecification.pathResolver(child)
-          : `${hitSpecification.path || "datamangd"}${context.getId()}_${
-              hit.entryId
-            }`;
+        hit.url = `${hitSpecification.path || "datamangd"}${context.getId()}_${
+          hit.entryId
+        }`;
 
         hits.push(hit);
       }
