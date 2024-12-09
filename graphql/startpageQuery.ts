@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+
 import {
   BLOCK_FRAGMENT,
   START_PAGE_FRAGMENT,
@@ -9,7 +10,7 @@ import {
 } from "./fragments";
 
 export const START_PAGE_QUERY = gql`
-  query StartPage($filter: dataportal_QueryContainerArgs) {
+  query StartPage($filter: dataportal_QueryStartPageArgs) {
     dataportal_Digg_Start_Page(filter: $filter) {
       ...StartPageData
     }

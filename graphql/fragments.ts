@@ -399,6 +399,17 @@ export const GOOD_EXAMPLE_BLOCK_FRAGMENT = gql`
   ${GOOD_EXAMPLE_BLOCK_ITEM_FRAGMENT}
 `;
 
+export const CTA_CARD_BLOCK_FRAGMENT = gql`
+  fragment CtaCardBlock on dataportal_Digg_CTACardBlock {
+    heading
+    description
+    ctaLinks {
+      title
+      link
+    }
+  }
+`;
+
 /* #endregion */
 
 /* #region Collections */
@@ -469,6 +480,10 @@ export const BLOCK_FRAGMENT = gql`
     ... on dataportal_Digg_NewsBlock {
       ...NewsBlock
     }
+
+    ... on dataportal_Digg_CTACardBlock {
+      ...CtaCardBlock
+    }
   }
   ${LINK_FRAGMENT}
   ${FAQ_FRAGMENT}
@@ -486,4 +501,5 @@ export const BLOCK_FRAGMENT = gql`
   ${QUOTE_FRAGMENT}
   ${GOOD_EXAMPLE_BLOCK_FRAGMENT}
   ${NEWS_BLOCK_FRAGMENT}
+  ${CTA_CARD_BLOCK_FRAGMENT}
 `;

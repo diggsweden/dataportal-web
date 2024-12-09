@@ -1,3 +1,4 @@
+import useTranslation from "next-translate/useTranslation";
 import { FC } from "react";
 
 import { AccordionBlock } from "@/components/blocks/accordion-block";
@@ -17,7 +18,10 @@ import {
   NewsItemDataFragment,
   GoodExampleDataFragment,
   StartPageDataFragment,
+  BlockDataFragment,
 } from "@/graphql/__generated__/operations";
+
+import { CtaCardBlock } from "../cta-card-block";
 interface blockListProps {
   blocks:
     | ContainerDataFragment["blocks"]
@@ -71,7 +75,7 @@ export const BlockList: FC<blockListProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const getUniqueKey = (block: any, index: number) => {
+  const getUniqueKey = (block: BlockDataFragment, index: number) => {
     const blockId = block?.id || "";
     const blockType = block?.__typename || "";
     return `block-${blockType}-${blockId}-${index}`;
@@ -159,6 +163,8 @@ export const BlockList: FC<blockListProps> = ({
                 heading={block.heading || t("pages|startpage$good-examples")}
               />
             );
+          case "dataportal_Digg_CTACardBlock":
+            return <CtaCardBlock {...block} key={getUniqueKey(block, index)} />;
           default: {
             const unknownBlock = block as { __typename: string; id: string };
             return (

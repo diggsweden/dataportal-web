@@ -66,31 +66,6 @@ export const StartPage: FC<StartPageDataFragment> = (props) => {
           {blocks && <BlockList blocks={blocks} landingPage={true} />}
         </div>
 
-        {lang === "sv" && (
-          <>
-            <ContentBox
-              heading="Var med och delta"
-              description="På Sveriges dataportal kan du som delar eller använder data, eller på andra sätt vill att data ska bli en strategisk resurs för bred samhällsnytta, delta på olika sätt. Här kan du ha dialoger med andra, bidra med innehåll eller kanske hitta en framtida samverkanspart."
-            >
-              <div className="flex flex-wrap justify-center gap-md lg:gap-xl">
-                {contentBoxLinks.map((link, idx: number) => (
-                  <ButtonLink
-                    key={idx}
-                    href={link.href}
-                    label={link.label}
-                    icon={
-                      isExternalLink(link.href)
-                        ? ExternalLinkIcon
-                        : ArrowRightIcon
-                    }
-                    iconPosition="right"
-                  />
-                ))}
-              </div>
-            </ContentBox>
-          </>
-        )}
-
         <ContentBox heading={t("pages|startpage$datasets_by_category")}>
           <ul className="flex flex-wrap justify-center gap-md lg:gap-lg">
             {dataCategories?.map((category, idx: number) => (
