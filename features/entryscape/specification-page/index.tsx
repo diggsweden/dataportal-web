@@ -13,10 +13,7 @@ import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
 
-export const SpecificationPage: FC<{ curi?: string; uri?: string }> = ({
-  curi,
-  uri,
-}) => {
+export const SpecificationPage: FC = () => {
   const { setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
@@ -34,8 +31,6 @@ export const SpecificationPage: FC<{ curi?: string; uri?: string }> = ({
     entrystoreBase: entry.entrystore.getBaseURI(),
     env: entry.env,
     lang,
-    curi,
-    uri,
     iconSize,
     pageType: "specification",
     context: entry.context,

@@ -35,10 +35,9 @@ export type DatasetInfo = {
 
 export interface EntrystoreProviderProps {
   env: EnvSettings;
-  eid?: string;
-  cid?: string;
+  eid: string;
+  cid: string;
   children?: ReactNode;
-  entryUri?: string;
   entrystoreUrl: string | "admin.dataportal.se";
   isConcept?: boolean;
   hasResourceUri?: string;
@@ -136,7 +135,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   children,
   cid,
   eid,
-  entryUri,
   entrystoreUrl,
   hasResourceUri,
   includeContact,
@@ -153,7 +151,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   // es.getREST().disableJSONP();
   const esu = new EntryStoreUtil(es);
   esu.loadOnlyPublicEntries(true);
-  let entry = {} as Entry;
 
   // Add background class based on page type
   useEffect(() => {
@@ -176,11 +173,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
   const fetchEntry = async () => {
     try {
-      if (entryUri) {
-        entry = await esu.getEntryByResourceURI(entryUri);
-      } else if (cid && eid) {
-        entry = await es.getEntry(es.getEntryURI(cid, eid));
-      }
+      const entry: Entry = await es.getEntry(es.getEntryURI(cid, eid));
 
       if (!entry) return router.push("/404");
 
@@ -566,12 +559,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           data.terms.termsInfo = termsList
             .map((t) => ({
               title: getLocalizedValue(t.getAllMetadata(), "dcterms:title"),
-              url: t.getResourceURI().startsWith("https://dataportal.se")
-                ? new URL(t.getResourceURI()).pathname.replace(
-                    "concepts",
-                    "terminology",
-                  )
-                : `/${lang}/externalterminology?resource=${t.getResourceURI()}`,
+              url: `/${lang}/terminology/${t
+                .getContext()
+                .getId()}_${t.getId()}`,
             }))
             .filter((t) => t.title && t.url);
         }
@@ -627,9 +617,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
     return {
       title: getLocalizedValue(termEntry.getAllMetadata(), "dcterms:title"),
-      url: termUri.startsWith("https://dataportal.se")
-        ? new URL(termUri).pathname.replace("concepts", "terminology")
-        : `/${lang}/externalterminology?resource=${termUri}`,
+      url: `/${lang}/terminology/${termEntry
+        .getContext()
+        .getId()}_${termEntry.getId()}`,
     };
   };
 
@@ -654,9 +644,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           .filter((e: Entry) => e)
           .map((e: Entry) => ({
             title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-            url: e.getResourceURI().startsWith("https://dataportal.se")
-              ? new URL(e.getResourceURI()).pathname
-              : `/${lang}/externalspecification?resource=${e.getResourceURI()}`,
+            url: `/${lang}/specifications/${e
+              .getContext()
+              .getId()}_${e.getId()}`,
           }));
       } else if (pageType === "terminology") {
         const specifications = await es
@@ -673,9 +663,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           .filter((e: Entry) => e)
           .map((e: Entry) => ({
             title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-            url: e.getResourceURI().startsWith("https://dataportal.se")
-              ? new URL(e.getResourceURI()).pathname
-              : `/${lang}/externalspecification?resource=${e.getResourceURI()}`,
+            url: `/${lang}/specifications/${e
+              .getContext()
+              .getId()}_${e.getId()}`,
           }));
       }
       return [];

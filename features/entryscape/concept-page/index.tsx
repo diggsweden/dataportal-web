@@ -12,24 +12,17 @@ import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
 
-export const ConceptPage: FC<{ curi?: string; uri?: string }> = ({
-  curi,
-  uri,
-}) => {
+export const ConceptPage: FC = () => {
   const { setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { lang, t } = useTranslation();
   const { pathname } = useRouter() || {};
-  const isTerminology =
-    pathname.startsWith("/terminology") ||
-    pathname.startsWith("/externalterminology");
+  const isTerminology = pathname.startsWith("/terminology");
 
   useEntryScapeBlocks({
     entrystoreBase: entry.entrystore.getBaseURI(),
     env: entry.env,
     lang,
-    curi,
-    uri,
     iconSize,
     pageType: isTerminology ? "terminology" : "concept",
     context: entry.context,
