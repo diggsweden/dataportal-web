@@ -2,12 +2,12 @@ import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import { FC, useContext, useEffect, useState } from "react";
 
-import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
+import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import DataIcon from "@/assets/icons/data.svg";
 import DateIcon from "@/assets/icons/date.svg";
 import ExternalIcon from "@/assets/icons/external-link.svg";
-import GoodExampleIcon from "@/assets/icons/godaExempel.svg";
-import KeywordsIcon from "@/assets/icons/keywords.svg";
+import KeywordTagIcon from "@/assets/icons/keyword-tag.svg";
+import StarIcon from "@/assets/icons/star.svg";
 import { BlockList } from "@/components/blocks/block-list";
 import { ButtonLink } from "@/components/button";
 import { GridList } from "@/components/grid-list";
@@ -81,7 +81,7 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
                   size="sm"
                   className="mb-md flex text-textSecondary"
                 >
-                  <GoodExampleIcon className="mr-sm" />
+                  <StarIcon className="mr-sm" />
                   Avsändare
                 </Heading>
                 <p className="ml-lg pl-md">{type.publisher}</p>
@@ -144,7 +144,7 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
                   size="sm"
                   className="mb-md flex text-textSecondary"
                 >
-                  <KeywordsIcon className="mr-sm" />
+                  <KeywordTagIcon className="mr-sm" />
                   Nyckelord
                 </Heading>
                 <div className="ml-lg flex flex-wrap gap-sm pl-md">

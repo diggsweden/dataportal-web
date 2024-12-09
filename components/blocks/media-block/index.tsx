@@ -2,8 +2,8 @@ import env from "@beam-australia/react-env";
 import Link from "next/link";
 import { FC } from "react";
 
+import DocumentPdfIcon from "@/assets/icons/document-pdf.svg";
 import DocumentIcon from "@/assets/icons/document.svg";
-import PDFIcon from "@/assets/icons/PDF.svg";
 import { CustomImage } from "@/components/custom-image";
 import { Heading } from "@/components/typography/heading";
 import {
@@ -61,7 +61,7 @@ const renderMedia = (
         >
           {description || url}
           {isPDF ? (
-            <PDFIcon className="ml-xs inline-block" />
+            <DocumentPdfIcon className="ml-xs inline-block" />
           ) : (
             <DocumentIcon className="ml-xs inline-block" />
           )}

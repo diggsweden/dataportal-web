@@ -9,8 +9,8 @@ import {
   useContext,
 } from "react";
 
-import ListIcon from "@/assets/icons/list.svg";
-import DetailedListIcon from "@/assets/icons/listDetailed.svg";
+import ListCompactIcon from "@/assets/icons/list-compact.svg";
+import ListDetailedIcon from "@/assets/icons/list-detailed.svg";
 import { Button } from "@/components/button";
 import { FileFormatBadge } from "@/components/file-format-badge";
 import { Pagination } from "@/components/pagination";
@@ -84,7 +84,7 @@ const SortingOptions: FC<{
         size="sm"
         variant="plain"
         className="hidden md:order-none md:flex"
-        icon={isCompact ? ListIcon : DetailedListIcon}
+        icon={isCompact ? ListCompactIcon : ListDetailedIcon}
         iconPosition="left"
         aria-label={
           isCompact
@@ -111,7 +111,7 @@ const SortingOptions: FC<{
         variant="plain"
         iconSize={iconSize * 1.5}
         className="px-none md:hidden"
-        icon={isCompact ? ListIcon : DetailedListIcon}
+        icon={isCompact ? ListCompactIcon : ListDetailedIcon}
         iconPosition="left"
         aria-label={
           isCompact

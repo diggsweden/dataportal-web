@@ -1,7 +1,8 @@
 import useTranslation from "next-translate/useTranslation";
 import { useState, useEffect, Dispatch, FC } from "react";
 
-import Arrow from "@/assets/icons/chevronRight.svg";
+import ChevronLeftIcon from "@/assets/icons/chevron-left.svg";
+import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 interface PaginationProps {
   totalResults: number;
   itemsPerPage: number;
@@ -107,14 +108,12 @@ export const Pagination: FC<PaginationProps> = ({
           tabIndex={currentPage === 1 ? -1 : 0}
           onClick={() => changePageNumber(currentPage - 1)}
           className={`focus--in flex h-xl w-xl items-center justify-center bg-white focus-visible:bg-brown-200 ${
-            currentPage === 1
-              ? "cursor-not-allowed [&_path]:opacity-20"
-              : "hover:bg-brown-200"
+            currentPage === 1 ? "cursor-not-allowed" : "hover:bg-brown-200"
           }`}
           disabled={currentPage === 1}
         >
           <span className="sr-only">{t("pages|search$prev-page")}</span>
-          <Arrow className="rotate-180" />
+          <ChevronLeftIcon className={currentPage === 1 ? "opacity-20" : ""} />
         </button>
         {pagination().map((value: number | string, idx: number) => (
           <button
@@ -141,13 +140,15 @@ export const Pagination: FC<PaginationProps> = ({
           onClick={() => changePageNumber(currentPage + 1)}
           className={`focus--in flex h-xl w-xl items-center justify-center bg-white focus-visible:bg-brown-200 ${
             currentPage === totalPages
-              ? "cursor-not-allowed [&_path]:opacity-20"
+              ? "cursor-not-allowed"
               : "hover:bg-brown-200"
           }`}
           disabled={currentPage === totalPages}
         >
           <span className="sr-only">{t("pages|search$next-page")}</span>
-          <Arrow />
+          <ChevronRightIcon
+            className={currentPage === totalPages ? "opacity-20" : ""}
+          />
         </button>
       </div>
     </div>

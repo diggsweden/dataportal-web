@@ -1,7 +1,7 @@
 import { usePathname } from "next/navigation";
 import { FC, useContext, useEffect } from "react";
 
-import ArrowIcon from "@/assets/icons/arrowRight.svg";
+import ArrowIcon from "@/assets/icons/arrow-right.svg";
 import { BlockList } from "@/components/blocks/block-list";
 import { ButtonLink } from "@/components/button";
 import { Container } from "@/components/layout/container";
