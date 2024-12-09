@@ -28,8 +28,6 @@ export const DatasetSeriesPage: FC = () => {
     });
   }, [pathname, entry]);
 
-  console.log("entry", entry);
-
   return (
     <div>
       <div className="py-lg">
