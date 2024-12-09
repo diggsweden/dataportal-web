@@ -11,9 +11,9 @@ import React, {
   useState,
 } from "react";
 
-import ChevronRightIcon from "@/assets/icons/chevronRight.svg";
+import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
-import NavPixelsImage from "@/assets/icons/navPixels.svg";
+import PixelsImage from "@/assets/icons/pixels.svg";
 import { SettingsContext } from "@/providers/settings-provider";
 import { AddIcon } from "@/types/global";
 import { NavData } from "@/utilities/menu-data";
@@ -76,15 +76,13 @@ const MenuLink: FC<MenuLinkProps> = ({
       onClick={() => vw < 600 && setOpenSideBar(false)}
     >
       <>
-        {isActive && <NavPixelsImage className="absolute right-none" />}
+        {isActive && <PixelsImage className="absolute right-none text-white" />}
         {Icon && (
           <Icon
             viewBox="0 0 24 24"
             width={1.5 * iconSize}
             height={1.5 * iconSize}
-            className={`flex-shrink-0 ${
-              isActive ? "[&_path]:fill-pink-600" : ""
-            }`}
+            className={`flex-shrink-0 ${isActive ? "text-pink-600" : ""}`}
           />
         )}
         <span
@@ -96,7 +94,7 @@ const MenuLink: FC<MenuLinkProps> = ({
         </span>
         {variant === "external" && (
           <ExternalLinkIcon
-            className="absolute right-md [&_path]:fill-brown-400"
+            className="absolute right-md text-brown-400"
             viewBox="0 0 24 24"
             width={1.5 * iconSize}
             height={1.5 * iconSize}

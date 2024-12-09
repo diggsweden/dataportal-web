@@ -19,8 +19,6 @@ interface HitSpecification {
   path: string;
   titleResource: string;
   descriptionResource: string;
-  // eslint-disable-next-line no-unused-vars
-  pathResolver?: (hitMeta: ResourceMeta) => string;
 }
 
 interface SearchProviderConfig {
@@ -34,6 +32,7 @@ interface SearchProviderConfig {
     language: string;
     takeFacets: number;
     sortOrder?: SearchSortOrder;
+    // Values to exclude from search
     filters?: {
       key: string;
       property: ESType;
@@ -41,49 +40,6 @@ interface SearchProviderConfig {
     }[];
   };
 }
-interface ResourceMeta {
-  getResourceURI: () => string;
-}
-
-interface PathResolverConfig {
-  externalPath: string;
-  internalPath: string;
-  domainLength: number;
-}
-
-function createPathResolver(config: PathResolverConfig) {
-  return (hitMeta: ResourceMeta) => {
-    const resourceUri = hitMeta.getResourceURI();
-
-    if (!resourceUri) return "";
-
-    if (!resourceUri.includes("dataportal.se")) {
-      return `${config.externalPath}?resource=${encodeURIComponent(
-        resourceUri,
-      )}`;
-    }
-
-    if (resourceUri.includes(config.internalPath)) {
-      return resourceUri.slice(
-        resourceUri.lastIndexOf("dataportal.se/") + config.domainLength,
-      );
-    }
-
-    return resourceUri;
-  };
-}
-
-const specsPathResolver = createPathResolver({
-  externalPath: "/externalspecification",
-  internalPath: "dataportal.se/specifications",
-  domainLength: 13,
-});
-
-const termsPathResolver = createPathResolver({
-  externalPath: "/externalconcept",
-  internalPath: "dataportal.se/concepts",
-  domainLength: 13,
-});
 
 export function createSearchProviderSettings(env: EnvSettings, lang: string) {
   return {
@@ -105,70 +61,70 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
       },
       facetSpecification: {
         facets: [
-          // {
-          //   resource: "http://purl.org/dc/terms/license",
-          //   type: ESType.uri,
-          //   dcatProperty: "dcterms:license",
-          //   dcatType: "choice",
-          //   dcatFilterEnabled: false,
-          //   indexOrder: 5,
-          //   group: "access",
-          // },
-          // {
-          //   resource: "http://www.w3.org/ns/dcat#theme",
-          //   type: ESType.uri,
-          //   dcatProperty: "dcat:theme",
-          //   dcatType: "choice",
-          //   dcatFilterEnabled: true,
-          //   indexOrder: 0,
-          //   group: "type",
-          // },
-          // {
-          //   resource: "http://purl.org/dc/terms/type",
-          //   dcatProperty: "dcterms:type",
-          //   dcatId: "adms:publishertype",
-          //   type: ESType.uri,
-          //   related: true,
-          //   dcatType: "choice",
-          //   indexOrder: 1,
-          //   maschineName: "publishertype",
-          //   group: "actor",
-          // },
-          // {
-          //   resource: "http://purl.org/dc/terms/publisher",
-          //   dcatProperty: "dcterms:publisher",
-          //   type: ESType.uri,
-          //   indexOrder: 2,
-          //   group: "actor",
-          // },
-          // {
-          //   resource: "http://purl.org/dc/terms/format",
-          //   type: ESType.literal,
-          //   dcatProperty: "dcterms:format",
-          //   dcatType: "choice",
-          //   dcatFilterEnabled: true,
-          //   indexOrder: 3,
-          //   group: "distribution",
-          // },
-          // {
-          //   resource: "http://purl.org/dc/terms/accrualPeriodicity",
-          //   dcatId: "dcat:dcterms:accrualPeriodicity_da",
-          //   type: ESType.uri,
-          //   dcatProperty: "dcterms:accrualPeriodicity",
-          //   dcatType: "choice",
-          //   dcatFilterEnabled: true,
-          //   indexOrder: 4,
-          //   group: "distribution",
-          // },
-          // {
-          //   resource: "http://data.europa.eu/r5r/applicableLegislation",
-          //   type: ESType.uri,
-          //   dcatProperty: "dcatap:applicableLegislation",
-          //   dcatType: "choice",
-          //   dcatFilterEnabled: false,
-          //   indexOrder: 6,
-          //   group: "type",
-          // },
+          {
+            resource: "http://purl.org/dc/terms/license",
+            type: ESType.uri,
+            dcatProperty: "dcterms:license",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 5,
+            group: "access",
+          },
+          {
+            resource: "http://www.w3.org/ns/dcat#theme",
+            type: ESType.uri,
+            dcatProperty: "dcat:theme",
+            dcatType: "choice",
+            dcatFilterEnabled: true,
+            indexOrder: 0,
+            group: "type",
+          },
+          {
+            resource: "http://purl.org/dc/terms/type",
+            dcatProperty: "dcterms:type",
+            dcatId: "adms:publishertype",
+            type: ESType.uri,
+            related: true,
+            dcatType: "choice",
+            indexOrder: 1,
+            maschineName: "publishertype",
+            group: "actor",
+          },
+          {
+            resource: "http://purl.org/dc/terms/publisher",
+            dcatProperty: "dcterms:publisher",
+            type: ESType.uri,
+            indexOrder: 2,
+            group: "actor",
+          },
+          {
+            resource: "http://purl.org/dc/terms/format",
+            type: ESType.literal,
+            dcatProperty: "dcterms:format",
+            dcatType: "choice",
+            dcatFilterEnabled: true,
+            indexOrder: 3,
+            group: "distribution",
+          },
+          {
+            resource: "http://purl.org/dc/terms/accrualPeriodicity",
+            dcatId: "dcat:dcterms:accrualPeriodicity_da",
+            type: ESType.uri,
+            dcatProperty: "dcterms:accrualPeriodicity",
+            dcatType: "choice",
+            dcatFilterEnabled: true,
+            indexOrder: 4,
+            group: "distribution",
+          },
+          {
+            resource: "http://data.europa.eu/r5r/applicableLegislation",
+            type: ESType.uri,
+            dcatProperty: "dcatap:applicableLegislation",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 6,
+            group: "type",
+          },
           {
             resource: "http://purl.org/dc/terms/subject",
             type: ESType.uri,
@@ -176,15 +132,15 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             indexOrder: 7,
             group: "type",
           },
-          //   {
-          //     resource: "http://purl.org/dc/terms/conformsTo",
-          //     type: ESType.uri,
-          //     dcatProperty: "dcterms:conformsTo",
-          //     dcatType: "choice",
-          //     dcatFilterEnabled: false,
-          //     indexOrder: 8,
-          //     group: "type",
-          //   },
+          {
+            resource: "http://purl.org/dc/terms/conformsTo",
+            type: ESType.uri,
+            dcatProperty: "dcterms:conformsTo",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 8,
+            group: "type",
+          },
         ],
       },
       initRequest: {
@@ -207,13 +163,11 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           path: `/specifications/`,
           titleResource: "dcterms:title",
           descriptionResource: "dcterms:description",
-          pathResolver: specsPathResolver,
         },
         "http://purl.org/dc/terms/Standard": {
           path: `/specifications/`,
           titleResource: "dcterms:title",
           descriptionResource: "dcterms:description",
-          pathResolver: specsPathResolver,
         },
       },
       facetSpecification: {
@@ -282,18 +236,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           {
             key: "dcterms:type",
             property: "uri",
-            values: [
-              "http://purl.org/adms/publishertype/Academia-ScientificOrganisation",
-              "http://purl.org/adms/publishertype/Company",
-              "http://purl.org/adms/publishertype/IndustryConsortium",
-              "http://purl.org/adms/publishertype/LocalAuthority",
-              "http://purl.org/adms/publishertype/NationalAuthority",
-              "http://purl.org/adms/publishertype/NonGovernmentalOrganisation",
-              "http://purl.org/adms/publishertype/Non-ProfitOrganisation",
-              "http://purl.org/adms/publishertype/RegionalAuthority",
-              "http://purl.org/adms/publishertype/StandardisationBody",
-              "http://purl.org/adms/publishertype/SupraNationalAuthority",
-            ],
+            values: ["http://purl.org/adms/publishertype/PrivateIndividual(s)"],
           },
         ],
       },
@@ -307,7 +250,6 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           path: `/concepts/`,
           titleResource: "http://www.w3.org/2004/02/skos/core#prefLabel",
           descriptionResource: "http://www.w3.org/2004/02/skos/core#definition",
-          pathResolver: termsPathResolver,
         },
       },
       facetSpecification: {

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { FC, useState } from "react";
 
-import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
+import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { ButtonLink } from "@/components/button";
 import { CustomImage } from "@/components/custom-image";
 import { Container } from "@/components/layout/container";

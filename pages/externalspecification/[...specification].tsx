@@ -1,29 +1,18 @@
-import { GetServerSideProps } from "next/types";
+import { GetServerSidePropsContext } from "next/types";
+
+import { handleEntryStoreRedirect } from "@/utilities/entryscape/entrystore-redirect";
 
 export default function Specification() {
   return null;
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const specification = (params?.specification as string[]) || [];
-  const scheme = specification[0];
-
-  if (scheme != "http" && scheme != "https") {
-    return {
-      notFound: true,
-    };
-  }
-
-  // Reconstruct the original URI and redirect to the new format
-  const curi = specification.slice(1).join("/");
-  const entryUri = `${scheme}://${curi}`;
-
-  return {
-    redirect: {
-      destination: `/externalspecification?resource=${encodeURIComponent(
-        entryUri,
-      )}`,
-      permanent: true,
-    },
-  };
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  return handleEntryStoreRedirect(context, {
+    pathPrefix: "/specifications",
+    redirectPath: "/specifications",
+    entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
+    paramName: "specification",
+  });
 };

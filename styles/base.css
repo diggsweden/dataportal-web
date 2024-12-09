@@ -231,13 +231,13 @@ input[type="radio"] {
 }
 
 .auth-wrapper .btn.unlocked::after {
-  content: url("../assets/icons/lockOpenWhite.svg");
-  @apply h-[1.5rem] w-[1.5rem];
+  content: url("../assets/icons/lock-open.svg");
+  @apply h-[1.5rem] w-[1.5rem] text-brown-100;
 }
 
 .authorization__btn.unlocked::after {
-  content: url("../assets/icons/lockOpenBrown.svg");
-  @apply h-[1.5rem] w-[1.5rem];
+  content: url("../assets/icons/lock-open.svg");
+  @apply h-[1.5rem] w-[1.5rem] text-textSecondary;
 }
 
 .auth-wrapper .btn.unlocked svg,

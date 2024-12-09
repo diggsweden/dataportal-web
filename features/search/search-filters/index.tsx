@@ -94,7 +94,7 @@ const FilterSearch: FC<FilterSearchProps> = ({
       <SearchIcon
         height={24}
         width={24}
-        className="absolute right-sm [&_path]:fill-brown-500"
+        className="absolute right-sm text-brown-500"
         aria-hidden="true"
       />
     </div>
@@ -369,7 +369,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
       <div
         ref={ref}
         id="filter-content"
-        className={`bg-pink-50 fixed inset-md z-50 w-auto border-t border-brown-400 md:static md:mt-xl md:bg-transparent md:pt-[1.875rem] ${
+        className={`fixed inset-md z-50 w-auto border-t border-brown-400 bg-pink-50 md:static md:mt-xl md:bg-transparent md:pt-[1.875rem] ${
           showFilter ? "block" : "hidden"
         }`}
       >

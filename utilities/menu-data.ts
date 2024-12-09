@@ -1,15 +1,15 @@
 import communityIcon from "@/assets/icons/community.svg";
+import dataCollaborationIcon from "@/assets/icons/data-collaboration.svg";
 import dataIcon from "@/assets/icons/data.svg";
-import datasamverkanIcon from "@/assets/icons/datasamverkan.svg";
-import delaDataIcon from "@/assets/icons/dela-data.svg";
 import externalLinkIcon from "@/assets/icons/external-link.svg";
 import globeIcon from "@/assets/icons/globe.svg";
-import godaExempelIcon from "@/assets/icons/godaExempel.svg";
 import homeIcon from "@/assets/icons/home.svg";
+import infoCircleIcon from "@/assets/icons/info-circle.svg";
 import mailIcon from "@/assets/icons/mail.svg";
-import nyheterIcon from "@/assets/icons/nyheter.svg";
-import shareData from "@/assets/icons/shareData.svg";
-import stodVerktygIcon from "@/assets/icons/stod-verktyg.svg";
+import newsIcon from "@/assets/icons/news.svg";
+import questionCircleIcon from "@/assets/icons/question-circle.svg";
+import rocketIcon from "@/assets/icons/rocket.svg";
+import starIcon from "@/assets/icons/star.svg";
 import { AddIcon } from "@/types/global";
 
 interface NavItem {
@@ -45,7 +45,7 @@ interface NavFooterData {
 }
 
 const topNav: NavTopData[] = [
-  { title: "about-us", icon: stodVerktygIcon },
+  { title: "about-us", icon: infoCircleIcon },
   {
     title: "community",
     href: "https://community.dataportal.se/",
@@ -71,29 +71,29 @@ const mainNav: NavData[] = [
     title: "support-tools",
     promoted: true,
     inEn: false,
-    icon: stodVerktygIcon,
+    icon: infoCircleIcon,
   },
   {
     title: "share-data",
     inEn: false,
-    icon: shareData,
+    icon: rocketIcon,
   },
   {
     title: "good-examples",
     promoted: true,
-    icon: godaExempelIcon,
+    icon: starIcon,
   },
   {
     title: "educations",
     promoted: false,
     inEn: false,
-    icon: stodVerktygIcon,
+    icon: infoCircleIcon,
   },
   {
     title: "data-collaboration",
     promoted: false,
     inEn: false,
-    icon: datasamverkanIcon,
+    icon: dataCollaborationIcon,
   },
   {
     title: "european-data-areas",
@@ -103,7 +103,7 @@ const mainNav: NavData[] = [
   {
     title: "why-share-data",
     promoted: false,
-    icon: delaDataIcon,
+    icon: questionCircleIcon,
     children: [
       {
         title: "shara-data-benefits",
@@ -123,7 +123,7 @@ const mainNav: NavData[] = [
     title: "results",
     promoted: false,
     inEn: false,
-    icon: stodVerktygIcon,
+    icon: infoCircleIcon,
     children: [
       {
         title: "metadata",
@@ -139,13 +139,13 @@ const mainNav: NavData[] = [
     title: "news",
     promoted: false,
     inEn: false,
-    icon: nyheterIcon,
+    icon: newsIcon,
   },
   {
     title: "faq",
     promoted: false,
     inEn: false,
-    icon: delaDataIcon,
+    icon: questionCircleIcon,
   },
   {
     title: "community",

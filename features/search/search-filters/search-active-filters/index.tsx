@@ -1,9 +1,11 @@
 import useTranslation from "next-translate/useTranslation";
+import { useContext } from "react";
 
 import CrossIcon from "@/assets/icons/cross.svg";
 import TrashIcon from "@/assets/icons/trash.svg";
 import { Button } from "@/components/button";
 import { SearchContextData } from "@/providers/search-provider";
+import { SettingsContext } from "@/providers/settings-provider";
 import { SearchFacetValue } from "@/types/search";
 import { ESRdfType } from "@/utilities/entryscape/entryscape";
 
@@ -28,6 +30,7 @@ export function SearchActiveFilters({
   activeCheckboxFilters,
 }: SearchActiveFiltersProps) {
   const { t } = useTranslation();
+  const { iconSize } = useContext(SettingsContext);
 
   const clearCurrentScrollPos = () => {
     if (typeof localStorage != "undefined" && typeof location != "undefined") {
@@ -115,7 +118,7 @@ export function SearchActiveFilters({
         <div className="mt-lg block whitespace-nowrap md:mt-none">
           <Button
             variant="plain"
-            size="sm"
+            size="xs"
             icon={TrashIcon}
             iconPosition="left"
             onClick={() => {
@@ -135,7 +138,7 @@ export function SearchActiveFilters({
                 .then(() => search.doSearch());
             }}
             label={t("common|clear-filters")}
-            className="[&_svg]:h-[1.5rem] [&_svg]:w-[1.5rem]"
+            iconSize={iconSize * 1.5}
           />
         </div>
       )}

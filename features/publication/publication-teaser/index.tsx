@@ -2,7 +2,7 @@ import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 import { FC, useEffect, useState } from "react";
 
-import ArrowIcon from "@/assets/icons/arrowRight.svg";
+import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { CustomImage } from "@/components/custom-image";
 import { Heading } from "@/components/typography/heading";
 import {
@@ -56,7 +56,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
       </div>
 
       <span className="button button--small button--plain focus--none group-focus-within:bg-brown-200">
-        Läs mer <ArrowIcon height={16} width={16} viewBox="0 0 24 24" />
+        Läs mer <ArrowRightIcon height={16} width={16} viewBox="0 0 24 24" />
       </span>
     </>
   );
