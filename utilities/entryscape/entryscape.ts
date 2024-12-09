@@ -551,14 +551,6 @@ export class Entryscape {
           const facetSpec = this.facetSpecification?.facets?.find(
             (spec) => spec.resource === fg.predicate,
           );
-          if (facetSpec?.resource === "http://purl.org/dc/terms/subject") {
-            fg.values = fg.values.filter(
-              (v: SearchFacet) =>
-                v.name?.startsWith(
-                  "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory",
-                ),
-            );
-          }
           if (facetSpec && facetSpec.dcatType !== "choice") {
             await getUriNames(
               fg.values
