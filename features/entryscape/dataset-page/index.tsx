@@ -79,13 +79,21 @@ export const DatasetPage: FC = () => {
         <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {entry.title}
         </Heading>
-
         <div className="mb-lg gap-2xl md:mb-xl lg:flex">
           {/* Left column */}
           <div className="mb-lg flex w-full max-w-md flex-col gap-lg lg:mb-xl">
             {/* Publisher */}
-            {entry.publisher && (
-              <Preamble className="mb-lg">{entry.publisher}</Preamble>
+            {entry.organisationLink ? (
+              <Link
+                className="text-lg text-green-600 hover:!no-underline"
+                href={entry.organisationLink}
+              >
+                {entry.publisher}
+              </Link>
+            ) : (
+              entry.publisher && (
+                <Preamble className="mb-lg">{entry.publisher}</Preamble>
+              )
             )}
 
             {/* Indicators */}
