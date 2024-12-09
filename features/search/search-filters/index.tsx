@@ -22,7 +22,7 @@ import { SearchFilter } from "@/features/search/search-filters/search-filter";
 import { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { SearchFacet, SearchFacetValue } from "@/types/search";
-import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
+import { ESRdfType, ESType, checkBoxFilterConfigs } from "@/utilities/entryscape/entryscape";
 
 import { SearchActiveFilters } from "./search-active-filters";
 import {
@@ -151,7 +151,7 @@ const FindFilters = (
 ) => {
   if (!checkedFilters) return "";
 
-  const allTitles = categoryFilters.map((item) => item.title);
+  const allTitles = categoryFilters.map((item) => item.title);    
   const checkedTitles = checkedFilters.map((item) => item.title);
   const union = allTitles.filter((x) => checkedTitles.includes(x));
 
@@ -280,7 +280,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
   }, [search.allFacets]);
 
   const hvd = "http://data.europa.eu/r5r/applicableLegislation";
-  const national = "http://purl.org/dc/terms/subject";
+  const spec = "http://purl.org/dc/terms/conformsTo";
 
   const activeCheckboxFilters = useMemo(() => {
     const filters = [];
@@ -300,17 +300,15 @@ export const SearchFilters: FC<SearchFilterProps> = ({
       });
     }
 
-    // National filter
+    // Specification filter
     if (
-      search.request.facetValues?.some(
-        (t: SearchFacetValue) => t.facet === ESRdfType.national_data,
-      )
+        search.request.facetValues?.some((t: SearchFacetValue) => t.facet === ESRdfType.spec)
     ) {
       filters.push({
-        id: "national_only",
-        label: t(`resources|${national}`),
+        id: "spec_only",
+        label: t(`resources|${spec}`),
         facetValue: search.request.facetValues.find(
-          (t: SearchFacetValue) => t.facet === ESRdfType.national_data,
+          (t) => t.facet === ESRdfType.spec,
         ),
       });
     }
@@ -409,7 +407,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                         )
                       : value?.facetValues.slice(0, show);
 
-                    if (key !== hvd && key !== national) {
+                    if (key !== hvd && key !== spec) {
                       return (
                         <li
                           key={`${value.title}-${idx}`}
@@ -448,7 +446,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                     />
                                   )}
                                 </>
-                              )}
+                              )}                              
                               {/* List of filter options within this category */}
                               <ul role="listbox" aria-multiselectable="true">
                                 {facetValues
@@ -527,28 +525,15 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                           </SearchFilter>
                         </li>
                       );
-                    } else if (key === hvd) {
+                    } else {
+                      const filterConfig = checkBoxFilterConfigs[key];
                       return (
                         <SearchCheckboxFilter
                           key={key}
-                          id="hvd_only"
-                          name="hvd"
+                          id={filterConfig.id}
+                          name={filterConfig.name}
                           checked={activeCheckboxFilters.some(
-                            (filter) => filter.id === "hvd_only",
-                          )}
-                          onChange={() => doSearch(key, facetValues[0])}
-                          label={t(`resources|${key}`)}
-                          iconSize={iconSize}
-                        />
-                      );
-                    } else if (key === national) {
-                      return (
-                        <SearchCheckboxFilter
-                          key={key}
-                          id="national_only"
-                          name="National"
-                          checked={activeCheckboxFilters.some(
-                            (filter) => filter.id === "national_only",
+                            (filter) => filter.id === filterConfig.id,
                           )}
                           onChange={() => doSearch(key, facetValues[0])}
                           label={t(`resources|${key}`)}

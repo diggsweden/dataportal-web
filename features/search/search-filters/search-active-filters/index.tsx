@@ -57,7 +57,7 @@ export function SearchActiveFilters({
           (facetValue: SearchFacetValue, index: number) =>
             facetValue.facet !==
               "http://data.europa.eu/r5r/applicableLegislation" &&
-            facetValue.facet !== "http://purl.org/dc/terms/subject" && (
+            facetValue.facet !== "http://purl.org/dc/terms/conformsTo" && (
               <Button
                 variant="filter"
                 size="xs"

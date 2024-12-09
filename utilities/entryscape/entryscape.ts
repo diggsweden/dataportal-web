@@ -52,8 +52,22 @@ export enum ESRdfType {
   esterms_ServedByDataService = "esterms:ServedByDataService",
   hvd = "http://data.europa.eu/eli/reg_impl/2023/138/oj",
   agent = "http://xmlns.com/foaf/0.1/Agent",
-  national_data = "http://purl.org/dc/terms/subject",
+  spec = "http://purl.org/dc/terms/conformsTo",
 }
+
+export const checkBoxFilterConfigs: Record<
+  string,
+  { id: string; name: string }
+> = {
+  "http://data.europa.eu/r5r/applicableLegislation": {
+    id: "hvd_only",
+    name: "hvd",
+  },
+  "http://purl.org/dc/terms/conformsTo": {
+    id: "spec_only",
+    name: "Specification",
+  },
+};
 
 /* eslint-enable no-unused-vars */
 
@@ -162,6 +176,13 @@ export class Entryscape {
           group: facetSpec.group,
           facetValues: f.values
             .filter((value: ESFacetFieldValue) => {
+              if (
+                facetSpec.resource === "http://purl.org/dc/terms/subject" &&
+                value.name.startsWith(
+                  "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/",
+                )
+              )
+                return true;
               if (!value.name || value.name.trim() === "") return false;
               if (!facetSpec?.dcatFilterEnabled) return true;
 
@@ -469,15 +490,6 @@ export class Entryscape {
             case ESType.uri:
             case ESType.wildcard:
               // Special case for National basic data because all subjects might not be National basic data
-              if (fvalue[0].facet === "http://purl.org/dc/terms/subject") {
-                esQuery.uriProperty(
-                  key,
-                  "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/*",
-                  null,
-                  fvalue[0].related,
-                );
-                break;
-              }
 
               esQuery.uriProperty(
                 key,
@@ -533,7 +545,14 @@ export class Entryscape {
           const facetSpec = this.facetSpecification?.facets?.find(
             (spec) => spec.resource === fg.predicate,
           );
-
+          if (facetSpec?.resource === "http://purl.org/dc/terms/subject") {
+            fg.values = fg.values.filter(
+              (v: SearchFacet) =>
+                v.name?.startsWith(
+                  "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory",
+                ),
+            );
+          }
           if (facetSpec && facetSpec.dcatType !== "choice") {
             await getUriNames(
               fg.values
