@@ -283,7 +283,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
             entry.getEntryInfo().getMetadataURI(),
           );
           entryData.mqaCatalog = await getRelatedMQA(entry);
-          if (publisherUri && publisherEntry) {
+          if (publisherUri && publisherEntry && publisher) {
             entryData.organisationLink = `/organisations/${publisherEntry.getContext().getId()}_${publisherEntry.getId()}`
           }
           break;
