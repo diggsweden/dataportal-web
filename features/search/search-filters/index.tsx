@@ -567,37 +567,6 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                         />
                       );
                     }
-
-                    /* 
-                     else if (key === hvd) {
-                      return (
-                        <SearchCheckboxFilter
-                          key={key}
-                          id="hvd_only"
-                          name="hvd"
-                          checked={activeCheckboxFilters.some(
-                            (filter) => filter.id === "hvd_only",
-                          )}
-                          onChange={() => doSearch(key, facetValues[0])}
-                          label={t(`resources|${key}`)}
-                          iconSize={iconSize}
-                        />
-                      );
-                    } else if (key === national) {
-                      return (
-                        <SearchCheckboxFilter
-                          key={key}
-                          id="national_only"
-                          name="National"
-                          checked={activeCheckboxFilters.some(
-                            (filter) => filter.id === "national_only",
-                          )}
-                          onChange={() => doSearch(key, facetValues[0])}
-                          label={t(`resources|${key}`)}
-                          iconSize={iconSize}
-                        />
-                      );
-                    } */
                   })}
 
                 {searchMode == "datasets" && groupName == "distribution" && (
