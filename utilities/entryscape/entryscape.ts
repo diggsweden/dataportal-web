@@ -181,13 +181,6 @@ export class Entryscape {
           group: facetSpec.group,
           facetValues: f.values
             .filter((value: ESFacetFieldValue) => {
-              if (
-                facetSpec.resource === "http://purl.org/dc/terms/subject" &&
-                value.name.startsWith(
-                  "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/",
-                )
-              )
-                return true;
               if (!value.name || value.name.trim() === "") return false;
               if (!facetSpec?.dcatFilterEnabled) return true;
 
@@ -495,7 +488,15 @@ export class Entryscape {
             case ESType.uri:
             case ESType.wildcard:
               // Special case for National basic data because all subjects might not be National basic data
-
+              if (fvalue[0].facet === "http://purl.org/dc/terms/subject") {
+                esQuery.uriProperty(
+                  key,
+                  "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/*",
+                  null,
+                  fvalue[0].related,
+                );
+                break;
+              }
               esQuery.uriProperty(
                 key,
                 fvalue.map((f) => f.resource),
