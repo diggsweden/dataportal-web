@@ -40,11 +40,7 @@ import {
 } from "@/utilities";
 
 import { DCATData } from "../dcat-utils";
-import {
-  formatDatasetUrl,
-  parseEmail,
-  luceneFriendlyQuery,
-} from "./entrystore-helpers";
+import { parseEmail, luceneFriendlyQuery } from "./entrystore-helpers";
 import { entryCache } from "./local-cache";
 
 interface EntryStoreConfig {
@@ -53,6 +49,7 @@ interface EntryStoreConfig {
   t: Translate;
   facetSpecification?: FacetSpecification;
   hitSpecifications?: { [key: string]: HitSpecification };
+  entry?: Entry;
 }
 
 export class EntrystoreService {
@@ -92,6 +89,7 @@ export class EntrystoreService {
   }
 
   public getEntryStoreUtil(): EntryStoreUtil {
+    this.entryStoreUtil.loadOnlyPublicEntries(true);
     return this.entryStoreUtil;
   }
 
@@ -147,6 +145,7 @@ export class EntrystoreService {
   public async solrSearch(
     request: SearchRequest,
     dcat?: DCATData,
+    entry?: Entry,
   ): Promise<SearchResult> {
     const hits: SearchHit[] = [];
     let query = luceneFriendlyQuery(request.query || "*");
@@ -156,10 +155,23 @@ export class EntrystoreService {
     esQuery.publicRead(true);
 
     // Handle filters
-    if (request.filters && request.filters.length > 0) {
-      request.filters.forEach((filter) => {
+    if (request?.filters?.exclude && request?.filters?.exclude?.length > 0) {
+      request.filters.exclude.forEach((filter) => {
         if (filter.property === "uri") {
-          esQuery.uriProperty(filter.key, filter.values, "not");
+          esQuery.uriProperty(filter.key, filter.values || [], "not");
+        }
+      });
+    }
+
+    // Filters to include
+    if (
+      request.filters?.include &&
+      request.filters.include.length > 0 &&
+      entry
+    ) {
+      request.filters.include.forEach((filter) => {
+        if (filter.property === "uri") {
+          esQuery.uriProperty(filter.key, entry.getResourceURI());
         }
       });
     }
@@ -263,7 +275,7 @@ export class EntrystoreService {
     }
 
     try {
-      const children = await searchList.getEntries(request.page || 0);
+      const entryList = await searchList.getEntries(request.page || 0);
       let metaFacets;
 
       if (request.fetchFacets) {
@@ -293,12 +305,12 @@ export class EntrystoreService {
       }
 
       // Process children sequentially to maintain order
-      for (const child of children) {
-        const metaData = child.getAllMetadata();
-        const resourceURI = child.getResourceURI();
-        const context = child.getContext();
+      for (const entry of entryList) {
+        const metaData = entry.getAllMetadata();
+        const resourceURI = entry.getResourceURI();
+        const context = entry.getContext();
         const rdfType = metaData.findFirstValue(
-          child.getResourceURI(),
+          entry.getResourceURI(),
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
         );
 
@@ -315,7 +327,7 @@ export class EntrystoreService {
         };
 
         const hit = {
-          entryId: child.getId(),
+          entryId: entry.getId(),
           title: getLocalizedValue(
             metaData,
             hitSpecification.titleResource || "dcterms:title",
@@ -326,9 +338,9 @@ export class EntrystoreService {
             hitSpecification.descriptionResource || "dcterms:description",
             resourceURI,
           ),
-          esEntry: child,
+          esEntry: entry,
           metadata: await this.getMetaValues(
-            child,
+            entry,
             hitSpecification.path || "",
             dcat,
           ),
@@ -654,25 +666,34 @@ export class EntrystoreService {
     return values;
   }
 
-  public async getPublisherInfo(metadata: Metadata): Promise<string> {
-    const publisherUri = metadata.findFirstValue(null, "dcterms:publisher");
+  public async getPublisherInfo(
+    resourceUri: string,
+    metadata: Metadata,
+  ): Promise<{ name: string; entry: Entry | null }> {
+    const publisherUri = metadata.findFirstValue(
+      resourceUri,
+      "dcterms:publisher",
+    );
     if (publisherUri) {
       try {
         const publisherEntry =
           await this.entryStoreUtil.getEntryByResourceURI(publisherUri);
         return publisherEntry
-          ? getLocalizedValue(
-              publisherEntry.getAllMetadata(),
-              "foaf:name",
-              publisherUri,
-            )
-          : "";
+          ? {
+              entry: publisherEntry,
+              name: getLocalizedValue(
+                publisherEntry.getAllMetadata(),
+                "foaf:name",
+                publisherUri,
+              ),
+            }
+          : { entry: null, name: "" };
       } catch (error) {
         console.error("Failed to fetch publisher:", error);
-        return "";
+        return { entry: null, name: "" };
       }
     }
-    return "";
+    return { entry: null, name: "" };
   }
 
   public async getContactInfo(metadata: Metadata) {
@@ -722,43 +743,6 @@ export class EntrystoreService {
         ds.getEntryInfo().getMetadataURI(),
       )}_${ds.getId()}`,
     }));
-  }
-
-  public async getDatasetsInSeries(
-    entry: Entry,
-    resourceUri: string,
-  ): Promise<SearchHit[] | null> {
-    try {
-      const datasetsInSeries = await this.entryStore
-        .newSolrQuery()
-        .rdfType(["dcat:Dataset", "esterms:IndependentDataService"])
-        .uriProperty("dcat:inSeries", resourceUri)
-        .publicRead(true)
-        .getEntries();
-
-      const dcat = await fetchDCATMeta();
-
-      return await Promise.all(
-        datasetsInSeries.map(async (e) => ({
-          ...e,
-          title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-          description: getLocalizedValue(
-            e.getAllMetadata(),
-            "dcterms:description",
-          ),
-          metadata: await this.getMetaValues(e, "/dataset-series", dcat),
-          modified: e.getEntryInfo().getModificationDate(),
-          url: formatDatasetUrl(
-            e,
-            this.lang,
-            this.entryStore.getContextId(e.getEntryInfo().getMetadataURI()),
-          ),
-        })),
-      );
-    } catch (error) {
-      console.error("Failed to fetch dataset series:", error);
-      return null;
-    }
   }
 
   public async getRelatedSpecifications(
@@ -843,6 +827,37 @@ export class EntrystoreService {
         .getContext()
         .getId()}_${termEntry.getId()}`,
     };
+  }
+
+  public async getRelatedDatasetSeries(entry: Entry, metadata: Metadata) {
+    try {
+      const datasetSeriesUris = metadata
+        .find(entry.getResourceURI(), "dcat:inSeries")
+        .map((stmt: { getValue: () => string }) => stmt.getValue());
+
+      const datasetSeriesEntries =
+        await this.entryStoreUtil.loadEntriesByResourceURIs(
+          datasetSeriesUris,
+          null,
+          true,
+        );
+      return datasetSeriesEntries.map((e: Entry) => ({
+        title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
+        url: `/${this.lang}/dataset-series/${e
+          .getContext()
+          .getId()}_${e.getId()}?q=&f=`,
+      }));
+    } catch {
+      return [];
+    }
+  }
+
+  public async getOrganisationLink(publisherEntry: Entry | null) {
+    if (!publisherEntry) return null;
+
+    return `/${this.lang}/organisations/${publisherEntry
+      .getContext()
+      .getId()}_${publisherEntry.getId()}`;
   }
 
   // ============================================================================

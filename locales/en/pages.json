@@ -54,6 +54,9 @@
   "dataservicepage": {
     "api": "About API"
   },
+  "dataset-series": {
+    "data-serie": "Dataset serie"
+  },
   "datasetpage": {
     "about-dataset": "About dataset",
     "catalog": "Catalog",
@@ -75,6 +78,7 @@
     "no_title": "No title given",
     "rdf": "Download metadata as RDF",
     "read_about_api": "Read more about API",
+    "related_dataset_series": "Belongs to dataset serie: ",
     "related_specifications": "Specification",
     "several_links": "The data has several links for download",
     "several_links_header": "The data resource consists of the following files",

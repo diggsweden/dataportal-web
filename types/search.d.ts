@@ -1,5 +1,6 @@
 import { SearchSortOrder } from "@/providers/search-provider";
-import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
+
+import { ESRdfType, ESType } from "./entrystore-core";
 
 //#region ES members
 
@@ -97,10 +98,15 @@ export interface SearchRequest {
   takeFacets?: number;
   esRdfTypes?: ESRdfType[];
   sortOrder?: SearchSortOrder;
-  compact?: boolean;
   filters?: {
-    key: string;
-    property: ESType;
-    values: string[];
-  }[];
+    exclude?: {
+      key: string;
+      property: ESType;
+      values: string[];
+    }[];
+    include?: {
+      key: string;
+      property: ESType;
+    }[];
+  };
 }

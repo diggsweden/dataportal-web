@@ -34,10 +34,16 @@ interface SearchProviderConfig {
     sortOrder?: SearchSortOrder;
     // Values to exclude from search
     filters?: {
-      key: string;
-      property: ESType;
-      values: string[];
-    }[];
+      exclude?: {
+        key: string;
+        property: ESType;
+        values: string[];
+      }[];
+      include?: {
+        key: string;
+        property: ESType;
+      }[];
+    };
   };
 }
 
@@ -146,13 +152,63 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
       initRequest: {
         esRdfTypes: [
           ESRdfType.dataset,
-          ESRdfType.esterms_IndependentDataService,
-          ESRdfType.esterms_ServedByDataService,
-          // ESRdfType.dataset_series,
+          ESRdfType.data_service,
+          ESRdfType.dataset_series,
         ],
+        filters: {
+          exclude: [
+            {
+              key: "dcat:inSeries",
+              property: "uri",
+              values: ["*"],
+            },
+          ],
+        },
         takeFacets: 30,
         language: lang,
         sortOrder: SearchSortOrder.score_desc,
+      },
+    },
+    "datasets-series": {
+      entryscapeUrl: env.ENTRYSCAPE_DATASETS_PATH
+        ? `https://${env.ENTRYSCAPE_DATASETS_PATH}/store`
+        : "https://admin.dataportal.se/store",
+      hitSpecifications: {
+        "http://www.w3.org/ns/dcat#Dataset": {
+          path: `/datasets/`,
+          titleResource: "dcterms:title",
+          descriptionResource: "dcterms:description",
+        },
+        "http://www.w3.org/ns/dcat#DataService": {
+          path: `/dataservice/`,
+          titleResource: "dcterms:title",
+          descriptionResource: "dcterms:description",
+        },
+      },
+      facetSpecification: {
+        facets: [
+          {
+            resource: "http://purl.org/dc/terms/publisher",
+            dcatProperty: "dcterms:publisher",
+            type: ESType.uri,
+            indexOrder: 1,
+            group: "default",
+          },
+        ],
+      },
+      initRequest: {
+        esRdfTypes: [ESRdfType.dataset, ESRdfType.data_service],
+        language: lang,
+        takeFacets: 30,
+        sortOrder: SearchSortOrder.modified_desc,
+        filters: {
+          include: [
+            {
+              key: "dcat:inSeries",
+              property: "uri",
+            },
+          ],
+        },
       },
     },
     specifications: {
@@ -226,13 +282,17 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
         esRdfTypes: [ESRdfType.agent],
         language: lang,
         takeFacets: 30,
-        filters: [
-          {
-            key: "dcterms:type",
-            property: "uri",
-            values: ["http://purl.org/adms/publishertype/PrivateIndividual(s)"],
-          },
-        ],
+        filters: {
+          exclude: [
+            {
+              key: "dcterms:type",
+              property: "uri",
+              values: [
+                "http://purl.org/adms/publishertype/PrivateIndividual(s)",
+              ],
+            },
+          ],
+        },
       },
     },
     concepts: {

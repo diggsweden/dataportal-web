@@ -36,7 +36,7 @@ const NotFound: FC = () => {
         </li>
         <li>
           <Link
-            href={`/datasets?p=1&q=&s=2&t=20&f=&rt=dataset%24esterms_IndependentDataService%24esterms_ServedByDataService&c=false`}
+            href={`/datasets?datasets?p=1&q=&s=2&t=20&f=&rt=dataset%24data_service%24dataset_series`}
             locale={lang}
             className="text-lg hover:no-underline"
           >

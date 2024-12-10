@@ -71,9 +71,15 @@ const SortingOptions: FC<{
   setCompact: Dispatch<SetStateAction<boolean>>;
   isCompact: boolean;
   search: SearchContextData;
-}> = ({ search, setCompact, isCompact }) => {
+  showSorting: boolean;
+}> = ({ search, setCompact, isCompact, showSorting }) => {
   const { t } = useTranslation();
   const { iconSize } = useContext(SettingsContext);
+
+  const toggleCompact = () => {
+    clearCurrentScrollPos();
+    setCompact(!isCompact);
+  };
 
   return (
     <div className="mb-lg flex flex-wrap items-center justify-between gap-md md:mb-none">
@@ -88,13 +94,7 @@ const SortingOptions: FC<{
             ? t("pages|search$detailed-list-active")
             : t("pages|search$detailed-list")
         }
-        onClick={() => {
-          clearCurrentScrollPos();
-          search.set({ compact: isCompact }).then(() => {
-            search.setStateToLocation();
-            setCompact(!isCompact);
-          });
-        }}
+        onClick={toggleCompact}
         label={
           isCompact
             ? t("pages|search$compact-list")
@@ -116,13 +116,7 @@ const SortingOptions: FC<{
             : t("pages|search$detailed-list")
         }
         label={t("pages|search$list")}
-        onClick={() => {
-          clearCurrentScrollPos();
-          search.set({ compact: isCompact }).then(() => {
-            search.setStateToLocation();
-            setCompact(!isCompact);
-          });
-        }}
+        onClick={toggleCompact}
       />
 
       <div className="flex items-center gap-md">
@@ -151,24 +145,26 @@ const SortingOptions: FC<{
           }}
         />
 
-        <SearchSelectFilter
-          id="hits"
-          label={t("pages|search$numberofhits")}
-          value={search.request.take?.toString()}
-          options={[
-            { value: "20", label: t("pages|search$numberofhits-20") },
-            { value: "50", label: t("pages|search$numberofhits-50") },
-            { value: "100", label: t("pages|search$numberofhits-100") },
-          ]}
-          onChange={(event) => {
-            clearCurrentScrollPos();
-            search
-              .set({
-                take: parseInt(event.target.value),
-              })
-              .then(() => search.doSearch());
-          }}
-        />
+        {showSorting && (
+          <SearchSelectFilter
+            id="hits"
+            label={t("pages|search$numberofhits")}
+            value={search.request.take?.toString()}
+            options={[
+              { value: "20", label: t("pages|search$numberofhits-20") },
+              { value: "50", label: t("pages|search$numberofhits-50") },
+              { value: "100", label: t("pages|search$numberofhits-100") },
+            ]}
+            onChange={(event) => {
+              clearCurrentScrollPos();
+              search
+                .set({
+                  take: parseInt(event.target.value),
+                })
+                .then(() => search.doSearch());
+            }}
+          />
+        )}
       </div>
     </div>
   );
@@ -177,8 +173,9 @@ const SortingOptions: FC<{
 export const SearchResults: FC<SearchResultsProps> = ({
   search,
   searchMode,
+  showSorting,
 }) => {
-  const [isCompact, setCompact] = useState(false);
+  const [isCompact, setCompact] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<string>("");
   const { t } = useTranslation();
 
@@ -194,11 +191,6 @@ export const SearchResults: FC<SearchResultsProps> = ({
       }
     }
   }, [search.loadingHits, search.result.hits]);
-
-  // Set compact view state
-  useEffect(() => {
-    setCompact(!search.request.compact);
-  }, [search.request.compact]);
 
   const changePage = (page: number) => {
     if (search.result.pages || 0 > 1) {
@@ -268,6 +260,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
             setCompact={setCompact}
             isCompact={isCompact}
             search={search}
+            showSorting={showSorting}
           />
         )}
       </div>
@@ -303,5 +296,3 @@ export const SearchResults: FC<SearchResultsProps> = ({
     </div>
   );
 };
-
-export default SearchResults;

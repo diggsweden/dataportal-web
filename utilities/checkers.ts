@@ -14,6 +14,3 @@ export const isExternalLink = (href: string) => {
 export const isMailLink = (href: string) => {
   return href.includes("mailto");
 };
-
-export const isDev = process.env.NODE_ENV === "development";
-export const hasWindow = typeof window !== "undefined";

@@ -63,7 +63,8 @@ export type SearchMode =
   | "datasets"
   | "concepts"
   | "specifications"
-  | "organisations";
+  | "organisations"
+  | "datasets-series";
 
 const FilterSearch: FC<FilterSearchProps> = ({
   filterKey,
@@ -335,14 +336,27 @@ export const SearchFilters: FC<SearchFilterProps> = ({
       });
     }
 
+    // Dataset series filter
+    if (
+      searchMode === "datasets" &&
+      search.request.esRdfTypes?.length === 1 &&
+      search.request.esRdfTypes[0] === ESRdfType.dataset_series
+    ) {
+      filters.push({
+        id: "dataset_series_only",
+        label: t(`resources|dataset-series`),
+        isSpecialFilter: true,
+      });
+    }
+
     // API only filter
     if (
       searchMode === "datasets" &&
       search.request.esRdfTypes?.some(
-        (t: ESRdfType) => t === ESRdfType.esterms_ServedByDataService,
+        (t: ESRdfType) => t === ESRdfType.served_by_data_service,
       ) &&
       search.request.esRdfTypes?.some(
-        (t: ESRdfType) => t === ESRdfType.esterms_IndependentDataService,
+        (t: ESRdfType) => t === ESRdfType.data_service,
       ) &&
       !search.request.esRdfTypes?.some(
         (t: ESRdfType) => t === ESRdfType.dataset,
@@ -351,13 +365,52 @@ export const SearchFilters: FC<SearchFilterProps> = ({
       filters.push({
         id: "api_only",
         label: t(`resources|api`),
-        // Special handling for API filter since it uses esRdfTypes
-        isApiFilter: true,
+        isSpecialFilter: true,
       });
     }
 
     return filters;
   }, [search.request.facetValues, search.request.esRdfTypes, searchMode]);
+
+  const handleFilterChange = (
+    isApiFilter: boolean,
+    isChecked: boolean,
+    currentTypes: ESRdfType[],
+  ) => {
+    // Remove all relevant types first
+    const baseTypes = currentTypes.filter(
+      (type) =>
+        ![
+          ESRdfType.dataset,
+          ESRdfType.data_service,
+          ESRdfType.served_by_data_service,
+          ESRdfType.dataset_series,
+        ].includes(type),
+    );
+
+    // Check which filters are active
+    const hasApiFilter = isApiFilter
+      ? !isChecked
+      : activeCheckboxFilters.some((f) => f.id === "api_only");
+    const hasSeriesFilter = !isApiFilter
+      ? !isChecked
+      : activeCheckboxFilters.some((f) => f.id === "dataset_series_only");
+
+    // Build new types array based on filter states
+    const newTypes = [...baseTypes];
+
+    if (hasApiFilter) {
+      newTypes.push(ESRdfType.data_service, ESRdfType.served_by_data_service);
+    }
+    if (hasSeriesFilter) {
+      newTypes.push(ESRdfType.dataset_series);
+    }
+    if (!hasApiFilter && !hasSeriesFilter) {
+      newTypes.push(ESRdfType.dataset);
+    }
+
+    return newTypes;
+  };
 
   return (
     <div id="SearchFilters" role="region" aria-label={t("common|filter")}>
@@ -570,45 +623,89 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                   })}
 
                 {searchMode == "datasets" && groupName == "distribution" && (
-                  <SearchCheckboxFilter
-                    key="api_only"
-                    id="api_only"
-                    name="API"
-                    checked={activeCheckboxFilters.some(
-                      (filter) => filter.id === "api_only",
-                    )}
-                    onChange={() => {
-                      clearCurrentScrollPos();
-                      if (
-                        activeCheckboxFilters.some(
-                          (filter) => filter.id === "api_only",
-                        )
-                      ) {
-                        search
-                          .set({
-                            esRdfTypes: [
-                              ESRdfType.dataset,
-                              ESRdfType.esterms_IndependentDataService,
-                              ESRdfType.esterms_ServedByDataService,
-                            ],
-                            query: query,
-                          })
-                          .then(() => search.doSearch());
-                      } else {
-                        search
-                          .set({
-                            esRdfTypes: [
-                              ESRdfType.esterms_IndependentDataService,
-                              ESRdfType.esterms_ServedByDataService,
-                            ],
-                            query: query,
-                          })
-                          .then(() => search.doSearch());
-                      }
-                    }}
-                    label={t(`resources|api`)}
-                    iconSize={iconSize}
-                  />
+                  <>
+                    <SearchCheckboxFilter
+                      key="api_only"
+                      id="api_only"
+                      name="API"
+                      checked={activeCheckboxFilters.some(
+                        (filter) => filter.id === "api_only",
+                      )}
+                      onChange={() => {
+                        clearCurrentScrollPos();
+                        if (
+                          activeCheckboxFilters.some(
+                            (filter) => filter.id === "api_only",
+                          )
+                        ) {
+                          const newTypes = handleFilterChange(
+                            true,
+                            activeCheckboxFilters.some(
+                              (filter) => filter.id === "api_only",
+                            ),
+                            search.request.esRdfTypes || [],
+                          );
+                          search
+                            .set({
+                              esRdfTypes: newTypes,
+                              query: query,
+                            })
+                            .then(() => search.doSearch());
+                        } else {
+                          search
+                            .set({
+                              esRdfTypes: [
+                                ESRdfType.data_service,
+                                ESRdfType.served_by_data_service,
+                              ],
+                              query: query,
+                            })
+                            .then(() => search.doSearch());
+                        }
+                      }}
+                      label={t(`resources|api`)}
+                      iconSize={iconSize}
+                    />
+                    <SearchCheckboxFilter
+                      key="dataset_series_only"
+                      id="dataset_series_only"
+                      name="Dataset series"
+                      checked={activeCheckboxFilters.some(
+                        (filter) => filter.id === "dataset_series_only",
+                      )}
+                      onChange={() => {
+                        clearCurrentScrollPos();
+                        if (
+                          activeCheckboxFilters.some(
+                            (filter) => filter.id === "dataset_series_only",
+                          )
+                        ) {
+                          const newTypes = handleFilterChange(
+                            false,
+                            activeCheckboxFilters.some(
+                              (filter) => filter.id === "dataset_series_only",
+                            ),
+                            search.request.esRdfTypes || [],
+                          );
+                          search
+                            .set({
+                              esRdfTypes: newTypes,
+                              query: query,
+                            })
+                            .then(() => search.doSearch());
+                        } else {
+                          search
+                            .set({
+                              esRdfTypes: [ESRdfType.dataset_series],
+                              query: query,
+                            })
+                            .then(() => search.doSearch());
+                        }
+                      }}
+                      label={t(`resources|dataset-series`)}
+                      iconSize={iconSize}
+                    />
+                  </>
                 )}
               </ul>
             </div>

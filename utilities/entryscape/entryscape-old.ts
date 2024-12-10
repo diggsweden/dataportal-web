@@ -49,8 +49,8 @@ export enum ESRdfType {
   spec_profile = "http://www.w3.org/ns/dx/prof/Profile",
   spec_standard = "http://purl.org/dc/terms/Standard",
   term = "http://www.w3.org/2004/02/skos/core#Concept",
-  esterms_IndependentDataService = "esterms:IndependentDataService",
-  esterms_ServedByDataService = "esterms:ServedByDataService",
+  data_service = "esterms:IndependentDataService",
+  served_by_data_service = "esterms:ServedByDataService",
   hvd = "http://data.europa.eu/eli/reg_impl/2023/138/oj",
   national_data = "http://purl.org/dc/terms/subject",
   agent = "http://xmlns.com/foaf/0.1/Agent",
@@ -182,13 +182,6 @@ export class Entryscape {
           group: facetSpec.group,
           facetValues: f.values
             .filter((value: ESFacetFieldValue) => {
-              if (
-                facetSpec.resource === "http://purl.org/dc/terms/subject" &&
-                value.name.startsWith(
-                  "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/",
-                )
-              )
-                return true;
               if (!value.name || value.name.trim() === "") return false;
               if (!facetSpec?.dcatFilterEnabled) return true;
 
@@ -440,8 +433,8 @@ export class Entryscape {
     esQuery.publicRead(true);
 
     // Handle filters
-    if (request.filters && request.filters.length > 0) {
-      request.filters.forEach((filter) => {
+    if (request.filters?.exclude?.length > 0) {
+      request.filters.exclude.forEach((filter) => {
         if (filter.property === "uri") {
           esQuery.uriProperty(filter.key, filter.values, "not");
         }
@@ -541,6 +534,15 @@ export class Entryscape {
       .rdfType(request.esRdfTypes || [ESRdfType.dataset])
       .publicRead(true)
       .list();
+
+    // Filters to include
+    if (request.filters?.include?.length > 0) {
+      request.filters.include.forEach((filter) => {
+        if (filter.property === "uri") {
+          esQuery.uriProperty(filter.key, filter.values);
+        }
+      });
+    }
 
     query = this.luceneFriendlyQuery(query);
 

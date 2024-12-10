@@ -79,7 +79,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   // TODO: Uncomment this when cors error is fixed
   // es.getREST().disableJSONP();
 
-  entrystoreService.getEntryStoreUtil().loadOnlyPublicEntries(true);
+  entrystoreService.getEntryStoreUtil();
 
   // Add background class based on page type
   useEffect(() => {
@@ -112,8 +112,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       // Parallel fetch for publisher info
       const publisherPromise =
         pageType !== "mqa"
-          ? entrystoreService.getPublisherInfo(metadata)
-          : Promise.resolve("");
+          ? await entrystoreService.getPublisherInfo(resourceUri, metadata)
+          : Promise.resolve({ name: "", entry: null });
 
       const entryData: Partial<ESEntry> = {
         entrystore: entrystoreService.getEntryStore(),
@@ -134,8 +134,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         loading: false,
       };
 
-      entryData.publisher = await publisherPromise;
+      const { name, entry: publisherEntry } = await publisherPromise;
 
+      entryData.publisher = name;
       if (includeContact) {
         entryData.contact = await entrystoreService.getContactInfo(metadata);
       }
@@ -146,6 +147,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         metadata,
         resourceUri,
         entrystoreService,
+        publisherEntry,
       );
 
       setState({
@@ -165,34 +167,39 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     metadata: Metadata,
     resourceUri: string,
     entrystoreService: EntrystoreService,
+    publisherEntry: Entry | null,
   ): Promise<Partial<ESEntry>> {
     switch (pageType) {
       case "dataset": {
         // Fetch all data in parallel
-        const [specs, keywords, formats, mqa] = await Promise.all([
-          entrystoreService.getRelatedSpecifications(entry, metadata, pageType),
-          entrystoreService.getKeywords(entry),
-          entrystoreService.getDownloadFormats(
-            entry.getEntryInfo().getMetadataURI(),
-          ),
-          entrystoreService.getRelatedMQA(entry),
-        ]);
+        const [specs, keywords, formats, mqa, dataseries, organisationLink] =
+          await Promise.all([
+            entrystoreService.getRelatedSpecifications(
+              entry,
+              metadata,
+              pageType,
+            ),
+            entrystoreService.getKeywords(entry),
+            entrystoreService.getDownloadFormats(
+              entry.getEntryInfo().getMetadataURI(),
+            ),
+            entrystoreService.getRelatedMQA(entry),
+            entrystoreService.getRelatedDatasetSeries(entry, metadata),
+            entrystoreService.getOrganisationLink(publisherEntry),
+          ]);
 
         return {
           relatedSpecifications: specs,
           keywords,
           downloadFormats: formats,
           mqaCatalog: mqa,
+          relatedDatasetSeries: dataseries,
+          organisationLink,
         };
       }
 
-      case "dataset-series": {
-        const datasets = await entrystoreService.getDatasetsInSeries(
-          entry,
-          resourceUri,
-        );
-        return { datasetsInSeries: datasets || [] };
-      }
+      case "dataset-series":
+        return {};
 
       case "dataservice":
         return {};

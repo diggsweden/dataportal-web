@@ -2,7 +2,6 @@
 import { Entry, EntryStore } from "@entryscape/entrystore-js";
 
 import { OrganisationData } from "./organisation";
-import { SearchHit } from "./search";
 
 // Core EntryStore Types
 export enum ESType {
@@ -18,8 +17,8 @@ export enum ESRdfType {
   spec_profile = "http://www.w3.org/ns/dx/prof/Profile",
   spec_standard = "http://purl.org/dc/terms/Standard",
   term = "http://www.w3.org/2004/02/skos/core#Concept",
-  esterms_IndependentDataService = "esterms:IndependentDataService",
-  esterms_ServedByDataService = "esterms:ServedByDataService",
+  data_service = "esterms:IndependentDataService",
+  served_by_data_service = "esterms:ServedByDataService",
   hvd = "http://data.europa.eu/eli/reg_impl/2023/138/oj",
   agent = "http://xmlns.com/foaf/0.1/Agent",
   national_data = "http://purl.org/dc/terms/subject",
@@ -108,9 +107,9 @@ export interface ESEntry {
   keywords?: string[];
   downloadFormats?: DownloadFormat[];
   mqaCatalog?: RelatedTerm | null;
-  datasetsInSeries?: SearchHit[];
+  relatedDatasetSeries?: RelatedTerm[];
   organisationData?: OrganisationData;
   relatedTerm?: RelatedTerm;
   relatedDatasets?: RelatedTerm[];
-  organisationLink?: string;
+  organisationLink?: string | null;
 }
