@@ -1,3 +1,4 @@
+import { Entry } from "@entryscape/entrystore-js";
 import { useRouter } from "next/router";
 import { I18n } from "next-translate";
 import withTranslation from "next-translate/withTranslation";
@@ -39,6 +40,7 @@ export interface SearchProviderProps {
   children?: ReactNode;
   fetchHitsWithFacets?: boolean;
   router: ReturnType<typeof useRouter>;
+  entry?: Entry;
 }
 
 /**
@@ -59,6 +61,7 @@ export interface SearchContextData {
     _appendHits?: boolean,
     _setStateToLocation?: boolean,
     _reSortOnDone?: boolean,
+    _hitsOnly?: boolean,
   ) => Promise<void>;
   setStateToLocation: () => void;
   sortAllFacets: (_excludeFacet?: string) => void;
@@ -125,6 +128,8 @@ export const SearchContext = createContext<SearchContextData>(
  */
 class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
   private entrystoreService: EntrystoreService;
+  private entry?: Entry;
+
   private getCacheKeys(request: SearchRequest) {
     const cacheKeyBase = `${request.language || ""}_${
       request.esRdfTypes?.[0] || ""
@@ -145,7 +150,10 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       t: t,
       facetSpecification: props.facetSpecification,
       hitSpecifications: props.hitSpecifications,
+      entry: props.entry,
     });
+
+    this.entry = props.entry;
 
     this.state = {
       ...defaultSearchSettings,
@@ -726,7 +734,6 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     const query = this.state.request?.query || "";
     const page = this.state.request?.page ? this.state.request.page + 1 : "1";
     const take = this.state.request?.take || 20;
-    const compact = this.state.request?.compact || false;
     const sortOrder =
       this.state.request?.sortOrder || SearchSortOrder.score_desc;
 
@@ -751,7 +758,6 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       t: take.toString(),
       f: facets.join("$"),
       rt: rdftypes.join("$"),
-      c: compact.toString(),
     });
 
     const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
@@ -778,7 +784,6 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     const querytext = qs.q?.toString().length > 0 ? qs.q.toString() : "";
     const page = qs.p?.toString().length > 0 ? qs.p.toString() : null;
     const take = qs.t?.toString().length > 0 ? qs.t.toString() : 20;
-    const compact = qs.c === true;
     const sortOrder: SearchSortOrder =
       (qs.s as SearchSortOrder) || SearchSortOrder.score_desc;
 
@@ -866,8 +871,6 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
           newState.request.esRdfTypes = rdftypes;
         }
 
-        newState.request.compact = compact;
-
         return newState;
       }, resolve);
     });
@@ -903,6 +906,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       const searchResult = await this.entrystoreService.solrSearch(
         searchRequest,
         this.state.dcatmeta,
+        this.entry,
       );
 
       const hits =
