@@ -1,19 +1,19 @@
-//unfortunate hack to get a entrystore class instance, script is inserted in head
-declare var ESJS: any;
+import { SearchSortOrder } from "@/providers/search-provider";
+import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
 
 //#region ES members
 
-interface ESEntryField {
+export interface ESEntryField {
   value: string;
   type: ESType;
 }
 
-interface ESFacetFieldValue {
+export interface ESFacetFieldValue {
   name: string;
   count: number;
 }
 
-interface ESFacetField {
+export interface ESFacetField {
   name: string;
   predicate: string;
   type: ESType;
@@ -21,18 +21,17 @@ interface ESFacetField {
   values: ESFacetFieldValue[];
 }
 
-interface HitSpecification {
+export interface HitSpecification {
   path?: string;
   titleResource?: string;
   descriptionResource?: string;
-  pathResolver?: (hit: any) => string;
 }
 
-interface FacetSpecification {
+export interface FacetSpecification {
   facets?: FacetSpecificationItem[];
 }
 
-interface FacetSpecificationItem {
+export interface FacetSpecificationItem {
   group: string;
   resource: string;
   indexOrder: number;
@@ -44,7 +43,7 @@ interface FacetSpecificationItem {
   dcatFilterEnabled?: boolean;
 }
 
-interface SearchResult {
+export interface SearchResult {
   hits?: SearchHit[];
   count?: number;
   pages?: number;
@@ -53,14 +52,14 @@ interface SearchResult {
   error?: string;
 }
 
-interface SearchHit {
+export interface SearchHit {
   entryId?: string;
   title: string;
   url: string;
   description?: string;
   info?: { [facet: string]: string[] };
   metadata?: { [facet: string]: string[] };
-  esEntry?: any;
+  esEntry?: ESEntry;
   titleLang?: string;
   descriptionLang?: string;
 }
@@ -77,17 +76,17 @@ interface SearchFacet {
   indexOrder: number;
 }
 
-interface SearchFacetValue {
+export interface SearchFacetValue {
   title?: string;
   resource: string;
   facet: string;
   facetType: ESType;
   count: number;
   facetValueString: string;
-  related: Boolean;
+  related: boolean;
 }
 
-interface SearchRequest {
+export interface SearchRequest {
   query?: string;
   titleQuery?: string;
   language?: string;
@@ -98,5 +97,10 @@ interface SearchRequest {
   takeFacets?: number;
   esRdfTypes?: ESRdfType[];
   sortOrder?: SearchSortOrder;
-  compact?: Boolean;
+  compact?: boolean;
+  filters?: {
+    key: string;
+    property: ESType;
+    values: string[];
+  }[];
 }

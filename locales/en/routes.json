@@ -20,17 +20,17 @@
     "title": "Search concepts"
   },
   "cookies": {
-    "analytic-heading": "Analytical cookies",
     "analytic-description": "Analytical cookies gives us information about how visitors interact with the site. We use this information to maintain, operate and improve the user experience.",
-    "necessary-heading": "Necessary cookies",
-    "necessary-description": "Necessary cookies are required to enable the basic features of this site. These cookies are always active and you can not deactivate them.",
-    "settings-heading": "Settings for cookies",
-    "customize-cookies-heading": "Customize cookie settings",
-    "path": "about-this-website/about-cookies",
-    "link-title": "Read more about cookies",
-    "cookie-text": "We use cookies on Sweden's data portal to improve your experience of the website. By continuing to browse, you agree that we use cookies.",
+    "analytic-heading": "Analytical cookies",
     "cookie-setting": "Save and accept all cookies",
-    "cookie-setting-open": "Save and accept"
+    "cookie-setting-open": "Save and accept",
+    "cookie-text": "We use cookies on Sweden's data portal to improve your experience of the website. By continuing to browse, you agree that we use cookies.",
+    "customize-cookies-heading": "Customize cookie settings",
+    "link-title": "Read more about cookies",
+    "necessary-description": "Necessary cookies are required to enable the basic features of this site. These cookies are always active and you can not deactivate them.",
+    "necessary-heading": "Necessary cookies",
+    "path": "about-this-website/about-cookies",
+    "settings-heading": "Settings for cookies"
   },
   "data-collaboration": {
     "path": "",
@@ -67,6 +67,10 @@
   "news": {
     "path": "",
     "title": "News"
+  },
+  "organisations": {
+    "path": "organisations",
+    "title": "Search organisations"
   },
   "projects": {
     "path": "inspiration",

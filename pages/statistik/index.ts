@@ -1,3 +1,3 @@
-import { StatisticPage } from "@/components/content/Statistic/StatisticPage";
+import { StatisticPage } from "@/features/statistic/statistic-page";
 
 export default StatisticPage;

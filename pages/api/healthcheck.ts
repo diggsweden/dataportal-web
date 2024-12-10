@@ -1,9 +1,11 @@
-import { client } from "../../graphql/client";
-import { NEWS_ITEM_QUERY } from "../../graphql/publicationQuery";
+import { NextApiRequest, NextApiResponse } from "next";
+
 import {
   NewsItemQuery,
   NewsItemQueryVariables,
 } from "../../graphql/__generated__/operations";
+import { client } from "../../graphql/client";
+import { NEWS_ITEM_QUERY } from "../../graphql/publicationQuery";
 
 const HEALTHCHECK_SECRET = process.env.HEALTHCHECK_SECRET;
 
@@ -14,7 +16,10 @@ const HEALTHCHECK_SECRET = process.env.HEALTHCHECK_SECRET;
  * @param {*} res
  * @returns status: "pass" or status: "fail"
  */
-export default async function handler(req: any, res: any) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   // Check to see that there is a secret set as env variable HEALTHCHECK_SECRET.
   if (!HEALTHCHECK_SECRET) {
     return res
@@ -43,9 +48,8 @@ export default async function handler(req: any, res: any) {
 
     res.setHeader("Cache-Control", "no-store");
     return res.status(200).json({ status: "pass" });
-  } catch (err) {
-    //TODO: try to log error
-
+  } catch (error) {
+    console.error(error);
     return res.status(500).json({ status: "fail" });
   }
 }

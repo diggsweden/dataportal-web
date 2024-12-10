@@ -1,58 +1,60 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 declare module "@entryscape/entrystore-js" {
   export class EntryStore {
-    constructor(url: string);
-    facetLimit(limit: number): this;
+    constructor(_url: string);
+    facetLimit(_limit: number): this;
     getBaseURI(): string;
-    getContextById(id: string): Context;
-    getEntryURI(cid: string, eid: string): string;
+    getContextById(_id: string): Context;
+    getEntryURI(_cid: string, _eid: string): string;
     newSolrQuery(): SolrQuery;
-    getEntry(uri: string): Promise<Entry>;
-    getContextId(uri: string): string;
-    getContext(uri: string): Context;
+    getEntry(_uri: string): Promise<Entry>;
+    getContextId(_uri: string): string;
+    getContext(_uri: string): Context;
+    getREST(): REST;
   }
 
   export class EntryStoreUtil {
-    constructor(entrystore: EntryStore);
+    constructor(_entrystore: EntryStore);
     loadEntriesByResourceURIs(
-      uris: string[],
-      context: Context | null,
-      all: boolean,
-      asyncCallType?: any,
+      _uris: string[],
+      _context: Context | null,
+      _all: boolean,
+      _asyncCallType?: any,
     ): Promise<Entry[]>;
-    loadOnlyPublicEntries(all: boolean): void;
-    getEntryByResourceURI(uri: string): Promise<Entry>;
+    loadOnlyPublicEntries(_all: boolean): void;
+    getEntryByResourceURI(_uri: string): Promise<Entry>;
   }
 
   export class SolrQuery {
-    constructor(entrystore: EntryStore);
+    constructor(_entrystore: EntryStore);
 
     // Core search methods
-    rdfType(type: string | string[], modifier?: boolean | string): this;
-    publicRead(val?: boolean): this;
-    limit(num: number): this;
-    offset(num: number): this;
-    sort(sort: string): this;
-    facetLimit(limit: number): this;
+    rdfType(_type: string | string[], _modifier?: boolean | string): this;
+    publicRead(_val?: boolean): this;
+    limit(_num: number): this;
+    offset(_num: number): this;
+    sort(_sort: string): this;
+    facetLimit(_limit: number): this;
 
     // Search field methods
-    title(val: string | string[], modifier?: boolean | string): this;
-    description(val: string | string[], modifier?: boolean | string): this;
-    all(val: string | string[], modifier?: boolean | string): this;
+    title(_val: string | string[], _modifier?: boolean | string): this;
+    description(_val: string | string[], _modifier?: boolean | string): this;
+    all(_val: string | string[], _modifier?: boolean | string): this;
 
     // Property search methods
     literalProperty(
-      predicate: string,
-      object: string | string[],
-      modifier?: boolean | string | null,
-      indexType?: "ngram" | "text" | "string",
-      related?: Boolean,
+      _predicate: string,
+      _object: string | string[],
+      _modifier?: boolean | string | null,
+      _indexType?: "ngram" | "text" | "string",
+      _related?: boolean,
     ): this;
 
     uriProperty(
-      predicate: string,
-      object: string | string[],
-      modifier?: boolean | string | null,
-      related?: Boolean,
+      _predicate: string,
+      _object: string | string[],
+      _modifier?: boolean | string | null,
+      _related?: boolean,
     ): this;
 
     // Query behavior modifiers
@@ -60,26 +62,30 @@ declare module "@entryscape/entrystore-js" {
     disjunctiveProperties(): this;
 
     // List creation and execution
-    list(asyncCallType?: any): SearchList;
-    getEntries(page?: number): Promise<Entry[]>;
+    list(_asyncCallType?: any): SearchList;
+    getEntries(_page?: number): Promise<Entry[]>;
     getEntry(): Promise<Entry>;
     size(): Promise<number>;
 
     // Facet methods
-    uriFacet(predicate: string, related?: boolean): this;
-    literalFacet(predicate: string, related?: boolean): this;
+    uriFacet(_predicate: string, _related?: boolean): this;
+    literalFacet(_predicate: string, _related?: boolean): this;
 
     // Internal methods
     getQuery(): string;
   }
 
   export class SearchList {
-    constructor(entrystore: EntryStore, query: SolrQuery, asyncCallType?: any);
-    getEntries(page?: number): Promise<Entry[]>;
+    constructor(
+      _entrystore: EntryStore,
+      _query: SolrQuery,
+      _asyncCallType?: any,
+    );
+    getEntries(_page?: number): Promise<Entry[]>;
     getSize(): number;
     getFacets(): Facet[];
     getQuery(): string;
-    forEach(callback: (entry: Entry) => void): Promise<void>;
+    forEach(_callback: (_entry: Entry) => void): Promise<void>;
   }
 
   export class Entry {
@@ -92,8 +98,8 @@ declare module "@entryscape/entrystore-js" {
   }
 
   export class Metadata {
-    find(subject: any, predicate: string): MetadataValue[];
-    findFirstValue(subject: any, predicate: string): string;
+    find(_subject: any, _predicate: string): MetadataValue[];
+    findFirstValue(_subject: any, _predicate: string): string;
   }
 
   export interface MetadataValue {

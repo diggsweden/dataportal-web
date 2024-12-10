@@ -1,3 +1,3 @@
-import { MQAPage } from "@/components/content/Entryscape/MQAPage";
+import { MQAPage } from "@/features/entryscape/mqa-page";
 
 export default MQAPage;

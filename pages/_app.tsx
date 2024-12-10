@@ -1,13 +1,38 @@
-import { useEffect, useState } from "react";
+import { ApolloProvider } from "@apollo/client";
+import reactenv from "@beam-australia/react-env";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
-import { ApolloProvider } from "@apollo/client";
-import { LocalStore, LocalStoreProvider } from "@/providers/LocalStoreProvider";
-import { TrackingProvider } from "@/providers/TrackingProvider";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
+import { useEffect, useState } from "react";
+
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
+import { Hero } from "@/components/layout/hero";
+import { MetaData } from "@/components/meta-data";
+import {
+  Breadcrumbs,
+  BreadcrumbProps,
+} from "@/components/navigation/breadcrumbs";
+import { Sidebar } from "@/components/navigation/sidebar";
+import {
+  SkipToContent,
+  skipToElement,
+} from "@/components/navigation/skip-to-content";
+import { EnvSettings, SettingsUtil } from "@/env";
+import { Settings_Sandbox } from "@/env/settings.sandbox";
+import { CookieBanner } from "@/features/cookie-banner";
+import { client } from "@/graphql";
+import {
+  LocalStore,
+  LocalStoreProvider,
+} from "@/providers/local-store-provider";
 import {
   defaultSettings,
   SettingsProvider,
-} from "@/providers/SettingsProvider";
+} from "@/providers/settings-provider";
+import { TrackingProvider } from "@/providers/tracking-provider";
 import {
   click,
   DataportalPageProps,
@@ -15,28 +40,8 @@ import {
   linkBase,
   resolvePage,
 } from "@/utilities";
-import { EnvSettings, SettingsUtil } from "@/env";
-import { client } from "@/graphql";
-import reactenv from "@beam-australia/react-env";
-import { Settings_Sandbox } from "@/env/Settings.Sandbox";
-import { SideBar } from "@/components/navigation/SideBar";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { CookieBanner } from "@/components/global/CookieBanner";
+
 import "@/styles/main.css";
-import {
-  Breadcrumb,
-  BreadcrumbProps,
-} from "@/components/navigation/BreadCrumb";
-import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
-import { Hero } from "@/components/layout/Hero";
-import { MetaData } from "@/components/global/MetaData";
-import {
-  SkipToContent,
-  skipToElement,
-} from "@/components/navigation/SkipToContent";
-import { useRouter } from "next/router";
 
 const GetCookiesAccepted = () => {
   try {
@@ -71,7 +76,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
   const { asPath } = useRouter();
   const { t, lang } = useTranslation();
   // Put shared props into state to persist between pages that doesn't use getStaticProps
-  const [env, setEnv] = useState<EnvSettings>(SettingsUtil.create());
+  const [env, setEnv] = useState<EnvSettings | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [matomoActivated, setMatomoActivated] = useState<boolean>(true);
   const [openSideBar, setOpenSideBar] = useState(false);
@@ -89,13 +94,13 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      let clienthost = window?.location?.host || "";
-
+      const isSandbox = window.location.host.includes("sandbox");
       //if host is run from sandbox, load that environment and disable matomo
-      if (clienthost?.includes("sandbox")) {
+      if (isSandbox) {
         setEnv(new Settings_Sandbox());
-        //disable matomo
         setMatomoActivated(false);
+      } else {
+        setEnv(SettingsUtil.create());
       }
     }
     document.documentElement.classList.add("no-focus-outline");
@@ -117,13 +122,19 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     };
   }
 
-  let conditionalPreamble =
+  const conditionalPreamble =
     pathname === `/${t("routes|search-api$path")}` ? null : preamble;
 
   useEffect(() => {
-    asPath.includes("#") && onHash(asPath);
+    if (asPath.includes("#")) {
+      onHash(asPath);
+    }
     setImageHero(heroImage);
   }, [pathname]);
+
+  if (!env) {
+    return null;
+  }
 
   return (
     <ApolloProvider client={client}>
@@ -156,7 +167,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 setOpenSideBar={setOpenSideBar}
                 openSideBar={openSideBar}
               />
-              <SideBar
+              <Sidebar
                 openSideBar={openSideBar}
                 setOpenSideBar={setOpenSideBar}
               />
@@ -182,7 +193,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 )}
 
                 {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
-                  <Breadcrumb {...breadcrumbState} />
+                  <Breadcrumbs {...breadcrumbState} />
                 )}
 
                 <main

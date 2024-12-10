@@ -1,5 +1,17 @@
 /// <reference types="@digg/design-system/lib/emotion-extention" />
-type FlexDirection = "column" | "row";
+
+import { ComponentType } from "react";
+
+import { Dataportal_LinkType } from "@/graphql/__generated__/types";
+
+export type FlexDirection = "column" | "row";
+
+type AddIcon = ComponentType<{
+  className?: string;
+  width?: number;
+  height?: number;
+  viewBox?: string;
+}>;
 
 type MenuItem = {
   link: string;
@@ -9,7 +21,7 @@ type MenuItem = {
   children: MenuItem[];
 };
 
-type DiggStrapiTheme =
+export type DiggStrapiTheme =
   | "brownTheme"
   | "lightBrownTheme"
   | "darkTheme"
@@ -21,24 +33,25 @@ type DiggStrapiTheme =
   | "pinkTheme"
   | "lightPinkTheme";
 
-type DiggLink = {
+export type DiggLink = {
   __typename: "dataportal_Digg_Link";
   title: string | null;
   link: string;
-  linktype: dataportal_LinkType;
+  linktype: Dataportal_LinkType;
   description: string | null;
 };
 
-type Breadcrumb = {
+export type Breadcrumb = {
   link: DiggLink;
   name: string;
 };
 
-type Anchorlink = {
+export type Anchorlink = {
   id: string;
   text: string;
 };
-interface DataportalSettings {
+
+export interface DataportalSettings {
   siteName: string;
   pageNotFoundHeading: string;
   pageNotFoundText: string;
@@ -60,7 +73,7 @@ declare module "react-show-more-text";
 
 declare module "fetch-enhanced";
 
-type CSPDirective =
+export type CSPDirective =
   | "child-src"
   | "connect-src"
   | "default-src"

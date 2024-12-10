@@ -1,5 +1,6 @@
-import NextErrorComponent, { ErrorProps } from "next/error";
 import { NextPage } from "next";
+import NextErrorComponent, { ErrorProps } from "next/error";
+
 import serverLogger from "../utilities/logger";
 
 interface AppErrorProps extends ErrorProps {
@@ -16,7 +17,7 @@ const AppError: NextPage<AppErrorProps> = ({
   statusCode,
 }) => {
   if (!hasGetInitialPropsRun && err) {
-    let logger = serverLogger.getInstance();
+    const logger = serverLogger.getInstance();
     logger.error([err.message, err.stack]);
   }
 
@@ -28,13 +29,13 @@ AppError.getInitialProps = async (ctx) => {
     await NextErrorComponent.getInitialProps(ctx);
   errorInitialProps.hasGetInitialPropsRun = true;
   if (ctx.err) {
-    let logger = serverLogger.getInstance();
+    const logger = serverLogger.getInstance();
     logger.error([ctx.err.message, ctx.err.stack]);
 
     return errorInitialProps;
   }
 
-  let logger = serverLogger.getInstance();
+  const logger = serverLogger.getInstance();
   logger.error(
     `_error.tsx getInitialProps missing data at path: ${ctx.asPath}`,
   );

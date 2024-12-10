@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+
 import { TOOL_FRAGMENT } from "./fragments";
 
 export const TOOL_QUERY = gql`
