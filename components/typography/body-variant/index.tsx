@@ -1,6 +1,6 @@
 import { cx, cva, VariantProps } from "class-variance-authority";
 import Link from "next/link";
-import React, { FC, PropsWithChildren } from "react";
+import { ElementType, FC, PropsWithChildren } from "react";
 
 import QuoteIcon from "@/assets/icons/quote.svg";
 import { isExternalLink } from "@/utilities";
@@ -61,7 +61,7 @@ const BodyVariant: FC<PropsWithChildren<BodyProps>> = ({
     );
   }
 
-  const CustomTag = variant as keyof React.JSX.IntrinsicElements;
+  const CustomTag = variant as ElementType;
 
   return (
     <CustomTag className={cx(bodyVariants({ variant }), className)}>

@@ -107,6 +107,14 @@ export const Hero: FC<HeroProps> = ({
                     iconPosition="right"
                   />
                   <ButtonLink
+                    href={`/specifications?q=&f=`}
+                    label={t("common|all-specs")}
+                    size="sm"
+                    locale={lang}
+                    icon={ArrowRightIcon}
+                    iconPosition="right"
+                  />
+                  <ButtonLink
                     href={`/concepts?q=&f=`}
                     label={t("common|all-concepts")}
                     size="sm"
@@ -115,8 +123,8 @@ export const Hero: FC<HeroProps> = ({
                     iconPosition="right"
                   />
                   <ButtonLink
-                    href={`/specifications?q=&f=`}
-                    label={t("common|all-specs")}
+                    href={`/organisations?q=&f=`}
+                    label={t("common|all-organisations")}
                     size="sm"
                     locale={lang}
                     icon={ArrowRightIcon}
