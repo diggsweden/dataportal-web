@@ -233,7 +233,10 @@ export class EntrystoreService {
                 );
                 break;
               }
-
+              if (fvalue[0].facet === "http://purl.org/dc/terms/conformsTo") {
+                esQuery.uriProperty(key, "*", null, fvalue[0].related);
+                break;
+              }
               esQuery.uriProperty(
                 key,
                 fvalue.map((f) => f.resource),
