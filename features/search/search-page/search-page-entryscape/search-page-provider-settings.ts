@@ -64,6 +64,11 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           titleResource: "dcterms:title",
           descriptionResource: "dcterms:description",
         },
+        "http://www.w3.org/ns/dcat#DatasetSeries": {
+          path: "/dataset-series/",
+          titleResource: "dcterms:title",
+          descriptionResource: "dcterms:description",
+        },
       },
       facetSpecification: {
         facets: [
