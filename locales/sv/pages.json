@@ -151,16 +151,15 @@
     "download_link": "Ladda ned metadata",
     "fee-data": "Avgiftsbelagda datamängder",
     "hvd-data": "Värdefulla datamängder",
-    "no-contact": "Inga kontaktuppgifter har angets",
+    "no-contact": "Inga kontaktuppgifter har angetts",
     "no-org-type": "Inget organisationstyp har angetts",
     "open-data": "Öppna datamängder",
     "org-no": "Organisationens id",
     "org-type": "Organisationstyp",
     "protected-data": "Skyddade datamängder",
     "spec-data": "Datamängder som följer specifikation",
-    "view-all-concepts": "Visa alla begrepp",
-    "view-all-data": "Visa alla datamängder",
-    "view-all-spec": "Visa alla specifikationer"
+    "view-all-data": "Visa datamängder",
+    "view-all-spec": "Visa specifikationer"
   },
   "organisations": {
     "organisations": "organisationer",

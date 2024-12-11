@@ -151,9 +151,8 @@
     "org-type": "Organisation type",
     "protected-data": "Protected datasets",
     "spec-data": "Datasets that follow specifications",
-    "view-all-concepts": "View all concepts",
-    "view-all-data": "View all datasets",
-    "view-all-spec": "View all specifications"
+    "view-all-data": "View datasets",
+    "view-all-spec": "View specifications"
   },
   "organisations": {
     "organisations": "organisations",

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { I18n } from "next-translate";
 import withTranslation from "next-translate/withTranslation";
-import { decode } from "qss";
+import { decode, encode } from "qss";
 import { Component, createContext, ReactNode } from "react";
 
 import {
@@ -748,7 +748,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       });
     }
 
-    const searchParams = new URLSearchParams({
+    const searchParams = encode({
       p: page.toString(),
       q: query,
       s: sortOrder.toString(),
