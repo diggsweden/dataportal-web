@@ -1,3 +1,4 @@
+import { Entry } from "@entryscape/entrystore-js";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { FC, useContext, useEffect, useMemo } from "react";
@@ -8,9 +9,32 @@ import { Heading } from "@/components/typography/heading";
 import { createSearchProviderSettings } from "@/features/search/search-page/search-page-entryscape/search-page-provider-settings";
 import { SearchResults } from "@/features/search/search-results";
 import { EntrystoreContext } from "@/providers/entrystore-provider";
-import SearchProvider, { SearchContext } from "@/providers/search-provider";
+import SearchProvider, {
+  SearchContext,
+  SearchContextData,
+} from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
+
+const SearchSection: FC<{ search: SearchContextData; entry: Entry }> = ({
+  search,
+  entry,
+}) => {
+  useEffect(() => {
+    if (!search) return;
+
+    // Perform initial search
+    search
+      .set({
+        page: 0,
+        query: "",
+        fetchFacets: true,
+      })
+      .then(() => search.doSearch(false, false, false, false));
+  }, [entry]);
+
+  return null;
+};
 
 export const DatasetSeriesPage: FC = () => {
   const { pathname } = useRouter() || {};
@@ -31,21 +55,6 @@ export const DatasetSeriesPage: FC = () => {
       ],
     });
   }, [pathname, entry]);
-
-  useEffect(() => {
-    // Check if there are no query parameters or if they're empty
-    if (!router.query.q && !router.query.f) {
-      // Update URL with default query parameters
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: { ...router.query, q: "", f: "" },
-        },
-        undefined,
-        { shallow: true },
-      );
-    }
-  }, [router.isReady]);
 
   const searchProviderSettings = useMemo(
     () => createSearchProviderSettings(env, lang),
@@ -81,6 +90,7 @@ export const DatasetSeriesPage: FC = () => {
         <SearchContext.Consumer>
           {(search) => (
             <div className="mt-xl bg-white py-xl">
+              <SearchSection search={search} entry={entry.entry} />
               <Container>
                 <div
                   className={
