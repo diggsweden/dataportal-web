@@ -216,11 +216,18 @@ export class Entryscape {
                 count: value.count,
                 facet: f.predicate,
                 facetType: f.type,
-                facetValueString: `${f.predicate}||${value.name}||${
-                  facetSpec.related || false
-                }||${f.type}||${this.t(f.predicate)}||${displayName}`,
+                facetValueString: `${f.predicate}||${
+                  f.type === ESType.uri || f.type === ESType.wildcard
+                    ? value.name
+                    : encodeURIComponent(value.name)
+                }||${facetSpec.related || false}||${f.type}||${this.t(
+                  f.predicate,
+                )}||${encodeURIComponent(displayName)}`,
                 related: facetSpec.related || false,
-                resource: value.name,
+                resource:
+                  f.type === ESType.uri || f.type === ESType.wildcard
+                    ? value.name
+                    : encodeURIComponent(value.name),
                 title: displayName,
               };
             }),
@@ -479,7 +486,7 @@ export class Entryscape {
             case ESType.literal_s:
               esQuery.literalProperty(
                 key,
-                fvalue.map((f) => f.resource), // Changed from f.title to f.resource
+                fvalue.map((f) => decodeURIComponent(f.resource)),
                 null,
                 "string",
                 fvalue[0].related,
@@ -505,7 +512,7 @@ export class Entryscape {
                 key,
                 fvalue.map((f) => f.resource),
                 null,
-                false,
+                fvalue[0].related,
               );
               break;
           }

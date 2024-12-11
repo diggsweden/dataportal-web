@@ -131,7 +131,11 @@ const MarkAll: FC<MarkAllProps> = ({ search, toggleKey, title }) => {
             resource: "*",
             title: title,
           };
-          wildcardFacet.facetValueString = `${toggleKey}||${wildcardFacet.resource}||${wildcardFacet.related}||${wildcardFacet.facetType}||${toggleKey}||${wildcardFacet.title}`;
+          wildcardFacet.facetValueString = `${toggleKey}||${
+            wildcardFacet.resource
+          }||${wildcardFacet.related}||${
+            wildcardFacet.facetType
+          }||${toggleKey}||${encodeURIComponent(wildcardFacet.title || "")}`;
           await search.toggleFacet(wildcardFacet);
           await search.doSearch(false, true, false);
 

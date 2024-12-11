@@ -108,7 +108,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           },
           {
             resource: "http://purl.org/dc/terms/accrualPeriodicity",
-            dcatId: "dcat:dcterms:accrualPeriodicity_da",
+            dcatId: "dcat:dcterms:accrualPeriodicity",
             type: ESType.uri,
             dcatProperty: "dcterms:accrualPeriodicity",
             dcatType: "choice",

@@ -641,7 +641,11 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
               related: false,
             };
 
-            newValue.facetValueString = `${facetkey}||${newValue.resource}||${newValue.related}||${ESType.uri}||${facets[facetkey].title}||${newValue.title}`;
+            newValue.facetValueString = `${facetkey}||${newValue.resource}||${
+              newValue.related
+            }||${ESType.uri}||${facets[facetkey].title}||${encodeURIComponent(
+              newValue.title || "",
+            )}`;
             facets[facetkey].facetValues.push(newValue);
           }
         });
@@ -828,8 +832,11 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
           facet: facetstring[0],
           facetValueString: f,
           related: facetstring[2] === "true",
-          resource: facetstring[1],
-          title: facetstring[5],
+          resource:
+            facetType === ESType.uri || facetType === ESType.wildcard
+              ? facetstring[1]
+              : decodeURIComponent(facetstring[1]),
+          title: decodeURIComponent(facetstring[5]),
         });
       });
     }
