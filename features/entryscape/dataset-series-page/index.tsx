@@ -16,7 +16,7 @@ import SearchProvider, {
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
 
-const SearchSection: FC<{ search: SearchContextData; entry: Entry }> = ({
+const SearchTrigger: FC<{ search: SearchContextData; entry: Entry }> = ({
   search,
   entry,
 }) => {
@@ -90,7 +90,7 @@ export const DatasetSeriesPage: FC = () => {
         <SearchContext.Consumer>
           {(search) => (
             <div className="mt-xl bg-white py-xl">
-              <SearchSection search={search} entry={entry.entry} />
+              <SearchTrigger search={search} entry={entry.entry} />
               <Container>
                 <div
                   className={
