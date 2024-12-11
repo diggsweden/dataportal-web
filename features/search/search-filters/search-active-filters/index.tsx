@@ -6,8 +6,8 @@ import TrashIcon from "@/assets/icons/trash.svg";
 import { Button } from "@/components/button";
 import { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
+import { ESRdfType } from "@/types/entrystore-core";
 import { SearchFacetValue } from "@/types/search";
-import { ESRdfType } from "@/utilities/entryscape/entryscape";
 
 import { SearchMode } from "../index";
 
@@ -19,7 +19,7 @@ interface SearchActiveFiltersProps {
     id: string;
     label: string;
     facetValue?: SearchFacetValue;
-    isApiFilter?: boolean;
+    isSpecialFilter?: boolean;
   }>;
 }
 
@@ -92,13 +92,13 @@ export function SearchActiveFilters({
             className="w-fit justify-between py-xs text-left font-strong md:py-[2px]"
             onClick={() => {
               clearCurrentScrollPos();
-              if (filter.isApiFilter) {
+              if (filter.isSpecialFilter) {
                 search
                   .set({
                     esRdfTypes: [
                       ESRdfType.dataset,
-                      ESRdfType.esterms_IndependentDataService,
-                      ESRdfType.esterms_ServedByDataService,
+                      ESRdfType.data_service,
+                      ESRdfType.dataset_series,
                     ],
                     query: query,
                   })
@@ -131,8 +131,8 @@ export function SearchActiveFilters({
                     searchMode === "datasets"
                       ? [
                           ESRdfType.dataset,
-                          ESRdfType.esterms_IndependentDataService,
-                          ESRdfType.esterms_ServedByDataService,
+                          ESRdfType.data_service,
+                          ESRdfType.dataset_series,
                         ]
                       : search.request.esRdfTypes,
                 })

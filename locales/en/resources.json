@@ -1,5 +1,6 @@
 {
   "api": "API/Data service",
+  "dataset-series": "Dataset series",
   "http://data.europa.eu/r5r/applicableLegislation": "High-value dataset",
   "http://publications.europa.eu/resource/authority/data-theme/AGRI": "Agriculture, fisheries, forestry and food",
   "http://publications.europa.eu/resource/authority/data-theme/ECON": "Economy and finance ",

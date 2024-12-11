@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next/types";
 
-import { handleEntryStoreRedirect } from "@/utilities/entryscape/entrystore-redirect";
+import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
 
 export default function Concept() {
   return null;

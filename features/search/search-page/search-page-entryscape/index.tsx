@@ -150,7 +150,7 @@ export const SearchPageEntryscape: FC<SearchProps> = ({ searchType }) => {
                     }
                   >
                     <SearchResults
-                      showSorting={showFilter}
+                      showSorting={true}
                       search={search}
                       searchMode={searchType}
                     />

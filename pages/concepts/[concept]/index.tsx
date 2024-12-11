@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { ConceptPage } from "@/features/entryscape/concept-page";
 import { EntrystoreProvider } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
-import { handleEntryStoreRedirect } from "@/utilities/entryscape/entrystore-redirect";
+import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
 
 export default function Concept() {
   const { env } = useContext(SettingsContext);

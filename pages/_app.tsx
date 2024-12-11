@@ -33,13 +33,7 @@ import {
   SettingsProvider,
 } from "@/providers/settings-provider";
 import { TrackingProvider } from "@/providers/tracking-provider";
-import {
-  click,
-  DataportalPageProps,
-  keyUp,
-  linkBase,
-  resolvePage,
-} from "@/utilities";
+import { DataportalPageProps, linkBase, resolvePage } from "@/utilities";
 
 import "@/styles/main.css";
 
@@ -103,14 +97,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
         setEnv(SettingsUtil.create());
       }
     }
-    document.documentElement.classList.add("no-focus-outline");
-    document.body.addEventListener("keyup", keyUp);
-    document.body.addEventListener("mousedown", click);
-
-    return () => {
-      document.body.removeEventListener("keyup", keyUp);
-      document.body.removeEventListener("mousedown", click);
-    };
   }, []);
 
   let searchProps = null;
