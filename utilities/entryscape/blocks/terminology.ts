@@ -2,7 +2,7 @@
 import { Entry } from "@entryscape/entrystore-js";
 import { Translate } from "next-translate";
 
-import { getLocalizedValue } from "@/utilities/entrystore-utils";
+import { getLocalizedValue } from "@/utilities/entrystore/entrystore-helpers";
 
 export const terminologyBlocks = (t: Translate, lang: string) => [
   {

@@ -1,111 +1,23 @@
-import {
-  Entry,
-  EntryStore,
-  EntryStoreUtil,
-  Metadata,
-} from "@entryscape/entrystore-js";
+import { Entry, EntryStore, Metadata } from "@entryscape/entrystore-js";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { createContext, FC, ReactNode, useEffect, useState } from "react";
 
-import { EnvSettings } from "@/env/env-settings";
+import { EnvSettings } from "@/env";
 import { SettingsUtil } from "@/env/settings-util";
+import { ESEntry, PageType } from "@/types/entrystore-core";
+import { OrganisationData } from "@/types/organisation";
 import { ESFacetField, ESFacetFieldValue } from "@/types/search";
 import { Choice, fetchDCATMeta } from "@/utilities";
 import {
+  formatTerminologyAddress,
+  getContactEmail,
+  getFirstMatchingValue,
   getLocalizedChoiceLabel,
   getLocalizedValue,
   getTemplateChoices,
-} from "@/utilities/entrystore-utils";
-
-type RelationObj = {
-  title: string;
-  url: string;
-};
-
-export type TermInfo = {
-  title: string;
-  url: string;
-};
-
-export type DatasetInfo = {
-  title: string;
-  total: number;
-};
-
-export interface EntrystoreProviderProps {
-  env: EnvSettings;
-  eid: string;
-  cid: string;
-  children?: ReactNode;
-  entrystoreUrl: string | "admin.dataportal.se";
-  isConcept?: boolean;
-  hasResourceUri?: string;
-  includeContact?: boolean;
-  pageType: PageType;
-}
-
-type PageType =
-  | "concept"
-  | "terminology"
-  | "specification"
-  | "dataset"
-  | "dataservice"
-  | "organisation"
-  | "apiexplore"
-  | "mqa";
-
-export type OrganisationData = {
-  datasets: {
-    total: number;
-    totTitle: string;
-    dataInfo: Array<DatasetInfo>;
-    link: string;
-  };
-  specifications: {
-    total: number;
-    link: string;
-  };
-  terms: {
-    total: number;
-    termsInfo: Array<TermInfo>;
-  };
-  orgClassification: string;
-  orgType: string;
-  orgNumber: string;
-};
-
-export interface ESEntry {
-  env: EnvSettings;
-  entrystore: EntryStore;
-  entry: Entry;
-  context: string;
-  esId: string;
-  loading: boolean;
-  title: string;
-  description: string;
-  publisher: string;
-  termPublisher: string;
-  definition: string;
-  contact?: ESContact;
-  conformsTo?: RelationObj[];
-  hasResource?: RelationObj[];
-  address: string;
-  downloadFormats?: Array<{ title: string; url: string }>;
-  relatedSpecifications?: Array<{ title: string; url: string }>;
-  relatedTerm?: { title: string; url: string };
-  relatedConcepts?: Array<{ title: string; url: string }>;
-  relatedDatasets?: Array<{ title: string; url: string }>;
-  keywords?: Array<string>;
-  mqaCatalog?: { title: string; url: string } | null;
-  organisationData?: OrganisationData;
-  organisationLink?: string | null;
-}
-
-export interface ESContact {
-  name: string;
-  email?: string;
-}
+} from "@/utilities/entrystore/entrystore-helpers";
+import { EntrystoreService } from "@/utilities/entrystore/entrystore.service";
 
 const defaultESEntry: ESEntry = {
   env: SettingsUtil.getDefault(),
@@ -124,6 +36,18 @@ const defaultESEntry: ESEntry = {
   esId: "",
 };
 
+export interface EntrystoreProviderProps {
+  env: EnvSettings;
+  children: ReactNode;
+  cid: string;
+  eid: string;
+  entryUri?: string;
+  entrystoreUrl?: string;
+  includeContact?: boolean;
+  hasResourceUri?: string;
+  pageType: PageType;
+}
+
 export const EntrystoreContext = createContext<ESEntry>(defaultESEntry);
 
 /**
@@ -137,21 +61,25 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   cid,
   eid,
   entrystoreUrl,
-  hasResourceUri,
   includeContact,
   pageType,
+  hasResourceUri,
 }) => {
   const [state, setState] = useState(defaultESEntry);
   const router = useRouter();
   const { lang, t } = useTranslation();
 
-  const es = new EntryStore(
-    `https://${entrystoreUrl}/store` || "https://admin.dataportal.se/store",
-  );
+  const entrystoreService = EntrystoreService.getInstance({
+    baseUrl:
+      `https://${entrystoreUrl}/store` || "https://admin.dataportal.se/store",
+    lang,
+    t,
+  });
+
   // TODO: Uncomment this when cors error is fixed
   // es.getREST().disableJSONP();
-  const esu = new EntryStoreUtil(es);
-  esu.loadOnlyPublicEntries(true);
+
+  entrystoreService.getEntryStoreUtil();
 
   // Add background class based on page type
   useEffect(() => {
@@ -174,215 +102,194 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
   const fetchEntry = async () => {
     try {
-      const entry: Entry = await es.getEntry(es.getEntryURI(cid, eid));
+      const entry: Entry = await entrystoreService.getEntry(cid, eid);
 
       if (!entry) return router.push("/404");
 
       const metadata = entry.getAllMetadata();
       const resourceUri = entry.getResourceURI();
 
-      const title =
-        getLocalizedValue(metadata, "dcterms:title", resourceUri) ||
-        getLocalizedValue(metadata, "skos:prefLabel", resourceUri) ||
-        getLocalizedValue(metadata, "foaf:name", resourceUri);
-
-      const description =
-        getLocalizedValue(metadata, "skos:definition", resourceUri) ||
-        getLocalizedValue(metadata, "dcterms:description", resourceUri);
-
-      const publisherUri = metadata.findFirstValue(
-        resourceUri,
-        "dcterms:publisher",
-      );
-
-      let publisher = "";
-      let publisherEntry: Entry | null = null;
-
-      if (pageType !== "mqa") {
-        if (publisherUri) {
-          try {
-            publisherEntry = await esu.getEntryByResourceURI(publisherUri);
-            if (publisherEntry) {
-              publisher = getLocalizedValue(
-                publisherEntry.getAllMetadata(),
-                "foaf:name",
-                publisherUri,
-              );
-            }
-          } catch (error) {
-            console.error("Failed to fetch publisher:", error);
-          }
-        } else {
-          try {
-            const specification = metadata.findFirstValue(
-              null,
-              "skos:inScheme",
-            );
-            if (specification) {
-              const specificationEntry =
-                await esu.getEntryByResourceURI(specification);
-              if (specificationEntry) {
-                const specificationMeta = specificationEntry.getAllMetadata();
-                const publisherUri = specificationMeta.findFirstValue(
-                  null,
-                  "dcterms:publisher",
-                );
-
-                if (publisherUri) {
-                  try {
-                    publisherEntry =
-                      await esu.getEntryByResourceURI(publisherUri);
-                    if (publisherEntry) {
-                      publisher = getLocalizedValue(
-                        publisherEntry.getAllMetadata(),
-                        "foaf:name",
-                        publisherUri,
-                      );
-                    }
-                  } catch (error) {
-                    console.error("Failed to fetch publisher:", error);
-                  }
-                }
-              }
-            }
-          } catch (error) {
-            console.error("Failed to fetch publisher:", error);
-          }
-        }
-      }
+      // Parallel fetch for publisher info
+      const publisherPromise =
+        pageType !== "mqa"
+          ? await entrystoreService.getPublisherInfo(resourceUri, metadata)
+          : Promise.resolve({ name: "", entry: null });
 
       const entryData: Partial<ESEntry> = {
-        entrystore: es,
+        entrystore: entrystoreService.getEntryStore(),
         entry,
         context: entry.getContext().getId(),
         esId: entry.getId(),
-        title,
+        title: getFirstMatchingValue(metadata, resourceUri, [
+          "dcterms:title",
+          "skos:prefLabel",
+          "foaf:name",
+        ]),
+        description: getFirstMatchingValue(metadata, resourceUri, [
+          "skos:definition",
+          "dcterms:description",
+        ]),
         address: resourceUri,
-        description,
-        publisher,
-        organisationLink: null,
+        organisationLink: undefined,
         loading: false,
       };
 
-      if (includeContact) entryData.contact = await getContactInfo(metadata);
+      const { name, entry: publisherEntry } = await publisherPromise;
 
-      switch (pageType) {
-        case "dataset":
-          entryData.relatedSpecifications = await getRelatedSpecifications(
-            entry,
-            metadata,
-            pageType,
-          );
-          entryData.keywords = await getKeywords(entry);
-          entryData.downloadFormats = getDownloadFormats(
-            entry.getEntryInfo().getMetadataURI(),
-          );
-          entryData.mqaCatalog = await getRelatedMQA(entry);
-          if (publisherUri && publisherEntry && publisher) {
-            entryData.organisationLink = `/organisations/${publisherEntry.getContext().getId()}_${publisherEntry.getId()}`
-          }
-          break;
-        case "dataservice":
-          break;
-        case "apiexplore":
-          entryData.contact = await getContactInfo(metadata);
-          break;
-        case "organisation":
-          entryData.organisationData = await getOrganisationDatasets(
-            entry,
-            resourceUri,
-            metadata,
-          );
-          entryData.contact = {
-            name: metadata.findFirstValue(null, "foaf:name"),
-            email:
-              metadata.findFirstValue(null, "foaf:mbox") ||
-              metadata.findFirstValue(null, "foaf:homepage"),
-          };
-
-          entryData.downloadFormats = getDownloadFormats(
-            entry.getEntryInfo().getMetadataURI(),
-          );
-
-          entryData.mqaCatalog = await getRelatedMQA(entry);
-          break;
-        case "terminology":
-          entryData.relatedSpecifications = await getRelatedSpecifications(
-            entry,
-            metadata,
-            pageType,
-          );
-          entryData.address = resourceUri.startsWith("https://dataportal.se")
-            ? resourceUri.replace("concepts", "terminology")
-            : resourceUri;
-          entryData.downloadFormats = getDownloadFormats(
-            entry.getEntryInfo().getMetadataURI(),
-          );
-          break;
-        case "specification":
-          entryData.relatedDatasets = await getRelatedDatasets(entry);
-          entryData.keywords = await getKeywords(entry);
-          entryData.downloadFormats = getDownloadFormats(
-            entry.getEntryInfo().getMetadataURI(),
-          );
-          break;
-        case "concept":
-          entryData.relatedTerm = await getRelatedTerm(metadata);
-          entryData.downloadFormats = getDownloadFormats(
-            entry.getEntryInfo().getMetadataURI(),
-          );
-          break;
-        case "mqa":
-          break;
+      entryData.publisher = name;
+      if (includeContact) {
+        entryData.contact = await entrystoreService.getContactInfo(metadata);
       }
+
+      const pageSpecificData = await getPageSpecificData(
+        pageType,
+        entry,
+        metadata,
+        resourceUri,
+        entrystoreService,
+        publisherEntry,
+      );
 
       setState({
         ...defaultESEntry,
         ...entryData,
+        ...pageSpecificData,
       });
     } catch (error) {
-      router.push("/404");
       console.error("Failed to fetch entry:", error);
+      router.push("/404");
     }
   };
 
-  const getContactInfo = async (metadata: Metadata) => {
-    const contactPoint = metadata.findFirstValue(null, "dcat:contactPoint");
+  async function getPageSpecificData(
+    pageType: PageType,
+    entry: Entry,
+    metadata: Metadata,
+    resourceUri: string,
+    entrystoreService: EntrystoreService,
+    publisherEntry: Entry | null,
+  ): Promise<Partial<ESEntry>> {
+    switch (pageType) {
+      case "dataset": {
+        // Fetch all data in parallel
+        const [specs, keywords, formats, mqa, dataseries, organisationLink] =
+          await Promise.all([
+            entrystoreService.getRelatedSpecifications(
+              entry,
+              metadata,
+              pageType,
+            ),
+            entrystoreService.getKeywords(entry),
+            entrystoreService.getDownloadFormats(
+              entry.getEntryInfo().getMetadataURI(),
+            ),
+            entrystoreService.getRelatedMQA(entry),
+            entrystoreService.getRelatedDatasetSeries(entry, metadata),
+            entrystoreService.getOrganisationLink(publisherEntry),
+          ]);
 
-    const contactEntry = await esu.getEntryByResourceURI(contactPoint);
-    const name = getLocalizedValue(
-      contactEntry.getAllMetadata(),
-      "http://www.w3.org/2006/vcard/ns#fn",
-    );
-    const email = parseEmail(
-      getLocalizedValue(
-        contactEntry.getAllMetadata(),
-        "http://www.w3.org/2006/vcard/ns#hasEmail",
-      ),
-    );
+        return {
+          relatedSpecifications: specs,
+          keywords,
+          downloadFormats: formats,
+          mqaCatalog: mqa,
+          relatedDatasetSeries: dataseries,
+          organisationLink,
+        };
+      }
 
-    return { name, email };
-  };
+      case "dataset-series":
+        return {};
 
-  const getRelatedDatasets = async (entry: Entry) => {
-    const datasets = await es
-      .newSolrQuery()
-      .rdfType(["dcat:Dataset", "esterms:IndependentDataService"])
-      .publicRead(true)
-      .uriProperty("dcterms:conformsTo", entry.getResourceURI())
-      .getEntries();
+      case "dataservice":
+        return {};
 
-    const datasetArray = datasets.map((ds: Entry) => {
-      return {
-        title: getLocalizedValue(ds.getAllMetadata(), "dcterms:title"),
-        url: `/${lang}/datasets/${es.getContextId(
-          ds.getEntryInfo().getMetadataURI(),
-        )}_${ds.getId()}`,
-      };
-    });
+      case "apiexplore": {
+        const contact = await entrystoreService.getContactInfo(metadata);
+        return { contact };
+      }
 
-    return datasetArray;
-  };
+      case "organisation": {
+        // Fetch all organisation data in parallel
+        const [orgData, formats, mqa] = await Promise.all([
+          getOrganisationDatasets(entry, resourceUri, metadata),
+          entrystoreService.getDownloadFormats(
+            entry.getEntryInfo().getMetadataURI(),
+          ),
+          entrystoreService.getRelatedMQA(entry),
+        ]);
+
+        return {
+          organisationData: orgData,
+          contact: {
+            name: metadata.findFirstValue(null, "foaf:name"),
+            email: getContactEmail(metadata),
+          },
+          downloadFormats: formats,
+          mqaCatalog: mqa,
+        };
+      }
+
+      case "terminology": {
+        // Fetch specifications and formats in parallel
+        const [specs, formats] = await Promise.all([
+          entrystoreService.getRelatedSpecifications(
+            entry,
+            metadata,
+            pageType,
+            hasResourceUri,
+          ),
+          entrystoreService.getDownloadFormats(
+            entry.getEntryInfo().getMetadataURI(),
+          ),
+        ]);
+
+        return {
+          relatedSpecifications: specs,
+          address: formatTerminologyAddress(resourceUri),
+          downloadFormats: formats,
+        };
+      }
+
+      case "specification": {
+        // Fetch all data in parallel
+        const [datasets, keywords, formats] = await Promise.all([
+          entrystoreService.getRelatedDatasets(entry),
+          entrystoreService.getKeywords(entry),
+          entrystoreService.getDownloadFormats(
+            entry.getEntryInfo().getMetadataURI(),
+          ),
+        ]);
+
+        return {
+          relatedDatasets: datasets,
+          keywords,
+          downloadFormats: formats,
+        };
+      }
+
+      case "concept": {
+        // Fetch term and formats in parallel
+        const [term, formats] = await Promise.all([
+          entrystoreService.getRelatedTerm(metadata),
+          entrystoreService.getDownloadFormats(
+            entry.getEntryInfo().getMetadataURI(),
+          ),
+        ]);
+
+        return {
+          relatedTerm: term,
+          downloadFormats: formats,
+        };
+      }
+
+      case "mqa":
+        return {};
+
+      default:
+        return {};
+    }
+  }
 
   const getOrganisationDatasets = async (
     entry: Entry,
@@ -422,9 +329,11 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         orgType: "",
       };
 
-      const esTerms = new EntryStore(
-        `https://${state.env.ENTRYSCAPE_TERMS_PATH}/store`,
-      );
+      const termsEntrystoreService = EntrystoreService.getInstance({
+        baseUrl: `https://${state.env.ENTRYSCAPE_TERMS_PATH}/store`,
+        lang,
+        t,
+      });
 
       const dcatMeta = await fetchDCATMeta();
 
@@ -446,7 +355,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       // Fetch dataset counts
       try {
-        const datasetCounts = es
+        const datasetCounts = entrystoreService
+          .getEntryStore()
           .newSolrQuery()
           .rdfType(["dcat:Dataset", "esterms:IndependentDataService"])
           .uriProperty("dcterms:publisher", uri)
@@ -520,7 +430,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       // Fetch specification counts
       try {
-        const specifications = es
+        const specifications = entrystoreService
+          .getEntryStore()
           .newSolrQuery()
           .rdfType(["dcterms:Standard", "prof:Profile"])
           .uriProperty("dcterms:publisher", uri)
@@ -552,7 +463,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       // Fetch terms counts
       try {
-        const terms = esTerms
+        const terms = termsEntrystoreService
+          .getEntryStore()
           .newSolrQuery()
           .publicRead(true)
           .limit(1000)
@@ -581,117 +493,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     } catch (error) {
       console.error("Error fetching organisation data:", error);
     }
-  };
-
-  const getRelatedMQA = async (entry: Entry) => {
-    try {
-      const mqa = es.getEntryURI(entry.getContext().getId(), "_quality");
-      const mqaEntry = await es.getEntry(mqa);
-      const mqaMetadata = mqaEntry.getAllMetadata();
-      const title = getLocalizedValue(mqaMetadata, "dcterms:title");
-      const url = `/metadatakvalitet/katalog/_quality/${entry
-        .getContext()
-        .getId()}`;
-      return { title, url };
-    } catch {
-      return null;
-    }
-  };
-
-  const getDownloadFormats = (baseUri: string) => {
-    return [
-      {
-        title: t("pages|datasetpage$download-metadata-as") + " RDF/XML",
-        url: baseUri,
-      },
-      {
-        title: t("pages|datasetpage$download-metadata-as") + " TURTLE",
-        url: baseUri + "?format=text/turtle",
-      },
-      {
-        title: t("pages|datasetpage$download-metadata-as") + " N-TRIPLES",
-        url: baseUri + "?format=text/n-triples",
-      },
-      {
-        title: t("pages|datasetpage$download-metadata-as") + " JSON-LD",
-        url: baseUri + "?format=application/ld+json",
-      },
-    ];
-  };
-
-  const getRelatedTerm = async (metadata: Metadata) => {
-    const termUri = metadata.findFirstValue(null, "skos:inScheme");
-    const termEntry = await esu.getEntryByResourceURI(termUri);
-
-    return {
-      title: getLocalizedValue(termEntry.getAllMetadata(), "dcterms:title"),
-      url: `/${lang}/terminology/${termEntry
-        .getContext()
-        .getId()}_${termEntry.getId()}`,
-    };
-  };
-
-  const getRelatedSpecifications = async (
-    entry: Entry,
-    metadata: Metadata,
-    pageType: PageType,
-  ) => {
-    try {
-      if (pageType === "dataset") {
-        const specifications = metadata
-          .find(entry.getResourceURI(), "dcterms:conformsTo")
-          .map((stmt: { getValue: () => string }) => stmt.getValue());
-
-        const resourceEntries = await esu.loadEntriesByResourceURIs(
-          specifications,
-          null,
-          true,
-        );
-
-        return resourceEntries
-          .filter((e: Entry) => e)
-          .map((e: Entry) => ({
-            title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-            url: `/${lang}/specifications/${e
-              .getContext()
-              .getId()}_${e.getId()}`,
-          }));
-      } else if (pageType === "terminology") {
-        const specifications = await es
-          .newSolrQuery()
-          .uriProperty(
-            "http://www.w3.org/ns/dx/prof/hasResource",
-            hasResourceUri || entry.getResourceURI(),
-          )
-          .rdfType(["dcterms:Standard", "prof:Profile"])
-          .publicRead(true)
-          .getEntries();
-
-        return specifications
-          .filter((e: Entry) => e)
-          .map((e: Entry) => ({
-            title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-            url: `/${lang}/specifications/${e
-              .getContext()
-              .getId()}_${e.getId()}`,
-          }));
-      }
-      return [];
-    } catch (error) {
-      console.error("Error fetching specifications:", error);
-      return [];
-    }
-  };
-
-  const getKeywords = async (entry: Entry) => {
-    return entry
-      .getAllMetadata()
-      .find(null, "dcat:keyword")
-      .map((k: { getValue: () => string }) => k.getValue());
-  };
-
-  const parseEmail = (email: string) => {
-    return email.startsWith("mailto:") ? email : `mailto:${email}`;
   };
 
   if (state.loading) return null;

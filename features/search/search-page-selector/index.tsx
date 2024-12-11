@@ -33,11 +33,6 @@ const SEARCH_TABS = [
 /**
  * Navigation component that displays tabs for different search categories.
  * Highlights the currently active tab and maintains the search query across navigation.
- *
- * @component
- * @param {SearchTabsProps} props - The component props
- * @param {string} [props.query] - The current search query string
- * @returns {JSX.Element} A navigation component with search category tabs
  */
 export function SearchPageSelector({ query }: SearchTabsProps) {
   const { t, lang } = useTranslation("pages");

@@ -14,12 +14,9 @@ import { CustomLink } from "@/components/custom-link";
 import { Container } from "@/components/layout/container";
 // import { Modal } from "@/components/modal";
 import { Heading } from "@/components/typography/heading";
-import {
-  DatasetInfo,
-  EntrystoreContext,
-  TermInfo,
-} from "@/providers/entrystore-provider";
+import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
+import { DataInfo, TermInfo } from "@/types/organisation";
 import { linkBase } from "@/utilities";
 
 export const OrganisationPage: FC = () => {
@@ -124,7 +121,7 @@ export const OrganisationPage: FC = () => {
                   />
                   <div className="grid grid-cols-2 gap-x-sm gap-y-xl">
                     {entry.organisationData?.datasets.dataInfo.map(
-                      (data: DatasetInfo, idx: number) => (
+                      (data: DataInfo, idx: number) => (
                         <div
                           key={idx}
                           className="flex flex-col items-center gap-sm"

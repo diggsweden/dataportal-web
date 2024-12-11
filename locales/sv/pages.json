@@ -54,6 +54,9 @@
   "dataservicepage": {
     "api": "Om API"
   },
+  "dataset-series": {
+    "data-serie": "Datamängdsserie"
+  },
   "datasetpage": {
     "about-dataset": "Om datamängd",
     "catalog": "Hämtad från katalog",
@@ -75,6 +78,7 @@
     "no_title": "Ingen titel given",
     "rdf": "Ladda ner metadata som RDF",
     "read_about_api": "Läs mer om API",
+    "related_dataset_series": "Tillhör datamängdsserie: ",
     "related_specifications": "Specifikation",
     "several_links": "Datat har flertalet länkar för nedladdning",
     "several_links_header": "Dataresursen består av följande filer",
