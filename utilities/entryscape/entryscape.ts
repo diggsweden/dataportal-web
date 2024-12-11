@@ -505,7 +505,7 @@ export class Entryscape {
                 key,
                 fvalue.map((f) => f.resource),
                 null,
-                false,
+                fvalue[0].related,
               );
               break;
           }
