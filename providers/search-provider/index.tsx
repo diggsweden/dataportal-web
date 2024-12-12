@@ -13,7 +13,6 @@ import {
   SearchFacet,
   SearchRequest,
   SearchResult,
-  SearchHit,
   ESFacetField,
 } from "@/types/search";
 import { DCATData, fetchDCATMeta } from "@/utilities";
@@ -51,12 +50,9 @@ export interface SearchContextData {
   toggleFacet: (_facetValue: SearchFacetValue) => Promise<void>;
   fetchMoreFacets: (_facetkey: string) => Promise<void>;
   fetchAllFacets: () => Promise<void>;
-  searchInFacets: (_query: string, _facetkey: string) => Promise<void>;
   showMoreFacets: (_facetkey: string) => void;
   updateFacetStats: () => Promise<void>;
   facetSelected: (_key: string, _value: string) => boolean;
-  facetHasSelectedValues: (_key: string) => boolean;
-  getFacetValueTitle: (_key: string, _valueKey: string) => string | null;
   doSearch: (
     _appendHits?: boolean,
     _setStateToLocation?: boolean,
@@ -96,12 +92,9 @@ export const defaultSearchSettings: SearchContextData = {
   toggleFacet: () => new Promise<void>(() => {}),
   fetchMoreFacets: () => new Promise<void>(() => {}),
   fetchAllFacets: async () => {},
-  searchInFacets: async () => {},
   showMoreFacets: () => {},
   updateFacetStats: () => new Promise<void>(() => {}),
   facetSelected: () => false,
-  facetHasSelectedValues: () => false,
-  getFacetValueTitle: () => "",
   doSearch: async () => {},
   setStateToLocation: () => {},
   sortAllFacets: () => {},
@@ -459,57 +452,10 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     }
 
     return facetValues.some(
-      (facetValue) => facetValue.facet === key && facetValue.resource === value,
+      (facetValue) =>
+        facetValue.facet === key &&
+        (facetValue.resource === value || facetValue.specialFilter === value),
     );
-  };
-
-  /**
-   * Check if facet with @param key has any selected facetvalues in current SearchRequest
-   */
-  facetHasSelectedValues = (key: string) => {
-    if (this.state.allFacets && this.state.result && this.state.result.facets) {
-      const facetValues = this.state.request.facetValues as SearchFacetValue[];
-
-      const existing = facetValues.filter(
-        (v: SearchFacetValue) => v.facet == key,
-      );
-
-      //existed
-      if (existing && existing.length > 0) {
-        return true;
-      }
-    }
-
-    return false;
-  };
-
-  /**
-   * Get title for facetvalue in facet with key
-   */
-  getFacetValueTitle = (key: string, valueKey: string) => {
-    let title = null;
-
-    if (this.state.allFacets) {
-      const existing = Object.entries(this.state.allFacets).filter(([v]) => {
-        return v == key;
-      });
-
-      //existed
-      if (existing && existing.length > 0) {
-        if (existing && existing.length > 0) {
-          // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-          existing.forEach(([_, facValue]) => {
-            if (facValue.facetValues) {
-              facValue.facetValues.forEach((f) => {
-                if (f.resource == valueKey) title = f.title || "";
-              });
-            }
-          });
-        }
-      }
-    }
-
-    return title;
   };
 
   /**
@@ -592,86 +538,6 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
   };
 
   /**
-   * Use when query filtering facets, cannot retrive facets count,
-   * will only fetch entries fromES from querytext, any found entries will be appended to the AllFacets state and localstorage
-   *
-   * TODO: Is now hardcoded to RDF: http://xmlns.com/foaf/0.1/Agent and URI estypes. Meaning only works for organisations for now.
-   *
-   */
-  searchInFacets = async (query: string, facetkey: string): Promise<void> => {
-    const { request } = this.state;
-    const CACHE_KEYS = this.getCacheKeys(request);
-
-    const facets = { ...this.state.allFacets };
-
-    // Store original specifications
-    const originalSpecs = { ...this.entrystoreService.hitSpecifications };
-
-    // Update specifications for this search
-    this.entrystoreService.hitSpecifications = {
-      "http://xmlns.com/foaf/0.1/Agent": {
-        path: ``,
-        titleResource: "http://xmlns.com/foaf/0.1/name",
-        descriptionResource: "",
-      },
-    };
-
-    try {
-      const res = await this.entrystoreService.solrSearch({
-        titleQuery: query && query.length > 0 ? query : "*",
-        fetchFacets: false,
-        take: 100,
-        page: 0,
-        esRdfTypes: [ESRdfType.agent],
-      });
-
-      if (res?.hits) {
-        res.hits.forEach((h: SearchHit) => {
-          if (
-            facets[facetkey] &&
-            facets[facetkey].facetValues &&
-            h.title &&
-            !facets[facetkey].facetValues.some(
-              (f) => f.title?.toLowerCase() === h.title.toLowerCase(),
-            )
-          ) {
-            const newValue: SearchFacetValue = {
-              count: -1,
-              title: h.title.trim(),
-              resource: h.esEntry.getResourceURI(),
-              facet: facetkey,
-              facetType: ESType.uri,
-              facetValueString: "",
-              related: false,
-            };
-
-            newValue.facetValueString = `${facetkey}||${newValue.resource}||${newValue.related}||${ESType.uri}||${facets[facetkey].title}||${newValue.title}`;
-            facets[facetkey].facetValues.push(newValue);
-          }
-        });
-      }
-
-      this.setState({ allFacets: facets });
-
-      if (hasLocalStore && hasWindow) {
-        window.localStorage.setItem(CACHE_KEYS.data, JSON.stringify(facets));
-        window.localStorage.setItem(
-          CACHE_KEYS.timestamp,
-          JSON.stringify(new Date()),
-        );
-      }
-
-      await this.mergeAllFacetsAndResult();
-    } catch (error) {
-      console.error("Error searching in facets:", error);
-    } finally {
-      this.setState({ loadingFacets: false });
-      // Restore original specifications
-      this.entrystoreService.hitSpecifications = originalSpecs;
-    }
-  };
-
-  /**
    * increase "show" parameter for facet with key @param facetkey
    */
   showMoreFacets = (facetkey: string) => {
@@ -705,7 +571,9 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       (v: SearchFacetValue) =>
         v.facet == facetValue.facet &&
         v.resource == facetValue.resource &&
-        v.related == facetValue.related,
+        v.related == facetValue.related &&
+        v.specialFilter == facetValue.specialFilter &&
+        v.specialSearch == facetValue.specialSearch,
     );
 
     let newFacetValues: SearchFacetValue[];
@@ -805,7 +673,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
         if (!f.includes("||")) return;
 
         const facetstring = f.split("||");
-        if (facetstring.length !== 6) return;
+        if (facetstring.length !== 8) return;
 
         let facetType = ESType.unknown;
         switch (facetstring[3]) {
@@ -831,6 +699,12 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
           related: facetstring[2] === "true",
           resource: facetstring[1],
           title: facetstring[5],
+          specialFilter:
+            facetstring[6] !== "undefined" ? facetstring[6] : undefined,
+          specialSearch:
+            facetstring[7] && facetstring[7] !== "undefined"
+              ? JSON.parse(facetstring[7])
+              : undefined,
         });
       });
     }
@@ -1038,11 +912,8 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       fetchMoreFacets: this.fetchMoreFacets,
       showMoreFacets: this.showMoreFacets,
       fetchAllFacets: this.fetchAllFacets,
-      searchInFacets: this.searchInFacets,
       updateFacetStats: this.mergeAllFacetsAndResult,
       facetSelected: this.facetSelected,
-      facetHasSelectedValues: this.facetHasSelectedValues,
-      getFacetValueTitle: this.getFacetValueTitle,
       sortAllFacets: this.sortAllFacets,
       request: this.state.request,
       result: this.state.result,

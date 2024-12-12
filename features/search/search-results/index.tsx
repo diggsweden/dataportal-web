@@ -21,6 +21,11 @@ import {
   SearchContextData,
 } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
+import {
+  clearCurrentScrollPos,
+  getScrollKey,
+  saveCurrentScrollPos,
+} from "@/utilities/scroll-helper";
 
 interface SearchResultsProps {
   search: SearchContextData;
@@ -44,24 +49,6 @@ const searchFocus = () => {
   }
 };
 
-const SCROLL_POS_PREFIX = "ScrollPosY_" as const;
-
-function getScrollKey(search: string): string {
-  return `${SCROLL_POS_PREFIX}${search}`;
-}
-
-function saveCurrentScrollPos(): void {
-  if (typeof window === "undefined") return;
-  const key = getScrollKey(window.location.search);
-  localStorage.setItem(key, window.scrollY.toString());
-}
-
-function clearCurrentScrollPos(): void {
-  if (typeof window === "undefined") return;
-  const key = getScrollKey(window.location.search);
-  localStorage.removeItem(key);
-}
-
 /**
  * Adds sorting options to the search-results
  *
@@ -76,11 +63,6 @@ const SortingOptions: FC<{
   const { t } = useTranslation();
   const { iconSize } = useContext(SettingsContext);
 
-  const toggleCompact = () => {
-    clearCurrentScrollPos();
-    setCompact(!isCompact);
-  };
-
   return (
     <div className="mb-lg flex flex-wrap items-center justify-between gap-md md:mb-none">
       <Button
@@ -94,7 +76,7 @@ const SortingOptions: FC<{
             ? t("pages|search$detailed-list-active")
             : t("pages|search$detailed-list")
         }
-        onClick={toggleCompact}
+        onClick={() => setCompact(!isCompact)}
         label={
           isCompact
             ? t("pages|search$compact-list")
@@ -116,7 +98,7 @@ const SortingOptions: FC<{
             : t("pages|search$detailed-list")
         }
         label={t("pages|search$list")}
-        onClick={toggleCompact}
+        onClick={() => setCompact(!isCompact)}
       />
 
       <div className="flex items-center gap-md">

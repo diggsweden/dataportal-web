@@ -213,6 +213,21 @@ export class EntrystoreService {
           switch (fvalue[0].facetType) {
             case ESType.literal:
             case ESType.literal_s:
+              // Special case for special filters with search checkbox
+              if (fvalue[0].specialSearch) {
+                break;
+              }
+              // Special case for special filters with regular checkbox
+              if (fvalue[0].specialFilter) {
+                esQuery.literalProperty(
+                  key,
+                  fvalue[0].specialFilter,
+                  null,
+                  "string",
+                  fvalue[0].related,
+                );
+                break;
+              }
               esQuery.literalProperty(
                 key,
                 fvalue.map((f) => f.resource),
@@ -223,18 +238,18 @@ export class EntrystoreService {
               break;
             case ESType.uri:
             case ESType.wildcard:
-              // Special case for National basic data because all subjects might not be National basic data
-              if (fvalue[0].facet === "http://purl.org/dc/terms/subject") {
+              // Special case for special filters with search checkbox
+              if (fvalue[0].specialSearch) {
+                break;
+              }
+              // Special case for special filters with regular checkbox
+              if (fvalue[0].specialFilter) {
                 esQuery.uriProperty(
                   key,
-                  "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/*",
+                  fvalue[0].specialFilter,
                   null,
                   fvalue[0].related,
                 );
-                break;
-              }
-              if (fvalue[0].facet === "http://purl.org/dc/terms/conformsTo") {
-                esQuery.uriProperty(key, "*", null, fvalue[0].related);
                 break;
               }
               esQuery.uriProperty(
@@ -430,6 +445,8 @@ export class EntrystoreService {
           count: f.valueCount,
           show: 25,
           group: facetSpec.group,
+          specialFilter: facetSpec.specialFilter,
+          specialSearch: facetSpec.specialSearch,
           facetValues: f.values
             .filter((value: ESFacetFieldValue) => {
               if (!value.name || value.name.trim() === "") return false;
@@ -469,10 +486,18 @@ export class EntrystoreService {
                 facetType: f.type,
                 facetValueString: `${f.predicate}||${value.name}||${
                   facetSpec.related || false
-                }||${f.type}||${this.t(f.predicate)}||${displayName}`,
+                }||${f.type}||${this.t(f.predicate)}||${displayName}||${
+                  facetSpec.specialFilter
+                }||${
+                  facetSpec.specialSearch
+                    ? JSON.stringify(facetSpec.specialSearch)
+                    : undefined
+                }`,
                 related: facetSpec.related || false,
                 resource: value.name,
                 title: displayName,
+                specialFilter: facetSpec.specialFilter,
+                specialSearch: facetSpec.specialSearch,
               };
             }),
         };
@@ -502,6 +527,8 @@ export class EntrystoreService {
           count: f.valueCount,
           show: 25,
           group: facetSpec.group,
+          specialFilter: facetSpec.specialFilter,
+          specialSearch: facetSpec.specialSearch,
           facetValues: f.values
             .filter((value: ESFacetFieldValue) => {
               if (!value.name || value.name.trim() === "") return false;
@@ -541,10 +568,18 @@ export class EntrystoreService {
                 facetType: f.type,
                 facetValueString: `${f.predicate}||${value.name}||${
                   facetSpec.related || false
-                }||${f.type}||${this.t(f.predicate)}||${displayName}`,
+                }||${f.type}||${this.t(f.predicate)}||${displayName}||${
+                  facetSpec.specialFilter || null
+                }||${
+                  facetSpec.specialSearch
+                    ? JSON.stringify(facetSpec.specialSearch)
+                    : undefined
+                }`,
                 related: facetSpec.related || false,
                 resource: value.name,
                 title: displayName,
+                specialFilter: facetSpec.specialFilter,
+                specialSearch: facetSpec.specialSearch,
               };
             }),
         };

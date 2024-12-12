@@ -13,6 +13,8 @@ interface FacetConfig {
   dcatId?: string;
   related?: boolean;
   maschineName?: string;
+  specialFilter?: string; // Special case for special filters with checkbox
+  specialSearch?: ESRdfType[]; // Special case for special filters with search
 }
 
 interface HitSpecification {
@@ -32,7 +34,7 @@ interface SearchProviderConfig {
     language: string;
     takeFacets: number;
     sortOrder?: SearchSortOrder;
-    // Values to exclude from search
+    // Values to exclude or include from search
     filters?: {
       exclude?: {
         key: string;
@@ -119,7 +121,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           },
           {
             resource: "http://purl.org/dc/terms/accrualPeriodicity",
-            dcatId: "dcat:dcterms:accrualPeriodicity_da",
+            dcatId: "dcat:dcterms:accrualPeriodicity",
             type: ESType.uri,
             dcatProperty: "dcterms:accrualPeriodicity",
             dcatType: "choice",
@@ -135,6 +137,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             dcatFilterEnabled: false,
             indexOrder: 6,
             group: "type",
+            specialFilter: "http://data.europa.eu/eli/reg_impl/2023/138/oj",
           },
           {
             resource: "http://purl.org/dc/terms/subject",
@@ -142,6 +145,8 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             dcatProperty: "dcterms:subject",
             indexOrder: 7,
             group: "type",
+            specialFilter:
+              "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/*",
           },
           {
             resource: "http://purl.org/dc/terms/conformsTo",
@@ -151,6 +156,30 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             dcatFilterEnabled: false,
             indexOrder: 8,
             group: "type",
+            specialFilter: "*",
+          },
+          {
+            resource: "http://www.w3.org/ns/dcat#DataService",
+            type: ESType.uri,
+            dcatProperty: "dcat:DataService",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 8,
+            group: "distribution",
+            specialSearch: [
+              ESRdfType.data_service,
+              ESRdfType.served_by_data_service,
+            ],
+          },
+          {
+            resource: "http://www.w3.org/ns/dcat#DatasetSeries",
+            type: ESType.uri,
+            dcatProperty: "dcat:DatasetSeries",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 9,
+            group: "distribution",
+            specialSearch: [ESRdfType.dataset_series],
           },
         ],
       },
@@ -278,13 +307,21 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             type: ESType.uri,
             dcatType: "choice",
             indexOrder: 1,
-            maschineName: "publishertype",
             group: "default",
+          },
+          {
+            resource: "https://www.w3.org/ns/org#classification",
+            dcatProperty: "org:classification",
+            type: ESType.uri,
+            indexOrder: 2,
+            group: "default",
+            specialFilter:
+              "https://dataportal.se/concepts/orgAspects/feeFinanzing",
           },
         ],
       },
       initRequest: {
-        esRdfTypes: [ESRdfType.agent],
+        esRdfTypes: [ESRdfType.organisation],
         language: lang,
         takeFacets: 30,
         filters: {

@@ -40,7 +40,7 @@ export const SearchHit: FC<SearchHitProps> = ({
       <Link
         href={hit.url}
         onClick={onLinkClick}
-        className="focus--none before:focus--outline before:focus--out before:focus--primary block no-underline before:absolute before:inset-none"
+        className="search-result-link focus--none before:focus--outline before:focus--out before:focus--primary block no-underline before:absolute before:inset-none"
       >
         <Heading
           level={3}
