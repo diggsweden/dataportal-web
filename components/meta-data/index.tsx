@@ -82,9 +82,9 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
 
       <meta
         name="robots"
-        content={`${robotsFollow && allowSEO ? "follow" : "nofollow"}, ${
-          robotsIndex && allowSEO ? "index" : "noindex"
-        }`}
+        content={`${
+          robotsFollow === false || !allowSEO ? "nofollow" : "follow"
+        }, ${robotsIndex === false || !allowSEO ? "noindex" : "index"}`}
       />
       <meta
         name="og:site_name"
