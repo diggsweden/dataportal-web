@@ -3,19 +3,15 @@ import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { FC, useContext, useEffect, useState, useMemo } from "react";
 
-import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
-import { Button } from "@/components/button";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { SearchFilters } from "@/features/search/search-filters";
 import { SearchForm } from "@/features/search/search-form";
 import { SearchPageSelector } from "@/features/search/search-page-selector";
 import { SearchResults } from "@/features/search/search-results";
-import { SearchTips } from "@/features/search/search-tips";
 import SearchProvider, { SearchContext } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
-import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 
 import { createSearchProviderSettings } from "./search-page-provider-settings";
 
@@ -31,8 +27,6 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
   const { pathname } = useRouter() || {};
   const { t, lang } = useTranslation();
   const [query, setQuery] = useState("");
-  const [showFilter, setShowFilter] = useState(false);
-  const [showTip, setShowTip] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -99,25 +93,7 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
                   <Heading level={1} size="lg" className="mb-none">
                     {pageTitle}
                   </Heading>
-
-                  {searchType === "datasets" && (
-                    <Button
-                      aria-expanded={showTip}
-                      variant="plain"
-                      size="sm"
-                      icon={ChevronDownIcon}
-                      iconPosition="right"
-                      className={showTip ? "active" : " "}
-                      onClick={() => {
-                        clearCurrentScrollPos();
-                        setShowTip(!showTip);
-                      }}
-                      label={t("pages|search$search-tips")}
-                    />
-                  )}
                 </div>
-
-                {searchType === "datasets" && <SearchTips showTip={showTip} />}
 
                 <SearchForm
                   search={search}
@@ -129,11 +105,9 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
                 <SearchPageSelector query={query} />
 
                 <SearchFilters
-                  showFilter={showFilter}
                   searchMode={searchType}
                   search={search}
                   query={query}
-                  setShowFilter={setShowFilter}
                 />
               </Container>
 

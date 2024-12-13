@@ -1,55 +1,113 @@
-import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 import { FC } from "react";
 
 interface SearchTipsProps {
-  showTip: boolean;
+  pageType: "datasets" | "organisations";
 }
 
-export const SearchTips: FC<SearchTipsProps> = ({ showTip }) => {
-  const { t, lang } = useTranslation();
+export const SearchTips: FC<SearchTipsProps> = ({ pageType }) => {
+  const { t } = useTranslation();
+  if (pageType === "datasets") {
+    return (
+      <div>
+        <ul className="ml-lg list-disc space-y-xs">
+          <li>
+            <p>{t(`pages|search$search-${pageType}-tips-1`)}</p>
+          </li>
+          <li>
+            <p>{t(`pages|search$search-${pageType}-tips-2`)}</p>
+          </li>
+          <li>
+            <p>{t(`pages|search$search-${pageType}-tips-3`)}</p>
+          </li>
+          <li>
+            <p>{t(`pages|search$search-${pageType}-tips-4`)}</p>
+          </li>
+          <li>
+            <p>{t(`pages|search$search-${pageType}-tips-5`)}</p>
+          </li>
+        </ul>
+        <p className={`pb-lg pt-lg text-lg text-brown-600`}>
+          {t(`pages|search$search-tips-filter-head`)}
+        </p>
+        <ul className="ml-lg list-disc space-y-xs">
+          <li>
+            <p>
+              <strong>{t(`pages|search$search-${pageType}-filter-1.1`)}</strong>
+              {t(`pages|search$search-${pageType}-filter-1.2`)}
+            </p>
+          </li>
+          <li>
+            <p>
+              <strong>{t(`pages|search$search-${pageType}-filter-2.1`)}</strong>
+              {t(`pages|search$search-${pageType}-filter-2.2`)}
+            </p>
+          </li>
+          <li>
+            <p>
+              <strong>{t(`pages|search$search-${pageType}-filter-3.1`)}</strong>
+              {t(`pages|search$search-${pageType}-filter-3.2`)}
+            </p>
+          </li>
+          <li>
+            <p>
+              <strong>{t(`pages|search$search-${pageType}-filter-4.1`)}</strong>
+              {t(`pages|search$search-${pageType}-filter-4.2`)}
+            </p>
+          </li>
+          <li>
+            <p>
+              <strong>{t(`pages|search$search-${pageType}-filter-5.1`)}</strong>
+              {t(`pages|search$search-${pageType}-filter-5.2`)}
+            </p>
+          </li>
+          <li>
+            <p>
+              <strong>{t(`pages|search$search-${pageType}-filter-6.1`)}</strong>
+              {t(`pages|search$search-${pageType}-filter-6.2`)}
+            </p>
+          </li>
+          <li>
+            <p>
+              <strong>{t(`pages|search$search-${pageType}-filter-7.1`)}</strong>
+              {t(`pages|search$search-${pageType}-filter-7.2`)}
+            </p>
+          </li>
+          <li>
+            <p>
+              <strong>{t(`pages|search$search-${pageType}-filter-8.1`)}</strong>
+              {t(`pages|search$search-${pageType}-filter-8.2`)}
+            </p>
+          </li>
+          <li>
+            <p>
+              <strong>{t(`pages|search$search-${pageType}-filter-9.1`)}</strong>
+              {t(`pages|search$search-${pageType}-filter-9.2`)}
+            </p>
+          </li>
+          <li>
+            <p>
+              <strong>
+                {t(`pages|search$search-${pageType}-filter-10.1`)}
+              </strong>
+              {t(`pages|search$search-${pageType}-filter-10.2`)}
+            </p>
+          </li>
+        </ul>
+      </div>
+    );
+  }
 
   return (
-    <div className={showTip ? "block" : "hidden"}>
-      <div className="my-lg max-w-md bg-white p-lg">
-        <div className="mb-xs text-lg">
-          {t("pages|search$search-tips-search-head")}
-        </div>
-        <span>{t("pages|search$search-tips-search-txt")}</span>
-        <div className="my-xs text-lg">
-          {t("pages|search$search-tips-filter-head")}
-        </div>
-        <span>{t("pages|search$search-tips-filter-txt")}</span>
-        <div className="my-xs text-lg">
-          {t("pages|search$search-tips-searchfilter-head")}
-        </div>
-        <span>{t("pages|search$search-tips-searchfilter-txt")}</span>
-        <div className="my-xs text-lg">
-          {" "}
-          {t("pages|search$search-tips-sort-head")}{" "}
-        </div>
-        <span>
-          {t("pages|search$search-tips-sort-txt1")}
-          {t("pages|search$search-tips-sort-txt2")}
-          {t("pages|search$search-tips-sort-txt3")}
-          {t("pages|search$search-tips-sort-txt4")}
-          {t("pages|search$search-tips-sort-txt5")}
-        </span>
-        <div className="my-xs text-lg">
-          {t("pages|search$search-tips-license-head")}{" "}
-        </div>
-        <div>
-          {t("pages|search$search-tips-license-txt")}{" "}
-          <Link
-            href={`${t("routes|about-us$path")}`}
-            locale={lang}
-            className="text-md"
-          >
-            {t("pages|search$search-tips-license-link")}
-          </Link>
-          .
-        </div>
-      </div>
+    <div>
+      <ul className="ml-lg list-disc space-y-xs">
+        <li>
+          <p>
+            <strong>{t(`pages|search$search-${pageType}-filter-1.1`)}</strong>
+            {t(`pages|search$search-${pageType}-filter-1.2`)}
+          </p>
+        </li>
+      </ul>
     </div>
   );
 };
