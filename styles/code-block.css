@@ -1,0 +1,172 @@
+/* Code blocks styling */
+code[class*="language-"],
+pre[class*="language-"] {
+  @apply hyphens-none whitespace-pre break-normal bg-none text-left font-ubuntu text-md tracking-normal text-blackOpaque3;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+}
+
+pre[class*="language-"]::-moz-selection,
+pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection,
+code[class*="language-"] ::-moz-selection,
+pre[class*="language-"]::selection,
+pre[class*="language-"] ::selection,
+code[class*="language-"]::selection,
+code[class*="language-"] ::selection {
+  @apply bg-brown-400;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  @apply min-h-[5.125rem] overflow-auto p-lg pl-md pr-2xl;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+  @apply bg-white;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  @apply p-xs;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  @apply text-brown-500;
+}
+
+.token.punctuation {
+  @apply text-blackOpaque3;
+}
+
+.token.namespace {
+  @apply opacity-75;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  @apply text-blackOpaque3;
+}
+
+.token.selector,
+.token.boolean,
+.token.number,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  @apply text-pink-600;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  @apply text-brown-400;
+}
+
+.token.string {
+  @apply text-green-600;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  @apply text-red-400;
+}
+
+.token.function,
+.token.class-name {
+  @apply text-primary;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  @apply text-red-400;
+}
+
+.token.important,
+.token.bold {
+  @apply font-strong;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  @apply cursor-help;
+}
+
+pre[class*="language-"].line-numbers {
+  @apply relative pl-[3.75rem];
+  counter-reset: linenumber;
+}
+
+pre[class*="language-"].line-numbers > code,
+div.code-toolbar {
+  @apply relative;
+}
+
+.line-numbers .line-numbers-rows {
+  @apply pointer-events-none absolute -left-md top-none w-xl -translate-x-full border-r-2 border-r-orange-600 pr-sm;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.line-numbers-rows > span {
+  @apply block;
+  counter-increment: linenumber;
+}
+
+.line-numbers-rows > span:before {
+  @apply block text-right text-blackOpaque3;
+  content: counter(linenumber);
+}
+
+div.code-toolbar pre {
+  @apply focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-primary
+   group-focus-visible:outline-dashed group-focus-visible:outline-[3px] group-focus-visible:outline-offset-2 group-focus-visible:outline-primary;
+}
+
+div.code-toolbar > .toolbar {
+  @apply absolute right-lg top-lg z-20;
+}
+
+div.code-toolbar > .toolbar button {
+  @apply z-20 cursor-pointer bg-brown-600 p-sm hover:bg-primary focus-visible:outline-dashed focus-visible:outline-[3px] 
+  focus-visible:outline-blackOpaque3 group-focus-visible:outline-dashed group-focus-visible:outline-[3px] group-focus-visible:outline-blackOpaque3;
+}
+
+div.code-toolbar > .toolbar span {
+  @apply inline-block h-[1.5rem] w-[1.5rem] bg-brown-100 p-sm text-[0];
+}
+
+div.code-toolbar > .toolbar button[data-copy-state="copy"] > span {
+  -webkit-mask: url("../assets/icons/copy.svg") no-repeat 50% 50%;
+  mask: url("../assets/icons/copy.svg") no-repeat 50% 50%;
+}
+
+div.code-toolbar > .toolbar button[data-copy-state="copy-success"] > span {
+  -webkit-mask: url("../assets/icons/check-circle.svg") no-repeat 50% 50%;
+  mask: url("../assets/icons/check-circle.svg") no-repeat 50% 50%;
+}
+
+div.code-toolbar > .toolbar button[data-copy-state="copy-error"] > span {
+  -webkit-mask: url("../assets/icons/alert-error.svg") no-repeat 50% 50%;
+  mask: url("../assets/icons/alert-error.svg") no-repeat 50% 50%;
+}

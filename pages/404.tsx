@@ -1,12 +1,13 @@
-import { Heading } from "@/components/global/Typography/Heading";
-import { Preamble } from "@/components/global/Typography/Preamble";
-import { Container } from "@/components/layout/Container";
-import { SettingsContext } from "@/providers/SettingsProvider";
-import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
-import { FC, useContext, useEffect } from "react";
-import { linkBase } from "@/utilities";
 import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
+import { FC, useContext, useEffect } from "react";
+
+import { Container } from "@/components/layout/container";
+import { Heading } from "@/components/typography/heading";
+import { Preamble } from "@/components/typography/preamble";
+import { SettingsContext } from "@/providers/settings-provider";
+import { linkBase } from "@/utilities";
 
 const NotFound: FC = () => {
   const { t, lang } = useTranslation("pages");
@@ -14,11 +15,10 @@ const NotFound: FC = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    setBreadcrumb &&
-      setBreadcrumb({
-        name: t("notfoundpage$heading"),
-        crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-      });
+    setBreadcrumb?.({
+      name: t("notfoundpage$heading"),
+      crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+    });
   }, [pathname, setBreadcrumb]);
 
   return (

@@ -1,3 +1,4 @@
+import { ApolloProvider } from "@apollo/client";
 import Document, {
   DocumentContext,
   Head,
@@ -5,14 +6,16 @@ import Document, {
   Main,
   NextScript,
 } from "next/document";
-import { ApolloProvider } from "@apollo/client";
-import { client } from "../graphql/client";
-import { SettingsUtil } from "../env";
+
+import { LocalStoreProvider } from "@/providers/local-store-provider";
 import {
   SettingsProvider,
   defaultSettings,
-} from "@/providers/SettingsProvider";
-import { LocalStoreProvider } from "@/providers/LocalStoreProvider";
+} from "@/providers/settings-provider";
+
+import { SettingsUtil } from "../env";
+import { client } from "../graphql/client";
+
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage;

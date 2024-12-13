@@ -1,18 +1,18 @@
-import { EnvSettings } from "@/env/EnvSettings";
 import { Translate } from "next-translate";
-import { specificationBlocks } from "./specification";
-import { conceptBlocks } from "./concept";
-import { terminologyBlocks } from "./terminology";
-import { datasetBlocks } from "./datasets";
-import { dataserviceBlocks } from "./dataservice";
+
+import { EnvSettings } from "@/env/env-settings";
+
 import { apiexploreBlocks } from "./apiexplore";
+import { conceptBlocks } from "./concept";
+import { dataserviceBlocks } from "./dataservice";
+import { datasetBlocks } from "./datasets";
+import { specificationBlocks } from "./specification";
+import { terminologyBlocks } from "./terminology";
 
 interface CreateBlocksConfigProps {
   entrystoreBase: string;
   env: EnvSettings;
   lang: string;
-  curi?: string;
-  uri?: string;
   iconSize?: number;
   t: Translate;
   pageType: string;
@@ -24,8 +24,6 @@ export const createBlocksConfig = ({
   entrystoreBase,
   env,
   lang,
-  curi,
-  uri,
   iconSize,
   context,
   esId,
@@ -46,22 +44,6 @@ export const createBlocksConfig = ({
       return [
         {
           ...baseConfig,
-          routes: [
-            {
-              regex: new RegExp("(/*/externalspecification/)(.+)/"),
-              uri: `${decodeURIComponent(uri as string)}`,
-              page_language: `${lang}`,
-            },
-            {
-              regex: new RegExp("(/*/specifications/)(.+)"),
-              uri: `https://${
-                env.ENTRYSCAPE_SPECS_PATH.startsWith("sandbox")
-                  ? "www-sandbox.dataportal.se"
-                  : "dataportal.se"
-              }/specifications/${curi}`,
-              page_language: `${lang}`,
-            },
-          ],
           clicks: {
             specification: "details.html",
             specifications: "index.html",
@@ -85,7 +67,7 @@ export const createBlocksConfig = ({
               "dcat",
               `https://${
                 env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
-                  ? "sandbox.editera.dataportal.se"
+                  ? "sandbox.admin.dataportal.se"
                   : "editera.dataportal.se"
               }/theme/templates/adms.json`,
               `https://${
@@ -102,22 +84,6 @@ export const createBlocksConfig = ({
       return [
         {
           ...baseConfig,
-          routes: [
-            {
-              regex: new RegExp("(/*/externalconcept)(.+)"),
-              uri: decodeURIComponent(uri as string),
-              page_language: lang,
-            },
-            {
-              regex: new RegExp("(/*/concepts/)(.+)"),
-              uri: `https://${
-                env.ENTRYSCAPE_TERMS_PATH.startsWith("sandbox")
-                  ? "www-sandbox.dataportal.se"
-                  : "dataportal.se"
-              }/concepts/${curi}`,
-              page_language: lang,
-            },
-          ],
           clicks: {
             concept: "details",
             concepts: "index",
@@ -144,22 +110,6 @@ export const createBlocksConfig = ({
       return [
         {
           ...baseConfig,
-          routes: [
-            {
-              regex: new RegExp("(/*/externalterminology)(.+)"),
-              uri: decodeURIComponent(uri as string),
-              page_language: lang,
-            },
-            {
-              regex: new RegExp("(/*/terminology/)(.+)"),
-              uri: `https://${
-                env.ENTRYSCAPE_TERMS_PATH.startsWith("sandbox")
-                  ? "www-sandbox.dataportal.se"
-                  : "dataportal.se"
-              }/concepts/${curi}`,
-              page_language: lang,
-            },
-          ],
           clicks: {
             concept: "details",
             concepts: "index",

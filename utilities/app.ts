@@ -1,9 +1,11 @@
+import { Translate } from "next-translate";
+
 import {
   GoodExampleDataFragment,
   ImageFragment,
   NewsItemDataFragment,
+  SeoDataFragment,
 } from "@/graphql/__generated__/operations";
-import { SeoDataFragment } from "@/graphql/__generated__/operations";
 import {
   FormResponse,
   GoodExampleListResponse,
@@ -14,7 +16,7 @@ import {
   NewsItemResponse,
   RootAggregateResponse,
   ToolListResponse,
-} from "@/utilities/queryHelpers";
+} from "@/utilities/query-helpers";
 
 export type DataportalPageProps =
   | MultiContainerResponse
@@ -47,7 +49,7 @@ type ResolvedPage = {
 export const resolvePage = (
   props: DataportalPageProps,
   lang: string,
-  t: any,
+  t: Translate,
 ): ResolvedPage => {
   if (props.type === "RootAggregate" && lang === "en") {
     return {

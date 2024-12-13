@@ -1,26 +1,29 @@
-import { getSimplifiedLocalizedValue } from "@/utilities/entrystoreUtil";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Entry } from "@entryscape/entrystore-js";
 import { Translate } from "next-translate";
+
+import { getLocalizedValue } from "@/utilities/entrystore-utils";
 
 export const terminologyBlocks = (t: Translate, lang: string) => [
   {
     block: "conceptLink",
     run: function (node: any, a2: any, a3: any, entry: Entry) {
       if (node && node.firstElementChild && entry) {
-        var el = document.createElement("a");
+        const el = document.createElement("a");
 
         node.setAttribute("class", "entryscape");
 
         node.firstElementChild.appendChild(el);
 
-        var ruri = entry.getResourceURI();
-        var label = getSimplifiedLocalizedValue(
+        const contextId = entry.getContext().getId();
+        const id = entry.getId();
+        const label = getLocalizedValue(
           entry.getAllMetadata(),
           "skos:prefLabel",
         );
         el.innerHTML = label;
-        var dpUri = getDataportalUri(ruri, lang);
-        el.setAttribute("href", dpUri);
+        const uri = `/${lang}/concepts/${contextId}_${id}`;
+        el.setAttribute("href", uri);
       }
     },
     loadEntry: true,
@@ -43,28 +46,3 @@ export const terminologyBlocks = (t: Translate, lang: string) => [
     click: "",
   },
 ];
-
-function getDataportalUri(resourceUri: string, lang: string) {
-  if (!resourceUri || !window?.location?.pathname) {
-    return resourceUri;
-  }
-  const currentPath = window.location.pathname;
-  const encodedResourceUri = encodeURIComponent(resourceUri);
-
-  if (currentPath.includes("/externalterminology"))
-    return `/${lang}/externalconcept?resource=${encodedResourceUri}`;
-
-  if (currentPath.includes("/terminology")) {
-    let entryPath = "";
-    if (resourceUri.includes("https://www-sandbox.dataportal.se/concepts"))
-      entryPath = resourceUri.replace(
-        "https://www-sandbox.dataportal.se/concepts",
-        "",
-      );
-    else entryPath = resourceUri.replace("https://dataportal.se/concepts", "");
-
-    return `/${lang}/concepts${entryPath}`;
-  }
-
-  return resourceUri;
-}

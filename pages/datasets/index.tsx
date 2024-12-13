@@ -1,8 +1,9 @@
 import { NextPage } from "next";
-import { SearchPageEntryScape } from "@/components/content/Search/SearchPage/SearchPageEntryScape";
+
+import { SearchPageEntryscape } from "@/features/search/search-page/search-page-entryscape";
 
 const DataSetPage: NextPage = () => (
-  <SearchPageEntryScape searchType="datasets" />
+  <SearchPageEntryscape searchType="datasets" />
 );
 
 export default DataSetPage;
