@@ -214,14 +214,14 @@ export class EntrystoreService {
             case ESType.literal:
             case ESType.literal_s:
               // Special case for special filters with search checkbox
-              if (fvalue[0].specialSearch) {
+              if (fvalue[0].customSearch) {
                 break;
               }
               // Special case for special filters with regular checkbox
-              if (fvalue[0].specialFilter) {
+              if (fvalue[0].customFilter) {
                 esQuery.literalProperty(
                   key,
-                  fvalue[0].specialFilter,
+                  fvalue[0].customFilter,
                   null,
                   "string",
                   fvalue[0].related,
@@ -239,14 +239,14 @@ export class EntrystoreService {
             case ESType.uri:
             case ESType.wildcard:
               // Special case for special filters with search checkbox
-              if (fvalue[0].specialSearch) {
+              if (fvalue[0].customSearch) {
                 break;
               }
               // Special case for special filters with regular checkbox
-              if (fvalue[0].specialFilter) {
+              if (fvalue[0].customFilter) {
                 esQuery.uriProperty(
                   key,
-                  fvalue[0].specialFilter,
+                  fvalue[0].customFilter,
                   null,
                   fvalue[0].related,
                 );
@@ -445,8 +445,8 @@ export class EntrystoreService {
           count: f.valueCount,
           show: 25,
           group: facetSpec.group,
-          specialFilter: facetSpec.specialFilter,
-          specialSearch: facetSpec.specialSearch,
+          customFilter: facetSpec.customFilter,
+          customSearch: facetSpec.customSearch,
           facetValues: f.values
             .filter((value: ESFacetFieldValue) => {
               if (!value.name || value.name.trim() === "") return false;
@@ -487,17 +487,17 @@ export class EntrystoreService {
                 facetValueString: `${f.predicate}||${value.name}||${
                   facetSpec.related || false
                 }||${f.type}||${this.t(f.predicate)}||${displayName}||${
-                  facetSpec.specialFilter
+                  facetSpec.customFilter
                 }||${
-                  facetSpec.specialSearch
-                    ? JSON.stringify(facetSpec.specialSearch)
+                  facetSpec.customSearch
+                    ? JSON.stringify(facetSpec.customSearch)
                     : undefined
                 }`,
                 related: facetSpec.related || false,
                 resource: value.name,
                 title: displayName,
-                specialFilter: facetSpec.specialFilter,
-                specialSearch: facetSpec.specialSearch,
+                customFilter: facetSpec.customFilter,
+                customSearch: facetSpec.customSearch,
               };
             }),
         };
@@ -527,8 +527,8 @@ export class EntrystoreService {
           count: f.valueCount,
           show: 25,
           group: facetSpec.group,
-          specialFilter: facetSpec.specialFilter,
-          specialSearch: facetSpec.specialSearch,
+          customFilter: facetSpec.customFilter,
+          customSearch: facetSpec.customSearch,
           facetValues: f.values
             .filter((value: ESFacetFieldValue) => {
               if (!value.name || value.name.trim() === "") return false;
@@ -569,17 +569,17 @@ export class EntrystoreService {
                 facetValueString: `${f.predicate}||${value.name}||${
                   facetSpec.related || false
                 }||${f.type}||${this.t(f.predicate)}||${displayName}||${
-                  facetSpec.specialFilter || null
+                  facetSpec.customFilter || null
                 }||${
-                  facetSpec.specialSearch
-                    ? JSON.stringify(facetSpec.specialSearch)
+                  facetSpec.customSearch
+                    ? JSON.stringify(facetSpec.customSearch)
                     : undefined
                 }`,
                 related: facetSpec.related || false,
                 resource: value.name,
                 title: displayName,
-                specialFilter: facetSpec.specialFilter,
-                specialSearch: facetSpec.specialSearch,
+                customFilter: facetSpec.customFilter,
+                customSearch: facetSpec.customSearch,
               };
             }),
         };
@@ -663,6 +663,35 @@ export class EntrystoreService {
         values["format_literal"] = metadata
           .find(null, "http://purl.org/dc/terms/format")
           .map((f: any) => this.t(f.getValue()));
+      }
+
+      // Adding custom facets with showInSearchResult true to format_literal if they are present in the metadata
+      const customFacets = this.facetSpecification?.facets?.filter(
+        (spec) => spec.showInSearchResult,
+      );
+
+      if (customFacets && customFacets.length > 0) {
+        for (const facet of customFacets) {
+          const hasResource = metadata
+            .find(entry.getResourceURI(), facet.resource)
+            .some((f: any) =>
+              f
+                .getValue()
+                .startsWith(
+                  facet?.customFilter?.endsWith("*")
+                    ? facet?.customFilter?.slice(0, -1)
+                    : facet?.customFilter,
+                ),
+            );
+
+          if (hasResource) {
+            // Add the translated resource URI to format_literal array
+            values["format_literal"] = [
+              ...(values["format_literal"] || []),
+              this.t(`resources|${facet.resource}`),
+            ];
+          }
+        }
       }
 
       const inSchemeUris = metadata.findFirstValue(

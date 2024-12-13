@@ -275,7 +275,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                         )
                       : value?.facetValues.slice(0, show);
 
-                    if (!value.specialFilter && !value.specialSearch) {
+                    if (!value.customFilter && !value.customSearch) {
                       return (
                         <li
                           key={`${value.title}-${idx}`}
@@ -385,28 +385,27 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                           id={value.predicate}
                           name={value.title}
                           checked={
-                            value.specialFilter
+                            value.customFilter
                               ? search.facetSelected(
                                   key,
-                                  value?.specialFilter || "",
+                                  value?.customFilter || "",
                                 )
-                              : value.specialSearch?.length ===
+                              : value.customSearch?.length ===
                                   search.request.esRdfTypes?.length &&
-                                value.specialSearch?.every(
+                                value.customSearch?.every(
                                   (type) =>
                                     search.request.esRdfTypes?.includes(type),
                                 )
                           }
                           onChange={() => {
-                            if (value.specialSearch) {
+                            if (value.customSearch) {
                               clearCurrentScrollPos();
                               if (
-                                value.specialSearch !==
-                                search.request.esRdfTypes
+                                value.customSearch !== search.request.esRdfTypes
                               ) {
                                 search
                                   .set({
-                                    esRdfTypes: value.specialSearch,
+                                    esRdfTypes: value.customSearch,
                                     query,
                                   })
                                   .then(() => search.doSearch());

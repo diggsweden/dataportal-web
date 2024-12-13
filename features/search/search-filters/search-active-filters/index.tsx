@@ -27,25 +27,25 @@ export function SearchActiveFilters({
   const { iconSize } = useContext(SettingsContext);
 
   // Create an array of active special search filters
-  const activeSpecialSearchFilters = Object.entries(search.allFacets || {})
+  const activecustomSearchFilters = Object.entries(search.allFacets || {})
     .filter(
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       ([_, facet]) =>
-        facet.specialSearch &&
-        facet.specialSearch.length === search.request.esRdfTypes?.length &&
-        facet.specialSearch.every(
+        facet.customSearch &&
+        facet.customSearch.length === search.request.esRdfTypes?.length &&
+        facet.customSearch.every(
           (type) => search.request.esRdfTypes?.includes(type),
         ),
     )
     .map(([key, facet]) => ({
       facet: key,
       title: facet.title,
-      specialSearch: facet.specialSearch,
+      customSearch: facet.customSearch,
     }));
 
   const hasActiveFilters =
     (search.request.facetValues && search.request.facetValues.length > 0) ||
-    activeSpecialSearchFilters.length > 0;
+    activecustomSearchFilters.length > 0;
 
   if (!hasActiveFilters) {
     return null;
@@ -59,7 +59,7 @@ export function SearchActiveFilters({
       <div className="flex flex-row flex-wrap gap-md md:items-center">
         {search.request.facetValues?.map(
           (facetValue: SearchFacetValue, index: number) => {
-            if (!facetValue.specialFilter && !facetValue.specialSearch) {
+            if (!facetValue.customFilter && !facetValue.customSearch) {
               return (
                 <Button
                   variant="filter"
@@ -80,7 +80,7 @@ export function SearchActiveFilters({
                   }}
                 />
               );
-            } else if (facetValue.specialFilter) {
+            } else if (facetValue.customFilter) {
               return (
                 <Button
                   variant="filter"
@@ -105,7 +105,7 @@ export function SearchActiveFilters({
           },
         )}
 
-        {activeSpecialSearchFilters.map((filter, index) => (
+        {activecustomSearchFilters.map((filter, index) => (
           <Button
             variant="filter"
             size="xs"

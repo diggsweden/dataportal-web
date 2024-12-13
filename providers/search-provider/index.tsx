@@ -454,7 +454,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     return facetValues.some(
       (facetValue) =>
         facetValue.facet === key &&
-        (facetValue.resource === value || facetValue.specialFilter === value),
+        (facetValue.resource === value || facetValue.customFilter === value),
     );
   };
 
@@ -572,8 +572,8 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
         v.facet == facetValue.facet &&
         v.resource == facetValue.resource &&
         v.related == facetValue.related &&
-        v.specialFilter == facetValue.specialFilter &&
-        v.specialSearch == facetValue.specialSearch,
+        v.customFilter == facetValue.customFilter &&
+        v.customSearch == facetValue.customSearch,
     );
 
     let newFacetValues: SearchFacetValue[];
@@ -699,9 +699,9 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
           related: facetstring[2] === "true",
           resource: facetstring[1],
           title: facetstring[5],
-          specialFilter:
+          customFilter:
             facetstring[6] !== "undefined" ? facetstring[6] : undefined,
-          specialSearch:
+          customSearch:
             facetstring[7] && facetstring[7] !== "undefined"
               ? JSON.parse(facetstring[7])
               : undefined,

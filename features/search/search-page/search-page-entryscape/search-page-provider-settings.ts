@@ -13,8 +13,9 @@ interface FacetConfig {
   dcatId?: string;
   related?: boolean;
   maschineName?: string;
-  specialFilter?: string; // Special case for special filters with checkbox
-  specialSearch?: ESRdfType[]; // Special case for special filters with search
+  showInSearchResult?: boolean;
+  customFilter?: string; // Special case for special filters with checkbox
+  customSearch?: ESRdfType[]; // Special case for special filters with search
 }
 
 interface HitSpecification {
@@ -137,7 +138,8 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             dcatFilterEnabled: false,
             indexOrder: 6,
             group: "type",
-            specialFilter: "http://data.europa.eu/eli/reg_impl/2023/138/oj",
+            customFilter: "http://data.europa.eu/eli/reg_impl/2023/138/oj",
+            showInSearchResult: true,
           },
           {
             resource: "http://purl.org/dc/terms/subject",
@@ -145,8 +147,9 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             dcatProperty: "dcterms:subject",
             indexOrder: 7,
             group: "type",
-            specialFilter:
+            customFilter:
               "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/*",
+            showInSearchResult: true,
           },
           {
             resource: "http://purl.org/dc/terms/conformsTo",
@@ -156,7 +159,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             dcatFilterEnabled: false,
             indexOrder: 8,
             group: "type",
-            specialFilter: "*",
+            customFilter: "*",
           },
           {
             resource: "http://www.w3.org/ns/dcat#DataService",
@@ -166,7 +169,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             dcatFilterEnabled: false,
             indexOrder: 8,
             group: "distribution",
-            specialSearch: [
+            customSearch: [
               ESRdfType.data_service,
               ESRdfType.served_by_data_service,
             ],
@@ -179,7 +182,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             dcatFilterEnabled: false,
             indexOrder: 9,
             group: "distribution",
-            specialSearch: [ESRdfType.dataset_series],
+            customSearch: [ESRdfType.dataset_series],
           },
         ],
       },
@@ -315,7 +318,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             type: ESType.uri,
             indexOrder: 2,
             group: "default",
-            specialFilter:
+            customFilter:
               "https://dataportal.se/concepts/orgAspects/feeFinanzing",
           },
         ],
