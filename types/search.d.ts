@@ -42,6 +42,9 @@ export interface FacetSpecificationItem {
   dcatId?: string;
   dcatType?: string;
   dcatFilterEnabled?: boolean;
+  customFilter?: string;
+  customSearch?: ESRdfType[];
+  showInSearchResult?: boolean;
 }
 
 export interface SearchResult {
@@ -75,6 +78,9 @@ interface SearchFacet {
   count: number;
   group: string;
   indexOrder: number;
+  resource?: string;
+  customFilter?: string;
+  customSearch?: ESRdfType[];
 }
 
 export interface SearchFacetValue {
@@ -85,6 +91,8 @@ export interface SearchFacetValue {
   count: number;
   facetValueString: string;
   related: boolean;
+  customFilter?: string;
+  customSearch?: ESRdfType[];
 }
 
 export interface SearchRequest {

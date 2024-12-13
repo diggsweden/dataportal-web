@@ -15,6 +15,7 @@ import { SearchTips } from "@/features/search/search-tips";
 import SearchProvider, { SearchContext } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
+import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 
 import { createSearchProviderSettings } from "./search-page-provider-settings";
 
@@ -25,18 +26,12 @@ interface SearchProps {
 
 export const SearchPageEntryscape: FC<SearchProps> = ({ searchType }) => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
-  const { pathname, query: routerQuery } = useRouter() || {};
+  const { pathname } = useRouter() || {};
   const { t, lang } = useTranslation();
   const [query, setQuery] = useState("");
   const [showFilter, setShowFilter] = useState(false);
   const [showTip, setShowTip] = useState(false);
   const router = useRouter();
-
-  const clearCurrentScrollPos = () => {
-    if (typeof localStorage != "undefined") {
-      localStorage.setItem(`ScrollposY_${routerQuery}`, "0");
-    }
-  };
 
   useEffect(() => {
     if (typeof window === "undefined") return;
