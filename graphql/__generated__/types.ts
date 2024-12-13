@@ -58,3 +58,7 @@ export interface Dataportal_QuerySearchArgs {
   offset?: InputMaybe<Scalars['Int']['input']>;
   query?: InputMaybe<Scalars['String']['input']>;
 }
+
+export interface Dataportal_QueryStartPageArgs {
+  locale?: InputMaybe<Scalars['String']['input']>;
+}
