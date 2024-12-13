@@ -3,7 +3,6 @@ import { ParsedUrlQuery } from "querystring";
 import { FC } from "react";
 
 import { ContainerPage } from "@/features/pages/container-page";
-import { ListPage } from "@/features/pages/list-page";
 import { PublicationFull } from "@/features/publication/publication-full";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {

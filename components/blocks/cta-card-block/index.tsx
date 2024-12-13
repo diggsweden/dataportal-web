@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
+import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import { ButtonLink } from "@/components/button";
 import { ContentBox } from "@/components/content-box";

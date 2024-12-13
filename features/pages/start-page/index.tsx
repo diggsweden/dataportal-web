@@ -4,8 +4,6 @@ import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import { FC } from "react";
 
-import ArrowRightIcon from "@/assets/icons/arrowRight.svg";
-import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import { BlockList } from "@/components/blocks/block-list";
 import { ButtonLink } from "@/components/button";
 import { ContentBox } from "@/components/content-box";
@@ -13,7 +11,6 @@ import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
 import { StartPageDataFragment } from "@/graphql/__generated__/operations";
-import { isExternalLink } from "@/utilities";
 import { dataCategories } from "@/utilities/data-categories";
 
 const DynamicStatisticGraph = dynamic(
@@ -33,15 +30,6 @@ const DynamicStatisticNumbers = dynamic(
 const DynamicStatistic = dynamic(() => import("@/features/statistic"), {
   ssr: false,
 });
-
-const contentBoxLinks = [
-  { label: "Bidra till Sveriges dataportal", href: "/om-oss" },
-  { label: "Hitta datasamverkan", href: "/datasamverkan" },
-  {
-    label: "Delta i communityt",
-    href: "https://community.dataportal.se/",
-  },
-];
 
 export const StartPage: FC<StartPageDataFragment> = (props) => {
   const { heading, preamble, image, blocks } = props;
