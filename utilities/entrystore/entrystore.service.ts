@@ -449,8 +449,25 @@ export class EntrystoreService {
           customSearch: facetSpec.customSearch,
           facetValues: f.values
             .filter((value: ESFacetFieldValue) => {
+              if (
+                facetSpec.customProperties &&
+                facetSpec.customProperties.length > 0
+              ) {
+                return facetSpec.customProperties.some((property) =>
+                  value.name.startsWith(property),
+                );
+              }
               if (!value.name || value.name.trim() === "") return false;
               if (!facetSpec?.dcatFilterEnabled) return true;
+
+              if (
+                facetSpec.resource === "http://purl.org/dc/terms/subject" &&
+                value.name.startsWith(
+                  "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/",
+                )
+              ) {
+                return true;
+              }
 
               const choices: Choice[] = getTemplateChoices(
                 dcat,
@@ -680,7 +697,7 @@ export class EntrystoreService {
                 .startsWith(
                   facet?.customFilter?.endsWith("*")
                     ? facet?.customFilter?.slice(0, -1)
-                    : facet?.customFilter,
+                    : facet?.customFilter || facet?.customProperties?.[0],
                 ),
             );
 

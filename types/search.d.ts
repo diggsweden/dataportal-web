@@ -44,6 +44,7 @@ export interface FacetSpecificationItem {
   dcatFilterEnabled?: boolean;
   customFilter?: string;
   customSearch?: ESRdfType[];
+  customProperties?: string[];
   showInSearchResult?: boolean;
 }
 
@@ -92,6 +93,7 @@ export interface SearchFacetValue {
   facetValueString: string;
   related: boolean;
   customFilter?: string;
+  customProperties?: string[];
   customSearch?: ESRdfType[];
 }
 
