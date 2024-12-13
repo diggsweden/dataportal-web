@@ -18,19 +18,20 @@ import { linkBase } from "@/utilities";
 
 import { createSearchProviderSettings } from "./search-page-provider-settings";
 
-interface SearchProps {
+interface SearchPageEntryscapeProps {
   activeLink?: string;
   searchType: "datasets" | "concepts" | "specifications" | "organisations";
 }
 
-export const SearchPageEntryscape: FC<SearchProps> = ({ searchType }) => {
+export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
+  searchType,
+}) => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
   const { pathname, query: routerQuery } = useRouter() || {};
   const { t, lang } = useTranslation();
   const [query, setQuery] = useState("");
   const [showFilter, setShowFilter] = useState(false);
   const [showTip, setShowTip] = useState(false);
-  const router = useRouter();
 
   const clearCurrentScrollPos = () => {
     if (typeof localStorage != "undefined") {
@@ -85,14 +86,16 @@ export const SearchPageEntryscape: FC<SearchProps> = ({ searchType }) => {
         <meta
           property="og:title"
           content={`${pageTitle} - Sveriges dataportal`}
+          key="og:title"
         />
         <meta
           name="twitter:title"
           content={`${pageTitle} - Sveriges dataportal`}
+          key="twitter:title"
         />
       </Head>
 
-      <SearchProvider router={router} {...searchProviderSettings[searchType]}>
+      <SearchProvider {...searchProviderSettings[searchType]}>
         <SearchContext.Consumer>
           {(search) => (
             <>

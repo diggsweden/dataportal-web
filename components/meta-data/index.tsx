@@ -42,21 +42,33 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
         content={
           title ? `${title} - Sveriges Dataportal` : "Sveriges Dataportal"
         }
+        key="og:title"
       />
       <meta
         name="twitter:title"
         content={
           title ? `${title} - Sveriges Dataportal` : "Sveriges Dataportal"
         }
+        key="twitter:title"
       />
-      <meta name="description" content={description || defaultDescription} />
-      <meta name="og:description" content={description || defaultDescription} />
+      <meta
+        name="description"
+        content={description || defaultDescription}
+        key="description"
+      />
+      <meta
+        name="og:description"
+        content={description || defaultDescription}
+        key="og:description"
+      />
       <meta
         name="twitter:description"
         content={description || defaultDescription}
+        key="twitter:description"
       />
-      <meta property="og:image" content={imageUrl} />
-      <meta name="twitter:image" content={imageUrl} />
+      <meta property="og:image" content={imageUrl} key="og:image" />
+      <meta name="twitter:image" content={imageUrl} key="twitter:image" />
+
       <link rel="canonical" href={`${env.CANONICAL_URL}${pathname || ""}`} />
       <meta
         property="og:url"
@@ -65,16 +77,23 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
       <meta
         name="twitter:url"
         content={`${env.CANONICAL_URL}${pathname || ""}`}
+        key="twitter:url"
       />
+
       <meta
         name="robots"
         content={`${robotsFollow && allowSEO ? "follow" : "nofollow"}, ${
           robotsIndex && allowSEO ? "index" : "noindex"
         }`}
       />
-      <meta name="og:site_name" content={defaultSettings.siteName} />
-      <meta name="language" content={locale} />
-      <meta name="og:type" content="website" />
+      <meta
+        name="og:site_name"
+        content={defaultSettings.siteName}
+        key="og:site_name"
+      />
+      <meta name="language" content={locale} key="language" />
+      <meta name="og:type" content="website" key="og:type" />
+
       {/* PWA settings */}
       <link rel="icon" href="/favicon.ico" />
       <link rel="manifest" href="/manifest.json" />
@@ -85,6 +104,7 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
         name="google-site-verification"
         content="w0YYxJ7mqlvbxEYUahNuFqQEgViod8_jgBykWc3TYzE"
       />
+
       {/* Matomo Tag Manager */}
       {activateMatomo && (
         <script

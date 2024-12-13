@@ -3,7 +3,7 @@ import reactenv from "@beam-australia/react-env";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
+import router, { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useState } from "react";
 
@@ -37,7 +37,7 @@ import { DataportalPageProps, linkBase, resolvePage } from "@/utilities";
 
 import "@/styles/main.css";
 
-const GetCookiesAccepted = () => {
+const getCookiesAccepted = () => {
   try {
     const store: LocalStore = JSON.parse(localStorage.getItem("digg-store")!);
     return store ? store.cookieSettings?.analytic.accepted == true : false;
@@ -45,6 +45,13 @@ const GetCookiesAccepted = () => {
     return false;
   }
 };
+
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    _paq: any[];
+  }
+}
 
 interface DataportalenProps extends AppProps {
   nonce: string;
@@ -99,6 +106,26 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     }
   }, []);
 
+  // Matomo tracking page view
+  useEffect(() => {
+    if (!matomoActivated) return;
+
+    const matomoInstance = window._paq || [];
+
+    // Track initial page view
+    if (matomoInstance) {
+      matomoInstance.push(["setCustomUrl", window.location.pathname]);
+      matomoInstance.push(["trackPageView"]);
+    }
+
+    router.events.on("routeChangeComplete", () => {
+      if (matomoInstance) {
+        matomoInstance.push(["setCustomUrl", window.location.pathname]);
+        matomoInstance.push(["trackPageView"]);
+      }
+    });
+  }, [router.events]);
+
   let searchProps = null;
 
   if (pathname === "/" || pathname === `/${t("routes|search-api$path")}`) {
@@ -134,7 +161,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
       >
         <LocalStoreProvider>
           <TrackingProvider
-            initalActivation={GetCookiesAccepted() && matomoActivated}
+            initalActivation={getCookiesAccepted() && matomoActivated}
           >
             <MetaData seo={seo} />
             <div id="scriptsPlaceholder" />
@@ -186,9 +213,6 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   id="main"
                   className={`mt-lg min-h-[calc(100vh-46.5rem)] pb-lg md:mt-xl md:pb-xl lg:min-h-[calc(100vh-38.25rem)]`}
                 >
-                  {/*{(pageProps as DataportalPageProps).type === "MultiContainer" ||*/}
-                  {/*  ((pageProps as DataportalPageProps).type ===*/}
-                  {/*    "Publication" && <div />)}*/}
                   <Component {...pageProps} />
                 </main>
               </div>

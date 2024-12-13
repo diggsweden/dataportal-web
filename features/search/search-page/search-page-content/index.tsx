@@ -166,10 +166,12 @@ export const SearchPageContent: FC<SearchProps> = () => {
         <meta
           property="og:title"
           content={`${t("common|search")} - Sveriges dataportal`}
+          key="og:title"
         />
         <meta
           name="twitter:title"
           content={`${t("common|search")} - Sveriges dataportal`}
+          key="twitter:title"
         />
       </Head>
       <Container>
@@ -231,6 +233,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
                         onClick={() => {
                           saveCurrentScrollPos();
                         }}
+                        data-tracking-name="search-hit"
                         className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
                       >
                         <Heading

@@ -114,7 +114,7 @@ export const resolvePage = (
         heading: props.heading,
       };
     default:
-      return {};
+      return { seo: (props as ResolvedPage).seo };
   }
 };
 
