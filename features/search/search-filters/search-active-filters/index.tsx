@@ -86,9 +86,11 @@ export function SearchActiveFilters({
                   variant="filter"
                   size="xs"
                   key={index}
-                  label={t(`resources|${facetValue.facet}`)}
+                  label={t(
+                    `resources|${facetValue.customLabel || facetValue.facet}`,
+                  )}
                   aria-label={`${t("common|clear-filters")} ${t(
-                    `resources|${facetValue.facet}`,
+                    `resources|${facetValue.customLabel || facetValue.facet}`,
                   )}`}
                   icon={CrossIcon}
                   iconPosition="right"

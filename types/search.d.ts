@@ -35,6 +35,7 @@ export interface FacetSpecification {
 export interface FacetSpecificationItem {
   group: string;
   resource: string;
+  customLabel?: string;
   indexOrder: number;
   type: ESType;
   related?: boolean;
@@ -81,6 +82,7 @@ interface SearchFacet {
   indexOrder: number;
   resource?: string;
   customFilter?: string;
+  customLabel?: string;
   customSearch?: ESRdfType[];
 }
 
@@ -93,6 +95,7 @@ export interface SearchFacetValue {
   facetValueString: string;
   related: boolean;
   customFilter?: string;
+  customLabel?: string;
   customProperties?: string[];
   customSearch?: ESRdfType[];
 }

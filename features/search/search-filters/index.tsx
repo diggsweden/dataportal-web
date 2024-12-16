@@ -388,7 +388,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                             value.customFilter
                               ? search.facetSelected(
                                   key,
-                                  value?.customFilter || "",
+                                 value?.customLabel || value?.customFilter || "" ,
                                 )
                               : value.customSearch?.length ===
                                   search.request.esRdfTypes?.length &&
