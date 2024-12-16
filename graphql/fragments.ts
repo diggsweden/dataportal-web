@@ -136,6 +136,26 @@ export const NEWS_ITEM_FRAGMENT = gql`
   ${MODULE_LIST_DATA_FRAGMENT}
 `;
 
+export const START_PAGE_FRAGMENT = gql`
+  fragment StartPageData on dataportal_Digg_IStart_Page {
+    id
+    locale
+    heading
+    preamble
+    image {
+      ...MediaType
+    }
+    updatedAt
+    createdAt
+    blocks {
+      ...BlockData
+    }
+    seo {
+      ...SeoData
+    }
+  }
+`;
+
 export const TOOL_FRAGMENT = gql`
   fragment ToolData on dataportal_Digg_ITool {
     heading
@@ -320,6 +340,76 @@ export const FORM_BLOCK_FRAGMENT = gql`
     }
   }
 `;
+
+export const NEWS_BLOCK_ITEM_FRAGMENT = gql`
+  fragment NewsBlockItem on dataportal_Digg_NewsItem_Preview {
+    heading
+    publishedAt
+    slug
+    keywords {
+      value
+      id
+    }
+    image {
+      ...Image
+    }
+  }
+  ${IMAGE_FRAGMENT}
+`;
+
+export const NEWS_BLOCK_FRAGMENT = gql`
+  fragment NewsBlock on dataportal_Digg_NewsBlock {
+    id
+    heading
+    items {
+      ... on dataportal_Digg_NewsItem_Preview {
+        ...NewsBlockItem
+      }
+    }
+  }
+  ${NEWS_BLOCK_ITEM_FRAGMENT}
+`;
+
+export const GOOD_EXAMPLE_BLOCK_ITEM_FRAGMENT = gql`
+  fragment GoodExampleBlockItem on dataportal_Digg_GoodExample_Preview {
+    heading
+    publishedAt
+    slug
+    keywords {
+      value
+      id
+    }
+    image {
+      ...Image
+    }
+  }
+  ${IMAGE_FRAGMENT}
+`;
+
+export const GOOD_EXAMPLE_BLOCK_FRAGMENT = gql`
+  fragment GoodExampleBlock on dataportal_Digg_GoodExampleBlock {
+    id
+    heading
+    items {
+      ... on dataportal_Digg_GoodExample_Preview {
+        ...GoodExampleBlockItem
+      }
+    }
+  }
+  ${GOOD_EXAMPLE_BLOCK_ITEM_FRAGMENT}
+`;
+
+export const CTA_CARD_BLOCK_FRAGMENT = gql`
+  fragment CtaCardBlock on dataportal_Digg_CTACardBlock {
+    heading
+    description
+    ctaLinks {
+      title
+      link
+    }
+  }
+`;
+
 /* #endregion */
 
 /* #region Collections */
@@ -382,6 +472,18 @@ export const BLOCK_FRAGMENT = gql`
     ... on dataportal_Digg_Quote {
       ...Quote
     }
+
+    ... on dataportal_Digg_GoodExampleBlock {
+      ...GoodExampleBlock
+    }
+
+    ... on dataportal_Digg_NewsBlock {
+      ...NewsBlock
+    }
+
+    ... on dataportal_Digg_CTACardBlock {
+      ...CtaCardBlock
+    }
   }
   ${LINK_FRAGMENT}
   ${FAQ_FRAGMENT}
@@ -397,4 +499,7 @@ export const BLOCK_FRAGMENT = gql`
   ${FORM_ELEMENT_FRAGMENT}
   ${CHOICE_FRAGMENT}
   ${QUOTE_FRAGMENT}
+  ${GOOD_EXAMPLE_BLOCK_FRAGMENT}
+  ${NEWS_BLOCK_FRAGMENT}
+  ${CTA_CARD_BLOCK_FRAGMENT}
 `;

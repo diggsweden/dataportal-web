@@ -14,6 +14,10 @@ import { SearchHitFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 import { SearchHit, SearchRequest, SearchResult } from "@/types/search";
 import { linkBase, querySearch } from "@/utilities";
+import {
+  clearCurrentScrollPos,
+  saveCurrentScrollPos,
+} from "@/utilities/scroll-helper";
 
 interface SearchProps {
   activeLink?: string;
@@ -64,21 +68,6 @@ export const SearchPageContent: FC<SearchProps> = () => {
     });
 
     setLoading(false);
-  };
-
-  const clearCurrentScrollPos = () => {
-    if (typeof localStorage != "undefined" && typeof location != "undefined") {
-      localStorage.setItem(`ScrollposY_${location.search}`, "0");
-    }
-  };
-
-  const saveCurrentScrollPos = () => {
-    if (typeof localStorage != "undefined" && typeof location != "undefined") {
-      localStorage.setItem(
-        `ScrollposY_${location.search}`,
-        JSON.stringify(window.scrollY),
-      );
-    }
   };
 
   const highlightWords = (text: string) => {

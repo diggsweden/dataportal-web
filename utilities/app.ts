@@ -15,11 +15,13 @@ import {
   NewsItemListResponse,
   NewsItemResponse,
   RootAggregateResponse,
+  StartPageResponse,
   ToolListResponse,
 } from "@/utilities/query-helpers";
 
 export type DataportalPageProps =
   | MultiContainerResponse
+  | StartPageResponse
   | NewsItemListResponse
   | NewsItemResponse
   | GoodExampleListResponse
@@ -72,6 +74,13 @@ export const resolvePage = (
 
   switch (props.type) {
     case "RootAggregate":
+      return {
+        seo: props.seo,
+        heroImage: props.image,
+        heading: props.heading,
+        preamble: props.preamble,
+      };
+    case "StartPage":
       return {
         seo: props.seo,
         heroImage: props.image,

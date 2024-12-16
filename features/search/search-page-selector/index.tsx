@@ -52,7 +52,7 @@ export function SearchPageSelector({ query }: SearchTabsProps) {
             href={`${path}?q=${query || ""}&f=`}
             label={t(translationKey)}
             locale={lang}
-            className={`button--large focus--in whitespace-nowrap rounded-t-md ${
+            className={`search-page-selector-button button--large focus--in whitespace-nowrap rounded-t-md ${
               pathname === path ? "active" : ""
             }`}
             role="tab"

@@ -1,8 +1,6 @@
 import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
 import { FC } from "react";
 
-import { Badge } from "@/components/badge";
 import { FileFormatBadge } from "@/components/file-format-badge";
 import { Heading } from "@/components/typography/heading";
 import { SearchHit as SearchHitType } from "@/types/search";
@@ -13,28 +11,11 @@ interface SearchHitProps {
   onLinkClick?: () => void;
 }
 
-const HVD_URI = "http://data.europa.eu/r5r/applicableLegislation";
-const NATIONAL_URI = "http://purl.org/dc/terms/subject";
-
-function isHVD(dataset: object) {
-  return Object.values(dataset).some((ds) =>
-    Object.prototype.hasOwnProperty.call(ds, HVD_URI),
-  );
-}
-
-function isNational(dataset: object) {
-  return Object.values(dataset).some((ds) =>
-    Object.prototype.hasOwnProperty.call(ds, NATIONAL_URI),
-  );
-}
-
 export const SearchHit: FC<SearchHitProps> = ({
   hit,
   isCompact,
   onLinkClick,
 }) => {
-  const { t } = useTranslation();
-
   return (
     <li className="group relative max-w-lg space-y-sm">
       <Link
@@ -98,12 +79,6 @@ export const SearchHit: FC<SearchHitProps> = ({
           {hit.metadata?.format_literal?.map((m: string, index: number) => (
             <FileFormatBadge key={index} badgeName={m} />
           ))}
-          {hit.esEntry && isHVD(hit.esEntry._metadata._graph) && (
-            <Badge text={t("common|high-value-dataset")} />
-          )}
-          {hit.esEntry && isNational(hit.esEntry._metadata._graph) && (
-            <Badge text={t("common|national-dataset")} />
-          )}
         </div>
       </div>
     </li>

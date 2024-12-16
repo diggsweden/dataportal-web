@@ -20,29 +20,12 @@ export enum ESRdfType {
   data_service = "esterms:IndependentDataService",
   served_by_data_service = "esterms:ServedByDataService",
   hvd = "http://data.europa.eu/eli/reg_impl/2023/138/oj",
-  agent = "http://xmlns.com/foaf/0.1/Agent",
+  organisation = "http://xmlns.com/foaf/0.1/Agent",
   national_data = "http://purl.org/dc/terms/subject",
   dataset_series = "http://www.w3.org/ns/dcat#DatasetSeries",
   spec = "http://purl.org/dc/terms/conformsTo",
+  classification = "http://www.w3.org/ns/dcat#classification",
 }
-
-export const checkBoxFilterConfigs: Record<
-  string,
-  { id: string; name: string }
-> = {
-  "http://data.europa.eu/r5r/applicableLegislation": {
-    id: "hvd_only",
-    name: "hvd",
-  },
-  "http://purl.org/dc/terms/conformsTo": {
-    id: "spec_only",
-    name: "Specification",
-  },
-  "http://purl.org/dc/terms/subject": {
-    id: "national_only",
-    name: "National data",
-  },
-};
 
 // Facet Types
 export interface ESFacetFieldValue {
