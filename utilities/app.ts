@@ -123,7 +123,7 @@ export const resolvePage = (
         heading: props.heading,
       };
     default:
-      return { seo: (props as ResolvedPage).seo };
+      return {};
   }
 };
 
