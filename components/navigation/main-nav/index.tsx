@@ -1,7 +1,7 @@
 import Link from "next/link.js";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useEffect, useRef, useState, useContext } from "react";
+import { FC, useRef, useState, useContext } from "react";
 
 import CrossIcon from "@/assets/icons/cross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
@@ -10,37 +10,30 @@ import DataportalTestLogo from "@/assets/logos/dataportalTest.svg";
 import DataportalLogo from "@/assets/logos/sveriges_dataportal_logo.svg";
 import { Button, ButtonLink } from "@/components/button";
 import { SearchInput } from "@/features/search/search-input";
+import { MenuLinkFragment } from "@/graphql/__generated__/operations";
 import { useClickOutside } from "@/hooks/use-click-outside";
 import { SettingsContext } from "@/providers/settings-provider";
-import { mainNav, NavData } from "@/utilities/menu-data";
 
 interface MainNavProps {
   setOpenSideBar: (_param: boolean) => void;
   openSideBar: boolean;
+  mainMenu: MenuLinkFragment[];
 }
 
-const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
-  const [menues, setMenues] = useState<NavData[]>([]);
+const MainNav: FC<MainNavProps> = ({
+  setOpenSideBar,
+  openSideBar,
+  mainMenu,
+}) => {
   const [openSearch, setOpenSearch] = useState<boolean>(false);
   const [query, setQuery] = useState("");
   const pathname = usePathname();
   const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
   const { t, lang } = useTranslation();
-  const isEn = lang === "en";
   const ref = useClickOutside<HTMLDivElement>(() => setOpenSearch(false));
   const formRef = useRef<HTMLFormElement>(null);
 
   const { env } = useContext(SettingsContext);
-  useEffect(() => {
-    let enMenu;
-    if (isEn) {
-      enMenu = mainNav.filter((menu) => menu.promoted && menu.inEn);
-      setMenues(enMenu);
-    } else {
-      enMenu = mainNav.filter((menu) => menu.promoted);
-      setMenues(enMenu);
-    }
-  }, [isEn]);
 
   const handleSearchButtonClick = () => {
     setOpenSearch(!openSearch);
@@ -76,21 +69,18 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
           className="hidden flex-row items-center space-x-sm xl:flex"
           aria-label={t("common|menu-main")}
         >
-          {menues.map((menu: NavData, idx: number) => (
-            <ButtonLink
-              variant="plain"
-              key={idx}
-              href={`/${t(`routes|${menu.title}$path`)}`}
-              onClick={() => setOpenSideBar(false)}
-              label={t(`routes|${menu.title}$title`)}
-              className={`${
-                `/${t(`routes|${menu.title}$path`)}` === basePath
-                  ? " active"
-                  : ""
-              }`}
-              data-tracking-name="menu-link"
-            />
-          ))}
+          {mainMenu?.length > 0 &&
+            mainMenu.map((menu: MenuLinkFragment, idx: number) => (
+              <ButtonLink
+                variant="plain"
+                key={idx}
+                href={menu.link}
+                onClick={() => setOpenSideBar(false)}
+                label={menu.name}
+                className={menu.link === basePath ? " active" : ""}
+                data-tracking-name="menu-link"
+              />
+            ))}
         </nav>
         <div
           ref={ref}

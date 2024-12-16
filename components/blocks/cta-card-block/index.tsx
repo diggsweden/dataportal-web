@@ -20,13 +20,11 @@ export const CtaCardBlock: FC<
           props.ctaLinks.length > 0 &&
           props.ctaLinks.map(
             (link, idx: number) =>
-              link &&
-              link.link &&
-              link.title && (
+              link && (
                 <ButtonLink
                   key={idx}
                   href={link.link}
-                  label={link.title}
+                  label={link.name}
                   icon={
                     isExternalLink(link.link)
                       ? ExternalLinkIcon

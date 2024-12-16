@@ -156,6 +156,44 @@ export const START_PAGE_FRAGMENT = gql`
   }
 `;
 
+export const NAVIGATION_FRAGMENT = gql`
+  fragment NavigationData on dataportal_Digg_INavigation {
+    id
+    locale
+    mainMenu {
+      name
+      link
+    }
+    footerMenu {
+      title
+      links {
+        name
+        link
+      }
+    }
+    serviceMenu {
+      icon
+      link
+      name
+    }
+    sidebarMenu {
+      ... on dataportal_Digg_MenuLinkIcon {
+        icon
+        link
+        name
+      }
+      ... on dataportal_Digg_SubLink {
+        title
+        icon
+        links {
+          name
+          link
+        }
+      }
+    }
+  }
+`;
+
 export const TOOL_FRAGMENT = gql`
   fragment ToolData on dataportal_Digg_ITool {
     heading
@@ -237,6 +275,22 @@ export const MEDIA_TYPE_FRAGMENT = gql`
     }
   }
 `;
+
+export const MENU_LINK_FRAGMENT = gql`
+  fragment MenuLink on dataportal_Digg_MenuLink {
+    name
+    link
+  }
+`;
+
+export const MENU_LINK_ICON_FRAGMENT = gql`
+  fragment MenuLinkIcon on dataportal_Digg_MenuLinkIcon {
+    name
+    link
+    icon
+  }
+`;
+
 /* #endregion */
 
 /* #region Components */
@@ -404,10 +458,10 @@ export const CTA_CARD_BLOCK_FRAGMENT = gql`
     heading
     description
     ctaLinks {
-      title
-      link
+      ...MenuLink
     }
   }
+  ${MENU_LINK_FRAGMENT}
 `;
 
 /* #endregion */

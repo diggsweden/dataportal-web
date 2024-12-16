@@ -14,9 +14,9 @@ import React, {
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import PixelsImage from "@/assets/icons/pixels.svg";
+import { MenuLinkFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
-import { AddIcon } from "@/types/global";
-import { NavData } from "@/utilities/menu-data";
+import { isExternalLink } from "@/utilities";
 
 const sidebarLinkVariants = cva(
   [
@@ -36,7 +36,7 @@ const sidebarLinkVariants = cva(
 );
 
 type MenuLinkProps = VariantProps<typeof sidebarLinkVariants> & {
-  Icon?: AddIcon;
+  icon?: string;
   iconSize: number;
   href: string;
   label: string;
@@ -49,7 +49,7 @@ const MenuLink: FC<MenuLinkProps> = ({
   href,
   className,
   label,
-  Icon,
+  icon,
   iconSize,
   variant,
   tabIndex,
@@ -78,11 +78,9 @@ const MenuLink: FC<MenuLinkProps> = ({
     >
       <>
         {isActive && <PixelsImage className="absolute right-none text-white" />}
-        {Icon && (
-          <Icon
-            viewBox="0 0 24 24"
-            width={1.5 * iconSize}
-            height={1.5 * iconSize}
+        {icon && (
+          <span
+            dangerouslySetInnerHTML={{ __html: icon }}
             className={`flex-shrink-0 ${isActive ? "text-pink-600" : ""}`}
           />
         )}
@@ -93,7 +91,7 @@ const MenuLink: FC<MenuLinkProps> = ({
         >
           {label}
         </span>
-        {variant === "external" && (
+        {isExternalLink(href) && (
           <ExternalLinkIcon
             className="absolute right-md text-brown-400"
             viewBox="0 0 24 24"
@@ -108,10 +106,10 @@ const MenuLink: FC<MenuLinkProps> = ({
 
 type SideBarLinkProps = VariantProps<typeof sidebarLinkVariants> & {
   level: "1" | "2";
-  icon?: AddIcon;
+  icon?: string;
   href?: string;
   label: string;
-  list?: NavData[];
+  list?: MenuLinkFragment[];
   variant?: "external" | "internal";
   openSideBar?: boolean;
   setOpenSideBar: (_param: boolean) => void;
@@ -131,16 +129,13 @@ export const SidebarLink: FC<
 }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const Icon = icon;
   const { iconSize } = useContext(SettingsContext);
   const pathname = usePathname();
   const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
 
   useEffect(() => {
     if (!openSideBar && list) {
-      const hasActiveLink = list.some(
-        (menu) => basePath === `/${t(`routes|${menu.title}$path`)}`,
-      );
+      const hasActiveLink = list.some((menu) => basePath === menu.link);
       if (!hasActiveLink) {
         setOpen(false);
       } else {
@@ -154,7 +149,7 @@ export const SidebarLink: FC<
       <MenuLink
         href={href}
         label={label}
-        Icon={Icon}
+        icon={icon}
         iconSize={iconSize}
         variant={variant}
         tabIndex={openSideBar ? 0 : -1}
@@ -180,14 +175,10 @@ export const SidebarLink: FC<
               : `${t("common|open")} ${t("common|menu-submenu")} ${label}`
           }
         >
-          {Icon && (
-            <Icon
-              width={1.5 * iconSize}
-              height={1.5 * iconSize}
-              viewBox="0 0 24 24"
-              className={`flex-shrink-0 ${
-                open ? "[&_path]:fill-pink-600" : ""
-              }`}
+          {icon && (
+            <span
+              dangerouslySetInnerHTML={{ __html: icon }}
+              className={`flex-shrink-0 ${open ? "text-pink-600" : ""}`}
             />
           )}
           <span
@@ -213,11 +204,11 @@ export const SidebarLink: FC<
             id={`submenu-${label.replace(/\s+/g, "-").toLowerCase()}`}
             className="flex flex-col"
           >
-            {list.map((menu, idx: number) => (
+            {list.map((menu: MenuLinkFragment, idx: number) => (
               <li key={idx} className="group relative overflow-y-hidden">
                 <MenuLink
-                  href={`/${t(`routes|${menu.title}$path`)}`}
-                  label={t(`routes|${menu.title}$title`)}
+                  href={menu.link}
+                  label={menu.name}
                   className={`pl-[3rem]`}
                   iconSize={iconSize}
                   tabIndex={openSideBar ? 0 : -1}

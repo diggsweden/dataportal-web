@@ -1,40 +1,24 @@
-import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import { ComponentType, FC, useContext } from "react";
+import { FC, Fragment, useContext } from "react";
 
+import { CustomLink } from "@/components/custom-link";
 import { Heading } from "@/components/typography/heading";
+import { MenuLinkFragment } from "@/graphql/__generated__/operations";
 import { LocalStoreContext } from "@/providers/local-store-provider";
-import { SettingsContext } from "@/providers/settings-provider";
-import { footerNav } from "@/utilities/menu-data";
-
-interface FooterNavItem {
-  title: string;
-  icon?: ComponentType<{
-    className?: string;
-    width?: number;
-    height?: number;
-    viewBox?: string;
-  }>;
-  type?: "internal" | "external" | "email" | "cookie";
-  href?: string;
-}
-
-interface FooterNavData {
-  title: string;
-  children: FooterNavItem[];
-}
+import { SubLinkFooter } from "@/types/global";
 
 interface FooterNavProps {
+  footerData: SubLinkFooter[];
   setOpenSideBar: (_param: boolean) => void;
   setSettingsOpen: (_param: boolean) => void;
 }
 
 export const FooterNav: FC<FooterNavProps> = ({
+  footerData,
   setOpenSideBar,
   setSettingsOpen,
 }) => {
   const { t } = useTranslation();
-  const { iconSize } = useContext(SettingsContext);
   const { set } = useContext(LocalStoreContext);
 
   return (
@@ -42,57 +26,58 @@ export const FooterNav: FC<FooterNavProps> = ({
       aria-label={t("common|menu-footer")}
       className="flex flex-col gap-xl lg:grid lg:grid-cols-2"
     >
-      {footerNav.map((footer: FooterNavData, idx: number) => (
-        <div key={idx} className="flex flex-col gap-sm">
-          <Heading size={"sm"} level={2} className="!text-lg">
-            {t(`common|${footer.title}`)}
+      {footerData?.length > 0 ? (
+        footerData.map((footer: SubLinkFooter, footerIdx: number) => (
+          <div key={footerIdx} className="flex flex-col gap-sm">
+            <Heading size={"sm"} level={2} className="!text-lg">
+              {footer.title}
+            </Heading>
+            <ul className="space-y-sm">
+              {footer.links.map((link: MenuLinkFragment, linkIdx: number) => (
+                <Fragment key={linkIdx}>
+                  <li className="text-md text-green-600">
+                    <CustomLink
+                      href={link.link}
+                      className="hover:no-underline"
+                      onClick={() => setOpenSideBar(false)}
+                    >
+                      {link.name}
+                    </CustomLink>
+                  </li>
+                  {footerIdx === 0 && linkIdx === footer.links.length - 1 && (
+                    <li className="text-md text-green-600">
+                      <button
+                        onClick={() => {
+                          set({ cookieSettings: {} });
+                          setSettingsOpen(true);
+                        }}
+                        className="cursor-pointer underline underline-offset-4 hover:no-underline"
+                      >
+                        {t("common|cookie-settings")}
+                      </button>
+                    </li>
+                  )}
+                </Fragment>
+              ))}
+            </ul>
+          </div>
+        ))
+      ) : (
+        <div className="flex flex-col gap-sm">
+          <Heading className="!text-lg" size={"sm"} level={2}>
+            {t("common|dataportal")}
           </Heading>
-          <ul className="space-y-sm">
-            {footer.children.map((link, idx: number) => (
-              <li
-                key={idx}
-                className="text-md text-green-600"
-                onClick={() =>
-                  link.type === "internal" && setOpenSideBar(false)
-                }
-              >
-                {link.href ? (
-                  <Link href={link.href} className="hover:no-underline">
-                    {link.type === "external"
-                      ? t(`common|${link.title}`)
-                      : link.title}
-                    {link.icon && (
-                      <link.icon
-                        className="mb-[2px] ml-xs inline-block [&_path]:fill-green-600"
-                        width={iconSize}
-                        height={iconSize}
-                        viewBox="0 0 24 24"
-                      />
-                    )}
-                  </Link>
-                ) : link.type === "cookie" ? (
-                  <button
-                    onClick={() => {
-                      set({ cookieSettings: {} });
-                      setSettingsOpen(true);
-                    }}
-                    className="cursor-pointer underline underline-offset-4 hover:no-underline"
-                  >
-                    {t(`common|${link.title}`)}
-                  </button>
-                ) : (
-                  <Link
-                    href={`/${t(`routes|${link.title}$path`)}`}
-                    className="hover:no-underline"
-                  >
-                    {t(`routes|${link.title}$title`)}
-                  </Link>
-                )}
-              </li>
-            ))}
-          </ul>
+          <button
+            onClick={() => {
+              set({ cookieSettings: {} });
+              setSettingsOpen(true);
+            }}
+            className="inline-flex w-fit cursor-pointer text-md text-green-600 underline underline-offset-4 hover:no-underline"
+          >
+            {t("common|cookie-settings")}
+          </button>
         </div>
-      ))}
+      )}
     </nav>
   );
 };

@@ -48,4 +48,12 @@ const NotFound: FC = () => {
   );
 };
 
+export const getStaticProps = async () => {
+  return {
+    props: {
+      type: "NotFound",
+    },
+  };
+};
+
 export default NotFound;
