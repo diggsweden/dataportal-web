@@ -25,6 +25,7 @@ import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { CookieBanner } from "@/features/cookie-banner";
 import { client } from "@/graphql";
 import {
+  MenuLinkFragment,
   MenuLinkIconFragment,
   NavigationDataFragment,
 } from "@/graphql/__generated__/operations";
@@ -37,7 +38,7 @@ import {
   SettingsProvider,
 } from "@/providers/settings-provider";
 import { TrackingProvider } from "@/providers/tracking-provider";
-import { SubLink } from "@/types/global";
+import { SubLink, SubLinkFooter } from "@/types/global";
 import {
   DataportalPageProps,
   getNavigationData,
@@ -110,12 +111,15 @@ function Dataportal({
     crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
   });
 
-  const navigationData = useMemo(
-    () =>
+  const navigationData = useMemo(() => {
+    if (!initialNavigationData?.items?.length) {
+      return null;
+    }
+    return (
       initialNavigationData.items.find((nav) => nav.locale === lang) ||
-      initialNavigationData.items[0],
-    [initialNavigationData.items, lang],
-  );
+      initialNavigationData.items[0]
+    );
+  }, [initialNavigationData?.items, lang]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -201,16 +205,21 @@ function Dataportal({
             >
               <SkipToContent text={t("common|skiptocontent")} />
               <Header
-                mainMenu={navigationData.mainMenu || []}
-                serviceMenu={navigationData.serviceMenu || []}
+                mainMenu={
+                  (navigationData?.mainMenu as MenuLinkFragment[]) || []
+                }
+                serviceMenu={
+                  (navigationData?.serviceMenu as MenuLinkIconFragment[]) || []
+                }
                 setOpenSideBar={setOpenSideBar}
                 openSideBar={openSideBar}
               />
               <Sidebar
                 sidebarMenu={
-                  navigationData.sidebarMenu as
+                  navigationData?.sidebarMenu as
                     | MenuLinkIconFragment[]
                     | SubLink[]
+                    | []
                 }
                 openSideBar={openSideBar}
                 setOpenSideBar={setOpenSideBar}
@@ -248,7 +257,9 @@ function Dataportal({
                 </main>
               </div>
               <Footer
-                footerData={navigationData.footerMenu || []}
+                footerData={
+                  (navigationData?.footerMenu as SubLinkFooter[]) || []
+                }
                 setSettingsOpen={setSettingsOpen}
                 setOpenSideBar={setOpenSideBar}
                 openSideBar={openSideBar}
