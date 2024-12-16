@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
@@ -55,20 +54,6 @@ export const SpecificationPage: FC = () => {
 
   return (
     <Container>
-      <Head>
-        <title>
-          {entry.title ? `${entry.title} - Sveriges dataportal` : "test"}
-        </title>
-        <meta
-          property="og:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-        <meta
-          name="twitter:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-      </Head>
-
       <div>
         <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {entry.title}

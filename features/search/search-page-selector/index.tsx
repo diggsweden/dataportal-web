@@ -56,6 +56,7 @@ export function SearchPageSelector({ query }: SearchTabsProps) {
               pathname === path ? "active" : ""
             }`}
             role="tab"
+            data-tracking-name="search-tab"
             aria-selected={pathname === path}
           />
         ))}

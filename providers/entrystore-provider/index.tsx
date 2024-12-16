@@ -1,4 +1,5 @@
 import { Entry, EntryStore, Metadata } from "@entryscape/entrystore-js";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { createContext, FC, ReactNode, useEffect, useState } from "react";
@@ -499,6 +500,34 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
   return (
     <EntrystoreContext.Provider value={state}>
+      <Head>
+        <title>{`${state.title} - Sveriges dataportal`}</title>
+        <meta
+          property="og:title"
+          content={`${state.title} - Sveriges dataportal`}
+          key="og:title"
+        />
+        <meta
+          name="twitter:title"
+          content={`${state.title} - Sveriges dataportal`}
+          key="twitter:title"
+        />
+        <meta
+          name="description"
+          content={`${state.description} - Sveriges dataportal`}
+          key="description"
+        />
+        <meta
+          property="og:description"
+          content={`${state.description} - Sveriges dataportal`}
+          key="og:description"
+        />
+        <meta
+          name="twitter:description"
+          content={`${state.description} - Sveriges dataportal`}
+          key="twitter:description"
+        />
+      </Head>
       {children}
     </EntrystoreContext.Provider>
   );

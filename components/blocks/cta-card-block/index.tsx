@@ -33,6 +33,7 @@ export const CtaCardBlock: FC<
                       : ArrowRightIcon
                   }
                   iconPosition="right"
+                  data-tracking-name="cta-link"
                 />
               ),
           )}

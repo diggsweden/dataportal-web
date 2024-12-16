@@ -52,7 +52,7 @@ const searchFocus = () => {
 /**
  * Adds sorting options to the search-results
  *
- * @param {*} { search } Context from the SearchProvider
+ * @param Context from the SearchProvider
  */
 const SortingOptions: FC<{
   setCompact: Dispatch<SetStateAction<boolean>>;
@@ -267,6 +267,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
           </ul>
         </div>
       )}
+
       {(search.result.pages || 0) > 1 && (
         <Pagination
           totalResults={search.result.count || 0}

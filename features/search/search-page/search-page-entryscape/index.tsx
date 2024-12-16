@@ -19,19 +19,20 @@ import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 
 import { createSearchProviderSettings } from "./search-page-provider-settings";
 
-interface SearchProps {
+interface SearchPageEntryscapeProps {
   activeLink?: string;
   searchType: "datasets" | "concepts" | "specifications" | "organisations";
 }
 
-export const SearchPageEntryscape: FC<SearchProps> = ({ searchType }) => {
+export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
+  searchType,
+}) => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
   const { pathname } = useRouter() || {};
   const { t, lang } = useTranslation();
   const [query, setQuery] = useState("");
   const [showFilter, setShowFilter] = useState(false);
   const [showTip, setShowTip] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -80,14 +81,16 @@ export const SearchPageEntryscape: FC<SearchProps> = ({ searchType }) => {
         <meta
           property="og:title"
           content={`${pageTitle} - Sveriges dataportal`}
+          key="og:title"
         />
         <meta
           name="twitter:title"
           content={`${pageTitle} - Sveriges dataportal`}
+          key="twitter:title"
         />
       </Head>
 
-      <SearchProvider router={router} {...searchProviderSettings[searchType]}>
+      <SearchProvider {...searchProviderSettings[searchType]}>
         <SearchContext.Consumer>
           {(search) => (
             <>

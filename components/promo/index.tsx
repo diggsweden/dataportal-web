@@ -45,6 +45,7 @@ export const Promo: FC<PromoProps> = ({
       <div className="flex h-full flex-col p-lg">
         <Link
           href={slug}
+          data-tracking-name="promo"
           className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
         >
           <Heading
