@@ -262,9 +262,7 @@ function Dataportal({
 }
 
 Dataportal.getInitialProps = async (appContext: AppContext) => {
-  const navigationData = await getNavigationData(
-    appContext.router.locale || "sv",
-  );
+  const navigationData = await getNavigationData("all");
 
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
