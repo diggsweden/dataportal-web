@@ -46,6 +46,7 @@ export const PromotedContentBlock: FC<PromotedContentFragment> = ({
             href={link}
             iconPosition="right"
             icon={ArrowRightIcon}
+            data-tracking-name="promoted-content-block"
           />
         )}
       </div>

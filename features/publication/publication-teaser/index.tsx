@@ -45,6 +45,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
             href={type.url}
             className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
             scroll={false}
+            data-tracking-name="publication-teaser"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             <Heading className="pb-md pt-sm" level={3} size={"sm"}>
