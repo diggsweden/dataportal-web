@@ -74,6 +74,7 @@ const MenuLink: FC<MenuLinkProps> = ({
       href={href}
       tabIndex={tabIndex}
       onClick={() => vw < 600 && setOpenSideBar(false)}
+      data-tracking-name="sidebar-link"
     >
       <>
         {isActive && <PixelsImage className="absolute right-none text-white" />}

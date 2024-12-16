@@ -88,6 +88,7 @@ const MainNav: FC<MainNavProps> = ({ setOpenSideBar, openSideBar }) => {
                   ? " active"
                   : ""
               }`}
+              data-tracking-name="menu-link"
             />
           ))}
         </nav>
