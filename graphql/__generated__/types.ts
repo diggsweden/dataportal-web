@@ -48,6 +48,10 @@ export interface Dataportal_QueryContainerArgs {
   state?: InputMaybe<Dataportal_ContainerState>;
 }
 
+export interface Dataportal_QueryLocaleArgs {
+  locale?: InputMaybe<Scalars['String']['input']>;
+}
+
 export interface Dataportal_QuerySearchArgs {
   getHighlights?: InputMaybe<Scalars['Boolean']['input']>;
   highlightPostText?: InputMaybe<Scalars['String']['input']>;
@@ -57,8 +61,4 @@ export interface Dataportal_QuerySearchArgs {
   locale?: InputMaybe<Scalars['String']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   query?: InputMaybe<Scalars['String']['input']>;
-}
-
-export interface Dataportal_QueryStartPageArgs {
-  locale?: InputMaybe<Scalars['String']['input']>;
 }

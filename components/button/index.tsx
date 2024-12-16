@@ -153,6 +153,7 @@ const ButtonLink: FC<
   locale,
   icon,
   iconPosition,
+  children,
   ...rest
 }) => {
   return (
@@ -168,6 +169,7 @@ const ButtonLink: FC<
         icon={icon}
         label={label}
       />
+      {children}
     </Link>
   );
 };

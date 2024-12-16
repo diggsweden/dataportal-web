@@ -5,7 +5,7 @@ import App from "next/app";
 import { usePathname } from "next/navigation";
 import router, { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
@@ -25,6 +25,10 @@ import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { CookieBanner } from "@/features/cookie-banner";
 import { client } from "@/graphql";
 import {
+  MenuLinkIconFragment,
+  NavigationDataFragment,
+} from "@/graphql/__generated__/operations";
+import {
   LocalStore,
   LocalStoreProvider,
 } from "@/providers/local-store-provider";
@@ -33,8 +37,13 @@ import {
   SettingsProvider,
 } from "@/providers/settings-provider";
 import { TrackingProvider } from "@/providers/tracking-provider";
-import { DataportalPageProps, linkBase, resolvePage } from "@/utilities";
-
+import { SubLink } from "@/types/global";
+import {
+  DataportalPageProps,
+  getNavigationData,
+  linkBase,
+  resolvePage,
+} from "@/utilities";
 import "@/styles/main.css";
 
 const getCookiesAccepted = () => {
@@ -54,6 +63,10 @@ declare global {
 }
 
 interface DataportalenProps extends AppProps {
+  navigationData: {
+    type: "Navigation";
+    items: NavigationDataFragment[];
+  };
   nonce: string;
 }
 
@@ -72,7 +85,11 @@ const onHash = (pathWithHash: string) => {
   skipToElement(hash);
 };
 
-function Dataportal({ Component, pageProps }: DataportalenProps) {
+function Dataportal({
+  Component,
+  pageProps,
+  navigationData: initialNavigationData,
+}: DataportalenProps) {
   const pathname = usePathname();
   const { asPath } = useRouter();
   const { t, lang } = useTranslation();
@@ -86,12 +103,19 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     lang,
     t,
   );
-  const [imageHero, setImageHero] = useState(heroImage);
 
+  const [imageHero, setImageHero] = useState(heroImage);
   const [breadcrumbState, setBreadcrumb] = useState<BreadcrumbProps>({
     name: heading || "",
     crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
   });
+
+  const navigationData = useMemo(
+    () =>
+      initialNavigationData.items.find((nav) => nav.locale === lang) ||
+      initialNavigationData.items[0],
+    [initialNavigationData.items, lang],
+  );
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -177,10 +201,17 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
             >
               <SkipToContent text={t("common|skiptocontent")} />
               <Header
+                mainMenu={navigationData.mainMenu || []}
+                serviceMenu={navigationData.serviceMenu || []}
                 setOpenSideBar={setOpenSideBar}
                 openSideBar={openSideBar}
               />
               <Sidebar
+                sidebarMenu={
+                  navigationData.sidebarMenu as
+                    | MenuLinkIconFragment[]
+                    | SubLink[]
+                }
                 openSideBar={openSideBar}
                 setOpenSideBar={setOpenSideBar}
               />
@@ -217,6 +248,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                 </main>
               </div>
               <Footer
+                footerData={navigationData.footerMenu || []}
                 setSettingsOpen={setSettingsOpen}
                 setOpenSideBar={setOpenSideBar}
                 openSideBar={openSideBar}
@@ -230,10 +262,12 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
 }
 
 Dataportal.getInitialProps = async (appContext: AppContext) => {
+  const navigationData = await getNavigationData("all");
+
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
 
-  return { ...appProps };
+  return { ...appProps, navigationData: navigationData.props };
 };
 
 export default Dataportal;

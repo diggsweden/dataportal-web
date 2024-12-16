@@ -29,11 +29,15 @@ import {
   StartPageQueryVariables,
   NewsBlockItemFragment,
   GoodExampleBlockItemFragment,
+  NavigationQuery,
+  NavigationQueryVariables,
+  NavigationDataFragment,
 } from "@/graphql/__generated__/operations";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import { ROOT_AGGREGATE_QUERY } from "@/graphql/aggregateQuery";
 import { FORM_QUERY } from "@/graphql/formQuery";
 import { MODULE_QUERY } from "@/graphql/moduleQuery";
+import { NAVIGATION_QUERY } from "@/graphql/navigationQuery";
 import {
   GOOD_EXAMPLE_QUERY,
   NEWS_ITEM_QUERY,
@@ -55,6 +59,7 @@ const notFound = (revalidate: boolean) => ({
     : {}),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const logGqlErrors = (error: any) => {
   const { networkError, graphQLErrors, clientErrors } = error || {};
   if (networkError?.result?.errors) {
@@ -124,6 +129,11 @@ export interface RootAggregateResponse extends ContainerDataFragment {
 
 export interface StartPageResponse extends StartPageDataFragment {
   type: "StartPage";
+}
+
+export interface NavigationResponse {
+  type: "Navigation";
+  items: NavigationDataFragment[];
 }
 
 export interface FormResponse extends FormDataFragment {
@@ -237,7 +247,7 @@ export const getMultiContainer = async (
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return notFound(revalidate);
   }
@@ -298,7 +308,7 @@ export const getNewsList = async (
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return {
       props: {
@@ -371,7 +381,7 @@ export const getGoodExamplesList = async (
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return {
       props: {
@@ -436,7 +446,7 @@ export const getToolsList = async (opts?: ToolistOptions) => {
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return {
       props: {
@@ -529,7 +539,7 @@ export const getNewsItem = async (
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return notFound(revalidate);
   }
@@ -619,7 +629,7 @@ export const getGoodExample = async (
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return notFound(revalidate);
   }
@@ -691,7 +701,7 @@ export const getRootAggregate = async (
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return {
       props: {
@@ -736,12 +746,51 @@ export const getStartPage = async (
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return {
       props: {
         type: "StartPage",
       } as StartPageResponse,
+      revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60"),
+    };
+  }
+};
+
+export const getNavigationData = async (
+  locale: string,
+  opts: QueryOptions = { revalidate: true },
+) => {
+  const { revalidate } = opts;
+  try {
+    const { data, error } = await client.query<
+      NavigationQuery,
+      NavigationQueryVariables
+    >({
+      query: NAVIGATION_QUERY,
+      variables: { filter: { locale } },
+      fetchPolicy: "no-cache",
+    });
+
+    if (error) {
+      console.error(error);
+    }
+
+    const navigationData = data.dataportal_Digg_Navigation;
+
+    return {
+      props: {
+        type: "Navigation",
+        items: navigationData,
+      } as NavigationResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
+    };
+  } catch (error) {
+    logGqlErrors(error);
+    return {
+      props: { type: "Navigation" } as NavigationResponse,
       revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60"),
     };
   }
@@ -792,7 +841,7 @@ export const querySearch = async (
     }
 
     return result;
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return notFound;
   }
@@ -816,7 +865,7 @@ export const getForm = async (identifier: string, locale?: string) => {
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return {
       props: { type: "Form" } as FormResponse,
@@ -862,7 +911,7 @@ export const getModule = async (
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return {
       props: {

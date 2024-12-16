@@ -10,7 +10,7 @@ import {
 } from "./fragments";
 
 export const START_PAGE_QUERY = gql`
-  query StartPage($filter: dataportal_QueryStartPageArgs) {
+  query StartPage($filter: dataportal_QueryLocaleArgs) {
     dataportal_Digg_Start_Page(filter: $filter) {
       ...StartPageData
     }

@@ -72,7 +72,6 @@ export const StatisticGraph: FC = () => {
       <span className="sr-only">{t("pages|statistic$graph-screenreader")}</span>
 
       <div className="flex flex-col items-end">
-        {/* @ts-ignore */}
         <FlexibleXYPlot
           xType="ordinal"
           height={380}
@@ -88,7 +87,6 @@ export const StatisticGraph: FC = () => {
             className="hide-odd-stat text-sm"
           />
           <YAxis width={64} className="text-sm" />
-          {/* @ts-ignore */}
           <BarSeries data={stats.x} barWidth={0.75} color="#CD7A6E" />
         </FlexibleXYPlot>
         <span className="mr-md">{t("pages|statistic$dataset-numbers")}</span>
