@@ -768,7 +768,7 @@ export const getNavigationData = async (
       NavigationQueryVariables
     >({
       query: NAVIGATION_QUERY,
-      variables: { filter: { locale } },
+      variables: { filter: { locale: "all" } },
       fetchPolicy: "no-cache",
     });
 
