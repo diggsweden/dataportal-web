@@ -27,6 +27,7 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
   const { pathname } = useRouter() || {};
   const { t, lang } = useTranslation();
   const [query, setQuery] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -84,7 +85,7 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
         />
       </Head>
 
-      <SearchProvider {...searchProviderSettings[searchType]}>
+      <SearchProvider router={router} {...searchProviderSettings[searchType]}>
         <SearchContext.Consumer>
           {(search) => (
             <>

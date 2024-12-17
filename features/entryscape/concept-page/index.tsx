@@ -49,8 +49,17 @@ export const ConceptPage: FC = () => {
       <div className="mb-lg flex flex-col gap-xl md:mb-xl lg:flex-row lg:gap-2xl">
         {/* Left column */}
         <div className="flex w-full max-w-md flex-col">
-          {entry.publisher && (
-            <Preamble className="mb-lg">{entry.publisher}</Preamble>
+          {entry.organisationLink ? (
+            <Link
+              className="mb-lg text-lg font-normal text-green-600 hover:!no-underline"
+              href={entry.organisationLink}
+            >
+              {entry.publisher}
+            </Link>
+          ) : (
+            entry.publisher && (
+              <Preamble className="mb-lg">{entry.publisher}</Preamble>
+            )
           )}
 
           {entry.description !== "" && (
