@@ -32,7 +32,6 @@ import {
   SearchCheckboxFilter,
   SearchCheckboxFilterIcon,
 } from "./search-checkbox-filter";
-import { SearchTips } from "../search-tips";
 
 interface SearchFilterProps {
   search: SearchContextData;
@@ -251,12 +250,11 @@ export const SearchFilters: FC<SearchFilterProps> = ({
               modalOpen={showFilterInfo}
               setModalOpen={setShowFilterInfo}
               text={t("pages|search$search-tips-head")}
+              description={t(`pages|search$search-${searchMode}-tips-text`)}
               textSize="md"
               closeBtn={t("common|close")}
               closeBtnClassName="ml-auto"
-            >
-              <SearchTips pageType={searchMode} />
-            </Modal>
+            />
           </>
         )}
       </div>
