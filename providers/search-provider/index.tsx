@@ -440,7 +440,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       }
     });
   };
-  
+
   /**
    * Check if facet with @param key and @param value is selected in current SearchRequest
    */
@@ -450,13 +450,11 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     if (!facetValues || !Array.isArray(facetValues)) {
       return false;
     }
-    console.log("facetValues", facetValues, key, value);
-    
 
     return facetValues.some(
       (facetValue) =>
-        facetValue.facet === key &&
-        (facetValue.resource === value || facetValue.customLabel === value),
+        (facetValue.facet === key && facetValue.resource === value) ||
+        facetValue.customFilter === value,
     );
   };
 
