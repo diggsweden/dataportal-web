@@ -25,6 +25,8 @@ export enum ESRdfType {
   dataset_series = "http://www.w3.org/ns/dcat#DatasetSeries",
   spec = "http://purl.org/dc/terms/conformsTo",
   classification = "http://www.w3.org/ns/dcat#classification",
+  access_right = "http://purl.org/dc/terms/accessRights",
+  access_right_public = "http://purl.org/dc/terms/accessRights:PUBLIC",
 }
 
 // Facet Types

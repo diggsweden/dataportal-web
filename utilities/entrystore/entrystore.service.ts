@@ -306,14 +306,20 @@ export class EntrystoreService {
           const facetSpec = this.facetSpecification?.facets?.find(
             (spec) => spec.resource === fg.predicate,
           );
-
           if (facetSpec && facetSpec.dcatType !== "choice") {
             await getUriNames(
               fg.values
-                .filter(
-                  (v: SearchFacet) =>
-                    v.name?.toLocaleLowerCase().startsWith("http"),
-                )
+                .filter((v: SearchFacet) => {
+                  if (
+                    facetSpec.customProperties &&
+                    facetSpec.customProperties?.length > 0
+                  ) {
+                    return facetSpec.customProperties.some(
+                      (property) => v.name?.startsWith(property),
+                    );
+                  }
+                  return v.name?.toLocaleLowerCase().startsWith("http");
+                })
                 .map((v: SearchFacet) => v.name),
               this.entryStoreUtil,
               facetSpec?.dcatProperty,
@@ -430,45 +436,53 @@ export class EntrystoreService {
   ): Promise<{ [key: string]: SearchFacet }> {
     const facets: { [key: string]: SearchFacet } = {};
 
-    for (const f of metaFacets) {
-      // Find the corresponding facet specification
-      const facetSpec = this.facetSpecification?.facets?.find(
-        (spec) => spec.resource === f.predicate,
+    const specFacets = this.facetSpecification?.facets;
+    if (!specFacets || specFacets.length === 0) return {};
+
+    for (const f of specFacets) {
+      const metaFacet = metaFacets.find(
+        (spec) => spec.predicate === f.resource,
       );
 
-      if (facetSpec) {
-        facets[f.predicate] = {
-          title: this.t(f.predicate),
-          name: f.name,
-          predicate: f.predicate,
-          indexOrder: facetSpec.indexOrder,
-          count: f.valueCount,
+      if (metaFacet) {
+        facets[f.customLabel || f.resource] = {
+          title: this.t(metaFacet.predicate),
+          name: metaFacet.name,
+          predicate: metaFacet.predicate,
+          indexOrder: f.indexOrder,
+          count: metaFacet.valueCount,
           show: 25,
-          group: facetSpec.group,
-          customFilter: facetSpec.customFilter,
-          customSearch: facetSpec.customSearch,
-          facetValues: f.values
+          group: f.group,
+          customFilter: f.customFilter,
+          customLabel: f.customLabel,
+          customSearch: f.customSearch,
+          facetValues: metaFacet.values
             .filter((value: ESFacetFieldValue) => {
+              if (f.customProperties && f.customProperties.length > 0) {
+                return f.customProperties.some((property) =>
+                  value.name.startsWith(property),
+                );
+              }
               if (!value.name || value.name.trim() === "") return false;
-              if (!facetSpec?.dcatFilterEnabled) return true;
+              if (!f?.dcatFilterEnabled) return true;
 
               const choices: Choice[] = getTemplateChoices(
                 dcat,
-                facetSpec.dcatProperty,
-                facetSpec.dcatId,
+                f.dcatProperty,
+                f.dcatId,
               );
               return choices.some(
                 (choice: Choice) => choice.value === value.name,
               );
             })
+
             .map((value: ESFacetFieldValue) => {
               let displayName = value.name;
-
-              if (facetSpec?.dcatType === "choice") {
+              if (f?.dcatType === "choice") {
                 const choices = getTemplateChoices(
                   dcat,
-                  facetSpec.dcatProperty,
-                  facetSpec.dcatId,
+                  f.dcatProperty,
+                  f.dcatId,
                 );
                 const choice = choices.find(
                   (c: Choice) => c.value === value.name,
@@ -478,31 +492,44 @@ export class EntrystoreService {
                 }
               } else {
                 displayName = entryCache.getValue(value.name) || value.name;
+                if (
+                  displayName.startsWith("http") &&
+                  f.customProperties &&
+                  f.customProperties.length > 0
+                ) {
+                  // Find the matching custom property that the displayName starts with
+                  const matchingProperty = f.customProperties.find((property) =>
+                    displayName.startsWith(property),
+                  );
+                  // Replace only if a matching property was found
+                  if (matchingProperty) {
+                    displayName = displayName.replace(matchingProperty, "");
+                  }
+                }
               }
-
               return {
                 count: value.count,
-                facet: f.predicate,
-                facetType: f.type,
-                facetValueString: `${f.predicate}||${value.name}||${
-                  facetSpec.related || false
-                }||${f.type}||${this.t(f.predicate)}||${displayName}||${
-                  facetSpec.customFilter
-                }||${
-                  facetSpec.customSearch
-                    ? JSON.stringify(facetSpec.customSearch)
-                    : undefined
-                }`,
-                related: facetSpec.related || false,
+                facet: metaFacet.predicate,
+                facetType: metaFacet.type,
+                facetValueString: `${metaFacet.predicate}||${value.name}||${
+                  f.related || false
+                }||${metaFacet.type}||${this.t(
+                  metaFacet.predicate,
+                )}||${displayName}||${f.customFilter}||${
+                  f.customSearch ? JSON.stringify(f.customSearch) : undefined
+                }||${f.customLabel}`,
+                related: f.related || false,
                 resource: value.name,
                 title: displayName,
-                customFilter: facetSpec.customFilter,
-                customSearch: facetSpec.customSearch,
+                customFilter: f.customFilter,
+                customLabel: f.customLabel,
+                customSearch: f.customSearch,
               };
             }),
         };
       }
     }
+
     return facets;
   }
 
@@ -574,10 +601,11 @@ export class EntrystoreService {
                   facetSpec.customSearch
                     ? JSON.stringify(facetSpec.customSearch)
                     : undefined
-                }`,
+                }||${facetSpec.customLabel}`,
                 related: facetSpec.related || false,
                 resource: value.name,
                 title: displayName,
+                customLabel: facetSpec.customLabel,
                 customFilter: facetSpec.customFilter,
                 customSearch: facetSpec.customSearch,
               };
@@ -680,7 +708,7 @@ export class EntrystoreService {
                 .startsWith(
                   facet?.customFilter?.endsWith("*")
                     ? facet?.customFilter?.slice(0, -1)
-                    : facet?.customFilter,
+                    : facet?.customFilter || facet?.customProperties?.[0],
                 ),
             );
 

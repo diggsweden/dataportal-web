@@ -409,10 +409,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                           name={value.title}
                           checked={
                             value.customFilter
-                              ? search.facetSelected(
-                                  key,
-                                  value?.customFilter || "",
-                                )
+                              ? search.facetSelected(key, value.customFilter)
                               : value.customSearch?.length ===
                                   search.request.esRdfTypes?.length &&
                                 value.customSearch?.every(

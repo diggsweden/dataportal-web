@@ -451,8 +451,8 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
 
     return facetValues.some(
       (facetValue) =>
-        facetValue.facet === key &&
-        (facetValue.resource === value || facetValue.customFilter === value),
+        (facetValue.facet === key && facetValue.resource === value) ||
+        facetValue.customFilter === value,
     );
   };
 
@@ -671,7 +671,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
         if (!f.includes("||")) return;
 
         const facetstring = f.split("||");
-        if (facetstring.length !== 8) return;
+        if (facetstring.length !== 9) return;
 
         let facetType = ESType.unknown;
         switch (facetstring[3]) {
@@ -703,6 +703,8 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
             facetstring[7] && facetstring[7] !== "undefined"
               ? JSON.parse(facetstring[7])
               : undefined,
+          customLabel:
+            facetstring[8] !== "undefined" ? facetstring[8] : undefined,
         });
       });
     }

@@ -147,9 +147,10 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             dcatProperty: "dcterms:subject",
             indexOrder: 7,
             group: "type",
-            customFilter:
-              "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/*",
             showInSearchResult: true,
+            customProperties: [
+              "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/",
+            ],
           },
           {
             resource: "http://purl.org/dc/terms/conformsTo",
@@ -183,6 +184,29 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             indexOrder: 9,
             group: "distribution",
             customSearch: [ESRdfType.dataset_series],
+          },
+          {
+            resource: "http://purl.org/dc/terms/accessRights",
+            type: ESType.uri,
+            dcatProperty: "dcterms:accessRights",
+            indexOrder: 10,
+            group: "access",
+            customLabel: "http://purl.org/dc/terms/accessRights:PUBLIC",
+            customFilter:
+              "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+          },
+          {
+            resource: "http://purl.org/dc/terms/accessRights",
+            type: ESType.uri,
+            dcatProperty: "dcterms:accessRights",
+            indexOrder: 11,
+            dcatType: "choice",
+            group: "access",
+            customLabel: "http://purl.org/dc/terms/accessRights",
+            customProperties: [
+              "http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC",
+              "http://publications.europa.eu/resource/authority/access-right/RESTRICTED",
+            ],
           },
         ],
       },
