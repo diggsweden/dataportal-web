@@ -26,7 +26,11 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
           name === "blockquote"
         ) {
           return (
-            <BodyVariant variant={name} href={attribs.href}>
+            <BodyVariant
+              variant={name}
+              href={attribs.href}
+              className={attribs.class}
+            >
               {domToReact(children as DOMNode[], options)}
             </BodyVariant>
           );

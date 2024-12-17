@@ -15,9 +15,11 @@ import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
 import CrossIcon from "@/assets/icons/cross.svg";
 import FilterIcon from "@/assets/icons/filter.svg";
+import InfoCircleIcon from "@/assets/icons/info-circle.svg";
 import SearchIcon from "@/assets/icons/search.svg";
 import { Button } from "@/components/button";
 import { TextInput } from "@/components/form/text-input";
+import { Modal } from "@/components/modal";
 import { SearchFilter } from "@/features/search/search-filters/search-filter";
 import { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
@@ -32,11 +34,9 @@ import {
 } from "./search-checkbox-filter";
 
 interface SearchFilterProps {
-  showFilter: boolean;
   search: SearchContextData;
   searchMode: SearchMode;
   query: string;
-  setShowFilter: Dispatch<SetStateAction<boolean>>;
   showTip?: boolean;
 }
 
@@ -111,22 +111,20 @@ const FindFilters = (
 /**
  * Controls for filtering searchhits
  *
- * @param showFilter disable or enable filters
  * @param search context for handling searchstate
  * @param searchMode
  * @param query
- * @param setShowFilter
  * @returns JSX-elements of selects and checkboxes
  */
 export const SearchFilters: FC<SearchFilterProps> = ({
-  showFilter,
   search,
   searchMode,
   query,
-  setShowFilter,
 }) => {
   const { t } = useTranslation();
   const { iconSize } = useContext(SettingsContext);
+  const [showFilter, setShowFilter] = useState(false);
+  const [showFilterInfo, setShowFilterInfo] = useState(false);
   const [inputFilter, setInputFilter] = useState<InputFilter>({});
   const ref = useRef<HTMLDivElement>(null);
   const trapRef = useRef<FocusTrap | null>(null);
@@ -214,31 +212,56 @@ export const SearchFilters: FC<SearchFilterProps> = ({
         onClick={() => setShowFilter(false)}
       />
 
-      <Button
-        variant="plain"
-        size="sm"
-        icon={showFilter ? ChevronUpIcon : ChevronDownIcon}
-        iconSize={iconSize * 1.5}
-        iconPosition="left"
-        aria-label={
-          showFilter ? t("common|hide-filter") : t("common|show-filter")
-        }
-        aria-expanded={showFilter}
-        aria-controls="filter-content"
-        onClick={() => updateFilters()}
-        label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
-        className="hidden items-center py-xs md:flex"
-        disabled={
-          search.loadingFacets && Object.keys(groupedFacets).length === 0
-        }
-      />
+      <div className="mb-lg mt-xl flex items-center justify-between">
+        <Button
+          variant="plain"
+          size="sm"
+          icon={showFilter ? ChevronUpIcon : ChevronDownIcon}
+          iconSize={iconSize * 1.5}
+          iconPosition="left"
+          aria-label={
+            showFilter ? t("common|hide-filter") : t("common|show-filter")
+          }
+          aria-expanded={showFilter}
+          aria-controls="filter-content"
+          onClick={() => updateFilters()}
+          label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
+          className="hidden items-center py-xs md:flex"
+          disabled={
+            search.loadingFacets && Object.keys(groupedFacets).length === 0
+          }
+        />
 
-      <MobileButton className="my-xl" />
+        <MobileButton />
 
+        {(searchMode === "datasets" || searchMode === "organisations") && (
+          <>
+            <Button
+              variant="plain"
+              size="sm"
+              label={t("common|filter-info")}
+              icon={InfoCircleIcon}
+              iconSize={iconSize * 1.5}
+              iconPosition="left"
+              onClick={() => setShowFilterInfo(true)}
+            />
+            <Modal
+              heading={t("pages|search$search-tips")}
+              modalOpen={showFilterInfo}
+              setModalOpen={setShowFilterInfo}
+              text={t("pages|search$search-tips-head")}
+              description={t(`pages|search$search-${searchMode}-tips-text`)}
+              textSize="md"
+              closeBtn={t("common|close")}
+              closeBtnClassName="ml-auto"
+            />
+          </>
+        )}
+      </div>
       <div
         ref={ref}
         id="filter-content"
-        className={`fixed inset-md z-50 w-auto border-t border-brown-400 bg-pink-50 md:static md:mt-xl md:bg-transparent md:pt-[1.875rem] ${
+        className={`fixed inset-md z-50 w-auto border-t border-brown-400 bg-pink-50 md:static md:bg-transparent md:pt-[1.875rem] ${
           showFilter ? "block" : "hidden"
         }`}
       >
