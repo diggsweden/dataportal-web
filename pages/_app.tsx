@@ -115,11 +115,11 @@ function Dataportal({
     if (!initialNavigationData?.items?.length) {
       return null;
     }
-    return (
-      initialNavigationData.items.find((nav) => nav.locale === lang) ||
-      initialNavigationData.items[0]
+
+    return initialNavigationData?.items.find(
+      (nav: NavigationDataFragment) => nav.locale === lang,
     );
-  }, [initialNavigationData?.items, lang]);
+  }, [lang]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

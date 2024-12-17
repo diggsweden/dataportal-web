@@ -71,32 +71,33 @@ export const Sidebar: FC<NavSideProps> = ({
       onKeyDown={handleEscape}
     >
       <ul className="w-full list-none whitespace-nowrap md:w-[18.75rem]">
-        {sidebarMenu.map(
-          (menu: MenuLinkIconFragment | SubLink, idx: number) => (
-            <li key={idx} className="whitespace-nowrap">
-              {menu.__typename === "dataportal_Digg_MenuLinkIcon" ? (
-                <SidebarLink
-                  level="1"
-                  icon={menu.icon}
-                  href={menu.link}
-                  label={menu.name}
-                  variant={"external"}
-                  openSideBar={openSideBar}
-                  setOpenSideBar={setOpenSideBar}
-                />
-              ) : (
-                <SidebarLink
-                  level="2"
-                  icon={menu.icon}
-                  list={menu.links}
-                  label={menu.title}
-                  openSideBar={openSideBar}
-                  setOpenSideBar={setOpenSideBar}
-                />
-              )}
-            </li>
-          ),
-        )}
+        {sidebarMenu?.length > 0 &&
+          sidebarMenu.map(
+            (menu: MenuLinkIconFragment | SubLink, idx: number) => (
+              <li key={idx} className="whitespace-nowrap">
+                {menu.__typename === "dataportal_Digg_MenuLinkIcon" ? (
+                  <SidebarLink
+                    level="1"
+                    icon={menu.icon}
+                    href={menu.link}
+                    label={menu.name}
+                    variant={"external"}
+                    openSideBar={openSideBar}
+                    setOpenSideBar={setOpenSideBar}
+                  />
+                ) : (
+                  <SidebarLink
+                    level="2"
+                    icon={menu.icon}
+                    list={menu.links}
+                    label={menu.title}
+                    openSideBar={openSideBar}
+                    setOpenSideBar={setOpenSideBar}
+                  />
+                )}
+              </li>
+            ),
+          )}
       </ul>
     </nav>
   );
