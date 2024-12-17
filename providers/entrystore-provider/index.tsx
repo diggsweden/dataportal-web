@@ -206,8 +206,11 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         return {};
 
       case "apiexplore": {
-        const contact = await entrystoreService.getContactInfo(metadata);
-        return { contact };
+        const [contact, organisationLink] = await Promise.all([
+          entrystoreService.getContactInfo(metadata),
+          entrystoreService.getOrganisationLink(publisherEntry),
+        ]);
+        return { contact, organisationLink };
       }
 
       case "organisation": {
@@ -233,7 +236,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       case "terminology": {
         // Fetch specifications and formats in parallel
-        const [specs, formats] = await Promise.all([
+        const [specs, formats, organisationLink] = await Promise.all([
           entrystoreService.getRelatedSpecifications(
             entry,
             metadata,
@@ -243,29 +246,34 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           entrystoreService.getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
           ),
+          entrystoreService.getOrganisationLink(publisherEntry),
         ]);
 
         return {
           relatedSpecifications: specs,
           address: formatTerminologyAddress(resourceUri),
           downloadFormats: formats,
+          organisationLink,
         };
       }
 
       case "specification": {
         // Fetch all data in parallel
-        const [datasets, keywords, formats] = await Promise.all([
-          entrystoreService.getRelatedDatasets(entry),
-          entrystoreService.getKeywords(entry),
-          entrystoreService.getDownloadFormats(
-            entry.getEntryInfo().getMetadataURI(),
-          ),
-        ]);
+        const [datasets, keywords, formats, organisationLink] =
+          await Promise.all([
+            entrystoreService.getRelatedDatasets(entry),
+            entrystoreService.getKeywords(entry),
+            entrystoreService.getDownloadFormats(
+              entry.getEntryInfo().getMetadataURI(),
+            ),
+            entrystoreService.getOrganisationLink(publisherEntry),
+          ]);
 
         return {
           relatedDatasets: datasets,
           keywords,
           downloadFormats: formats,
+          organisationLink,
         };
       }
 

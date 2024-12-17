@@ -1,4 +1,5 @@
 import { Entry } from "@entryscape/entrystore-js";
+import { useRouter } from "next/router";
 import { I18n } from "next-translate";
 import withTranslation from "next-translate/withTranslation";
 import { decode, encode } from "qss";
@@ -38,6 +39,7 @@ export interface SearchProviderProps {
   children?: ReactNode;
   fetchHitsWithFacets?: boolean;
   entry?: Entry;
+  router: ReturnType<typeof useRouter>;
 }
 
 /**
@@ -627,9 +629,8 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     });
 
     const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
-    if (window.location.search !== `?${searchParams}`) {
-      window.location.replace(newUrl);
-    }
+    // Use the router from props
+    this.props.router.replace(newUrl, undefined, { shallow: true });
   };
 
   /**

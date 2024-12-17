@@ -41,6 +41,7 @@ export const DatasetSeriesPage: FC = () => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { t, lang } = useTranslation();
+  const router = useRouter();
 
   useEffect(() => {
     setBreadcrumb?.({
@@ -82,6 +83,7 @@ export const DatasetSeriesPage: FC = () => {
       </div>
 
       <SearchProvider
+        router={router}
         {...searchProviderSettings["datasets-series"]}
         entry={entry.entry}
       >
