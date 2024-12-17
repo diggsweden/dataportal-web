@@ -306,14 +306,20 @@ export class EntrystoreService {
           const facetSpec = this.facetSpecification?.facets?.find(
             (spec) => spec.resource === fg.predicate,
           );
-
           if (facetSpec && facetSpec.dcatType !== "choice") {
             await getUriNames(
               fg.values
-                .filter(
-                  (v: SearchFacet) =>
-                    v.name?.toLocaleLowerCase().startsWith("http"),
-                )
+                .filter((v: SearchFacet) => {
+                  if (
+                    facetSpec.customProperties &&
+                    facetSpec.customProperties?.length > 0
+                  ) {
+                    return facetSpec.customProperties.some(
+                      (property) => v.name?.startsWith(property),
+                    );
+                  }
+                  return v.name?.toLocaleLowerCase().startsWith("http");
+                })
                 .map((v: SearchFacet) => v.name),
               this.entryStoreUtil,
               facetSpec?.dcatProperty,
@@ -486,6 +492,20 @@ export class EntrystoreService {
                 }
               } else {
                 displayName = entryCache.getValue(value.name) || value.name;
+                if (
+                  displayName.startsWith("http") &&
+                  f.customProperties &&
+                  f.customProperties.length > 0
+                ) {
+                  // Find the matching custom property that the displayName starts with
+                  const matchingProperty = f.customProperties.find((property) =>
+                    displayName.startsWith(property),
+                  );
+                  // Replace only if a matching property was found
+                  if (matchingProperty) {
+                    displayName = displayName.replace(matchingProperty, "");
+                  }
+                }
               }
               return {
                 count: value.count,
