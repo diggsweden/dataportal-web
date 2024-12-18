@@ -630,7 +630,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
 
     const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
     // Use the router from props
-    this.props.router.replace(newUrl, undefined, { shallow: true });
+    this.props.router.push(newUrl, undefined, { shallow: true });
   };
 
   /**
