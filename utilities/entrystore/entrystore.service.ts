@@ -456,76 +456,91 @@ export class EntrystoreService {
           customFilter: f.customFilter,
           customLabel: f.customLabel,
           customSearch: f.customSearch,
-          facetValues: metaFacet.values
-            .filter((value: ESFacetFieldValue) => {
-              if (f.customProperties && f.customProperties.length > 0) {
-                return f.customProperties.some((property) =>
-                  value.name.startsWith(property),
-                );
-              }
-              if (!value.name || value.name.trim() === "") return false;
-              if (!f?.dcatFilterEnabled) return true;
+          facetValues:
+            metaFacet.values.length > 0
+              ? metaFacet.values
+                  .filter((value: ESFacetFieldValue) => {
+                    if (f.customProperties && f.customProperties.length > 0) {
+                      return f.customProperties.some((property) =>
+                        value.name.startsWith(property),
+                      );
+                    }
+                    if (!value.name || value.name.trim() === "") return false;
+                    if (!f?.dcatFilterEnabled) return true;
 
-              const choices: Choice[] = getTemplateChoices(
-                dcat,
-                f.dcatProperty,
-                f.dcatId,
-              );
-              return choices.some(
-                (choice: Choice) => choice.value === value.name,
-              );
-            })
-
-            .map((value: ESFacetFieldValue) => {
-              let displayName = value.name;
-              if (f?.dcatType === "choice") {
-                const choices = getTemplateChoices(
-                  dcat,
-                  f.dcatProperty,
-                  f.dcatId,
-                );
-                const choice = choices.find(
-                  (c: Choice) => c.value === value.name,
-                );
-                if (choice) {
-                  displayName = getLocalizedChoiceLabel(choice, this.lang);
-                }
-              } else {
-                displayName = entryCache.getValue(value.name) || value.name;
-                if (
-                  displayName.startsWith("http") &&
-                  f.customProperties &&
-                  f.customProperties.length > 0
-                ) {
-                  // Find the matching custom property that the displayName starts with
-                  const matchingProperty = f.customProperties.find((property) =>
-                    displayName.startsWith(property),
-                  );
-                  // Replace only if a matching property was found
-                  if (matchingProperty) {
-                    displayName = displayName.replace(matchingProperty, "");
-                  }
-                }
-              }
-              return {
-                count: value.count,
-                facet: metaFacet.predicate,
-                facetType: metaFacet.type,
-                facetValueString: `${metaFacet.predicate}||${value.name}||${
-                  f.related || false
-                }||${metaFacet.type}||${this.t(
-                  metaFacet.predicate,
-                )}||${displayName}||${f.customFilter}||${
-                  f.customSearch ? JSON.stringify(f.customSearch) : undefined
-                }||${f.customLabel}`,
-                related: f.related || false,
-                resource: value.name,
-                title: displayName,
-                customFilter: f.customFilter,
-                customLabel: f.customLabel,
-                customSearch: f.customSearch,
-              };
-            }),
+                    const choices: Choice[] = getTemplateChoices(
+                      dcat,
+                      f.dcatProperty,
+                      f.dcatId,
+                    );
+                    return choices.some(
+                      (choice: Choice) => choice.value === value.name,
+                    );
+                  })
+                  .map((value: ESFacetFieldValue) => {
+                    let displayName = value.name;
+                    if (f?.dcatType === "choice") {
+                      const choices = getTemplateChoices(
+                        dcat,
+                        f.dcatProperty,
+                        f.dcatId,
+                      );
+                      const choice = choices.find(
+                        (c: Choice) => c.value === value.name,
+                      );
+                      if (choice) {
+                        displayName = getLocalizedChoiceLabel(
+                          choice,
+                          this.lang,
+                        );
+                      }
+                    } else {
+                      displayName =
+                        entryCache.getValue(value.name) || value.name;
+                    }
+                    return {
+                      count: value.count,
+                      facet: metaFacet.predicate,
+                      facetType: metaFacet.type,
+                      facetValueString: `${metaFacet.predicate}||${
+                        value.name
+                      }||${f.related || false}||${metaFacet.type}||${this.t(
+                        metaFacet.predicate,
+                      )}||${displayName}||${f.customFilter}||${
+                        f.customSearch
+                          ? JSON.stringify(f.customSearch)
+                          : undefined
+                      }||${f.customLabel}`,
+                      related: f.related || false,
+                      resource: value.name,
+                      title: displayName,
+                      customFilter: f.customFilter,
+                      customLabel: f.customLabel,
+                      customSearch: f.customSearch,
+                    };
+                  })
+              : [
+                  {
+                    count: 0,
+                    facet: metaFacet.predicate,
+                    facetType: metaFacet.type,
+                    facetValueString: `${metaFacet.predicate}||${
+                      f.customFilter
+                    }||${f.related || false}||${metaFacet.type}||${this.t(
+                      metaFacet.predicate,
+                    )}||${f.customFilter}||${f.customFilter}||${
+                      f.customSearch
+                        ? JSON.stringify(f.customSearch)
+                        : undefined
+                    }||${f.customLabel}`,
+                    related: false,
+                    resource: "",
+                    title: "",
+                    customFilter: f.customFilter,
+                    customSearch: f.customSearch,
+                    customLabel: f.customLabel,
+                  },
+                ],
         };
       }
     }

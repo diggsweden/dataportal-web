@@ -91,7 +91,7 @@ const FilterSearch: FC<FilterSearchProps> = ({
   );
 };
 
-const FindFilters = (
+const findFilters = (
   categoryFilters: SearchFacetValue[],
   checkedFilters: SearchFacetValue[] | undefined,
 ) => {
@@ -307,7 +307,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                         >
                           <SearchFilter
                             title={value.title}
-                            usedFilters={FindFilters(
+                            usedFilters={findFilters(
                               value.facetValues,
                               search.request.facetValues,
                             )}

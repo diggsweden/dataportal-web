@@ -148,9 +148,8 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             indexOrder: 7,
             group: "type",
             showInSearchResult: true,
-            customProperties: [
-              "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/",
-            ],
+            customFilter:
+              "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/*",
           },
           {
             resource: "http://purl.org/dc/terms/conformsTo",

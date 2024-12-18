@@ -672,7 +672,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
         if (!f.includes("||")) return;
 
         const facetstring = f.split("||");
-        if (facetstring.length !== 9) return;
+        if (facetstring.length < 6) return;
 
         let facetType = ESType.unknown;
         switch (facetstring[3]) {

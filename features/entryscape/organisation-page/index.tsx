@@ -230,7 +230,7 @@ export const OrganisationPage: FC = () => {
                   </Heading>
                   {entry.contact && entry.contact.email ? (
                     <CustomLink
-                      className="text-green-600 hover:no-underline"
+                      className="text-sm text-green-600 hover:no-underline"
                       href={entry.contact.email}
                     >
                       {entry.contact.name}
@@ -263,7 +263,7 @@ export const OrganisationPage: FC = () => {
                     >
                       {t("pages|organisation_page$org-no")}
                     </Heading>
-                    <p>{entry.organisationData?.orgClassification}</p>
+                    <p>{entry.organisationData.orgNumber}</p>
                   </div>
                 )}
 
