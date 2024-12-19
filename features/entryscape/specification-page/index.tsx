@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
@@ -55,20 +54,6 @@ export const SpecificationPage: FC = () => {
 
   return (
     <Container>
-      <Head>
-        <title>
-          {entry.title ? `${entry.title} - Sveriges dataportal` : "test"}
-        </title>
-        <meta
-          property="og:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-        <meta
-          name="twitter:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-      </Head>
-
       <div>
         <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {entry.title}
@@ -76,8 +61,17 @@ export const SpecificationPage: FC = () => {
         <div className="flex flex-col gap-xl md:mb-xl lg:flex-row lg:gap-2xl">
           {/* Left column */}
           <div className="flex w-full max-w-md flex-col">
-            {entry.publisher && (
-              <Preamble className="mb-lg">{entry.publisher}</Preamble>
+            {entry.organisationLink ? (
+              <Link
+                className="mb-lg text-lg font-normal text-green-600 hover:!no-underline"
+                href={entry.organisationLink}
+              >
+                {entry.publisher}
+              </Link>
+            ) : (
+              entry.publisher && (
+                <Preamble className="mb-lg">{entry.publisher}</Preamble>
+              )
             )}
 
             <span className="mb-lg mt-md !font-ubuntu text-lg text-textSecondary md:mb-xl md:mt-lg">

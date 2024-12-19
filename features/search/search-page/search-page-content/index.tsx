@@ -14,6 +14,10 @@ import { SearchHitFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 import { SearchHit, SearchRequest, SearchResult } from "@/types/search";
 import { linkBase, querySearch } from "@/utilities";
+import {
+  clearCurrentScrollPos,
+  saveCurrentScrollPos,
+} from "@/utilities/scroll-helper";
 
 interface SearchProps {
   activeLink?: string;
@@ -64,21 +68,6 @@ export const SearchPageContent: FC<SearchProps> = () => {
     });
 
     setLoading(false);
-  };
-
-  const clearCurrentScrollPos = () => {
-    if (typeof localStorage != "undefined" && typeof location != "undefined") {
-      localStorage.setItem(`ScrollposY_${location.search}`, "0");
-    }
-  };
-
-  const saveCurrentScrollPos = () => {
-    if (typeof localStorage != "undefined" && typeof location != "undefined") {
-      localStorage.setItem(
-        `ScrollposY_${location.search}`,
-        JSON.stringify(window.scrollY),
-      );
-    }
   };
 
   const highlightWords = (text: string) => {
@@ -166,10 +155,12 @@ export const SearchPageContent: FC<SearchProps> = () => {
         <meta
           property="og:title"
           content={`${t("common|search")} - Sveriges dataportal`}
+          key="og:title"
         />
         <meta
           name="twitter:title"
           content={`${t("common|search")} - Sveriges dataportal`}
+          key="twitter:title"
         />
       </Head>
       <Container>
@@ -231,6 +222,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
                         onClick={() => {
                           saveCurrentScrollPos();
                         }}
+                        data-tracking-name="search-hit"
                         className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
                       >
                         <Heading

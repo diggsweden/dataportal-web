@@ -5,14 +5,17 @@ import { FC } from "react";
 import { CustomLink } from "@/components/custom-link";
 import { Container } from "@/components/layout/container";
 import { FooterNav } from "@/components/navigation/footer-nav";
+import { SubLinkFooter } from "@/types/global";
 
 type FooterProps = {
+  footerData: SubLinkFooter[];
   openSideBar: boolean;
   setOpenSideBar: (_param: boolean) => void;
   setSettingsOpen: (_param: boolean) => void;
 };
 
 export const Footer: FC<FooterProps> = ({
+  footerData,
   openSideBar,
   setOpenSideBar,
   setSettingsOpen,
@@ -27,6 +30,7 @@ export const Footer: FC<FooterProps> = ({
       >
         <Container className="space-y-xl md:space-y-2xl">
           <FooterNav
+            footerData={footerData}
             setSettingsOpen={setSettingsOpen}
             setOpenSideBar={setOpenSideBar}
           />

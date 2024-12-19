@@ -1,5 +1,6 @@
-import { exploreApiLink, keyword, theme, customIndicators } from "./global";
 import { Translate } from "next-translate";
+
+import { exploreApiLink, keyword, theme, customIndicators } from "./global";
 
 export const dataserviceBlocks = (
   t: Translate,

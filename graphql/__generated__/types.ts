@@ -48,6 +48,10 @@ export interface Dataportal_QueryContainerArgs {
   state?: InputMaybe<Dataportal_ContainerState>;
 }
 
+export interface Dataportal_QueryLocaleArgs {
+  locale?: InputMaybe<Scalars['String']['input']>;
+}
+
 export interface Dataportal_QuerySearchArgs {
   getHighlights?: InputMaybe<Scalars['Boolean']['input']>;
   highlightPostText?: InputMaybe<Scalars['String']['input']>;

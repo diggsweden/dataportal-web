@@ -8,27 +8,27 @@ import {
 } from "react";
 
 export interface ITrackingContext {
-  activateMatomo: Boolean;
-  setActivation: Dispatch<SetStateAction<Boolean>>;
+  activateMatomo: boolean;
+  setActivation: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface ITrackingContextProps {
   children?: ReactNode;
-  initalActivation: Boolean;
+  initalActivation: boolean;
 }
 
-/* eslint-disable no-unused-vars */
 export const TrackingContext = createContext<ITrackingContext>({
   activateMatomo: false,
-  setActivation: (value: SetStateAction<Boolean>) => {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setActivation: (_value: SetStateAction<boolean>) => {},
 });
-/* eslint-enable no-unused-vars */
 
 export const TrackingProvider: FC<ITrackingContextProps> = ({
   initalActivation,
   children,
 }) => {
   const [activate, setActivation] = useState(initalActivation);
+
   return (
     <TrackingContext.Provider
       value={{ activateMatomo: activate, setActivation }}

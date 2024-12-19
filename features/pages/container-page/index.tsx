@@ -76,7 +76,8 @@ const getLinks = () => {
       };
       const id = `${element.innerText
         .toLowerCase()
-        .replace(/[åäö\s.]/g, (m: string) => chars[m])}`;
+        .replace(/[åäö\s.]/g, (m: string) => chars[m] || "")
+        .trim()}`;
       // Get the sibling element and give it the id
       element.id = `${id}`;
       menuItems.push({

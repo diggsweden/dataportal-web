@@ -1,5 +1,6 @@
 import { SearchSortOrder } from "@/providers/search-provider";
-import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
+
+import { ESRdfType, ESType } from "./entrystore-core";
 
 //#region ES members
 
@@ -34,6 +35,7 @@ export interface FacetSpecification {
 export interface FacetSpecificationItem {
   group: string;
   resource: string;
+  customLabel?: string;
   indexOrder: number;
   type: ESType;
   related?: boolean;
@@ -41,6 +43,10 @@ export interface FacetSpecificationItem {
   dcatId?: string;
   dcatType?: string;
   dcatFilterEnabled?: boolean;
+  customFilter?: string;
+  customSearch?: ESRdfType[];
+  customProperties?: string[];
+  showInSearchResult?: boolean;
 }
 
 export interface SearchResult {
@@ -74,6 +80,10 @@ interface SearchFacet {
   count: number;
   group: string;
   indexOrder: number;
+  resource?: string;
+  customFilter?: string;
+  customLabel?: string;
+  customSearch?: ESRdfType[];
 }
 
 export interface SearchFacetValue {
@@ -84,6 +94,10 @@ export interface SearchFacetValue {
   count: number;
   facetValueString: string;
   related: boolean;
+  customFilter?: string;
+  customLabel?: string;
+  customProperties?: string[];
+  customSearch?: ESRdfType[];
 }
 
 export interface SearchRequest {
@@ -97,10 +111,15 @@ export interface SearchRequest {
   takeFacets?: number;
   esRdfTypes?: ESRdfType[];
   sortOrder?: SearchSortOrder;
-  compact?: boolean;
   filters?: {
-    key: string;
-    property: ESType;
-    values: string[];
-  }[];
+    exclude?: {
+      key: string;
+      property: ESType;
+      values: string[];
+    }[];
+    include?: {
+      key: string;
+      property: ESType;
+    }[];
+  };
 }

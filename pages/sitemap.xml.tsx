@@ -177,9 +177,9 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const staticPaths = [
     "",
-    "/datasets?p=1&amp;q=&amp;s=2&amp;t=20&amp;f=&amp;rt=dataset%24esterms_IndependentDataService%24esterms_ServedByDataService&amp;c=false",
-    "/concepts?p=1&amp;q=&amp;s=2&amp;t=20&amp;f=&amp;rt=term&amp;c=false",
-    "/specifications?p=1&amp;q=&amp;s=2&amp;t=20&amp;f=&amp;rt=spec_standard%24spec_profile&amp;c=false",
+    "/datasets?datasets?p=1&q=&s=2&t=20&f=&rt=dataset%24data_service%24dataset_series",
+    "/concepts?p=1&q=&s=2&t=20&f=&rt=term",
+    "/specifications?specifications?p=1&q=&s=2&t=20&f=&rt=spec_standard%24spec_profile",
     "/statistik",
     "/en/statistics",
     "/metadatakvalitet",

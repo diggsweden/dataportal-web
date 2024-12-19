@@ -25,7 +25,7 @@ export const PromotedContentBlock: FC<PromotedContentFragment> = ({
     <div className="bg-white p-lg md:flex">
       {img && (
         <CustomImage
-          className="max-h-[21.25rem] object-cover md:w-[45%]"
+          className="h-full max-h-[21.25rem] object-cover md:w-[45%]"
           image={img}
         />
       )}
@@ -46,6 +46,7 @@ export const PromotedContentBlock: FC<PromotedContentFragment> = ({
             href={link}
             iconPosition="right"
             icon={ArrowRightIcon}
+            data-tracking-name="promoted-content-block"
           />
         )}
       </div>

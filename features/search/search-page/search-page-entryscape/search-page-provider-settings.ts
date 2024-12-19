@@ -1,6 +1,6 @@
 import { EnvSettings } from "@/env";
 import { SearchSortOrder } from "@/providers/search-provider";
-import { ESRdfType, ESType } from "@/utilities/entryscape/entryscape";
+import { ESRdfType, ESType } from "@/types/entrystore-core";
 
 interface FacetConfig {
   resource: string;
@@ -13,6 +13,9 @@ interface FacetConfig {
   dcatId?: string;
   related?: boolean;
   maschineName?: string;
+  showInSearchResult?: boolean;
+  customFilter?: string; // Special case for special filters with checkbox
+  customSearch?: ESRdfType[]; // Special case for special filters with search
 }
 
 interface HitSpecification {
@@ -32,12 +35,18 @@ interface SearchProviderConfig {
     language: string;
     takeFacets: number;
     sortOrder?: SearchSortOrder;
-    // Values to exclude from search
+    // Values to exclude or include from search
     filters?: {
-      key: string;
-      property: ESType;
-      values: string[];
-    }[];
+      exclude?: {
+        key: string;
+        property: ESType;
+        values: string[];
+      }[];
+      include?: {
+        key: string;
+        property: ESType;
+      }[];
+    };
   };
 }
 
@@ -55,6 +64,11 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
         },
         "http://www.w3.org/ns/dcat#DataService": {
           path: `/dataservice/`,
+          titleResource: "dcterms:title",
+          descriptionResource: "dcterms:description",
+        },
+        "http://www.w3.org/ns/dcat#DatasetSeries": {
+          path: "/dataset-series/",
           titleResource: "dcterms:title",
           descriptionResource: "dcterms:description",
         },
@@ -108,7 +122,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           },
           {
             resource: "http://purl.org/dc/terms/accrualPeriodicity",
-            dcatId: "dcat:dcterms:accrualPeriodicity_da",
+            dcatId: "dcat:dcterms:accrualPeriodicity",
             type: ESType.uri,
             dcatProperty: "dcterms:accrualPeriodicity",
             dcatType: "choice",
@@ -124,15 +138,18 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             dcatFilterEnabled: false,
             indexOrder: 6,
             group: "type",
+            customFilter: "http://data.europa.eu/eli/reg_impl/2023/138/oj",
+            showInSearchResult: true,
           },
           {
             resource: "http://purl.org/dc/terms/subject",
             type: ESType.uri,
             dcatProperty: "dcterms:subject",
-            dcatType: "choice",
-            dcatFilterEnabled: false,
             indexOrder: 7,
             group: "type",
+            showInSearchResult: true,
+            customFilter:
+              "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/*",
           },
           {
             resource: "http://purl.org/dc/terms/conformsTo",
@@ -142,18 +159,116 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             dcatFilterEnabled: false,
             indexOrder: 8,
             group: "type",
+            customFilter: "*",
+          },
+          {
+            resource: "http://www.w3.org/ns/dcat#DataService",
+            type: ESType.uri,
+            dcatProperty: "dcat:DataService",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 8,
+            group: "distribution",
+            customSearch: [
+              ESRdfType.data_service,
+              ESRdfType.served_by_data_service,
+            ],
+          },
+          {
+            resource: "http://www.w3.org/ns/dcat#DatasetSeries",
+            type: ESType.uri,
+            dcatProperty: "dcat:DatasetSeries",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 9,
+            group: "distribution",
+            customSearch: [ESRdfType.dataset_series],
+          },
+          {
+            resource: "http://purl.org/dc/terms/accessRights",
+            type: ESType.uri,
+            dcatProperty: "dcterms:accessRights",
+            indexOrder: 10,
+            group: "access",
+            customLabel: "http://purl.org/dc/terms/accessRights:PUBLIC",
+            customFilter:
+              "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+          },
+          {
+            resource: "http://purl.org/dc/terms/accessRights",
+            type: ESType.uri,
+            dcatProperty: "dcterms:accessRights",
+            indexOrder: 11,
+            dcatType: "choice",
+            group: "access",
+            customLabel: "http://purl.org/dc/terms/accessRights",
+            customProperties: [
+              "http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC",
+              "http://publications.europa.eu/resource/authority/access-right/RESTRICTED",
+            ],
           },
         ],
       },
       initRequest: {
         esRdfTypes: [
           ESRdfType.dataset,
-          ESRdfType.esterms_IndependentDataService,
-          ESRdfType.esterms_ServedByDataService,
+          ESRdfType.data_service,
+          ESRdfType.dataset_series,
         ],
+        filters: {
+          exclude: [
+            {
+              key: "dcat:inSeries",
+              property: "uri",
+              values: ["*"],
+            },
+          ],
+        },
         takeFacets: 30,
         language: lang,
         sortOrder: SearchSortOrder.score_desc,
+      },
+    },
+    "datasets-series": {
+      entryscapeUrl: env.ENTRYSCAPE_DATASETS_PATH
+        ? `https://${env.ENTRYSCAPE_DATASETS_PATH}/store`
+        : "https://admin.dataportal.se/store",
+      hitSpecifications: {
+        "http://www.w3.org/ns/dcat#Dataset": {
+          path: `/datasets/`,
+          titleResource: "dcterms:title",
+          descriptionResource: "dcterms:description",
+        },
+        "http://www.w3.org/ns/dcat#DataService": {
+          path: `/dataservice/`,
+          titleResource: "dcterms:title",
+          descriptionResource: "dcterms:description",
+        },
+      },
+      facetSpecification: {
+        facets: [
+          {
+            resource: "http://purl.org/dc/terms/publisher",
+            dcatProperty: "dcterms:publisher",
+            type: ESType.uri,
+            indexOrder: 1,
+            group: "default",
+          },
+        ],
+      },
+      initRequest: {
+        esRdfTypes: [ESRdfType.dataset, ESRdfType.data_service],
+        language: lang,
+        takeFacets: 30,
+        sortOrder: SearchSortOrder.modified_desc,
+        filters: {
+          include: [
+            {
+              key: "dcat:inSeries",
+              property: "uri",
+            },
+          ],
+        },
       },
     },
     specifications: {
@@ -218,22 +333,34 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             type: ESType.uri,
             dcatType: "choice",
             indexOrder: 1,
-            maschineName: "publishertype",
             group: "default",
+          },
+          {
+            resource: "https://www.w3.org/ns/org#classification",
+            dcatProperty: "org:classification",
+            type: ESType.uri,
+            indexOrder: 2,
+            group: "default",
+            customFilter:
+              "https://dataportal.se/concepts/orgAspects/feeFinanzing",
           },
         ],
       },
       initRequest: {
-        esRdfTypes: [ESRdfType.agent],
+        esRdfTypes: [ESRdfType.organisation],
         language: lang,
         takeFacets: 30,
-        filters: [
-          {
-            key: "dcterms:type",
-            property: "uri",
-            values: ["http://purl.org/adms/publishertype/PrivateIndividual(s)"],
-          },
-        ],
+        filters: {
+          exclude: [
+            {
+              key: "dcterms:type",
+              property: "uri",
+              values: [
+                "http://purl.org/adms/publishertype/PrivateIndividual(s)",
+              ],
+            },
+          ],
+        },
       },
     },
     concepts: {

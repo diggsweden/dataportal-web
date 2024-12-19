@@ -22,8 +22,8 @@ export const slugify = (str: string) => {
     .replace(/\s+/g, "-") // Replace spaces with -
     .replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
     .replace(/&/g, "-and-") // Replace & with 'and'
-    .replace(/[^\w\-]+/g, "") // Remove all non-word characters
-    .replace(/\-\-+/g, "-") // Replace multiple - with single -
+    .replace(/[^\w\s]+/g, "") // Remove all non-word characters
+    .replace(/--+/g, "-") // Replace multiple - with single -
     .replace(/^-+/, "") // Trim - from start of text
     .replace(/-+$/, ""); // Trim - from end of text
 };
@@ -74,7 +74,7 @@ export const makeBreadcrumbsFromPath = (path: string) => {
     { name: "start", link: { ...linkBase, link: "/" } },
   ];
 
-  let basePath: string[] = [];
+  const basePath: string[] = [];
 
   paths.map((path, index) => {
     if (index !== paths.length - 1) {

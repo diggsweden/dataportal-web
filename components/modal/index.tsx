@@ -1,5 +1,5 @@
 import { createFocusTrap, FocusTrap } from "focus-trap";
-import { FC, useEffect, useRef, KeyboardEvent } from "react";
+import { FC, useEffect, useRef, KeyboardEvent, PropsWithChildren } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ExternalIcon from "@/assets/icons/external-link.svg";
@@ -10,19 +10,21 @@ import { isExternalLink } from "@/utilities";
 import { HtmlParser } from "../typography/html-parser";
 
 interface ModalProps {
-  heading: string;
+  heading?: string;
   text?: string;
   onClick?: () => void;
   modalOpen: boolean;
   setModalOpen: (_param: boolean) => void;
   closeBtn?: string;
+  closeBtnClassName?: string;
   confirmBtn?: string;
   description?: string | null;
   href?: string;
-  type?: "tools";
+  modalSize?: "sm" | "md";
+  textSize?: "sm" | "md";
 }
 
-export const Modal: FC<ModalProps> = ({
+export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   heading,
   text,
   onClick,
@@ -30,16 +32,23 @@ export const Modal: FC<ModalProps> = ({
   setModalOpen,
   description,
   closeBtn,
+  closeBtnClassName,
   confirmBtn,
   href,
-  type,
+
+  modalSize = "md",
+  textSize = "sm",
+  children,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const modalType = type === "tools";
   const trapRef = useRef<FocusTrap | null>(null);
 
   useEffect(() => {
     if (modalOpen && ref.current) {
+      // Focus the modal container itself to prevent scroll to bottom when modal opens
+      ref.current.scrollTo({ top: 0, behavior: "instant" });
+      ref.current.focus();
+
       trapRef.current = createFocusTrap(ref.current, {
         escapeDeactivates: false,
         allowOutsideClick: true,
@@ -69,16 +78,19 @@ export const Modal: FC<ModalProps> = ({
       />
       <div
         ref={ref}
-        className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] w-4/5 max-w-md -translate-x-1/2 -translate-y-1/2  
-        overflow-auto bg-white p-xl shadow-2xl md:w-auto ${
+        tabIndex={-1}
+        role="dialog"
+        aria-modal="true"
+        className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] w-4/5 -translate-x-1/2 -translate-y-1/2 overflow-auto  
+        bg-white p-xl shadow-2xl outline-none md:w-auto ${
           modalOpen ? "visible" : "hidden"
-        }`}
+        } ${modalSize === "sm" ? "max-w-[24rem]" : "max-w-md"}`}
         onKeyDown={handleEscape}
       >
         {heading && (
           <Heading
             level={1}
-            size={modalType ? "md" : "sm"}
+            size={textSize}
             className={text ? "font-thin" : "pb-lg"}
           >
             {heading}
@@ -87,7 +99,7 @@ export const Modal: FC<ModalProps> = ({
         {text && (
           <p
             className={`${
-              modalType ? "pt-lg text-lg text-brown-600" : ""
+              textSize === "md" ? "pt-lg text-lg text-brown-600" : ""
             } pb-lg`}
           >
             {text}
@@ -97,11 +109,15 @@ export const Modal: FC<ModalProps> = ({
           <div className="pb-lg">{HtmlParser({ text: description })}</div>
         )}
 
+        {children && <div className="pb-lg">{children}</div>}
+
         <div className="flex justify-between gap-lg">
           {closeBtn && (
             <Button
               onClick={() => setModalOpen(false)}
-              className="min-w-[3.125rem] justify-center hover:bg-brown-200"
+              className={`min-w-[3.125rem] justify-center hover:bg-brown-200 ${
+                closeBtnClassName ? closeBtnClassName : ""
+              }`}
               variant={"secondary"}
               label={closeBtn}
               aria-label={`${closeBtn} modal ${heading}`}

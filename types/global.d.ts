@@ -2,6 +2,7 @@
 
 import { ComponentType } from "react";
 
+import { MenuLinkFragment } from "@/graphql/__generated__/operations";
 import { Dataportal_LinkType } from "@/graphql/__generated__/types";
 
 export type FlexDirection = "column" | "row";
@@ -13,12 +14,17 @@ type AddIcon = ComponentType<{
   viewBox?: string;
 }>;
 
-type MenuItem = {
-  link: string;
-  name: string;
-  order: number;
-  pageId: number;
-  children: MenuItem[];
+type SubLink = {
+  __typename: "dataportal_Digg_SubLink";
+  title: string;
+  icon: string;
+  links: MenuLinkFragment[];
+};
+
+type SubLinkFooter = {
+  __typename: "dataportal_Digg_SubLink";
+  title: string;
+  links: MenuLinkFragment[];
 };
 
 export type DiggStrapiTheme =
@@ -60,12 +66,12 @@ export interface DataportalSettings {
 }
 
 declare module "remark-gfm" {
-  const content: any;
+  const content: unknown;
   export default content;
 }
 
 declare module "react-truncate" {
-  const content: any;
+  const content: unknown;
   export default content;
 }
 

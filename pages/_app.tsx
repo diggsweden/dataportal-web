@@ -3,9 +3,9 @@ import reactenv from "@beam-australia/react-env";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
+import router, { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
@@ -25,6 +25,11 @@ import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { CookieBanner } from "@/features/cookie-banner";
 import { client } from "@/graphql";
 import {
+  MenuLinkFragment,
+  MenuLinkIconFragment,
+  NavigationDataFragment,
+} from "@/graphql/__generated__/operations";
+import {
   LocalStore,
   LocalStoreProvider,
 } from "@/providers/local-store-provider";
@@ -33,17 +38,16 @@ import {
   SettingsProvider,
 } from "@/providers/settings-provider";
 import { TrackingProvider } from "@/providers/tracking-provider";
+import { SubLink, SubLinkFooter } from "@/types/global";
 import {
-  click,
   DataportalPageProps,
-  keyUp,
+  getNavigationData,
   linkBase,
   resolvePage,
 } from "@/utilities";
-
 import "@/styles/main.css";
 
-const GetCookiesAccepted = () => {
+const getCookiesAccepted = () => {
   try {
     const store: LocalStore = JSON.parse(localStorage.getItem("digg-store")!);
     return store ? store.cookieSettings?.analytic.accepted == true : false;
@@ -52,7 +56,18 @@ const GetCookiesAccepted = () => {
   }
 };
 
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    _paq: any[];
+  }
+}
+
 interface DataportalenProps extends AppProps {
+  navigationData: {
+    type: "Navigation";
+    items: NavigationDataFragment[];
+  };
   nonce: string;
 }
 
@@ -71,7 +86,11 @@ const onHash = (pathWithHash: string) => {
   skipToElement(hash);
 };
 
-function Dataportal({ Component, pageProps }: DataportalenProps) {
+function Dataportal({
+  Component,
+  pageProps,
+  navigationData: initialNavigationData,
+}: DataportalenProps) {
   const pathname = usePathname();
   const { asPath } = useRouter();
   const { t, lang } = useTranslation();
@@ -85,12 +104,22 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
     lang,
     t,
   );
-  const [imageHero, setImageHero] = useState(heroImage);
 
+  const [imageHero, setImageHero] = useState(heroImage);
   const [breadcrumbState, setBreadcrumb] = useState<BreadcrumbProps>({
     name: heading || "",
     crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
   });
+
+  const navigationData = useMemo(() => {
+    if (!initialNavigationData?.items?.length) {
+      return null;
+    }
+
+    return initialNavigationData?.items.find(
+      (nav: NavigationDataFragment) => nav.locale === lang,
+    );
+  }, [lang]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -103,15 +132,27 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
         setEnv(SettingsUtil.create());
       }
     }
-    document.documentElement.classList.add("no-focus-outline");
-    document.body.addEventListener("keyup", keyUp);
-    document.body.addEventListener("mousedown", click);
-
-    return () => {
-      document.body.removeEventListener("keyup", keyUp);
-      document.body.removeEventListener("mousedown", click);
-    };
   }, []);
+
+  // Matomo tracking page view
+  useEffect(() => {
+    if (!matomoActivated) return;
+
+    const matomoInstance = window._paq || [];
+
+    // Track initial page view
+    if (matomoInstance) {
+      matomoInstance.push(["setCustomUrl", window.location.pathname]);
+      matomoInstance.push(["trackPageView"]);
+    }
+
+    router.events.on("routeChangeComplete", () => {
+      if (matomoInstance) {
+        matomoInstance.push(["setCustomUrl", window.location.pathname]);
+        matomoInstance.push(["trackPageView"]);
+      }
+    });
+  }, [router.events]);
 
   let searchProps = null;
 
@@ -148,7 +189,7 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
       >
         <LocalStoreProvider>
           <TrackingProvider
-            initalActivation={GetCookiesAccepted() && matomoActivated}
+            initalActivation={getCookiesAccepted() && matomoActivated}
           >
             <MetaData seo={seo} />
             <div id="scriptsPlaceholder" />
@@ -164,10 +205,22 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
             >
               <SkipToContent text={t("common|skiptocontent")} />
               <Header
+                mainMenu={
+                  (navigationData?.mainMenu as MenuLinkFragment[]) || []
+                }
+                serviceMenu={
+                  (navigationData?.serviceMenu as MenuLinkIconFragment[]) || []
+                }
                 setOpenSideBar={setOpenSideBar}
                 openSideBar={openSideBar}
               />
               <Sidebar
+                sidebarMenu={
+                  navigationData?.sidebarMenu as
+                    | MenuLinkIconFragment[]
+                    | SubLink[]
+                    | []
+                }
                 openSideBar={openSideBar}
                 setOpenSideBar={setOpenSideBar}
               />
@@ -200,13 +253,13 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
                   id="main"
                   className={`mt-lg min-h-[calc(100vh-46.5rem)] pb-lg md:mt-xl md:pb-xl lg:min-h-[calc(100vh-38.25rem)]`}
                 >
-                  {/*{(pageProps as DataportalPageProps).type === "MultiContainer" ||*/}
-                  {/*  ((pageProps as DataportalPageProps).type ===*/}
-                  {/*    "Publication" && <div />)}*/}
                   <Component {...pageProps} />
                 </main>
               </div>
               <Footer
+                footerData={
+                  (navigationData?.footerMenu as SubLinkFooter[]) || []
+                }
                 setSettingsOpen={setSettingsOpen}
                 setOpenSideBar={setOpenSideBar}
                 openSideBar={openSideBar}
@@ -220,10 +273,12 @@ function Dataportal({ Component, pageProps }: DataportalenProps) {
 }
 
 Dataportal.getInitialProps = async (appContext: AppContext) => {
+  const navigationData = await getNavigationData("all");
+
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
 
-  return { ...appProps };
+  return { ...appProps, navigationData: navigationData.props };
 };
 
 export default Dataportal;
