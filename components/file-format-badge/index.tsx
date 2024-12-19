@@ -141,5 +141,5 @@ export const FileFormatBadge: FC<FileFormatBadgeProps> = ({ badgeName }) => {
       break;
   }
 
-  return <Badge text={text} className={className} />;
+  return <Badge text={text} className={`${className} bg-pink-200`} />;
 };

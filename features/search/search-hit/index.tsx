@@ -1,6 +1,8 @@
 import Link from "next/link";
+import useTranslation from "next-translate/useTranslation";
 import { FC } from "react";
 
+import { Badge } from "@/components/badge";
 import { FileFormatBadge } from "@/components/file-format-badge";
 import { Heading } from "@/components/typography/heading";
 import { SearchHit as SearchHitType } from "@/types/search";
@@ -16,6 +18,8 @@ export const SearchHit: FC<SearchHitProps> = ({
   isCompact,
   onLinkClick,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <li className="group relative max-w-lg space-y-sm">
       <Link
@@ -76,6 +80,12 @@ export const SearchHit: FC<SearchHitProps> = ({
             )}
         </div>
         <div className="formats flex w-full flex-wrap gap-md">
+          {hit.url.startsWith("/dataset-series") && (
+            <Badge text={t("pages|dataset-series$data-serie")} />
+          )}
+          {hit.metadata?.custom_facet_literal?.map(
+            (m: string, index: number) => <Badge key={index} text={m} />,
+          )}
           {hit.metadata?.format_literal?.map((m: string, index: number) => (
             <FileFormatBadge key={index} badgeName={m} />
           ))}
