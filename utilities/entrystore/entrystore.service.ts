@@ -708,7 +708,7 @@ export class EntrystoreService {
           .map((f: any) => this.t(f.getValue()));
       }
 
-      // Adding custom facets with showInSearchResult true to format_literal if they are present in the metadata
+      // Adding custom facets with showInSearchResult true to custom_facet_literal if they are present in the metadata
       const customFacets = this.facetSpecification?.facets?.filter(
         (spec) => spec.showInSearchResult,
       );
@@ -728,9 +728,8 @@ export class EntrystoreService {
             );
 
           if (hasResource) {
-            // Add the translated resource URI to format_literal array
-            values["format_literal"] = [
-              ...(values["format_literal"] || []),
+            // Add the translated resource URI to custom_facet_literal array
+            values["custom_facet_literal"] = [
               this.t(`resources|${facet.resource}`),
             ];
           }
