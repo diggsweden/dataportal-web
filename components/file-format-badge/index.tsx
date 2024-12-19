@@ -1,4 +1,6 @@
-import React, { FC } from "react";
+import { FC } from "react";
+
+import { Badge } from "@/components/badge";
 
 interface FileFormatBadgeProps {
   badgeName: string;
@@ -139,9 +141,5 @@ export const FileFormatBadge: FC<FileFormatBadgeProps> = ({ badgeName }) => {
       break;
   }
 
-  return (
-    <span className={`bg-pink-200 px-sm py-xs text-sm uppercase ${className}`}>
-      {text}
-    </span>
-  );
+  return <Badge text={text} className={`${className} bg-pink-200`} />;
 };

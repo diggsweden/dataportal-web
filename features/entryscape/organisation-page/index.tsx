@@ -1,25 +1,21 @@
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import React, { FC, useContext, useEffect } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import DiamondIcon from "@/assets/icons/diamond.svg";
 import HoldingHandsIcon from "@/assets/icons/holding-hands.svg";
 import ListBlockIcon from "@/assets/icons/list-block.svg";
-// import QuestionCircleIcon from "@/assets/icons/question-circle.svg";
-import { ButtonLink } from "@/components/button";
+import QuestionCircleIcon from "@/assets/icons/question-circle.svg";
+import { Button, ButtonLink } from "@/components/button";
 import { CustomLink } from "@/components/custom-link";
 import { Container } from "@/components/layout/container";
-// import { Modal } from "@/components/modal";
+import { Modal } from "@/components/modal";
 import { Heading } from "@/components/typography/heading";
-import {
-  DatasetInfo,
-  EntrystoreContext,
-  TermInfo,
-} from "@/providers/entrystore-provider";
+import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
+import { DataInfo, TermInfo } from "@/types/organisation";
 import { linkBase } from "@/utilities";
 
 export const OrganisationPage: FC = () => {
@@ -27,7 +23,7 @@ export const OrganisationPage: FC = () => {
   const { setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const { t } = useTranslation();
-  // const [showInfo, setShowInfo] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
     setBreadcrumb?.({
@@ -47,22 +43,7 @@ export const OrganisationPage: FC = () => {
 
   return (
     <Container>
-      <Head>
-        <title>{`${entry.title} - Sveriges dataportal`}</title>
-        <meta
-          property="og:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-        {entry.description && (
-          <meta property="og:description" content={entry.description} />
-        )}
-        <meta
-          name="twitter:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-      </Head>
       <div>
-        {/* Title */}
         <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {entry.title}
         </Heading>
@@ -83,25 +64,25 @@ export const OrganisationPage: FC = () => {
                 className="mb-lg inline-flex items-center gap-[0.625rem]"
               >
                 {t("common|datasets")}
-                {/* TODO: Uncomment when text for modal is ready */}
-                {/*   <Button
+                <Button
                   variant="plain"
                   className="rounded-full !p-xs"
                   aria-label={t("pages|organisation_page$data-info")}
                   icon={QuestionCircleIcon}
                   iconPosition="left"
                   onClick={() => setShowInfo(!showInfo)}
-                /> */}
+                />
               </Heading>
-              {/* TODO: Uncomment when text for modal is ready */}
-              {/*     <Modal
+
+              <Modal
                 modalOpen={showInfo}
                 setModalOpen={setShowInfo}
                 onClick={() => setShowInfo(false)}
-                heading={t("pages|organisation_page$data-info")}
                 description={t("pages|organisation_page$data-info-more")}
-                confirmBtn={t("common|close")}
-              /> */}
+                closeBtn={t("common|close")}
+                closeBtnClassName="ml-auto"
+                modalSize="sm"
+              />
               <div className="box-border flex w-full flex-col items-center gap-xl rounded-lg bg-white p-xl md:items-end">
                 <div className="flex w-full flex-col items-center py-lg md:flex-row">
                   <div className="flex flex-shrink-0 flex-col items-center gap-sm">
@@ -124,7 +105,7 @@ export const OrganisationPage: FC = () => {
                   />
                   <div className="grid grid-cols-2 gap-x-sm gap-y-xl">
                     {entry.organisationData?.datasets.dataInfo.map(
-                      (data: DatasetInfo, idx: number) => (
+                      (data: DataInfo, idx: number) => (
                         <div
                           key={idx}
                           className="flex flex-col items-center gap-sm"
@@ -249,7 +230,7 @@ export const OrganisationPage: FC = () => {
                   </Heading>
                   {entry.contact && entry.contact.email ? (
                     <CustomLink
-                      className="text-green-600 hover:no-underline"
+                      className="text-sm text-green-600 hover:no-underline"
                       href={entry.contact.email}
                     >
                       {entry.contact.name}
@@ -282,7 +263,7 @@ export const OrganisationPage: FC = () => {
                     >
                       {t("pages|organisation_page$org-no")}
                     </Heading>
-                    <p>{entry.organisationData?.orgClassification}</p>
+                    <p>{entry.organisationData.orgNumber}</p>
                   </div>
                 )}
 

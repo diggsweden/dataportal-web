@@ -39,12 +39,13 @@ export const Promo: FC<PromoProps> = ({
           image={image}
           width={384}
           sizes="(max-width: 640px) 100vw, (max-width: 1080px) 50vw, (max-width: 1200px) 33vw, 20vw"
-          className="h-[9.5rem] w-full object-cover"
+          className="h-full max-h-[9.5rem] w-full object-cover"
         />
       )}
       <div className="flex h-full flex-col p-lg">
         <Link
           href={slug}
+          data-tracking-name="promo"
           className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
         >
           <Heading

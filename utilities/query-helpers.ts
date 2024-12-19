@@ -24,16 +24,26 @@ import {
   ToolQuery,
   ToolQueryVariables,
   ContainerDataFragment,
+  StartPageDataFragment,
+  StartPageQuery,
+  StartPageQueryVariables,
+  NewsBlockItemFragment,
+  GoodExampleBlockItemFragment,
+  NavigationQuery,
+  NavigationQueryVariables,
+  NavigationDataFragment,
 } from "@/graphql/__generated__/operations";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import { ROOT_AGGREGATE_QUERY } from "@/graphql/aggregateQuery";
 import { FORM_QUERY } from "@/graphql/formQuery";
 import { MODULE_QUERY } from "@/graphql/moduleQuery";
+import { NAVIGATION_QUERY } from "@/graphql/navigationQuery";
 import {
   GOOD_EXAMPLE_QUERY,
   NEWS_ITEM_QUERY,
 } from "@/graphql/publicationQuery";
 import { SEARCH_QUERY } from "@/graphql/searchQuery";
+import { START_PAGE_QUERY } from "@/graphql/startpageQuery";
 import { TOOL_QUERY } from "@/graphql/toolQuery";
 
 /**
@@ -49,6 +59,7 @@ const notFound = (revalidate: boolean) => ({
     : {}),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const logGqlErrors = (error: any) => {
   const { networkError, graphQLErrors, clientErrors } = error || {};
   if (networkError?.result?.errors) {
@@ -72,12 +83,12 @@ export interface MultiContainerResponse {
 
 export interface NewsItemResponse extends NewsItemDataFragment {
   type: "Publication";
-  related?: NewsItemDataFragment[];
+  related?: NewsBlockItemFragment[];
 }
 
 export interface GoodExampleResponse extends GoodExampleDataFragment {
   type: "Publication";
-  related?: GoodExampleDataFragment[];
+  related?: GoodExampleBlockItemFragment[];
 }
 export interface NewsItemListResponse {
   type: "PublicationList";
@@ -114,6 +125,15 @@ export interface RootAggregateResponse extends ContainerDataFragment {
   news?: NewsItemDataFragment;
   examples?: GoodExampleDataFragment;
   // events?: PublicationDataFragment;
+}
+
+export interface StartPageResponse extends StartPageDataFragment {
+  type: "StartPage";
+}
+
+export interface NavigationResponse {
+  type: "Navigation";
+  items: NavigationDataFragment[];
 }
 
 export interface FormResponse extends FormDataFragment {
@@ -227,7 +247,7 @@ export const getMultiContainer = async (
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return notFound(revalidate);
   }
@@ -288,7 +308,7 @@ export const getNewsList = async (
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return {
       props: {
@@ -361,7 +381,7 @@ export const getGoodExamplesList = async (
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return {
       props: {
@@ -426,7 +446,7 @@ export const getToolsList = async (opts?: ToolistOptions) => {
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return {
       props: {
@@ -499,25 +519,48 @@ export const getNewsItem = async (
       fetchPolicy: "no-cache",
     });
 
-    // console.log(relatedPublicationResult.data.dataportal_Digg_Publications);
+    // Transform the related publications to match the preview type
+    const relatedPreviews: NewsBlockItemFragment[] =
+      relatedPublicationResult?.data?.dataportal_Digg_News_Items
+        .filter(
+          (pub): pub is NewsItemDataFragment =>
+            pub !== null && pub.id !== publication.id,
+        )
+        .slice(0, 3)
+        .map(toNewsPreview) || [];
 
     return {
       props: {
         type: "Publication",
         ...publication,
-        related:
-          relatedPublicationResult?.data?.dataportal_Digg_News_Items
-            .filter((pub) => pub?.id !== publication.id)
-            .slice(0, 3) || [],
+        related: relatedPreviews,
       } as NewsItemResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return notFound(revalidate);
   }
+};
+
+// Helper function to type check the preview transformation
+export const toNewsPreview = (
+  pub: NewsItemDataFragment,
+): NewsBlockItemFragment => {
+  if (!pub.heading || !pub.slug || !pub.publishedAt || !pub.image) {
+    throw new Error(`Invalid publication data for preview: ${pub.id}`);
+  }
+
+  return {
+    __typename: "dataportal_Digg_NewsItem_Preview",
+    heading: pub.heading,
+    slug: pub.slug,
+    publishedAt: pub.publishedAt,
+    image: pub.image,
+    keywords: pub.keywords,
+  };
 };
 
 export const getGoodExample = async (
@@ -567,25 +610,47 @@ export const getGoodExample = async (
       fetchPolicy: "no-cache",
     });
 
-    // console.log(relatedPublicationResult.data.dataportal_Digg_Publications);
+    const relatedPreviews: GoodExampleBlockItemFragment[] =
+      relatedPublicationResult?.data?.dataportal_Digg_Good_Examples
+        .filter(
+          (pub): pub is GoodExampleDataFragment =>
+            pub !== null && pub.id !== publication.id,
+        )
+        .slice(0, 3)
+        .map(toGoodExamplePreview) || [];
 
     return {
       props: {
         type: "Publication",
         ...publication,
-        related:
-          relatedPublicationResult?.data?.dataportal_Digg_Good_Examples
-            .filter((pub) => pub?.id !== publication.id)
-            .slice(0, 3) || [],
+        related: relatedPreviews,
       } as GoodExampleResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return notFound(revalidate);
   }
+};
+
+// Helper function to type check the preview transformation
+export const toGoodExamplePreview = (
+  pub: GoodExampleDataFragment,
+): GoodExampleBlockItemFragment => {
+  if (!pub.heading || !pub.slug || !pub.publishedAt || !pub.image) {
+    throw new Error(`Invalid publication data for preview: ${pub.id}`);
+  }
+
+  return {
+    __typename: "dataportal_Digg_GoodExample_Preview",
+    heading: pub.heading,
+    slug: pub.slug,
+    publishedAt: pub.publishedAt,
+    image: pub.image,
+    keywords: pub.keywords,
+  };
 };
 
 export const getRootAggregate = async (
@@ -636,12 +701,96 @@ export const getRootAggregate = async (
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return {
       props: {
         type: "RootAggregate",
       } as RootAggregateResponse,
+      revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60"),
+    };
+  }
+};
+
+export const getStartPage = async (
+  locale: string,
+  opts: QueryOptions = { revalidate: true },
+) => {
+  const { revalidate } = opts;
+  try {
+    const { data, error } = await client.query<
+      StartPageQuery,
+      StartPageQueryVariables
+    >({
+      query: START_PAGE_QUERY,
+      variables: {
+        filter: {
+          locale,
+        },
+      },
+      fetchPolicy: "no-cache",
+    });
+
+    if (error) {
+      console.error(error);
+    }
+
+    const startPage = data.dataportal_Digg_Start_Page;
+
+    return {
+      props: {
+        ...startPage,
+        type: "StartPage",
+      } as StartPageResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
+    };
+  } catch (error) {
+    logGqlErrors(error);
+    return {
+      props: {
+        type: "StartPage",
+      } as StartPageResponse,
+      revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60"),
+    };
+  }
+};
+
+export const getNavigationData = async (
+  locale: string,
+  opts: QueryOptions = { revalidate: true },
+) => {
+  const { revalidate } = opts;
+  try {
+    const { data, error } = await client.query<
+      NavigationQuery,
+      NavigationQueryVariables
+    >({
+      query: NAVIGATION_QUERY,
+      variables: { filter: { locale } },
+      fetchPolicy: "no-cache",
+    });
+
+    if (error) {
+      console.error(error);
+    }
+
+    const navigationData = data.dataportal_Digg_Navigation;
+
+    return {
+      props: {
+        type: "Navigation",
+        items: navigationData,
+      } as NavigationResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
+    };
+  } catch (error) {
+    logGqlErrors(error);
+    return {
+      props: { type: "Navigation" } as NavigationResponse,
       revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60"),
     };
   }
@@ -662,7 +811,7 @@ export const querySearch = async (
   clientQuery: boolean,
 ) => {
   try {
-    let cl = clientQuery ? browserclient : client;
+    const cl = clientQuery ? browserclient : client;
 
     const searchResult = await cl.query<
       ContainerDataFragment | GoodExampleDataFragment | NewsItemDataFragment,
@@ -692,7 +841,7 @@ export const querySearch = async (
     }
 
     return result;
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return notFound;
   }
@@ -716,7 +865,7 @@ export const getForm = async (identifier: string, locale?: string) => {
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return {
       props: { type: "Form" } as FormResponse,
@@ -762,7 +911,7 @@ export const getModule = async (
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),
     };
-  } catch (error: any) {
+  } catch (error) {
     logGqlErrors(error);
     return {
       props: {

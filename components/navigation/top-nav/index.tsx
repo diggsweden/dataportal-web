@@ -1,22 +1,17 @@
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useEffect, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 
+import GlobeIcon from "@/assets/icons/globe.svg";
 import { ButtonLink } from "@/components/button";
-import { AddIcon } from "@/types/global";
-import { topNav } from "@/utilities/menu-data";
-
-interface TopNavData {
-  title: string;
-  icon: AddIcon;
-  href?: string;
-}
+import { MenuLinkIconFragment } from "@/graphql/__generated__/operations";
 
 interface TopNavProps {
   setOpenSideBar: (_param: boolean) => void;
+  serviceMenu: MenuLinkIconFragment[];
 }
 
-const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
+const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
   const pathname = usePathname();
   const { t, lang } = useTranslation();
   const [isClient, setIsClient] = useState(false);
@@ -32,43 +27,58 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar }) => {
   return (
     <div className="flex flex-row items-center justify-end">
       <nav aria-label={t("common|menu-service")}>
-        <ul className="flex flex-row space-x-xs">
-          {topNav.map((menu: TopNavData, idx: number) => (
-            <li key={idx} className="group text-sm">
-              {menu.href ? (
-                <ButtonLink
-                  variant="plain"
-                  href={menu.href}
-                  icon={menu.icon ? menu.icon : undefined}
-                  iconPosition="left"
-                  label={t(`common|${menu.title}`)}
-                  size={"sm"}
-                  className="[&_span]:hidden md:[&_span]:block"
-                />
-              ) : (
-                <ButtonLink
-                  variant="plain"
-                  href={`/${t(`routes|${menu.title}$path`)}`}
-                  locale={`${menu.title === "language" ? "" : lang}`}
-                  onClick={() => setOpenSideBar(false)}
-                  icon={menu.icon}
-                  hrefLang={lang === "sv" ? "en" : "sv"}
-                  iconPosition="left"
-                  label={t(`routes|${menu.title}$title`)}
-                  size={"sm"}
-                  className={`${
-                    menu.title !== "language" &&
-                    "[&_span]:hidden md:[&_span]:block"
-                  } ${
-                    pathname === `/${t(`routes|${menu.title}$path`)}` &&
-                    menu.title !== "language"
-                      ? " active"
-                      : ""
-                  }`}
-                />
-              )}
-            </li>
-          ))}
+        <ul className="flex flex-row items-center space-x-xs">
+          {serviceMenu?.length > 0 ? (
+            serviceMenu.map((menu: MenuLinkIconFragment, idx: number) => (
+              <Fragment key={idx}>
+                <li className="group text-sm">
+                  <ButtonLink
+                    variant="plain"
+                    href={menu.link}
+                    locale={lang}
+                    onClick={() => setOpenSideBar(false)}
+                    hrefLang={lang === "sv" ? "en" : "sv"}
+                    size={"sm"}
+                    className={pathname === menu.link ? " active" : ""}
+                  >
+                    <span
+                      className="inline-flex"
+                      dangerouslySetInnerHTML={{ __html: menu.icon }}
+                      aria-hidden="true"
+                    />
+                    <span className="hidden md:block">{menu.name}</span>
+                  </ButtonLink>
+                </li>
+                {serviceMenu.length === idx + 1 && (
+                  <li>
+                    <ButtonLink
+                      variant="plain"
+                      href={`/${t(`routes|language$path`)}`}
+                      icon={GlobeIcon}
+                      locale={""}
+                      onClick={() => setOpenSideBar(false)}
+                      hrefLang={lang === "sv" ? "en" : "sv"}
+                      iconPosition="left"
+                      label={t(`routes|language$title`)}
+                      size={"sm"}
+                    />
+                  </li>
+                )}
+              </Fragment>
+            ))
+          ) : (
+            <ButtonLink
+              variant="plain"
+              href={`/${t(`routes|language$path`)}`}
+              icon={GlobeIcon}
+              locale={""}
+              onClick={() => setOpenSideBar(false)}
+              hrefLang={lang === "sv" ? "en" : "sv"}
+              iconPosition="left"
+              label={t(`routes|language$title`)}
+              size={"sm"}
+            />
+          )}
         </ul>
       </nav>
     </div>

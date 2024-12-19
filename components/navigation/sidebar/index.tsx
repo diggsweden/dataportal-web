@@ -3,42 +3,28 @@ import useTranslation from "next-translate/useTranslation";
 import { FC, useRef, useEffect, useState, KeyboardEvent } from "react";
 
 import { SidebarLink } from "@/components/navigation/sidebar/sidebar-link";
+import { MenuLinkIconFragment } from "@/graphql/__generated__/operations";
 import { useClickOutside } from "@/hooks/use-click-outside";
-import { mainNav, NavData } from "@/utilities/menu-data";
+import { SubLink } from "@/types/global";
 
 interface NavSideProps {
   openSideBar: boolean;
   setOpenSideBar: (_param: boolean) => void;
+  sidebarMenu: MenuLinkIconFragment[] | SubLink[];
 }
 
-export const Sidebar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
-  const [menu, setMenu] = useState<NavData[]>([]);
-  const { t, lang } = useTranslation();
+export const Sidebar: FC<NavSideProps> = ({
+  openSideBar,
+  setOpenSideBar,
+  sidebarMenu,
+}) => {
+  const { t } = useTranslation();
   const [vw, setVw] = useState(0);
-  const isEn = lang === "en";
   const trapRef = useRef<FocusTrap | null>(null);
   const ref = useClickOutside(
     () => (vw < 1200 ? setOpenSideBar(false) : null),
     ["#sidebarBtn"],
   );
-  useEffect(() => {
-    if (isEn) {
-      const enMenu = mainNav
-        .filter(
-          (menu) =>
-            menu.inEn ||
-            (menu.children && menu.children.some((subMennu) => subMennu.inEn)),
-        )
-        .map((menu) => ({
-          ...menu,
-          children: menu.children?.filter((subMenu) => subMenu.inEn),
-        }));
-
-      setMenu(enMenu);
-    } else {
-      setMenu(mainNav);
-    }
-  }, [isEn]);
 
   useEffect(() => {
     if (typeof window !== "undefined" && vw === 0) {
@@ -85,39 +71,33 @@ export const Sidebar: FC<NavSideProps> = ({ openSideBar, setOpenSideBar }) => {
       onKeyDown={handleEscape}
     >
       <ul className="w-full list-none whitespace-nowrap md:w-[18.75rem]">
-        {menu.map((menu: NavData, idx: number) => (
-          <li key={idx} className="whitespace-nowrap">
-            {menu.href ? (
-              <SidebarLink
-                level="1"
-                icon={menu.icon}
-                href={menu.href}
-                label={t(`common|${menu.title}`)}
-                variant={"external"}
-                openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
-              />
-            ) : menu.children ? (
-              <SidebarLink
-                level="2"
-                icon={menu.icon}
-                list={menu.children}
-                label={t(`routes|${menu.title}$title`)}
-                openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
-              />
-            ) : (
-              <SidebarLink
-                level="1"
-                href={`/${t(`routes|${menu.title}$path`)}`}
-                icon={menu.icon}
-                label={t(`routes|${menu.title}$title`)}
-                openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
-              />
-            )}
-          </li>
-        ))}
+        {sidebarMenu?.length > 0 &&
+          sidebarMenu.map(
+            (menu: MenuLinkIconFragment | SubLink, idx: number) => (
+              <li key={idx} className="whitespace-nowrap">
+                {menu.__typename === "dataportal_Digg_MenuLinkIcon" ? (
+                  <SidebarLink
+                    level="1"
+                    icon={menu.icon}
+                    href={menu.link}
+                    label={menu.name}
+                    variant={"external"}
+                    openSideBar={openSideBar}
+                    setOpenSideBar={setOpenSideBar}
+                  />
+                ) : (
+                  <SidebarLink
+                    level="2"
+                    icon={menu.icon}
+                    list={menu.links}
+                    label={menu.title}
+                    openSideBar={openSideBar}
+                    setOpenSideBar={setOpenSideBar}
+                  />
+                )}
+              </li>
+            ),
+          )}
       </ul>
     </nav>
   );

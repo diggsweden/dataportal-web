@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+
 import {
   BLOCK_FRAGMENT,
   MODULE_FRAGMENT,

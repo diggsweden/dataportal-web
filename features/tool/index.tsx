@@ -82,7 +82,7 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
         heading={heading}
         closeBtn={t("close")}
         description={description}
-        type="tools"
+        textSize="md"
         text={preamble}
         modalOpen={showModal}
         setModalOpen={setShowModal}

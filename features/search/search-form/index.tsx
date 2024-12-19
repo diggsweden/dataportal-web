@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, FC } from "react";
 import { SearchMode } from "@/features/search/search-filters";
 import { SearchInput } from "@/features/search/search-input";
 import { SearchContextData } from "@/providers/search-provider";
+import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 
 interface SearchFormProps {
   search: SearchContextData;
@@ -27,12 +28,6 @@ export const SearchForm: FC<SearchFormProps> = ({
   const { t } = useTranslation();
 
   const placeholder = t(`pages|${searchMode}$search`);
-
-  const clearCurrentScrollPos = () => {
-    if (typeof localStorage != "undefined" && typeof location != "undefined") {
-      localStorage.setItem(`ScrollposY_${location.search}`, "0");
-    }
-  };
 
   const submitSearch = (newQuery: string) => {
     search

@@ -210,14 +210,14 @@ export const datasetBlocks = (
 };
 
 const filterCatalogProperties = [
-  "dcat:keyword",
-  "dcat:theme",
   "dcterms:title",
   "dcterms:description",
-  "dcterms:publisher",
-  "dcat:bbox",
   "dcterms:spatial",
+  "dcat:keyword",
+  "dcat:theme",
+  "dcterms:publisher",
   "dcterms:provenance",
+  "dcat:inSeries",
 ];
 
 const filterAllExceptContactAndLandingPage = [
@@ -233,13 +233,25 @@ const filterAllExceptContactAndLandingPage = [
   "dcterms:accrualPeriodicity",
   "dcterms:accessRights",
   "dcterms:conformsTo",
+  "dcat:version",
+  "dcat:hasVersion",
+  "dcat:spatialResolutionInMeters",
+  "dcterms:isReferencedBy",
+  "dcterms:relation",
+  "dcat:qualifiedRelation",
 ];
 
 const filterContactAndLandingPage = [
   ...filterCatalogProperties,
+  "dcterms:creator",
+  "adms:identifier",
   "dcat:contactPoint",
+  "dcterms:source",
   "dcat:landingPage",
   "http://data.europa.eu/r5r/applicableLegislation",
   "http://xmlns.com/foaf/0.1/page",
   "http://data.europa.eu/r5r/hvdCategory",
+  "schema:offers",
+  "prov:qualifiedAttribution",
+  "dcterms:subject",
 ];

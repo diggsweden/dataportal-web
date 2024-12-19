@@ -55,6 +55,7 @@ const IconLabel: FC<IconLabelProps> = ({
     <>
       {iconPosition === "left" && Icon && (
         <Icon
+          className="flex-shrink-0"
           height={
             iconSizeBase
               ? iconSizeBase
@@ -75,6 +76,7 @@ const IconLabel: FC<IconLabelProps> = ({
       {label && <span>{label}</span>}
       {iconPosition === "right" && Icon && (
         <Icon
+          className="flex-shrink-0"
           height={
             iconSizeBase
               ? iconSizeBase
@@ -153,6 +155,7 @@ const ButtonLink: FC<
   locale,
   icon,
   iconPosition,
+  children,
   ...rest
 }) => {
   return (
@@ -168,6 +171,7 @@ const ButtonLink: FC<
         icon={icon}
         label={label}
       />
+      {children}
     </Link>
   );
 };

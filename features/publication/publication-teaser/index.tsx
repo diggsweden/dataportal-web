@@ -6,24 +6,23 @@ import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { CustomImage } from "@/components/custom-image";
 import { Heading } from "@/components/typography/heading";
 import {
-  GoodExampleDataFragment,
-  NewsItemDataFragment,
+  GoodExampleBlockItemFragment,
+  NewsBlockItemFragment,
 } from "@/graphql/__generated__/operations";
 import { formatDate } from "@/utilities/date-helper";
 
 interface PublicationTeaserProps {
-  publication: GoodExampleDataFragment | NewsItemDataFragment;
+  publication: GoodExampleBlockItemFragment | NewsBlockItemFragment;
 }
 
 export const PublicationTeaser: FC<PublicationTeaserProps> = ({
   publication,
 }) => {
-  const { publishedAt, heading, slug, image, __typename } = publication;
+  const { heading, publishedAt, slug, image, __typename } = publication;
   const { lang } = useTranslation();
   const [date, setDate] = useState("");
-
   const type =
-    __typename === "dataportal_Digg_News_Item"
+    __typename === "dataportal_Digg_NewsItem_Preview"
       ? { url: `/nyheter${slug}`, name: "Nyhet" }
       : { url: `/goda-exempel${slug}`, name: "Goda Exempel" };
 
@@ -46,6 +45,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
             href={type.url}
             className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
             scroll={false}
+            data-tracking-name="publication-teaser"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             <Heading className="pb-md pt-sm" level={3} size={"sm"}>

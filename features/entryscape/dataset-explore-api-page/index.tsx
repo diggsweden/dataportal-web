@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { FC, useContext, useEffect, useState } from "react";
@@ -96,8 +97,17 @@ export const DataSetExploreApiPage: FC<{
 
         <div className="mb-md flex w-full flex-col gap-lg lg:mb-lg">
           {/* Publisher */}
-          {entry.publisher && (
-            <Preamble className="mb-lg">{entry.publisher}</Preamble>
+          {entry.organisationLink ? (
+            <Link
+              className="mb-lg text-lg font-normal text-green-600 hover:!no-underline"
+              href={entry.organisationLink}
+            >
+              {entry.publisher}
+            </Link>
+          ) : (
+            entry.publisher && (
+              <Preamble className="mb-lg">{entry.publisher}</Preamble>
+            )
           )}
 
           {/* Indicators */}

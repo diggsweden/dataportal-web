@@ -6,7 +6,7 @@ import { FC, LinkHTMLAttributes, PropsWithChildren, useContext } from "react";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import MailIcon from "@/assets/icons/mail.svg";
 import { SettingsContext } from "@/providers/settings-provider";
-import { isMailLink } from "@/utilities";
+import { isExternalLink, isMailLink } from "@/utilities";
 
 type CustomLinkProps = {
   href: string;
@@ -33,7 +33,7 @@ export const CustomLink: FC<
           <MailIcon width={iconSize} height={iconSize} viewBox="0 0 24 24" />
           <span className="sr-only">{t("common|open-in-email")}</span>
         </>
-      ) : (
+      ) : isExternalLink(href) ? (
         <>
           <ExternalLinkIcon
             width={iconSize}
@@ -42,7 +42,7 @@ export const CustomLink: FC<
           />
           <span className="sr-only">{t("common|open-in-new-tab")}</span>
         </>
-      )}
+      ) : null}
     </Link>
   );
 };

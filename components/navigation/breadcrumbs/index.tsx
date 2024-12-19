@@ -32,6 +32,7 @@ export const Breadcrumbs: FC<BreadcrumbProps> = ({ crumbs, name }) => {
                     href={`${crumb.link.link}`}
                     locale={lang}
                     className="no-underline"
+                    data-tracking-name="breadcrumb-link"
                   >
                     {crumb.name === "start" ? (
                       <HomeIcon className="[&_path]:hover:fill-brown-900" />

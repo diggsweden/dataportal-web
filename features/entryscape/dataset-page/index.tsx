@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
@@ -63,19 +62,7 @@ export const DatasetPage: FC = () => {
 
   return (
     <Container>
-      <Head>
-        <title>{`${entry.title} - Sveriges dataportal`}</title>
-        <meta
-          property="og:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-        <meta
-          name="twitter:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-      </Head>
       <div>
-        {/* Title */}
         <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {entry.title}
         </Heading>
@@ -83,18 +70,40 @@ export const DatasetPage: FC = () => {
           {/* Left column */}
           <div className="mb-lg flex w-full max-w-md flex-col gap-lg lg:mb-xl">
             {/* Publisher */}
-            {entry.organisationLink ? (
-              <Link
-                className="text-lg text-green-600 hover:!no-underline"
-                href={entry.organisationLink}
-              >
-                {entry.publisher}
-              </Link>
-            ) : (
-              entry.publisher && (
-                <Preamble className="mb-lg">{entry.publisher}</Preamble>
-              )
-            )}
+            <div className="mb-md flex flex-col gap-md">
+              {entry.organisationLink ? (
+                <Link
+                  className="text-lg font-normal text-green-600 hover:!no-underline"
+                  href={entry.organisationLink}
+                >
+                  {entry.publisher}
+                </Link>
+              ) : (
+                entry.publisher && <Preamble>{entry.publisher}</Preamble>
+              )}
+
+              {/* Related dataset series */}
+              {entry.relatedDatasetSeries &&
+                entry.relatedDatasetSeries.length > 0 && (
+                  <div className="inline-flex flex-wrap items-center gap-sm text-sm">
+                    <span className="text-textSecondary">
+                      {t("pages|datasetpage$related_dataset_series")}
+                    </span>
+                    {entry.relatedDatasetSeries.map((ds, idx) => (
+                      <span key={idx} className="inline-flex items-center">
+                        <Link
+                          href={ds.url}
+                          className="text-sm text-green-600 hover:no-underline"
+                        >
+                          {ds.title}
+                        </Link>
+                        {idx < (entry.relatedDatasetSeries?.length ?? 0) - 1 &&
+                          ", "}
+                      </span>
+                    ))}
+                  </div>
+                )}
+            </div>
 
             {/* Indicators */}
             <div
