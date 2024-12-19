@@ -111,9 +111,21 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       const resourceUri = entry.getResourceURI();
 
       // Parallel fetch for publisher info
+      // TODO: Remove this when concepts and terminologies are moved to admin.dataportal.se
+      const publisherEntrystoreService =
+        pageType === "concept" || pageType === "terminology"
+          ? EntrystoreService.getInstance({
+              baseUrl: `https://admin.dataportal.se/store`,
+              lang,
+              t,
+            })
+          : entrystoreService;
       const publisherPromise =
         pageType !== "mqa"
-          ? await entrystoreService.getPublisherInfo(resourceUri, metadata)
+          ? await publisherEntrystoreService.getPublisherInfo(
+              resourceUri,
+              metadata,
+            )
           : Promise.resolve({ name: "", entry: null });
 
       const entryData: Partial<ESEntry> = {
