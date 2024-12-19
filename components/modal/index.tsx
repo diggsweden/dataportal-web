@@ -45,6 +45,10 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
 
   useEffect(() => {
     if (modalOpen && ref.current) {
+      // Focus the modal container itself to prevent scroll to bottom when modal opens
+      ref.current.scrollTo({ top: 0, behavior: "instant" });
+      ref.current.focus();
+
       trapRef.current = createFocusTrap(ref.current, {
         escapeDeactivates: false,
         allowOutsideClick: true,
@@ -74,8 +78,11 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
       />
       <div
         ref={ref}
-        className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] w-4/5 -translate-x-1/2 -translate-y-1/2  
-        overflow-auto bg-white p-xl shadow-2xl md:w-auto ${
+        tabIndex={-1}
+        role="dialog"
+        aria-modal="true"
+        className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] w-4/5 -translate-x-1/2 -translate-y-1/2 overflow-auto  
+        bg-white p-xl shadow-2xl outline-none md:w-auto ${
           modalOpen ? "visible" : "hidden"
         } ${modalSize === "sm" ? "max-w-[24rem]" : "max-w-md"}`}
         onKeyDown={handleEscape}
