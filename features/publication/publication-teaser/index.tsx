@@ -1,34 +1,58 @@
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { CustomImage } from "@/components/custom-image";
 import { Heading } from "@/components/typography/heading";
 import {
   GoodExampleBlockItemFragment,
+  GoodExampleDataFragment,
   NewsBlockItemFragment,
+  NewsItemDataFragment,
 } from "@/graphql/__generated__/operations";
 import { formatDate } from "@/utilities/date-helper";
 
 interface PublicationTeaserProps {
-  publication: GoodExampleBlockItemFragment | NewsBlockItemFragment;
+  publication:
+    | GoodExampleDataFragment
+    | GoodExampleBlockItemFragment
+    | NewsItemDataFragment
+    | NewsBlockItemFragment;
 }
+
+const NEWS_TYPES = [
+  "dataportal_Digg_News_Item",
+  "dataportal_Digg_NewsItem_Preview",
+] as const;
+
+const GOOD_EXAMPLE_TYPES = [
+  "dataportal_Digg_GoodExample_Item",
+  "dataportal_Digg_GoodExampleItem_Preview",
+] as const;
 
 export const PublicationTeaser: FC<PublicationTeaserProps> = ({
   publication,
 }) => {
   const { heading, publishedAt, slug, image, __typename } = publication;
   const { lang } = useTranslation();
-  const [date, setDate] = useState("");
-  const type =
-    __typename === "dataportal_Digg_NewsItem_Preview"
-      ? { url: `/nyheter${slug}`, name: "Nyhet" }
-      : { url: `/goda-exempel${slug}`, name: "Goda Exempel" };
+  const formattedDate = formatDate(lang, publishedAt);
 
-  useEffect(() => {
-    setDate(formatDate(lang, publishedAt));
-  }, []);
+  function getPublicationType(__typename: string) {
+    if (NEWS_TYPES.includes(__typename as (typeof NEWS_TYPES)[number])) {
+      return { url: `/nyheter${slug}`, name: "Nyhet" };
+    }
+    if (
+      GOOD_EXAMPLE_TYPES.includes(
+        __typename as (typeof GOOD_EXAMPLE_TYPES)[number],
+      )
+    ) {
+      return { url: `/goda-exempel${slug}`, name: "Goda Exempel" };
+    }
+    return { url: `/goda-exempel${slug}`, name: "Goda Exempel" };
+  }
+
+  const type = getPublicationType(__typename);
 
   return (
     <>
@@ -40,7 +64,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
           className="h-[11.5rem] w-full object-cover md:h-[15rem] lg:h-[11.5rem]"
         />
         <div className="px-md pt-lg text-sm text-textPrimary">
-          <span className="text-textSecondary">{`${type.name} | ${date}`}</span>
+          <span className="text-textSecondary">{`${type.name} | ${formattedDate}`}</span>
           <Link
             href={type.url}
             className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"

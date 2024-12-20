@@ -277,7 +277,7 @@ export const OrganisationPage: FC = () => {
                       {t("pages|datasetpage$mqa")}
                     </Heading>
                     <Link
-                      className="text-green-600 hover:no-underline"
+                      className="text-sm text-green-600 hover:no-underline"
                       href={entry.mqaCatalog.url}
                     >
                       {entry.mqaCatalog.title}
