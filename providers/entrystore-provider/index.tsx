@@ -9,7 +9,7 @@ import { SettingsUtil } from "@/env/settings-util";
 import { ESEntry, PageType } from "@/types/entrystore-core";
 import { OrganisationData } from "@/types/organisation";
 import { ESFacetField, ESFacetFieldValue } from "@/types/search";
-import { Choice, fetchDCATMeta } from "@/utilities";
+import { Choice, fetchDCATMeta, handleLocale } from "@/utilities";
 import {
   formatTerminologyAddress,
   getContactEmail,
@@ -40,8 +40,9 @@ const defaultESEntry: ESEntry = {
 export interface EntrystoreProviderProps {
   env: EnvSettings;
   children: ReactNode;
-  cid: string;
-  eid: string;
+  cid?: string;
+  eid?: string;
+  rUri?: string;
   entryUri?: string;
   entrystoreUrl?: string;
   includeContact?: boolean;
@@ -61,6 +62,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   children,
   cid,
   eid,
+  rUri,
   entrystoreUrl,
   includeContact,
   pageType,
@@ -69,6 +71,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   const [state, setState] = useState(defaultESEntry);
   const router = useRouter();
   const { lang, t } = useTranslation();
+  let entry: Entry;
+  let resourceUri: string;
 
   const entrystoreService = EntrystoreService.getInstance({
     baseUrl:
@@ -97,25 +101,39 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     };
   }, [pageType]);
 
+  // Remove locale from path if it's the default locale
+  useEffect(() => {
+    handleLocale(window.location.pathname, lang, router.asPath, router);
+  }, [router.asPath]);
+
   useEffect(() => {
     fetchEntry();
   }, []);
 
   const fetchEntry = async () => {
     try {
-      const entry: Entry = await entrystoreService.getEntry(cid, eid);
+      if (cid && eid) {
+        entry = await entrystoreService.getEntry(cid, eid);
+        resourceUri = entry.getResourceURI();
+      } else if (rUri) {
+        resourceUri = rUri;
+        entry = await entrystoreService.getEntryByResourceURI(rUri);
+      }
 
       if (!entry) return router.push("/404");
 
       const metadata = entry.getAllMetadata();
-      const resourceUri = entry.getResourceURI();
 
       // Parallel fetch for publisher info
       // TODO: Remove this when concepts and terminologies are moved to admin.dataportal.se
       const publisherEntrystoreService =
         pageType === "concept" || pageType === "terminology"
           ? EntrystoreService.getInstance({
-              baseUrl: `https://admin.dataportal.se/store`,
+              baseUrl: `https://${
+                entry.getEntryInfo().getMetadataURI().includes("sandbox")
+                  ? "sandbox."
+                  : ""
+              }admin.dataportal.se/store`,
               lang,
               t,
             })
@@ -161,6 +179,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         resourceUri,
         entrystoreService,
         publisherEntry,
+        defaultESEntry.env,
       );
 
       setState({
@@ -181,6 +200,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     resourceUri: string,
     entrystoreService: EntrystoreService,
     publisherEntry: Entry | null,
+    env: EnvSettings,
   ): Promise<Partial<ESEntry>> {
     switch (pageType) {
       case "dataset": {
@@ -263,7 +283,10 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
         return {
           relatedSpecifications: specs,
-          address: formatTerminologyAddress(resourceUri),
+          address: formatTerminologyAddress(resourceUri, [
+            env.PRODUCTION_BASE_URL,
+            env.SANDBOX_BASE_URL,
+          ]),
           downloadFormats: formats,
           organisationLink,
         };
@@ -351,7 +374,11 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       };
 
       const termsEntrystoreService = EntrystoreService.getInstance({
-        baseUrl: `https://${state.env.ENTRYSCAPE_TERMS_PATH}/store`,
+        baseUrl: `https://${
+          entry.getEntryInfo().getMetadataURI().includes("sandbox")
+            ? "sandbox."
+            : ""
+        }editera.dataportal.se/store`,
         lang,
         t,
       });

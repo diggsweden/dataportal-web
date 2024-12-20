@@ -8,6 +8,10 @@ import {
 // @ts-expect-error no types
 import lucene from "lucene";
 
+import { SettingsUtil } from "@/env";
+import { Settings_Sandbox } from "@/env/settings.sandbox";
+import { RedirectConfig } from "@/types/global";
+
 import { Choice, ChoiceTemplate, DCATData } from "../dcat-utils";
 import { entryCache } from "./local-cache";
 
@@ -134,23 +138,77 @@ export function formatDatasetUrl(
   ds: Entry,
   lang: string,
   contextId: string,
+  baseUrls: string[],
 ): string {
-  return ds.getResourceURI().startsWith("https://dataportal.se")
+  return baseUrls.some((url) => ds.getResourceURI().startsWith(url))
     ? new URL(ds.getResourceURI()).pathname
     : `/${lang}/datasets/${contextId}_${ds.getId()}`;
 }
 
-export function formatSpecificationUrl(uri: string, lang: string): string {
-  return uri.startsWith("https://dataportal.se")
+export function formatSpecificationUrl(
+  uri: string,
+  lang: string,
+  baseUrls: string[],
+): string {
+  return baseUrls.some((url) => uri.startsWith(url))
     ? new URL(uri).pathname
     : `/${lang}/externalspecification?resource=${uri}`;
 }
 
-export function formatTerminologyAddress(resourceUri: string): string {
-  return resourceUri.startsWith("https://dataportal.se")
+export function formatTerminologyAddress(
+  resourceUri: string,
+  baseUrls: string[],
+): string {
+  return baseUrls.some((url) => resourceUri.startsWith(url))
     ? resourceUri.replace("concepts", "terminology")
     : resourceUri;
 }
+
+export function createPathResolver(config: RedirectConfig) {
+  return (hitMeta: Entry) => {
+    const resourceUri = hitMeta.getResourceURI();
+    const env = resourceUri.includes("sandbox")
+      ? new Settings_Sandbox()
+      : SettingsUtil.create();
+    const baseUrl = env[config.entrystorePathKey].includes("sandbox")
+      ? env.SANDBOX_BASE_URL
+      : env.PRODUCTION_BASE_URL;
+
+    if (!resourceUri) return "";
+
+    if (!resourceUri.startsWith(baseUrl)) {
+      return `${config.redirectPath}/${hitMeta
+        .getContext()
+        .getId()}_${hitMeta.getId()}`;
+    }
+    if (resourceUri.startsWith(baseUrl)) {
+      return `${config.redirectPath}${resourceUri.replace(
+        `${baseUrl}${config.pathPrefix}`,
+        "",
+      )}`;
+    }
+
+    return resourceUri;
+  };
+}
+
+export const specsPathResolver = createPathResolver({
+  pathPrefix: "/specifications",
+  redirectPath: "/specifications",
+  entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
+});
+
+export const conceptsPathResolver = createPathResolver({
+  pathPrefix: "/concepts",
+  redirectPath: "/concepts",
+  entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
+});
+
+export const termsPathResolver = createPathResolver({
+  pathPrefix: "/concepts",
+  redirectPath: "/terminology",
+  entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
+});
 
 // ============================================================================
 // Template and Choice Helpers
