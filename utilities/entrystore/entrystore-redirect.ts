@@ -1,7 +1,9 @@
-import { EntryStore, EntryStoreUtil } from "@entryscape/entrystore-js";
 import { GetServerSidePropsContext, GetStaticPropsContext } from "next";
+import getT from "next-translate/getT";
 
 import { SettingsUtil } from "@/env";
+
+import { EntrystoreService } from "./entrystore.service";
 
 type RedirectConfig = {
   pathPrefix: string;
@@ -18,12 +20,15 @@ export async function handleEntryStoreRedirect(
 ) {
   const { locale, params } = context;
   const env = SettingsUtil.create();
-  const es = new EntryStore(
-    `https://${env[config.entrystorePathKey]}/store` ||
+  const t = await getT(locale || "sv", "pages");
+  const entrystoreService = EntrystoreService.getInstance({
+    baseUrl:
+      `https://${env[config.entrystorePathKey]}/store` ||
       "https://admin.dataportal.se/store",
-  );
-  const esu = new EntryStoreUtil(es);
-  esu.loadOnlyPublicEntries(true);
+    lang: locale || "sv",
+    t,
+  });
+
   const baseUrl = env[config.entrystorePathKey].includes("sandbox")
     ? "https://www-sandbox.dataportal.se"
     : "https://dataportal.se";
@@ -59,7 +64,7 @@ export async function handleEntryStoreRedirect(
       const eid = ids.pop() || "";
       const cid = ids.join("_");
 
-      const entry = await es.getEntry(es.getEntryURI(cid, eid));
+      const entry = await entrystoreService.getEntry(cid, eid);
       const resourceUri = entry.getResourceURI();
 
       if (resourceUri.startsWith(baseUrl)) {
@@ -79,7 +84,9 @@ export async function handleEntryStoreRedirect(
   }
 
   try {
-    const entry = await esu.getEntryByResourceURI(resourceUri || "");
+    const entry = await entrystoreService.getEntryByResourceURI(
+      resourceUri || "",
+    );
 
     if (entry) {
       return {
