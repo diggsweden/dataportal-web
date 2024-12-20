@@ -1,6 +1,7 @@
 import { Translate } from "next-translate";
 
 import { EnvSettings } from "@/env/env-settings";
+import { includeLangInPath } from "@/utilities/check-lang";
 
 import { apiexploreBlocks } from "./apiexplore";
 import { conceptBlocks } from "./concept";
@@ -307,7 +308,8 @@ export const createBlocksConfig = ({
           ...baseConfig,
           clicks: {
             katalog:
-              "/" + lang + "/metadatakvalitet/katalog/${entry}/${context}",
+              includeLangInPath(lang) +
+              "/metadatakvalitet/katalog/${entry}/${context}",
           },
         },
       ];
