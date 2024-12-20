@@ -908,18 +908,29 @@ export class EntrystoreService {
     }
   }
 
-  public async getRelatedMQA(entry: Entry) {
+  public async getRelatedMQA(entry: Entry, pageType?: PageType) {
+    let contextId = entry.getContext().getId();
     try {
-      const mqa = this.entryStore.getEntryURI(
-        entry.getContext().getId(),
-        "_quality",
-      );
+      if (pageType === "organisation") {
+        const categoryEntries = await this.entryStore
+          .newSolrQuery()
+          .publicRead(true)
+          .rdfType(["dcat:Catalog"])
+          .uriProperty("dcterms:publisher", entry.getResourceURI())
+          .getEntries();
+
+        if (categoryEntries.length > 0) {
+          contextId = categoryEntries[0].getContext().getId();
+        }
+      }
+
+      const mqa = this.entryStore.getEntryURI(contextId, "_quality");
       const mqaEntry = await this.entryStore.getEntry(mqa);
       const mqaMetadata = mqaEntry.getAllMetadata();
 
       return {
         title: getLocalizedValue(mqaMetadata, "dcterms:title"),
-        url: `/metadatakvalitet/katalog/_quality/${entry.getContext().getId()}`,
+        url: `/metadatakvalitet/katalog/_quality/${contextId}`,
       };
     } catch {
       return null;

@@ -232,7 +232,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           entrystoreService.getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
           ),
-          entrystoreService.getRelatedMQA(entry),
+          entrystoreService.getRelatedMQA(entry, pageType),
         ]);
 
         return {
@@ -385,7 +385,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           .uriFacet("dcterms:accessRights")
           .uriFacet("rdf:type")
           .uriFacet("http://data.europa.eu/r5r/hvdCategory")
-          .uriFacet("schema:offers")
           .uriFacet("dcterms:conformsTo")
           .list();
 
@@ -419,12 +418,12 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
           data.datasets.dataInfo[1].total = protectedDataCount || 0;
 
-          const apiDataFacet = rawFacets.find(
+          const rdfTypeFacet = rawFacets.find(
             (f) =>
               f.predicate === "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
           );
           const apiData =
-            apiDataFacet?.values?.find(
+            rdfTypeFacet?.values?.find(
               (v: ESFacetFieldValue) =>
                 v.name === "http://entryscape.com/terms/ServedByDataService",
             )?.count || 0;
@@ -437,10 +436,10 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           const hvdData = hvdDataFacet?.valueCount || 0;
           data.datasets.dataInfo[3].total = hvdData;
 
-          const feeDataFacet = rawFacets.find(
-            (f: ESFacetField) => f.predicate === "http://schema.org/offers",
+          const feeDataFacet = rdfTypeFacet?.values?.find(
+            (f: ESFacetFieldValue) => f.name === "http://schema.org/Offer",
           );
-          const feeData = feeDataFacet?.valueCount || 0;
+          const feeData = feeDataFacet?.count || 0;
           data.datasets.dataInfo[4].total = feeData;
 
           data.datasets.total = datasetCounts.getSize();
