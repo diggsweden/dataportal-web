@@ -1,7 +1,9 @@
-import { EntryStore, EntryStoreUtil } from "@entryscape/entrystore-js";
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext, GetStaticPropsContext } from "next";
+import getT from "next-translate/getT";
 
 import { SettingsUtil } from "@/env";
+
+import { EntrystoreService } from "./entrystore.service";
 
 type RedirectConfig = {
   pathPrefix: string;
@@ -12,12 +14,24 @@ type RedirectConfig = {
 };
 
 export async function handleEntryStoreRedirect(
-  context: GetServerSidePropsContext,
+  context: GetStaticPropsContext | GetServerSidePropsContext,
   config: RedirectConfig,
   resourceUri?: string,
 ) {
   const { locale, params } = context;
   const env = SettingsUtil.create();
+  const t = await getT(locale || "sv", "pages");
+  const entrystoreService = EntrystoreService.getInstance({
+    baseUrl:
+      `https://${env[config.entrystorePathKey]}/store` ||
+      "https://admin.dataportal.se/store",
+    lang: locale || "sv",
+    t,
+  });
+
+  const baseUrl = env[config.entrystorePathKey].includes("sandbox")
+    ? "https://www-sandbox.dataportal.se"
+    : "https://dataportal.se";
 
   // Handle catch-all routes ([...param])
   const param = params?.[config.paramName || ""];
@@ -32,31 +46,47 @@ export async function handleEntryStoreRedirect(
   }
   // Handle regular routes
   else if (param) {
-    if (/\d/.test(param) && param.includes("_")) {
-      return { props: {} };
+    if (!param.includes("_") && !/^\d/.test(param)) {
+      // Construct resourceUri based on number of parameters
+      const pathSuffix =
+        config.secondParamName && params?.[config.secondParamName]
+          ? `${param}/${params[config.secondParamName]}` // Two params
+          : param; // Single param
+
+      resourceUri = `${baseUrl}${config.pathPrefix}/${pathSuffix}`;
+      return {
+        props: {
+          resourceUri,
+        },
+      };
+    } else if (param.includes("_") && /^\d/.test(param)) {
+      const ids = param.split("_");
+      const eid = ids.pop() || "";
+      const cid = ids.join("_");
+
+      const entry = await entrystoreService.getEntry(cid, eid);
+      const resourceUri = entry.getResourceURI();
+
+      if (resourceUri.startsWith(baseUrl)) {
+        return {
+          redirect: {
+            destination: `/${locale}${config.redirectPath}${resourceUri.replace(
+              `${baseUrl}${config.pathPrefix}`,
+              "",
+            )}`,
+            permanent: true,
+          },
+        };
+      } else {
+        return { props: {} };
+      }
     }
-
-    // Construct resourceUri based on number of parameters
-    const baseUrl = env[config.entrystorePathKey].includes("sandbox")
-      ? "https://www-sandbox.dataportal.se"
-      : "https://dataportal.se";
-
-    const pathSuffix =
-      config.secondParamName && params?.[config.secondParamName]
-        ? `${param}/${params[config.secondParamName]}` // Two params
-        : param; // Single param
-
-    resourceUri = `${baseUrl}${config.pathPrefix}/${pathSuffix}`;
   }
 
   try {
-    const es = new EntryStore(
-      `https://${env[config.entrystorePathKey]}/store` ||
-        "https://admin.dataportal.se/store",
+    const entry = await entrystoreService.getEntryByResourceURI(
+      resourceUri || "",
     );
-    const esu = new EntryStoreUtil(es);
-
-    const entry = await esu.getEntryByResourceURI(resourceUri || "");
 
     if (entry) {
       return {
