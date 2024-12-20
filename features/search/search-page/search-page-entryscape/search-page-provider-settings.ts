@@ -1,4 +1,4 @@
-import { EnvSettings } from "@/env";
+import { EnvSettings, SettingsUtil } from "@/env";
 import { SearchSortOrder } from "@/providers/search-provider";
 import { ESRdfType, ESType } from "@/types/entrystore-core";
 
@@ -49,6 +49,54 @@ interface SearchProviderConfig {
     };
   };
 }
+
+interface ResourceMeta {
+  getResourceURI: () => string;
+  getContext: () => ResourceMeta;
+  getId: () => string;
+}
+
+interface PathResolverConfig {
+  pathPrefix: string;
+  entrystorePathKey: "ENTRYSCAPE_SPECS_PATH" | "ENTRYSCAPE_TERMS_PATH";
+}
+
+function createPathResolver(config: PathResolverConfig) {
+  return (hitMeta: ResourceMeta) => {
+    const resourceUri = hitMeta.getResourceURI();
+    const env = SettingsUtil.create();
+    const baseUrl = env[config.entrystorePathKey].includes("sandbox")
+      ? "https://www-sandbox.dataportal.se"
+      : "https://dataportal.se";
+
+    if (!resourceUri) return "";
+
+    if (!resourceUri.startsWith(baseUrl)) {
+      return `${config.pathPrefix}/${hitMeta
+        .getContext()
+        .getId()}_${hitMeta.getId()}`;
+    }
+
+    if (resourceUri.startsWith(baseUrl)) {
+      return `${config.pathPrefix}${resourceUri.replace(
+        `${baseUrl}${config.pathPrefix}`,
+        "",
+      )}`;
+    }
+
+    return resourceUri;
+  };
+}
+
+const specsPathResolver = createPathResolver({
+  pathPrefix: "/specifications",
+  entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
+});
+
+const termsPathResolver = createPathResolver({
+  pathPrefix: "/concepts",
+  entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
+});
 
 export function createSearchProviderSettings(env: EnvSettings, lang: string) {
   return {
@@ -285,6 +333,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           path: `/specifications/`,
           titleResource: "dcterms:title",
           descriptionResource: "dcterms:description",
+          pathResolver: specsPathResolver,
         },
       },
       facetSpecification: {
@@ -372,6 +421,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           path: `/concepts/`,
           titleResource: "http://www.w3.org/2004/02/skos/core#prefLabel",
           descriptionResource: "http://www.w3.org/2004/02/skos/core#definition",
+          pathResolver: termsPathResolver,
         },
       },
       facetSpecification: {
