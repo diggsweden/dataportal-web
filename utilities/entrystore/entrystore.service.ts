@@ -37,10 +37,16 @@ import {
   Choice,
   getLocalizedValue,
   fetchDCATMeta,
+  includeLangInPath,
 } from "@/utilities";
 
 import { DCATData } from "../dcat-utils";
-import { parseEmail, luceneFriendlyQuery } from "./entrystore-helpers";
+import {
+  parseEmail,
+  luceneFriendlyQuery,
+  termsPathResolver,
+  specsPathResolver,
+} from "./entrystore-helpers";
 import { entryCache } from "./local-cache";
 
 interface EntryStoreConfig {
@@ -381,9 +387,11 @@ export class EntrystoreService {
           ),
         };
 
-        hit.url = `${hitSpecification.path || "datamangd"}${context.getId()}_${
-          hit.entryId
-        }`;
+        hit.url = hitSpecification.pathResolver
+          ? hitSpecification.pathResolver(entry)
+          : `${hitSpecification.path || "datamangd"}${context.getId()}_${
+              hit.entryId
+            }`;
 
         hits.push(hit);
       }
@@ -848,7 +856,9 @@ export class EntrystoreService {
 
     return datasets.map((ds: Entry) => ({
       title: getLocalizedValue(ds.getAllMetadata(), "dcterms:title"),
-      url: `/${this.lang}/datasets/${this.entryStore.getContextId(
+      url: `${includeLangInPath(
+        this.lang,
+      )}/datasets/${this.entryStore.getContextId(
         ds.getEntryInfo().getMetadataURI(),
       )}_${ds.getId()}`,
     }));
@@ -877,9 +887,7 @@ export class EntrystoreService {
           .filter((e: Entry) => e)
           .map((e: Entry) => ({
             title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-            url: `/${this.lang}/specifications/${e
-              .getContext()
-              .getId()}_${e.getId()}`,
+            url: `${includeLangInPath(this.lang)}${specsPathResolver(e)}`,
           }));
       } else if (pageType === "terminology") {
         const specifications = await this.entryStore
@@ -896,9 +904,7 @@ export class EntrystoreService {
           .filter((e: Entry) => e)
           .map((e: Entry) => ({
             title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-            url: `/${this.lang}/specifications/${e
-              .getContext()
-              .getId()}_${e.getId()}`,
+            url: `${includeLangInPath(this.lang)}${specsPathResolver(e)}`,
           }));
       }
       return [];
@@ -919,7 +925,9 @@ export class EntrystoreService {
 
       return {
         title: getLocalizedValue(mqaMetadata, "dcterms:title"),
-        url: `/metadatakvalitet/katalog/_quality/${entry.getContext().getId()}`,
+        url: `${includeLangInPath(
+          this.lang,
+        )}/metadatakvalitet/katalog/_quality/${entry.getContext().getId()}`,
       };
     } catch {
       return null;
@@ -932,9 +940,7 @@ export class EntrystoreService {
 
     return {
       title: getLocalizedValue(termEntry.getAllMetadata(), "dcterms:title"),
-      url: `/${this.lang}/terminology/${termEntry
-        .getContext()
-        .getId()}_${termEntry.getId()}`,
+      url: `${includeLangInPath(this.lang)}${termsPathResolver(termEntry)}`,
     };
   }
 
@@ -950,11 +956,12 @@ export class EntrystoreService {
           null,
           true,
         );
+
       return datasetSeriesEntries.map((e: Entry) => ({
         title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-        url: `/${this.lang}/dataset-series/${e
+        url: `${includeLangInPath(this.lang)}/dataset-series/${e
           .getContext()
-          .getId()}_${e.getId()}?q=&f=`,
+          .getId()}_${e.getId()}`,
       }));
     } catch {
       return [];
@@ -964,7 +971,7 @@ export class EntrystoreService {
   public async getOrganisationLink(publisherEntry: Entry | null) {
     if (!publisherEntry) return null;
 
-    return `/${this.lang}/organisations/${publisherEntry
+    return `${includeLangInPath(this.lang)}/organisations/${publisherEntry
       .getContext()
       .getId()}_${publisherEntry.getId()}`;
   }
