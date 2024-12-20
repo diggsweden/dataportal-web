@@ -1,18 +1,33 @@
-import { GetServerSidePropsContext } from "next/types";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
+import { getEntryStoreProps } from "@/utilities/entrystore/get-entrystore-props";
 
 export default function Concept() {
+  const router = useRouter();
+  const { concept } = router.query;
+
+  useEffect(() => {
+    const fetchEntryStoreProps = async () => {
+      if (!concept) return;
+      const isSandbox = window.location.host.includes("sandbox");
+
+      await getEntryStoreProps({
+        config: {
+          pathPrefix: "/concepts",
+          redirectPath: "/concepts",
+          entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
+          param: concept,
+        },
+        locale: router.locale || "sv",
+        isSandbox,
+        router,
+        includeBasePath: false,
+      });
+    };
+
+    fetchEntryStoreProps();
+  }, [concept]);
+
   return null;
 }
-
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext,
-) => {
-  return handleEntryStoreRedirect(context, {
-    pathPrefix: "/concepts",
-    redirectPath: "/concepts",
-    entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
-    paramName: "concept",
-  });
-};

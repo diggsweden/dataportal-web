@@ -1,6 +1,10 @@
 import { EnvSettings } from "@/env";
 import { SearchSortOrder } from "@/providers/search-provider";
 import { ESRdfType, ESType } from "@/types/entrystore-core";
+import {
+  specsPathResolver,
+  conceptsPathResolver,
+} from "@/utilities/entrystore/entrystore-helpers";
 
 interface FacetConfig {
   resource: string;
@@ -285,6 +289,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           path: `/specifications/`,
           titleResource: "dcterms:title",
           descriptionResource: "dcterms:description",
+          pathResolver: specsPathResolver,
         },
       },
       facetSpecification: {
@@ -372,6 +377,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           path: `/concepts/`,
           titleResource: "http://www.w3.org/2004/02/skos/core#prefLabel",
           descriptionResource: "http://www.w3.org/2004/02/skos/core#definition",
+          pathResolver: conceptsPathResolver,
         },
       },
       facetSpecification: {

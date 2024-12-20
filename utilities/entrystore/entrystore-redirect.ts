@@ -1,26 +1,34 @@
-import { EntryStore, EntryStoreUtil } from "@entryscape/entrystore-js";
-import { GetServerSidePropsContext } from "next";
+import { Entry } from "@entryscape/entrystore-js";
+import getT from "next-translate/getT";
 
 import { SettingsUtil } from "@/env";
+import { Settings_Sandbox } from "@/env/settings.sandbox";
+import { RedirectConfig } from "@/types/global";
 
-type RedirectConfig = {
-  pathPrefix: string;
-  redirectPath: "/concepts" | "/specifications" | "/terminology";
-  entrystorePathKey: "ENTRYSCAPE_TERMS_PATH" | "ENTRYSCAPE_SPECS_PATH";
-  paramName?: string;
-  secondParamName?: string;
-};
+import { EntrystoreService } from "./entrystore.service";
+import { includeLangInPath } from "../check-lang";
 
 export async function handleEntryStoreRedirect(
-  context: GetServerSidePropsContext,
   config: RedirectConfig,
+  locale: string = "sv",
+  isSandbox: boolean = false,
   resourceUri?: string,
 ) {
-  const { locale, params } = context;
-  const env = SettingsUtil.create();
+  const env = isSandbox ? new Settings_Sandbox() : SettingsUtil.create();
+  const baseUrl = isSandbox
+    ? "https://www-sandbox.dataportal.se"
+    : "https://dataportal.se";
+
+  const entrystoreService = EntrystoreService.getInstance({
+    baseUrl:
+      `https://${env[config.entrystorePathKey]}/store` ||
+      "https://admin.dataportal.se/store",
+    lang: locale || "sv",
+    t: await getT(locale || "sv", "pages"),
+  });
 
   // Handle catch-all routes ([...param])
-  const param = params?.[config.paramName || ""];
+  const param = config.param || null;
   if (Array.isArray(param)) {
     const scheme = param[0];
     if (scheme !== "http" && scheme !== "https") {
@@ -32,40 +40,48 @@ export async function handleEntryStoreRedirect(
   }
   // Handle regular routes
   else if (param) {
-    if (/\d/.test(param) && param.includes("_")) {
-      return { props: {} };
-    }
+    if (param.includes("_") && /^\d/.test(param)) {
+      const ids = param.split("_");
+      const eid = ids.pop() || "";
+      const cid = ids.join("_");
 
-    // Construct resourceUri based on number of parameters
-    const baseUrl = env[config.entrystorePathKey].includes("sandbox")
-      ? "https://www-sandbox.dataportal.se"
-      : "https://dataportal.se";
+      const entry = await entrystoreService.getEntry(cid, eid);
+      const resourceUri = entry.getResourceURI();
 
-    const pathSuffix =
-      config.secondParamName && params?.[config.secondParamName]
-        ? `${param}/${params[config.secondParamName]}` // Two params
+      if (resourceUri.startsWith(baseUrl)) {
+        return {
+          redirect: `${includeLangInPath(locale)}${
+            config.redirectPath
+          }${resourceUri.replace(`${baseUrl}${config.pathPrefix}`, "")}`,
+        };
+      } else {
+        return { props: {} };
+      }
+    } else {
+      // Construct resourceUri based on number of parameters
+      const pathSuffix = config.secondParam
+        ? `${param}/${config.secondParam}` // Two params
         : param; // Single param
 
-    resourceUri = `${baseUrl}${config.pathPrefix}/${pathSuffix}`;
+      resourceUri = `${baseUrl}${config.pathPrefix}/${pathSuffix}`;
+      return {
+        props: {
+          resourceUri,
+        },
+      };
+    }
   }
 
   try {
-    const es = new EntryStore(
-      `https://${env[config.entrystorePathKey]}/store` ||
-        "https://admin.dataportal.se/store",
+    const entry: Entry = await entrystoreService.getEntryByResourceURI(
+      resourceUri || "",
     );
-    const esu = new EntryStoreUtil(es);
-
-    const entry = await esu.getEntryByResourceURI(resourceUri || "");
 
     if (entry) {
       return {
-        redirect: {
-          destination: `/${locale}${config.redirectPath}/${entry
-            .getContext()
-            .getId()}_${entry.getId()}`,
-          permanent: true,
-        },
+        redirect: `${includeLangInPath(locale)}${config.redirectPath}/${entry
+          .getContext()
+          .getId()}_${entry.getId()}`,
       };
     }
   } catch (error) {

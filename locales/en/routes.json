@@ -64,6 +64,10 @@
     "path": "sv",
     "title": "Svenska"
   },
+  "metadata": {
+    "path": "metadatakvalitet",
+    "title": "Metadata quality per catalog"
+  },
   "news": {
     "path": "",
     "title": "News"
