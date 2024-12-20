@@ -1,7 +1,8 @@
-import { GetServerSidePropsContext, GetStaticPropsContext } from "next";
+import { GetServerSidePropsContext } from "next";
 import getT from "next-translate/getT";
 
 import { SettingsUtil } from "@/env";
+import { Settings_Sandbox } from "@/env/settings.sandbox";
 
 import { EntrystoreService } from "./entrystore.service";
 
@@ -14,12 +15,13 @@ type RedirectConfig = {
 };
 
 export async function handleEntryStoreRedirect(
-  context: GetStaticPropsContext | GetServerSidePropsContext,
+  context: GetServerSidePropsContext,
   config: RedirectConfig,
   resourceUri?: string,
 ) {
-  const { locale, params } = context;
-  const env = SettingsUtil.create();
+  const { locale, params, req } = context;
+  const isSandbox = req?.headers.host?.includes("sandbox");
+  const env = isSandbox ? new Settings_Sandbox() : SettingsUtil.create();
   const t = await getT(locale || "sv", "pages");
   const entrystoreService = EntrystoreService.getInstance({
     baseUrl:

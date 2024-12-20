@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticPropsContext } from "next/types";
+import { GetServerSidePropsContext } from "next/types";
 import { useContext } from "react";
 
 import { SpecificationPage } from "@/features/entryscape/specification-page";
@@ -27,7 +27,9 @@ export default function Specification({ resourceUri }: SpecificationProps) {
   );
 }
 
-export const getStaticProps = async (context: GetStaticPropsContext) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
   return handleEntryStoreRedirect(context, {
     pathPrefix: "/specifications",
     redirectPath: "/specifications",
@@ -35,13 +37,4 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     paramName: "spec",
     secondParamName: "param",
   });
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths: string[] = [];
-
-  return {
-    paths,
-    fallback: "blocking",
-  };
 };
