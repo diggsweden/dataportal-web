@@ -40,8 +40,9 @@ const defaultESEntry: ESEntry = {
 export interface EntrystoreProviderProps {
   env: EnvSettings;
   children: ReactNode;
-  cid: string;
-  eid: string;
+  cid?: string;
+  eid?: string;
+  rUri?: string;
   entryUri?: string;
   entrystoreUrl?: string;
   includeContact?: boolean;
@@ -61,6 +62,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   children,
   cid,
   eid,
+  rUri,
   entrystoreUrl,
   includeContact,
   pageType,
@@ -69,6 +71,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   const [state, setState] = useState(defaultESEntry);
   const router = useRouter();
   const { lang, t } = useTranslation();
+  let entry: Entry;
+  let resourceUri: string;
 
   const entrystoreService = EntrystoreService.getInstance({
     baseUrl:
@@ -103,12 +107,17 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
   const fetchEntry = async () => {
     try {
-      const entry: Entry = await entrystoreService.getEntry(cid, eid);
+      if (cid && eid) {
+        entry = await entrystoreService.getEntry(cid, eid);
+        resourceUri = entry.getResourceURI();
+      } else if (rUri) {
+        resourceUri = rUri;
+        entry = await entrystoreService.getEntryByResourceURI(rUri);
+      }
 
       if (!entry) return router.push("/404");
 
       const metadata = entry.getAllMetadata();
-      const resourceUri = entry.getResourceURI();
 
       // Parallel fetch for publisher info
       // TODO: Remove this when concepts and terminologies are moved to admin.dataportal.se
