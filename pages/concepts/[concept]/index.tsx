@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { GetStaticPaths, GetStaticPropsContext } from "next/types";
+import { GetServerSidePropsContext } from "next/types";
 import { useContext } from "react";
 
 import { ConceptPage } from "@/features/entryscape/concept-page";
@@ -46,20 +46,13 @@ export default function Concept({ resourceUri }: ConceptProps) {
   );
 }
 
-export const getStaticProps = async (context: GetStaticPropsContext) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
   return handleEntryStoreRedirect(context, {
     pathPrefix: "/concepts",
     redirectPath: "/concepts",
     entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
     paramName: "concept",
   });
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths: string[] = [];
-
-  return {
-    paths,
-    fallback: "blocking",
-  };
 };

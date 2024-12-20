@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticPropsContext } from "next";
+import { GetServerSidePropsContext } from "next";
 import { useContext } from "react";
 
 import { ConceptPage } from "@/features/entryscape/concept-page";
@@ -27,7 +27,9 @@ export default function Concept({ resourceUri }: ConceptProps) {
   );
 }
 
-export const getStaticProps = async (context: GetStaticPropsContext) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
   return handleEntryStoreRedirect(context, {
     pathPrefix: "/concepts",
     redirectPath: "/concepts",
@@ -35,13 +37,4 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     paramName: "concept",
     secondParamName: "param",
   });
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths: string[] = [];
-
-  return {
-    paths,
-    fallback: "blocking",
-  };
 };
