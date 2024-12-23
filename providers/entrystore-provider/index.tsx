@@ -348,7 +348,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         orgClassification: metadata.findFirstValue(null, "org:classification"),
         orgNumber: metadata.findFirstValue(null, "dcterms:identifier"),
         orgType: "",
-        showCases: [],
       };
 
       const termsEntrystoreService = EntrystoreService.getInstance({
