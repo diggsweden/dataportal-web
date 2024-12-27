@@ -77,9 +77,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     t,
   });
 
-  // TODO: Uncomment this when cors error is fixed
-  // es.getREST().disableJSONP();
-
   entrystoreService.getEntryStoreUtil();
 
   // Add background class based on page type
@@ -348,6 +345,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         orgClassification: metadata.findFirstValue(null, "org:classification"),
         orgNumber: metadata.findFirstValue(null, "dcterms:identifier"),
         orgType: "",
+        showcases: [],
       };
 
       const termsEntrystoreService = EntrystoreService.getInstance({
@@ -394,14 +392,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         rawFacets = datasetCounts.getFacets();
 
         // Rodret är ditt KOTSKI
-        const showcasesTEST = entrystoreService
-          .getEntryStore()
-          .newSolrQuery()
-          .rdfType("dcat:Resource")
-          .uriProperty("dcterms:publisher", uri)
-          .list();
-
-        console.log("showcasesTEST", showcasesTEST);
+        data.showcases = await entrystoreService.getShowcases(entry);
 
         if (rawFacets.length > 0) {
           const dataAccessFacet = rawFacets.find(

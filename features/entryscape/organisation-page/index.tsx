@@ -55,7 +55,6 @@ export const OrganisationPage: FC = () => {
             {entry.description !== "" && (
               <p className="mb-lg">{entry.description}</p>
             )}
-
             {/* Datasets wrapper */}
             <div>
               <Heading
@@ -131,7 +130,6 @@ export const OrganisationPage: FC = () => {
                 )}
               </div>
             </div>
-
             {/* Specifications wrapper */}
             {entry.organisationData?.specifications.total &&
             entry.organisationData?.specifications.total > 0 ? (
@@ -163,7 +161,6 @@ export const OrganisationPage: FC = () => {
                 </div>
               </div>
             ) : null}
-
             {/* Terminology wrapper */}
             {entry.organisationData?.terms?.termsInfo?.length &&
             entry.organisationData?.terms?.termsInfo?.length > 0 ? (
@@ -311,6 +308,29 @@ export const OrganisationPage: FC = () => {
             </div>
           </div>
           {/* End right column */}
+        </div>
+        <div className="grid grid-cols-3 gap-xl">
+          {entry.organisationData?.showcases.map((showcase) => (
+            <div
+              className="block space-y-sm bg-white px-md py-lg no-underline"
+              key={showcase.title}
+            >
+              {showcase.date && (
+                <div className="text-sm text-textSecondary">
+                  {showcase.date} |
+                </div>
+              )}
+              <div className="text-lg text-textPrimary">{showcase.title}</div>
+              <ButtonLink
+                href={showcase.url}
+                label={t("common|read-more")}
+                size="sm"
+                variant="plain"
+                icon={ArrowRightIcon}
+                iconPosition="right"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </Container>

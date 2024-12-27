@@ -26,11 +26,11 @@ export interface TermsInfo {
   termsInfo: TermInfo[];
 }
 // Vem vet vad detta kommer att bli?
-// export interface ShowCaseInfo {
-//   date: string;
-//   title: string;
-//   text: string;
-// }
+export interface Showcase {
+  date: string;
+  title: string;
+  url: string;
+}
 
 export interface OrganisationData {
   datasets: DatasetInfo;
@@ -39,5 +39,5 @@ export interface OrganisationData {
   orgClassification?: string;
   orgNumber?: string;
   orgType: string;
-  // showCases: an;
+  showcases: Showcase[];
 }
