@@ -25,7 +25,7 @@ describe("Search concepts", () => {
 
     // Type a search query and click search.
     cy.get("input#search-field").type("api");
-    cy.get(`button[aria-label="Sök"]`).click();
+    cy.get(`button[aria-label="Sök begrepp"]`).click();
 
     // Verify that we have 20 results on first page.
     // Also change the default waiting time of 4 seconds from Cypress.
@@ -69,7 +69,9 @@ describe("Search concepts", () => {
     cy.get("#SearchFilters button").contains("Terminologier").click();
 
     // Select one category item.
-    cy.get("#SearchFilters button").contains("The GEMET thesaurus - version 4.2.3").click();
+    cy.get("#SearchFilters button")
+      .contains("The GEMET thesaurus - version 4.2.3")
+      .click();
 
     // Close the category filter popup bu clicking it again.
     cy.get("#SearchFilters button").contains("Terminologier").click();
