@@ -1,4 +1,7 @@
 export abstract class EnvSettings {
+  abstract PRODUCTION_BASE_URL: string;
+  abstract SANDBOX_BASE_URL: string;
+
   abstract ENTRYSCAPE_DATASETS_PATH: string;
   abstract ENTRYSCAPE_SPECS_PATH: string;
   abstract ENTRYSCAPE_TERMS_PATH: string;
