@@ -65,6 +65,14 @@ export interface DataportalSettings {
   matomoSiteId: string;
 }
 
+export type RedirectConfig = {
+  pathPrefix: string;
+  redirectPath: "/concepts" | "/specifications" | "/terminology";
+  entrystorePathKey: "ENTRYSCAPE_TERMS_PATH" | "ENTRYSCAPE_SPECS_PATH";
+  param?: string | string[];
+  secondParam?: string;
+};
+
 declare module "remark-gfm" {
   const content: unknown;
   export default content;

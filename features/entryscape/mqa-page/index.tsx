@@ -10,9 +10,9 @@ import { linkBase } from "@/utilities";
 
 export const MQAPage: FC = () => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
-  const { lang } = useTranslation();
+  const { lang, t } = useTranslation();
   const pathname = usePathname();
-  const pageTitle = "Metadatakvalitet per katalog";
+  const pageTitle = t("routes|metadata$title");
 
   useEntryScapeBlocks({
     entrystoreBase: `https://${env.ENTRYSCAPE_MQA_PATH}/store`,
