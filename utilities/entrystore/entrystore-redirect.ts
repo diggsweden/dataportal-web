@@ -1,4 +1,5 @@
 import { Entry } from "@entryscape/entrystore-js";
+import { NextRouter } from "next/router";
 import getT from "next-translate/getT";
 
 import { SettingsUtil } from "@/env";
@@ -10,6 +11,7 @@ import { includeLangInPath } from "../check-lang";
 
 export async function handleEntryStoreRedirect(
   config: RedirectConfig,
+  router: NextRouter,
   locale: string = "sv",
   isSandbox: boolean = false,
   resourceUri?: string,
@@ -49,11 +51,12 @@ export async function handleEntryStoreRedirect(
       const resourceUri = entry.getResourceURI();
 
       if (resourceUri.startsWith(baseUrl)) {
-        return {
-          redirect: `${includeLangInPath(locale)}${
+        router.replace(
+          `${includeLangInPath(locale)}${
             config.redirectPath
           }${resourceUri.replace(`${baseUrl}${config.pathPrefix}`, "")}`,
-        };
+        );
+        return;
       } else {
         return { props: {} };
       }
@@ -65,9 +68,7 @@ export async function handleEntryStoreRedirect(
 
       resourceUri = `${baseUrl}${config.pathPrefix}/${pathSuffix}`;
       return {
-        props: {
-          resourceUri,
-        },
+        resourceUri,
       };
     }
   }
@@ -78,11 +79,12 @@ export async function handleEntryStoreRedirect(
     );
 
     if (entry) {
-      return {
-        redirect: `${includeLangInPath(locale)}${config.redirectPath}/${entry
+      router.replace(
+        `${includeLangInPath(locale)}${config.redirectPath}/${entry
           .getContext()
           .getId()}_${entry.getId()}`,
-      };
+      );
+      return;
     }
   } catch (error) {
     console.error("Error fetching entry:", error);

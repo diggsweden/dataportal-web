@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { getEntryStoreProps } from "@/utilities/entrystore/get-entrystore-props";
+import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
 
 export default function Specification() {
   const router = useRouter();
@@ -12,18 +12,17 @@ export default function Specification() {
       if (!specification) return;
       const isSandbox = window.location.host.includes("sandbox");
 
-      await getEntryStoreProps({
-        config: {
+      await handleEntryStoreRedirect(
+        {
           pathPrefix: "/concepts",
           redirectPath: "/concepts",
           entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
           param: specification,
         },
-        locale: router.locale || "sv",
-        isSandbox,
         router,
-        includeBasePath: false,
-      });
+        router.locale || "sv",
+        isSandbox,
+      );
     };
 
     fetchEntryStoreProps();

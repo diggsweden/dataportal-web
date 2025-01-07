@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { getEntryStoreProps } from "@/utilities/entrystore/get-entrystore-props";
+import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
 
 export default function Terminology() {
   const router = useRouter();
@@ -12,18 +12,17 @@ export default function Terminology() {
       if (!resource) return;
       const isSandbox = window.location.host.includes("sandbox");
 
-      await getEntryStoreProps({
-        config: {
+      await handleEntryStoreRedirect(
+        {
           pathPrefix: "/concepts",
           redirectPath: "/terminology",
           entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
         },
-        locale: router.locale || "sv",
-        isSandbox,
         router,
-        resourceUri: resource as string,
-        includeBasePath: false,
-      });
+        router.locale || "sv",
+        isSandbox,
+        resource as string,
+      );
     };
 
     fetchEntryStoreProps();

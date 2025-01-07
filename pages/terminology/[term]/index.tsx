@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { ConceptPage } from "@/features/entryscape/concept-page";
 import { EntrystoreProvider } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
-import { getEntryStoreProps } from "@/utilities/entrystore/get-entrystore-props";
+import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
 
 export default function Terminology() {
   const { env } = useContext(SettingsContext);
@@ -18,18 +18,17 @@ export default function Terminology() {
       if (!term) return;
       const isSandbox = window.location.host.includes("sandbox");
 
-      const data = await getEntryStoreProps({
-        config: {
+      const data = await handleEntryStoreRedirect(
+        {
           pathPrefix: "/concepts",
           redirectPath: "/terminology",
           entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
           param: term,
         },
-        locale: router.locale || "sv",
-        isSandbox,
         router,
-        includeBasePath: false,
-      });
+        router.locale || "sv",
+        isSandbox,
+      );
 
       if (data?.resourceUri) {
         setResourceUri(data.resourceUri);
