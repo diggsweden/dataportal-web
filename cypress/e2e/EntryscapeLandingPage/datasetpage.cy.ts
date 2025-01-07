@@ -23,7 +23,7 @@ describe("Check dataset page", () => {
     // Type a search query and click search + find first result and click.
     cy.get("input#search-field", { timeout: 6000 }).type("api");
 
-    cy.get(`button[aria-label="Sök"]`)
+    cy.get(`button[aria-label="Sök Data & Api:er"]`)
       .click()
       .then(() => {
         cy.reload();

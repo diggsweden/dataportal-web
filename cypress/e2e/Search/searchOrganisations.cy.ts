@@ -7,25 +7,25 @@ beforeEach(() => {
   });
 });
 
-describe("Search specifications", () => {
+describe("Search organisations", () => {
   /**
-   * Verify that the search page is accessible and that the search for specifications gives results.
+   * Verify that the search page is accessible and that the search for organisations gives results.
    */
-  it("Verify specifications search result", () => {
+  it("Verify organisations search result", () => {
     // Gg to searchpage
-    cy.visit("/sv/specifications");
+    cy.visit("/sv/organisations");
 
     // verify H1 text
-    cy.get("h1").contains("Sök specifikationer");
+    cy.get("h1").contains("Sök organisationer");
 
     // Verify that the search field is present and contains correct placeholder text.
     cy.get("input#search-field")
       .invoke("attr", "placeholder")
-      .should("contain", "Sök specifikationer");
+      .should("contain", "Sök organisationer");
 
     // Type a search query and click search.
-    cy.get("input#search-field").type("data");
-    cy.get(`button[aria-label="Sök specifikationer"]`).click();
+    cy.get("input#search-field").type("kommun");
+    cy.get(`button[aria-label="Sök organisationer"]`).click();
 
     // Verify that we have 20 results on first page.
     // Also change the default waiting time of 4 seconds from Cypress.
@@ -36,16 +36,16 @@ describe("Search specifications", () => {
       .find("li")
       .should("have.length", 20);
 
-    // verify that url specifies "page 1" and search query "api" after we have done the search.
-    cy.url().should("include", "/specifications?p=1&q=data");
+    // verify that url specifies "page 1" and search query "kommun" after we have done the search.
+    cy.url().should("include", "/organisations?p=1&q=kommun");
   });
 
   /**
    * Verify that the search filters exist and is usable.
    */
-  it("Verify search filter on specifications search result", () => {
-    // Go to search page with a search query of "api".
-    cy.visit("/sv/specifications?q=data");
+  it("Verify search filter on organisations search result", () => {
+    // Go to search page with a search query of "kommun".
+    cy.visit("/sv/organisations?q=kommun");
 
     // Verify that we have 20 results on first page.
     // Also change the default waiting time of 4 seconds from Cypress.
@@ -62,30 +62,15 @@ describe("Search specifications", () => {
     );
 
     // Open search filters.
-    cy.get(`#SearchFilters button[aria-label="Visa filter"]`).click();
+    cy.get(`#SearchFilters button[aria-label="Visa filter"]`).first().click();
     cy.get(`#SearchFilters button[aria-label="Dölj filter"]`).should("exist");
 
     // Verify filter buttons.
-    cy.get("#SearchFilters button").contains("Kategori");
-    // Verify and open the  filter named "Terminologier".
-    cy.get("#SearchFilters button").contains("Organisation").click();
-
-    // Select one category item.
-    cy.get("#SearchFilters button")
-      .contains("Myndigheten för digital förvaltning")
-      .click();
+    cy.get("#SearchFilters button").contains("Organisationstyp");
+    // Open the first filter named "Organisationstyp".
+    cy.get("#SearchFilters button").contains("Organisationstyp").click();
 
     // Close the category filter popup bu clicking it again.
-    cy.get("#SearchFilters button").contains("Organisation").click();
-
-    cy.get("#SearchFilters span.text-textSecondary").contains("Aktiva filter");
-
-    // Verify that we have a different results count after adding a filter.
-    cy.get("h2.search-result-header").then((secondSearchCount) =>
-      cy.wrap(secondSearchCount.text()).as("secondSearchCount"),
-    );
-    cy.get("@secondSearchCount").then((secondSearchCount) =>
-      cy.get("@firstSearchCount").should("not.equal", secondSearchCount),
-    );
+    cy.get("#SearchFilters button").contains("Organisationstyp").click();
   });
 });

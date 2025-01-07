@@ -26,7 +26,7 @@ describe("Search concepts", () => {
     // Type a search query and click search + find first result and click.
     cy.get("input#search-field").type("data");
 
-    cy.get(`button[aria-label="Sök"]`)
+    cy.get(`button[aria-label="Sök begrepp"]`)
       .click()
       .then(() => {
         cy.reload();

@@ -23,7 +23,7 @@ describe("Check specification page", () => {
     // Type a search query and click search + find first result and click.
     cy.get("input#search-field").type("api");
 
-    cy.get(`button[aria-label="Sök"]`)
+    cy.get(`button[aria-label="Sök specifikationer"]`)
       .click()
       .then(() => {
         cy.reload();

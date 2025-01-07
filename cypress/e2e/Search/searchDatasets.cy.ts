@@ -25,7 +25,7 @@ describe("Search datasets", () => {
 
     // Type a search query and click search.
     cy.get("input#search-field").type("api");
-    cy.get(`button[aria-label="Sök"]`).click();
+    cy.get(`button[aria-label="Sök Data & Api:er"]`).click();
 
     // Verify that we have 20 results on first page.
     // Also change the default waiting time of 4 seconds from Cypress.
