@@ -284,6 +284,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           path: `/specifications/`,
           titleResource: "dcterms:title",
           descriptionResource: "dcterms:description",
+          pathResolver: specsPathResolver,
         },
         "http://purl.org/dc/terms/Standard": {
           path: `/specifications/`,
