@@ -328,7 +328,10 @@ export class EntrystoreService {
                 })
                 .map((v: SearchFacet) => v.name),
               this.entryStoreUtil,
+              this.t,
               facetSpec?.dcatProperty,
+              facetSpec.customProperties &&
+                facetSpec.customProperties.length > 0,
             );
           }
         }
@@ -725,21 +728,26 @@ export class EntrystoreService {
         for (const facet of customFacets) {
           const hasResource = metadata
             .find(entry.getResourceURI(), facet.resource)
-            .some((f: any) =>
-              f
-                .getValue()
-                .startsWith(
+            .some((f: any) => {
+              const value = f.getValue();
+
+              return (
+                value.startsWith(
                   facet?.customFilter?.endsWith("*")
                     ? facet?.customFilter?.slice(0, -1)
                     : facet?.customFilter || facet?.customProperties?.[0],
-                ),
-            );
+                ) || facet?.customProperties?.includes(value)
+              );
+            });
 
           if (hasResource) {
+            // Initialize the array if it doesn't exist
+            values["custom_facet_literal"] =
+              values["custom_facet_literal"] || [];
             // Add the translated resource URI to custom_facet_literal array
-            values["custom_facet_literal"] = [
+            values["custom_facet_literal"].push(
               this.t(`resources|${facet.resource}`),
-            ];
+            );
           }
         }
       }
