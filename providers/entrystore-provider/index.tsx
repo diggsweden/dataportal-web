@@ -9,7 +9,12 @@ import { SettingsUtil } from "@/env/settings-util";
 import { ESEntry, PageType } from "@/types/entrystore-core";
 import { OrganisationData } from "@/types/organisation";
 import { ESFacetField, ESFacetFieldValue } from "@/types/search";
-import { Choice, fetchDCATMeta, handleLocale } from "@/utilities";
+import {
+  Choice,
+  fetchDCATMeta,
+  handleLocale,
+  includeLangInPath,
+} from "@/utilities";
 import {
   formatTerminologyAddress,
   getContactEmail,
@@ -17,6 +22,7 @@ import {
   getLocalizedChoiceLabel,
   getLocalizedValue,
   getTemplateChoices,
+  termsPathResolver,
 } from "@/utilities/entrystore/entrystore-helpers";
 import { EntrystoreService } from "@/utilities/entrystore/entrystore.service";
 
@@ -46,7 +52,6 @@ export interface EntrystoreProviderProps {
   entryUri?: string;
   entrystoreUrl?: string;
   includeContact?: boolean;
-  hasResourceUri?: string;
   pageType: PageType;
 }
 
@@ -66,7 +71,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   entrystoreUrl,
   includeContact,
   pageType,
-  hasResourceUri,
 }) => {
   const [state, setState] = useState(defaultESEntry);
   const router = useRouter();
@@ -126,7 +130,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       // Parallel fetch for publisher info
       // TODO: Remove this when concepts and terminologies are moved to admin.dataportal.se
-      const publisherEntrystoreService =
+      const adminEntrystoreService =
         pageType === "concept" || pageType === "terminology"
           ? EntrystoreService.getInstance({
               baseUrl: `https://${
@@ -140,10 +144,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           : entrystoreService;
       const publisherPromise =
         pageType !== "mqa"
-          ? await publisherEntrystoreService.getPublisherInfo(
-              resourceUri,
-              metadata,
-            )
+          ? await adminEntrystoreService.getPublisherInfo(resourceUri, metadata)
           : Promise.resolve({ name: "", entry: null });
 
       const entryData: Partial<ESEntry> = {
@@ -178,6 +179,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         metadata,
         resourceUri,
         entrystoreService,
+        adminEntrystoreService,
         publisherEntry,
         defaultESEntry.env,
       );
@@ -199,6 +201,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     metadata: Metadata,
     resourceUri: string,
     entrystoreService: EntrystoreService,
+    adminEntrystoreService: EntrystoreService,
     publisherEntry: Entry | null,
     env: EnvSettings,
   ): Promise<Partial<ESEntry>> {
@@ -268,12 +271,12 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       case "terminology": {
         // Fetch specifications and formats in parallel
+        // TODO: replace adminEntrystoreService with entrystoreService when concepts and terminologies are moved to admin.dataportal.se
         const [specs, formats, organisationLink] = await Promise.all([
-          entrystoreService.getRelatedSpecifications(
+          adminEntrystoreService.getRelatedSpecifications(
             entry,
             metadata,
             pageType,
-            hasResourceUri,
           ),
           entrystoreService.getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
@@ -314,16 +317,29 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       case "concept": {
         // Fetch term and formats in parallel
-        const [term, formats] = await Promise.all([
-          entrystoreService.getRelatedTerm(metadata),
+        const [termEntry, formats] = await Promise.all([
+          entrystoreService.getRelatedTerm(metadata, true) as Promise<Entry>,
           entrystoreService.getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
           ),
         ]);
+        // TODO: replace adminEntrystoreService with entrystoreService when concepts and terminologies are moved to admin.dataportal.se
+        const spec = await adminEntrystoreService.getRelatedSpecifications(
+          termEntry,
+          termEntry.getAllMetadata(),
+          pageType,
+        );
 
         return {
-          relatedTerm: term,
+          relatedTerm: {
+            title: getLocalizedValue(
+              termEntry.getAllMetadata(),
+              "dcterms:title",
+            ),
+            url: `${includeLangInPath(lang)}${termsPathResolver(termEntry)}`,
+          },
           downloadFormats: formats,
+          relatedSpecifications: spec,
         };
       }
 
