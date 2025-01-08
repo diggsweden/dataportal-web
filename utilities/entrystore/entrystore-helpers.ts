@@ -7,6 +7,7 @@ import {
 } from "@entryscape/entrystore-js";
 // @ts-expect-error no types
 import lucene from "lucene";
+import { Translate } from "next-translate";
 
 import { SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
@@ -81,7 +82,9 @@ export const getEntryLang = (metadataGraph: any, prop: any, lang: string) => {
 export const getUriNames = async (
   facetValues: string[],
   esu: EntryStoreUtil,
+  t: Translate,
   property?: string,
+  hasCustomProperties?: boolean,
 ) => {
   const cache = entryCache.get();
   // Filter out null values and already cached URIs
@@ -90,6 +93,13 @@ export const getUriNames = async (
   );
 
   if (uniqueUris.length === 0) {
+    return cache;
+  }
+
+  if (hasCustomProperties) {
+    uniqueUris.forEach((uri) => {
+      cache.set(uri, t(`resources|${uri}`));
+    });
     return cache;
   }
 
