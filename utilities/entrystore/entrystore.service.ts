@@ -876,7 +876,6 @@ export class EntrystoreService {
     entry: Entry,
     metadata: Metadata,
     pageType: PageType,
-    hasResourceUri?: string,
   ) {
     try {
       if (pageType === "dataset") {
@@ -897,15 +896,23 @@ export class EntrystoreService {
             title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
             url: `${includeLangInPath(this.lang)}${specsPathResolver(e)}`,
           }));
-      } else if (pageType === "terminology") {
+      } else if (pageType === "terminology" || pageType === "concept") {
+        const resourceUri = entry
+          .getResourceURI()
+          .replace(
+            "https://dataportal.se/concepts/",
+            "https://www.dataportal.se/terminology/",
+          )
+          .replace(
+            "https://www-sandbox.dataportal.se/concepts/",
+            "https://www-sandbox.dataportal.se/terminology/",
+          );
+
         const specifications = await this.entryStore
           .newSolrQuery()
-          .uriProperty(
-            "http://www.w3.org/ns/dx/prof/hasResource",
-            hasResourceUri || entry.getResourceURI(),
-          )
-          .rdfType(["dcterms:Standard", "prof:Profile"])
           .publicRead(true)
+          .uriProperty("http://www.w3.org/ns/dx/prof/hasResource", resourceUri)
+          .rdfType([ESRdfType.spec_standard, ESRdfType.spec_profile])
           .getEntries();
 
         return specifications
@@ -953,9 +960,16 @@ export class EntrystoreService {
     }
   }
 
-  async getRelatedTerm(metadata: Metadata): Promise<RelatedTerm> {
+  async getRelatedTerm(
+    metadata: Metadata,
+    returnEntry = false,
+  ): Promise<RelatedTerm | Entry> {
     const termUri = metadata.findFirstValue(null, "skos:inScheme");
     const termEntry = await this.getEntryByResourceURI(termUri);
+
+    if (returnEntry) {
+      return termEntry;
+    }
 
     return {
       title: getLocalizedValue(termEntry.getAllMetadata(), "dcterms:title"),
