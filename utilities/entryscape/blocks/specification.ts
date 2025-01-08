@@ -29,8 +29,6 @@ export const specificationBlocks = (t: Translate, iconSize: number) => [
       "</svg>" +
       "</span>" +
       "</a>" +
-      '<button open="{{expandTooltip}}" close="{{unexpandTooltip}}" class="esbExpandButton button button--secondary button--large h-fit text-nowrap">' +
-      "</button>" +
       "</div>",
   },
 ];
