@@ -309,29 +309,34 @@ export const OrganisationPage: FC = () => {
           </div>
           {/* End right column */}
         </div>
-        <div className="grid grid-cols-3 gap-xl">
-          {entry.organisationData?.showcases.map((showcase) => (
-            <div
-              className="block space-y-sm bg-white px-md py-lg no-underline"
-              key={showcase.title}
-            >
-              {showcase.date && (
-                <div className="text-sm text-textSecondary">
-                  {showcase.date} |
+        {entry.organisationData?.showcases &&
+          entry.organisationData?.showcases.length > 0 && (
+            <div className="grid grid-cols-3 gap-xl">
+              {entry.organisationData?.showcases.map((showcase) => (
+                <div
+                  className="block space-y-sm bg-white px-md py-lg no-underline"
+                  key={showcase.title}
+                >
+                  {showcase.date && (
+                    <div className="text-sm text-textSecondary">
+                      {showcase.date} |
+                    </div>
+                  )}
+                  <div className="text-lg text-textPrimary">
+                    {showcase.title}
+                  </div>
+                  <ButtonLink
+                    href={showcase.url}
+                    label={t("common|read-more")}
+                    size="sm"
+                    variant="plain"
+                    icon={ArrowRightIcon}
+                    iconPosition="right"
+                  />
                 </div>
-              )}
-              <div className="text-lg text-textPrimary">{showcase.title}</div>
-              <ButtonLink
-                href={showcase.url}
-                label={t("common|read-more")}
-                size="sm"
-                variant="plain"
-                icon={ArrowRightIcon}
-                iconPosition="right"
-              />
+              ))}
             </div>
-          ))}
-        </div>
+          )}
       </div>
     </Container>
   );
