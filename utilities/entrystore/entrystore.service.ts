@@ -863,6 +863,10 @@ export class EntrystoreService {
         .getContext()
         .getId()}_${entry.getId()}`,
       date: getLocalizedValue(entry.getAllMetadata(), "dcterms:issued"),
+      description: getLocalizedValue(
+        entry.getAllMetadata(),
+        "dcterms:description",
+      ),
     }));
   }
 

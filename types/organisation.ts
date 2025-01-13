@@ -25,11 +25,12 @@ export interface TermsInfo {
   total: number;
   termsInfo: TermInfo[];
 }
-// Vem vet vad detta kommer att bli?
+
 export interface Showcase {
   date: string;
   title: string;
   url: string;
+  description: string;
 }
 
 export interface OrganisationData {

@@ -13,6 +13,7 @@ import { CustomLink } from "@/components/custom-link";
 import { Container } from "@/components/layout/container";
 import { Modal } from "@/components/modal";
 import { Heading } from "@/components/typography/heading";
+import Showcase from "@/features/entryscape/showcase";
 import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { DataInfo, TermInfo } from "@/types/organisation";
@@ -311,30 +312,15 @@ export const OrganisationPage: FC = () => {
         </div>
         {entry.organisationData?.showcases &&
           entry.organisationData?.showcases.length > 0 && (
-            <div className="grid grid-cols-3 gap-xl">
-              {entry.organisationData?.showcases.map((showcase) => (
-                <div
-                  className="block space-y-sm bg-white px-md py-lg no-underline"
-                  key={showcase.title}
-                >
-                  {showcase.date && (
-                    <div className="text-sm text-textSecondary">
-                      {showcase.date} |
-                    </div>
-                  )}
-                  <div className="text-lg text-textPrimary">
-                    {showcase.title}
-                  </div>
-                  <ButtonLink
-                    href={showcase.url}
-                    label={t("common|read-more")}
-                    size="sm"
-                    variant="plain"
-                    icon={ArrowRightIcon}
-                    iconPosition="right"
-                  />
-                </div>
-              ))}
+            <div>
+              <Heading level={2} size={"md"} className="mb-lg md:mb-xl">
+                {t("pages|organisation_page$showcases_heading")}
+              </Heading>
+              <div className="grid grid-cols-3 gap-xl">
+                {entry.organisationData?.showcases.map((showcase) => (
+                  <Showcase key={showcase.title} {...showcase} />
+                ))}
+              </div>
             </div>
           )}
       </div>

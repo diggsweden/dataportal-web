@@ -391,7 +391,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
         rawFacets = datasetCounts.getFacets();
 
-        // Rodret är ditt KOTSKI
         data.showcases = await entrystoreService.getShowcases(entry);
 
         if (rawFacets.length > 0) {
