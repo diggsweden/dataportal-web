@@ -854,14 +854,12 @@ export class EntrystoreService {
     const showcaseData = await this.entryStore
       .newSolrQuery()
       .rdfType("dcat:Resource")
+      .publicRead(true)
       .uriProperty("dcterms:publisher", entry.getResourceURI())
       .getEntries();
 
     return showcaseData.map((entry: Entry) => ({
       title: getLocalizedValue(entry.getAllMetadata(), "dcterms:title"),
-      url: `/${this.lang}/showcases/${entry
-        .getContext()
-        .getId()}_${entry.getId()}`,
       date: getLocalizedValue(entry.getAllMetadata(), "dcterms:issued"),
       description: getLocalizedValue(
         entry.getAllMetadata(),

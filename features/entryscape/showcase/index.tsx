@@ -39,7 +39,7 @@ const Showcase: FC<ShowcaseType> = ({ title, date, description }) => {
         textSize="md"
         modalOpen={showModal}
         setModalOpen={setShowModal}
-      ></Modal>
+      />
     </div>
   );
 };

@@ -29,7 +29,6 @@ export interface TermsInfo {
 export interface Showcase {
   date: string;
   title: string;
-  url: string;
   description: string;
 }
 
