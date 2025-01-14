@@ -37,10 +37,16 @@ import {
   Choice,
   getLocalizedValue,
   fetchDCATMeta,
+  includeLangInPath,
 } from "@/utilities";
 
 import { DCATData } from "../dcat-utils";
-import { parseEmail, luceneFriendlyQuery } from "./entrystore-helpers";
+import {
+  parseEmail,
+  luceneFriendlyQuery,
+  termsPathResolver,
+  specsPathResolver,
+} from "./entrystore-helpers";
 import { entryCache } from "./local-cache";
 
 interface EntryStoreConfig {
@@ -322,7 +328,10 @@ export class EntrystoreService {
                 })
                 .map((v: SearchFacet) => v.name),
               this.entryStoreUtil,
+              this.t,
               facetSpec?.dcatProperty,
+              facetSpec.customProperties &&
+                facetSpec.customProperties.length > 0,
             );
           }
         }
@@ -381,9 +390,11 @@ export class EntrystoreService {
           ),
         };
 
-        hit.url = `${hitSpecification.path || "datamangd"}${context.getId()}_${
-          hit.entryId
-        }`;
+        hit.url = hitSpecification.pathResolver
+          ? hitSpecification.pathResolver(entry)
+          : `${hitSpecification.path || "datamangd"}${context.getId()}_${
+              hit.entryId
+            }`;
 
         hits.push(hit);
       }
@@ -717,21 +728,26 @@ export class EntrystoreService {
         for (const facet of customFacets) {
           const hasResource = metadata
             .find(entry.getResourceURI(), facet.resource)
-            .some((f: any) =>
-              f
-                .getValue()
-                .startsWith(
+            .some((f: any) => {
+              const value = f.getValue();
+
+              return (
+                value.startsWith(
                   facet?.customFilter?.endsWith("*")
                     ? facet?.customFilter?.slice(0, -1)
                     : facet?.customFilter || facet?.customProperties?.[0],
-                ),
-            );
+                ) || facet?.customProperties?.includes(value)
+              );
+            });
 
           if (hasResource) {
+            // Initialize the array if it doesn't exist
+            values["custom_facet_literal"] =
+              values["custom_facet_literal"] || [];
             // Add the translated resource URI to custom_facet_literal array
-            values["custom_facet_literal"] = [
+            values["custom_facet_literal"].push(
               this.t(`resources|${facet.resource}`),
-            ];
+            );
           }
         }
       }
@@ -848,7 +864,9 @@ export class EntrystoreService {
 
     return datasets.map((ds: Entry) => ({
       title: getLocalizedValue(ds.getAllMetadata(), "dcterms:title"),
-      url: `/${this.lang}/datasets/${this.entryStore.getContextId(
+      url: `${includeLangInPath(
+        this.lang,
+      )}/datasets/${this.entryStore.getContextId(
         ds.getEntryInfo().getMetadataURI(),
       )}_${ds.getId()}`,
     }));
@@ -858,7 +876,6 @@ export class EntrystoreService {
     entry: Entry,
     metadata: Metadata,
     pageType: PageType,
-    hasResourceUri?: string,
   ) {
     try {
       if (pageType === "dataset") {
@@ -877,28 +894,32 @@ export class EntrystoreService {
           .filter((e: Entry) => e)
           .map((e: Entry) => ({
             title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-            url: `/${this.lang}/specifications/${e
-              .getContext()
-              .getId()}_${e.getId()}`,
+            url: `${includeLangInPath(this.lang)}${specsPathResolver(e)}`,
           }));
-      } else if (pageType === "terminology") {
+      } else if (pageType === "terminology" || pageType === "concept") {
+        const resourceUri = entry
+          .getResourceURI()
+          .replace(
+            "https://dataportal.se/concepts/",
+            "https://www.dataportal.se/terminology/",
+          )
+          .replace(
+            "https://www-sandbox.dataportal.se/concepts/",
+            "https://www-sandbox.dataportal.se/terminology/",
+          );
+
         const specifications = await this.entryStore
           .newSolrQuery()
-          .uriProperty(
-            "http://www.w3.org/ns/dx/prof/hasResource",
-            hasResourceUri || entry.getResourceURI(),
-          )
-          .rdfType(["dcterms:Standard", "prof:Profile"])
           .publicRead(true)
+          .uriProperty("http://www.w3.org/ns/dx/prof/hasResource", resourceUri)
+          .rdfType([ESRdfType.spec_standard, ESRdfType.spec_profile])
           .getEntries();
 
         return specifications
           .filter((e: Entry) => e)
           .map((e: Entry) => ({
             title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-            url: `/${this.lang}/specifications/${e
-              .getContext()
-              .getId()}_${e.getId()}`,
+            url: `${includeLangInPath(this.lang)}${specsPathResolver(e)}`,
           }));
       }
       return [];
@@ -908,33 +929,51 @@ export class EntrystoreService {
     }
   }
 
-  public async getRelatedMQA(entry: Entry) {
+  public async getRelatedMQA(entry: Entry, pageType?: PageType) {
+    let contextId = entry.getContext().getId();
     try {
-      const mqa = this.entryStore.getEntryURI(
-        entry.getContext().getId(),
-        "_quality",
-      );
+      if (pageType === "organisation") {
+        const categoryEntries = await this.entryStore
+          .newSolrQuery()
+          .publicRead(true)
+          .rdfType(["dcat:Catalog"])
+          .uriProperty("dcterms:publisher", entry.getResourceURI())
+          .getEntries();
+
+        if (categoryEntries.length > 0) {
+          contextId = categoryEntries[0].getContext().getId();
+        }
+      }
+
+      const mqa = this.entryStore.getEntryURI(contextId, "_quality");
       const mqaEntry = await this.entryStore.getEntry(mqa);
       const mqaMetadata = mqaEntry.getAllMetadata();
 
       return {
         title: getLocalizedValue(mqaMetadata, "dcterms:title"),
-        url: `/metadatakvalitet/katalog/_quality/${entry.getContext().getId()}`,
+        url: `${includeLangInPath(
+          this.lang,
+        )}/metadatakvalitet/katalog/_quality/${contextId}`,
       };
     } catch {
       return null;
     }
   }
 
-  async getRelatedTerm(metadata: Metadata): Promise<RelatedTerm> {
+  async getRelatedTerm(
+    metadata: Metadata,
+    returnEntry = false,
+  ): Promise<RelatedTerm | Entry> {
     const termUri = metadata.findFirstValue(null, "skos:inScheme");
     const termEntry = await this.getEntryByResourceURI(termUri);
 
+    if (returnEntry) {
+      return termEntry;
+    }
+
     return {
       title: getLocalizedValue(termEntry.getAllMetadata(), "dcterms:title"),
-      url: `/${this.lang}/terminology/${termEntry
-        .getContext()
-        .getId()}_${termEntry.getId()}`,
+      url: `${includeLangInPath(this.lang)}${termsPathResolver(termEntry)}`,
     };
   }
 
@@ -950,11 +989,12 @@ export class EntrystoreService {
           null,
           true,
         );
+
       return datasetSeriesEntries.map((e: Entry) => ({
         title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-        url: `/${this.lang}/dataset-series/${e
+        url: `${includeLangInPath(this.lang)}/dataset-series/${e
           .getContext()
-          .getId()}_${e.getId()}?q=&f=`,
+          .getId()}_${e.getId()}`,
       }));
     } catch {
       return [];
@@ -964,7 +1004,7 @@ export class EntrystoreService {
   public async getOrganisationLink(publisherEntry: Entry | null) {
     if (!publisherEntry) return null;
 
-    return `/${this.lang}/organisations/${publisherEntry
+    return `${includeLangInPath(this.lang)}/organisations/${publisherEntry
       .getContext()
       .getId()}_${publisherEntry.getId()}`;
   }

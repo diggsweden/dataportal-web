@@ -9,7 +9,12 @@ import { SettingsUtil } from "@/env/settings-util";
 import { ESEntry, PageType } from "@/types/entrystore-core";
 import { OrganisationData } from "@/types/organisation";
 import { ESFacetField, ESFacetFieldValue } from "@/types/search";
-import { Choice, fetchDCATMeta } from "@/utilities";
+import {
+  Choice,
+  fetchDCATMeta,
+  handleLocale,
+  includeLangInPath,
+} from "@/utilities";
 import {
   formatTerminologyAddress,
   getContactEmail,
@@ -17,6 +22,7 @@ import {
   getLocalizedChoiceLabel,
   getLocalizedValue,
   getTemplateChoices,
+  termsPathResolver,
 } from "@/utilities/entrystore/entrystore-helpers";
 import { EntrystoreService } from "@/utilities/entrystore/entrystore.service";
 
@@ -40,12 +46,12 @@ const defaultESEntry: ESEntry = {
 export interface EntrystoreProviderProps {
   env: EnvSettings;
   children: ReactNode;
-  cid: string;
-  eid: string;
+  cid?: string;
+  eid?: string;
+  rUri?: string;
   entryUri?: string;
   entrystoreUrl?: string;
   includeContact?: boolean;
-  hasResourceUri?: string;
   pageType: PageType;
 }
 
@@ -61,14 +67,16 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   children,
   cid,
   eid,
+  rUri,
   entrystoreUrl,
   includeContact,
   pageType,
-  hasResourceUri,
 }) => {
   const [state, setState] = useState(defaultESEntry);
   const router = useRouter();
   const { lang, t } = useTranslation();
+  let entry: Entry;
+  let resourceUri: string;
 
   const entrystoreService = EntrystoreService.getInstance({
     baseUrl:
@@ -97,35 +105,46 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     };
   }, [pageType]);
 
+  // Remove locale from path if it's the default locale
+  useEffect(() => {
+    handleLocale(window.location.pathname, lang, router.asPath, router);
+  }, [router.asPath]);
+
   useEffect(() => {
     fetchEntry();
   }, []);
 
   const fetchEntry = async () => {
     try {
-      const entry: Entry = await entrystoreService.getEntry(cid, eid);
+      if (cid && eid) {
+        entry = await entrystoreService.getEntry(cid, eid);
+        resourceUri = entry.getResourceURI();
+      } else if (rUri) {
+        resourceUri = rUri;
+        entry = await entrystoreService.getEntryByResourceURI(rUri);
+      }
 
       if (!entry) return router.push("/404");
 
       const metadata = entry.getAllMetadata();
-      const resourceUri = entry.getResourceURI();
 
       // Parallel fetch for publisher info
       // TODO: Remove this when concepts and terminologies are moved to admin.dataportal.se
-      const publisherEntrystoreService =
+      const adminEntrystoreService =
         pageType === "concept" || pageType === "terminology"
           ? EntrystoreService.getInstance({
-              baseUrl: `https://admin.dataportal.se/store`,
+              baseUrl: `https://${
+                entry.getEntryInfo().getMetadataURI().includes("sandbox")
+                  ? "sandbox."
+                  : ""
+              }admin.dataportal.se/store`,
               lang,
               t,
             })
           : entrystoreService;
       const publisherPromise =
         pageType !== "mqa"
-          ? await publisherEntrystoreService.getPublisherInfo(
-              resourceUri,
-              metadata,
-            )
+          ? await adminEntrystoreService.getPublisherInfo(resourceUri, metadata)
           : Promise.resolve({ name: "", entry: null });
 
       const entryData: Partial<ESEntry> = {
@@ -160,7 +179,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         metadata,
         resourceUri,
         entrystoreService,
+        adminEntrystoreService,
         publisherEntry,
+        defaultESEntry.env,
       );
 
       setState({
@@ -180,7 +201,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     metadata: Metadata,
     resourceUri: string,
     entrystoreService: EntrystoreService,
+    adminEntrystoreService: EntrystoreService,
     publisherEntry: Entry | null,
+    env: EnvSettings,
   ): Promise<Partial<ESEntry>> {
     switch (pageType) {
       case "dataset": {
@@ -232,7 +255,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           entrystoreService.getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
           ),
-          entrystoreService.getRelatedMQA(entry),
+          entrystoreService.getRelatedMQA(entry, pageType),
         ]);
 
         return {
@@ -248,12 +271,12 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       case "terminology": {
         // Fetch specifications and formats in parallel
+        // TODO: replace adminEntrystoreService with entrystoreService when concepts and terminologies are moved to admin.dataportal.se
         const [specs, formats, organisationLink] = await Promise.all([
-          entrystoreService.getRelatedSpecifications(
+          adminEntrystoreService.getRelatedSpecifications(
             entry,
             metadata,
             pageType,
-            hasResourceUri,
           ),
           entrystoreService.getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
@@ -263,7 +286,10 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
         return {
           relatedSpecifications: specs,
-          address: formatTerminologyAddress(resourceUri),
+          address: formatTerminologyAddress(resourceUri, [
+            env.PRODUCTION_BASE_URL,
+            env.SANDBOX_BASE_URL,
+          ]),
           downloadFormats: formats,
           organisationLink,
         };
@@ -291,16 +317,29 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       case "concept": {
         // Fetch term and formats in parallel
-        const [term, formats] = await Promise.all([
-          entrystoreService.getRelatedTerm(metadata),
+        const [termEntry, formats] = await Promise.all([
+          entrystoreService.getRelatedTerm(metadata, true) as Promise<Entry>,
           entrystoreService.getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
           ),
         ]);
+        // TODO: replace adminEntrystoreService with entrystoreService when concepts and terminologies are moved to admin.dataportal.se
+        const spec = await adminEntrystoreService.getRelatedSpecifications(
+          termEntry,
+          termEntry.getAllMetadata(),
+          pageType,
+        );
 
         return {
-          relatedTerm: term,
+          relatedTerm: {
+            title: getLocalizedValue(
+              termEntry.getAllMetadata(),
+              "dcterms:title",
+            ),
+            url: `${includeLangInPath(lang)}${termsPathResolver(termEntry)}`,
+          },
           downloadFormats: formats,
+          relatedSpecifications: spec,
         };
       }
 
@@ -351,7 +390,11 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       };
 
       const termsEntrystoreService = EntrystoreService.getInstance({
-        baseUrl: `https://${state.env.ENTRYSCAPE_TERMS_PATH}/store`,
+        baseUrl: `https://${
+          entry.getEntryInfo().getMetadataURI().includes("sandbox")
+            ? "sandbox."
+            : ""
+        }editera.dataportal.se/store`,
         lang,
         t,
       });
@@ -385,7 +428,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           .uriFacet("dcterms:accessRights")
           .uriFacet("rdf:type")
           .uriFacet("http://data.europa.eu/r5r/hvdCategory")
-          .uriFacet("schema:offers")
           .uriFacet("dcterms:conformsTo")
           .list();
 
@@ -419,12 +461,12 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
           data.datasets.dataInfo[1].total = protectedDataCount || 0;
 
-          const apiDataFacet = rawFacets.find(
+          const rdfTypeFacet = rawFacets.find(
             (f) =>
               f.predicate === "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
           );
           const apiData =
-            apiDataFacet?.values?.find(
+            rdfTypeFacet?.values?.find(
               (v: ESFacetFieldValue) =>
                 v.name === "http://entryscape.com/terms/ServedByDataService",
             )?.count || 0;
@@ -437,10 +479,10 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           const hvdData = hvdDataFacet?.valueCount || 0;
           data.datasets.dataInfo[3].total = hvdData;
 
-          const feeDataFacet = rawFacets.find(
-            (f: ESFacetField) => f.predicate === "http://schema.org/offers",
+          const feeDataFacet = rdfTypeFacet?.values?.find(
+            (f: ESFacetFieldValue) => f.name === "http://schema.org/Offer",
           );
-          const feeData = feeDataFacet?.valueCount || 0;
+          const feeData = feeDataFacet?.count || 0;
           data.datasets.dataInfo[4].total = feeData;
 
           data.datasets.total = datasetCounts.getSize();

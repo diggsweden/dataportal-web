@@ -2,9 +2,10 @@ import { generateRandomKey } from "../utilities";
 import { EnvSettings } from "./env-settings";
 
 export class Settings_Dev extends EnvSettings {
-  ENTRYSCAPE_DATASETS_PATH = "admin.dataportal.se";
-  // ENTRYSCAPE_DATASETS_PATH="sandbox.admin.dataportal.se"
+  PRODUCTION_BASE_URL = "https://dataportal.se";
+  SANDBOX_BASE_URL = "https://www-sandbox.dataportal.se";
 
+  ENTRYSCAPE_DATASETS_PATH = "admin.dataportal.se";
   ENTRYSCAPE_SPECS_PATH = "admin.dataportal.se";
   ENTRYSCAPE_TERMS_PATH = "editera.dataportal.se";
   ENTRYSCAPE_MQA_PATH = "admin.dataportal.se";

@@ -11,7 +11,7 @@ import { SearchPageSelector } from "@/features/search/search-page-selector";
 import { SearchResults } from "@/features/search/search-results";
 import SearchProvider, { SearchContext } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
-import { linkBase } from "@/utilities";
+import { handleLocale, linkBase } from "@/utilities";
 
 import { createSearchProviderSettings } from "./search-page-provider-settings";
 
@@ -28,6 +28,11 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
   const { t, lang } = useTranslation();
   const [query, setQuery] = useState("");
   const router = useRouter();
+
+  // Remove locale from path if it's the default locale
+  useEffect(() => {
+    handleLocale(window.location.pathname, lang, router.asPath, router);
+  }, [router.asPath]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;

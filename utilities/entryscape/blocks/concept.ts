@@ -2,7 +2,11 @@
 import { Entry } from "@entryscape/entrystore-js";
 import { Translate } from "next-translate";
 
-import { getLocalizedValue } from "@/utilities/entrystore/entrystore-helpers";
+import { includeLangInPath } from "@/utilities/check-lang";
+import {
+  conceptsPathResolver,
+  getLocalizedValue,
+} from "@/utilities/entrystore/entrystore-helpers";
 
 export const conceptBlocks = (t: Translate, iconSize: number, lang: string) => [
   {
@@ -38,20 +42,21 @@ export const conceptBlocks = (t: Translate, iconSize: number, lang: string) => [
     block: "conceptLink",
     run: function (node: any, a2: any, a3: any, entry: Entry) {
       if (node && node.firstElementChild && entry) {
+        const baseUrl = window.location.origin;
         const el = document.createElement("a");
 
         node.setAttribute("class", "entryscape");
 
         node.firstElementChild.appendChild(el);
 
-        const contextId = entry.getContext().getId();
-        const id = entry.getId();
         const label = getLocalizedValue(
           entry.getAllMetadata(),
           "skos:prefLabel",
         );
         el.innerHTML = label;
-        const uri = `/${lang}/concepts/${contextId}_${id}`;
+        const uri = `${baseUrl}${includeLangInPath(lang)}${conceptsPathResolver(
+          entry,
+        )}`;
         el.setAttribute("href", uri);
       }
     },

@@ -1,6 +1,10 @@
 import { EnvSettings } from "@/env";
 import { SearchSortOrder } from "@/providers/search-provider";
 import { ESRdfType, ESType } from "@/types/entrystore-core";
+import {
+  specsPathResolver,
+  conceptsPathResolver,
+} from "@/utilities/entrystore/entrystore-helpers";
 
 interface FacetConfig {
   resource: string;
@@ -131,14 +135,20 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             group: "distribution",
           },
           {
-            resource: "http://data.europa.eu/r5r/applicableLegislation",
+            resource: "http://data.europa.eu/r5r/hvdCategory",
             type: ESType.uri,
-            dcatProperty: "dcatap:applicableLegislation",
-            dcatType: "choice",
+            dcatProperty: "dcatap:hvdCategory",
             dcatFilterEnabled: false,
             indexOrder: 6,
             group: "type",
-            customFilter: "http://data.europa.eu/eli/reg_impl/2023/138/oj",
+            customProperties: [
+              "http://data.europa.eu/bna/c_ac64a52d",
+              "http://data.europa.eu/bna/c_dd313021",
+              "http://data.europa.eu/bna/c_164e0bf5",
+              "http://data.europa.eu/bna/c_e1da4e07",
+              "http://data.europa.eu/bna/c_a9135398",
+              "http://data.europa.eu/bna/c_b79e35eb",
+            ],
             showInSearchResult: true,
           },
           {
@@ -280,11 +290,13 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           path: `/specifications/`,
           titleResource: "dcterms:title",
           descriptionResource: "dcterms:description",
+          pathResolver: specsPathResolver,
         },
         "http://purl.org/dc/terms/Standard": {
           path: `/specifications/`,
           titleResource: "dcterms:title",
           descriptionResource: "dcterms:description",
+          pathResolver: specsPathResolver,
         },
       },
       facetSpecification: {
@@ -372,6 +384,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           path: `/concepts/`,
           titleResource: "http://www.w3.org/2004/02/skos/core#prefLabel",
           descriptionResource: "http://www.w3.org/2004/02/skos/core#definition",
+          pathResolver: conceptsPathResolver,
         },
       },
       facetSpecification: {
