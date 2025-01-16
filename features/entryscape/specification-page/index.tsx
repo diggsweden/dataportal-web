@@ -177,17 +177,21 @@ export const SpecificationPage: FC = () => {
 
                 {entry.relatedDatasets && entry.relatedDatasets.length > 0 && (
                   <div>
-                    <span className="rdformsLabel">
+                    <Heading
+                      className="font-strong text-textSecondary"
+                      level={3}
+                      size={"xxs"}
+                    >
                       {t("pages|specification_page$related_datasets")}
-                    </span>
+                    </Heading>
                     {relatedDatasets?.map((ds, idx) => (
-                      <a
+                      <Link
                         className="fit mb-sm block text-sm text-green-600 hover:no-underline"
                         key={idx}
                         href={ds.url}
                       >
                         {ds.title}
-                      </a>
+                      </Link>
                     ))}
                     {entry.relatedDatasets?.length > 4 && (
                       <Button
