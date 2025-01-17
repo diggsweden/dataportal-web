@@ -549,7 +549,7 @@ export const getNewsItem = async (
 export const toNewsPreview = (
   pub: NewsItemDataFragment,
 ): NewsBlockItemFragment => {
-  if (!pub.heading || !pub.slug || !pub.publishedAt || !pub.image) {
+  if (!pub.heading || !pub.slug || !pub.publishedAt) {
     throw new Error(`Invalid publication data for preview: ${pub.id}`);
   }
 
@@ -639,7 +639,7 @@ export const getGoodExample = async (
 export const toGoodExamplePreview = (
   pub: GoodExampleDataFragment,
 ): GoodExampleBlockItemFragment => {
-  if (!pub.heading || !pub.slug || !pub.publishedAt || !pub.image) {
+  if (!pub.heading || !pub.slug || !pub.publishedAt) {
     throw new Error(`Invalid publication data for preview: ${pub.id}`);
   }
 
