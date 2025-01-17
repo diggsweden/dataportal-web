@@ -14,7 +14,8 @@
   @apply mb-md inline-flex w-full flex-col p-none md:mb-lg !important;
 }
 
-.rdformsRow .rdformsRow {
+.rdformsRow .rdformsRow,
+.rdformsRow:last-child {
   @apply mb-none !important;
 }
 
