@@ -163,7 +163,8 @@
     "protected-data": "Skyddade datamängder",
     "spec-data": "Datamängder som följer specifikation",
     "view-all-data": "Visa datamängderna",
-    "view-all-spec": "Visa specifikationerna"
+    "view-all-spec": "Visa specifikationerna",
+    "showcases_heading": "Exempel på användningsfall"
   },
   "organisations": {
     "organisations": "organisationer",

@@ -26,6 +26,12 @@ export interface TermsInfo {
   termsInfo: TermInfo[];
 }
 
+export interface Showcase {
+  date: string;
+  title: string;
+  description: string;
+}
+
 export interface OrganisationData {
   datasets: DatasetInfo;
   specifications: SpecificationInfo;
@@ -33,4 +39,5 @@ export interface OrganisationData {
   orgClassification?: string;
   orgNumber?: string;
   orgType: string;
+  showcases: Showcase[];
 }
