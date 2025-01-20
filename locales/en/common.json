@@ -36,6 +36,7 @@
   "digg-managed_text": "DIGG is managed by the Swedish Agency for Digital Government",
   "documentation-services": "Documentation och services - Sweden's dataportal",
   "email_link": "Opens email",
+  "example": "Example",
   "exploreapi": "Explore API",
   "external_link": "Leads to external website",
   "fee": "Chargeable",
@@ -107,6 +108,5 @@
   "toolbox-share-data": "Toolbox for sharing data",
   "top-image": "View of Stockholm",
   "training": "Training for managers and leaders",
-  "yes": "Yes",
-  "example": "Example"
+  "yes": "Yes"
 }
