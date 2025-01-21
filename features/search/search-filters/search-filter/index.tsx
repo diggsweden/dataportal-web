@@ -1,10 +1,11 @@
 import FocusTrap from "focus-trap-react";
 import useTranslation from "next-translate/useTranslation";
-import { FC, PropsWithChildren, useContext, useEffect, useState } from "react";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
 
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
+import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
+import { Button } from "@/components/button";
 import { useClickOutside } from "@/hooks/use-click-outside";
-import { SettingsContext } from "@/providers/settings-provider";
 
 export interface SearchFilterProps {
   title: string | null;
@@ -20,7 +21,6 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [trapFocus, setTrapFocus] = useState(false);
-  const { iconSize } = useContext(SettingsContext);
   const ref = useClickOutside<HTMLDivElement>(() => handleOpen(false));
   const { t } = useTranslation("common");
 
@@ -42,7 +42,10 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
         ref={ref}
         onKeyDown={(ev) => ev.key === "Escape" && handleOpen(false)}
       >
-        <button
+        <Button
+          variant="secondary"
+          size="md"
+          label={`${title} ${usedFilters || ""}` || t("open")}
           aria-haspopup={true}
           aria-expanded={open}
           aria-label={`${
@@ -51,17 +54,15 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
             usedFilters ? ` - ${usedFilters} ${t("active-filters")}` : ""
           }`}
           onClick={() => handleOpen(!open)}
-          className={`${
-            open && "active"
-          } button button--secondary button--small w-fit py-xs md:justify-start`}
-        >
-          {`${title} ${usedFilters || ""}` || t("open")}
-          <ChevronDownIcon
-            height={iconSize * 1.5}
-            width={iconSize * 1.5}
-            viewBox="0 0 24 24"
-          />
-        </button>
+          className={
+            open
+              ? "active"
+              : "bg-white hover:bg-transparent focus-visible:bg-transparent"
+          }
+          icon={open ? ChevronUpIcon : ChevronDownIcon}
+          iconPosition="right"
+        />
+
         <div className={open ? "relative block md:static" : "hidden"}>
           {children}
         </div>

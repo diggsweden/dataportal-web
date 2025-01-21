@@ -43,7 +43,6 @@ import {
 import { DCATData } from "../dcat-utils";
 import {
   parseEmail,
-  luceneFriendlyQuery,
   termsPathResolver,
   specsPathResolver,
 } from "./entrystore-helpers";
@@ -154,9 +153,8 @@ export class EntrystoreService {
     entry?: Entry,
   ): Promise<SearchResult> {
     const hits: SearchHit[] = [];
-    let query = luceneFriendlyQuery(request.query || "*");
+    const query = request.query;
     const lang = request.language || "sv";
-
     const esQuery = this.entryStore.newSolrQuery();
     esQuery.publicRead(true);
 
@@ -291,11 +289,15 @@ export class EntrystoreService {
       .publicRead(true)
       .list();
 
-    query = luceneFriendlyQuery(query);
-
     // Set query text
     if (query) {
-      esQuery.all(`${query}`);
+      // This is a bit of a hack to make search work for sentences and partial words
+      esQuery.or({
+        title: query,
+        description: query,
+        "tag.literal": query,
+        all: query,
+      });
     }
 
     try {

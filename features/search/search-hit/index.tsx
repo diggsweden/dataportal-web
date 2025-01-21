@@ -65,11 +65,7 @@ export const SearchHit: FC<SearchHitProps> = ({
         </p>
       )}
 
-      <div
-        className={
-          !isCompact ? "flex items-baseline space-x-md" : "block space-y-sm"
-        }
-      >
+      <div className="block space-y-sm">
         <div className="mb-xs text-sm font-strong text-textSecondary">
           {hit.metadata &&
             hit.metadata.theme_literal &&

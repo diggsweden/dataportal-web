@@ -37,10 +37,11 @@ declare module "@entryscape/entrystore-js" {
     facetLimit(_limit: number): this;
 
     // Search field methods
+    or(_fields: { [key: string]: string }): this;
     title(_val: string | string[], _modifier?: boolean | string): this;
     description(_val: string | string[], _modifier?: boolean | string): this;
+    tagLiteral(_val: string | string[], _modifier?: boolean | string): this;
     all(_val: string | string[], _modifier?: boolean | string): this;
-
     // Property search methods
     literalProperty(
       _predicate: string,
