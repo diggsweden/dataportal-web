@@ -314,7 +314,8 @@ export const OrganisationPage: FC = () => {
           entry.organisationData?.showcases.length > 0 && (
             <div>
               <Heading level={2} size={"md"} className="mb-lg md:mb-xl">
-                {t("pages|organisation_page$showcases_heading")}
+                {`${t("pages|organisation_page$showcases_heading")} (${entry
+                  .organisationData?.showcases.length})`}
               </Heading>
               <div className="grid grid-cols-3 gap-xl">
                 {entry.organisationData?.showcases.map((showcase) => (
