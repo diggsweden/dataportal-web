@@ -161,7 +161,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
    * Initial load of search results and facets
    */
   initialLoad = async () => {
-    const loadTasks = [this.doSearch(false, true, false, true)];
+    const loadTasks = [this.doSearch(false, false, false, true)];
 
     if (this.state.fetchAllFacetsOnMount) {
       loadTasks.push(this.fetchAllFacets());

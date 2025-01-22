@@ -4,8 +4,8 @@ import useTranslation from "next-translate/useTranslation";
 import React, { FC, useContext, useEffect, useState } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
+import DataIcon from "@/assets/icons/data.svg";
 import DiamondIcon from "@/assets/icons/diamond.svg";
-import HoldingHandsIcon from "@/assets/icons/holding-hands.svg";
 import ListBlockIcon from "@/assets/icons/list-block.svg";
 import QuestionCircleIcon from "@/assets/icons/question-circle.svg";
 import { Button, ButtonLink } from "@/components/button";
@@ -171,7 +171,7 @@ export const OrganisationPage: FC = () => {
                 </Heading>
                 <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
                   <div className="flex w-full flex-col items-center gap-sm text-textSecondary md:flex-row md:gap-lg">
-                    <HoldingHandsIcon
+                    <DataIcon
                       className="flex-shrink-0"
                       height={iconSize * 3}
                       width={iconSize * 3}
