@@ -54,10 +54,12 @@ export const OrganisationPage: FC = () => {
           <div className="mb-xl flex w-full max-w-md flex-shrink-0 flex-col gap-xl">
             {/* Description */}
             {entry.description !== "" && (
-              <p className="mb-lg">{entry.description}</p>
+              <p data-test-id="description" className="mb-lg">
+                {entry.description}
+              </p>
             )}
             {/* Datasets wrapper */}
-            <div>
+            <div data-test-id="organisation-datasets">
               <Heading
                 level={2}
                 size={"md"}
@@ -65,6 +67,7 @@ export const OrganisationPage: FC = () => {
               >
                 {t("common|datasets")}
                 <Button
+                  data-test-id="data-info-button"
                   variant="plain"
                   className="rounded-full !p-xs"
                   aria-label={t("pages|organisation_page$data-info")}
@@ -75,6 +78,7 @@ export const OrganisationPage: FC = () => {
               </Heading>
 
               <Modal
+                data-test-id="data-info-modal"
                 modalOpen={showInfo}
                 setModalOpen={setShowInfo}
                 onClick={() => setShowInfo(false)}
@@ -123,6 +127,7 @@ export const OrganisationPage: FC = () => {
                 </div>
                 {entry.organisationData?.datasets.link && (
                   <ButtonLink
+                    data-test-id="organisation-datasets-link"
                     href={entry.organisationData?.datasets.link}
                     label={t("pages|organisation_page$view-all-data")}
                     icon={ArrowRightIcon}
@@ -134,7 +139,7 @@ export const OrganisationPage: FC = () => {
             {/* Specifications wrapper */}
             {entry.organisationData?.specifications.total &&
             entry.organisationData?.specifications.total > 0 ? (
-              <div>
+              <div data-test-id="organisation-specifications">
                 <Heading level={2} size={"md"} className="mb-lg">
                   {t("common|specifications")}
                 </Heading>
@@ -154,6 +159,7 @@ export const OrganisationPage: FC = () => {
                     </span>
                   </div>
                   <ButtonLink
+                    data-test-id="organisation-specifications-link"
                     href={entry.organisationData.specifications.link}
                     label={t("pages|organisation_page$view-all-spec")}
                     icon={ArrowRightIcon}
@@ -165,7 +171,7 @@ export const OrganisationPage: FC = () => {
             {/* Terminology wrapper */}
             {entry.organisationData?.terms?.termsInfo?.length &&
             entry.organisationData?.terms?.termsInfo?.length > 0 ? (
-              <div>
+              <div data-test-id="organisation-terminology">
                 <Heading level={2} size={"md"} className="mb-lg">
                   {t("common|term-with-concept")}
                 </Heading>
@@ -189,6 +195,7 @@ export const OrganisationPage: FC = () => {
                         {entry.organisationData?.terms?.termsInfo.map(
                           (term: TermInfo, idx: number) => (
                             <Link
+                              data-test-id="organisation-terminology-link"
                               key={idx}
                               href={term.url}
                               className="text-sm text-green-600 hover:no-underline"
@@ -208,7 +215,10 @@ export const OrganisationPage: FC = () => {
           {/* Right column */}
           <div className="mb-lg w-full max-w-md space-y-lg pt-none lg:mb-none lg:max-w-[26.25rem]">
             {/* About dataset - wrapper  */}
-            <div className="box-border w-full rounded-lg bg-white p-xl">
+            <div
+              data-test-id="about-section"
+              className="box-border w-full rounded-lg bg-white p-xl"
+            >
               <Heading
                 level={2}
                 size={"md"}
@@ -218,7 +228,7 @@ export const OrganisationPage: FC = () => {
               </Heading>
 
               <div className="space-y-lg text-sm">
-                <div>
+                <div data-test-id="contact">
                   <Heading
                     className="font-strong text-textSecondary"
                     level={3}
@@ -228,17 +238,20 @@ export const OrganisationPage: FC = () => {
                   </Heading>
                   {entry.contact && entry.contact.email ? (
                     <CustomLink
+                      data-test-id="contact-link"
                       className="text-sm text-green-600 hover:no-underline"
                       href={entry.contact.email}
                     >
                       {entry.contact.name}
                     </CustomLink>
                   ) : (
-                    <p>{t("pages|organisation_page$no-contact")}</p>
+                    <p data-test-id="no-contact">
+                      {t("pages|organisation_page$no-contact")}
+                    </p>
                   )}
                 </div>
 
-                <div>
+                <div data-test-id="organisation-type">
                   <Heading
                     className="font-strong text-textSecondary"
                     level={3}
@@ -253,7 +266,7 @@ export const OrganisationPage: FC = () => {
                 </div>
 
                 {entry.organisationData?.orgNumber && (
-                  <div>
+                  <div data-test-id="organisation-number">
                     <Heading
                       className="font-strong text-textSecondary"
                       level={3}
@@ -266,7 +279,7 @@ export const OrganisationPage: FC = () => {
                 )}
 
                 {entry.mqaCatalog && (
-                  <div>
+                  <div data-test-id="mqa-link">
                     <Heading
                       className="font-strong text-textSecondary"
                       level={3}
@@ -284,7 +297,7 @@ export const OrganisationPage: FC = () => {
                 )}
 
                 {entry.downloadFormats && entry.downloadFormats?.length > 0 && (
-                  <div>
+                  <div data-test-id="download-formats">
                     <Heading
                       className="font-strong text-textSecondary"
                       level={3}

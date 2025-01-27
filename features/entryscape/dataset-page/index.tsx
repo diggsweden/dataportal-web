@@ -107,6 +107,7 @@ export const DatasetPage: FC = () => {
 
             {/* Indicators */}
             <div
+              data-test-id="indicators"
               data-entryscape="customIndicators"
               className="indicators flex flex-col flex-wrap gap-x-lg gap-y-sm text-textSecondary md:flex-row"
             />
@@ -138,6 +139,7 @@ export const DatasetPage: FC = () => {
             <div>
               {/* Distribution list */}
               <div
+                data-test-id="datasets-block"
                 className="distribution__list"
                 data-entryscape="distributionListCustom"
                 data-entryscape-registry="true"
@@ -158,7 +160,10 @@ export const DatasetPage: FC = () => {
               ></div>
 
               {/* Questions  or comments */}
-              <div className="contact__publisher mt-md md:mt-lg">
+              <div
+                data-test-id="contact-publisher"
+                className="contact__publisher mt-md md:mt-lg"
+              >
                 <Heading
                   level={2}
                   size={"sm"}
@@ -185,7 +190,10 @@ export const DatasetPage: FC = () => {
           {/* Right column */}
           <div className="mb-lg w-full max-w-md space-y-lg pt-none lg:mb-none lg:max-w-[18.5rem]">
             {/* About dataset - wrapper  */}
-            <div className="box-border w-full bg-white p-md">
+            <div
+              data-test-id="about-section"
+              className="box-border w-full bg-white p-md"
+            >
               <Heading
                 level={2}
                 size={"sm"}
@@ -271,7 +279,10 @@ export const DatasetPage: FC = () => {
             </div>
 
             {/* Catalog informaton wrapper */}
-            <div className="box-border w-full bg-white p-md">
+            <div
+              data-test-id="catalog-information"
+              className="box-border w-full bg-white p-md"
+            >
               <Heading
                 level={2}
                 size={"sm"}
@@ -312,7 +323,7 @@ export const DatasetPage: FC = () => {
 
                 {/* Download formats */}
                 {entry.downloadFormats && entry.downloadFormats?.length > 0 && (
-                  <div>
+                  <div data-test-id="download-formats">
                     <Heading
                       className="font-strong text-textSecondary"
                       level={3}

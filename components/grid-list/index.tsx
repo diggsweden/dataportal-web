@@ -34,7 +34,10 @@ export const GridList: FC<ListProps> = ({
   const { t } = useTranslation();
 
   return (
-    <div className={`mb-lg md:mb-xl ${className ? className : ""}`}>
+    <div
+      data-test-id="grid-list-container"
+      className={`mb-lg md:mb-xl ${className ? className : ""}`}
+    >
       <div
         className={`mb-lg flex items-center md:mb-xl ${
           items.length <= 3 ? "justify-between" : "gap-sm"
@@ -59,25 +62,27 @@ export const GridList: FC<ListProps> = ({
       </div>
 
       {items.length > 0 ? (
-        <ul className="gap-4 grid grid-cols-1 gap-xl md:grid-cols-2 lg:grid-cols-3">
+        <ul
+          data-test-id="grid-list"
+          className="gap-4 grid grid-cols-1 gap-xl md:grid-cols-2 lg:grid-cols-3"
+        >
           {items.map((item, idx) => (
             <li
               key={idx}
               className="group relative flex h-full flex-col justify-between no-underline"
             >
-              {(() => {
-                switch (item.__typename) {
-                  case "dataportal_Digg_Tool":
-                    return <Toolteaser tools={item as ToolDataFragment} />;
-                  default:
-                    return <PublicationTeaser publication={item} />;
-                }
-              })()}
+              {item.__typename === "dataportal_Digg_Tool" ? (
+                <Toolteaser tools={item as ToolDataFragment} />
+              ) : (
+                <PublicationTeaser publication={item} />
+              )}
             </li>
           ))}
         </ul>
       ) : (
-        <span>{t("pages|listpage$no-content")}</span>
+        <span data-test-id="grid-list-empty">
+          {t("pages|listpage$no-content")}
+        </span>
       )}
     </div>
   );

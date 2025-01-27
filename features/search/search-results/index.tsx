@@ -194,9 +194,10 @@ export const SearchResults: FC<SearchResultsProps> = ({
     <div id="search-result" className="md:my-lg">
       <div className="mb-lg flex flex-col justify-between md:flex-row">
         <Heading
+          data-test-id="search-result-header"
           level={2}
           size="md"
-          className="search-result-header mb-md text-xl"
+          className="mb-md text-xl"
         >
           {/* Visual display of the count */}
           <span aria-hidden="true">
@@ -230,7 +231,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
         </div>
       ) : (
         <div>
-          <ul className="search-result-list space-y-xl">
+          <ul data-test-id="search-result-list" className="space-y-xl">
             {search.result.hits?.map((hit, index) => (
               <SearchHit
                 key={index}

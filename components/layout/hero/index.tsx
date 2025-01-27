@@ -41,6 +41,7 @@ const HeroButton = ({ href, label, lang, icon }: HeroButtonProps) => {
   const CenterIcon = icon;
   return (
     <ButtonLink
+      data-test-id="hero-search-button"
       className="w-full max-w-sm flex-col rounded-md p-lg"
       href={href}
       size="md"
@@ -99,6 +100,7 @@ export const Hero: FC<HeroProps> = ({
           >
             {heading && (
               <Heading
+                data-test-id="hero-heading"
                 level={1}
                 size="lg"
                 className={`${

@@ -71,6 +71,7 @@ export const DataServicePage: FC<{
             {entry.publisher && <Preamble>{entry.publisher}</Preamble>}
             {/* Indicators */}
             <div
+              data-test-id="indicators"
               data-entryscape="customIndicators"
               className="indicators flex flex-col flex-wrap gap-x-lg gap-y-sm text-textSecondary md:flex-row"
             />

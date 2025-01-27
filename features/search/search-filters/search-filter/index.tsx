@@ -18,6 +18,7 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
   usedFilters,
   defaultValue,
   children,
+  ...props
 }) => {
   const [open, setOpen] = useState(false);
   const [trapFocus, setTrapFocus] = useState(false);
@@ -41,6 +42,7 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
       <div
         ref={ref}
         onKeyDown={(ev) => ev.key === "Escape" && handleOpen(false)}
+        {...props}
       >
         <Button
           variant="secondary"
