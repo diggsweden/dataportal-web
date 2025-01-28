@@ -91,6 +91,7 @@ export const Pagination: FC<PaginationProps> = ({
 
   return (
     <div
+      data-test-id="pagination"
       className={`${
         totalPages <= 1 ? "hidden" : "flex"
       }  mt-xl w-full flex-col items-center justify-between gap-lg lg:flex-row lg:gap-none`}

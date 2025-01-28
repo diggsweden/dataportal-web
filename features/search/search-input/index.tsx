@@ -32,7 +32,10 @@ export const SearchInput: FC<SearchInputProps> = ({
   const { t } = useTranslation();
 
   return (
-    <div className="relative flex items-center justify-end">
+    <div
+      data-test-id="search-input"
+      className="relative flex items-center justify-end"
+    >
       <label className="sr-only" htmlFor={id}>
         {placeholder}
       </label>
@@ -64,6 +67,8 @@ export const SearchInput: FC<SearchInputProps> = ({
           />
         )}
         <Button
+          data-test-id="search-button"
+          data-test-loading={isLoading}
           type="submit"
           label={type !== "small" ? t("common|search") : ""}
           icon={isLoading ? SpinnerIcon : SearchIcon}

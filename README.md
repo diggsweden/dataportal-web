@@ -62,9 +62,9 @@ docker build . -t dataportal-web
 docker run -p 3000:3000 -e PORT=3000 -e HOST=http://localhost:3000 -e REACT_APP_APOLLO_URL=http://localhost:1400 -e REACT_APP_RUNTIME_ENV=prod -e IMAGE_DOMAIN=host.docker.internal -e REACT_APP_MEDIA_BASE_URL="http://host.docker.internal:1400/assets/dataportal" --add-host=host.docker.internal:host-gateway dataportal-web
 ```
 
-### Testing in local Sandbox Environment
+### Local testing with Sandbox data
 
-Go to: [sandbox.localhost](http://sandbox.localhost:3000/sv) to test and explore the site with data from Entryscape.
+Go to: [sandbox.localhost](http://sandbox.localhost:3000/) to test and explore the site with data from Entryscape sandbox environment.
 
 ### Health check
 
@@ -86,18 +86,13 @@ No cache, Do a request to content backend with startpage query.
 - [![Nextjs](https://badgen.net/badge/Nextjs/JS%20framework/blue)](https://nextjs.org/)
 - [![TypeScript](https://badgen.net/badge/TypeScript/For%20static%20types/blue)](https://www.typescriptlang.org/)
 - [![React](https://badgen.net/badge/React/For%20UI/blue)](https://reactjs.org/)
-- [![Emotion](https://badgen.net/badge/Emotion/For%20styling/blue)](https://emotion.sh)
+- [![Tailwind](https://badgen.net/badge/Tailwind/For%20styling/blue)](https://tailwindcss.com/)
 - [![Apollo Client](https://badgen.net/badge/Apollo%20Client/For%20federated%20content/blue)](https://www.apollographql.com/docs/react/)
 
 ### Content backend
 
 The Swedish Dataportal consumes news and content via a GraphQL proxy. The content is
 rendered with Apollo GraphQl and React. The proxy is not published on Github.
-
-### Component library
-
-The project has a dependency to [Digg component library](https://github.com/DIGGSweden/react-component-library).
-The package is published via NMP under [`@digg/design-system`](https://www.npmjs.com/package/@digg/design-system)
 
 ### Videos
 
@@ -106,30 +101,36 @@ The package is published via NMP under [`@digg/design-system`](https://www.npmjs
 Display of video is done via [screen9](https://screen9.com/). To be able to display videos an account from screen9 is needed and an API key.
 The key for this frontend application has read access only to DIGG screen9 account.
 
-### Sandbox editera
-
-To test locally in the sandbox environment, set the sandbox.editera URL on lines 6, 7, and 12 in Settings.Dev.ts
-
-Line 6: ENTRYSCAPE_SPECS_PATH="admin.dataportal.se"
-Line 7: ENTRYSCAPE_TERMS_PATH="editera.dataportal.se"
-Line 12: ENTRYSCAPE_CONCEPT_STATS_URL="https://editera.dataportal.se/stats/entityData.json"
-
-
 ## E2E Test with Cypress
-https://www.cypress.io/
+
+[cypress.io](https://www.cypress.io/)
 
 Run all tests
-```
+
+```bash
 yarn cypress run
 ```
 
 Run a specific test
-```
+
+```bash
 yarn cypress run --spec "cypress/e2e/YOUR_TEST_FILE.cy.js"
 ```
 
 To use the cypress GUI run the following command.
-```
+
+```bash
 yarn cypress open
 ```
+
 This can be used to debug and view your tests in a user interface.
+
+### Guidelines when writing tests
+
+To write tests that are easy to maintain, follow these guidelines:
+
+- Use descriptive names for tests
+- Divide tests into smaller tests to make them easier to maintain and debug
+- Use/add data-test-id to select elements to avoid using CSS selectors
+- Add comments to explain why a test is written in a certain way
+- Keep tests clean and readable

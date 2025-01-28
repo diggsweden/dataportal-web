@@ -22,10 +22,10 @@ type HeadingProps = VariantProps<typeof headingVariants> & {
 
 export const Heading: FC<
   PropsWithChildren<HeadingProps & HTMLAttributes<HTMLElement>>
-> = ({ size, level, className, children }) => {
+> = ({ size, level, className, children, ...props }) => {
   const CustomTag = `h${level}` as ElementType;
   return (
-    <CustomTag className={cx(headingVariants({ size }), className)}>
+    <CustomTag className={cx(headingVariants({ size }), className)} {...props}>
       {children}
     </CustomTag>
   );

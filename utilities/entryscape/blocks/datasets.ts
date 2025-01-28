@@ -99,8 +99,8 @@ export const datasetBlocks = (
         '<div class="flex flex-col md:flex-row gap-md md:gap-lg md:justify-between md:items-center">' +
         '<span class="text-md">{{labelish}}</span>' +
         '<a class="text-white noUnderline mr-xs" href="{{value}}">' +
-        '<span class="button--primary button--small md:button--large text-white flex items-center !no-underline">' +
-        '${t("pages|datasetpage$download_link")}' +
+        '<span class="button--primary button--small md:button--large text-white flex items-center !no-underline whitespace-nowrap">' +
+        t("pages|datasetpage$download_link") +
         '<svg xmlns="http://www.w3.org/2000/svg" width="' +
         1.5 * iconSize +
         '" height="' +

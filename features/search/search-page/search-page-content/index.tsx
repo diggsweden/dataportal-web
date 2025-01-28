@@ -211,7 +211,10 @@ export const SearchPageContent: FC<SearchProps> = () => {
             </div>
 
             {searchResult && (
-              <ul className="search-result-list space-y-lg md:space-y-xl">
+              <ul
+                data-test-id="search-result-list"
+                className="space-y-lg md:space-y-xl"
+              >
                 {searchResult.hits &&
                   searchResult.hits.map((hit: SearchHit, index: number) => (
                     <li className="group relative max-w-lg" key={index}>

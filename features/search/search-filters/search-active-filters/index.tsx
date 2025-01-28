@@ -88,12 +88,18 @@ export function SearchActiveFilters({
   }
 
   return (
-    <div className="flex flex-col gap-md md:mt-lg md:flex-row md:items-center">
+    <div
+      data-test-id="search-active-filters"
+      className="flex flex-col gap-md md:mt-lg md:flex-row md:items-center"
+    >
       <span className="w-[6.25rem] flex-shrink-0 text-textSecondary md:mb-auto md:mt-xs">
         {t("common|active-filters")}:
       </span>
       <div className="flex flex-col gap-lg">
-        <div className="flex flex-row flex-wrap gap-md md:items-center">
+        <div
+          data-test-id="search-active-filters-list"
+          className="flex flex-row flex-wrap gap-md md:items-center"
+        >
           {search.request.facetValues?.map(
             (facetValue: SearchFacetValue, index: number) => {
               const label =

@@ -41,7 +41,7 @@ export function SearchCheckboxFilter({
   iconSize,
 }: SearchCheckboxFilterProps) {
   return (
-    <div className="relative w-fit">
+    <div data-test-id="search-checkbox-filter" className="relative w-fit">
       <input
         id={id}
         name={name}

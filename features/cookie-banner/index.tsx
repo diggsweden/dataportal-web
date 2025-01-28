@@ -97,6 +97,7 @@ export const CookieBanner: FC<{
           )}
           <div className="flex space-x-lg">
             <Button
+              data-test-id="cookie-setting-button"
               type="submit"
               onClick={() => {
                 set({ cookieSettings: cookieSettings });

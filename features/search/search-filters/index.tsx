@@ -184,6 +184,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
   const ToggleFilterButton = ({ className }: { className?: string }) => {
     return (
       <Button
+        data-test-id="search-filters-toggle"
         variant="secondary"
         size="md"
         icon={showFilter ? CrossIcon : FilterIcon}
@@ -218,7 +219,11 @@ export const SearchFilters: FC<SearchFilterProps> = ({
   }, [searchMode, search.allFacets]);
 
   return (
-    <div id="SearchFilters" role="region" aria-label={t("common|filter")}>
+    <div
+      data-test-id="search-filters"
+      role="region"
+      aria-label={t("common|filter")}
+    >
       <div
         className={`fixed inset-none z-40 overflow-hidden bg-brownOpaque5 md:hidden 
         ${showFilter ? "visible" : "hidden"}`}
@@ -295,6 +300,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                       return (
                         <li key={`${value.title}-${idx}`} role="listitem">
                           <SearchFilter
+                            data-test-id="search-filter-select"
                             title={value.title}
                             usedFilters={findFilters(
                               value.facetValues,
@@ -313,7 +319,11 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                               />
 
                               {/* List of filter options within this category */}
-                              <ul role="listbox" aria-multiselectable="true">
+                              <ul
+                                data-test-id="search-filter-select-list"
+                                role="listbox"
+                                aria-multiselectable="true"
+                              >
                                 {facetValues
                                   // .filter((v) => v.count > 0)
                                   .map(
@@ -392,51 +402,54 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                       );
                     } else {
                       return (
-                        <SearchCheckboxFilter
-                          key={key}
-                          id={value.predicate}
-                          name={value.title}
-                          checked={
-                            value.customFilter
-                              ? search.facetSelected(key, value.customFilter)
-                              : value.customSearch?.length ===
-                                  search.request.esRdfTypes?.length &&
-                                value.customSearch?.every(
-                                  (type) =>
-                                    search.request.esRdfTypes?.includes(type),
-                                )
-                          }
-                          onChange={() => {
-                            if (value.customSearch) {
-                              clearCurrentScrollPos();
-                              if (
-                                value.customSearch !== search.request.esRdfTypes
-                              ) {
-                                search
-                                  .set({
-                                    esRdfTypes: value.customSearch,
-                                    query,
-                                  })
-                                  .then(() => search.doSearch());
-                              } else {
-                                search
-                                  .set({
-                                    esRdfTypes: [
-                                      ESRdfType.dataset,
-                                      ESRdfType.data_service,
-                                      ESRdfType.dataset_series,
-                                    ],
-                                    query,
-                                  })
-                                  .then(() => search.doSearch());
-                              }
-                            } else {
-                              doSearch(key, facetValues[0]);
+                        <li key={key} role="listitem">
+                          <SearchCheckboxFilter
+                            key={key}
+                            id={value.predicate}
+                            name={value.title}
+                            checked={
+                              value.customFilter
+                                ? search.facetSelected(key, value.customFilter)
+                                : value.customSearch?.length ===
+                                    search.request.esRdfTypes?.length &&
+                                  value.customSearch?.every(
+                                    (type) =>
+                                      search.request.esRdfTypes?.includes(type),
+                                  )
                             }
-                          }}
-                          label={t(`resources|${key}`)}
-                          iconSize={iconSize}
-                        />
+                            onChange={() => {
+                              if (value.customSearch) {
+                                clearCurrentScrollPos();
+                                if (
+                                  value.customSearch !==
+                                  search.request.esRdfTypes
+                                ) {
+                                  search
+                                    .set({
+                                      esRdfTypes: value.customSearch,
+                                      query,
+                                    })
+                                    .then(() => search.doSearch());
+                                } else {
+                                  search
+                                    .set({
+                                      esRdfTypes: [
+                                        ESRdfType.dataset,
+                                        ESRdfType.data_service,
+                                        ESRdfType.dataset_series,
+                                      ],
+                                      query,
+                                    })
+                                    .then(() => search.doSearch());
+                                }
+                              } else {
+                                doSearch(key, facetValues[0]);
+                              }
+                            }}
+                            label={t(`resources|${key}`)}
+                            iconSize={iconSize}
+                          />
+                        </li>
                       );
                     }
                   })}

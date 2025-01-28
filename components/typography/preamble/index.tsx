@@ -17,6 +17,8 @@ type PreambleProps = VariantProps<typeof preabmle>;
 
 export const Preamble: FC<
   PropsWithChildren<PreambleProps & HTMLAttributes<HTMLDivElement>>
-> = ({ color, children, className }) => (
-  <div className={preabmle({ color, className })}>{children}</div>
+> = ({ color, children, className, ...props }) => (
+  <div className={preabmle({ color, className })} {...props}>
+    {children}
+  </div>
 );
