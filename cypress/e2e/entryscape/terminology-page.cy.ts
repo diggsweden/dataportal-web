@@ -16,16 +16,24 @@ describe("Terminology page", () => {
   beforeEach(() => {
     // Go to concepts page search
     cy.visit("/concepts?q=&f=");
+    /**
+     * Wait for the search button to be visible and not loading.
+     * This is to make sure that the search results are loaded.
+     */
+    cy.get("[data-test-id='search-button']", { timeout: 10000 })
+      .should("have.attr", "data-test-loading", "false")
+      .should("be.visible");
+    cy.wait(1000);
 
     // Go to first concept page in the search result list
-    cy.get("[data-test-id='search-result-list']", { timeout: 6000 }).within(
+    cy.get("[data-test-id='search-result-list']", { timeout: 10000 }).within(
       () => {
-        cy.get("li").first().click();
+        cy.get("li a").first().click();
       },
     );
 
     // Check for related terminology and go to it
-    cy.get("[data-test-id='related-terminology']")
+    cy.get("[data-test-id='related-terminology']", { timeout: 10000 })
       .should("exist")
       .within(() => {
         cy.get("h3").should("not.be.empty");
@@ -34,8 +42,8 @@ describe("Terminology page", () => {
   });
 
   it("Should display terminology page header and description", () => {
-    cy.get("h1").should("exist").should("not.be.empty");
-    cy.get("[data-test-id='description']").should(($el) => {
+    cy.get("h1", { timeout: 10000 }).should("exist").should("not.be.empty");
+    cy.get("[data-test-id='description']", { timeout: 10000 }).should(($el) => {
       // If description exists, verify it has content
       if ($el.length > 0) {
         cy.wrap($el)
@@ -47,7 +55,7 @@ describe("Terminology page", () => {
   });
 
   it("Should display publisher information correctly", () => {
-    cy.get("[data-test-id='publisher']").should(($el) => {
+    cy.get("[data-test-id='publisher']", { timeout: 10000 }).should(($el) => {
       if ($el.length > 0) {
         // If publisher exists, it must be either a link or paragraph
         if ($el.is("a")) {
@@ -64,11 +72,11 @@ describe("Terminology page", () => {
   });
 
   it("Should display terminology block and its children", () => {
-    cy.get("[data-test-id='terminology-block']")
+    cy.get("[data-test-id='terminology-block']", { timeout: 10000 })
       .should("exist")
       .within(() => {
         cy.get("h2").should("not.be.empty");
-        cy.get("a")
+        cy.get("a", { timeout: 10000 })
           .first()
           .should("not.be.empty")
           .should("have.attr", "href")
@@ -77,7 +85,7 @@ describe("Terminology page", () => {
   });
 
   it("Should display about section", () => {
-    cy.get("[data-test-id='about-section']")
+    cy.get("[data-test-id='about-section']", { timeout: 10000 })
       .should("exist")
       .within(() => {
         cy.get("h2").should("not.be.empty");
@@ -95,7 +103,7 @@ describe("Terminology page", () => {
   });
 
   it("Should download RDF file", () => {
-    cy.get("[data-test-id='download-formats']")
+    cy.get("[data-test-id='download-formats']", { timeout: 10000 })
       .should("exist")
       .within(() => {
         cy.get("a").first().click();

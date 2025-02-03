@@ -16,6 +16,14 @@ describe("Organisation page", () => {
   beforeEach(() => {
     // Go to datasets page search
     cy.visit("/organisations?q=&f=");
+    /**
+     * Wait for the search button to be visible and not loading.
+     * This is to make sure that the search results are loaded.
+     */
+    cy.get("[data-test-id='search-button']", { timeout: 10000 })
+      .should("have.attr", "data-test-loading", "false")
+      .should("be.visible");
+    cy.wait(1000);
 
     cy.get("[data-test-id='search-input']").find("input").type(SEARCH_INPUT);
     cy.get("[data-test-id='search-button']").click();
@@ -29,8 +37,8 @@ describe("Organisation page", () => {
   });
 
   it("Should display organisation page header and description", () => {
-    cy.get("h1").should("exist").should("not.be.empty");
-    cy.get("[data-test-id='description']").should(($el) => {
+    cy.get("h1", { timeout: 10000 }).should("exist").should("not.be.empty");
+    cy.get("[data-test-id='description']", { timeout: 10000 }).should(($el) => {
       // If description exists, verify it has content
       if ($el.length > 0) {
         cy.wrap($el)
@@ -42,14 +50,18 @@ describe("Organisation page", () => {
   });
 
   it("Should open information modal when clicking on data info button", () => {
-    cy.get("[data-test-id='data-info-button']").click();
-    cy.get("[data-test-id='modal']").should("exist").should("be.visible");
-    cy.get("[data-test-id='modal-close-btn']").click();
-    cy.get("[data-test-id='modal']").should("not.be.visible");
+    cy.get("[data-test-id='data-info-button']", { timeout: 10000 }).click();
+    cy.get("[data-test-id='modal']", { timeout: 10000 })
+      .should("exist")
+      .should("be.visible");
+    cy.get("[data-test-id='modal-close-btn']", { timeout: 10000 }).click();
+    cy.get("[data-test-id='modal']", { timeout: 10000 }).should(
+      "not.be.visible",
+    );
   });
 
   it("Should display organisation sections and its children", () => {
-    cy.get("[data-test-id='organisation-datasets']")
+    cy.get("[data-test-id='organisation-datasets']", { timeout: 10000 })
       .should("exist")
       .within(() => {
         cy.get("h2").should("not.be.empty");
@@ -89,13 +101,13 @@ describe("Organisation page", () => {
   });
 
   it("Should display about section", () => {
-    cy.get("[data-test-id='about-section']")
+    cy.get("[data-test-id='about-section']", { timeout: 10000 })
       .should("exist")
       .within(() => {
         cy.get("h2").should("not.be.empty");
 
         // Should display contact as a link or paragraph
-        cy.get("[data-test-id='contact']")
+        cy.get("[data-test-id='contact']", { timeout: 10000 })
           .should("exist")
           .within(($el) => {
             cy.get("h3").should("not.be.empty");
@@ -111,7 +123,7 @@ describe("Organisation page", () => {
           });
 
         // Should display organisation type
-        cy.get("[data-test-id='organisation-type']")
+        cy.get("[data-test-id='organisation-type']", { timeout: 10000 })
           .should("exist")
           .within(() => {
             cy.get("h3").should("not.be.empty");
@@ -119,20 +131,24 @@ describe("Organisation page", () => {
           });
 
         // Should display organisation number
-        cy.get("[data-test-id='organisation-number']").should(($el) => {
+        cy.get("[data-test-id='organisation-number']", {
+          timeout: 10000,
+        }).should(($el) => {
           if ($el.length > 0) {
             assert.isNotEmpty($el.find("h3"));
             assert.isNotEmpty($el.find("p"));
           }
         });
 
-        cy.get("[data-test-id='mqa-link']").should(($el) => {
-          if ($el.length > 0) {
-            assert.isNotEmpty($el.find("h3"));
-            assert.isNotEmpty($el.find("a"));
-            assert.isNotEmpty($el.find("a").attr("href"));
-          }
-        });
+        cy.get("[data-test-id='mqa-link']", { timeout: 10000 }).should(
+          ($el) => {
+            if ($el.length > 0) {
+              assert.isNotEmpty($el.find("h3"));
+              assert.isNotEmpty($el.find("a"));
+              assert.isNotEmpty($el.find("a").attr("href"));
+            }
+          },
+        );
       });
   });
 

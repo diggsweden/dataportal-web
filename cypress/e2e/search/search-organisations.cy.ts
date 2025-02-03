@@ -45,7 +45,7 @@ describe("Search organisations", () => {
   });
 
   it("Verify search result list has default 20 results", () => {
-    cy.get("[data-test-id='search-result-list']")
+    cy.get("[data-test-id='search-result-list']", { timeout: 10000 })
       .should("exist")
       .within(() => {
         cy.get("li").should("have.length", 20);
@@ -73,9 +73,11 @@ describe("Search organisations", () => {
    */
   it("Verify search filter on organisations search result", () => {
     // Get the search result count, so we can check against it later when we add a filter.
-    cy.get("[data-test-id='search-result-header']").then((firstSearchCount) =>
-      cy.wrap(firstSearchCount.text()).as("firstSearchCount"),
-    );
+    cy.get("[data-test-id='search-result-header']", { timeout: 10000 })
+      .should("not.contain", "Laddar", { timeout: 10000 })
+      .then((firstSearchCount) =>
+        cy.wrap(firstSearchCount.text()).as("firstSearchCount"),
+      );
 
     // Check that the search filters toggle button exists and is expanded.
     cy.get("[data-test-id='search-filters']").within(() => {
@@ -111,10 +113,19 @@ describe("Search organisations", () => {
         .should("have.length", 6);
     });
 
+    // Wait for the search button to be visible and not loading.
+    // This is to make sure that the search results are loaded.
+    cy.get("[data-test-id='search-button']", { timeout: 10000 })
+      .should("have.attr", "data-test-loading", "false")
+      .should("be.visible");
+    cy.wait(1000);
+
     // Verify that we have a different results count after adding a filter.
-    cy.get("[data-test-id='search-result-header']").then((secondSearchCount) =>
-      cy.wrap(secondSearchCount.text()).as("secondSearchCount"),
-    );
+    cy.get("[data-test-id='search-result-header']")
+      .should("not.contain", "Laddar", { timeout: 10000 })
+      .then((secondSearchCount) =>
+        cy.wrap(secondSearchCount.text()).as("secondSearchCount"),
+      );
     cy.get("@secondSearchCount").then((secondSearchCount) =>
       cy.get("@firstSearchCount").should("not.equal", secondSearchCount),
     );

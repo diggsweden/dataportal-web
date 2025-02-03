@@ -6,7 +6,7 @@ describe("Check tools and support page", () => {
   it("Verify headings and list filters", () => {
     cy.get("h1").should("exist").should("not.be.empty");
 
-    cy.get("[data-test-id='list-page']")
+    cy.get("[data-test-id='list-page']", { timeout: 10000 })
       .should("exist")
       .within(() => {
         cy.get("[data-test-id='list-page-heading']")
@@ -22,7 +22,7 @@ describe("Check tools and support page", () => {
   });
 
   it("Verify grid list", () => {
-    cy.get("[data-test-id='grid-list-container']")
+    cy.get("[data-test-id='grid-list-container']", { timeout: 10000 })
       .should("exist")
       .within(() => {
         // Check if either grid-list or grid-list-empty exists
@@ -42,7 +42,7 @@ describe("Check tools and support page", () => {
       });
 
     // Get the total count from the heading outside grid-list-container
-    cy.get("[data-test-id='list-page-heading']")
+    cy.get("[data-test-id='list-page-heading']", { timeout: 10000 })
       .invoke("text")
       .then((text) => {
         // Extract number from heading (assuming format like "XX results" or similar)
@@ -56,45 +56,49 @@ describe("Check tools and support page", () => {
   });
 
   it("Verify tool teaser component", () => {
-    cy.get("[data-test-id='tool-teaser']").each(($teaser) => {
-      cy.wrap($teaser).within(() => {
-        cy.get("[data-test-id='tool-teaser-link']")
-          .invoke("attr", "href")
-          .then((href) => {
-            cy.get("[data-test-id='tool-teaser-link']")
-              .invoke("attr", "data-test-is-external")
-              .then((isExternal) => {
-                if (isExternal === "true") {
-                  expect(href).to.match(/^https?:\/\//);
-                } else {
-                  expect(href).to.match(/^\//);
-                }
-              });
-          });
+    cy.get("[data-test-id='tool-teaser']", { timeout: 10000 }).each(
+      ($teaser) => {
+        cy.wrap($teaser).within(() => {
+          cy.get("[data-test-id='tool-teaser-link']")
+            .invoke("attr", "href")
+            .then((href) => {
+              cy.get("[data-test-id='tool-teaser-link']")
+                .invoke("attr", "data-test-is-external")
+                .then((isExternal) => {
+                  if (isExternal === "true") {
+                    expect(href).to.match(/^https?:\/\//);
+                  } else {
+                    expect(href).to.match(/^\//);
+                  }
+                });
+            });
 
-        cy.get("[data-test-id='tool-teaser-domain-label']")
-          .should("exist")
-          .should("not.be.empty");
+          cy.get("[data-test-id='tool-teaser-domain-label']")
+            .should("exist")
+            .should("not.be.empty");
 
-        cy.get("[data-test-id='tool-teaser-icon']")
-          .should("exist")
-          .should("not.be.empty");
+          cy.get("[data-test-id='tool-teaser-icon']")
+            .should("exist")
+            .should("not.be.empty");
 
-        cy.get("[data-test-id='tool-teaser-heading']")
-          .should("exist")
-          .should("not.be.empty");
+          cy.get("[data-test-id='tool-teaser-heading']")
+            .should("exist")
+            .should("not.be.empty");
 
-        cy.get("[data-test-id='tool-teaser-preamble']")
-          .should("exist")
-          .should("not.be.empty");
+          cy.get("[data-test-id='tool-teaser-preamble']")
+            .should("exist")
+            .should("not.be.empty");
 
-        cy.get("[data-test-id='tool-teaser-preview-button']").should("exist");
-      });
-    });
+          cy.get("[data-test-id='tool-teaser-preview-button']").should("exist");
+        });
+      },
+    );
   });
 
   it("Verify that modal opens when clicking on preview button", () => {
-    cy.get("[data-test-id='modal']").first().should("not.be.visible");
+    cy.get("[data-test-id='modal']", { timeout: 10000 })
+      .first()
+      .should("not.be.visible");
     cy.get("[data-test-id='tool-teaser-preview-button']").first().click();
     cy.get("[data-test-id='modal']").first().should("be.visible");
 

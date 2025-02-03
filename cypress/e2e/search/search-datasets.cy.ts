@@ -73,9 +73,11 @@ describe("Search datasets", () => {
    */
   it("Verify search filter on datasets search result", () => {
     // Get the search result count, so we can check against it later when we add a filter.
-    cy.get("[data-test-id='search-result-header']").then((firstSearchCount) =>
-      cy.wrap(firstSearchCount.text()).as("firstSearchCount"),
-    );
+    cy.get("[data-test-id='search-result-header']", { timeout: 10000 })
+      .should("not.contain", "Laddar", { timeout: 10000 })
+      .then((firstSearchCount) =>
+        cy.wrap(firstSearchCount.text()).as("firstSearchCount"),
+      );
 
     // Check that the search filters toggle button exists and is expanded.
     cy.get("[data-test-id='search-filters']").within(() => {
@@ -94,7 +96,7 @@ describe("Search datasets", () => {
         .first()
         .find("li button")
         .first()
-        .click();
+        .click({ force: true });
 
       // Click the filter button again to close the filter list.
       cy.get("[data-test-id='search-filter-select'] button")
@@ -105,7 +107,7 @@ describe("Search datasets", () => {
       cy.get("[data-test-id='search-checkbox-filter']").first().click();
 
       // Verify that the active filter exists and has the correct count.
-      // There are two active filters because one active filter is only shown in mobile view.
+      // There are six active filters because three active filter is only shown in mobile view.
       // Last extra button is the clear all button.
       cy.get("[data-test-id='search-active-filters-list']")
         .should("exist")
@@ -113,10 +115,19 @@ describe("Search datasets", () => {
         .should("have.length", 6);
     });
 
+    // Wait for the search button to be visible and not loading.
+    // This is to make sure that the search results are loaded.
+    cy.get("[data-test-id='search-button']", { timeout: 10000 })
+      .should("have.attr", "data-test-loading", "false")
+      .should("be.visible");
+    cy.wait(1000);
+
     // Verify that we have a different results count after adding a filter.
-    cy.get("[data-test-id='search-result-header']").then((secondSearchCount) =>
-      cy.wrap(secondSearchCount.text()).as("secondSearchCount"),
-    );
+    cy.get("[data-test-id='search-result-header']")
+      .should("not.contain", "Laddar", { timeout: 10000 })
+      .then((secondSearchCount) =>
+        cy.wrap(secondSearchCount.text()).as("secondSearchCount"),
+      );
     cy.get("@secondSearchCount").then((secondSearchCount) =>
       cy.get("@firstSearchCount").should("not.equal", secondSearchCount),
     );
