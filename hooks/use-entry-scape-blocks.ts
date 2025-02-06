@@ -51,7 +51,7 @@ export const useEntryScapeBlocks = ({
     return () => {
       document.removeEventListener("click", handleClick);
     };
-  }, []);
+  }, [pageType, context, esId]);
 
   useEffect(() => {
     // Create the ready promise if it doesn't exist
@@ -123,7 +123,7 @@ export const useEntryScapeBlocks = ({
         (window as any).__entryscape_blocks.clear();
       }
     };
-  }, []);
+  }, [pageType, context, esId]);
 };
 
 const loadScript = (url: string): Promise<void> => {
