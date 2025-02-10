@@ -589,6 +589,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           content={`${state.description} - Sveriges dataportal`}
           key="twitter:description"
         />
+        <meta name="robots" content="index, follow" />
       </Head>
       {children}
     </EntrystoreContext.Provider>
