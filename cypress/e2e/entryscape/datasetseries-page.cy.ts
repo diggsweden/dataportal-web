@@ -14,9 +14,17 @@ describe("Datasetseries page", () => {
   beforeEach(() => {
     // Go to datasets page search
     cy.visit("/datasets?q=&f=");
+    /**
+     * Wait for the search button to be visible and not loading.
+     * This is to make sure that the search results are loaded.
+     */
+    cy.get("[data-test-id='search-button']", { timeout: 10000 })
+      .should("have.attr", "data-test-loading", "false")
+      .should("be.visible");
+    cy.wait(1000);
 
     // Go to first datasetseries page in the search result list
-    cy.get("[data-test-id='search-result-list']", { timeout: 8000 }).within(
+    cy.get("[data-test-id='search-result-list']", { timeout: 10000 }).within(
       () => {
         cy.get("li a").filter('[href^="/dataset-series/"]').first().click();
       },
@@ -24,8 +32,8 @@ describe("Datasetseries page", () => {
   });
 
   it("Should display dataset page header and description", () => {
-    cy.get("h1").should("exist").should("not.be.empty");
-    cy.get("[data-test-id='description']").should(($el) => {
+    cy.get("h1", { timeout: 10000 }).should("exist").should("not.be.empty");
+    cy.get("[data-test-id='description']", { timeout: 10000 }).should(($el) => {
       // If description exists, verify it has content
       if ($el.length > 0) {
         cy.wrap($el)
@@ -37,26 +45,28 @@ describe("Datasetseries page", () => {
   });
 
   it("Should display dataset page publisher and datasetseries badge", () => {
-    cy.get("[data-test-id='publisher']").should(($el) => {
+    cy.get("[data-test-id='publisher']", { timeout: 10000 }).should(($el) => {
       // If publisher exists, verify it has content
       if ($el.length > 0) {
         cy.wrap($el).should("not.be.empty");
       }
     });
-    cy.get("[data-test-id='datasetseries-badge']").should("exist");
+    cy.get("[data-test-id='datasetseries-badge']", { timeout: 10000 }).should(
+      "exist",
+    );
   });
 
   it("Verify datasetseries page lists datasets", () => {
-    cy.get("[data-test-id='search-result-header']", { timeout: 8000 })
+    cy.get("[data-test-id='search-result-header']", { timeout: 10000 })
       .should("exist")
       .should("not.be.empty");
 
-    cy.get("[data-test-id='search-result-list']", { timeout: 8000 })
+    cy.get("[data-test-id='search-result-list']", { timeout: 10000 })
       .should("exist")
       .find("li")
       .should("have.length.gt", 0);
 
     // Check for sort and filter buttons
-    cy.get("button#sort").should("exist");
+    cy.get("button#sort", { timeout: 10000 }).should("exist");
   });
 });

@@ -1,0 +1,57 @@
+name: Cypress Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    # Set environment variables for the cypress tests.
+    # These are needed for test against the graphql endpoint.
+    env:
+      APOLLO_URL: 'https://graphql.digg.se/'
+      REACT_APP_APOLLO_URL: 'https://graphql.digg.se/'
+      IMAGE_DOMAIN: 'graphql.digg.se'
+      REACT_APP_MEDIA_BASE_URL: 'https://graphql.digg.se/assets/dataportal'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build Next.js app
+        run: yarn build
+
+      - name: Start Next.js app and wait for it
+        run: |
+          yarn start &
+          # Wait for the app to be available
+          timeout 60 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:3000)" != "200" ]]; do sleep 2; done' || false
+
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          record: false
+          config-file: cypress.config.ts
+
+      - name: Upload screenshots on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore

@@ -73,9 +73,11 @@ describe("Search concepts", () => {
    */
   it("Verify search filter works on concepts search result", () => {
     // Get the search result count, so we can check against it later when we add a filter.
-    cy.get("[data-test-id='search-result-header']").then((firstSearchCount) =>
-      cy.wrap(firstSearchCount.text()).as("firstSearchCount"),
-    );
+    cy.get("[data-test-id='search-result-header']", { timeout: 10000 })
+      .should("not.contain", "Laddar", { timeout: 10000 })
+      .then((firstSearchCount) =>
+        cy.wrap(firstSearchCount.text()).as("firstSearchCount"),
+      );
 
     // Check that the search filters toggle button exists and is expanded.
     cy.get("[data-test-id='search-filters']").within(() => {
@@ -109,10 +111,19 @@ describe("Search concepts", () => {
         .should("have.length", 2);
     });
 
+    // Wait for the search button to be visible and not loading.
+    // This is to make sure that the search results are loaded.
+    cy.get("[data-test-id='search-button']", { timeout: 10000 })
+      .should("have.attr", "data-test-loading", "false")
+      .should("be.visible");
+    cy.wait(1000);
+
     // Verify that we have a different results count after adding a filter.
-    cy.get("[data-test-id='search-result-header']").then((secondSearchCount) =>
-      cy.wrap(secondSearchCount.text()).as("secondSearchCount"),
-    );
+    cy.get("[data-test-id='search-result-header']")
+      .should("not.contain", "Laddar", { timeout: 10000 })
+      .then((secondSearchCount) =>
+        cy.wrap(secondSearchCount.text()).as("secondSearchCount"),
+      );
     cy.get("@secondSearchCount").then((secondSearchCount) =>
       cy.get("@firstSearchCount").should("not.equal", secondSearchCount),
     );
