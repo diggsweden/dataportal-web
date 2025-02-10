@@ -330,7 +330,7 @@ export const OrganisationPage: FC = () => {
                 {`${t("pages|organisation_page$showcases_heading")} (${entry
                   .organisationData?.showcases.length})`}
               </Heading>
-              <div className="grid grid-cols-3 gap-xl">
+              <div className="flex flex-col gap-xl md:grid md:grid-cols-2 lg:grid-cols-3">
                 {entry.organisationData?.showcases.map((showcase) => (
                   <Showcase key={showcase.title} {...showcase} />
                 ))}
