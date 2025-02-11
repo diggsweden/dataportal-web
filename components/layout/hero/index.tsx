@@ -94,8 +94,8 @@ export const Hero: FC<HeroProps> = ({
       <Container>
         <div className="relative z-10">
           <div
-            className={`${isFrontpage && search && "text-center"} ${
-              search ? "text-brown-100" : "bg-white p-xl"
+            className={`${isFrontpage && search ? "text-center" : ""} ${
+              search ? "text-brown-100" : "max-w-md bg-white p-xl"
             }`}
           >
             {heading && (
