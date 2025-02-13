@@ -58,27 +58,36 @@ export const ConceptPage: FC = () => {
             </Link>
           ) : (
             entry.publisher && (
-              <Preamble className="mb-lg">{entry.publisher}</Preamble>
+              <Preamble data-test-id="publisher" className="mb-lg">
+                {entry.publisher}
+              </Preamble>
             )
           )}
 
           {entry.description !== "" && (
-            <p className="mb-lg text-textSecondary">{entry.description}</p>
+            <p data-test-id="description" className="mb-lg text-textSecondary">
+              {entry.description}
+            </p>
           )}
 
           <div
+            data-test-id="concept-block"
             className="flex flex-col gap-lg"
             data-entryscape="conceptBlock"
           />
 
           <span
-            data-entryscape="toppbegrepp"
+            data-test-id="terminology-block"
+            data-entryscape="terminologyBlock"
             className="totTerminology conceptDetail"
           />
         </div>
 
         {/* Right column */}
-        <div className="mb-lg h-fit w-full max-w-md bg-white p-md lg:mb-none lg:max-w-[296px]">
+        <div
+          data-test-id="about-section"
+          className="mb-lg h-fit w-full max-w-md bg-white p-md lg:mb-none lg:max-w-[296px]"
+        >
           <Heading
             level={2}
             size={"sm"}
@@ -90,7 +99,7 @@ export const ConceptPage: FC = () => {
           </Heading>
 
           <div className="space-y-lg">
-            <div>
+            <div data-test-id="address">
               <Heading
                 className="font-strong text-textSecondary"
                 level={3}
@@ -132,7 +141,7 @@ export const ConceptPage: FC = () => {
               )}
 
             {entry.relatedTerm && (
-              <div>
+              <div data-test-id="related-terminology">
                 <Heading
                   className="font-strong text-textSecondary"
                   level={3}
@@ -151,7 +160,7 @@ export const ConceptPage: FC = () => {
 
             {/* Download formats */}
             {entry.downloadFormats && entry.downloadFormats?.length > 0 && (
-              <div>
+              <div data-test-id="download-formats">
                 <Heading
                   className="font-strong text-textSecondary"
                   level={3}

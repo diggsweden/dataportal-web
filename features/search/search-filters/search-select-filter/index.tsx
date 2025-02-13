@@ -47,7 +47,7 @@ export const SearchSelectFilter: FC<SelectProps> = ({
       >
         <Button
           id={id}
-          size="sm"
+          size="md"
           variant="secondary"
           iconPosition="right"
           icon={open ? ChevronUpIcon : ChevronDownIcon}
@@ -56,6 +56,7 @@ export const SearchSelectFilter: FC<SelectProps> = ({
           onClick={() => handleOpen(!open)}
           aria-labelledby={id}
           label={selectedText}
+          className="hover:bg-brown-100 focus-visible:bg-brown-100"
         />
         {open && (
           <div className={open ? "relative block" : "hidden"}>

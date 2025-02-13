@@ -107,7 +107,7 @@ body {
     group-hover:bg-brown-800 group-hover:bg-whiteOpaque5 group-focus:bg-whiteOpaque5 [&_path]:fill-brown-600;
   }
   .button--secondary.active {
-    @apply bg-brown-600 text-white [&_path]:fill-white [&_svg]:rotate-180;
+    @apply bg-brown-600 text-white [&_path]:fill-white;
   }
   .button--light {
     @apply bg-brown-200 text-brown-600 hover:bg-textSecondary focus-visible:bg-textSecondary hover:text-brown-100 focus-visible:text-brown-100
@@ -134,6 +134,9 @@ body {
     @apply gap-sm px-md py-[0.125rem] text-sm;
   }
   .button--small {
+    @apply gap-sm px-md py-sm text-sm;
+  }
+  .button--medium {
     @apply gap-sm px-md py-[0.375rem] text-sm;
   }
   .button--large {

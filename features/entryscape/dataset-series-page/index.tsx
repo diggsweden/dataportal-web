@@ -65,7 +65,10 @@ export const DatasetSeriesPage: FC = () => {
     <div>
       <div className="py-lg">
         <Container className="space-y-lg">
-          <Badge text={t("pages|dataset-series$data-serie")} />
+          <Badge
+            data-test-id="datasetseries-badge"
+            text={t("pages|dataset-series$data-serie")}
+          />
           <Heading level={1} size="lg" className="mb-none">
             {entry.title}
           </Heading>
@@ -76,7 +79,9 @@ export const DatasetSeriesPage: FC = () => {
               </div>
             )}
             {entry.publisher && (
-              <div className="text-sm font-strong">{entry.publisher}</div>
+              <div data-test-id="publisher" className="text-sm font-strong">
+                {entry.publisher}
+              </div>
             )}
           </div>
         </Container>
@@ -96,7 +101,7 @@ export const DatasetSeriesPage: FC = () => {
                   className={
                     search.result.hits && search.result.hits.length === 0
                       ? "min-h-[800px]"
-                      : " "
+                      : ""
                   }
                 >
                   <SearchResults

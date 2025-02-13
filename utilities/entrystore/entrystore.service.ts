@@ -43,7 +43,6 @@ import {
 import { DCATData } from "../dcat-utils";
 import {
   parseEmail,
-  luceneFriendlyQuery,
   termsPathResolver,
   specsPathResolver,
 } from "./entrystore-helpers";
@@ -84,6 +83,8 @@ export class EntrystoreService {
     this.facetSpecification = config.facetSpecification || {};
     this._hitSpecifications = config.hitSpecifications || {};
     namespaces.add("esterms", "http://entryscape.com/terms/");
+    // TODO: Disable JSONP and implement a proxy
+    // this.entryStore.getREST().disableJSONP();
   }
 
   public static getInstance(config: EntryStoreConfig): EntrystoreService {
@@ -154,9 +155,8 @@ export class EntrystoreService {
     entry?: Entry,
   ): Promise<SearchResult> {
     const hits: SearchHit[] = [];
-    let query = luceneFriendlyQuery(request.query || "*");
+    const query = request.query;
     const lang = request.language || "sv";
-
     const esQuery = this.entryStore.newSolrQuery();
     esQuery.publicRead(true);
 
@@ -291,11 +291,15 @@ export class EntrystoreService {
       .publicRead(true)
       .list();
 
-    query = luceneFriendlyQuery(query);
-
     // Set query text
     if (query) {
-      esQuery.all(`${query}`);
+      // This is a bit of a hack to make search work for sentences and partial words
+      esQuery.or({
+        title: query,
+        description: query,
+        "tag.literal": query,
+        all: query,
+      });
     }
 
     try {
@@ -347,13 +351,7 @@ export class EntrystoreService {
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
         );
 
-        let hitSpecification: HitSpecification = {
-          descriptionResource: "blaa",
-          path: "hmm",
-          titleResource: "blaa",
-        };
-
-        hitSpecification = this._hitSpecifications[rdfType] || {
+        const hitSpecification = this._hitSpecifications[rdfType] || {
           titleResource: "dcterms:title",
           path: "/datasets/",
           descriptionResource: "dcterms:description",
@@ -869,6 +867,24 @@ export class EntrystoreService {
       )}/datasets/${this.entryStore.getContextId(
         ds.getEntryInfo().getMetadataURI(),
       )}_${ds.getId()}`,
+    }));
+  }
+
+  public async getShowcases(entry: Entry) {
+    const showcaseData = await this.entryStore
+      .newSolrQuery()
+      .rdfType("dcat:Resource")
+      .publicRead(true)
+      .uriProperty("dcterms:publisher", entry.getResourceURI())
+      .getEntries();
+
+    return showcaseData.map((entry: Entry) => ({
+      title: getLocalizedValue(entry.getAllMetadata(), "dcterms:title"),
+      date: getLocalizedValue(entry.getAllMetadata(), "dcterms:issued"),
+      description: getLocalizedValue(
+        entry.getAllMetadata(),
+        "dcterms:description",
+      ),
     }));
   }
 

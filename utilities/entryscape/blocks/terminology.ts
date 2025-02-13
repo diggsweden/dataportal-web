@@ -35,14 +35,14 @@ export const terminologyBlocks = (t: Translate, lang: string) => [
     loadEntry: true,
   },
   {
-    block: "toppbegrepp",
+    block: "terminologyBlock",
     extends: "template",
     template: `{{#ifprop "rdf:type" uri="skos:ConceptScheme"}}<h2 class="toplist-header !text-lg">${t(
       "pages|concept_page$first_level_concepts",
-    )}</h2>{{toppbegreppLista}}{{/ifprop}}`,
+    )}</h2>{{topConceptsList}}{{/ifprop}}`,
   },
   {
-    block: "toppbegreppLista",
+    block: "topConceptsList",
     extends: "list",
     namedclick: "test",
     relation: "skos:hasTopConcept",

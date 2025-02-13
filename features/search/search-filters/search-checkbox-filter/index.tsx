@@ -41,7 +41,7 @@ export function SearchCheckboxFilter({
   iconSize,
 }: SearchCheckboxFilterProps) {
   return (
-    <div className="relative w-fit">
+    <div data-test-id="search-checkbox-filter" className="relative w-fit">
       <input
         id={id}
         name={name}
@@ -52,8 +52,8 @@ export function SearchCheckboxFilter({
       />
       <label
         className={`button button--small button--secondary z-2 focus--outline focus--primary relative cursor-pointer 
-          pr-xl peer-focus-visible:bg-whiteOpaque5 peer-focus-visible:outline-dashed 
-          peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary md:pr-xl`}
+          pl-xl peer-focus-visible:bg-whiteOpaque5 peer-focus-visible:outline-dashed 
+          peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary`}
         htmlFor={id}
       >
         {label}
@@ -61,7 +61,7 @@ export function SearchCheckboxFilter({
       <SearchCheckboxFilterIcon
         isChecked={checked}
         iconSize={iconSize}
-        className="pointer-events-none absolute right-md top-1/2 -translate-y-1/2"
+        className="pointer-events-none absolute left-md top-1/2 -translate-y-1/2"
       />
     </div>
   );

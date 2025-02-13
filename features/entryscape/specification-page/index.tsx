@@ -63,6 +63,7 @@ export const SpecificationPage: FC = () => {
           <div className="flex w-full max-w-md flex-col">
             {entry.organisationLink ? (
               <Link
+                data-test-id="publisher"
                 className="mb-lg text-lg font-normal text-green-600 hover:!no-underline"
                 href={entry.organisationLink}
               >
@@ -70,23 +71,32 @@ export const SpecificationPage: FC = () => {
               </Link>
             ) : (
               entry.publisher && (
-                <Preamble className="mb-lg">{entry.publisher}</Preamble>
+                <Preamble data-test-id="publisher" className="mb-lg">
+                  {entry.publisher}
+                </Preamble>
               )
             )}
 
-            <span className="mb-lg mt-md !font-ubuntu text-lg text-textSecondary md:mb-xl md:mt-lg">
+            <Preamble
+              data-test-id="description"
+              className="mb-lg mt-md md:mb-xl md:mt-lg"
+            >
               {entry.description}
-            </span>
+            </Preamble>
 
             <Heading level={2} size={"md"} className="mb-md md:mb-lg">
               {t("pages|specification_page$resource_specification")}
             </Heading>
             <div
+              data-test-id="resource-descriptors"
               data-entryscape="resourceDescriptors2"
               data-entryscape-rdftype="prof:ResourceDescriptor"
-            ></div>
+            />
 
-            <div className="contact__publisher mt-md md:mt-lg">
+            <div
+              data-test-id="contact-publisher"
+              className="contact__publisher mt-md md:mt-lg"
+            >
               <Heading level={3} size={"sm"}>
                 {t("pages|datasetpage$contact-publisher")}
               </Heading>
@@ -103,135 +113,140 @@ export const SpecificationPage: FC = () => {
           {/* End left column */}
 
           {/* Right column */}
-          <div className="h-fit w-full max-w-md bg-white p-md lg:max-w-[296px]">
-            <div className="w-full">
-              <Heading
-                level={2}
-                size={"sm"}
-                className="mb-sm font-strong text-textSecondary md:mb-md"
-              >
-                {t("pages|specification_page$about_specification")}
-              </Heading>
+          <div
+            data-test-id="about-section"
+            className="h-fit w-full max-w-md bg-white p-md lg:max-w-[296px]"
+          >
+            <Heading
+              level={2}
+              size={"sm"}
+              className="mb-sm font-strong text-textSecondary md:mb-md"
+            >
+              {t("pages|specification_page$about_specification")}
+            </Heading>
 
-              <div className="space-y-lg">
-                <div>
+            <div className="space-y-lg">
+              <div data-test-id="address">
+                <Heading
+                  className="font-strong text-textSecondary"
+                  level={3}
+                  size={"xxs"}
+                >
+                  {t("pages|specification_page$address")}
+                </Heading>
+
+                <Link
+                  className="break-words text-sm text-green-600 hover:no-underline"
+                  href={entry.address}
+                >
+                  {entry.address}
+                </Link>
+              </div>
+
+              {entry.keywords && entry.keywords?.length > 0 && (
+                <div data-test-id="keywords">
                   <Heading
                     className="font-strong text-textSecondary"
                     level={3}
                     size={"xxs"}
                   >
-                    {t("pages|specification_page$address")}
+                    {t("pages|datasetpage$keyword")}
                   </Heading>
-
-                  <Link
-                    className="break-words text-sm text-green-600 hover:no-underline"
-                    href={entry.address}
-                  >
-                    {entry.address}
-                  </Link>
+                  <div className="flex flex-col">
+                    {keywords?.map((k, idx) => (
+                      <span
+                        className="mb-sm w-fit bg-pink-200 px-sm py-xs text-sm font-strong"
+                        key={idx}
+                      >
+                        {k}
+                      </span>
+                    ))}
+                  </div>
+                  <Button
+                    size={"xs"}
+                    className="mt-xs px-sm py-xs !font-strong text-brown-600"
+                    variant={"plain"}
+                    label={
+                      showAllKeywords
+                        ? t("pages|datasetpage$view_less")
+                        : t("pages|datasetpage$view_more")
+                    }
+                    onClick={() => setShowAllKeywords(!showAllKeywords)}
+                  />
                 </div>
+              )}
 
-                {entry.keywords && entry.keywords?.length > 0 && (
-                  <div>
-                    <Heading
-                      className="font-strong text-textSecondary"
-                      level={3}
-                      size={"xxs"}
+              <div
+                data-entryscape-dialog
+                data-entryscape-rdformsid="dcat:contactPoint"
+              />
+
+              <div
+                data-entryscape="view"
+                data-entryscape-rdformsid="prof:Profile"
+                data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev,dcat:keyword"
+              />
+
+              {entry.relatedDatasets && entry.relatedDatasets.length > 0 && (
+                <div data-test-id="related-datasets">
+                  <Heading
+                    className="font-strong text-textSecondary"
+                    level={3}
+                    size={"xxs"}
+                  >
+                    {t("pages|specification_page$related_datasets")}
+                  </Heading>
+                  {relatedDatasets?.map((ds, idx) => (
+                    <Link
+                      className="fit mb-sm block text-sm text-green-600 hover:no-underline"
+                      key={idx}
+                      href={ds.url}
                     >
-                      {t("pages|datasetpage$keyword")}
-                    </Heading>
-                    <div className="flex flex-col">
-                      {keywords?.map((k, idx) => (
-                        <span
-                          className="mb-sm w-fit bg-pink-200 px-sm py-xs text-sm font-strong"
-                          key={idx}
-                        >
-                          {k}
-                        </span>
-                      ))}
-                    </div>
+                      {ds.title}
+                    </Link>
+                  ))}
+                  {entry.relatedDatasets?.length > 4 && (
                     <Button
                       size={"xs"}
                       className="mt-xs px-sm py-xs !font-strong text-brown-600"
                       variant={"plain"}
                       label={
-                        showAllKeywords
+                        showAllDatasets
                           ? t("pages|datasetpage$view_less")
                           : t("pages|datasetpage$view_more")
                       }
-                      onClick={() => setShowAllKeywords(!showAllKeywords)}
+                      onClick={() => setShowAllDatasets(!showAllDatasets)}
                     />
-                  </div>
-                )}
+                  )}
+                </div>
+              )}
 
-                <div
-                  data-entryscape-dialog
-                  data-entryscape-rdformsid="dcat:contactPoint"
-                />
-
-                <div
-                  data-entryscape="view"
-                  data-entryscape-rdformsid="prof:Profile"
-                  data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev,dcat:keyword"
-                />
-
-                {entry.relatedDatasets && entry.relatedDatasets.length > 0 && (
-                  <div>
-                    <span className="rdformsLabel">
-                      {t("pages|specification_page$related_datasets")}
-                    </span>
-                    {relatedDatasets?.map((ds, idx) => (
+              {/* Download formats */}
+              {entry.downloadFormats && entry.downloadFormats?.length > 0 && (
+                <div data-test-id="download-formats">
+                  <Heading
+                    className="font-strong text-textSecondary"
+                    level={3}
+                    size={"xxs"}
+                  >
+                    {t("pages|datasetpage$download_link")}
+                  </Heading>
+                  <div className="flex flex-col gap-xs">
+                    {entry.downloadFormats.map(({ title, url }, idx) => (
                       <a
-                        className="fit mb-sm block text-sm text-green-600 hover:no-underline"
                         key={idx}
-                        href={ds.url}
+                        href={url}
+                        className="text-sm text-green-600 hover:no-underline"
                       >
-                        {ds.title}
+                        {title}
                       </a>
                     ))}
-                    {entry.relatedDatasets?.length > 4 && (
-                      <Button
-                        size={"xs"}
-                        className="mt-xs px-sm py-xs !font-strong text-brown-600"
-                        variant={"plain"}
-                        label={
-                          showAllDatasets
-                            ? t("pages|datasetpage$view_less")
-                            : t("pages|datasetpage$view_more")
-                        }
-                        onClick={() => setShowAllDatasets(!showAllDatasets)}
-                      />
-                    )}
                   </div>
-                )}
-
-                {/* Download formats */}
-                {entry.downloadFormats && entry.downloadFormats?.length > 0 && (
-                  <div>
-                    <Heading
-                      className="font-strong text-textSecondary"
-                      level={3}
-                      size={"xxs"}
-                    >
-                      {t("pages|datasetpage$download_link")}
-                    </Heading>
-                    <div className="flex flex-col gap-xs">
-                      {entry.downloadFormats.map(({ title, url }, idx) => (
-                        <a
-                          key={idx}
-                          href={url}
-                          className="text-sm text-green-600 hover:no-underline"
-                        >
-                          {title}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-              {/* End right column */}
+                </div>
+              )}
             </div>
           </div>
+          {/* End right column */}
         </div>
       </div>
     </Container>

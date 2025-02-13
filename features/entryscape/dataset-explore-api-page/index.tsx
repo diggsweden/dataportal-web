@@ -112,6 +112,7 @@ export const DataSetExploreApiPage: FC<{
 
           {/* Indicators */}
           <div
+            data-test-id="indicators"
             data-entryscape="customIndicators"
             data-entryscape-entry={eid}
             data-entryscape-context={cid}

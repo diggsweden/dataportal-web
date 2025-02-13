@@ -105,16 +105,19 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
   }, [heading]);
 
   return (
-    <div id="news-list" className="mb-lg md:mb-xl">
+    <div data-test-id="list-page" className="mb-lg md:mb-xl">
       <Container>
         {heading && (
-          <Heading level={2} size={"md"}>
+          <Heading data-test-id="list-page-heading" level={2} size={"md"}>
             {`${filterList.length} ${heading}`}
           </Heading>
         )}
 
         {keywordList.length > 1 && (
-          <div className="mt-xl flex flex-wrap gap-md">
+          <div
+            data-test-id="list-filters"
+            className="mt-xl flex flex-wrap gap-md"
+          >
             {keywordList.map((keyword, idx) => (
               <Button
                 variant="plain"

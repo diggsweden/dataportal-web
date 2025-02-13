@@ -11,8 +11,6 @@ import {
   useEffect,
 } from "react";
 
-import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
-import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
 import CrossIcon from "@/assets/icons/cross.svg";
 import FilterIcon from "@/assets/icons/filter.svg";
 import InfoCircleIcon from "@/assets/icons/info-circle.svg";
@@ -123,7 +121,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
 }) => {
   const { t } = useTranslation();
   const { iconSize } = useContext(SettingsContext);
-  const [showFilter, setShowFilter] = useState(false);
+  const [showFilter, setShowFilter] = useState(true);
   const [showFilterInfo, setShowFilterInfo] = useState(false);
   const [inputFilter, setInputFilter] = useState<InputFilter>({});
   const ref = useRef<HTMLDivElement>(null);
@@ -152,6 +150,14 @@ export const SearchFilters: FC<SearchFilterProps> = ({
     };
   }, [showFilter]);
 
+  useEffect(() => {
+    if (window.innerWidth < 600) {
+      setShowFilter(false);
+    } else {
+      setShowFilter(true);
+    }
+  }, []);
+
   const selected = (key: string, facetValue: SearchFacetValue) => {
     return search.facetSelected(key, facetValue.resource);
   };
@@ -175,17 +181,25 @@ export const SearchFilters: FC<SearchFilterProps> = ({
     setShowFilter(!showFilter);
   }
 
-  const MobileButton = ({ className }: { className?: string }) => {
+  const ToggleFilterButton = ({ className }: { className?: string }) => {
     return (
       <Button
+        data-test-id="search-filters-toggle"
         variant="secondary"
-        size="sm"
-        iconSize={iconSize * 1.5}
+        size="md"
         icon={showFilter ? CrossIcon : FilterIcon}
         iconPosition="left"
         label={showFilter ? t("common|close-filter") : t("common|show-filter")}
+        aria-label={
+          showFilter ? t("common|close-filter") : t("common|show-filter")
+        }
+        aria-expanded={showFilter}
+        aria-controls="filter-content"
         onClick={() => updateFilters()}
-        className={`md:hidden ${className ? className : ""}`}
+        className={`py-sm ${className ? className : ""}`}
+        disabled={
+          search.loadingFacets && Object.keys(groupedFacets).length === 0
+        }
       />
     );
   };
@@ -205,43 +219,27 @@ export const SearchFilters: FC<SearchFilterProps> = ({
   }, [searchMode, search.allFacets]);
 
   return (
-    <div id="SearchFilters" role="region" aria-label={t("common|filter")}>
+    <div
+      data-test-id="search-filters"
+      role="region"
+      aria-label={t("common|filter")}
+    >
       <div
         className={`fixed inset-none z-40 overflow-hidden bg-brownOpaque5 md:hidden 
         ${showFilter ? "visible" : "hidden"}`}
         onClick={() => setShowFilter(false)}
       />
 
-      <div className="mb-lg mt-xl flex items-center justify-between">
-        <Button
-          variant="plain"
-          size="sm"
-          icon={showFilter ? ChevronUpIcon : ChevronDownIcon}
-          iconSize={iconSize * 1.5}
-          iconPosition="left"
-          aria-label={
-            showFilter ? t("common|hide-filter") : t("common|show-filter")
-          }
-          aria-expanded={showFilter}
-          aria-controls="filter-content"
-          onClick={() => updateFilters()}
-          label={showFilter ? t("common|hide-filter") : t("common|show-filter")}
-          className="hidden items-center py-xs md:flex"
-          disabled={
-            search.loadingFacets && Object.keys(groupedFacets).length === 0
-          }
-        />
-
-        <MobileButton />
+      <div className="my-xl flex items-center justify-between md:my-lg">
+        <ToggleFilterButton />
 
         {(searchMode === "datasets" || searchMode === "organisations") && (
           <>
             <Button
               variant="plain"
-              size="sm"
+              size="md"
               label={t("common|filter-info")}
               icon={InfoCircleIcon}
-              iconSize={iconSize * 1.5}
               iconPosition="left"
               onClick={() => setShowFilterInfo(true)}
             />
@@ -261,26 +259,26 @@ export const SearchFilters: FC<SearchFilterProps> = ({
       <div
         ref={ref}
         id="filter-content"
-        className={`fixed inset-md z-50 w-auto border-t border-brown-400 bg-pink-50 md:static md:bg-transparent md:pt-[1.875rem] ${
+        className={`fixed inset-md z-50 w-auto rounded-md border-t border-brown-400 bg-pink-50 md:static md:rounded-sm md:bg-transparent ${
           showFilter ? "block" : "hidden"
         }`}
       >
-        <div className="flex h-full flex-col space-y-lg overflow-y-auto overscroll-contain p-lg md:gap-none md:space-y-sm md:p-none">
-          <MobileButton className="mb-lg" />
-
+        <div className="flex h-full flex-col space-y-xl overflow-y-auto overscroll-contain p-lg md:my-xl md:gap-none md:space-y-sm md:p-none">
+          <ToggleFilterButton className="md:hidden" />
+          <span className="!mt-lg border-b border-brown-500 md:hidden" />
           {Object.entries(groupedFacets).map(([groupName, groupFacets]) => (
             <div
               id="group-container"
               key={groupName}
-              className="mb-md items-center border-b border-dashed border-brown-500 pb-lg md:!mb-sm md:flex md:border-none md:pb-none"
+              className="mb-md items-center md:!mb-sm md:flex"
             >
               {groupName !== "default" && (
-                <h4 className="mb-sm mr-md shrink-0 text-sm text-textSecondary md:mb-none md:w-[120px]">
+                <h4 className="mb-sm mr-md shrink-0 text-sm text-textSecondary md:mb-none md:w-[6.25rem]">
                   {t(`filters|group$${groupName}`)}:
                 </h4>
               )}
               <ul
-                className="flex w-full flex-row flex-wrap gap-md"
+                className="flex w-full flex-col flex-wrap gap-md md:flex-row"
                 role="list"
                 aria-label={t("common|available-filters")}
               >
@@ -300,19 +298,16 @@ export const SearchFilters: FC<SearchFilterProps> = ({
 
                     if (!value.customFilter && !value.customSearch) {
                       return (
-                        <li
-                          key={`${value.title}-${idx}`}
-                          role="listitem"
-                          className="w-full md:w-auto"
-                        >
+                        <li key={`${value.title}-${idx}`} role="listitem">
                           <SearchFilter
+                            data-test-id="search-filter-select"
                             title={value.title}
                             usedFilters={findFilters(
                               value.facetValues,
                               search.request.facetValues,
                             )}
                           >
-                            <div className="absolute z-10 mr-lg mt-sm max-h-[200px] w-full overflow-y-auto overscroll-contain border border-brown-200 bg-white shadow-md md:max-h-[600px] md:max-w-[20.625rem]">
+                            <div className="absolute z-10 mr-lg mt-sm max-h-[200px] w-[calc(100vw-4rem)] overflow-y-auto overscroll-contain border border-brown-200 bg-white shadow-md md:max-h-[600px] md:w-full md:max-w-[20.625rem]">
                               <FilterSearch
                                 filterKey={key}
                                 filter={inputFilter}
@@ -324,7 +319,11 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                               />
 
                               {/* List of filter options within this category */}
-                              <ul role="listbox" aria-multiselectable="true">
+                              <ul
+                                data-test-id="search-filter-select-list"
+                                role="listbox"
+                                aria-multiselectable="true"
+                              >
                                 {facetValues
                                   // .filter((v) => v.count > 0)
                                   .map(
@@ -359,7 +358,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                           ({facetValue.count})
                                           {/* Decorative checkbox icon */}
                                           <span
-                                            className="absolute right-md mt-[0.375rem]"
+                                            className="absolute right-md top-1/2 -translate-y-1/2 "
                                             aria-hidden="true"
                                           >
                                             <SearchCheckboxFilterIcon
@@ -403,51 +402,54 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                       );
                     } else {
                       return (
-                        <SearchCheckboxFilter
-                          key={key}
-                          id={value.predicate}
-                          name={value.title}
-                          checked={
-                            value.customFilter
-                              ? search.facetSelected(key, value.customFilter)
-                              : value.customSearch?.length ===
-                                  search.request.esRdfTypes?.length &&
-                                value.customSearch?.every(
-                                  (type) =>
-                                    search.request.esRdfTypes?.includes(type),
-                                )
-                          }
-                          onChange={() => {
-                            if (value.customSearch) {
-                              clearCurrentScrollPos();
-                              if (
-                                value.customSearch !== search.request.esRdfTypes
-                              ) {
-                                search
-                                  .set({
-                                    esRdfTypes: value.customSearch,
-                                    query,
-                                  })
-                                  .then(() => search.doSearch());
-                              } else {
-                                search
-                                  .set({
-                                    esRdfTypes: [
-                                      ESRdfType.dataset,
-                                      ESRdfType.data_service,
-                                      ESRdfType.dataset_series,
-                                    ],
-                                    query,
-                                  })
-                                  .then(() => search.doSearch());
-                              }
-                            } else {
-                              doSearch(key, facetValues[0]);
+                        <li key={key} role="listitem">
+                          <SearchCheckboxFilter
+                            key={key}
+                            id={value.predicate}
+                            name={value.title}
+                            checked={
+                              value.customFilter
+                                ? search.facetSelected(key, value.customFilter)
+                                : value.customSearch?.length ===
+                                    search.request.esRdfTypes?.length &&
+                                  value.customSearch?.every(
+                                    (type) =>
+                                      search.request.esRdfTypes?.includes(type),
+                                  )
                             }
-                          }}
-                          label={t(`resources|${key}`)}
-                          iconSize={iconSize}
-                        />
+                            onChange={() => {
+                              if (value.customSearch) {
+                                clearCurrentScrollPos();
+                                if (
+                                  value.customSearch !==
+                                  search.request.esRdfTypes
+                                ) {
+                                  search
+                                    .set({
+                                      esRdfTypes: value.customSearch,
+                                      query,
+                                    })
+                                    .then(() => search.doSearch());
+                                } else {
+                                  search
+                                    .set({
+                                      esRdfTypes: [
+                                        ESRdfType.dataset,
+                                        ESRdfType.data_service,
+                                        ESRdfType.dataset_series,
+                                      ],
+                                      query,
+                                    })
+                                    .then(() => search.doSearch());
+                                }
+                              } else {
+                                doSearch(key, facetValues[0]);
+                              }
+                            }}
+                            label={t(`resources|${key}`)}
+                            iconSize={iconSize}
+                          />
+                        </li>
                       );
                     }
                   })}
@@ -462,7 +464,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
               searchMode={searchMode}
             />
           </div>
-          <MobileButton className="!mt-xl" />
+          <ToggleFilterButton className="!mt-xl md:hidden" />
         </div>
       </div>
 

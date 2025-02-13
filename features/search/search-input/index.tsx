@@ -32,7 +32,10 @@ export const SearchInput: FC<SearchInputProps> = ({
   const { t } = useTranslation();
 
   return (
-    <div className="relative flex items-center justify-end">
+    <div
+      data-test-id="search-input"
+      className="relative flex items-center justify-end"
+    >
       <label className="sr-only" htmlFor={id}>
         {placeholder}
       </label>
@@ -45,7 +48,11 @@ export const SearchInput: FC<SearchInputProps> = ({
         aria-label={ariaLabel}
         {...props}
       />
-      <div className="absolute mr-xs flex h-[2.75rem]">
+      <div
+        className={`${
+          type === "small" ? "h-[2.75rem]" : "h-[2rem] md:h-[2.75rem]"
+        } absolute mr-xs flex`}
+      >
         {query && (
           <Button
             type="reset"
@@ -60,6 +67,8 @@ export const SearchInput: FC<SearchInputProps> = ({
           />
         )}
         <Button
+          data-test-id="search-button"
+          data-test-loading={isLoading}
           type="submit"
           label={type !== "small" ? t("common|search") : ""}
           icon={isLoading ? SpinnerIcon : SearchIcon}

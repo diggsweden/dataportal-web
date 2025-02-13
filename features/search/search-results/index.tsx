@@ -1,12 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import {
-  useEffect,
-  useState,
-  FC,
-  Dispatch,
-  SetStateAction,
-  useContext,
-} from "react";
+import { useEffect, useState, FC, Dispatch, SetStateAction } from "react";
 
 import ListCompactIcon from "@/assets/icons/list-compact.svg";
 import ListDetailedIcon from "@/assets/icons/list-detailed.svg";
@@ -20,7 +13,6 @@ import {
   SearchSortOrder,
   SearchContextData,
 } from "@/providers/search-provider";
-import { SettingsContext } from "@/providers/settings-provider";
 import {
   clearCurrentScrollPos,
   getScrollKey,
@@ -61,45 +53,28 @@ const SortingOptions: FC<{
   showSorting: boolean;
 }> = ({ search, setCompact, isCompact, showSorting }) => {
   const { t } = useTranslation();
-  const { iconSize } = useContext(SettingsContext);
 
   return (
     <div className="mb-lg flex flex-wrap items-center justify-between gap-md md:mb-none">
       <Button
-        size="sm"
+        size="md"
         variant="plain"
-        className="hidden md:order-none md:flex"
-        icon={isCompact ? ListCompactIcon : ListDetailedIcon}
-        iconPosition="left"
+        className="px-xs"
         aria-label={
           isCompact
             ? t("pages|search$detailed-list-active")
             : t("pages|search$detailed-list")
         }
         onClick={() => setCompact(!isCompact)}
-        label={
-          isCompact
+      >
+        {isCompact ? <ListCompactIcon /> : <ListDetailedIcon />}
+        <span className="hidden md:block">
+          {isCompact
             ? t("pages|search$compact-list")
-            : t("pages|search$detailed-list")
-        }
-      />
-
-      {/* For mobile only */}
-      <Button
-        size="sm"
-        variant="plain"
-        iconSize={iconSize * 1.5}
-        className="px-none md:hidden"
-        icon={isCompact ? ListCompactIcon : ListDetailedIcon}
-        iconPosition="left"
-        aria-label={
-          isCompact
-            ? t("pages|search$detailed-list-active")
-            : t("pages|search$detailed-list")
-        }
-        label={t("pages|search$list")}
-        onClick={() => setCompact(!isCompact)}
-      />
+            : t("pages|search$detailed-list")}
+        </span>
+        <span className="md:hidden">{t("pages|search$list")}</span>
+      </Button>
 
       <div className="flex items-center gap-md">
         <SearchSelectFilter
@@ -219,9 +194,10 @@ export const SearchResults: FC<SearchResultsProps> = ({
     <div id="search-result" className="md:my-lg">
       <div className="mb-lg flex flex-col justify-between md:flex-row">
         <Heading
+          data-test-id="search-result-header"
           level={2}
           size="md"
-          className="search-result-header mb-md text-xl"
+          className="mb-md text-xl"
         >
           {/* Visual display of the count */}
           <span aria-hidden="true">
@@ -255,7 +231,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
         </div>
       ) : (
         <div>
-          <ul className="search-result-list space-y-xl">
+          <ul data-test-id="search-result-list" className="space-y-xl">
             {search.result.hits?.map((hit, index) => (
               <SearchHit
                 key={index}

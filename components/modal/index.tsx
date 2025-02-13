@@ -77,6 +77,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
         onClick={() => setModalOpen(false)}
       />
       <div
+        data-test-id="modal"
         ref={ref}
         tabIndex={-1}
         role="dialog"
@@ -114,6 +115,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
         <div className="flex justify-between gap-lg">
           {closeBtn && (
             <Button
+              data-test-id="modal-close-btn"
               onClick={() => setModalOpen(false)}
               className={`min-w-[3.125rem] justify-center hover:bg-brown-200 ${
                 closeBtnClassName ? closeBtnClassName : ""

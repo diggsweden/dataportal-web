@@ -68,7 +68,7 @@ export const conceptBlocks = (t: Translate, iconSize: number, lang: string) => [
     extends: "template",
     template:
       '{{#ifprop "skos:altLabel"}}' +
-      "<div><h2>" +
+      "<div data-test-id='alternative-terms'><h2>" +
       t("pages|concept_page$alternativ_term") +
       '</h2><span>{{ text content="${skos:altLabel}" }}</span></div>' +
       "{{/ifprop}}" +
@@ -77,60 +77,33 @@ export const conceptBlocks = (t: Translate, iconSize: number, lang: string) => [
       '</h2><span>{{ text content="${skos:example}" }}</span></div>' +
       "{{/ifprop}}" +
       '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}' +
-      '{{#ifprop "skos:broader"}}' +
-      "<div>" +
-      "<h2>" +
+      "<div data-test-id='superior-concepts'><h2>" +
       t("pages|concept_page$superior_concept") +
       "</h2>" +
-      "{{broaderList}}" +
-      "</div>" +
-      "{{/ifprop}}" +
+      '{{#ifprop "skos:broader"}}{{broaderList}}{{/ifprop}}' +
       '{{#ifprop "skos:broader" invert="true"}}' +
-      "<div>" +
-      "<h2>" +
-      t("pages|concept_page$superior_concept") +
-      "</h2>" +
       '<span class="mb-xl">' +
       t("pages|concept_page$no_superior_concept") +
       "</span>" +
-      "</div>" +
-      "{{/ifprop}}" +
-      '{{#ifprop "skos:narrower"}}' +
-      '<div class="totConcepts">' +
-      "<h2>" +
+      "{{/ifprop}}</div>" +
+      '<div data-test-id="subordinate-concepts" class="subordinateConcepts"><h2>' +
       t("pages|concept_page$subordinate_concepts") +
       "</h2>" +
-      "{{narrowerList}}" +
-      "</div>" +
-      "{{/ifprop}}" +
+      '{{#ifprop "skos:narrower"}}{{narrowerList}}{{/ifprop}}' +
       '{{#ifprop "skos:narrower" invert="true"}}' +
-      "<div>" +
-      "<h2>" +
-      t("pages|concept_page$subordinate_concepts") +
-      "</h2>" +
       "<span>" +
       t("pages|concept_page$no_subordinate_concepts") +
       "</span>" +
-      "</div>" +
-      "{{/ifprop}}" +
-      '{{#ifprop "skos:related"}}' +
-      "<div>" +
-      "<h2>" +
+      "{{/ifprop}}</div>" +
+      "<div data-test-id='related-concepts'><h2>" +
       t("pages|concept_page$related_concepts") +
       "</h2>" +
-      "{{relatedList}}" +
-      "</div>" +
-      "{{/ifprop}}" +
+      '{{#ifprop "skos:related"}}{{relatedList}}{{/ifprop}}' +
       '{{#ifprop "skos:related" invert="true"}}' +
-      "<div>" +
-      "<h2>" +
-      t("pages|concept_page$related_concepts") +
-      "</h2>" +
       "<span>" +
       t("pages|concept_page$no_related_concepts") +
       "</span>" +
-      "</div>" +
-      "{{/ifprop}}" +
+      "{{/ifprop}}</div>" +
       "{{/ifprop}}" +
       '{{#ifprop "skos:historyNote"}}' +
       "<div>" +

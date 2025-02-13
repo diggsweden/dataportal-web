@@ -51,18 +51,10 @@ export const useEntryScapeBlocks = ({
     return () => {
       document.removeEventListener("click", handleClick);
     };
-  }, []);
+  }, [pageType, context, esId]);
 
   useEffect(() => {
-    // Create the ready promise if it doesn't exist
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (!(window as any).__entryscape_blocks_ready) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as any).__entryscape_blocks_ready = new Promise((resolve) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window as any).__entryscape_blocks_resolve = resolve;
-      });
-    }
+    if (typeof window === "undefined") return;
 
     const initializeBlocks = async () => {
       try {
@@ -81,6 +73,13 @@ export const useEntryScapeBlocks = ({
         (window as any).__entryscape_config =
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ((window as any).__entryscape_config || []).concat(newConfig);
+
+        // Create the ready promise
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).__entryscape_blocks_ready = new Promise((resolve) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (window as any).__entryscape_blocks_resolve = resolve;
+        });
 
         if (pageType !== "mqa") {
           await loadScript(
@@ -123,7 +122,7 @@ export const useEntryScapeBlocks = ({
         (window as any).__entryscape_blocks.clear();
       }
     };
-  }, []);
+  }, [pageType, context, esId]);
 };
 
 const loadScript = (url: string): Promise<void> => {
@@ -138,8 +137,7 @@ const loadScript = (url: string): Promise<void> => {
     // Check if script already exists
     const existingScript = document.querySelector(`script[src="${url}"]`);
     if (existingScript) {
-      resolve();
-      return;
+      existingScript.remove();
     }
 
     const script = document.createElement("script");

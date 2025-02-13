@@ -16,6 +16,7 @@ const buttonVariants = cva(["button"], {
     size: {
       xs: ["button--xs"],
       sm: ["button--small"],
+      md: ["button--medium"],
       lg: ["button--small md:button--large"],
     },
     variant: {
@@ -35,41 +36,22 @@ const buttonVariants = cva(["button"], {
 
 type IconLabelProps = {
   icon?: AddIcon;
-  size?: "xs" | "sm" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   label?: string;
   iconPosition?: "left" | "right";
-  iconSizeBase?: number;
 };
 
-const IconLabel: FC<IconLabelProps> = ({
-  icon,
-  label,
-  size,
-  iconPosition,
-  iconSizeBase,
-}) => {
+const IconLabel: FC<IconLabelProps> = ({ icon, label, size, iconPosition }) => {
   const Icon = icon;
-  const { iconSize: contextIconSize } = useContext(SettingsContext);
+  const { iconSize } = useContext(SettingsContext);
 
   return (
     <>
       {iconPosition === "left" && Icon && (
         <Icon
           className="flex-shrink-0"
-          height={
-            iconSizeBase
-              ? iconSizeBase
-              : size === "lg"
-              ? 1.5 * contextIconSize
-              : contextIconSize
-          }
-          width={
-            iconSizeBase
-              ? iconSizeBase
-              : size === "lg"
-              ? 1.5 * contextIconSize
-              : contextIconSize
-          }
+          height={size === "sm" || size === "xs" ? iconSize : 1.5 * iconSize}
+          width={size === "sm" || size === "xs" ? iconSize : 1.5 * iconSize}
           viewBox="0 0 24 24"
         />
       )}
@@ -77,20 +59,8 @@ const IconLabel: FC<IconLabelProps> = ({
       {iconPosition === "right" && Icon && (
         <Icon
           className="flex-shrink-0"
-          height={
-            iconSizeBase
-              ? iconSizeBase
-              : size === "lg"
-              ? 1.5 * contextIconSize
-              : contextIconSize
-          }
-          width={
-            iconSizeBase
-              ? iconSizeBase
-              : size === "lg"
-              ? 1.5 * contextIconSize
-              : contextIconSize
-          }
+          height={size === "sm" || size === "xs" ? iconSize : 1.5 * iconSize}
+          width={size === "sm" || size === "xs" ? iconSize : 1.5 * iconSize}
           viewBox="0 0 24 24"
         />
       )}
@@ -101,7 +71,6 @@ const IconLabel: FC<IconLabelProps> = ({
 type ButtonProps = VariantProps<typeof buttonVariants> & {
   icon?: AddIcon;
   iconPosition?: "left" | "right";
-  iconSize?: number;
   label?: string;
 };
 
@@ -113,7 +82,6 @@ const Button: FC<
   className,
   icon,
   iconPosition,
-  iconSize,
   label,
   children,
   ...rest
@@ -126,7 +94,6 @@ const Button: FC<
     >
       <IconLabel
         size={size ? size : "lg"}
-        iconSizeBase={iconSize}
         iconPosition={iconPosition}
         icon={icon}
         label={label}

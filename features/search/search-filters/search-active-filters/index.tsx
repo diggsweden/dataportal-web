@@ -1,11 +1,9 @@
 import useTranslation from "next-translate/useTranslation";
-import { useContext } from "react";
 
 import CrossIcon from "@/assets/icons/cross.svg";
 import TrashIcon from "@/assets/icons/trash.svg";
 import { Button } from "@/components/button";
 import { SearchContextData } from "@/providers/search-provider";
-import { SettingsContext } from "@/providers/settings-provider";
 import { ESRdfType } from "@/types/entrystore-core";
 import { SearchFacetValue } from "@/types/search";
 import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
@@ -18,13 +16,51 @@ interface SearchActiveFiltersProps {
   searchMode: SearchMode;
 }
 
+export function ClearFiltersButton({
+  search,
+  searchMode,
+  className,
+}: {
+  search: SearchContextData;
+  searchMode: SearchMode;
+  className?: string;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <Button
+      variant="plain"
+      size="md"
+      icon={TrashIcon}
+      iconPosition="left"
+      onClick={() => {
+        clearCurrentScrollPos();
+        search
+          .set({
+            facetValues: [],
+            esRdfTypes:
+              searchMode === "datasets"
+                ? [
+                    ESRdfType.dataset,
+                    ESRdfType.data_service,
+                    ESRdfType.dataset_series,
+                  ]
+                : search.request.esRdfTypes,
+          })
+          .then(() => search.doSearch());
+      }}
+      label={t("common|clear-filters")}
+      className={`whitespace-nowrap p-xs pr-sm ${className ?? ""}`}
+    />
+  );
+}
+
 export function SearchActiveFilters({
   search,
   query,
   searchMode,
 }: SearchActiveFiltersProps) {
   const { t } = useTranslation();
-  const { iconSize } = useContext(SettingsContext);
 
   // Create an array of active special search filters
   const activecustomSearchFilters = Object.entries(search.allFacets || {})
@@ -52,26 +88,37 @@ export function SearchActiveFilters({
   }
 
   return (
-    <div className="mt-lg flex flex-col gap-md md:flex-row md:items-center">
-      <span className="w-[7.5rem] text-textSecondary">
+    <div
+      data-test-id="search-active-filters"
+      className="flex flex-col gap-md md:mt-lg md:flex-row md:items-center"
+    >
+      <span className="w-[6.25rem] flex-shrink-0 text-textSecondary md:mb-auto md:mt-xs">
         {t("common|active-filters")}:
       </span>
-      <div className="flex flex-row flex-wrap gap-md md:items-center">
-        {search.request.facetValues?.map(
-          (facetValue: SearchFacetValue, index: number) => {
-            if (!facetValue.customFilter && !facetValue.customSearch) {
+      <div className="flex flex-col gap-lg">
+        <div
+          data-test-id="search-active-filters-list"
+          className="flex flex-row flex-wrap gap-md md:items-center"
+        >
+          {search.request.facetValues?.map(
+            (facetValue: SearchFacetValue, index: number) => {
+              const label =
+                !facetValue.customFilter && !facetValue.customSearch
+                  ? facetValue.title || facetValue.resource
+                  : t(
+                      `resources|${facetValue.customLabel || facetValue.facet}`,
+                    );
+
               return (
                 <Button
                   variant="filter"
-                  size="xs"
+                  size="md"
                   key={index}
-                  label={facetValue.title || facetValue.resource}
-                  aria-label={`${t("common|clear-filters")} ${
-                    facetValue.title || facetValue.resource
-                  }`}
+                  label={label}
+                  aria-label={`${t("common|clear-filters")} ${label}`}
                   icon={CrossIcon}
                   iconPosition="right"
-                  className="w-fit justify-between py-xs text-left font-strong md:py-[2px]"
+                  className="w-fit justify-between py-xs text-left font-strong"
                   onClick={() => {
                     clearCurrentScrollPos();
                     search.toggleFacet(facetValue).then(() => {
@@ -80,87 +127,53 @@ export function SearchActiveFilters({
                   }}
                 />
               );
-            } else if (facetValue.customFilter) {
-              return (
-                <Button
-                  variant="filter"
-                  size="xs"
-                  key={index}
-                  label={t(
-                    `resources|${facetValue.customLabel || facetValue.facet}`,
-                  )}
-                  aria-label={`${t("common|clear-filters")} ${t(
-                    `resources|${facetValue.customLabel || facetValue.facet}`,
-                  )}`}
-                  icon={CrossIcon}
-                  iconPosition="right"
-                  className="w-fit justify-between py-xs text-left font-strong md:py-[2px]"
-                  onClick={() => {
-                    clearCurrentScrollPos();
-                    search.toggleFacet(facetValue).then(() => {
-                      search.doSearch();
-                    });
-                  }}
-                />
-              );
-            }
-          },
-        )}
+            },
+          )}
 
-        {activecustomSearchFilters.map((filter, index) => (
-          <Button
-            variant="filter"
-            size="xs"
-            key={`special-search-${index}`}
-            label={t(`resources|${filter.facet}`)}
-            aria-label={`${t("common|clear-filters")} ${t(
-              `resources|${filter.facet}`,
-            )}`}
-            icon={CrossIcon}
-            iconPosition="right"
-            className="w-fit justify-between py-xs text-left font-strong md:py-[2px]"
-            onClick={() => {
-              clearCurrentScrollPos();
-              search
-                .set({
-                  esRdfTypes: [
-                    ESRdfType.dataset,
-                    ESRdfType.data_service,
-                    ESRdfType.dataset_series,
-                  ],
-                  query: query,
-                })
-                .then(() => search.doSearch());
-            }}
-          />
-        ))}
-
-        {search.request.facetValues &&
-          search.request.facetValues.length >= 2 && (
+          {activecustomSearchFilters.map((filter, index) => (
             <Button
-              variant="plain"
-              size="xs"
-              icon={TrashIcon}
-              iconPosition="left"
+              variant="filter"
+              size="md"
+              key={`special-search-${index}`}
+              label={t(`resources|${filter.facet}`)}
+              aria-label={`${t("common|clear-filters")} ${t(
+                `resources|${filter.facet}`,
+              )}`}
+              icon={CrossIcon}
+              iconPosition="right"
+              className="w-fit justify-between py-xs text-left font-strong"
               onClick={() => {
                 clearCurrentScrollPos();
                 search
                   .set({
-                    facetValues: [],
-                    esRdfTypes:
-                      searchMode === "datasets"
-                        ? [
-                            ESRdfType.dataset,
-                            ESRdfType.data_service,
-                            ESRdfType.dataset_series,
-                          ]
-                        : search.request.esRdfTypes,
+                    esRdfTypes: [
+                      ESRdfType.dataset,
+                      ESRdfType.data_service,
+                      ESRdfType.dataset_series,
+                    ],
+                    query: query,
                   })
                   .then(() => search.doSearch());
               }}
-              label={t("common|clear-filters")}
-              className="whitespace-nowrap"
-              iconSize={iconSize * 1.5}
+            />
+          ))}
+          {/* Desktop clear filters button */}
+          {search.request.facetValues &&
+            search.request.facetValues.length >= 2 && (
+              <ClearFiltersButton
+                search={search}
+                searchMode={searchMode}
+                className="hidden md:flex"
+              />
+            )}
+        </div>
+        {/* Mobile clear filters button */}
+        {search.request.facetValues &&
+          search.request.facetValues.length >= 2 && (
+            <ClearFiltersButton
+              search={search}
+              searchMode={searchMode}
+              className="md:hidden"
             />
           )}
       </div>

@@ -5,8 +5,6 @@ import {
   Metadata,
   MetadataValue,
 } from "@entryscape/entrystore-js";
-// @ts-expect-error no types
-import lucene from "lucene";
 import { Translate } from "next-translate";
 
 import { SettingsUtil } from "@/env";
@@ -262,28 +260,6 @@ export const resourcesSearch = (resources: string[], es: any): Promise<any> => {
       });
   });
 };
-
-export function luceneFriendlyQuery(query: string): string {
-  if (query === "AND" || query === "NOT" || query === "OR") return "*";
-  try {
-    const ast = lucene.parse(query);
-    let q = lucene.toString(ast);
-    q = q
-      .replace(/\\~ /g, "~")
-      .replace(/\+-/g, "")
-      .replace(/ NOT -/g, " NOT ")
-      .replace(/ AND NOT /g, "+NOT+")
-      .replace(/ OR NOT /g, "+NOT+")
-      .replace(/ OR /g, "+OR+")
-      .replace(/ AND /g, "+AND+")
-      .replace(/ NOT /g, "+-");
-    if (q.indexOf('"') === -1) q = q.replace(/ /g, "+AND+");
-    return q || "*";
-  } catch {
-    // eslint-disable-next-line no-useless-escape
-    return query.replace(/[\!\*\-\+\&\|\(\)\[\]\{\}\^\\~\?\:\"]/g, "").trim();
-  }
-}
 
 // ============================================================================
 // Formatting Helpers

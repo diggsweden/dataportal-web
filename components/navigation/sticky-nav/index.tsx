@@ -25,6 +25,18 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
     const hash = router.asPath.split("#")[1];
     if (hash && menuItems.some((item) => item.id === hash)) {
       setActiveItemId(hash);
+
+      // Only scroll on initial load if there's a hash in the URL
+      if (window.location.hash) {
+        const element = document.getElementById(hash);
+        if (element) {
+          isScrolling.current = true;
+          element.scrollIntoView({ behavior: "smooth" });
+          setTimeout(() => {
+            isScrolling.current = false;
+          }, 1000);
+        }
+      }
     }
 
     const handleResize = () => setIsLargeScreen(window.innerWidth >= 984);
@@ -37,15 +49,30 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
   useEffect(() => {
     if (!isLargeScreen) return;
 
+    // Store the initial path when the effect runs
+    const initialPath = router.asPath.split("#")[0];
     const watchScroll = () => {
       if (isScrolling.current) return;
+
+      // Check if we're still on the same page
+      const currentPath = window.location.pathname;
+      if (currentPath !== initialPath) {
+        return; // We've navigated to a different page
+      }
 
       requestAnimationFrame(() => {
         for (const item of menuItems) {
           const element = document.getElementById(item.id);
           if (element && isInView(element)) {
             setActiveItemId(item.id);
-            history.replaceState(null, "", `#${item.id}`);
+            // Only update URL if we already have a hash and we're on the initial path
+            if (window.location.hash && currentPath === initialPath) {
+              history.replaceState(
+                { ...history.state, as: `${currentPath}#${item.id}` },
+                "",
+                `${currentPath}#${item.id}`,
+              );
+            }
             break;
           }
         }
@@ -60,12 +87,25 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
+
+    // Check if we're still on the same page
+    const currentPath = window.location.pathname;
+    const initialPath = router.asPath.split("#")[0];
+
+    if (currentPath !== initialPath) {
+      return; // We're on a different page
+    }
+
     const element = document.getElementById(id);
     if (element) {
       isScrolling.current = true;
       element.scrollIntoView({ behavior: "smooth" });
       setActiveItemId(id);
-      history.replaceState(null, "", `#${id}`);
+      history.replaceState(
+        { ...history.state, as: `${currentPath}#${id}` },
+        "",
+        `${currentPath}#${id}`,
+      );
       setTimeout(() => {
         isScrolling.current = false;
       }, 1000);

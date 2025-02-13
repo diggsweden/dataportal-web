@@ -163,7 +163,8 @@
     "protected-data": "Skyddade datamängder",
     "spec-data": "Datamängder som följer specifikation",
     "view-all-data": "Visa datamängderna",
-    "view-all-spec": "Visa specifikationerna"
+    "view-all-spec": "Visa specifikationerna",
+    "showcases_heading": "Exempel på användningsfall"
   },
   "organisations": {
     "organisations": "organisationer",
@@ -229,7 +230,7 @@
     "address": "Adress för specifikation",
     "download": "Ladda ner",
     "guidance_download": "Ladda ner guidance",
-    "related_datasets": "Relaterade datamängder",
+    "related_datasets": "Specifikationen följs av",
     "resource_specification": "Resurs",
     "scheme_download": "Ladda ner schema",
     "specification_download": "Åtkomst"
