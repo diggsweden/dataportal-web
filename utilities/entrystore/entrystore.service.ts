@@ -176,7 +176,7 @@ export class EntrystoreService {
           esQuery.uriProperty(filter.key, entry.getResourceURI());
         }
         if (filter.property === "context") {
-          esQuery.context(filter.values);
+          esQuery.context(filter.key);
         }
       });
     }

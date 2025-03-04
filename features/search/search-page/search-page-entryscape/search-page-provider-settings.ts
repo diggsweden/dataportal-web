@@ -49,7 +49,6 @@ interface SearchProviderConfig {
       include?: {
         key: string;
         property: ESType;
-        values: string[];
       }[];
     };
   };
@@ -277,7 +276,6 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             {
               key: "dcat:inSeries",
               property: "uri",
-              values: ["*"],
             },
           ],
         },
@@ -376,9 +374,8 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           ],
           include: [
             {
-              key: "context",
+              key: "827",
               property: "context",
-              values: ["827"],
             },
           ],
         },
