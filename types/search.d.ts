@@ -121,6 +121,7 @@ export interface SearchRequest {
     include?: {
       key: string;
       property: ESType;
+      values: string[];
     }[];
   };
 }

@@ -49,6 +49,7 @@ interface SearchProviderConfig {
       include?: {
         key: string;
         property: ESType;
+        values: string[];
       }[];
     };
   };
@@ -276,6 +277,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             {
               key: "dcat:inSeries",
               property: "uri",
+              values: ["*"],
             },
           ],
         },
@@ -370,6 +372,13 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
               values: [
                 "http://purl.org/adms/publishertype/PrivateIndividual(s)",
               ],
+            },
+          ],
+          include: [
+            {
+              key: "context",
+              property: "context",
+              values: ["827"],
             },
           ],
         },
