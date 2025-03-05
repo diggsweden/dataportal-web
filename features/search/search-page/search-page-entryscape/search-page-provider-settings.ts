@@ -372,6 +372,12 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
               ],
             },
           ],
+          include: [
+            {
+              key: "827",
+              property: "context",
+            },
+          ],
         },
       },
     },
