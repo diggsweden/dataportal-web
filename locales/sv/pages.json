@@ -274,6 +274,7 @@
     "statistic-page-seotitle": "Statistik - Sveriges Dataportal",
     "statistic-page-text": "Statistiken som visualiseras på startsidan presenteras här i textform.  Statistiken visar mängden data på Sveriges Dataportal per månad, topp 5 gällande datamängder för organisationer och kategorier.",
     "top-categories": "Kategorier med flest datamängder",
-    "top-organisations": "Organisationer med flest datamängder"
+    "top-organisations": "Organisationer med flest datamängder",
+    "statistic-link-aria": "Beskrivning av tabellen Portalen i siffror"
   }
 }

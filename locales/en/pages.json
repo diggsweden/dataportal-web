@@ -267,6 +267,7 @@
     "statistic-page-seotitle": "Statistics - Sveriges dataportal",
     "statistic-page-text": "Statistics visualized on the startpage is here available in text. The statistics shows the amount of data on Sweden´s dataportal per month, top 5 organisations and categories.",
     "top-categories": "Categories with the most datasets",
-    "top-organisations": "Organisations with the most datasets"
+    "top-organisations": "Organisations with the most datasets",
+    "statistic-link-aria": "Description of the graph Statistics at a glance"
   }
 }
