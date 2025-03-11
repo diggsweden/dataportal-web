@@ -100,6 +100,7 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
         modalOpen={showModal}
         setModalOpen={setShowModal}
         confirmBtn={t("to-page")}
+        ariaLabel={`${t("to-page")} - ${heading}`}
         href={link}
       />
     </div>

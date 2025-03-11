@@ -22,6 +22,7 @@ interface ModalProps {
   href?: string;
   modalSize?: "sm" | "md";
   textSize?: "sm" | "md";
+  ariaLabel?: string;
 }
 
 export const Modal: FC<PropsWithChildren<ModalProps>> = ({
@@ -35,7 +36,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   closeBtnClassName,
   confirmBtn,
   href,
-
+  ariaLabel,
   modalSize = "md",
   textSize = "sm",
   children,
@@ -127,6 +128,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
           )}
           {href ? (
             <ButtonLink
+              aria-label={ariaLabel}
               href={href}
               onClick={onClick}
               label={confirmBtn}
