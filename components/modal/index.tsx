@@ -82,6 +82,8 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
         tabIndex={-1}
         role="dialog"
         aria-modal="true"
+        aria-labelledby="modal-heading"
+        aria-describedby="modal-description"
         className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] w-4/5 -translate-x-1/2 -translate-y-1/2 overflow-auto  
         bg-white p-xl shadow-2xl outline-none md:w-auto ${
           modalOpen ? "visible" : "hidden"
@@ -93,12 +95,14 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
             level={1}
             size={textSize}
             className={text ? "font-thin" : "pb-lg"}
+            id="modal-heading"
           >
             {heading}
           </Heading>
         )}
         {text && (
           <p
+            id="modal-description"
             className={`${
               textSize === "md" ? "pt-lg text-lg text-brown-600" : ""
             } pb-lg`}
@@ -107,7 +111,9 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
           </p>
         )}
         {description && (
-          <div className="pb-lg">{HtmlParser({ text: description })}</div>
+          <div id="modal-description" className="pb-lg">
+            {HtmlParser({ text: description })}
+          </div>
         )}
 
         {children && <div className="pb-lg">{children}</div>}
