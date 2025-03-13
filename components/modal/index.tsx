@@ -1,13 +1,11 @@
-import { createFocusTrap, FocusTrap } from "focus-trap";
 import { FC, useEffect, useRef, PropsWithChildren } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ExternalIcon from "@/assets/icons/external-link.svg";
 import { Button, ButtonLink } from "@/components/button";
 import { Heading } from "@/components/typography/heading";
+import { HtmlParser } from "@/components/typography/html-parser";
 import { isExternalLink } from "@/utilities";
-
-import { HtmlParser } from "../typography/html-parser";
 
 interface ModalProps {
   heading?: string;
@@ -40,7 +38,6 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   children,
 }) => {
   const ref = useRef<HTMLDialogElement>(null);
-  const trapRef = useRef<FocusTrap | null>(null);
 
   useEffect(() => {
     const dialog = ref.current;
@@ -48,23 +45,9 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
 
     if (modalOpen) {
       dialog.showModal();
-      trapRef.current = createFocusTrap(dialog, {
-        escapeDeactivates: true,
-        allowOutsideClick: true,
-      });
-      trapRef.current.activate();
     } else {
       dialog.close();
-      if (trapRef.current) {
-        trapRef.current.deactivate();
-      }
     }
-
-    return () => {
-      if (trapRef.current) {
-        trapRef.current.deactivate();
-      }
-    };
   }, [modalOpen]);
 
   const handleClose = () => {

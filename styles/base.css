@@ -74,7 +74,7 @@ body {
     @apply focus-visible:outline-white group-focus-visible:outline-white !important;
   }
   .focus--primary {
-    @apply focus-visible:outline-primary group-focus-visible:outline-primary;
+    @apply focus-visible:outline-primary group-focus-visible:outline-primary !important;
   }
   .focus--in {
     @apply focus-visible:-outline-offset-[3px] group-focus-visible:-outline-offset-[3px] !important;
@@ -261,4 +261,15 @@ input[type="radio"] {
   .forced-colors-visible svg rect {
     fill: CanvasText !important;
   }
+}
+
+/* MQA accessibility */
+
+.esbModalToggle {
+  @apply rounded-[0px] border-none shadow-none outline-none !important;
+}
+
+.esbModalToggle:focus,
+.esbModalToggle:focus-visible {
+  @apply focus--primary outline-dashed outline-[3px] !important;
 }
