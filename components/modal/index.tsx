@@ -58,7 +58,6 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
     <dialog
       data-test-id="modal"
       ref={ref}
-      tabIndex={-1}
       role="dialog"
       aria-modal="true"
       className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] w-4/5 -translate-x-1/2 -translate-y-1/2 overflow-auto  
