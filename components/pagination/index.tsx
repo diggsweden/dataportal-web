@@ -113,7 +113,9 @@ export const Pagination: FC<PaginationProps> = ({
           }`}
           disabled={currentPage === 1}
         >
-          <span className="sr-only">{t("pages|search$prev-page")}</span>
+          <span className="sr-only">
+            {t("pages|search$prev-page")} {t("pages|search$page")}
+          </span>
           <ChevronLeftIcon className={currentPage === 1 ? "opacity-20" : ""} />
         </button>
         {pagination().map((value: number | string, idx: number) => (
@@ -125,6 +127,7 @@ export const Pagination: FC<PaginationProps> = ({
             }
             tabIndex={value === "..." || value === currentPage ? -1 : 0}
             key={idx}
+            aria-label={`${t("pages|search$page")} ${value}`}
             className={`focus--in focus-visible:bg-brown-200 ${
               value === currentPage
                 ? "cursor-auto bg-brown-800 text-white"
@@ -146,7 +149,9 @@ export const Pagination: FC<PaginationProps> = ({
           }`}
           disabled={currentPage === totalPages}
         >
-          <span className="sr-only">{t("pages|search$next-page")}</span>
+          <span className="sr-only">
+            {t("pages|search$next-page")} {t("pages|search$page")}
+          </span>
           <ChevronRightIcon
             className={currentPage === totalPages ? "opacity-20" : ""}
           />

@@ -121,7 +121,11 @@ export const Statistic: FC = () => {
 
   return (
     <>
-      <div className="block bg-white p-xl">
+      <div
+        tabIndex={0}
+        className="focus--primary block bg-white p-xl"
+        aria-label={t("statistic$top-organisations")}
+      >
         <Heading level={3} size="sm" className="mb-lg">
           {t("statistic$top-organisations")}
         </Heading>
@@ -136,6 +140,7 @@ export const Statistic: FC = () => {
                     key={"org-" + index}
                     listText={stats.labels && stats.labels[index]}
                     listNumber={item}
+                    translation={t("datasets$datasets")}
                     listUrl={`/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${
                       stats.values && encodeURIComponent(stats.values[index])
                     }%7C%7Cfalse%7C%7Curi%7C%7COrganisationer%7C%7C${
@@ -147,7 +152,11 @@ export const Statistic: FC = () => {
         </ol>
       </div>
 
-      <div className="block bg-white p-xl">
+      <div
+        tabIndex={0}
+        className="focus--primary block bg-white p-xl"
+        aria-label={t("statistic$top-categories")}
+      >
         <Heading level={3} size="sm" className="mb-lg">
           {t("statistic$top-categories")}
         </Heading>
@@ -162,6 +171,7 @@ export const Statistic: FC = () => {
                     key={"cat-" + index}
                     listText={stats.labelsTheme && stats.labelsTheme[index]}
                     listNumber={item}
+                    translation={t("datasets$datasets")}
                     listUrl={`/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7C${
                       stats.valuesTheme &&
                       encodeURIComponent(stats.valuesTheme[index])
