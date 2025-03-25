@@ -34,7 +34,7 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
               setShowModal(true);
             }}
             label={t("preview")}
-            className="focus--none no-group-hover z-20"
+            className="focus--primary no-group-hover z-20"
             aria-label={`${t("preview")} ${t("support-tools")} - ${heading}`}
           />
           <div className="flex h-full flex-col gap-sm">

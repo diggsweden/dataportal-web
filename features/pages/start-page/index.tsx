@@ -86,6 +86,7 @@ export const StartPage: FC<StartPageDataFragment> = (props) => {
               href={`/${t("routes|statistics$path")}`}
               locale={lang}
               className="statistic-link"
+              aria-label={t("pages|statistic$statistic-link-aria")}
             >
               {t("pages|statistic$statistic-link")}
             </Link>
