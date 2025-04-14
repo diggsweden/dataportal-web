@@ -10,7 +10,6 @@ import {
 } from "react";
 
 import { Button } from "@/components/button";
-import { FormGeneratePDF } from "@/components/form/form-generate-pdf";
 import { RenderForm } from "@/components/form/render-form";
 import { Container } from "@/components/layout/container";
 import { FormBottomNav } from "@/components/navigation/form-bottom-nav";
@@ -25,6 +24,7 @@ import { SettingsContext } from "@/providers/settings-provider";
 import { FormTypes } from "@/types/form";
 import { linkBase } from "@/utilities";
 import { GetLocalstorageData, handleScroll } from "@/utilities/form-utils";
+import { FormEndBlock } from "@/components/form/form-end-block";
 
 type Props = IForm & {
   elements: IForm["elements"];
@@ -37,6 +37,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
   const pathname = usePathname();
   const [page, setPage] = useState<number>(-1);
   const scrollRef = useRef<HTMLSpanElement>(null);
+  const [totalScore, setTotalScore] = useState<number>(0);
   const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>(
     [],
   );
@@ -242,6 +243,34 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
     }
   }
 
+  // Add this useEffect near your other useEffects //waldo
+  useEffect(() => {
+    // Calculate total score from all pages
+    let newTotalScore = 0;
+    formDataArray.forEach((page) => {
+      page.forEach((item) => {
+        if (
+          item.__typename === "dataportal_Digg_FormRadio" && 
+          item.selected?.score
+        ) {
+          newTotalScore += item.selected.score;
+        }
+      });
+    });
+    setTotalScore(newTotalScore);
+
+    // Save score to localStorage
+    localStorage.setItem(`${pathname}Score`, newTotalScore.toString());
+  }, [formDataArray]); // This will run whenever formDataArray changes
+
+  // Add this useEffect to load the score when the page loads
+  useEffect(() => {
+    const savedScore = localStorage.getItem(`${pathname}Score`);
+    if (savedScore) {
+      setTotalScore(parseInt(savedScore));
+    }
+  }, []); // Empty dependency array means this runs once on mount
+
   return (
     <Container>
       {formDataArray[0] && (
@@ -251,7 +280,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
         >
           {page !== 0 && formSteps.length > 0 && (
             <FormNav
-              pageNames={[...formSteps, t("pages|form$generate-pdf-text")]}
+              pageNames={[...formSteps, "Klar"]}
               setPage={setPage}
               scrollRef={scrollRef}
               forceUpdate={page - 1}
@@ -315,7 +344,8 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
             })}
 
             {page === formDataArray.length + 1 && (
-              <FormGeneratePDF
+              <FormEndBlock
+                totalScore={totalScore} //waldo
                 formDataArray={formDataArray}
                 blocks={module ? module : null}
               />

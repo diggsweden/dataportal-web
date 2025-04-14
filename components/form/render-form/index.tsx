@@ -235,13 +235,15 @@ export const RenderForm = ({
 
   return (
     <>
-      {formDataArray.map((item) => {
-        return (
-          <div key={`item-${item.ID}`} className="space-y-sm">
-            {FormItem(item, UpdateFormDataArray, pageIndex, t)}
-          </div>
-        );
-      })}
+      <div className="flex flex-col gap-md">
+        {formDataArray.map((item) => {
+          return (
+            <div key={`item-${item.ID}`} className="space-y-sm">
+              {FormItem(item, UpdateFormDataArray, pageIndex, t)}
+            </div>
+          );
+        })}
+      </div>
     </>
   );
 };

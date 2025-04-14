@@ -215,6 +215,35 @@ export const FORM_INPUT_FRAGMENT = gql`
   }
 `;
 
+export const RESULT_FRAGMENT = gql`
+  fragment Result on dataportal_Digg_Result {
+    heading
+    text {
+      markdown
+    }
+    score_from
+    score_to
+    container {
+      slug
+      title
+      preamble
+      image {
+        ...Image
+      }
+    }
+  }
+`;
+
+export const FORM_RESULT_FRAGMENT = gql`
+  fragment FormResult on dataportal_Digg_FormResult {
+    __typename
+    result {
+      ...Result
+    }
+  }
+  ${RESULT_FRAGMENT}
+`;
+
 export const FORM_ELEMENT_FRAGMENT = gql`
   fragment FormElement on dataportal_Digg_IFormElement {
     __typename
@@ -224,6 +253,10 @@ export const FORM_ELEMENT_FRAGMENT = gql`
       text {
         markdown
       }
+    }
+
+    ... on dataportal_Digg_FormResult {
+      ...FormResult
     }
 
     ... on dataportal_Digg_IFormInput {
@@ -244,6 +277,7 @@ export const FORM_ELEMENT_FRAGMENT = gql`
     }
   }
   ${FORM_INPUT_FRAGMENT}
+  ${FORM_RESULT_FRAGMENT}
 `;
 
 // Type
@@ -312,6 +346,7 @@ export const CHOICE_FRAGMENT = gql`
   fragment Choice on dataportal_Digg_FormChoice {
     popup
     label
+    score
   }
 `;
 /* #endregion */
@@ -551,6 +586,7 @@ export const BLOCK_FRAGMENT = gql`
   ${VIDEO_FRAGMENT}
   ${FORM_BLOCK_FRAGMENT}
   ${FORM_ELEMENT_FRAGMENT}
+  ${RESULT_FRAGMENT}
   ${CHOICE_FRAGMENT}
   ${QUOTE_FRAGMENT}
   ${GOOD_EXAMPLE_BLOCK_FRAGMENT}
