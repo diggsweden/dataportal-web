@@ -83,8 +83,8 @@ export class EntrystoreService {
     this.facetSpecification = config.facetSpecification || {};
     this._hitSpecifications = config.hitSpecifications || {};
     namespaces.add("esterms", "http://entryscape.com/terms/");
-    // TODO: Disable JSONP and implement a proxy
-    // this.entryStore.getREST().disableJSONP();
+    this.entryStore.getREST().disableJSONP();
+    this.entryStore.getREST().disableCredentials();
   }
 
   public static getInstance(config: EntryStoreConfig): EntrystoreService {
