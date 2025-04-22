@@ -89,6 +89,7 @@ export interface NewsItemResponse extends NewsItemDataFragment {
 export interface GoodExampleResponse extends GoodExampleDataFragment {
   type: "Publication";
   related?: GoodExampleBlockItemFragment[];
+  reuse: boolean;
 }
 export interface NewsItemListResponse {
   type: "PublicationList";
@@ -103,6 +104,7 @@ export interface NewsItemListResponse {
 export interface GoodExampleListResponse {
   type: "PublicationList";
   heading: string;
+  breadcrumb?: string;
   listItems: GoodExampleDataFragment[];
   seo?: SeoDataFragment;
   basePath?: string;
@@ -163,11 +165,13 @@ export interface QueryOptions {
 }
 
 export interface PublicationListOptions {
+  reuse?: boolean;
   seo?: SeoDataFragment;
   basePath?: string;
   heading?: string;
   preamble?: string;
   heroImage?: ImageFragment | null;
+  breadcrumb?: string;
 }
 
 export interface ToolistOptions {
@@ -339,8 +343,8 @@ export const getGoodExamplesList = async (
 ) => {
   // If nextjs should check for changes on the server
   const revalidate = true;
-  const { seo, basePath, heading, preamble, heroImage } = opts || {};
-
+  const { seo, basePath, heading, preamble, heroImage, reuse, breadcrumb } =
+    opts || {};
   try {
     const { data, error } = await client.query<
       GoodExampleQuery,
@@ -357,7 +361,9 @@ export const getGoodExamplesList = async (
       fetchPolicy: "no-cache",
     });
 
-    const publications = data?.dataportal_Digg_Good_Examples;
+    const publications = data?.dataportal_Digg_Good_Examples?.filter(
+      (publication) => publication && publication.reuse === reuse,
+    );
 
     if (error) {
       console.error(error);
@@ -376,6 +382,7 @@ export const getGoodExamplesList = async (
         heading: heading || "",
         preamble: preamble || null,
         heroImage: heroImage || null,
+        breadcrumb: breadcrumb || null,
       } as GoodExampleListResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
@@ -391,6 +398,7 @@ export const getGoodExamplesList = async (
         basePath: basePath || null,
         heading: heading || "",
         heroImage: heroImage || null,
+        breadcrumb: breadcrumb || null,
       } as GoodExampleListResponse,
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
@@ -567,6 +575,7 @@ export const getGoodExample = async (
   slug: string,
   locale: string,
   opts: PublicationQueryOptions = { revalidate: true },
+  reuse: boolean = false,
 ) => {
   const { state, secret, revalidate } = opts;
   try {
@@ -601,12 +610,27 @@ export const getGoodExample = async (
       return notFound(revalidate);
     }
 
+    // Check if the reuse value matches the expected pattern
+    if (publication.reuse !== reuse) {
+      console.warn(
+        `Access denied: Good example with slug '${slug}' has reuse=${
+          publication.reuse
+        } but accessed from ${reuse ? "private" : "public"} route`,
+      );
+      return notFound(revalidate);
+    }
+
     const relatedPublicationResult = await client.query<
       GoodExampleQuery,
       GoodExampleQueryVariables
     >({
       query: GOOD_EXAMPLE_QUERY,
-      variables: { filter: { limit: 4, locale } },
+      variables: {
+        filter: {
+          limit: 4,
+          locale,
+        },
+      },
       fetchPolicy: "no-cache",
     });
 
@@ -614,7 +638,7 @@ export const getGoodExample = async (
       relatedPublicationResult?.data?.dataportal_Digg_Good_Examples
         .filter(
           (pub): pub is GoodExampleDataFragment =>
-            pub !== null && pub.id !== publication.id,
+            pub !== null && pub.id !== publication.id && pub.reuse === reuse,
         )
         .slice(0, 3)
         .map(toGoodExamplePreview) || [];
@@ -650,6 +674,7 @@ export const toGoodExamplePreview = (
     publishedAt: pub.publishedAt,
     image: pub.image,
     keywords: pub.keywords,
+    reuse: pub.reuse,
   };
 };
 

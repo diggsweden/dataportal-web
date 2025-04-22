@@ -5,17 +5,18 @@ import { getGoodExamplesList, populateSeo } from "@/utilities";
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return await getGoodExamplesList(locale || "sv", {
-    reuse: false,
+    reuse: true,
     seo: {
       ...populateSeo,
-      title: "Goda exempel - Sveriges Dataportal",
-      description: "Goda exempel på datadriven innovation i samhället.",
+      title: "Exempel på återanvändning av data",
+      description:
+        "Läs om hur olika dataanvändare har skapat nytta och innovation från data som har delats av offentliga aktörer.",
     },
-    basePath: `/goda-exempel`,
-    heading: "Goda exempel från offentliga aktörer",
-    breadcrumb: "Goda exempel",
+    basePath: `/exempel-pa-ateranvandning`,
+    heading: "Exempel på återanvändning av data",
+    breadcrumb: "Exempel på återanvändning",
     preamble:
-      "Läs om goda exempel på hur offentliga aktörer arbetar med datadriven transformation.",
+      "Läs om hur olika dataanvändare har skapat nytta och innovation från data som har delats av offentliga aktörer.",
     heroImage: {
       __typename: "dataportal_Digg_Image",
       url: "/images/goodExamplesHero.png",

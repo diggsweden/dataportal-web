@@ -5,7 +5,7 @@ import { getGoodExample } from "@/utilities";
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const slug = `/${context.params?.slug}`;
-  const reuse = false;
+  const reuse = true;
   const result = await getGoodExample(
     slug,
     context.locale || "sv",

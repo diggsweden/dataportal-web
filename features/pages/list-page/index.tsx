@@ -23,13 +23,18 @@ interface ListPageProps {
   )[];
   heading: string;
   type: string;
+  breadcrumb?: string;
 }
 interface Keyword {
   value: string;
   id: string;
 }
 
-export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
+export const ListPage: FC<ListPageProps> = ({
+  listItems,
+  heading,
+  breadcrumb,
+}) => {
   const { setBreadcrumb } = useContext(SettingsContext);
   const list = Array.isArray(listItems) ? listItems : [];
   const pathname = usePathname();
@@ -54,7 +59,7 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
 
   useEffect(() => {
     setBreadcrumb?.({
-      name: heading,
+      name: breadcrumb ?? heading,
       crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
     });
   }, [pathname]);
@@ -109,7 +114,7 @@ export const ListPage: FC<ListPageProps> = ({ listItems, heading }) => {
       <Container>
         {heading && (
           <Heading data-test-id="list-page-heading" level={2} size={"md"}>
-            {`${filterList.length} ${heading}`}
+            {`${filterList.length} ${breadcrumb ?? heading}`}
           </Heading>
         )}
 
