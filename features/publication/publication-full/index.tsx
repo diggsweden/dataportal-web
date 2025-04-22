@@ -127,7 +127,10 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
           </Heading>
         )}
         <div className="flex w-full flex-col items-start justify-end gap-xl lg:flex-row-reverse">
-          <aside id="sidebar" className="w-full space-y-lg lg:max-w-[296px]">
+          <aside
+            id="publication-info"
+            className="w-full space-y-lg lg:max-w-[296px]"
+          >
             {infoSection.map(
               (item, index) =>
                 item.value &&
