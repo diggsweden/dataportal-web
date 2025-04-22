@@ -18,7 +18,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
       "Läs om goda exempel på hur offentliga aktörer arbetar med datadriven transformation.",
     heroImage: {
       __typename: "dataportal_Digg_Image",
-      url: "/images/goodExamplesHero.png",
+      url: "/images/goodExamplesHero.jpg",
       name: null,
       alt: null,
       description: null,
