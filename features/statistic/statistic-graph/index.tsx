@@ -68,9 +68,10 @@ export const StatisticGraph: FC = () => {
   const BarSeries = useCanvas ? VerticalBarSeriesCanvas : VerticalBarSeries;
 
   return (
-    <div className="statistics-graph mb-lg w-full lg:mb-none lg:w-[79%]">
-      <span className="sr-only">{t("pages|statistic$graph-screenreader")}</span>
-
+    <div
+      aria-hidden="true"
+      className="statistics-graph mb-lg w-full lg:mb-none lg:w-[79%]"
+    >
       <div className="flex flex-col items-end">
         <FlexibleXYPlot
           xType="ordinal"

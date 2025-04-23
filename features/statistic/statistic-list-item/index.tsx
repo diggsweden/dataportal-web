@@ -5,6 +5,7 @@ interface StatisticListItemProps {
   listText?: string;
   listNumber?: number;
   listUrl?: string;
+  translation?: string;
 }
 
 export class StatisticListItem extends Component<StatisticListItemProps> {
@@ -19,6 +20,7 @@ export class StatisticListItem extends Component<StatisticListItemProps> {
           <Link
             href={this.props.listUrl || "#"}
             className="mr-sm hyphens-auto text-green-600"
+            aria-label={`${this.props.listText} ${this.props.listNumber} ${this.props.translation}`}
           >
             {this.props.listText}
           </Link>

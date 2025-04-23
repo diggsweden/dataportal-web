@@ -33,6 +33,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
               <Fragment key={idx}>
                 <li className="group text-sm">
                   <ButtonLink
+                    aria-label={menu.name}
                     variant="plain"
                     href={menu.link}
                     locale={lang}
@@ -52,6 +53,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
                 {serviceMenu.length === idx + 1 && (
                   <li>
                     <ButtonLink
+                      aria-label={t("common|language")}
                       variant="plain"
                       href={`/${t(`routes|language$path`)}`}
                       icon={GlobeIcon}
