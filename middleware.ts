@@ -15,7 +15,10 @@ function getLocale(request: NextRequest): string {
 }
 
 export function middleware(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
+  // request.nextUrl.pathname strips the locale,
+  // Use the request.url string to extract the
+  // pathname which includes the locale prefix
+  const pathname = new URL(request.url).pathname;
 
   // Check if the pathname already has a locale
   const pathnameHasLocale = i18n.locales.some(
