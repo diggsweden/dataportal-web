@@ -37,6 +37,9 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
   const { heading, publishedAt, slug, image, __typename } = publication;
   const { lang } = useTranslation();
   const formattedDate = formatDate(lang, publishedAt);
+  const goodExampleLink = (publication as GoodExampleDataFragment)?.reuse
+    ? `/exempel-pa-ateranvandning${slug}`
+    : `/goda-exempel${slug}`;
 
   function getPublicationType(__typename: string) {
     if (NEWS_TYPES.includes(__typename as (typeof NEWS_TYPES)[number])) {
@@ -47,9 +50,9 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
         __typename as (typeof GOOD_EXAMPLE_TYPES)[number],
       )
     ) {
-      return { url: `/goda-exempel${slug}`, name: "Goda Exempel" };
+      return { url: goodExampleLink, name: "Goda Exempel" };
     }
-    return { url: `/goda-exempel${slug}`, name: "Goda Exempel" };
+    return { url: goodExampleLink, name: "Goda Exempel" };
   }
 
   const type = getPublicationType(__typename);
