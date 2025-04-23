@@ -35,7 +35,7 @@ declare module "@entryscape/entrystore-js" {
     offset(_num: number): this;
     sort(_sort: string): this;
     facetLimit(_limit: number): this;
-    context(_context: string): this;
+
     // Search field methods
     or(_fields: { [key: string]: string }): this;
     title(_val: string | string[], _modifier?: boolean | string): this;

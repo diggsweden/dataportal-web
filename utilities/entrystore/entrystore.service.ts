@@ -170,13 +170,14 @@ export class EntrystoreService {
     }
 
     // Filters to include
-    if (request.filters?.include && request.filters.include.length > 0) {
+    if (
+      request.filters?.include &&
+      request.filters.include.length > 0 &&
+      entry
+    ) {
       request.filters.include.forEach((filter) => {
-        if (filter.property === "uri" && entry) {
+        if (filter.property === "uri") {
           esQuery.uriProperty(filter.key, entry.getResourceURI());
-        }
-        if (filter.property === "context") {
-          esQuery.context(filter.key);
         }
       });
     }

@@ -10,7 +10,6 @@ export enum ESType {
   literal = "literal",
   uri = "uri",
   wildcard = "wildcard",
-  context = "context",
 }
 
 export enum ESRdfType {
