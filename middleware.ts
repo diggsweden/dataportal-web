@@ -15,7 +15,10 @@ function getLocale(request: NextRequest): string {
 }
 
 export function middleware(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
+  // request.nextUrl.pathname strips the locale,
+  // Use the request.url string to extract the
+  // pathname which includes the locale prefix
+  const pathname = new URL(request.url).pathname;
 
   // Check if the pathname already has a locale
   const pathnameHasLocale = i18n.locales.some(
@@ -48,7 +51,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|__ENV.js|manifest.json|.*\\.(?:jpg|jpeg|gif|png|svg|woff|woff2)).*)",
-    "/",
+    "/((?!_next|api|favicon.ico|manifest.json|__ENV.js|.*\\.(?:jpg|jpeg|png|gif|svg|webp|ico|woff|woff2|ttf|eot|otf|css|js|json)).*)",
   ],
 };
