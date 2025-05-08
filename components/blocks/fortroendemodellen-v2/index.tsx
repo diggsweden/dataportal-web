@@ -247,13 +247,8 @@ export const FortroendemodellenFrom = () => {
           );
           if (selectedItem) {
             // @ts-expect-error - TODO: fix this waldo
-            foundObj.selected = {
-              ID: foundObj.ID,
-              __typename: "dataportal_Digg_FormChoice",
-              label: selectedItem.value,
-              exploratory: false,
-              popup: selectedItem.popup,
-            };
+
+            foundObj.selected = selectedItem;
             foundObj.value = selectedItem.value;
           }
         }
