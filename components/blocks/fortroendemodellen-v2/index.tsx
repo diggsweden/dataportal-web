@@ -12,8 +12,11 @@ import { FormNav } from "@/components/navigation/form-nav";
 import { Heading } from "@/components/typography/heading";
 import { FormDataFragment } from "@/graphql/__generated__/operations";
 import { FormTypes } from "@/types/form";
-import { fetchFortroendemodellenForm } from "@/utilities/form-utils";
-import { GetLocalstorageData, handleScroll } from "@/utilities/form-utils";
+import {
+  GetLocalstorageData,
+  handleScroll,
+  fetchFortroendemodellenForm,
+} from "@/utilities/form-utils";
 
 interface FormData {
   id: string;
@@ -243,13 +246,13 @@ export const FortroendemodellenFrom = () => {
             (item) => item.value === e.target.value,
           );
           if (selectedItem) {
-            // @ts-expect-error
+            // @ts-expect-error - TODO: fix this waldo
             foundObj.selected = {
               ID: foundObj.ID,
               __typename: "dataportal_Digg_FormChoice",
               label: selectedItem.value,
               exploratory: false,
-              popup: selectedItem.popup
+              popup: selectedItem.popup,
             };
             foundObj.value = selectedItem.value;
           }
