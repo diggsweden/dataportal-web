@@ -245,7 +245,10 @@ export const FORM_ELEMENT_FRAGMENT = gql`
         }
       }
       ... on dataportal_Digg_FormDropdown {
-        items
+        items {
+          value
+          popup
+        }
       }
     }
   }
@@ -318,6 +321,7 @@ export const CHOICE_FRAGMENT = gql`
   fragment Choice on dataportal_Digg_FormChoice {
     popup
     label
+    exploratory
   }
 `;
 /* #endregion */
@@ -496,6 +500,59 @@ export const MODULE_FRAGMENT = gql`
     }
   }
 `;
+
+export const FOETROENDEMODELLEN_FRAGMENT_BLOCK = gql`
+  fragment FoertroendemodellenBlock on dataportal_Digg_FoertroendemodellenBlock {
+    __typename
+    id
+  }
+`;
+
+export const FOETROENDEMODELLEN_FORM_ELEMENTS = gql`
+  fragment FoertroendemodellenFormElements on dataportal_Digg_IFormElement {
+    __typename
+    title
+    ... on dataportal_Digg_FormDescription {
+      text {
+        markdown
+      }
+    }
+    ... on dataportal_Digg_IFormInput {
+      ...Input
+      ... on dataportal_Digg_FormRadio {
+        choices {
+          ...Choice
+        }
+      }
+      ... on dataportal_Digg_FormCheckbox {
+        choices {
+          ...Choice
+        }
+      }
+      ... on dataportal_Digg_FormDropdown {
+        items {
+          value
+          popup
+        }
+      }
+    }
+  }
+  ${FORM_INPUT_FRAGMENT}
+  ${CHOICE_FRAGMENT}
+`;
+
+export const FOETROENDEMODELLEN_FORM_FRAGMENT_FORM = gql`
+  fragment FoertroendemodellenForm on dataportal_Digg_FoertroendemodellenForm {
+    __typename
+    id
+    preamble
+    elements {
+      ...FoertroendemodellenFormElements
+    }
+  }
+  ${FOETROENDEMODELLEN_FORM_ELEMENTS}
+`;
+
 /* #endregion */
 
 export const BLOCK_FRAGMENT = gql`
@@ -545,9 +602,14 @@ export const BLOCK_FRAGMENT = gql`
     ... on dataportal_Digg_CTACardBlock {
       ...CtaCardBlock
     }
+
+    ... on dataportal_Digg_FoertroendemodellenBlock {
+      ...FoertroendemodellenBlock
+    }
   }
   ${LINK_FRAGMENT}
   ${FAQ_FRAGMENT}
+  ${FOETROENDEMODELLEN_FRAGMENT_BLOCK}
   ${TEXT_FRAGMENT}
   ${RELATED_CONTENT_FRAGMENT}
   ${PROMOTED_CONTENT_FRAGMENT}

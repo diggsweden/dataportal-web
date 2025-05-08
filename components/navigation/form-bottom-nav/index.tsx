@@ -25,10 +25,12 @@ type Props = {
   page: number;
   formDataArray: FormTypes[][];
   setFormDataArray: Dispatch<SetStateAction<FormTypes[][]>>;
+  fortroendemodellen?: boolean;
   scrollRef: RefObject<HTMLSpanElement>;
 };
 
 export const FormBottomNav: FC<Props> = ({
+  fortroendemodellen,
   setPage,
   page,
   formDataArray,
@@ -68,7 +70,7 @@ export const FormBottomNav: FC<Props> = ({
       <div className={`flex ${page === 1 ? "justify-end" : "justify-between"}`}>
         {page > 1 && (
           <Button
-            label={t("pages|form$previous-section-text")}
+            label={t("pages|form$previous")}
             icon={ArrowLeftIcon}
             iconPosition="left"
             variant={"secondary"}
@@ -79,8 +81,9 @@ export const FormBottomNav: FC<Props> = ({
           />
         )}
         <Button
-          label={t("pages|form$next-section-text")}
+          label={t("pages|form$next")}
           icon={ArrowRightIcon}
+          variant={"secondary"}
           iconPosition="right"
           onClick={() => {
             setPage(page + 1);
@@ -89,36 +92,38 @@ export const FormBottomNav: FC<Props> = ({
         />
       </div>
 
-      <div className="flex flex-col gap-md md:flex-row md:justify-between">
-        <Button
-          label={t("pages|form$save-form")}
-          onClick={() => setSaveModalOpen(true)}
-          className="button--large w-full justify-center md:w-auto md:justify-start"
-        />
-        <input
-          type="file"
-          accept="application/json"
-          title="Ladda upp JSON"
-          ref={fileInputRef}
-          onChange={(e) => {
-            ImportFromJsonFile(e, formDataArray, setFormDataArray);
-          }}
-          className="hidden"
-        />
-        <Button
-          label={t("pages|form$upload-json-file")}
-          onClick={(e) => {
-            e.preventDefault();
-            fileInputRef.current?.click();
-          }}
-          className="button--large w-full justify-center md:w-auto md:justify-start"
-        />
-        <Button
-          label={t("pages|form$clear-all-text")}
-          onClick={() => setClearModalOpen(true)}
-          className="button--large w-full justify-center md:w-auto md:justify-start"
-        />
-      </div>
+      {!fortroendemodellen && (
+        <div className="flex flex-col gap-md md:flex-row md:justify-between">
+          <Button
+            label={t("pages|form$save-form")}
+            onClick={() => setSaveModalOpen(true)}
+            className="button--large w-full justify-center md:w-auto md:justify-start"
+          />
+          <input
+            type="file"
+            accept="application/json"
+            title="Ladda upp JSON"
+            ref={fileInputRef}
+            onChange={(e) => {
+              ImportFromJsonFile(e, formDataArray, setFormDataArray);
+            }}
+            className="hidden"
+          />
+          <Button
+            label={t("pages|form$upload-json-file")}
+            onClick={(e) => {
+              e.preventDefault();
+              fileInputRef.current?.click();
+            }}
+            className="button--large w-full justify-center md:w-auto md:justify-start"
+          />
+          <Button
+            label={t("pages|form$clear-all-text")}
+            onClick={() => setClearModalOpen(true)}
+            className="button--large w-full justify-center md:w-auto md:justify-start"
+          />
+        </div>
+      )}
 
       <Modal
         heading={t("pages|form$clear-confirm-text")}

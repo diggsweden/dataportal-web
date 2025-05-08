@@ -34,7 +34,7 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [curActive, setCurActive] = useState("");
-  const { t } = useTranslation("common");
+  const { t } = useTranslation("");
   const [vw, setVw] = useState(0);
   const navRef = useRef<HTMLUListElement>(null);
   useClickOutside(() => setExpanded(false), [], navRef);
@@ -66,15 +66,16 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
   }, [expanded, vw]);
 
   useEffect(() => {
-    if (forceUpdate) {
+    if (forceUpdate !== undefined) {
       setCurActive(pageNames[forceUpdate]);
     }
-  }, [forceUpdate]);
+  }, [forceUpdate, pageNames]);
 
   const handleClick = (pageName: string) => {
+    const pageIndex = pageNames.indexOf(pageName);
     setCurActive(pageName);
     setExpanded(false);
-    setPage(pageNames.indexOf(pageName) + 1);
+    setPage(pageIndex + 1);
     handleScroll(scrollRef);
   };
 
@@ -96,71 +97,76 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
   };
 
   return (
-    <nav
-      ref={navRef}
-      className={`relative row-start-1 mb-lg flex h-fit w-full lg:col-span-1 lg:col-start-1 
+    <div>
+      <span className="text-lg text-textSecondary">
+        {t("pages|form$sections")}
+      </span>
+      <nav
+        ref={navRef}
+        className={`relative row-start-1 mb-lg mt-xl flex h-fit w-full lg:col-span-1 lg:col-start-1 
       lg:row-span-2 lg:mb-xl ${className ? className : ""}`}
-      aria-label={t("common|menu-form")}
-      onKeyDown={handleEscape}
-    >
-      {expanded && (
-        <div
-          className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden"
-          onClick={() => setExpanded(false)}
-        />
-      )}
+        aria-label={t("common|menu-form")}
+        onKeyDown={handleEscape}
+      >
+        {expanded && (
+          <div
+            className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden"
+            onClick={() => setExpanded(false)}
+          />
+        )}
 
-      {/* This is added so a user can tab through the page when the button is not visible */}
-      {vw < 984 && (
-        <Button
-          iconPosition="right"
-          icon={expanded ? ChevronUpIcon : ChevronDownIcon}
-          label={curActive === "" ? t("go-to") : curActive}
-          onClick={() => setExpanded(!expanded)}
-          className={`!button--large z-40 !w-full justify-between md:!w-[328px] lg:hidden`}
-          aria-expanded={expanded}
-          aria-controls="form-nav"
-          aria-label={
-            expanded
-              ? `${t("common|close")} ${t("common|menu-form")} navigation`
-              : `${t("common|open")} ${t("common|menu-form")} navigation`
-          }
-        />
-      )}
-      <ul
-        id="form-nav"
-        className={`absolute w-full flex-col bg-white md:w-[328px] lg:static lg:flex lg:h-full lg:w-fit 
+        {/* This is added so a user can tab through the page when the button is not visible */}
+        {vw < 984 && (
+          <Button
+            iconPosition="right"
+            icon={expanded ? ChevronUpIcon : ChevronDownIcon}
+            label={curActive === "" ? t("common:go-to") : curActive}
+            onClick={() => setExpanded(!expanded)}
+            className={`!button--large z-40 !w-full justify-between md:!w-[328px] lg:hidden`}
+            aria-expanded={expanded}
+            aria-controls="form-nav"
+            aria-label={
+              expanded
+                ? `${t("common|close")} ${t("common|menu-form")} navigation`
+                : `${t("common|open")} ${t("common|menu-form")} navigation`
+            }
+          />
+        )}
+        <ul
+          id="form-nav"
+          className={`absolute w-full flex-col gap-md bg-white md:w-[328px] lg:static lg:flex lg:h-full lg:w-fit 
         lg:bg-transparent ${
           expanded
             ? `-bottom-sm z-40 h-fit max-h-[calc(100svh-292px)] translate-y-full overflow-y-auto 
             shadow-2xl md:max-h-[calc(100svh-248px)]`
             : "hidden"
         }`}
-        aria-label={`${t("common|menu-form")} navigation`}
-      >
-        {pageNames.map((name, idx: number) => {
-          return (
-            <li
-              key={`name-${idx}`}
-              tabIndex={0}
-              className={`focus--outline focus--primary focus--in cursor-pointer p-md no-underline underline-offset-4
+          aria-label={`${t("common|menu-form")} navigation`}
+        >
+          {pageNames.map((name, idx: number) => {
+            return (
+              <li
+                key={`name-${idx}`}
+                tabIndex={0}
+                className={`focus--outline focus--primary focus--in cursor-pointer rounded-md border border-brown-600 p-md text-textPrimary
                ${
                  isActive(name)
-                   ? "!cursor-default bg-brown-900 text-white"
-                   : "focus--underline text-textSecondary hover:underline"
+                   ? "ml-md !cursor-default border-l-8 border-brown-600"
+                   : "focus--underline text-textSecondary"
                }`}
-              onClick={() => handleClick(name)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleClick(name);
-                }
-              }}
-            >
-              {name}
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+                onClick={() => handleClick(name)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleClick(name);
+                  }
+                }}
+              >
+                {name}
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </div>
   );
 };

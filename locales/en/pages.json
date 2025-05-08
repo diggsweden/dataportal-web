@@ -110,12 +110,17 @@
     "form-continue-text": "Do you wish to continue to the next step?",
     "generate-pdf-text": "Generate PDF",
     "go-back-text": "Back",
-    "next-section-text": "Next section",
+    "next": "Next",
     "placeholder-text": "Enter your answer here",
-    "previous-section-text": "Previous section",
+    "previous": "Previous",
     "save-form": "Save",
+    "sections": "Sections",
     "start-evaluation-text": "Start evaluation",
-    "upload-json-file": "Upload JSON-file"
+    "select-placeholder": "Select an option",
+    "summary": "Summary",
+    "upload-json-file": "Upload JSON-file",
+    "questions": "Questions",
+    "question": "Question"
   },
   "good-examples": {
     "social_meta_description": "Good examples on Sveriges Dataportal",

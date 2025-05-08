@@ -1,83 +1,87 @@
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import {
-  ChangeEvent,
-  FC,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/button";
-import { FormGeneratePDF } from "@/components/form/form-generate-pdf";
+// import { FormGeneratePDF } from "@/components/form/form-generate-pdf";
 import { RenderForm } from "@/components/form/render-form";
 import { Container } from "@/components/layout/container";
 import { FormBottomNav } from "@/components/navigation/form-bottom-nav";
 import { FormNav } from "@/components/navigation/form-nav";
-import { ProgressBar } from "@/components/progress-bar";
 import { Heading } from "@/components/typography/heading";
-import {
-  ModuleDataFragment,
-  FormDataFragment as IForm,
-} from "@/graphql/__generated__/operations";
-import { SettingsContext } from "@/providers/settings-provider";
+import { FormDataFragment } from "@/graphql/__generated__/operations";
 import { FormTypes } from "@/types/form";
-import { linkBase } from "@/utilities";
+import { fetchFortroendemodellenForm } from "@/utilities/form-utils";
 import { GetLocalstorageData, handleScroll } from "@/utilities/form-utils";
 
-type Props = IForm & {
-  elements: IForm["elements"];
-  module?: ModuleDataFragment["blocks"] | null;
-};
+interface FormData {
+  id: string;
+  preamble: string;
+  elements: FormDataFragment["elements"];
+}
 
-export const FormPage: FC<Props> = ({ elements, module }) => {
+export const FortroendemodellenFrom = () => {
+  const router = useRouter();
   const { t } = useTranslation();
-  const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
-  const [page, setPage] = useState<number>(-1);
+  const [formData, setFormData] = useState<FormData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState<number>(1);
   const scrollRef = useRef<HTMLSpanElement>(null);
   const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>(
     [],
   );
-
-  const [formSteps, setFormSteps] = useState<string[]>([]); //The title of the different pages
+  const [formSteps, setFormSteps] = useState<string[]>([]);
   const [showFirstPage, setShowFirstPage] = useState<boolean>(true);
   const [formIntroText, setFormIntroText] = useState<{
     title: string;
     text: string;
   }>({ title: "", text: "" });
-  let questionNumber = 1; //Used for visual numberings (can't use ID since we don't want headings/pagebreaks to be numbered)
+  let questionNumber = 1;
 
-  // Temporary breadcrumbs for förtroendemodellen
-  useEffect(() => {
-    setBreadcrumb?.({
-      name: "Förtroendemodellen utveckling",
-      crumbs: [
-        { name: "start", link: { ...linkBase, link: "/" } },
-        {
-          name: "Förtroendemodellen",
-          link: {
-            ...linkBase,
-            link: "/fortroendemodellen",
-          },
-        },
-      ],
-    });
-  }, [pathname]);
+  // Set breadcrumbs
 
+  const getFortroendemodellenForm = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await fetchFortroendemodellenForm(router.locale || "sv");
+
+      // Add IDs to elements
+      if (data.elements) {
+        (data.elements as FormTypes[]).forEach((element, index) => {
+          element.ID = index;
+        });
+      }
+
+      setFormData(data);
+    } catch (err) {
+      console.error("Error fetching form data:", err);
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch form data when router is ready
   useEffect(() => {
-    if (elements === null || elements.length === 0) {
+    if (router.isReady) {
+      getFortroendemodellenForm();
+    }
+  }, [router.isReady, router.locale]);
+
+  // Process form elements when formData changes
+  useEffect(() => {
+    if (!formData?.elements || formData.elements.length === 0) {
       return;
     }
 
-    (elements as FormTypes[]).forEach((element, index) => {
-      element.ID = index; //Make sure each element has a unique ID
-    });
-
+    const elements = formData.elements;
     SetupPages(elements as FormTypes[]);
     GetLocalstorageData(setFormDataArray, elements, pathname);
-  }, []);
+  }, [formData, pathname]);
 
   const SetupPages = (data: FormTypes[]) => {
     if (data == null) {
@@ -87,17 +91,13 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
     const pageArray: Array<Array<FormTypes>> = [];
     setFormSteps([]);
 
-    //Make sure that nessecary fields exists and have default values
     initializeFields(data);
 
-    //Split the data into pages
     let checkTopHeading = true;
     data.forEach((item, i) => {
-      //If first element is a description, we don't want to add it to our data array
       if (i === 0 && item.__typename === "dataportal_Digg_FormDescription") {
         return;
       }
-
       if (item.__typename === "dataportal_Digg_FormPageBreak") {
         setFormSteps((prev) => [...prev, item.title]);
         if (currentPage.length > 1) {
@@ -125,16 +125,17 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
   };
 
   const initializeFields = (data: FormTypes[]) => {
-    //Make sure that nessecary fields exists and have default values
     data.forEach((item) => {
       setupItem(item);
       if (item.__typename === "dataportal_Digg_FormRadio") {
-        item.selected = item.choices[item.choices.length - 1];
+        // Don't set any default selection
+        item.selected = null;
         item.choices.forEach((choice, i) => {
           if (choice.popup === null) {
             choice.popup = "";
+            choice.exploratory = false;
           }
-          choice.ID = parseInt(`${item.ID}${i}`); //create a unique id by using the parent id and the index of the choice
+          choice.ID = parseInt(`${item.ID}${i}`);
         });
       }
       if (item.__typename === "dataportal_Digg_FormDescription") {
@@ -142,7 +143,6 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
       }
     });
 
-    //If first element is a description we extract it and show it as an intropage to the form.
     if (data[0].__typename === "dataportal_Digg_FormDescription") {
       setShowFirstPage(true);
       setFormIntroText({
@@ -154,21 +154,23 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
     }
   };
 
-  //Set default values on fields in an item
   const setupItem = (item: FormTypes) => {
     if (
       item.__typename === "dataportal_Digg_FormText" ||
       item.__typename === "dataportal_Digg_FormTextArea" ||
       item.__typename === "dataportal_Digg_FormRadio" ||
-      item.__typename === "dataportal_Digg_FormDropdown"
+      item.__typename === "dataportal_Digg_FormDropdown" ||
+      item.__typename === "dataportal_Digg_FormCheckbox"
     ) {
+      if (item.__typename === "dataportal_Digg_FormDropdown") {
+        item.selected = null;
+      }
       item.value = "";
       item.number = questionNumber;
       questionNumber++;
     }
   };
 
-  //Set correct starting page depending if any pagebreak exists or not.
   useEffect(() => {
     const pageLastVisit = localStorage.getItem(`${pathname}Page`);
     if (!showFirstPage) {
@@ -176,25 +178,23 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
     } else {
       setPage(pageLastVisit ? parseInt(pageLastVisit) : 0);
     }
-  }, [showFirstPage]);
+  }, [showFirstPage, pathname]);
 
   useEffect(() => {
-    if (page === -1) return;
+    if (page === 0) return;
     localStorage.setItem(`${pathname}Page`, page.toString());
-  }, [page]);
+  }, [page, pathname]);
 
-  //Update the fields when data is changed in the form. Handles all types of fields.
   const UpdateFormDataArray = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
     fieldToUpdate: FormTypes,
     pageIndex: number,
     imgData: { fileName: string; base64: string } | null = null,
   ) => {
-    pageIndex = pageIndex - 1; //Page index starts at 1 since we hardcode the first page.
+    pageIndex = pageIndex - 1;
 
     if (fieldToUpdate.__typename === "dataportal_Digg_FormChoice") {
       setFormDataArray((prev) => {
-        //Find the index of the correct object by finding the choice with the same ID as the data (only for radio buttons)
         const itemIndex = prev[pageIndex].findIndex(
           (item) =>
             "choices" in item &&
@@ -202,7 +202,57 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
         );
         const foundObj = prev[pageIndex][itemIndex];
         if (foundObj && "choices" in foundObj) {
-          foundObj.selected = fieldToUpdate;
+          if (foundObj.__typename === "dataportal_Digg_FormCheckbox") {
+            // Initialize selected as array if it doesn't exist or is not an array
+            if (!foundObj.selected || !Array.isArray(foundObj.selected)) {
+              foundObj.selected = [];
+            }
+            // Find the choice in the choices array
+            const choice = foundObj.choices.find(
+              (c) => c.label === fieldToUpdate.label,
+            );
+            if (choice) {
+              // Add or remove the choice from the selected array based on checkbox state
+              const choiceIndex = foundObj.selected.findIndex(
+                (c) => c.label === choice.label,
+              );
+              if ((e.target as HTMLInputElement).checked) {
+                if (choiceIndex === -1) {
+                  foundObj.selected.push(choice);
+                }
+              } else {
+                if (choiceIndex !== -1) {
+                  foundObj.selected.splice(choiceIndex, 1);
+                }
+              }
+            }
+          } else {
+            foundObj.selected = fieldToUpdate;
+          }
+        }
+        return [...prev];
+      });
+    } else if (fieldToUpdate.__typename === "dataportal_Digg_FormDropdown") {
+      setFormDataArray((prev) => {
+        const itemIndex = prev[pageIndex].findIndex(
+          (item) => item.ID === fieldToUpdate.ID,
+        );
+        const foundObj = prev[pageIndex][itemIndex];
+        if (foundObj && "items" in foundObj) {
+          const selectedItem = foundObj.items.find(
+            (item) => item.value === e.target.value,
+          );
+          if (selectedItem) {
+            // @ts-expect-error
+            foundObj.selected = {
+              ID: foundObj.ID,
+              __typename: "dataportal_Digg_FormChoice",
+              label: selectedItem.value,
+              exploratory: false,
+              popup: selectedItem.popup
+            };
+            foundObj.value = selectedItem.value;
+          }
         }
         return [...prev];
       });
@@ -227,7 +277,6 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
     }, 100);
   };
 
-  //Check if an image has been added to the textarea, and if so add it to the images object.
   function checkForImage(
     foundObj: FormTypes,
     isImg: { fileName: string; base64: string },
@@ -243,16 +292,32 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
     }
   }
 
+  if (loading) {
+    return (
+      <Container>
+        <div>Loading...</div>
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container>
+        <div>Error: {error}</div>
+      </Container>
+    );
+  }
+
   return (
     <Container>
       {formDataArray[0] && (
         <div
           id="FormPage"
-          className="grid grid-cols-1 lg:max-w-xl lg:grid-cols-[200px_620px_1fr] lg:gap-x-xl "
+          className="grid grid-cols-1 lg:max-w-xl lg:grid-cols-[200px_620px_1fr] lg:gap-x-xl"
         >
           {page !== 0 && formSteps.length > 0 && (
             <FormNav
-              pageNames={[...formSteps, t("pages|form$generate-pdf-text")]}
+              pageNames={[...formSteps, t("pages|form$summary")]}
               setPage={setPage}
               scrollRef={scrollRef}
               forceUpdate={page - 1}
@@ -262,13 +327,11 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
           <>
             {page === 0 && (
               <>
-                {/* If first element in form is description, render the text here */}
                 {formIntroText.title.length > 0 && (
                   <>
                     <Heading level={1} size={"lg"}>
                       {formIntroText.title}
                     </Heading>
-
                     <p className="text-md">{formIntroText.text}</p>
                   </>
                 )}
@@ -281,9 +344,8 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
                 />
               </>
             )}
-
             {formDataArray.map((data: FormTypes[], index) => {
-              index++; //Start at page 1 since page 0 is the intro page
+              index++;
               if (page === index) {
                 return (
                   <div
@@ -291,18 +353,17 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
                     className="col-span-1 col-start-1 row-start-2 max-w-md lg:col-start-2 lg:row-start-1"
                   >
                     <span ref={scrollRef} />
-                    {page !== 0 && formSteps.length > 0 && (
-                      <ProgressBar
-                        page={page}
-                        totalPages={formSteps.length + 1}
-                      />
-                    )}
+
+                    <span className="text-lg text-textSecondary">
+                      {t("pages|form$questions")}
+                    </span>
                     <RenderForm
                       UpdateFormDataArray={UpdateFormDataArray}
                       formDataArray={data}
                       pageIndex={index}
                     />
                     <FormBottomNav
+                      fortroendemodellen
                       key={`nav${index}`}
                       setFormDataArray={setFormDataArray}
                       formDataArray={formDataArray}
@@ -315,12 +376,12 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
               }
             })}
 
-            {page === formDataArray.length + 1 && (
+            {/* {page === formDataArray.length + 1 && (
               <FormGeneratePDF
                 formDataArray={formDataArray}
-                blocks={module ? module : null}
+                blocks={null}
               />
-            )}
+            )} */}
           </>
         </div>
       )}

@@ -110,12 +110,17 @@
     "form-continue-text": "Vill du gå vidare?",
     "generate-pdf-text": "Generera PDF",
     "go-back-text": "Tillbaka",
-    "next-section-text": "Nästa avsnitt",
+    "next": "Nästa",
     "placeholder-text": "Fyll i ditt svar",
-    "previous-section-text": "Föregående avsnitt",
+    "previous": "Föregående",
     "save-form": "Spara era svar på din dator",
+    "sections": "Sektioner",
     "start-evaluation-text": "Starta utvärdering",
-    "upload-json-file": "Ladda upp sparade svar"
+    "select-placeholder": "Välj",
+    "summary": "Sammanställning",
+    "upload-json-file": "Ladda upp sparade svar",
+    "questions": "Frågor",
+    "question": "Fråga"
   },
   "good-examples": {
     "social_meta_description": "Goda exempel på Sveriges Dataportal",

@@ -22,6 +22,7 @@ import {
 } from "@/graphql/__generated__/operations";
 
 import { CtaCardBlock } from "../cta-card-block";
+import { FortroendemodellenFrom } from "../fortroendemodellen-v2";
 interface blockListProps {
   blocks:
     | ContainerDataFragment["blocks"]
@@ -165,6 +166,8 @@ export const BlockList: FC<blockListProps> = ({
             );
           case "dataportal_Digg_CTACardBlock":
             return <CtaCardBlock {...block} key={getUniqueKey(block, index)} />;
+          case "dataportal_Digg_FoertroendemodellenBlock":
+            return <FortroendemodellenFrom key={getUniqueKey(block, index)} />;
           default: {
             const unknownBlock = block as { __typename: string; id: string };
             return (
