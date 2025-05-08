@@ -3,21 +3,18 @@ import type { NextRequest } from "next/server";
 
 import i18n from "./i18n";
 
-function getLocale(request: NextRequest): string {
-  const acceptLanguage = request.headers.get("accept-language");
-  if (acceptLanguage) {
-    const [browserLocale] = acceptLanguage.split(",");
-    if (i18n.locales.includes(browserLocale as string)) {
-      return browserLocale;
-    }
-  }
-  return i18n.defaultLocale;
-}
+// function getLocale(request: NextRequest): string {
+//   const acceptLanguage = request.headers.get("accept-language");
+//   if (acceptLanguage) {
+//     const [browserLocale] = acceptLanguage.split(",");
+//     if (i18n.locales.includes(browserLocale as string)) {
+//       return browserLocale;
+//     }
+//   }
+//   return i18n.defaultLocale;
+// }
 
 export function middleware(request: NextRequest) {
-  // request.nextUrl.pathname strips the locale,
-  // Use the request.url string to extract the
-  // pathname which includes the locale prefix
   const pathname = new URL(request.url).pathname;
 
   // Check if the pathname already has a locale
@@ -36,21 +33,35 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const locale = getLocale(request);
+  // Get the current locale from the referer header if available
+  const referer = request.headers.get("referer");
+  let currentLocale = i18n.defaultLocale;
+
+  if (referer) {
+    const refererUrl = new URL(referer);
+    const refererPath = refererUrl.pathname;
+    const localeFromReferer = i18n.locales.find(
+      (locale) =>
+        refererPath.startsWith(`/${locale}/`) || refererPath === `/${locale}`,
+    );
+    if (localeFromReferer) {
+      currentLocale = localeFromReferer;
+    }
+  }
 
   // Only add locale to URL if it's not the default locale
-  if (locale !== i18n.defaultLocale) {
-    const newUrl = new URL(`/${locale}${pathname}`, request.url);
+  if (currentLocale !== i18n.defaultLocale) {
+    const newUrl = new URL(`/${currentLocale}${pathname}`, request.url);
     newUrl.search = request.nextUrl.search;
     return NextResponse.redirect(newUrl);
   }
 
-  // For default locale, just continue without modification
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    "/((?!_next|api|favicon.ico|manifest.json|__ENV.js|.*\\.(?:jpg|jpeg|png|gif|svg|webp|ico|woff|woff2|ttf|eot|otf|css|js|json)).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|__ENV.js|manifest.json|.*\\.(?:jpg|jpeg|gif|png|svg|woff|woff2)).*)",
+    "/",
   ],
 };
