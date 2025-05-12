@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 
+import CheckIcon from "@/assets/icons/check-circle.svg";
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
 import { Button } from "@/components/button";
@@ -23,12 +24,18 @@ interface ContainerDpDwnProps {
   scrollRef: RefObject<HTMLSpanElement>;
   className?: string;
   forceUpdate?: number;
+  countQuestionsPerSection?: {
+    title: string;
+    count: number;
+    answered: number;
+  }[];
 }
 
 export const FormNav: FC<ContainerDpDwnProps> = ({
   pageNames,
   className,
   setPage,
+  countQuestionsPerSection,
   forceUpdate,
   scrollRef,
 }) => {
@@ -96,6 +103,16 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
     }
   };
 
+  const doneSection = (idx: number) => {
+    const done =
+      countQuestionsPerSection &&
+      countQuestionsPerSection[idx] &&
+      countQuestionsPerSection[idx].answered ===
+        countQuestionsPerSection[idx].count;
+
+    return done;
+  };
+
   return (
     <div>
       <span className="text-lg text-textSecondary">
@@ -148,12 +165,18 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
               <li
                 key={`name-${idx}`}
                 tabIndex={0}
-                className={`focus--outline focus--primary focus--in cursor-pointer rounded-md border border-brown-600 p-md text-textPrimary
+                className={`focus--outline focus--primary focus--in relative flex max-w-[200px] cursor-pointer flex-col gap-sm rounded-md border border-brown-600 p-md text-textPrimary
                ${
                  isActive(name)
                    ? "ml-md !cursor-default border-l-8 border-brown-600"
                    : "focus--underline text-textSecondary"
-               }`}
+               }
+               ${
+                 doneSection(idx)
+                   ? "bg-green-100"
+                   : "focus--underline text-textSecondary"
+               }
+               `}
                 onClick={() => handleClick(name)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -161,7 +184,20 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
                   }
                 }}
               >
-                {name}
+                <span className="break-words">{name}</span>
+                {countQuestionsPerSection &&
+                  countQuestionsPerSection[idx]?.count > 0 && (
+                    <span className="relative flex items-center gap-sm">
+                      - {countQuestionsPerSection[idx].count}{" "}
+                      {countQuestionsPerSection[idx].count === 1
+                        ? t("pages|form$question").toLowerCase()
+                        : t("pages|form$questions").toLowerCase()}
+                      {doneSection(idx) && `/ ${t("pages|form$done")}`}
+                      {doneSection(idx) && (
+                        <CheckIcon className="h-4 w-4 ml-auto shrink-0 [&_path]:fill-green-600" />
+                      )}
+                    </span>
+                  )}
               </li>
             );
           })}

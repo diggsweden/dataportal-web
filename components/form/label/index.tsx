@@ -5,7 +5,7 @@ export const Label: FC<
 > = ({ children, className, ...props }) => (
   <label
     {...props}
-    className={`cursor-pointer text-xl font-thin text-brown-600 ${
+    className={`cursor-pointer text-lg font-thin text-brown-600 md:text-xl ${
       className ? className : ""
     }`}
   >

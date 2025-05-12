@@ -541,18 +541,6 @@ export const FOETROENDEMODELLEN_FORM_ELEMENTS = gql`
   ${CHOICE_FRAGMENT}
 `;
 
-export const FOETROENDEMODELLEN_FORM_FRAGMENT_FORM = gql`
-  fragment FoertroendemodellenForm on dataportal_Digg_FoertroendemodellenForm {
-    __typename
-    id
-    preamble
-    elements {
-      ...FoertroendemodellenFormElements
-    }
-  }
-  ${FOETROENDEMODELLEN_FORM_ELEMENTS}
-`;
-
 /* #endregion */
 
 export const BLOCK_FRAGMENT = gql`
@@ -625,4 +613,21 @@ export const BLOCK_FRAGMENT = gql`
   ${GOOD_EXAMPLE_BLOCK_FRAGMENT}
   ${NEWS_BLOCK_FRAGMENT}
   ${CTA_CARD_BLOCK_FRAGMENT}
+`;
+
+export const FOETROENDEMODELLEN_FORM_FRAGMENT_FORM = gql`
+  fragment FoertroendemodellenForm on dataportal_Digg_FoertroendemodellenForm {
+    __typename
+    id
+    preamble
+    elements {
+      ...FoertroendemodellenFormElements
+    }
+    resultPageInfo
+    blocks {
+      ...BlockData
+    }
+  }
+  ${FOETROENDEMODELLEN_FORM_ELEMENTS}
+  ${BLOCK_FRAGMENT}
 `;

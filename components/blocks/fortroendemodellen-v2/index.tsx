@@ -4,13 +4,16 @@ import useTranslation from "next-translate/useTranslation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/button";
-// import { FormGeneratePDF } from "@/components/form/form-generate-pdf";
+import { FormEnding } from "@/components/form/form-ending";
 import { RenderForm } from "@/components/form/render-form";
 import { Container } from "@/components/layout/container";
 import { FormBottomNav } from "@/components/navigation/form-bottom-nav";
 import { FormNav } from "@/components/navigation/form-nav";
 import { Heading } from "@/components/typography/heading";
-import { FormDataFragment } from "@/graphql/__generated__/operations";
+import {
+  FormDataFragment,
+  ContainerDataFragment,
+} from "@/graphql/__generated__/operations";
 import { FormTypes } from "@/types/form";
 import {
   GetLocalstorageData,
@@ -18,10 +21,15 @@ import {
   fetchFortroendemodellenForm,
 } from "@/utilities/form-utils";
 
-interface FormData {
+import { BlockList } from "../block-list";
+// import { FormGeneratePDF } from "@/components/form/form-generate-pdf";
+
+export interface FormData {
   id: string;
   preamble: string;
   elements: FormDataFragment["elements"];
+  blocks?: ContainerDataFragment["blocks"];
+  resultPageInfo?: string;
 }
 
 export const FortroendemodellenFrom = () => {
@@ -43,8 +51,6 @@ export const FortroendemodellenFrom = () => {
     text: string;
   }>({ title: "", text: "" });
   let questionNumber = 1;
-
-  // Set breadcrumbs
 
   const getFortroendemodellenForm = async () => {
     try {
@@ -172,6 +178,63 @@ export const FortroendemodellenFrom = () => {
       item.number = questionNumber;
       questionNumber++;
     }
+  };
+
+  const countQuestionsPerSection = () => {
+    const questionsPerSection: {
+      title: string;
+      count: number;
+      answered: number;
+    }[] = [];
+    let currentSection = { title: "Start", count: 0, answered: 0 };
+
+    formDataArray.forEach((page) => {
+      page.forEach((item) => {
+        if (item.__typename === "dataportal_Digg_FormPageBreak") {
+          // Save the previous section
+          if (currentSection.count > 0) {
+            questionsPerSection.push(currentSection);
+          }
+          // Start a new section
+          currentSection = { title: item.title, count: 0, answered: 0 };
+        } else if (
+          item.__typename === "dataportal_Digg_FormText" ||
+          item.__typename === "dataportal_Digg_FormTextArea" ||
+          item.__typename === "dataportal_Digg_FormRadio" ||
+          item.__typename === "dataportal_Digg_FormDropdown" ||
+          item.__typename === "dataportal_Digg_FormCheckbox"
+        ) {
+          currentSection.count++;
+          // Check if the question is answered
+          if (
+            (item.__typename === "dataportal_Digg_FormText" ||
+              item.__typename === "dataportal_Digg_FormTextArea") &&
+            item.value !== ""
+          ) {
+            currentSection.answered++;
+          } else if (
+            (item.__typename === "dataportal_Digg_FormRadio" ||
+              item.__typename === "dataportal_Digg_FormDropdown") &&
+            item.selected !== null
+          ) {
+            currentSection.answered++;
+          } else if (
+            item.__typename === "dataportal_Digg_FormCheckbox" &&
+            Array.isArray(item.selected) &&
+            item.selected.length > 0
+          ) {
+            currentSection.answered++;
+          }
+        }
+      });
+    });
+
+    // Add the last section if it has questions
+    if (currentSection.count > 0) {
+      questionsPerSection.push(currentSection);
+    }
+
+    return questionsPerSection;
   };
 
   useEffect(() => {
@@ -311,11 +374,12 @@ export const FortroendemodellenFrom = () => {
       {formDataArray[0] && (
         <div
           id="FormPage"
-          className="grid grid-cols-1 lg:max-w-xl lg:grid-cols-[200px_620px_1fr] lg:gap-x-xl"
+          className="mb-xl grid grid-cols-1 lg:max-w-xl lg:grid-cols-[200px_620px_1fr] lg:gap-x-xl"
         >
           {page !== 0 && formSteps.length > 0 && (
             <FormNav
               pageNames={[...formSteps, t("pages|form$summary")]}
+              countQuestionsPerSection={countQuestionsPerSection()}
               setPage={setPage}
               scrollRef={scrollRef}
               forceUpdate={page - 1}
@@ -374,15 +438,16 @@ export const FortroendemodellenFrom = () => {
               }
             })}
 
-            {/* {page === formDataArray.length + 1 && (
-              <FormGeneratePDF
+            {page === formDataArray.length + 1 && (
+              <FormEnding
+                formData={formData as FormData}
                 formDataArray={formDataArray}
-                blocks={null}
               />
-            )} */}
+            )}
           </>
         </div>
       )}
+      {formData?.blocks && <BlockList blocks={formData.blocks} />}
     </Container>
   );
 };

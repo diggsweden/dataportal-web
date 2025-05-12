@@ -14,7 +14,7 @@ export const ProgressBar: FC<Props> = ({ page, totalPages }) => {
 
   return (
     <div
-      className="mb-lg flex w-full overflow-hidden border border-brown-600 bg-white"
+      className="mb-lg mt-xl flex w-full overflow-hidden border border-brown-600 bg-white"
       role="progressbar"
       aria-valuenow={page}
       aria-valuemin={1}

@@ -274,6 +274,12 @@ input[type="radio"] {
   @apply focus--primary outline-dashed outline-[3px] !important;
 }
 
+/* Form */
+
 .form-item {
   @apply rounded-lg border border-brown-200 bg-red-50 p-xl;
+}
+
+.checkbox {
+  accent-color: #6e615a;
 }

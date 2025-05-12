@@ -291,6 +291,9 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
                     className="col-span-1 col-start-1 row-start-2 max-w-md lg:col-start-2 lg:row-start-1"
                   >
                     <span ref={scrollRef} />
+                    <span className="text-lg text-textSecondary">
+                      {t("pages|form$questions")}
+                    </span>
                     {page !== 0 && formSteps.length > 0 && (
                       <ProgressBar
                         page={page}
