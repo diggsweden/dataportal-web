@@ -194,11 +194,11 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
                         ? t("pages|form$question").toLowerCase()
                         : t("pages|form$questions").toLowerCase()}
                       {doneSection(idx) && `/ ${t("pages|form$done")}`}
-                      {doneSection(idx) && (
-                        <CheckIcon className="h-4 w-4 ml-auto shrink-0 [&_path]:fill-green-600" />
-                      )}
                     </span>
                   )}
+                {doneSection(idx) && (
+                  <CheckIcon className="top-0 h-4 w-4 absolute bottom-sm right-sm [&_path]:fill-green-600" />
+                )}
               </li>
             );
           })}

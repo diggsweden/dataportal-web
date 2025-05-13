@@ -1,6 +1,7 @@
 import { cx } from "class-variance-authority";
+import { usePathname } from "next/navigation";
 import Organisationsnummer from "organisationsnummer";
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 
 import CheckIcon from "@/assets/icons/check-circle.svg";
 import { Button } from "@/components/button";
@@ -26,22 +27,16 @@ export const OrganisationNumber: FC<OrganisationNumberProps> = ({
   onChange,
   onSubmit,
 }) => {
+  const pathname = usePathname();
   const [inputValue, setInputValue] = useState(value);
   const [validation, setValidation] = useState<ValidationState>({
     isValid: null,
     errorMessage: null,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setInputValue(newValue);
-    onChange?.(newValue);
-    setValidation({ isValid: null, errorMessage: null });
-  };
-
-  const handleSubmit = () => {
-    const valid = Organisationsnummer.valid(inputValue);
-    const startsWithValidPrefix = inputValue.startsWith("2");
+  const checkValidation = (value: string) => {
+    const valid = Organisationsnummer.valid(value);
+    const startsWithValidPrefix = value.startsWith("2");
 
     if (!valid) {
       setValidation({
@@ -61,6 +56,34 @@ export const OrganisationNumber: FC<OrganisationNumberProps> = ({
         errorMessage: null,
       });
     }
+  };
+
+  // Load saved value from localStorage on mount
+  useEffect(() => {
+    const savedValue = localStorage.getItem(`${pathname}OrgNumber`);
+    if (savedValue) {
+      setInputValue(savedValue);
+      onChange?.(savedValue);
+      checkValidation(savedValue);
+    }
+  }, [pathname, onChange]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setInputValue(newValue);
+    onChange?.(newValue);
+    setValidation({ isValid: null, errorMessage: null });
+
+    // Save to localStorage
+    if (newValue) {
+      localStorage.setItem(`${pathname}OrgNumber`, newValue);
+    } else {
+      localStorage.removeItem(`${pathname}OrgNumber`);
+    }
+  };
+
+  const handleSubmit = () => {
+    checkValidation(inputValue);
     onSubmit?.(inputValue);
   };
 
