@@ -110,7 +110,7 @@ body {
     @apply bg-brown-600 text-white [&_path]:fill-white;
   }
   .button--light {
-    @apply bg-brown-200 text-brown-600 hover:bg-textSecondary focus-visible:bg-textSecondary hover:text-brown-100 focus-visible:text-brown-100
+    @apply bg-brown-200 text-brown-600 hover:bg-textSecondary hover:text-brown-100 focus-visible:bg-textSecondary focus-visible:text-brown-100
     group-hover:bg-textSecondary group-hover:text-brown-100 group-focus:bg-textSecondary group-focus:text-brown-100 [&_path]:fill-brown-600;
   }
   .button--light.active {
@@ -272,4 +272,14 @@ input[type="radio"] {
 .esbModalToggle:focus,
 .esbModalToggle:focus-visible {
   @apply focus--primary outline-dashed outline-[3px] !important;
+}
+
+/* Form */
+
+.form-item {
+  @apply rounded-lg border border-brown-200 bg-red-50 p-xl;
+}
+
+.checkbox {
+  accent-color: #6e615a;
 }
