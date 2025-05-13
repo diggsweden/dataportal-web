@@ -6,15 +6,15 @@ import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
 import { Button } from "@/components/button";
 import { Label } from "@/components/form/label";
+import { MultiSelect } from "@/components/form/multi-select";
+import { OrganisationNumber } from "@/components/form/organisation-number";
 import { RadioInput } from "@/components/form/radio-input";
+import { Select } from "@/components/form/select";
 import { TextInput } from "@/components/form/text-input";
 import { Textarea } from "@/components/form/textarea";
 import { Heading } from "@/components/typography/heading";
 import { HtmlParser } from "@/components/typography/html-parser";
 import { FormTypes } from "@/types/form";
-
-import { MultiSelect } from "../multi-select";
-import { Select } from "../select";
 
 const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
   const [visible, setVisible] = useState(false);
@@ -73,6 +73,7 @@ interface Props {
   ) => void;
   formDataArray: Array<FormTypes>;
   pageIndex: number;
+  fortroendemodellen?: boolean;
 }
 
 const FormItem = (
@@ -172,7 +173,7 @@ const FormItem = (
           >
             {addLabel(item.number, Type, ID, item.title)}
             {item.info && PopOver({ text: item.info, title: item.title })}
-            <div className="flex items-center gap-md">
+            <div className="flex flex-col gap-md lg:flex-row lg:items-center">
               {item.choices.map((choice) => {
                 return (
                   <div key={choice.ID} className="flex items-center gap-md">
@@ -189,7 +190,7 @@ const FormItem = (
                 );
               })}
               {item.selected?.popup && item.selected.popup.length > 0 && (
-                <div className="ml-lg w-fit border p-xs">
+                <div className="w-fit border p-xs lg:ml-lg">
                   <span className="text-sm text-red-600">
                     {HtmlParser({ text: item.selected?.popup })}
                   </span>
@@ -305,10 +306,12 @@ export const RenderForm = ({
   formDataArray,
   UpdateFormDataArray,
   pageIndex,
+  fortroendemodellen,
 }: Props) => {
   const { t } = useTranslation("pages");
   return (
-    <div className="mt-lg space-y-lg">
+    <div className="mt-md space-y-lg lg:mt-xl">
+      {fortroendemodellen && pageIndex === 1 && <OrganisationNumber />}
       {formDataArray.map((item) => {
         return (
           item.__typename !== "dataportal_Digg_FormPageBreak" && (

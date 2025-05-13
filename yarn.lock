@@ -6927,6 +6927,7 @@ __metadata:
     next-translate: "npm:^2.6.2"
     next-translate-plugin: "npm:^2.6.2"
     node-fetch: "npm:^3.2.10"
+    organisationsnummer: "npm:^1.2.0"
     postcss: "npm:^8.4.32"
     prettier: "npm:3.0.3"
     prettier-plugin-tailwindcss: "npm:^0.5.9"
@@ -12394,6 +12395,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"organisationsnummer@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "organisationsnummer@npm:1.2.0"
+  dependencies:
+    personnummer: "npm:^3.2.1"
+  bin:
+    organisationsnummer: bin/organisationsnummer
+  checksum: 10/848992ff31ad6d46b5808f486577d8a754a7e1cb46082c8f59872188e3ad35acc89abc3ac8654ca549b0dd756a635c0a0a8f756b6a606f3c1e209fdc7cf0396d
+  languageName: node
+  linkType: hard
+
 "os-tmpdir@npm:~1.0.2":
   version: 1.0.2
   resolution: "os-tmpdir@npm:1.0.2"
@@ -12701,6 +12713,15 @@ __metadata:
   version: 2.1.0
   resolution: "performance-now@npm:2.1.0"
   checksum: 10/534e641aa8f7cba160f0afec0599b6cecefbb516a2e837b512be0adbe6c1da5550e89c78059c7fabc5c9ffdf6627edabe23eb7c518c4500067a898fa65c2b550
+  languageName: node
+  linkType: hard
+
+"personnummer@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "personnummer@npm:3.2.1"
+  bin:
+    personnummer: bin/personnummer
+  checksum: 10/cb1517a64d4a7dccd29f7b38ea048140d74eb059eee7149d2af42aae30325762c8f8e555228bce0c20ff5f667611171f72f13a24e847811ff9490e6ca13500fc
   languageName: node
   linkType: hard
 
