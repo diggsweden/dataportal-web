@@ -1,5 +1,6 @@
 import { cx } from "class-variance-authority";
 import { usePathname } from "next/navigation";
+import useTranslation from "next-translate/useTranslation";
 import Organisationsnummer from "organisationsnummer";
 import { FC, useState, useEffect } from "react";
 
@@ -28,6 +29,7 @@ export const OrganisationNumber: FC<OrganisationNumberProps> = ({
   onSubmit,
 }) => {
   const pathname = usePathname();
+  const { t } = useTranslation("pages");
   const [inputValue, setInputValue] = useState(value);
   const [validation, setValidation] = useState<ValidationState>({
     isValid: null,
@@ -41,14 +43,12 @@ export const OrganisationNumber: FC<OrganisationNumberProps> = ({
     if (!valid) {
       setValidation({
         isValid: false,
-        errorMessage:
-          "Please enter a valid Swedish organization number (XXXXXX-XXXX)",
+        errorMessage: t("form$organisation-number-validation"),
       });
     } else if (!startsWithValidPrefix) {
       setValidation({
         isValid: false,
-        errorMessage:
-          "Enbart offentliga aktörer kan använda detta verktyg...!!!!",
+        errorMessage: t("form$organisation-number-validation-public"),
       });
     } else {
       setValidation({
@@ -74,7 +74,6 @@ export const OrganisationNumber: FC<OrganisationNumberProps> = ({
     onChange?.(newValue);
     setValidation({ isValid: null, errorMessage: null });
 
-    // Save to localStorage
     if (newValue) {
       localStorage.setItem(`${pathname}OrgNumber`, newValue);
     } else {
@@ -98,16 +97,22 @@ export const OrganisationNumber: FC<OrganisationNumberProps> = ({
           : "bg-red-50",
       )}
     >
-      <Label>Organisationsnummer</Label>
+      <Label>{t("form$organisation-number")}</Label>
       <div className="flex gap-sm">
         <TextInput
           placeholder="XXXXXX-XXXX"
           value={inputValue}
           onChange={handleChange}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleSubmit();
+            }
+          }}
           className="mt-sm"
         />
         <Button
-          label="Validate"
+          label={t("form$validate")}
           onClick={handleSubmit}
           className="mt-sm justify-between"
         />

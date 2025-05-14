@@ -309,10 +309,8 @@ export const FortroendemodellenFrom = () => {
             (item) => item.value === e.target.value,
           );
           if (selectedItem) {
-            // @ts-expect-error - TODO: fix this waldo
-
             foundObj.selected = selectedItem;
-            foundObj.value = selectedItem.value;
+            foundObj.value = selectedItem.value ?? "";
           }
         }
         return [...prev];

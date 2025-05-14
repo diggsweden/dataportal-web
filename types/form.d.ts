@@ -65,17 +65,18 @@ interface FormChoice extends ChoiceFragment {
   title: string;
   popup: string | null;
   value: string | null;
+  number: number;
   exploratory: boolean;
-  selected: SelectedFormChoice | SelectedFormChoice[] | null;
+  selected: SelectedFormChoice | null;
   __typename: "dataportal_Digg_FormChoice";
 }
 
 interface FormDropdown
   extends FormElement_Dataportal_Digg_FormDropdown_Fragment,
     DefaultProps {
-  items: { value: string; popup: string }[];
+  items: FormChoice[];
   ID: number;
-  selected: FormChoice | string | null;
+  selected: FormChoice | null;
   __typename: "dataportal_Digg_FormDropdown";
 }
 
