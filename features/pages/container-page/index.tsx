@@ -239,7 +239,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
               aria-label="Main content"
               className={`${
                 formPage
-                  ? "lg:max-w-screen-xl"
+                  ? "w-full"
                   : "flex w-full max-w-md flex-col space-y-lg md:space-y-xl lg:min-w-[620px]"
               }`}
             >

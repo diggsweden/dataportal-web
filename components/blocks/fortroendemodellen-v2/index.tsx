@@ -368,11 +368,11 @@ export const FortroendemodellenFrom = () => {
   }
 
   return (
-    <Container>
+    <>
       {formDataArray[0] && (
         <div
           id="FormPage"
-          className="mb-xl grid grid-cols-1 lg:max-w-xl lg:grid-cols-[200px_620px_1fr] lg:gap-x-xl"
+          className="mb-xl flex flex-col gap-lg lg:flex-row lg:gap-xl lg:px-xl"
         >
           {page !== 0 && formSteps.length > 0 && (
             <FormNav
@@ -410,7 +410,7 @@ export const FortroendemodellenFrom = () => {
                 return (
                   <div
                     key={`page${index}`}
-                    className="col-span-1 col-start-1 row-start-2 max-w-md lg:col-start-2 lg:row-start-1"
+                    className="col-span-1 col-start-1 row-start-2 w-full max-w-md lg:col-start-2 lg:row-start-1"
                   >
                     <span ref={scrollRef} />
 
@@ -451,6 +451,6 @@ export const FortroendemodellenFrom = () => {
           {formData?.blocks && <BlockList formPage blocks={formData.blocks} />}
         </div>
       )}
-    </Container>
+    </>
   );
 };

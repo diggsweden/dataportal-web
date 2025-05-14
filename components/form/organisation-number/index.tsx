@@ -118,7 +118,7 @@ export const OrganisationNumber: FC<OrganisationNumberProps> = ({
         />
       </div>
       {validation.errorMessage && (
-        <span className="text-sm text-red-600">{validation.errorMessage}</span>
+        <span className="text-sm">{validation.errorMessage}</span>
       )}
       {validation.isValid && (
         <div className="absolute right-lg top-lg hidden md:block">

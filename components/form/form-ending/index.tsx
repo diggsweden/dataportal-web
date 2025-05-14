@@ -15,6 +15,7 @@ interface QuestionWithRisk {
   title: string;
   risk: string;
   answer: string;
+  number: number;
 }
 
 export const FormEnding: FC<Props> = ({ formDataArray, formData }) => {
@@ -43,6 +44,7 @@ export const FormEnding: FC<Props> = ({ formDataArray, formData }) => {
               title: item.title,
               risk: item.selected.popup,
               answer: item.selected.label || item.selected.value || "",
+              number: item.number,
             });
           }
           // Handle Checkbox (multiple selections)
@@ -61,6 +63,7 @@ export const FormEnding: FC<Props> = ({ formDataArray, formData }) => {
                   title: item.title,
                   risk: choice.popup,
                   answer: choice.label,
+                  number: item.number,
                 });
               }
             });
@@ -77,30 +80,35 @@ export const FormEnding: FC<Props> = ({ formDataArray, formData }) => {
   return (
     <div>
       <span className="text-lg text-brown-600">{t("pages|form$summary")}</span>
-      <Preamble color="primary" className="mt-xl text-md">
+      <Preamble color="primary" className="mt-md text-md lg:mt-xl">
         {formData.resultPageInfo}
       </Preamble>
-      {questionsWithRisks.length > 0 ? (
-        <div className="mt-xl rounded-lg bg-brown-100 p-xl">
-          <Heading size="sm" className="text-brown-600" level={2}>
-            {t("pages|form$risks-title")}
-          </Heading>
-
-          <div className="mt-lg space-y-xl">
-            {questionsWithRisks.map((item, index) => (
-              <div key={index} className="flex flex-col gap-sm">
-                <div className="flex items-center gap-sm">
+      <div className="mt-xl rounded-lg bg-brown-100 p-xl">
+        {questionsWithRisks.length > 0 ? (
+          <div>
+            <Heading size="sm" className="text-brown-600" level={2}>
+              {t("pages|form$risks-title")}
+            </Heading>
+            <div className="mt-lg space-y-xl">
+              {questionsWithRisks.map((item, index) => (
+                <div key={index} className="flex flex-col gap-sm">
                   <Heading size="xs" className="text-brown-600" level={3}>
-                    {item.title}:
+                    {t("pages|form$question")} {item.number}: {item.title}
                   </Heading>
-                  <span className="text-sm text-red-600">{item.answer}</span>
+                  <span className="text-sm">
+                    {t("pages|form$answer")} {item.answer}
+                  </span>
+                  <span className="text-sm text-textPrimary">{item.risk}</span>
                 </div>
-                <span className="text-sm text-textPrimary">{item.risk}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      ) : null}
+        ) : (
+          <Heading size="sm" className="font-strong text-brown-600" level={2}>
+            {t("pages|form$no-risk")}
+          </Heading>
+        )}
+      </div>
     </div>
   );
 };
