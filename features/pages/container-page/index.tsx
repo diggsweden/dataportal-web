@@ -178,7 +178,9 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
   const { t } = useTranslation("common");
-
+  const formPage = blocks?.find(
+    (block) => block.__typename === "dataportal_Digg_FoertroendemodellenBlock",
+  );
   const hasRelatedContent = related && related.length > 1;
 
   useEffect(() => {
@@ -235,7 +237,11 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
             <div
               id="content"
               aria-label="Main content"
-              className={`flex w-full max-w-md flex-col space-y-lg md:space-y-xl lg:min-w-[620px]`}
+              className={`${
+                formPage
+                  ? "lg:max-w-screen-xl"
+                  : "flex w-full max-w-md flex-col space-y-lg md:space-y-xl lg:min-w-[620px]"
+              }`}
             >
               {!image && preamble && <Preamble>{checkLang(preamble)}</Preamble>}
               {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}

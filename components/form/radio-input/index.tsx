@@ -9,7 +9,7 @@ export const RadioInput: FC<RadioInputProps> = ({
   label,
   ...props
 }) => (
-  <label className="group relative flex h-[4rem] w-[8rem] cursor-pointer items-center justify-center">
+  <label className="group relative flex min-w-[4rem] cursor-pointer items-center justify-center p-md lg:h-[4rem] lg:w-[8rem]">
     <input
       type="radio"
       {...props}

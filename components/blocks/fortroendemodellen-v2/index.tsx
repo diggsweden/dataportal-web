@@ -309,10 +309,8 @@ export const FortroendemodellenFrom = () => {
             (item) => item.value === e.target.value,
           );
           if (selectedItem) {
-            // @ts-expect-error - TODO: fix this waldo
-
             foundObj.selected = selectedItem;
-            foundObj.value = selectedItem.value;
+            foundObj.value = selectedItem.value ?? "";
           }
         }
         return [...prev];
@@ -420,6 +418,7 @@ export const FortroendemodellenFrom = () => {
                       {t("pages|form$questions")}
                     </span>
                     <RenderForm
+                      fortroendemodellen
                       UpdateFormDataArray={UpdateFormDataArray}
                       formDataArray={data}
                       pageIndex={index}
@@ -447,7 +446,11 @@ export const FortroendemodellenFrom = () => {
           </>
         </div>
       )}
-      {formData?.blocks && <BlockList blocks={formData.blocks} />}
+      {page === formDataArray.length + 1 && (
+        <div className="lg:max-w-screen-xl lg:mx-xl">
+          {formData?.blocks && <BlockList formPage blocks={formData.blocks} />}
+        </div>
+      )}
     </Container>
   );
 };

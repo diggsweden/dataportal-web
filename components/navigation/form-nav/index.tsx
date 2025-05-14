@@ -165,10 +165,10 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
               <li
                 key={`name-${idx}`}
                 tabIndex={0}
-                className={`focus--outline focus--primary focus--in relative flex max-w-[200px] cursor-pointer flex-col gap-sm rounded-md border border-brown-600 p-md text-textPrimary
+                className={`focus--outline focus--primary focus--in relative flex cursor-pointer flex-col gap-sm border-b border-brown-600 p-md text-textPrimary lg:max-w-[200px] lg:rounded-md lg:border
                ${
                  isActive(name)
-                   ? "ml-md !cursor-default border-l-8 border-brown-600"
+                   ? "!cursor-default !border-l-8 border-brown-600 lg:ml-md"
                    : "focus--underline text-textSecondary"
                }
                ${
@@ -185,7 +185,8 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
                 }}
               >
                 <span className="break-words">{name}</span>
-                {countQuestionsPerSection &&
+                {idx !== 0 &&
+                  countQuestionsPerSection &&
                   countQuestionsPerSection[idx]?.count > 0 && (
                     <span className="relative flex items-center gap-sm">
                       - {countQuestionsPerSection[idx].count}{" "}
@@ -193,11 +194,11 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
                         ? t("pages|form$question").toLowerCase()
                         : t("pages|form$questions").toLowerCase()}
                       {doneSection(idx) && `/ ${t("pages|form$done")}`}
-                      {doneSection(idx) && (
-                        <CheckIcon className="h-4 w-4 ml-auto shrink-0 [&_path]:fill-green-600" />
-                      )}
                     </span>
                   )}
+                {doneSection(idx) && (
+                  <CheckIcon className="top-0 h-4 w-4 absolute bottom-sm right-sm [&_path]:fill-green-600" />
+                )}
               </li>
             );
           })}
