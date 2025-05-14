@@ -191,7 +191,7 @@ const FormItem = (
               })}
               {item.selected?.popup && item.selected.popup.length > 0 && (
                 <div className="w-fit border p-xs lg:ml-lg">
-                  <span className="text-sm text-red-600">
+                  <span className="text-sm">
                     {HtmlParser({ text: item.selected?.popup })}
                   </span>
                 </div>
@@ -248,12 +248,12 @@ const FormItem = (
                 // @ts-expect-error  - TODO: fix this waldo
                 UpdateFormDataArray(e, item, pageIndex);
               }}
-              // @ts-expect-error - TODO: fix this waldo
               value={item.selected?.value || ""}
             >
               <option value="" disabled>
                 {t("form$select-placeholder")}
               </option>
+              {/* @ts-expect-error - TODO: fix this waldo */}
               {item.items.map((option: { value: string }) => {
                 return (
                   <option key={option.value} value={option.value}>
@@ -266,7 +266,7 @@ const FormItem = (
               item.selected?.popup &&
               item.selected.popup.length > 0 && (
                 <div className="w-fit border p-xs">
-                  <span className="text-sm text-red-600">
+                  <span className="text-sm">
                     {HtmlParser({ text: item.selected?.popup })}
                   </span>
                 </div>

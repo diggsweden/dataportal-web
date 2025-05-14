@@ -13,11 +13,11 @@ export const RadioInput: FC<RadioInputProps> = ({
     <input
       type="radio"
       {...props}
-      className={`inset-0 peer absolute h-full w-full cursor-pointer appearance-none rounded-sm
-      border border-brown-600 bg-white !outline-offset-[3px] checked:bg-green-600
-      hover:outline hover:outline-primary 
-      disabled:cursor-not-allowed disabled:border-brown-400 disabled:bg-brown-400
-      disabled:checked:bg-brown-200 disabled:hover:outline-none
+      className={`inset-0 focus-visible::outline focus-visible::outline-primary peer absolute h-full w-full cursor-pointer
+      appearance-none rounded-sm border border-brown-600 bg-white
+      !outline-offset-[3px] checked:bg-green-600 
+       hover:bg-brown-100 checked:hover:bg-green-600 disabled:cursor-not-allowed disabled:border-brown-400
+      disabled:bg-brown-400 disabled:checked:bg-brown-200 disabled:hover:outline-none
       ${className}`}
     />
     <span className="relative z-10 text-center text-textPrimary peer-checked:text-white">

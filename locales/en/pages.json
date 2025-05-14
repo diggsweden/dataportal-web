@@ -105,6 +105,7 @@
     "open-apis-txt": "If the API is open you are able to directly make API calls and explore the data."
   },
   "form": {
+    "answer": "Answer:",
     "clear-all-text": "Clear form",
     "clear-confirm-text": "Are you sure you want to clear the form?",
     "done": "DONE",
@@ -112,6 +113,7 @@
     "generate-pdf-text": "Generate PDF",
     "go-back-text": "Back",
     "next": "Next",
+    "no-risk": "No possible risks",
     "organisation-number": "Organisation number",
     "organisation-number-validation": "Please enter a valid organisation number (XXXXXX-XXXX)",
     "organisation-number-validation-public": "Only public sector entities may complete this form. Please ensure that the organization number belongs to a government agency, municipality, or other public institution",

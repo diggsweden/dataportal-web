@@ -105,6 +105,7 @@
     "open-apis-txt": "För API:er som är öppna går det att direkt göra anrop till och utforska datamängden."
   },
   "form": {
+    "answer": "Svar:",
     "clear-all-text": "Rensa alla svar",
     "clear-confirm-text": "Är du säker på att du vill rensa alla svar?",
     "done": "KLAR",
@@ -112,6 +113,7 @@
     "generate-pdf-text": "Generera PDF",
     "go-back-text": "Tillbaka",
     "next": "Nästa",
+    "no-risk": "Inga möjliga risker",
     "organisation-number": "Organisationsnummer",
     "organisation-number-validation": "Ange ett giltligt organisationsnummer (XXXXXX-XXXX)",
     "organisation-number-validation-public": "Endast offentliga aktörer kan använda detta verktyg. Se till att organisationsnumret tillhör en myndighet, kommun eller annan offentlig institution",
@@ -121,8 +123,8 @@
     "risks-title": "Möjliga risker i era svar",
     "save-form": "Spara era svar på din dator",
     "sections": "Sektioner",
-    "start-evaluation-text": "Starta utvärdering",
     "select-placeholder": "Välj",
+    "start-evaluation-text": "Starta utvärdering",
     "summary": "Sammanställning",
     "upload-json-file": "Ladda upp sparade svar",
     "questions": "Frågor",

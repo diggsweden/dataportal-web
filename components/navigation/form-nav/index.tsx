@@ -120,8 +120,8 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
       </span>
       <nav
         ref={navRef}
-        className={`relative row-start-1 mb-lg mt-xl flex h-fit w-full lg:col-span-1 lg:col-start-1 
-      lg:row-span-2 lg:mb-xl ${className ? className : ""}`}
+        className={`relative row-start-1 mb-lg mt-md flex h-fit w-full lg:col-span-1 lg:col-start-1 lg:row-span-2 
+      lg:mb-xl lg:mt-xl ${className ? className : ""}`}
         aria-label={t("common|menu-form")}
         onKeyDown={handleEscape}
       >
@@ -141,6 +141,7 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
             onClick={() => setExpanded(!expanded)}
             className={`!button--large z-40 !w-full justify-between md:!w-[328px] lg:hidden`}
             aria-expanded={expanded}
+            variant="secondary"
             aria-controls="form-nav"
             aria-label={
               expanded
@@ -151,7 +152,7 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
         )}
         <ul
           id="form-nav"
-          className={`absolute w-full flex-col gap-md bg-white md:w-[328px] lg:static lg:flex lg:h-full lg:w-fit 
+          className={`absolute w-full min-w-[200px] flex-col gap-md bg-white md:w-[328px] lg:static lg:flex lg:h-full lg:w-fit 
         lg:bg-transparent ${
           expanded
             ? `-bottom-sm z-40 h-fit max-h-[calc(100svh-292px)] translate-y-full overflow-y-auto 
@@ -197,7 +198,7 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
                     </span>
                   )}
                 {doneSection(idx) && (
-                  <CheckIcon className="top-0 h-4 w-4 absolute bottom-sm right-sm [&_path]:fill-green-600" />
+                  <CheckIcon className="top-0 h-4 w-4 absolute bottom-sm right-sm hidden md:block [&_path]:fill-green-600" />
                 )}
               </li>
             );
