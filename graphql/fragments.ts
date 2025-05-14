@@ -77,6 +77,8 @@ export const GOOD_EXAMPLE_FRAGMENT = gql`
     heading
     preamble
     publisher
+    link
+    reuse
     image {
       ...MediaType
     }
@@ -96,6 +98,10 @@ export const GOOD_EXAMPLE_FRAGMENT = gql`
       value
       id
     }
+    category
+    typeOfReuse
+    benefit
+    entity
     apiAndDataset {
       title
       link
@@ -429,6 +435,7 @@ export const GOOD_EXAMPLE_BLOCK_ITEM_FRAGMENT = gql`
     heading
     publishedAt
     slug
+    reuse
     keywords {
       value
       id
