@@ -90,6 +90,13 @@ interface FormCheckbox
   __typename: "dataportal_Digg_FormCheckbox";
 }
 
+interface OrganisationNumber
+  extends FormElement_Dataportal_Digg_FormOrganisationNumber_Fragment,
+    DefaultProps {
+  ID: number;
+  __typename: "organisationNumber";
+}
+
 export type FormTypes =
   | FormText
   | TextArea
@@ -98,4 +105,5 @@ export type FormTypes =
   | PageBreak
   | FormChoice
   | FormDropdown
-  | FormCheckbox;
+  | FormCheckbox
+  | OrganisationNumber;

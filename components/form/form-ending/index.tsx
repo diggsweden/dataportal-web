@@ -9,6 +9,11 @@ import { FormTypes } from "@/types/form";
 type Props = {
   formDataArray: FormTypes[][];
   formData: FormData;
+  countQuestionsPerSection: {
+    title: string;
+    count: number;
+    answered: number;
+  }[];
 };
 
 interface QuestionWithRisk {
@@ -18,8 +23,20 @@ interface QuestionWithRisk {
   number: number;
 }
 
-export const FormEnding: FC<Props> = ({ formDataArray, formData }) => {
+export const FormEnding: FC<Props> = ({
+  formDataArray,
+  formData,
+  countQuestionsPerSection,
+}) => {
   const { t } = useTranslation();
+
+  const questionStats = countQuestionsPerSection.reduce(
+    (stats, section) => ({
+      total: stats.total + section.count,
+      answered: stats.answered + section.answered,
+    }),
+    { total: 0, answered: 0 },
+  );
 
   const getQuestionsWithRisks = (): QuestionWithRisk[] => {
     const questionsWithRisks: QuestionWithRisk[] = [];
@@ -80,9 +97,19 @@ export const FormEnding: FC<Props> = ({ formDataArray, formData }) => {
   return (
     <div>
       <span className="text-lg text-brown-600">{t("pages|form$summary")}</span>
-      <Preamble color="primary" className="mt-md text-md lg:mt-xl">
+      <Preamble color="primary" className="mt-md text-md lg:my-xl">
         {formData.resultPageInfo}
       </Preamble>
+      {questionStats.total !== questionStats.answered && (
+        <span className="border border-brown-800 p-sm text-lg text-red-600">
+          {t("pages|form$not-all-questions-answered")} ({" "}
+          {questionStats.total - questionStats.answered}
+          {questionStats.total - questionStats.answered === 1
+            ? t("pages|form$question-remaining")
+            : t("pages|form$questions-remaining")}{" "}
+          )
+        </span>
+      )}
       <div className="mt-xl rounded-lg bg-brown-100 p-xl">
         {questionsWithRisks.length > 0 ? (
           <div>
@@ -92,13 +119,14 @@ export const FormEnding: FC<Props> = ({ formDataArray, formData }) => {
             <div className="mt-lg space-y-xl">
               {questionsWithRisks.map((item, index) => (
                 <div key={index} className="flex flex-col gap-sm">
-                  <Heading size="xs" className="text-brown-600" level={3}>
-                    {t("pages|form$question")} {item.number}: {item.title}
+                  <Heading size="sm" className="text-brown-600" level={3}>
+                    {t("pages|form$question")} {item.number}
                   </Heading>
-                  <span className="text-sm">
+                  <span>{item.title}</span>
+                  <span className="w-fit border border-brown-600 p-sm text-sm">
                     {t("pages|form$answer")} {item.answer}
                   </span>
-                  <span className="text-sm text-textPrimary">{item.risk}</span>
+                  <span className="text-sm text-brown-600">{item.risk}</span>
                 </div>
               ))}
             </div>

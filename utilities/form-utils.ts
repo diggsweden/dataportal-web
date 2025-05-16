@@ -40,9 +40,15 @@ export const ImportFromJsonFile = (
       page.forEach((field) => {
         //check if field title exists in imported data
         let importedField = importedData[pageIndex]?.find((item) => {
-          if ("value" in field && "value" in item) {
+          if (
+            "value" in field &&
+            "value" in item &&
+            "title" in field &&
+            "title" in item
+          ) {
             return field.title === item.title;
           }
+          return false;
         });
 
         //If we find the field in the imported data, use imported, otherwise use current form data (blank question).
@@ -64,9 +70,15 @@ export const ImportFromJsonFile = (
 
         //If we can't find the field in the current form data, add it to the new page
         const fieldToFind = !page.find((item) => {
-          if ("value" in field && "value" in item) {
+          if (
+            "value" in field &&
+            "value" in item &&
+            "title" in field &&
+            "title" in item
+          ) {
             return field.title === item.title;
           }
+          return false;
         });
         if (fieldToFind) {
           newPage.push(field);

@@ -619,7 +619,6 @@ export const FOETROENDEMODELLEN_FORM_FRAGMENT_FORM = gql`
   fragment FoertroendemodellenForm on dataportal_Digg_FoertroendemodellenForm {
     __typename
     id
-    preamble
     elements {
       ...FoertroendemodellenFormElements
     }

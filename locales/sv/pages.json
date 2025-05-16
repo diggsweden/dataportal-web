@@ -105,6 +105,7 @@
     "open-apis-txt": "För API:er som är öppna går det att direkt göra anrop till och utforska datamängden."
   },
   "form": {
+    "ai-system-name": "Vad heter AI-systemet?",
     "answer": "Svar:",
     "clear-all-text": "Rensa alla svar",
     "clear-confirm-text": "Är du säker på att du vill rensa alla svar?",
@@ -114,6 +115,8 @@
     "go-back-text": "Tillbaka",
     "next": "Nästa",
     "no-risk": "Inga möjliga risker",
+    "not-all-questions-answered": "Säkerställ att du har besvarat alla frågor",
+    "organisation-name": "Organisationsnamn",
     "organisation-number": "Organisationsnummer",
     "organisation-number-validation": "Ange ett giltligt organisationsnummer (XXXXXX-XXXX)",
     "organisation-number-validation-public": "Endast offentliga aktörer kan använda detta verktyg. Se till att organisationsnumret tillhör en myndighet, kommun eller annan offentlig institution",
@@ -128,7 +131,9 @@
     "summary": "Sammanställning",
     "upload-json-file": "Ladda upp sparade svar",
     "questions": "Frågor",
-    "question": "Fråga"
+    "question": "Fråga",
+    "question-remaining": " fråga kvar",
+    "questions-remaining": " frågor kvar"
   },
   "good-examples": {
     "social_meta_description": "Goda exempel på Sveriges Dataportal",
