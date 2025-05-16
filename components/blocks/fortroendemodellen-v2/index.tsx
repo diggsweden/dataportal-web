@@ -10,7 +10,6 @@ import { Container } from "@/components/layout/container";
 import { FormBottomNav } from "@/components/navigation/form-bottom-nav";
 import { FormNav } from "@/components/navigation/form-nav";
 import { Heading } from "@/components/typography/heading";
-import { Preamble } from "@/components/typography/preamble";
 import {
   FormDataFragment,
   ContainerDataFragment,
@@ -28,7 +27,6 @@ import { BlockList } from "../block-list";
 
 export interface FormData {
   id: string;
-  preamble: string;
   elements: FormDataFragment["elements"];
   blocks?: ContainerDataFragment["blocks"];
   resultPageInfo?: string;
@@ -408,7 +406,6 @@ export const FortroendemodellenFrom = () => {
 
   return (
     <>
-      <Preamble>{formData?.preamble}</Preamble>
       {formDataArray[0] && (
         <div
           id="FormPage"
