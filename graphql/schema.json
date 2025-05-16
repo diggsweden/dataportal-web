@@ -2248,22 +2248,6 @@
             "deprecationReason": null
           },
           {
-            "name": "preamble",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "resultPageInfo",
             "description": null,
             "args": [],
@@ -4854,22 +4838,6 @@
           {
             "name": "locale",
             "description": "two-letter lang",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "preamble",
-            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",

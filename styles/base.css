@@ -277,7 +277,7 @@ input[type="radio"] {
 /* Form */
 
 .form-item {
-  @apply rounded-lg border border-brown-200 bg-red-50 p-lg lg:p-xl;
+  @apply relative space-y-lg rounded-lg border border-brown-200 bg-red-50 p-lg lg:p-xl;
 }
 
 .checkbox {

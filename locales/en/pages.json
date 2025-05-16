@@ -105,6 +105,7 @@
     "open-apis-txt": "If the API is open you are able to directly make API calls and explore the data."
   },
   "form": {
+    "ai-system-name": "Name of AI system?",
     "answer": "Answer:",
     "clear-all-text": "Clear form",
     "clear-confirm-text": "Are you sure you want to clear the form?",
@@ -114,6 +115,8 @@
     "go-back-text": "Back",
     "next": "Next",
     "no-risk": "No possible risks",
+    "not-all-questions-answered": "Please ensure that you have answered all questions",
+    "organisation-name": "Organisation name",
     "organisation-number": "Organisation number",
     "organisation-number-validation": "Please enter a valid organisation number (XXXXXX-XXXX)",
     "organisation-number-validation-public": "Only public sector entities may complete this form. Please ensure that the organization number belongs to a government agency, municipality, or other public institution",
@@ -128,7 +131,9 @@
     "summary": "Summary",
     "upload-json-file": "Upload JSON-file",
     "questions": "Questions",
-    "question": "Question"
+    "question": "Question",
+    "question-remaining": " question remaining",
+    "questions-remaining": " questions remaining"
   },
   "good-examples": {
     "social_meta_description": "Good examples on Sveriges Dataportal",

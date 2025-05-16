@@ -185,7 +185,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
 
   //Update the fields when data is changed in the form. Handles all types of fields.
   const UpdateFormDataArray = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
     fieldToUpdate: FormTypes,
     pageIndex: number,
     imgData: { fileName: string; base64: string } | null = null,
@@ -248,7 +248,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
       {formDataArray[0] && (
         <div
           id="FormPage"
-          className="grid grid-cols-1 lg:max-w-xl lg:grid-cols-[200px_620px_1fr] lg:gap-x-xl "
+          className="grid grid-cols-1 lg:max-w-xl lg:grid-cols-[200px_620px_1fr] lg:gap-x-xl"
         >
           {page !== 0 && formSteps.length > 0 && (
             <FormNav
