@@ -43,17 +43,12 @@ export const FormEnding: FC<Props> = ({
     if (window._paq) {
       const name = nameField && "value" in nameField ? nameField.value : "";
       const organisationNumber = localStorage.getItem(`${pathname}OrgNumber`);
+
       window._paq.push([
         "trackEvent",
         "Förtroendemodellen",
-        "AI-systemets namn",
-        name,
-      ]);
-      window._paq.push([
-        "trackEvent",
-        "Förtroendemodellen",
-        "Organisationsnummer",
-        organisationNumber,
+        "Formulär slutfört",
+        `Organisationsnummer: ${organisationNumber}, Namn på AI-systemet: ${name}`,
       ]);
     }
   }, [formDataArray]);
