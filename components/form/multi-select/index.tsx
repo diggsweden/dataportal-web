@@ -17,7 +17,7 @@ export const MultiSelect: FC<PropsWithChildren<MultiSelectProps>> = ({
   return (
     <div className="flex items-center gap-sm">
       <input
-        className="checkbox h-lg w-lg cursor-pointer"
+        className="checkbox min-h-lg min-w-lg cursor-pointer"
         type="checkbox"
         id={id}
         {...props}
