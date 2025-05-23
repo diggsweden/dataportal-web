@@ -1,5 +1,6 @@
+import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 import { FormData } from "@/components/blocks/fortroendemodellen-v2";
 import { Heading } from "@/components/typography/heading";
@@ -29,6 +30,33 @@ export const FormEnding: FC<Props> = ({
   countQuestionsPerSection,
 }) => {
   const { t } = useTranslation();
+  const pathname = usePathname();
+  useEffect(() => {
+    // Find the name and organization number fields in the form data
+    const nameField = formDataArray[0].find(
+      (item) =>
+        item.__typename === "dataportal_Digg_FormText" &&
+        item.title.toLowerCase() === "vad heter ai-systemet?",
+    );
+
+    // Track the event with Matomo
+    if (window._paq) {
+      const name = nameField && "value" in nameField ? nameField.value : "";
+      const organisationNumber = localStorage.getItem(`${pathname}OrgNumber`);
+      window._paq.push([
+        "trackEvent",
+        "Förtroendemodellen",
+        "AI-systemets namn",
+        name,
+      ]);
+      window._paq.push([
+        "trackEvent",
+        "Förtroendemodellen",
+        "Organisationsnummer",
+        organisationNumber,
+      ]);
+    }
+  }, [formDataArray]);
 
   const questionStats = countQuestionsPerSection.reduce(
     (stats, section) => ({
@@ -97,11 +125,11 @@ export const FormEnding: FC<Props> = ({
   return (
     <div>
       <span className="text-lg text-brown-600">{t("pages|form$summary")}</span>
-      <Preamble color="primary" className="mt-md text-md lg:my-xl">
+      <Preamble color="primary" className="mb-lg mt-md text-md lg:my-xl">
         {formData.resultPageInfo}
       </Preamble>
       {questionStats.total !== questionStats.answered && (
-        <span className="border border-brown-800 p-sm text-lg text-red-600">
+        <span className="border-brown-800 p-xs text-sm text-red-600 md:border md:p-sm md:text-lg">
           {t("pages|form$not-all-questions-answered")} ({" "}
           {questionStats.total - questionStats.answered}
           {questionStats.total - questionStats.answered === 1
