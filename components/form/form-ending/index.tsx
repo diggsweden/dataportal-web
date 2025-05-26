@@ -46,9 +46,9 @@ export const FormEnding: FC<Props> = ({
 
       window._paq.push([
         "trackEvent",
-        "Förtroendemodellen",
-        "Formulär slutfört",
-        `Organisationsnummer: ${organisationNumber}, Namn på AI-systemet: ${name}`,
+        "Förtroendemodellen - formulär utfört",
+        `Organisationsnummer: ${organisationNumber || "ej ifyllt"}`,
+        `AI-systemets namn: ${name || "ej ifyllt"}`,
       ]);
     }
   }, [formDataArray]);
