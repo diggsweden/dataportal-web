@@ -28,7 +28,7 @@ export const Select: FC<PropsWithChildren<SelectProps>> = ({
         />
         <select
           id={id}
-          className="button button--secondary button--small w-full appearance-none pr-xl"
+          className="button button--secondary button--small w-full appearance-none pr-xl text-md"
           {...props}
         >
           {children}
