@@ -34,6 +34,7 @@
     "next-absolute-url": "^1.2.2",
     "next-translate": "^2.6.2",
     "node-fetch": "^3.2.10",
+    "organisationsnummer": "^1.2.0",
     "prismjs": "^1.29.0",
     "qss": "^2.0.3",
     "react": "18.2.0",

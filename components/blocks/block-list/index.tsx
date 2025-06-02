@@ -32,6 +32,7 @@ interface blockListProps {
     | StartPageDataFragment["blocks"];
   className?: string;
   landingPage?: boolean;
+  formPage?: boolean;
 }
 
 /**
@@ -73,6 +74,7 @@ export const BlockList: FC<blockListProps> = ({
   blocks,
   className,
   landingPage,
+  formPage,
 }) => {
   const { t } = useTranslation();
 
@@ -117,6 +119,7 @@ export const BlockList: FC<blockListProps> = ({
                 {...block}
                 key={getUniqueKey(block, index)}
                 landingPage={landingPage}
+                formPage={formPage}
               />
             );
           case "dataportal_Digg_ModuleList": {

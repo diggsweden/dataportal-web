@@ -40,9 +40,15 @@ export const ImportFromJsonFile = (
       page.forEach((field) => {
         //check if field title exists in imported data
         let importedField = importedData[pageIndex]?.find((item) => {
-          if ("value" in field && "value" in item) {
+          if (
+            "value" in field &&
+            "value" in item &&
+            "title" in field &&
+            "title" in item
+          ) {
             return field.title === item.title;
           }
+          return false;
         });
 
         //If we find the field in the imported data, use imported, otherwise use current form data (blank question).
@@ -63,10 +69,16 @@ export const ImportFromJsonFile = (
         }
 
         //If we can't find the field in the current form data, add it to the new page
-        let fieldToFind = !page.find((item) => {
-          if ("value" in field && "value" in item) {
+        const fieldToFind = !page.find((item) => {
+          if (
+            "value" in field &&
+            "value" in item &&
+            "title" in field &&
+            "title" in item
+          ) {
             return field.title === item.title;
           }
+          return false;
         });
         if (fieldToFind) {
           newPage.push(field);
@@ -82,7 +94,6 @@ export const ImportFromJsonFile = (
     newArr.forEach((page) => {
       page.forEach((field) => {
         if ("value" in field) {
-          // @ts-expect-error - TODO: fix this waldo
           field.number = questionNumber;
           questionNumber++;
         }
@@ -108,7 +119,7 @@ export const GeneratePDF = (
 ) => {
   e.preventDefault();
   //Generate the PDF html data and set the iframe
-  let docToPrint = ParseDocToHtml(formDataArray);
+  const docToPrint = ParseDocToHtml(formDataArray);
   iframeRef?.current?.setAttribute("srcDoc", docToPrint);
 
   //For some reason we can't access .print unless we add a slight delay
@@ -138,8 +149,8 @@ export const GetLocalstorageData = (
 ) => {
   const localData = localStorage.getItem(`${path}Data`);
   if (localData) {
-    let data: FormTypes[][] = JSON.parse(localData);
-    let tmpArr = data.map((item) => {
+    const data: FormTypes[][] = JSON.parse(localData);
+    const tmpArr = data.map((item) => {
       item.forEach((data) => {
         if ("choices" in data) {
           data.selected = data.selected || null;
@@ -151,7 +162,7 @@ export const GetLocalstorageData = (
     //todo: Should we do a deeper check to see if the questions are the same?
     //Use localstorage data if they contain the same amount of questions
     if (tmpArr.length > 0) {
-      let tmpArr2 = tmpArr.reduce((page, item) => page.concat(item), []);
+      const tmpArr2 = tmpArr.reduce((page, item) => page.concat(item), []);
 
       let elementsLength = elements.length;
       if (

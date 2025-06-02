@@ -65,17 +65,18 @@ interface FormChoice extends ChoiceFragment {
   title: string;
   popup: string | null;
   value: string | null;
+  number: number;
   exploratory: boolean;
-  selected: SelectedFormChoice | SelectedFormChoice[] | null;
+  selected: SelectedFormChoice | null;
   __typename: "dataportal_Digg_FormChoice";
 }
 
 interface FormDropdown
   extends FormElement_Dataportal_Digg_FormDropdown_Fragment,
     DefaultProps {
-  items: { value: string; popup: string }[];
+  items: FormChoice[];
   ID: number;
-  selected: FormChoice | string | null;
+  selected: FormChoice | null;
   __typename: "dataportal_Digg_FormDropdown";
 }
 
@@ -89,6 +90,13 @@ interface FormCheckbox
   __typename: "dataportal_Digg_FormCheckbox";
 }
 
+interface OrganisationNumber
+  extends FormElement_Dataportal_Digg_FormOrganisationNumber_Fragment,
+    DefaultProps {
+  ID: number;
+  __typename: "organisationNumber";
+}
+
 export type FormTypes =
   | FormText
   | TextArea
@@ -97,4 +105,5 @@ export type FormTypes =
   | PageBreak
   | FormChoice
   | FormDropdown
-  | FormCheckbox;
+  | FormCheckbox
+  | OrganisationNumber;

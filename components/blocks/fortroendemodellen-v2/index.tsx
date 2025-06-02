@@ -22,11 +22,11 @@ import {
 } from "@/utilities/form-utils";
 
 import { BlockList } from "../block-list";
+
 // import { FormGeneratePDF } from "@/components/form/form-generate-pdf";
 
 export interface FormData {
   id: string;
-  preamble: string;
   elements: FormDataFragment["elements"];
   blocks?: ContainerDataFragment["blocks"];
   resultPageInfo?: string;
@@ -52,12 +52,41 @@ export const FortroendemodellenFrom = () => {
   }>({ title: "", text: "" });
   let questionNumber = 1;
 
+  const informationSection = [
+    {
+      ID: 1,
+      info: null,
+      number: 1,
+      required: false,
+      title: t("pages|form$organisation-number"),
+      value: "",
+      __typename: "organisationNumber",
+    },
+    {
+      ID: 2,
+      info: null,
+      number: 2,
+      required: false,
+      title: t("pages|form$organisation-name"),
+      value: "",
+      __typename: "dataportal_Digg_FormText",
+    },
+    {
+      ID: 3,
+      info: null,
+      number: 3,
+      required: false,
+      title: t("pages|form$ai-system-name"),
+      value: "",
+      __typename: "dataportal_Digg_FormText",
+    },
+  ];
   const getFortroendemodellenForm = async () => {
     try {
       setLoading(true);
       setError(null);
       const data = await fetchFortroendemodellenForm(router.locale || "sv");
-
+      data.elements = [...informationSection, ...data.elements];
       // Add IDs to elements
       if (data.elements) {
         (data.elements as FormTypes[]).forEach((element, index) => {
@@ -169,7 +198,8 @@ export const FortroendemodellenFrom = () => {
       item.__typename === "dataportal_Digg_FormTextArea" ||
       item.__typename === "dataportal_Digg_FormRadio" ||
       item.__typename === "dataportal_Digg_FormDropdown" ||
-      item.__typename === "dataportal_Digg_FormCheckbox"
+      item.__typename === "dataportal_Digg_FormCheckbox" ||
+      item.__typename === "organisationNumber"
     ) {
       if (item.__typename === "dataportal_Digg_FormDropdown") {
         item.selected = null;
@@ -259,7 +289,40 @@ export const FortroendemodellenFrom = () => {
   ) => {
     pageIndex = pageIndex - 1;
 
-    if (fieldToUpdate.__typename === "dataportal_Digg_FormChoice") {
+    if (fieldToUpdate.__typename === "dataportal_Digg_FormCheckbox") {
+      setFormDataArray((prev) => {
+        const itemIndex = prev[pageIndex].findIndex(
+          (item) => item.ID === fieldToUpdate.ID,
+        );
+        const foundObj = prev[pageIndex][itemIndex];
+        if (foundObj && "choices" in foundObj) {
+          // Initialize selected as array if it doesn't exist or is not an array
+          if (!foundObj.selected || !Array.isArray(foundObj.selected)) {
+            foundObj.selected = [];
+          }
+          // Find the choice in the choices array that matches the value
+          const choice = foundObj.choices.find(
+            (c) => c.label === (e.target as HTMLInputElement).value,
+          );
+          if (choice) {
+            // Add or remove the choice from the selected array based on checkbox state
+            const choiceIndex = foundObj.selected.findIndex(
+              (c) => c.label === choice.label,
+            );
+            if ((e.target as HTMLInputElement).checked) {
+              if (choiceIndex === -1) {
+                foundObj.selected.push(choice);
+              }
+            } else {
+              if (choiceIndex !== -1) {
+                foundObj.selected.splice(choiceIndex, 1);
+              }
+            }
+          }
+        }
+        return [...prev];
+      });
+    } else if (fieldToUpdate.__typename === "dataportal_Digg_FormChoice") {
       setFormDataArray((prev) => {
         const itemIndex = prev[pageIndex].findIndex(
           (item) =>
@@ -268,33 +331,7 @@ export const FortroendemodellenFrom = () => {
         );
         const foundObj = prev[pageIndex][itemIndex];
         if (foundObj && "choices" in foundObj) {
-          if (foundObj.__typename === "dataportal_Digg_FormCheckbox") {
-            // Initialize selected as array if it doesn't exist or is not an array
-            if (!foundObj.selected || !Array.isArray(foundObj.selected)) {
-              foundObj.selected = [];
-            }
-            // Find the choice in the choices array
-            const choice = foundObj.choices.find(
-              (c) => c.label === fieldToUpdate.label,
-            );
-            if (choice) {
-              // Add or remove the choice from the selected array based on checkbox state
-              const choiceIndex = foundObj.selected.findIndex(
-                (c) => c.label === choice.label,
-              );
-              if ((e.target as HTMLInputElement).checked) {
-                if (choiceIndex === -1) {
-                  foundObj.selected.push(choice);
-                }
-              } else {
-                if (choiceIndex !== -1) {
-                  foundObj.selected.splice(choiceIndex, 1);
-                }
-              }
-            }
-          } else {
-            foundObj.selected = fieldToUpdate;
-          }
+          foundObj.selected = fieldToUpdate;
         }
         return [...prev];
       });
@@ -309,10 +346,8 @@ export const FortroendemodellenFrom = () => {
             (item) => item.value === e.target.value,
           );
           if (selectedItem) {
-            // @ts-expect-error - TODO: fix this waldo
-
             foundObj.selected = selectedItem;
-            foundObj.value = selectedItem.value;
+            foundObj.value = selectedItem.value ?? "";
           }
         }
         return [...prev];
@@ -370,11 +405,11 @@ export const FortroendemodellenFrom = () => {
   }
 
   return (
-    <Container>
+    <>
       {formDataArray[0] && (
         <div
           id="FormPage"
-          className="mb-xl grid grid-cols-1 lg:max-w-xl lg:grid-cols-[200px_620px_1fr] lg:gap-x-xl"
+          className="mb-xl flex flex-col gap-lg lg:flex-row lg:gap-xl"
         >
           {page !== 0 && formSteps.length > 0 && (
             <FormNav
@@ -412,7 +447,7 @@ export const FortroendemodellenFrom = () => {
                 return (
                   <div
                     key={`page${index}`}
-                    className="col-span-1 col-start-1 row-start-2 max-w-md lg:col-start-2 lg:row-start-1"
+                    className="col-span-1 col-start-1 row-start-2 w-full max-w-md lg:col-start-2 lg:row-start-1"
                   >
                     <span ref={scrollRef} />
 
@@ -420,6 +455,7 @@ export const FortroendemodellenFrom = () => {
                       {t("pages|form$questions")}
                     </span>
                     <RenderForm
+                      fortroendemodellen
                       UpdateFormDataArray={UpdateFormDataArray}
                       formDataArray={data}
                       pageIndex={index}
@@ -440,6 +476,7 @@ export const FortroendemodellenFrom = () => {
 
             {page === formDataArray.length + 1 && (
               <FormEnding
+                countQuestionsPerSection={countQuestionsPerSection()}
                 formData={formData as FormData}
                 formDataArray={formDataArray}
               />
@@ -447,7 +484,11 @@ export const FortroendemodellenFrom = () => {
           </>
         </div>
       )}
-      {formData?.blocks && <BlockList blocks={formData.blocks} />}
-    </Container>
+      {page === formDataArray.length + 1 && (
+        <div className="lg:max-w-screen-xl lg:mx-xl">
+          {formData?.blocks && <BlockList formPage blocks={formData.blocks} />}
+        </div>
+      )}
+    </>
   );
 };
