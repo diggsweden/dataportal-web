@@ -7,7 +7,9 @@ import {
 } from "react";
 
 import { ParseDocToHtml } from "@/components/typography/parse-doc-to-html";
+import { browserclient } from "@/graphql";
 import { FormDataFragment } from "@/graphql/__generated__/operations";
+import { FOETROENDEMODELLEN_FORM_CLIENT_QUERY } from "@/graphql/formQuery";
 import { FormTypes } from "@/types/form";
 
 /* Import json */
@@ -80,6 +82,7 @@ export const ImportFromJsonFile = (
     newArr.forEach((page) => {
       page.forEach((field) => {
         if ("value" in field) {
+          // @ts-expect-error - TODO: fix this waldo
           field.number = questionNumber;
           questionNumber++;
         }
@@ -139,7 +142,7 @@ export const GetLocalstorageData = (
     let tmpArr = data.map((item) => {
       item.forEach((data) => {
         if ("choices" in data) {
-          data.selected = data.selected;
+          data.selected = data.selected || null;
         }
       });
       return item;
@@ -182,4 +185,24 @@ export const handleScroll = (scrollRef: RefObject<HTMLSpanElement>) => {
       scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
+};
+
+export const fetchFortroendemodellenForm = async (locale: string) => {
+  const { data, error } = await browserclient.query({
+    query: FOETROENDEMODELLEN_FORM_CLIENT_QUERY,
+    variables: { locale },
+    fetchPolicy: "no-cache",
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  const formData = data?.dataportal_Digg_FoertroendemodellenForm;
+
+  if (!formData) {
+    throw new Error("No form data returned");
+  }
+
+  return formData;
 };

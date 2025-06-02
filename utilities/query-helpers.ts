@@ -35,7 +35,7 @@ import {
 } from "@/graphql/__generated__/operations";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import { ROOT_AGGREGATE_QUERY } from "@/graphql/aggregateQuery";
-import { FORM_QUERY } from "@/graphql/formQuery";
+import { FORM_QUERY, FOETROENDEMODELLEN_FORM_QUERY } from "@/graphql/formQuery";
 import { MODULE_QUERY } from "@/graphql/moduleQuery";
 import { NAVIGATION_QUERY } from "@/graphql/navigationQuery";
 import {
@@ -894,6 +894,45 @@ export const getForm = async (identifier: string, locale?: string) => {
     logGqlErrors(error);
     return {
       props: { type: "Form" } as FormResponse,
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
+    };
+  }
+};
+
+export const getFoertroendemodellenForm = async (locale?: string) => {
+  const revalidate = true;
+
+  try {
+    const { data, error } = await client.query({
+      query: FOETROENDEMODELLEN_FORM_QUERY,
+      variables: { filter: { locale } },
+      fetchPolicy: "no-cache",
+    });
+
+    if (error) {
+      console.error("GraphQL error:", error);
+      throw error;
+    }
+
+    const formData = data?.dataportal_Digg_FoertroendemodellenForm;
+
+    if (!formData) {
+      console.error("No form data returned from GraphQL");
+      throw new Error("No form data returned");
+    }
+
+    return {
+      props: { ...formData, type: "FörtroendemodellenForm" },
+      ...(revalidate
+        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+        : {}),
+    };
+  } catch (error) {
+    logGqlErrors(error);
+    return {
+      props: { type: "FörtroendemodellenForm" },
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
         : {}),

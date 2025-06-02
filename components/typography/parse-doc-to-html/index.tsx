@@ -173,7 +173,7 @@ export const ParseDocToHtml = (formData: FormTypes[][]) => {
               case "dataportal_Digg_FormRadio":
                 return `<div class="form-group">
                                 <p><strong>${field.number}. ${field.title}</strong></p>
-                                <p><strong><i>Val: ${field.selected.label}</i></strong></p>
+                                <p><strong><i>Val: ${field.selected?.label}</i></strong></p>
                                 <p>${field.value}</p>
                             </div>`;
 
