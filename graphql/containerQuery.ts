@@ -22,13 +22,7 @@ export const CONTAINER_QUERY = gql`
 `;
 
 export const CONTAINER_MULTI_QUERY = gql`
-  query MultiContainers(
-    $containerGroup: dataportal_QueryContainerArgs
-    $container: dataportal_QueryContainerArgs
-  ) {
-    containerGroup: dataportal_Digg_Containers(filter: $containerGroup) {
-      ...ContainerData
-    }
+  query MultiContainers($container: dataportal_QueryContainerArgs) {
     container: dataportal_Digg_Containers(filter: $container) {
       ...ContainerData
     }
