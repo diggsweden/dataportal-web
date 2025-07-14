@@ -26,13 +26,25 @@ export const MODULE_LIST_DATA_FRAGMENT = gql`
   }
 `;
 
+export const PARENT_SIMPLIFIED_FRAGMENT = gql`
+  fragment ParentSimplified on dataportal_Digg_Parent_Simplified {
+    slug
+    name
+    heading
+  }
+`;
+
 export const PARENT_FRAGMENT = gql`
   fragment Parent on dataportal_Digg_Parent {
     heading
     preamble
     slug
     name
+    pageNavigation {
+      ...ParentSimplified
+    }
   }
+  ${PARENT_SIMPLIFIED_FRAGMENT}
 `;
 
 export const CONTAINER_FRAGMENT = gql`
@@ -58,14 +70,15 @@ export const CONTAINER_FRAGMENT = gql`
     parent {
       ...Parent
     }
-    containerGroup {
-      ...Parent
+    pageNavigation {
+      ...ParentSimplified
     }
     seo {
       ...SeoData
     }
   }
   ${PARENT_FRAGMENT}
+  ${PARENT_SIMPLIFIED_FRAGMENT}
   ${MODULE_LIST_DATA_FRAGMENT}
 `;
 
