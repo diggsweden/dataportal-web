@@ -999,14 +999,6 @@ export class EntrystoreService {
         .find(entry.getResourceURI(), "dcat:inSeries")
         .map((stmt: { getValue: () => string }) => stmt.getValue());
 
-      const test = await this.entryStore
-        .newSolrQuery()
-        .publicRead(true)
-        .uriFacet("foaf:name", true)
-        .list();
-      console.log("test", test);
-      console.log("test", test.getFacets());
-
       const datasetSeriesEntries =
         await this.entryStoreUtil.loadEntriesByResourceURIs(
           datasetSeriesUris,
