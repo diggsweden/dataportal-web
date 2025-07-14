@@ -297,6 +297,7 @@ export class EntrystoreService {
         title: query,
         description: query,
         "tag.literal": query,
+        "related.metadata.predicate.literal.893797ba": query, // This searches for the name of the publisher
         all: query,
       });
     }
@@ -997,6 +998,14 @@ export class EntrystoreService {
       const datasetSeriesUris = metadata
         .find(entry.getResourceURI(), "dcat:inSeries")
         .map((stmt: { getValue: () => string }) => stmt.getValue());
+
+      const test = await this.entryStore
+        .newSolrQuery()
+        .publicRead(true)
+        .uriFacet("foaf:name", true)
+        .list();
+      console.log("test", test);
+      console.log("test", test.getFacets());
 
       const datasetSeriesEntries =
         await this.entryStoreUtil.loadEntriesByResourceURIs(

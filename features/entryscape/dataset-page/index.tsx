@@ -73,7 +73,7 @@ export const DatasetPage: FC = () => {
             <div className="mb-md flex flex-col gap-md">
               {entry.organisationLink ? (
                 <Link
-                  className="text-lg font-normal text-green-600 hover:!no-underline"
+                  className="w-fit text-lg font-normal text-green-600 hover:!no-underline"
                   href={entry.organisationLink}
                 >
                   {entry.publisher}

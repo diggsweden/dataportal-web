@@ -51,7 +51,7 @@ export const ConceptPage: FC = () => {
         <div className="flex w-full max-w-md flex-col">
           {entry.organisationLink ? (
             <Link
-              className="mb-lg text-lg font-normal text-green-600 hover:!no-underline"
+              className="mb-lg w-fit text-lg font-normal text-green-600 hover:!no-underline"
               href={entry.organisationLink}
             >
               {entry.publisher}
