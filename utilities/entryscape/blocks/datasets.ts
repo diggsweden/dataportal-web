@@ -187,7 +187,7 @@ export const datasetBlocks = (
       block: "aboutDataset",
       extends: "template",
       template:
-        '<div class="about_dataset">' +
+        '<div class="about_dataset space-y-lg">' +
         '<div class="view_metadata_group">' +
         '{{viewMetadata template="dcat:Dataset" filterpredicates="' +
         filterAllExceptContactAndLandingPage.join(",") +

@@ -64,7 +64,7 @@ export const SpecificationPage: FC = () => {
             {entry.organisationLink ? (
               <Link
                 data-test-id="publisher"
-                className="mb-lg text-lg font-normal text-green-600 hover:!no-underline"
+                className="mb-lg w-fit text-lg font-normal text-green-600 hover:!no-underline"
                 href={entry.organisationLink}
               >
                 {entry.publisher}

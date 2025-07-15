@@ -297,6 +297,7 @@ export class EntrystoreService {
         title: query,
         description: query,
         "tag.literal": query,
+        "related.metadata.predicate.literal.893797ba": query, // This searches for the name of the publisher
         all: query,
       });
     }
