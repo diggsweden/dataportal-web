@@ -2,6 +2,7 @@ import reactenv from "@beam-australia/react-env";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
+import Script from "next/script";
 import { FC, useState, useContext } from "react";
 
 import { EnvSettings, SettingsUtil } from "@/env";
@@ -107,7 +108,8 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
 
       {/* Matomo Tag Manager */}
       {activateMatomo && (
-        <script
+        <Script
+          id="matomo-tag-manager"
           dangerouslySetInnerHTML={{
             __html: `
                 var _mtm = window._mtm = window._mtm || [];

@@ -6,6 +6,7 @@ import Document, {
   Main,
   NextScript,
 } from "next/document";
+import Script from "next/script";
 
 import { LocalStoreProvider } from "@/providers/local-store-provider";
 import {
@@ -53,12 +54,12 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head nonce={SettingsUtil.getCurrent().nonce}>
-          <script
+          <Script
             nonce={SettingsUtil.getCurrent().nonce}
             type="text/javascript"
             src="/__ENV.js"
+            strategy="beforeInteractive"
           />
-
           <link
             type="text/css"
             rel="stylesheet"

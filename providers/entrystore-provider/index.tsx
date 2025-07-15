@@ -1,6 +1,7 @@
 import { Entry, EntryStore, Metadata } from "@entryscape/entrystore-js";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import Script from "next/script";
 import useTranslation from "next-translate/useTranslation";
 import { createContext, FC, ReactNode, useEffect, useState } from "react";
 
@@ -591,6 +592,24 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         />
         <meta name="robots" content="index, follow" />
       </Head>
+      <Script src={state.env.ENTRYSCAPE_BLOCKS_URL}></Script>
+      {pageType !== "mqa" ? (
+        <Script
+          src={
+            lang === "sv"
+              ? state.env.ENTRYSCAPE_OPENDATA_SV_URL
+              : state.env.ENTRYSCAPE_OPENDATA_EN_URL
+          }
+        ></Script>
+      ) : (
+        <Script
+          src={
+            lang === "sv"
+              ? state.env.ENTRYSCAPE_MQA_SV_URL
+              : state.env.ENTRYSCAPE_MQA_EN_URL
+          }
+        ></Script>
+      )}
       {children}
     </EntrystoreContext.Provider>
   );
