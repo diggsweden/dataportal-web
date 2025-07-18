@@ -123,7 +123,7 @@ export const datasetBlocks = (
       template:
         '<span class="border-t border-brown-600 pt-md flex flex-col">' +
         '{{view rdformsid="dcat:endpointDescription,dcat:dcterms:type_ds"}}' +
-        '<button class="button--primary button--large flex items-center !no-underline w-fit">' +
+        '<button class="button--primary button--large flex items-center !no-underline w-fit !mt-lg">' +
         '{{link class="linkInBtn noUnderline" namedclick="dataservice-link" content="' +
         t("pages|datasetpage$read_about_api") +
         '"}}' +
@@ -159,8 +159,9 @@ export const datasetBlocks = (
         '<span class="text-textSecondary text-md"></i>API</span>' +
         "{{/ifprop}}" +
         "</div>" +
-        "<span>{{text fallback='<span class=\\'distributionNoName\\'>'}}</span>" +
+        "<span>{{text fallback='<span class=\\'distributionNoName\\'>" +
         t("pages|datasetpage$no_title") +
+        "</span>'}}" +
         "</span>" +
         "</span>" +
         "<div class='flex flex-wrap justify-between items-end md:items-center mt-md md:mt-lg gap-lg'>" +

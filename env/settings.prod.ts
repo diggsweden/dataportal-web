@@ -35,7 +35,7 @@ export class Settings_Prod extends EnvSettings {
 
   ENTRYSCAPE_SITEMAP_JSON_URL = "https://admin.dataportal.se/sitemap.json";
 
-  API_DETECTION_PATH = "https://admin.dataportal.se/detectedapis.json";
+  API_DETECTION_PATH = "https://admin.dataportal.se/detectapis.json";
 
   CANONICAL_URL = "https://www.dataportal.se";
 
