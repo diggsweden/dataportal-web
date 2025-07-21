@@ -1,9 +1,4 @@
-import url from "url";
-
-import fetchEnhanced from "fetch-enhanced";
-import { HttpsProxyAgent } from "https-proxy-agent";
 import { GetServerSideProps } from "next/types";
-import nodeFetch from "node-fetch";
 
 import { SettingsUtil } from "../env";
 import { client, CONTAINER_QUERY } from "../graphql";
@@ -22,8 +17,6 @@ import {
   GOOD_EXAMPLE_QUERY,
   NEWS_ITEM_QUERY,
 } from "../graphql/publicationQuery";
-
-const proxyfetch = fetchEnhanced(nodeFetch);
 
 const env = SettingsUtil.create();
 
@@ -63,41 +56,13 @@ const slug = (
  * @returns array of sitemap-object
  */
 const getDatasets = async () => {
-  //check for proxy config
-  const proxy_url = process.env.HTTP_PROXY || "";
-  const proxy_user = process.env.HTTP_PROXY_USER;
-  const proxy_pass = process.env.HTTP_PROXY_PASS;
+  const response = await fetch(env.ENTRYSCAPE_SITEMAP_JSON_URL);
 
-  if (proxy_url && proxy_url.length > 0) {
-    const proxy_uri = url.parse(proxy_url);
-
-    //add auth to proxy if set in env
-    if (proxy_user && proxy_pass) {
-      proxy_uri.auth = `${proxy_user}:${proxy_pass}`;
-    }
-
-    const proxy = new HttpsProxyAgent(proxy_uri);
-
-    const response = await proxyfetch(env.ENTRYSCAPE_SITEMAP_JSON_URL, {
-      agent: proxy,
-    });
-
-    if (response.ok && response.status === 200) {
-      const data = await response.json();
-      return data;
-    } else {
-      console.error({ message: "proxy fetch error", response });
-      return [];
-    }
+  if (response.ok && response.status === 200) {
+    const data = await response.json();
+    return data;
   } else {
-    const response = await fetch(env.ENTRYSCAPE_SITEMAP_JSON_URL);
-
-    if (response.ok && response.status === 200) {
-      const data = await response.json();
-      return data;
-    } else {
-      return [];
-    }
+    return [];
   }
 };
 
@@ -177,93 +142,94 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const staticPaths = [
     "",
-    "/datasets?datasets?p=1&q=&s=2&t=20&f=&rt=dataset%24data_service%24dataset_series",
-    "/concepts?p=1&q=&s=2&t=20&f=&rt=term",
-    "/specifications?specifications?p=1&q=&s=2&t=20&f=&rt=spec_standard%24spec_profile",
+    "/datasets?q=&amp;f=",
+    "/concepts?q=&amp;f=",
+    "/specifications?q=&amp;f=",
+    "/organisations?q=&amp;f=",
     "/statistik",
     "/en/statistics",
     "/metadatakvalitet",
   ];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    ${
-      Array.isArray(staticPaths) &&
-      staticPaths
-        .map((path) => {
-          return `
-        <url>
-            <loc>${env.CANONICAL_URL}${path}</loc>
-            <lastmod>${new Date().toISOString()}</lastmod>
-            <changefreq>monthly</changefreq>
-            <priority>1.0</priority>
-        </url>
-    `;
-        })
-        .join("")
-    }
-    ${
-      Array.isArray(allContainers) &&
-      allContainers
-        .map((c) => {
-          return `
-        <url>
+      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+      ${
+        Array.isArray(staticPaths) &&
+        staticPaths
+          .map((path) => {
+            return `
+          <url>
+              <loc>${env.CANONICAL_URL}${path}</loc>
+              <lastmod>${new Date().toISOString()}</lastmod>
+              <changefreq>monthly</changefreq>
+              <priority>1.0</priority>
+          </url>
+      `;
+          })
+          .join("")
+      }
+      ${
+        Array.isArray(allContainers) &&
+        allContainers
+          .map((c) => {
+            return `
+          <url>
             <loc>${env.CANONICAL_URL}${slug(c)}</loc>
-            <lastmod>${c?.updatedAt}</lastmod>
-            <changefreq>monthly</changefreq>
-            <priority>1.0</priority>
-        </url>
-    `;
-        })
-        .join("")
-    }
-    ${
-      Array.isArray(allNewsItems) &&
-      allNewsItems
-        .map((n) => {
-          return `
-        <url>
+              <lastmod>${c?.updatedAt}</lastmod>
+              <changefreq>monthly</changefreq>
+              <priority>1.0</priority>
+          </url>
+      `;
+          })
+          .join("")
+      }
+      ${
+        Array.isArray(allNewsItems) &&
+        allNewsItems
+          .map((n) => {
+            return `
+          <url>
             <loc>${env.CANONICAL_URL}${slug(n)}</loc>
-            <lastmod>${n?.updatedAt}</lastmod>
-            <changefreq>monthly</changefreq>
-            <priority>1.0</priority>
-        </url>
-    `;
-        })
-        .join("")
-    }
-    ${
-      Array.isArray(allGoodExamples) &&
-      allGoodExamples
-        .map((g) => {
-          return `
-        <url>
+              <lastmod>${n?.updatedAt}</lastmod>
+              <changefreq>monthly</changefreq>
+              <priority>1.0</priority>
+          </url>
+      `;
+          })
+          .join("")
+      }
+      ${
+        Array.isArray(allGoodExamples) &&
+        allGoodExamples
+          .map((g) => {
+            return `
+          <url>
             <loc>${env.CANONICAL_URL}${slug(g)}</loc>
-            <lastmod>${g?.updatedAt}</lastmod>
-            <changefreq>monthly</changefreq>
-            <priority>1.0</priority>
-        </url>
+              <lastmod>${g?.updatedAt}</lastmod>
+              <changefreq>monthly</changefreq>
+              <priority>1.0</priority>
+          </url>
+      `;
+          })
+          .join("")
+      }
+      ${
+        Array.isArray(datasets) &&
+        datasets
+          .map((d) => {
+            return `
+          <url>
+              <loc>${env.CANONICAL_URL}/datasets/${d.cid}_${d.eid}</loc>
+              <lastmod>${d.modified}</lastmod>
+              <changefreq>monthly</changefreq>
+              <priority>1.0</priority>
+          </url>
+      `;
+          })
+          .join("")
+      }
+      </urlset>
     `;
-        })
-        .join("")
-    }
-    ${
-      Array.isArray(datasets) &&
-      datasets
-        .map((d) => {
-          return `
-        <url>
-            <loc>${env.CANONICAL_URL}/datasets/${d.cid}_${d.eid}</loc>
-            <lastmod>${d.modified}</lastmod>
-            <changefreq>monthly</changefreq>
-            <priority>1.0</priority>
-        </url>
-    `;
-        })
-        .join("")
-    }
-    </urlset>
-  `;
 
   res.setHeader(
     "Cache-Control",
