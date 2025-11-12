@@ -306,6 +306,12 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                               value.facetValues,
                               search.request.facetValues,
                             )}
+                            onOpen={
+                              value.predicate ===
+                              "http://purl.org/dc/terms/publisher"
+                                ? () => search.fetchFacetNames(key)
+                                : undefined
+                            }
                           >
                             <div className="absolute z-10 mr-lg mt-sm max-h-[200px] w-[calc(100vw-4rem)] overflow-y-auto overscroll-contain border border-brown-200 bg-white shadow-md md:max-h-[600px] md:w-full md:max-w-[20.625rem]">
                               <FilterSearch

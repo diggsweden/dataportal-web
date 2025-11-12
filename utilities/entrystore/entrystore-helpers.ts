@@ -81,37 +81,24 @@ export const getUriNames = async (
   facetValues: string[],
   esu: EntryStoreUtil,
   t: Translate,
-  property?: string,
+  _property?: string,
   hasCustomProperties?: boolean,
 ) => {
   const cache = entryCache.get();
-  // Filter out null values and already cached URIs
   const uniqueUris = Array.from(new Set(facetValues)).filter(
-    (uri): uri is string => uri !== null && uri !== "" && !cache.has(uri),
+    (uri): uri is string =>
+      uri !== null && uri !== "" && (!cache.has(uri) || cache.get(uri) === uri),
   );
 
-  if (uniqueUris.length === 0) {
-    return cache;
-  }
+  if (!uniqueUris.length) return cache;
 
   if (hasCustomProperties) {
-    uniqueUris.forEach((uri) => {
-      cache.set(uri, t(`resources|${uri}`));
-    });
+    uniqueUris.forEach((uri) => cache.set(uri, t(`resources|${uri}`)));
     return cache;
   }
 
   try {
-    // Load all entries in one batch with a single request
-    const entries = await esu.loadEntriesByResourceURIs(
-      uniqueUris,
-      null,
-      true,
-      property,
-    );
-
-    // TODO: This is not efficient, we need to find another way in handling this
-    // Process all entries at once
+    const entries = await esu.loadEntriesByResourceURIs(uniqueUris, null, true);
     entries.forEach((entry: any) => {
       if (entry) {
         const metadata = entry.getMetadata();
@@ -122,24 +109,17 @@ export const getUriNames = async (
           getLocalizedValue(metadata, "skos:prefLabel", uri) ||
           getLocalizedValue(metadata, "rdfs:label", uri) ||
           uri;
-
         cache.set(uri, name);
       }
     });
-
-    // Cache any URIs that weren't found
     uniqueUris.forEach((uri) => {
-      if (!cache.has(uri)) {
-        cache.set(uri, uri);
-      }
+      if (!cache.has(uri)) cache.set(uri, uri);
     });
-
-    return cache;
   } catch (error) {
     console.error("Error fetching URI names:", error);
     uniqueUris.forEach((uri) => cache.set(uri, uri));
-    return cache;
   }
+  return cache;
 };
 
 export function formatDatasetUrl(
