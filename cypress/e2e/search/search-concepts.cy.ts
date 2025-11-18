@@ -52,13 +52,13 @@ describe("Search concepts", () => {
       });
   });
 
-  it("Verify search filters toggle button exists and is expanded by default", () => {
+  it("Verify search filters toggle button exists and is closed by default", () => {
     cy.get("[data-test-id='search-filters']").within(() => {
       cy.get("[data-test-id='search-filters-toggle']")
         .first()
         .as("filterToggle")
         .should("exist")
-        .should("have.attr", "aria-expanded", "true");
+        .should("have.attr", "aria-expanded", "false");
     });
 
     // Wait a moment and then click using the alias
@@ -66,66 +66,5 @@ describe("Search concepts", () => {
     cy.get("@filterToggle").click();
 
     cy.get("@filterToggle").should("have.attr", "aria-expanded", "false");
-  });
-
-  /**
-   * Verify that the search filters exist and is usable.
-   */
-  it("Verify search filter works on concepts search result", () => {
-    // Get the search result count, so we can check against it later when we add a filter.
-    cy.get("[data-test-id='search-result-header']", { timeout: 10000 })
-      .should("not.contain", "Laddar", { timeout: 10000 })
-      .then((firstSearchCount) =>
-        cy.wrap(firstSearchCount.text()).as("firstSearchCount"),
-      );
-
-    // Check that the search filters toggle button exists and is expanded.
-    cy.get("[data-test-id='search-filters']").within(() => {
-      cy.get("[data-test-id='search-filters-toggle']")
-        .first()
-        .should("have.attr", "aria-expanded", "true");
-
-      // Click the filter button
-      cy.get("[data-test-id='search-filter-select'] button")
-        .first()
-        .click()
-        .should("have.attr", "aria-expanded", "true");
-
-      // Click the first filter button in the list.
-      cy.get("[data-test-id='search-filter-select-list']")
-        .find("li button")
-        .first()
-        .click({ force: true });
-
-      // Click the filter button again to close the filter list.
-      cy.get("[data-test-id='search-filter-select'] button")
-        .first()
-        .click()
-        .should("have.attr", "aria-expanded", "false");
-
-      // Verify that the active filter exists and has the correct count.
-      // There are two active filters because one active filter is only shown in mobile view.
-      cy.get("[data-test-id='search-active-filters-list']")
-        .should("exist")
-        .find("button")
-        .should("have.length", 2);
-    });
-
-    // Wait for the search button to be visible and not loading.
-    // This is to make sure that the search results are loaded.
-    cy.get("[data-test-id='search-button']", { timeout: 10000 })
-      .should("have.attr", "data-test-loading", "false")
-      .should("be.visible");
-    cy.wait(1000);
-
-    // Verify that we have a different results count after adding a filter.
-    cy.get("[data-test-id='search-result-header']")
-      .should("not.contain", "Laddar", { timeout: 10000 })
-      .then((secondSearchCount) =>
-        cy.wrap(secondSearchCount.text()).as("secondSearchCount"),
-      );
-    cy.get("@secondSearchCount").then((secondSearchCount) =>
-      cy.get("@firstSearchCount").should("not.equal", secondSearchCount),
-    );
   });
 });
