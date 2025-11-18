@@ -306,6 +306,12 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                               value.facetValues,
                               search.request.facetValues,
                             )}
+                            onOpen={
+                              value.predicate ===
+                              "http://purl.org/dc/terms/publisher"
+                                ? () => search.fetchFacetNames(key)
+                                : undefined
+                            }
                           >
                             <div className="absolute z-10 mr-lg mt-sm max-h-[200px] w-[calc(100vw-4rem)] overflow-y-auto overscroll-contain border border-brown-200 bg-white shadow-md md:max-h-[600px] md:w-full md:max-w-[20.625rem]">
                               <FilterSearch
@@ -324,55 +330,75 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                 role="listbox"
                                 aria-multiselectable="true"
                               >
-                                {facetValues
-                                  // .filter((v) => v.count > 0)
-                                  .map(
-                                    (
-                                      facetValue: SearchFacetValue,
-                                      index: number,
-                                    ) => (
+                                {search.loadingFacets &&
+                                value.predicate ===
+                                  "http://purl.org/dc/terms/publisher" &&
+                                facetValues.some(
+                                  (v) => !v.title || v.title === v.resource,
+                                )
+                                  ? // Show skeleton while fetching organization names
+                                    Array.from({
+                                      length: Math.min(facetValues.length, 10),
+                                    }).map((_, index) => (
                                       <li
-                                        key={index}
+                                        key={`skeleton-${index}`}
                                         role="option"
-                                        aria-selected={selected(
-                                          key,
-                                          facetValue,
-                                        )}
+                                        aria-busy="true"
+                                        aria-selected={false}
                                       >
-                                        <button
-                                          className={`focus--in group relative flex w-full items-center break-all py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
-                                            selected(key, facetValue) &&
-                                            "font-strong"
-                                          }`}
-                                          onClick={() => {
-                                            doSearch(key, facetValue);
-                                          }}
-                                          role="checkbox"
-                                          aria-checked={selected(
+                                        <div className="animate-pulse py-md pl-md pr-[3rem]">
+                                          <div className="rounded h-md w-3/4 bg-brown-200" />
+                                          <div className="rounded mt-xs h-sm w-1/4 bg-brown-100" />
+                                        </div>
+                                      </li>
+                                    ))
+                                  : facetValues.map(
+                                      (
+                                        facetValue: SearchFacetValue,
+                                        index: number,
+                                      ) => (
+                                        <li
+                                          key={index}
+                                          role="option"
+                                          aria-selected={selected(
                                             key,
                                             facetValue,
                                           )}
                                         >
-                                          {facetValue.title ||
-                                            facetValue.resource}{" "}
-                                          ({facetValue.count})
-                                          {/* Decorative checkbox icon */}
-                                          <span
-                                            className="absolute right-md top-1/2 -translate-y-1/2 "
-                                            aria-hidden="true"
+                                          <button
+                                            className={`focus--in group relative flex w-full items-center break-all py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
+                                              selected(key, facetValue) &&
+                                              "font-strong"
+                                            }`}
+                                            onClick={() => {
+                                              doSearch(key, facetValue);
+                                            }}
+                                            role="checkbox"
+                                            aria-checked={selected(
+                                              key,
+                                              facetValue,
+                                            )}
                                           >
-                                            <SearchCheckboxFilterIcon
-                                              isChecked={selected(
-                                                key,
-                                                facetValue,
-                                              )}
-                                              iconSize={iconSize}
-                                            />
-                                          </span>
-                                        </button>
-                                      </li>
-                                    ),
-                                  )}
+                                            {facetValue.title ||
+                                              facetValue.resource}{" "}
+                                            ({facetValue.count})
+                                            {/* Decorative checkbox icon */}
+                                            <span
+                                              className="absolute right-md top-1/2 -translate-y-1/2 "
+                                              aria-hidden="true"
+                                            >
+                                              <SearchCheckboxFilterIcon
+                                                isChecked={selected(
+                                                  key,
+                                                  facetValue,
+                                                )}
+                                                iconSize={iconSize}
+                                              />
+                                            </span>
+                                          </button>
+                                        </li>
+                                      ),
+                                    )}
                               </ul>
 
                               {value.facetValues.length > value.show && (
