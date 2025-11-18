@@ -93,17 +93,12 @@ const findFilters = (
   categoryFilters: SearchFacetValue[],
   checkedFilters: SearchFacetValue[] | undefined,
 ) => {
-  if (!checkedFilters) return "";
-
-  const allTitles = categoryFilters.map((item) => item.title);
-  const checkedTitles = checkedFilters.map((item) => item.title);
-  const union = allTitles.filter((x) => checkedTitles.includes(x));
-
-  if (union.length > 0) {
-    return " (" + union.length + ")";
-  }
-
-  return "";
+  if (!checkedFilters?.length) return "";
+  const allResources = new Set(categoryFilters.map((v) => v.resource));
+  const count = checkedFilters.filter((v) =>
+    allResources.has(v.resource),
+  ).length;
+  return count > 0 ? ` (${count})` : "";
 };
 
 /**
@@ -121,7 +116,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
 }) => {
   const { t } = useTranslation();
   const { iconSize } = useContext(SettingsContext);
-  const [showFilter, setShowFilter] = useState(true);
+  const [showFilter, setShowFilter] = useState(false);
   const [showFilterInfo, setShowFilterInfo] = useState(false);
   const [inputFilter, setInputFilter] = useState<InputFilter>({});
   const ref = useRef<HTMLDivElement>(null);
@@ -151,12 +146,8 @@ export const SearchFilters: FC<SearchFilterProps> = ({
   }, [showFilter]);
 
   useEffect(() => {
-    if (window.innerWidth < 600) {
-      setShowFilter(false);
-    } else {
-      setShowFilter(true);
-    }
-  }, []);
+    if (search.request.facetValues?.length) setShowFilter(true);
+  }, [search.request.facetValues]);
 
   const selected = (key: string, facetValue: SearchFacetValue) => {
     return search.facetSelected(key, facetValue.resource);
@@ -286,15 +277,20 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                   .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
                   .map(([key, value], idx: number) => {
                     const shouldFetchMore = value.show <= value.count;
-                    const show = (value && value.show) || 20;
+                    const show = value?.show || 20;
+                    const uniqueFacetValues = Array.from(
+                      new Map(
+                        value?.facetValues.map((v) => [v.resource, v]),
+                      ).values(),
+                    );
                     const facetValues = inputFilter[key]
-                      ? value?.facetValues.filter(
+                      ? uniqueFacetValues.filter(
                           (v) =>
                             v.title
                               ?.toLowerCase()
                               .includes(inputFilter[key].toLowerCase()),
                         )
-                      : value?.facetValues.slice(0, show);
+                      : uniqueFacetValues.slice(0, show);
 
                     if (!value.customFilter && !value.customSearch) {
                       return (
