@@ -245,7 +245,9 @@ export const FORM_ELEMENT_FRAGMENT = gql`
         }
       }
       ... on dataportal_Digg_FormDropdown {
-        items
+        items {
+          value
+        }
       }
     }
   }
