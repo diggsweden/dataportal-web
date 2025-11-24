@@ -55,7 +55,8 @@
     "api": "About API"
   },
   "dataset-series": {
-    "data-serie": "Dataset serie"
+    "data-serie": "Dataset serie",
+    "about-dataset-serie": "About dataset serie"
   },
   "datasetpage": {
     "about-dataset": "About dataset",

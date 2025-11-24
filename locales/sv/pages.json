@@ -55,7 +55,8 @@
     "api": "Om API"
   },
   "dataset-series": {
-    "data-serie": "Datamängdsserie"
+    "data-serie": "Datamängdsserie",
+    "about-dataset-serie": "Om datamängdsserie"
   },
   "datasetpage": {
     "about-dataset": "Om datamängd",
