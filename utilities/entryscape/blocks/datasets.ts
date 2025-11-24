@@ -206,6 +206,29 @@ export const datasetBlocks = (
         "</div>" +
         "</div>",
     },
+    {
+      block: "aboutDatasetSeries",
+      extends: "template",
+      template:
+        '<div class="about_dataset">' +
+        '<div class="view_metadata_group">' +
+        '{{viewMetadata template="dcat:DatasetSeries" filterpredicates="' +
+        filterAllExceptContactAndLandingPage.join(",") +
+        '"}}' +
+        "</div>" +
+        '<div class="keyword">' +
+        "{{keyword}}" +
+        "</div>" +
+        '<div class="theme">' +
+        "{{theme}}" +
+        "</div>" +
+        '<div class="view_metadata_group">' +
+        '{{viewMetadata template="dcat:DatasetSeries" filterpredicates="' +
+        filterContactAndLandingPage.join(",") +
+        '"}}' +
+        "</div>" +
+        "</div>",
+    },
   ];
 };
 
