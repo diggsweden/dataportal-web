@@ -275,6 +275,29 @@ export const DatasetPage: FC = () => {
                       )}
                     </div>
                   )}
+                {/* Download formats */}
+                {entry.downloadFormats && entry.downloadFormats?.length > 0 && (
+                  <div data-test-id="download-formats">
+                    <Heading
+                      className="font-strong text-textSecondary"
+                      level={3}
+                      size={"xxs"}
+                    >
+                      {t("pages|datasetpage$download_link")}
+                    </Heading>
+                    <div className="flex flex-col gap-xs">
+                      {entry.downloadFormats.map(({ title, url }, idx) => (
+                        <a
+                          key={idx}
+                          href={url}
+                          className="text-sm text-green-600 hover:no-underline"
+                        >
+                          {title}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -320,30 +343,6 @@ export const DatasetPage: FC = () => {
                   data-entryscape-onecol="true"
                   data-entryscape-filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi"
                 />
-
-                {/* Download formats */}
-                {entry.downloadFormats && entry.downloadFormats?.length > 0 && (
-                  <div data-test-id="download-formats">
-                    <Heading
-                      className="font-strong text-textSecondary"
-                      level={3}
-                      size={"xxs"}
-                    >
-                      {t("pages|datasetpage$download_link")}
-                    </Heading>
-                    <div className="flex flex-col gap-xs">
-                      {entry.downloadFormats.map(({ title, url }, idx) => (
-                        <a
-                          key={idx}
-                          href={url}
-                          className="text-sm text-green-600 hover:no-underline"
-                        >
-                          {title}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </div>

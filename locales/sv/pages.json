@@ -55,16 +55,18 @@
     "api": "Om API"
   },
   "dataset-series": {
-    "data-serie": "Datamängdsserie"
+    "data-serie": "Datamängdsserie",
+    "about-dataset-serie": "Om datamängdsserie"
   },
   "datasetpage": {
     "about-dataset": "Om datamängd",
     "catalog": "Hämtad från katalog",
-    "category": "Kategori",
+    "category_tag": "Kategori",
+    "categories": "Kategorier",
     "contact-publisher": "Har du frågor eller synpunkter?",
     "contact-publisher-text": "Kontakta publicerande organisation för frågor, synpunkter och önskemål kring informationen på den här sidan. ",
     "contact-publisher-text2": "Du kan även vända dig till dataportalens ",
-    "dataservice": "Dataservice",
+    "dataservice": "Datatjänst",
     "download-dataset": "Hämta datamängd",
     "download-metadata-as": "Ladda ner metadata som",
     "download_link": "Ladda ner",
@@ -89,6 +91,7 @@
   "datasets": {
     "datasets": "datamängder",
     "search": "Sök Data & Api:er",
+    "dataset_title": "Datamängd",
     "social_meta_description": "Data & API:er på Sveriges Dataportal",
     "social_meta_title": "Sök data & API:er"
   },

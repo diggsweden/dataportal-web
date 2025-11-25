@@ -56,7 +56,7 @@ export const datasetBlocks = (
         t("pages|datasetpage$several_links") +
         "{{/ifprop}}" +
         '{{#ifprop "dcat:downloadURL" min="2" invert="true"}}' +
-        '<a href="{{prop "dcat:downloadURL"}}" class="text-white noUnderline">' +
+        '<a href="{{prop "dcat:downloadURL"}}" target="_blank" rel="noopener noreferrer" class="text-white noUnderline">' +
         '<span class="button--primary button--large text-white flex items-center !no-underline">' +
         t("pages|datasetpage$download_link") +
         '<svg xmlns="http://www.w3.org/2000/svg" width="' +
@@ -71,7 +71,7 @@ export const datasetBlocks = (
         "{{/ifprop}}" +
         "{{/ifprop}}" +
         '{{#ifprop "dcat:downloadURL" invert="true"}}' +
-        '<a href="{{prop "dcat:accessURL"}}" class="text-white noUnderline">' +
+        '<a href="{{prop "dcat:accessURL"}}" target="_blank" rel="noopener noreferrer" class="text-white noUnderline">' +
         '<span class="button--primary button--large text-white flex items-center !no-underline">' +
         t("pages|datasetpage$download_link_adress") +
         '<svg xmlns="http://www.w3.org/2000/svg" width="' +
@@ -98,7 +98,7 @@ export const datasetBlocks = (
         '{{#eachprop "dcat:downloadURL"}}' +
         '<div class="flex flex-col md:flex-row gap-md md:gap-lg md:justify-between md:items-center">' +
         '<span class="text-md">{{labelish}}</span>' +
-        '<a class="text-white noUnderline mr-xs" href="{{value}}">' +
+        '<a class="text-white noUnderline mr-xs" href="{{value}}" target="_blank" rel="noopener noreferrer">' +
         '<span class="button--primary button--small md:button--large text-white flex items-center !no-underline whitespace-nowrap">' +
         t("pages|datasetpage$download_link") +
         '<svg xmlns="http://www.w3.org/2000/svg" width="' +
@@ -201,6 +201,29 @@ export const datasetBlocks = (
         "</div>" +
         '<div class="view_metadata_group">' +
         '{{viewMetadata template="dcat:Dataset" filterpredicates="' +
+        filterContactAndLandingPage.join(",") +
+        '"}}' +
+        "</div>" +
+        "</div>",
+    },
+    {
+      block: "aboutDatasetSeries",
+      extends: "template",
+      template:
+        '<div class="about_dataset">' +
+        '<div class="view_metadata_group">' +
+        '{{viewMetadata template="dcat:DatasetSeries" filterpredicates="' +
+        filterAllExceptContactAndLandingPage.join(",") +
+        '"}}' +
+        "</div>" +
+        '<div class="keyword">' +
+        "{{keyword}}" +
+        "</div>" +
+        '<div class="theme">' +
+        "{{theme}}" +
+        "</div>" +
+        '<div class="view_metadata_group">' +
+        '{{viewMetadata template="dcat:DatasetSeries" filterpredicates="' +
         filterContactAndLandingPage.join(",") +
         '"}}' +
         "</div>" +

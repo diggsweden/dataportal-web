@@ -55,16 +55,18 @@
     "api": "About API"
   },
   "dataset-series": {
-    "data-serie": "Dataset serie"
+    "data-serie": "Dataset serie",
+    "about-dataset-serie": "About dataset serie"
   },
   "datasetpage": {
     "about-dataset": "About dataset",
     "catalog": "Catalog",
-    "category": "Categories",
+    "category_tag": "Category",
+    "categories": "Categories",
     "contact-publisher": "Do you have questions or comments?",
     "contact-publisher-text": "Contact the publishing organisation for questions, comments and requests regarding the information on this page. ",
     "contact-publisher-text2": "You can also go to the data portal ",
-    "dataservice": "Dataservice",
+    "dataservice": "Data service",
     "download-dataset": "Access data",
     "download-metadata-as": "Download metadata as",
     "download_link": "Download data",
@@ -89,6 +91,7 @@
   "datasets": {
     "datasets": "datasets",
     "search": "Search",
+    "dataset_title": "Dataset",
     "social_meta_description": "Datasets on Sweden's data portal",
     "social_meta_title": "Search datasets"
   },

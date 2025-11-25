@@ -142,7 +142,7 @@ export const theme = (t: Translate) => {
       '<div class="rdforms">' +
       '<div class="rdformsRow rdformsTopLevel">' +
       '<div class="rdformsLabel">' +
-      t("pages|datasetpage$category") +
+      t("pages|datasetpage$categories") +
       "</div>" +
       "<div>" +
       '{{#eachprop "dcat:theme" limit=4 expandbutton="' +
