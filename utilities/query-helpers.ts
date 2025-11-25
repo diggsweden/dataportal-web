@@ -611,7 +611,11 @@ export const getGoodExample = async (
     }
 
     // Check if the reuse value matches the expected pattern
-    if (publication.reuse !== reuse) {
+    // Skip this check for preview mode (when state is Preview)
+    if (
+      state !== Dataportal_ContainerState.Preview &&
+      publication.reuse !== reuse
+    ) {
       console.warn(
         `Access denied: Good example with slug '${slug}' has reuse=${
           publication.reuse
