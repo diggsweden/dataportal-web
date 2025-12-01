@@ -11,7 +11,7 @@
 }
 
 .rdformsRow {
-  @apply mb-md inline-flex w-full flex-col p-none md:mb-lg !important;
+  @apply !mb-md inline-flex w-full flex-col p-none md:mb-lg !important;
 }
 
 .rdformsRow .rdformsRow,
@@ -85,7 +85,7 @@
 }
 
 .rdformsFields {
-  @apply space-y-sm !important;
+  @apply mb-md space-y-sm !important;
 }
 
 .rdformsFields div {
@@ -93,7 +93,7 @@
 }
 
 .rdformsRow .rdformsPresenter .rdformsLabel {
-  @apply hidden;
+  @apply !mb-none;
 }
 
 .contact__publisher {
