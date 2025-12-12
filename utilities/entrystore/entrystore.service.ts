@@ -312,7 +312,6 @@ export class EntrystoreService {
 
       // Process facet values if they are not type choices
       if (metaFacets) {
-        const cache = entryCache.get();
         for (const fg of metaFacets) {
           const facetSpec = this.facetSpecification?.facets?.find(
             (spec) => spec.resource === fg.predicate,
@@ -330,21 +329,16 @@ export class EntrystoreService {
               .map((v: SearchFacet) => v.name);
 
             if (uris.length) {
-              if (facetSpec.customProperties?.length) {
-                // Custom properties: translate immediately (no API call)
-                await getUriNames(
-                  uris,
-                  this.entryStoreUtil,
-                  this.t,
-                  undefined,
-                  true,
-                );
-              } else {
-                // Regular URIs: cache as placeholders (lazy load later)
-                uris.forEach((uri: string) => {
-                  if (!cache.has(uri)) cache.set(uri, uri);
-                });
-              }
+              await getUriNames(
+                uris,
+                this.entryStoreUtil,
+                this.t,
+                undefined,
+                !!(
+                  facetSpec.customProperties &&
+                  facetSpec.customProperties.length > 0
+                ),
+              );
             }
           }
         }
