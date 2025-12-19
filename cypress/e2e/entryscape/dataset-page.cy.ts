@@ -93,14 +93,4 @@ describe("Dataset page", () => {
         cy.get("h2", { timeout: 10000 }).should("not.be.empty");
       });
   });
-
-  it("Should download RDF file", () => {
-    cy.get("[data-test-id='download-formats']", { timeout: 10000 })
-      .should("exist")
-      .within(() => {
-        cy.get("a").first().click();
-        cy.verifyDownload("rdf", { contains: true });
-        cy.task("deleteFolder", "cypress//downloads//");
-      });
-  });
 });

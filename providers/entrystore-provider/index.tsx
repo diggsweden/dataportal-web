@@ -231,8 +231,24 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         };
       }
 
-      case "dataset-series":
-        return {};
+      case "dataset-series": {
+        // Fetch all data in parallel for dataset-series
+        const [keywords, formats, mqa, contact] = await Promise.all([
+          entrystoreService.getKeywords(entry),
+          entrystoreService.getDownloadFormats(
+            entry.getEntryInfo().getMetadataURI(),
+          ),
+          entrystoreService.getRelatedMQA(entry),
+          entrystoreService.getContactInfo(metadata),
+        ]);
+
+        return {
+          keywords,
+          downloadFormats: formats,
+          mqaCatalog: mqa,
+          contact,
+        };
+      }
 
       case "dataservice":
         return {};

@@ -55,16 +55,18 @@
     "api": "About API"
   },
   "dataset-series": {
-    "data-serie": "Dataset serie"
+    "data-serie": "Dataset serie",
+    "about-dataset-serie": "About dataset serie"
   },
   "datasetpage": {
     "about-dataset": "About dataset",
     "catalog": "Catalog",
-    "category": "Categories",
+    "category_tag": "Category",
+    "categories": "Categories",
     "contact-publisher": "Do you have questions or comments?",
     "contact-publisher-text": "Contact the publishing organisation for questions, comments and requests regarding the information on this page. ",
     "contact-publisher-text2": "You can also go to the data portal ",
-    "dataservice": "Dataservice",
+    "dataservice": "Data service",
     "download-dataset": "Access data",
     "download-metadata-as": "Download metadata as",
     "download_link": "Download data",
@@ -89,6 +91,7 @@
   "datasets": {
     "datasets": "datasets",
     "search": "Search",
+    "dataset_title": "Dataset",
     "social_meta_description": "Datasets on Sweden's data portal",
     "social_meta_title": "Search datasets"
   },
@@ -105,17 +108,35 @@
     "open-apis-txt": "If the API is open you are able to directly make API calls and explore the data."
   },
   "form": {
+    "ai-system-name": "Name of AI system?",
+    "answer": "Answer:",
     "clear-all-text": "Clear form",
     "clear-confirm-text": "Are you sure you want to clear the form?",
+    "done": "DONE",
     "form-continue-text": "Do you wish to continue to the next step?",
     "generate-pdf-text": "Generate PDF",
     "go-back-text": "Back",
-    "next-section-text": "Next section",
+    "next": "Next",
+    "no-risk": "No possible risks",
+    "not-all-questions-answered": "Please ensure that you have answered all questions",
+    "organisation-name": "Organisation name",
+    "organisation-number": "Organisation number",
+    "organisation-number-validation": "Please enter a valid organisation number (XXXXXX-XXXX)",
+    "organisation-number-validation-public": "Only public sector entities may complete this form. Please ensure that the organization number belongs to a government agency, municipality, or other public institution",
+    "validate": "Validate",
     "placeholder-text": "Enter your answer here",
-    "previous-section-text": "Previous section",
+    "previous": "Previous",
+    "risks-title": "Possible risks from your answers",
     "save-form": "Save",
+    "sections": "Sections",
     "start-evaluation-text": "Start evaluation",
-    "upload-json-file": "Upload JSON-file"
+    "select-placeholder": "Select an option",
+    "summary": "Summary",
+    "upload-json-file": "Upload JSON-file",
+    "questions": "Questions",
+    "question": "Question",
+    "question-remaining": " question remaining",
+    "questions-remaining": " questions remaining"
   },
   "good-examples": {
     "social_meta_description": "Good examples on Sveriges Dataportal",

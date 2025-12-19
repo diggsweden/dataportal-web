@@ -7,7 +7,9 @@ import {
 } from "react";
 
 import { ParseDocToHtml } from "@/components/typography/parse-doc-to-html";
+import { browserclient } from "@/graphql";
 import { FormDataFragment } from "@/graphql/__generated__/operations";
+import { FOETROENDEMODELLEN_FORM_CLIENT_QUERY } from "@/graphql/formQuery";
 import { FormTypes } from "@/types/form";
 
 /* Import json */
@@ -38,9 +40,15 @@ export const ImportFromJsonFile = (
       page.forEach((field) => {
         //check if field title exists in imported data
         let importedField = importedData[pageIndex]?.find((item) => {
-          if ("value" in field && "value" in item) {
+          if (
+            "value" in field &&
+            "value" in item &&
+            "title" in field &&
+            "title" in item
+          ) {
             return field.title === item.title;
           }
+          return false;
         });
 
         //If we find the field in the imported data, use imported, otherwise use current form data (blank question).
@@ -61,10 +69,16 @@ export const ImportFromJsonFile = (
         }
 
         //If we can't find the field in the current form data, add it to the new page
-        let fieldToFind = !page.find((item) => {
-          if ("value" in field && "value" in item) {
+        const fieldToFind = !page.find((item) => {
+          if (
+            "value" in field &&
+            "value" in item &&
+            "title" in field &&
+            "title" in item
+          ) {
             return field.title === item.title;
           }
+          return false;
         });
         if (fieldToFind) {
           newPage.push(field);
@@ -105,7 +119,7 @@ export const GeneratePDF = (
 ) => {
   e.preventDefault();
   //Generate the PDF html data and set the iframe
-  let docToPrint = ParseDocToHtml(formDataArray);
+  const docToPrint = ParseDocToHtml(formDataArray);
   iframeRef?.current?.setAttribute("srcDoc", docToPrint);
 
   //For some reason we can't access .print unless we add a slight delay
@@ -135,11 +149,11 @@ export const GetLocalstorageData = (
 ) => {
   const localData = localStorage.getItem(`${path}Data`);
   if (localData) {
-    let data: FormTypes[][] = JSON.parse(localData);
-    let tmpArr = data.map((item) => {
+    const data: FormTypes[][] = JSON.parse(localData);
+    const tmpArr = data.map((item) => {
       item.forEach((data) => {
         if ("choices" in data) {
-          data.selected = data.selected;
+          data.selected = data.selected || null;
         }
       });
       return item;
@@ -148,7 +162,7 @@ export const GetLocalstorageData = (
     //todo: Should we do a deeper check to see if the questions are the same?
     //Use localstorage data if they contain the same amount of questions
     if (tmpArr.length > 0) {
-      let tmpArr2 = tmpArr.reduce((page, item) => page.concat(item), []);
+      const tmpArr2 = tmpArr.reduce((page, item) => page.concat(item), []);
 
       let elementsLength = elements.length;
       if (
@@ -182,4 +196,24 @@ export const handleScroll = (scrollRef: RefObject<HTMLSpanElement>) => {
       scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
+};
+
+export const fetchFortroendemodellenForm = async (locale: string) => {
+  const { data, error } = await browserclient.query({
+    query: FOETROENDEMODELLEN_FORM_CLIENT_QUERY,
+    variables: { locale },
+    fetchPolicy: "no-cache",
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  const formData = data?.dataportal_Digg_FoertroendemodellenForm;
+
+  if (!formData) {
+    throw new Error("No form data returned");
+  }
+
+  return formData;
 };

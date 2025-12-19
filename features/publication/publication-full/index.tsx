@@ -91,7 +91,7 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
       title: "Kategori",
       value: type.category ?? undefined,
       icon: <KeywordTagIcon className="mr-sm" />,
-      type: "tag",
+      type: "plain",
       onlyReuse: true,
     },
   ];

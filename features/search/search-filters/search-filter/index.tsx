@@ -11,6 +11,7 @@ export interface SearchFilterProps {
   title: string | null;
   usedFilters?: string;
   defaultValue?: boolean;
+  onOpen?: () => void;
 }
 
 export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
@@ -18,6 +19,7 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
   usedFilters,
   defaultValue,
   children,
+  onOpen,
   ...props
 }) => {
   const [open, setOpen] = useState(false);
@@ -28,6 +30,9 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
   const handleOpen = (value: boolean) => {
     setOpen(value);
     setTrapFocus(value);
+    if (value && onOpen) {
+      onOpen();
+    }
   };
 
   useEffect(() => {

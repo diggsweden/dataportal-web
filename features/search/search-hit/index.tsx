@@ -13,12 +13,28 @@ interface SearchHitProps {
   onLinkClick?: () => void;
 }
 
+const URL_BADGE_MAP: Record<string, string> = {
+  "/datasets": "pages|datasets$dataset_title",
+  "/dataservice": "pages|datasetpage$dataservice",
+  "/dataset-series": "pages|dataset-series$data-serie",
+};
+
+const getBadgeForUrl = (url: string): string | null => {
+  for (const [prefix, translationKey] of Object.entries(URL_BADGE_MAP)) {
+    if (url.startsWith(prefix)) {
+      return translationKey;
+    }
+  }
+  return null;
+};
+
 export const SearchHit: FC<SearchHitProps> = ({
   hit,
   isCompact,
   onLinkClick,
 }) => {
   const { t } = useTranslation();
+  const badgeTranslationKey = getBadgeForUrl(hit.url);
 
   return (
     <li className="group relative max-w-lg space-y-sm">
@@ -71,14 +87,15 @@ export const SearchHit: FC<SearchHitProps> = ({
             hit.metadata.theme_literal &&
             hit.metadata.theme_literal.length > 0 && (
               <span className="category">
-                {hit.metadata.theme_literal.join(",  ")}
+                {hit.metadata.theme_literal.length > 1
+                  ? t("pages|datasetpage$categories")
+                  : t("pages|datasetpage$category_tag")}
+                : {hit.metadata.theme_literal.join(",  ")}
               </span>
             )}
         </div>
         <div className="formats flex w-full flex-wrap gap-md">
-          {hit.url.startsWith("/dataset-series") && (
-            <Badge text={t("pages|dataset-series$data-serie")} />
-          )}
+          {badgeTranslationKey && <Badge text={t(badgeTranslationKey)} />}
           {hit.metadata?.custom_facet_literal?.map(
             (m: string, index: number) => <Badge key={index} text={m} />,
           )}

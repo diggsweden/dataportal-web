@@ -1,3 +1,4 @@
+import { cx } from "class-variance-authority";
 import useTranslation from "next-translate/useTranslation";
 import { FC } from "react";
 
@@ -8,6 +9,7 @@ import { RelatedContentFragment } from "@/graphql/__generated__/operations";
 
 interface RelatedContentProps extends RelatedContentFragment {
   landingPage?: boolean;
+  formPage?: boolean;
 }
 
 export const RelatedContentBlock: FC<RelatedContentProps> = ({
@@ -15,6 +17,7 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
   heading,
   showMoreLink,
   landingPage,
+  formPage,
 }) => {
   const { t } = useTranslation("pages");
 
@@ -42,9 +45,12 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
         </div>
       )}
       <ul
-        className={`flex flex-col gap-lg md:grid md:grid-flow-row md:auto-rows-min md:grid-cols-2 ${
-          landingPage ? "lg:grid-cols-3" : "max-w-md"
-        } ${heading ? "mt-xl" : ""}`}
+        className={cx(
+          "flex flex-col gap-lg md:grid md:grid-flow-row md:auto-rows-min md:grid-cols-2",
+          landingPage ? "lg:grid-cols-3" : "max-w-md",
+          heading && "mt-xl",
+          formPage && "max-w-xl lg:grid-cols-3",
+        )}
       >
         {links.map((link: PromoProps, idx: number) => {
           return (

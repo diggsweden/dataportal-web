@@ -159,7 +159,8 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
     if (
       item.__typename === "dataportal_Digg_FormText" ||
       item.__typename === "dataportal_Digg_FormTextArea" ||
-      item.__typename === "dataportal_Digg_FormRadio"
+      item.__typename === "dataportal_Digg_FormRadio" ||
+      item.__typename === "dataportal_Digg_FormDropdown"
     ) {
       item.value = "";
       item.number = questionNumber;
@@ -184,7 +185,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
 
   //Update the fields when data is changed in the form. Handles all types of fields.
   const UpdateFormDataArray = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
     fieldToUpdate: FormTypes,
     pageIndex: number,
     imgData: { fileName: string; base64: string } | null = null,
@@ -247,7 +248,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
       {formDataArray[0] && (
         <div
           id="FormPage"
-          className="grid grid-cols-1 lg:max-w-xl lg:grid-cols-[200px_620px_1fr] lg:gap-x-xl "
+          className="grid grid-cols-1 lg:max-w-xl lg:grid-cols-[200px_620px_1fr] lg:gap-x-xl"
         >
           {page !== 0 && formSteps.length > 0 && (
             <FormNav
@@ -290,6 +291,9 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
                     className="col-span-1 col-start-1 row-start-2 max-w-md lg:col-start-2 lg:row-start-1"
                   >
                     <span ref={scrollRef} />
+                    <span className="text-lg text-textSecondary">
+                      {t("pages|form$questions")}
+                    </span>
                     {page !== 0 && formSteps.length > 0 && (
                       <ProgressBar
                         page={page}

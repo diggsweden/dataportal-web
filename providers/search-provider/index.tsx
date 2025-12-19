@@ -52,6 +52,7 @@ export interface SearchContextData {
   fetchAllFacets: () => Promise<void>;
   showMoreFacets: (_facetkey: string) => void;
   updateFacetStats: () => Promise<void>;
+  fetchFacetNames: (_facetKey: string) => Promise<void>;
   facetSelected: (_key: string, _value: string) => boolean;
   doSearch: (
     _appendHits?: boolean,
@@ -94,6 +95,7 @@ export const defaultSearchSettings: SearchContextData = {
   fetchAllFacets: async () => {},
   showMoreFacets: () => {},
   updateFacetStats: () => new Promise<void>(() => {}),
+  fetchFacetNames: async () => {},
   facetSelected: () => false,
   doSearch: async () => {},
   setStateToLocation: () => {},
@@ -559,6 +561,72 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     }
   };
 
+  fetchFacetNames = async (facetKey: string): Promise<void> => {
+    const publisherPredicate = "http://purl.org/dc/terms/publisher";
+    const allFacets = this.state.allFacets || {};
+    const facet =
+      allFacets[facetKey] ||
+      Object.values(allFacets).find((f) => f.predicate === publisherPredicate);
+
+    if (
+      !facet?.facetValues?.length ||
+      facet.predicate !== publisherPredicate ||
+      !facet.facetValues.some((fv) => !fv.title || fv.title === fv.resource)
+    ) {
+      return;
+    }
+
+    try {
+      this.setState({ loadingFacets: true });
+      const uris = facet.facetValues
+        .map((fv) => fv.resource)
+        .filter((uri) => uri?.startsWith("http"));
+
+      if (!uris.length) {
+        this.setState({ loadingFacets: false });
+        return;
+      }
+
+      const [{ getUriNames }, { entryCache }, { t }] = await Promise.all([
+        import("@/utilities/entrystore/entrystore-helpers"),
+        import("@/utilities/entrystore/local-cache"),
+        Promise.resolve(this.props.i18n!),
+      ]);
+
+      await getUriNames(
+        uris,
+        this.entrystoreService.getEntryStoreUtil(),
+        t,
+        undefined,
+        false,
+      );
+
+      const cache = entryCache.get();
+      const keyToUpdate =
+        Object.keys(allFacets).find(
+          (k) => allFacets[k].predicate === publisherPredicate,
+        ) || facetKey;
+
+      this.setState((state) => {
+        const facets = { ...state.allFacets } as {
+          [facet: string]: SearchFacet;
+        };
+        if (facets[keyToUpdate]?.facetValues) {
+          facets[keyToUpdate].facetValues = facets[keyToUpdate].facetValues.map(
+            (fv) => ({
+              ...fv,
+              title: cache.get(fv.resource) || fv.title || fv.resource,
+            }),
+          );
+        }
+        return { allFacets: facets, loadingFacets: false };
+      });
+    } catch (error) {
+      console.error("Error fetching facet names:", error);
+      this.setState({ loadingFacets: false });
+    }
+  };
+
   /**
    * Toggles facetvalue as selected/not selected in current SearchRequest
    */
@@ -914,6 +982,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
       showMoreFacets: this.showMoreFacets,
       fetchAllFacets: this.fetchAllFacets,
       updateFacetStats: this.mergeAllFacetsAndResult,
+      fetchFacetNames: this.fetchFacetNames,
       facetSelected: this.facetSelected,
       sortAllFacets: this.sortAllFacets,
       request: this.state.request,

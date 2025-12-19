@@ -55,16 +55,18 @@
     "api": "Om API"
   },
   "dataset-series": {
-    "data-serie": "Datamängdsserie"
+    "data-serie": "Datamängdsserie",
+    "about-dataset-serie": "Om datamängdsserie"
   },
   "datasetpage": {
     "about-dataset": "Om datamängd",
     "catalog": "Hämtad från katalog",
-    "category": "Kategori",
+    "category_tag": "Kategori",
+    "categories": "Kategorier",
     "contact-publisher": "Har du frågor eller synpunkter?",
     "contact-publisher-text": "Kontakta publicerande organisation för frågor, synpunkter och önskemål kring informationen på den här sidan. ",
     "contact-publisher-text2": "Du kan även vända dig till dataportalens ",
-    "dataservice": "Dataservice",
+    "dataservice": "Datatjänst",
     "download-dataset": "Hämta datamängd",
     "download-metadata-as": "Ladda ner metadata som",
     "download_link": "Ladda ner",
@@ -89,6 +91,7 @@
   "datasets": {
     "datasets": "datamängder",
     "search": "Sök Data & Api:er",
+    "dataset_title": "Datamängd",
     "social_meta_description": "Data & API:er på Sveriges Dataportal",
     "social_meta_title": "Sök data & API:er"
   },
@@ -105,17 +108,35 @@
     "open-apis-txt": "För API:er som är öppna går det att direkt göra anrop till och utforska datamängden."
   },
   "form": {
+    "ai-system-name": "Vad heter AI-systemet?",
+    "answer": "Svar:",
     "clear-all-text": "Rensa alla svar",
     "clear-confirm-text": "Är du säker på att du vill rensa alla svar?",
+    "done": "KLAR",
     "form-continue-text": "Vill du gå vidare?",
     "generate-pdf-text": "Generera PDF",
     "go-back-text": "Tillbaka",
-    "next-section-text": "Nästa avsnitt",
+    "next": "Nästa",
+    "no-risk": "Inga möjliga risker",
+    "not-all-questions-answered": "Säkerställ att du har besvarat alla frågor",
+    "organisation-name": "Organisationsnamn",
+    "organisation-number": "Organisationsnummer",
+    "organisation-number-validation": "Ange ett giltligt organisationsnummer (XXXXXX-XXXX)",
+    "organisation-number-validation-public": "Endast offentliga aktörer kan använda detta verktyg. Se till att organisationsnumret tillhör en myndighet, kommun eller annan offentlig institution",
+    "validate": "Validera",
     "placeholder-text": "Fyll i ditt svar",
-    "previous-section-text": "Föregående avsnitt",
+    "previous": "Föregående",
+    "risks-title": "Möjliga risker i era svar",
     "save-form": "Spara era svar på din dator",
+    "sections": "Sektioner",
+    "select-placeholder": "Välj",
     "start-evaluation-text": "Starta utvärdering",
-    "upload-json-file": "Ladda upp sparade svar"
+    "summary": "Sammanställning",
+    "upload-json-file": "Ladda upp sparade svar",
+    "questions": "Frågor",
+    "question": "Fråga",
+    "question-remaining": " fråga kvar",
+    "questions-remaining": " frågor kvar"
   },
   "good-examples": {
     "social_meta_description": "Goda exempel på Sveriges Dataportal",

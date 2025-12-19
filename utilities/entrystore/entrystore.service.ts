@@ -317,26 +317,29 @@ export class EntrystoreService {
             (spec) => spec.resource === fg.predicate,
           );
           if (facetSpec && facetSpec.dcatType !== "choice") {
-            await getUriNames(
-              fg.values
-                .filter((v: SearchFacet) => {
-                  if (
-                    facetSpec.customProperties &&
-                    facetSpec.customProperties?.length > 0
-                  ) {
-                    return facetSpec.customProperties.some(
-                      (property) => v.name?.startsWith(property),
-                    );
-                  }
-                  return v.name?.toLocaleLowerCase().startsWith("http");
-                })
-                .map((v: SearchFacet) => v.name),
-              this.entryStoreUtil,
-              this.t,
-              facetSpec?.dcatProperty,
-              facetSpec.customProperties &&
-                facetSpec.customProperties.length > 0,
-            );
+            const uris = fg.values
+              .filter((v: SearchFacet) => {
+                if (facetSpec.customProperties?.length) {
+                  return facetSpec.customProperties.some(
+                    (p: string) => v.name?.startsWith(p),
+                  );
+                }
+                return v.name?.toLocaleLowerCase().startsWith("http");
+              })
+              .map((v: SearchFacet) => v.name);
+
+            if (uris.length) {
+              await getUriNames(
+                uris,
+                this.entryStoreUtil,
+                this.t,
+                undefined,
+                !!(
+                  facetSpec.customProperties &&
+                  facetSpec.customProperties.length > 0
+                ),
+              );
+            }
           }
         }
       }

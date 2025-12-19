@@ -6,6 +6,7 @@ const preabmle = cva(["text-lg"], {
     color: {
       light: ["text-brown-100"],
       dark: ["text-textSecondary"],
+      primary: ["text-textPrimary"],
     },
   },
   defaultVariants: {
