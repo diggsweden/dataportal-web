@@ -53,7 +53,7 @@ import { TOOL_QUERY } from "@/graphql/toolQuery";
 
 /* #region private */
 const notFound = (revalidate: boolean) => ({
-  notFound: true,
+  notFound: true as const,
   ...(revalidate
     ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
     : {}),
@@ -273,7 +273,7 @@ export const getNewsList = async (
   const { seo, basePath, heading, preamble, heroImage } = opts || {};
 
   try {
-    const { data, error } = await client.query<
+    const { data, errors } = await client.query<
       NewsItemQuery,
       NewsItemQueryVariables
     >({
@@ -286,17 +286,18 @@ export const getNewsList = async (
         },
       },
       fetchPolicy: "no-cache",
+      errorPolicy: "all", // Allow partial data even with errors
     });
 
+    if (errors && errors.length > 0) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[getNewsList] GraphQL errors for locale '${locale}':`,
+        errors,
+      );
+    }
+
     const publications = data?.dataportal_Digg_News_Items;
-
-    if (error) {
-      console.error(error);
-    }
-
-    if (!publications) {
-      console.warn(`No news found`);
-    }
 
     return {
       props: {
@@ -329,24 +330,26 @@ export const getNewsList = async (
     };
   }
 };
-
 /**
- * Get a list of publications from strapi
+ * Get a list of publications from Strapi
  *
- * @param {Array<String>} slug
- * @param {string} locale
- * @returns {GoodExampleListResponse} nextjs staticprops
+ * @param {string} locale - Locale for the publications
+ * @param {PublicationListOptions} opts - Options for the list page (SEO, reuse filter, hero image, etc.)
+ * @returns {GoodExampleListResponse} - Props for Next.js getStaticProps
  */
 export const getGoodExamplesList = async (
   locale: string,
   opts?: PublicationListOptions,
 ) => {
-  // If nextjs should check for changes on the server
   const revalidate = true;
   const { seo, basePath, heading, preamble, heroImage, reuse, breadcrumb } =
     opts || {};
+
+  // Default empty list to avoid 404s
+  let publications: GoodExampleListResponse["listItems"] = [];
+
   try {
-    const { data, error } = await client.query<
+    const { data } = await client.query<
       GoodExampleQuery,
       GoodExampleQueryVariables
     >({
@@ -359,52 +362,38 @@ export const getGoodExamplesList = async (
         },
       },
       fetchPolicy: "no-cache",
+      errorPolicy: "all", // Allow partial data even with errors
     });
 
-    const publications = data?.dataportal_Digg_Good_Examples?.filter(
-      (publication) => publication && publication.reuse === reuse,
+    // Filter publications safely (filter out nulls and by reuse)
+    const allPublications =
+      data?.dataportal_Digg_Good_Examples?.filter(
+        (pub): pub is GoodExampleDataFragment => pub !== null,
+      ) || [];
+    publications = allPublications.filter(
+      (publication) => publication.reuse === reuse,
     );
-
-    if (error) {
-      console.error(error);
-    }
-
-    if (!publications) {
-      console.warn(`No good examples found`);
-    }
-
-    return {
-      props: {
-        type: "PublicationList",
-        listItems: publications || [],
-        seo: seo || null,
-        basePath: basePath || null,
-        heading: heading || "",
-        preamble: preamble || null,
-        heroImage: heroImage || null,
-        breadcrumb: breadcrumb || null,
-      } as GoodExampleListResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
   } catch (error) {
     logGqlErrors(error);
-    return {
-      props: {
-        type: "PublicationList",
-        listItems: [],
-        seo: seo || null,
-        basePath: basePath || null,
-        heading: heading || "",
-        heroImage: heroImage || null,
-        breadcrumb: breadcrumb || null,
-      } as GoodExampleListResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+    // Return empty array on error to prevent page crash
   }
+
+  return {
+    props: {
+      type: "PublicationList",
+      listItems: publications,
+      seo: seo || null,
+      basePath: basePath || null,
+      heading: heading || "",
+      preamble: preamble || null,
+      heroImage: heroImage || null,
+      breadcrumb: breadcrumb || null,
+    } as GoodExampleListResponse,
+    // ISR: regenerate the page periodically
+    ...(revalidate
+      ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
+      : {}),
+  };
 };
 
 /**
@@ -420,7 +409,7 @@ export const getToolsList = async (opts?: ToolistOptions) => {
   const { heading, preamble, heroImage, seo, basePath } = opts || {};
 
   try {
-    const { data, error } = await client.query<ToolQuery, ToolQueryVariables>({
+    const { data, errors } = await client.query<ToolQuery, ToolQueryVariables>({
       query: TOOL_QUERY,
       variables: {
         filter: {
@@ -428,17 +417,15 @@ export const getToolsList = async (opts?: ToolistOptions) => {
         },
       },
       fetchPolicy: "no-cache",
+      errorPolicy: "all", // Allow partial data even with errors
     });
 
+    if (errors && errors.length > 0) {
+      // eslint-disable-next-line no-console
+      console.warn("[getToolsList] GraphQL errors:", errors);
+    }
+
     const tools = data?.dataportal_Digg_Tools;
-
-    if (error) {
-      console.error(error);
-    }
-
-    if (!tools) {
-      console.warn(`No tools found`);
-    }
 
     return {
       props: {
@@ -594,16 +581,23 @@ export const getGoodExample = async (
         },
       },
       fetchPolicy: "no-cache",
+      errorPolicy: "all", // Allow partial data even with errors
     });
 
-    const publication =
-      mainPublicationResult && mainPublicationResult.data
-        ? mainPublicationResult.data.dataportal_Digg_Good_Examples[0]
-        : undefined;
-
-    if (mainPublicationResult && mainPublicationResult.error) {
-      console.error(mainPublicationResult.error);
+    // With errorPolicy: "all", check errors array, not error property
+    if (
+      mainPublicationResult?.errors &&
+      mainPublicationResult.errors.length > 0
+    ) {
+      // Log errors but continue - errorPolicy: "all" allows partial data
+      console.warn(
+        `GraphQL errors for good example '${slug}':`,
+        mainPublicationResult.errors,
+      );
     }
+
+    const publication =
+      mainPublicationResult?.data?.dataportal_Digg_Good_Examples?.[0];
 
     if (!publication) {
       console.warn(`No good example found with slug: '${slug}'`);
@@ -636,6 +630,7 @@ export const getGoodExample = async (
         },
       },
       fetchPolicy: "no-cache",
+      errorPolicy: "all", // Allow partial data even with errors
     });
 
     const relatedPreviews: GoodExampleBlockItemFragment[] =

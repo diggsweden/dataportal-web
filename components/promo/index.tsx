@@ -32,6 +32,10 @@ export const Promo: FC<PromoProps> = ({
       : description
     : null;
 
+  // Don't render if slug is invalid
+  if (!slug || !slug.trim()) {
+    return null;
+  }
   return (
     <>
       {image && (
