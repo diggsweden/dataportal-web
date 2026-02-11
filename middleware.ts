@@ -3,6 +3,19 @@ import type { NextRequest } from "next/server";
 
 import i18n from "./i18n";
 
+// Hardcoded redirects
+const REDIRECTS: Record<string, string> = {
+  "/fortroendemodellen": "https://fortroendemodellen.dataportal.se/",
+  "/fortroendemodellen/valkommen-till-fortroendemodellen":
+    "https://fortroendemodellen.dataportal.se/",
+  "/sv/fortroendemodellen": "https://fortroendemodellen.dataportal.se/",
+  "/sv/fortroendemodellen/valkommen-till-fortroendemodellen":
+    "https://fortroendemodellen.dataportal.se/",
+  "/en/fortroendemodellen": "https://fortroendemodellen.dataportal.se/",
+  "/en/fortroendemodellen/valkommen-till-fortroendemodellen":
+    "https://fortroendemodellen.dataportal.se/",
+};
+
 /**
  * Determines the locale for the current request
  * Since localeDetection is false in i18n.js, we only use the locale from the URL
@@ -32,6 +45,12 @@ function getLocale(request: NextRequest): string {
  */
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
+
+  // Check for hardcoded redirects first (before locale handling)
+  const redirectUrl = REDIRECTS[pathname];
+  if (redirectUrl) {
+    return NextResponse.redirect(new URL(redirectUrl, request.url), 302);
+  }
 
   // Special handling for root path
   if (pathname === "/") {
