@@ -1,4 +1,3 @@
-import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 import { FC } from "react";
 
