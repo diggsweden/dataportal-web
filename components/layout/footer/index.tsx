@@ -1,4 +1,3 @@
-import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 import { FC } from "react";
 
@@ -34,25 +33,16 @@ export const Footer: FC<FooterProps> = ({
             setSettingsOpen={setSettingsOpen}
             setOpenSideBar={setOpenSideBar}
           />
-          <div className="flex flex-col justify-between gap-xl align-top md:flex-row md:gap-none">
-            <div className="mr-lg">
-              <span className="font-strong">Sveriges dataportal </span>
-              <span>{t("common|managed-and-developed-by")}</span>
-              <CustomLink
-                aria-label="Digg - Myndigheten för digital förvaltning"
-                href={"https://digg.se/"}
-                className="min-w-min text-green-600 hover:no-underline [&_path]:fill-green-600"
-              >
-                Digg - Myndigheten för digital förvaltning
-              </CustomLink>
-            </div>
-            <Image
-              src={"/images/europeiskaunionen.png"}
-              width={200}
-              height={42}
-              className="h-[2.625rem] w-[12.5rem]"
-              alt="Europeiska unionen logotyp. Dataportalen finansieras av Europeiska unionen, NextGenerationEU."
-            />
+          <div className="mr-lg align-top">
+            <span className="font-strong">Sveriges dataportal </span>
+            <span>{t("common|managed-and-developed-by")}</span>
+            <CustomLink
+              aria-label="Digg - Myndigheten för digital förvaltning"
+              href={"https://digg.se/"}
+              className="min-w-min text-green-600 hover:no-underline [&_path]:fill-green-600"
+            >
+              Digg - Myndigheten för digital förvaltning
+            </CustomLink>
           </div>
         </Container>
       </div>
