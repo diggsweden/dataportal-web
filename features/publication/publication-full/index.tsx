@@ -74,7 +74,7 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
       type: "plain",
     },
     {
-      title: "Typ av återanvändning",
+      title: "Typ av användning",
       value: type.typeOfReuse ?? undefined,
       icon: <NewsIcon className="mr-sm" />,
       type: "plain",
