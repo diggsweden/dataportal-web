@@ -11,7 +11,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
       title: "Goda exempel - Sveriges Dataportal",
       description: "Goda exempel på datadriven innovation i samhället.",
     },
-    basePath: `/goda-exempel`,
+    basePath: `/exempel-datadriven-transformation`,
     heading: "Goda exempel från offentliga aktörer",
     breadcrumb: "Goda exempel",
     preamble:
