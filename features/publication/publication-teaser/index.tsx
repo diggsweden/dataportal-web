@@ -39,7 +39,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
   const formattedDate = formatDate(lang, publishedAt);
   const goodExampleLink = (publication as GoodExampleDataFragment)?.reuse
     ? `/exempel-pa-ateranvandning${slug}`
-    : `/goda-exempel${slug}`;
+    : `/exempel-datadriven-transformation${slug}`;
 
   function getPublicationType(__typename: string) {
     if (NEWS_TYPES.includes(__typename as (typeof NEWS_TYPES)[number])) {

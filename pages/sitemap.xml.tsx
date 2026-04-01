@@ -52,7 +52,7 @@ const slug = (
   if (c?.__typename === "dataportal_Digg_News_Item") {
     return `/nyheter${slug}`;
   } else if (c?.__typename === "dataportal_Digg_Good_Example") {
-    return `/goda-exempel${slug}`;
+    return `/exempel-datadriven-transformation${slug}`;
   } else {
     return slug;
   }
