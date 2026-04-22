@@ -10,6 +10,7 @@ import {
   MultiContainersQuery,
   MultiContainersQueryVariables,
   ParentFragment,
+  ParentSimplifiedFragment,
   NewsItemDataFragment,
   NewsItemQuery,
   NewsItemQueryVariables,
@@ -77,7 +78,7 @@ const logGqlErrors = (error: any) => {
 export interface MultiContainerResponse {
   type: "MultiContainer";
   container?: ContainerDataFragment;
-  related?: ContainerDataFragment[];
+  related?: ParentSimplifiedFragment[];
   parent?: ParentFragment | null;
 }
 
@@ -214,11 +215,6 @@ export const getMultiContainer = async (
     >({
       query: CONTAINER_MULTI_QUERY,
       variables: {
-        containerGroup: {
-          containerGroup: { slug: `/${slugs[0]}` },
-          locale,
-          limit: 50,
-        },
         container: {
           slug,
           locale,
@@ -239,13 +235,25 @@ export const getMultiContainer = async (
       return notFound(revalidate);
     }
 
+    let pageNavigation: ParentSimplifiedFragment[] = [];
+
+    if (container.pageNavigation && container.pageNavigation.length > 0) {
+      pageNavigation = container.pageNavigation;
+    } else if (
+      container.parent &&
+      container.parent.pageNavigation &&
+      container.parent.pageNavigation.length > 0
+    ) {
+      pageNavigation = container.parent.pageNavigation;
+    }
+
     // The value of the `props` key will be
     //  passed to the `Page` component
     return {
       props: {
         type: "MultiContainer",
         container,
-        related: data.containerGroup || [],
+        related: pageNavigation,
       },
       ...(revalidate
         ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }

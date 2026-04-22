@@ -11,7 +11,10 @@ import { ContainerNav } from "@/components/navigation/container-nav";
 import { StickyNav } from "@/components/navigation/sticky-nav";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { ContainerDataFragment } from "@/graphql/__generated__/operations";
+import {
+  ContainerDataFragment,
+  ParentSimplifiedFragment,
+} from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 import { Anchorlink } from "@/types/global";
 import { checkLang, linkBase } from "@/utilities";
@@ -91,7 +94,7 @@ const getLinks = () => {
 };
 
 interface ContainerPageProps extends ContainerDataFragment {
-  related?: ContainerDataFragment[];
+  related?: ParentSimplifiedFragment[];
 }
 
 export const highlightCode = (t: Translate) => {
