@@ -1,4 +1,3 @@
-import { ApolloProvider } from "@apollo/client";
 import reactenv from "@beam-australia/react-env";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
@@ -23,7 +22,6 @@ import {
 import { EnvSettings, SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { CookieBanner } from "@/features/cookie-banner";
-import { client } from "@/graphql";
 import {
   MenuLinkFragment,
   MenuLinkIconFragment,
@@ -178,97 +176,91 @@ function Dataportal({
   }
 
   return (
-    <ApolloProvider client={client}>
-      <SettingsProvider
-        value={{
-          ...defaultSettings,
-          env,
-          setBreadcrumb,
-          matomoSiteId: reactenv("MATOMO_SITE_ID"),
-        }}
-      >
-        <LocalStoreProvider>
-          <TrackingProvider
-            initalActivation={getCookiesAccepted() && matomoActivated}
+    <SettingsProvider
+      value={{
+        ...defaultSettings,
+        env,
+        setBreadcrumb,
+        matomoSiteId: reactenv("MATOMO_SITE_ID"),
+      }}
+    >
+      <LocalStoreProvider>
+        <TrackingProvider
+          initalActivation={getCookiesAccepted() && matomoActivated}
+        >
+          <MetaData seo={seo} />
+          <div id="scriptsPlaceholder" />
+          <CookieBanner
+            settingsOpen={settingsOpen}
+            setSettingsOpen={setSettingsOpen}
+          />
+          <div
+            id="top"
+            className={`relative h-[100dvh] md:h-full ${
+              openSideBar ? "overflow-y-hidden md:overflow-y-auto" : ""
+            }`}
           >
-            <MetaData seo={seo} />
-            <div id="scriptsPlaceholder" />
-            <CookieBanner
-              settingsOpen={settingsOpen}
-              setSettingsOpen={setSettingsOpen}
+            <SkipToContent text={t("common|skiptocontent")} />
+            <Header
+              mainMenu={(navigationData?.mainMenu as MenuLinkFragment[]) || []}
+              serviceMenu={
+                (navigationData?.serviceMenu as MenuLinkIconFragment[]) || []
+              }
+              setOpenSideBar={setOpenSideBar}
+              openSideBar={openSideBar}
             />
+            <Sidebar
+              sidebarMenu={
+                navigationData?.sidebarMenu as
+                  | MenuLinkIconFragment[]
+                  | SubLink[]
+                  | []
+              }
+              openSideBar={openSideBar}
+              setOpenSideBar={setOpenSideBar}
+            />
+            <noscript>
+              <div>
+                <span>{defaultSettings.noScriptContent}</span>
+              </div>
+            </noscript>
+
             <div
-              id="top"
-              className={`relative h-[100dvh] md:h-full ${
-                openSideBar ? "overflow-y-hidden md:overflow-y-auto" : ""
+              id="siteWrapper"
+              className={`transition-all duration-300 ease-in-out ${
+                openSideBar ? "2xl:w-[calc(100vw-18.75rem)]" : "w-full"
               }`}
             >
-              <SkipToContent text={t("common|skiptocontent")} />
-              <Header
-                mainMenu={
-                  (navigationData?.mainMenu as MenuLinkFragment[]) || []
-                }
-                serviceMenu={
-                  (navigationData?.serviceMenu as MenuLinkIconFragment[]) || []
-                }
-                setOpenSideBar={setOpenSideBar}
-                openSideBar={openSideBar}
-              />
-              <Sidebar
-                sidebarMenu={
-                  navigationData?.sidebarMenu as
-                    | MenuLinkIconFragment[]
-                    | SubLink[]
-                    | []
-                }
-                openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
-              />
-              <noscript>
-                <div>
-                  <span>{defaultSettings.noScriptContent}</span>
-                </div>
-              </noscript>
+              {imageHero && (
+                <Hero
+                  heading={heading}
+                  preamble={conditionalPreamble}
+                  image={imageHero}
+                  search={searchProps}
+                />
+              )}
 
-              <div
-                id="siteWrapper"
-                className={`transition-all duration-300 ease-in-out ${
-                  openSideBar ? "2xl:w-[calc(100vw-18.75rem)]" : "w-full"
-                }`}
+              {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
+                <Breadcrumbs {...breadcrumbState} />
+              )}
+
+              <main
+                id="main"
+                className={`mt-lg min-h-[calc(100vh-46.5rem)] pb-lg md:mt-xl md:pb-xl lg:min-h-[calc(100vh-38.25rem)]`}
               >
-                {imageHero && (
-                  <Hero
-                    heading={heading}
-                    preamble={conditionalPreamble}
-                    image={imageHero}
-                    search={searchProps}
-                  />
-                )}
-
-                {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
-                  <Breadcrumbs {...breadcrumbState} />
-                )}
-
-                <main
-                  id="main"
-                  className={`mt-lg min-h-[calc(100vh-46.5rem)] pb-lg md:mt-xl md:pb-xl lg:min-h-[calc(100vh-38.25rem)]`}
-                >
-                  <Component {...pageProps} />
-                </main>
-              </div>
-              <Footer
-                footerData={
-                  (navigationData?.footerMenu as SubLinkFooter[]) || []
-                }
-                setSettingsOpen={setSettingsOpen}
-                setOpenSideBar={setOpenSideBar}
-                openSideBar={openSideBar}
-              />
+                <Component {...pageProps} />
+              </main>
             </div>
-          </TrackingProvider>
-        </LocalStoreProvider>
-      </SettingsProvider>
-    </ApolloProvider>
+            <Footer
+              footerData={(navigationData?.footerMenu as SubLinkFooter[]) || []}
+              setSettingsOpen={setSettingsOpen}
+              setOpenSideBar={setOpenSideBar}
+              openSideBar={openSideBar}
+            />
+          </div>
+        </TrackingProvider>
+      </LocalStoreProvider>
+    </SettingsProvider>
   );
 }
 

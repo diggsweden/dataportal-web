@@ -1,4 +1,4 @@
-import { browserclient, client, CONTAINER_MULTI_QUERY } from "@/graphql";
+import { CONTAINER_MULTI_QUERY } from "@/graphql";
 import {
   FormDataFragment,
   FormQuery,
@@ -18,6 +18,7 @@ import {
   GoodExampleQueryVariables,
   RootAggregateQuery,
   RootAggregateQueryVariables,
+  SearchQuery,
   SearchQueryVariables,
   SeoDataFragment,
   ToolDataFragment,
@@ -32,9 +33,12 @@ import {
   NavigationQuery,
   NavigationQueryVariables,
   NavigationDataFragment,
+  FoertroendemodellenFormQuery,
+  FoertroendemodellenFormQueryVariables,
 } from "@/graphql/__generated__/operations";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import { ROOT_AGGREGATE_QUERY } from "@/graphql/aggregateQuery";
+import { gqlFetch, logGqlError } from "@/graphql/fetcher";
 import { FORM_QUERY, FOETROENDEMODELLEN_FORM_QUERY } from "@/graphql/formQuery";
 import { MODULE_QUERY } from "@/graphql/moduleQuery";
 import { NAVIGATION_QUERY } from "@/graphql/navigationQuery";
@@ -46,34 +50,18 @@ import { SEARCH_QUERY } from "@/graphql/searchQuery";
 import { START_PAGE_QUERY } from "@/graphql/startpageQuery";
 import { TOOL_QUERY } from "@/graphql/toolQuery";
 
-/**
- * ? Better comments: https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
- * ? Folding regions: https://marketplace.visualstudio.com/items?itemName=maptz.regionfolder
- */
+const revalidateValue = () => parseInt(process.env.REVALIDATE_INTERVAL || "60");
 
-/* #region private */
 const notFound = (revalidate: boolean) => ({
   notFound: true,
-  ...(revalidate
-    ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-    : {}),
+  ...(revalidate ? { revalidate: revalidateValue() } : {}),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const logGqlErrors = (error: any) => {
-  const { networkError, graphQLErrors, clientErrors } = error || {};
-  if (networkError?.result?.errors) {
-    console.error("networkError", error.networkError.result.errors);
-  }
-  if (graphQLErrors?.length > 0) {
-    console.error("graphqlError", error.graphQLErrors);
-  }
-  if (clientErrors?.length > 0) {
-    console.error("clientError", error.clientErrors);
-  }
-};
+const withRevalidate = <T>(props: T, revalidate: boolean) => ({
+  props,
+  ...(revalidate ? { revalidate: revalidateValue() } : {}),
+});
 
-/* #region types */
 export interface MultiContainerResponse {
   type: "MultiContainer";
   container?: ContainerDataFragment;
@@ -126,7 +114,6 @@ export interface RootAggregateResponse extends ContainerDataFragment {
   type: "RootAggregate";
   news?: NewsItemDataFragment;
   examples?: GoodExampleDataFragment;
-  // events?: PublicationDataFragment;
 }
 
 export interface StartPageResponse extends StartPageDataFragment {
@@ -191,12 +178,7 @@ export interface ModuleOptions {
   basePath?: string;
   heading?: string;
 }
-/* #endregion */
 
-/**
- * @param {Array<string>} slugs
- * @returns
- */
 export const getMultiContainer = async (
   slugs: string[],
   locale: string,
@@ -207,30 +189,22 @@ export const getMultiContainer = async (
   const slug = "/" + slugs.join("/");
 
   try {
-    // Get external data from the file system, API, DB, etc.
-    const { error, errors, data } = await client.query<
+    const data = await gqlFetch<
       MultiContainersQuery,
       MultiContainersQueryVariables
-    >({
-      query: CONTAINER_MULTI_QUERY,
-      variables: {
-        containerGroup: {
-          containerGroup: { slug: `/${slugs[0]}` },
-          locale,
-          limit: 50,
-        },
-        container: {
-          slug,
-          locale,
-          ...(secret ? { previewSecret: secret } : {}),
-          ...(state ? { state } : {}),
-        },
+    >(CONTAINER_MULTI_QUERY, {
+      containerGroup: {
+        containerGroup: { slug: `/${slugs[0]}` },
+        locale,
+        limit: 50,
       },
-      fetchPolicy: "no-cache",
+      container: {
+        slug,
+        locale,
+        ...(secret ? { previewSecret: secret } : {}),
+        ...(state ? { state } : {}),
+      },
     });
-    if (error || errors) {
-      console.error({ error, errors });
-    }
 
     const container = data.container[0];
 
@@ -239,67 +213,47 @@ export const getMultiContainer = async (
       return notFound(revalidate);
     }
 
-    // The value of the `props` key will be
-    //  passed to the `Page` component
-    return {
-      props: {
+    return withRevalidate(
+      {
         type: "MultiContainer",
         container,
         related: data.containerGroup || [],
       },
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   } catch (error) {
-    logGqlErrors(error);
+    logGqlError(error);
     return notFound(revalidate);
   }
 };
 
-/**
- * Get a list of publications from strapi
- *
- * @param {Array<String>} slug
- * @param {string} locale
- * @returns {NewsItemListResponse} nextjs staticprops
- */
 export const getNewsList = async (
   locale: string,
   opts?: PublicationListOptions,
 ) => {
-  // If nextjs should check for changes on the server
   const revalidate = true;
   const { seo, basePath, heading, preamble, heroImage } = opts || {};
 
   try {
-    const { data, error } = await client.query<
-      NewsItemQuery,
-      NewsItemQueryVariables
-    >({
-      query: NEWS_ITEM_QUERY,
-      variables: {
+    const data = await gqlFetch<NewsItemQuery, NewsItemQueryVariables>(
+      NEWS_ITEM_QUERY,
+      {
         filter: {
           locale,
           state: Dataportal_ContainerState.Live,
           limit: 1000,
         },
       },
-      fetchPolicy: "no-cache",
-    });
+    );
 
     const publications = data?.dataportal_Digg_News_Items;
-
-    if (error) {
-      console.error(error);
-    }
 
     if (!publications) {
       console.warn(`No news found`);
     }
 
-    return {
-      props: {
+    return withRevalidate(
+      {
         type: "PublicationList",
         listItems: publications || [],
         seo: seo || null,
@@ -308,14 +262,12 @@ export const getNewsList = async (
         preamble: preamble || null,
         heroImage: heroImage || null,
       } as NewsItemListResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   } catch (error) {
-    logGqlErrors(error);
-    return {
-      props: {
+    logGqlError(error);
+    return withRevalidate(
+      {
         type: "PublicationList",
         listItems: [],
         seo: seo || null,
@@ -323,58 +275,40 @@ export const getNewsList = async (
         heading: heading || "",
         heroImage: heroImage || null,
       } as NewsItemListResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   }
 };
 
-/**
- * Get a list of publications from strapi
- *
- * @param {Array<String>} slug
- * @param {string} locale
- * @returns {GoodExampleListResponse} nextjs staticprops
- */
 export const getGoodExamplesList = async (
   locale: string,
   opts?: PublicationListOptions,
 ) => {
-  // If nextjs should check for changes on the server
   const revalidate = true;
   const { seo, basePath, heading, preamble, heroImage, reuse, breadcrumb } =
     opts || {};
   try {
-    const { data, error } = await client.query<
-      GoodExampleQuery,
-      GoodExampleQueryVariables
-    >({
-      query: GOOD_EXAMPLE_QUERY,
-      variables: {
+    const data = await gqlFetch<GoodExampleQuery, GoodExampleQueryVariables>(
+      GOOD_EXAMPLE_QUERY,
+      {
         filter: {
           locale,
           state: Dataportal_ContainerState.Live,
           limit: 1000,
         },
       },
-      fetchPolicy: "no-cache",
-    });
+    );
 
     const publications = data?.dataportal_Digg_Good_Examples?.filter(
       (publication) => publication && publication.reuse === reuse,
     );
 
-    if (error) {
-      console.error(error);
-    }
-
     if (!publications) {
       console.warn(`No good examples found`);
     }
 
-    return {
-      props: {
+    return withRevalidate(
+      {
         type: "PublicationList",
         listItems: publications || [],
         seo: seo || null,
@@ -384,14 +318,12 @@ export const getGoodExamplesList = async (
         heroImage: heroImage || null,
         breadcrumb: breadcrumb || null,
       } as GoodExampleListResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   } catch (error) {
-    logGqlErrors(error);
-    return {
-      props: {
+    logGqlError(error);
+    return withRevalidate(
+      {
         type: "PublicationList",
         listItems: [],
         seo: seo || null,
@@ -400,48 +332,28 @@ export const getGoodExamplesList = async (
         heroImage: heroImage || null,
         breadcrumb: breadcrumb || null,
       } as GoodExampleListResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   }
 };
 
-/**
- * Get a list of publications from strapi
- *
- * @param {Array<String>} slug
- * @param {string} locale
- * @returns {ToolListResponse} nextjs staticprops
- */
 export const getToolsList = async (opts?: ToolistOptions) => {
-  // If nextjs should check for changes on the server
   const revalidate = true;
   const { heading, preamble, heroImage, seo, basePath } = opts || {};
 
   try {
-    const { data, error } = await client.query<ToolQuery, ToolQueryVariables>({
-      query: TOOL_QUERY,
-      variables: {
-        filter: {
-          limit: 100,
-        },
-      },
-      fetchPolicy: "no-cache",
+    const data = await gqlFetch<ToolQuery, ToolQueryVariables>(TOOL_QUERY, {
+      filter: { limit: 100 },
     });
 
     const tools = data?.dataportal_Digg_Tools;
-
-    if (error) {
-      console.error(error);
-    }
 
     if (!tools) {
       console.warn(`No tools found`);
     }
 
-    return {
-      props: {
+    return withRevalidate(
+      {
         type: "ToolList",
         listItems: tools || [],
         seo: seo || null,
@@ -450,14 +362,12 @@ export const getToolsList = async (opts?: ToolistOptions) => {
         preamble: preamble || null,
         heroImage: heroImage || null,
       } as ToolListResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   } catch (error) {
-    logGqlErrors(error);
-    return {
-      props: {
+    logGqlError(error);
+    return withRevalidate(
+      {
         type: "ToolList",
         listItems: [],
         basePath: basePath || null,
@@ -465,20 +375,11 @@ export const getToolsList = async (opts?: ToolistOptions) => {
         heading: heading || null,
         heroImage: heroImage || null,
       } as ToolListResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   }
 };
 
-/**
- * Get publication from strapi
- *
- * @param {string} slug
- * @param {string} locale
- * @returns nextjs staticprops
- */
 export const getNewsItem = async (
   slug: string,
   locale: string,
@@ -487,73 +388,54 @@ export const getNewsItem = async (
   const { state, secret, revalidate } = opts;
 
   try {
-    const mainPublicationResult = await client.query<
+    const mainPublicationResult = await gqlFetch<
       NewsItemQuery,
       NewsItemQueryVariables
-    >({
-      query: NEWS_ITEM_QUERY,
-      variables: {
-        filter: {
-          slug,
-          limit: 1,
-          locale,
-          ...(secret ? { previewSecret: secret } : {}),
-          ...(state ? { state } : {}),
-        },
+    >(NEWS_ITEM_QUERY, {
+      filter: {
+        slug,
+        limit: 1,
+        locale,
+        ...(secret ? { previewSecret: secret } : {}),
+        ...(state ? { state } : {}),
       },
-      fetchPolicy: "no-cache",
     });
 
-    const publication =
-      mainPublicationResult && mainPublicationResult.data
-        ? mainPublicationResult.data.dataportal_Digg_News_Items[0]
-        : undefined;
-
-    if (mainPublicationResult && mainPublicationResult.error) {
-      console.error(mainPublicationResult.error);
-    }
+    const publication = mainPublicationResult.dataportal_Digg_News_Items[0];
 
     if (!publication) {
       console.warn(`No news found with slug: '${slug}'`);
       return notFound(revalidate);
     }
 
-    const relatedPublicationResult = await client.query<
+    const relatedPublicationResult = await gqlFetch<
       NewsItemQuery,
       NewsItemQueryVariables
-    >({
-      query: NEWS_ITEM_QUERY,
-      variables: { filter: { limit: 4, locale } },
-      fetchPolicy: "no-cache",
-    });
+    >(NEWS_ITEM_QUERY, { filter: { limit: 4, locale } });
 
-    // Transform the related publications to match the preview type
     const relatedPreviews: NewsBlockItemFragment[] =
-      relatedPublicationResult?.data?.dataportal_Digg_News_Items
-        .filter(
+      relatedPublicationResult.dataportal_Digg_News_Items
+        ?.filter(
           (pub): pub is NewsItemDataFragment =>
             pub !== null && pub.id !== publication.id,
         )
         .slice(0, 3)
         .map(toNewsPreview) || [];
 
-    return {
-      props: {
+    return withRevalidate(
+      {
         type: "Publication",
         ...publication,
         related: relatedPreviews,
       } as NewsItemResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   } catch (error) {
-    logGqlErrors(error);
+    logGqlError(error);
     return notFound(revalidate);
   }
 };
 
-// Helper function to type check the preview transformation
 export const toNewsPreview = (
   pub: NewsItemDataFragment,
 ): NewsBlockItemFragment => {
@@ -579,39 +461,26 @@ export const getGoodExample = async (
 ) => {
   const { state, secret, revalidate } = opts;
   try {
-    const mainPublicationResult = await client.query<
+    const mainPublicationResult = await gqlFetch<
       GoodExampleQuery,
       GoodExampleQueryVariables
-    >({
-      query: GOOD_EXAMPLE_QUERY,
-      variables: {
-        filter: {
-          slug,
-          limit: 1,
-          locale,
-          ...(secret ? { previewSecret: secret } : {}),
-          ...(state ? { state } : {}),
-        },
+    >(GOOD_EXAMPLE_QUERY, {
+      filter: {
+        slug,
+        limit: 1,
+        locale,
+        ...(secret ? { previewSecret: secret } : {}),
+        ...(state ? { state } : {}),
       },
-      fetchPolicy: "no-cache",
     });
 
-    const publication =
-      mainPublicationResult && mainPublicationResult.data
-        ? mainPublicationResult.data.dataportal_Digg_Good_Examples[0]
-        : undefined;
-
-    if (mainPublicationResult && mainPublicationResult.error) {
-      console.error(mainPublicationResult.error);
-    }
+    const publication = mainPublicationResult.dataportal_Digg_Good_Examples[0];
 
     if (!publication) {
       console.warn(`No good example found with slug: '${slug}'`);
       return notFound(revalidate);
     }
 
-    // Check if the reuse value matches the expected pattern
-    // Skip this check for preview mode (when state is Preview)
     if (
       state !== Dataportal_ContainerState.Preview &&
       publication.reuse !== reuse
@@ -624,46 +493,34 @@ export const getGoodExample = async (
       return notFound(revalidate);
     }
 
-    const relatedPublicationResult = await client.query<
+    const relatedPublicationResult = await gqlFetch<
       GoodExampleQuery,
       GoodExampleQueryVariables
-    >({
-      query: GOOD_EXAMPLE_QUERY,
-      variables: {
-        filter: {
-          limit: 4,
-          locale,
-        },
-      },
-      fetchPolicy: "no-cache",
-    });
+    >(GOOD_EXAMPLE_QUERY, { filter: { limit: 4, locale } });
 
     const relatedPreviews: GoodExampleBlockItemFragment[] =
-      relatedPublicationResult?.data?.dataportal_Digg_Good_Examples
-        .filter(
+      relatedPublicationResult.dataportal_Digg_Good_Examples
+        ?.filter(
           (pub): pub is GoodExampleDataFragment =>
             pub !== null && pub.id !== publication.id && pub.reuse === reuse,
         )
         .slice(0, 3)
         .map(toGoodExamplePreview) || [];
 
-    return {
-      props: {
+    return withRevalidate(
+      {
         type: "Publication",
         ...publication,
         related: relatedPreviews,
       } as GoodExampleResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   } catch (error) {
-    logGqlErrors(error);
+    logGqlError(error);
     return notFound(revalidate);
   }
 };
 
-// Helper function to type check the preview transformation
 export const toGoodExamplePreview = (
   pub: GoodExampleDataFragment,
 ): GoodExampleBlockItemFragment => {
@@ -689,22 +546,14 @@ export const getRootAggregate = async (
   const { state, secret, revalidate } = opts;
 
   try {
-    const { data, error } = await client.query<
+    const data = await gqlFetch<
       RootAggregateQuery,
       RootAggregateQueryVariables
-    >({
-      query: ROOT_AGGREGATE_QUERY,
-      variables: {
-        locale,
-        state: state || Dataportal_ContainerState.Live,
-        ...(secret ? { previewSecret: secret } : {}),
-      },
-      fetchPolicy: "no-cache",
+    >(ROOT_AGGREGATE_QUERY, {
+      locale,
+      state: state || Dataportal_ContainerState.Live,
+      ...(secret ? { previewSecret: secret } : {}),
     });
-
-    if (error) {
-      console.error(error);
-    }
 
     const container = data ? data.container[0] : undefined;
 
@@ -714,29 +563,23 @@ export const getRootAggregate = async (
 
     const news = data.news || null;
     const example = data.examples || null;
-    // const event = data.events[0] || null;
 
-    // The value of the `props` key will be
-    //  passed to the `Page` component
-    return {
-      props: {
+    return withRevalidate(
+      {
         ...container,
         type: "RootAggregate",
         news,
         example,
-        // event,
       },
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   } catch (error) {
-    logGqlErrors(error);
+    logGqlError(error);
     return {
       props: {
         type: "RootAggregate",
       } as RootAggregateResponse,
-      revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60"),
+      revalidate: revalidateValue(),
     };
   }
 };
@@ -747,41 +590,27 @@ export const getStartPage = async (
 ) => {
   const { revalidate } = opts;
   try {
-    const { data, error } = await client.query<
-      StartPageQuery,
-      StartPageQueryVariables
-    >({
-      query: START_PAGE_QUERY,
-      variables: {
-        filter: {
-          locale,
-        },
-      },
-      fetchPolicy: "no-cache",
-    });
-
-    if (error) {
-      console.error(error);
-    }
+    const data = await gqlFetch<StartPageQuery, StartPageQueryVariables>(
+      START_PAGE_QUERY,
+      { filter: { locale } },
+    );
 
     const startPage = data.dataportal_Digg_Start_Page;
 
-    return {
-      props: {
+    return withRevalidate(
+      {
         ...startPage,
         type: "StartPage",
       } as StartPageResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   } catch (error) {
-    logGqlErrors(error);
+    logGqlError(error);
     return {
       props: {
         type: "StartPage",
       } as StartPageResponse,
-      revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60"),
+      revalidate: revalidateValue(),
     };
   }
 };
@@ -792,62 +621,46 @@ export const getNavigationData = async (
 ) => {
   const { revalidate } = opts;
   try {
-    const { data, error } = await client.query<
-      NavigationQuery,
-      NavigationQueryVariables
-    >({
-      query: NAVIGATION_QUERY,
-      variables: { filter: { locale } },
-      fetchPolicy: "no-cache",
-    });
-
-    if (error) {
-      console.error(error);
-    }
+    const data = await gqlFetch<NavigationQuery, NavigationQueryVariables>(
+      NAVIGATION_QUERY,
+      { filter: { locale } },
+    );
 
     const navigationData = data.dataportal_Digg_Navigation;
 
-    return {
-      props: {
+    return withRevalidate(
+      {
         type: "Navigation",
         items: navigationData,
       } as NavigationResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   } catch (error) {
-    logGqlErrors(error);
+    logGqlError(error);
     return {
       props: { type: "Navigation" } as NavigationResponse,
-      revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60"),
+      revalidate: revalidateValue(),
     };
   }
 };
 
 /**
- * Query GraphQL Search index
- *
- * @param {string} query
- * @param {string} locale
- * @returns nextjs staticprops
+ * Query GraphQL Search index. The previous `clientQuery` flag is kept for
+ * call-site compatibility but is now a no-op: gqlFetch resolves the APOLLO_URL
+ * correctly on both server and client.
  */
 export const querySearch = async (
   query: string,
   locale: string,
   limit: number,
   offset: number,
-  clientQuery: boolean,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _clientQuery: boolean,
 ) => {
   try {
-    const cl = clientQuery ? browserclient : client;
-
-    const searchResult = await cl.query<
-      ContainerDataFragment | GoodExampleDataFragment | NewsItemDataFragment,
-      SearchQueryVariables
-    >({
-      query: SEARCH_QUERY,
-      variables: {
+    const data = await gqlFetch<SearchQuery, SearchQueryVariables>(
+      SEARCH_QUERY,
+      {
         filter: {
           highlightPreText: "**",
           highlightPostText: "**",
@@ -859,20 +672,12 @@ export const querySearch = async (
           locale,
         },
       },
-      fetchPolicy: "no-cache",
-    });
+    );
 
-    const result =
-      searchResult && searchResult.data ? searchResult.data : undefined;
-
-    if (searchResult && searchResult.error) {
-      console.error(searchResult.error);
-    }
-
-    return result;
+    return data;
   } catch (error) {
-    logGqlErrors(error);
-    return notFound;
+    logGqlError(error);
+    return undefined;
   }
 };
 
@@ -880,28 +685,20 @@ export const getForm = async (identifier: string, locale?: string) => {
   const revalidate = true;
 
   try {
-    const { data } = await client.query<FormQuery, FormQueryVariables>({
-      query: FORM_QUERY,
-      variables: { identifier, locale },
-      fetchPolicy: "no-cache",
+    const data = await gqlFetch<FormQuery, FormQueryVariables>(FORM_QUERY, {
+      identifier,
+      locale,
     });
 
     const form = data.dataportal_Digg_Form;
 
-    return {
-      props: { ...form, type: "Form" } as FormResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+    return withRevalidate(
+      { ...form, type: "Form" } as FormResponse,
+      revalidate,
+    );
   } catch (error) {
-    logGqlErrors(error);
-    return {
-      props: { type: "Form" } as FormResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+    logGqlError(error);
+    return withRevalidate({ type: "Form" } as FormResponse, revalidate);
   }
 };
 
@@ -909,16 +706,10 @@ export const getFoertroendemodellenForm = async (locale?: string) => {
   const revalidate = true;
 
   try {
-    const { data, error } = await client.query({
-      query: FOETROENDEMODELLEN_FORM_QUERY,
-      variables: { filter: { locale } },
-      fetchPolicy: "no-cache",
-    });
-
-    if (error) {
-      console.error("GraphQL error:", error);
-      throw error;
-    }
+    const data = await gqlFetch<
+      FoertroendemodellenFormQuery,
+      FoertroendemodellenFormQueryVariables
+    >(FOETROENDEMODELLEN_FORM_QUERY, { filter: { locale } });
 
     const formData = data?.dataportal_Digg_FoertroendemodellenForm;
 
@@ -927,20 +718,13 @@ export const getFoertroendemodellenForm = async (locale?: string) => {
       throw new Error("No form data returned");
     }
 
-    return {
-      props: { ...formData, type: "FörtroendemodellenForm" },
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+    return withRevalidate(
+      { ...formData, type: "FörtroendemodellenForm" },
+      revalidate,
+    );
   } catch (error) {
-    logGqlErrors(error);
-    return {
-      props: { type: "FörtroendemodellenForm" },
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+    logGqlError(error);
+    return withRevalidate({ type: "FörtroendemodellenForm" }, revalidate);
   }
 };
 
@@ -959,39 +743,34 @@ export const getModule = async (
   };
 
   try {
-    const { data } = await client.query<ModuleQuery, ModuleQueryVariables>({
-      query: MODULE_QUERY,
-      variables: { identifier, locale },
-      fetchPolicy: "no-cache",
-    });
+    const data = await gqlFetch<ModuleQuery, ModuleQueryVariables>(
+      MODULE_QUERY,
+      { identifier, locale },
+    );
 
     const mod = data.dataportal_Digg_Module;
 
-    return {
-      props: {
+    return withRevalidate(
+      {
         ...mod,
         type: "Module",
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
       } as ModuleResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   } catch (error) {
-    logGqlErrors(error);
-    return {
-      props: {
+    logGqlError(error);
+    return withRevalidate(
+      {
         ...emptyModule,
         type: "Module",
         seo: seo || null,
         basePath: basePath || null,
         heading: heading || null,
       } as ModuleResponse,
-      ...(revalidate
-        ? { revalidate: parseInt(process.env.REVALIDATE_INTERVAL || "60") }
-        : {}),
-    };
+      revalidate,
+    );
   }
 };

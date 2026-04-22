@@ -7,8 +7,12 @@ import {
 } from "react";
 
 import { ParseDocToHtml } from "@/components/typography/parse-doc-to-html";
-import { browserclient } from "@/graphql";
-import { FormDataFragment } from "@/graphql/__generated__/operations";
+import {
+  FoertroendemodellenFormClientQuery,
+  FoertroendemodellenFormClientQueryVariables,
+  FormDataFragment,
+} from "@/graphql/__generated__/operations";
+import { gqlFetch } from "@/graphql/fetcher";
 import { FOETROENDEMODELLEN_FORM_CLIENT_QUERY } from "@/graphql/formQuery";
 import { FormTypes } from "@/types/form";
 
@@ -33,13 +37,13 @@ export const ImportFromJsonFile = (
     const importedData: FormTypes[][] = JSON.parse(text as string);
 
     //combine imported data with current form data, use current form data if the imported data is missing a question
-    let newArr: FormTypes[][] = [];
+    const newArr: FormTypes[][] = [];
     formData.forEach((page, pageIndex) => {
-      let newPage: FormTypes[] = [];
+      const newPage: FormTypes[] = [];
 
       page.forEach((field) => {
         //check if field title exists in imported data
-        let importedField = importedData[pageIndex]?.find((item) => {
+        const importedField = importedData[pageIndex]?.find((item) => {
           if (
             "value" in field &&
             "value" in item &&
@@ -199,15 +203,10 @@ export const handleScroll = (scrollRef: RefObject<HTMLSpanElement>) => {
 };
 
 export const fetchFortroendemodellenForm = async (locale: string) => {
-  const { data, error } = await browserclient.query({
-    query: FOETROENDEMODELLEN_FORM_CLIENT_QUERY,
-    variables: { locale },
-    fetchPolicy: "no-cache",
-  });
-
-  if (error) {
-    throw error;
-  }
+  const data = await gqlFetch<
+    FoertroendemodellenFormClientQuery,
+    FoertroendemodellenFormClientQueryVariables
+  >(FOETROENDEMODELLEN_FORM_CLIENT_QUERY, { locale });
 
   const formData = data?.dataportal_Digg_FoertroendemodellenForm;
 
@@ -215,5 +214,9 @@ export const fetchFortroendemodellenForm = async (locale: string) => {
     throw new Error("No form data returned");
   }
 
-  return formData;
+  // Consumers (`fortroendemodellen-v2`) mutate `elements` with custom
+  // `__typename`s that aren't in the generated union; keep the previous
+  // implicit `any` return contract until Phase 4 tightens types.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return formData as any;
 };

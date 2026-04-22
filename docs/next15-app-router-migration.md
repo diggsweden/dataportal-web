@@ -131,8 +131,8 @@ Default rule of thumb: if a component doesn't import `react`'s state/effect hook
 
 ## Todo checklist
 
-- [ ] **Phase 1:** add `graphql/fetcher.ts` (`gqlFetch`) and port all `query-helpers` + `form-utils` call sites off Apollo.
-- [ ] **Phase 1:** remove `ApolloProvider` from `_app`/`_document`, delete `graphql/client.ts`, drop `@apollo/client` + `apollo` deps, switch introspect to `graphql-codegen`.
+- [x] **Phase 1:** add `graphql/fetcher.ts` (`gqlFetch`) and port all `query-helpers` + `form-utils` call sites off Apollo.
+- [x] **Phase 1:** remove `ApolloProvider` from `_app`/`_document`, delete `graphql/client.ts`, drop `@apollo/client` + `apollo` deps, switch introspect to `graphql-codegen`.
 - [ ] **Phase 2:** upgrade to Next 15 / React 19 on the Pages Router, run Next codemods, fix `images.remotePatterns` and `fetch` cache defaults.
 - [ ] **Phase 3:** add `middleware.ts` (next-intl + CSP nonce), `i18n/request.ts`, `app/[locale]/layout.tsx`, `components/providers.tsx`, `LayoutStateProvider`, not-found/error pages; switch `next/router` -> `next/navigation`.
 - [ ] **Phase 3:** flatten locale JSON (drop `|` and `$` separators) and codemod every `t()` call; wire `next-intl` pathnames from `routes.json` for localized slugs.

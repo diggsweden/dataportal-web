@@ -6,7 +6,7 @@ import { GetServerSideProps } from "next/types";
 import nodeFetch from "node-fetch";
 
 import { SettingsUtil } from "../env";
-import { client, CONTAINER_QUERY } from "../graphql";
+import { CONTAINER_QUERY } from "../graphql";
 import {
   ContainerDataFragment,
   ContainersQuery,
@@ -18,6 +18,7 @@ import {
   NewsItemQuery,
   NewsItemQueryVariables,
 } from "../graphql/__generated__/operations";
+import { gqlFetch, logGqlError } from "../graphql/fetcher";
 import {
   GOOD_EXAMPLE_QUERY,
   NEWS_ITEM_QUERY,
@@ -120,56 +121,38 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   if (locales) {
     await Promise.all(
-      // Get all containers in all locales
       locales.map(async (locale) => {
-        // Get external data from the file system, API, DB, etc.
-        const containerResult = await client.query<
-          ContainersQuery,
-          ContainersQueryVariables
-        >({
-          query: CONTAINER_QUERY,
-          variables: { filter: { locale, limit: 9999 } },
-        });
+        try {
+          const [containerResult, newsResult, goodExampleResult] =
+            await Promise.all([
+              gqlFetch<ContainersQuery, ContainersQueryVariables>(
+                CONTAINER_QUERY,
+                { filter: { locale, limit: 9999 } },
+              ),
+              gqlFetch<NewsItemQuery, NewsItemQueryVariables>(NEWS_ITEM_QUERY, {
+                filter: { locale, limit: 9999 },
+              }),
+              gqlFetch<GoodExampleQuery, GoodExampleQueryVariables>(
+                GOOD_EXAMPLE_QUERY,
+                { filter: { locale, limit: 9999 } },
+              ),
+            ]);
 
-        const newsResult = await client.query<
-          NewsItemQuery,
-          NewsItemQueryVariables
-        >({
-          query: NEWS_ITEM_QUERY,
-          variables: { filter: { locale, limit: 9999 } },
-        });
+          const containers = containerResult?.dataportal_Digg_Containers;
+          const news = newsResult?.dataportal_Digg_News_Items;
+          const goodExamples = goodExampleResult?.dataportal_Digg_Good_Examples;
 
-        const goodExampleResult = await client.query<
-          GoodExampleQuery,
-          GoodExampleQueryVariables
-        >({
-          query: GOOD_EXAMPLE_QUERY,
-          variables: { filter: { locale, limit: 9999 } },
-        });
-
-        const containers = containerResult?.data?.dataportal_Digg_Containers;
-        const news = newsResult?.data?.dataportal_Digg_News_Items;
-        const goodExamples =
-          goodExampleResult?.data?.dataportal_Digg_Good_Examples;
-
-        if (containerResult?.error) {
-          console.error(containerResult?.error);
-        }
-        if (newsResult?.error) {
-          console.error(newsResult.error);
-        }
-        if (goodExampleResult?.error) {
-          console.error(goodExampleResult.error);
-        }
-
-        if (containers) {
-          allContainers.push(...containers);
-        }
-        if (news) {
-          allNewsItems.push(...news);
-        }
-        if (goodExamples) {
-          allGoodExamples.push(...goodExamples);
+          if (containers) {
+            allContainers.push(...containers);
+          }
+          if (news) {
+            allNewsItems.push(...news);
+          }
+          if (goodExamples) {
+            allGoodExamples.push(...goodExamples);
+          }
+        } catch (error) {
+          logGqlError(error);
         }
       }),
     );

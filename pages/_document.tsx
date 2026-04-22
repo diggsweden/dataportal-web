@@ -1,4 +1,3 @@
-import { ApolloProvider } from "@apollo/client";
 import Document, {
   DocumentContext,
   Head,
@@ -14,34 +13,27 @@ import {
 } from "@/providers/settings-provider";
 
 import { SettingsUtil } from "../env";
-import { client } from "../graphql/client";
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage;
 
     const env = SettingsUtil.create();
-    // Run the React rendering logic synchronously
     ctx.renderPage = () =>
       originalRenderPage({
-        // Useful for wrapping the whole react tree
         enhanceApp: (App) =>
           function callback(props) {
             return (
-              <ApolloProvider client={client}>
-                <SettingsProvider value={{ ...defaultSettings, env }}>
-                  <LocalStoreProvider>
-                    <App {...props} />
-                  </LocalStoreProvider>
-                </SettingsProvider>
-              </ApolloProvider>
+              <SettingsProvider value={{ ...defaultSettings, env }}>
+                <LocalStoreProvider>
+                  <App {...props} />
+                </LocalStoreProvider>
+              </SettingsProvider>
             );
           },
-        // Useful for wrapping in a per-page basis
         enhanceComponent: (Component) => Component,
       });
 
-    // Run the parent `getInitialProps`, it now includes the custom `renderPage`
     const initialProps = await Document.getInitialProps(ctx);
 
     return {
