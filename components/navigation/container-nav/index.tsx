@@ -7,15 +7,17 @@ import { FC, KeyboardEvent, useEffect, useRef, useState } from "react";
 import CrossIcon from "@/assets/icons/cross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { Button } from "@/components/button";
-import { ContainerDataFragment } from "@/graphql/__generated__/operations";
+import { ParentSimplifiedFragment } from "@/graphql/__generated__/operations";
 import { useClickOutside } from "@/hooks/use-click-outside";
 
 interface ContainerDpDwnProps {
-  related: ContainerDataFragment[];
+  related: ParentSimplifiedFragment[];
   parent?: string;
 }
 
 export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
+  const sectionLabel =
+    related[0].name || related[0].heading || related[0].slug || "";
   const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
   const [vw, setVw] = useState(0);
@@ -61,10 +63,11 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
   };
 
   const isActive = (url: string) => {
-    if (url === related[0].slug || url.endsWith(related[0].slug)) {
+    const firstSlug = related[0].slug || "";
+    if (url === firstSlug || url.endsWith(firstSlug)) {
       return pathname === url;
     } else {
-      return pathname.startsWith(url) && pathname !== related[0].slug;
+      return pathname.startsWith(url) && pathname !== firstSlug;
     }
   };
 
@@ -87,15 +90,15 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
         <Button
           iconPosition="left"
           icon={expanded ? CrossIcon : HamburgerIcon}
-          label={related[0].name}
+          label={sectionLabel}
           onClick={handleToggle}
           className={`!button--large relative z-40 w-full md:w-[20rem] xl:hidden`}
           aria-expanded={expanded}
           aria-controls="container-nav"
           aria-label={
             expanded
-              ? `${t("common|close")} ${related[0].name}`
-              : `${t("common|open")} ${related[0].name}`
+              ? `${t("common|close")} ${sectionLabel}`
+              : `${t("common|open")} ${sectionLabel}`
           }
         />
       )}
@@ -107,24 +110,26 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
             ? "-bottom-sm z-40 h-fit max-h-[calc(100svh-18.25rem)] w-full translate-y-full overflow-y-auto md:max-h-[calc(100vh-18.25rem)]"
             : "hidden"
         }`}
-        aria-label={`${related[0].name} navigation`}
+        aria-label={`${sectionLabel} navigation`}
       >
-        {related.map(({ name, slug }) => {
+        {related.map(({ name, slug, heading }, index) => {
+          const label = name || heading || slug || "";
+          const href = slug || "#";
           return (
             <li
               className={`${
-                isActive(slug) ? " bg-brown-900 text-white" : "text-brown-600"
+                isActive(href) ? " bg-brown-900 text-white" : "text-brown-600"
               }`}
-              key={slug}
+              key={slug || `nav-${index}`}
             >
               <Link
-                href={slug}
+                href={href}
                 className={`focus--in inline-flex w-full px-md py-sm no-underline ${
-                  isActive(slug)
+                  isActive(href)
                     ? "cursor-default"
                     : "focus--underline hover:underline"
                 }`}
-                aria-disabled={isActive(slug)}
+                aria-disabled={isActive(href)}
                 onClick={() => {
                   setExpanded(false);
                   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -137,7 +142,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
                 }}
                 scroll={false}
               >
-                {name}
+                {label}
               </Link>
             </li>
           );
