@@ -24,7 +24,7 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
     "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor";
 
   const isDraft = pathname?.substring(0, 7) === "/drafts";
-  const allowSEO = env.envName == "prod" && !isDraft;
+  const allowSEO = env.envName === "prod" && !isDraft;
 
   return (
     <Head>
@@ -108,6 +108,7 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
       {/* Matomo Tag Manager */}
       {activateMatomo && (
         <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: Matomo script
           dangerouslySetInnerHTML={{
             __html: `
                 var _mtm = window._mtm = window._mtm || [];

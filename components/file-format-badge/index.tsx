@@ -81,11 +81,7 @@ export const FileFormatBadge: FC<FileFormatBadgeProps> = ({ badgeName }) => {
       className = "bc-2";
       break;
 
-    case "application/ld+json" && "application/json-ld":
-      text = "rdf";
-      className = "bc-2";
-      break;
-
+    case "application/ld+json":
     case "application/json-ld":
       text = "rdf";
       className = "bc-2";

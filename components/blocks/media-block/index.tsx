@@ -18,10 +18,10 @@ export const handleUrl = ({ screen9, url, __typename }: MediaBaseFragment) => {
   if (screen9 || isExternalLink(url)) {
     return url;
   } else if (__typename === "dataportal_Digg_File") {
-    return (documentBaseUrl || mediaBaseUrl || "") + `${url}`;
+    return `${documentBaseUrl || mediaBaseUrl || ""}${url}`;
   }
 
-  return (mediaBaseUrl || "") + `${url}`;
+  return `${mediaBaseUrl || ""}${url}`;
 };
 
 const renderMedia = (

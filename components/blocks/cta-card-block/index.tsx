@@ -22,7 +22,7 @@ export const CtaCardBlock: FC<
             (link, idx: number) =>
               link && (
                 <ButtonLink
-                  key={idx}
+                  key={link.name}
                   href={link.link}
                   label={link.name}
                   icon={

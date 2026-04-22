@@ -301,7 +301,7 @@ export const DatasetPage: FC = () => {
               </div>
             </div>
 
-            {/* Catalog informaton wrapper */}
+            {/* Catalog information wrapper */}
             <div
               data-test-id="catalog-information"
               className="box-border w-full bg-white p-md"

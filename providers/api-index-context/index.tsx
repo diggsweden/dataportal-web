@@ -146,7 +146,7 @@ export const ApiIndexProvider: FC<ApiIndexProviderProps> = ({
       });
 
     const parsedResult = result.join(",").replace(/'/g, "").split(",");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     (window as any).__es_has_apis = parsedResult;
   };
 

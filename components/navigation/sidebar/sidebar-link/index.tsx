@@ -161,6 +161,7 @@ export const SidebarLink: FC<
     return (
       <>
         <button
+          type="button"
           className={`focus--in focus--underline group flex w-full cursor-pointer flex-row items-center
             gap-md whitespace-normal p-md text-left text-brown-600 ${
               open && "font-strong text-brown-900"
@@ -177,6 +178,7 @@ export const SidebarLink: FC<
         >
           {icon && (
             <span
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: Icon is HTML
               dangerouslySetInnerHTML={{ __html: icon }}
               className={`flex-shrink-0 ${open ? "text-pink-600" : ""}`}
             />

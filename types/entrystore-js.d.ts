@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+// biome-ignore-all lint/suspicious/noExplicitAny: Unknown types from entrystore-js
 declare module "@entryscape/entrystore-js" {
   export class EntryStore {
     constructor(_url: string);

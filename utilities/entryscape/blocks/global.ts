@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+// biome-ignore-all lint/suspicious/noExplicitAny: Unknown types from entrystore-js
 import type { Entry } from "@entryscape/entrystore-js";
 import type { Translate } from "next-translate";
 
@@ -177,19 +177,19 @@ export const exploreApiLink = (
     {
       block: "exploreApiLinkRun",
       run: (node: any, a2: any, a3: any, entry: Entry) => {
-        if (node && node.firstElementChild) {
+        if (node?.firstElementChild) {
           let showExploreApi = false;
           const entryId = entry.getId();
           const contextId = cid;
 
-          if ((window as any).__es_has_apis)
+          if ((window as any).__es_has_apis) {
             for (const a in (window as any).__es_has_apis) {
               if (
-                (window as any).__es_has_apis[a] ===
-                contextId + "_" + entryId
+                (window as any).__es_has_apis[a] === `${contextId}_${entryId}`
               )
                 showExploreApi = true;
             }
+          }
           if (showExploreApi) {
             const el = document.createElement("a");
             const label = document.createElement("span");

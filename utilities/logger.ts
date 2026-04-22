@@ -91,15 +91,15 @@ export class ServerLogger {
     return ServerLogger.instance._logger;
   }
 
-  error(err: any) {
+  error(err: unknown) {
     this._logger?.error(err);
   }
 
-  warning(warn: any) {
+  warning(warn: unknown) {
     this._logger?.warning(warn);
   }
 
-  info(info: any) {
+  info(info: unknown) {
     this._logger?.info(info);
   }
 }

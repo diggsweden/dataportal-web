@@ -52,12 +52,14 @@ export function getContactEmail(metadata: Metadata): string {
   );
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: Unknown type
 export const getEntryLang = (metadataGraph: any, prop: any, lang: string) => {
   let val = "";
   const fallbackLang = "sv";
 
   const stmts = metadataGraph.find(null, prop);
   if (stmts.length > 0) {
+    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     const obj: any = {};
     for (let s = 0; s < stmts.length; s++) {
       obj[stmts[s].getLanguage() || ""] = stmts[s].getValue();
@@ -99,6 +101,7 @@ export const getUriNames = async (
 
   try {
     const entries = await esu.loadEntriesByResourceURIs(uniqueUris, null, true);
+    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     entries.forEach((entry: any) => {
       if (entry) {
         const metadata = entry.getMetadata();
@@ -228,13 +231,16 @@ export function getLocalizedChoiceLabel(choice: Choice, lang: string) {
 // Search and Query Helpers
 // ============================================================================
 
+// biome-ignore lint/suspicious/noExplicitAny: Unknown type
 export const resourcesSearch = (resources: string[], es: any): Promise<any> => {
+  // biome-ignore lint/suspicious/noExplicitAny: Unknown type
   return new Promise<any>((resolve) => {
     const esQuery = es.newSolrQuery();
     esQuery.publicRead(true);
     esQuery
       .resource(resources, null)
       .getEntries(0)
+      // biome-ignore lint/suspicious/noExplicitAny: Unknown type
       .then((children: any) => {
         resolve(children);
       });

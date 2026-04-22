@@ -712,7 +712,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     }
 
     let fetchResults = false;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     const qs = decode(window.location.search.substring(1)) as any;
 
     // Parse query parameters

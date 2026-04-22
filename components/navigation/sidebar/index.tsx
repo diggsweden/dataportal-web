@@ -68,7 +68,6 @@ export const Sidebar: FC<NavSideProps> = ({
   return (
     <nav
       id="sidebar"
-      role="navigation"
       ref={ref}
       className={`absolute right-none top-[8.5rem] z-50 -mb-[8.5rem] h-[calc(100%-8.5rem)] overflow-y-auto 
       overflow-x-hidden bg-white transition-all duration-300 ease-in-out md:overflow-y-visible

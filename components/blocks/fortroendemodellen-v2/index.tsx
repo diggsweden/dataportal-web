@@ -421,67 +421,65 @@ export const FortroendemodellenFrom = () => {
             />
           )}
 
-          <>
-            {page === 0 && (
-              <>
-                {formIntroText.title.length > 0 && (
-                  <>
-                    <Heading level={1} size={"lg"}>
-                      {formIntroText.title}
-                    </Heading>
-                    <p className="text-md">{formIntroText.text}</p>
-                  </>
-                )}
-                <Button
-                  onClick={() => {
-                    setPage(page + 1);
-                    handleScroll(scrollRef);
-                  }}
-                  label={t("pages|form$start-evaluation-text")}
-                />
-              </>
-            )}
-            {formDataArray.map((data: FormTypes[], index) => {
-              index++;
-              if (page === index) {
-                return (
-                  <div
-                    key={`page${index}`}
-                    className="col-span-1 col-start-1 row-start-2 w-full max-w-md lg:col-start-2 lg:row-start-1"
-                  >
-                    <span ref={scrollRef} />
-
-                    <span className="text-lg text-textSecondary">
-                      {t("pages|form$questions")}
-                    </span>
-                    <RenderForm
-                      fortroendemodellen
-                      UpdateFormDataArray={UpdateFormDataArray}
-                      formDataArray={data}
-                      pageIndex={index}
-                    />
-                    <FormBottomNav
-                      fortroendemodellen
-                      key={`nav${index}`}
-                      setFormDataArray={setFormDataArray}
-                      formDataArray={formDataArray}
-                      setPage={setPage}
-                      page={page}
-                      scrollRef={scrollRef}
-                    />
-                  </div>
-                );
-              }
-            })}
-
-            {page === formDataArray.length + 1 && (
-              <FormEnding
-                countQuestionsPerSection={countQuestionsPerSection()}
-                formData={formData as FormData}
-                formDataArray={formDataArray}
+          {page === 0 && (
+            <>
+              {formIntroText.title.length > 0 && (
+                <>
+                  <Heading level={1} size={"lg"}>
+                    {formIntroText.title}
+                  </Heading>
+                  <p className="text-md">{formIntroText.text}</p>
+                </>
+              )}
+              <Button
+                onClick={() => {
+                  setPage(page + 1);
+                  handleScroll(scrollRef);
+                }}
+                label={t("pages|form$start-evaluation-text")}
               />
-            )}
-          </>
+            </>
+          )}
+          {formDataArray.map((data: FormTypes[], index) => {
+            index++;
+            if (page === index) {
+              return (
+                <div
+                  key={`page${index}`}
+                  className="col-span-1 col-start-1 row-start-2 w-full max-w-md lg:col-start-2 lg:row-start-1"
+                >
+                  <span ref={scrollRef} />
+
+                  <span className="text-lg text-textSecondary">
+                    {t("pages|form$questions")}
+                  </span>
+                  <RenderForm
+                    fortroendemodellen
+                    UpdateFormDataArray={UpdateFormDataArray}
+                    formDataArray={data}
+                    pageIndex={index}
+                  />
+                  <FormBottomNav
+                    fortroendemodellen
+                    key={`nav${index}`}
+                    setFormDataArray={setFormDataArray}
+                    formDataArray={formDataArray}
+                    setPage={setPage}
+                    page={page}
+                    scrollRef={scrollRef}
+                  />
+                </div>
+              );
+            }
+          })}
+
+          {page === formDataArray.length + 1 && (
+            <FormEnding
+              countQuestionsPerSection={countQuestionsPerSection()}
+              formData={formData as FormData}
+              formDataArray={formDataArray}
+            />
+          )}
         </div>
       )}
       {page === formDataArray.length + 1 && (

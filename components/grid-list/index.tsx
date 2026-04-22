@@ -48,7 +48,7 @@ export const GridList: FC<ListProps> = ({
             {heading}
           </Heading>
         )}
-        {showMoreLink && showMoreLink.slug && (
+        {showMoreLink?.slug && (
           <ButtonLink
             size="sm"
             href={showMoreLink.slug}

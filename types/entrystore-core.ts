@@ -72,8 +72,8 @@ export interface DownloadFormat {
 
 // Entry Types
 export interface ESEntry {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  env: any; // Replace with proper env type
+  // biome-ignore lint/suspicious/noExplicitAny: Unknown type
+  env: any;
   entrystore: EntryStore;
   entry: Entry;
   loading: boolean;

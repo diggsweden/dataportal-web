@@ -156,22 +156,23 @@ export const Hero: FC<HeroProps> = ({
                     />
                   </div>
                 </div>
-                <form
-                  className={`datapage-form w-full max-w-md ${
-                    isFrontpage ? "mx-auto" : "justify-start"
-                  }`}
-                  method="GET"
-                  action={search.destination}
-                  role={"search"}
-                >
-                  <SearchInput
-                    id="start-search"
-                    placeholder={search.placeholder}
-                    query={query}
-                    setQuery={setQuery}
-                    ariaLabel={search.placeholder}
-                  />
-                </form>
+                <search>
+                  <form
+                    className={`datapage-form w-full max-w-md ${
+                      isFrontpage ? "mx-auto" : "justify-start"
+                    }`}
+                    method="GET"
+                    action={search.destination}
+                  >
+                    <SearchInput
+                      id="start-search"
+                      placeholder={search.placeholder}
+                      query={query}
+                      setQuery={setQuery}
+                      ariaLabel={search.placeholder}
+                    />
+                  </form>
+                </search>
               </div>
             )}
           </div>

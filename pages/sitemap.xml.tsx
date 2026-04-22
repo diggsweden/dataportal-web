@@ -112,7 +112,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   res,
   locales,
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
   const datasets: any[] = await getDatasets();
 
   const allContainers: (ContainerDataFragment | null)[] = [];

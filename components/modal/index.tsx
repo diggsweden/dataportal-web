@@ -56,10 +56,10 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   };
 
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: Modal is a dialog
     <dialog
       data-test-id="modal"
       ref={ref}
-      role="dialog"
       aria-modal="true"
       className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] w-4/5 -translate-x-1/2 -translate-y-1/2 overflow-auto  
         bg-white p-xl shadow-2xl outline-none md:w-auto ${
@@ -67,6 +67,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
         } ${modalSize === "sm" ? "max-w-[24rem]" : "max-w-md"}
         [&::backdrop]:bg-brownOpaque5
         `}
+      onClose={handleClose}
       onClick={handleClose}
     >
       {heading && (

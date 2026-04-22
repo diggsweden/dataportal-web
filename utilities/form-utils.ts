@@ -217,6 +217,6 @@ export const fetchFortroendemodellenForm = async (locale: string) => {
   // Consumers (`fortroendemodellen-v2`) mutate `elements` with custom
   // `__typename`s that aren't in the generated union; keep the previous
   // implicit `any` return contract until Phase 4 tightens types.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
   return formData as any;
 };

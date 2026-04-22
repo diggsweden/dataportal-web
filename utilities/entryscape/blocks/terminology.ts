@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+// biome-ignore-all lint/suspicious/noExplicitAny: Unknown types from entrystore-js
 import type { Entry } from "@entryscape/entrystore-js";
 import type { Translate } from "next-translate";
 
@@ -12,7 +12,7 @@ export const terminologyBlocks = (t: Translate, lang: string) => [
   {
     block: "conceptLink",
     run: (node: any, a2: any, a3: any, entry: Entry) => {
-      if (node && node.firstElementChild && entry) {
+      if (node?.firstElementChild && entry) {
         const baseUrl = window.location.origin;
         const el = document.createElement("a");
 

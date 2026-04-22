@@ -14,20 +14,19 @@ export interface ITrackingContext {
 
 export interface ITrackingContextProps {
   children?: ReactNode;
-  initalActivation: boolean;
+  initialActivation: boolean;
 }
 
 export const TrackingContext = createContext<ITrackingContext>({
   activateMatomo: false,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setActivation: (_value: SetStateAction<boolean>) => {},
 });
 
 export const TrackingProvider: FC<ITrackingContextProps> = ({
-  initalActivation,
+  initialActivation,
   children,
 }) => {
-  const [activate, setActivation] = useState(initalActivation);
+  const [activate, setActivation] = useState(initialActivation);
 
   return (
     <TrackingContext.Provider

@@ -36,7 +36,7 @@ export const CookieOptions: FC<CookieOptionsProps> = ({
   };
 
   useEffect(() => {
-    if (firstInputElement && firstInputElement.current) {
+    if (firstInputElement?.current) {
       const input = firstInputElement.current as unknown as HTMLInputElement;
       input.focus();
     }

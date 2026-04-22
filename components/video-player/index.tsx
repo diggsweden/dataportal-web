@@ -3,6 +3,7 @@ import { type FC, useEffect, useState } from "react";
 
 export const VideoPlayer: FC<{ video_id: string }> = ({ video_id }) => {
   const containerid = `video_screen9_${video_id}`;
+  // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
   let player: any;
 
   const useScript = (src: string) => {
@@ -23,7 +24,7 @@ export const VideoPlayer: FC<{ video_id: string }> = ({ video_id }) => {
         script.setAttribute("data-status", "loading");
         document.body.appendChild(script);
 
-        const setAttributeFromEvent = (event: any) => {
+        const setAttributeFromEvent = (event: Event) => {
           script.setAttribute(
             "data-status",
             event.type === "load" ? "ready" : "error",
@@ -36,7 +37,7 @@ export const VideoPlayer: FC<{ video_id: string }> = ({ video_id }) => {
         setStatus(existingScript.getAttribute("data-status") || "error");
       }
 
-      const setStateFromEvent = (event: any) => {
+      const setStateFromEvent = (event: Event) => {
         setStatus(event.type === "load" ? "ready" : "error");
       };
 
@@ -63,6 +64,7 @@ export const VideoPlayer: FC<{ video_id: string }> = ({ video_id }) => {
         containerid,
         token: process.env.NEXT_PUBLIC_SCREEN9_API_TOKEN,
       };
+      // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
       player = new (window as any).screen9.Player(options);
     }
     return () => {
@@ -79,6 +81,7 @@ export const VideoPlayer: FC<{ video_id: string }> = ({ video_id }) => {
   }, [status]);
 
   return (
+    // biome-ignore lint/a11y/useMediaCaption: Screen9 replaces this element at runtime and manages its own captions.
     <video id={containerid} className="video-js vjs-fluid" controls playsInline>
       Video
     </video>

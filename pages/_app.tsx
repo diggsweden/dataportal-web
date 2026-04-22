@@ -47,8 +47,10 @@ import "@/styles/main.css";
 
 const getCookiesAccepted = () => {
   try {
-    const store: LocalStore = JSON.parse(localStorage.getItem("digg-store")!);
-    return store ? store.cookieSettings?.analytic.accepted == true : false;
+    const store: LocalStore = JSON.parse(
+      localStorage.getItem("digg-store") ?? "{}",
+    );
+    return store ? store.cookieSettings?.analytic.accepted === true : false;
   } catch {
     return false;
   }
@@ -56,7 +58,7 @@ const getCookiesAccepted = () => {
 
 declare global {
   interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
     _paq: any[];
   }
 }
@@ -189,7 +191,7 @@ function Dataportal({
     >
       <LocalStoreProvider>
         <TrackingProvider
-          initalActivation={getCookiesAccepted() && matomoActivated}
+          initialActivation={(getCookiesAccepted() ?? false) && matomoActivated}
         >
           <MetaData seo={seo} />
           <div id="scriptsPlaceholder" />

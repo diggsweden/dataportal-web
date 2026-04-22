@@ -63,7 +63,7 @@ const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
       key={`content-${pos}-${faqGroup[0].id}`}
     >
       {faqGroup.map((faq, idx: number) => (
-        <li key={idx} className="px-xs">
+        <li key={faq.id} className="px-xs">
           <AccordionBlock {...(faq as FaqFragment)} idx={idx} />
         </li>
       ))}
@@ -93,7 +93,7 @@ export const BlockList: FC<blockListProps> = ({
     >
       {blocks?.map((block, index) => {
         if (block == null) {
-          return;
+          return null;
         }
 
         switch (block.__typename) {
@@ -126,8 +126,8 @@ export const BlockList: FC<blockListProps> = ({
           case "dataportal_Digg_ModuleList": {
             const typedBlock = block as ModuleListDataFragment;
             return (
-              typedBlock.modules &&
-              typedBlock.modules.map((module) => (
+              typedBlock.modules.length > 0 &&
+              typedBlock.modules.map((module: ModuleDataFragment) => (
                 <BlockList {...module} key={module.identifier} />
               ))
             );

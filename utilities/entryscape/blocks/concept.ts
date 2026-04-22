@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Entry } from "@entryscape/entrystore-js";
 import type { Translate } from "next-translate";
 
@@ -40,8 +39,9 @@ export const conceptBlocks = (t: Translate, iconSize: number, lang: string) => [
   },
   {
     block: "conceptLink",
+    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     run: (node: any, a2: any, a3: any, entry: Entry) => {
-      if (node && node.firstElementChild && entry) {
+      if (node?.firstElementChild && entry) {
         const baseUrl = window.location.origin;
         const el = document.createElement("a");
 

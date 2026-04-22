@@ -28,7 +28,7 @@ export const ProgressBar: FC<Props> = ({ page, totalPages }) => {
         style={{ width: `${percentage}%` }}
         aria-hidden="true"
       >
-        {page + "/" + totalPages}
+        {`${page}/${totalPages}`}
       </div>
     </div>
   );

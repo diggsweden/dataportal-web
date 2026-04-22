@@ -19,7 +19,7 @@ export const SearchTestPage: FC = () => {
     const search = async () => {
       index
         .search(searchWord, { attributesToHighlight: ["*"] })
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // biome-ignore lint/suspicious/noExplicitAny: Unknown type
         .then((result: any) => {
           setHits(result.hits);
         });
@@ -48,11 +48,12 @@ export const SearchTestPage: FC = () => {
             type="text"
           ></input>
           <ul>
-            {hits &&
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              hits.map((r: any, index: number) => (
+            {
+              // biome-ignore lint/suspicious/noExplicitAny: Unknown type
+              hits?.map((r: any, index: number) => (
                 <li key={index}>{r.name}</li>
-              ))}
+              ))
+            }
           </ul>
         </div>
       </div>

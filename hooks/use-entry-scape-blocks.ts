@@ -82,11 +82,11 @@ export const useEntryScapeBlocks = ({
   }, [pageType, context, esId]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
     if (!(window as any).__entryscape_blocks_ready) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
       (window as any).__entryscape_blocks_ready = new Promise((resolve) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
         (window as any).__entryscape_blocks_resolve = resolve;
       });
     }
@@ -108,15 +108,15 @@ export const useEntryScapeBlocks = ({
           esId,
         });
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
         (window as any).__entryscape_config =
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
           ((window as any).__entryscape_config || []).concat(newConfig);
 
         // Create the ready promise
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
         (window as any).__entryscape_blocks_ready = new Promise((resolve) => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // biome-ignore lint/suspicious/noExplicitAny: <>
           (window as any).__entryscape_blocks_resolve = resolve;
         });
 
@@ -136,14 +136,14 @@ export const useEntryScapeBlocks = ({
 
         await loadScript(envRef.current.ENTRYSCAPE_BLOCKS_URL);
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
         await (window as any).__entryscape_blocks_ready;
 
         if (cancelled) return;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
         if ((window as any).__entryscape_blocks) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
           (window as any).__entryscape_blocks.init();
         }
       } catch (error) {
@@ -155,11 +155,11 @@ export const useEntryScapeBlocks = ({
 
     return () => {
       cancelled = true;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
       (window as any).__entryscape_config = [];
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
       if ((window as any).__entryscape_blocks?.clear) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
         (window as any).__entryscape_blocks.clear();
       }
     };

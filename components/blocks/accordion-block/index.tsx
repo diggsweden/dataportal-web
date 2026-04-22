@@ -23,6 +23,7 @@ export const AccordionBlock: FC<AccordionBlockProps> = ({
   return (
     <div title={question}>
       <button
+        type="button"
         id={`accordion-${idx}`}
         className="group inline-flex w-full flex-row items-center justify-between gap-md hyphens-auto py-lg text-start"
         onClick={() => setOpen(!open)}
@@ -46,14 +47,13 @@ export const AccordionBlock: FC<AccordionBlockProps> = ({
         </span>
       </button>
       {open && (
-        <div
+        <section
           id={`section-${idx}`}
-          role="region"
           aria-labelledby={`accordion-${idx}`}
           className="space-y-md pb-lg"
         >
           {answer.markdown && <HtmlParser text={answer.markdown} />}
-        </div>
+        </section>
       )}
     </div>
   );

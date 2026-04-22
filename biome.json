@@ -31,8 +31,7 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "double",
-      "jsxQuoteStyle": "double",
-      "trailingCommas": "all"
+      "jsxQuoteStyle": "double"
     }
   },
   "css": {
@@ -52,7 +51,7 @@
         "noDoubleEquals": "warn",
         "noArrayIndexKey": "warn",
         "useIterableCallbackReturn": "warn",
-        "noExplicitAny": "warn",
+        "noExplicitAny": "error",
         "useBiomeIgnoreFolder": "off"
       },
       "correctness": {
