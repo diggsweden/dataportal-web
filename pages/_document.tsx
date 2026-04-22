@@ -43,7 +43,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html data-scroll-behavior="smooth">
         <Head nonce={SettingsUtil.getCurrent().nonce}>
           <script
             nonce={SettingsUtil.getCurrent().nonce}

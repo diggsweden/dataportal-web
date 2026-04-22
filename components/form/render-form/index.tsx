@@ -46,7 +46,7 @@ const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
           visible ? "visible" : "hidden"
         }`}
       >
-        {HtmlParser({ text })}
+        <HtmlParser text={text} />
       </p>
     </div>
   );
@@ -128,7 +128,7 @@ const FormItem = (
       return (
         <div className="form-item">
           {addLabel(item.number, Type, ID, item.title)}
-          {item.info && PopOver({ text: item.info, title: item.title })}
+          {item.info && <PopOver text={item.info} title={item.title} />}
           <TextInput
             id={`${Type}${ID}`}
             placeholder={t("form$placeholder-text")}
@@ -144,7 +144,7 @@ const FormItem = (
       return (
         <div className="form-item">
           {addLabel(item.number, Type, ID, item.title)}
-          {item.info && PopOver({ text: item.info, title: item.title })}
+          {item.info && <PopOver text={item.info} title={item.title} />}
           <Textarea
             name={`${Type}${ID}`}
             id={`${Type}${ID}`}
@@ -177,7 +177,7 @@ const FormItem = (
             }
           >
             {addLabel(item.number, Type, ID, item.title)}
-            {item.info && PopOver({ text: item.info, title: item.title })}
+            {item.info && <PopOver text={item.info} title={item.title} />}
             <div className="flex flex-col gap-md lg:flex-row lg:items-center">
               {item.choices.map((choice) => {
                 return (
@@ -197,7 +197,7 @@ const FormItem = (
               {item.selected?.popup && item.selected.popup.length > 0 && (
                 <div className="w-fit border p-xs lg:ml-lg">
                   <span className="text-sm">
-                    {HtmlParser({ text: item.selected?.popup })}
+                    <HtmlParser text={item.selected?.popup ?? ""} />
                   </span>
                 </div>
               )}
@@ -209,7 +209,7 @@ const FormItem = (
             item.selected.popup.length > 0 && (
               <>
                 <span className="text-sm text-textSecondary">
-                  {HtmlParser({ text: item.selected?.popup })}
+                  <HtmlParser text={item.selected?.popup ?? ""} />
                 </span>
                 <Textarea
                   id={`${Type}${ID}`}
@@ -236,7 +236,7 @@ const FormItem = (
 
           {item.text.markdown?.length && item.text.markdown?.length > 9 && (
             <div className="text">
-              {HtmlParser({ text: item.text.markdown })}
+              <HtmlParser text={item.text.markdown} />
             </div>
           )}
         </div>
@@ -270,7 +270,7 @@ const FormItem = (
               item.selected.popup.length > 0 && (
                 <div className="w-fit border p-xs">
                   <span className="text-sm">
-                    {HtmlParser({ text: item.selected?.popup })}
+                    <HtmlParser text={item.selected?.popup ?? ""} />
                   </span>
                 </div>
               )}

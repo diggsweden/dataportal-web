@@ -1,6 +1,6 @@
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import React, { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 
 import { Button } from "@/components/button";
 import { Container } from "@/components/layout/container";

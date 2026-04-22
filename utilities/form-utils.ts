@@ -118,7 +118,7 @@ export const ImportFromJsonFile = (
 
 export const GeneratePDF = (
   e: MouseEvent<HTMLButtonElement>,
-  iframeRef: RefObject<HTMLIFrameElement>,
+  iframeRef: RefObject<HTMLIFrameElement | null>,
   formDataArray: FormTypes[][],
 ) => {
   e.preventDefault();
@@ -185,7 +185,7 @@ export const GetLocalstorageData = (
   }
 };
 
-export const handleScroll = (scrollRef: RefObject<HTMLSpanElement>) => {
+export const handleScroll = (scrollRef: RefObject<HTMLSpanElement | null>) => {
   if (
     scrollRef.current?.offsetTop === undefined ||
     window.pageYOffset === undefined

@@ -2,7 +2,7 @@ import { cx, cva, VariantProps } from "class-variance-authority";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import React, {
+import {
   FC,
   HTMLAttributes,
   PropsWithChildren,

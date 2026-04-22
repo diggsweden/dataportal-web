@@ -95,7 +95,10 @@ function Dataportal({
   // Put shared props into state to persist between pages that doesn't use getStaticProps
   const [env, setEnv] = useState<EnvSettings | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [matomoActivated, setMatomoActivated] = useState<boolean>(true);
+
+  const [matomoActivated, setMatomoActivated] = useState<boolean>(
+    process.env.NEXT_PUBLIC_DISABLE_MATOMO !== "1",
+  );
   const [openSideBar, setOpenSideBar] = useState(false);
   const { seo, heading, heroImage, preamble } = resolvePage(
     pageProps as DataportalPageProps,

@@ -144,25 +144,6 @@ body {
   }
 }
 
-/* Custom styling for Statistics Graph */
-.hide-odd-stat .rv-xy-plot__axis__tick {
-  display: none;
-}
-.hide-odd-stat .rv-xy-plot__axis__tick:first-child {
-  display: block;
-}
-.hide-odd-stat .rv-xy-plot__axis__tick:last-child {
-  display: block;
-}
-@screen md {
-  .hide-odd-stat .rv-xy-plot__axis__tick {
-    display: block;
-  }
-  .hide-odd-stat .rv-xy-plot__axis__tick:nth-child(even) {
-    display: none;
-  }
-}
-
 * {
   font-family: Ubuntu, sans-serif;
   scroll-behavior: smooth;

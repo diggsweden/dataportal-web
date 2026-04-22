@@ -21,7 +21,7 @@ import { handleScroll } from "@/utilities/form-utils";
 interface ContainerDpDwnProps {
   pageNames: string[];
   setPage: Dispatch<SetStateAction<number>>;
-  scrollRef: RefObject<HTMLSpanElement>;
+  scrollRef: RefObject<HTMLSpanElement | null>;
   className?: string;
   forceUpdate?: number;
   countQuestionsPerSection?: {

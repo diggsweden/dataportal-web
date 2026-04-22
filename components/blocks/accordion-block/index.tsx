@@ -52,7 +52,7 @@ export const AccordionBlock: FC<AccordionBlockProps> = ({
           aria-labelledby={`accordion-${idx}`}
           className="space-y-md pb-lg"
         >
-          {answer.markdown && HtmlParser({ text: answer.markdown })}
+          {answer.markdown && <HtmlParser text={answer.markdown} />}
         </div>
       )}
     </div>

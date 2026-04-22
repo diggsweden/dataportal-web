@@ -3,9 +3,9 @@ import { useEffect, useRef, RefObject } from "react";
 export const useClickOutside = <T extends HTMLElement>(
   onClickOutside: () => void,
   excludedSelectors: string[] = [],
-  existingRef?: RefObject<T>,
+  existingRef?: RefObject<T | null>,
 ) => {
-  const defaultRef = useRef() as RefObject<T>;
+  const defaultRef = useRef<T | null>(null);
   const ref = existingRef || defaultRef;
 
   useEffect(() => {

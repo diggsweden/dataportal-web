@@ -88,7 +88,9 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
         </p>
       )}
       {description && (
-        <div className="pb-lg">{HtmlParser({ text: description })}</div>
+        <div className="pb-lg">
+          <HtmlParser text={description} />
+        </div>
       )}
 
       {children && <div className="pb-lg">{children}</div>}

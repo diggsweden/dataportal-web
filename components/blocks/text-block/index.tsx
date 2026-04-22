@@ -14,7 +14,7 @@ export const TextBlock: FC<TextFragment> = ({ heading, text }) => {
         </Heading>
       )}
 
-      {text.markdown && HtmlParser({ text: text.markdown })}
+      {text.markdown && <HtmlParser text={text.markdown} />}
     </div>
   );
 };

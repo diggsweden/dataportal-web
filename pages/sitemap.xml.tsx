@@ -1,3 +1,4 @@
+import http from "http";
 import url from "url";
 
 import fetchEnhanced from "fetch-enhanced";
@@ -80,7 +81,9 @@ const getDatasets = async () => {
     const proxy = new HttpsProxyAgent(proxy_uri);
 
     const response = await proxyfetch(env.ENTRYSCAPE_SITEMAP_JSON_URL, {
-      agent: proxy,
+      // `https-proxy-agent@5` does not implement the newer http.Agent surface
+      // expected by `@types/node@20`. This path is being rewritten in Phase 4.
+      agent: proxy as unknown as http.Agent,
     });
 
     if (response.ok && response.status === 200) {

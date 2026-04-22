@@ -1,6 +1,59 @@
 import reactEnv from "@beam-australia/react-env";
-import type { DocumentNode } from "graphql/language/ast";
+import type {
+  DocumentNode,
+  FieldNode,
+  OperationDefinitionNode,
+  SelectionSetNode,
+} from "graphql/language/ast";
+import { Kind } from "graphql/language/kinds";
 import { print } from "graphql/language/printer";
+import { visit } from "graphql/language/visitor";
+
+/**
+ * Auto-inject `__typename` into every selection set (except the root
+ * operation). This replicates Apollo Client's default `addTypename: true`
+ * behaviour, which the codebase still relies on for union / interface
+ * discrimination at runtime (e.g. `item.__typename === "dataportal_Digg_Tool"`
+ * in `components/grid-list`). Without it, those checks fall through to the
+ * default branch and unrelated components receive the wrong shape.
+ *
+ * Cached per-document via a WeakMap — the same query is printed many times.
+ */
+const TYPENAME_FIELD: FieldNode = {
+  kind: Kind.FIELD,
+  name: { kind: Kind.NAME, value: "__typename" },
+};
+const typenameCache = new WeakMap<DocumentNode, DocumentNode>();
+
+function addTypename(doc: DocumentNode): DocumentNode {
+  const cached = typenameCache.get(doc);
+  if (cached) return cached;
+
+  const transformed = visit(doc, {
+    SelectionSet: {
+      enter(node: SelectionSetNode, _key, parent) {
+        // Skip the root selection set of an operation; querying
+        // `__typename` on Query/Mutation/Subscription is valid but noisy
+        // and matches Apollo's built-in behaviour.
+        if (
+          parent &&
+          !Array.isArray(parent) &&
+          (parent as OperationDefinitionNode).kind === Kind.OPERATION_DEFINITION
+        ) {
+          return undefined;
+        }
+        const hasTypename = node.selections.some(
+          (s) => s.kind === Kind.FIELD && s.name.value === "__typename",
+        );
+        if (hasTypename) return undefined;
+        return { ...node, selections: [...node.selections, TYPENAME_FIELD] };
+      },
+    },
+  }) as DocumentNode;
+
+  typenameCache.set(doc, transformed);
+  return transformed;
+}
 
 export interface GqlFetchOptions {
   /**
@@ -62,7 +115,7 @@ export const gqlFetch = async <TData, TVariables = Record<string, unknown>>(
       accept: "application/json",
       ...headers,
     },
-    body: JSON.stringify({ query: print(document), variables }),
+    body: JSON.stringify({ query: print(addTypename(document)), variables }),
     signal,
     ...(hasNextHint
       ? {

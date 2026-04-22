@@ -26,7 +26,7 @@ type Props = {
   formDataArray: FormTypes[][];
   setFormDataArray: Dispatch<SetStateAction<FormTypes[][]>>;
   fortroendemodellen?: boolean;
-  scrollRef: RefObject<HTMLSpanElement>;
+  scrollRef: RefObject<HTMLSpanElement | null>;
 };
 
 export const FormBottomNav: FC<Props> = ({
