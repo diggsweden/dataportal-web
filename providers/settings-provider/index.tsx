@@ -1,16 +1,16 @@
 import {
+  createContext,
+  type Dispatch,
+  type FC,
+  type ReactNode,
+  type SetStateAction,
   useEffect,
   useState,
-  createContext,
-  Dispatch,
-  SetStateAction,
-  FC,
-  ReactNode,
 } from "react";
 
-import { BreadcrumbProps } from "@/components/navigation/breadcrumbs";
-import { EnvSettings, SettingsUtil } from "@/env";
-import { DataportalSettings } from "@/types/global";
+import type { BreadcrumbProps } from "@/components/navigation/breadcrumbs";
+import { type EnvSettings, SettingsUtil } from "@/env";
+import type { DataportalSettings } from "@/types/global";
 
 interface SettingsContextProps extends DataportalSettings {
   noScriptContent: string;

@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
+import type {
   Entry,
   EntryStoreUtil,
   Metadata,
   MetadataValue,
 } from "@entryscape/entrystore-js";
-import { Translate } from "next-translate";
+import type { Translate } from "next-translate";
 
 import { SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
-import { RedirectConfig } from "@/types/global";
+import type { RedirectConfig } from "@/types/global";
 
-import { Choice, ChoiceTemplate, DCATData } from "../dcat-utils";
+import type { Choice, ChoiceTemplate, DCATData } from "../dcat-utils";
 import { entryCache } from "./local-cache";
 
 // ============================================================================

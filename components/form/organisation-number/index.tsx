@@ -2,7 +2,7 @@ import { cx } from "class-variance-authority";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import Organisationsnummer from "organisationsnummer";
-import { FC, useState, useEffect } from "react";
+import { type FC, useEffect, useState } from "react";
 
 import CheckIcon from "@/assets/icons/check-circle.svg";
 import { Button } from "@/components/button";
@@ -93,8 +93,8 @@ export const OrganisationNumber: FC<OrganisationNumberProps> = ({
         validation.isValid === null
           ? "bg-red-50"
           : validation.isValid
-          ? "!bg-green-100"
-          : "bg-red-50",
+            ? "!bg-green-100"
+            : "bg-red-50",
       )}
     >
       {addLabel(1, "organisationNumber", 1, t("form$organisation-number"))}

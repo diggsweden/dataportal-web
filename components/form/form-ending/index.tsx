@@ -1,11 +1,11 @@
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useEffect } from "react";
+import { type FC, useEffect } from "react";
 
-import { FormData } from "@/components/blocks/fortroendemodellen-v2";
+import type { FormData } from "@/components/blocks/fortroendemodellen-v2";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { FormTypes } from "@/types/form";
+import type { FormTypes } from "@/types/form";
 
 type Props = {
   formDataArray: FormTypes[][];

@@ -1,6 +1,12 @@
-import { Translate } from "next-translate";
+import type { Translate } from "next-translate";
 import useTranslation from "next-translate/useTranslation";
-import { ChangeEvent, DragEvent, FC, useCallback, useState } from "react";
+import {
+  type ChangeEvent,
+  type DragEvent,
+  type FC,
+  useCallback,
+  useState,
+} from "react";
 
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
@@ -14,7 +20,7 @@ import { TextInput } from "@/components/form/text-input";
 import { Textarea } from "@/components/form/textarea";
 import { Heading } from "@/components/typography/heading";
 import { HtmlParser } from "@/components/typography/html-parser";
-import { FormTypes, FormChoice } from "@/types/form";
+import type { FormChoice, FormTypes } from "@/types/form";
 
 const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
   const [visible, setVisible] = useState(false);
@@ -58,7 +64,7 @@ export const addLabel = (
   ID: number,
   title: string,
 ) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // biome-ignore lint/correctness/useHookAtTopLevel: addLabel is a JSX-returning helper; refactor to a component in the App Router port.
   const { t } = useTranslation("pages");
   return (
     <div className="flex flex-col gap-md">

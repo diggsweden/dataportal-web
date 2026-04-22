@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { Dispatch, FC, InputHTMLAttributes, SetStateAction } from "react";
+import type { Dispatch, FC, InputHTMLAttributes, SetStateAction } from "react";
 
 import CrossIcon from "@/assets/icons/cross.svg";
 import SearchIcon from "@/assets/icons/search.svg";

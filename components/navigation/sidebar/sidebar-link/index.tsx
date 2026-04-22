@@ -1,11 +1,11 @@
-import { cx, cva, VariantProps } from "class-variance-authority";
+import { cva, cx, type VariantProps } from "class-variance-authority";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import {
-  FC,
-  HTMLAttributes,
-  PropsWithChildren,
+  type FC,
+  type HTMLAttributes,
+  type PropsWithChildren,
   useContext,
   useEffect,
   useState,
@@ -14,7 +14,7 @@ import {
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import PixelsImage from "@/assets/icons/pixels.svg";
-import { MenuLinkFragment } from "@/graphql/__generated__/operations";
+import type { MenuLinkFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 import { isExternalLink } from "@/utilities";
 

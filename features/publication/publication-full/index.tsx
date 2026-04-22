@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useState } from "react";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import DataIcon from "@/assets/icons/data.svg";
@@ -21,10 +21,10 @@ import { Preamble } from "@/components/typography/preamble";
 import { highlightCode } from "@/features/pages/container-page";
 import { SettingsContext } from "@/providers/settings-provider";
 import {
-  GoodExampleResponse,
+  type GoodExampleResponse,
   isExternalLink,
   linkBase,
-  NewsItemResponse,
+  type NewsItemResponse,
   slugify,
 } from "@/utilities";
 import { formatDateWithTime } from "@/utilities/date-helper";

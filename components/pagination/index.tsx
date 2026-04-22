@@ -1,8 +1,9 @@
 import useTranslation from "next-translate/useTranslation";
-import { useState, useEffect, Dispatch, FC } from "react";
+import { type Dispatch, type FC, useEffect, useState } from "react";
 
 import ChevronLeftIcon from "@/assets/icons/chevron-left.svg";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
+
 interface PaginationProps {
   totalResults: number;
   itemsPerPage: number;

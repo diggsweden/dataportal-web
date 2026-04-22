@@ -1,14 +1,14 @@
-import { createFocusTrap, FocusTrap } from "focus-trap";
+import { createFocusTrap, type FocusTrap } from "focus-trap";
 import useTranslation from "next-translate/useTranslation";
 import {
-  FC,
+  type Dispatch,
+  type FC,
+  type SetStateAction,
   useContext,
-  useState,
-  useMemo,
-  Dispatch,
-  SetStateAction,
-  useRef,
   useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from "react";
 
 import CrossIcon from "@/assets/icons/cross.svg";
@@ -19,10 +19,10 @@ import { Button } from "@/components/button";
 import { TextInput } from "@/components/form/text-input";
 import { Modal } from "@/components/modal";
 import { SearchFilter } from "@/features/search/search-filters/search-filter";
-import { SearchContextData } from "@/providers/search-provider";
+import type { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { ESRdfType } from "@/types/entrystore-core";
-import { SearchFacet, SearchFacetValue } from "@/types/search";
+import type { SearchFacet, SearchFacetValue } from "@/types/search";
 import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 
 import { SearchActiveFilters } from "./search-active-filters";
@@ -284,11 +284,10 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                       ).values(),
                     );
                     const facetValues = inputFilter[key]
-                      ? uniqueFacetValues.filter(
-                          (v) =>
-                            v.title
-                              ?.toLowerCase()
-                              .includes(inputFilter[key].toLowerCase()),
+                      ? uniqueFacetValues.filter((v) =>
+                          v.title
+                            ?.toLowerCase()
+                            .includes(inputFilter[key].toLowerCase()),
                         )
                       : uniqueFacetValues.slice(0, show);
 
@@ -434,9 +433,8 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                 ? search.facetSelected(key, value.customFilter)
                                 : value.customSearch?.length ===
                                     search.request.esRdfTypes?.length &&
-                                  value.customSearch?.every(
-                                    (type) =>
-                                      search.request.esRdfTypes?.includes(type),
+                                  value.customSearch?.every((type) =>
+                                    search.request.esRdfTypes?.includes(type),
                                   )
                             }
                             onChange={() => {

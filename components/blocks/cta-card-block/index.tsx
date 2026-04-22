@@ -1,10 +1,10 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import { ButtonLink } from "@/components/button";
 import { ContentBox } from "@/components/content-box";
-import { BlockData_Dataportal_Digg_CtaCardBlock_Fragment } from "@/graphql/__generated__/operations";
+import type { BlockData_Dataportal_Digg_CtaCardBlock_Fragment } from "@/graphql/__generated__/operations";
 import { isExternalLink } from "@/utilities";
 
 export const CtaCardBlock: FC<

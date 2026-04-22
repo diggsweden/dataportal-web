@@ -1,8 +1,14 @@
-import { Dispatch, FC, SetStateAction, useEffect, useRef } from "react";
+import {
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+  useEffect,
+  useRef,
+} from "react";
 
 import { Toggle } from "@/components/form/toggle";
 import { Heading } from "@/components/typography/heading";
-import { CookieSetting, NecessaryCookies } from "@/features/cookie-banner";
+import type { CookieSetting, NecessaryCookies } from "@/features/cookie-banner";
 
 export interface CookieOptionsProps {
   cookieSettingsHeading: string;

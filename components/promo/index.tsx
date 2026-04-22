@@ -1,12 +1,12 @@
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext } from "react";
+import { type FC, useContext } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import { CustomImage } from "@/components/custom-image";
 import { Heading } from "@/components/typography/heading";
-import { LinkFragment } from "@/graphql/__generated__/operations";
+import type { LinkFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 import { isExternalLink } from "@/utilities";
 

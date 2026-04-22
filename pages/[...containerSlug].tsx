@@ -1,12 +1,11 @@
-import { ParsedUrlQuery } from "querystring";
-
 import { useRouter } from "next/navigation";
-import { GetStaticPaths } from "next/types";
-import { FC } from "react";
+import type { GetStaticPaths } from "next/types";
+import type { ParsedUrlQuery } from "querystring";
+import type { FC } from "react";
 
 import { ContainerPage } from "@/features/pages/container-page";
 import { LandingPage } from "@/features/pages/landing-page";
-import { getMultiContainer, MultiContainerResponse } from "@/utilities";
+import { getMultiContainer, type MultiContainerResponse } from "@/utilities";
 
 export const Page: FC<MultiContainerResponse> = ({ container, related }) => {
   const router = useRouter();

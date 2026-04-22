@@ -1,8 +1,8 @@
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import {
-  ChangeEvent,
-  FC,
+  type ChangeEvent,
+  type FC,
   useContext,
   useEffect,
   useRef,
@@ -17,12 +17,12 @@ import { FormBottomNav } from "@/components/navigation/form-bottom-nav";
 import { FormNav } from "@/components/navigation/form-nav";
 import { ProgressBar } from "@/components/progress-bar";
 import { Heading } from "@/components/typography/heading";
-import {
-  ModuleDataFragment,
+import type {
   FormDataFragment as IForm,
+  ModuleDataFragment,
 } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
-import { FormTypes } from "@/types/form";
+import type { FormTypes } from "@/types/form";
 import { linkBase } from "@/utilities";
 import { GetLocalstorageData, handleScroll } from "@/utilities/form-utils";
 

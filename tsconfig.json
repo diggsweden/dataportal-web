@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -21,13 +17,8 @@
     "noUnusedLocals": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "types": [
-        "cypress",
-        "cy-verify-downloads"
-      ]
+      "@/*": ["./*"],
+      "types": ["cypress", "cy-verify-downloads"]
     }
   },
   "include": [
@@ -36,7 +27,5 @@
     "**/*.tsx",
     "pages/fortroendemodellen-obsolete/(index.ts)"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

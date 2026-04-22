@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Entry } from "@entryscape/entrystore-js";
-import { Translate } from "next-translate";
+import type { Entry } from "@entryscape/entrystore-js";
+import type { Translate } from "next-translate";
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 export const customIndicators = (t: Translate, iconSize: number) => {
@@ -79,12 +79,12 @@ export const customIndicators = (t: Translate, iconSize: number) => {
     {
       block: "customLicenseIndicator",
       loadEntry: true,
-      run: function (node: any, data: any, items: any, entry: Entry) {
+      run: (node: any, data: any, items: any, entry: Entry) => {
         const v = entry
           .getAllMetadata()
           .findFirstValue(null, "dcterms:license");
         if (v.indexOf("http://creativecommons.org/") === 0) {
-          let variant;
+          let variant: string;
           if (v === "http://creativecommons.org/publicdomain/zero/1.0/") {
             variant = "zero";
           } else if (v.indexOf("http://creativecommons.org/licenses/") === 0) {
@@ -176,7 +176,7 @@ export const exploreApiLink = (
   return [
     {
       block: "exploreApiLinkRun",
-      run: function (node: any, a2: any, a3: any, entry: Entry) {
+      run: (node: any, a2: any, a3: any, entry: Entry) => {
         if (node && node.firstElementChild) {
           let showExploreApi = false;
           const entryId = entry.getId();

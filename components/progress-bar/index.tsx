@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import type { FC } from "react";
 
 /* eslint-disable no-unused-vars */
 type Props = {

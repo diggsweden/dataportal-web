@@ -1,12 +1,12 @@
-import { Translate } from "next-translate";
+import type { Translate } from "next-translate";
 
-import {
+import type {
   GoodExampleDataFragment,
   ImageFragment,
   NewsItemDataFragment,
   SeoDataFragment,
 } from "@/graphql/__generated__/operations";
-import {
+import type {
   FormResponse,
   GoodExampleListResponse,
   GoodExampleResponse,

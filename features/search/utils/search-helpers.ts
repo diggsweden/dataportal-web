@@ -1,7 +1,7 @@
-import { Translate } from "next-translate";
+import type { Translate } from "next-translate";
 
-import { SearchHitFragment } from "@/graphql/__generated__/operations";
-import { SearchHit } from "@/types/search";
+import type { SearchHitFragment } from "@/graphql/__generated__/operations";
+import type { SearchHit } from "@/types/search";
 
 /**
  * Parse Search_dataportal_Digg_Search

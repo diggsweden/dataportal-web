@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
-import { FC, useContext } from "react";
+import { type FC, useContext } from "react";
 
-import { EnvSettings } from "@/env/env-settings";
+import type { EnvSettings } from "@/env/env-settings";
 import { ApiIndexContext } from "@/providers/api-index-context";
 
 export interface ApiExplorerProps {

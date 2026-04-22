@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 
 export const VideoPlayer: FC<{ video_id: string }> = ({ video_id }) => {
   const containerid = `video_screen9_${video_id}`;

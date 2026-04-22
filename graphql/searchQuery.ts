@@ -3,8 +3,8 @@ import { gql } from "graphql-tag";
 import {
   BLOCK_FRAGMENT,
   CONTAINER_FRAGMENT,
-  MODULE_FRAGMENT,
   GOOD_EXAMPLE_FRAGMENT,
+  MODULE_FRAGMENT,
   NEWS_ITEM_FRAGMENT,
   SEO_FRAGMENT,
 } from "./fragments";

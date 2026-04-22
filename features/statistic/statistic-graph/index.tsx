@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useMemo, useState } from "react";
+import { type FC, useContext, useEffect, useMemo, useState } from "react";
 
 import { SettingsContext } from "@/providers/settings-provider";
 
@@ -19,7 +19,7 @@ const BAR_COLOR = "#CD7A6E";
 function buildYTicks(max: number): number[] {
   if (max <= 0) return [0];
   const rawStep = max / Y_TICK_COUNT;
-  const magnitude = Math.pow(10, Math.floor(Math.log10(rawStep)));
+  const magnitude = 10 ** Math.floor(Math.log10(rawStep));
   const normalized = rawStep / magnitude;
   const niceStep =
     normalized >= 5 ? 5 : normalized >= 2 ? 2 : normalized >= 1 ? 1 : 1;

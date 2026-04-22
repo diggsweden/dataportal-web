@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, PropsWithChildren } from "react";
+import { type FC, type PropsWithChildren, useEffect, useRef } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ExternalIcon from "@/assets/icons/external-link.svg";

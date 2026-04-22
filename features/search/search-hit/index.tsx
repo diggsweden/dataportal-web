@@ -1,11 +1,11 @@
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import type { FC } from "react";
 
 import { Badge } from "@/components/badge";
 import { FileFormatBadge } from "@/components/file-format-badge";
 import { Heading } from "@/components/typography/heading";
-import { SearchHit as SearchHitType } from "@/types/search";
+import type { SearchHit as SearchHitType } from "@/types/search";
 
 interface SearchHitProps {
   hit: SearchHitType;
@@ -97,7 +97,9 @@ export const SearchHit: FC<SearchHitProps> = ({
         <div className="formats flex w-full flex-wrap gap-md">
           {badgeTranslationKey && <Badge text={t(badgeTranslationKey)} />}
           {hit.metadata?.custom_facet_literal?.map(
-            (m: string, index: number) => <Badge key={index} text={m} />,
+            (m: string, index: number) => (
+              <Badge key={index} text={m} />
+            ),
           )}
           {hit.metadata?.format_literal?.map((m: string, index: number) => (
             <FileFormatBadge key={index} badgeName={m} />

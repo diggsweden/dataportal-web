@@ -1,6 +1,6 @@
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 
 import InternalLinkIcon from "@/assets/icons/arrow-right.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
@@ -8,7 +8,7 @@ import InfoCircleIcon from "@/assets/icons/info-circle.svg";
 import { Button } from "@/components/button";
 import { Modal } from "@/components/modal";
 import { Heading } from "@/components/typography/heading";
-import { ToolDataFragment as Tool } from "@/graphql/__generated__/operations";
+import type { ToolDataFragment as Tool } from "@/graphql/__generated__/operations";
 import { isExternalLink } from "@/utilities";
 
 interface ToolsTeaserProps {

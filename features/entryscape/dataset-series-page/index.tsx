@@ -1,8 +1,8 @@
-import { Entry } from "@entryscape/entrystore-js";
+import type { Entry } from "@entryscape/entrystore-js";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useMemo } from "react";
+import { type FC, useContext, useEffect, useMemo } from "react";
 
 import { Badge } from "@/components/badge";
 import { Container } from "@/components/layout/container";
@@ -13,7 +13,7 @@ import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
 import { EntrystoreContext } from "@/providers/entrystore-provider";
 import SearchProvider, {
   SearchContext,
-  SearchContextData,
+  type SearchContextData,
 } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";

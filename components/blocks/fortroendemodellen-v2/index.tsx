@@ -1,7 +1,7 @@
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { type ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/button";
 import { FormEnding } from "@/components/form/form-ending";
@@ -10,15 +10,15 @@ import { Container } from "@/components/layout/container";
 import { FormBottomNav } from "@/components/navigation/form-bottom-nav";
 import { FormNav } from "@/components/navigation/form-nav";
 import { Heading } from "@/components/typography/heading";
-import {
-  FormDataFragment,
+import type {
   ContainerDataFragment,
+  FormDataFragment,
 } from "@/graphql/__generated__/operations";
-import { FormTypes } from "@/types/form";
+import type { FormTypes } from "@/types/form";
 import {
+  fetchFortroendemodellenForm,
   GetLocalstorageData,
   handleScroll,
-  fetchFortroendemodellenForm,
 } from "@/utilities/form-utils";
 
 import { BlockList } from "../block-list";

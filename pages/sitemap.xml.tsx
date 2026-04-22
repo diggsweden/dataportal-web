@@ -1,14 +1,13 @@
-import http from "http";
-import url from "url";
-
 import fetchEnhanced from "fetch-enhanced";
+import type http from "http";
 import { HttpsProxyAgent } from "https-proxy-agent";
-import { GetServerSideProps } from "next/types";
+import type { GetServerSideProps } from "next/types";
 import nodeFetch from "node-fetch";
+import url from "url";
 
 import { SettingsUtil } from "../env";
 import { CONTAINER_QUERY } from "../graphql";
-import {
+import type {
   ContainerDataFragment,
   ContainersQuery,
   ContainersQueryVariables,

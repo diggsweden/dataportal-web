@@ -2,11 +2,11 @@ import { gql } from "graphql-tag";
 
 import {
   BLOCK_FRAGMENT,
-  START_PAGE_FRAGMENT,
-  SEO_FRAGMENT,
+  GOOD_EXAMPLE_BLOCK_FRAGMENT,
   IMAGE_FRAGMENT,
   NEWS_BLOCK_FRAGMENT,
-  GOOD_EXAMPLE_BLOCK_FRAGMENT,
+  SEO_FRAGMENT,
+  START_PAGE_FRAGMENT,
 } from "./fragments";
 
 export const START_PAGE_QUERY = gql`

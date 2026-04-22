@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useState } from "react";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import DataIcon from "@/assets/icons/data.svg";
@@ -16,7 +16,7 @@ import { Heading } from "@/components/typography/heading";
 import Showcase from "@/features/entryscape/showcase";
 import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
-import { DataInfo, TermInfo } from "@/types/organisation";
+import type { DataInfo, TermInfo } from "@/types/organisation";
 import { linkBase } from "@/utilities";
 
 export const OrganisationPage: FC = () => {
@@ -327,8 +327,9 @@ export const OrganisationPage: FC = () => {
           entry.organisationData?.showcases.length > 0 && (
             <div>
               <Heading level={2} size={"md"} className="mb-lg md:mb-xl">
-                {`${t("pages|organisation_page$showcases_heading")} (${entry
-                  .organisationData?.showcases.length})`}
+                {`${t("pages|organisation_page$showcases_heading")} (${
+                  entry.organisationData?.showcases.length
+                })`}
               </Heading>
               <div className="flex flex-col gap-xl md:grid md:grid-cols-2 lg:grid-cols-3">
                 {entry.organisationData?.showcases.map((showcase) => (

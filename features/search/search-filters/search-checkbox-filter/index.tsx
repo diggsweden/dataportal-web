@@ -1,5 +1,5 @@
-import CheckboxCheckedIcon from "@/assets/icons/checkbox-checked.svg";
 import CheckboxIcon from "@/assets/icons/checkbox.svg";
+import CheckboxCheckedIcon from "@/assets/icons/checkbox-checked.svg";
 
 interface SearchCheckboxFilterProps {
   id: string;

@@ -1,7 +1,12 @@
 import { cx } from "class-variance-authority";
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import { FC, LinkHTMLAttributes, PropsWithChildren, useContext } from "react";
+import {
+  type FC,
+  type LinkHTMLAttributes,
+  type PropsWithChildren,
+  useContext,
+} from "react";
 
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import MailIcon from "@/assets/icons/mail.svg";

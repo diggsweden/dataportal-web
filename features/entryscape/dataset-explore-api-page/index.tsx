@@ -3,13 +3,13 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useState } from "react";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import { CustomLink } from "@/components/custom-link";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { ApiExplorerProps } from "@/features/entryscape/api-exploring";
+import type { ApiExplorerProps } from "@/features/entryscape/api-exploring";
 import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
 import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";

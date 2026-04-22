@@ -1,4 +1,10 @@
-import { createContext, FC, ReactNode, useEffect, useState } from "react";
+import {
+  createContext,
+  type FC,
+  type ReactNode,
+  useEffect,
+  useState,
+} from "react";
 
 export interface ApiIndexProviderProps {
   apiIndexFileUrl: string;
@@ -73,7 +79,7 @@ export const ApiIndexProvider: FC<ApiIndexProviderProps> = ({
     contextid: string,
     entryid: string,
   ): ApiSpecDetection | undefined => {
-    let result: ApiSpecDetection | undefined = undefined;
+    let result: ApiSpecDetection | undefined;
 
     if (contextid && entryid && detections && detections.length > 0) {
       //any detections in sent in context

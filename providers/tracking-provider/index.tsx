@@ -1,10 +1,10 @@
 import {
-  useState,
   createContext,
-  Dispatch,
-  SetStateAction,
-  ReactNode,
-  FC,
+  type Dispatch,
+  type FC,
+  type ReactNode,
+  type SetStateAction,
+  useState,
 } from "react";
 
 export interface ITrackingContext {

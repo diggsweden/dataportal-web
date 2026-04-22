@@ -1,15 +1,15 @@
 import parse, {
-  Element,
-  HTMLReactParserOptions,
+  type DOMNode,
   domToReact,
-  DOMNode,
+  Element,
+  type HTMLReactParserOptions,
 } from "html-react-parser";
-import { FC } from "react";
+import type { FC } from "react";
 
 import { CustomImage } from "@/components/custom-image";
 import BodyVariant from "@/components/typography/body-variant";
 import { Heading } from "@/components/typography/heading";
-import { ImageFragment } from "@/graphql/__generated__/operations";
+import type { ImageFragment } from "@/graphql/__generated__/operations";
 
 export const HtmlParser: FC<{ text: string }> = ({ text }) => {
   const options: HTMLReactParserOptions = {
@@ -102,12 +102,12 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
             name === "h1"
               ? "!mt-lg md:!mt-xl"
               : name === "h2" && prev
-              ? "!mt-lg md:!mt-xl !mb-md md:!mb-lg"
-              : name === "h2"
-              ? "!mb-md md:!mb-lg"
-              : name === "h3" && !prev
-              ? "!mb-md"
-              : "!mt-md md:!mt-lg !mb-md";
+                ? "!mt-lg md:!mt-xl !mb-md md:!mb-lg"
+                : name === "h2"
+                  ? "!mb-md md:!mb-lg"
+                  : name === "h3" && !prev
+                    ? "!mb-md"
+                    : "!mt-md md:!mt-lg !mb-md";
           return (
             <Heading
               level={level as 1 | 2 | 3 | 4 | 5}

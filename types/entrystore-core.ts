@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { Entry, EntryStore } from "@entryscape/entrystore-js";
+import type { Entry, EntryStore } from "@entryscape/entrystore-js";
 
-import { OrganisationData } from "./organisation";
+import type { OrganisationData } from "./organisation";
 
 // Core EntryStore Types
 export enum ESType {

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ConceptIcon from "@/assets/icons/data.svg";
@@ -13,8 +13,8 @@ import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
 import { SearchInput } from "@/features/search/search-input";
-import { ImageFragment } from "@/graphql/__generated__/operations";
-import { AddIcon } from "@/types/global";
+import type { ImageFragment } from "@/graphql/__generated__/operations";
+import type { AddIcon } from "@/types/global";
 import { checkLang } from "@/utilities";
 
 interface HeroProps {

@@ -1,11 +1,11 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { Button } from "@/components/button";
 import { Modal } from "@/components/modal";
 import { Heading } from "@/components/typography/heading";
-import { Showcase as ShowcaseType } from "@/types/organisation";
+import type { Showcase as ShowcaseType } from "@/types/organisation";
 import { formatDate } from "@/utilities/date-helper";
 
 const Showcase: FC<ShowcaseType> = ({ title, date, description }) => {

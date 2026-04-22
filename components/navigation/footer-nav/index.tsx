@@ -1,11 +1,11 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC, Fragment, useContext } from "react";
+import { type FC, Fragment, useContext } from "react";
 
 import { CustomLink } from "@/components/custom-link";
 import { Heading } from "@/components/typography/heading";
-import { MenuLinkFragment } from "@/graphql/__generated__/operations";
+import type { MenuLinkFragment } from "@/graphql/__generated__/operations";
 import { LocalStoreContext } from "@/providers/local-store-provider";
-import { SubLinkFooter } from "@/types/global";
+import type { SubLinkFooter } from "@/types/global";
 
 interface FooterNavProps {
   footerData: SubLinkFooter[];

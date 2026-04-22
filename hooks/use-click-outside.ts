@@ -1,4 +1,4 @@
-import { useEffect, useRef, RefObject } from "react";
+import { type RefObject, useEffect, useRef } from "react";
 
 export const useClickOutside = <T extends HTMLElement>(
   onClickOutside: () => void,
@@ -10,9 +10,8 @@ export const useClickOutside = <T extends HTMLElement>(
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const isExcluded = excludedSelectors.some(
-        (selector) =>
-          document.querySelector(selector)?.contains(event.target as Node),
+      const isExcluded = excludedSelectors.some((selector) =>
+        document.querySelector(selector)?.contains(event.target as Node),
       );
 
       if (

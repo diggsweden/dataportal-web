@@ -1,9 +1,9 @@
 import useTranslation from "next-translate/useTranslation";
-import { Dispatch, SetStateAction, FC } from "react";
+import type { Dispatch, FC, SetStateAction } from "react";
 
-import { SearchMode } from "@/features/search/search-filters";
+import type { SearchMode } from "@/features/search/search-filters";
 import { SearchInput } from "@/features/search/search-input";
-import { SearchContextData } from "@/providers/search-provider";
+import type { SearchContextData } from "@/providers/search-provider";
 import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 
 interface SearchFormProps {

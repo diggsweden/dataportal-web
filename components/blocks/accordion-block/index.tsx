@@ -1,10 +1,10 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useState } from "react";
+import { type FC, useContext, useState } from "react";
 
 import CrossIcon from "@/assets/icons/cross.svg";
 import PlusIcon from "@/assets/icons/plus.svg";
 import { HtmlParser } from "@/components/typography/html-parser";
-import { FaqFragment as IFaq } from "@/graphql/__generated__/operations";
+import type { FaqFragment as IFaq } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 
 interface AccordionBlockProps extends IFaq {

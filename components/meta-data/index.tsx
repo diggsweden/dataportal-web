@@ -2,10 +2,10 @@ import reactenv from "@beam-australia/react-env";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { FC, useState, useContext } from "react";
+import { type FC, useContext, useState } from "react";
 
-import { EnvSettings, SettingsUtil } from "@/env";
-import { SeoDataFragment } from "@/graphql/__generated__/operations";
+import { type EnvSettings, SettingsUtil } from "@/env";
+import type { SeoDataFragment } from "@/graphql/__generated__/operations";
 import { defaultSettings } from "@/providers/settings-provider";
 import { TrackingContext } from "@/providers/tracking-provider";
 import generateCSP from "@/utilities/generate-csp";

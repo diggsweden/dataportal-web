@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useState } from "react";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import { Container } from "@/components/layout/container";
 import { Pagination } from "@/components/pagination";
@@ -10,9 +10,9 @@ import { Heading } from "@/components/typography/heading";
 import { SearchInput } from "@/features/search/search-input";
 import { SearchPageSelector } from "@/features/search/search-page-selector";
 import { getSearchHit } from "@/features/search/utils/search-helpers";
-import { SearchHitFragment } from "@/graphql/__generated__/operations";
+import type { SearchHitFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
-import { SearchHit, SearchRequest, SearchResult } from "@/types/search";
+import type { SearchHit, SearchRequest, SearchResult } from "@/types/search";
 import { linkBase, querySearch } from "@/utilities";
 import {
   clearCurrentScrollPos,

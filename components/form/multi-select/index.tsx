@@ -1,4 +1,4 @@
-import { FC, InputHTMLAttributes, PropsWithChildren } from "react";
+import type { FC, InputHTMLAttributes, PropsWithChildren } from "react";
 
 interface MultiSelectProps extends InputHTMLAttributes<HTMLInputElement> {
   choice: {

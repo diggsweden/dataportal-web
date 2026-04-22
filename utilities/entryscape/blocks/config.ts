@@ -1,6 +1,6 @@
-import { Translate } from "next-translate";
+import type { Translate } from "next-translate";
 
-import { EnvSettings } from "@/env/env-settings";
+import type { EnvSettings } from "@/env/env-settings";
 import { includeLangInPath } from "@/utilities/check-lang";
 
 import { apiexploreBlocks } from "./apiexplore";

@@ -1,5 +1,5 @@
-import { NextRouter } from "next/router";
-import { ReactNode } from "react";
+import type { NextRouter } from "next/router";
+import type { ReactNode } from "react";
 
 import i18n from "@/i18n";
 

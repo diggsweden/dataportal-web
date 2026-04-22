@@ -1,4 +1,4 @@
-import { FC, TextareaHTMLAttributes } from "react";
+import type { FC, TextareaHTMLAttributes } from "react";
 
 export const Textarea: FC<TextareaHTMLAttributes<HTMLTextAreaElement>> = ({
   className,

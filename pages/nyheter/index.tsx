@@ -1,4 +1,4 @@
-import { GetStaticProps } from "next/types";
+import type { GetStaticProps } from "next/types";
 
 import { ListPage } from "@/features/pages/list-page";
 import { getNewsList, populateSeo } from "@/utilities";

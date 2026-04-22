@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps } from "next/types";
+import type { GetStaticPaths, GetStaticProps } from "next/types";
 
 import { PublicationFull } from "@/features/publication/publication-full";
 import { getGoodExample } from "@/utilities";

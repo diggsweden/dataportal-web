@@ -11,24 +11,24 @@ import { Header } from "@/components/layout/header";
 import { Hero } from "@/components/layout/hero";
 import { MetaData } from "@/components/meta-data";
 import {
+  type BreadcrumbProps,
   Breadcrumbs,
-  BreadcrumbProps,
 } from "@/components/navigation/breadcrumbs";
 import { Sidebar } from "@/components/navigation/sidebar";
 import {
   SkipToContent,
   skipToElement,
 } from "@/components/navigation/skip-to-content";
-import { EnvSettings, SettingsUtil } from "@/env";
+import { type EnvSettings, SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { CookieBanner } from "@/features/cookie-banner";
-import {
+import type {
   MenuLinkFragment,
   MenuLinkIconFragment,
   NavigationDataFragment,
 } from "@/graphql/__generated__/operations";
 import {
-  LocalStore,
+  type LocalStore,
   LocalStoreProvider,
 } from "@/providers/local-store-provider";
 import {
@@ -36,9 +36,9 @@ import {
   SettingsProvider,
 } from "@/providers/settings-provider";
 import { TrackingProvider } from "@/providers/tracking-provider";
-import { SubLink, SubLinkFooter } from "@/types/global";
+import type { SubLink, SubLinkFooter } from "@/types/global";
 import {
-  DataportalPageProps,
+  type DataportalPageProps,
   getNavigationData,
   linkBase,
   resolvePage,

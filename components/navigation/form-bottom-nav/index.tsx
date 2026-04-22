@@ -1,10 +1,10 @@
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import {
-  Dispatch,
-  FC,
-  RefObject,
-  SetStateAction,
+  type Dispatch,
+  type FC,
+  type RefObject,
+  type SetStateAction,
   useRef,
   useState,
 } from "react";
@@ -13,11 +13,11 @@ import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { Button } from "@/components/button";
 import { Modal } from "@/components/modal";
-import { FormTypes } from "@/types/form";
+import type { FormTypes } from "@/types/form";
 import {
   GenerateJsonFile,
-  ImportFromJsonFile,
   handleScroll,
+  ImportFromJsonFile,
 } from "@/utilities/form-utils";
 
 type Props = {

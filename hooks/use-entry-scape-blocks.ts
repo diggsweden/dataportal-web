@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useRef } from "react";
 
-import { EnvSettings } from "@/env/env-settings";
+import type { EnvSettings } from "@/env/env-settings";
 import { createBlocksConfig } from "@/utilities/entryscape/blocks/config";
 
 interface BlocksConfig {

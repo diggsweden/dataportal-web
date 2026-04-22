@@ -1,4 +1,4 @@
-import winston, { createLogger, format, Logger } from "winston";
+import winston, { createLogger, format, type Logger } from "winston";
 
 const LogstashTransport = require("@alfalab/winston3-logstash-transport");
 

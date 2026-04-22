@@ -1,4 +1,4 @@
-import {
+import type {
   ChangeEvent,
   Dispatch,
   MouseEvent,
@@ -7,14 +7,14 @@ import {
 } from "react";
 
 import { ParseDocToHtml } from "@/components/typography/parse-doc-to-html";
-import {
+import type {
   FoertroendemodellenFormClientQuery,
   FoertroendemodellenFormClientQueryVariables,
   FormDataFragment,
 } from "@/graphql/__generated__/operations";
 import { gqlFetch } from "@/graphql/fetcher";
 import { FOETROENDEMODELLEN_FORM_CLIENT_QUERY } from "@/graphql/formQuery";
-import { FormTypes } from "@/types/form";
+import type { FormTypes } from "@/types/form";
 
 /* Import json */
 export const ImportFromJsonFile = (

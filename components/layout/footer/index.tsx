@@ -1,10 +1,10 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import type { FC } from "react";
 
 import { CustomLink } from "@/components/custom-link";
 import { Container } from "@/components/layout/container";
 import { FooterNav } from "@/components/navigation/footer-nav";
-import { SubLinkFooter } from "@/types/global";
+import type { SubLinkFooter } from "@/types/global";
 
 type FooterProps = {
   footerData: SubLinkFooter[];

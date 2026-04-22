@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import type { FC } from "react";
 
 import { AccordionBlock } from "@/components/blocks/accordion-block";
 import { MediaBlock } from "@/components/blocks/media-block";
@@ -10,19 +10,20 @@ import { TextBlock } from "@/components/blocks/text-block";
 import { VideoBlock } from "@/components/blocks/video-block";
 import { GridList } from "@/components/grid-list";
 import { FormPage } from "@/features/pages/form-page";
-import {
+import type {
+  BlockDataFragment,
+  ContainerDataFragment,
+  FaqFragment,
+  GoodExampleDataFragment,
   ModuleDataFragment,
   ModuleListDataFragment,
-  FaqFragment,
-  ContainerDataFragment,
   NewsItemDataFragment,
-  GoodExampleDataFragment,
   StartPageDataFragment,
-  BlockDataFragment,
 } from "@/graphql/__generated__/operations";
 
 import { CtaCardBlock } from "../cta-card-block";
 import { FortroendemodellenFrom } from "../fortroendemodellen-v2";
+
 interface blockListProps {
   blocks:
     | ContainerDataFragment["blocks"]

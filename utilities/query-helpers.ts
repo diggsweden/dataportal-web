@@ -1,45 +1,45 @@
 import { CONTAINER_MULTI_QUERY } from "@/graphql";
-import {
+import type {
+  ContainerDataFragment,
+  FoertroendemodellenFormQuery,
+  FoertroendemodellenFormQueryVariables,
   FormDataFragment,
   FormQuery,
   FormQueryVariables,
+  GoodExampleBlockItemFragment,
+  GoodExampleDataFragment,
+  GoodExampleQuery,
+  GoodExampleQueryVariables,
   ImageFragment,
   ModuleDataFragment,
   ModuleQuery,
   ModuleQueryVariables,
   MultiContainersQuery,
   MultiContainersQueryVariables,
-  ParentFragment,
+  NavigationDataFragment,
+  NavigationQuery,
+  NavigationQueryVariables,
+  NewsBlockItemFragment,
   NewsItemDataFragment,
   NewsItemQuery,
   NewsItemQueryVariables,
-  GoodExampleDataFragment,
-  GoodExampleQuery,
-  GoodExampleQueryVariables,
+  ParentFragment,
   RootAggregateQuery,
   RootAggregateQueryVariables,
   SearchQuery,
   SearchQueryVariables,
   SeoDataFragment,
-  ToolDataFragment,
-  ToolQuery,
-  ToolQueryVariables,
-  ContainerDataFragment,
   StartPageDataFragment,
   StartPageQuery,
   StartPageQueryVariables,
-  NewsBlockItemFragment,
-  GoodExampleBlockItemFragment,
-  NavigationQuery,
-  NavigationQueryVariables,
-  NavigationDataFragment,
-  FoertroendemodellenFormQuery,
-  FoertroendemodellenFormQueryVariables,
+  ToolDataFragment,
+  ToolQuery,
+  ToolQueryVariables,
 } from "@/graphql/__generated__/operations";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import { ROOT_AGGREGATE_QUERY } from "@/graphql/aggregateQuery";
 import { gqlFetch, logGqlError } from "@/graphql/fetcher";
-import { FORM_QUERY, FOETROENDEMODELLEN_FORM_QUERY } from "@/graphql/formQuery";
+import { FOETROENDEMODELLEN_FORM_QUERY, FORM_QUERY } from "@/graphql/formQuery";
 import { MODULE_QUERY } from "@/graphql/moduleQuery";
 import { NAVIGATION_QUERY } from "@/graphql/navigationQuery";
 import {

@@ -1,11 +1,11 @@
 import { cx } from "class-variance-authority";
 import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import type { FC } from "react";
 
 import { ButtonLink } from "@/components/button";
-import { PromoProps, Promo } from "@/components/promo";
+import { Promo, type PromoProps } from "@/components/promo";
 import { Heading } from "@/components/typography/heading";
-import { RelatedContentFragment } from "@/graphql/__generated__/operations";
+import type { RelatedContentFragment } from "@/graphql/__generated__/operations";
 
 interface RelatedContentProps extends RelatedContentFragment {
   landingPage?: boolean;
