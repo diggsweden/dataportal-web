@@ -2,7 +2,7 @@ import reactenv from "@beam-australia/react-env";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { usePathname } from "next/navigation";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -27,6 +27,7 @@ import type {
   MenuLinkIconFragment,
   NavigationDataFragment,
 } from "@/graphql/__generated__/operations";
+import { MatomoProvider } from "@/lib/matomo";
 import {
   type LocalStore,
   LocalStoreProvider,
@@ -35,7 +36,6 @@ import {
   defaultSettings,
   SettingsProvider,
 } from "@/providers/settings-provider";
-import { TrackingProvider } from "@/providers/tracking-provider";
 import type { SubLink, SubLinkFooter } from "@/types/global";
 import {
   type DataportalPageProps,
@@ -55,13 +55,6 @@ const getCookiesAccepted = () => {
     return false;
   }
 };
-
-declare global {
-  interface Window {
-    // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-    _paq: any[];
-  }
-}
 
 interface DataportalenProps extends AppProps {
   navigationData: {
@@ -97,10 +90,6 @@ function Dataportal({
   // Put shared props into state to persist between pages that doesn't use getStaticProps
   const [env, setEnv] = useState<EnvSettings | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
-
-  const [matomoActivated, setMatomoActivated] = useState<boolean>(
-    process.env.NEXT_PUBLIC_DISABLE_MATOMO !== "1",
-  );
   const [openSideBar, setOpenSideBar] = useState(false);
   const { seo, heading, heroImage, preamble } = resolvePage(
     pageProps as DataportalPageProps,
@@ -127,35 +116,18 @@ function Dataportal({
   useEffect(() => {
     if (typeof window !== "undefined") {
       const isSandbox = window.location.host.includes("sandbox");
-      //if host is run from sandbox, load that environment and disable matomo
+      // Sandbox hosts load the sandbox environment and disable Matomo.
       if (isSandbox) {
         setEnv(new Settings_Sandbox());
-        setMatomoActivated(false);
       } else {
         setEnv(SettingsUtil.create());
       }
     }
   }, []);
 
-  // Matomo tracking page view
-  useEffect(() => {
-    if (!matomoActivated) return;
-
-    const matomoInstance = window._paq || [];
-
-    // Track initial page view
-    if (matomoInstance) {
-      matomoInstance.push(["setCustomUrl", window.location.pathname]);
-      matomoInstance.push(["trackPageView"]);
-    }
-
-    router.events.on("routeChangeComplete", () => {
-      if (matomoInstance) {
-        matomoInstance.push(["setCustomUrl", window.location.pathname]);
-        matomoInstance.push(["trackPageView"]);
-      }
-    });
-  }, [router.events]);
+  const matomoDisabled =
+    process.env.NEXT_PUBLIC_DISABLE_MATOMO === "1" ||
+    env instanceof Settings_Sandbox;
 
   let searchProps = null;
 
@@ -190,8 +162,10 @@ function Dataportal({
       }}
     >
       <LocalStoreProvider>
-        <TrackingProvider
-          initialActivation={(getCookiesAccepted() ?? false) && matomoActivated}
+        <MatomoProvider
+          disabled={matomoDisabled}
+          initialConsent={getCookiesAccepted() ?? false}
+          nonce={env.nonce}
         >
           <MetaData seo={seo} />
           <div id="scriptsPlaceholder" />
@@ -263,7 +237,7 @@ function Dataportal({
               openSideBar={openSideBar}
             />
           </div>
-        </TrackingProvider>
+        </MatomoProvider>
       </LocalStoreProvider>
     </SettingsProvider>
   );

@@ -80,7 +80,7 @@ Coexists with `pages/` - no route ported yet.
   - Uses `NextIntlClientProvider` with messages from the request config.
   - Static layout chrome (Header shell, Footer, Hero outer) stays server-rendered; interactive sub-components are Client Components.
 - Add `components/providers.tsx` marked `"use client"`:
-  - Wraps `SettingsProvider`, `LocalStoreProvider`, `TrackingProvider`, `NextIntlClientProvider` for client consumers.
+  - Wraps `SettingsProvider`, `LocalStoreProvider`, `MatomoProvider` (`@/lib/matomo`), `NextIntlClientProvider` for client consumers.
 - Move the shared layout state (`breadcrumbState`, `imageHero`, `openSideBar`, `settingsOpen`) out of `pages/_app.tsx` into a new `LayoutStateProvider` client context so it survives the move off `_app`.
 - Replace every `next/router` import with `next/navigation` (`useRouter`/`usePathname`/`useSearchParams`); replace `router.events.on("routeChangeComplete", ...)` (Matomo) with an effect on `[pathname, searchParams]`.
 - Add `app/[locale]/not-found.tsx`, `app/[locale]/error.tsx`, `app/global-error.tsx`.
