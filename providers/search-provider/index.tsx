@@ -1,9 +1,16 @@
+"use client";
+
 import { Entry } from "@entryscape/entrystore-js";
-import { useRouter } from "next/router";
-import { I18n } from "next-translate";
-import withTranslation from "next-translate/withTranslation";
 import { decode, encode } from "qss";
 import { Component, createContext, ReactNode } from "react";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type TranslateFn = (key: string, ...args: any[]) => string;
+
+interface I18nCompat {
+  t: TranslateFn;
+  lang: string;
+}
 
 import { ESRdfType, ESType } from "@/types/entrystore-core";
 import {
@@ -35,11 +42,12 @@ export interface SearchProviderProps {
   hitSpecifications?: { [key: string]: HitSpecification };
   facetSpecification?: FacetSpecification;
   initRequest: SearchRequest;
-  i18n: I18n;
+  i18n: I18nCompat;
   children?: ReactNode;
   fetchHitsWithFacets?: boolean;
   entry?: Entry;
-  router: ReturnType<typeof useRouter>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  router: any;
 }
 
 /**
@@ -698,7 +706,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
 
     const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
     // Use the router from props
-    this.props.router.push(newUrl, undefined, { shallow: true });
+    this.props.router.push(newUrl);
   };
 
   /**
@@ -1002,4 +1010,4 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
   }
 }
 
-export default withTranslation(SearchProvider, "resources");
+export default SearchProvider;

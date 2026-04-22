@@ -1,5 +1,6 @@
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 
+import { useResourceLabels } from "@/providers/resource-labels-provider";
 import { Dataportal_LinkType } from "@/graphql/__generated__/types";
 import { Breadcrumb, DiggLink } from "@/types/global";
 
@@ -39,12 +40,12 @@ export const SearchDatasetsPagePath = (
   resourceType: string,
   resource: string,
 ) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
+  const resourceLabels = useResourceLabels();
+  const tr = (key: string) => resourceLabels[key] ?? key;
   if (lang && lang.length > 0 && resource && resource.length > 0) {
-    return `/${t("routes|datasets$path")}?f=${encodeURIComponent(
-      `${resourceType}||${resource}||FALSE||uri||${t(
-        "resources|" + resourceType,
-      )}||${t("resources|" + resource)}`,
+    return `/${t("routes.datasets.path")}?f=${encodeURIComponent(
+      `${resourceType}||${resource}||FALSE||uri||${tr(resourceType)}||${tr(resource)}`,
     )}`;
   }
 

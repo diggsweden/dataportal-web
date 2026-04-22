@@ -3,8 +3,8 @@
  * for different search categories (datasets, concepts, specifications, content).
  */
 
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { usePathname } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import React from "react";
 
 import { ButtonLink } from "@/components/button";
@@ -23,11 +23,11 @@ interface SearchTabsProps {
  * @constant
  */
 const SEARCH_TABS = [
-  { path: "/datasets", translationKey: "search$datasets" },
-  { path: "/specifications", translationKey: "search$specifications" },
-  { path: "/concepts", translationKey: "search$concepts" },
-  { path: "/organisations", translationKey: "search$organisations" },
-  { path: "/search", translationKey: "search$content" },
+  { path: "/datasets", translationKey: "search.datasets" },
+  { path: "/specifications", translationKey: "search.specifications" },
+  { path: "/concepts", translationKey: "search.concepts" },
+  { path: "/organisations", translationKey: "search.organisations" },
+  { path: "/search", translationKey: "search.content" },
 ] as const;
 
 /**
@@ -35,15 +35,16 @@ const SEARCH_TABS = [
  * Highlights the currently active tab and maintains the search query across navigation.
  */
 export function SearchPageSelector({ query }: SearchTabsProps) {
-  const { t, lang } = useTranslation("pages");
-  const { pathname } = useRouter() || {};
+  const t = useTranslations("pages");
+  const lang = useLocale();
+  const pathname = usePathname() ?? "";
 
   return (
-    <nav aria-label={t("search$search-type-navigation")}>
+    <nav aria-label={t("search.search-type-navigation")}>
       <div
         className="mb-lg flex flex-wrap gap-sm md:gap-md"
         role="tablist"
-        aria-label={t("search$search-tabs")}
+        aria-label={t("search.search-tabs")}
       >
         {SEARCH_TABS.map(({ path, translationKey }) => (
           <ButtonLink

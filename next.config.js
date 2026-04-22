@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
-const nextTranslate = require("next-translate-plugin");
+const createNextIntlPlugin = require("next-intl/plugin");
+const withNextIntl = createNextIntlPlugin("./lib/i18n/request.ts");
 
 const baseHeaders = [
   {
@@ -41,7 +42,7 @@ const csp = [
   },
 ];
 
-const nextConfig = nextTranslate({
+const nextConfig = {
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
@@ -106,6 +107,6 @@ const nextConfig = nextTranslate({
       },
     ];
   },
-});
+};
 
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);

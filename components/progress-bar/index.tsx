@@ -1,4 +1,4 @@
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { FC } from "react";
 
 /* eslint-disable no-unused-vars */
@@ -9,7 +9,7 @@ type Props = {
 /* eslint-enable no-unused-vars */
 
 export const ProgressBar: FC<Props> = ({ page, totalPages }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const percentage = (page / totalPages) * 100;
 
   return (
@@ -19,8 +19,8 @@ export const ProgressBar: FC<Props> = ({ page, totalPages }) => {
       aria-valuenow={page}
       aria-valuemin={1}
       aria-valuemax={totalPages}
-      aria-label={`${t("common|menu-form")} ${page} ${t(
-        "common|of",
+      aria-label={`${t("common.menu-form")} ${page} ${t(
+        "common.of",
       )} ${totalPages}`}
     >
       <div

@@ -5,10 +5,11 @@ import {
   Metadata,
   MetadataValue,
 } from "@entryscape/entrystore-js";
-import { Translate } from "next-translate";
 
 import { SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
+
+type Translate = (_key: string, ..._args: any[]) => string;
 import { RedirectConfig } from "@/types/global";
 
 import { Choice, ChoiceTemplate, DCATData } from "../dcat-utils";

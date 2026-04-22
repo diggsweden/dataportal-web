@@ -1,5 +1,3 @@
-import { Translate } from "next-translate";
-
 import { EnvSettings } from "@/env/env-settings";
 import { includeLangInPath } from "@/utilities/check-lang";
 
@@ -9,6 +7,9 @@ import { dataserviceBlocks } from "./dataservice";
 import { datasetBlocks } from "./datasets";
 import { specificationBlocks } from "./specification";
 import { terminologyBlocks } from "./terminology";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Translate = (_key: string, ..._args: any[]) => string;
 
 interface CreateBlocksConfigProps {
   entrystoreBase: string;
@@ -205,7 +206,7 @@ export const createBlocksConfig = ({
                   ".xls",
                 ],
                 ods: ["application/vnd.oasis.opendocument.spreadsheet"],
-                [t("pages|datasetpage$fileformat")]: null,
+                [t("pages.datasetpage.fileformat")]: null,
               },
             },
           ],
@@ -295,7 +296,7 @@ export const createBlocksConfig = ({
                   ".xls",
                 ],
                 ods: ["application/vnd.oasis.opendocument.spreadsheet"],
-                [t("pages|datasetpage$fileformat")]: null,
+                [t("pages.datasetpage.fileformat")]: null,
               },
             },
           ],

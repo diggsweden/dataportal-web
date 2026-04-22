@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { usePathname } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { FC, useContext, useEffect, useState } from "react";
 
 import { Button } from "@/components/button";
@@ -13,10 +13,11 @@ import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
 
 export const DatasetPage: FC = () => {
-  const { pathname } = useRouter() || {};
+  const pathname = usePathname() ?? "";
   const { setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
-  const { lang, t } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
   const [showText, setShowText] = useState(false);
   const [descriptionHeight, setDescriptionHeight] = useState(0);
   const [showAllSpecs, setShowAllSpecs] = useState(false);
@@ -44,8 +45,8 @@ export const DatasetPage: FC = () => {
       crumbs: [
         { name: "start", link: { ...linkBase, link: "/" } },
         {
-          name: t("routes|datasets$title"),
-          link: { ...linkBase, link: `/${t("routes|datasets$path")}?q=&f=` },
+          name: t("routes.datasets.title"),
+          link: { ...linkBase, link: `/${t("routes.datasets.path")}?q=&f=` },
         },
       ],
     });
@@ -87,7 +88,7 @@ export const DatasetPage: FC = () => {
                 entry.relatedDatasetSeries.length > 0 && (
                   <div className="inline-flex flex-wrap items-center gap-sm text-sm">
                     <span className="text-textSecondary">
-                      {t("pages|datasetpage$related_dataset_series")}
+                      {t("pages.datasetpage.related_dataset_series")}
                     </span>
                     {entry.relatedDatasetSeries.map((ds, idx) => (
                       <span key={idx} className="inline-flex items-center">
@@ -128,8 +129,8 @@ export const DatasetPage: FC = () => {
                   variant={"plain"}
                   label={
                     showText
-                      ? t("pages|datasetpage$view_less")
-                      : t("pages|datasetpage$view_more")
+                      ? t("pages.datasetpage.view_less")
+                      : t("pages.datasetpage.view_more")
                   }
                   onClick={() => setShowText(!showText)}
                 />
@@ -169,11 +170,11 @@ export const DatasetPage: FC = () => {
                   size={"sm"}
                   className="mb-sm text-textSecondary md:mb-md"
                 >
-                  {t("pages|datasetpage$contact-publisher")}
+                  {t("pages.datasetpage.contact-publisher")}
                 </Heading>
                 <p>
-                  {t("pages|datasetpage$contact-publisher-text")}
-                  {t("pages|datasetpage$contact-publisher-text2")}{" "}
+                  {t("pages.datasetpage.contact-publisher-text")}
+                  {t("pages.datasetpage.contact-publisher-text2")}{" "}
                   <a
                     className="link text-md"
                     href="https://community.dataportal.se/"
@@ -199,7 +200,7 @@ export const DatasetPage: FC = () => {
                 size={"sm"}
                 className="mb-md font-strong text-textSecondary md:mb-lg"
               >
-                {t("pages|datasetpage$about-dataset")}
+                {t("pages.datasetpage.about-dataset")}
               </Heading>
 
               <div className="space-y-lg">
@@ -215,7 +216,7 @@ export const DatasetPage: FC = () => {
                       level={3}
                       size={"xxs"}
                     >
-                      {t("pages|datasetpage$keyword")}
+                      {t("pages.datasetpage.keyword")}
                     </Heading>
                     <div className="flex flex-col">
                       {keywords?.map((k, idx) => (
@@ -233,8 +234,8 @@ export const DatasetPage: FC = () => {
                       variant={"plain"}
                       label={
                         showAllKeywords
-                          ? t("pages|datasetpage$view_less")
-                          : t("pages|datasetpage$view_more")
+                          ? t("pages.datasetpage.view_less")
+                          : t("pages.datasetpage.view_more")
                       }
                       onClick={() => setShowAllKeywords(!showAllKeywords)}
                     />
@@ -249,7 +250,7 @@ export const DatasetPage: FC = () => {
                         level={3}
                         size={"xxs"}
                       >
-                        {t("pages|datasetpage$related_specifications")}
+                        {t("pages.datasetpage.related_specifications")}
                       </Heading>
                       {relatedSpecs?.map((spec, idx) => (
                         <a
@@ -267,8 +268,8 @@ export const DatasetPage: FC = () => {
                           variant={"plain"}
                           label={
                             showAllSpecs
-                              ? t("pages|datasetpage$view_less")
-                              : t("pages|datasetpage$view_more")
+                              ? t("pages.datasetpage.view_less")
+                              : t("pages.datasetpage.view_more")
                           }
                           onClick={() => setShowAllSpecs(!showAllSpecs)}
                         />
@@ -283,7 +284,7 @@ export const DatasetPage: FC = () => {
                       level={3}
                       size={"xxs"}
                     >
-                      {t("pages|datasetpage$download_link")}
+                      {t("pages.datasetpage.download_link")}
                     </Heading>
                     <div className="flex flex-col gap-xs">
                       {entry.downloadFormats.map(({ title, url }, idx) => (
@@ -311,7 +312,7 @@ export const DatasetPage: FC = () => {
                 size={"sm"}
                 className="mb-sm font-strong text-textSecondary md:mb-md"
               >
-                {t("pages|datasetpage$catalog")}
+                {t("pages.datasetpage.catalog")}
               </Heading>
               <div className="space-y-lg">
                 {entry.mqaCatalog && (
@@ -321,7 +322,7 @@ export const DatasetPage: FC = () => {
                       level={3}
                       size={"xxs"}
                     >
-                      {t("pages|datasetpage$mqa-catalog")}
+                      {t("pages.datasetpage.mqa-catalog")}
                     </Heading>
                     <Link
                       className="text-sm text-green-600 underline-offset-2 hover:no-underline"

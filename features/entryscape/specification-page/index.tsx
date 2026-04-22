@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { usePathname } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { FC, useContext, useEffect, useState } from "react";
 
 import { Button } from "@/components/button";
@@ -15,8 +15,9 @@ import { linkBase } from "@/utilities";
 export const SpecificationPage: FC = () => {
   const { setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
-  const { lang, t } = useTranslation();
-  const { pathname } = useRouter() || {};
+  const t = useTranslations();
+  const lang = useLocale();
+  const pathname = usePathname() ?? "";
   const [showAllDatasets, setShowAllDatasets] = useState(false);
   const [showAllKeywords, setShowAllKeywords] = useState(false);
   const relatedDatasets = showAllDatasets
@@ -42,10 +43,10 @@ export const SpecificationPage: FC = () => {
       crumbs: [
         { name: "start", link: { ...linkBase, link: "/" } },
         {
-          name: t("routes|specifications$title"),
+          name: t("routes.specifications.title"),
           link: {
             ...linkBase,
-            link: `/${t("routes|specifications$path")}?q=&f=`,
+            link: `/${t("routes.specifications.path")}?q=&f=`,
           },
         },
       ],
@@ -85,7 +86,7 @@ export const SpecificationPage: FC = () => {
             </Preamble>
 
             <Heading level={2} size={"md"} className="mb-md md:mb-lg">
-              {t("pages|specification_page$resource_specification")}
+              {t("pages.specification_page.resource_specification")}
             </Heading>
             <div
               data-test-id="resource-descriptors"
@@ -98,11 +99,11 @@ export const SpecificationPage: FC = () => {
               className="contact__publisher mt-md md:mt-lg"
             >
               <Heading level={3} size={"sm"}>
-                {t("pages|datasetpage$contact-publisher")}
+                {t("pages.datasetpage.contact-publisher")}
               </Heading>
               <p>
-                {t("pages|datasetpage$contact-publisher-text")}
-                {t("pages|datasetpage$contact-publisher-text2")}{" "}
+                {t("pages.datasetpage.contact-publisher-text")}
+                {t("pages.datasetpage.contact-publisher-text2")}{" "}
                 <a href="https://community.dataportal.se/" lang="en">
                   community
                 </a>
@@ -122,7 +123,7 @@ export const SpecificationPage: FC = () => {
               size={"sm"}
               className="mb-sm font-strong text-textSecondary md:mb-md"
             >
-              {t("pages|specification_page$about_specification")}
+              {t("pages.specification_page.about_specification")}
             </Heading>
 
             <div className="space-y-lg">
@@ -132,7 +133,7 @@ export const SpecificationPage: FC = () => {
                   level={3}
                   size={"xxs"}
                 >
-                  {t("pages|specification_page$address")}
+                  {t("pages.specification_page.address")}
                 </Heading>
 
                 <Link
@@ -150,7 +151,7 @@ export const SpecificationPage: FC = () => {
                     level={3}
                     size={"xxs"}
                   >
-                    {t("pages|datasetpage$keyword")}
+                    {t("pages.datasetpage.keyword")}
                   </Heading>
                   <div className="flex flex-col">
                     {keywords?.map((k, idx) => (
@@ -168,8 +169,8 @@ export const SpecificationPage: FC = () => {
                     variant={"plain"}
                     label={
                       showAllKeywords
-                        ? t("pages|datasetpage$view_less")
-                        : t("pages|datasetpage$view_more")
+                        ? t("pages.datasetpage.view_less")
+                        : t("pages.datasetpage.view_more")
                     }
                     onClick={() => setShowAllKeywords(!showAllKeywords)}
                   />
@@ -194,7 +195,7 @@ export const SpecificationPage: FC = () => {
                     level={3}
                     size={"xxs"}
                   >
-                    {t("pages|specification_page$related_datasets")}
+                    {t("pages.specification_page.related_datasets")}
                   </Heading>
                   {relatedDatasets?.map((ds, idx) => (
                     <Link
@@ -212,8 +213,8 @@ export const SpecificationPage: FC = () => {
                       variant={"plain"}
                       label={
                         showAllDatasets
-                          ? t("pages|datasetpage$view_less")
-                          : t("pages|datasetpage$view_more")
+                          ? t("pages.datasetpage.view_less")
+                          : t("pages.datasetpage.view_more")
                       }
                       onClick={() => setShowAllDatasets(!showAllDatasets)}
                     />
@@ -229,7 +230,7 @@ export const SpecificationPage: FC = () => {
                     level={3}
                     size={"xxs"}
                   >
-                    {t("pages|datasetpage$download_link")}
+                    {t("pages.datasetpage.download_link")}
                   </Heading>
                   <div className="flex flex-col gap-xs">
                     {entry.downloadFormats.map(({ title, url }, idx) => (

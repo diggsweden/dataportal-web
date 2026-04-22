@@ -1,4 +1,6 @@
-import useTranslation from "next-translate/useTranslation";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { useState, useEffect, Dispatch, FC } from "react";
 
 import ChevronLeftIcon from "@/assets/icons/chevron-left.svg";
@@ -18,7 +20,7 @@ export const Pagination: FC<PaginationProps> = ({
 }) => {
   const [screenSize, setScreenSize] = useState(false);
   const totalPages: number = Math.ceil(totalResults / itemsPerPage);
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [currentPage, setCurrentPage] = useState(pageNumber ? pageNumber : 1);
   const firstOnCurrentPage =
     currentPage === 1 ? 1 : (currentPage - 1) * itemsPerPage + 1;
@@ -97,12 +99,12 @@ export const Pagination: FC<PaginationProps> = ({
       }  mt-xl w-full flex-col items-center justify-between gap-lg lg:flex-row lg:gap-none`}
     >
       <span>
-        {t("pages|search$showing")}
+        {t("pages.search.showing")}
         <span className="font-strong"> {firstOnCurrentPage} </span>
-        {t("common|to")}
+        {t("common.to")}
         <span className="font-strong"> {lastOnCurrentPage} </span>
-        {t("common|of")} <span className="font-strong"> {totalResults} </span>
-        {t("pages|search$results")}
+        {t("common.of")} <span className="font-strong"> {totalResults} </span>
+        {t("pages.search.results")}
       </span>
       <div className="flex flex-wrap items-center">
         <button
@@ -114,7 +116,7 @@ export const Pagination: FC<PaginationProps> = ({
           disabled={currentPage === 1}
         >
           <span className="sr-only">
-            {t("pages|search$prev-page")} {t("pages|search$page")}
+            {t("pages.search.prev-page")} {t("pages.search.page")}
           </span>
           <ChevronLeftIcon className={currentPage === 1 ? "opacity-20" : ""} />
         </button>
@@ -127,7 +129,7 @@ export const Pagination: FC<PaginationProps> = ({
             }
             tabIndex={value === "..." || value === currentPage ? -1 : 0}
             key={idx}
-            aria-label={`${t("pages|search$page")} ${value}`}
+            aria-label={`${t("pages.search.page")} ${value}`}
             className={`focus--in focus-visible:bg-brown-200 ${
               value === currentPage
                 ? "cursor-auto bg-brown-800 text-white"
@@ -150,7 +152,7 @@ export const Pagination: FC<PaginationProps> = ({
           disabled={currentPage === totalPages}
         >
           <span className="sr-only">
-            {t("pages|search$next-page")} {t("pages|search$page")}
+            {t("pages.search.next-page")} {t("pages.search.page")}
           </span>
           <ChevronRightIcon
             className={currentPage === totalPages ? "opacity-20" : ""}

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Entry } from "@entryscape/entrystore-js";
-import { Translate } from "next-translate";
 
 import { includeLangInPath } from "@/utilities/check-lang";
+
+type Translate = (_key: string, ..._args: any[]) => string;
 import {
   conceptsPathResolver,
   getLocalizedValue,
@@ -38,7 +39,7 @@ export const terminologyBlocks = (t: Translate, lang: string) => [
     block: "terminologyBlock",
     extends: "template",
     template: `{{#ifprop "rdf:type" uri="skos:ConceptScheme"}}<h2 class="toplist-header !text-lg">${t(
-      "pages|concept_page$first_level_concepts",
+      "pages.concept_page.first_level_concepts",
     )}</h2>{{topConceptsList}}{{/ifprop}}`,
   },
   {

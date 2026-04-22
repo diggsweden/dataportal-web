@@ -1,9 +1,11 @@
-import env from "@beam-australia/react-env";
+"use client";
+
 import Image from "next/image";
 import { FC } from "react";
 
 import noImage from "@/assets/logos/noImage.png";
 import { ImageFragment as ImageInterface } from "@/graphql/__generated__/operations";
+import { useMediaBaseUrl } from "@/providers/media-url-provider";
 import { isExternalLink } from "@/utilities";
 
 /**
@@ -40,19 +42,6 @@ const DEFAULT_SIZES =
 const isNextStatic = (url: string) => !url.startsWith("/uploads");
 
 /**
- * Generates the complete image URL with width and quality parameters
- * @param imageUrl - The base image URL
- * @param width - Desired image width
- * @param quality - Desired image quality
- * @returns The complete image URL with parameters
- */
-const getImageUrl = (imageUrl: string, width: number, quality: number) => {
-  if (isExternalLink(imageUrl)) return imageUrl;
-  const baseUrl = env("MEDIA_BASE_URL") || "";
-  return `${baseUrl}${imageUrl}?w=${width}&q=${quality}`;
-};
-
-/**
  * A custom Image component that handles various image sources and formats
  * Supports external images, Next.js static assets, and dynamic images with optimization
  * Falls back to a placeholder image when no image is provided
@@ -65,6 +54,8 @@ export const CustomImage: FC<CustomImageProps> = ({
   width = DEFAULT_WIDTH,
   quality = DEFAULT_QUALITY,
 }) => {
+  const mediaBaseUrl = useMediaBaseUrl();
+
   if (!image) {
     return (
       <Image
@@ -93,12 +84,12 @@ export const CustomImage: FC<CustomImageProps> = ({
     return <Image src={image.url} {...imageProps} />;
   }
 
+  const src = isExternalLink(image.url)
+    ? image.url
+    : `${mediaBaseUrl}${image.url}?w=${width}&q=${quality}`;
+
   return (
     // eslint-disable-next-line jsx-a11y/alt-text
-    <Image
-      src={getImageUrl(image.url, width, quality)}
-      {...imageProps}
-      unoptimized
-    />
+    <Image src={src} {...imageProps} unoptimized />
   );
 };

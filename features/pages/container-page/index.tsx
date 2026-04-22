@@ -1,9 +1,13 @@
+"use client";
+
 /* eslint-disable @typescript-eslint/no-require-imports */
 import { usePathname } from "next/navigation";
-import { Translate } from "next-translate";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { Environment } from "prismjs";
 import React, { useContext, useEffect, useState } from "react";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Translate = (_key: string, ..._args: any[]) => string;
 
 import { BlockList } from "@/components/blocks/block-list";
 import { Container } from "@/components/layout/container";
@@ -176,8 +180,8 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
 }) => {
   const [menuItems, setMenuItems] = useState<Anchorlink[] | []>([]);
   const { setBreadcrumb } = useContext(SettingsContext);
-  const pathname = usePathname();
-  const { t } = useTranslation("common");
+  const pathname = usePathname() ?? "";
+  const t = useTranslations("common");
   const formPage = blocks?.find(
     (block) => block.__typename === "dataportal_Digg_FoertroendemodellenBlock",
   );
@@ -228,7 +232,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
                 className="w-full overflow-y-auto lg:sticky lg:top-[4.75rem] lg:max-h-[calc(100vh-9.5rem)]"
               >
                 <StickyNav
-                  menuHeading={t("common|content-menu-heading")}
+                  menuHeading={t("common.content-menu-heading")}
                   menuItems={menuItems}
                 />
               </div>

@@ -1,6 +1,6 @@
 import { cx } from "class-variance-authority";
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import Organisationsnummer from "organisationsnummer";
 import { FC, useState, useEffect } from "react";
 
@@ -28,8 +28,8 @@ export const OrganisationNumber: FC<OrganisationNumberProps> = ({
   onChange,
   onSubmit,
 }) => {
-  const pathname = usePathname();
-  const { t } = useTranslation("pages");
+  const pathname = usePathname() ?? "";
+  const t = useTranslations("pages");
   const [inputValue, setInputValue] = useState(value);
   const [validation, setValidation] = useState<ValidationState>({
     isValid: null,
@@ -43,12 +43,12 @@ export const OrganisationNumber: FC<OrganisationNumberProps> = ({
     if (!valid) {
       setValidation({
         isValid: false,
-        errorMessage: t("form$organisation-number-validation"),
+        errorMessage: t("form.organisation-number-validation"),
       });
     } else if (!startsWithValidPrefix) {
       setValidation({
         isValid: false,
-        errorMessage: t("form$organisation-number-validation-public"),
+        errorMessage: t("form.organisation-number-validation-public"),
       });
     } else {
       setValidation({
@@ -97,7 +97,7 @@ export const OrganisationNumber: FC<OrganisationNumberProps> = ({
           : "bg-red-50",
       )}
     >
-      {addLabel(1, "organisationNumber", 1, t("form$organisation-number"))}
+      {addLabel(1, "organisationNumber", 1, t("form.organisation-number"))}
       <div className="flex gap-sm">
         <TextInput
           placeholder="XXXXXX-XXXX"
@@ -112,7 +112,7 @@ export const OrganisationNumber: FC<OrganisationNumberProps> = ({
           className="mt-sm"
         />
         <Button
-          label={t("form$validate")}
+          label={t("form.validate")}
           onClick={handleSubmit}
           className="mt-sm justify-between"
         />

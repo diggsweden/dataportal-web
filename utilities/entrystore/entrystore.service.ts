@@ -7,9 +7,10 @@ import {
 } from "@entryscape/entrystore-js";
 // @ts-expect-error no types.
 import { namespaces } from "@entryscape/rdfjson";
-import { Translate } from "next-translate";
 
 import { SearchSortOrder } from "@/providers/search-provider";
+
+type Translate = (_key: string, ..._args: any[]) => string;
 import {
   ESType,
   ESRdfType,
@@ -1035,19 +1036,19 @@ export class EntrystoreService {
   public getDownloadFormats(baseUri: string) {
     return [
       {
-        title: this.t("pages|datasetpage$download-metadata-as") + " RDF/XML",
+        title: this.t("pages.datasetpage.download-metadata-as") + " RDF/XML",
         url: baseUri,
       },
       {
-        title: this.t("pages|datasetpage$download-metadata-as") + " TURTLE",
+        title: this.t("pages.datasetpage.download-metadata-as") + " TURTLE",
         url: baseUri + "?format=text/turtle",
       },
       {
-        title: this.t("pages|datasetpage$download-metadata-as") + " N-TRIPLES",
+        title: this.t("pages.datasetpage.download-metadata-as") + " N-TRIPLES",
         url: baseUri + "?format=text/n-triples",
       },
       {
-        title: this.t("pages|datasetpage$download-metadata-as") + " JSON-LD",
+        title: this.t("pages.datasetpage.download-metadata-as") + " JSON-LD",
         url: baseUri + "?format=application/ld+json",
       },
     ];

@@ -1,4 +1,6 @@
-import useTranslation from "next-translate/useTranslation";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { FC } from "react";
 
 import { CustomLink } from "@/components/custom-link";
@@ -19,7 +21,7 @@ export const Footer: FC<FooterProps> = ({
   setOpenSideBar,
   setSettingsOpen,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   return (
     <footer className="mt-xl border-t-2 border-brown-600 bg-white py-xl">
       <div
@@ -35,7 +37,7 @@ export const Footer: FC<FooterProps> = ({
           />
           <div className="mr-lg align-top">
             <span className="font-strong">Sveriges dataportal </span>
-            <span>{t("common|managed-and-developed-by")}</span>
+            <span>{t("common.managed-and-developed-by")}</span>
             <CustomLink
               aria-label="Digg - Myndigheten för digital förvaltning"
               href={"https://digg.se/"}

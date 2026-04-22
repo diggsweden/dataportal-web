@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations, useLocale } from "next-intl";
 import { FC, useContext, useEffect } from "react";
 
 import { Container } from "@/components/layout/container";
@@ -16,7 +16,8 @@ export const DataServicePage: FC<{
   dataSet: string | string[] | undefined;
   name: string | string[] | undefined;
 }> = ({ dataSet, name }) => {
-  const { lang, t } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
   const { findDetection } = useContext(ApiIndexContext);
   const { setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
@@ -40,8 +41,8 @@ export const DataServicePage: FC<{
       crumbs: [
         { name: "start", link: { ...linkBase, link: "/" } },
         {
-          name: t("routes|datasets$title"),
-          link: { ...linkBase, link: `/${t("routes|datasets$path")}?q=&f=` },
+          name: t("routes.datasets.title"),
+          link: { ...linkBase, link: `/${t("routes.datasets.path")}?q=&f=` },
         },
       ],
     });
@@ -93,7 +94,7 @@ export const DataServicePage: FC<{
                 <span className="esbRowAlignSecondary">
                   <Link
                     href={`/${t(
-                      "routes|dataservices$path",
+                      "routes.dataservices.path",
                     )}/${cid}_${eid}/${name}/apiexplore/${eid}`}
                     locale={lang}
                     className="dataservice-explore-api-link entryscape link text-md"
@@ -107,11 +108,11 @@ export const DataServicePage: FC<{
 
             <div className="bg-pink-200 p-lg">
               <Heading level={3}>
-                {t("pages|datasetpage$contact-publisher")}
+                {t("pages.datasetpage.contact-publisher")}
               </Heading>
               <p>
-                {t("pages|datasetpage$contact-publisher-text")}
-                {t("pages|datasetpage$contact-publisher-text2")}{" "}
+                {t("pages.datasetpage.contact-publisher-text")}
+                {t("pages.datasetpage.contact-publisher-text2")}{" "}
                 <a
                   className="link"
                   href="https://community.dataportal.se/"
@@ -131,7 +132,7 @@ export const DataServicePage: FC<{
               size={"sm"}
               className="mb-md font-strong text-textSecondary md:mb-lg"
             >
-              {t("pages|dataservicepage$api")}
+              {t("pages.dataservicepage.api")}
             </Heading>
             {/* About dataservice */}
             <div data-entryscape="aboutDaservice" className="mb-lg" />

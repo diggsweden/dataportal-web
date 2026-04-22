@@ -1,5 +1,7 @@
+"use client";
+
 import { usePathname } from "next/navigation";
-import { useRouter, NextRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FC, useContext, useEffect, useState } from "react";
 
 import { Button } from "@/components/button";
@@ -37,10 +39,11 @@ export const ListPage: FC<ListPageProps> = ({
 }) => {
   const { setBreadcrumb } = useContext(SettingsContext);
   const list = Array.isArray(listItems) ? listItems : [];
-  const pathname = usePathname();
-  const router: NextRouter = useRouter();
+  const pathname = usePathname() ?? "";
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const listItemsPerPage = 12;
-  const page = parseInt(router.query.page as string) || 1;
+  const page = parseInt(searchParams?.get("page") || "1") || 1;
   const startIndex = (page - 1) * listItemsPerPage;
   const endIndex = startIndex + listItemsPerPage;
   const [filterList, setFilterList] =
@@ -94,7 +97,7 @@ export const ListPage: FC<ListPageProps> = ({
           );
         }),
       );
-      if (router.query.page) {
+      if (searchParams?.get("page")) {
         router.replace("");
       }
     }
@@ -106,7 +109,8 @@ export const ListPage: FC<ListPageProps> = ({
       id: "0",
     });
 
-    router.query.page = "1";
+    // Reset to page 1 when heading changes
+    router.replace("?page=1");
   }, [heading]);
 
   return (
@@ -143,7 +147,7 @@ export const ListPage: FC<ListPageProps> = ({
             <Pagination
               totalResults={filterList.length || 0}
               itemsPerPage={listItemsPerPage}
-              pageNumber={parseInt(router.query.page as string)}
+              pageNumber={parseInt(searchParams?.get("page") as string)}
               changePage={changePage}
             />
           </div>

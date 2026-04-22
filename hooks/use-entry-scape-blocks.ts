@@ -1,4 +1,4 @@
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
 import { EnvSettings } from "@/env/env-settings";
@@ -33,7 +33,7 @@ export const useEntryScapeBlocks = ({
   context,
   esId,
 }: BlocksConfig) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   useEffect(() => {
     //this is to make sure that the correct entryscape blocks are loaded when navigating to a new page

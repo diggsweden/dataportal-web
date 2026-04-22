@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, FC, ReactNode, useEffect, useState } from "react";
 
 export interface ApiIndexProviderProps {

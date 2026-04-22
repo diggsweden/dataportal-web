@@ -1,5 +1,5 @@
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { FC, useRef, useState } from "react";
 
 import { BlockList } from "@/components/blocks/block-list";
@@ -19,7 +19,7 @@ export const FormGeneratePDF: FC<Props> = ({ formDataArray, blocks }) => {
   const pathname = usePathname();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [showModal, setShowModal] = useState(false);
-  const { t } = useTranslation();
+  const t = useTranslations();
   return (
     <div>
       {blocks && (
@@ -29,11 +29,11 @@ export const FormGeneratePDF: FC<Props> = ({ formDataArray, blocks }) => {
       )}
 
       <Button
-        label={t("pages|form$generate-pdf-text")}
+        label={t("pages.form.generate-pdf-text")}
         onClick={(e) => {
           GeneratePDF(e, iframeRef, formDataArray);
 
-          const url = pathname;
+          const url = pathname ?? "";
           const urlArray = url.split("/");
           const curPath = urlArray[urlArray.length - 1];
           const pathsToIgnore = ["uppfoljning", "infor-utveckling"];
@@ -49,11 +49,11 @@ export const FormGeneratePDF: FC<Props> = ({ formDataArray, blocks }) => {
       />
 
       <Modal
-        heading={t("pages|form$form-continue-text")}
-        closeBtn={t("common|no")}
+        heading={t("pages.form.form-continue-text")}
+        closeBtn={t("common.no")}
         modalOpen={showModal}
         setModalOpen={setShowModal}
-        confirmBtn={t("common|yes")}
+        confirmBtn={t("common.yes")}
         href={"/fortroendemodellen/success"}
       />
 

@@ -1,6 +1,8 @@
-import { Translate } from "next-translate";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { ChangeEvent, DragEvent, FC, useCallback, useState } from "react";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Translate = (_key: string, ..._args: any[]) => string;
 
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
@@ -59,11 +61,11 @@ export const addLabel = (
   title: string,
 ) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { t } = useTranslation("pages");
+  const t = useTranslations("pages");
   return (
     <div className="flex flex-col gap-md">
       <span className="text-sm text-textSecondary">
-        {t("form$question")} {number}
+        {t("form.question")} {number}
       </span>
       <Label htmlFor={`${Type}${ID}`}>{title}</Label>
     </div>
@@ -131,7 +133,7 @@ const FormItem = (
           {item.info && PopOver({ text: item.info, title: item.title })}
           <TextInput
             id={`${Type}${ID}`}
-            placeholder={t("form$placeholder-text")}
+            placeholder={t("form.placeholder-text")}
             name={`${Type}${ID}`}
             value={item.value}
             onChange={(e) => {
@@ -148,7 +150,7 @@ const FormItem = (
           <Textarea
             name={`${Type}${ID}`}
             id={`${Type}${ID}`}
-            placeholder={t("form$placeholder-text")}
+            placeholder={t("form.placeholder-text")}
             value={item.value}
             onChange={(e) => {
               UpdateFormDataArray(e, item, pageIndex);
@@ -214,7 +216,7 @@ const FormItem = (
                 <Textarea
                   id={`${Type}${ID}`}
                   name={`${Type}${ID}`}
-                  placeholder={t("form$placeholder-text")}
+                  placeholder={t("form.placeholder-text")}
                   value={item.value}
                   onChange={(e) => {
                     UpdateFormDataArray(e, item, pageIndex);
@@ -255,7 +257,7 @@ const FormItem = (
               value={item.selected?.value || ""}
             >
               <option value="" disabled>
-                {t("form$select-placeholder")}
+                {t("form.select-placeholder")}
               </option>
               {item.items.map((option: FormChoice) => {
                 return (
@@ -315,7 +317,7 @@ export const RenderForm = ({
   UpdateFormDataArray,
   pageIndex,
 }: Props) => {
-  const { t } = useTranslation("pages");
+  const t = useTranslations("pages");
   return (
     <div className="mt-md space-y-lg lg:mt-xl">
       {formDataArray.map((item) => {

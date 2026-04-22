@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { FC, useContext, useEffect, useState } from "react";
 
 import { Container } from "@/components/layout/container";
@@ -24,16 +24,27 @@ interface SearchProps {
 }
 
 export const SearchPageContent: FC<SearchProps> = () => {
-  const router = useRouter() || {};
+  const router = useRouter();
+  const pathname = usePathname() ?? "";
+  const searchParams = useSearchParams();
   const { setBreadcrumb } = useContext(SettingsContext);
-  const { pathname, query: routerQuery } = router || {};
-  const { t, lang } = useTranslation("common");
-  const [query, setQuery] = useState((routerQuery?.q as string) || "");
-  const pageNumber = parseInt(routerQuery?.p as string) || 1;
+  const t = useTranslations();
+  const lang = useLocale();
+  const [query, setQuery] = useState(searchParams?.get("q") || "");
+  const pageNumber = parseInt(searchParams?.get("p") || "1") || 1;
+
+  // Helper to build search URL with updated params
+  const buildSearchUrl = (updates: Record<string, string | number>) => {
+    const params = new URLSearchParams(searchParams?.toString() || "");
+    Object.entries(updates).forEach(([key, value]) => {
+      params.set(key, String(value));
+    });
+    return `${pathname}?${params.toString()}`;
+  };
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [searchRequest, setSearchRequest] = useState<SearchRequest>({
-    page: parseInt(routerQuery?.p as string),
-    query: routerQuery?.q as string,
+    page: parseInt(searchParams?.get("p") || "1"),
+    query: (searchParams?.get("q") as string) || "",
   });
   const [loading, setLoading] = useState(false);
   const PER_PAGE = 10;
@@ -94,7 +105,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
   });
 
   useEffect(() => {
-    router.push({ query: { ...router.query, p: router.query.p } });
+    router.push(buildSearchUrl({ p: searchParams?.get("p") || "1" }));
     clearCurrentScrollPos();
     window.scrollTo({
       top: 0,
@@ -103,7 +114,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
   }, [pageNumber]);
 
   const changePage = (page: number) => {
-    router.push({ query: { ...router.query, p: page } });
+    router.push(buildSearchUrl({ p: page }));
     clearCurrentScrollPos();
     window.scrollTo({
       top: 0,
@@ -117,26 +128,26 @@ export const SearchPageContent: FC<SearchProps> = () => {
 
   useEffect(() => {
     setBreadcrumb?.({
-      name: t("common|search-content"),
+      name: t("common.search-content"),
       crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
     });
   }, [pathname]);
 
   useEffect(() => {
-    if (!routerQuery.p) {
-      router.push({ query: { ...router.query, p: 1 } });
+    if (!searchParams?.get("p")) {
+      router.push(buildSearchUrl({ p: 1 }));
     }
-    const q = (routerQuery.q as string) || "";
+    const q = searchParams?.get("q") || "";
     setQuery(q);
     setSearchRequest({
       ...searchRequest,
-      page: parseInt(routerQuery.p as string),
+      page: parseInt(searchParams?.get("p") || "1"),
       query: q,
     });
-  }, [routerQuery]);
+  }, [searchParams]);
 
   const submitSearch = (newQuery: string) => {
-    router.push({ query: { ...router.query, q: newQuery, p: 1 } });
+    router.push(buildSearchUrl({ q: newQuery, p: 1 }));
     setSearchRequest({
       ...searchRequest,
       query: newQuery,
@@ -151,21 +162,21 @@ export const SearchPageContent: FC<SearchProps> = () => {
   return (
     <div className="SearchContentPage">
       <Head>
-        <title>{`${t("common|search")} - Sveriges dataportal`}</title>
+        <title>{`${t("common.search")} - Sveriges dataportal`}</title>
         <meta
           property="og:title"
-          content={`${t("common|search")} - Sveriges dataportal`}
+          content={`${t("common.search")} - Sveriges dataportal`}
           key="og:title"
         />
         <meta
           name="twitter:title"
-          content={`${t("common|search")} - Sveriges dataportal`}
+          content={`${t("common.search")} - Sveriges dataportal`}
           key="twitter:title"
         />
       </Head>
       <Container>
         <Heading level={1} size="lg" className="mb-none">
-          {t("common|search-content")}
+          {t("common.search-content")}
         </Heading>
 
         <form
@@ -180,7 +191,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
           <SearchInput
             autoFocus
             id="search-field"
-            placeholder={t("pages|content$search")}
+            placeholder={t("pages.content.search")}
             isLoading={loading}
             query={query}
             setQuery={setQuery}
@@ -190,7 +201,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
               setQuery(e.target.value);
             }}
             key={searchRequest?.query ? "loaded" : "not loaded"}
-            ariaLabel={t("pages|content$search")}
+            ariaLabel={t("pages.content.search")}
           />
         </form>
 
@@ -202,11 +213,11 @@ export const SearchPageContent: FC<SearchProps> = () => {
           <div id="search-result" className="my-lg">
             <div className="mb-lg md:mb-xl">
               <Heading level={2} size="md">
-                {loading && <span>{t("common|loading")}</span>}
+                {loading && <span>{t("common.loading")}</span>}
                 {!loading &&
                   searchResult &&
                   (searchResult.count || 0) >= 0 &&
-                  `${searchResult.count} ${t("pages|search$content-hits")}`}
+                  `${searchResult.count} ${t("pages.search.content-hits")}`}
               </Heading>
             </div>
 

@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, useEffect } from "react";
 
 import MainNav from "@/components/navigation/main-nav";

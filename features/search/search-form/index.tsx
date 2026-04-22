@@ -1,4 +1,4 @@
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { Dispatch, SetStateAction, FC } from "react";
 
 import { SearchMode } from "@/features/search/search-filters";
@@ -25,9 +25,9 @@ export const SearchForm: FC<SearchFormProps> = ({
   query,
   setQuery,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
-  const placeholder = t(`pages|${searchMode}$search`);
+  const placeholder = t(`pages.${searchMode}.search`);
 
   const submitSearch = (newQuery: string) => {
     search

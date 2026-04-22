@@ -1,5 +1,3 @@
-import { Translate } from "next-translate";
-
 import {
   GoodExampleDataFragment,
   ImageFragment,
@@ -18,6 +16,9 @@ import {
   StartPageResponse,
   ToolListResponse,
 } from "@/utilities/query-helpers";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Translate = (_key: string, ..._args: any[]) => string;
 
 export type DataportalPageProps =
   | MultiContainerResponse
@@ -55,8 +56,8 @@ export const resolvePage = (
 ): ResolvedPage => {
   if (props.type === "RootAggregate" && lang === "en") {
     return {
-      heading: t("pages|startpage$heading"),
-      preamble: t("pages|startpage$preamble"),
+      heading: t("pages.startpage.heading"),
+      preamble: t("pages.startpage.preamble"),
       heroImage: {
         __typename: "dataportal_Digg_Image",
         url: "/images/startPageHero.png",

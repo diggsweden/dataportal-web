@@ -1,6 +1,6 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { usePathname, useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { FC, useContext, useEffect, useState, useMemo } from "react";
 
 import { Container } from "@/components/layout/container";
@@ -24,15 +24,16 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
   searchType,
 }) => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
-  const { pathname } = useRouter() || {};
-  const { t, lang } = useTranslation();
+  const pathname = usePathname() ?? "";
+  const t = useTranslations();
+  const lang = useLocale();
   const [query, setQuery] = useState("");
   const router = useRouter();
 
   // Remove locale from path if it's the default locale
   useEffect(() => {
-    handleLocale(window.location.pathname, lang, router.asPath, router);
-  }, [router.asPath]);
+    handleLocale(window.location.pathname, lang, window.location.pathname, router);
+  }, [pathname]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -60,7 +61,7 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
     return () => window.removeEventListener("popstate", handleUrlChange);
   }, []);
 
-  const pageTitle = t(`routes|${searchType}$title`);
+  const pageTitle = t(`routes.${searchType}.title`);
 
   useEffect(() => {
     setBreadcrumb?.({
@@ -90,7 +91,7 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
         />
       </Head>
 
-      <SearchProvider router={router} {...searchProviderSettings[searchType]}>
+      <SearchProvider router={router} i18n={{ t: t as any, lang }} {...searchProviderSettings[searchType]}>
         <SearchContext.Consumer>
           {(search) => (
             <>
@@ -117,7 +118,7 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
                 />
               </Container>
 
-              <noscript>{t("common|no-js-text")}</noscript>
+              <noscript>{t("common.no-js-text")}</noscript>
               <div className="mt-xl bg-white py-xl">
                 <Container>
                   <div

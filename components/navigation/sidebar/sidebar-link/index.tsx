@@ -1,7 +1,7 @@
 import { cx, cva, VariantProps } from "class-variance-authority";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import React, {
   FC,
   HTMLAttributes,
@@ -55,13 +55,11 @@ const MenuLink: FC<MenuLinkProps> = ({
   tabIndex,
   setOpenSideBar,
 }) => {
-  const { t } = useTranslation();
-  const pathname = usePathname();
+  const t = useTranslations();
+  const pathname = usePathname() ?? "";
   const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
-  const vw = window.innerWidth;
-
   const isActive =
-    (pathname === "/" && href === t(`common|lang-path`)) || href === basePath;
+    (pathname === "/" && href === t(`common.lang-path`)) || href === basePath;
 
   return (
     <Link
@@ -73,7 +71,7 @@ const MenuLink: FC<MenuLinkProps> = ({
       )}
       href={href}
       tabIndex={tabIndex}
-      onClick={() => vw < 600 && setOpenSideBar(false)}
+      onClick={() => window.innerWidth < 600 && setOpenSideBar(false)}
       data-tracking-name="sidebar-link"
     >
       <>
@@ -127,10 +125,10 @@ export const SidebarLink: FC<
   openSideBar,
   setOpenSideBar,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const { iconSize } = useContext(SettingsContext);
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
 
   useEffect(() => {
@@ -171,8 +169,8 @@ export const SidebarLink: FC<
           aria-controls={`submenu-${label.replace(/\s+/g, "-").toLowerCase()}`}
           aria-label={
             open
-              ? `${t("common|close")} ${t("common|menu-submenu")} ${label}`
-              : `${t("common|open")} ${t("common|menu-submenu")} ${label}`
+              ? `${t("common.close")} ${t("common.menu-submenu")} ${label}`
+              : `${t("common.open")} ${t("common.menu-submenu")} ${label}`
           }
         >
           {icon && (

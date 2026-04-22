@@ -1,4 +1,6 @@
-import useTranslation from "next-translate/useTranslation";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { FC, useContext, useState } from "react";
 
 import CrossIcon from "@/assets/icons/cross.svg";
@@ -16,7 +18,7 @@ export const AccordionBlock: FC<AccordionBlockProps> = ({
   answer,
   idx,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { iconSize } = useContext(SettingsContext);
   const [open, setOpen] = useState(false);
 
@@ -28,8 +30,8 @@ export const AccordionBlock: FC<AccordionBlockProps> = ({
         onClick={() => setOpen(!open)}
         aria-label={
           open
-            ? `${t("common|close")} FAQ ${question}`
-            : `${t("common|open")} FAQ ${question}`
+            ? `${t("common.close")} FAQ ${question}`
+            : `${t("common.open")} FAQ ${question}`
         }
         aria-expanded={open}
         aria-controls={`section-${idx}`}

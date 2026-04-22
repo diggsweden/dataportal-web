@@ -1,9 +1,12 @@
+"use client";
+
 import { Entry, EntryStore, Metadata } from "@entryscape/entrystore-js";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { usePathname, useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { createContext, FC, ReactNode, useEffect, useState } from "react";
 
+import { useResourceLabels } from "@/providers/resource-labels-provider";
 import { EnvSettings } from "@/env";
 import { SettingsUtil } from "@/env/settings-util";
 import { ESEntry, PageType } from "@/types/entrystore-core";
@@ -73,10 +76,24 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   pageType,
 }) => {
   const [state, setState] = useState(defaultESEntry);
+  const pathname = usePathname() ?? "";
   const router = useRouter();
-  const { lang, t } = useTranslation();
+  const nextIntlT = useTranslations();
+  const lang = useLocale();
+  const resourceMessages = useResourceLabels();
   let entry: Entry;
   let resourceUri: string;
+
+  const t = (key: string): string => {
+    const uri = key.startsWith("resources|") ? key.slice(10) : key;
+    if (uri.startsWith("http://") || uri.startsWith("https://"))
+      return resourceMessages[uri] ?? uri;
+    try {
+      return String(nextIntlT(key as never));
+    } catch {
+      return key;
+    }
+  };
 
   const entrystoreService = EntrystoreService.getInstance({
     baseUrl:
@@ -104,8 +121,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
   // Remove locale from path if it's the default locale
   useEffect(() => {
-    handleLocale(window.location.pathname, lang, router.asPath, router);
-  }, [router.asPath]);
+    handleLocale(window.location.pathname, lang, window.location.pathname, router);
+  }, [pathname]);
 
   useEffect(() => {
     fetchEntry();
@@ -373,14 +390,14 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       const data: OrganisationData = {
         datasets: {
           total: 0,
-          totTitle: t("pages|organisation_page$all-data"),
+          totTitle: t("pages.organisation_page.all-data"),
           dataInfo: [
-            { total: 0, title: t("pages|organisation_page$open-data") },
-            { total: 0, title: t("pages|organisation_page$protected-data") },
-            { total: 0, title: t("pages|organisation_page$api-data") },
-            { total: 0, title: t("pages|organisation_page$hvd-data") },
-            { total: 0, title: t("pages|organisation_page$fee-data") },
-            { total: 0, title: t("pages|organisation_page$spec-data") },
+            { total: 0, title: t("pages.organisation_page.open-data") },
+            { total: 0, title: t("pages.organisation_page.protected-data") },
+            { total: 0, title: t("pages.organisation_page.api-data") },
+            { total: 0, title: t("pages.organisation_page.hvd-data") },
+            { total: 0, title: t("pages.organisation_page.fee-data") },
+            { total: 0, title: t("pages.organisation_page.spec-data") },
           ],
           link: `/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${encodeURIComponent(
             uri,

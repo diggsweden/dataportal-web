@@ -1,3 +1,5 @@
+"use client";
+
 import { FC } from "react";
 
 import { Heading } from "@/components/typography/heading";

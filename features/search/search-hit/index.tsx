@@ -1,5 +1,5 @@
 import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { FC } from "react";
 
 import { Badge } from "@/components/badge";
@@ -14,9 +14,9 @@ interface SearchHitProps {
 }
 
 const URL_BADGE_MAP: Record<string, string> = {
-  "/datasets": "pages|datasets$dataset_title",
-  "/dataservice": "pages|datasetpage$dataservice",
-  "/dataset-series": "pages|dataset-series$data-serie",
+  "/datasets": "pages.datasets.dataset_title",
+  "/dataservice": "pages.datasetpage.dataservice",
+  "/dataset-series": "pages.dataset-series.data-serie",
 };
 
 const getBadgeForUrl = (url: string): string | null => {
@@ -33,7 +33,7 @@ export const SearchHit: FC<SearchHitProps> = ({
   isCompact,
   onLinkClick,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const badgeTranslationKey = getBadgeForUrl(hit.url);
 
   return (
@@ -88,8 +88,8 @@ export const SearchHit: FC<SearchHitProps> = ({
             hit.metadata.theme_literal.length > 0 && (
               <span className="category">
                 {hit.metadata.theme_literal.length > 1
-                  ? t("pages|datasetpage$categories")
-                  : t("pages|datasetpage$category_tag")}
+                  ? t("pages.datasetpage.categories")
+                  : t("pages.datasetpage.category_tag")}
                 : {hit.metadata.theme_literal.join(",  ")}
               </span>
             )}

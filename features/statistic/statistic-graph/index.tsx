@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { FC, useContext, useEffect, useState } from "react";
 import {
   FlexibleXYPlot,
@@ -23,7 +23,7 @@ interface StatisticGraphState {
 export const StatisticGraph: FC = () => {
   const { env } = useContext(SettingsContext);
 
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [stats, setStats] = useState<StatisticGraphState>({
     useCanvas: false,
     x: [],
@@ -90,7 +90,7 @@ export const StatisticGraph: FC = () => {
           <YAxis width={64} className="text-sm" />
           <BarSeries data={stats.x} barWidth={0.75} color="#CD7A6E" />
         </FlexibleXYPlot>
-        <span className="mr-md">{t("pages|statistic$dataset-numbers")}</span>
+        <span className="mr-md">{t("pages.statistic.dataset-numbers")}</span>
       </div>
     </div>
   );

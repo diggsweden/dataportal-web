@@ -12,7 +12,7 @@ import { linkBase } from "@/utilities";
 
 export const FortroendeIntroPage: FC<ModuleDataFragment> = ({ blocks }) => {
   const { setBreadcrumb } = useContext(SettingsContext);
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const intro = blocks.slice(0, 1);
   const extraInfo = blocks.slice(1);
 

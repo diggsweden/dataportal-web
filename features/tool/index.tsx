@@ -1,5 +1,5 @@
 import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import React, { FC, useState } from "react";
 
 import InternalLinkIcon from "@/assets/icons/arrow-right.svg";
@@ -18,7 +18,7 @@ interface ToolsTeaserProps {
 export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
   const { heading, link, domainLabel, preamble, description } = tools;
   const [showModal, setShowModal] = useState(false);
-  const { t } = useTranslation("common");
+  const t = useTranslations("common");
   return (
     <div data-test-id="tool-teaser" className="h-full">
       <div className="flex h-full flex-col justify-between gap-lg bg-white p-lg">
@@ -57,7 +57,7 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
                   <>
                     <ExternalLinkIcon className="flex-shrink-0 transform  transition-transform duration-500 group-hover:translate-x-1/3" />
                     <span className="sr-only">
-                      {t("common|open-in-new-tab")}
+                      {t("common.open-in-new-tab")}
                     </span>
                   </>
                 ) : (

@@ -1,4 +1,6 @@
-import useTranslation from "next-translate/useTranslation";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { FC } from "react";
 
 import { AccordionBlock } from "@/components/blocks/accordion-block";
@@ -76,7 +78,7 @@ export const BlockList: FC<blockListProps> = ({
   landingPage,
   formPage,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const getUniqueKey = (block: BlockDataFragment, index: number) => {
     const blockId = block?.id || "";
@@ -148,10 +150,10 @@ export const BlockList: FC<blockListProps> = ({
                 className="!my-xl md:!my-2xl"
                 items={block.items}
                 showMoreLink={{
-                  title: t("pages|news$view-all"),
-                  slug: t("routes|news$path"),
+                  title: t("pages.news.view-all"),
+                  slug: t("routes.news.path"),
                 }}
-                heading={block.heading || t("pages|startpage$news")}
+                heading={block.heading || t("pages.startpage.news")}
               />
             );
           case "dataportal_Digg_GoodExampleBlock":
@@ -161,10 +163,10 @@ export const BlockList: FC<blockListProps> = ({
                 className="!my-xl md:!my-2xl"
                 items={block.items}
                 showMoreLink={{
-                  title: t("pages|good-examples$view-all"),
-                  slug: t("routes|good-examples$path"),
+                  title: t("pages.good-examples.view-all"),
+                  slug: t("routes.good-examples.path"),
                 }}
-                heading={block.heading || t("pages|startpage$good-examples")}
+                heading={block.heading || t("pages.startpage.good-examples")}
               />
             );
           case "dataportal_Digg_CTACardBlock":

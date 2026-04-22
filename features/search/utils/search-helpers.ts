@@ -1,7 +1,8 @@
-import { Translate } from "next-translate";
-
 import { SearchHitFragment } from "@/graphql/__generated__/operations";
 import { SearchHit } from "@/types/search";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Translate = (_key: string, ..._args: any[]) => string;
 
 /**
  * Parse Search_dataportal_Digg_Search
@@ -31,7 +32,7 @@ export const getSearchHit = (
         } as SearchHit;
       case "dataportal_Digg_News_Item":
         return {
-          url: `/${t("routes|news$path")}/${r.hit.slug}`,
+          url: `/${t("routes.news.path")}/${r.hit.slug}`,
           title: r.hit?.heading ?? r.hit.name,
           description: r.highlights
             ?.map((c) => {
@@ -46,7 +47,7 @@ export const getSearchHit = (
         } as SearchHit;
       case "dataportal_Digg_Good_Example":
         return {
-          url: `/${t("routes|good-examples$path")}/${r.hit.slug}`,
+          url: `/${t("routes.good-examples.path")}/${r.hit.slug}`,
           title: r.hit?.heading ?? r.hit.name,
           description: r.highlights
             ?.map((c) => {

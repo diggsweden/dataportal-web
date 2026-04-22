@@ -1,11 +1,13 @@
-import reactenv from "@beam-australia/react-env";
+"use client";
+
 import Head from "next/head";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
+import { useLocale } from "next-intl";
 import { FC, useState, useContext } from "react";
 
 import { EnvSettings, SettingsUtil } from "@/env";
 import { SeoDataFragment } from "@/graphql/__generated__/operations";
+import { useMediaBaseUrl } from "@/providers/media-url-provider";
 import { defaultSettings } from "@/providers/settings-provider";
 import { TrackingContext } from "@/providers/tracking-provider";
 import generateCSP from "@/utilities/generate-csp";
@@ -13,17 +15,18 @@ import generateCSP from "@/utilities/generate-csp";
 export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
   const [env] = useState<EnvSettings>(SettingsUtil.create());
   const { activateMatomo } = useContext(TrackingContext);
-  const pathname = usePathname();
-  const { locale } = useRouter();
+  const pathname = usePathname() ?? "";
+  const locale = useLocale();
   const { title, description, image, robotsFollow, robotsIndex } = seo || {};
+  const mediaBaseUrl = useMediaBaseUrl();
   const strapiImageUrl = image?.url;
   const imageUrl = strapiImageUrl
-    ? `${reactenv("MEDIA_BASE_URL") || ""}${strapiImageUrl}`
+    ? `${mediaBaseUrl}${strapiImageUrl}`
     : "/images/svdp-favicon-150.png";
   const defaultDescription =
     "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor";
 
-  const isDraft = pathname?.substring(0, 7) === "/drafts";
+  const isDraft = pathname.substring(0, 7) === "/drafts";
   const allowSEO = env.envName == "prod" && !isDraft;
 
   return (
@@ -69,14 +72,11 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
       <meta property="og:image" content={imageUrl} key="og:image" />
       <meta name="twitter:image" content={imageUrl} key="twitter:image" />
 
-      <link rel="canonical" href={`${env.CANONICAL_URL}${pathname || ""}`} />
-      <meta
-        property="og:url"
-        content={`${env.CANONICAL_URL}${pathname || ""}`}
-      />
+      <link rel="canonical" href={`${env.CANONICAL_URL}${pathname}`} />
+      <meta property="og:url" content={`${env.CANONICAL_URL}${pathname}`} />
       <meta
         name="twitter:url"
-        content={`${env.CANONICAL_URL}${pathname || ""}`}
+        content={`${env.CANONICAL_URL}${pathname}`}
         key="twitter:url"
       />
 

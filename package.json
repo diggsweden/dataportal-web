@@ -30,9 +30,9 @@
     "html-react-parser": "^5.0.11",
     "https-proxy-agent": "^5.0.1",
     "meilisearch": "^0.27.0",
-    "next": "13.5.1",
+    "next": "14.2.35",
     "next-absolute-url": "^1.2.2",
-    "next-translate": "^2.6.2",
+    "next-intl": "^4.9.1",
     "node-fetch": "^3.2.10",
     "organisationsnummer": "^1.2.0",
     "prismjs": "^1.29.0",
@@ -50,6 +50,7 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-static-block": "^7.21.0",
     "@graphql-codegen/add": "^5.0.0",
     "@graphql-codegen/cli": "5.0.0",
     "@graphql-codegen/client-preset": "^4.1.0",
@@ -80,7 +81,6 @@
     "eslint-plugin-prettier": "^5.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
-    "next-translate-plugin": "^2.6.2",
     "postcss": "^8.4.32",
     "prettier": "3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.9",

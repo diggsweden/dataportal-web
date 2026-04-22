@@ -1,6 +1,5 @@
 import { Entry } from "@entryscape/entrystore-js";
-import { NextRouter } from "next/router";
-import getT from "next-translate/getT";
+import { getTranslations } from "next-intl/server";
 
 import { SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
@@ -9,9 +8,13 @@ import { RedirectConfig } from "@/types/global";
 import { EntrystoreService } from "./entrystore.service";
 import { includeLangInPath } from "../check-lang";
 
+interface RouterLike {
+  replace: (url: string) => void;
+}
+
 export async function handleEntryStoreRedirect(
   config: RedirectConfig,
-  router: NextRouter,
+  router: RouterLike,
   locale: string = "sv",
   isSandbox: boolean = false,
   resourceUri?: string,
@@ -19,12 +22,13 @@ export async function handleEntryStoreRedirect(
   const env = isSandbox ? new Settings_Sandbox() : SettingsUtil.create();
   const baseUrl = isSandbox ? env.SANDBOX_BASE_URL : env.PRODUCTION_BASE_URL;
 
+  const t = await getTranslations({ locale, namespace: "pages" });
   const entrystoreService = EntrystoreService.getInstance({
     baseUrl:
       `https://${env[config.entrystorePathKey]}/store` ||
       "https://admin.dataportal.se/store",
     lang: locale || "sv",
-    t: await getT(locale || "sv", "pages"),
+    t: t as any,
   });
 
   // Handle catch-all routes ([...param])

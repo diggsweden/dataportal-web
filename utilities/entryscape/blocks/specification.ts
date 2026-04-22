@@ -1,4 +1,5 @@
-import { Translate } from "next-translate";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Translate = (_key: string, ..._args: any[]) => string;
 
 export const specificationBlocks = (t: Translate, iconSize: number) => [
   {
@@ -6,8 +7,8 @@ export const specificationBlocks = (t: Translate, iconSize: number) => [
     extends: "list",
     relation: "prof:hasResource",
     template: "prof:ResourceDescriptor",
-    expandTooltip: t("pages|datasetpage$view_more"),
-    unexpandTooltip: t("pages|datasetpage$view_less"),
+    expandTooltip: t("pages.datasetpage.view_more"),
+    unexpandTooltip: t("pages.datasetpage.view_less"),
     expandButton: false,
     listbody: '<div class="specification__resource--body">{{body}}</div>',
     listplaceholder:
@@ -19,7 +20,7 @@ export const specificationBlocks = (t: Translate, iconSize: number) => [
       '<div class="flex justify-between items-end md:items-center mt-md md:mt-lg gap-lg">' +
       '<a href="{{resourceURI}}">' +
       '<span class="button button--primary button--large text-white">' +
-      t("pages|specification_page$specification_download") +
+      t("pages.specification_page.specification_download") +
       '<svg xmlns="http://www.w3.org/2000/svg" width="' +
       1.5 * iconSize +
       '" height="' +

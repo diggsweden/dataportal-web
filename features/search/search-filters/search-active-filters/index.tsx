@@ -1,8 +1,9 @@
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 
 import CrossIcon from "@/assets/icons/cross.svg";
 import TrashIcon from "@/assets/icons/trash.svg";
 import { Button } from "@/components/button";
+import { useResourceLabels } from "@/providers/resource-labels-provider";
 import { SearchContextData } from "@/providers/search-provider";
 import { ESRdfType } from "@/types/entrystore-core";
 import { SearchFacetValue } from "@/types/search";
@@ -25,7 +26,7 @@ export function ClearFiltersButton({
   searchMode: SearchMode;
   className?: string;
 }) {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <Button
@@ -49,7 +50,7 @@ export function ClearFiltersButton({
           })
           .then(() => search.doSearch());
       }}
-      label={t("common|clear-filters")}
+      label={t("common.clear-filters")}
       className={`whitespace-nowrap p-xs pr-sm ${className ?? ""}`}
     />
   );
@@ -60,7 +61,9 @@ export function SearchActiveFilters({
   query,
   searchMode,
 }: SearchActiveFiltersProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
+  const resourceLabels = useResourceLabels();
+  const tr = (key: string) => resourceLabels[key] ?? key;
 
   // Create an array of active special search filters
   const activecustomSearchFilters = Object.entries(search.allFacets || {})
@@ -93,7 +96,7 @@ export function SearchActiveFilters({
       className="flex flex-col gap-md md:mt-lg md:flex-row md:items-center"
     >
       <span className="w-[6.25rem] flex-shrink-0 text-textSecondary md:mb-auto md:mt-xs">
-        {t("common|active-filters")}:
+        {t("common.active-filters")}:
       </span>
       <div className="flex flex-col gap-lg">
         <div
@@ -105,9 +108,7 @@ export function SearchActiveFilters({
               const label =
                 !facetValue.customFilter && !facetValue.customSearch
                   ? facetValue.title || facetValue.resource
-                  : t(
-                      `resources|${facetValue.customLabel || facetValue.facet}`,
-                    );
+                  : tr(facetValue.customLabel || facetValue.facet);
 
               return (
                 <Button
@@ -115,7 +116,7 @@ export function SearchActiveFilters({
                   size="md"
                   key={index}
                   label={label}
-                  aria-label={`${t("common|clear-filters")} ${label}`}
+                  aria-label={`${t("common.clear-filters")} ${label}`}
                   icon={CrossIcon}
                   iconPosition="right"
                   className="w-fit justify-between py-xs text-left font-strong"
@@ -135,10 +136,8 @@ export function SearchActiveFilters({
               variant="filter"
               size="md"
               key={`special-search-${index}`}
-              label={t(`resources|${filter.facet}`)}
-              aria-label={`${t("common|clear-filters")} ${t(
-                `resources|${filter.facet}`,
-              )}`}
+              label={tr(filter.facet)}
+              aria-label={`${t("common.clear-filters")} ${tr(filter.facet)}`}
               icon={CrossIcon}
               iconPosition="right"
               className="w-fit justify-between py-xs text-left font-strong"

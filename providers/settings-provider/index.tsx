@@ -1,3 +1,5 @@
+"use client";
+
 import {
   useEffect,
   useState,
@@ -10,12 +12,21 @@ import {
 
 import { BreadcrumbProps } from "@/components/navigation/breadcrumbs";
 import { EnvSettings, SettingsUtil } from "@/env";
+import { ImageFragment } from "@/graphql/__generated__/operations";
 import { DataportalSettings } from "@/types/global";
+
+export interface HeroData {
+  heading?: string | null;
+  preamble?: string | null;
+  image: ImageFragment | null;
+  search?: { destination: string; placeholder: string } | null;
+}
 
 interface SettingsContextProps extends DataportalSettings {
   noScriptContent: string;
   env: EnvSettings;
   setBreadcrumb?: Dispatch<SetStateAction<BreadcrumbProps>>;
+  setHero?: Dispatch<SetStateAction<HeroData | null>>;
   iconSize: number;
   siteName: string;
   pageNotFoundHeading: string;

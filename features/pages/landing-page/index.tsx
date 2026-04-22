@@ -1,7 +1,9 @@
+"use client";
+
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations, useLocale } from "next-intl";
 import { FC, useContext, useEffect } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
@@ -21,6 +23,7 @@ import {
   NewsBlockItemFragment,
   NewsItemDataFragment,
 } from "@/graphql/__generated__/operations";
+import { useResourceLabels } from "@/providers/resource-labels-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import {
   isExternalLink,
@@ -67,9 +70,12 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
   const { parent, news, example, image, heading, blocks, preamble } =
     props || {};
 
-  const { setBreadcrumb } = useContext(SettingsContext);
-  const pathname = usePathname();
-  const { t, lang } = useTranslation();
+  const { setBreadcrumb, setHero } = useContext(SettingsContext);
+  const pathname = usePathname() ?? "";
+  const t = useTranslations();
+  const lang = useLocale();
+  const resourceLabels = useResourceLabels();
+  const tr = (key: string) => resourceLabels[key] ?? key;
 
   const topPromos =
     blocks &&
@@ -94,6 +100,25 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
       name: heading,
       crumbs: crumbs,
     });
+
+    if (image) {
+      const searchProps =
+        pathname === "/" || pathname === `/${t("routes.search-api.path")}`
+          ? {
+              destination: `/${lang}/datasets`,
+              placeholder: t("pages.startpage.search_placeholder"),
+            }
+          : null;
+      setHero?.({
+        heading,
+        preamble: pathname === `/${t("routes.search-api.path")}` ? null : preamble,
+        image,
+        search: searchProps,
+      });
+    } else {
+      setHero?.(null);
+    }
+    return () => setHero?.(null);
   }, [pathname]);
 
   return (
@@ -105,7 +130,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
           </Heading>
         )}
 
-        {pathname === `/${t("routes|search-api$path")}` ||
+        {pathname === `/${t("routes.search-api.path")}` ||
         (!image && preamble) ? (
           <Preamble className="max-w-md">{preamble}</Preamble>
         ) : null}
@@ -119,10 +144,10 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
                 className="!my-xl md:!my-2xl"
                 items={newsPreviews as NewsBlockItemFragment[]}
                 showMoreLink={{
-                  title: t("pages|news$view-all"),
-                  slug: t("routes|news$path"),
+                  title: t("pages.news.view-all"),
+                  slug: t("routes.news.path"),
                 }}
-                heading={t("pages|startpage$news")}
+                heading={t("pages.startpage.news")}
               />
             )}
             {example && (
@@ -130,10 +155,10 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
                 className="!my-xl md:!my-2xl"
                 items={examplePreviews as GoodExampleBlockItemFragment[]}
                 showMoreLink={{
-                  title: t("pages|good-examples$view-all"),
-                  slug: t("routes|good-examples$path"),
+                  title: t("pages.good-examples.view-all"),
+                  slug: t("routes.good-examples.path"),
                 }}
-                heading={t("pages|startpage$good-examples")}
+                heading={t("pages.startpage.good-examples")}
               />
             )}
 
@@ -166,25 +191,25 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
 
         {pathname === "/" && (
           <>
-            <ContentBox heading={t("pages|startpage$datasets_by_category")}>
+            <ContentBox heading={t("pages.startpage.datasets_by_category")}>
               <ul className="flex flex-wrap justify-center gap-md lg:gap-lg">
                 {dataCategories?.map((category, idx: number) => (
                   <li key={idx}>
                     <ButtonLink
                       className="text-center"
-                      aria-label={t("pages|startpage$search_datasets_format", {
-                        category: t(`resources|${category.href}`),
+                      aria-label={t("pages.startpage.search_datasets_format", {
+                        category: tr(category.href),
                       })}
                       href={`/${t(
-                        "routes|datasets$path",
+                        "routes.datasets.path",
                       )}?f=${encodeURIComponent(
                         `http://www.w3.org/ns/dcat#theme||${
                           category.href
-                        }||FALSE||uri||${t(
-                          "resources|http://www.w3.org/ns/dcat#theme",
-                        )}||${t("resources|" + category.href)}`,
+                        }||FALSE||uri||${tr(
+                          "http://www.w3.org/ns/dcat#theme",
+                        )}||${tr(category.href)}`,
                       )}`}
-                      label={t(`resources|${category.href}`)}
+                      label={tr(category.href)}
                     />
                   </li>
                 ))}
@@ -194,14 +219,14 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
             <section id="statistics" className="my-xl">
               <div className="mb-2xl flex flex-col justify-between gap-sm md:flex-row md:items-end">
                 <Heading level={2} size={"lg"}>
-                  {t("pages|statistic$statistic-numbers")}
+                  {t("pages.statistic.statistic-numbers")}
                 </Heading>
                 <Link
-                  href={`/${t("routes|statistics$path")}`}
+                  href={`/${t("routes.statistics.path")}`}
                   locale={lang}
                   className="statistic-link"
                 >
-                  {t("pages|statistic$statistic-link")}
+                  {t("pages.statistic.statistic-link")}
                 </Link>
               </div>
 
