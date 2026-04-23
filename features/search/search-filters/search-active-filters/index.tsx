@@ -100,41 +100,37 @@ export function SearchActiveFilters({
           data-test-id="search-active-filters-list"
           className="flex flex-row flex-wrap gap-md md:items-center"
         >
-          {search.request.facetValues?.map(
-            (facetValue: SearchFacetValue, index: number) => {
-              const label =
-                !facetValue.customFilter && !facetValue.customSearch
-                  ? facetValue.title || facetValue.resource
-                  : t(
-                      `resources|${facetValue.customLabel || facetValue.facet}`,
-                    );
+          {search.request.facetValues?.map((facetValue: SearchFacetValue) => {
+            const label =
+              !facetValue.customFilter && !facetValue.customSearch
+                ? facetValue.title || facetValue.resource
+                : t(`resources|${facetValue.customLabel || facetValue.facet}`);
 
-              return (
-                <Button
-                  variant="filter"
-                  size="md"
-                  key={index}
-                  label={label}
-                  aria-label={`${t("common|clear-filters")} ${label}`}
-                  icon={CrossIcon}
-                  iconPosition="right"
-                  className="w-fit justify-between py-xs text-left font-strong"
-                  onClick={() => {
-                    clearCurrentScrollPos();
-                    search.toggleFacet(facetValue).then(() => {
-                      search.doSearch();
-                    });
-                  }}
-                />
-              );
-            },
-          )}
+            return (
+              <Button
+                variant="filter"
+                size="md"
+                key={`${facetValue.facet}-${facetValue.resource}-${facetValue.facetValueString}`}
+                label={label}
+                aria-label={`${t("common|clear-filters")} ${label}`}
+                icon={CrossIcon}
+                iconPosition="right"
+                className="w-fit justify-between py-xs text-left font-strong"
+                onClick={() => {
+                  clearCurrentScrollPos();
+                  search.toggleFacet(facetValue).then(() => {
+                    search.doSearch();
+                  });
+                }}
+              />
+            );
+          })}
 
-          {activecustomSearchFilters.map((filter, index) => (
+          {activecustomSearchFilters.map((filter) => (
             <Button
               variant="filter"
               size="md"
-              key={`special-search-${index}`}
+              key={`special-search-${filter.facet}`}
               label={t(`resources|${filter.facet}`)}
               aria-label={`${t("common|clear-filters")} ${t(
                 `resources|${filter.facet}`,

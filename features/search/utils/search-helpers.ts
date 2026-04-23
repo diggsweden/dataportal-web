@@ -12,7 +12,7 @@ export const getSearchHit = (
   r: SearchHitFragment,
   t: Translate,
 ): SearchHit | null => {
-  if (r && r.hit) {
+  if (r?.hit) {
     switch (r.hit.__typename) {
       case "dataportal_Digg_Container":
         return {

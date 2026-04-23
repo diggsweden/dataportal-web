@@ -132,10 +132,10 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
             className="w-full space-y-lg lg:max-w-[296px]"
           >
             {infoSection.map(
-              (item, index) =>
+              (item) =>
                 item.value &&
                 (item.onlyReuse === isReuse || !item.onlyReuse) && (
-                  <div key={`infoSection-${index}`}>
+                  <div key={item.title}>
                     <Heading
                       level={2}
                       size="sm"
@@ -148,10 +148,7 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
                       <p className="ml-lg pl-md">{item.value}</p>
                     ) : (
                       <div className="ml-lg pl-md">
-                        <span
-                          className="button--pink button--xs hover:bg-pink-200"
-                          key={index}
-                        >
+                        <span className="button--pink button--xs hover:bg-pink-200">
                           {item.value}
                         </span>
                       </div>
@@ -170,8 +167,8 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
                   API:er och datamängder
                 </Heading>
                 <ul className="ml-lg flex flex-wrap gap-sm pl-md">
-                  {type.apiAndDataset.map((item, index) => (
-                    <li key={`apiAndDataset-${index}`} className="flex">
+                  {type.apiAndDataset.map((item) => (
+                    <li key={item.link ?? item.title} className="flex">
                       {item.link ? (
                         <ButtonLink
                           href={item.link}
@@ -208,10 +205,10 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
                   Nyckelord
                 </Heading>
                 <div className="ml-lg flex flex-wrap gap-sm pl-md">
-                  {publication.keywords.map((item, index) => (
+                  {publication.keywords.map((item) => (
                     <span
                       className="button--pink button--xs hover:bg-pink-200"
-                      key={index}
+                      key={item.value}
                     >
                       {item.value}
                     </span>
@@ -262,7 +259,7 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
         {publication.related && publication.related.length > 0 && (
           <GridList
             items={publication.related}
-            heading={"Fler " + type.name.toLowerCase()}
+            heading={`Fler ${type.name.toLowerCase()}`}
           />
         )}
       </article>

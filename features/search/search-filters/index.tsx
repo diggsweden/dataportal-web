@@ -73,11 +73,11 @@ const FilterSearch: FC<FilterSearchProps> = ({
         className="focus--in border-none"
         aria-label={title}
         value={filter[filterKey] || ""}
-        onChange={(e) => (
-          clearCurrentScrollPos(),
-          fetchMore(),
-          setFilter({ ...filter, [filterKey]: e.target.value })
-        )}
+        onChange={(e) => {
+          clearCurrentScrollPos();
+          fetchMore();
+          setFilter({ ...filter, [filterKey]: e.target.value });
+        }}
       />
       <SearchIcon
         height={24}
@@ -210,13 +210,11 @@ export const SearchFilters: FC<SearchFilterProps> = ({
   }, [searchMode, search.allFacets]);
 
   return (
-    <div
-      data-test-id="search-filters"
-      role="region"
-      aria-label={t("common|filter")}
-    >
-      <div
-        className={`fixed inset-none z-40 overflow-hidden bg-brownOpaque5 md:hidden 
+    <section data-test-id="search-filters" aria-label={t("common|filter")}>
+      <button
+        type="button"
+        aria-label={t("common|close-filter")}
+        className={`fixed inset-none z-40 cursor-default overflow-hidden border-0 bg-brownOpaque5 p-0 md:hidden 
         ${showFilter ? "visible" : "hidden"}`}
         onClick={() => setShowFilter(false)}
       />
@@ -493,7 +491,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
         query={query}
         searchMode={searchMode}
       />
-    </div>
+    </section>
   );
 };
 

@@ -83,8 +83,7 @@ export const SearchHit: FC<SearchHitProps> = ({
 
       <div className="block space-y-sm">
         <div className="mb-xs text-sm font-strong text-textSecondary">
-          {hit.metadata &&
-            hit.metadata.theme_literal &&
+          {hit.metadata?.theme_literal &&
             hit.metadata.theme_literal.length > 0 && (
               <span className="category">
                 {hit.metadata.theme_literal.length > 1
@@ -96,13 +95,11 @@ export const SearchHit: FC<SearchHitProps> = ({
         </div>
         <div className="formats flex w-full flex-wrap gap-md">
           {badgeTranslationKey && <Badge text={t(badgeTranslationKey)} />}
-          {hit.metadata?.custom_facet_literal?.map(
-            (m: string, index: number) => (
-              <Badge key={index} text={m} />
-            ),
-          )}
-          {hit.metadata?.format_literal?.map((m: string, index: number) => (
-            <FileFormatBadge key={index} badgeName={m} />
+          {hit.metadata?.custom_facet_literal?.map((m: string) => (
+            <Badge key={`custom-facet-${m}`} text={m} />
+          ))}
+          {hit.metadata?.format_literal?.map((m: string) => (
+            <FileFormatBadge key={`format-${m}`} badgeName={m} />
           ))}
         </div>
       </div>

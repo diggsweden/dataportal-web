@@ -40,7 +40,6 @@ export const SearchTestPage: FC = () => {
         <div className="content statistic-page">
           <h2>Sök direkt via Meiliclient</h2>
           <input
-            autoFocus
             id="search-field"
             name="q"
             value={searchWord}
@@ -50,8 +49,15 @@ export const SearchTestPage: FC = () => {
           <ul>
             {
               // biome-ignore lint/suspicious/noExplicitAny: Unknown type
-              hits?.map((r: any, index: number) => (
-                <li key={index}>{r.name}</li>
+              hits?.map((r: any) => (
+                <li
+                  key={
+                    [r.uri, r.slug, r.id, r.name].filter(Boolean).join("|") ||
+                    "hit"
+                  }
+                >
+                  {r.name}
+                </li>
               ))
             }
           </ul>

@@ -90,7 +90,7 @@ export const DatasetPage: FC = () => {
                       {t("pages|datasetpage$related_dataset_series")}
                     </span>
                     {entry.relatedDatasetSeries.map((ds, idx) => (
-                      <span key={idx} className="inline-flex items-center">
+                      <span key={ds.url} className="inline-flex items-center">
                         <Link
                           href={ds.url}
                           className="text-sm text-green-600 hover:no-underline"
@@ -254,7 +254,7 @@ export const DatasetPage: FC = () => {
                       {relatedSpecs?.map((spec, idx) => (
                         <a
                           className="fit mb-sm block text-sm text-green-600 hover:no-underline"
-                          key={idx}
+                          key={spec.url}
                           href={spec.url}
                         >
                           {spec.title}
@@ -286,9 +286,9 @@ export const DatasetPage: FC = () => {
                       {t("pages|datasetpage$download_link")}
                     </Heading>
                     <div className="flex flex-col gap-xs">
-                      {entry.downloadFormats.map(({ title, url }, idx) => (
+                      {entry.downloadFormats.map(({ title, url }) => (
                         <a
-                          key={idx}
+                          key={`${url}-${title}`}
                           href={url}
                           className="text-sm text-green-600 hover:no-underline"
                         >
