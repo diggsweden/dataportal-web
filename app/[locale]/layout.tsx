@@ -4,9 +4,9 @@ import Script from "next/script";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { AppRouterProviders } from "@/components/providers";
 import { loadResourceLabels } from "@/i18n/load-messages";
 import { isAppLocale, routing } from "@/i18n/routing";
+import { AppRouterProviders } from "@/providers/app-router-providers";
 import { generateRandomKey } from "@/utilities/key-generator";
 
 import "@/styles/main.css";
