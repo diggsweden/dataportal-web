@@ -19,13 +19,20 @@
     "paths": {
       "@/*": ["./*"],
       "types": ["cypress", "cy-verify-downloads"]
-    }
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/fortroendemodellen-obsolete/(index.ts)"
+    "pages/fortroendemodellen-obsolete/(index.ts)",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

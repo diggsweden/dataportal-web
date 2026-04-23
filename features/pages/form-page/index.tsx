@@ -76,7 +76,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
     });
 
     SetupPages(elements as FormTypes[]);
-    GetLocalstorageData(setFormDataArray, elements, pathname);
+    GetLocalstorageData(setFormDataArray, elements, pathname ?? "");
   }, []);
 
   const SetupPages = (data: FormTypes[]) => {

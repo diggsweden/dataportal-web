@@ -70,7 +70,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
     if (url === related[0].slug || url.endsWith(related[0].slug)) {
       return pathname === url;
     } else {
-      return pathname.startsWith(url) && pathname !== related[0].slug;
+      return (pathname ?? "").startsWith(url) && pathname !== related[0].slug;
     }
   };
 

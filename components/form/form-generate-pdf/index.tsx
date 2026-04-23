@@ -33,7 +33,7 @@ export const FormGeneratePDF: FC<Props> = ({ formDataArray, blocks }) => {
         onClick={(e) => {
           GeneratePDF(e, iframeRef, formDataArray);
 
-          const url = pathname;
+          const url = pathname ?? "";
           const urlArray = url.split("/");
           const curPath = urlArray[urlArray.length - 1];
           const pathsToIgnore = ["uppfoljning", "infor-utveckling"];

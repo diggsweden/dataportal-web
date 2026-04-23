@@ -2,18 +2,14 @@ import reactenv from "@beam-australia/react-env";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { useEffect, useMemo, useState } from "react";
+import { type FC, useEffect, useMemo, useState } from "react";
 
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { Hero } from "@/components/layout/hero";
 import { MetaData } from "@/components/meta-data";
-import {
-  type BreadcrumbProps,
-  Breadcrumbs,
-} from "@/components/navigation/breadcrumbs";
+import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { Sidebar } from "@/components/navigation/sidebar";
 import {
   SkipToContent,
@@ -29,6 +25,10 @@ import type {
 } from "@/graphql/__generated__/operations";
 import { MatomoProvider } from "@/lib/matomo";
 import {
+  LayoutStateProvider,
+  useLayoutState,
+} from "@/providers/layout-state-provider";
+import {
   type LocalStore,
   LocalStoreProvider,
 } from "@/providers/local-store-provider";
@@ -40,9 +40,9 @@ import type { SubLink, SubLinkFooter } from "@/types/global";
 import {
   type DataportalPageProps,
   getNavigationData,
-  linkBase,
   resolvePage,
 } from "@/utilities";
+import { initBreadcrumb } from "@/utilities/layout-breadcrumb";
 import "@/styles/main.css";
 
 const getCookiesAccepted = () => {
@@ -64,50 +64,49 @@ interface DataportalenProps extends AppProps {
   nonce: string;
 }
 
-export const initBreadcrumb = {
-  name: "",
-  crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-};
+/** Re-exported for backwards compatibility with `pages/404.tsx` etc. */
+export { initBreadcrumb };
 
-/**
- * focuses on element with id provided from path
- * @param pathWithHash url path along with hash
- */
+/** Focuses on element with id provided from path. */
 const onHash = (pathWithHash: string) => {
   const hashIndex = pathWithHash.indexOf("#");
   const hash = pathWithHash.substring(hashIndex + 1);
   skipToElement(hash);
 };
 
-function Dataportal({
+/**
+ * Inner shell — runs inside `LayoutStateProvider` so it can read shared
+ * layout chrome state via the new hook. All page-level state that used to
+ * live as `useState` calls in this file now lives in the provider.
+ */
+const DataportalChrome: FC<DataportalenProps> = ({
   Component,
   pageProps,
+  router,
   navigationData: initialNavigationData,
-}: DataportalenProps) {
+}) => {
   const pathname = usePathname();
-  const { asPath } = useRouter();
   const { t, lang } = useTranslation();
-  // Put shared props into state to persist between pages that doesn't use getStaticProps
   const [env, setEnv] = useState<EnvSettings | null>(null);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [openSideBar, setOpenSideBar] = useState(false);
+  const {
+    settingsOpen,
+    setSettingsOpen,
+    openSideBar,
+    setOpenSideBar,
+    imageHero,
+    setImageHero,
+    breadcrumbState,
+    setBreadcrumb,
+  } = useLayoutState();
+
   const { seo, heading, heroImage, preamble } = resolvePage(
     pageProps as DataportalPageProps,
     lang,
     t,
   );
 
-  const [imageHero, setImageHero] = useState(heroImage);
-  const [breadcrumbState, setBreadcrumb] = useState<BreadcrumbProps>({
-    name: heading || "",
-    crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-  });
-
   const navigationData = useMemo(() => {
-    if (!initialNavigationData?.items?.length) {
-      return null;
-    }
-
+    if (!initialNavigationData?.items?.length) return null;
     return initialNavigationData?.items.find(
       (nav: NavigationDataFragment) => nav.locale === lang,
     );
@@ -142,15 +141,17 @@ function Dataportal({
     pathname === `/${t("routes|search-api$path")}` ? null : preamble;
 
   useEffect(() => {
-    if (asPath.includes("#")) {
-      onHash(asPath);
+    // `router.asPath` keeps fragment + query so we can detect `#hash`
+    // navigation. We avoid `useRouter()` from `next/router` at module top
+    // level to ease the eventual App Router move; `props.router` is the
+    // identical instance for any Pages Router page.
+    if (router?.asPath.includes("#")) {
+      onHash(router.asPath);
     }
     setImageHero(heroImage);
   }, [pathname]);
 
-  if (!env) {
-    return null;
-  }
+  if (!env) return null;
 
   return (
     <SettingsProvider
@@ -240,6 +241,14 @@ function Dataportal({
         </MatomoProvider>
       </LocalStoreProvider>
     </SettingsProvider>
+  );
+};
+
+function Dataportal(props: DataportalenProps) {
+  return (
+    <LayoutStateProvider initialBreadcrumb={initBreadcrumb}>
+      <DataportalChrome {...props} />
+    </LayoutStateProvider>
   );
 }
 

@@ -68,24 +68,40 @@ Goal: remove Apollo without touching routing. This de-risks everything after.
 
 ## Phase 3 - Shell: `app/[locale]/layout.tsx` + providers + middleware
 
-Coexists with `pages/` - no route ported yet.
+Split into two PRs because each item has a very different blast radius:
 
-- Add `middleware.ts`:
-  - `next-intl/middleware` with `locales: ["sv", "en"]`, `defaultLocale: "sv"`, `localePrefix: "always"` (matches current `localeDetection: false` behavior), plus a localized `pathnames` map generated from `locales/sv/routes.json` / `locales/en/routes.json` so `/datasets` <-> `/data-apier` continues to work.
-  - Generate per-request CSP nonce, set on `x-nonce` request header.
-- Add `i18n/request.ts` (`next-intl` `getRequestConfig`) pointing at `locales/{locale}/{namespace}.json`. Flatten the custom `|` / `$` separators to standard nested JSON as part of this phase (one-time script; keys in code like `t("pages|startpage$search_placeholder")` get rewritten to `t("pages.startpage.search_placeholder")`).
-- Add `app/[locale]/layout.tsx` as a Server Component:
-  - Owns `<html lang>`, `<head>`, Matomo base tag, screen9 stylesheet, `/__ENV.js` script with nonce, `theme-color`, fonts.
-  - Reads nonce from `headers()`.
-  - Uses `NextIntlClientProvider` with messages from the request config.
-  - Static layout chrome (Header shell, Footer, Hero outer) stays server-rendered; interactive sub-components are Client Components.
-- Add `components/providers.tsx` marked `"use client"`:
-  - Wraps `SettingsProvider`, `LocalStoreProvider`, `MatomoProvider` (`@/lib/matomo`), `NextIntlClientProvider` for client consumers.
-- Move the shared layout state (`breadcrumbState`, `imageHero`, `openSideBar`, `settingsOpen`) out of `pages/_app.tsx` into a new `LayoutStateProvider` client context so it survives the move off `_app`.
-- Replace every `next/router` import with `next/navigation` (`useRouter`/`usePathname`/`useSearchParams`); replace `router.events.on("routeChangeComplete", ...)` (Matomo) with an effect on `[pathname, searchParams]`.
-- Add `app/[locale]/not-found.tsx`, `app/[locale]/error.tsx`, `app/global-error.tsx`.
+- **3a — Infra scaffold** (landed): `proxy.ts` + `next-intl` middleware, `i18n/{routing,request}.ts`, `app/layout.tsx` + `app/[locale]/layout.tsx`, `components/providers.tsx`, `LayoutStateProvider`, error/not-found shells, `pages/_app.tsx` refactor. Coexists with `pages/` — no route ported yet, no UI regression expected.
+- **3b — i18n key flatten + localized pathnames** (still pending): one-time codemod to flatten the `|` / `$` separators in `locales/**/*.json`, rewrite the ~330 `t("ns|key$sub")` call sites in 64 files, and wire `next-intl` `pathnames` from `routes.json` so `/datasets` ↔ `/en/data-apis` keeps working.
 
-At the end of Phase 3, `pages/` still owns every route. No UI should have regressed.
+### Phase 3a — what shipped (and pragmatic deviations from the original plan)
+
+- `proxy.ts`:
+  - `next-intl/middleware` with `locales: ["sv", "en"]`, `defaultLocale: "sv"`, `localePrefix: "as-needed"`. _Deviation:_ the original plan said `"always"` "matches current `localeDetection: false` behavior" — that's wrong. The legacy hand-rolled proxy stripped `/sv/` and only prefixed English (`as-needed` semantics). Switching to `"always"` would force `/sv/datasets` everywhere and break every existing URL/bookmark. We use `as-needed`.
+  - Per-request CSP nonce stamped on both the **request** header (so RSCs can read via `headers()`) and the **response** header. The locale layout falls back to a freshly minted nonce if the header is missing.
+- `i18n/routing.ts` exports a single `routing` object (DRY: middleware + request config + future `Link`/`navigation` helpers all consume it).
+- `i18n/request.ts`: `getRequestConfig` preloads all five namespaces (`common`, `pages`, `resources`, `routes`, `filters`) per locale. Messages keep their legacy `|`/`$` keys for now — the 3b codemod replaces them.
+- `next.config.mjs`: wrapped with `createNextIntlPlugin("./i18n/request.ts")`. The plugin order matters: `nextTranslate(withNextIntl(coreConfig), { turbopack: true })` — `next-intl` first so it doesn't see the legacy `i18n` key that `next-translate` injects.
+- Also added `serverExternalPackages: ["winston", "@alfalab/winston3-logstash-transport"]` to fix a Phase 2 fallout: `pages/_error.tsx → utilities/logger.ts → winston/...` was pulling Node-only `net`/`tls`/`fs` into the browser bundle under Turbopack. `_error.tsx` itself was tightened to dynamically import the logger behind `typeof window === "undefined"` with `webpackIgnore` / `turbopackIgnore` hints.
+- `app/layout.tsx`: minimal passthrough (`return children`). _Deviation:_ original plan implied a single root layout owning `<html>` — but `<html lang={locale}>` must be dynamic, so the locale layout below owns it instead. Documented Next-intl pattern.
+- `app/[locale]/layout.tsx` (RSC):
+  - Owns `<html lang>`, `<body>`, the screen9 stylesheet, preconnects, `theme-color`, and `/__ENV.js` (loaded `beforeInteractive` with the CSP nonce).
+  - `generateStaticParams()` pre-renders both locales.
+  - Validates `params.locale` and calls `notFound()` for unknown values.
+  - Wraps children in `<AppRouterProviders>`.
+- `components/providers.tsx` (`"use client"`, exports `AppRouterProviders`): wraps `NextIntlClientProvider`, `SettingsProvider`, `LocalStoreProvider`, `LayoutStateProvider`, `MatomoProvider`. `EnvSettings` is created client-side via `useEffect` because `react-env` reads `window.__beam_env` populated by `/__ENV.js`. Until env hydrates, `SettingsUtil.getDefault()` is used so SSR markup doesn't drift.
+- `providers/layout-state-provider/`: holds `settingsOpen`, `openSideBar`, `imageHero`, `breadcrumbState`, with both their setters. `pages/_app.tsx` reads from it via `useLayoutState()` and bridges `setBreadcrumb` into `SettingsContext` so the 14 existing pages that call `setBreadcrumb?.({...})` keep working unchanged.
+- `pages/_app.tsx`: split into `Dataportal` (outer, renders `LayoutStateProvider`) and `DataportalChrome` (inner, consumes the hook and renders `Settings/LocalStore/Matomo` + chrome). Top-level `useRouter()` from `next/router` removed — the hash effect now reads `props.router.asPath` instead.
+- `app/[locale]/not-found.tsx`, `app/[locale]/error.tsx`, `app/global-error.tsx`: minimal shells; `global-error.tsx` ships its own `<html>/<body>` because it triggers when the root layout itself crashes.
+
+_Pragmatic deviation — `next/router` → `next/navigation` sweep:_ the original plan said "replace every `next/router` import" in this phase. We deferred everything except `pages/_app.tsx`. The other ~38 callers all live inside Pages-Router-only files (`pages/`, `features/`); each will be ported alongside its page during Phase 4, when the surrounding component model also changes. Doing them eagerly here would make a 30-file mechanical PR that has no observable effect (all those files still render under `pages/` for now).
+
+### Phase 3b — still to do
+
+- One-time JSON codemod: `{"pages|startpage$heading": "..."}` → `{ "pages": { "startpage": { "heading": "..." } } }` for all five namespaces × two locales (~1200 lines).
+- `t()` codemod across all 64 callers: `t("ns|key$sub")` → `t("ns.key.sub")` (or split into `useTranslations("ns")` + `t("key.sub")` where the namespace is consistent within a file).
+- Add `pathnames` to `i18n/routing.ts` derived from `locales/{sv,en}/routes.json` so localized slugs (`/datasets` ↔ `/en/data-apis`, etc.) survive the App Router move. Build a generator so we keep a single source of truth.
+
+At the end of Phase 3 (3a + 3b), `pages/` still owns every route. No UI should have regressed.
 
 ## Phase 4 - Port routes family by family
 
@@ -182,8 +198,8 @@ lib/
 - [x] **Phase 1:** add `graphql/fetcher.ts` (`gqlFetch`) and port all `query-helpers` + `form-utils` call sites off Apollo.
 - [x] **Phase 1:** remove `ApolloProvider` from `_app`/`_document`, delete `graphql/client.ts`, drop `@apollo/client` + `apollo` deps, switch introspect to `graphql-codegen`.
 - [ ] **Phase 2:** upgrade to Next 16 / React 19 on the Pages Router, run Next codemods, fix `images.remotePatterns` and `fetch` cache defaults.
-- [ ] **Phase 3:** extend `proxy.ts` (next-intl + CSP nonce — the Phase 2 rename already moved `middleware.ts` to `proxy.ts`), add `i18n/request.ts`, `app/[locale]/layout.tsx`, `components/providers.tsx`, `LayoutStateProvider`, not-found/error pages; switch `next/router` -> `next/navigation`.
-- [ ] **Phase 3:** flatten locale JSON (drop `|` and `$` separators) and codemod every `t()` call; wire `next-intl` pathnames from `routes.json` for localized slugs.
+- [x] **Phase 3a:** extend `proxy.ts` (next-intl + CSP nonce), add `i18n/{routing,request}.ts`, `app/layout.tsx` + `app/[locale]/layout.tsx`, `components/providers.tsx`, `LayoutStateProvider`, not-found/error pages, refactor `pages/_app.tsx` onto `LayoutStateProvider`. _Per-page `next/router` → `next/navigation` sweep deferred to Phase 4._
+- [ ] **Phase 3b:** flatten locale JSON (drop `|` and `$` separators) and codemod every `t()` call (~330 calls across 64 files); wire `next-intl` `pathnames` from `routes.json` for localized slugs.
 - [ ] **Phase 4:** port static/API/sitemap routes to `app/` (healthcheck, auth, sitemap, 404).
 - [ ] **Phase 4:** port start/landing/container/list/form pages and CMS routes (nyheter, goda-exempel, stod-och-verktyg, [...containerSlug], fortroendemodellen tree).
 - [ ] **Phase 4:** port Entryscape route families one PR each (datasets, dataservice, concepts, specifications, terminology, organisations, metadatakvalitet, dataset-series, external*, drafts).
