@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link.js";
 import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";

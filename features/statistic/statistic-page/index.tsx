@@ -1,3 +1,5 @@
+"use client";
+
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";

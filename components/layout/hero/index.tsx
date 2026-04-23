@@ -1,6 +1,5 @@
-import { useRouter } from "next/router";
-import { useLocale, useTranslations } from "next-intl";
-import { type FC, useState } from "react";
+import { useTranslations } from "next-intl";
+import type { FC } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ConceptIcon from "@/assets/icons/data.svg";
@@ -12,10 +11,16 @@ import { CustomImage } from "@/components/custom-image";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { SearchInput } from "@/features/search/search-input";
 import type { ImageFragment } from "@/graphql/__generated__/operations";
 import type { AddIcon } from "@/types/global";
 import { checkLang } from "@/utilities";
+
+import { HeroSearch } from "./hero-search";
+
+interface SearchProps {
+  destination: string;
+  placeholder: string;
+}
 
 interface HeroProps {
   heading?: string | null;
@@ -23,21 +28,21 @@ interface HeroProps {
   image: ImageFragment | null;
   search?: SearchProps | null;
   className?: string;
-}
-
-interface SearchProps {
-  destination: string;
-  placeholder: string;
+  /**
+   * Centers the heading + search block (used on the start page). Callers
+   * decide — `<Hero>` no longer reads the pathname, so it stays a pure
+   * Server Component.
+   */
+  isFrontpage?: boolean;
 }
 
 interface HeroButtonProps {
   href: string;
   label: string;
-  lang: string;
   icon: AddIcon;
 }
 
-const HeroButton = ({ href, label, lang, icon }: HeroButtonProps) => {
+const HeroButton: FC<HeroButtonProps> = ({ href, label, icon }) => {
   const CenterIcon = icon;
   return (
     <ButtonLink
@@ -55,18 +60,28 @@ const HeroButton = ({ href, label, lang, icon }: HeroButtonProps) => {
   );
 };
 
-export const Hero: FC<HeroProps> = ({
+/**
+ * Presentational hero used on the start page and most CMS pages. Pure
+ * by design — no async, no `"use client"` — so it renders as a Server
+ * Component in the App Router and as a regular component in any
+ * remaining Pages Router routes. `useTranslations` from `next-intl`
+ * is universal: it works in both sync RSCs and the Pages Router, so
+ * we don't need to push button labels in as props.
+ *
+ * The shortcut links are static `<ButtonLink>`s — no state, no event
+ * handlers — so they live here in the server component. Only the
+ * search form (controlled `<SearchInput>` with a conditional clear
+ * button) needs a client boundary; that's `<HeroSearch>`.
+ */
+export function Hero({
   heading,
   preamble,
   image,
   search,
   className,
-}) => {
-  const { pathname } = useRouter();
+  isFrontpage = false,
+}: HeroProps) {
   const t = useTranslations();
-  const lang = useLocale();
-  const isFrontpage = pathname === "/";
-  const [query, setQuery] = useState("");
 
   return (
     <section
@@ -127,52 +142,34 @@ export const Hero: FC<HeroProps> = ({
                 >
                   <div className="grid grid-cols-2 gap-md md:gap-lg">
                     <HeroButton
-                      href={`/datasets?q=&f=`}
+                      href="/datasets?q=&f="
                       label={t("common.all-data-api")}
-                      lang={lang}
                       icon={DiamondIcon}
                     />
-
                     <HeroButton
-                      href={`/specifications?q=&f=`}
+                      href="/specifications?q=&f="
                       label={t("common.specifications")}
-                      lang={lang}
                       icon={SpecificationIcon}
                     />
                   </div>
                   <div className="grid grid-cols-2  gap-md md:gap-lg">
                     <HeroButton
-                      href={`/concepts?q=&f=`}
+                      href="/concepts?q=&f="
                       label={t("common.all-concepts")}
-                      lang={lang}
                       icon={ConceptIcon}
                     />
-
                     <HeroButton
-                      href={`/organisations?q=&f=`}
+                      href="/organisations?q=&f="
                       label={t("common.organisations")}
-                      lang={lang}
                       icon={OrganisationIcon}
                     />
                   </div>
                 </div>
-                <search>
-                  <form
-                    className={`datapage-form w-full max-w-md ${
-                      isFrontpage ? "mx-auto" : "justify-start"
-                    }`}
-                    method="GET"
-                    action={search.destination}
-                  >
-                    <SearchInput
-                      id="start-search"
-                      placeholder={search.placeholder}
-                      query={query}
-                      setQuery={setQuery}
-                      ariaLabel={search.placeholder}
-                    />
-                  </form>
-                </search>
+                <HeroSearch
+                  destination={search.destination}
+                  placeholder={search.placeholder}
+                  isFrontpage={isFrontpage}
+                />
               </div>
             )}
           </div>
@@ -180,4 +177,4 @@ export const Hero: FC<HeroProps> = ({
       </Container>
     </section>
   );
-};
+}

@@ -1,3 +1,5 @@
+"use client";
+
 import FocusTrap from "focus-trap-react";
 import { useTranslations } from "next-intl";
 import { type FC, type PropsWithChildren, useEffect, useState } from "react";

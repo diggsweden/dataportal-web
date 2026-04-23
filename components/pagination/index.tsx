@@ -1,3 +1,5 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 import { type Dispatch, type FC, useEffect, useState } from "react";
 

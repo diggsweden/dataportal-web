@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useLocale, useTranslations } from "next-intl";

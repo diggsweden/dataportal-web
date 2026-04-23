@@ -1,3 +1,5 @@
+"use client";
+
 import { usePathname } from "next/navigation";
 import { type FC, useContext, useEffect } from "react";
 

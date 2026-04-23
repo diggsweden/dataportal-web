@@ -1,5 +1,6 @@
+"use client";
+
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
 import { useLocale, useTranslations } from "next-intl";
 import { type ChangeEvent, useEffect, useRef, useState } from "react";
 
@@ -33,7 +34,6 @@ export interface FormData {
 }
 
 export const FortroendemodellenFrom = () => {
-  const router = useRouter();
   const locale = useLocale();
   const t = useTranslations();
   const pathname = usePathname();
@@ -104,12 +104,13 @@ export const FortroendemodellenFrom = () => {
     }
   };
 
-  // Fetch form data when router is ready
+  // Pages Router used `router.isReady` as a hydration gate before
+  // touching dynamic-route params; the App Router has no equivalent —
+  // `usePathname()` resolves on first render — so we just fetch on
+  // mount / locale change.
   useEffect(() => {
-    if (router.isReady) {
-      getFortroendemodellenForm();
-    }
-  }, [router.isReady, locale]);
+    getFortroendemodellenForm();
+  }, [locale]);
 
   // Process form elements when formData changes
   useEffect(() => {

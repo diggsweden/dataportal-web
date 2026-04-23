@@ -1,3 +1,5 @@
+"use client";
+
 import { cx } from "class-variance-authority";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";

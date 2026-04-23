@@ -1,3 +1,5 @@
+"use client";
+
 import { createFocusTrap, type FocusTrap } from "focus-trap";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

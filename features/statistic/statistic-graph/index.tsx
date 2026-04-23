@@ -1,3 +1,5 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 import { type FC, useContext, useEffect, useMemo, useState } from "react";
 

@@ -1,3 +1,5 @@
+"use client";
+
 import { useRouter } from "next/router";
 import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useEffect } from "react";

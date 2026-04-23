@@ -233,6 +233,7 @@ const DataportalChrome: FC<DataportalenProps> = ({
                   preamble={conditionalPreamble}
                   image={imageHero}
                   search={searchProps}
+                  isFrontpage={pathname === "/"}
                 />
               )}
 

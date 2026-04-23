@@ -1,3 +1,5 @@
+"use client";
+
 import { type FC, type PropsWithChildren, useEffect, useRef } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";

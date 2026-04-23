@@ -1,3 +1,5 @@
+"use client";
+
 import { MeiliSearch } from "meilisearch";
 import Head from "next/head";
 import { type FC, useEffect, useState } from "react";

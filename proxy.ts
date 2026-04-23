@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
+import { routing } from "./i18n/routing";
 import generateCSP from "./utilities/generate-csp";
 import { generateRandomKey } from "./utilities/key-generator";
 
@@ -15,15 +16,14 @@ import { generateRandomKey } from "./utilities/key-generator";
  *     components — avoiding the hydration mismatch a raw `<script nonce>`
  *     hits once the browser strips the attribute per CSP3 spec
  *     (https://www.w3.org/TR/CSP3/#is-element-nonceable).
- *
- * Locale routing is intentionally absent:
- *   - The Pages Router `i18n` block was removed from `next.config.mjs` as
- *     part of Option B of the migration (see
- *     `docs/next15-app-router-migration.md`), so Pages Router serves only
- *     Swedish until each route family moves under `app/[locale]/`.
- *   - `next-intl`'s middleware (`createMiddleware(routing)`) gets layered
- *     back in here during Phase 4 as soon as the first App Router route
- *     lands. Its output composes with the CSP logic without changes.
+ *   - Rewrite `/` → `/${defaultLocale}` internally so the App Router
+ *     start page (`app/[locale]/page.tsx`) serves Swedish users on the
+ *     bare root URL. This is the incremental stand-in for the full
+ *     `next-intl` middleware (deferred until all Pages Router families
+ *     move under `app/[locale]/`): running `createMiddleware(routing)`
+ *     today would also rewrite `/datasets` → `/sv/datasets`, which
+ *     would break every Pages Router route still serving Swedish at
+ *     its un-prefixed path.
  */
 export function proxy(request: NextRequest) {
   const nonce = generateRandomKey(32);
@@ -43,9 +43,15 @@ export function proxy(request: NextRequest) {
   // RSCs via `headers()` once any segment is rendered from `app/`.
   request.headers.set("x-nonce", nonce);
 
-  const response = NextResponse.next({
-    request: { headers: request.headers },
-  });
+  const pathname = request.nextUrl.pathname;
+  const response =
+    pathname === "/"
+      ? NextResponse.rewrite(
+          new URL(`/${routing.defaultLocale}`, request.url),
+          { request: { headers: request.headers } },
+        )
+      : NextResponse.next({ request: { headers: request.headers } });
+
   response.headers.set("x-nonce", nonce);
   response.headers.set("Content-Security-Policy", csp);
   return response;

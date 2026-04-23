@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable @typescript-eslint/no-require-imports */
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";

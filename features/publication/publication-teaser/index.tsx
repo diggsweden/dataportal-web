@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useLocale } from "next-intl";
 import type { FC } from "react";
 
@@ -12,6 +11,8 @@ import type {
   NewsItemDataFragment,
 } from "@/graphql/__generated__/operations";
 import { formatDate } from "@/utilities/date-helper";
+
+import { TeaserLink } from "./teaser-link";
 
 interface PublicationTeaserProps {
   publication:
@@ -68,17 +69,11 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
         />
         <div className="px-md pt-lg text-sm text-textPrimary">
           <span className="text-textSecondary">{`${type.name} | ${formattedDate}`}</span>
-          <Link
-            href={type.url}
-            className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
-            scroll={false}
-            data-tracking-name="publication-teaser"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          >
+          <TeaserLink href={type.url}>
             <Heading className="pb-md pt-sm" level={3} size={"sm"}>
               {heading}
             </Heading>
-          </Link>
+          </TeaserLink>
         </div>
       </div>
 

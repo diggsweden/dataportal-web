@@ -1,3 +1,5 @@
+"use client";
+
 import { createFocusTrap, type FocusTrap } from "focus-trap";
 import { useTranslations } from "next-intl";
 import {

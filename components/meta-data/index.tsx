@@ -1,3 +1,5 @@
+"use client";
+
 import reactenv from "@beam-australia/react-env";
 import Head from "next/head";
 import { usePathname } from "next/navigation";

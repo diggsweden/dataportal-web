@@ -1,3 +1,5 @@
+"use client";
+
 import { cva, cx, type VariantProps } from "class-variance-authority";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

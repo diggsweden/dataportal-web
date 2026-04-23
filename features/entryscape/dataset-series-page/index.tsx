@@ -1,3 +1,5 @@
+"use client";
+
 import type { Entry } from "@entryscape/entrystore-js";
 import Link from "next/link";
 import { useRouter } from "next/router";
