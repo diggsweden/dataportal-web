@@ -23,10 +23,9 @@ export class ServerLogger {
   constructor() {
     this._logger = createLogger();
 
-    const levels =
-      LOGGING_LEVELS && LOGGING_LEVELS.includes(",")
-        ? LOGGING_LEVELS.split(",")
-        : [LOGGING_LEVELS];
+    const levels = LOGGING_LEVELS?.includes(",")
+      ? LOGGING_LEVELS.split(",")
+      : [LOGGING_LEVELS];
 
     levels.forEach((level) => {
       //add console transports (OBS might lead to duplicates in console output)

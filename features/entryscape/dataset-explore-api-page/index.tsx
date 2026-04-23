@@ -133,9 +133,10 @@ export const DataSetExploreApiPage: FC<{
 
         {/* Tabs navigation */}
         <nav className="mb-lg">
-          <ul role="tablist" className="flex gap-xl">
-            <li role="presentation">
+          <div role="tablist" className="flex gap-xl">
+            <div role="presentation">
               <button
+                type="button"
                 role="tab"
                 aria-selected={tab}
                 aria-controls="panel-api-contract"
@@ -149,9 +150,10 @@ export const DataSetExploreApiPage: FC<{
               >
                 {t("pages|explore-api-page$api-contract")}
               </button>
-            </li>
-            <li role="presentation">
+            </div>
+            <div role="presentation">
               <button
+                type="button"
                 role="tab"
                 aria-selected={!tab}
                 aria-controls="panel-information"
@@ -165,8 +167,8 @@ export const DataSetExploreApiPage: FC<{
               >
                 Information
               </button>
-            </li>
-          </ul>
+            </div>
+          </div>
         </nav>
 
         {/* Tabs */}

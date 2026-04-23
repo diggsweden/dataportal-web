@@ -33,8 +33,11 @@ export const FortroendeModulePage: FC<ModuleDataFragment> = ({ blocks }) => {
   }, []);
 
   useEffect(() => {
+    if (heading === null) {
+      return;
+    }
     setBreadcrumb?.({
-      name: heading!,
+      name: heading,
       crumbs: [
         { name: "start", link: { ...linkBase, link: "/" } },
         {

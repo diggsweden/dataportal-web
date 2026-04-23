@@ -103,7 +103,7 @@ export const ImportFromJsonFile = (
         }
         if ("choices" in field) {
           field.choices.forEach((choice, i) => {
-            choice.ID = parseInt(`${field.ID}${i}`);
+            choice.ID = Number.parseInt(`${field.ID}${i}`, 10);
           });
         }
         field.ID = id;

@@ -203,17 +203,15 @@ export const DatasetSeriesPage: FC = () => {
                                 {t("pages|datasetpage$download_link")}
                               </Heading>
                               <div className="flex flex-col gap-xs">
-                                {entry.downloadFormats.map(
-                                  ({ title, url }, idx) => (
-                                    <a
-                                      key={idx}
-                                      href={url}
-                                      className="text-sm text-green-600 hover:no-underline"
-                                    >
-                                      {title}
-                                    </a>
-                                  ),
-                                )}
+                                {entry.downloadFormats.map(({ title, url }) => (
+                                  <a
+                                    key={`${url}-${title}`}
+                                    href={url}
+                                    className="text-sm text-green-600 hover:no-underline"
+                                  >
+                                    {title}
+                                  </a>
+                                ))}
                               </div>
                             </div>
                           )}

@@ -122,7 +122,5 @@ export const CookieBanner: FC<{
         </form>
       </Container>
     </section>
-  ) : (
-    <></>
-  );
+  ) : null;
 };

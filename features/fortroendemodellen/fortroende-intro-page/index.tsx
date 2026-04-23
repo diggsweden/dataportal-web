@@ -34,19 +34,19 @@ export const FortroendeIntroPage: FC<ModuleDataFragment> = ({ blocks }) => {
 
       <div className="my-xl flex max-w-md flex-col gap-md md:flex-row md:justify-between">
         <ButtonLink
-          href={pathname + "/infor-utveckling"}
+          href={`${pathname}/infor-utveckling`}
           label="Inför utveckling"
           icon={ArrowIcon}
           iconPosition="right"
         />
         <ButtonLink
-          href={pathname + "/utveckling"}
+          href={`${pathname}/utveckling`}
           label="Utveckling och drift"
           icon={ArrowIcon}
           iconPosition="right"
         />
         <ButtonLink
-          href={pathname + "/uppfoljning"}
+          href={`${pathname}/uppfoljning`}
           label="Uppföljning"
           icon={ArrowIcon}
           iconPosition="right"

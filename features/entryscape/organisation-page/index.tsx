@@ -109,9 +109,9 @@ export const OrganisationPage: FC = () => {
                   />
                   <div className="grid grid-cols-2 gap-x-sm gap-y-xl">
                     {entry.organisationData?.datasets.dataInfo.map(
-                      (data: DataInfo, idx: number) => (
+                      (data: DataInfo) => (
                         <div
-                          key={idx}
+                          key={`${data.title}-${data.total}`}
                           className="flex flex-col items-center gap-sm"
                         >
                           <span className="text-xl text-primary md:text-2xl">
@@ -193,10 +193,10 @@ export const OrganisationPage: FC = () => {
                       </span>
                       <div className="flex flex-col justify-center gap-sm">
                         {entry.organisationData?.terms?.termsInfo.map(
-                          (term: TermInfo, idx: number) => (
+                          (term: TermInfo) => (
                             <Link
                               data-test-id="organisation-terminology-link"
-                              key={idx}
+                              key={term.url}
                               href={term.url}
                               className="text-sm text-green-600 hover:no-underline"
                             >
@@ -236,7 +236,7 @@ export const OrganisationPage: FC = () => {
                   >
                     {t("pages|organisation_page$contact")}
                   </Heading>
-                  {entry.contact && entry.contact.email ? (
+                  {entry.contact?.email ? (
                     <CustomLink
                       data-test-id="contact-link"
                       className="text-sm text-green-600 hover:no-underline"
@@ -306,9 +306,9 @@ export const OrganisationPage: FC = () => {
                       {t("pages|organisation_page$download_link")}
                     </Heading>
                     <div className="flex flex-col gap-sm">
-                      {entry.downloadFormats.map(({ title, url }, idx) => (
+                      {entry.downloadFormats.map(({ title, url }) => (
                         <a
-                          key={idx}
+                          key={`${url}-${title}`}
                           href={url}
                           className="text-sm text-green-600 hover:no-underline"
                         >
