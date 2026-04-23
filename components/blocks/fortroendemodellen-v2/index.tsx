@@ -118,7 +118,7 @@ export const FortroendemodellenFrom = () => {
 
     const elements = formData.elements;
     SetupPages(elements as FormTypes[]);
-    GetLocalstorageData(setFormDataArray, elements, pathname);
+    GetLocalstorageData(setFormDataArray, elements, pathname ?? "");
   }, [formData, pathname]);
 
   const SetupPages = (data: FormTypes[]) => {

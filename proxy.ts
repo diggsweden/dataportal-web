@@ -1,74 +1,40 @@
 import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import createMiddleware from "next-intl/middleware";
 
-import i18n from "./i18n";
+import { routing } from "./i18n/routing";
+import { generateRandomKey } from "./utilities/key-generator";
 
-/**
- * Determines the locale for the current request
- * Since localeDetection is false in i18n.js, we only use the locale from the URL
- * or fall back to the default locale (sv)
- */
-function getLocale(request: NextRequest): string {
-  // First check if the URL already has a locale
-  const pathname = request.nextUrl.pathname;
-  const pathnameLocale = i18n.locales.find(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-  );
-  if (pathnameLocale) {
-    return pathnameLocale;
-  }
-
-  // Since localeDetection is false, we always return defaultLocale
-  return i18n.defaultLocale;
-}
+const handleI18n = createMiddleware(routing);
 
 /**
- * Proxy (formerly `middleware`, renamed in Next 16) for handling locale-based routing.
+ * Next 16 middleware (renamed `proxy.ts` per the Next 16 file convention).
  *
- * Rules:
- * 1. If URL contains default locale (sv), remove it
- * 2. If URL has no locale and it's not default locale, add it
- * 3. If URL already has a non-default locale, leave it as is
+ * Two responsibilities:
+ *  1. `next-intl` locale handling with `localePrefix: "as-needed"`: Swedish
+ *     stays unprefixed (`/datasets`), English under `/en/...`. Replaces the
+ *     hand-rolled redirect logic that used to live here.
+ *  2. Per-request CSP nonce: stamps `x-nonce` on both the **request** (so
+ *     server components in `app/[locale]/layout.tsx` can read it via
+ *     `headers()`) and the **response** (for any downstream consumer). The
+ *     `app/[locale]/layout.tsx` falls back to generating its own nonce if
+ *     this header is missing, so a cold-cache request never ships without
+ *     CSP coverage.
  */
 export function proxy(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
+  const nonce = generateRandomKey(32);
 
-  // Special handling for root path
-  if (pathname === "/") {
-    const locale = getLocale(request);
-    if (locale !== i18n.defaultLocale) {
-      return NextResponse.redirect(new URL(`/${locale}`, request.url));
-    }
-    return NextResponse.next();
-  }
+  // Mutating the incoming request headers makes them visible to downstream
+  // RSCs via `headers()` whenever the eventual NextResponse is a rewrite or
+  // pass-through (which is what `next-intl` returns for valid locales).
+  request.headers.set("x-nonce", nonce);
 
-  // Check if the pathname already has a locale
-  const pathnameHasLocale = i18n.locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-  );
-
-  if (pathnameHasLocale) {
-    const currentLocale = i18n.locales.find(
-      (locale) =>
-        pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-    );
-
-    // If the URL contains the default locale (sv), remove it
-    if (currentLocale === i18n.defaultLocale) {
-      const newPathname = pathname.replace(`/${i18n.defaultLocale}`, "") || "/";
-      const newUrl = new URL(newPathname, request.url);
-      newUrl.search = request.nextUrl.search;
-      return NextResponse.redirect(newUrl);
-    }
-    // If the URL has a non-default locale, leave it as is
-    return NextResponse.next();
-  }
-
-  // Since localeDetection is false, we don't redirect based on browser locale
-  return NextResponse.next();
+  const response = handleI18n(request);
+  response.headers.set("x-nonce", nonce);
+  return response;
 }
 
 export const config = {
+  // Skip Next internals, static assets, and route handlers (`/api`).
   matcher: [
     "/((?!api|_next/static|_next/image|favicon.ico|__ENV.js|manifest.json|.*\\.(?:jpg|jpeg|gif|png|svg|woff|woff2)).*)",
     "/",
