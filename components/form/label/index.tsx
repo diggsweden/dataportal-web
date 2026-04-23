@@ -3,6 +3,7 @@ import type { FC, LabelHTMLAttributes, PropsWithChildren } from "react";
 export const Label: FC<
   PropsWithChildren<LabelHTMLAttributes<HTMLLabelElement>>
 > = ({ children, className, ...props }) => (
+  // biome-ignore lint/a11y/noLabelWithoutControl: callers pass htmlFor via ...props (see addLabel in render-form).
   <label
     {...props}
     className={`cursor-pointer break-words text-lg font-thin text-brown-600 lg:text-xl ${

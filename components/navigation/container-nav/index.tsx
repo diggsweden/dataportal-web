@@ -82,8 +82,10 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
       onKeyDown={handleEscape}
     >
       {expanded && (
-        <div
-          className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden"
+        <button
+          type="button"
+          aria-label={t("common|close")}
+          className="fixed left-none top-none z-30 h-screen w-screen cursor-default border-0 bg-brownOpaque5 p-0 md:hidden"
           onClick={() => setExpanded(false)}
         />
       )}

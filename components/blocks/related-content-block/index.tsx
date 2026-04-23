@@ -52,10 +52,10 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
           formPage && "max-w-xl lg:grid-cols-3",
         )}
       >
-        {links.map((link: PromoProps, idx: number) => {
+        {links.map((link: PromoProps) => {
           return (
             <li
-              key={idx}
+              key={link.slug}
               className="group relative flex h-full flex-col bg-white text-brown-900"
             >
               <Promo {...link} heading={heading} />

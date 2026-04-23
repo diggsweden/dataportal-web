@@ -137,8 +137,11 @@ export const FormEnding: FC<Props> = ({
               {t("pages|form$risks-title")}
             </Heading>
             <div className="mt-lg space-y-xl">
-              {questionsWithRisks.map((item, index) => (
-                <div key={index} className="flex flex-col gap-sm">
+              {questionsWithRisks.map((item) => (
+                <div
+                  key={`${item.number}-${item.title}`}
+                  className="flex flex-col gap-sm"
+                >
                   <Heading size="sm" className="text-brown-600" level={3}>
                     {t("pages|form$question")} {item.number}
                   </Heading>

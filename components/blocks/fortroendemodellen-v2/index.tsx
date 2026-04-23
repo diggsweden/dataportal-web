@@ -173,7 +173,7 @@ export const FortroendemodellenFrom = () => {
             choice.popup = "";
             choice.exploratory = false;
           }
-          choice.ID = parseInt(`${item.ID}${i}`);
+          choice.ID = Number.parseInt(`${item.ID}${i}`, 10);
         });
       }
       if (item.__typename === "dataportal_Digg_FormDescription") {
@@ -270,9 +270,9 @@ export const FortroendemodellenFrom = () => {
   useEffect(() => {
     const pageLastVisit = localStorage.getItem(`${pathname}Page`);
     if (!showFirstPage) {
-      setPage(pageLastVisit ? parseInt(pageLastVisit) : 1);
+      setPage(pageLastVisit ? Number.parseInt(pageLastVisit, 10) : 1);
     } else {
-      setPage(pageLastVisit ? parseInt(pageLastVisit) : 0);
+      setPage(pageLastVisit ? Number.parseInt(pageLastVisit, 10) : 0);
     }
   }, [showFirstPage, pathname]);
 
@@ -440,37 +440,41 @@ export const FortroendemodellenFrom = () => {
               />
             </>
           )}
-          {formDataArray.map((data: FormTypes[], index) => {
-            index++;
-            if (page === index) {
-              return (
-                <div
-                  key={`page${index}`}
-                  className="col-span-1 col-start-1 row-start-2 w-full max-w-md lg:col-start-2 lg:row-start-1"
-                >
-                  <span ref={scrollRef} />
-
-                  <span className="text-lg text-textSecondary">
-                    {t("pages|form$questions")}
-                  </span>
-                  <RenderForm
-                    fortroendemodellen
-                    UpdateFormDataArray={UpdateFormDataArray}
-                    formDataArray={data}
-                    pageIndex={index}
-                  />
-                  <FormBottomNav
-                    fortroendemodellen
-                    key={`nav${index}`}
-                    setFormDataArray={setFormDataArray}
-                    formDataArray={formDataArray}
-                    setPage={setPage}
-                    page={page}
-                    scrollRef={scrollRef}
-                  />
-                </div>
-              );
+          {formDataArray.map((data: FormTypes[], arrayIndex) => {
+            const pageIndex = arrayIndex + 1;
+            if (page !== pageIndex) {
+              return null;
             }
+            const stepKey = data
+              .map((el) => `${el.__typename}-${el.ID}`)
+              .join("|");
+            return (
+              <div
+                key={stepKey}
+                className="col-span-1 col-start-1 row-start-2 w-full max-w-md lg:col-start-2 lg:row-start-1"
+              >
+                <span ref={scrollRef} />
+
+                <span className="text-lg text-textSecondary">
+                  {t("pages|form$questions")}
+                </span>
+                <RenderForm
+                  fortroendemodellen
+                  UpdateFormDataArray={UpdateFormDataArray}
+                  formDataArray={data}
+                  pageIndex={pageIndex}
+                />
+                <FormBottomNav
+                  fortroendemodellen
+                  key={`nav-${stepKey}`}
+                  setFormDataArray={setFormDataArray}
+                  formDataArray={formDataArray}
+                  setPage={setPage}
+                  page={page}
+                  scrollRef={scrollRef}
+                />
+              </div>
+            );
           })}
 
           {page === formDataArray.length + 1 && (

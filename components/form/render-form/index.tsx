@@ -45,7 +45,7 @@ const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
         size={"xs"}
         className="mb-sm justify-between"
       />
-      <p
+      <section
         id={popoverId}
         aria-labelledby={`${popoverId}-button`}
         className={`text-sm text-textSecondary ${
@@ -53,7 +53,7 @@ const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
         }`}
       >
         <HtmlParser text={text} />
-      </p>
+      </section>
     </div>
   );
 };
@@ -171,17 +171,7 @@ const FormItem = (
     case "dataportal_Digg_FormRadio":
       return (
         <div className="form-item">
-          <fieldset
-            className="mb-md space-y-lg"
-            aria-expanded={
-              item.selected &&
-              item.selected !== item.choices[item.choices.length - 1] &&
-              item.selected.popup &&
-              item.selected.popup.length > 0
-                ? "true"
-                : false
-            }
-          >
+          <fieldset className="mb-md space-y-lg">
             {addLabel(item.number, Type, ID, item.title)}
             {item.info && <PopOver text={item.info} title={item.title} />}
             <div className="flex flex-col gap-md lg:flex-row lg:items-center">

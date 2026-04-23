@@ -70,10 +70,10 @@ const MainNav: FC<MainNavProps> = ({
           aria-label={t("common|menu-main")}
         >
           {mainMenu?.length > 0 &&
-            mainMenu.map((menu: MenuLinkFragment, idx: number) => (
+            mainMenu.map((menu: MenuLinkFragment) => (
               <ButtonLink
                 variant="plain"
-                key={idx}
+                key={menu.link}
                 href={menu.link}
                 onClick={() => setOpenSideBar(false)}
                 label={menu.name}
@@ -96,8 +96,7 @@ const MainNav: FC<MainNavProps> = ({
               className="w-[2.75rem] cursor-pointer p-[0.625rem]"
             />
           ) : (
-            <form
-              ref={formRef}
+            <search
               className={`transition-width max-w-[17.125rem] text-sm duration-100 md:w-[17.125rem] [&_div]:mr-none [&_div_div_button]:p-[0.625rem] hover:first:[&_div_div_button]:bg-brown-200  ${
                 openSearch
                   ? `w-full ${
@@ -107,19 +106,19 @@ const MainNav: FC<MainNavProps> = ({
                     } [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900 focus-visible:[&_div_div_button]:-outline-offset-2 focus-visible:[&_div_div_button]:outline-white`
                   : "w-none overflow-hidden"
               }`}
-              action={`/${lang}/search`}
-              role={"search"}
             >
-              <SearchInput
-                id="header-search"
-                placeholder={t("common|search")}
-                ariaLabel={t("common|search-content")}
-                query={query}
-                setQuery={setQuery}
-                type="small"
-                className="focus-in !h-[2.75rem] border-none !bg-brown-100 pr-[5.625rem] hover:outline-0"
-              />
-            </form>
+              <form ref={formRef} action={`/${lang}/search`}>
+                <SearchInput
+                  id="header-search"
+                  placeholder={t("common|search")}
+                  ariaLabel={t("common|search-content")}
+                  query={query}
+                  setQuery={setQuery}
+                  type="small"
+                  className="focus-in !h-[2.75rem] border-none !bg-brown-100 pr-[5.625rem] hover:outline-0"
+                />
+              </form>
+            </search>
           )}
         </div>
 
