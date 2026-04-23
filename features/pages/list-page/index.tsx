@@ -40,7 +40,11 @@ export const ListPage: FC<ListPageProps> = ({
   const pathname = usePathname();
   const router: NextRouter = useRouter();
   const listItemsPerPage = 12;
-  const page = parseInt(router.query.page as string) || 1;
+  const page =
+    Number.parseInt(
+      typeof router.query.page === "string" ? router.query.page : "1",
+      10,
+    ) || 1;
   const startIndex = (page - 1) * listItemsPerPage;
   const endIndex = startIndex + listItemsPerPage;
   const [filterList, setFilterList] =
@@ -69,9 +73,9 @@ export const ListPage: FC<ListPageProps> = ({
 
   useEffect(() => {
     const keywords = [{ value: "Alla", id: "0" }];
-    list.map((item) => {
+    list.forEach((item) => {
       if (item.keywords) {
-        item.keywords.map((keyword: Keyword) => {
+        item.keywords.forEach((keyword: Keyword) => {
           if (!keywords.some((i) => i.id === keyword.id)) {
             keywords.push(keyword);
           }
@@ -123,10 +127,10 @@ export const ListPage: FC<ListPageProps> = ({
             data-test-id="list-filters"
             className="mt-xl flex flex-wrap gap-md"
           >
-            {keywordList.map((keyword, idx) => (
+            {keywordList.map((keyword) => (
               <Button
                 variant="plain"
-                key={idx}
+                key={keyword.id}
                 onClick={() => setActiveFilter(keyword)}
                 label={keyword.value}
                 className={`${
@@ -143,7 +147,14 @@ export const ListPage: FC<ListPageProps> = ({
             <Pagination
               totalResults={filterList.length || 0}
               itemsPerPage={listItemsPerPage}
-              pageNumber={parseInt(router.query.page as string)}
+              pageNumber={
+                Number.parseInt(
+                  typeof router.query.page === "string"
+                    ? router.query.page
+                    : "1",
+                  10,
+                ) || 1
+              }
               changePage={changePage}
             />
           </div>

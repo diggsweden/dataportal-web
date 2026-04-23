@@ -153,10 +153,10 @@ export const SpecificationPage: FC = () => {
                     {t("pages|datasetpage$keyword")}
                   </Heading>
                   <div className="flex flex-col">
-                    {keywords?.map((k, idx) => (
+                    {keywords?.map((k) => (
                       <span
                         className="mb-sm w-fit bg-pink-200 px-sm py-xs text-sm font-strong"
-                        key={idx}
+                        key={k}
                       >
                         {k}
                       </span>
@@ -196,10 +196,10 @@ export const SpecificationPage: FC = () => {
                   >
                     {t("pages|specification_page$related_datasets")}
                   </Heading>
-                  {relatedDatasets?.map((ds, idx) => (
+                  {relatedDatasets?.map((ds) => (
                     <Link
                       className="fit mb-sm block text-sm text-green-600 hover:no-underline"
-                      key={idx}
+                      key={ds.url}
                       href={ds.url}
                     >
                       {ds.title}
@@ -232,9 +232,9 @@ export const SpecificationPage: FC = () => {
                     {t("pages|datasetpage$download_link")}
                   </Heading>
                   <div className="flex flex-col gap-xs">
-                    {entry.downloadFormats.map(({ title, url }, idx) => (
+                    {entry.downloadFormats.map(({ title, url }) => (
                       <a
-                        key={idx}
+                        key={`${url}-${title}`}
                         href={url}
                         className="text-sm text-green-600 hover:no-underline"
                       >

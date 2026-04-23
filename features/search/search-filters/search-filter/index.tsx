@@ -24,7 +24,7 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [trapFocus, setTrapFocus] = useState(false);
-  const ref = useClickOutside<HTMLDivElement>(() => handleOpen(false));
+  const ref = useClickOutside<HTMLFieldSetElement>(() => handleOpen(false));
   const { t } = useTranslation("common");
 
   const handleOpen = (value: boolean) => {
@@ -44,8 +44,9 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
       active={trapFocus}
       focusTrapOptions={{ allowOutsideClick: true }}
     >
-      <div
+      <fieldset
         ref={ref}
+        className="m-0 min-w-0 border-0 p-0"
         onKeyDown={(ev) => ev.key === "Escape" && handleOpen(false)}
         {...props}
       >
@@ -73,7 +74,7 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
         <div className={open ? "relative block md:static" : "hidden"}>
           {children}
         </div>
-      </div>
+      </fieldset>
     </FocusTrap>
   );
 };
