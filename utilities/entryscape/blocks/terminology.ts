@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Entry } from "@entryscape/entrystore-js";
-import { Translate } from "next-translate";
+// biome-ignore-all lint/suspicious/noExplicitAny: Unknown types from entrystore-js
+import type { Entry } from "@entryscape/entrystore-js";
+import type { Translate } from "next-translate";
 
 import { includeLangInPath } from "@/utilities/check-lang";
 import {
@@ -11,8 +11,8 @@ import {
 export const terminologyBlocks = (t: Translate, lang: string) => [
   {
     block: "conceptLink",
-    run: function (node: any, a2: any, a3: any, entry: Entry) {
-      if (node && node.firstElementChild && entry) {
+    run: (node: any, a2: any, a3: any, entry: Entry) => {
+      if (node?.firstElementChild && entry) {
         const baseUrl = window.location.origin;
         const el = document.createElement("a");
 

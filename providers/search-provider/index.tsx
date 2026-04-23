@@ -1,21 +1,21 @@
-import { Entry } from "@entryscape/entrystore-js";
-import { useRouter } from "next/router";
-import { I18n } from "next-translate";
+import type { Entry } from "@entryscape/entrystore-js";
+import type { useRouter } from "next/router";
+import type { I18n } from "next-translate";
 import withTranslation from "next-translate/withTranslation";
 import { decode, encode } from "qss";
-import { Component, createContext, ReactNode } from "react";
+import { Component, createContext, type ReactNode } from "react";
 
 import { ESRdfType, ESType } from "@/types/entrystore-core";
-import {
-  HitSpecification,
+import type {
+  ESFacetField,
   FacetSpecification,
-  SearchFacetValue,
+  HitSpecification,
   SearchFacet,
+  SearchFacetValue,
   SearchRequest,
   SearchResult,
-  ESFacetField,
 } from "@/types/search";
-import { DCATData, fetchDCATMeta } from "@/utilities";
+import { type DCATData, fetchDCATMeta } from "@/utilities";
 import { EntrystoreService } from "@/utilities/entrystore/entrystore.service";
 
 /* eslint-disable no-unused-vars */
@@ -712,7 +712,7 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
     }
 
     let fetchResults = false;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     const qs = decode(window.location.search.substring(1)) as any;
 
     // Parse query parameters

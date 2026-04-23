@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useState } from "react";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import { Button } from "@/components/button";
 import { Container } from "@/components/layout/container";
@@ -301,7 +301,7 @@ export const DatasetPage: FC = () => {
               </div>
             </div>
 
-            {/* Catalog informaton wrapper */}
+            {/* Catalog information wrapper */}
             <div
               data-test-id="catalog-information"
               className="box-border w-full bg-white p-md"

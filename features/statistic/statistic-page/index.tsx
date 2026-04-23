@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect } from "react";
+import { type FC, useContext, useEffect } from "react";
 
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";

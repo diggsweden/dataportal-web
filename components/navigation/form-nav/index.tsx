@@ -1,11 +1,11 @@
-import { createFocusTrap, FocusTrap } from "focus-trap";
+import { createFocusTrap, type FocusTrap } from "focus-trap";
 import useTranslation from "next-translate/useTranslation";
 import {
-  Dispatch,
-  FC,
-  KeyboardEvent,
-  RefObject,
-  SetStateAction,
+  type Dispatch,
+  type FC,
+  type KeyboardEvent,
+  type RefObject,
+  type SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -21,7 +21,7 @@ import { handleScroll } from "@/utilities/form-utils";
 interface ContainerDpDwnProps {
   pageNames: string[];
   setPage: Dispatch<SetStateAction<number>>;
-  scrollRef: RefObject<HTMLSpanElement>;
+  scrollRef: RefObject<HTMLSpanElement | null>;
   className?: string;
   forceUpdate?: number;
   countQuestionsPerSection?: {

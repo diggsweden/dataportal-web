@@ -1,10 +1,10 @@
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { FC, Fragment, useEffect, useState } from "react";
+import { type FC, Fragment, useEffect, useState } from "react";
 
 import GlobeIcon from "@/assets/icons/globe.svg";
 import { ButtonLink } from "@/components/button";
-import { MenuLinkIconFragment } from "@/graphql/__generated__/operations";
+import type { MenuLinkIconFragment } from "@/graphql/__generated__/operations";
 
 interface TopNavProps {
   setOpenSideBar: (_param: boolean) => void;
@@ -44,6 +44,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
                   >
                     <span
                       className="inline-flex"
+                      // biome-ignore lint/security/noDangerouslySetInnerHtml: Icon is HTML
                       dangerouslySetInnerHTML={{ __html: menu.icon }}
                       aria-hidden="true"
                     />

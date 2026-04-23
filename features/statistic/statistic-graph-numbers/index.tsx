@@ -1,5 +1,11 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC, ReactNode, useContext, useEffect, useState } from "react";
+import {
+  type FC,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import { Heading } from "@/components/typography/heading";
 import { StatisticListItemHistory } from "@/features/statistic/statistic-list-item-history";

@@ -1,5 +1,5 @@
-import { cva, VariantProps } from "class-variance-authority";
-import { FC, HTMLAttributes, PropsWithChildren } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import type { FC, HTMLAttributes, PropsWithChildren } from "react";
 
 const container = cva(["container"], {
   variants: {

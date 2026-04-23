@@ -1,6 +1,6 @@
 import FocusTrap from "focus-trap-react";
 import useTranslation from "next-translate/useTranslation";
-import { FC, PropsWithChildren, useEffect, useState } from "react";
+import { type FC, type PropsWithChildren, useEffect, useState } from "react";
 
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/chevron-up.svg";

@@ -1,11 +1,11 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import type { FC } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { ButtonLink } from "@/components/button";
 import { CustomImage } from "@/components/custom-image";
 import { Heading } from "@/components/typography/heading";
-import { PromotedContentFragment } from "@/graphql/__generated__/operations";
+import type { PromotedContentFragment } from "@/graphql/__generated__/operations";
 
 export const PromotedContentBlock: FC<PromotedContentFragment> = ({
   heading,

@@ -1,11 +1,12 @@
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useEffect } from "react";
+import { type FC, useEffect } from "react";
 
-import { FormData } from "@/components/blocks/fortroendemodellen-v2";
+import type { FormData } from "@/components/blocks/fortroendemodellen-v2";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { FormTypes } from "@/types/form";
+import { trackEvent } from "@/lib/matomo";
+import type { FormTypes } from "@/types/form";
 
 type Props = {
   formDataArray: FormTypes[][];
@@ -39,18 +40,14 @@ export const FormEnding: FC<Props> = ({
         item.title.toLowerCase() === "vad heter ai-systemet?",
     );
 
-    // Track the event with Matomo
-    if (window._paq) {
-      const name = nameField && "value" in nameField ? nameField.value : "";
-      const organisationNumber = localStorage.getItem(`${pathname}OrgNumber`);
+    const name = nameField && "value" in nameField ? nameField.value : "";
+    const organisationNumber = localStorage.getItem(`${pathname}OrgNumber`);
 
-      window._paq.push([
-        "trackEvent",
-        "Förtroendemodellen - formulär utfört",
-        `Organisationsnummer: ${organisationNumber || "ej ifyllt"}`,
-        `AI-systemets namn: ${name || "ej ifyllt"}`,
-      ]);
-    }
+    trackEvent(
+      "Förtroendemodellen - formulär utfört",
+      `Organisationsnummer: ${organisationNumber || "ej ifyllt"}`,
+      `AI-systemets namn: ${name || "ej ifyllt"}`,
+    );
   }, [formDataArray]);
 
   const questionStats = countQuestionsPerSection.reduce(

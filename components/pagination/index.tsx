@@ -1,8 +1,9 @@
 import useTranslation from "next-translate/useTranslation";
-import { useState, useEffect, Dispatch, FC } from "react";
+import { type Dispatch, type FC, useEffect, useState } from "react";
 
 import ChevronLeftIcon from "@/assets/icons/chevron-left.svg";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
+
 interface PaginationProps {
   totalResults: number;
   itemsPerPage: number;
@@ -32,7 +33,7 @@ export const Pagination: FC<PaginationProps> = ({
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.addEventListener("resize", () =>
-        setScreenSize(window.innerWidth > 600 ? false : true),
+        setScreenSize(window.innerWidth > 600),
       );
     }
   }, []);
@@ -85,7 +86,7 @@ export const Pagination: FC<PaginationProps> = ({
 
   useEffect(() => {
     if (pageNumber) {
-      setCurrentPage(isNaN(pageNumber) ? 1 : pageNumber);
+      setCurrentPage(Number.isNaN(pageNumber) ? 1 : pageNumber);
     }
   }, [pageNumber]);
 
@@ -106,6 +107,7 @@ export const Pagination: FC<PaginationProps> = ({
       </span>
       <div className="flex flex-wrap items-center">
         <button
+          type="button"
           tabIndex={currentPage === 1 ? -1 : 0}
           onClick={() => changePageNumber(currentPage - 1)}
           className={`focus--in flex h-xl w-xl items-center justify-center bg-white focus-visible:bg-brown-200 ${
@@ -120,6 +122,7 @@ export const Pagination: FC<PaginationProps> = ({
         </button>
         {pagination().map((value: number | string, idx: number) => (
           <button
+            type="button"
             onClick={
               value === "..." || value === currentPage
                 ? () => null
@@ -140,6 +143,7 @@ export const Pagination: FC<PaginationProps> = ({
           </button>
         ))}
         <button
+          type="button"
           tabIndex={currentPage === totalPages ? -1 : 0}
           onClick={() => changePageNumber(currentPage + 1)}
           className={`focus--in flex h-xl w-xl items-center justify-center bg-white focus-visible:bg-brown-200 ${

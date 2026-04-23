@@ -2,17 +2,15 @@ import reactenv from "@beam-australia/react-env";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { FC, useState, useContext } from "react";
+import { type FC, useState } from "react";
 
-import { EnvSettings, SettingsUtil } from "@/env";
-import { SeoDataFragment } from "@/graphql/__generated__/operations";
+import { type EnvSettings, SettingsUtil } from "@/env";
+import type { SeoDataFragment } from "@/graphql/__generated__/operations";
 import { defaultSettings } from "@/providers/settings-provider";
-import { TrackingContext } from "@/providers/tracking-provider";
 import generateCSP from "@/utilities/generate-csp";
 
 export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
   const [env] = useState<EnvSettings>(SettingsUtil.create());
-  const { activateMatomo } = useContext(TrackingContext);
   const pathname = usePathname();
   const { locale } = useRouter();
   const { title, description, image, robotsFollow, robotsIndex } = seo || {};
@@ -24,7 +22,7 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
     "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor";
 
   const isDraft = pathname?.substring(0, 7) === "/drafts";
-  const allowSEO = env.envName == "prod" && !isDraft;
+  const allowSEO = env.envName === "prod" && !isDraft;
 
   return (
     <Head>
@@ -105,22 +103,6 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
         content="w0YYxJ7mqlvbxEYUahNuFqQEgViod8_jgBykWc3TYzE"
       />
 
-      {/* Matomo Tag Manager */}
-      {activateMatomo && (
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-                var _mtm = window._mtm = window._mtm || [];
-                _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
-                (function() {
-                  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-                  g.async=true; g.src='https://webbanalys.digg.se/js/container_hV6fNi9j.js'; s.parentNode.insertBefore(g,s);
-                })();
-              `,
-          }}
-        />
-      )}
-      {/* End Matomo Tag Manager */}
       <link
         rel="icon"
         type="image/png"

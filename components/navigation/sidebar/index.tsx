@@ -1,11 +1,17 @@
-import { createFocusTrap, FocusTrap } from "focus-trap";
+import { createFocusTrap, type FocusTrap } from "focus-trap";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useRef, useEffect, useState, KeyboardEvent } from "react";
+import {
+  type FC,
+  type KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { SidebarLink } from "@/components/navigation/sidebar/sidebar-link";
-import { MenuLinkIconFragment } from "@/graphql/__generated__/operations";
+import type { MenuLinkIconFragment } from "@/graphql/__generated__/operations";
 import { useClickOutside } from "@/hooks/use-click-outside";
-import { SubLink } from "@/types/global";
+import type { SubLink } from "@/types/global";
 
 interface NavSideProps {
   openSideBar: boolean;
@@ -62,7 +68,6 @@ export const Sidebar: FC<NavSideProps> = ({
   return (
     <nav
       id="sidebar"
-      role="navigation"
       ref={ref}
       className={`absolute right-none top-[8.5rem] z-50 -mb-[8.5rem] h-[calc(100%-8.5rem)] overflow-y-auto 
       overflow-x-hidden bg-white transition-all duration-300 ease-in-out md:overflow-y-visible

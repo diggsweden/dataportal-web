@@ -1,7 +1,7 @@
 import Link from "next/link.js";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useRef, useState, useContext } from "react";
+import { type FC, useContext, useRef, useState } from "react";
 
 import CrossIcon from "@/assets/icons/cross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
@@ -10,7 +10,7 @@ import DataportalTestLogo from "@/assets/logos/dataportalTest.svg";
 import DataportalLogo from "@/assets/logos/sveriges_dataportal_logo.svg";
 import { Button, ButtonLink } from "@/components/button";
 import { SearchInput } from "@/features/search/search-input";
-import { MenuLinkFragment } from "@/graphql/__generated__/operations";
+import type { MenuLinkFragment } from "@/graphql/__generated__/operations";
 import { useClickOutside } from "@/hooks/use-click-outside";
 import { SettingsContext } from "@/providers/settings-provider";
 

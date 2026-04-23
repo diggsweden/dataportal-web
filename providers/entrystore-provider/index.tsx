@@ -1,20 +1,27 @@
-import { Entry, EntryStore, Metadata } from "@entryscape/entrystore-js";
+import type { Entry, EntryStore, Metadata } from "@entryscape/entrystore-js";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { createContext, FC, ReactNode, useEffect, useState } from "react";
-
-import { EnvSettings } from "@/env";
-import { SettingsUtil } from "@/env/settings-util";
-import { ESEntry, PageType } from "@/types/entrystore-core";
-import { OrganisationData } from "@/types/organisation";
-import { ESFacetField, ESFacetFieldValue } from "@/types/search";
 import {
-  Choice,
+  createContext,
+  type FC,
+  type ReactNode,
+  useEffect,
+  useState,
+} from "react";
+
+import type { EnvSettings } from "@/env";
+import { SettingsUtil } from "@/env/settings-util";
+import type { ESEntry, PageType } from "@/types/entrystore-core";
+import type { OrganisationData } from "@/types/organisation";
+import type { ESFacetField, ESFacetFieldValue } from "@/types/search";
+import {
+  type Choice,
   fetchDCATMeta,
   handleLocale,
   includeLangInPath,
 } from "@/utilities";
+import { EntrystoreService } from "@/utilities/entrystore/entrystore.service";
 import {
   formatTerminologyAddress,
   getContactEmail,
@@ -24,7 +31,6 @@ import {
   getTemplateChoices,
   termsPathResolver,
 } from "@/utilities/entrystore/entrystore-helpers";
-import { EntrystoreService } from "@/utilities/entrystore/entrystore.service";
 
 const defaultESEntry: ESEntry = {
   env: SettingsUtil.getDefault(),

@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import type { FC } from "react";
 
 import { BlockList } from "@/components/blocks/block-list";
 import { ButtonLink } from "@/components/button";
@@ -10,7 +10,7 @@ import { ContentBox } from "@/components/content-box";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { StartPageDataFragment } from "@/graphql/__generated__/operations";
+import type { StartPageDataFragment } from "@/graphql/__generated__/operations";
 import { dataCategories } from "@/utilities/data-categories";
 
 const DynamicStatisticGraph = dynamic(

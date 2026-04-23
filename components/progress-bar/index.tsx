@@ -1,5 +1,5 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import type { FC } from "react";
 
 /* eslint-disable no-unused-vars */
 type Props = {
@@ -28,7 +28,7 @@ export const ProgressBar: FC<Props> = ({ page, totalPages }) => {
         style={{ width: `${percentage}%` }}
         aria-hidden="true"
       >
-        {page + "/" + totalPages}
+        {`${page}/${totalPages}`}
       </div>
     </div>
   );

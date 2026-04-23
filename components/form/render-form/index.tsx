@@ -1,6 +1,12 @@
-import { Translate } from "next-translate";
+import type { Translate } from "next-translate";
 import useTranslation from "next-translate/useTranslation";
-import { ChangeEvent, DragEvent, FC, useCallback, useState } from "react";
+import {
+  type ChangeEvent,
+  type DragEvent,
+  type FC,
+  useCallback,
+  useState,
+} from "react";
 
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
@@ -14,7 +20,7 @@ import { TextInput } from "@/components/form/text-input";
 import { Textarea } from "@/components/form/textarea";
 import { Heading } from "@/components/typography/heading";
 import { HtmlParser } from "@/components/typography/html-parser";
-import { FormTypes, FormChoice } from "@/types/form";
+import type { FormChoice, FormTypes } from "@/types/form";
 
 const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
   const [visible, setVisible] = useState(false);
@@ -46,7 +52,7 @@ const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
           visible ? "visible" : "hidden"
         }`}
       >
-        {HtmlParser({ text })}
+        <HtmlParser text={text} />
       </p>
     </div>
   );
@@ -58,7 +64,7 @@ export const addLabel = (
   ID: number,
   title: string,
 ) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // biome-ignore lint/correctness/useHookAtTopLevel: addLabel is a JSX-returning helper; refactor to a component in the App Router port.
   const { t } = useTranslation("pages");
   return (
     <div className="flex flex-col gap-md">
@@ -128,7 +134,7 @@ const FormItem = (
       return (
         <div className="form-item">
           {addLabel(item.number, Type, ID, item.title)}
-          {item.info && PopOver({ text: item.info, title: item.title })}
+          {item.info && <PopOver text={item.info} title={item.title} />}
           <TextInput
             id={`${Type}${ID}`}
             placeholder={t("form$placeholder-text")}
@@ -144,7 +150,7 @@ const FormItem = (
       return (
         <div className="form-item">
           {addLabel(item.number, Type, ID, item.title)}
-          {item.info && PopOver({ text: item.info, title: item.title })}
+          {item.info && <PopOver text={item.info} title={item.title} />}
           <Textarea
             name={`${Type}${ID}`}
             id={`${Type}${ID}`}
@@ -177,7 +183,7 @@ const FormItem = (
             }
           >
             {addLabel(item.number, Type, ID, item.title)}
-            {item.info && PopOver({ text: item.info, title: item.title })}
+            {item.info && <PopOver text={item.info} title={item.title} />}
             <div className="flex flex-col gap-md lg:flex-row lg:items-center">
               {item.choices.map((choice) => {
                 return (
@@ -197,7 +203,7 @@ const FormItem = (
               {item.selected?.popup && item.selected.popup.length > 0 && (
                 <div className="w-fit border p-xs lg:ml-lg">
                   <span className="text-sm">
-                    {HtmlParser({ text: item.selected?.popup })}
+                    <HtmlParser text={item.selected?.popup ?? ""} />
                   </span>
                 </div>
               )}
@@ -209,7 +215,7 @@ const FormItem = (
             item.selected.popup.length > 0 && (
               <>
                 <span className="text-sm text-textSecondary">
-                  {HtmlParser({ text: item.selected?.popup })}
+                  <HtmlParser text={item.selected?.popup ?? ""} />
                 </span>
                 <Textarea
                   id={`${Type}${ID}`}
@@ -236,7 +242,7 @@ const FormItem = (
 
           {item.text.markdown?.length && item.text.markdown?.length > 9 && (
             <div className="text">
-              {HtmlParser({ text: item.text.markdown })}
+              <HtmlParser text={item.text.markdown} />
             </div>
           )}
         </div>
@@ -270,7 +276,7 @@ const FormItem = (
               item.selected.popup.length > 0 && (
                 <div className="w-fit border p-xs">
                   <span className="text-sm">
-                    {HtmlParser({ text: item.selected?.popup })}
+                    <HtmlParser text={item.selected?.popup ?? ""} />
                   </span>
                 </div>
               )}

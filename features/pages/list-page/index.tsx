@@ -1,13 +1,13 @@
 import { usePathname } from "next/navigation";
-import { useRouter, NextRouter } from "next/router";
-import { FC, useContext, useEffect, useState } from "react";
+import { type NextRouter, useRouter } from "next/router";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import { Button } from "@/components/button";
 import { GridList } from "@/components/grid-list";
 import { Container } from "@/components/layout/container";
 import { Pagination } from "@/components/pagination";
 import { Heading } from "@/components/typography/heading";
-import {
+import type {
   GoodExampleBlockItemFragment,
   NewsBlockItemFragment,
   ToolDataFragment,

@@ -1,4 +1,4 @@
-import {
+import type {
   ChangeEvent,
   Dispatch,
   MouseEvent,
@@ -7,14 +7,14 @@ import {
 } from "react";
 
 import { ParseDocToHtml } from "@/components/typography/parse-doc-to-html";
-import {
+import type {
   FoertroendemodellenFormClientQuery,
   FoertroendemodellenFormClientQueryVariables,
   FormDataFragment,
 } from "@/graphql/__generated__/operations";
 import { gqlFetch } from "@/graphql/fetcher";
 import { FOETROENDEMODELLEN_FORM_CLIENT_QUERY } from "@/graphql/formQuery";
-import { FormTypes } from "@/types/form";
+import type { FormTypes } from "@/types/form";
 
 /* Import json */
 export const ImportFromJsonFile = (
@@ -118,7 +118,7 @@ export const ImportFromJsonFile = (
 
 export const GeneratePDF = (
   e: MouseEvent<HTMLButtonElement>,
-  iframeRef: RefObject<HTMLIFrameElement>,
+  iframeRef: RefObject<HTMLIFrameElement | null>,
   formDataArray: FormTypes[][],
 ) => {
   e.preventDefault();
@@ -185,7 +185,7 @@ export const GetLocalstorageData = (
   }
 };
 
-export const handleScroll = (scrollRef: RefObject<HTMLSpanElement>) => {
+export const handleScroll = (scrollRef: RefObject<HTMLSpanElement | null>) => {
   if (
     scrollRef.current?.offsetTop === undefined ||
     window.pageYOffset === undefined
@@ -217,6 +217,6 @@ export const fetchFortroendemodellenForm = async (locale: string) => {
   // Consumers (`fortroendemodellen-v2`) mutate `elements` with custom
   // `__typename`s that aren't in the generated union; keep the previous
   // implicit `any` return contract until Phase 4 tightens types.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
   return formData as any;
 };

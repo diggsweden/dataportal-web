@@ -1,5 +1,5 @@
-import { cx, cva, VariantProps } from "class-variance-authority";
-import { ElementType, FC, HTMLAttributes, PropsWithChildren } from "react";
+import { cva, cx, type VariantProps } from "class-variance-authority";
+import type { ElementType, FC, HTMLAttributes, PropsWithChildren } from "react";
 
 const headingVariants = cva(["text-wrap"], {
   variants: {

@@ -1,13 +1,13 @@
-import url from "url";
-
 import fetchEnhanced from "fetch-enhanced";
+import type http from "http";
 import { HttpsProxyAgent } from "https-proxy-agent";
-import { GetServerSideProps } from "next/types";
+import type { GetServerSideProps } from "next/types";
 import nodeFetch from "node-fetch";
+import url from "url";
 
 import { SettingsUtil } from "../env";
 import { CONTAINER_QUERY } from "../graphql";
-import {
+import type {
   ContainerDataFragment,
   ContainersQuery,
   ContainersQueryVariables,
@@ -80,7 +80,9 @@ const getDatasets = async () => {
     const proxy = new HttpsProxyAgent(proxy_uri);
 
     const response = await proxyfetch(env.ENTRYSCAPE_SITEMAP_JSON_URL, {
-      agent: proxy,
+      // `https-proxy-agent@5` does not implement the newer http.Agent surface
+      // expected by `@types/node@20`. This path is being rewritten in Phase 4.
+      agent: proxy as unknown as http.Agent,
     });
 
     if (response.ok && response.status === 200) {
@@ -110,7 +112,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   res,
   locales,
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
   const datasets: any[] = await getDatasets();
 
   const allContainers: (ContainerDataFragment | null)[] = [];

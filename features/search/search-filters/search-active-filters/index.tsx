@@ -3,12 +3,12 @@ import useTranslation from "next-translate/useTranslation";
 import CrossIcon from "@/assets/icons/cross.svg";
 import TrashIcon from "@/assets/icons/trash.svg";
 import { Button } from "@/components/button";
-import { SearchContextData } from "@/providers/search-provider";
+import type { SearchContextData } from "@/providers/search-provider";
 import { ESRdfType } from "@/types/entrystore-core";
-import { SearchFacetValue } from "@/types/search";
+import type { SearchFacetValue } from "@/types/search";
 import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 
-import { SearchMode } from "../index";
+import type { SearchMode } from "../index";
 
 interface SearchActiveFiltersProps {
   search: SearchContextData;
@@ -69,8 +69,8 @@ export function SearchActiveFilters({
       ([_, facet]) =>
         facet.customSearch &&
         facet.customSearch.length === search.request.esRdfTypes?.length &&
-        facet.customSearch.every(
-          (type) => search.request.esRdfTypes?.includes(type),
+        facet.customSearch.every((type) =>
+          search.request.esRdfTypes?.includes(type),
         ),
     )
     .map(([key, facet]) => ({

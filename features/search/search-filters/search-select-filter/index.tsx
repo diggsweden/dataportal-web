@@ -1,5 +1,5 @@
 import FocusTrap from "focus-trap-react";
-import { FC, useContext, useState } from "react";
+import { type FC, useContext, useState } from "react";
 
 import CheckDoneIcon from "@/assets/icons/check-done.svg";
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC, useEffect, useRef, useState, MouseEvent } from "react";
+import { type FC, type MouseEvent, useEffect, useRef, useState } from "react";
 
 import { Heading } from "@/components/typography/heading";
-import { Anchorlink } from "@/types/global";
+import type { Anchorlink } from "@/types/global";
 
 interface StickyNavProps {
   menuItems: Anchorlink[];

@@ -1,11 +1,11 @@
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import type { FC } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { CustomImage } from "@/components/custom-image";
 import { Heading } from "@/components/typography/heading";
-import {
+import type {
   GoodExampleBlockItemFragment,
   GoodExampleDataFragment,
   NewsBlockItemFragment,

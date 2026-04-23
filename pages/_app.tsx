@@ -2,7 +2,7 @@ import reactenv from "@beam-australia/react-env";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { usePathname } from "next/navigation";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -11,34 +11,34 @@ import { Header } from "@/components/layout/header";
 import { Hero } from "@/components/layout/hero";
 import { MetaData } from "@/components/meta-data";
 import {
+  type BreadcrumbProps,
   Breadcrumbs,
-  BreadcrumbProps,
 } from "@/components/navigation/breadcrumbs";
 import { Sidebar } from "@/components/navigation/sidebar";
 import {
   SkipToContent,
   skipToElement,
 } from "@/components/navigation/skip-to-content";
-import { EnvSettings, SettingsUtil } from "@/env";
+import { type EnvSettings, SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { CookieBanner } from "@/features/cookie-banner";
-import {
+import type {
   MenuLinkFragment,
   MenuLinkIconFragment,
   NavigationDataFragment,
 } from "@/graphql/__generated__/operations";
+import { MatomoProvider } from "@/lib/matomo";
 import {
-  LocalStore,
+  type LocalStore,
   LocalStoreProvider,
 } from "@/providers/local-store-provider";
 import {
   defaultSettings,
   SettingsProvider,
 } from "@/providers/settings-provider";
-import { TrackingProvider } from "@/providers/tracking-provider";
-import { SubLink, SubLinkFooter } from "@/types/global";
+import type { SubLink, SubLinkFooter } from "@/types/global";
 import {
-  DataportalPageProps,
+  type DataportalPageProps,
   getNavigationData,
   linkBase,
   resolvePage,
@@ -47,19 +47,14 @@ import "@/styles/main.css";
 
 const getCookiesAccepted = () => {
   try {
-    const store: LocalStore = JSON.parse(localStorage.getItem("digg-store")!);
-    return store ? store.cookieSettings?.analytic.accepted == true : false;
+    const store: LocalStore = JSON.parse(
+      localStorage.getItem("digg-store") ?? "{}",
+    );
+    return store ? store.cookieSettings?.analytic.accepted === true : false;
   } catch {
     return false;
   }
 };
-
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    _paq: any[];
-  }
-}
 
 interface DataportalenProps extends AppProps {
   navigationData: {
@@ -95,7 +90,6 @@ function Dataportal({
   // Put shared props into state to persist between pages that doesn't use getStaticProps
   const [env, setEnv] = useState<EnvSettings | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [matomoActivated, setMatomoActivated] = useState<boolean>(true);
   const [openSideBar, setOpenSideBar] = useState(false);
   const { seo, heading, heroImage, preamble } = resolvePage(
     pageProps as DataportalPageProps,
@@ -122,35 +116,18 @@ function Dataportal({
   useEffect(() => {
     if (typeof window !== "undefined") {
       const isSandbox = window.location.host.includes("sandbox");
-      //if host is run from sandbox, load that environment and disable matomo
+      // Sandbox hosts load the sandbox environment and disable Matomo.
       if (isSandbox) {
         setEnv(new Settings_Sandbox());
-        setMatomoActivated(false);
       } else {
         setEnv(SettingsUtil.create());
       }
     }
   }, []);
 
-  // Matomo tracking page view
-  useEffect(() => {
-    if (!matomoActivated) return;
-
-    const matomoInstance = window._paq || [];
-
-    // Track initial page view
-    if (matomoInstance) {
-      matomoInstance.push(["setCustomUrl", window.location.pathname]);
-      matomoInstance.push(["trackPageView"]);
-    }
-
-    router.events.on("routeChangeComplete", () => {
-      if (matomoInstance) {
-        matomoInstance.push(["setCustomUrl", window.location.pathname]);
-        matomoInstance.push(["trackPageView"]);
-      }
-    });
-  }, [router.events]);
+  const matomoDisabled =
+    process.env.NEXT_PUBLIC_DISABLE_MATOMO === "1" ||
+    env instanceof Settings_Sandbox;
 
   let searchProps = null;
 
@@ -185,8 +162,10 @@ function Dataportal({
       }}
     >
       <LocalStoreProvider>
-        <TrackingProvider
-          initalActivation={getCookiesAccepted() && matomoActivated}
+        <MatomoProvider
+          disabled={matomoDisabled}
+          initialConsent={getCookiesAccepted() ?? false}
+          nonce={env.nonce}
         >
           <MetaData seo={seo} />
           <div id="scriptsPlaceholder" />
@@ -258,7 +237,7 @@ function Dataportal({
               openSideBar={openSideBar}
             />
           </div>
-        </TrackingProvider>
+        </MatomoProvider>
       </LocalStoreProvider>
     </SettingsProvider>
   );

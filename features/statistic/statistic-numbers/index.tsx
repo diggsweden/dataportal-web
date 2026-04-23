@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 import { useContext, useEffect, useState } from "react";
 
-import { EnvSettings } from "@/env";
+import type { EnvSettings } from "@/env";
 import { StatisticDataPresentation } from "@/features/statistic/statistic-data-presentation";
 import { SettingsContext } from "@/providers/settings-provider";
 

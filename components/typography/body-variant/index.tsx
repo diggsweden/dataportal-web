@@ -1,6 +1,6 @@
-import { cx, cva, VariantProps } from "class-variance-authority";
+import { cva, cx, type VariantProps } from "class-variance-authority";
 import Link from "next/link";
-import { ElementType, FC, PropsWithChildren } from "react";
+import type { ElementType, FC, PropsWithChildren } from "react";
 
 import QuoteIcon from "@/assets/icons/quote.svg";
 import { isExternalLink } from "@/utilities";

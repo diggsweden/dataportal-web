@@ -1,7 +1,7 @@
 import useTranslation from "next-translate/useTranslation";
 
-import { Dataportal_LinkType } from "@/graphql/__generated__/types";
-import { Breadcrumb, DiggLink } from "@/types/global";
+import type { Dataportal_LinkType } from "@/graphql/__generated__/types";
+import type { Breadcrumb, DiggLink } from "@/types/global";
 
 /**
  * Make @param str URL-friendly

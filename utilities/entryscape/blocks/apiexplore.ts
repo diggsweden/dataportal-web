@@ -1,4 +1,4 @@
-import { Translate } from "next-translate";
+import type { Translate } from "next-translate";
 
 import { customIndicators } from "./global";
 

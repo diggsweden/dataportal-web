@@ -88,8 +88,7 @@
 }
 
 .totMQA .esbExpandHead > button {
-  @apply m-none rounded-sm hover:bg-brown-200 focus:shadow-none focus-visible:bg-brown-200
-  focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-primary;
+  @apply m-none rounded-sm hover:bg-brown-200 focus:shadow-none focus-visible:bg-brown-200 focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-primary;
 }
 
 .totMQA .esbExpandHead > button[title="Visa mindre"] {
@@ -132,8 +131,7 @@
 .totMQA .page-link:not(:disabled),
 .subordinateConcepts .page-link:not(:disabled),
 .totTerminology .page-link:not(:disabled) {
-  @apply border-none bg-white text-brown-900 shadow-none hover:bg-brown-200 focus-visible:bg-brown-200
-  focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:-outline-offset-2 focus-visible:outline-primary !important;
+  @apply border-none bg-white text-brown-900 shadow-none hover:bg-brown-200 focus-visible:bg-brown-200 focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:-outline-offset-2 focus-visible:outline-primary !important;
 }
 
 .totMQA .page-link[disabled="true"],

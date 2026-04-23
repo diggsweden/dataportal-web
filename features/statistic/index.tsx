@@ -1,8 +1,14 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC, ReactNode, useContext, useEffect, useState } from "react";
+import {
+  type FC,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import { Heading } from "@/components/typography/heading";
-import { EnvSettings } from "@/env";
+import type { EnvSettings } from "@/env";
 import { StatisticListItem } from "@/features/statistic/statistic-list-item";
 import { getNumbersData } from "@/features/statistic/statistic-numbers";
 import { SettingsContext } from "@/providers/settings-provider";

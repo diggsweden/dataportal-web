@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-import {
+import type {
   NewsItemQuery,
   NewsItemQueryVariables,
 } from "../../graphql/__generated__/operations";

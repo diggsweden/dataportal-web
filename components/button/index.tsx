@@ -1,15 +1,15 @@
-import { cx, cva, VariantProps } from "class-variance-authority";
+import { cva, cx, type VariantProps } from "class-variance-authority";
 import Link from "next/link";
 import {
-  FC,
-  PropsWithChildren,
-  ButtonHTMLAttributes,
-  AnchorHTMLAttributes,
+  type AnchorHTMLAttributes,
+  type ButtonHTMLAttributes,
+  type FC,
+  type PropsWithChildren,
   useContext,
 } from "react";
 
 import { SettingsContext } from "@/providers/settings-provider";
-import { AddIcon } from "@/types/global";
+import type { AddIcon } from "@/types/global";
 
 const buttonVariants = cva(["button"], {
   variants: {

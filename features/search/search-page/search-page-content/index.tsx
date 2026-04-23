@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useState } from "react";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import { Container } from "@/components/layout/container";
 import { Pagination } from "@/components/pagination";
@@ -10,9 +10,9 @@ import { Heading } from "@/components/typography/heading";
 import { SearchInput } from "@/features/search/search-input";
 import { SearchPageSelector } from "@/features/search/search-page-selector";
 import { getSearchHit } from "@/features/search/utils/search-helpers";
-import { SearchHitFragment } from "@/graphql/__generated__/operations";
+import type { SearchHitFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
-import { SearchHit, SearchRequest, SearchResult } from "@/types/search";
+import type { SearchHit, SearchRequest, SearchResult } from "@/types/search";
 import { linkBase, querySearch } from "@/utilities";
 import {
   clearCurrentScrollPos,
@@ -52,7 +52,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
       PER_PAGE,
       pageNumber && pageNumber > 1 ? (pageNumber - 1) * PER_PAGE : 0,
       true,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     )) as any;
 
     const hits: SearchHit[] = result?.dataportal_Digg_Search?.hits
@@ -215,33 +215,32 @@ export const SearchPageContent: FC<SearchProps> = () => {
                 data-test-id="search-result-list"
                 className="space-y-lg md:space-y-xl"
               >
-                {searchResult.hits &&
-                  searchResult.hits.map((hit: SearchHit, index: number) => (
-                    <li className="group relative max-w-lg" key={index}>
-                      <Link
-                        href={`${cleanDoubleSlash(hit.url!)}#ref=${
-                          window ? window.location.search : ""
-                        }`}
-                        onClick={() => {
-                          saveCurrentScrollPos();
-                        }}
-                        data-tracking-name="search-hit"
-                        className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
+                {searchResult.hits?.map((hit: SearchHit, index: number) => (
+                  <li className="group relative max-w-lg" key={index}>
+                    <Link
+                      href={`${cleanDoubleSlash(hit.url!)}#ref=${
+                        window ? window.location.search : ""
+                      }`}
+                      onClick={() => {
+                        saveCurrentScrollPos();
+                      }}
+                      data-tracking-name="search-hit"
+                      className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
+                    >
+                      <Heading
+                        level={3}
+                        size="sm"
+                        className={`mb-sm font-normal text-green-600 group-focus-within:underline group-hover:underline`}
+                        lang={hit.titleLang}
                       >
-                        <Heading
-                          level={3}
-                          size="sm"
-                          className={`mb-sm font-normal text-green-600 group-focus-within:underline group-hover:underline`}
-                          lang={hit.titleLang}
-                        >
-                          {highlightWords(hit.title)}
-                        </Heading>
-                      </Link>
-                      {hit.description && (
-                        <p>{highlightWords(hit.description)}</p>
-                      )}
-                    </li>
-                  ))}
+                        {highlightWords(hit.title)}
+                      </Heading>
+                    </Link>
+                    {hit.description && (
+                      <p>{highlightWords(hit.description)}</p>
+                    )}
+                  </li>
+                ))}
               </ul>
             )}
             {searchResult?.hits && (

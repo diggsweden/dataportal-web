@@ -1,11 +1,11 @@
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useRef, useState } from "react";
+import { type FC, useRef, useState } from "react";
 
 import { BlockList } from "@/components/blocks/block-list";
 import { Button } from "@/components/button";
-import { ModuleDataFragment } from "@/graphql/__generated__/operations";
-import { FormTypes } from "@/types/form";
+import type { ModuleDataFragment } from "@/graphql/__generated__/operations";
+import type { FormTypes } from "@/types/form";
 import { GeneratePDF } from "@/utilities/form-utils";
 
 import { Modal } from "../../modal";

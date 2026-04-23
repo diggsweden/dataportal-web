@@ -1,13 +1,19 @@
-import { createFocusTrap, FocusTrap } from "focus-trap";
+import { createFocusTrap, type FocusTrap } from "focus-trap";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { FC, KeyboardEvent, useEffect, useRef, useState } from "react";
+import {
+  type FC,
+  type KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import CrossIcon from "@/assets/icons/cross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { Button } from "@/components/button";
-import { ContainerDataFragment } from "@/graphql/__generated__/operations";
+import type { ContainerDataFragment } from "@/graphql/__generated__/operations";
 import { useClickOutside } from "@/hooks/use-click-outside";
 
 interface ContainerDpDwnProps {

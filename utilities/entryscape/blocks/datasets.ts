@@ -1,11 +1,11 @@
-import { Translate } from "next-translate";
+import type { Translate } from "next-translate";
 
 import {
   catalog,
+  customIndicators,
   exploreApiLink,
   keyword,
   theme,
-  customIndicators,
 } from "./global";
 
 export const datasetBlocks = (

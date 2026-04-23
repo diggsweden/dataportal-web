@@ -1,9 +1,9 @@
 import { gql } from "graphql-tag";
 
 import {
-  FORM_ELEMENT_FRAGMENT,
   CHOICE_FRAGMENT,
   FOETROENDEMODELLEN_FORM_FRAGMENT_FORM,
+  FORM_ELEMENT_FRAGMENT,
 } from "./fragments";
 
 export const FORM_DATA_FRAGMENT = gql`

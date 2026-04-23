@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 import i18n from "./i18n";
 
@@ -23,14 +23,14 @@ function getLocale(request: NextRequest): string {
 }
 
 /**
- * Middleware for handling locale-based routing
+ * Proxy (formerly `middleware`, renamed in Next 16) for handling locale-based routing.
  *
  * Rules:
  * 1. If URL contains default locale (sv), remove it
  * 2. If URL has no locale and it's not default locale, add it
  * 3. If URL already has a non-default locale, leave it as is
  */
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // Special handling for root path

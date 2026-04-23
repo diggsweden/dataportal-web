@@ -1,12 +1,12 @@
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import React, { FC, useContext, useEffect, useState } from "react";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import { Button } from "@/components/button";
 import { Container } from "@/components/layout/container";
 import { CookieOptions } from "@/features/cookie-banner/cookie-options";
+import { useMatomo } from "@/lib/matomo";
 import { LocalStoreContext } from "@/providers/local-store-provider";
-import { TrackingContext } from "@/providers/tracking-provider";
 
 export type CookieSetting = {
   [key: string]: CookieProperties;
@@ -29,7 +29,7 @@ export const CookieBanner: FC<{
   setSettingsOpen: (value: boolean) => void;
 }> = ({ settingsOpen, setSettingsOpen }) => {
   const { store, set } = useContext(LocalStoreContext);
-  const { setActivation } = useContext(TrackingContext);
+  const { setConsent } = useMatomo();
   const { t, lang } = useTranslation();
 
   const initialCookieSetting: CookieSetting = {
@@ -53,7 +53,7 @@ export const CookieBanner: FC<{
 
   useEffect(() => {
     if (store.cookieSettings?.analytic?.accepted) {
-      setActivation(true);
+      setConsent(true);
     }
   }, [store.cookieSettings?.analytic?.accepted]);
 

@@ -1,8 +1,8 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { Heading } from "@/components/typography/heading";
 import { HtmlParser } from "@/components/typography/html-parser";
-import { TextFragment } from "@/graphql/__generated__/operations";
+import type { TextFragment } from "@/graphql/__generated__/operations";
 import { parseLanguageMarkup } from "@/utilities/check-lang";
 
 export const TextBlock: FC<TextFragment> = ({ heading, text }) => {
@@ -14,7 +14,7 @@ export const TextBlock: FC<TextFragment> = ({ heading, text }) => {
         </Heading>
       )}
 
-      {text.markdown && HtmlParser({ text: text.markdown })}
+      {text.markdown && <HtmlParser text={text.markdown} />}
     </div>
   );
 };

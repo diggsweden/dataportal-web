@@ -1,11 +1,11 @@
-import { cx, cva, VariantProps } from "class-variance-authority";
+import { cva, cx, type VariantProps } from "class-variance-authority";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import React, {
-  FC,
-  HTMLAttributes,
-  PropsWithChildren,
+import {
+  type FC,
+  type HTMLAttributes,
+  type PropsWithChildren,
   useContext,
   useEffect,
   useState,
@@ -14,7 +14,7 @@ import React, {
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import PixelsImage from "@/assets/icons/pixels.svg";
-import { MenuLinkFragment } from "@/graphql/__generated__/operations";
+import type { MenuLinkFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 import { isExternalLink } from "@/utilities";
 
@@ -161,6 +161,7 @@ export const SidebarLink: FC<
     return (
       <>
         <button
+          type="button"
           className={`focus--in focus--underline group flex w-full cursor-pointer flex-row items-center
             gap-md whitespace-normal p-md text-left text-brown-600 ${
               open && "font-strong text-brown-900"
@@ -177,6 +178,7 @@ export const SidebarLink: FC<
         >
           {icon && (
             <span
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: Icon is HTML
               dangerouslySetInnerHTML={{ __html: icon }}
               className={`flex-shrink-0 ${open ? "text-pink-600" : ""}`}
             />

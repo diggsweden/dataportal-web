@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 import { usePathname } from "next/navigation";
-import { Translate } from "next-translate";
+import type { Translate } from "next-translate";
 import useTranslation from "next-translate/useTranslation";
-import { Environment } from "prismjs";
-import React, { useContext, useEffect, useState } from "react";
+import type { Environment } from "prismjs";
+import type React from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { BlockList } from "@/components/blocks/block-list";
 import { Container } from "@/components/layout/container";
@@ -11,9 +12,9 @@ import { ContainerNav } from "@/components/navigation/container-nav";
 import { StickyNav } from "@/components/navigation/sticky-nav";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { ContainerDataFragment } from "@/graphql/__generated__/operations";
+import type { ContainerDataFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
-import { Anchorlink } from "@/types/global";
+import type { Anchorlink } from "@/types/global";
 import { checkLang, linkBase } from "@/utilities";
 
 /**
@@ -23,7 +24,7 @@ export const highlightCodeBlock = async () => {
   // ? Fix to get <br/> as line-breaks
   (await require("prismjs")).hooks.add(
     "before-highlight",
-    function (env: Environment) {
+    (env: Environment) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       env.code = (env.element as HTMLElement).innerText;
     },

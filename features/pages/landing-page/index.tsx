@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect } from "react";
+import { type FC, useContext, useEffect } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
@@ -14,7 +14,7 @@ import { GridList } from "@/components/grid-list";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import {
+import type {
   ContainerDataFragment,
   GoodExampleBlockItemFragment,
   GoodExampleDataFragment,

@@ -1,10 +1,10 @@
 import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useState } from "react";
+import { type FC, useContext, useState } from "react";
 
 import CrossIcon from "@/assets/icons/cross.svg";
 import PlusIcon from "@/assets/icons/plus.svg";
 import { HtmlParser } from "@/components/typography/html-parser";
-import { FaqFragment as IFaq } from "@/graphql/__generated__/operations";
+import type { FaqFragment as IFaq } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 
 interface AccordionBlockProps extends IFaq {
@@ -23,6 +23,7 @@ export const AccordionBlock: FC<AccordionBlockProps> = ({
   return (
     <div title={question}>
       <button
+        type="button"
         id={`accordion-${idx}`}
         className="group inline-flex w-full flex-row items-center justify-between gap-md hyphens-auto py-lg text-start"
         onClick={() => setOpen(!open)}
@@ -46,14 +47,13 @@ export const AccordionBlock: FC<AccordionBlockProps> = ({
         </span>
       </button>
       {open && (
-        <div
+        <section
           id={`section-${idx}`}
-          role="region"
           aria-labelledby={`accordion-${idx}`}
           className="space-y-md pb-lg"
         >
-          {answer.markdown && HtmlParser({ text: answer.markdown })}
-        </div>
+          {answer.markdown && <HtmlParser text={answer.markdown} />}
+        </section>
       )}
     </div>
   );

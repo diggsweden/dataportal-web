@@ -1,5 +1,5 @@
 import FortroendemodellenImage from "@/assets/logos/fortroendemodellen.png";
-import { FormTypes, TextArea } from "@/types/form";
+import type { FormTypes, TextArea } from "@/types/form";
 
 const renderTextAndImages = (field: TextArea) => {
   if (field.images && Object.keys(field.images).length > 0) {

@@ -1,10 +1,12 @@
-# Next 15 + App Router + gqlFetch migration
+# Next 16 + App Router + gqlFetch migration
 
-Incrementally upgrade to Next 15 / React 19, replace Apollo Client with a plain `gqlFetch` helper, migrate to the App Router, switch i18n from next-translate to next-intl, and push as much rendering as possible into React Server Components.
+Incrementally upgrade to Next 16 / React 19, replace Apollo Client with a plain `gqlFetch` helper, migrate to the App Router, switch i18n from next-translate to next-intl, and push as much rendering as possible into React Server Components.
+
+> **Note:** this plan was originally scoped to Next 15. By the time Phase 2 landed, Next 16 was stable and is a small hop from 15 (mostly App Router async-request tightening + Turbopack default for `next build`). We target 16 to avoid a near-term re-upgrade. Filename is kept for continuity.
 
 ## Target end state
 
-- Next `^15`, React `^19`, TypeScript unchanged, Node `>=20` recommended (Next 15 requirement).
+- Next `^16`, React `^19`, TypeScript unchanged, Node `>=20` recommended.
 - No `@apollo/client`, no `apollo` CLI. All GraphQL traffic goes through a single `graphql/fetcher.ts` (`gqlFetch<TData, TVars>(doc, vars, { revalidate, tags, cache })`) that works on server and client.
 - No `pages/` directory. All routing under `app/[locale]/...` with `next-intl`.
 - Data fetching happens in **Server Components** by default. Client Components only where strictly required: state, effects, browser APIs, Entryscape, Matomo, Swagger UI, react-player, react-vis, focus-trap, cookie banner, interactive nav.
@@ -46,6 +48,7 @@ Goal: remove Apollo without touching routing. This de-risks everything after.
   - URL resolution: `typeof window === "undefined" ? process.env.APOLLO_URL : reactEnv("APOLLO_URL")`.
   - Maps `opts.revalidate`, `opts.tags`, `opts.cache` onto `fetch(..., { cache, next })`.
   - Inspects `json.errors` and throws a `GqlError` with the array attached.
+  - Runs an `addTypename(doc)` transform before `print` that walks every non-root `SelectionSet` and injects `__typename` if missing. This replicates Apollo's default `InMemoryCache({ addTypename: true })` behavior which the codebase still depends on for runtime union/interface discrimination (e.g. `item.__typename === "dataportal_Digg_Tool"` in `components/grid-list`). Cached per-`DocumentNode` via a `WeakMap`. Slated for removal in Phase 5 once codegen bakes `__typename` into the documents at build time.
 - Port every call site in `utilities/query-helpers.ts` (14 `client.query` + 1 `browserclient.query`) and `utilities/form-utils.ts` (`fetchFortroendemodellenForm`) to `gqlFetch`. Keep the existing `{ props, revalidate, notFound }` return shape for now so `getStaticProps` pages keep working.
 - Remove `<ApolloProvider>` from `pages/_app.tsx` and `pages/_document.tsx`. Nothing inside uses `useQuery`/`useMutation`/`useApolloClient`, confirmed by grep.
 - Delete `graphql/client.ts`.
@@ -77,7 +80,7 @@ Coexists with `pages/` - no route ported yet.
   - Uses `NextIntlClientProvider` with messages from the request config.
   - Static layout chrome (Header shell, Footer, Hero outer) stays server-rendered; interactive sub-components are Client Components.
 - Add `components/providers.tsx` marked `"use client"`:
-  - Wraps `SettingsProvider`, `LocalStoreProvider`, `TrackingProvider`, `NextIntlClientProvider` for client consumers.
+  - Wraps `SettingsProvider`, `LocalStoreProvider`, `MatomoProvider` (`@/lib/matomo`), `NextIntlClientProvider` for client consumers.
 - Move the shared layout state (`breadcrumbState`, `imageHero`, `openSideBar`, `settingsOpen`) out of `pages/_app.tsx` into a new `LayoutStateProvider` client context so it survives the move off `_app`.
 - Replace every `next/router` import with `next/navigation` (`useRouter`/`usePathname`/`useSearchParams`); replace `router.events.on("routeChangeComplete", ...)` (Matomo) with an effect on `[pathname, searchParams]`.
 - Add `app/[locale]/not-found.tsx`, `app/[locale]/error.tsx`, `app/global-error.tsx`.
@@ -127,17 +130,21 @@ Default rule of thumb: if a component doesn't import `react`'s state/effect hook
 - **`@beam-australia/react-env` + RSC.** `/__ENV.js` must still load before any client provider reads `reactEnv(...)`. Layout injects the script with the CSP nonce; runtime env stays runtime.
 - **Entryscape library.** Browser-only, DOM-dependent. All `useEntryScapeBlocks` consumers must be Client Components, loaded via `next/dynamic(..., { ssr: false })` where hydration would otherwise race the library's DOM mounting.
 - **Apollo cache wasn't doing anything.** Confirmed by code search: no hooks, no reactive vars, every query used `no-cache`. Removing Apollo is safe.
-- **Node version.** Next 15 wants Node 18.18+ (ideally 20). Bump CI/Dockerfile before Phase 2.
+- **Node version.** Next 16 wants Node 20.9+ (Dockerfile already on `node:22-alpine`, local Node is v24). Bump `engines.node` to `>=20` in `package.json`.
 
 ## Todo checklist
 
 - [x] **Phase 1:** add `graphql/fetcher.ts` (`gqlFetch`) and port all `query-helpers` + `form-utils` call sites off Apollo.
 - [x] **Phase 1:** remove `ApolloProvider` from `_app`/`_document`, delete `graphql/client.ts`, drop `@apollo/client` + `apollo` deps, switch introspect to `graphql-codegen`.
-- [ ] **Phase 2:** upgrade to Next 15 / React 19 on the Pages Router, run Next codemods, fix `images.remotePatterns` and `fetch` cache defaults.
-- [ ] **Phase 3:** add `middleware.ts` (next-intl + CSP nonce), `i18n/request.ts`, `app/[locale]/layout.tsx`, `components/providers.tsx`, `LayoutStateProvider`, not-found/error pages; switch `next/router` -> `next/navigation`.
+- [ ] **Phase 2:** upgrade to Next 16 / React 19 on the Pages Router, run Next codemods, fix `images.remotePatterns` and `fetch` cache defaults.
+- [ ] **Phase 3:** extend `proxy.ts` (next-intl + CSP nonce — the Phase 2 rename already moved `middleware.ts` to `proxy.ts`), add `i18n/request.ts`, `app/[locale]/layout.tsx`, `components/providers.tsx`, `LayoutStateProvider`, not-found/error pages; switch `next/router` -> `next/navigation`.
 - [ ] **Phase 3:** flatten locale JSON (drop `|` and `$` separators) and codemod every `t()` call; wire `next-intl` pathnames from `routes.json` for localized slugs.
 - [ ] **Phase 4:** port static/API/sitemap routes to `app/` (healthcheck, auth, sitemap, 404).
 - [ ] **Phase 4:** port start/landing/container/list/form pages and CMS routes (nyheter, goda-exempel, stod-och-verktyg, [...containerSlug], fortroendemodellen tree).
 - [ ] **Phase 4:** port Entryscape route families one PR each (datasets, dataservice, concepts, specifications, terminology, organisations, metadatakvalitet, dataset-series, external*, drafts).
 - [ ] **Phase 4:** flatten `query-helpers` return shape (data-or-throw) and move revalidate to page-level `export const revalidate` / `gqlFetch` tags.
 - [ ] **Phase 5:** delete `pages/`, remove `next-translate` + plugin, audit `"use client"` boundaries, add `revalidateTag` webhook, update docs and run Lighthouse.
+- [ ] **Phase 5:** migrate GraphQL layer to `@graphql-codegen/typed-document-node` (or `client-preset`). Typed documents remove the `<TData, TVars>` generics at every `gqlFetch` call site and let us drop the `graphql-tag` runtime dep. Defer until after the App Router port so the query files can be split route-locally in one pass.
+  - If we adopt `preset: "client"` with `documentMode: "string"` (the "other project" setup), codegen will bake `__typename` into every operation/fragment at build time. At that point, delete the `addTypename(doc)` transform in `graphql/fetcher.ts` — it becomes redundant and just adds latency per request.
+  - If we stop at the plain `typed-document-node` preset, `__typename` is **not** injected (that preset only emits `TypedDocumentNode<TData, TVars>` types around the existing source) and the runtime `addTypename` transform in `gqlFetch` must stay.
+  - Either way, verify post-migration by diffing an outgoing request body against a pre-migration capture: `__typename` selections must still be present on every nested selection set, otherwise `components/grid-list` and any other discriminator-based component will silently render the wrong variant.

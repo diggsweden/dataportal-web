@@ -1,5 +1,5 @@
 import Document, {
-  DocumentContext,
+  type DocumentContext,
   Head,
   Html,
   Main,
@@ -8,8 +8,8 @@ import Document, {
 
 import { LocalStoreProvider } from "@/providers/local-store-provider";
 import {
-  SettingsProvider,
   defaultSettings,
+  SettingsProvider,
 } from "@/providers/settings-provider";
 
 import { SettingsUtil } from "../env";
@@ -43,7 +43,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html data-scroll-behavior="smooth">
         <Head nonce={SettingsUtil.getCurrent().nonce}>
           <script
             nonce={SettingsUtil.getCurrent().nonce}

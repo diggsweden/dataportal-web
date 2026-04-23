@@ -1,17 +1,23 @@
 import useTranslation from "next-translate/useTranslation";
-import { useEffect, useState, FC, Dispatch, SetStateAction } from "react";
+import {
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 
 import ListCompactIcon from "@/assets/icons/list-compact.svg";
 import ListDetailedIcon from "@/assets/icons/list-detailed.svg";
 import { Button } from "@/components/button";
 import { Pagination } from "@/components/pagination";
 import { Heading } from "@/components/typography/heading";
-import { SearchMode } from "@/features/search/search-filters";
+import type { SearchMode } from "@/features/search/search-filters";
 import { SearchSelectFilter } from "@/features/search/search-filters/search-select-filter";
 import { SearchHit } from "@/features/search/search-hit";
 import {
+  type SearchContextData,
   SearchSortOrder,
-  SearchContextData,
 } from "@/providers/search-provider";
 import {
   clearCurrentScrollPos,

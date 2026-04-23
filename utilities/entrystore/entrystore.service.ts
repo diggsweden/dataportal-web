@@ -1,24 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  type Entry,
   EntryStore,
   EntryStoreUtil,
-  Entry,
-  Metadata,
+  type Metadata,
 } from "@entryscape/entrystore-js";
 // @ts-expect-error no types.
 import { namespaces } from "@entryscape/rdfjson";
-import { Translate } from "next-translate";
+import type { Translate } from "next-translate";
 
 import { SearchSortOrder } from "@/providers/search-provider";
 import {
-  ESType,
+  type ESFacetField,
+  type ESFacetFieldValue,
   ESRdfType,
-  ESFacetFieldValue,
-  ESFacetField,
-  PageType,
-  RelatedTerm,
+  ESType,
+  type PageType,
+  type RelatedTerm,
 } from "@/types/entrystore-core";
-import {
+import type {
   FacetSpecification,
   HitSpecification,
   SearchFacet,
@@ -28,23 +27,23 @@ import {
   SearchResult,
 } from "@/types/search";
 import {
-  getEntryLang,
-  resourcesSearch,
-  listChoices,
-  getTemplateChoices,
-  getLocalizedChoiceLabel,
-  getUriNames,
-  Choice,
-  getLocalizedValue,
+  type Choice,
   fetchDCATMeta,
+  getEntryLang,
+  getLocalizedChoiceLabel,
+  getLocalizedValue,
+  getTemplateChoices,
+  getUriNames,
   includeLangInPath,
+  listChoices,
+  resourcesSearch,
 } from "@/utilities";
 
-import { DCATData } from "../dcat-utils";
+import type { DCATData } from "../dcat-utils";
 import {
   parseEmail,
-  termsPathResolver,
   specsPathResolver,
+  termsPathResolver,
 } from "./entrystore-helpers";
 import { entryCache } from "./local-cache";
 
@@ -304,7 +303,7 @@ export class EntrystoreService {
 
     try {
       const entryList = await searchList.getEntries(request.page || 0);
-      let metaFacets;
+      let metaFacets: ReturnType<typeof searchList.getFacets> | undefined;
 
       if (request.fetchFacets) {
         metaFacets = searchList.getFacets();
@@ -320,8 +319,8 @@ export class EntrystoreService {
             const uris = fg.values
               .filter((v: SearchFacet) => {
                 if (facetSpec.customProperties?.length) {
-                  return facetSpec.customProperties.some(
-                    (p: string) => v.name?.startsWith(p),
+                  return facetSpec.customProperties.some((p: string) =>
+                    v.name?.startsWith(p),
                   );
                 }
                 return v.name?.toLocaleLowerCase().startsWith("http");
@@ -412,9 +411,12 @@ export class EntrystoreService {
     }
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: Unknown type
   public async getResources(resources: string[]): Promise<any> {
+    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     const result: any[] = [];
     const maxRequestUriLength = 1500;
+    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     const requestPromises: Promise<any>[] = [];
 
     while (resources.length) {
@@ -674,15 +676,12 @@ export class EntrystoreService {
         (spec) => spec.resource === "http://www.w3.org/ns/dcat#theme",
       );
 
-      if (
-        themeFacetSpec &&
-        themeFacetSpec.dcatFilterEnabled &&
-        themeFacetSpec.dcatProperty
-      ) {
+      if (themeFacetSpec?.dcatFilterEnabled && themeFacetSpec.dcatProperty) {
         try {
           const whitelist = await listChoices("dcat:theme", dcat!);
           values["theme_literal"] = metadata
             .find(null, "http://www.w3.org/ns/dcat#theme")
+            // biome-ignore lint/suspicious/noExplicitAny: Unknown type
             .map((f: any) => f.getValue())
             .filter((value: string) => whitelist.includes(value))
             .map((value: string) => this.t(value));
@@ -692,6 +691,7 @@ export class EntrystoreService {
       } else {
         values["theme_literal"] = metadata
           .find(null, "http://www.w3.org/ns/dcat#theme")
+          // biome-ignore lint/suspicious/noExplicitAny: Unknown type
           .map((f: any) => this.t(f.getValue()));
       }
 
@@ -699,15 +699,12 @@ export class EntrystoreService {
         (spec) => spec.resource === "http://purl.org/dc/terms/format",
       );
 
-      if (
-        formatFacetSpec &&
-        formatFacetSpec.dcatFilterEnabled &&
-        formatFacetSpec.dcatProperty
-      ) {
+      if (formatFacetSpec?.dcatFilterEnabled && formatFacetSpec.dcatProperty) {
         try {
           const whitelist = await listChoices("dcterms:format", dcat!);
           values["format_literal"] = metadata
             .find(null, "http://purl.org/dc/terms/format")
+            // biome-ignore lint/suspicious/noExplicitAny: Unknown type
             .map((f: any) => f.getValue())
             .filter((value: string) => whitelist.includes(value))
             .map((value: string) => this.t(value));
@@ -717,6 +714,7 @@ export class EntrystoreService {
       } else {
         values["format_literal"] = metadata
           .find(null, "http://purl.org/dc/terms/format")
+          // biome-ignore lint/suspicious/noExplicitAny: Unknown type
           .map((f: any) => this.t(f.getValue()));
       }
 
@@ -729,6 +727,7 @@ export class EntrystoreService {
         for (const facet of customFacets) {
           const hasResource = metadata
             .find(entry.getResourceURI(), facet.resource)
+            // biome-ignore lint/suspicious/noExplicitAny: Unknown type
             .some((f: any) => {
               const value = f.getValue();
 
@@ -763,6 +762,7 @@ export class EntrystoreService {
 
       values["modified"] = metadata
         .find(null, "http://purl.org/dc/terms/modified")
+        // biome-ignore lint/suspicious/noExplicitAny: Unknown type
         .map((f: any) => f.getValue());
     } else {
       const metadata = entry.getAllMetadata();

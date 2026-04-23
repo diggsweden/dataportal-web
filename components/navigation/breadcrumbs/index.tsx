@@ -1,6 +1,6 @@
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import type { FC } from "react";
 
 import BreadcrumbDividerIcon from "@/assets/icons/breadcrumb-divider.svg";
 import HomeIcon from "@/assets/icons/home.svg";

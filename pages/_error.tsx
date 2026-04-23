@@ -1,5 +1,5 @@
-import { NextPage } from "next";
-import NextErrorComponent, { ErrorProps } from "next/error";
+import type { NextPage } from "next";
+import NextErrorComponent, { type ErrorProps } from "next/error";
 
 import serverLogger from "../utilities/logger";
 

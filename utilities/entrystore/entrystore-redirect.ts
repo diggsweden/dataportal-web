@@ -1,13 +1,12 @@
-import { Entry } from "@entryscape/entrystore-js";
-import { NextRouter } from "next/router";
+import type { Entry } from "@entryscape/entrystore-js";
+import type { NextRouter } from "next/router";
 import getT from "next-translate/getT";
 
 import { SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
-import { RedirectConfig } from "@/types/global";
-
-import { EntrystoreService } from "./entrystore.service";
+import type { RedirectConfig } from "@/types/global";
 import { includeLangInPath } from "../check-lang";
+import { EntrystoreService } from "./entrystore.service";
 
 export async function handleEntryStoreRedirect(
   config: RedirectConfig,
