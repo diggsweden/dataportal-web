@@ -13,6 +13,7 @@ import { SearchInput } from "@/features/search/search-input";
 import type { MenuLinkFragment } from "@/graphql/__generated__/operations";
 import { useClickOutside } from "@/hooks/use-click-outside";
 import { SettingsContext } from "@/providers/settings-provider";
+import { includeLangInPath } from "@/utilities/check-lang";
 
 interface MainNavProps {
   setOpenSideBar: (_param: boolean) => void;
@@ -48,7 +49,7 @@ const MainNav: FC<MainNavProps> = ({
   return (
     <div className="flex flex-row items-center justify-between">
       <Link
-        href={`${t(`common.${"lang-path"}`)}`}
+        href={includeLangInPath(lang) || "/"}
         aria-label="Dataportal logga länk till startsida"
         onClick={() => setOpenSideBar(false)}
         className="forced-colors-visible"
@@ -108,7 +109,7 @@ const MainNav: FC<MainNavProps> = ({
                     } [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900 focus-visible:[&_div_div_button]:-outline-offset-2 focus-visible:[&_div_div_button]:outline-white`
                   : "w-none overflow-hidden"
               }`}
-              action={`/${lang}/search`}
+              action={`${includeLangInPath(lang)}/search`}
               role={"search"}
             >
               <SearchInput

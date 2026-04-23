@@ -1,6 +1,6 @@
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { type ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/button";
@@ -34,6 +34,7 @@ export interface FormData {
 
 export const FortroendemodellenFrom = () => {
   const router = useRouter();
+  const locale = useLocale();
   const t = useTranslations();
   const pathname = usePathname();
   const [formData, setFormData] = useState<FormData | null>(null);
@@ -85,7 +86,7 @@ export const FortroendemodellenFrom = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await fetchFortroendemodellenForm(router.locale || "sv");
+      const data = await fetchFortroendemodellenForm(locale);
       data.elements = [...informationSection, ...data.elements];
       // Add IDs to elements
       if (data.elements) {
@@ -108,7 +109,7 @@ export const FortroendemodellenFrom = () => {
     if (router.isReady) {
       getFortroendemodellenForm();
     }
-  }, [router.isReady, router.locale]);
+  }, [router.isReady, locale]);
 
   // Process form elements when formData changes
   useEffect(() => {

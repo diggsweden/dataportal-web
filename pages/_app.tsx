@@ -50,6 +50,7 @@ import {
   getNavigationData,
   resolvePage,
 } from "@/utilities";
+import { includeLangInPath } from "@/utilities/check-lang";
 import { initBreadcrumb } from "@/utilities/layout-breadcrumb";
 import "@/styles/main.css";
 
@@ -147,7 +148,7 @@ const DataportalChrome: FC<DataportalenProps> = ({
 
   if (pathname === "/" || pathname === `/${t("routes.search-api.path")}`) {
     searchProps = {
-      destination: `/${lang}/datasets`,
+      destination: `${includeLangInPath(lang)}/datasets`,
       placeholder: t("pages.startpage.search_placeholder"),
     };
   }
@@ -282,9 +283,10 @@ Dataportal.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
 
   // Resolve locale + messages up-front so every Pages Router page renders
-  // inside `NextIntlClientProvider`. `appContext.router.locale` is set by
-  // Next's `i18n` config; we fall back to the default when it's absent
-  // (e.g. statically-optimized 404 render).
+  // inside `NextIntlClientProvider`. With the native `i18n` block removed from
+  // `next.config.mjs` (Option B of the migration plan), `appContext.router.locale`
+  // is always `undefined` in Pages Router, so we fall back to the default. `/en`
+  // gets re-enabled per-route as each tree moves under `app/[locale]/`.
   const rawLocale = appContext.router.locale ?? routing.defaultLocale;
   const locale = isAppLocale(rawLocale) ? rawLocale : routing.defaultLocale;
   const [messages, resources] = await Promise.all([

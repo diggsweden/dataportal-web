@@ -569,7 +569,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           data.terms.termsInfo = termsList
             .map((t) => ({
               title: getLocalizedValue(t.getAllMetadata(), "dcterms:title"),
-              url: `/${lang}/terminology/${t
+              url: `${includeLangInPath(lang)}/terminology/${t
                 .getContext()
                 .getId()}_${t.getId()}`,
             }))

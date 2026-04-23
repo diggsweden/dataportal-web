@@ -10,6 +10,7 @@ import { Settings_Sandbox } from "@/env/settings.sandbox";
 import type { ResourceLabel } from "@/i18n/types";
 import type { RedirectConfig } from "@/types/global";
 
+import { includeLangInPath } from "../check-lang";
 import type { Choice, ChoiceTemplate, DCATData } from "../dcat-utils";
 import { entryCache } from "./local-cache";
 
@@ -132,7 +133,7 @@ export function formatDatasetUrl(
 ): string {
   return baseUrls.some((url) => ds.getResourceURI().startsWith(url))
     ? new URL(ds.getResourceURI()).pathname
-    : `/${lang}/datasets/${contextId}_${ds.getId()}`;
+    : `${includeLangInPath(lang)}/datasets/${contextId}_${ds.getId()}`;
 }
 
 export function formatSpecificationUrl(
@@ -142,7 +143,7 @@ export function formatSpecificationUrl(
 ): string {
   return baseUrls.some((url) => uri.startsWith(url))
     ? new URL(uri).pathname
-    : `/${lang}/externalspecification?resource=${uri}`;
+    : `${includeLangInPath(lang)}/externalspecification?resource=${uri}`;
 }
 
 export function formatTerminologyAddress(

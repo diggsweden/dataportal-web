@@ -42,21 +42,16 @@ const csp = [
 ];
 
 // `createNextIntlPlugin` wires the App Router message loader
-// (`i18n/request.ts`). The Pages Router still uses Next's native `i18n`
-// config below so `router.locale` / `asPath` behave as before; the messages
-// are loaded in `pages/_app.tsx` via `loadLocaleMessages` and passed to
-// `NextIntlClientProvider` at the tree root.
+// (`i18n/request.ts`). We intentionally do NOT set Next's native Pages Router
+// `i18n` option here: it's incompatible with the App Router and `next-intl`
+// logs a warning when both are present. During the migration, Pages Router
+// routes are effectively Swedish-only (callers read `useLocale()` from
+// `next-intl`, which resolves to `routing.defaultLocale` outside `app/`);
+// `/en` gets re-enabled per-route as each tree moves under `app/[locale]/`.
+// See `docs/next15-app-router-migration.md` for the full rollout.
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const coreNextConfig = {
-  // Native Pages Router i18n. Matches the locales defined in `i18n/routing.ts`
-  // and keeps Swedish un-prefixed (localeDetection: false preserves existing
-  // SEO URLs). App Router locale handling is layered on top by `next-intl`.
-  i18n: {
-    locales: ["sv", "en"],
-    defaultLocale: "sv",
-    localeDetection: false,
-  },
   turbopack: {
     rules: {
       "*.svg": {
