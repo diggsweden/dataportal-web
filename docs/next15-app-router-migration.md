@@ -172,7 +172,7 @@ lib/
 
 - **next-intl + localized slugs.** `locales/sv/routes.json` encodes localized paths (e.g. `datasets` -> `/data-apier`). These must be expressed in `next-intl`'s `pathnames` config; otherwise links break. Budget time to build a generator from `routes.json` to the pathnames map so we keep a single source of truth.
 - **Flattening `|`/`$` keys.** Breaks every `t("ns|key$sub")` call. Do it via codemod in Phase 3; don't attempt it piecemeal.
-- **`@beam-australia/react-env` + RSC.** `/__ENV.js` must still load before any client provider reads `reactEnv(...)`. Layout injects the script with the CSP nonce; runtime env stays runtime.
+- **`@beam-australia/react-env` + RSC.** `/__ENV.js` must still load before any client provider reads `reactEnv(...)`. **`app/layout.tsx`** now injects the script with the CSP **`nonce`** for App Router HTML; **`pages/_document.tsx`** still does the same for Pages Router.
 - **Entryscape library.** Browser-only, DOM-dependent. All `useEntryScapeBlocks` consumers must be Client Components, loaded via `next/dynamic(..., { ssr: false })` where hydration would otherwise race the library's DOM mounting.
 - **Apollo cache wasn't doing anything.** Confirmed by code search: no hooks, no reactive vars, every query used `no-cache`. Removing Apollo is safe.
 - **Node version.** Next 16 wants Node 20.9+ (Dockerfile already on `node:22-alpine`, local Node is v24). Bump `engines.node` to `>=20` in `package.json`.
@@ -182,9 +182,18 @@ lib/
 - [x] **Phase 1:** add `graphql/fetcher.ts` (`gqlFetch`) and port all `query-helpers` + `form-utils` call sites off Apollo.
 - [x] **Phase 1:** remove `ApolloProvider` from `_app`/`_document`, delete `graphql/client.ts`, drop `@apollo/client` + `apollo` deps, switch introspect to `graphql-codegen`.
 - [x] **Phase 2:** upgrade to Next 16 / React 19 on the Pages Router, run Next codemods, fix `images.remotePatterns` and `fetch` cache defaults.
-- [x] **Phase 3 (partial):** `proxy.ts` runs `next-intl` middleware + per-request `x-nonce`; `i18n/routing.ts` + `i18n/request.ts`; `next-intl` plugin in `next.config.mjs`; `app/layout.tsx`, `app/[locale]/layout.tsx`, `components/providers.tsx` (`NextIntlClientProvider`), `LayoutStateProvider` + `utilities/layout-breadcrumb.ts`, `app/[locale]/not-found.tsx` / `error.tsx`, `app/global-error.tsx`. **Still TODO:** wire `SettingsUtil`/CSP to `x-nonce`, move `<head>` chrome from `_document` into App layouts, finish `next/router` → `next/navigation` on remaining ~30 `pages/` + feature modules.
-- [ ] **Phase 3:** flatten locale JSON (drop `|` and `$` separators) and codemod every `t()` call; wire `next-intl` `pathnames` from `routes.json` (deferred until first `app/[locale]` routes exist so rewrites have targets).
-- [ ] **Phase 4:** port static/API/sitemap routes to `app/` (healthcheck, auth, sitemap, 404).
+- [x] **Phase 3 — shell & App bridge (done):**
+  - [x] **`proxy.ts`:** `next-intl` middleware + per-request **`x-nonce`** on the request.
+  - [x] **`i18n/routing.ts`**, **`i18n/request.ts`**, `next-intl` (+ `next-translate`) in **`next.config.mjs`**.
+  - [x] **`app/layout.tsx`:** minimal `<html>` / `<body>` + **`<head>`** parity with **`_document`** for App routes (`/__ENV.js` **with nonce**, Screen9 CSS, preconnects, `theme-color`).
+  - [x] **`app/[locale]/layout.tsx`:** passes **`cspNonce`** into client providers.
+  - [x] **`AppRouterProviders`** (`components/app-router-providers.tsx`, re-exported from `components/providers.tsx`): **`LayoutStateProvider`**, **`SettingsProvider`**, **`LocalStoreProvider`**, **`MatomoProvider`**, **`NextIntlClientProvider`**; shared **`readDiggStoreAnalyticConsentAccepted`**, **`useClientEnvSettings`** (no duplicate logic vs `_app`).
+  - [x] **`LayoutStateProvider`** in **`pages/_app.tsx`** for Pages chrome; **`utilities/layout-breadcrumb.ts`**.
+  - [x] **`app/[locale]/not-found.tsx`**, **`error.tsx`**, **`app/global-error.tsx`**.
+  - [x] **Navigation audit:** **`pages/_app`** uses **`next/navigation`** where appropriate (`usePathname`); **`pages/*`** and features that only run under the Pages Router **may keep `next/router`** until those routes move to `app/` (then switch to `next/navigation` per route). No global “grep-replace all `next/router`” requirement for Phase 3.
+  - [x] **Phase 4 pulled forward:** **`app/api/healthcheck/route.ts`**, **`app/api/auth/route.ts`** (+ removal of duplicate **`pages/api`** handlers).
+- [ ] **Phase 4 — i18n cutover (was overstuffed in original “Phase 3” text):** flatten locale JSON (drop `|` / `$`) + codemod every `t()`; single message strategy; generate and wire **`next-intl` `pathnames`** from **`locales/*/routes.json`** when **`app/[locale]`** document routes exist (rewrites must not target missing `page.tsx`).
+- [ ] **Phase 4:** port `/sitemap.xml` → `app/sitemap.ts` (and `/robots` if applicable).
 - [ ] **Phase 4:** port start/landing/container/list/form pages and CMS routes (nyheter, goda-exempel, stod-och-verktyg, [...containerSlug], fortroendemodellen tree).
 - [ ] **Phase 4:** port Entryscape route families one PR each (datasets, dataservice, concepts, specifications, terminology, organisations, metadatakvalitet, dataset-series, external*, drafts).
 - [ ] **Phase 4:** flatten `query-helpers` return shape (data-or-throw) and move revalidate to page-level `export const revalidate` / `gqlFetch` tags.

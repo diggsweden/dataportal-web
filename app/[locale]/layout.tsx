@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
@@ -26,9 +27,10 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
   const messages = await getMessages();
+  const cspNonce = (await headers()).get("x-nonce");
 
   return (
-    <AppRouterProviders locale={locale} messages={messages}>
+    <AppRouterProviders locale={locale} messages={messages} cspNonce={cspNonce}>
       {children}
     </AppRouterProviders>
   );

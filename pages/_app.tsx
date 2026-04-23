@@ -31,10 +31,7 @@ import {
   LayoutStateProvider,
   useLayoutState,
 } from "@/providers/layout-state-provider";
-import {
-  type LocalStore,
-  LocalStoreProvider,
-} from "@/providers/local-store-provider";
+import { LocalStoreProvider } from "@/providers/local-store-provider";
 import {
   defaultSettings,
   SettingsProvider,
@@ -46,18 +43,8 @@ import {
   linkBase,
   resolvePage,
 } from "@/utilities";
+import { readDiggStoreAnalyticConsentAccepted } from "@/utilities/read-digg-store-analytic-consent";
 import "@/styles/main.css";
-
-const getCookiesAccepted = () => {
-  try {
-    const store: LocalStore = JSON.parse(
-      localStorage.getItem("digg-store") ?? "{}",
-    );
-    return store ? store.cookieSettings?.analytic.accepted === true : false;
-  } catch {
-    return false;
-  }
-};
 
 interface DataportalenProps extends AppProps {
   navigationData: {
@@ -165,7 +152,7 @@ function DataportalChrome({
       <LocalStoreProvider>
         <MatomoProvider
           disabled={matomoDisabled}
-          initialConsent={getCookiesAccepted() ?? false}
+          initialConsent={readDiggStoreAnalyticConsentAccepted()}
           nonce={env.nonce}
         >
           <MetaData seo={seo} />
