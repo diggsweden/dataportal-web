@@ -268,12 +268,11 @@ export const SearchFilters: FC<SearchFilterProps> = ({
               )}
               <ul
                 className="flex w-full flex-col flex-wrap gap-md md:flex-row"
-                role="list"
                 aria-label={t("common|available-filters")}
               >
                 {Object.entries(groupFacets)
                   .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
-                  .map(([key, value], idx: number) => {
+                  .map(([key, value]) => {
                     const shouldFetchMore = value.show <= value.count;
                     const show = value?.show || 20;
                     const uniqueFacetValues = Array.from(
@@ -291,7 +290,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
 
                     if (!value.customFilter && !value.customSearch) {
                       return (
-                        <li key={`${value.title}-${idx}`} role="listitem">
+                        <li key={key}>
                           <SearchFilter
                             data-test-id="search-filter-select"
                             title={value.title}
@@ -318,7 +317,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                               />
 
                               {/* List of filter options within this category */}
-                              <ul
+                              <div
                                 data-test-id="search-filter-select-list"
                                 role="listbox"
                                 aria-multiselectable="true"
@@ -330,69 +329,70 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                   (v) => !v.title || v.title === v.resource,
                                 )
                                   ? // Show skeleton while fetching organization names
-                                    Array.from({
-                                      length: Math.min(facetValues.length, 10),
-                                    }).map((_, index) => (
-                                      <li
-                                        key={`skeleton-${index}`}
-                                        role="option"
-                                        aria-busy="true"
-                                        aria-selected={false}
-                                      >
-                                        <div className="animate-pulse py-md pl-md pr-[3rem]">
+                                    [
+                                      "sk0",
+                                      "sk1",
+                                      "sk2",
+                                      "sk3",
+                                      "sk4",
+                                      "sk5",
+                                      "sk6",
+                                      "sk7",
+                                      "sk8",
+                                      "sk9",
+                                    ]
+                                      .slice(
+                                        0,
+                                        Math.min(facetValues.length, 10),
+                                      )
+                                      .map((sk) => (
+                                        <div
+                                          key={sk}
+                                          className="animate-pulse py-md pl-md pr-[3rem]"
+                                          aria-busy="true"
+                                        >
                                           <div className="rounded h-md w-3/4 bg-brown-200" />
                                           <div className="rounded mt-xs h-sm w-1/4 bg-brown-100" />
                                         </div>
-                                      </li>
-                                    ))
+                                      ))
                                   : facetValues.map(
-                                      (
-                                        facetValue: SearchFacetValue,
-                                        index: number,
-                                      ) => (
-                                        <li
-                                          key={index}
+                                      (facetValue: SearchFacetValue) => (
+                                        <button
+                                          key={`${key}-${facetValue.resource}-${facetValue.facetValueString}`}
+                                          type="button"
                                           role="option"
                                           aria-selected={selected(
                                             key,
                                             facetValue,
                                           )}
+                                          className={`focus--in group relative flex w-full items-center break-all border-0 bg-transparent py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
+                                            selected(key, facetValue) &&
+                                            "font-strong"
+                                          }`}
+                                          onClick={() => {
+                                            doSearch(key, facetValue);
+                                          }}
                                         >
-                                          <button
-                                            className={`focus--in group relative flex w-full items-center break-all py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
-                                              selected(key, facetValue) &&
-                                              "font-strong"
-                                            }`}
-                                            onClick={() => {
-                                              doSearch(key, facetValue);
-                                            }}
-                                            role="checkbox"
-                                            aria-checked={selected(
-                                              key,
-                                              facetValue,
-                                            )}
+                                          {facetValue.title ||
+                                            facetValue.resource}{" "}
+                                          ({facetValue.count})
+                                          {/* Decorative checkbox icon */}
+                                          <span
+                                            className="absolute right-md top-1/2 -translate-y-1/2 "
+                                            aria-hidden="true"
                                           >
-                                            {facetValue.title ||
-                                              facetValue.resource}{" "}
-                                            ({facetValue.count})
-                                            {/* Decorative checkbox icon */}
-                                            <span
-                                              className="absolute right-md top-1/2 -translate-y-1/2 "
-                                              aria-hidden="true"
-                                            >
-                                              <SearchCheckboxFilterIcon
-                                                isChecked={selected(
-                                                  key,
-                                                  facetValue,
-                                                )}
-                                                iconSize={iconSize}
-                                              />
-                                            </span>
-                                          </button>
-                                        </li>
+                                            <SearchCheckboxFilterIcon
+                                              isChecked={selected(
+                                                key,
+                                                facetValue,
+                                              )}
+                                              iconSize={iconSize}
+                                            />
+                                          </span>
+                                        </button>
                                       ),
                                     )}
-                              </ul>
+                              </div>
 
                               {value.facetValues.length > value.show && (
                                 <Button
@@ -410,7 +410,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                   }
                                 />
                               )}
-                              {facetValues.length == 0 && (
+                              {facetValues.length === 0 && (
                                 <div className="p-md">
                                   {t("pages|search$nohits")}
                                 </div>
@@ -421,7 +421,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                       );
                     } else {
                       return (
-                        <li key={key} role="listitem">
+                        <li key={key}>
                           <SearchCheckboxFilter
                             key={key}
                             id={value.predicate}

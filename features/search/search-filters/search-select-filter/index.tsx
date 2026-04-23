@@ -26,7 +26,7 @@ export const SearchSelectFilter: FC<SelectProps> = ({
   const [open, setOpen] = useState(false);
   const [trapFocus, setTrapFocus] = useState(false);
   const { iconSize } = useContext(SettingsContext);
-  const ref = useClickOutside<HTMLDivElement>(() => handleOpen(false));
+  const ref = useClickOutside<HTMLFieldSetElement>(() => handleOpen(false));
 
   const handleOpen = (value: boolean) => {
     setOpen(value);
@@ -41,8 +41,9 @@ export const SearchSelectFilter: FC<SelectProps> = ({
       active={trapFocus}
       focusTrapOptions={{ allowOutsideClick: true }}
     >
-      <div
+      <fieldset
         ref={ref}
+        className="m-0 min-w-0 border-0 p-0"
         onKeyDown={(ev) => ev.key === "Escape" && handleOpen(false)}
       >
         <Button
@@ -60,45 +61,40 @@ export const SearchSelectFilter: FC<SelectProps> = ({
         />
         {open && (
           <div className={open ? "relative block" : "hidden"}>
-            <ul
+            <div
               className="absolute z-10 mt-sm border border-brown-200 bg-white shadow-lg"
               role="listbox"
               aria-labelledby={id}
             >
               {options.map((option) => (
-                <li
+                <button
                   key={option.value}
+                  type="button"
                   role="option"
                   aria-selected={option.value === value}
-                  className={`inline-flex w-full cursor-pointer hover:bg-brown-100`}
+                  className={`focus--in relative inline-flex w-full cursor-pointer text-nowrap py-sm pl-[2.25rem] pr-md text-left text-sm hover:bg-brown-100 ${
+                    selectedOption?.value === option.value ? "bg-brown-100" : ""
+                  }`}
                   onClick={() => {
                     onChange({ target: { value: option.value } });
                     handleOpen(false);
                   }}
                 >
-                  <button
-                    className={`focus--in relative w-full text-nowrap py-sm pl-[2.25rem] pr-md text-left text-sm ${
-                      selectedOption?.value === option.value
-                        ? "bg-brown-100"
-                        : ""
-                    }`}
-                  >
-                    {selectedOption?.value === option.value && (
-                      <CheckDoneIcon
-                        className="absolute mt-xs -translate-x-[1.5rem]"
-                        height={iconSize}
-                        width={iconSize}
-                        viewBox={`0 0 ${iconSize * 1.5} ${iconSize * 1.5}`}
-                      />
-                    )}
-                    {option.label}
-                  </button>
-                </li>
+                  {selectedOption?.value === option.value && (
+                    <CheckDoneIcon
+                      className="absolute mt-xs -translate-x-[1.5rem]"
+                      height={iconSize}
+                      width={iconSize}
+                      viewBox={`0 0 ${iconSize * 1.5} ${iconSize * 1.5}`}
+                    />
+                  )}
+                  {option.label}
+                </button>
               ))}
-            </ul>
+            </div>
           </div>
         )}
-      </div>
+      </fieldset>
     </FocusTrap>
   );
 };
