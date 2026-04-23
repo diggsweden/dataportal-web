@@ -1,10 +1,10 @@
-import { type RefObject, useEffect, useRef } from "react";
+import { type Ref, type RefObject, useEffect, useRef } from "react";
 
 export const useClickOutside = <T extends HTMLElement>(
   onClickOutside: () => void,
   excludedSelectors: string[] = [],
   existingRef?: RefObject<T | null>,
-) => {
+): Ref<T> => {
   const defaultRef = useRef<T | null>(null);
   const ref = existingRef || defaultRef;
 
@@ -30,6 +30,5 @@ export const useClickOutside = <T extends HTMLElement>(
     };
   }, [onClickOutside, excludedSelectors, ref]);
 
-  // Return the ref if no existing ref was provided
-  return ref;
+  return ref as Ref<T>;
 };

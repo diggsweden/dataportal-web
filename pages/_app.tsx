@@ -2,7 +2,6 @@ import reactenv from "@beam-australia/react-env";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -28,6 +27,10 @@ import type {
   NavigationDataFragment,
 } from "@/graphql/__generated__/operations";
 import { MatomoProvider } from "@/lib/matomo";
+import {
+  LayoutStateProvider,
+  useLayoutState,
+} from "@/providers/layout-state-provider";
 import {
   type LocalStore,
   LocalStoreProvider,
@@ -64,11 +67,6 @@ interface DataportalenProps extends AppProps {
   nonce: string;
 }
 
-export const initBreadcrumb = {
-  name: "",
-  crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-};
-
 /**
  * focuses on element with id provided from path
  * @param pathWithHash url path along with hash
@@ -79,29 +77,31 @@ const onHash = (pathWithHash: string) => {
   skipToElement(hash);
 };
 
-function Dataportal({
+function DataportalChrome({
   Component,
   pageProps,
+  router,
   navigationData: initialNavigationData,
 }: DataportalenProps) {
   const pathname = usePathname();
-  const { asPath } = useRouter();
   const { t, lang } = useTranslation();
-  // Put shared props into state to persist between pages that doesn't use getStaticProps
+  const {
+    settingsOpen,
+    setSettingsOpen,
+    openSideBar,
+    setOpenSideBar,
+    imageHero,
+    setImageHero,
+    breadcrumbState,
+    setBreadcrumb,
+  } = useLayoutState();
+
   const [env, setEnv] = useState<EnvSettings | null>(null);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [openSideBar, setOpenSideBar] = useState(false);
   const { seo, heading, heroImage, preamble } = resolvePage(
     pageProps as DataportalPageProps,
     lang,
     t,
   );
-
-  const [imageHero, setImageHero] = useState(heroImage);
-  const [breadcrumbState, setBreadcrumb] = useState<BreadcrumbProps>({
-    name: heading || "",
-    crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-  });
 
   const navigationData = useMemo(() => {
     if (!initialNavigationData?.items?.length) {
@@ -111,12 +111,11 @@ function Dataportal({
     return initialNavigationData?.items.find(
       (nav: NavigationDataFragment) => nav.locale === lang,
     );
-  }, [lang]);
+  }, [lang, initialNavigationData?.items]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const isSandbox = window.location.host.includes("sandbox");
-      // Sandbox hosts load the sandbox environment and disable Matomo.
       if (isSandbox) {
         setEnv(new Settings_Sandbox());
       } else {
@@ -141,12 +140,14 @@ function Dataportal({
   const conditionalPreamble =
     pathname === `/${t("routes|search-api$path")}` ? null : preamble;
 
+  const { asPath } = router;
+
   useEffect(() => {
     if (asPath.includes("#")) {
       onHash(asPath);
     }
-    setImageHero(heroImage);
-  }, [pathname]);
+    setImageHero(heroImage ?? null);
+  }, [pathname, asPath, heroImage, setImageHero]);
 
   if (!env) {
     return null;
@@ -243,10 +244,33 @@ function Dataportal({
   );
 }
 
+function Dataportal(props: DataportalenProps) {
+  const { t, lang } = useTranslation();
+  const { heading, heroImage } = resolvePage(
+    props.pageProps as DataportalPageProps,
+    lang,
+    t,
+  );
+
+  const initialBreadcrumb: BreadcrumbProps = {
+    name: heading || "",
+    crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
+  };
+
+  return (
+    <LayoutStateProvider
+      key={props.router.asPath}
+      initialBreadcrumb={initialBreadcrumb}
+      initialImageHero={heroImage ?? null}
+    >
+      <DataportalChrome {...props} />
+    </LayoutStateProvider>
+  );
+}
+
 Dataportal.getInitialProps = async (appContext: AppContext) => {
   const navigationData = await getNavigationData("all");
 
-  // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
 
   return { ...appProps, navigationData: navigationData.props };

@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import useTranslation from "next-translate/useTranslation";
 import { type FC, useState } from "react";
 
@@ -63,7 +63,7 @@ export const Hero: FC<HeroProps> = ({
   search,
   className,
 }) => {
-  const { pathname } = useRouter();
+  const pathname = usePathname();
   const { t, lang } = useTranslation();
   const isFrontpage = pathname === "/";
   const [query, setQuery] = useState("");

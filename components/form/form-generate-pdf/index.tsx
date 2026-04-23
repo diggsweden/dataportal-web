@@ -16,7 +16,7 @@ type Props = {
 };
 
 export const FormGeneratePDF: FC<Props> = ({ formDataArray, blocks }) => {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation();

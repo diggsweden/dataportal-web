@@ -1,15 +1,15 @@
 import type { NextPage } from "next";
 import NextErrorComponent, { type ErrorProps } from "next/error";
 
-import serverLogger from "../utilities/logger";
-
 interface AppErrorProps extends ErrorProps {
   err?: Error;
   hasGetInitialPropsRun?: boolean;
 }
 
 /**
- * Server application error page, uses logger instance on server rendering code
+ * Global error page. Must not import `utilities/logger` (Winston / Node-only)
+ * at module scope — Turbopack would pull it into the client bundle and fail on
+ * `fs` / `dgram` / etc.
  */
 const AppError: NextPage<AppErrorProps> = ({
   hasGetInitialPropsRun,
@@ -17,8 +17,7 @@ const AppError: NextPage<AppErrorProps> = ({
   statusCode,
 }) => {
   if (!hasGetInitialPropsRun && err) {
-    const logger = serverLogger.getInstance();
-    logger.error([err.message, err.stack]);
+    console.error(err.message, err.stack);
   }
 
   return <NextErrorComponent statusCode={statusCode} />;
@@ -29,14 +28,12 @@ AppError.getInitialProps = async (ctx) => {
     await NextErrorComponent.getInitialProps(ctx);
   errorInitialProps.hasGetInitialPropsRun = true;
   if (ctx.err) {
-    const logger = serverLogger.getInstance();
-    logger.error([ctx.err.message, ctx.err.stack]);
+    console.error(ctx.err.message, ctx.err.stack);
 
     return errorInitialProps;
   }
 
-  const logger = serverLogger.getInstance();
-  logger.error(
+  console.error(
     `_error.tsx getInitialProps missing data at path: ${ctx.asPath}`,
   );
 

@@ -56,7 +56,7 @@ const MenuLink: FC<MenuLinkProps> = ({
   setOpenSideBar,
 }) => {
   const { t } = useTranslation();
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
   const vw = window.innerWidth;
 
@@ -130,7 +130,7 @@ export const SidebarLink: FC<
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { iconSize } = useContext(SettingsContext);
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
 
   useEffect(() => {

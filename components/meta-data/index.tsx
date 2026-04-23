@@ -1,7 +1,7 @@
 import reactenv from "@beam-australia/react-env";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
 import { type FC, useState } from "react";
 
 import { type EnvSettings, SettingsUtil } from "@/env";
@@ -12,7 +12,7 @@ import generateCSP from "@/utilities/generate-csp";
 export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
   const [env] = useState<EnvSettings>(SettingsUtil.create());
   const pathname = usePathname();
-  const { locale } = useRouter();
+  const { lang: locale } = useTranslation();
   const { title, description, image, robotsFollow, robotsIndex } = seo || {};
   const strapiImageUrl = image?.url;
   const imageUrl = strapiImageUrl

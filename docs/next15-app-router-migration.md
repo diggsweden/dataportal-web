@@ -181,9 +181,9 @@ lib/
 
 - [x] **Phase 1:** add `graphql/fetcher.ts` (`gqlFetch`) and port all `query-helpers` + `form-utils` call sites off Apollo.
 - [x] **Phase 1:** remove `ApolloProvider` from `_app`/`_document`, delete `graphql/client.ts`, drop `@apollo/client` + `apollo` deps, switch introspect to `graphql-codegen`.
-- [ ] **Phase 2:** upgrade to Next 16 / React 19 on the Pages Router, run Next codemods, fix `images.remotePatterns` and `fetch` cache defaults.
-- [ ] **Phase 3:** extend `proxy.ts` (next-intl + CSP nonce — the Phase 2 rename already moved `middleware.ts` to `proxy.ts`), add `i18n/request.ts`, `app/[locale]/layout.tsx`, `components/providers.tsx`, `LayoutStateProvider`, not-found/error pages; switch `next/router` -> `next/navigation`.
-- [ ] **Phase 3:** flatten locale JSON (drop `|` and `$` separators) and codemod every `t()` call; wire `next-intl` pathnames from `routes.json` for localized slugs.
+- [x] **Phase 2:** upgrade to Next 16 / React 19 on the Pages Router, run Next codemods, fix `images.remotePatterns` and `fetch` cache defaults.
+- [x] **Phase 3 (partial):** `proxy.ts` runs `next-intl` middleware + per-request `x-nonce`; `i18n/routing.ts` + `i18n/request.ts`; `next-intl` plugin in `next.config.mjs`; `app/layout.tsx`, `app/[locale]/layout.tsx`, `components/providers.tsx` (`NextIntlClientProvider`), `LayoutStateProvider` + `utilities/layout-breadcrumb.ts`, `app/[locale]/not-found.tsx` / `error.tsx`, `app/global-error.tsx`. **Still TODO:** wire `SettingsUtil`/CSP to `x-nonce`, move `<head>` chrome from `_document` into App layouts, finish `next/router` → `next/navigation` on remaining ~30 `pages/` + feature modules.
+- [ ] **Phase 3:** flatten locale JSON (drop `|` and `$` separators) and codemod every `t()` call; wire `next-intl` `pathnames` from `routes.json` (deferred until first `app/[locale]` routes exist so rewrites have targets).
 - [ ] **Phase 4:** port static/API/sitemap routes to `app/` (healthcheck, auth, sitemap, 404).
 - [ ] **Phase 4:** port start/landing/container/list/form pages and CMS routes (nyheter, goda-exempel, stod-och-verktyg, [...containerSlug], fortroendemodellen tree).
 - [ ] **Phase 4:** port Entryscape route families one PR each (datasets, dataservice, concepts, specifications, terminology, organisations, metadatakvalitet, dataset-series, external*, drafts).

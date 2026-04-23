@@ -34,7 +34,7 @@ type Props = IForm & {
 export const FormPage: FC<Props> = ({ elements, module }) => {
   const { t } = useTranslation();
   const { setBreadcrumb } = useContext(SettingsContext);
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const [page, setPage] = useState<number>(-1);
   const scrollRef = useRef<HTMLSpanElement>(null);
   const [formDataArray, setFormDataArray] = useState<Array<Array<FormTypes>>>(

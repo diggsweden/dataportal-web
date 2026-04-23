@@ -27,7 +27,7 @@ const MainNav: FC<MainNavProps> = ({
 }) => {
   const [openSearch, setOpenSearch] = useState<boolean>(false);
   const [query, setQuery] = useState("");
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
   const { t, lang } = useTranslation();
   const ref = useClickOutside<HTMLDivElement>(() => setOpenSearch(false));

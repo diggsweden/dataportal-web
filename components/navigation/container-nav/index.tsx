@@ -23,7 +23,7 @@ interface ContainerDpDwnProps {
 
 export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
   const [expanded, setExpanded] = useState(false);
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const [vw, setVw] = useState(0);
   const { t } = useTranslation();
   const navRef = useRef<HTMLUListElement>(null);

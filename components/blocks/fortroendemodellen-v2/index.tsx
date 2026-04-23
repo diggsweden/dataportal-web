@@ -35,7 +35,7 @@ export interface FormData {
 export const FortroendemodellenFrom = () => {
   const router = useRouter();
   const { t } = useTranslation();
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const [formData, setFormData] = useState<FormData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

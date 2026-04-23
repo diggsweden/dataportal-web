@@ -17,7 +17,12 @@ export function trackEvent(
   name?: string,
   value?: number,
 ) {
-  push(["trackEvent", category, action, name, value]);
+  const cat = category?.trim() ?? "";
+  const act = action?.trim() ?? "";
+  if (!cat || !act) {
+    return;
+  }
+  push(["trackEvent", cat, act, name, value]);
 }
 
 export { push as pushMatomoCommand };

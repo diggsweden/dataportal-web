@@ -27,9 +27,11 @@ export const Sidebar: FC<NavSideProps> = ({
   const { t } = useTranslation();
   const [vw, setVw] = useState(0);
   const trapRef = useRef<FocusTrap | null>(null);
-  const ref = useClickOutside(
+  const navRef = useRef<HTMLElement>(null);
+  useClickOutside(
     () => (vw < 1200 ? setOpenSideBar(false) : null),
     ["#sidebarBtn"],
+    navRef,
   );
 
   useEffect(() => {
@@ -44,8 +46,8 @@ export const Sidebar: FC<NavSideProps> = ({
   });
 
   useEffect(() => {
-    if (openSideBar && vw < 600 && ref.current) {
-      trapRef.current = createFocusTrap(ref.current, {
+    if (openSideBar && vw < 600 && navRef.current) {
+      trapRef.current = createFocusTrap(navRef.current, {
         escapeDeactivates: false,
         allowOutsideClick: true,
       });
@@ -68,7 +70,7 @@ export const Sidebar: FC<NavSideProps> = ({
   return (
     <nav
       id="sidebar"
-      ref={ref}
+      ref={navRef}
       className={`absolute right-none top-[8.5rem] z-50 -mb-[8.5rem] h-[calc(100%-8.5rem)] overflow-y-auto 
       overflow-x-hidden bg-white transition-all duration-300 ease-in-out md:overflow-y-visible
       ${openSideBar ? "w-full md:w-[18.75rem]" : "w-none"}`}
