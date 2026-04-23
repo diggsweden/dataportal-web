@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { useLocale, useTranslations } from "next-intl";
 import { type FC, useState } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
@@ -64,7 +64,8 @@ export const Hero: FC<HeroProps> = ({
   className,
 }) => {
   const { pathname } = useRouter();
-  const { t, lang } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
   const isFrontpage = pathname === "/";
   const [query, setQuery] = useState("");
 
@@ -128,14 +129,14 @@ export const Hero: FC<HeroProps> = ({
                   <div className="grid grid-cols-2 gap-md md:gap-lg">
                     <HeroButton
                       href={`/datasets?q=&f=`}
-                      label={t("common|all-data-api")}
+                      label={t("common.all-data-api")}
                       lang={lang}
                       icon={DiamondIcon}
                     />
 
                     <HeroButton
                       href={`/specifications?q=&f=`}
-                      label={t("common|specifications")}
+                      label={t("common.specifications")}
                       lang={lang}
                       icon={SpecificationIcon}
                     />
@@ -143,14 +144,14 @@ export const Hero: FC<HeroProps> = ({
                   <div className="grid grid-cols-2  gap-md md:gap-lg">
                     <HeroButton
                       href={`/concepts?q=&f=`}
-                      label={t("common|all-concepts")}
+                      label={t("common.all-concepts")}
                       lang={lang}
                       icon={ConceptIcon}
                     />
 
                     <HeroButton
                       href={`/organisations?q=&f=`}
-                      label={t("common|organisations")}
+                      label={t("common.organisations")}
                       lang={lang}
                       icon={OrganisationIcon}
                     />

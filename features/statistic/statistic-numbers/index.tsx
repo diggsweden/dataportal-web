@@ -1,4 +1,4 @@
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { useContext, useEffect, useState } from "react";
 
 import type { EnvSettings } from "@/env";
@@ -47,7 +47,7 @@ export const getNumbersData = async (env: EnvSettings) => {
 
 export const StatisticNumbers = () => {
   const { env } = useContext(SettingsContext);
-  const { t } = useTranslation("pages");
+  const t = useTranslations();
   const [state, setState] = useState({
     publisherCount: -1,
     datasetCount: -1,
@@ -67,11 +67,11 @@ export const StatisticNumbers = () => {
   return (
     <div className="flex w-full flex-col justify-between lg:w-[18%]">
       <StatisticDataPresentation
-        dataText={t("search$datasets")}
+        dataText={t("pages.search.datasets")}
         dataNumber={state.datasetCount}
       />
       <StatisticDataPresentation
-        dataText={t("search$organisations")}
+        dataText={t("pages.search.organisations")}
         dataNumber={state.publisherCount}
       />
     </div>

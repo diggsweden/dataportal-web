@@ -1,5 +1,4 @@
-import type { Translate } from "next-translate";
-
+import type { Translate } from "@/i18n/types";
 import {
   catalog,
   customIndicators,
@@ -53,12 +52,12 @@ export const datasetBlocks = (
       template:
         '{{#ifprop "dcat:downloadURL"}}' +
         '{{#ifprop "dcat:downloadURL" min="2"}}' +
-        t("pages|datasetpage$several_links") +
+        t("pages.datasetpage.several_links") +
         "{{/ifprop}}" +
         '{{#ifprop "dcat:downloadURL" min="2" invert="true"}}' +
         '<a href="{{prop "dcat:downloadURL"}}" target="_blank" rel="noopener noreferrer" class="text-white noUnderline">' +
         '<span class="button--primary button--large text-white flex items-center !no-underline">' +
-        t("pages|datasetpage$download_link") +
+        t("pages.datasetpage.download_link") +
         '<svg xmlns="http://www.w3.org/2000/svg" width="' +
         1.5 * iconSize +
         '" height="' +
@@ -73,7 +72,7 @@ export const datasetBlocks = (
         '{{#ifprop "dcat:downloadURL" invert="true"}}' +
         '<a href="{{prop "dcat:accessURL"}}" target="_blank" rel="noopener noreferrer" class="text-white noUnderline">' +
         '<span class="button--primary button--large text-white flex items-center !no-underline">' +
-        t("pages|datasetpage$download_link_adress") +
+        t("pages.datasetpage.download_link_adress") +
         '<svg xmlns="http://www.w3.org/2000/svg" width="' +
         1.5 * iconSize +
         '" height="' +
@@ -100,7 +99,7 @@ export const datasetBlocks = (
         '<span class="text-md">{{labelish}}</span>' +
         '<a class="text-white noUnderline mr-xs" href="{{value}}" target="_blank" rel="noopener noreferrer">' +
         '<span class="button--primary button--small md:button--large text-white flex items-center !no-underline whitespace-nowrap">' +
-        t("pages|datasetpage$download_link") +
+        t("pages.datasetpage.download_link") +
         '<svg xmlns="http://www.w3.org/2000/svg" width="' +
         1.5 * iconSize +
         '" height="' +
@@ -125,7 +124,7 @@ export const datasetBlocks = (
         '{{view rdformsid="dcat:endpointDescription,dcat:dcterms:type_ds"}}' +
         '<button class="button--primary button--large flex items-center !no-underline w-fit">' +
         '{{link class="linkInBtn noUnderline" namedclick="dataservice-link" content="' +
-        t("pages|datasetpage$read_about_api") +
+        t("pages.datasetpage.read_about_api") +
         '"}}' +
         '<svg xmlns="http://www.w3.org/2000/svg" width="' +
         1.5 * iconSize +
@@ -141,15 +140,15 @@ export const datasetBlocks = (
       block: "distributionListCustom",
       extends: "list",
       relation: "dcat:distribution",
-      expandTooltip: t("pages|datasetpage$view_more"),
-      unexpandTooltip: t("pages|datasetpage$view_less"),
+      expandTooltip: t("pages.datasetpage.view_more"),
+      unexpandTooltip: t("pages.datasetpage.view_less"),
       registry: false,
       expandButton: false,
       hl: 2,
       listbody: '<div class="formats">{{body}}</div>',
       listplaceholder:
         '<div class="alert alert-info" role="alert">' +
-        t("pages|datasetpage$no_data") +
+        t("pages.datasetpage.no_data") +
         "</div>",
       rowhead:
         '<span class="flex flex-col">' +
@@ -160,7 +159,7 @@ export const datasetBlocks = (
         "{{/ifprop}}" +
         "</div>" +
         "<span>{{text fallback='<span class=\\'distributionNoName\\'>'}}</span>" +
-        t("pages|datasetpage$no_title") +
+        t("pages.datasetpage.no_title") +
         "</span>" +
         "</span>" +
         "<div class='flex flex-wrap justify-between items-end md:items-center mt-md md:mt-lg gap-lg'>" +
@@ -175,7 +174,7 @@ export const datasetBlocks = (
         '{{#ifprop "dcat:downloadURL"}}' +
         '{{#ifprop "dcat:downloadURL" min="2"}}' +
         '<h3 class="rdformsLabel !mt-none">' +
-        t("pages|datasetpage$several_links_header") +
+        t("pages.datasetpage.several_links_header") +
         "</h3>" +
         '{{fileList2 directlabel="inherit:registry"}}' +
         "{{/ifprop}}" +

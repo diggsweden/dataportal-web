@@ -1,4 +1,4 @@
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import type { FC } from "react";
 
 import { ButtonLink } from "@/components/button";
@@ -31,7 +31,7 @@ export const GridList: FC<ListProps> = ({
   showMoreLink,
   className,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <div
@@ -81,7 +81,7 @@ export const GridList: FC<ListProps> = ({
         </ul>
       ) : (
         <span data-test-id="grid-list-empty">
-          {t("pages|listpage$no-content")}
+          {t("pages.listpage.no-content")}
         </span>
       )}
     </div>

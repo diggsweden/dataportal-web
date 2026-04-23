@@ -1,12 +1,14 @@
 "use client";
 
 import reactenv from "@beam-australia/react-env";
-import type { AbstractIntlMessages } from "next-intl";
+import type { AbstractIntlMessages, Locale } from "next-intl";
 import { NextIntlClientProvider } from "next-intl";
 import { type ReactNode, useEffect, useState } from "react";
 
 import { type EnvSettings, SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
+import type { ResourceMap } from "@/i18n/load-messages";
+import { ResourcesProvider } from "@/i18n/resources-provider";
 import { MatomoProvider } from "@/lib/matomo";
 import {
   type LayoutState,
@@ -20,8 +22,10 @@ import {
 
 interface AppRouterProvidersProps {
   children: ReactNode;
-  locale: string;
+  locale: Locale;
   messages: AbstractIntlMessages;
+  /** URI → label map handed to `ResourcesProvider`. */
+  resources: ResourceMap;
   /** CSP nonce stamped on the request by `proxy.ts`. */
   nonce: string;
   /** Optional initial breadcrumb / hero forwarded to `LayoutStateProvider`. */
@@ -67,6 +71,7 @@ export function AppRouterProviders({
   children,
   locale,
   messages,
+  resources,
   nonce,
   initialBreadcrumb,
   initialImageHero,
@@ -88,29 +93,35 @@ export function AppRouterProviders({
     resolvedEnv instanceof Settings_Sandbox;
 
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
-      <SettingsProvider
-        value={{
-          ...defaultSettings,
-          env: resolvedEnv,
-          matomoSiteId: reactenv("MATOMO_SITE_ID"),
-        }}
-      >
-        <LocalStoreProvider>
-          <LayoutStateProvider
-            initialBreadcrumb={initialBreadcrumb}
-            initialImageHero={initialImageHero}
-          >
-            <MatomoProvider
-              disabled={matomoDisabled}
-              initialConsent={readInitialConsent()}
-              nonce={nonce}
+    <NextIntlClientProvider
+      locale={locale}
+      messages={messages}
+      timeZone="Europe/Stockholm"
+    >
+      <ResourcesProvider resources={resources}>
+        <SettingsProvider
+          value={{
+            ...defaultSettings,
+            env: resolvedEnv,
+            matomoSiteId: reactenv("MATOMO_SITE_ID"),
+          }}
+        >
+          <LocalStoreProvider>
+            <LayoutStateProvider
+              initialBreadcrumb={initialBreadcrumb}
+              initialImageHero={initialImageHero}
             >
-              {children}
-            </MatomoProvider>
-          </LayoutStateProvider>
-        </LocalStoreProvider>
-      </SettingsProvider>
+              <MatomoProvider
+                disabled={matomoDisabled}
+                initialConsent={readInitialConsent()}
+                nonce={nonce}
+              >
+                {children}
+              </MatomoProvider>
+            </LayoutStateProvider>
+          </LocalStoreProvider>
+        </SettingsProvider>
+      </ResourcesProvider>
     </NextIntlClientProvider>
   );
 }

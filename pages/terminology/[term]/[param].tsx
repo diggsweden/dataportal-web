@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useLocale } from "next-intl";
 import { useContext, useEffect, useState } from "react";
 
 import { ConceptPage } from "@/features/entryscape/concept-page";
@@ -9,6 +10,7 @@ import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redi
 export default function Terminology() {
   const { env } = useContext(SettingsContext);
   const router = useRouter();
+  const locale = useLocale();
   const { term, param } = router.query || {};
   const [resourceUri, setResourceUri] = useState<string | null>(null);
 
@@ -26,7 +28,7 @@ export default function Terminology() {
           secondParam: param as string,
         },
         router,
-        router.locale || "sv",
+        locale,
         isSandbox,
       );
 

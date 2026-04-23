@@ -1,11 +1,10 @@
-import type { Translate } from "next-translate";
-
 import type {
   GoodExampleDataFragment,
   ImageFragment,
   NewsItemDataFragment,
   SeoDataFragment,
 } from "@/graphql/__generated__/operations";
+import type { Translate } from "@/i18n/types";
 import type {
   FormResponse,
   GoodExampleListResponse,
@@ -55,8 +54,8 @@ export const resolvePage = (
 ): ResolvedPage => {
   if (props.type === "RootAggregate" && lang === "en") {
     return {
-      heading: t("pages|startpage$heading"),
-      preamble: t("pages|startpage$preamble"),
+      heading: t("pages.startpage.heading"),
+      preamble: t("pages.startpage.preamble"),
       heroImage: {
         __typename: "dataportal_Digg_Image",
         url: "/images/startPageHero.png",

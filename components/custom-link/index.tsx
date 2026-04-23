@@ -1,6 +1,6 @@
 import { cx } from "class-variance-authority";
 import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import {
   type FC,
   type LinkHTMLAttributes,
@@ -21,7 +21,7 @@ export const CustomLink: FC<
   PropsWithChildren<CustomLinkProps & LinkHTMLAttributes<HTMLAnchorElement>>
 > = ({ className, children, href, ...rest }) => {
   const { iconSize } = useContext(SettingsContext);
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <Link
@@ -36,7 +36,7 @@ export const CustomLink: FC<
       {isMailLink(href) ? (
         <>
           <MailIcon width={iconSize} height={iconSize} viewBox="0 0 24 24" />
-          <span className="sr-only">{t("common|open-in-email")}</span>
+          <span className="sr-only">{t("common.open-in-email")}</span>
         </>
       ) : isExternalLink(href) ? (
         <>
@@ -45,7 +45,7 @@ export const CustomLink: FC<
             height={iconSize}
             viewBox="0 0 24 24"
           />
-          <span className="sr-only">{t("common|open-in-new-tab")}</span>
+          <span className="sr-only">{t("common.open-in-new-tab")}</span>
         </>
       ) : null}
     </Link>

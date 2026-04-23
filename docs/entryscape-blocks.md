@@ -133,27 +133,28 @@ For anything that needs the concrete `Entry` (context id, localized label, licen
 
 Used for:
 
-- **Internal Next.js links** — `conceptLink` writes a same-origin `/{lang}/concepts/{ctx}_{id}` anchor so users stay inside the app:
+- **Internal Next.js links** — `conceptLink` writes a same-origin anchor so users stay inside the app. The URL is assembled through the shared `includeLangInPath()` helper so it collapses to `/concepts/…` for Swedish (default locale, no prefix) and `/en/concepts/…` once the route is re-enabled under `app/[locale]/`:
 
-```38:59:utilities/entryscape/blocks/concept.ts
+```39:63:utilities/entryscape/blocks/concept.ts
   {
     block: "conceptLink",
-    run: function (node: any, a2: any, a3: any, entry: Entry) {
-      if (node && node.firstElementChild && entry) {
+    run: (node: any, a2: any, a3: any, entry: Entry) => {
+      if (node?.firstElementChild && entry) {
+        const baseUrl = window.location.origin;
         const el = document.createElement("a");
 
         node.setAttribute("class", "entryscape");
 
         node.firstElementChild.appendChild(el);
 
-        const contextId = entry.getContext().getId();
-        const id = entry.getId();
         const label = getLocalizedValue(
           entry.getAllMetadata(),
           "skos:prefLabel",
         );
         el.innerHTML = label;
-        const uri = `/${lang}/concepts/${contextId}_${id}`;
+        const uri = `${baseUrl}${includeLangInPath(lang)}${conceptsPathResolver(
+          entry,
+        )}`;
         el.setAttribute("href", uri);
       }
     },

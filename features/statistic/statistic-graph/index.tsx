@@ -1,4 +1,4 @@
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { type FC, useContext, useEffect, useMemo, useState } from "react";
 
 import { SettingsContext } from "@/providers/settings-provider";
@@ -31,7 +31,7 @@ function buildYTicks(max: number): number[] {
 
 export const StatisticGraph: FC = () => {
   const { env } = useContext(SettingsContext);
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [points, setPoints] = useState<HistoryPoint[]>([]);
 
   useEffect(() => {
@@ -114,7 +114,7 @@ export const StatisticGraph: FC = () => {
           </div>
         </div>
 
-        <span className="mr-md">{t("pages|statistic$dataset-numbers")}</span>
+        <span className="mr-md">{t("pages.statistic.dataset-numbers")}</span>
       </div>
     </div>
   );

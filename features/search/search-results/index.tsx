@@ -1,4 +1,4 @@
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import {
   type Dispatch,
   type FC,
@@ -58,7 +58,7 @@ const SortingOptions: FC<{
   search: SearchContextData;
   showSorting: boolean;
 }> = ({ search, setCompact, isCompact, showSorting }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <div className="mb-lg flex flex-wrap items-center justify-between gap-md md:mb-none">
@@ -68,33 +68,33 @@ const SortingOptions: FC<{
         className="px-xs"
         aria-label={
           isCompact
-            ? t("pages|search$detailed-list-active")
-            : t("pages|search$detailed-list")
+            ? t("pages.search.detailed-list-active")
+            : t("pages.search.detailed-list")
         }
         onClick={() => setCompact(!isCompact)}
       >
         {isCompact ? <ListCompactIcon /> : <ListDetailedIcon />}
         <span className="hidden md:block">
           {isCompact
-            ? t("pages|search$compact-list")
-            : t("pages|search$detailed-list")}
+            ? t("pages.search.compact-list")
+            : t("pages.search.detailed-list")}
         </span>
-        <span className="md:hidden">{t("pages|search$list")}</span>
+        <span className="md:hidden">{t("pages.search.list")}</span>
       </Button>
 
       <div className="flex items-center gap-md">
         <SearchSelectFilter
           id="sort"
-          label={t("pages|search$sort")}
+          label={t("pages.search.sort")}
           value={search.request.sortOrder?.toString()}
           options={[
             {
               value: SearchSortOrder.score_desc.toString(),
-              label: t("pages|search$relevance"),
+              label: t("pages.search.relevance"),
             },
             {
               value: SearchSortOrder.modified_desc.toString(),
-              label: t("pages|search$date"),
+              label: t("pages.search.date"),
             },
           ]}
           onChange={(event) => {
@@ -111,12 +111,12 @@ const SortingOptions: FC<{
         {showSorting && (
           <SearchSelectFilter
             id="hits"
-            label={t("pages|search$numberofhits")}
+            label={t("pages.search.numberofhits")}
             value={search.request.take?.toString()}
             options={[
-              { value: "20", label: t("pages|search$numberofhits-20") },
-              { value: "50", label: t("pages|search$numberofhits-50") },
-              { value: "100", label: t("pages|search$numberofhits-100") },
+              { value: "20", label: t("pages.search.numberofhits-20") },
+              { value: "50", label: t("pages.search.numberofhits-50") },
+              { value: "100", label: t("pages.search.numberofhits-100") },
             ]}
             onChange={(event) => {
               clearCurrentScrollPos();
@@ -140,7 +140,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
 }) => {
   const [isCompact, setCompact] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<string>("");
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   useEffect(() => {
     // Restore scroll position only after results are loaded
@@ -174,10 +174,10 @@ export const SearchResults: FC<SearchResultsProps> = ({
   // Track both result count and filter changes
   useEffect(() => {
     if (search.loadingHits) {
-      setLastUpdate(t("common|loading"));
+      setLastUpdate(t("common.loading"));
     } else if (search.result) {
       const count = search.result.count || 0;
-      const message = `${count} ${t("pages|search$dataset-hits")}`;
+      const message = `${count} ${t("pages.search.dataset-hits")}`;
       setLastUpdate(message);
     }
   }, [search.loadingHits, search.result?.count, search.request.facetValues, t]);
@@ -207,11 +207,11 @@ export const SearchResults: FC<SearchResultsProps> = ({
         >
           {/* Visual display of the count */}
           <span aria-hidden="true">
-            {search.loadingHits && `${t("common|loading")}...`}
+            {search.loadingHits && `${t("common.loading")}...`}
             {!search.loadingHits &&
               search.result &&
               (search.result.count || 0) >= 0 &&
-              `${search.result.count} ${t("pages|search$dataset-hits")}`}
+              `${search.result.count} ${t("pages.search.dataset-hits")}`}
           </span>
           {/* Screen reader announcement */}
           <div aria-live="polite" className="sr-only" role="status">

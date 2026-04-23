@@ -1,7 +1,7 @@
 import type { Entry } from "@entryscape/entrystore-js";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useEffect, useMemo } from "react";
 
 import { Badge } from "@/components/badge";
@@ -42,8 +42,8 @@ export const DatasetSeriesPage: FC = () => {
   const { pathname } = useRouter() || {};
   const { env, setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
-  const { t, lang } = useTranslation();
-  const router = useRouter();
+  const t = useTranslations();
+  const lang = useLocale();
 
   useEntryScapeBlocks({
     entrystoreBase: entry.entrystore.getBaseURI(),
@@ -61,8 +61,8 @@ export const DatasetSeriesPage: FC = () => {
       crumbs: [
         { name: "start", link: { ...linkBase, link: "/" } },
         {
-          name: t("routes|datasets$title"),
-          link: { ...linkBase, link: `/${t("routes|datasets$path")}?q=&f=` },
+          name: t("routes.datasets.title"),
+          link: { ...linkBase, link: `/${t("routes.datasets.path")}?q=&f=` },
         },
       ],
     });
@@ -79,7 +79,7 @@ export const DatasetSeriesPage: FC = () => {
         <Container className="space-y-lg">
           <Badge
             data-test-id="datasetseries-badge"
-            text={t("pages|dataset-series$data-serie")}
+            text={t("pages.dataset-series.data-serie")}
           />
           <Heading level={1} size="lg" className="mb-none">
             {entry.title}
@@ -100,7 +100,6 @@ export const DatasetSeriesPage: FC = () => {
       </div>
 
       <SearchProvider
-        router={router}
         {...searchProviderSettings["datasets-series"]}
         entry={entry.entry}
       >
@@ -139,7 +138,7 @@ export const DatasetSeriesPage: FC = () => {
                         size={"sm"}
                         className="mb-md font-strong text-textSecondary md:mb-lg"
                       >
-                        {t("pages|dataset-series$about-dataset-serie")}
+                        {t("pages.dataset-series.about-dataset-serie")}
                       </Heading>
 
                       <div className="space-y-lg">
@@ -158,7 +157,7 @@ export const DatasetSeriesPage: FC = () => {
                         size={"sm"}
                         className="mb-sm font-strong text-textSecondary md:mb-md"
                       >
-                        {t("pages|datasetpage$catalog")}
+                        {t("pages.datasetpage.catalog")}
                       </Heading>
                       <div className="space-y-lg">
                         {entry.mqaCatalog && (
@@ -168,7 +167,7 @@ export const DatasetSeriesPage: FC = () => {
                               level={3}
                               size={"xxs"}
                             >
-                              {t("pages|datasetpage$mqa-catalog")}
+                              {t("pages.datasetpage.mqa-catalog")}
                             </Heading>
                             <Link
                               className="text-sm text-green-600 underline-offset-2 hover:no-underline"
@@ -200,7 +199,7 @@ export const DatasetSeriesPage: FC = () => {
                                 level={3}
                                 size={"xxs"}
                               >
-                                {t("pages|datasetpage$download_link")}
+                                {t("pages.datasetpage.download_link")}
                               </Heading>
                               <div className="flex flex-col gap-xs">
                                 {entry.downloadFormats.map(

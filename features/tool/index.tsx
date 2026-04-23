@@ -1,5 +1,5 @@
 import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { type FC, useState } from "react";
 
 import InternalLinkIcon from "@/assets/icons/arrow-right.svg";
@@ -18,7 +18,7 @@ interface ToolsTeaserProps {
 export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
   const { heading, link, domainLabel, preamble, description } = tools;
   const [showModal, setShowModal] = useState(false);
-  const { t } = useTranslation("common");
+  const t = useTranslations();
   return (
     <div data-test-id="tool-teaser" className="h-full">
       <div className="flex h-full flex-col justify-between gap-lg bg-white p-lg">
@@ -33,9 +33,9 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
               e.preventDefault();
               setShowModal(true);
             }}
-            label={t("preview")}
+            label={t("common.preview")}
             className="focus--primary no-group-hover z-20"
-            aria-label={`${t("preview")} ${t("support-tools")} - ${heading}`}
+            aria-label={`${t("common.preview")} ${t("common.support-tools")} - ${heading}`}
           />
           <div className="flex h-full flex-col gap-sm">
             <div className="flex items-center justify-between gap-sm">
@@ -57,7 +57,7 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
                   <>
                     <ExternalLinkIcon className="flex-shrink-0 transform  transition-transform duration-500 group-hover:translate-x-1/3" />
                     <span className="sr-only">
-                      {t("common|open-in-new-tab")}
+                      {t("common.open-in-new-tab")}
                     </span>
                   </>
                 ) : (
@@ -93,14 +93,14 @@ export const Toolteaser: FC<ToolsTeaserProps> = ({ tools }) => {
       </div>
       <Modal
         heading={heading}
-        closeBtn={t("close")}
+        closeBtn={t("common.close")}
         description={description}
         textSize="md"
         text={preamble}
         modalOpen={showModal}
         setModalOpen={setShowModal}
-        confirmBtn={t("to-page")}
-        ariaLabel={`${t("to-page")} - ${heading}`}
+        confirmBtn={t("common.to-page")}
+        ariaLabel={`${t("common.to-page")} - ${heading}`}
         href={link}
       />
     </div>

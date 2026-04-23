@@ -6,8 +6,7 @@ import {
 } from "@entryscape/entrystore-js";
 // @ts-expect-error no types.
 import { namespaces } from "@entryscape/rdfjson";
-import type { Translate } from "next-translate";
-
+import type { ResourceLabel, Translate } from "@/i18n/types";
 import { SearchSortOrder } from "@/providers/search-provider";
 import {
   type ESFacetField,
@@ -51,6 +50,14 @@ interface EntryStoreConfig {
   baseUrl: string;
   lang: string;
   t: Translate;
+  /**
+   * URI → human label lookup for the `resources` namespace. Passed in from
+   * a React hook (`useResourceLabel`) or the server helper
+   * (`getResourceLabel`) so this class stays pure and test-friendly.
+   * Required because `next-intl`'s dot-path key syntax can't address the
+   * URL-shaped keys that live in `resources.json`.
+   */
+  resourceLabel: ResourceLabel;
   facetSpecification?: FacetSpecification;
   hitSpecifications?: { [key: string]: HitSpecification };
   entry?: Entry;
@@ -63,6 +70,7 @@ export class EntrystoreService {
   private entryStore: EntryStore;
   private entryStoreUtil: EntryStoreUtil;
   private t: Translate;
+  private resourceLabel: ResourceLabel;
   private lang: string;
   private _hitSpecifications: { [key: string]: HitSpecification } = {
     dataset: {
@@ -79,6 +87,7 @@ export class EntrystoreService {
     this.entryStoreUtil.loadOnlyPublicEntries(true);
     this.lang = config.lang;
     this.t = config.t;
+    this.resourceLabel = config.resourceLabel;
     this.facetSpecification = config.facetSpecification || {};
     this._hitSpecifications = config.hitSpecifications || {};
     namespaces.add("esterms", "http://entryscape.com/terms/");
@@ -331,7 +340,7 @@ export class EntrystoreService {
               await getUriNames(
                 uris,
                 this.entryStoreUtil,
-                this.t,
+                this.resourceLabel,
                 undefined,
                 !!(
                   facetSpec.customProperties &&
@@ -460,7 +469,7 @@ export class EntrystoreService {
 
       if (metaFacet) {
         facets[f.customLabel || f.resource] = {
-          title: this.t(metaFacet.predicate),
+          title: this.resourceLabel(metaFacet.predicate),
           name: metaFacet.name,
           predicate: metaFacet.predicate,
           indexOrder: f.indexOrder,
@@ -518,7 +527,7 @@ export class EntrystoreService {
                       facetType: metaFacet.type,
                       facetValueString: `${metaFacet.predicate}||${
                         value.name
-                      }||${f.related || false}||${metaFacet.type}||${this.t(
+                      }||${f.related || false}||${metaFacet.type}||${this.resourceLabel(
                         metaFacet.predicate,
                       )}||${displayName}||${f.customFilter}||${
                         f.customSearch
@@ -540,7 +549,7 @@ export class EntrystoreService {
                     facetType: metaFacet.type,
                     facetValueString: `${metaFacet.predicate}||${
                       f.customFilter
-                    }||${f.related || false}||${metaFacet.type}||${this.t(
+                    }||${f.related || false}||${metaFacet.type}||${this.resourceLabel(
                       metaFacet.predicate,
                     )}||${f.customFilter}||${f.customFilter}||${
                       f.customSearch
@@ -576,7 +585,7 @@ export class EntrystoreService {
 
       if (facetSpec) {
         facets[f.predicate] = {
-          title: this.t(f.predicate),
+          title: this.resourceLabel(f.predicate),
           name: f.name,
           predicate: f.predicate,
           indexOrder: facetSpec.indexOrder,
@@ -624,7 +633,7 @@ export class EntrystoreService {
                 facetType: f.type,
                 facetValueString: `${f.predicate}||${value.name}||${
                   facetSpec.related || false
-                }||${f.type}||${this.t(f.predicate)}||${displayName}||${
+                }||${f.type}||${this.resourceLabel(f.predicate)}||${displayName}||${
                   facetSpec.customFilter || null
                 }||${
                   facetSpec.customSearch
@@ -684,7 +693,7 @@ export class EntrystoreService {
             // biome-ignore lint/suspicious/noExplicitAny: Unknown type
             .map((f: any) => f.getValue())
             .filter((value: string) => whitelist.includes(value))
-            .map((value: string) => this.t(value));
+            .map((value: string) => this.resourceLabel(value));
         } catch (error) {
           console.error("Error fetching themes:", error);
         }
@@ -692,7 +701,7 @@ export class EntrystoreService {
         values["theme_literal"] = metadata
           .find(null, "http://www.w3.org/ns/dcat#theme")
           // biome-ignore lint/suspicious/noExplicitAny: Unknown type
-          .map((f: any) => this.t(f.getValue()));
+          .map((f: any) => this.resourceLabel(f.getValue()));
       }
 
       const formatFacetSpec = this.facetSpecification?.facets?.find(
@@ -707,7 +716,7 @@ export class EntrystoreService {
             // biome-ignore lint/suspicious/noExplicitAny: Unknown type
             .map((f: any) => f.getValue())
             .filter((value: string) => whitelist.includes(value))
-            .map((value: string) => this.t(value));
+            .map((value: string) => this.resourceLabel(value));
         } catch (error) {
           console.error("Error fetching formats:", error);
         }
@@ -715,7 +724,7 @@ export class EntrystoreService {
         values["format_literal"] = metadata
           .find(null, "http://purl.org/dc/terms/format")
           // biome-ignore lint/suspicious/noExplicitAny: Unknown type
-          .map((f: any) => this.t(f.getValue()));
+          .map((f: any) => this.resourceLabel(f.getValue()));
       }
 
       // Adding custom facets with showInSearchResult true to custom_facet_literal if they are present in the metadata
@@ -746,7 +755,7 @@ export class EntrystoreService {
               values["custom_facet_literal"] || [];
             // Add the translated resource URI to custom_facet_literal array
             values["custom_facet_literal"].push(
-              this.t(`resources|${facet.resource}`),
+              this.resourceLabel(facet.resource),
             );
           }
         }
@@ -1035,19 +1044,19 @@ export class EntrystoreService {
   public getDownloadFormats(baseUri: string) {
     return [
       {
-        title: this.t("pages|datasetpage$download-metadata-as") + " RDF/XML",
+        title: this.t("pages.datasetpage.download-metadata-as") + " RDF/XML",
         url: baseUri,
       },
       {
-        title: this.t("pages|datasetpage$download-metadata-as") + " TURTLE",
+        title: this.t("pages.datasetpage.download-metadata-as") + " TURTLE",
         url: baseUri + "?format=text/turtle",
       },
       {
-        title: this.t("pages|datasetpage$download-metadata-as") + " N-TRIPLES",
+        title: this.t("pages.datasetpage.download-metadata-as") + " N-TRIPLES",
         url: baseUri + "?format=text/n-triples",
       },
       {
-        title: this.t("pages|datasetpage$download-metadata-as") + " JSON-LD",
+        title: this.t("pages.datasetpage.download-metadata-as") + " JSON-LD",
         url: baseUri + "?format=application/ld+json",
       },
     ];

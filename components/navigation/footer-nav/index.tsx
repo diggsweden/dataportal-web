@@ -1,4 +1,4 @@
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { type FC, Fragment, useContext } from "react";
 
 import { CustomLink } from "@/components/custom-link";
@@ -18,12 +18,12 @@ export const FooterNav: FC<FooterNavProps> = ({
   setOpenSideBar,
   setSettingsOpen,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { set } = useContext(LocalStoreContext);
 
   return (
     <nav
-      aria-label={t("common|menu-footer")}
+      aria-label={t("common.menu-footer")}
       className="flex flex-col gap-xl lg:grid lg:grid-cols-2"
     >
       {footerData?.length > 0 ? (
@@ -53,7 +53,7 @@ export const FooterNav: FC<FooterNavProps> = ({
                         }}
                         className="cursor-pointer underline underline-offset-4 hover:no-underline"
                       >
-                        {t("common|cookie-settings")}
+                        {t("common.cookie-settings")}
                       </button>
                     </li>
                   )}
@@ -65,7 +65,7 @@ export const FooterNav: FC<FooterNavProps> = ({
       ) : (
         <div className="flex flex-col gap-sm">
           <Heading className="!text-lg" size={"sm"} level={2}>
-            {t("common|dataportal")}
+            {t("common.dataportal")}
           </Heading>
           <button
             onClick={() => {
@@ -74,7 +74,7 @@ export const FooterNav: FC<FooterNavProps> = ({
             }}
             className="inline-flex w-fit cursor-pointer text-md text-green-600 underline underline-offset-4 hover:no-underline"
           >
-            {t("common|cookie-settings")}
+            {t("common.cookie-settings")}
           </button>
         </div>
       )}

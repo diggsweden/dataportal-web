@@ -1,5 +1,5 @@
 import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
+import { useLocale, useTranslations } from "next-intl";
 import type { FC } from "react";
 
 import BreadcrumbDividerIcon from "@/assets/icons/breadcrumb-divider.svg";
@@ -14,11 +14,12 @@ export interface BreadcrumbProps {
 }
 
 export const Breadcrumbs: FC<BreadcrumbProps> = ({ crumbs, name }) => {
-  const { t, lang } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
 
   return (
     <Container>
-      <nav className="mb-lg py-md md:mb-xl" aria-label={t("common|breadcrumb")}>
+      <nav className="mb-lg py-md md:mb-xl" aria-label={t("common.breadcrumb")}>
         {crumbs.length > 0 && (
           <ul className="flex flex-wrap items-center gap-md">
             {crumbs.map((crumb, index) => {

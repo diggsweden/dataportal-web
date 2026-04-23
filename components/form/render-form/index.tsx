@@ -1,5 +1,4 @@
-import type { Translate } from "next-translate";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import {
   type ChangeEvent,
   type DragEvent,
@@ -7,7 +6,6 @@ import {
   useCallback,
   useState,
 } from "react";
-
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
 import { Button } from "@/components/button";
@@ -20,6 +18,7 @@ import { TextInput } from "@/components/form/text-input";
 import { Textarea } from "@/components/form/textarea";
 import { Heading } from "@/components/typography/heading";
 import { HtmlParser } from "@/components/typography/html-parser";
+import type { Translate } from "@/i18n/types";
 import type { FormChoice, FormTypes } from "@/types/form";
 
 const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
@@ -65,11 +64,11 @@ export const addLabel = (
   title: string,
 ) => {
   // biome-ignore lint/correctness/useHookAtTopLevel: addLabel is a JSX-returning helper; refactor to a component in the App Router port.
-  const { t } = useTranslation("pages");
+  const t = useTranslations();
   return (
     <div className="flex flex-col gap-md">
       <span className="text-sm text-textSecondary">
-        {t("form$question")} {number}
+        {t("pages.form.question")} {number}
       </span>
       <Label htmlFor={`${Type}${ID}`}>{title}</Label>
     </div>
@@ -137,7 +136,7 @@ const FormItem = (
           {item.info && <PopOver text={item.info} title={item.title} />}
           <TextInput
             id={`${Type}${ID}`}
-            placeholder={t("form$placeholder-text")}
+            placeholder={t("pages.form.placeholder-text")}
             name={`${Type}${ID}`}
             value={item.value}
             onChange={(e) => {
@@ -154,7 +153,7 @@ const FormItem = (
           <Textarea
             name={`${Type}${ID}`}
             id={`${Type}${ID}`}
-            placeholder={t("form$placeholder-text")}
+            placeholder={t("pages.form.placeholder-text")}
             value={item.value}
             onChange={(e) => {
               UpdateFormDataArray(e, item, pageIndex);
@@ -220,7 +219,7 @@ const FormItem = (
                 <Textarea
                   id={`${Type}${ID}`}
                   name={`${Type}${ID}`}
-                  placeholder={t("form$placeholder-text")}
+                  placeholder={t("pages.form.placeholder-text")}
                   value={item.value}
                   onChange={(e) => {
                     UpdateFormDataArray(e, item, pageIndex);
@@ -261,7 +260,7 @@ const FormItem = (
               value={item.selected?.value || ""}
             >
               <option value="" disabled>
-                {t("form$select-placeholder")}
+                {t("pages.form.select-placeholder")}
               </option>
               {item.items.map((option: FormChoice) => {
                 return (
@@ -321,7 +320,7 @@ export const RenderForm = ({
   UpdateFormDataArray,
   pageIndex,
 }: Props) => {
-  const { t } = useTranslation("pages");
+  const t = useTranslations();
   return (
     <div className="mt-md space-y-lg lg:mt-xl">
       {formDataArray.map((item) => {

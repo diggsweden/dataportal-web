@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useEffect, useMemo, useState } from "react";
 
 import { Container } from "@/components/layout/container";
@@ -25,7 +25,8 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
 }) => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
   const { pathname } = useRouter() || {};
-  const { t, lang } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
   const [query, setQuery] = useState("");
   const router = useRouter();
 
@@ -60,7 +61,7 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
     return () => window.removeEventListener("popstate", handleUrlChange);
   }, []);
 
-  const pageTitle = t(`routes|${searchType}$title`);
+  const pageTitle = t(`routes.${searchType}.title`);
 
   useEffect(() => {
     setBreadcrumb?.({
@@ -90,7 +91,7 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
         />
       </Head>
 
-      <SearchProvider router={router} {...searchProviderSettings[searchType]}>
+      <SearchProvider {...searchProviderSettings[searchType]}>
         <SearchContext.Consumer>
           {(search) => (
             <>
@@ -117,7 +118,7 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
                 />
               </Container>
 
-              <noscript>{t("common|no-js-text")}</noscript>
+              <noscript>{t("common.no-js-text")}</noscript>
               <div className="mt-xl bg-white py-xl">
                 <Container>
                   <div

@@ -74,6 +74,19 @@
       },
       "security": {
         "noDangerouslySetInnerHtml": "warn"
+      },
+      "style": {
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "next-translate": "Use `next-intl` instead: `useTranslations()` from `next-intl`, or `getTranslations()` from `@/i18n/get-translations`. Resource URI lookups go through `useResourceLabel` / `getResourceLabel`.",
+              "next-translate/useTranslation": "Use `useTranslations()` / `useLocale()` from `next-intl`.",
+              "next-translate/getT": "Use `getTranslations()` from `@/i18n/get-translations`.",
+              "next-translate/withTranslation": "`withTranslation` is no longer available. Wrap class components in a functional component that calls `useTranslations()` and passes the result down."
+            }
+          }
+        }
       }
     }
   },

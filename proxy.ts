@@ -1,34 +1,31 @@
-import type { NextRequest } from "next/server";
-import createMiddleware from "next-intl/middleware";
+import { type NextRequest, NextResponse } from "next/server";
 
-import { routing } from "./i18n/routing";
 import { generateRandomKey } from "./utilities/key-generator";
-
-const handleI18n = createMiddleware(routing);
 
 /**
  * Next 16 middleware (renamed `proxy.ts` per the Next 16 file convention).
  *
- * Two responsibilities:
- *  1. `next-intl` locale handling with `localePrefix: "as-needed"`: Swedish
- *     stays unprefixed (`/datasets`), English under `/en/...`. Replaces the
- *     hand-rolled redirect logic that used to live here.
- *  2. Per-request CSP nonce: stamps `x-nonce` on both the **request** (so
- *     server components in `app/[locale]/layout.tsx` can read it via
- *     `headers()`) and the **response** (for any downstream consumer). The
- *     `app/[locale]/layout.tsx` falls back to generating its own nonce if
- *     this header is missing, so a cold-cache request never ships without
- *     CSP coverage.
+ * This file's only job right now is to stamp a per-request CSP nonce onto
+ * both the incoming request (so downstream RSCs can read it via `headers()`)
+ * and the outgoing response. Locale routing is intentionally absent:
+ *   - The native Pages Router `i18n` block was removed from
+ *     `next.config.mjs` as part of Option B of the migration
+ *     (see `docs/next15-app-router-migration.md`), so Pages Router serves
+ *     only Swedish until each route family moves under `app/[locale]/`.
+ *   - `next-intl`'s middleware (`createMiddleware(routing)`) gets layered
+ *     back in here during Phase 4 as soon as the first App Router route
+ *     lands. Its output composes with the nonce logic without changes.
  */
 export function proxy(request: NextRequest) {
   const nonce = generateRandomKey(32);
 
   // Mutating the incoming request headers makes them visible to downstream
-  // RSCs via `headers()` whenever the eventual NextResponse is a rewrite or
-  // pass-through (which is what `next-intl` returns for valid locales).
+  // RSCs via `headers()` once any segment is rendered from `app/`.
   request.headers.set("x-nonce", nonce);
 
-  const response = handleI18n(request);
+  const response = NextResponse.next({
+    request: { headers: request.headers },
+  });
   response.headers.set("x-nonce", nonce);
   return response;
 }

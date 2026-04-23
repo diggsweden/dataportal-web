@@ -1,6 +1,6 @@
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { useLocale, useTranslations } from "next-intl";
 import { type ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/button";
@@ -34,7 +34,8 @@ export interface FormData {
 
 export const FortroendemodellenFrom = () => {
   const router = useRouter();
-  const { t } = useTranslation();
+  const locale = useLocale();
+  const t = useTranslations();
   const pathname = usePathname();
   const [formData, setFormData] = useState<FormData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -58,7 +59,7 @@ export const FortroendemodellenFrom = () => {
       info: null,
       number: 1,
       required: false,
-      title: t("pages|form$organisation-number"),
+      title: t("pages.form.organisation-number"),
       value: "",
       __typename: "organisationNumber",
     },
@@ -67,7 +68,7 @@ export const FortroendemodellenFrom = () => {
       info: null,
       number: 2,
       required: false,
-      title: t("pages|form$organisation-name"),
+      title: t("pages.form.organisation-name"),
       value: "",
       __typename: "dataportal_Digg_FormText",
     },
@@ -76,7 +77,7 @@ export const FortroendemodellenFrom = () => {
       info: null,
       number: 3,
       required: false,
-      title: t("pages|form$ai-system-name"),
+      title: t("pages.form.ai-system-name"),
       value: "",
       __typename: "dataportal_Digg_FormText",
     },
@@ -85,7 +86,7 @@ export const FortroendemodellenFrom = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await fetchFortroendemodellenForm(router.locale || "sv");
+      const data = await fetchFortroendemodellenForm(locale);
       data.elements = [...informationSection, ...data.elements];
       // Add IDs to elements
       if (data.elements) {
@@ -108,7 +109,7 @@ export const FortroendemodellenFrom = () => {
     if (router.isReady) {
       getFortroendemodellenForm();
     }
-  }, [router.isReady, router.locale]);
+  }, [router.isReady, locale]);
 
   // Process form elements when formData changes
   useEffect(() => {
@@ -413,7 +414,7 @@ export const FortroendemodellenFrom = () => {
         >
           {page !== 0 && formSteps.length > 0 && (
             <FormNav
-              pageNames={[...formSteps, t("pages|form$summary")]}
+              pageNames={[...formSteps, t("pages.form.summary")]}
               countQuestionsPerSection={countQuestionsPerSection()}
               setPage={setPage}
               scrollRef={scrollRef}
@@ -436,7 +437,7 @@ export const FortroendemodellenFrom = () => {
                   setPage(page + 1);
                   handleScroll(scrollRef);
                 }}
-                label={t("pages|form$start-evaluation-text")}
+                label={t("pages.form.start-evaluation-text")}
               />
             </>
           )}
@@ -451,7 +452,7 @@ export const FortroendemodellenFrom = () => {
                   <span ref={scrollRef} />
 
                   <span className="text-lg text-textSecondary">
-                    {t("pages|form$questions")}
+                    {t("pages.form.questions")}
                   </span>
                   <RenderForm
                     fortroendemodellen

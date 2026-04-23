@@ -1,7 +1,7 @@
 import { cva, cx, type VariantProps } from "class-variance-authority";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
+import { useLocale, useTranslations } from "next-intl";
 import {
   type FC,
   type HTMLAttributes,
@@ -17,6 +17,7 @@ import PixelsImage from "@/assets/icons/pixels.svg";
 import type { MenuLinkFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 import { isExternalLink } from "@/utilities";
+import { includeLangInPath } from "@/utilities/check-lang";
 
 const sidebarLinkVariants = cva(
   [
@@ -55,13 +56,18 @@ const MenuLink: FC<MenuLinkProps> = ({
   tabIndex,
   setOpenSideBar,
 }) => {
-  const { t } = useTranslation();
+  const lang = useLocale();
   const pathname = usePathname();
   const basePath = `/${(pathname ?? "").split("/").splice(1, 1)[0]}`;
   const vw = window.innerWidth;
 
-  const isActive =
-    (pathname === "/" && href === t(`common|lang-path`)) || href === basePath;
+  // The home item's `href` comes through as `/` for Swedish and `/en` for
+  // English (see `includeLangInPath`), but `basePath` on the home route
+  // collapses to `/` (sv) or `/en` (en) — so the straight `href === basePath`
+  // comparison handles both. Special-case the odd Swedish shape where
+  // `pathname` is exactly `/` but `includeLangInPath()` returned `""`.
+  const homeHref = includeLangInPath(lang) || "/";
+  const isActive = href === basePath || (pathname === "/" && href === homeHref);
 
   return (
     <Link
@@ -127,7 +133,7 @@ export const SidebarLink: FC<
   openSideBar,
   setOpenSideBar,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const { iconSize } = useContext(SettingsContext);
   const pathname = usePathname();
@@ -172,8 +178,8 @@ export const SidebarLink: FC<
           aria-controls={`submenu-${label.replace(/\s+/g, "-").toLowerCase()}`}
           aria-label={
             open
-              ? `${t("common|close")} ${t("common|menu-submenu")} ${label}`
-              : `${t("common|open")} ${t("common|menu-submenu")} ${label}`
+              ? `${t("common.close")} ${t("common.menu-submenu")} ${label}`
+              : `${t("common.open")} ${t("common.menu-submenu")} ${label}`
           }
         >
           {icon && (

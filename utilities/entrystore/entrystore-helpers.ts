@@ -5,12 +5,12 @@ import type {
   Metadata,
   MetadataValue,
 } from "@entryscape/entrystore-js";
-import type { Translate } from "next-translate";
-
 import { SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
+import type { ResourceLabel } from "@/i18n/types";
 import type { RedirectConfig } from "@/types/global";
 
+import { includeLangInPath } from "../check-lang";
 import type { Choice, ChoiceTemplate, DCATData } from "../dcat-utils";
 import { entryCache } from "./local-cache";
 
@@ -82,7 +82,7 @@ export const getEntryLang = (metadataGraph: any, prop: any, lang: string) => {
 export const getUriNames = async (
   facetValues: string[],
   esu: EntryStoreUtil,
-  t: Translate,
+  resourceLabel: ResourceLabel,
   _property?: string,
   hasCustomProperties?: boolean,
 ) => {
@@ -95,7 +95,7 @@ export const getUriNames = async (
   if (!uniqueUris.length) return cache;
 
   if (hasCustomProperties) {
-    uniqueUris.forEach((uri) => cache.set(uri, t(`resources|${uri}`)));
+    uniqueUris.forEach((uri) => cache.set(uri, resourceLabel(uri)));
     return cache;
   }
 
@@ -133,7 +133,7 @@ export function formatDatasetUrl(
 ): string {
   return baseUrls.some((url) => ds.getResourceURI().startsWith(url))
     ? new URL(ds.getResourceURI()).pathname
-    : `/${lang}/datasets/${contextId}_${ds.getId()}`;
+    : `${includeLangInPath(lang)}/datasets/${contextId}_${ds.getId()}`;
 }
 
 export function formatSpecificationUrl(
@@ -143,7 +143,7 @@ export function formatSpecificationUrl(
 ): string {
   return baseUrls.some((url) => uri.startsWith(url))
     ? new URL(uri).pathname
-    : `/${lang}/externalspecification?resource=${uri}`;
+    : `${includeLangInPath(lang)}/externalspecification?resource=${uri}`;
 }
 
 export function formatTerminologyAddress(

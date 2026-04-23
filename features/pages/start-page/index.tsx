@@ -1,9 +1,8 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
+import { useLocale, useTranslations } from "next-intl";
 import type { FC } from "react";
-
 import { BlockList } from "@/components/blocks/block-list";
 import { ButtonLink } from "@/components/button";
 import { ContentBox } from "@/components/content-box";
@@ -11,6 +10,7 @@ import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
 import type { StartPageDataFragment } from "@/graphql/__generated__/operations";
+import { useResourceLabel } from "@/i18n/use-resource-label";
 import { dataCategories } from "@/utilities/data-categories";
 
 const DynamicStatisticGraph = dynamic(
@@ -34,7 +34,9 @@ const DynamicStatistic = dynamic(() => import("@/features/statistic"), {
 export const StartPage: FC<StartPageDataFragment> = (props) => {
   const { heading, preamble, image, blocks } = props;
   const pathname = usePathname();
-  const { t, lang } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
+  const tResource = useResourceLabel();
 
   return (
     <Container>
@@ -45,7 +47,7 @@ export const StartPage: FC<StartPageDataFragment> = (props) => {
           </Heading>
         )}
 
-        {pathname === `/${t("routes|search-api$path")}` ||
+        {pathname === `/${t("routes.search-api.path")}` ||
         (!image && preamble) ? (
           <Preamble className="max-w-md">{preamble}</Preamble>
         ) : null}
@@ -54,23 +56,21 @@ export const StartPage: FC<StartPageDataFragment> = (props) => {
           {blocks && <BlockList blocks={blocks} landingPage={true} />}
         </div>
 
-        <ContentBox heading={t("pages|startpage$datasets_by_category")}>
+        <ContentBox heading={t("pages.startpage.datasets_by_category")}>
           <ul className="flex flex-wrap justify-center gap-md lg:gap-lg">
             {dataCategories?.map((category, idx: number) => (
               <li key={idx}>
                 <ButtonLink
                   className="text-center"
-                  aria-label={t("pages|startpage$search_datasets_format", {
-                    category: t(`resources|${category.href}`),
+                  aria-label={t("pages.startpage.search_datasets_format", {
+                    category: tResource(category.href),
                   })}
-                  href={`/${t("routes|datasets$path")}?f=${encodeURIComponent(
+                  href={`/${t("routes.datasets.path")}?f=${encodeURIComponent(
                     `http://www.w3.org/ns/dcat#theme||${
                       category.href
-                    }||FALSE||uri||${t(
-                      "resources|http://www.w3.org/ns/dcat#theme",
-                    )}||${t("resources|" + category.href)}`,
+                    }||FALSE||uri||${tResource("http://www.w3.org/ns/dcat#theme")}||${tResource(category.href)}`,
                   )}`}
-                  label={t(`resources|${category.href}`)}
+                  label={tResource(category.href)}
                 />
               </li>
             ))}
@@ -80,15 +80,15 @@ export const StartPage: FC<StartPageDataFragment> = (props) => {
         <section id="statistics" className="my-xl">
           <div className="mb-2xl flex flex-col justify-between gap-sm md:flex-row md:items-end">
             <Heading level={2} size={"lg"}>
-              {t("pages|statistic$statistic-numbers")}
+              {t("pages.statistic.statistic-numbers")}
             </Heading>
             <Link
-              href={`/${t("routes|statistics$path")}`}
+              href={`/${t("routes.statistics.path")}`}
               locale={lang}
               className="statistic-link"
-              aria-label={t("pages|statistic$statistic-link-aria")}
+              aria-label={t("pages.statistic.statistic-link-aria")}
             >
-              {t("pages|statistic$statistic-link")}
+              {t("pages.statistic.statistic-link")}
             </Link>
           </div>
 

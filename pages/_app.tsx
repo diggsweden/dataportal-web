@@ -2,9 +2,9 @@ import reactenv from "@beam-australia/react-env";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
+import type { Locale } from "next-intl";
+import { NextIntlClientProvider, useLocale, useTranslations } from "next-intl";
 import { type FC, useEffect, useMemo, useState } from "react";
-
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { Hero } from "@/components/layout/hero";
@@ -23,6 +23,14 @@ import type {
   MenuLinkIconFragment,
   NavigationDataFragment,
 } from "@/graphql/__generated__/operations";
+import {
+  type LocaleMessages,
+  loadLocaleMessages,
+  loadResourceLabels,
+  type ResourceMap,
+} from "@/i18n/load-messages";
+import { ResourcesProvider } from "@/i18n/resources-provider";
+import { isAppLocale, routing } from "@/i18n/routing";
 import { MatomoProvider } from "@/lib/matomo";
 import {
   LayoutStateProvider,
@@ -42,6 +50,7 @@ import {
   getNavigationData,
   resolvePage,
 } from "@/utilities";
+import { includeLangInPath } from "@/utilities/check-lang";
 import { initBreadcrumb } from "@/utilities/layout-breadcrumb";
 import "@/styles/main.css";
 
@@ -62,6 +71,12 @@ interface DataportalenProps extends AppProps {
     items: NavigationDataFragment[];
   };
   nonce: string;
+  /** Locale resolved for the current request (Swedish by default). */
+  locale: Locale;
+  /** Messages tree handed to `NextIntlClientProvider`. */
+  messages: LocaleMessages;
+  /** URI → label map handed to `ResourcesProvider`. */
+  resources: ResourceMap;
 }
 
 /** Re-exported for backwards compatibility with `pages/404.tsx` etc. */
@@ -86,7 +101,8 @@ const DataportalChrome: FC<DataportalenProps> = ({
   navigationData: initialNavigationData,
 }) => {
   const pathname = usePathname();
-  const { t, lang } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
   const [env, setEnv] = useState<EnvSettings | null>(null);
   const {
     settingsOpen,
@@ -130,15 +146,15 @@ const DataportalChrome: FC<DataportalenProps> = ({
 
   let searchProps = null;
 
-  if (pathname === "/" || pathname === `/${t("routes|search-api$path")}`) {
+  if (pathname === "/" || pathname === `/${t("routes.search-api.path")}`) {
     searchProps = {
-      destination: `/${lang}/datasets`,
-      placeholder: t("pages|startpage$search_placeholder"),
+      destination: `${includeLangInPath(lang)}/datasets`,
+      placeholder: t("pages.startpage.search_placeholder"),
     };
   }
 
   const conditionalPreamble =
-    pathname === `/${t("routes|search-api$path")}` ? null : preamble;
+    pathname === `/${t("routes.search-api.path")}` ? null : preamble;
 
   useEffect(() => {
     // `router.asPath` keeps fragment + query so we can detect `#hash`
@@ -180,7 +196,7 @@ const DataportalChrome: FC<DataportalenProps> = ({
               openSideBar ? "overflow-y-hidden md:overflow-y-auto" : ""
             }`}
           >
-            <SkipToContent text={t("common|skiptocontent")} />
+            <SkipToContent text={t("common.skiptocontent")} />
             <Header
               mainMenu={(navigationData?.mainMenu as MenuLinkFragment[]) || []}
               serviceMenu={
@@ -246,19 +262,45 @@ const DataportalChrome: FC<DataportalenProps> = ({
 
 function Dataportal(props: DataportalenProps) {
   return (
-    <LayoutStateProvider initialBreadcrumb={initBreadcrumb}>
-      <DataportalChrome {...props} />
-    </LayoutStateProvider>
+    <NextIntlClientProvider
+      locale={props.locale}
+      messages={props.messages}
+      timeZone="Europe/Stockholm"
+    >
+      <ResourcesProvider resources={props.resources}>
+        <LayoutStateProvider initialBreadcrumb={initBreadcrumb}>
+          <DataportalChrome {...props} />
+        </LayoutStateProvider>
+      </ResourcesProvider>
+    </NextIntlClientProvider>
   );
 }
 
 Dataportal.getInitialProps = async (appContext: AppContext) => {
   const navigationData = await getNavigationData("all");
 
-  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  // Calls the page's `getInitialProps` and fills `appProps.pageProps`.
   const appProps = await App.getInitialProps(appContext);
 
-  return { ...appProps, navigationData: navigationData.props };
+  // Resolve locale + messages up-front so every Pages Router page renders
+  // inside `NextIntlClientProvider`. With the native `i18n` block removed from
+  // `next.config.mjs` (Option B of the migration plan), `appContext.router.locale`
+  // is always `undefined` in Pages Router, so we fall back to the default. `/en`
+  // gets re-enabled per-route as each tree moves under `app/[locale]/`.
+  const rawLocale = appContext.router.locale ?? routing.defaultLocale;
+  const locale = isAppLocale(rawLocale) ? rawLocale : routing.defaultLocale;
+  const [messages, resources] = await Promise.all([
+    loadLocaleMessages(locale),
+    loadResourceLabels(locale),
+  ]);
+
+  return {
+    ...appProps,
+    navigationData: navigationData.props,
+    locale,
+    messages,
+    resources,
+  };
 };
 
 export default Dataportal;

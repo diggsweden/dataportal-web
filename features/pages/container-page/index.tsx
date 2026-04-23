@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 import { usePathname } from "next/navigation";
-import type { Translate } from "next-translate";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import type { Environment } from "prismjs";
 import type React from "react";
 import { useContext, useEffect, useState } from "react";
-
 import { BlockList } from "@/components/blocks/block-list";
 import { Container } from "@/components/layout/container";
 import { ContainerNav } from "@/components/navigation/container-nav";
@@ -13,6 +11,7 @@ import { StickyNav } from "@/components/navigation/sticky-nav";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
 import type { ContainerDataFragment } from "@/graphql/__generated__/operations";
+import type { Translate } from "@/i18n/types";
 import { SettingsContext } from "@/providers/settings-provider";
 import type { Anchorlink } from "@/types/global";
 import { checkLang, linkBase } from "@/utilities";
@@ -104,7 +103,7 @@ export const highlightCode = (t: Translate) => {
     pres.forEach((pre) => {
       pre.classList.add("line-numbers");
       pre.setAttribute("role", "region");
-      pre.setAttribute("aria-label", t("code-block"));
+      pre.setAttribute("aria-label", t("common.code-block"));
     });
 
     // Set timeout to allow for prismjs to load before adding new code
@@ -127,7 +126,7 @@ export const highlightCode = (t: Translate) => {
         button.parentElement?.appendChild(liveRegion);
 
         // Set initial aria-label
-        button.setAttribute("aria-label", t("copy-code"));
+        button.setAttribute("aria-label", t("common.copy-code"));
 
         // Add mutation observer to watch for data-copy-state changes
         const observer = new MutationObserver((mutations) => {
@@ -136,14 +135,14 @@ export const highlightCode = (t: Translate) => {
               const state = (mutation.target as HTMLElement).getAttribute(
                 "data-copy-state",
               );
-              let ariaLabel = t("copy-code");
+              let ariaLabel = t("common.copy-code");
 
               switch (state) {
                 case "copy-success":
-                  ariaLabel = t("code-copied-successfully");
+                  ariaLabel = t("common.code-copied-successfully");
                   break;
                 case "copy-error":
-                  ariaLabel = t("code-copy-failed");
+                  ariaLabel = t("common.code-copy-failed");
                   break;
               }
 
@@ -178,7 +177,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   const [menuItems, setMenuItems] = useState<Anchorlink[] | []>([]);
   const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
-  const { t } = useTranslation("common");
+  const t = useTranslations();
   const formPage = blocks?.find(
     (block) => block.__typename === "dataportal_Digg_FoertroendemodellenBlock",
   );
@@ -229,7 +228,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
                 className="w-full overflow-y-auto lg:sticky lg:top-[4.75rem] lg:max-h-[calc(100vh-9.5rem)]"
               >
                 <StickyNav
-                  menuHeading={t("common|content-menu-heading")}
+                  menuHeading={t("common.content-menu-heading")}
                   menuItems={menuItems}
                 />
               </div>

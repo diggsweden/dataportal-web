@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useLocale } from "next-intl";
 import { useContext, useEffect, useState } from "react";
 
 import { SpecificationPage } from "@/features/entryscape/specification-page";
@@ -9,6 +10,7 @@ import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redi
 export default function Specification() {
   const { env } = useContext(SettingsContext);
   const router = useRouter();
+  const locale = useLocale();
   const { spec } = router.query || {};
   const [resourceUri, setResourceUri] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +28,7 @@ export default function Specification() {
           param: spec,
         },
         router,
-        router.locale || "sv",
+        locale,
         isSandbox,
       );
 

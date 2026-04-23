@@ -1,10 +1,12 @@
 import { useRouter } from "next/router";
+import { useLocale } from "next-intl";
 import { useEffect } from "react";
 
 import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
 
 export default function Concept() {
   const router = useRouter();
+  const locale = useLocale();
   const { resource } = router.query;
 
   useEffect(() => {
@@ -19,7 +21,7 @@ export default function Concept() {
           entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
         },
         router,
-        router.locale || "sv",
+        locale,
         isSandbox,
         resource as string,
       );

@@ -1,5 +1,5 @@
 import { cx } from "class-variance-authority";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import type { FC } from "react";
 
 import { ButtonLink } from "@/components/button";
@@ -19,7 +19,7 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
   landingPage,
   formPage,
 }) => {
-  const { t } = useTranslation("pages");
+  const t = useTranslations();
 
   return (
     <>
@@ -35,8 +35,8 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
             <ButtonLink
               size="sm"
               href={showMoreLink}
-              label={t("news$view-all")}
-              aria-label={`${t("news$view-all")} ${
+              label={t("pages.news.view-all")}
+              aria-label={`${t("pages.news.view-all")} ${
                 heading ? `- ${heading}` : ""
               }`}
               variant="secondary"
