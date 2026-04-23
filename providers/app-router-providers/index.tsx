@@ -13,6 +13,7 @@ import { MatomoProvider } from "@/lib/matomo";
 import {
   type LayoutState,
   LayoutStateProvider,
+  useLayoutState,
 } from "@/providers/layout-state-provider";
 import { LocalStoreProvider } from "@/providers/local-store-provider";
 import {
@@ -53,19 +54,55 @@ function readInitialConsent(): boolean {
 }
 
 /**
- * App Router client boundary. Wraps the four state providers any
- * `app/[locale]/.../page.tsx` may consume:
+ * Injects `setBreadcrumb` (owned by `LayoutStateProvider`) into
+ * `SettingsProvider.value`. Mirrors the bridge pattern in `pages/_app.tsx`
+ * so ported pages can keep calling `useContext(SettingsContext).setBreadcrumb?.(...)`
+ * unchanged. Required because `SettingsProvider` is a pure value wrapper —
+ * it doesn't know about layout state on its own.
+ */
+function SettingsLayoutBridge({
+  env,
+  matomoSiteId,
+  children,
+}: {
+  env: EnvSettings;
+  matomoSiteId: string;
+  children: ReactNode;
+}) {
+  const { setBreadcrumb } = useLayoutState();
+  return (
+    <SettingsProvider
+      value={{
+        ...defaultSettings,
+        env,
+        setBreadcrumb,
+        matomoSiteId,
+      }}
+    >
+      {children}
+    </SettingsProvider>
+  );
+}
+
+/**
+ * App Router client boundary. Composes every provider any
+ * `app/[locale]/.../page.tsx` may consume. Order matters:
  *
- *  - `NextIntlClientProvider`  — translations + formatters
- *  - `SettingsProvider`        — `EnvSettings`, breadcrumb setter, Matomo site id
- *  - `LocalStoreProvider`      — cookie-banner store backed by `localStorage`
- *  - `MatomoProvider`          — script loading + page-view tracking
- *  - `LayoutStateProvider`     — sidebar/settings dialog/hero/breadcrumb state
+ *  - `NextIntlClientProvider`   translations + formatters
+ *  - `ResourcesProvider`        URI-keyed SKOS labels (out-of-band from
+ *                               next-intl's validator)
+ *  - `LayoutStateProvider`      sidebar / settings dialog / hero / breadcrumb
+ *                               state — sits *outside* `SettingsProvider`
+ *                               so its setters can be bridged downward
+ *  - `SettingsLayoutBridge`     injects `setBreadcrumb` from layout state
+ *                               into `SettingsContext`
+ *  - `LocalStoreProvider`       cookie-banner store backed by `localStorage`
+ *  - `MatomoProvider`           script loading + page-view tracking
  *
- * `EnvSettings` is created client-side because it depends on
- * `react-env` which reads `window.__beam_env` populated by `/__ENV.js`. The
- * server layout injects that script with the CSP nonce *before* this
- * provider hydrates, so the env is available on the first effect tick.
+ * `EnvSettings` is created client-side because it depends on `react-env`
+ * which reads `window.__beam_env` populated by `/__ENV.js`. The server
+ * layout injects that script with the CSP nonce *before* this provider
+ * hydrates, so the env is available on the first effect tick.
  */
 export function AppRouterProviders({
   children,
@@ -99,18 +136,15 @@ export function AppRouterProviders({
       timeZone="Europe/Stockholm"
     >
       <ResourcesProvider resources={resources}>
-        <SettingsProvider
-          value={{
-            ...defaultSettings,
-            env: resolvedEnv,
-            matomoSiteId: reactenv("MATOMO_SITE_ID"),
-          }}
+        <LayoutStateProvider
+          initialBreadcrumb={initialBreadcrumb}
+          initialImageHero={initialImageHero}
         >
-          <LocalStoreProvider>
-            <LayoutStateProvider
-              initialBreadcrumb={initialBreadcrumb}
-              initialImageHero={initialImageHero}
-            >
+          <SettingsLayoutBridge
+            env={resolvedEnv}
+            matomoSiteId={reactenv("MATOMO_SITE_ID")}
+          >
+            <LocalStoreProvider>
               <MatomoProvider
                 disabled={matomoDisabled}
                 initialConsent={readInitialConsent()}
@@ -118,9 +152,9 @@ export function AppRouterProviders({
               >
                 {children}
               </MatomoProvider>
-            </LayoutStateProvider>
-          </LocalStoreProvider>
-        </SettingsProvider>
+            </LocalStoreProvider>
+          </SettingsLayoutBridge>
+        </LayoutStateProvider>
       </ResourcesProvider>
     </NextIntlClientProvider>
   );

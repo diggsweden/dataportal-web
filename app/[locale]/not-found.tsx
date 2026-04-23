@@ -6,28 +6,30 @@ import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
 import { includeLangInPath } from "@/utilities/check-lang";
 
+import { NotFoundBreadcrumb } from "./_components/not-found-breadcrumb";
+
 /**
  * Locale-scoped 404 for the App Router. Mirrors `pages/404.tsx` but runs
  * as a pure RSC (`getTranslations` + `getLocale` from `next-intl/server`).
+ * Rendered inside `app/[locale]/layout.tsx` so it inherits the App Router
+ * chrome (Header / Sidebar / Footer / Breadcrumbs) automatically.
  *
- * Breadcrumbs are intentionally not set here: the chrome (Header / Footer
- * / Sidebar / Breadcrumbs) still lives in `pages/_app.tsx`. When that
- * moves into `app/[locale]/layout.tsx` in a later Phase 4 step, this
- * page will pick it up automatically through the nested-layout rule.
+ * The breadcrumb label is set from a client island (`NotFoundBreadcrumb`)
+ * because `LayoutStateProvider` lives client-side.
  *
- * `pages/404.tsx` stays as-is; both routers never collide on a single
- * request — Next picks the App Router 404 for any unmatched route under
- * `app/[locale]/...` and the Pages Router 404 for everything else.
+ * `pages/404.tsx` stays untouched — Pages Router routes still serve it.
  */
 export default async function LocaleNotFound() {
   const [t, lang] = await Promise.all([getTranslations(), getLocale()]);
   const base = includeLangInPath(lang);
   const datasetsHref = `${base}/datasets?datasets?p=1&q=&s=2&t=20&f=&rt=dataset%24data_service%24dataset_series`;
+  const heading = t("pages.notfoundpage.heading");
 
   return (
     <Container>
+      <NotFoundBreadcrumb name={heading} />
       <Heading level={1} size="lg" className="mb-lg md:mb-xl">
-        {t("pages.notfoundpage.heading")}
+        {heading}
       </Heading>
 
       <Preamble className="max-w-md">{t("pages.notfoundpage.body")}</Preamble>

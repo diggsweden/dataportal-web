@@ -4,10 +4,13 @@ import Script from "next/script";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
+import { AppRouterChrome } from "@/components/layout/app-router-chrome";
+import type { NavigationDataFragment } from "@/graphql/__generated__/operations";
 import { loadResourceLabels } from "@/i18n/load-messages";
 import { isAppLocale, routing } from "@/i18n/routing";
 import { AppRouterProviders } from "@/providers/app-router-providers";
 import { generateRandomKey } from "@/utilities/key-generator";
+import { getNavigationData } from "@/utilities/query-helpers";
 
 /**
  * Pre-render every locale at build time. Without this, every page under
@@ -44,11 +47,19 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
 
-  const [messages, resources, requestHeaders] = await Promise.all([
+  const [messages, resources, requestHeaders, navResp] = await Promise.all([
     getMessages(),
     loadResourceLabels(locale),
     headers(),
+    // `"all"` mirrors the Pages Router chrome — one cache key shared across
+    // locales. We filter to the current locale client-side-of-Graphql below.
+    getNavigationData("all"),
   ]);
+
+  const navigationData: NavigationDataFragment | null =
+    navResp.props.items?.find(
+      (n: NavigationDataFragment) => n.locale === locale,
+    ) ?? null;
 
   // `proxy.ts` sets `x-nonce` per request. Fall back to a freshly minted
   // nonce so a request that bypassed middleware (e.g. a static prerender
@@ -82,7 +93,9 @@ export default async function LocaleLayout({
           resources={resources}
           nonce={nonce}
         >
-          {children}
+          <AppRouterChrome navigationData={navigationData}>
+            {children}
+          </AppRouterChrome>
         </AppRouterProviders>
       </body>
     </html>
