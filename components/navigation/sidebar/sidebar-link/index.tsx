@@ -59,7 +59,6 @@ const MenuLink: FC<MenuLinkProps> = ({
   const lang = useLocale();
   const pathname = usePathname();
   const basePath = `/${(pathname ?? "").split("/").splice(1, 1)[0]}`;
-  const vw = window.innerWidth;
 
   // The home item's `href` comes through as `/` for Swedish and `/en` for
   // English (see `includeLangInPath`), but `basePath` on the home route
@@ -79,33 +78,35 @@ const MenuLink: FC<MenuLinkProps> = ({
       )}
       href={href}
       tabIndex={tabIndex}
-      onClick={() => vw < 600 && setOpenSideBar(false)}
+      // Read width inside the handler (not at render time) — event handlers
+      // never fire during SSR so `window` is guaranteed to exist here. Also
+      // catches post-mount viewport resizes, which the old render-time read
+      // missed (it captured width at first render and went stale).
+      onClick={() => window.innerWidth < 600 && setOpenSideBar(false)}
       data-tracking-name="sidebar-link"
     >
-      <>
-        {isActive && <PixelsImage className="absolute right-none text-white" />}
-        {icon && (
-          <span
-            dangerouslySetInnerHTML={{ __html: icon }}
-            className={`flex-shrink-0 ${isActive ? "text-pink-600" : ""}`}
-          />
-        )}
+      {isActive && <PixelsImage className="absolute right-none text-white" />}
+      {icon && (
         <span
-          className={`z-50 underline-offset-4 group-hover:underline ${
-            isActive ? "font-strong text-brown-900" : ""
-          }`}
-        >
-          {label}
-        </span>
-        {isExternalLink(href) && (
-          <ExternalLinkIcon
-            className="absolute right-md text-brown-400"
-            viewBox="0 0 24 24"
-            width={1.5 * iconSize}
-            height={1.5 * iconSize}
-          />
-        )}
-      </>
+          dangerouslySetInnerHTML={{ __html: icon }}
+          className={`flex-shrink-0 ${isActive ? "text-pink-600" : ""}`}
+        />
+      )}
+      <span
+        className={`z-50 underline-offset-4 group-hover:underline ${
+          isActive ? "font-strong text-brown-900" : ""
+        }`}
+      >
+        {label}
+      </span>
+      {isExternalLink(href) && (
+        <ExternalLinkIcon
+          className="absolute right-md text-brown-400"
+          viewBox="0 0 24 24"
+          width={1.5 * iconSize}
+          height={1.5 * iconSize}
+        />
+      )}
     </Link>
   );
 };
