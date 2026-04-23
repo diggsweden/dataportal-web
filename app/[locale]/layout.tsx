@@ -9,8 +9,6 @@ import { isAppLocale, routing } from "@/i18n/routing";
 import { AppRouterProviders } from "@/providers/app-router-providers";
 import { generateRandomKey } from "@/utilities/key-generator";
 
-import "@/styles/main.css";
-
 /**
  * Pre-render every locale at build time. Without this, every page under
  * `app/[locale]/...` would be dynamic.
