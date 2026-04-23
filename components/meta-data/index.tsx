@@ -7,7 +7,6 @@ import { type FC, useState } from "react";
 import { type EnvSettings, SettingsUtil } from "@/env";
 import type { SeoDataFragment } from "@/graphql/__generated__/operations";
 import { defaultSettings } from "@/providers/settings-provider";
-import generateCSP from "@/utilities/generate-csp";
 
 export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
   const [env] = useState<EnvSettings>(SettingsUtil.create());
@@ -27,10 +26,13 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
   return (
     <Head>
       <meta name="referrer" content="no-referrer" />
-      <meta
-        httpEquiv="Content-Security-Policy"
-        content={generateCSP({ nonce: env.nonce })}
-      />
+      {/*
+       * CSP is emitted as a `Content-Security-Policy` response header by
+       * `proxy.ts` (the single source of truth). The `<meta http-equiv>`
+       * variant previously lived here as a fallback; dropped to avoid
+       * dueling policies (browsers apply the intersection when both are
+       * present) now that the middleware owns delivery.
+       */}
       {/* SEO */}
       <title>
         {title ? `${title} - Sveriges Dataportal` : "Sveriges Dataportal"}

@@ -1,37 +1,46 @@
-import reactEnv from "@beam-australia/react-env";
-
 import type { CSPDirective } from "@/types/global";
 
 interface Options {
   prodOnly?: boolean;
 }
 
-interface generateCSPProps {
+interface GenerateCSPProps {
+  /**
+   * Per-request CSP nonce. Stamped into `script-src` alongside
+   * `'strict-dynamic'` so modern browsers gate script execution by
+   * nonce match, not by the `'self'` / host allowlist. Omit only in
+   * tests — a missing nonce makes the policy unusable in production.
+   */
   nonce?: string;
+  /**
+   * Value of the `IMAGE_DOMAIN` runtime env (via `@beam-australia/react-env`
+   * at the call site). Passed in explicitly rather than read from
+   * `process.env` inside here so the generator stays callable from edge
+   * middleware without pulling `react-env`'s resolver into the edge bundle.
+   */
+  imageDomain?: string;
+  /** Same rationale as `imageDomain` but for `APOLLO_URL` (connect-src). */
+  apolloUrl?: string;
 }
 
 /**
- * @param options nonce: string
- * @returns A string with multiple CSP directives and corresponding values
+ * Builds a single-line `Content-Security-Policy` string. Pure; no env reads.
+ * Caller (e.g. `proxy.ts`) is responsible for resolving runtime env values
+ * and passing them in.
  */
-const generateCSP = ({ nonce }: generateCSPProps = {}) => {
+const generateCSP = ({
+  nonce,
+  imageDomain = "",
+  apolloUrl = "",
+}: GenerateCSPProps = {}) => {
   const policy: Partial<Record<CSPDirective, string[]>> = {};
 
-  /**
-   * ads a directive to the CSP
-   * @param directive ex style-src
-   * @param value dirctive value, ex 'self' https://example.com
-   * @param options {prodOnly: boolean}
-   * @returns A CSP directive and value
-   */
   const add = (
     directive: CSPDirective,
     value: string,
     options: Options = {},
   ) => {
     if (options.prodOnly && process.env.NODE_ENV === "development") return;
-    /** eslint-disable */
-    // console.log({ directive, value });
     const curr = policy[directive];
     policy[directive] = curr ? [...curr, value] : [value];
   };
@@ -68,14 +77,9 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   add("form-action", `'self'`);
   add(
     "img-src",
-    `'self' ${
-      reactEnv("IMAGE_DOMAIN") || ""
-    } https://diggdrstoragetest.blob.core.windows.net/ data: *`,
+    `'self' ${imageDomain} https://diggdrstoragetest.blob.core.windows.net/ data: *`,
   );
-  add(
-    "media-src",
-    `'self' ${reactEnv("IMAGE_DOMAIN") || ""} https: data: blob:`,
-  );
+  add("media-src", `'self' ${imageDomain} https: data: blob:`);
   add(
     "style-src",
     `'self' 'unsafe-inline' https://cdn.screen9.com/players/amber-player.css https://webbanalys-dashboard.digg.se`,
@@ -87,12 +91,9 @@ const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   add("style-src-attr", `'self' 'unsafe-inline'`);
   add(
     "connect-src",
-    `'self' https://* http://127.0.0.1:1300/ https://admin.dataportal.se https://editera.dataportal.se https://webbanalys.digg.se ${
-      reactEnv("APOLLO_URL") || ""
-    } https://* webbanalys.digg.se statsapi.screen9.com geo-inspire.trafikverket.se`,
+    `'self' https://* http://127.0.0.1:1300/ https://admin.dataportal.se https://editera.dataportal.se https://webbanalys.digg.se ${apolloUrl} https://* webbanalys.digg.se statsapi.screen9.com geo-inspire.trafikverket.se`,
   );
 
-  // Return the object in a formatted value
   return Object.entries(policy)
     .map(([key, value]) => `${key} ${value.join(" ")}`)
     .join("; ");
