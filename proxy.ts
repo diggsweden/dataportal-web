@@ -5,12 +5,16 @@ import { generateRandomKey } from "./utilities/key-generator";
 /**
  * Next 16 middleware (renamed `proxy.ts` per the Next 16 file convention).
  *
- * Locale routing is handled by the native Pages Router `i18n` config in
- * `next.config.mjs`, so this file's sole job is to stamp a per-request
- * CSP nonce onto both the incoming request and the outgoing response.
- *
- * When the App Router port lands we'll layer `next-intl`'s middleware back
- * in for the routed segments; the nonce logic stays identical either way.
+ * This file's only job right now is to stamp a per-request CSP nonce onto
+ * both the incoming request (so downstream RSCs can read it via `headers()`)
+ * and the outgoing response. Locale routing is intentionally absent:
+ *   - The native Pages Router `i18n` block was removed from
+ *     `next.config.mjs` as part of Option B of the migration
+ *     (see `docs/next15-app-router-migration.md`), so Pages Router serves
+ *     only Swedish until each route family moves under `app/[locale]/`.
+ *   - `next-intl`'s middleware (`createMiddleware(routing)`) gets layered
+ *     back in here during Phase 4 as soon as the first App Router route
+ *     lands. Its output composes with the nonce logic without changes.
  */
 export function proxy(request: NextRequest) {
   const nonce = generateRandomKey(32);
