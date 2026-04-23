@@ -176,9 +176,7 @@ export const BlockList: FC<blockListProps> = ({
             const unknownBlock = block as { __typename: string; id: string };
             return (
               <div key={unknownBlock.id}>
-                <h2>
-                  <>{unknownBlock.__typename} Not found</>
-                </h2>
+                <h2>{unknownBlock.__typename} Not found</h2>
                 <pre>{JSON.stringify(unknownBlock, null, 2)}</pre>
               </div>
             );

@@ -308,11 +308,7 @@ const FormItem = (
         </div>
       );
     case "organisationNumber":
-      return (
-        <>
-          <OrganisationNumber />
-        </>
-      );
+      return <OrganisationNumber />;
   }
 };
 

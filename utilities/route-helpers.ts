@@ -43,8 +43,8 @@ export const SearchDatasetsPagePath = (
   if (lang && lang.length > 0 && resource && resource.length > 0) {
     return `/${t("routes|datasets$path")}?f=${encodeURIComponent(
       `${resourceType}||${resource}||FALSE||uri||${t(
-        "resources|" + resourceType,
-      )}||${t("resources|" + resource)}`,
+        `resources|${resourceType}`,
+      )}||${t(`resources|${resource}`)}`,
     )}`;
   }
 
@@ -76,7 +76,7 @@ export const makeBreadcrumbsFromPath = (path: string) => {
 
   const basePath: string[] = [];
 
-  paths.map((path, index) => {
+  paths.forEach((path, index) => {
     if (index !== paths.length - 1) {
       crumbs.push({
         name: path.replaceAll("-", " "),
