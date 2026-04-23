@@ -123,6 +123,51 @@ Default rule of thumb: if a component doesn't import `react`'s state/effect hook
 - Update `docs/entryscape-blocks.md` to describe the client-boundary model.
 - Run the full Cypress suite; compare Lighthouse numbers against pre-migration baseline (LCP, CLS, TBT).
 
+## Phase 6 - `lib/` consolidation (optional, post-migration cleanup)
+
+Goal: finish the move started by `lib/matomo/` in Phase 2. Pull third-party integrations out of `utilities/` and `hooks/` into self-contained `lib/<integration>/` modules so the public API of each integration is a single import surface and route-local code in `app/` only imports from stable, well-named entry points.
+
+Rule of thumb:
+
+- `lib/<name>/` = integration with side effects, singletons, external services, or SDK wrappers (stable public API per folder).
+- `utilities/` = pure helpers only — no React, no network, no module-scope state.
+
+Scope:
+
+- **`utilities/entrystore/*` → `lib/entrystore/`** (biggest win). Includes `entrystore.service.ts`, `entrystore-helpers.ts`, `entrystore-redirect.ts`, `local-cache.ts`, plus `types/entrystore-js.d.ts` and `types/entrystore-core.ts` colocated as `lib/entrystore/types.ts`. Optionally move `providers/entrystore-provider/` into the same folder so the lib is fully self-contained (one `@/lib/entrystore` import surface).
+- **`utilities/entryscape/blocks/*` → `lib/entryscape-blocks/`**. Colocate `hooks/use-entry-scape-blocks.ts` as `lib/entryscape-blocks/use-blocks.ts` — that hook has no meaning outside this integration.
+- **Optional:** move `providers/api-index-context/` next to whichever lib owns its data source (if it talks to an external index API).
+- **Leave alone:** `graphql/` (conventional top-level + codegen config points at it), `env/`, `types/` global ambient decls, pure helpers in `utilities/` (`checkers`, `date-helper`, `form-utils`, `query-helpers`, `dcat-utils`, `data-categories`, `key-generator`, `scroll-helper`, `route-helpers`, `app`), generic `hooks/*`, `providers/*` that hold pure app state (`settings`, `local-store`, `search`).
+- **Borderline:** `utilities/generate-csp.ts` (pure function but all third-party origins — move only if CSP grows beyond one file), `utilities/logger.ts` (move if it starts forwarding to Sentry/Datadog).
+
+Sequencing:
+
+- Do NOT do this during Phase 4 — moving files while porting routes multiplies diff conflicts.
+- One focused PR per integration after the App Router port is stable:
+  - PR A: `utilities/entrystore/*` → `lib/entrystore/*` (mechanical: `git mv` + alias-aware find/replace on `@/utilities/entrystore`).
+  - PR B: `utilities/entryscape/blocks/*` + `use-entry-scape-blocks` → `lib/entryscape-blocks/*`.
+- Each PR is just renames + import path rewrites; Biome and `yarn check-types` flag stale imports immediately. No behavior change.
+
+End-state example:
+
+```
+lib/
+├── matomo/                    # Phase 2 (done)
+├── entrystore/                # PR A
+│   ├── client.ts              # ← entrystore.service.ts
+│   ├── helpers.ts             # ← entrystore-helpers.ts
+│   ├── redirect.ts            # ← entrystore-redirect.ts
+│   ├── local-cache.ts
+│   ├── types.ts               # ← types/entrystore-*
+│   ├── entrystore-provider.tsx (optional co-locate)
+│   └── index.ts
+└── entryscape-blocks/         # PR B
+    ├── blocks/                # ← utilities/entryscape/blocks/*
+    ├── config.ts
+    ├── use-blocks.ts          # ← hooks/use-entry-scape-blocks.ts
+    └── index.ts
+```
+
 ## Risks and open items
 
 - **next-intl + localized slugs.** `locales/sv/routes.json` encodes localized paths (e.g. `datasets` -> `/data-apier`). These must be expressed in `next-intl`'s `pathnames` config; otherwise links break. Budget time to build a generator from `routes.json` to the pathnames map so we keep a single source of truth.
@@ -148,3 +193,5 @@ Default rule of thumb: if a component doesn't import `react`'s state/effect hook
   - If we adopt `preset: "client"` with `documentMode: "string"` (the "other project" setup), codegen will bake `__typename` into every operation/fragment at build time. At that point, delete the `addTypename(doc)` transform in `graphql/fetcher.ts` — it becomes redundant and just adds latency per request.
   - If we stop at the plain `typed-document-node` preset, `__typename` is **not** injected (that preset only emits `TypedDocumentNode<TData, TVars>` types around the existing source) and the runtime `addTypename` transform in `gqlFetch` must stay.
   - Either way, verify post-migration by diffing an outgoing request body against a pre-migration capture: `__typename` selections must still be present on every nested selection set, otherwise `components/grid-list` and any other discriminator-based component will silently render the wrong variant.
+- [ ] **Phase 6 (optional):** move `utilities/entrystore/*` → `lib/entrystore/*` (one PR, mechanical rename + import rewrites). Colocate `types/entrystore-*` and optionally `providers/entrystore-provider/`.
+- [ ] **Phase 6 (optional):** move `utilities/entryscape/blocks/*` + `hooks/use-entry-scape-blocks.ts` → `lib/entryscape-blocks/*` (one PR). Hook gets renamed to `use-blocks.ts`.
