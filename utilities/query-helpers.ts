@@ -50,7 +50,8 @@ import { SEARCH_QUERY } from "@/graphql/searchQuery";
 import { START_PAGE_QUERY } from "@/graphql/startpageQuery";
 import { TOOL_QUERY } from "@/graphql/toolQuery";
 
-const revalidateValue = () => parseInt(process.env.REVALIDATE_INTERVAL || "60");
+const revalidateValue = () =>
+  Number.parseInt(process.env.REVALIDATE_INTERVAL || "60", 10);
 
 const notFound = (revalidate: boolean) => ({
   notFound: true,
@@ -186,7 +187,7 @@ export const getMultiContainer = async (
 ) => {
   const { state, secret, revalidate } = opts;
 
-  const slug = "/" + slugs.join("/");
+  const slug = `/${slugs.join("/")}`;
 
   try {
     const data = await gqlFetch<
