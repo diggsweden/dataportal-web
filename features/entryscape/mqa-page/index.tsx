@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useEffect } from "react";
 
 import { Container } from "@/components/layout/container";
@@ -10,9 +10,10 @@ import { handleLocale, linkBase } from "@/utilities";
 
 export const MQAPage: FC = () => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
-  const { lang, t } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
   const router = useRouter();
-  const pageTitle = t("routes|metadata$title");
+  const pageTitle = t("routes.metadata.title");
 
   useEntryScapeBlocks({
     entrystoreBase: `https://${env.ENTRYSCAPE_MQA_PATH}/store`,

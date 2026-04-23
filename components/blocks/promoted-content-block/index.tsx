@@ -1,4 +1,4 @@
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import type { FC } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
@@ -15,10 +15,10 @@ export const PromotedContentBlock: FC<PromotedContentFragment> = ({
   preamble,
   container,
 }) => {
-  const { t } = useTranslation("common");
+  const t = useTranslations();
   const link = externalLink || container?.slug;
   const title = heading || container?.title;
-  const btnText = buttonText ? buttonText : t("read-more");
+  const btnText = buttonText ? buttonText : t("common.read-more");
   const img = image || container?.image;
 
   return (

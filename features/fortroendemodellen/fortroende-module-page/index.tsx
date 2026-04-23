@@ -1,5 +1,5 @@
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { type FC, useContext, useEffect, useState } from "react";
 
 import { BlockList } from "@/components/blocks/block-list";
@@ -13,7 +13,7 @@ import { linkBase } from "@/utilities";
 export const FortroendeModulePage: FC<ModuleDataFragment> = ({ blocks }) => {
   const [heading, setHeading] = useState<string | null>(null);
   const { setBreadcrumb } = useContext(SettingsContext);
-  const { t } = useTranslation();
+  const t = useTranslations();
   const pathname = usePathname();
 
   const getHeading = () => {

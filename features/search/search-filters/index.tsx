@@ -1,5 +1,5 @@
 import { createFocusTrap, type FocusTrap } from "focus-trap";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import {
   type Dispatch,
   type FC,
@@ -10,7 +10,6 @@ import {
   useRef,
   useState,
 } from "react";
-
 import CrossIcon from "@/assets/icons/cross.svg";
 import FilterIcon from "@/assets/icons/filter.svg";
 import InfoCircleIcon from "@/assets/icons/info-circle.svg";
@@ -19,6 +18,7 @@ import { Button } from "@/components/button";
 import { TextInput } from "@/components/form/text-input";
 import { Modal } from "@/components/modal";
 import { SearchFilter } from "@/features/search/search-filters/search-filter";
+import { useResourceLabel } from "@/i18n/use-resource-label";
 import type { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { ESRdfType } from "@/types/entrystore-core";
@@ -62,14 +62,14 @@ const FilterSearch: FC<FilterSearchProps> = ({
   setFilter,
   fetchMore,
 }) => {
-  const { t } = useTranslation("pages");
+  const t = useTranslations();
 
   return (
     <div className="relative flex items-center">
       <TextInput
         id={filterKey}
         name={filterKey}
-        placeholder={t("search$filtersearch")}
+        placeholder={t("pages.search.filtersearch")}
         className="focus--in border-none"
         aria-label={title}
         value={filter[filterKey] || ""}
@@ -114,7 +114,8 @@ export const SearchFilters: FC<SearchFilterProps> = ({
   searchMode,
   query,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
+  const tResource = useResourceLabel();
   const { iconSize } = useContext(SettingsContext);
   const [showFilter, setShowFilter] = useState(false);
   const [showFilterInfo, setShowFilterInfo] = useState(false);
@@ -180,9 +181,9 @@ export const SearchFilters: FC<SearchFilterProps> = ({
         size="md"
         icon={showFilter ? CrossIcon : FilterIcon}
         iconPosition="left"
-        label={showFilter ? t("common|close-filter") : t("common|show-filter")}
+        label={showFilter ? t("common.close-filter") : t("common.show-filter")}
         aria-label={
-          showFilter ? t("common|close-filter") : t("common|show-filter")
+          showFilter ? t("common.close-filter") : t("common.show-filter")
         }
         aria-expanded={showFilter}
         aria-controls="filter-content"
@@ -213,7 +214,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
     <div
       data-test-id="search-filters"
       role="region"
-      aria-label={t("common|filter")}
+      aria-label={t("common.filter")}
     >
       <div
         className={`fixed inset-none z-40 overflow-hidden bg-brownOpaque5 md:hidden 
@@ -229,19 +230,25 @@ export const SearchFilters: FC<SearchFilterProps> = ({
             <Button
               variant="plain"
               size="md"
-              label={t("common|filter-info")}
+              label={t("common.filter-info")}
               icon={InfoCircleIcon}
               iconPosition="left"
               onClick={() => setShowFilterInfo(true)}
             />
             <Modal
-              heading={t("pages|search$search-tips")}
+              heading={t("pages.search.search-tips")}
               modalOpen={showFilterInfo}
               setModalOpen={setShowFilterInfo}
-              text={t("pages|search$search-tips-head")}
-              description={t(`pages|search$search-${searchMode}-tips-text`)}
+              text={t("pages.search.search-tips-head")}
+              description={
+                t.raw(
+                  `pages.search.search-${searchMode}-tips-text` as Parameters<
+                    typeof t
+                  >[0],
+                ) as string
+              }
               textSize="md"
-              closeBtn={t("common|close")}
+              closeBtn={t("common.close")}
               closeBtnClassName="ml-auto"
             />
           </>
@@ -265,13 +272,13 @@ export const SearchFilters: FC<SearchFilterProps> = ({
             >
               {groupName !== "default" && (
                 <h4 className="mb-sm mr-md shrink-0 text-sm text-textSecondary md:mb-none md:w-[6.25rem]">
-                  {t(`filters|group$${groupName}`)}:
+                  {t(`filters.group.${groupName}` as Parameters<typeof t>[0])}:
                 </h4>
               )}
               <ul
                 className="flex w-full flex-col flex-wrap gap-md md:flex-row"
                 role="list"
-                aria-label={t("common|available-filters")}
+                aria-label={t("common.available-filters")}
               >
                 {Object.entries(groupFacets)
                   .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
@@ -407,14 +414,14 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                   disabled={search.loadingFacets}
                                   label={
                                     search.loadingFacets
-                                      ? t("common|loading")
-                                      : t("common|load-more")
+                                      ? t("common.loading")
+                                      : t("common.load-more")
                                   }
                                 />
                               )}
-                              {facetValues.length == 0 && (
+                              {facetValues.length === 0 && (
                                 <div className="p-md">
-                                  {t("pages|search$nohits")}
+                                  {t("pages.search.nohits")}
                                 </div>
                               )}
                             </div>
@@ -466,7 +473,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                 doSearch(key, facetValues[0]);
                               }
                             }}
-                            label={t(`resources|${key}`)}
+                            label={tResource(key)}
                             iconSize={iconSize}
                           />
                         </li>

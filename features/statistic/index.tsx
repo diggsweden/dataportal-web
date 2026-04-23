@@ -1,4 +1,4 @@
-import useTranslation from "next-translate/useTranslation";
+import { useLocale, useTranslations } from "next-intl";
 import {
   type FC,
   type ReactNode,
@@ -97,7 +97,8 @@ export const getStatistics = async (env: EnvSettings, lang: string) => {
 //Statistic
 export const Statistic: FC = () => {
   const { env } = useContext(SettingsContext);
-  const { t, lang } = useTranslation("pages");
+  const t = useTranslations();
+  const lang = useLocale();
 
   const [stats, setStats] = useState<StatisticState>({
     publisherCount: -1,
@@ -130,10 +131,10 @@ export const Statistic: FC = () => {
       <div
         tabIndex={0}
         className="focus--primary block bg-white p-xl"
-        aria-label={t("statistic$top-organisations")}
+        aria-label={t("pages.statistic.top-organisations")}
       >
         <Heading level={3} size="sm" className="mb-lg">
-          {t("statistic$top-organisations")}
+          {t("pages.statistic.top-organisations")}
         </Heading>
 
         <ol key={"toplist-organisation"} className="list-decimal pl-lg">
@@ -146,7 +147,7 @@ export const Statistic: FC = () => {
                     key={"org-" + index}
                     listText={stats.labels && stats.labels[index]}
                     listNumber={item}
-                    translation={t("datasets$datasets")}
+                    translation={t("pages.datasets.datasets")}
                     listUrl={`/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${
                       stats.values && encodeURIComponent(stats.values[index])
                     }%7C%7Cfalse%7C%7Curi%7C%7COrganisationer%7C%7C${
@@ -161,10 +162,10 @@ export const Statistic: FC = () => {
       <div
         tabIndex={0}
         className="focus--primary block bg-white p-xl"
-        aria-label={t("statistic$top-categories")}
+        aria-label={t("pages.statistic.top-categories")}
       >
         <Heading level={3} size="sm" className="mb-lg">
-          {t("statistic$top-categories")}
+          {t("pages.statistic.top-categories")}
         </Heading>
 
         <ol className="list-decimal pl-lg">
@@ -177,7 +178,7 @@ export const Statistic: FC = () => {
                     key={"cat-" + index}
                     listText={stats.labelsTheme && stats.labelsTheme[index]}
                     listNumber={item}
-                    translation={t("datasets$datasets")}
+                    translation={t("pages.datasets.datasets")}
                     listUrl={`/datasets?f=http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23theme%7C%7C${
                       stats.valuesTheme &&
                       encodeURIComponent(stats.valuesTheme[index])

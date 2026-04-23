@@ -1,5 +1,5 @@
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import {
   type ChangeEvent,
   type FC,
@@ -32,7 +32,7 @@ type Props = IForm & {
 };
 
 export const FormPage: FC<Props> = ({ elements, module }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
   const [page, setPage] = useState<number>(-1);
@@ -252,7 +252,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
         >
           {page !== 0 && formSteps.length > 0 && (
             <FormNav
-              pageNames={[...formSteps, t("pages|form$generate-pdf-text")]}
+              pageNames={[...formSteps, t("pages.form.generate-pdf-text")]}
               setPage={setPage}
               scrollRef={scrollRef}
               forceUpdate={page - 1}
@@ -277,7 +277,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
                     setPage(page + 1);
                     handleScroll(scrollRef);
                   }}
-                  label={t("pages|form$start-evaluation-text")}
+                  label={t("pages.form.start-evaluation-text")}
                 />
               </>
             )}
@@ -292,7 +292,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
                   >
                     <span ref={scrollRef} />
                     <span className="text-lg text-textSecondary">
-                      {t("pages|form$questions")}
+                      {t("pages.form.questions")}
                     </span>
                     {page !== 0 && formSteps.length > 0 && (
                       <ProgressBar

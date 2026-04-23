@@ -1,7 +1,7 @@
 import type { NextRouter } from "next/router";
 import type { ReactNode } from "react";
 
-import i18n from "@/i18n";
+import { routing } from "@/i18n/routing";
 
 export interface IHeading {
   lang: string;
@@ -58,7 +58,7 @@ export const checkLang = (text: string | null) => {
 };
 
 export const includeLangInPath = (lang: string) => {
-  return lang === i18n.defaultLocale ? "" : `/${lang}`;
+  return lang === routing.defaultLocale ? "" : `/${lang}`;
 };
 
 export const handleLocale = (
@@ -68,7 +68,7 @@ export const handleLocale = (
   router: NextRouter,
 ) => {
   if (
-    currentLocale === i18n.defaultLocale &&
+    currentLocale === routing.defaultLocale &&
     pathname.startsWith(`/${currentLocale}/`)
   ) {
     router.replace(currentPath, undefined, {

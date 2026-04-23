@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useEffect } from "react";
 
 import { Container } from "@/components/layout/container";
@@ -14,7 +14,8 @@ import { linkBase } from "@/utilities";
 export const ConceptPage: FC = () => {
   const { setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
-  const { lang, t } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
   const { pathname } = useRouter() || {};
   const isTerminology = pathname.startsWith("/terminology");
 
@@ -34,8 +35,8 @@ export const ConceptPage: FC = () => {
       crumbs: [
         { name: "start", link: { ...linkBase, link: "/" } },
         {
-          name: t("routes|concepts$title"),
-          link: { ...linkBase, link: `/${t("routes|concepts$path")}?q=&f=` },
+          name: t("routes.concepts.title"),
+          link: { ...linkBase, link: `/${t("routes.concepts.path")}?q=&f=` },
         },
       ],
     });
@@ -94,8 +95,8 @@ export const ConceptPage: FC = () => {
             className="mb-sm font-strong text-textSecondary md:mb-md"
           >
             {isTerminology
-              ? t("pages|concept_page$about_terminology")
-              : t("pages|concept_page$about_concept")}
+              ? t("pages.concept_page.about_terminology")
+              : t("pages.concept_page.about_concept")}
           </Heading>
 
           <div className="space-y-lg">
@@ -106,8 +107,8 @@ export const ConceptPage: FC = () => {
                 size={"xxs"}
               >
                 {isTerminology
-                  ? t("pages|concept_page$term_adress")
-                  : t("pages|concept_page$concept_adress")}
+                  ? t("pages.concept_page.term_adress")
+                  : t("pages.concept_page.concept_adress")}
               </Heading>
 
               <Link
@@ -126,7 +127,7 @@ export const ConceptPage: FC = () => {
                     level={3}
                     size={"xxs"}
                   >
-                    {t("pages|datasetpage$related_specifications")}
+                    {t("pages.datasetpage.related_specifications")}
                   </Heading>
                   {entry.relatedSpecifications.map(({ title, url }, idx) => (
                     <Link
@@ -147,7 +148,7 @@ export const ConceptPage: FC = () => {
                   level={3}
                   size={"xxs"}
                 >
-                  {t("pages|concept_page$terminology_concept")}
+                  {t("pages.concept_page.terminology_concept")}
                 </Heading>
                 <Link
                   className="block text-sm text-green-600 hover:no-underline"
@@ -166,7 +167,7 @@ export const ConceptPage: FC = () => {
                   level={3}
                   size={"xxs"}
                 >
-                  {t("pages|datasetpage$download_link")}
+                  {t("pages.datasetpage.download_link")}
                 </Heading>
                 <div className="flex flex-col gap-xs">
                   {entry.downloadFormats.map(({ title, url }, idx) => (

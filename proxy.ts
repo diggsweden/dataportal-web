@@ -1,34 +1,27 @@
-import type { NextRequest } from "next/server";
-import createMiddleware from "next-intl/middleware";
+import { type NextRequest, NextResponse } from "next/server";
 
-import { routing } from "./i18n/routing";
 import { generateRandomKey } from "./utilities/key-generator";
-
-const handleI18n = createMiddleware(routing);
 
 /**
  * Next 16 middleware (renamed `proxy.ts` per the Next 16 file convention).
  *
- * Two responsibilities:
- *  1. `next-intl` locale handling with `localePrefix: "as-needed"`: Swedish
- *     stays unprefixed (`/datasets`), English under `/en/...`. Replaces the
- *     hand-rolled redirect logic that used to live here.
- *  2. Per-request CSP nonce: stamps `x-nonce` on both the **request** (so
- *     server components in `app/[locale]/layout.tsx` can read it via
- *     `headers()`) and the **response** (for any downstream consumer). The
- *     `app/[locale]/layout.tsx` falls back to generating its own nonce if
- *     this header is missing, so a cold-cache request never ships without
- *     CSP coverage.
+ * Locale routing is handled by the native Pages Router `i18n` config in
+ * `next.config.mjs`, so this file's sole job is to stamp a per-request
+ * CSP nonce onto both the incoming request and the outgoing response.
+ *
+ * When the App Router port lands we'll layer `next-intl`'s middleware back
+ * in for the routed segments; the nonce logic stays identical either way.
  */
 export function proxy(request: NextRequest) {
   const nonce = generateRandomKey(32);
 
   // Mutating the incoming request headers makes them visible to downstream
-  // RSCs via `headers()` whenever the eventual NextResponse is a rewrite or
-  // pass-through (which is what `next-intl` returns for valid locales).
+  // RSCs via `headers()` once any segment is rendered from `app/`.
   request.headers.set("x-nonce", nonce);
 
-  const response = handleI18n(request);
+  const response = NextResponse.next({
+    request: { headers: request.headers },
+  });
   response.headers.set("x-nonce", nonce);
   return response;
 }

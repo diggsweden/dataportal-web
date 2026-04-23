@@ -1,5 +1,5 @@
 import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
+import { useLocale } from "next-intl";
 import type { FC } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
@@ -35,7 +35,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
   publication,
 }) => {
   const { heading, publishedAt, slug, image, __typename } = publication;
-  const { lang } = useTranslation();
+  const lang = useLocale();
   const formattedDate = formatDate(lang, publishedAt);
   const goodExampleLink = (publication as GoodExampleDataFragment)?.reuse
     ? `/exempel-pa-ateranvandning${slug}`

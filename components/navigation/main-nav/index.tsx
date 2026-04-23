@@ -1,6 +1,6 @@
 import Link from "next/link.js";
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
+import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useRef, useState } from "react";
 
 import CrossIcon from "@/assets/icons/cross.svg";
@@ -29,7 +29,8 @@ const MainNav: FC<MainNavProps> = ({
   const [query, setQuery] = useState("");
   const pathname = usePathname();
   const basePath = `/${(pathname ?? "").split("/").splice(1, 1)[0]}`;
-  const { t, lang } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
   const ref = useClickOutside<HTMLDivElement>(() => setOpenSearch(false));
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -47,7 +48,7 @@ const MainNav: FC<MainNavProps> = ({
   return (
     <div className="flex flex-row items-center justify-between">
       <Link
-        href={`${t(`common|${"lang-path"}`)}`}
+        href={`${t(`common.${"lang-path"}`)}`}
         aria-label="Dataportal logga länk till startsida"
         onClick={() => setOpenSideBar(false)}
         className="forced-colors-visible"
@@ -67,7 +68,7 @@ const MainNav: FC<MainNavProps> = ({
       <div className="flex flex-row items-center justify-end space-x-md">
         <nav
           className="hidden flex-row items-center space-x-sm xl:flex"
-          aria-label={t("common|menu-main")}
+          aria-label={t("common.menu-main")}
         >
           {mainMenu?.length > 0 &&
             mainMenu.map((menu: MenuLinkFragment, idx: number) => (
@@ -89,7 +90,7 @@ const MainNav: FC<MainNavProps> = ({
           {!openSearch ? (
             <Button
               variant="plain"
-              aria-label={t("common|search-content")}
+              aria-label={t("common.search-content")}
               onClick={handleSearchButtonClick}
               icon={SearchIcon}
               iconPosition="left"
@@ -112,8 +113,8 @@ const MainNav: FC<MainNavProps> = ({
             >
               <SearchInput
                 id="header-search"
-                placeholder={t("common|search")}
-                ariaLabel={t("common|search-content")}
+                placeholder={t("common.search")}
+                ariaLabel={t("common.search-content")}
                 query={query}
                 setQuery={setQuery}
                 type="small"
@@ -131,10 +132,10 @@ const MainNav: FC<MainNavProps> = ({
           icon={openSideBar ? CrossIcon : HamburgerIcon}
           iconPosition="left"
           onClick={() => setOpenSideBar(!openSideBar)}
-          label={t("common|menu")}
+          label={t("common.menu")}
           className={`button--large ${openSideBar ? "active" : ""}`}
           aria-label={
-            openSideBar ? t("common|menu-close") : t("common|menu-open")
+            openSideBar ? t("common.menu-close") : t("common.menu-open")
           }
         />
       </div>

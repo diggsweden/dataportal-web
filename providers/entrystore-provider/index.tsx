@@ -1,7 +1,7 @@
 import type { Entry, EntryStore, Metadata } from "@entryscape/entrystore-js";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { useLocale, useTranslations } from "next-intl";
 import {
   createContext,
   type FC,
@@ -9,9 +9,9 @@ import {
   useEffect,
   useState,
 } from "react";
-
 import type { EnvSettings } from "@/env";
 import { SettingsUtil } from "@/env/settings-util";
+import { useResourceLabel } from "@/i18n/use-resource-label";
 import type { ESEntry, PageType } from "@/types/entrystore-core";
 import type { OrganisationData } from "@/types/organisation";
 import type { ESFacetField, ESFacetFieldValue } from "@/types/search";
@@ -80,7 +80,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 }) => {
   const [state, setState] = useState(defaultESEntry);
   const router = useRouter();
-  const { lang, t } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
+  const resourceLabel = useResourceLabel();
   let entry: Entry;
   let resourceUri: string;
 
@@ -89,6 +91,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       `https://${entrystoreUrl}/store` || "https://admin.dataportal.se/store",
     lang,
     t,
+    resourceLabel,
   });
 
   entrystoreService.getEntryStoreUtil();
@@ -143,6 +146,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
               }admin.dataportal.se/store`,
               lang,
               t,
+              resourceLabel,
             })
           : entrystoreService;
       const publisherPromise =
@@ -379,14 +383,14 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       const data: OrganisationData = {
         datasets: {
           total: 0,
-          totTitle: t("pages|organisation_page$all-data"),
+          totTitle: t("pages.organisation_page.all-data"),
           dataInfo: [
-            { total: 0, title: t("pages|organisation_page$open-data") },
-            { total: 0, title: t("pages|organisation_page$protected-data") },
-            { total: 0, title: t("pages|organisation_page$api-data") },
-            { total: 0, title: t("pages|organisation_page$hvd-data") },
-            { total: 0, title: t("pages|organisation_page$fee-data") },
-            { total: 0, title: t("pages|organisation_page$spec-data") },
+            { total: 0, title: t("pages.organisation_page.open-data") },
+            { total: 0, title: t("pages.organisation_page.protected-data") },
+            { total: 0, title: t("pages.organisation_page.api-data") },
+            { total: 0, title: t("pages.organisation_page.hvd-data") },
+            { total: 0, title: t("pages.organisation_page.fee-data") },
+            { total: 0, title: t("pages.organisation_page.spec-data") },
           ],
           link: `/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${encodeURIComponent(
             uri,
@@ -417,6 +421,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         }editera.dataportal.se/store`,
         lang,
         t,
+        resourceLabel,
       });
 
       const dcatMeta = await fetchDCATMeta();

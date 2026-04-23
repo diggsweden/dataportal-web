@@ -1,5 +1,3 @@
-import useTranslation from "next-translate/useTranslation";
-
 import type { Dataportal_LinkType } from "@/graphql/__generated__/types";
 import type { Breadcrumb, DiggLink } from "@/types/global";
 
@@ -26,29 +24,6 @@ export const slugify = (str: string) => {
     .replace(/--+/g, "-") // Replace multiple - with single -
     .replace(/^-+/, "") // Trim - from start of text
     .replace(/-+$/, ""); // Trim - from end of text
-};
-
-/**
- * Return relative path to search result page, with sent in @param resource and @param lang selected in search filters
- * @param resourceType
- * @param resource
- * @param lang
- */
-export const SearchDatasetsPagePath = (
-  lang: string,
-  resourceType: string,
-  resource: string,
-) => {
-  const { t } = useTranslation();
-  if (lang && lang.length > 0 && resource && resource.length > 0) {
-    return `/${t("routes|datasets$path")}?f=${encodeURIComponent(
-      `${resourceType}||${resource}||FALSE||uri||${t(
-        "resources|" + resourceType,
-      )}||${t("resources|" + resource)}`,
-    )}`;
-  }
-
-  return "";
 };
 
 // Used to satisfy typescript condition for DiggLink

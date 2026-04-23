@@ -1,10 +1,17 @@
 import type { Entry } from "@entryscape/entrystore-js";
-import type { useRouter } from "next/router";
-import type { I18n } from "next-translate";
-import withTranslation from "next-translate/withTranslation";
+import { useRouter } from "next/router";
+import { useLocale, useTranslations } from "next-intl";
 import { decode, encode } from "qss";
-import { Component, createContext, type ReactNode } from "react";
+import {
+  Component,
+  createContext,
+  type FC,
+  type ReactNode,
+  useMemo,
+} from "react";
 
+import type { ResourceLabel, Translate } from "@/i18n/types";
+import { useResourceLabel } from "@/i18n/use-resource-label";
 import { ESRdfType, ESType } from "@/types/entrystore-core";
 import type {
   ESFacetField,
@@ -17,6 +24,18 @@ import type {
 } from "@/types/search";
 import { type DCATData, fetchDCATMeta } from "@/utilities";
 import { EntrystoreService } from "@/utilities/entrystore/entrystore.service";
+
+/**
+ * Shape of the i18n bag injected into the class `SearchProviderClass` by
+ * its functional wrapper. Kept local so the class doesn't reach into
+ * `next-intl` hooks (which would break it — it's a class, not a function
+ * component).
+ */
+interface SearchProviderI18n {
+  t: Translate;
+  lang: string;
+  resourceLabel: ResourceLabel;
+}
 
 /* eslint-disable no-unused-vars */
 export enum SearchSortOrder {
@@ -35,7 +54,7 @@ export interface SearchProviderProps {
   hitSpecifications?: { [key: string]: HitSpecification };
   facetSpecification?: FacetSpecification;
   initRequest: SearchRequest;
-  i18n: I18n;
+  i18n: SearchProviderI18n;
   children?: ReactNode;
   fetchHitsWithFacets?: boolean;
   entry?: Entry;
@@ -121,7 +140,10 @@ export const SearchContext = createContext<SearchContextData>(
 /**
  * SearchProvider component
  */
-class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
+class SearchProviderClass extends Component<
+  SearchProviderProps,
+  SearchContextData
+> {
   private entrystoreService: EntrystoreService;
   private entry?: Entry;
 
@@ -137,12 +159,13 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
 
   constructor(props: SearchProviderProps) {
     super(props);
-    const { t, lang } = props.i18n!;
+    const { t, lang, resourceLabel } = props.i18n;
 
     this.entrystoreService = EntrystoreService.getInstance({
       baseUrl: props.entryscapeUrl || "https://admin.dataportal.se/store",
       lang: lang,
       t: t,
+      resourceLabel,
       facetSpecification: props.facetSpecification,
       hitSpecifications: props.hitSpecifications,
       entry: props.entry,
@@ -220,12 +243,13 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
   // Update EntryScape instance when language changes
   componentDidUpdate(prevProps: SearchProviderProps) {
     if (prevProps.i18n.lang !== this.props.i18n.lang) {
-      const { t, lang } = this.props.i18n;
+      const { t, lang, resourceLabel } = this.props.i18n;
       this.entrystoreService = EntrystoreService.getInstance({
         baseUrl:
           this.props.entryscapeUrl || "https://admin.dataportal.se/store",
         lang: lang,
         t: t,
+        resourceLabel,
         facetSpecification: this.props.facetSpecification,
         hitSpecifications: this.props.hitSpecifications,
       });
@@ -587,16 +611,16 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
         return;
       }
 
-      const [{ getUriNames }, { entryCache }, { t }] = await Promise.all([
+      const [{ getUriNames }, { entryCache }] = await Promise.all([
         import("@/utilities/entrystore/entrystore-helpers"),
         import("@/utilities/entrystore/local-cache"),
-        Promise.resolve(this.props.i18n!),
       ]);
+      const { resourceLabel } = this.props.i18n;
 
       await getUriNames(
         uris,
         this.entrystoreService.getEntryStoreUtil(),
-        t,
+        resourceLabel,
         undefined,
         false,
       );
@@ -1002,4 +1026,26 @@ class SearchProvider extends Component<SearchProviderProps, SearchContextData> {
   }
 }
 
-export default withTranslation(SearchProvider, "resources");
+/**
+ * Functional wrapper that supplies the `i18n` bag (previously injected by
+ * `next-translate`'s `withTranslation` HOC). React hooks cannot be used
+ * inside the class component, so we collect `t`, `lang`, and the flat
+ * `resourceLabel` lookup here and pass them down.
+ */
+const SearchProvider: FC<Omit<SearchProviderProps, "i18n" | "router">> = (
+  props,
+) => {
+  const router = useRouter();
+  const t = useTranslations();
+  const lang = useLocale();
+  const resourceLabel = useResourceLabel();
+
+  const i18n = useMemo<SearchProviderI18n>(
+    () => ({ t, lang, resourceLabel }),
+    [t, lang, resourceLabel],
+  );
+
+  return <SearchProviderClass {...props} router={router} i18n={i18n} />;
+};
+
+export default SearchProvider;

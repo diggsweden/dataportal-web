@@ -5,6 +5,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { AppRouterProviders } from "@/components/providers";
+import { loadResourceLabels } from "@/i18n/load-messages";
 import { isAppLocale, routing } from "@/i18n/routing";
 import { generateRandomKey } from "@/utilities/key-generator";
 
@@ -45,8 +46,9 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
 
-  const [messages, requestHeaders] = await Promise.all([
+  const [messages, resources, requestHeaders] = await Promise.all([
     getMessages(),
+    loadResourceLabels(locale),
     headers(),
   ]);
 
@@ -76,7 +78,12 @@ export default async function LocaleLayout({
         <meta name="theme-color" content="#FBF2F0" />
       </head>
       <body className="font-ubuntu text-md text-textPrimary">
-        <AppRouterProviders locale={locale} messages={messages} nonce={nonce}>
+        <AppRouterProviders
+          locale={locale}
+          messages={messages}
+          resources={resources}
+          nonce={nonce}
+        >
           {children}
         </AppRouterProviders>
       </body>

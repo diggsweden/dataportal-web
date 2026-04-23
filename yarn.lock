@@ -5754,8 +5754,6 @@ __metadata:
     next: "npm:16.2.4"
     next-absolute-url: "npm:^1.2.2"
     next-intl: "npm:^4.9.1"
-    next-translate: "npm:3.1.2"
-    next-translate-plugin: "npm:3.1.2"
     node-fetch: "npm:^3.2.10"
     organisationsnummer: "npm:^1.2.0"
     postcss: "npm:^8.4.32"
@@ -8931,27 +8929,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-translate-plugin@npm:3.1.2":
-  version: 3.1.2
-  resolution: "next-translate-plugin@npm:3.1.2"
-  dependencies:
-    typescript: "npm:5.9.3"
-  peerDependencies:
-    next-translate: ">= 2.4.1"
-  checksum: 10/f63c30d789fbd40a7572f3e2e87c7b139bd8566e7723b8bd1ce41ba1c4682d21cae66f2cd62c6fe6fa376c5cd8444418ebc8574678f292f2a0111fb15e6203f0
-  languageName: node
-  linkType: hard
-
-"next-translate@npm:3.1.2":
-  version: 3.1.2
-  resolution: "next-translate@npm:3.1.2"
-  peerDependencies:
-    next: ">= 13.2.5"
-    react: ">= 18.0.0"
-  checksum: 10/ab623d259cede0245528c80742f3d855f0bff587efc97f100160d0115c922aabad6e368a4eb35ba0576bbd9d5235ce356f0c4a09a092ff5a87a8f34fc14ef810
-  languageName: node
-  linkType: hard
-
 "next@npm:16.2.4":
   version: 16.2.4
   resolution: "next@npm:16.2.4"
@@ -11710,16 +11687,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.9.3":
-  version: 5.9.3
-  resolution: "typescript@npm:5.9.3"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10/c089d9d3da2729fd4ac517f9b0e0485914c4b3c26f80dc0cffcb5de1719a17951e92425d55db59515c1a7ddab65808466debb864d0d56dcf43f27007d0709594
-  languageName: node
-  linkType: hard
-
 "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>":
   version: 5.3.3
   resolution: "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=e012d7"
@@ -11727,16 +11694,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/c93786fcc9a70718ba1e3819bab56064ead5817004d1b8186f8ca66165f3a2d0100fee91fa64c840dcd45f994ca5d615d8e1f566d39a7470fc1e014dbb4cf15d
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>":
-  version: 5.9.3
-  resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10/696e1b017bc2635f4e0c94eb4435357701008e2f272f553d06e35b494b8ddc60aa221145e286c28ace0c89ee32827a28c2040e3a69bdc108b1a5dc8fb40b72e3
   languageName: node
   linkType: hard
 

@@ -71,7 +71,7 @@ Goal: remove Apollo without touching routing. This de-risks everything after.
 Split into two PRs because each item has a very different blast radius:
 
 - **3a — Infra scaffold** (landed): `proxy.ts` + `next-intl` middleware, `i18n/{routing,request}.ts`, `app/layout.tsx` + `app/[locale]/layout.tsx`, `components/providers.tsx`, `LayoutStateProvider`, error/not-found shells, `pages/_app.tsx` refactor. Coexists with `pages/` — no route ported yet, no UI regression expected.
-- **3b — i18n key flatten + localized pathnames** (still pending): one-time codemod to flatten the `|` / `$` separators in `locales/**/*.json`, rewrite the ~330 `t("ns|key$sub")` call sites in 64 files, and wire `next-intl` `pathnames` from `routes.json` so `/datasets` ↔ `/en/data-apis` keeps working.
+- **3b — Full `next-translate` → `next-intl` migration** (landed): rewrote every `t("ns|key$sub")` call site to native `next-intl` dot notation (`t("ns.key.sub")`), deleted `next-translate` + `next-translate-plugin`, and unwound its `next.config` wrapper. Localized `pathnames` wiring from `routes.json` still pending (deferred into Phase 4 where per-route porting happens anyway).
 
 ### Phase 3a — what shipped (and pragmatic deviations from the original plan)
 
@@ -95,13 +95,21 @@ Split into two PRs because each item has a very different blast radius:
 
 _Pragmatic deviation — `next/router` → `next/navigation` sweep:_ the original plan said "replace every `next/router` import" in this phase. We deferred everything except `pages/_app.tsx`. The other ~38 callers all live inside Pages-Router-only files (`pages/`, `features/`); each will be ported alongside its page during Phase 4, when the surrounding component model also changes. Doing them eagerly here would make a 30-file mechanical PR that has no observable effect (all those files still render under `pages/` for now).
 
-### Phase 3b — still to do
+### Phase 3b — what shipped
 
-- One-time JSON codemod: `{"pages|startpage$heading": "..."}` → `{ "pages": { "startpage": { "heading": "..." } } }` for all five namespaces × two locales (~1200 lines).
-- `t()` codemod across all 64 callers: `t("ns|key$sub")` → `t("ns.key.sub")` (or split into `useTranslations("ns")` + `t("key.sub")` where the namespace is consistent within a file).
-- Add `pathnames` to `i18n/routing.ts` derived from `locales/{sv,en}/routes.json` so localized slugs (`/datasets` ↔ `/en/data-apis`, etc.) survive the App Router move. Build a generator so we keep a single source of truth.
+- **No JSON changes needed.** `locales/**/*.json` files were already nested — the `|`/`$` syntax only existed in call sites. Only the translation call sites needed rewriting.
+- **Call-site rewrite** (~330 calls across 77 files): `useTranslation("ns")` → `useTranslations()` + `useLocale()` from `next-intl`; `t("ns|key$sub", {vars})` → `t("ns.key.sub", {vars})`; `t("resources|<uri>")` → dedicated `useResourceLabel()` (client) / `getResourceLabel()` (server) helpers because the `resources` namespace uses URIs containing `.` and `/` as keys, which collide with `next-intl`'s dot-path resolver. `SearchProvider` (class component) got a thin functional wrapper that injects hooks; `EntrystoreService` (pure class) now takes `t` + `resourceLabel` as constructor deps.
+- **Native Pages-Router i18n.** `next.config.mjs` is no longer wrapped by `nextTranslate`; native Next `i18n: { locales: ["sv", "en"], defaultLocale: "sv", localeDetection: false }` handles locale routing until routes are ported. `proxy.ts` dropped `createMiddleware(routing)` and is now nonce-only (the Pages Router can't share `next-intl`'s middleware anyway — it would double-prefix `/en`). The `NextIntlClientProvider` is mounted in `pages/_app.tsx` with messages preloaded in `getInitialProps` via the shared `loadLocaleMessages`.
+- **Server-side helpers.** `i18n/get-translations.ts` (mirrors `useTranslations` for `getServerSideProps`), `i18n/get-resource-label.ts` (mirrors `useResourceLabel`), and `i18n/load-messages.ts` (single source for loading all five namespaces). Used by `utilities/entrystore/entrystore-redirect.ts` among others.
+- **Biome guardrail.** `biome.json` bans every `next-translate/*` import via `noRestrictedImports` so legacy calls can't sneak back.
+- `next-translate`, `next-translate-plugin`, `i18n.js`, and the matching Dockerfile copy are all deleted.
+- **Type-safe `t()` keys.** `i18n/messages.d.ts` augments `use-intl`'s `AppConfig` with `Locale = "sv" | "en"` and `Messages = { common, pages, filters, routes }` (sourced from the Swedish JSON — default locale is the schema of record; `resources` is intentionally excluded since it's URI-keyed and bypassed by `useResourceLabel`). `Translate` is now `ReturnType<typeof useTranslations<never>>` so helper signatures (`createBlocksConfig`, `EntrystoreService`, `SearchProvider`, the server helpers) get end-to-end autocomplete + typo-checking for every `t("…")` literal. Turning this on surfaced ~110 stale call sites the codemod missed — stray `$`/`:` separators, bare `common.*` keys missing their prefix, `search$*` translation-key constants, and a `common.language` key that never existed — all fixed. Dynamic keys (`` `filters.group.${groupName}` ``, `` `pages.${searchMode}.search` ``) use `as Parameters<typeof t>[0]` at the call site; `URL_BADGE_MAP` in `search-hit` moved to `as const satisfies` so its values type-narrow into valid keys automatically.
 
-At the end of Phase 3 (3a + 3b), `pages/` still owns every route. No UI should have regressed.
+### Phase 3b — deferred
+
+- `next-intl` `pathnames` derived from `locales/{sv,en}/routes.json` (localized slugs `/datasets` ↔ `/en/data-apis`). Rolled into Phase 4 — each route family gets its `pathnames` entry added when it's ported to `app/[locale]/`. Doing it here would require running `next-intl` middleware alongside native Pages-Router i18n, and those two conflict on `/en`.
+
+At the end of Phase 3 (3a + 3b), `pages/` still owns every route, but all i18n flows through `next-intl`. No UI should have regressed.
 
 ## Phase 4 - Port routes family by family
 
@@ -121,6 +129,7 @@ For each page:
 - `getStaticPaths` -> `export async function generateStaticParams()`.
 - `revalidate: N` -> `export const revalidate = N` at module scope, or pass `{ next: { revalidate: N } }` in `gqlFetch`.
 - SEO (today via `resolvePage` + `<MetaData>`) -> `export async function generateMetadata()`; delete the `<MetaData>` component once all routes are ported.
+- Swap the Pages-Router-only i18n bridges for the native `next-intl/server` APIs once the caller lives inside `app/`: `@/i18n/get-translations` → `getTranslations({ locale })` from `next-intl/server`, `@/i18n/get-resource-label` → `getMessages({ locale })` narrowed to `.resources`. The custom helpers only exist because `next-intl/server`'s `getTranslations` is stubbed to throw outside the `react-server` condition (i.e. from `getServerSideProps`/`getInitialProps`); they become deletable once `utilities/entrystore/entrystore-redirect.ts` and its callers are RSCs.
 - Mark as `"use client"` only the subtrees that genuinely need it:
   - Entryscape blocks / `useEntryScapeBlocks` (DOM-bound Entryscape JS library).
   - Search UI (`features/search/**`), filters, URL state via `nuqs`.
@@ -132,7 +141,7 @@ Default rule of thumb: if a component doesn't import `react`'s state/effect hook
 ## Phase 5 - Clean up and hardening
 
 - Delete `pages/_app.tsx`, `pages/_document.tsx`, and the now-empty `pages/` directory.
-- Remove `next-translate`, `next-translate-plugin`; remove its wrapper from `next.config.js`. Remove the webpack `resolve.fallback` block unless a dep still needs it (verify with a production build).
+- Remove the remaining webpack `resolve.fallback` block unless a dep still needs it (verify with a production build). (`next-translate` + plugin already gone in Phase 3b.)
 - Keep the SVGR rule in `next.config.js`; verify it still runs under Next 15 / Turbopack. If Turbopack is enabled (`next dev --turbopack`), move SVGR to the Turbopack `rules` config.
 - Audit `"use client"` boundaries: any provider or pure-display component that accidentally got marked client can often be pushed back to the server.
 - Add tags to `gqlFetch` calls that change via CMS (`navigation`, `start-page`, `container:<slug>`) and expose a `/api/revalidate` Route Handler using `revalidateTag` for webhook-driven invalidation, replacing the ISR-only model.
@@ -186,8 +195,7 @@ lib/
 
 ## Risks and open items
 
-- **next-intl + localized slugs.** `locales/sv/routes.json` encodes localized paths (e.g. `datasets` -> `/data-apier`). These must be expressed in `next-intl`'s `pathnames` config; otherwise links break. Budget time to build a generator from `routes.json` to the pathnames map so we keep a single source of truth.
-- **Flattening `|`/`$` keys.** Breaks every `t("ns|key$sub")` call. Do it via codemod in Phase 3; don't attempt it piecemeal.
+- **next-intl + localized slugs.** `locales/sv/routes.json` encodes localized paths (e.g. `datasets` -> `/data-apier`). These must be expressed in `next-intl`'s `pathnames` config; otherwise links break. Deferred into Phase 4 — each route gets its pathname entry added when ported to `app/`.
 - **`@beam-australia/react-env` + RSC.** `/__ENV.js` must still load before any client provider reads `reactEnv(...)`. Layout injects the script with the CSP nonce; runtime env stays runtime.
 - **Entryscape library.** Browser-only, DOM-dependent. All `useEntryScapeBlocks` consumers must be Client Components, loaded via `next/dynamic(..., { ssr: false })` where hydration would otherwise race the library's DOM mounting.
 - **Apollo cache wasn't doing anything.** Confirmed by code search: no hooks, no reactive vars, every query used `no-cache`. Removing Apollo is safe.
@@ -199,12 +207,12 @@ lib/
 - [x] **Phase 1:** remove `ApolloProvider` from `_app`/`_document`, delete `graphql/client.ts`, drop `@apollo/client` + `apollo` deps, switch introspect to `graphql-codegen`.
 - [ ] **Phase 2:** upgrade to Next 16 / React 19 on the Pages Router, run Next codemods, fix `images.remotePatterns` and `fetch` cache defaults.
 - [x] **Phase 3a:** extend `proxy.ts` (next-intl + CSP nonce), add `i18n/{routing,request}.ts`, `app/layout.tsx` + `app/[locale]/layout.tsx`, `components/providers.tsx`, `LayoutStateProvider`, not-found/error pages, refactor `pages/_app.tsx` onto `LayoutStateProvider`. _Per-page `next/router` → `next/navigation` sweep deferred to Phase 4._
-- [ ] **Phase 3b:** flatten locale JSON (drop `|` and `$` separators) and codemod every `t()` call (~330 calls across 64 files); wire `next-intl` `pathnames` from `routes.json` for localized slugs.
+- [x] **Phase 3b:** rewrite every `t("ns|key$sub")` call (~330 across 77 files) to native `next-intl` dot notation; introduce `useResourceLabel` / `getResourceLabel` for the URI-keyed `resources` namespace; drop `next-translate` + plugin; switch Pages Router to native `i18n` config; add Biome `noRestrictedImports` guardrail. Localized `pathnames` deferred into Phase 4 (per-route).
 - [ ] **Phase 4:** port static/API/sitemap routes to `app/` (healthcheck, auth, sitemap, 404).
 - [ ] **Phase 4:** port start/landing/container/list/form pages and CMS routes (nyheter, goda-exempel, stod-och-verktyg, [...containerSlug], fortroendemodellen tree).
 - [ ] **Phase 4:** port Entryscape route families one PR each (datasets, dataservice, concepts, specifications, terminology, organisations, metadatakvalitet, dataset-series, external*, drafts).
 - [ ] **Phase 4:** flatten `query-helpers` return shape (data-or-throw) and move revalidate to page-level `export const revalidate` / `gqlFetch` tags.
-- [ ] **Phase 5:** delete `pages/`, remove `next-translate` + plugin, audit `"use client"` boundaries, add `revalidateTag` webhook, update docs and run Lighthouse.
+- [ ] **Phase 5:** delete `pages/`, audit `"use client"` boundaries, add `revalidateTag` webhook, update docs and run Lighthouse.
 - [ ] **Phase 5:** migrate GraphQL layer to `@graphql-codegen/typed-document-node` (or `client-preset`). Typed documents remove the `<TData, TVars>` generics at every `gqlFetch` call site and let us drop the `graphql-tag` runtime dep. Defer until after the App Router port so the query files can be split route-locally in one pass.
   - If we adopt `preset: "client"` with `documentMode: "string"` (the "other project" setup), codegen will bake `__typename` into every operation/fragment at build time. At that point, delete the `addTypename(doc)` transform in `graphql/fetcher.ts` — it becomes redundant and just adds latency per request.
   - If we stop at the plain `typed-document-node` preset, `__typename` is **not** injected (that preset only emits `TypedDocumentNode<TData, TVars>` types around the existing source) and the runtime `addTypename` transform in `gqlFetch` must stay.

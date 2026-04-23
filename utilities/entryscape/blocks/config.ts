@@ -1,6 +1,5 @@
-import type { Translate } from "next-translate";
-
 import type { EnvSettings } from "@/env/env-settings";
+import type { Translate } from "@/i18n/types";
 import { includeLangInPath } from "@/utilities/check-lang";
 
 import { apiexploreBlocks } from "./apiexplore";
@@ -205,7 +204,7 @@ export const createBlocksConfig = ({
                   ".xls",
                 ],
                 ods: ["application/vnd.oasis.opendocument.spreadsheet"],
-                [t("pages|datasetpage$fileformat")]: null,
+                [t("pages.datasetpage.fileformat")]: null,
               },
             },
           ],
@@ -295,7 +294,7 @@ export const createBlocksConfig = ({
                   ".xls",
                 ],
                 ods: ["application/vnd.oasis.opendocument.spreadsheet"],
-                [t("pages|datasetpage$fileformat")]: null,
+                [t("pages.datasetpage.fileformat")]: null,
               },
             },
           ],

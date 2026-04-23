@@ -1,4 +1,4 @@
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import type { Dispatch, FC, InputHTMLAttributes, SetStateAction } from "react";
 
 import CrossIcon from "@/assets/icons/cross.svg";
@@ -29,7 +29,7 @@ export const SearchInput: FC<SearchInputProps> = ({
   type,
   ...props
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <div
@@ -63,14 +63,14 @@ export const SearchInput: FC<SearchInputProps> = ({
               submitSearch?.("");
               setQuery("");
             }}
-            aria-label={t("common|clear-search")}
+            aria-label={t("common.clear-search")}
           />
         )}
         <Button
           data-test-id="search-button"
           data-test-loading={isLoading}
           type="submit"
-          label={type !== "small" ? t("common|search") : ""}
+          label={type !== "small" ? t("common.search") : ""}
           icon={isLoading ? SpinnerIcon : SearchIcon}
           iconPosition="left"
           aria-label={ariaLabel}

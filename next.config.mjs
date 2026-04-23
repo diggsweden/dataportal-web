@@ -1,5 +1,4 @@
 import createNextIntlPlugin from "next-intl/plugin";
-import nextTranslate from "next-translate-plugin";
 
 /** @type {import('next').NextConfig} */
 
@@ -42,21 +41,22 @@ const csp = [
   },
 ];
 
-// Plugin chain (apply order matters):
-//   1. `createNextIntlPlugin("./i18n/request.ts")` wires `next-intl` server config.
-//   2. `nextTranslate(..., { turbopack: true })` injects the legacy `i18n` key
-//      that `next-translate` (still used by `pages/`) requires. Applying
-//      `next-intl` first keeps it from seeing that key and erroring out with
-//      "An i18n property was found in your Next.js config".
-// `next-translate-plugin` requires `{ turbopack: true }` on Next 16 so it
-// registers its `t()` rewrite loader under Turbopack (the default bundler).
-// Without it, `t()` calls render as raw keys (e.g. `common|dataportal`).
-// NOTE: with turbopack: true the plugin strips any `webpack` config you pass,
-// so we express bundler-specific rules via `turbopack.rules` only.
-
+// `createNextIntlPlugin` wires the App Router message loader
+// (`i18n/request.ts`). The Pages Router still uses Next's native `i18n`
+// config below so `router.locale` / `asPath` behave as before; the messages
+// are loaded in `pages/_app.tsx` via `loadLocaleMessages` and passed to
+// `NextIntlClientProvider` at the tree root.
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const coreNextConfig = {
+  // Native Pages Router i18n. Matches the locales defined in `i18n/routing.ts`
+  // and keeps Swedish un-prefixed (localeDetection: false preserves existing
+  // SEO URLs). App Router locale handling is layered on top by `next-intl`.
+  i18n: {
+    locales: ["sv", "en"],
+    defaultLocale: "sv",
+    localeDetection: false,
+  },
   turbopack: {
     rules: {
       "*.svg": {
@@ -105,4 +105,4 @@ const coreNextConfig = {
   },
 };
 
-export default nextTranslate(withNextIntl(coreNextConfig), { turbopack: true });
+export default withNextIntl(coreNextConfig);

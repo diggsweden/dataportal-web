@@ -1,5 +1,5 @@
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
+import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useEffect } from "react";
 
 import { Container } from "@/components/layout/container";
@@ -10,7 +10,8 @@ import { linkBase } from "@/utilities";
 
 export const MQACategoryPage: FC = () => {
   const entry = useContext(EntrystoreContext);
-  const { lang, t } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
   const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
 
@@ -29,10 +30,10 @@ export const MQACategoryPage: FC = () => {
       crumbs: [
         { name: "start", link: { ...linkBase, link: "/" } },
         {
-          name: t("routes|metadata$title"),
+          name: t("routes.metadata.title"),
           link: {
             ...linkBase,
-            link: `/${t(`routes|metadata$path`)}`,
+            link: `/${t(`routes.metadata.path`)}`,
           },
         },
       ],

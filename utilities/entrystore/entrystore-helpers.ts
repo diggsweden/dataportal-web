@@ -5,10 +5,9 @@ import type {
   Metadata,
   MetadataValue,
 } from "@entryscape/entrystore-js";
-import type { Translate } from "next-translate";
-
 import { SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
+import type { ResourceLabel } from "@/i18n/types";
 import type { RedirectConfig } from "@/types/global";
 
 import type { Choice, ChoiceTemplate, DCATData } from "../dcat-utils";
@@ -82,7 +81,7 @@ export const getEntryLang = (metadataGraph: any, prop: any, lang: string) => {
 export const getUriNames = async (
   facetValues: string[],
   esu: EntryStoreUtil,
-  t: Translate,
+  resourceLabel: ResourceLabel,
   _property?: string,
   hasCustomProperties?: boolean,
 ) => {
@@ -95,7 +94,7 @@ export const getUriNames = async (
   if (!uniqueUris.length) return cache;
 
   if (hasCustomProperties) {
-    uniqueUris.forEach((uri) => cache.set(uri, t(`resources|${uri}`)));
+    uniqueUris.forEach((uri) => cache.set(uri, resourceLabel(uri)));
     return cache;
   }
 

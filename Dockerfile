@@ -18,8 +18,7 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY --from=builder /build/next.config.js ./
-COPY --from=builder /build/i18n.js ./
+COPY --from=builder /build/next.config.mjs ./
 COPY --from=builder /build/public ./public
 COPY --from=builder /build/.next ./.next
 COPY --from=builder /build/node_modules ./node_modules

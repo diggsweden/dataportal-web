@@ -1,32 +1,13 @@
 import { getRequestConfig } from "next-intl/server";
 
+import { loadLocaleMessages } from "./load-messages";
 import { type AppLocale, isAppLocale, routing } from "./routing";
 
 /**
- * Loads the same five locale namespaces (`common`, `pages`, `resources`,
- * `routes`, `filters`) we use under `next-translate`. Messages keep their
- * legacy `|`/`$` separator keys for now — the second Phase 3 PR will flatten
- * the JSON and codemod every `t()` call site. Until then, App Router code
- * that needs translations should reach into the namespace as a flat map.
+ * App Router entry point for `next-intl`. Delegates to the shared
+ * `loadLocaleMessages` loader so Pages Router (`pages/_app.tsx`) and App
+ * Router share exactly the same messages tree.
  */
-async function loadMessages(locale: AppLocale) {
-  const [common, pages, resources, routes, filters] = await Promise.all([
-    import(`../locales/${locale}/common.json`),
-    import(`../locales/${locale}/pages.json`),
-    import(`../locales/${locale}/resources.json`),
-    import(`../locales/${locale}/routes.json`),
-    import(`../locales/${locale}/filters.json`),
-  ]);
-
-  return {
-    common: common.default,
-    pages: pages.default,
-    resources: resources.default,
-    routes: routes.default,
-    filters: filters.default,
-  };
-}
-
 export default getRequestConfig(async ({ requestLocale }) => {
   const resolved = await requestLocale;
   const locale: AppLocale = isAppLocale(resolved)
@@ -35,6 +16,11 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   return {
     locale,
-    messages: await loadMessages(locale),
+    messages: await loadLocaleMessages(locale),
+    // Global default for all date/time formatters. Dataportal.se is a
+    // Swedish public-sector site, so Stockholm time is the right default.
+    // Without this, `use-intl` throws `ENVIRONMENT_FALLBACK` from server
+    // renders of any component that calls `useTranslations`.
+    timeZone: "Europe/Stockholm",
   };
 });

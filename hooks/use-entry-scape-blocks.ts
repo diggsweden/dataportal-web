@@ -1,4 +1,4 @@
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
 import type { EnvSettings } from "@/env/env-settings";
@@ -39,7 +39,7 @@ export const useEntryScapeBlocks = ({
   context,
   esId,
 }: BlocksConfig) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   // `t` and `env` change identity on most renders but should always be read
   // fresh inside the async init. Keep them in refs so they don't force the

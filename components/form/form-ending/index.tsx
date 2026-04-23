@@ -1,5 +1,5 @@
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { type FC, useEffect } from "react";
 
 import type { FormData } from "@/components/blocks/fortroendemodellen-v2";
@@ -30,7 +30,7 @@ export const FormEnding: FC<Props> = ({
   formData,
   countQuestionsPerSection,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const pathname = usePathname();
   useEffect(() => {
     // Find the name and organization number fields in the form data
@@ -116,17 +116,17 @@ export const FormEnding: FC<Props> = ({
 
   return (
     <div>
-      <span className="text-lg text-brown-600">{t("pages|form$summary")}</span>
+      <span className="text-lg text-brown-600">{t("pages.form.summary")}</span>
       <Preamble color="primary" className="mb-lg mt-md text-md lg:my-xl">
         {formData.resultPageInfo}
       </Preamble>
       {questionStats.total !== questionStats.answered && (
         <span className="border-brown-800 p-xs text-sm text-red-600 md:border md:p-sm md:text-lg">
-          {t("pages|form$not-all-questions-answered")} ({" "}
+          {t("pages.form.not-all-questions-answered")} ({" "}
           {questionStats.total - questionStats.answered}
           {questionStats.total - questionStats.answered === 1
-            ? t("pages|form$question-remaining")
-            : t("pages|form$questions-remaining")}{" "}
+            ? t("pages.form.question-remaining")
+            : t("pages.form.questions-remaining")}{" "}
           )
         </span>
       )}
@@ -134,17 +134,17 @@ export const FormEnding: FC<Props> = ({
         {questionsWithRisks.length > 0 ? (
           <div>
             <Heading size="sm" className="text-brown-600" level={2}>
-              {t("pages|form$risks-title")}
+              {t("pages.form.risks-title")}
             </Heading>
             <div className="mt-lg space-y-xl">
               {questionsWithRisks.map((item, index) => (
                 <div key={index} className="flex flex-col gap-sm">
                   <Heading size="sm" className="text-brown-600" level={3}>
-                    {t("pages|form$question")} {item.number}
+                    {t("pages.form.question")} {item.number}
                   </Heading>
                   <span>{item.title}</span>
                   <span className="w-fit border border-brown-600 p-sm text-sm">
-                    {t("pages|form$answer")} {item.answer}
+                    {t("pages.form.answer")} {item.answer}
                   </span>
                   <span className="text-sm text-brown-600">{item.risk}</span>
                 </div>
@@ -153,7 +153,7 @@ export const FormEnding: FC<Props> = ({
           </div>
         ) : (
           <Heading size="sm" className="font-strong text-brown-600" level={2}>
-            {t("pages|form$no-risk")}
+            {t("pages.form.no-risk")}
           </Heading>
         )}
       </div>

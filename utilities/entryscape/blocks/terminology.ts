@@ -1,7 +1,6 @@
 // biome-ignore-all lint/suspicious/noExplicitAny: Unknown types from entrystore-js
 import type { Entry } from "@entryscape/entrystore-js";
-import type { Translate } from "next-translate";
-
+import type { Translate } from "@/i18n/types";
 import { includeLangInPath } from "@/utilities/check-lang";
 import {
   conceptsPathResolver,
@@ -38,7 +37,7 @@ export const terminologyBlocks = (t: Translate, lang: string) => [
     block: "terminologyBlock",
     extends: "template",
     template: `{{#ifprop "rdf:type" uri="skos:ConceptScheme"}}<h2 class="toplist-header !text-lg">${t(
-      "pages|concept_page$first_level_concepts",
+      "pages.concept_page.first_level_concepts",
     )}</h2>{{topConceptsList}}{{/ifprop}}`,
   },
   {

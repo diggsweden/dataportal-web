@@ -1,5 +1,5 @@
 import { createFocusTrap, type FocusTrap } from "focus-trap";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import {
   type FC,
   type KeyboardEvent,
@@ -24,7 +24,7 @@ export const Sidebar: FC<NavSideProps> = ({
   setOpenSideBar,
   sidebarMenu,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [vw, setVw] = useState(0);
   const trapRef = useRef<FocusTrap | null>(null);
   const ref = useClickOutside(
@@ -72,7 +72,7 @@ export const Sidebar: FC<NavSideProps> = ({
       className={`absolute right-none top-[8.5rem] z-50 -mb-[8.5rem] h-[calc(100%-8.5rem)] overflow-y-auto 
       overflow-x-hidden bg-white transition-all duration-300 ease-in-out md:overflow-y-visible
       ${openSideBar ? "w-full md:w-[18.75rem]" : "w-none"}`}
-      aria-label={t("common|menu-sidebar")}
+      aria-label={t("common.menu-sidebar")}
       onKeyDown={handleEscape}
     >
       <ul className="w-full list-none whitespace-nowrap md:w-[18.75rem]">
