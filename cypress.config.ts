@@ -1,6 +1,6 @@
+import { rm } from "node:fs";
 import { verifyDownloadTasks } from "cy-verify-downloads";
 import { defineConfig } from "cypress";
-import { rm } from "fs";
 
 export default defineConfig({
   e2e: {

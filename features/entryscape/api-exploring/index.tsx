@@ -29,7 +29,7 @@ export const ApiExplorer: FC<ApiExplorerProps> = (props) => {
       props.entryId,
     );
 
-    if (detection && detection.apiDefinition) return detection.apiDefinition;
+    if (detection?.apiDefinition) return detection.apiDefinition;
 
     return undefined;
   };

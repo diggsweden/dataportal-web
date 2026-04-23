@@ -185,6 +185,8 @@ export const ParseDocToHtml = (formData: FormTypes[][]) => {
 
               case "dataportal_Digg_FormPageBreak":
                 return `<h2>${field.title}</h2>`;
+              default:
+                return "";
             }
           })
           .join("");

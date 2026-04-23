@@ -104,13 +104,8 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
   };
 
   const doneSection = (idx: number) => {
-    const done =
-      countQuestionsPerSection &&
-      countQuestionsPerSection[idx] &&
-      countQuestionsPerSection[idx].answered ===
-        countQuestionsPerSection[idx].count;
-
-    return done;
+    const section = countQuestionsPerSection?.[idx];
+    return !!(section && section.answered === section.count);
   };
 
   return (
@@ -126,8 +121,10 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
         onKeyDown={handleEscape}
       >
         {expanded && (
-          <div
-            className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden"
+          <button
+            type="button"
+            aria-label={t("common|close")}
+            className="fixed left-none top-none z-30 h-screen w-screen cursor-default border-0 bg-brownOpaque5 p-0 md:hidden"
             onClick={() => setExpanded(false)}
           />
         )}
@@ -163,10 +160,10 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
         >
           {pageNames.map((name, idx: number) => {
             return (
-              <li
-                key={`name-${idx}`}
-                tabIndex={0}
-                className={`focus--outline focus--primary focus--in relative flex cursor-pointer flex-col gap-sm border-b border-brown-600 p-md text-textPrimary lg:max-w-[200px] lg:rounded-md lg:border
+              <li key={name} className="list-none">
+                <button
+                  type="button"
+                  className={`focus--outline focus--primary focus--in relative flex w-full cursor-pointer flex-col gap-sm border-b border-brown-600 p-md text-left text-textPrimary lg:max-w-[200px] lg:rounded-md lg:border
                ${
                  isActive(name)
                    ? "!cursor-default !border-l-8 border-brown-600 lg:ml-md"
@@ -178,28 +175,24 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
                    : "focus--underline text-textSecondary"
                }
                `}
-                onClick={() => handleClick(name)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleClick(name);
-                  }
-                }}
-              >
-                <span className="break-words">{name}</span>
-                {idx !== 0 &&
-                  countQuestionsPerSection &&
-                  countQuestionsPerSection[idx]?.count > 0 && (
-                    <span className="relative flex items-center gap-sm">
-                      - {countQuestionsPerSection[idx].count}{" "}
-                      {countQuestionsPerSection[idx].count === 1
-                        ? t("pages|form$question").toLowerCase()
-                        : t("pages|form$questions").toLowerCase()}
-                      {doneSection(idx) && `/ ${t("pages|form$done")}`}
-                    </span>
+                  onClick={() => handleClick(name)}
+                >
+                  <span className="break-words">{name}</span>
+                  {idx !== 0 &&
+                    countQuestionsPerSection &&
+                    countQuestionsPerSection[idx]?.count > 0 && (
+                      <span className="relative flex items-center gap-sm">
+                        - {countQuestionsPerSection[idx].count}{" "}
+                        {countQuestionsPerSection[idx].count === 1
+                          ? t("pages|form$question").toLowerCase()
+                          : t("pages|form$questions").toLowerCase()}
+                        {doneSection(idx) && `/ ${t("pages|form$done")}`}
+                      </span>
+                    )}
+                  {doneSection(idx) && (
+                    <CheckIcon className="top-0 h-4 w-4 absolute bottom-sm right-sm hidden md:block [&_path]:fill-green-600" />
                   )}
-                {doneSection(idx) && (
-                  <CheckIcon className="top-0 h-4 w-4 absolute bottom-sm right-sm hidden md:block [&_path]:fill-green-600" />
-                )}
+                </button>
               </li>
             );
           })}

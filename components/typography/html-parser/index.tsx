@@ -96,7 +96,7 @@ export const HtmlParser: FC<{ text: string }> = ({ text }) => {
           name === "h4" ||
           name === "h5"
         ) {
-          const level = parseInt(name[1]);
+          const level = Number.parseInt(name[1], 10);
           const size = name === "h1" ? "lg" : name === "h2" ? "md" : "sm";
           const className =
             name === "h1"

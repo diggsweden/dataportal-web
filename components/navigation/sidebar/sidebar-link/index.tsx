@@ -76,30 +76,29 @@ const MenuLink: FC<MenuLinkProps> = ({
       onClick={() => vw < 600 && setOpenSideBar(false)}
       data-tracking-name="sidebar-link"
     >
-      <>
-        {isActive && <PixelsImage className="absolute right-none text-white" />}
-        {icon && (
-          <span
-            dangerouslySetInnerHTML={{ __html: icon }}
-            className={`flex-shrink-0 ${isActive ? "text-pink-600" : ""}`}
-          />
-        )}
+      {isActive && <PixelsImage className="absolute right-none text-white" />}
+      {icon && (
         <span
-          className={`z-50 underline-offset-4 group-hover:underline ${
-            isActive ? "font-strong text-brown-900" : ""
-          }`}
-        >
-          {label}
-        </span>
-        {isExternalLink(href) && (
-          <ExternalLinkIcon
-            className="absolute right-md text-brown-400"
-            viewBox="0 0 24 24"
-            width={1.5 * iconSize}
-            height={1.5 * iconSize}
-          />
-        )}
-      </>
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: Icon markup from CMS (same as level-2 control).
+          dangerouslySetInnerHTML={{ __html: icon }}
+          className={`flex-shrink-0 ${isActive ? "text-pink-600" : ""}`}
+        />
+      )}
+      <span
+        className={`z-50 underline-offset-4 group-hover:underline ${
+          isActive ? "font-strong text-brown-900" : ""
+        }`}
+      >
+        {label}
+      </span>
+      {isExternalLink(href) && (
+        <ExternalLinkIcon
+          className="absolute right-md text-brown-400"
+          viewBox="0 0 24 24"
+          width={1.5 * iconSize}
+          height={1.5 * iconSize}
+        />
+      )}
     </Link>
   );
 };
@@ -206,8 +205,8 @@ export const SidebarLink: FC<
             id={`submenu-${label.replace(/\s+/g, "-").toLowerCase()}`}
             className="flex flex-col"
           >
-            {list.map((menu: MenuLinkFragment, idx: number) => (
-              <li key={idx} className="group relative overflow-y-hidden">
+            {list.map((menu: MenuLinkFragment) => (
+              <li key={menu.link} className="group relative overflow-y-hidden">
                 <MenuLink
                   href={menu.link}
                   label={menu.name}

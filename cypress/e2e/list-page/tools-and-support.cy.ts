@@ -46,7 +46,7 @@ describe("Check tools and support page", () => {
       .invoke("text")
       .then((text) => {
         // Extract number from heading (assuming format like "XX results" or similar)
-        const count = parseInt(text.match(/\d+/)?.[0] ?? "0");
+        const count = Number.parseInt(text.match(/\d+/)?.[0] ?? "0", 10);
 
         if (count > 20) {
           // Verify pagination exists when total count exceeds 20
