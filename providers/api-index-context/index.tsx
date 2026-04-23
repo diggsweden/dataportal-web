@@ -86,24 +86,22 @@ export const ApiIndexProvider: FC<ApiIndexProviderProps> = ({
       const tmp = detections.filter((d) => {
         return d.contextId === contextid;
       });
-      if (tmp && tmp.length > 0)
+      if (tmp && tmp.length > 0) {
         //iterate matches in context
-        tmp.forEach((t) => {
-          if (t.detections) {
-            //get any matching context and entry
-            const existing =
-              t.detections.filter((d) => {
-                return d.entryId == entryid && d.allowOrigin != null;
-              }) ?? [];
+        for (const t of tmp) {
+          if (!t.detections) continue;
 
-            if (existing && existing.length > 0) {
-              result = existing[0];
-              return result;
-            }
+          //get any matching context and entry
+          const existing = t.detections.filter(
+            (d) => d.entryId == entryid && d.allowOrigin != null,
+          );
+
+          if (existing.length > 0) {
+            result = existing[0];
+            break;
           }
-
-          return undefined;
-        });
+        }
+      }
     }
 
     return result;
