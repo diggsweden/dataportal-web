@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import type { FC } from "react";
 
 import BreadcrumbDividerIcon from "@/assets/icons/breadcrumb-divider.svg";
@@ -15,7 +15,6 @@ export interface BreadcrumbProps {
 
 export const Breadcrumbs: FC<BreadcrumbProps> = ({ crumbs, name }) => {
   const t = useTranslations();
-  const lang = useLocale();
 
   return (
     <Container>
@@ -31,7 +30,6 @@ export const Breadcrumbs: FC<BreadcrumbProps> = ({ crumbs, name }) => {
                   <Link
                     aria-label={crumb.name}
                     href={`${crumb.link.link}`}
-                    locale={lang}
                     className="no-underline"
                     data-tracking-name="breadcrumb-link"
                   >

@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import type { FC } from "react";
 import { BlockList } from "@/components/blocks/block-list";
 import { ButtonLink } from "@/components/button";
@@ -35,7 +35,6 @@ export const StartPage: FC<StartPageDataFragment> = (props) => {
   const { heading, preamble, image, blocks } = props;
   const pathname = usePathname();
   const t = useTranslations();
-  const lang = useLocale();
   const tResource = useResourceLabel();
 
   return (
@@ -84,7 +83,6 @@ export const StartPage: FC<StartPageDataFragment> = (props) => {
             </Heading>
             <Link
               href={`/${t("routes.statistics.path")}`}
-              locale={lang}
               className="statistic-link"
               aria-label={t("pages.statistic.statistic-link-aria")}
             >

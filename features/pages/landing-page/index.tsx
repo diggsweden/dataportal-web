@@ -198,7 +198,6 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
                 </Heading>
                 <Link
                   href={`/${t("routes.statistics.path")}`}
-                  locale={lang}
                   className="statistic-link"
                 >
                   {t("pages.statistic.statistic-link")}

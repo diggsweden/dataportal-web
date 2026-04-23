@@ -96,7 +96,6 @@ export const DataServicePage: FC<{
                     href={`/${t(
                       "routes.dataservices.path",
                     )}/${cid}_${eid}/${name}/apiexplore/${eid}`}
-                    locale={lang}
                     className="dataservice-explore-api-link entryscape link text-md"
                   >
                     Utforska API

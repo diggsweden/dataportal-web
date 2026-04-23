@@ -37,7 +37,6 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
                     aria-label={menu.name}
                     variant="plain"
                     href={menu.link}
-                    locale={lang}
                     onClick={() => setOpenSideBar(false)}
                     hrefLang={lang === "sv" ? "en" : "sv"}
                     size={"sm"}
@@ -59,7 +58,6 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
                       variant="plain"
                       href={`/${t(`routes.language.path`)}`}
                       icon={GlobeIcon}
-                      locale={""}
                       onClick={() => setOpenSideBar(false)}
                       hrefLang={lang === "sv" ? "en" : "sv"}
                       iconPosition="left"
@@ -75,7 +73,6 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
               variant="plain"
               href={`/${t(`routes.language.path`)}`}
               icon={GlobeIcon}
-              locale={""}
               onClick={() => setOpenSideBar(false)}
               hrefLang={lang === "sv" ? "en" : "sv"}
               iconPosition="left"

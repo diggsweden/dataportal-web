@@ -108,7 +108,6 @@ type ButtonLinkProps = VariantProps<typeof buttonVariants> & {
   iconPosition?: "left" | "right";
   label?: string;
   href: string;
-  locale?: string;
 };
 
 const ButtonLink: FC<
@@ -119,7 +118,6 @@ const ButtonLink: FC<
   className,
   label,
   href,
-  locale,
   icon,
   iconPosition,
   children,
@@ -129,7 +127,6 @@ const ButtonLink: FC<
     <Link
       href={href}
       className={cx(buttonVariants({ variant, size }), className)}
-      locale={locale}
       {...rest}
     >
       <IconLabel

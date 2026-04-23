@@ -45,7 +45,6 @@ const HeroButton = ({ href, label, lang, icon }: HeroButtonProps) => {
       className="w-full max-w-sm flex-col rounded-md p-lg"
       href={href}
       size="md"
-      locale={lang}
     >
       <CenterIcon />
       <span className="flex flex-row items-center gap-xs">

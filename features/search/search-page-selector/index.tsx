@@ -4,7 +4,7 @@
  */
 
 import { useRouter } from "next/router";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { ButtonLink } from "@/components/button";
 
 /**
@@ -34,7 +34,6 @@ const SEARCH_TABS = [
  */
 export function SearchPageSelector({ query }: SearchTabsProps) {
   const t = useTranslations();
-  const lang = useLocale();
   const { pathname } = useRouter() || {};
 
   return (
@@ -50,7 +49,6 @@ export function SearchPageSelector({ query }: SearchTabsProps) {
             variant="light"
             href={`${path}?q=${query || ""}&f=`}
             label={t(translationKey)}
-            locale={lang}
             className={`search-page-selector-button button--large focus--in whitespace-nowrap rounded-t-md ${
               pathname === path ? "active" : ""
             }`}
