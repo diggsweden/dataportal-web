@@ -41,14 +41,7 @@ const csp = [
   },
 ];
 
-// `createNextIntlPlugin` wires the App Router message loader
-// (`i18n/request.ts`). We intentionally do NOT set Next's native Pages Router
-// `i18n` option here: it's incompatible with the App Router and `next-intl`
-// logs a warning when both are present. During the migration, Pages Router
-// routes are effectively Swedish-only (callers read `useLocale()` from
-// `next-intl`, which resolves to `routing.defaultLocale` outside `app/`);
-// `/en` gets re-enabled per-route as each tree moves under `app/[locale]/`.
-// See `docs/next15-app-router-migration.md` for the full rollout.
+// `createNextIntlPlugin` wires the App Router message loader (`i18n/request.ts`).
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const coreNextConfig = {
@@ -60,11 +53,6 @@ const coreNextConfig = {
       },
     },
   },
-  // Keep Node-only deps out of the browser bundle. `winston` and the
-  // logstash transport import `net`/`tls`/`fs`; with Turbopack default in
-  // Next 16 there's no implicit `resolve.fallback: false` shim, so they
-  // crash the build when transitively imported from `pages/_error.tsx`.
-  serverExternalPackages: ["winston", "@alfalab/winston3-logstash-transport"],
   productionBrowserSourceMaps: true,
   env: {
     REVALIDATE_INTERVAL: process.env.REVALIDATE_INTERVAL,
