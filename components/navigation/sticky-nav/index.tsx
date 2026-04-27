@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { type FC, type MouseEvent, useEffect, useRef, useState } from "react";
 
 import { Heading } from "@/components/typography/heading";
@@ -21,10 +21,10 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
   const [activeItemId, setActiveItemId] = useState<string | null>(null);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
   const isScrolling = useRef(false);
-  const router = useRouter();
+  const pathname = usePathname() ?? "";
 
   useEffect(() => {
-    const hash = router.asPath.split("#")[1];
+    const hash = typeof window !== "undefined" ? window.location.hash.slice(1) : "";
     if (hash && menuItems.some((item) => item.id === hash)) {
       setActiveItemId(hash);
 
@@ -46,13 +46,13 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
     handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
-  }, [router.asPath, menuItems]);
+  }, [pathname, menuItems]);
 
   useEffect(() => {
     if (!isLargeScreen) return;
 
     // Store the initial path when the effect runs
-    const initialPath = router.asPath.split("#")[0];
+    const initialPath = pathname;
     const watchScroll = () => {
       if (isScrolling.current) return;
 
@@ -92,7 +92,7 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
 
     // Check if we're still on the same page
     const currentPath = window.location.pathname;
-    const initialPath = router.asPath.split("#")[0];
+    const initialPath = pathname;
 
     if (currentPath !== initialPath) {
       return; // We're on a different page

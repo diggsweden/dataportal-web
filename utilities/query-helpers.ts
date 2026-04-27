@@ -50,18 +50,6 @@ import { SEARCH_QUERY } from "@/graphql/searchQuery";
 import { START_PAGE_QUERY } from "@/graphql/startpageQuery";
 import { TOOL_QUERY } from "@/graphql/toolQuery";
 
-const revalidateValue = () => parseInt(process.env.REVALIDATE_INTERVAL || "60");
-
-const notFound = (revalidate: boolean) => ({
-  notFound: true,
-  ...(revalidate ? { revalidate: revalidateValue() } : {}),
-});
-
-const withRevalidate = <T>(props: T, revalidate: boolean) => ({
-  props,
-  ...(revalidate ? { revalidate: revalidateValue() } : {}),
-});
-
 export interface MultiContainerResponse {
   type: "MultiContainer";
   container?: ContainerDataFragment;
@@ -148,7 +136,6 @@ export interface ContentSearchResponse {
 export interface QueryOptions {
   state?: Dataportal_ContainerState;
   secret?: string;
-  revalidate: boolean;
 }
 
 export interface PublicationListOptions {
@@ -182,11 +169,11 @@ export interface ModuleOptions {
 export const getMultiContainer = async (
   slugs: string[],
   locale: string,
-  opts: QueryOptions = { revalidate: true },
-) => {
-  const { state, secret, revalidate } = opts;
+  opts: QueryOptions = {},
+): Promise<MultiContainerResponse | null> => {
+  const { state, secret } = opts;
 
-  const slug = "/" + slugs.join("/");
+  const slug = `/${slugs.join("/")}`;
 
   try {
     const data = await gqlFetch<
@@ -210,28 +197,27 @@ export const getMultiContainer = async (
 
     if (!container) {
       console.warn(`No container found for: ${slug}`);
-      return notFound(revalidate);
+      return null;
     }
 
-    return withRevalidate(
-      {
-        type: "MultiContainer",
-        container,
-        related: data.containerGroup || [],
-      },
-      revalidate,
-    );
+    return {
+      type: "MultiContainer",
+      container,
+      related:
+        data.containerGroup?.filter(
+          (c): c is ContainerDataFragment => c !== null,
+        ) || [],
+    };
   } catch (error) {
     logGqlError(error);
-    return notFound(revalidate);
+    return null;
   }
 };
 
 export const getNewsList = async (
   locale: string,
   opts?: PublicationListOptions,
-) => {
-  const revalidate = true;
+): Promise<NewsItemListResponse> => {
   const { seo, basePath, heading, preamble, heroImage } = opts || {};
 
   try {
@@ -252,39 +238,32 @@ export const getNewsList = async (
       console.warn(`No news found`);
     }
 
-    return withRevalidate(
-      {
-        type: "PublicationList",
-        listItems: publications || [],
-        seo: seo || null,
-        basePath: basePath || null,
-        heading: heading || "",
-        preamble: preamble || null,
-        heroImage: heroImage || null,
-      } as NewsItemListResponse,
-      revalidate,
-    );
+    return {
+      type: "PublicationList",
+      listItems: publications || [],
+      seo: seo || null,
+      basePath: basePath || null,
+      heading: heading || "",
+      preamble: preamble || null,
+      heroImage: heroImage || null,
+    } as NewsItemListResponse;
   } catch (error) {
     logGqlError(error);
-    return withRevalidate(
-      {
-        type: "PublicationList",
-        listItems: [],
-        seo: seo || null,
-        basePath: basePath || null,
-        heading: heading || "",
-        heroImage: heroImage || null,
-      } as NewsItemListResponse,
-      revalidate,
-    );
+    return {
+      type: "PublicationList",
+      listItems: [],
+      seo: seo || null,
+      basePath: basePath || null,
+      heading: heading || "",
+      heroImage: heroImage || null,
+    } as NewsItemListResponse;
   }
 };
 
 export const getGoodExamplesList = async (
   locale: string,
   opts?: PublicationListOptions,
-) => {
-  const revalidate = true;
+): Promise<GoodExampleListResponse> => {
   const { seo, basePath, heading, preamble, heroImage, reuse, breadcrumb } =
     opts || {};
   try {
@@ -307,38 +286,33 @@ export const getGoodExamplesList = async (
       console.warn(`No good examples found`);
     }
 
-    return withRevalidate(
-      {
-        type: "PublicationList",
-        listItems: publications || [],
-        seo: seo || null,
-        basePath: basePath || null,
-        heading: heading || "",
-        preamble: preamble || null,
-        heroImage: heroImage || null,
-        breadcrumb: breadcrumb || null,
-      } as GoodExampleListResponse,
-      revalidate,
-    );
+    return {
+      type: "PublicationList",
+      listItems: publications || [],
+      seo: seo || null,
+      basePath: basePath || null,
+      heading: heading || "",
+      preamble: preamble || null,
+      heroImage: heroImage || null,
+      breadcrumb: breadcrumb || null,
+    } as GoodExampleListResponse;
   } catch (error) {
     logGqlError(error);
-    return withRevalidate(
-      {
-        type: "PublicationList",
-        listItems: [],
-        seo: seo || null,
-        basePath: basePath || null,
-        heading: heading || "",
-        heroImage: heroImage || null,
-        breadcrumb: breadcrumb || null,
-      } as GoodExampleListResponse,
-      revalidate,
-    );
+    return {
+      type: "PublicationList",
+      listItems: [],
+      seo: seo || null,
+      basePath: basePath || null,
+      heading: heading || "",
+      heroImage: heroImage || null,
+      breadcrumb: breadcrumb || null,
+    } as GoodExampleListResponse;
   }
 };
 
-export const getToolsList = async (opts?: ToolistOptions) => {
-  const revalidate = true;
+export const getToolsList = async (
+  opts?: ToolistOptions,
+): Promise<ToolListResponse> => {
   const { heading, preamble, heroImage, seo, basePath } = opts || {};
 
   try {
@@ -352,40 +326,34 @@ export const getToolsList = async (opts?: ToolistOptions) => {
       console.warn(`No tools found`);
     }
 
-    return withRevalidate(
-      {
-        type: "ToolList",
-        listItems: tools || [],
-        seo: seo || null,
-        basePath: basePath || null,
-        heading: heading || null,
-        preamble: preamble || null,
-        heroImage: heroImage || null,
-      } as ToolListResponse,
-      revalidate,
-    );
+    return {
+      type: "ToolList",
+      listItems: tools || [],
+      seo: seo || null,
+      basePath: basePath || null,
+      heading: heading || null,
+      preamble: preamble || null,
+      heroImage: heroImage || null,
+    } as ToolListResponse;
   } catch (error) {
     logGqlError(error);
-    return withRevalidate(
-      {
-        type: "ToolList",
-        listItems: [],
-        basePath: basePath || null,
-        seo: seo || null,
-        heading: heading || null,
-        heroImage: heroImage || null,
-      } as ToolListResponse,
-      revalidate,
-    );
+    return {
+      type: "ToolList",
+      listItems: [],
+      basePath: basePath || null,
+      seo: seo || null,
+      heading: heading || null,
+      heroImage: heroImage || null,
+    } as ToolListResponse;
   }
 };
 
 export const getNewsItem = async (
   slug: string,
   locale: string,
-  opts: PublicationQueryOptions = { revalidate: true },
-) => {
-  const { state, secret, revalidate } = opts;
+  opts: PublicationQueryOptions = {},
+): Promise<NewsItemResponse | null> => {
+  const { state, secret } = opts;
 
   try {
     const mainPublicationResult = await gqlFetch<
@@ -405,7 +373,7 @@ export const getNewsItem = async (
 
     if (!publication) {
       console.warn(`No news found with slug: '${slug}'`);
-      return notFound(revalidate);
+      return null;
     }
 
     const relatedPublicationResult = await gqlFetch<
@@ -422,17 +390,14 @@ export const getNewsItem = async (
         .slice(0, 3)
         .map(toNewsPreview) || [];
 
-    return withRevalidate(
-      {
-        type: "Publication",
-        ...publication,
-        related: relatedPreviews,
-      } as NewsItemResponse,
-      revalidate,
-    );
+    return {
+      type: "Publication",
+      ...publication,
+      related: relatedPreviews,
+    } as NewsItemResponse;
   } catch (error) {
     logGqlError(error);
-    return notFound(revalidate);
+    return null;
   }
 };
 
@@ -456,10 +421,10 @@ export const toNewsPreview = (
 export const getGoodExample = async (
   slug: string,
   locale: string,
-  opts: PublicationQueryOptions = { revalidate: true },
+  opts: PublicationQueryOptions = {},
   reuse: boolean = false,
-) => {
-  const { state, secret, revalidate } = opts;
+): Promise<GoodExampleResponse | null> => {
+  const { state, secret } = opts;
   try {
     const mainPublicationResult = await gqlFetch<
       GoodExampleQuery,
@@ -478,7 +443,7 @@ export const getGoodExample = async (
 
     if (!publication) {
       console.warn(`No good example found with slug: '${slug}'`);
-      return notFound(revalidate);
+      return null;
     }
 
     if (
@@ -490,7 +455,7 @@ export const getGoodExample = async (
           publication.reuse
         } but accessed from ${reuse ? "private" : "public"} route`,
       );
-      return notFound(revalidate);
+      return null;
     }
 
     const relatedPublicationResult = await gqlFetch<
@@ -507,17 +472,14 @@ export const getGoodExample = async (
         .slice(0, 3)
         .map(toGoodExamplePreview) || [];
 
-    return withRevalidate(
-      {
-        type: "Publication",
-        ...publication,
-        related: relatedPreviews,
-      } as GoodExampleResponse,
-      revalidate,
-    );
+    return {
+      type: "Publication",
+      ...publication,
+      related: relatedPreviews,
+    } as GoodExampleResponse;
   } catch (error) {
     logGqlError(error);
-    return notFound(revalidate);
+    return null;
   }
 };
 
@@ -541,9 +503,9 @@ export const toGoodExamplePreview = (
 
 export const getRootAggregate = async (
   locale: string,
-  opts: QueryOptions = { revalidate: true },
-) => {
-  const { state, secret, revalidate } = opts;
+  opts: QueryOptions = {},
+): Promise<RootAggregateResponse> => {
+  const { state, secret } = opts;
 
   try {
     const data = await gqlFetch<
@@ -561,34 +523,26 @@ export const getRootAggregate = async (
       console.warn(`No container found with slug: '/'`);
     }
 
-    const news = data.news || null;
-    const example = data.examples || null;
+    const news = data.news?.[0] ?? undefined;
+    const examples = data.examples?.[0] ?? undefined;
 
-    return withRevalidate(
-      {
-        ...container,
-        type: "RootAggregate",
-        news,
-        example,
-      },
-      revalidate,
-    );
+    return {
+      ...container,
+      type: "RootAggregate",
+      news,
+      examples,
+    } as RootAggregateResponse;
   } catch (error) {
     logGqlError(error);
     return {
-      props: {
-        type: "RootAggregate",
-      } as RootAggregateResponse,
-      revalidate: revalidateValue(),
-    };
+      type: "RootAggregate",
+    } as RootAggregateResponse;
   }
 };
 
 export const getStartPage = async (
   locale: string,
-  opts: QueryOptions = { revalidate: true },
-) => {
-  const { revalidate } = opts;
+): Promise<StartPageResponse> => {
   try {
     const data = await gqlFetch<StartPageQuery, StartPageQueryVariables>(
       START_PAGE_QUERY,
@@ -597,29 +551,21 @@ export const getStartPage = async (
 
     const startPage = data.dataportal_Digg_Start_Page;
 
-    return withRevalidate(
-      {
-        ...startPage,
-        type: "StartPage",
-      } as StartPageResponse,
-      revalidate,
-    );
+    return {
+      ...startPage,
+      type: "StartPage",
+    } as StartPageResponse;
   } catch (error) {
     logGqlError(error);
     return {
-      props: {
-        type: "StartPage",
-      } as StartPageResponse,
-      revalidate: revalidateValue(),
-    };
+      type: "StartPage",
+    } as StartPageResponse;
   }
 };
 
 export const getNavigationData = async (
   locale: string,
-  opts: QueryOptions = { revalidate: true },
-) => {
-  const { revalidate } = opts;
+): Promise<NavigationResponse> => {
   try {
     const data = await gqlFetch<NavigationQuery, NavigationQueryVariables>(
       NAVIGATION_QUERY,
@@ -628,19 +574,13 @@ export const getNavigationData = async (
 
     const navigationData = data.dataportal_Digg_Navigation;
 
-    return withRevalidate(
-      {
-        type: "Navigation",
-        items: navigationData,
-      } as NavigationResponse,
-      revalidate,
-    );
+    return {
+      type: "Navigation",
+      items: navigationData,
+    } as NavigationResponse;
   } catch (error) {
     logGqlError(error);
-    return {
-      props: { type: "Navigation" } as NavigationResponse,
-      revalidate: revalidateValue(),
-    };
+    return { type: "Navigation", items: [] } as NavigationResponse;
   }
 };
 
@@ -681,9 +621,10 @@ export const querySearch = async (
   }
 };
 
-export const getForm = async (identifier: string, locale?: string) => {
-  const revalidate = true;
-
+export const getForm = async (
+  identifier: string,
+  locale?: string,
+): Promise<FormResponse> => {
   try {
     const data = await gqlFetch<FormQuery, FormQueryVariables>(FORM_QUERY, {
       identifier,
@@ -692,19 +633,14 @@ export const getForm = async (identifier: string, locale?: string) => {
 
     const form = data.dataportal_Digg_Form;
 
-    return withRevalidate(
-      { ...form, type: "Form" } as FormResponse,
-      revalidate,
-    );
+    return { ...form, type: "Form" } as FormResponse;
   } catch (error) {
     logGqlError(error);
-    return withRevalidate({ type: "Form" } as FormResponse, revalidate);
+    return { type: "Form" } as FormResponse;
   }
 };
 
 export const getFoertroendemodellenForm = async (locale?: string) => {
-  const revalidate = true;
-
   try {
     const data = await gqlFetch<
       FoertroendemodellenFormQuery,
@@ -718,13 +654,10 @@ export const getFoertroendemodellenForm = async (locale?: string) => {
       throw new Error("No form data returned");
     }
 
-    return withRevalidate(
-      { ...formData, type: "FörtroendemodellenForm" },
-      revalidate,
-    );
+    return { ...formData, type: "FörtroendemodellenForm" };
   } catch (error) {
     logGqlError(error);
-    return withRevalidate({ type: "FörtroendemodellenForm" }, revalidate);
+    return { type: "FörtroendemodellenForm" };
   }
 };
 
@@ -732,8 +665,7 @@ export const getModule = async (
   identifier: string,
   locale?: string,
   opts?: ModuleOptions,
-) => {
-  const revalidate = true;
+): Promise<ModuleResponse> => {
   const { seo, basePath, heading } = opts || {};
 
   const emptyModule: ModuleDataFragment = {
@@ -750,27 +682,21 @@ export const getModule = async (
 
     const mod = data.dataportal_Digg_Module;
 
-    return withRevalidate(
-      {
-        ...mod,
-        type: "Module",
-        seo: seo || null,
-        basePath: basePath || null,
-        heading: heading || null,
-      } as ModuleResponse,
-      revalidate,
-    );
+    return {
+      ...mod,
+      type: "Module",
+      seo: seo || null,
+      basePath: basePath || null,
+      heading: heading || null,
+    } as ModuleResponse;
   } catch (error) {
     logGqlError(error);
-    return withRevalidate(
-      {
-        ...emptyModule,
-        type: "Module",
-        seo: seo || null,
-        basePath: basePath || null,
-        heading: heading || null,
-      } as ModuleResponse,
-      revalidate,
-    );
+    return {
+      ...emptyModule,
+      type: "Module",
+      seo: seo || null,
+      basePath: basePath || null,
+      heading: heading || null,
+    } as ModuleResponse;
   }
 };

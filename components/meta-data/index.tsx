@@ -1,9 +1,8 @@
 "use client";
 
 import reactenv from "@beam-australia/react-env";
-import Head from "next/head";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
+import { useLocale } from "next-intl";
 import { type FC, useState } from "react";
 
 import { type EnvSettings, SettingsUtil } from "@/env";
@@ -13,7 +12,7 @@ import { defaultSettings } from "@/providers/settings-provider";
 export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
   const [env] = useState<EnvSettings>(SettingsUtil.create());
   const pathname = usePathname();
-  const { locale } = useRouter();
+  const locale = useLocale();
   const { title, description, image, robotsFollow, robotsIndex } = seo || {};
   const strapiImageUrl = image?.url;
   const imageUrl = strapiImageUrl
@@ -26,7 +25,7 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
   const allowSEO = env.envName === "prod" && !isDraft;
 
   return (
-    <Head>
+    <>
       <meta name="referrer" content="no-referrer" />
       {/*
        * CSP is emitted as a `Content-Security-Policy` response header by
@@ -146,6 +145,6 @@ export const MetaData: FC<{ seo?: SeoDataFragment | null }> = ({ seo }) => {
         href="/images/safari-pinned-tab.svg"
         color="black"
       />
-    </Head>
+    </>
   );
 };

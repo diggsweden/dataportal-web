@@ -1,6 +1,5 @@
 import type { Entry, EntryStore, Metadata } from "@entryscape/entrystore-js";
-import Head from "next/head";
-import { useRouter } from "next/router";
+import { usePathname, useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import {
   createContext,
@@ -80,6 +79,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 }) => {
   const [state, setState] = useState(defaultESEntry);
   const router = useRouter();
+  const pathname = usePathname();
   const t = useTranslations();
   const lang = useLocale();
   const resourceLabel = useResourceLabel();
@@ -113,8 +113,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
   // Remove locale from path if it's the default locale
   useEffect(() => {
-    handleLocale(window.location.pathname, lang, router.asPath, router);
-  }, [router.asPath]);
+    handleLocale(window.location.pathname, lang, pathname, router);
+  }, [pathname]);
 
   useEffect(() => {
     fetchEntry();
@@ -589,35 +589,33 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
   return (
     <EntrystoreContext.Provider value={state}>
-      <Head>
-        <title>{`${state.title} - Sveriges dataportal`}</title>
-        <meta
-          property="og:title"
-          content={`${state.title} - Sveriges dataportal`}
-          key="og:title"
-        />
-        <meta
-          name="twitter:title"
-          content={`${state.title} - Sveriges dataportal`}
-          key="twitter:title"
-        />
-        <meta
-          name="description"
-          content={`${state.description} - Sveriges dataportal`}
-          key="description"
-        />
-        <meta
-          property="og:description"
-          content={`${state.description} - Sveriges dataportal`}
-          key="og:description"
-        />
-        <meta
-          name="twitter:description"
-          content={`${state.description} - Sveriges dataportal`}
-          key="twitter:description"
-        />
-        <meta name="robots" content="index, follow" />
-      </Head>
+      <title>{`${state.title} - Sveriges dataportal`}</title>
+      <meta
+        property="og:title"
+        content={`${state.title} - Sveriges dataportal`}
+        key="og:title"
+      />
+      <meta
+        name="twitter:title"
+        content={`${state.title} - Sveriges dataportal`}
+        key="twitter:title"
+      />
+      <meta
+        name="description"
+        content={`${state.description} - Sveriges dataportal`}
+        key="description"
+      />
+      <meta
+        property="og:description"
+        content={`${state.description} - Sveriges dataportal`}
+        key="og:description"
+      />
+      <meta
+        name="twitter:description"
+        content={`${state.description} - Sveriges dataportal`}
+        key="twitter:description"
+      />
+      <meta name="robots" content="index, follow" />
       {children}
     </EntrystoreContext.Provider>
   );

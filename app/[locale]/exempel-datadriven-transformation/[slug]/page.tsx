@@ -3,12 +3,13 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 import { Hero } from "@/components/layout/hero";
-import { PageBreadcrumbs } from "@/components/navigation/page-breadcrumbs";
 import { SettingsUtil } from "@/env";
 import { PublicationFull } from "@/features/publication/publication-full";
 import { isAppLocale } from "@/i18n/routing";
 import { includeLangInPath } from "@/utilities/check-lang";
 import { getGoodExample } from "@/utilities/query-helpers";
+
+export const revalidate = parseInt(process.env.REVALIDATE_INTERVAL || "60", 10);
 
 interface PageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -20,15 +21,8 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   if (!isAppLocale(locale)) return {};
 
-  const result = await getGoodExample(
-    `/${slug}`,
-    locale,
-    { revalidate: true },
-    false,
-  );
-  if ("notFound" in result) return {};
-
-  const publication = result.props;
+  const publication = await getGoodExample(`/${slug}`, locale, {}, false);
+  if (!publication) return {};
   const env = SettingsUtil.create();
   const canonicalPath = `${includeLangInPath(locale)}/exempel-datadriven-transformation/${slug}`;
   const canonicalUrl = `${env.CANONICAL_URL}${canonicalPath}`;
@@ -67,20 +61,12 @@ export default async function ExempelDatadrivenTransformationSlugPage({
   if (!isAppLocale(locale)) notFound();
   setRequestLocale(locale);
 
-  const result = await getGoodExample(
-    `/${slug}`,
-    locale,
-    { revalidate: true },
-    false,
-  );
-  if ("notFound" in result) notFound();
-
-  const data = result.props;
+  const data = await getGoodExample(`/${slug}`, locale, {}, false);
+  if (!data) notFound();
 
   return (
     <>
       {data.image && <Hero heading={data.heading} image={data.image} />}
-      <PageBreadcrumbs />
       <PublicationFull {...data} />
     </>
   );

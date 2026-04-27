@@ -1,7 +1,6 @@
 "use client";
 
-import Head from "next/head";
-import { useRouter } from "next/router";
+import { usePathname, useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useEffect, useMemo, useState } from "react";
 
@@ -26,7 +25,7 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
   searchType,
 }) => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
-  const { pathname } = useRouter() || {};
+  const pathname = usePathname();
   const t = useTranslations();
   const lang = useLocale();
   const [query, setQuery] = useState("");
@@ -34,8 +33,8 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
 
   // Remove locale from path if it's the default locale
   useEffect(() => {
-    handleLocale(window.location.pathname, lang, router.asPath, router);
-  }, [router.asPath]);
+    handleLocale(window.location.pathname, lang, pathname, router);
+  }, [pathname]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -79,19 +78,17 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
 
   return (
     <div id="data-search">
-      <Head>
-        <title>{`${pageTitle} - Sveriges dataportal`}</title>
-        <meta
-          property="og:title"
-          content={`${pageTitle} - Sveriges dataportal`}
-          key="og:title"
-        />
-        <meta
-          name="twitter:title"
-          content={`${pageTitle} - Sveriges dataportal`}
-          key="twitter:title"
-        />
-      </Head>
+      <title>{`${pageTitle} - Sveriges dataportal`}</title>
+      <meta
+        property="og:title"
+        content={`${pageTitle} - Sveriges dataportal`}
+        key="og:title"
+      />
+      <meta
+        name="twitter:title"
+        content={`${pageTitle} - Sveriges dataportal`}
+        key="twitter:title"
+      />
 
       <SearchProvider {...searchProviderSettings[searchType]}>
         <SearchContext.Consumer>

@@ -297,7 +297,7 @@ Dataportal.getInitialProps = async (appContext: AppContext) => {
 
   return {
     ...appProps,
-    navigationData: navigationData.props,
+    navigationData,
     locale,
     messages,
     resources,

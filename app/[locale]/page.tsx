@@ -20,6 +20,8 @@ import { includeLangInPath } from "@/utilities/check-lang";
 import { dataCategories } from "@/utilities/data-categories";
 import { getStartPage } from "@/utilities/query-helpers";
 
+export const revalidate = parseInt(process.env.REVALIDATE_INTERVAL || "60", 10);
+
 interface PageProps {
   params: Promise<{ locale: string }>;
 }
@@ -36,11 +38,10 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isAppLocale(locale)) return {};
 
-  const [t, startPageResult] = await Promise.all([
+  const [t, data] = await Promise.all([
     getTranslations({ locale }),
     getStartPage(locale),
   ]);
-  const data = startPageResult.props;
   const seo = data.seo ?? null;
 
   const env = SettingsUtil.create();
@@ -111,7 +112,7 @@ export default async function LocaleStartPage({ params }: PageProps) {
   if (!isAppLocale(locale)) notFound();
   setRequestLocale(locale);
 
-  const [t, tResource, { props: data }] = await Promise.all([
+  const [t, tResource, data] = await Promise.all([
     getTranslations({ locale }),
     getResourceLabel(locale),
     getStartPage(locale),

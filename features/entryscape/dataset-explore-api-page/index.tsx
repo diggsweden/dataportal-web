@@ -1,9 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useEffect, useState } from "react";
 
@@ -30,7 +29,7 @@ export const DataSetExploreApiPage: FC<{
   dataSet: string | string[] | undefined;
   apieid: string | string[] | undefined;
 }> = ({ dataSet, apieid }) => {
-  const { query } = useRouter() || {};
+  const query = useParams();
   const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];
   const eid = ids[1];
@@ -81,17 +80,6 @@ export const DataSetExploreApiPage: FC<{
 
   return (
     <Container>
-      <Head>
-        <title>{`${entry.title} - Sveriges dataportal`}</title>
-        <meta
-          property="og:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-        <meta
-          name="twitter:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-      </Head>
       <div>
         {/* Title */}
         <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">

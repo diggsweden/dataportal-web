@@ -2,7 +2,7 @@
 
 import type { Entry } from "@entryscape/entrystore-js";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useEffect, useMemo } from "react";
 
@@ -41,7 +41,7 @@ const SearchTrigger: FC<{ search: SearchContextData; entry: Entry }> = ({
 };
 
 export const DatasetSeriesPage: FC = () => {
-  const { pathname } = useRouter() || {};
+  const pathname = usePathname();
   const { env, setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const t = useTranslations();

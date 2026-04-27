@@ -3,12 +3,13 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 import { Hero } from "@/components/layout/hero";
-import { PageBreadcrumbs } from "@/components/navigation/page-breadcrumbs";
 import { SettingsUtil } from "@/env";
 import { ListPage } from "@/features/pages/list-page";
 import { isAppLocale } from "@/i18n/routing";
 import { includeLangInPath } from "@/utilities/check-lang";
 import { getGoodExamplesList } from "@/utilities/query-helpers";
+
+export const revalidate = parseInt(process.env.REVALIDATE_INTERVAL || "60", 10);
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -64,7 +65,7 @@ export default async function ExempelDatadrivenTransformationPage({
   if (!isAppLocale(locale)) notFound();
   setRequestLocale(locale);
 
-  const { props: data } = await getGoodExamplesList(locale, {
+  const data = await getGoodExamplesList(locale, {
     reuse: false,
     heading: "Goda exempel från offentliga aktörer",
     breadcrumb: "Goda exempel",
@@ -76,7 +77,6 @@ export default async function ExempelDatadrivenTransformationPage({
   return (
     <>
       <Hero heading={data.heading} preamble={data.preamble} image={heroImage} />
-      <PageBreadcrumbs />
       <ListPage
         listItems={data.listItems}
         heading={data.heading ?? ""}

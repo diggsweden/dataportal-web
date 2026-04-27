@@ -1,4 +1,3 @@
-import type { NextRouter } from "next/router";
 import type { ReactNode } from "react";
 
 import { routing } from "@/i18n/routing";
@@ -65,15 +64,13 @@ export const handleLocale = (
   pathname: string,
   currentLocale: string,
   currentPath: string,
-  router: NextRouter,
+  router: { replace: (url: string) => void },
 ) => {
   if (
     currentLocale === routing.defaultLocale &&
     pathname.startsWith(`/${currentLocale}/`)
   ) {
-    router.replace(currentPath, undefined, {
-      shallow: true,
-    });
+    router.replace(currentPath);
   }
 };
 

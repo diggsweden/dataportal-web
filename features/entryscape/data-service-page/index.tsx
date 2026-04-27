@@ -1,6 +1,5 @@
 "use client";
 
-import Head from "next/head";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useEffect } from "react";
@@ -52,17 +51,15 @@ export const DataServicePage: FC<{
 
   return (
     <Container>
-      <Head>
-        <title>{`${entry.title} - Sveriges dataportal`}</title>
-        <meta
-          property="og:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-        <meta
-          name="twitter:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-      </Head>
+      <title>{`${entry.title} - Sveriges dataportal`}</title>
+      <meta
+        property="og:title"
+        content={`${entry.title} - Sveriges dataportal`}
+      />
+      <meta
+        name="twitter:title"
+        content={`${entry.title} - Sveriges dataportal`}
+      />
       <main>
         <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
           {entry.title}

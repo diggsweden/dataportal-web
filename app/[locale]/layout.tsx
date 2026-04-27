@@ -63,7 +63,7 @@ export default async function LocaleLayout({
   ]);
 
   const navigationData: NavigationDataFragment | null =
-    navResp.props.items?.find(
+    navResp.items?.find(
       (n: NavigationDataFragment) => n.locale === locale,
     ) ?? null;
 

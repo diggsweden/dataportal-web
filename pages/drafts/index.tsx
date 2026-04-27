@@ -25,7 +25,6 @@ const getQuery = async (
     return await getNewsItem(slug, locale, {
       state: Dataportal_ContainerState.Preview,
       secret,
-      revalidate: false,
     });
   }
 
@@ -33,7 +32,6 @@ const getQuery = async (
     return await getGoodExample(slug, locale, {
       state: Dataportal_ContainerState.Preview,
       secret,
-      revalidate: false,
     });
   }
 
@@ -42,13 +40,11 @@ const getQuery = async (
       return await getRootAggregate(locale, {
         state: Dataportal_ContainerState.Preview,
         secret,
-        revalidate: false,
       });
     default:
       return await getMultiContainer([slug.substring(1)], locale, {
         state: Dataportal_ContainerState.Preview,
         secret,
-        revalidate: false,
       });
   }
 };
@@ -88,8 +84,9 @@ export const getServerSideProps = async ({
   const slug = (query?.slug as string) || "";
   const secret = (query?.secret as string) || "";
   const type = query?.type as string;
-  // Get external data from the file system, API, DB, etc.
-  return await getQuery(slug, locale || "sv", secret, type);
+  const result = await getQuery(slug, locale || "sv", secret, type);
+  if (!result) return { notFound: true as const };
+  return { props: result as DataportalPageProps };
 };
 
 export default Draft;

@@ -3,7 +3,7 @@
  * for different search categories (datasets, concepts, specifications, content).
  */
 
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { ButtonLink } from "@/components/button";
 
@@ -34,7 +34,7 @@ const SEARCH_TABS = [
  */
 export function SearchPageSelector({ query }: SearchTabsProps) {
   const t = useTranslations();
-  const { pathname } = useRouter() || {};
+  const pathname = usePathname();
 
   return (
     <nav aria-label={t("pages.search.search-type-navigation")}>

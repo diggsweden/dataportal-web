@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { PageBreadcrumbs } from "@/components/navigation/page-breadcrumbs";
 import { SettingsUtil } from "@/env";
 import { StatisticPage } from "@/features/statistic/statistic-page";
 import { isAppLocale } from "@/i18n/routing";
@@ -39,10 +38,5 @@ export default async function StatistikRSCPage({ params }: PageProps) {
   if (!isAppLocale(locale)) notFound();
   setRequestLocale(locale);
 
-  return (
-    <>
-      <PageBreadcrumbs />
-      <StatisticPage />
-    </>
-  );
+  return <StatisticPage />;
 }

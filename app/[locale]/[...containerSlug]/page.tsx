@@ -3,13 +3,14 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 import { Hero } from "@/components/layout/hero";
-import { PageBreadcrumbs } from "@/components/navigation/page-breadcrumbs";
 import { SettingsUtil } from "@/env";
 import { ContainerPage } from "@/features/pages/container-page";
 import { LandingPage } from "@/features/pages/landing-page";
 import { isAppLocale } from "@/i18n/routing";
 import { includeLangInPath } from "@/utilities/check-lang";
 import { getMultiContainer } from "@/utilities/query-helpers";
+
+export const revalidate = parseInt(process.env.REVALIDATE_INTERVAL || "60", 10);
 
 interface PageProps {
   params: Promise<{ locale: string; containerSlug: string[] }>;
@@ -22,9 +23,9 @@ export async function generateMetadata({
   if (!isAppLocale(locale)) return {};
 
   const result = await getMultiContainer(containerSlug, locale);
-  if ("notFound" in result) return {};
+  if (!result) return {};
 
-  const container = result.props.container;
+  const container = result.container;
   if (!container) return {};
 
   const seo = container.seo;
@@ -73,9 +74,9 @@ export default async function ContainerSlugPage({ params }: PageProps) {
   setRequestLocale(locale);
 
   const result = await getMultiContainer(containerSlug, locale);
-  if ("notFound" in result) notFound();
+  if (!result) notFound();
 
-  const { container, related } = result.props;
+  const { container, related } = result;
   if (!container) notFound();
 
   return (
@@ -87,7 +88,6 @@ export default async function ContainerSlugPage({ params }: PageProps) {
           image={container.image}
         />
       )}
-      <PageBreadcrumbs />
       {container.landingPage ? (
         <LandingPage {...container} />
       ) : (

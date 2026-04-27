@@ -1,5 +1,5 @@
 import type { Entry } from "@entryscape/entrystore-js";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { decode, encode } from "qss";
 import {
@@ -58,7 +58,7 @@ export interface SearchProviderProps {
   children?: ReactNode;
   fetchHitsWithFacets?: boolean;
   entry?: Entry;
-  router: ReturnType<typeof useRouter>;
+  router: { push: (url: string) => void };
 }
 
 /**
@@ -722,7 +722,7 @@ class SearchProviderClass extends Component<
 
     const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
     // Use the router from props
-    this.props.router.push(newUrl, undefined, { shallow: true });
+    this.props.router.push(newUrl);
   };
 
   /**

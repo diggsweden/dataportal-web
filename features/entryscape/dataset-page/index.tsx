@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useEffect, useState } from "react";
 
@@ -15,7 +15,7 @@ import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
 
 export const DatasetPage: FC = () => {
-  const { pathname } = useRouter() || {};
+  const pathname = usePathname();
   const { setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const t = useTranslations();

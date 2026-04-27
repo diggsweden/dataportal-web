@@ -14,19 +14,7 @@ import { generateRandomKey } from "./utilities/key-generator";
  * `app/[locale]/` during Phase 4.
  */
 const PAGES_ROUTER_PREFIXES = new Set([
-  "datasets",
-  "dataservice",
-  "concepts",
-  "specifications",
-  "terminology",
-  "organisations",
-  "metadatakvalitet",
-  "dataset-series",
-  "externalconcept",
-  "externalspecification",
-  "externalterminology",
-  "drafts",
-  "search",
+  "fortroendemodellen",
 ]);
 
 /**

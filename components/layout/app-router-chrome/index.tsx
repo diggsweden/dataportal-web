@@ -6,6 +6,9 @@ import { type FC, type ReactNode, useEffect } from "react";
 
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
+import {
+  Breadcrumbs,
+} from "@/components/navigation/breadcrumbs";
 import { Sidebar } from "@/components/navigation/sidebar";
 import {
   SkipToContent,
@@ -61,6 +64,7 @@ export const AppRouterChrome: FC<AppRouterChromeProps> = ({
     setSettingsOpen,
     openSideBar,
     setOpenSideBar,
+    breadcrumbState,
   } = useLayoutState();
 
   useEffect(() => {
@@ -120,9 +124,13 @@ export const AppRouterChrome: FC<AppRouterChromeProps> = ({
             openSideBar ? "2xl:w-[calc(100vw-18.75rem)]" : "w-full"
           }`}
         >
+          {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
+            <Breadcrumbs {...breadcrumbState} />
+          )}
+
           <main
             id="main"
-            className="min-h-[calc(100vh-46.5rem)] pb-lg md:pb-xl lg:min-h-[calc(100vh-38.25rem)]"
+            className="mt-lg min-h-[calc(100vh-46.5rem)] pb-lg md:mt-xl md:pb-xl lg:min-h-[calc(100vh-38.25rem)]"
           >
             {children}
           </main>

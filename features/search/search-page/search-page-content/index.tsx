@@ -1,8 +1,7 @@
 "use client";
 
-import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useEffect, useState } from "react";
 
@@ -26,17 +25,18 @@ interface SearchProps {
 }
 
 export const SearchPageContent: FC<SearchProps> = () => {
-  const router = useRouter() || {};
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { setBreadcrumb } = useContext(SettingsContext);
-  const { pathname, query: routerQuery } = router || {};
   const t = useTranslations();
   const lang = useLocale();
-  const [query, setQuery] = useState((routerQuery?.q as string) || "");
-  const pageNumber = parseInt(routerQuery?.p as string) || 1;
+  const [query, setQuery] = useState(searchParams?.get("q") || "");
+  const pageNumber = parseInt(searchParams?.get("p") ?? "") || 1;
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [searchRequest, setSearchRequest] = useState<SearchRequest>({
-    page: parseInt(routerQuery?.p as string),
-    query: routerQuery?.q as string,
+    page: parseInt(searchParams?.get("p") ?? ""),
+    query: searchParams?.get("q") ?? "",
   });
   const [loading, setLoading] = useState(false);
   const PER_PAGE = 10;
@@ -97,7 +97,9 @@ export const SearchPageContent: FC<SearchProps> = () => {
   });
 
   useEffect(() => {
-    router.push({ query: { ...router.query, p: router.query.p } });
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    params.set("p", String(searchParams?.get("p") ?? "1"));
+    router.push(`${pathname}?${params.toString()}`);
     clearCurrentScrollPos();
     window.scrollTo({
       top: 0,
@@ -106,7 +108,9 @@ export const SearchPageContent: FC<SearchProps> = () => {
   }, [pageNumber]);
 
   const changePage = (page: number) => {
-    router.push({ query: { ...router.query, p: page } });
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    params.set("p", String(page));
+    router.push(`${pathname}?${params.toString()}`);
     clearCurrentScrollPos();
     window.scrollTo({
       top: 0,
@@ -126,8 +130,11 @@ export const SearchPageContent: FC<SearchProps> = () => {
   }, [pathname]);
 
   useEffect(() => {
+    const routerQuery = Object.fromEntries(searchParams?.entries() ?? []);
     if (!routerQuery.p) {
-      router.push({ query: { ...router.query, p: 1 } });
+      const params = new URLSearchParams(searchParams?.toString() ?? "");
+      params.set("p", "1");
+      router.push(`${pathname}?${params.toString()}`);
     }
     const q = (routerQuery.q as string) || "";
     setQuery(q);
@@ -136,10 +143,13 @@ export const SearchPageContent: FC<SearchProps> = () => {
       page: parseInt(routerQuery.p as string),
       query: q,
     });
-  }, [routerQuery]);
+  }, [searchParams]);
 
   const submitSearch = (newQuery: string) => {
-    router.push({ query: { ...router.query, q: newQuery, p: 1 } });
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    params.set("q", newQuery);
+    params.set("p", "1");
+    router.push(`${pathname}?${params.toString()}`);
     setSearchRequest({
       ...searchRequest,
       query: newQuery,
@@ -153,19 +163,6 @@ export const SearchPageContent: FC<SearchProps> = () => {
 
   return (
     <div className="SearchContentPage">
-      <Head>
-        <title>{`${t("common.search")} - Sveriges dataportal`}</title>
-        <meta
-          property="og:title"
-          content={`${t("common.search")} - Sveriges dataportal`}
-          key="og:title"
-        />
-        <meta
-          name="twitter:title"
-          content={`${t("common.search")} - Sveriges dataportal`}
-          key="twitter:title"
-        />
-      </Head>
       <Container>
         <Heading level={1} size="lg" className="mb-none">
           {t("common.search-content")}

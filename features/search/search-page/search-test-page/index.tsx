@@ -1,7 +1,6 @@
 "use client";
 
 import { MeiliSearch } from "meilisearch";
-import Head from "next/head";
 import { type FC, useEffect, useState } from "react";
 
 import type { SearchHit } from "@/types/search";
@@ -32,11 +31,9 @@ export const SearchTestPage: FC = () => {
 
   return (
     <>
-      <Head>
-        <title>{`Söktest - Sveriges dataportal`}</title>
-        <meta property="og:title" content={`Söktest - Sveriges dataportal`} />
-        <meta name="twitter:title" content={`Söktest - Sveriges dataportal`} />
-      </Head>
+      <title>{`Söktest - Sveriges dataportal`}</title>
+      <meta property="og:title" content={`Söktest - Sveriges dataportal`} />
+      <meta name="twitter:title" content={`Söktest - Sveriges dataportal`} />
       <div className="container">
         <h2>Söktest </h2>
         <div className="content statistic-page">

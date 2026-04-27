@@ -1,5 +1,4 @@
 import type { Entry } from "@entryscape/entrystore-js";
-import type { NextRouter } from "next/router";
 import { SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { getResourceLabel } from "@/i18n/get-resource-label";
@@ -9,9 +8,14 @@ import type { RedirectConfig } from "@/types/global";
 import { includeLangInPath } from "../check-lang";
 import { EntrystoreService } from "./entrystore.service";
 
+/** Minimal router interface — works with both Pages Router and App Router. */
+interface RouterLike {
+  replace: (url: string) => void;
+}
+
 export async function handleEntryStoreRedirect(
   config: RedirectConfig,
-  router: NextRouter,
+  router: RouterLike,
   locale: string = "sv",
   isSandbox: boolean = false,
   resourceUri?: string,

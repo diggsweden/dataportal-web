@@ -1,0 +1,59 @@
+"use client";
+
+import { useParams, useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
+import { useContext, useEffect, useState } from "react";
+
+import { SpecificationPage } from "@/features/entryscape/specification-page";
+import { EntrystoreProvider } from "@/providers/entrystore-provider";
+import { SettingsContext } from "@/providers/settings-provider";
+import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
+
+export default function SpecificationParam() {
+  const { env } = useContext(SettingsContext);
+  const router = useRouter();
+  const locale = useLocale();
+  const params = useParams<{ spec: string; param: string }>();
+  const spec = params?.spec;
+  const param = params?.param;
+  const [resourceUri, setResourceUri] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchEntryStoreProps = async () => {
+      if (!spec || !param) return;
+      const isSandbox = window.location.host.includes("sandbox");
+
+      const data = await handleEntryStoreRedirect(
+        {
+          pathPrefix: "/specifications",
+          redirectPath: "/specifications",
+          entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
+          param: spec,
+          secondParam: param as string,
+        },
+        router,
+        locale,
+        isSandbox,
+      );
+
+      if (data?.resourceUri) {
+        setResourceUri(data.resourceUri);
+      }
+    };
+
+    fetchEntryStoreProps();
+  }, [spec, param]);
+
+  if (!resourceUri) return null;
+
+  return (
+    <EntrystoreProvider
+      env={env}
+      rUri={resourceUri}
+      entrystoreUrl={env.ENTRYSCAPE_SPECS_PATH}
+      pageType="specification"
+    >
+      <SpecificationPage />
+    </EntrystoreProvider>
+  );
+}
