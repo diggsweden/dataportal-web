@@ -13,19 +13,15 @@ import {
 import { SidebarLink } from "@/components/navigation/sidebar/sidebar-link";
 import type { MenuLinkIconFragment } from "@/graphql/__generated__/operations";
 import { useClickOutside } from "@/hooks/use-click-outside";
+import { useLayoutState } from "@/providers/layout-state-provider";
 import type { SubLink } from "@/types/global";
 
 interface NavSideProps {
-  openSideBar: boolean;
-  setOpenSideBar: (_param: boolean) => void;
   sidebarMenu: MenuLinkIconFragment[] | SubLink[];
 }
 
-export const Sidebar: FC<NavSideProps> = ({
-  openSideBar,
-  setOpenSideBar,
-  sidebarMenu,
-}) => {
+export const Sidebar: FC<NavSideProps> = ({ sidebarMenu }) => {
+  const { openSideBar, setOpenSideBar } = useLayoutState();
   const t = useTranslations();
   const [vw, setVw] = useState(0);
   const trapRef = useRef<FocusTrap | null>(null);

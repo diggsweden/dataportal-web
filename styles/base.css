@@ -2,6 +2,11 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* Hide chrome-level breadcrumbs when a hero page renders its own */
+#siteWrapper:has(.hero-breadcrumbs) > .chrome-breadcrumbs {
+  display: none;
+}
+
 @font-face {
   font-family: "Ubuntu";
   src:

@@ -8,20 +8,16 @@ import type {
   MenuLinkFragment,
   MenuLinkIconFragment,
 } from "@/graphql/__generated__/operations";
+import { useLayoutState } from "@/providers/layout-state-provider";
 
 type HeaderProps = {
-  setOpenSideBar: (_param: boolean) => void;
-  openSideBar: boolean;
   mainMenu: MenuLinkFragment[];
   serviceMenu: MenuLinkIconFragment[];
 };
 
-export const Header: FC<HeaderProps> = ({
-  openSideBar,
-  setOpenSideBar,
-  mainMenu,
-  serviceMenu,
-}) => {
+export const Header: FC<HeaderProps> = ({ mainMenu, serviceMenu }) => {
+  const { openSideBar, setOpenSideBar } = useLayoutState();
+
   useEffect(() => {
     return () => {
       window.removeEventListener("resize", () => setOpenSideBar(false));

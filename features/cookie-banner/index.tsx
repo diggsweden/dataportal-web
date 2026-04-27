@@ -8,6 +8,7 @@ import { Button } from "@/components/button";
 import { Container } from "@/components/layout/container";
 import { CookieOptions } from "@/features/cookie-banner/cookie-options";
 import { useMatomo } from "@/lib/matomo";
+import { useLayoutState } from "@/providers/layout-state-provider";
 import { LocalStoreContext } from "@/providers/local-store-provider";
 
 export type CookieSetting = {
@@ -25,11 +26,8 @@ export type CookieProperties = {
   accepted: boolean;
 };
 
-export const CookieBanner: FC<{
-  settingsOpen: boolean;
-  // eslint-disable-next-line no-unused-vars
-  setSettingsOpen: (value: boolean) => void;
-}> = ({ settingsOpen, setSettingsOpen }) => {
+export const CookieBanner: FC = () => {
+  const { settingsOpen, setSettingsOpen } = useLayoutState();
   const { store, set } = useContext(LocalStoreContext);
   const { setConsent } = useMatomo();
   const t = useTranslations();

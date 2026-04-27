@@ -1,3 +1,5 @@
+"use client";
+
 import type { FC, MouseEvent } from "react";
 
 import { ButtonLink } from "@/components/button";

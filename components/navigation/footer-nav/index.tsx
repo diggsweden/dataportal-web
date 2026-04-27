@@ -6,22 +6,18 @@ import { type FC, Fragment, useContext } from "react";
 import { CustomLink } from "@/components/custom-link";
 import { Heading } from "@/components/typography/heading";
 import type { MenuLinkFragment } from "@/graphql/__generated__/operations";
+import { useLayoutState } from "@/providers/layout-state-provider";
 import { LocalStoreContext } from "@/providers/local-store-provider";
 import type { SubLinkFooter } from "@/types/global";
 
 interface FooterNavProps {
   footerData: SubLinkFooter[];
-  setOpenSideBar: (_param: boolean) => void;
-  setSettingsOpen: (_param: boolean) => void;
 }
 
-export const FooterNav: FC<FooterNavProps> = ({
-  footerData,
-  setOpenSideBar,
-  setSettingsOpen,
-}) => {
+export const FooterNav: FC<FooterNavProps> = ({ footerData }) => {
   const t = useTranslations();
   const { set } = useContext(LocalStoreContext);
+  const { setOpenSideBar, setSettingsOpen } = useLayoutState();
 
   return (
     <nav

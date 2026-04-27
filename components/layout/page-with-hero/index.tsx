@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Hero, type HeroSearchProps } from "@/components/layout/hero";
+import { ChromeBreadcrumbs } from "@/components/navigation/breadcrumbs/chrome-breadcrumbs";
 import type { ImageFragment } from "@/graphql/__generated__/operations";
 
 interface PageWithHeroProps {
@@ -56,14 +57,17 @@ export function PageWithHero({
   return (
     <div className="space-y-xl">
       {resolvedImage && (
-        <Hero
-          heading={heading}
-          preamble={preamble}
-          image={resolvedImage}
-          search={search}
-          isFrontpage={isFrontpage}
-          className={className}
-        />
+        <div className="hero-breadcrumbs">
+          <Hero
+            heading={heading}
+            preamble={preamble}
+            image={resolvedImage}
+            search={search}
+            isFrontpage={isFrontpage}
+            className={className}
+          />
+          <ChromeBreadcrumbs />
+        </div>
       )}
       {children}
     </div>

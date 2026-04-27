@@ -1,38 +1,24 @@
-import { useTranslations } from "next-intl";
-import type { FC } from "react";
+import { getTranslations } from "next-intl/server";
 
 import { CustomLink } from "@/components/custom-link";
 import { Container } from "@/components/layout/container";
 import { FooterNav } from "@/components/navigation/footer-nav";
 import type { SubLinkFooter } from "@/types/global";
 
+import { FooterSidebarWrapper } from "./footer-sidebar-wrapper";
+
 type FooterProps = {
   footerData: SubLinkFooter[];
-  openSideBar: boolean;
-  setOpenSideBar: (_param: boolean) => void;
-  setSettingsOpen: (_param: boolean) => void;
 };
 
-export const Footer: FC<FooterProps> = ({
-  footerData,
-  openSideBar,
-  setOpenSideBar,
-  setSettingsOpen,
-}) => {
-  const t = useTranslations();
+export async function Footer({ footerData }: FooterProps) {
+  const t = await getTranslations();
+
   return (
     <footer className="mt-xl border-t-2 border-brown-600 bg-white py-xl">
-      <div
-        className={`transition-all duration-300 ease-in-out ${
-          openSideBar ? "xl:w-[calc(100vw-18.75rem)]" : "w-full"
-        }`}
-      >
+      <FooterSidebarWrapper>
         <Container className="space-y-xl md:space-y-2xl">
-          <FooterNav
-            footerData={footerData}
-            setSettingsOpen={setSettingsOpen}
-            setOpenSideBar={setOpenSideBar}
-          />
+          <FooterNav footerData={footerData} />
           <div className="mr-lg align-top">
             <span className="font-strong">Sveriges dataportal </span>
             <span>{t("common.managed-and-developed-by")}</span>
@@ -45,7 +31,7 @@ export const Footer: FC<FooterProps> = ({
             </CustomLink>
           </div>
         </Container>
-      </div>
+      </FooterSidebarWrapper>
     </footer>
   );
-};
+}
