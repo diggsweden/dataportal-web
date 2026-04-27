@@ -3,17 +3,17 @@ import type { ParsedUrlQuery } from "querystring";
 import type { FC } from "react";
 
 import { ContainerPage } from "@/features/pages/container-page";
+import { LandingPage } from "@/features/pages/landing-page";
 import { PublicationFull } from "@/features/publication/publication-full";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
   type DataportalPageProps,
+  type MultiContainerResponse,
   getGoodExample,
   getMultiContainer,
   getNewsItem,
   getRootAggregate,
 } from "@/utilities";
-
-import { Page } from "../[...containerSlug]";
 
 const getQuery = async (
   slug: string,
@@ -57,8 +57,15 @@ const render = (props: DataportalPageProps) => {
   switch (props.type) {
     case "RootAggregate":
       return <ContainerPage {...props} />;
-    case "MultiContainer":
-      return <Page {...props} />;
+    case "MultiContainer": {
+      const { container, related } = props as MultiContainerResponse;
+      if (!container) return null;
+      return container.landingPage ? (
+        <LandingPage {...container} />
+      ) : (
+        <ContainerPage {...container} related={related} />
+      );
+    }
     case "Publication":
       return <PublicationFull {...props} />;
     // We don't have a preview for list pages

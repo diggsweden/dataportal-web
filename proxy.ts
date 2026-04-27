@@ -5,52 +5,78 @@ import generateCSP from "./utilities/generate-csp";
 import { generateRandomKey } from "./utilities/key-generator";
 
 /**
+ * Route prefixes that are still served by the Pages Router (`pages/`).
+ * Any request whose first path segment matches one of these is passed
+ * through to Next without a locale rewrite so the Pages Router picks
+ * it up at its un-prefixed URL.
+ *
+ * Remove entries from this set as each Entryscape family is ported to
+ * `app/[locale]/` during Phase 4.
+ */
+const PAGES_ROUTER_PREFIXES = new Set([
+  "datasets",
+  "dataservice",
+  "concepts",
+  "specifications",
+  "terminology",
+  "organisations",
+  "metadatakvalitet",
+  "dataset-series",
+  "externalconcept",
+  "externalspecification",
+  "externalterminology",
+  "drafts",
+  "search",
+]);
+
+/**
  * Next 16 middleware (renamed `proxy.ts` per the Next 16 file convention).
  *
  * Responsibilities:
  *   - Generate a per-request CSP nonce (`x-nonce` request + response header)
  *     so RSCs can read it via `headers()` and stamp it onto `<Script>` tags.
  *   - Emit the `Content-Security-Policy` response header containing that
- *     nonce. With the header in place, Next.js auto-applies the nonce to
- *     framework scripts, route bundles, and `<Script nonce={nonce}>`
- *     components — avoiding the hydration mismatch a raw `<script nonce>`
- *     hits once the browser strips the attribute per CSP3 spec
- *     (https://www.w3.org/TR/CSP3/#is-element-nonceable).
- *   - Rewrite `/` → `/${defaultLocale}` internally so the App Router
- *     start page (`app/[locale]/page.tsx`) serves Swedish users on the
- *     bare root URL. This is the incremental stand-in for the full
- *     `next-intl` middleware (deferred until all Pages Router families
- *     move under `app/[locale]/`): running `createMiddleware(routing)`
- *     today would also rewrite `/datasets` → `/sv/datasets`, which
- *     would break every Pages Router route still serving Swedish at
- *     its un-prefixed path.
+ *     nonce.
+ *   - Rewrite bare (un-prefixed) Swedish paths to `/${defaultLocale}${path}`
+ *     so the App Router serves them from `app/[locale]/...`. Paths that
+ *     start with a known locale prefix pass through as-is. Paths whose
+ *     first segment matches a Pages Router route (`PAGES_ROUTER_PREFIXES`)
+ *     are left alone so `pages/` can still serve them.
  */
 export function proxy(request: NextRequest) {
   const nonce = generateRandomKey(32);
 
-  // `@beam-australia/react-env` pulls runtime config out of `window.__beam_env`
-  // in the browser and out of `process.env.REACT_APP_*` on the server. We're
-  // on the server here, so `process.env` reads are safe and edge-compatible.
-  // Read explicitly (rather than via `reactEnv()`) to keep the middleware
-  // bundle free of the `react-env` runtime.
   const csp = generateCSP({
     nonce,
     imageDomain: process.env.REACT_APP_IMAGE_DOMAIN ?? process.env.IMAGE_DOMAIN,
     apolloUrl: process.env.REACT_APP_APOLLO_URL ?? process.env.APOLLO_URL,
   });
 
-  // Mutating the incoming request headers makes them visible to downstream
-  // RSCs via `headers()` once any segment is rendered from `app/`.
   request.headers.set("x-nonce", nonce);
 
-  const pathname = request.nextUrl.pathname;
-  const response =
-    pathname === "/"
-      ? NextResponse.rewrite(
-          new URL(`/${routing.defaultLocale}`, request.url),
-          { request: { headers: request.headers } },
-        )
-      : NextResponse.next({ request: { headers: request.headers } });
+  const { pathname } = request.nextUrl;
+  const firstSegment = pathname.split("/").filter(Boolean)[0] ?? "";
+
+  // Path already starts with a locale prefix (e.g. `/en/nyheter`) — the
+  // App Router resolves it directly via `app/[locale]/`.
+  const hasLocalePrefix = (routing.locales as readonly string[]).includes(
+    firstSegment,
+  );
+
+  // Path belongs to a route family still on the Pages Router.
+  const isPagesRoute = PAGES_ROUTER_PREFIXES.has(firstSegment);
+
+  const needsRewrite = !hasLocalePrefix && !isPagesRoute;
+
+  const response = needsRewrite
+    ? (() => {
+        const url = request.nextUrl.clone();
+        url.pathname = `/${routing.defaultLocale}${pathname}`;
+        return NextResponse.rewrite(url, {
+          request: { headers: request.headers },
+        });
+      })()
+    : NextResponse.next({ request: { headers: request.headers } });
 
   response.headers.set("x-nonce", nonce);
   response.headers.set("Content-Security-Policy", csp);
@@ -58,11 +84,6 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Skip Next internals, static assets, and route handlers (`/api`). Also
-  // ignore `next/link` prefetches and RSC prefetch fetches — those responses
-  // don't render a fresh HTML document and don't need their own CSP. The
-  // matcher uses Next's `missing` filter (same pattern as the official
-  // CSP guide) to drop those.
   matcher: [
     {
       source:

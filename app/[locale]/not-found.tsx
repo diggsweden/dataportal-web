@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/container";
+import { PageBreadcrumbs } from "@/components/navigation/page-breadcrumbs";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
 import { includeLangInPath } from "@/utilities/check-lang";
@@ -26,8 +27,10 @@ export default async function LocaleNotFound() {
   const heading = t("pages.notfoundpage.heading");
 
   return (
-    <Container>
+    <>
       <NotFoundBreadcrumb name={heading} />
+      <PageBreadcrumbs />
+      <Container>
       <Heading level={1} size="lg" className="mb-lg md:mb-xl">
         {heading}
       </Heading>
@@ -46,6 +49,7 @@ export default async function LocaleNotFound() {
           </Link>
         </li>
       </ul>
-    </Container>
+      </Container>
+    </>
   );
 }

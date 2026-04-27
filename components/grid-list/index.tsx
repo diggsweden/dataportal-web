@@ -7,7 +7,9 @@ import { PublicationTeaser } from "@/features/publication/publication-teaser";
 import { Toolteaser } from "@/features/tool";
 import type {
   GoodExampleBlockItemFragment,
+  GoodExampleDataFragment,
   NewsBlockItemFragment,
+  NewsItemDataFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
 
@@ -16,6 +18,8 @@ interface ListProps {
     | ToolDataFragment
     | GoodExampleBlockItemFragment
     | NewsBlockItemFragment
+    | NewsItemDataFragment
+    | GoodExampleDataFragment
   )[];
   heading?: string;
   showMoreLink?: {

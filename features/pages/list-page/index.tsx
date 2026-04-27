@@ -1,7 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { type NextRouter, useRouter } from "next/router";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { type FC, useContext, useEffect, useState } from "react";
 
 import { Button } from "@/components/button";
@@ -11,7 +10,9 @@ import { Pagination } from "@/components/pagination";
 import { Heading } from "@/components/typography/heading";
 import type {
   GoodExampleBlockItemFragment,
+  GoodExampleDataFragment,
   NewsBlockItemFragment,
+  NewsItemDataFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
@@ -22,6 +23,8 @@ interface ListPageProps {
     | ToolDataFragment
     | NewsBlockItemFragment
     | GoodExampleBlockItemFragment
+    | NewsItemDataFragment
+    | GoodExampleDataFragment
   )[];
   heading: string;
   type: string;
@@ -40,19 +43,14 @@ export const ListPage: FC<ListPageProps> = ({
   const { setBreadcrumb } = useContext(SettingsContext);
   const list = Array.isArray(listItems) ? listItems : [];
   const pathname = usePathname();
-  const router: NextRouter = useRouter();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const listItemsPerPage = 12;
-  const page = parseInt(router.query.page as string) || 1;
+  const page = parseInt(searchParams?.get("page") ?? "", 10) || 1;
   const startIndex = (page - 1) * listItemsPerPage;
   const endIndex = startIndex + listItemsPerPage;
   const [filterList, setFilterList] =
-    useState<
-      (
-        | ToolDataFragment
-        | NewsBlockItemFragment
-        | GoodExampleBlockItemFragment
-      )[]
-    >(listItems);
+    useState<ListPageProps["listItems"]>(listItems);
   const [keywordList, setKeywordList] = useState<Keyword[]>([]);
   const [activeFilter, setActiveFilter] = useState<Keyword>({
     value: "Alla",
@@ -65,8 +63,16 @@ export const ListPage: FC<ListPageProps> = ({
       crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
     });
   }, [pathname]);
-  const changePage = (page: number) => {
-    router.replace(page !== 1 ? `?page=${page}` : "");
+
+  const changePage = (newPage: number) => {
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    if (newPage !== 1) {
+      params.set("page", String(newPage));
+    } else {
+      params.delete("page");
+    }
+    const qs = params.toString();
+    router.replace(qs ? `?${qs}` : (pathname ?? "/"));
   };
 
   useEffect(() => {
@@ -96,8 +102,11 @@ export const ListPage: FC<ListPageProps> = ({
           );
         }),
       );
-      if (router.query.page) {
-        router.replace("");
+      // Reset to first page when filtering
+      const params = new URLSearchParams(searchParams?.toString() ?? "");
+      if (params.has("page")) {
+        params.delete("page");
+        router.replace(pathname ?? "/");
       }
     }
   }, [setActiveFilter, activeFilter, pathname, listItems]);
@@ -107,8 +116,6 @@ export const ListPage: FC<ListPageProps> = ({
       value: "Alla",
       id: "0",
     });
-
-    router.query.page = "1";
   }, [heading]);
 
   return (
@@ -145,7 +152,7 @@ export const ListPage: FC<ListPageProps> = ({
             <Pagination
               totalResults={filterList.length || 0}
               itemsPerPage={listItemsPerPage}
-              pageNumber={parseInt(router.query.page as string)}
+              pageNumber={page}
               changePage={changePage}
             />
           </div>

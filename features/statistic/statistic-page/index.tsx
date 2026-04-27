@@ -1,8 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Head from "next/head";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { type FC, useContext, useEffect } from "react";
 
@@ -37,7 +36,7 @@ const DynamicStatistic = dynamic(() => import("@/features/statistic"), {
 
 export const StatisticPage: FC = () => {
   const t = useTranslations();
-  const { pathname } = useRouter() || {};
+  const pathname = usePathname();
   const { setBreadcrumb } = useContext(SettingsContext);
 
   useEffect(() => {
@@ -48,42 +47,23 @@ export const StatisticPage: FC = () => {
   }, [pathname]);
 
   return (
-    <>
-      <Head>
-        <title>{`${t(
-          "pages.statistic.statistic-page-header",
-        )} - Sveriges dataportal`}</title>
-        <meta
-          property="og:title"
-          content={`${t(
-            "pages.statistic.statistic-page-header",
-          )} - Sveriges dataportal`}
-        />
-        <meta
-          name="twitter:title"
-          content={`${t(
-            "pages.statistic.statistic-page-header",
-          )} - Sveriges dataportal`}
-        />
-      </Head>
-      <Container>
-        <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
-          {t("pages.statistic.statistic-page-header")}
-        </Heading>
-        <div className="max-w-md">
-          <p className="mb-xl text-lg text-brown-600">
-            {t("pages.statistic.statistic-page-text")}
-          </p>
-          <DynamicStatisticGraphNumbers />
-          <p className="mb-xl mt-md">
-            {t("pages.statistic.statistic-page-numberofdatasets")}{" "}
-            <DynamicStatisticNumbersDatasets />
-          </p>
-          <div className="flex flex-col gap-xl">
-            <DynamicStatistic />
-          </div>
+    <Container>
+      <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
+        {t("pages.statistic.statistic-page-header")}
+      </Heading>
+      <div className="max-w-md">
+        <p className="mb-xl text-lg text-brown-600">
+          {t("pages.statistic.statistic-page-text")}
+        </p>
+        <DynamicStatisticGraphNumbers />
+        <p className="mb-xl mt-md">
+          {t("pages.statistic.statistic-page-numberofdatasets")}{" "}
+          <DynamicStatisticNumbersDatasets />
+        </p>
+        <div className="flex flex-col gap-xl">
+          <DynamicStatistic />
         </div>
-      </Container>
-    </>
+      </div>
+    </Container>
   );
 };
