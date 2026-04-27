@@ -7,10 +7,9 @@ import { BlockList } from "@/components/blocks/block-list";
 import { ButtonLink } from "@/components/button";
 import { ContentBox } from "@/components/content-box";
 import { Container } from "@/components/layout/container";
-import { Hero } from "@/components/layout/hero";
+import { PageWithHero } from "@/components/layout/page-with-hero";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { SettingsUtil } from "@/env";
 import Statistic from "@/features/statistic";
 import StatisticGraph from "@/features/statistic/statistic-graph";
 import StatisticNumbers from "@/features/statistic/statistic-numbers";
@@ -18,6 +17,10 @@ import { getResourceLabel } from "@/i18n/get-resource-label";
 import { isAppLocale } from "@/i18n/routing";
 import { includeLangInPath } from "@/utilities/check-lang";
 import { dataCategories } from "@/utilities/data-categories";
+import {
+  buildPageMetadata,
+  resolveCmsOgImage,
+} from "@/utilities/page-metadata";
 import { getStartPage } from "@/utilities/query-helpers";
 
 export const revalidate = parseInt(process.env.REVALIDATE_INTERVAL || "60", 10);
@@ -43,51 +46,20 @@ export async function generateMetadata({
     getStartPage(locale),
   ]);
   const seo = data.seo ?? null;
-
-  const env = SettingsUtil.create();
-  const canonicalPath = `${includeLangInPath(locale)}/`;
-  const canonicalUrl = `${env.CANONICAL_URL}${canonicalPath}`;
-  const title = seo?.title
-    ? `${seo.title} - Sveriges Dataportal`
-    : "Sveriges Dataportal";
   const defaultDescription =
     "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor";
-  const description =
-    seo?.description ?? t("pages.startpage.preamble") ?? defaultDescription;
-  const mediaBase = process.env.REACT_APP_MEDIA_BASE_URL ?? "";
-  const ogImage = seo?.image?.url
-    ? `${mediaBase}${seo.image.url}`
-    : "/images/svdp-favicon-150.png";
 
-  // `<MetaData>` only allows follow/index in prod + non-draft. Start
-  // page is never a draft route, so we just gate on env.
-  const allowSEO = env.envName === "prod";
-
-  return {
-    title,
-    description,
-    alternates: { canonical: canonicalUrl },
-    robots: {
-      follow: allowSEO && (seo?.robotsFollow ?? true),
-      index: allowSEO && (seo?.robotsIndex ?? true),
-    },
-    openGraph: {
-      title,
-      description,
-      url: canonicalUrl,
-      siteName: "Sveriges Dataportal",
-      images: [ogImage],
-      type: "website",
-    },
-    twitter: {
-      title,
-      description,
-      images: [ogImage],
-    },
-    other: {
-      language: locale,
-    },
-  };
+  return buildPageMetadata({
+    locale,
+    path: "/",
+    title: seo?.title,
+    description:
+      seo?.description ?? t("pages.startpage.preamble") ?? defaultDescription,
+    ogImage:
+      resolveCmsOgImage(seo?.image?.url) ?? "/images/svdp-favicon-150.png",
+    robotsFollow: seo?.robotsFollow,
+    robotsIndex: seo?.robotsIndex,
+  });
 }
 
 /**
@@ -136,17 +108,13 @@ export default async function LocaleStartPage({ params }: PageProps) {
   };
 
   return (
-    <>
-      {image && (
-        <Hero
-          heading={heading}
-          preamble={preamble}
-          image={image}
-          search={searchProps}
-          isFrontpage
-        />
-      )}
-
+    <PageWithHero
+      heading={heading}
+      preamble={preamble}
+      image={image}
+      search={searchProps}
+      isFrontpage
+    >
       <Container>
         <div id="startPage" className="space-y-md lg:space-y-xl">
           {!image && heading && (
@@ -209,6 +177,6 @@ export default async function LocaleStartPage({ params }: PageProps) {
           </section>
         </div>
       </Container>
-    </>
+    </PageWithHero>
   );
 }

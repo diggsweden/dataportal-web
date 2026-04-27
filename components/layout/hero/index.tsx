@@ -1,6 +1,6 @@
+import { cx } from "class-variance-authority";
 import { useTranslations } from "next-intl";
 import type { FC } from "react";
-
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ConceptIcon from "@/assets/icons/data.svg";
 import DiamondIcon from "@/assets/icons/diamond.svg";
@@ -14,10 +14,9 @@ import { Preamble } from "@/components/typography/preamble";
 import type { ImageFragment } from "@/graphql/__generated__/operations";
 import type { AddIcon } from "@/types/global";
 import { checkLang } from "@/utilities";
-
 import { HeroSearch } from "./hero-search";
 
-interface SearchProps {
+export interface HeroSearchProps {
   destination: string;
   placeholder: string;
 }
@@ -26,7 +25,7 @@ interface HeroProps {
   heading?: string | null;
   preamble?: string | null;
   image: ImageFragment | null;
-  search?: SearchProps | null;
+  search?: HeroSearchProps | null;
   className?: string;
   /**
    * Centers the heading + search block (used on the start page). Callers
@@ -87,9 +86,7 @@ export function Hero({
     <section
       id="Hero"
       aria-label="Hero"
-      className={`relative flex flex-col justify-center py-2xl ${
-        className ? className : ""
-      }`}
+      className={cx("relative flex flex-col justify-center py-2xl", className)}
     >
       {image && (
         <div className="inset-0 absolute h-full w-full">
@@ -118,9 +115,10 @@ export function Hero({
                 data-test-id="hero-heading"
                 level={1}
                 size="lg"
-                className={`${
-                  isFrontpage ? "mx-auto" : ""
-                } mb-none max-w-[700px]`}
+                className={cx(
+                  isFrontpage ? "mx-auto" : "",
+                  "mb-none max-w-[700px]",
+                )}
               >
                 {checkLang(heading)}
               </Heading>
@@ -136,9 +134,10 @@ export function Hero({
             {search && (
               <div id="SearchHero" className="mt-xl flex flex-col gap-xl">
                 <div
-                  className={`${
-                    isFrontpage ? "justify-center" : "justify-start"
-                  } flex flex-wrap gap-md md:gap-lg`}
+                  className={cx(
+                    "flex flex-wrap gap-md md:gap-lg",
+                    isFrontpage ? "justify-center" : "justify-start",
+                  )}
                 >
                   <div className="grid grid-cols-2 gap-md md:gap-lg">
                     <HeroButton

@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
-import { Hero } from "@/components/layout/hero";
-import { SettingsUtil } from "@/env";
+import { PageWithHero } from "@/components/layout/page-with-hero";
 import { ListPage } from "@/features/pages/list-page";
 import { isAppLocale } from "@/i18n/routing";
-import { includeLangInPath } from "@/utilities/check-lang";
+import { buildPageMetadata } from "@/utilities/page-metadata";
 import { getToolsList } from "@/utilities/query-helpers";
 
 export const revalidate = parseInt(process.env.REVALIDATE_INTERVAL || "60", 10);
@@ -15,48 +14,19 @@ interface PageProps {
   params: Promise<{ locale: string }>;
 }
 
-const heroImage = {
-  __typename: "dataportal_Digg_Image" as const,
-  url: "/images/stodOchVerktygHero.png",
-  name: null,
-  alt: null,
-  description: null,
-  mime: "image/png",
-  ext: ".png",
-  width: 1200,
-  height: 300,
-  screen9: { id: "" },
-};
-
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { locale } = await params;
   if (!isAppLocale(locale)) return {};
 
-  const env = SettingsUtil.create();
-  const canonicalPath = `${includeLangInPath(locale)}/stod-och-verktyg`;
-  const canonicalUrl = `${env.CANONICAL_URL}${canonicalPath}`;
-  const title = "Stöd och verktyg - Sveriges Dataportal";
-  const description =
-    "Här kan du som dataproducent eller dataanvändare hitta olika fomer av verktyg och stöd för ditt arbete. Målet är att data ska kunna nyttjas som en strategisk resurs för samhället och att det ska vara så enkelt som möjligt att nå dit.";
-  const allowSEO = env.envName === "prod";
-
-  return {
-    title,
-    description,
-    alternates: { canonical: canonicalUrl },
-    robots: { follow: allowSEO, index: allowSEO },
-    openGraph: {
-      title,
-      description,
-      url: canonicalUrl,
-      siteName: "Sveriges Dataportal",
-      type: "website",
-    },
-    twitter: { title, description },
-    other: { language: locale },
-  };
+  return buildPageMetadata({
+    locale,
+    path: "/stod-och-verktyg",
+    title: "Stöd och verktyg",
+    description:
+      "Här kan du som dataproducent eller dataanvändare hitta olika fomer av verktyg och stöd för ditt arbete. Målet är att data ska kunna nyttjas som en strategisk resurs för samhället och att det ska vara så enkelt som möjligt att nå dit.",
+  });
 }
 
 export default async function StodOchVerktygPage({ params }: PageProps) {
@@ -72,13 +42,16 @@ export default async function StodOchVerktygPage({ params }: PageProps) {
   });
 
   return (
-    <>
-      <Hero heading={data.heading} preamble={data.preamble} image={heroImage} />
+    <PageWithHero
+      heading={data.heading}
+      preamble={data.preamble}
+      imageUrl="/images/stodOchVerktygHero.png"
+    >
       <ListPage
         listItems={data.listItems}
         heading={data.heading ?? "Stöd och verktyg"}
         type={data.type}
       />
-    </>
+    </PageWithHero>
   );
 }

@@ -33,7 +33,7 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
 
   // Remove locale from path if it's the default locale
   useEffect(() => {
-    handleLocale(window.location.pathname, lang, pathname, router);
+    handleLocale(window.location.pathname, lang, pathname ?? "", router);
   }, [pathname]);
 
   useEffect(() => {

@@ -69,8 +69,8 @@ export const DataSetExploreApiPage: FC<{
           name: (entry.title as string) || "",
           link: {
             ...linkBase,
-            link: `/${t("routes.datasets.path")}/${query.dataSet}/${
-              query.name
+            link: `/${t("routes.datasets.path")}/${query?.dataSet}/${
+              query?.name
             }`,
           },
         },
