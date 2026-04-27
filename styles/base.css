@@ -256,3 +256,14 @@ input[type="radio"] {
 .checkbox {
   accent-color: #6e615a;
 }
+
+/* Hide breadcrumbs when a Hero is present */
+#siteWrapper:has(#Hero) #layout-breadcrumbs {
+  display: none;
+}
+
+/* Remove top margin on main when Hero is present — the hero sits
+   flush against the header. */
+#siteWrapper:has(#Hero) #main {
+  margin-top: 0;
+}

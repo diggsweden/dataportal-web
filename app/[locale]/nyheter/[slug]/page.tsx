@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 import { Hero } from "@/components/layout/hero";
+import { LayoutBreadcrumbs } from "@/components/navigation/layout-breadcrumbs";
 import { SettingsUtil } from "@/env";
 import { PublicationFull } from "@/features/publication/publication-full";
 import { isAppLocale } from "@/i18n/routing";
@@ -65,6 +66,7 @@ export default async function NyheterSlugPage({ params }: PageProps) {
   return (
     <>
       {data.image && <Hero heading={data.heading} image={data.image} />}
+      <LayoutBreadcrumbs />
       <PublicationFull {...data} />
     </>
   );

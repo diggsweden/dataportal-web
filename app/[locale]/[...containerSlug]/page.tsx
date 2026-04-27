@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 import { Hero } from "@/components/layout/hero";
+import { LayoutBreadcrumbs } from "@/components/navigation/layout-breadcrumbs";
 import { SettingsUtil } from "@/env";
 import { ContainerPage } from "@/features/pages/container-page";
 import { LandingPage } from "@/features/pages/landing-page";
@@ -82,11 +83,14 @@ export default async function ContainerSlugPage({ params }: PageProps) {
   return (
     <>
       {container.image && (
-        <Hero
-          heading={container.heading}
-          preamble={container.preamble}
-          image={container.image}
-        />
+        <>
+          <Hero
+            heading={container.heading}
+            preamble={container.preamble}
+            image={container.image}
+          />
+          <LayoutBreadcrumbs />
+        </>
       )}
       {container.landingPage ? (
         <LandingPage {...container} />

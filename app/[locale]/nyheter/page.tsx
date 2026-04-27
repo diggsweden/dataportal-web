@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 import { Hero } from "@/components/layout/hero";
+import { LayoutBreadcrumbs } from "@/components/navigation/layout-breadcrumbs";
 import { SettingsUtil } from "@/env";
 import { ListPage } from "@/features/pages/list-page";
 import { isAppLocale } from "@/i18n/routing";
@@ -72,6 +73,7 @@ export default async function NyheterPage({ params }: PageProps) {
   return (
     <>
       <Hero heading={data.heading} preamble={data.preamble} image={heroImage} />
+      <LayoutBreadcrumbs />
       <ListPage
         listItems={data.listItems}
         heading={data.heading ?? "Nyheter"}

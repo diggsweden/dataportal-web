@@ -124,9 +124,11 @@ export const AppRouterChrome: FC<AppRouterChromeProps> = ({
             openSideBar ? "2xl:w-[calc(100vw-18.75rem)]" : "w-full"
           }`}
         >
-          {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
-            <Breadcrumbs {...breadcrumbState} />
-          )}
+          <div id="layout-breadcrumbs">
+            {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
+              <Breadcrumbs {...breadcrumbState} />
+            )}
+          </div>
 
           <main
             id="main"
