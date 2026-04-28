@@ -1,174 +1,24 @@
-"use client";
-
-/* eslint-disable @typescript-eslint/no-require-imports */
-import { usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
-import type { Environment } from "prismjs";
+import { getTranslations } from "next-intl/server";
 import type React from "react";
-import { useContext, useEffect, useState } from "react";
+
 import { BlockList } from "@/components/blocks/block-list";
 import { Container } from "@/components/layout/container";
 import { ContainerNav } from "@/components/navigation/container-nav";
-import { StickyNav } from "@/components/navigation/sticky-nav";
+import { BreadcrumbSetter } from "@/components/navigation/breadcrumbs/breadcrumb-setter";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
 import type { ContainerDataFragment } from "@/graphql/__generated__/operations";
-import type { Translate } from "@/i18n/types";
-import { SettingsContext } from "@/providers/settings-provider";
-import type { Anchorlink } from "@/types/global";
+import type { Breadcrumb } from "@/types/global";
 import { checkLang, linkBase } from "@/utilities";
 
-/**
- * Uses prismjs to style codeblock
- */
-export const highlightCodeBlock = async () => {
-  // ? Fix to get <br/> as line-breaks
-  (await require("prismjs")).hooks.add(
-    "before-highlight",
-    (env: Environment) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      env.code = (env.element as HTMLElement).innerText;
-    },
-  );
-  // * init prismjs
-  (await require("prismjs")).highlightAll();
-  // ? Await all plugins and components to fix hydration issue
-  await require("prismjs/plugins/line-numbers/prism-line-numbers");
-  await require("prismjs/components/prism-markup-templating");
-  await require("prismjs/components/prism-csharp");
-  await require("prismjs/components/prism-json");
-  await require("prismjs/components/prism-javascript");
-  await require("prismjs/components/prism-css");
-  await require("prismjs/components/prism-php");
-  await require("prismjs/components/prism-ruby");
-  await require("prismjs/components/prism-python");
-  await require("prismjs/components/prism-java");
-  await require("prismjs/components/prism-c");
-  await require("prismjs/components/prism-cpp");
-  await require("prismjs/plugins/line-numbers/prism-line-numbers");
-  await require("prismjs/plugins/toolbar/prism-toolbar");
-  await require("prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard");
-};
-
-/**
- * Gets all h2 elements on the page and sets id:s to a visibility:hidden sibling be used
- * in the anchorLinkMenu
- * @returns {Array} An array of id:s to all h2-elements on the page
- */
-const getLinks = () => {
-  const menuItems: Anchorlink[] = [];
-  const cont: HTMLElement =
-    document.querySelector("#content") || document.createElement("div");
-
-  const hTags = Array.prototype.slice.call(
-    cont.querySelectorAll(".textBlock h2") || document.createElement("div"),
-    0,
-  );
-
-  // Set only if there are more than 2 elements
-  if (hTags.length > 2) {
-    hTags.forEach((element: HTMLElement) => {
-      // filter swedish characters and whitespaces from anchor
-      const chars: Record<string, string> = {
-        å: "a",
-        ä: "a",
-        ö: "o",
-        " ": "_",
-        ".": "",
-      };
-      const id = `${element.innerText
-        .toLowerCase()
-        .replace(/[åäö\s.]/g, (m: string) => chars[m] || "")
-        .trim()}`;
-      // Get the sibling element and give it the id
-      element.id = `${id}`;
-      menuItems.push({
-        id: id,
-        text: element.textContent,
-      } as Anchorlink);
-    });
-  }
-
-  return menuItems;
-};
+import { AnchorNavigation } from "./anchor-navigation";
+import { CodeHighlighter } from "./code-highlighter";
 
 interface ContainerPageProps extends ContainerDataFragment {
   related?: ContainerDataFragment[];
 }
 
-export const highlightCode = (t: Translate) => {
-  highlightCodeBlock().then(() => {
-    // Adds line numbers to codeBlocks
-    const pres = Array.prototype.slice.call(
-      document.getElementsByTagName("pre"),
-    );
-    pres.forEach((pre) => {
-      pre.classList.add("line-numbers");
-      pre.setAttribute("role", "region");
-      pre.setAttribute("aria-label", t("common.code-block"));
-    });
-
-    // Set timeout to allow for prismjs to load before adding new code
-    setTimeout(() => {
-      // Adds lang attribute to codeBlocks
-      const codeWrappers = Array.prototype.slice.call(
-        document.getElementsByClassName("code-toolbar"),
-      );
-      codeWrappers.map((codeWrapper) => codeWrapper.setAttribute("lang", "en"));
-
-      // Add new code to set aria-labels
-      const copyButtons = document.querySelectorAll(
-        ".copy-to-clipboard-button",
-      );
-      copyButtons.forEach((button) => {
-        // Create a live region for announcements
-        const liveRegion = document.createElement("div");
-        liveRegion.setAttribute("aria-live", "polite");
-        liveRegion.className = "sr-only";
-        button.parentElement?.appendChild(liveRegion);
-
-        // Set initial aria-label
-        button.setAttribute("aria-label", t("common.copy-code"));
-
-        // Add mutation observer to watch for data-copy-state changes
-        const observer = new MutationObserver((mutations) => {
-          mutations.forEach((mutation) => {
-            if (mutation.attributeName === "data-copy-state") {
-              const state = (mutation.target as HTMLElement).getAttribute(
-                "data-copy-state",
-              );
-              let ariaLabel = t("common.copy-code");
-
-              switch (state) {
-                case "copy-success":
-                  ariaLabel = t("common.code-copied-successfully");
-                  break;
-                case "copy-error":
-                  ariaLabel = t("common.code-copy-failed");
-                  break;
-              }
-
-              (mutation.target as HTMLElement).setAttribute(
-                "aria-label",
-                ariaLabel,
-              );
-
-              // Clear and update live region to trigger announcement
-              liveRegion.textContent = "";
-              setTimeout(() => {
-                liveRegion.textContent = ariaLabel;
-              }, 100);
-            }
-          });
-        });
-
-        observer.observe(button, { attributes: true });
-      });
-    }, 100);
-  });
-};
-
-export const ContainerPage: React.FC<ContainerPageProps> = ({
+export const ContainerPage: React.FC<ContainerPageProps> = async ({
   heading,
   image,
   preamble,
@@ -176,39 +26,27 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
   related,
   parent,
 }) => {
-  const [menuItems, setMenuItems] = useState<Anchorlink[] | []>([]);
-  const { setBreadcrumb } = useContext(SettingsContext);
-  const pathname = usePathname();
-  const t = useTranslations();
+  const t = await getTranslations();
+
   const formPage = blocks?.find(
     (block) => block.__typename === "dataportal_Digg_FoertroendemodellenBlock",
   );
   const hasRelatedContent = related && related.length > 1;
 
-  useEffect(() => {
-    //Highlights code using prismjs
-    highlightCode(t);
-
-    //Creates anchorlinks for the content menu
-    const newMenuItems = getLinks();
-    setMenuItems(newMenuItems);
-
-    const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
-    if (parent && parent.heading && parent.slug) {
-      crumbs.push({
-        name: parent.heading,
-        link: { ...linkBase, link: parent.slug },
-      });
-    }
-
-    setBreadcrumb?.({
-      name: heading,
-      crumbs: crumbs,
+  const crumbs: Breadcrumb[] = [
+    { name: "start", link: { ...linkBase, link: "/" } },
+  ];
+  if (parent && parent.heading && parent.slug) {
+    crumbs.push({
+      name: parent.heading,
+      link: { ...linkBase, link: parent.slug },
     });
-  }, [pathname]);
+  }
 
   return (
     <Container>
+      <BreadcrumbSetter name={heading} crumbs={crumbs} />
+      <CodeHighlighter />
       <article className="flex w-full flex-col gap-md lg:gap-xl xl:flex-row">
         {hasRelatedContent && <ContainerNav related={related} />}
         <div className="flex w-full flex-col">
@@ -224,17 +62,9 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
             </Heading>
           )}
           <div className="flex w-full flex-col items-start justify-end gap-xl lg:flex-row-reverse">
-            {menuItems.length > 2 && (
-              <div
-                id="stickyNav"
-                className="w-full overflow-y-auto lg:sticky lg:top-[4.75rem] lg:max-h-[calc(100vh-9.5rem)]"
-              >
-                <StickyNav
-                  menuHeading={t("common.content-menu-heading")}
-                  menuItems={menuItems}
-                />
-              </div>
-            )}
+            <AnchorNavigation
+              menuHeading={t("common.content-menu-heading")}
+            />
 
             <div
               id="content"

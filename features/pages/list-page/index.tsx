@@ -1,12 +1,7 @@
-"use client";
+import { getTranslations } from "next-intl/server";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { type FC, useContext, useEffect, useState } from "react";
-
-import { Button } from "@/components/button";
 import { GridList } from "@/components/grid-list";
 import { Container } from "@/components/layout/container";
-import { Pagination } from "@/components/pagination";
 import { Heading } from "@/components/typography/heading";
 import type {
   GoodExampleBlockItemFragment,
@@ -15,149 +10,100 @@ import type {
   NewsItemDataFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
-import { SettingsContext } from "@/providers/settings-provider";
-import { linkBase } from "@/utilities";
 
-interface ListPageProps {
-  listItems: (
-    | ToolDataFragment
-    | NewsBlockItemFragment
-    | GoodExampleBlockItemFragment
-    | NewsItemDataFragment
-    | GoodExampleDataFragment
-  )[];
-  heading: string;
-  type: string;
-  breadcrumb?: string;
-}
+import { BreadcrumbSetter } from "@/components/navigation/breadcrumbs/breadcrumb-setter";
+import { ListFilters } from "./list-filters";
+import { ListPagination } from "./list-pagination";
+
+const ITEMS_PER_PAGE = 12;
+
+type ListItem =
+  | ToolDataFragment
+  | NewsBlockItemFragment
+  | GoodExampleBlockItemFragment
+  | NewsItemDataFragment
+  | GoodExampleDataFragment;
+
 interface Keyword {
   value: string;
   id: string;
 }
 
-export const ListPage: FC<ListPageProps> = ({
+interface ListPageProps {
+  listItems: ListItem[];
+  heading: string;
+  type: string;
+  breadcrumb?: string;
+  searchParams?: { page?: string; filter?: string };
+}
+
+function extractKeywords(items: ListItem[]): Keyword[] {
+  const keywords: Keyword[] = [{ value: "Alla", id: "0" }];
+  for (const item of items) {
+    if (item.keywords) {
+      for (const keyword of item.keywords as Keyword[]) {
+        if (!keywords.some((k) => k.id === keyword.id)) {
+          keywords.push(keyword);
+        }
+      }
+    }
+  }
+  return keywords;
+}
+
+export async function ListPage({
   listItems,
   heading,
   breadcrumb,
-}) => {
-  const { setBreadcrumb } = useContext(SettingsContext);
+  searchParams,
+}: ListPageProps) {
+  const t = await getTranslations();
   const list = Array.isArray(listItems) ? listItems : [];
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const listItemsPerPage = 12;
-  const page = parseInt(searchParams?.get("page") ?? "", 10) || 1;
-  const startIndex = (page - 1) * listItemsPerPage;
-  const endIndex = startIndex + listItemsPerPage;
-  const [filterList, setFilterList] =
-    useState<ListPageProps["listItems"]>(listItems);
-  const [keywordList, setKeywordList] = useState<Keyword[]>([]);
-  const [activeFilter, setActiveFilter] = useState<Keyword>({
-    value: "Alla",
-    id: "0",
-  });
 
-  useEffect(() => {
-    setBreadcrumb?.({
-      name: breadcrumb ?? heading,
-      crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-    });
-  }, [pathname]);
+  const page = parseInt(searchParams?.page ?? "", 10) || 1;
+  const activeFilterId = searchParams?.filter ?? "0";
 
-  const changePage = (newPage: number) => {
-    const params = new URLSearchParams(searchParams?.toString() ?? "");
-    if (newPage !== 1) {
-      params.set("page", String(newPage));
-    } else {
-      params.delete("page");
-    }
-    const qs = params.toString();
-    router.replace(qs ? `?${qs}` : (pathname ?? "/"));
-  };
+  const keywords = extractKeywords(list);
 
-  useEffect(() => {
-    const keywords = [{ value: "Alla", id: "0" }];
-    list.map((item) => {
-      if (item.keywords) {
-        item.keywords.map((keyword: Keyword) => {
-          if (!keywords.some((i) => i.id === keyword.id)) {
-            keywords.push(keyword);
-          }
-        });
-      }
-    });
+  const filtered =
+    activeFilterId === "0"
+      ? list
+      : list.filter((item) =>
+          (item.keywords as Keyword[] | undefined)?.some(
+            (k) => String(k.id) === activeFilterId,
+          ),
+        );
 
-    setKeywordList(keywords);
-  }, [listItems]);
-
-  useEffect(() => {
-    if (activeFilter.id === "0") {
-      setFilterList(listItems);
-    } else {
-      setFilterList(
-        listItems.filter((item) => {
-          if (!item.keywords) return false;
-          return item.keywords.some(
-            (keywordObj) => String(keywordObj.id) === activeFilter.id,
-          );
-        }),
-      );
-      // Reset to first page when filtering
-      const params = new URLSearchParams(searchParams?.toString() ?? "");
-      if (params.has("page")) {
-        params.delete("page");
-        router.replace(pathname ?? "/");
-      }
-    }
-  }, [setActiveFilter, activeFilter, pathname, listItems]);
-
-  useEffect(() => {
-    setActiveFilter({
-      value: "Alla",
-      id: "0",
-    });
-  }, [heading]);
+  const startIndex = (page - 1) * ITEMS_PER_PAGE;
+  const pageItems = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   return (
     <div data-test-id="list-page" className="mb-lg md:mb-xl">
+      <BreadcrumbSetter name={breadcrumb ?? heading} />
       <Container>
         {heading && (
           <Heading data-test-id="list-page-heading" level={2} size={"md"}>
-            {`${filterList.length} ${breadcrumb ?? heading}`}
+            {`${filtered.length} ${breadcrumb ?? heading}`}
           </Heading>
         )}
 
-        {keywordList.length > 1 && (
-          <div
-            data-test-id="list-filters"
-            className="mt-xl flex flex-wrap gap-md"
-          >
-            {keywordList.map((keyword, idx) => (
-              <Button
-                variant="plain"
-                key={idx}
-                onClick={() => setActiveFilter(keyword)}
-                label={keyword.value}
-                className={`${
-                  keyword.id === activeFilter.id &&
-                  "hover-none bg-pink-200 font-strong text-blackOpaque3 hover:bg-pink-200"
-                }`}
-              />
-            ))}
-          </div>
+        {keywords.length > 1 && (
+          <ListFilters keywords={keywords} activeFilterId={activeFilterId} />
         )}
-        <GridList items={filterList.slice(startIndex, endIndex)} />
-        {filterList.length > listItemsPerPage && (
+        <GridList
+          items={pageItems}
+          emptyMessage={t("pages.listpage.no-content")}
+        />
+        {filtered.length > ITEMS_PER_PAGE && (
           <div className="flex justify-center">
-            <Pagination
-              totalResults={filterList.length || 0}
-              itemsPerPage={listItemsPerPage}
+            <ListPagination
+              totalResults={filtered.length}
+              itemsPerPage={ITEMS_PER_PAGE}
               pageNumber={page}
-              changePage={changePage}
             />
           </div>
         )}
       </Container>
     </div>
   );
-};
+}

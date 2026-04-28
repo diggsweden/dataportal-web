@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import type { FC } from "react";
 
 import { ButtonLink } from "@/components/button";
@@ -27,6 +26,7 @@ interface ListProps {
     title: string;
   };
   className?: string;
+  emptyMessage?: string;
 }
 
 export const GridList: FC<ListProps> = ({
@@ -34,9 +34,8 @@ export const GridList: FC<ListProps> = ({
   heading,
   showMoreLink,
   className,
+  emptyMessage,
 }) => {
-  const t = useTranslations();
-
   return (
     <div
       data-test-id="grid-list-container"
@@ -84,9 +83,9 @@ export const GridList: FC<ListProps> = ({
           ))}
         </ul>
       ) : (
-        <span data-test-id="grid-list-empty">
-          {t("pages.listpage.no-content")}
-        </span>
+        emptyMessage && (
+          <span data-test-id="grid-list-empty">{emptyMessage}</span>
+        )
       )}
     </div>
   );

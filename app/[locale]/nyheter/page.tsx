@@ -12,6 +12,7 @@ export const revalidate = parseInt(process.env.REVALIDATE_INTERVAL || "60", 10);
 
 interface PageProps {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export async function generateMetadata({
@@ -28,8 +29,9 @@ export async function generateMetadata({
   });
 }
 
-export default async function NyheterPage({ params }: PageProps) {
+export default async function NyheterPage({ params, searchParams }: PageProps) {
   const { locale } = await params;
+  const sp = await searchParams;
   if (!isAppLocale(locale)) notFound();
   setRequestLocale(locale);
 
@@ -49,6 +51,7 @@ export default async function NyheterPage({ params }: PageProps) {
         listItems={data.listItems}
         heading={data.heading ?? "Nyheter"}
         type={data.type}
+        searchParams={{ page: sp.page as string, filter: sp.filter as string }}
       />
     </PageWithHero>
   );

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import { type FC, useContext, useEffect, useState } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
@@ -20,7 +20,7 @@ import { GridList } from "@/components/grid-list";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { highlightCode } from "@/features/pages/container-page";
+import { CodeHighlighter } from "@/features/pages/container-page/code-highlighter";
 import { SettingsContext } from "@/providers/settings-provider";
 import {
   type GoodExampleResponse,
@@ -57,7 +57,6 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
           entity: publication.entity,
         };
 
-  const t = useTranslations();
   const lang = useLocale();
   const pathname = usePathname();
   const { setBreadcrumb } = useContext(SettingsContext);
@@ -100,9 +99,6 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
   ];
 
   useEffect(() => {
-    //Highlights code using prismjs
-    highlightCode(t);
-
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
 
     crumbs.push({
@@ -123,6 +119,7 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
 
   return (
     <Container>
+      <CodeHighlighter />
       <article className="flex w-full flex-col gap-lg md:gap-xl">
         {!publication.image && publication.heading && (
           <Heading size={"lg"} level={1} className="mb-lg md:mb-xl">

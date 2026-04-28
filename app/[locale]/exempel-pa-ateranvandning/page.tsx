@@ -12,6 +12,7 @@ export const revalidate = parseInt(process.env.REVALIDATE_INTERVAL || "60", 10);
 
 interface PageProps {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export async function generateMetadata({
@@ -31,8 +32,10 @@ export async function generateMetadata({
 
 export default async function ExempelPaAteranvandningPage({
   params,
+  searchParams,
 }: PageProps) {
   const { locale } = await params;
+  const sp = await searchParams;
   if (!isAppLocale(locale)) notFound();
   setRequestLocale(locale);
 
@@ -56,6 +59,7 @@ export default async function ExempelPaAteranvandningPage({
         heading={data.heading ?? ""}
         type={data.type}
         breadcrumb={data.breadcrumb}
+        searchParams={{ page: sp.page as string, filter: sp.filter as string }}
       />
     </PageWithHero>
   );
