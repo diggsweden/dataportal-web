@@ -94,6 +94,21 @@ const nextConfig = nextTranslate({
     minimumCacheTTL: 604800,
   },
 
+  async redirects() {
+    return [
+      {
+        source: "/fortroendemodellen",
+        destination: "https://fortroendemodellen.dataportal.se/",
+        permanent: true,
+      },
+      {
+        source: "/fortroendemodellen/:path*",
+        destination: "https://fortroendemodellen.dataportal.se/:path*",
+        permanent: true,
+      },
+    ];
+  },
+
   async headers() {
     return [
       {
