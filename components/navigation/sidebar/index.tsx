@@ -81,6 +81,7 @@ export const Sidebar: FC<NavSideProps> = ({
         {sidebarMenu?.length > 0 &&
           sidebarMenu.map(
             (menu: MenuLinkIconFragment | SubLink, idx: number) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: no unique id on mixed menu types
               <li key={idx} className="whitespace-nowrap">
                 {menu.__typename === "dataportal_Digg_MenuLinkIcon" ? (
                   <SidebarLink

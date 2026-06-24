@@ -76,6 +76,7 @@
         "noDangerouslySetInnerHtml": "warn"
       },
       "style": {
+        "noDescendingSpecificity": "off",
         "noRestrictedImports": {
           "level": "error",
           "options": {

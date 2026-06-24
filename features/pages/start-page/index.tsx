@@ -59,8 +59,8 @@ export const StartPage: FC<StartPageDataFragment> = (props) => {
 
         <ContentBox heading={t("pages.startpage.datasets_by_category")}>
           <ul className="flex flex-wrap justify-center gap-md lg:gap-lg">
-            {dataCategories?.map((category, idx: number) => (
-              <li key={idx}>
+            {dataCategories?.map((category) => (
+              <li key={category.href}>
                 <ButtonLink
                   className="text-center"
                   aria-label={t("pages.startpage.search_datasets_format", {

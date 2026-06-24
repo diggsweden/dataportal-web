@@ -113,7 +113,7 @@ export const OrganisationPage: FC = () => {
                     {entry.organisationData?.datasets.dataInfo.map(
                       (data: DataInfo, idx: number) => (
                         <div
-                          key={idx}
+                          key={data.title}
                           className="flex flex-col items-center gap-sm"
                         >
                           <span className="text-xl text-primary md:text-2xl">
@@ -198,7 +198,7 @@ export const OrganisationPage: FC = () => {
                           (term: TermInfo, idx: number) => (
                             <Link
                               data-test-id="organisation-terminology-link"
-                              key={idx}
+                              key={term.url}
                               href={term.url}
                               className="text-sm text-green-600 hover:no-underline"
                             >
@@ -310,7 +310,7 @@ export const OrganisationPage: FC = () => {
                     <div className="flex flex-col gap-sm">
                       {entry.downloadFormats.map(({ title, url }, idx) => (
                         <a
-                          key={idx}
+                          key={url}
                           href={url}
                           className="text-sm text-green-600 hover:no-underline"
                         >

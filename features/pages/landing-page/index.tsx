@@ -146,9 +146,9 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
               description="På Sveriges dataportal kan du som delar eller använder data, eller på andra sätt vill att data ska bli en strategisk resurs för bred samhällsnytta, delta på olika sätt. Här kan du ha dialoger med andra, bidra med innehåll eller kanske hitta en framtida samverkanspart."
             >
               <div className="flex flex-wrap justify-center gap-md lg:gap-xl">
-                {contentBoxLinks.map((link, idx: number) => (
+                {contentBoxLinks.map((link) => (
                   <ButtonLink
-                    key={idx}
+                    key={link.href}
                     href={link.href}
                     label={link.label}
                     icon={
@@ -172,8 +172,8 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
           <>
             <ContentBox heading={t("pages.startpage.datasets_by_category")}>
               <ul className="flex flex-wrap justify-center gap-md lg:gap-lg">
-                {dataCategories?.map((category, idx: number) => (
-                  <li key={idx}>
+                {dataCategories?.map((category) => (
+                  <li key={category.href}>
                     <ButtonLink
                       className="text-center"
                       aria-label={t("pages.startpage.search_datasets_format", {

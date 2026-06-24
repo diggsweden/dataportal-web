@@ -131,10 +131,10 @@ export const ConceptPage: FC = () => {
                   >
                     {t("pages.datasetpage.related_specifications")}
                   </Heading>
-                  {entry.relatedSpecifications.map(({ title, url }, idx) => (
+                  {entry.relatedSpecifications.map(({ title, url }) => (
                     <Link
                       className="block text-sm text-green-600 hover:no-underline"
-                      key={idx}
+                      key={url}
                       href={url}
                     >
                       {title}
@@ -174,7 +174,7 @@ export const ConceptPage: FC = () => {
                 <div className="flex flex-col gap-xs">
                   {entry.downloadFormats.map(({ title, url }, idx) => (
                     <a
-                      key={idx}
+                      key={url}
                       href={url + (idx === 0 ? "" : "&recursive=conceptscheme")}
                       className="text-sm text-green-600 hover:no-underline"
                     >

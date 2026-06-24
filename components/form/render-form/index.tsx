@@ -46,6 +46,7 @@ const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
         size={"xs"}
         className="mb-sm justify-between"
       />
+      {/* biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-labelledby links to toggle button */}
       <p
         id={popoverId}
         aria-labelledby={`${popoverId}-button`}
@@ -172,6 +173,7 @@ const FormItem = (
     case "dataportal_Digg_FormRadio":
       return (
         <div className="form-item">
+          {/* biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-expanded used for conditional display */}
           <fieldset
             className="mb-md space-y-lg"
             aria-expanded={

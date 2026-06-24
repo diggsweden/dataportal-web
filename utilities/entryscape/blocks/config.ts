@@ -308,6 +308,7 @@ export const createBlocksConfig = ({
           clicks: {
             katalog:
               includeLangInPath(lang) +
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: entryscape template syntax
               "/metadatakvalitet/katalog/${entry}/${context}",
           },
         },

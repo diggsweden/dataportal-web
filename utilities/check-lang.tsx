@@ -78,6 +78,7 @@ export const parseLanguageMarkup = (heading: string) => {
   return heading.split(/(\{en:\s*[^}]+\})/g).map((headingSplit, index) => {
     const match = headingSplit.match(/\{en:\s*([^}]+)\}/);
     return match ? (
+      // biome-ignore lint/suspicious/noArrayIndexKey: split fragments lack stable id
       <span key={index} lang="en" dir="ltr">
         {match[1]}
       </span>

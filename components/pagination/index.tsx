@@ -131,6 +131,7 @@ export const Pagination: FC<PaginationProps> = ({
                 : () => changePageNumber(value as number)
             }
             tabIndex={value === "..." || value === currentPage ? -1 : 0}
+            // biome-ignore lint/suspicious/noArrayIndexKey: pagination items
             key={idx}
             aria-label={`${t("pages.search.page")} ${value}`}
             className={`focus--in focus-visible:bg-brown-200 ${

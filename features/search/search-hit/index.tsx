@@ -97,13 +97,11 @@ export const SearchHit: FC<SearchHitProps> = ({
         </div>
         <div className="formats flex w-full flex-wrap gap-md">
           {badgeTranslationKey && <Badge text={t(badgeTranslationKey)} />}
-          {hit.metadata?.custom_facet_literal?.map(
-            (m: string, index: number) => (
-              <Badge key={index} text={m} />
-            ),
-          )}
-          {hit.metadata?.format_literal?.map((m: string, index: number) => (
-            <FileFormatBadge key={index} badgeName={m} />
+          {hit.metadata?.custom_facet_literal?.map((m: string) => (
+            <Badge key={m} text={m} />
+          ))}
+          {hit.metadata?.format_literal?.map((m: string) => (
+            <FileFormatBadge key={m} badgeName={m} />
           ))}
         </div>
       </div>

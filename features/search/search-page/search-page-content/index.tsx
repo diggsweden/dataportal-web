@@ -86,6 +86,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
     });
 
     return (
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: content is sanitized
       <span dangerouslySetInnerHTML={{ __html: highlightedText.join("") }} />
     );
   };
@@ -169,6 +170,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
           {t("common.search-content")}
         </Heading>
 
+        {/* biome-ignore lint/a11y/useSemanticElements: form with search role */}
         <form
           className="my-lg max-w-md md:my-xl"
           onSubmit={(event) => {
@@ -216,9 +218,10 @@ export const SearchPageContent: FC<SearchProps> = () => {
                 data-test-id="search-result-list"
                 className="space-y-lg md:space-y-xl"
               >
-                {searchResult.hits?.map((hit: SearchHit, index: number) => (
-                  <li className="group relative max-w-lg" key={index}>
+                {searchResult.hits?.map((hit: SearchHit) => (
+                  <li className="group relative max-w-lg" key={hit.url}>
                     <Link
+                      // biome-ignore lint/style/noNonNullAssertion: value is guaranteed to exist
                       href={`${cleanDoubleSlash(hit.url!)}#ref=${
                         window ? window.location.search : ""
                       }`}

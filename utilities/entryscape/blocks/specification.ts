@@ -14,6 +14,7 @@ export const specificationBlocks = (t: Translate, iconSize: number) => [
     rowhead:
       "<span>{{text}}</span>" +
       '<span class="block mb-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: entryscape template syntax
       '<div>{{ text content="${skos:definition}" }}</div>' +
       '<div class="flex justify-between items-end md:items-center mt-md md:mt-lg gap-lg">' +
       '<a href="{{#ifprop "prof:hasArtifact"}}{{prop "prof:hasArtifact"}}{{/ifprop}}{{#ifprop "prof:hasArtifact" invert=true}}{{resourceURI}}{{/ifprop}}">' +

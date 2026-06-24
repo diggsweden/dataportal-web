@@ -33,7 +33,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
         <ul className="flex flex-row items-center space-x-xs">
           {serviceMenu?.length > 0 ? (
             serviceMenu.map((menu: MenuLinkIconFragment, idx: number) => (
-              <Fragment key={idx}>
+              <Fragment key={menu.link}>
                 <li className="group text-sm">
                   <ButtonLink
                     aria-label={menu.name}

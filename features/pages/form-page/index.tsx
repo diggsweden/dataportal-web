@@ -288,6 +288,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
             if (page === index) {
               return (
                 <div
+                  // biome-ignore lint/suspicious/noArrayIndexKey: stable page order
                   key={`page${index}`}
                   className="col-span-1 col-start-1 row-start-2 max-w-md lg:col-start-2 lg:row-start-1"
                 >
@@ -307,7 +308,6 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
                     pageIndex={index}
                   />
                   <FormBottomNav
-                    key={`nav${index}`}
                     setFormDataArray={setFormDataArray}
                     formDataArray={formDataArray}
                     setPage={setPage}
@@ -317,6 +317,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
                 </div>
               );
             }
+            return undefined;
           })}
 
           {page === formDataArray.length + 1 && (

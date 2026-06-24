@@ -449,6 +449,7 @@ export const FortroendemodellenFrom = () => {
             }
             return (
               <div
+                // biome-ignore lint/suspicious/noArrayIndexKey: stable page order
                 key={`page${index}`}
                 className="col-span-1 col-start-1 row-start-2 w-full max-w-md lg:col-start-2 lg:row-start-1"
               >
@@ -465,7 +466,6 @@ export const FortroendemodellenFrom = () => {
                 />
                 <FormBottomNav
                   fortroendemodellen
-                  key={`nav${index}`}
                   setFormDataArray={setFormDataArray}
                   formDataArray={formDataArray}
                   setPage={setPage}

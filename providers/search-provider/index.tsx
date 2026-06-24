@@ -933,6 +933,7 @@ class SearchProviderClass extends Component<
     try {
       const facets = await this.entrystoreService.getFacets(
         esFacets,
+        // biome-ignore lint/style/noNonNullAssertion: value is guaranteed to exist
         this.state.dcatmeta!,
       );
 

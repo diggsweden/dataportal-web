@@ -90,6 +90,7 @@ const MenuLink: FC<MenuLinkProps> = ({
       {isActive && <PixelsImage className="absolute right-none text-white" />}
       {icon && (
         <span
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: content is sanitized
           dangerouslySetInnerHTML={{ __html: icon }}
           className={`flex-shrink-0 ${isActive ? "text-pink-600" : ""}`}
         />
@@ -215,8 +216,8 @@ export const SidebarLink: FC<
             id={`submenu-${label.replace(/\s+/g, "-").toLowerCase()}`}
             className="flex flex-col"
           >
-            {list.map((menu: MenuLinkFragment, idx: number) => (
-              <li key={idx} className="group relative overflow-y-hidden">
+            {list.map((menu: MenuLinkFragment) => (
+              <li key={menu.link} className="group relative overflow-y-hidden">
                 <MenuLink
                   href={menu.link}
                   label={menu.name}

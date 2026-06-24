@@ -74,10 +74,10 @@ const MainNav: FC<MainNavProps> = ({
           aria-label={t("common.menu-main")}
         >
           {mainMenu?.length > 0 &&
-            mainMenu.map((menu: MenuLinkFragment, idx: number) => (
+            mainMenu.map((menu: MenuLinkFragment) => (
               <ButtonLink
                 variant="plain"
-                key={idx}
+                key={menu.link}
                 href={menu.link}
                 onClick={() => setOpenSideBar(false)}
                 label={menu.name}
@@ -100,6 +100,7 @@ const MainNav: FC<MainNavProps> = ({
               className="w-[2.75rem] cursor-pointer p-[0.625rem]"
             />
           ) : (
+            // biome-ignore lint/a11y/useSemanticElements: form with search role for compatibility
             <form
               ref={formRef}
               className={`transition-width max-w-[17.125rem] text-sm duration-100 md:w-[17.125rem] [&_div]:mr-none [&_div_div_button]:p-[0.625rem] hover:first:[&_div_div_button]:bg-brown-200  ${

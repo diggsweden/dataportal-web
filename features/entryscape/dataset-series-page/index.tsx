@@ -207,7 +207,7 @@ export const DatasetSeriesPage: FC = () => {
                                 {entry.downloadFormats.map(
                                   ({ title, url }, idx) => (
                                     <a
-                                      key={idx}
+                                      key={url}
                                       href={url}
                                       className="text-sm text-green-600 hover:no-underline"
                                     >

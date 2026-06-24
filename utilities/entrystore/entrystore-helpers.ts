@@ -95,14 +95,16 @@ export const getUriNames = async (
   if (!uniqueUris.length) return cache;
 
   if (hasCustomProperties) {
-    uniqueUris.forEach((uri) => cache.set(uri, resourceLabel(uri)));
+    for (const uri of uniqueUris) {
+      cache.set(uri, resourceLabel(uri));
+    }
     return cache;
   }
 
   try {
     const entries = await esu.loadEntriesByResourceURIs(uniqueUris, null, true);
-    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
-    entries.forEach((entry: any) => {
+    // biome-ignore lint/suspicious/noExplicitAny: entrystore SDK types
+    for (const entry of entries as any[]) {
       if (entry) {
         const metadata = entry.getMetadata();
         const uri = entry.getResourceURI();
@@ -114,13 +116,15 @@ export const getUriNames = async (
           uri;
         cache.set(uri, name);
       }
-    });
-    uniqueUris.forEach((uri) => {
+    }
+    for (const uri of uniqueUris) {
       if (!cache.has(uri)) cache.set(uri, uri);
-    });
+    }
   } catch (error) {
     console.error("Error fetching URI names:", error);
-    uniqueUris.forEach((uri) => cache.set(uri, uri));
+    for (const uri of uniqueUris) {
+      cache.set(uri, uri);
+    }
   }
   return cache;
 };

@@ -127,6 +127,7 @@ export const DataSetExploreApiPage: FC<{
           <ul className="flex gap-xl">
             <li role="presentation">
               <button
+                type="button"
                 role="tab"
                 aria-selected={tab}
                 aria-controls="panel-api-contract"
@@ -143,6 +144,7 @@ export const DataSetExploreApiPage: FC<{
             </li>
             <li role="presentation">
               <button
+                type="button"
                 role="tab"
                 aria-selected={!tab}
                 aria-controls="panel-information"

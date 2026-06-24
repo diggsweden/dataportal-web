@@ -30,13 +30,14 @@ export const FooterNav: FC<FooterNavProps> = ({
     >
       {footerData?.length > 0 ? (
         footerData.map((footer: SubLinkFooter, footerIdx: number) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: stable footer order
           <div key={footerIdx} className="flex flex-col gap-sm">
             <Heading size={"sm"} level={2} className="!text-lg">
               {footer.title}
             </Heading>
             <ul className="space-y-sm">
               {footer.links.map((link: MenuLinkFragment, linkIdx: number) => (
-                <Fragment key={linkIdx}>
+                <Fragment key={link.link}>
                   <li className="text-md text-green-600">
                     <CustomLink
                       href={link.link}

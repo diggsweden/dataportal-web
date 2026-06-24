@@ -48,8 +48,8 @@ export const SearchTestPage: FC = () => {
           <ul>
             {
               // biome-ignore lint/suspicious/noExplicitAny: Unknown type
-              hits?.map((r: any, index: number) => (
-                <li key={index}>{r.name}</li>
+              hits?.map((r: any) => (
+                <li key={r.name}>{r.name}</li>
               ))
             }
           </ul>

@@ -84,6 +84,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
       onKeyDown={handleEscape}
     >
       {expanded && (
+        // biome-ignore lint/a11y/useSemanticElements: overlay backdrop with click handler
         <div
           role="button"
           tabIndex={0}

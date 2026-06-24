@@ -130,6 +130,7 @@ export const Statistic: FC = () => {
 
   return (
     <>
+      {/* biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-label for content section */}
       <div
         className="focus--primary block bg-white p-xl"
         aria-label={t("pages.statistic.top-organisations")}
@@ -144,6 +145,7 @@ export const Statistic: FC = () => {
             .map((item: number, index: number) => {
               return (
                 <StatisticListItem
+                  // biome-ignore lint/suspicious/noArrayIndexKey: index maps to labels array
                   key={`org-${index}`}
                   listText={stats.labels?.[index]}
                   listNumber={item}
@@ -159,6 +161,7 @@ export const Statistic: FC = () => {
         </ol>
       </div>
 
+      {/* biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-label for content section */}
       <div
         className="focus--primary block bg-white p-xl"
         aria-label={t("pages.statistic.top-categories")}
@@ -173,6 +176,7 @@ export const Statistic: FC = () => {
             .map((item: number, index: number) => {
               return (
                 <StatisticListItem
+                  // biome-ignore lint/suspicious/noArrayIndexKey: index maps to labels array
                   key={`cat-${index}`}
                   listText={stats.labelsTheme?.[index]}
                   listNumber={item}

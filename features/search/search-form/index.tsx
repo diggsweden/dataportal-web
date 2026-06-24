@@ -43,6 +43,7 @@ export const SearchForm: FC<SearchFormProps> = ({
 
   return (
     <div className="my-lg max-w-md md:my-xl">
+      {/* biome-ignore lint/a11y/useSemanticElements: form with search role */}
       <form
         role={"search"}
         onSubmit={(e) => {

@@ -46,6 +46,7 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
       active={trapFocus}
       focusTrapOptions={{ allowOutsideClick: true }}
     >
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: keyboard handler for Escape */}
       <div
         ref={ref}
         onKeyDown={(ev) => ev.key === "Escape" && handleOpen(false)}

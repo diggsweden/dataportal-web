@@ -159,7 +159,7 @@ export const SpecificationPage: FC = () => {
                     {keywords?.map((k, idx) => (
                       <span
                         className="mb-sm w-fit bg-pink-200 px-sm py-xs text-sm font-strong"
-                        key={idx}
+                        key={k}
                       >
                         {k}
                       </span>
@@ -202,7 +202,7 @@ export const SpecificationPage: FC = () => {
                   {relatedDatasets?.map((ds, idx) => (
                     <Link
                       className="fit mb-sm block text-sm text-green-600 hover:no-underline"
-                      key={idx}
+                      key={ds.url}
                       href={ds.url}
                     >
                       {ds.title}
@@ -237,7 +237,7 @@ export const SpecificationPage: FC = () => {
                   <div className="flex flex-col gap-xs">
                     {entry.downloadFormats.map(({ title, url }, idx) => (
                       <a
-                        key={idx}
+                        key={url}
                         href={url}
                         className="text-sm text-green-600 hover:no-underline"
                       >

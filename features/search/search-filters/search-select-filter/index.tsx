@@ -43,6 +43,7 @@ export const SearchSelectFilter: FC<SelectProps> = ({
       active={trapFocus}
       focusTrapOptions={{ allowOutsideClick: true }}
     >
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: keyboard handler for Escape */}
       <div
         ref={ref}
         onKeyDown={(ev) => ev.key === "Escape" && handleOpen(false)}
@@ -67,6 +68,8 @@ export const SearchSelectFilter: FC<SelectProps> = ({
               aria-labelledby={id}
             >
               {options.map((option) => (
+                // biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-selected for selection state
+                // biome-ignore lint/a11y/useKeyWithClickEvents: keyboard handled by parent Escape handler
                 <li
                   key={option.value}
                   aria-selected={option.value === value}
@@ -77,6 +80,7 @@ export const SearchSelectFilter: FC<SelectProps> = ({
                   }}
                 >
                   <button
+                    type="button"
                     className={`focus--in relative w-full text-nowrap py-sm pl-[2.25rem] pr-md text-left text-sm ${
                       selectedOption?.value === option.value
                         ? "bg-brown-100"

@@ -72,6 +72,7 @@ export const GridList: FC<ListProps> = ({
         >
           {items.map((item, idx) => (
             <li
+              // biome-ignore lint/suspicious/noArrayIndexKey: no stable unique id
               key={idx}
               className="group relative flex h-full flex-col justify-between no-underline"
             >

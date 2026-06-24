@@ -75,11 +75,11 @@ const FilterSearch: FC<FilterSearchProps> = ({
         className="focus--in border-none"
         aria-label={title}
         value={filter[filterKey] || ""}
-        onChange={(e) => (
-          clearCurrentScrollPos(),
-          fetchMore(),
-          setFilter({ ...filter, [filterKey]: e.target.value })
-        )}
+        onChange={(e) => {
+          clearCurrentScrollPos();
+          fetchMore();
+          setFilter({ ...filter, [filterKey]: e.target.value });
+        }}
       />
       <SearchIcon
         height={24}
@@ -213,13 +213,16 @@ export const SearchFilters: FC<SearchFilterProps> = ({
   }, [searchMode, search.allFacets]);
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: div with region role for filter section
     <div
       data-test-id="search-filters"
       role="region"
       aria-label={t("common.filter")}
     >
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: click closes overlay */}
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: keyboard handled by Escape */}
       <div
-        className={`fixed inset-none z-40 overflow-hidden bg-brownOpaque5 md:hidden 
+        className={`fixed inset-none z-40 overflow-hidden bg-brownOpaque5 md:hidden
         ${showFilter ? "visible" : "hidden"}`}
         onClick={() => setShowFilter(false)}
       />
@@ -301,7 +304,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
 
                     if (!value.customFilter && !value.customSearch) {
                       return (
-                        <li key={`${value.title}-${idx}`}>
+                        <li key={value.title}>
                           <SearchFilter
                             data-test-id="search-filter-select"
                             title={value.title}
@@ -328,6 +331,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                               />
 
                               {/* List of filter options within this category */}
+                              {/* biome-ignore lint/a11y/useAriaPropsSupportedByRole: multiselectable for filter list */}
                               <ul
                                 data-test-id="search-filter-select-list"
                                 aria-multiselectable="true"
@@ -342,8 +346,9 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                     Array.from({
                                       length: Math.min(facetValues.length, 10),
                                     }).map((_, index) => (
+                                      // biome-ignore lint/a11y/useAriaPropsSupportedByRole: skeleton placeholders
                                       <li
-                                        key={`skeleton-${index}`}
+                                        key={`skeleton-${String(index)}`}
                                         aria-busy="true"
                                         aria-selected={false}
                                       >
@@ -358,14 +363,17 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                         facetValue: SearchFacetValue,
                                         index: number,
                                       ) => (
+                                        // biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-selected for filter state
                                         <li
-                                          key={index}
+                                          key={facetValue.resource}
                                           aria-selected={selected(
                                             key,
                                             facetValue,
                                           )}
                                         >
+                                          {/* biome-ignore lint/a11y/useSemanticElements: button with checkbox role for filter toggle */}
                                           <button
+                                            type="button"
                                             className={`focus--in group relative flex w-full items-center break-all py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
                                               selected(key, facetValue) &&
                                               "font-strong"

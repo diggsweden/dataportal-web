@@ -86,7 +86,7 @@ export const StatisticGraph: FC = () => {
           <div className="border-gray-300 flex flex-1 items-end gap-[2px] border-b border-l">
             {points.map((point, idx) => (
               <div
-                key={`${point.x}-${idx}`}
+                key={point.x}
                 className="flex h-full flex-1 flex-col justify-end"
               >
                 <div
@@ -105,7 +105,7 @@ export const StatisticGraph: FC = () => {
           <div className="flex flex-1 gap-[2px] pt-xs text-sm text-textSecondary">
             {points.map((point, idx) => (
               <span
-                key={`label-${point.x}-${idx}`}
+                key={`label-${point.x}`}
                 className={`flex-1 text-center ${
                   idx % 2 === 1 ? "hidden lg:inline" : ""
                 }`}

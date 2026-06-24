@@ -58,7 +58,7 @@ export const CookieOptions: FC<CookieOptionsProps> = ({
       )}
 
       {keys.map((key, index) => (
-        <div key={key + index}>
+        <div key={key}>
           <div className="mb-xs flex items-center">
             <label className="inline-flex gap-sm font-strong" htmlFor={key}>
               {cookieSettings[key].label}

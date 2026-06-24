@@ -680,6 +680,7 @@ export class EntrystoreService {
 
       if (themeFacetSpec?.dcatFilterEnabled && themeFacetSpec.dcatProperty) {
         try {
+          // biome-ignore lint/style/noNonNullAssertion: value is guaranteed to exist
           const whitelist = await listChoices("dcat:theme", dcat!);
           values.theme_literal = metadata
             .find(null, "http://www.w3.org/ns/dcat#theme")
@@ -703,6 +704,7 @@ export class EntrystoreService {
 
       if (formatFacetSpec?.dcatFilterEnabled && formatFacetSpec.dcatProperty) {
         try {
+          // biome-ignore lint/style/noNonNullAssertion: value is guaranteed to exist
           const whitelist = await listChoices("dcterms:format", dcat!);
           values.format_literal = metadata
             .find(null, "http://purl.org/dc/terms/format")

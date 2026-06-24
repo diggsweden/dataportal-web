@@ -77,15 +77,15 @@ export const ListPage: FC<ListPageProps> = ({
 
   useEffect(() => {
     const keywords = [{ value: "Alla", id: "0" }];
-    list.map((item) => {
+    for (const item of list) {
       if (item.keywords) {
-        item.keywords.map((keyword: Keyword) => {
+        for (const keyword of item.keywords) {
           if (!keywords.some((i) => i.id === keyword.id)) {
             keywords.push(keyword);
           }
-        });
+        }
       }
-    });
+    }
 
     setKeywordList(keywords);
   }, [listItems]);
@@ -132,10 +132,10 @@ export const ListPage: FC<ListPageProps> = ({
             data-test-id="list-filters"
             className="mt-xl flex flex-wrap gap-md"
           >
-            {keywordList.map((keyword, idx) => (
+            {keywordList.map((keyword) => (
               <Button
                 variant="plain"
-                key={idx}
+                key={keyword.id}
                 onClick={() => setActiveFilter(keyword)}
                 label={keyword.value}
                 className={`${

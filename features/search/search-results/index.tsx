@@ -234,15 +234,16 @@ export const SearchResults: FC<SearchResultsProps> = ({
       {search.loadingHits && search.result.hits?.length === 0 ? (
         <div className="space-y-xl">
           {[...Array(5)].map((_, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: skeleton placeholders
             <SearchResultSkeleton key={index} />
           ))}
         </div>
       ) : (
         <div>
           <ul data-test-id="search-result-list" className="space-y-xl">
-            {search.result.hits?.map((hit, index) => (
+            {search.result.hits?.map((hit) => (
               <SearchHit
-                key={index}
+                key={hit.url}
                 hit={hit}
                 isCompact={isCompact}
                 onLinkClick={saveCurrentScrollPos}
