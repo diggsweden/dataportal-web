@@ -15,7 +15,7 @@ import {
 import CrossIcon from "@/assets/icons/cross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { Button } from "@/components/button";
-import { ParentSimplifiedFragment } from "@/graphql/__generated__/operations";
+import type { ParentSimplifiedFragment } from "@/graphql/__generated__/operations";
 import { useClickOutside } from "@/hooks/use-click-outside";
 
 interface ContainerDpDwnProps {
