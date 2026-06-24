@@ -1,5 +1,5 @@
-import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import { useTranslations } from "next-intl";
+import type { FC } from "react";
 
 import { AccordionBlock } from "@/components/blocks/accordion-block";
 import { MediaBlock } from "@/components/blocks/media-block";
@@ -10,19 +10,20 @@ import { TextBlock } from "@/components/blocks/text-block";
 import { VideoBlock } from "@/components/blocks/video-block";
 import { GridList } from "@/components/grid-list";
 import { FormPage } from "@/features/pages/form-page";
-import {
+import type {
+  BlockDataFragment,
+  ContainerDataFragment,
+  FaqFragment,
+  GoodExampleDataFragment,
   ModuleDataFragment,
   ModuleListDataFragment,
-  FaqFragment,
-  ContainerDataFragment,
   NewsItemDataFragment,
-  GoodExampleDataFragment,
   StartPageDataFragment,
-  BlockDataFragment,
 } from "@/graphql/__generated__/operations";
 
 import { CtaCardBlock } from "../cta-card-block";
 import { FortroendemodellenFrom } from "../fortroendemodellen-v2";
+
 interface blockListProps {
   blocks:
     | ContainerDataFragment["blocks"]
@@ -62,7 +63,7 @@ const handleFaqs = (blocks: blockListProps["blocks"], pos: number) => {
       key={`content-${pos}-${faqGroup[0].id}`}
     >
       {faqGroup.map((faq, idx: number) => (
-        <li key={idx} className="px-xs">
+        <li key={faq.id} className="px-xs">
           <AccordionBlock {...(faq as FaqFragment)} idx={idx} />
         </li>
       ))}
@@ -76,7 +77,7 @@ export const BlockList: FC<blockListProps> = ({
   landingPage,
   formPage,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const getUniqueKey = (block: BlockDataFragment, index: number) => {
     const blockId = block?.id || "";
@@ -92,7 +93,7 @@ export const BlockList: FC<blockListProps> = ({
     >
       {blocks?.map((block, index) => {
         if (block == null) {
-          return;
+          return null;
         }
 
         switch (block.__typename) {
@@ -125,8 +126,8 @@ export const BlockList: FC<blockListProps> = ({
           case "dataportal_Digg_ModuleList": {
             const typedBlock = block as ModuleListDataFragment;
             return (
-              typedBlock.modules &&
-              typedBlock.modules.map((module) => (
+              typedBlock.modules.length > 0 &&
+              typedBlock.modules.map((module: ModuleDataFragment) => (
                 <BlockList {...module} key={module.identifier} />
               ))
             );
@@ -148,10 +149,10 @@ export const BlockList: FC<blockListProps> = ({
                 className="!my-xl md:!my-2xl"
                 items={block.items}
                 showMoreLink={{
-                  title: t("pages|news$view-all"),
-                  slug: t("routes|news$path"),
+                  title: t("pages.news.view-all"),
+                  slug: t("routes.news.path"),
                 }}
-                heading={block.heading || t("pages|startpage$news")}
+                heading={block.heading || t("pages.startpage.news")}
               />
             );
           case "dataportal_Digg_GoodExampleBlock":
@@ -161,10 +162,10 @@ export const BlockList: FC<blockListProps> = ({
                 className="!my-xl md:!my-2xl"
                 items={block.items}
                 showMoreLink={{
-                  title: t("pages|good-examples$view-all"),
-                  slug: t("routes|good-examples$path"),
+                  title: t("pages.good-examples.view-all"),
+                  slug: t("routes.good-examples.path"),
                 }}
-                heading={block.heading || t("pages|startpage$good-examples")}
+                heading={block.heading || t("pages.startpage.good-examples")}
               />
             );
           case "dataportal_Digg_CTACardBlock":
@@ -175,9 +176,7 @@ export const BlockList: FC<blockListProps> = ({
             const unknownBlock = block as { __typename: string; id: string };
             return (
               <div key={unknownBlock.id}>
-                <h2>
-                  <>{unknownBlock.__typename} Not found</>
-                </h2>
+                <h2>{unknownBlock.__typename} Not found</h2>
                 <pre>{JSON.stringify(unknownBlock, null, 2)}</pre>
               </div>
             );

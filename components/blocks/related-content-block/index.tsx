@@ -1,11 +1,11 @@
 import { cx } from "class-variance-authority";
-import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import { useTranslations } from "next-intl";
+import type { FC } from "react";
 
 import { ButtonLink } from "@/components/button";
-import { PromoProps, Promo } from "@/components/promo";
+import { Promo, type PromoProps } from "@/components/promo";
 import { Heading } from "@/components/typography/heading";
-import { RelatedContentFragment } from "@/graphql/__generated__/operations";
+import type { RelatedContentFragment } from "@/graphql/__generated__/operations";
 
 interface RelatedContentProps extends RelatedContentFragment {
   landingPage?: boolean;
@@ -19,7 +19,7 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
   landingPage,
   formPage,
 }) => {
-  const { t } = useTranslation("pages");
+  const t = useTranslations();
 
   return (
     <>
@@ -35,8 +35,8 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
             <ButtonLink
               size="sm"
               href={showMoreLink}
-              label={t("news$view-all")}
-              aria-label={`${t("news$view-all")} ${
+              label={t("pages.news.view-all")}
+              aria-label={`${t("pages.news.view-all")} ${
                 heading ? `- ${heading}` : ""
               }`}
               variant="secondary"
@@ -55,7 +55,8 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
         {links.map((link: PromoProps, idx: number) => {
           return (
             <li
-              key={idx}
+              // biome-ignore lint/suspicious/noArrayIndexKey: no unique id available
+              key={`related-content-${idx}`}
               className="group relative flex h-full flex-col bg-white text-brown-900"
             >
               <Promo {...link} heading={heading} />

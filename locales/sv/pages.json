@@ -275,7 +275,7 @@
     "open-source-header": "Öppen källkod",
     "preamble": "Dataportalen är till för er som har data, för er som redan använder och utvecklar kring data, såväl som för er som precis har börjat fundera på hur den samlade kraften i vår data kan förflytta samhället framåt.",
     "public-ai-header": "Offentlig AI",
-    "search_datasets_format": "Sök datamängder inom kategorin {{category}}",
+    "search_datasets_format": "Sök datamängder inom kategorin {category}",
     "search_placeholder": "Sök data och API:er",
     "search_title_1": "Sök och utforska data i Sverige",
     "seo_description": "Sveriges nationella dataportal för att hitta, utforska och använda data från offentlig och privat sektor",

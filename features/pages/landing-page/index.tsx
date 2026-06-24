@@ -1,9 +1,10 @@
+"use client";
+
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect } from "react";
-
+import { useLocale, useTranslations } from "next-intl";
+import { type FC, useContext, useEffect } from "react";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import { BlockList } from "@/components/blocks/block-list";
@@ -14,13 +15,14 @@ import { GridList } from "@/components/grid-list";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import {
+import type {
   ContainerDataFragment,
   GoodExampleBlockItemFragment,
   GoodExampleDataFragment,
   NewsBlockItemFragment,
   NewsItemDataFragment,
 } from "@/graphql/__generated__/operations";
+import { useResourceLabel } from "@/i18n/use-resource-label";
 import { SettingsContext } from "@/providers/settings-provider";
 import {
   isExternalLink,
@@ -69,7 +71,9 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
 
   const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
-  const { t, lang } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
+  const tResource = useResourceLabel();
 
   const topPromos =
     blocks &&
@@ -83,7 +87,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
 
   useEffect(() => {
     const crumbs = [{ name: "start", link: { ...linkBase, link: "/" } }];
-    if (parent && parent.heading && parent.slug) {
+    if (parent?.heading && parent.slug) {
       crumbs.push({
         name: parent.heading,
         link: { ...linkBase, link: parent.slug },
@@ -105,7 +109,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
           </Heading>
         )}
 
-        {pathname === `/${t("routes|search-api$path")}` ||
+        {pathname === `/${t("routes.search-api.path")}` ||
         (!image && preamble) ? (
           <Preamble className="max-w-md">{preamble}</Preamble>
         ) : null}
@@ -119,10 +123,10 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
                 className="!my-xl md:!my-2xl"
                 items={newsPreviews as NewsBlockItemFragment[]}
                 showMoreLink={{
-                  title: t("pages|news$view-all"),
-                  slug: t("routes|news$path"),
+                  title: t("pages.news.view-all"),
+                  slug: t("routes.news.path"),
                 }}
-                heading={t("pages|startpage$news")}
+                heading={t("pages.startpage.news")}
               />
             )}
             {example && (
@@ -130,10 +134,10 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
                 className="!my-xl md:!my-2xl"
                 items={examplePreviews as GoodExampleBlockItemFragment[]}
                 showMoreLink={{
-                  title: t("pages|good-examples$view-all"),
-                  slug: t("routes|good-examples$path"),
+                  title: t("pages.good-examples.view-all"),
+                  slug: t("routes.good-examples.path"),
                 }}
-                heading={t("pages|startpage$good-examples")}
+                heading={t("pages.startpage.good-examples")}
               />
             )}
 
@@ -142,9 +146,9 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
               description="På Sveriges dataportal kan du som delar eller använder data, eller på andra sätt vill att data ska bli en strategisk resurs för bred samhällsnytta, delta på olika sätt. Här kan du ha dialoger med andra, bidra med innehåll eller kanske hitta en framtida samverkanspart."
             >
               <div className="flex flex-wrap justify-center gap-md lg:gap-xl">
-                {contentBoxLinks.map((link, idx: number) => (
+                {contentBoxLinks.map((link) => (
                   <ButtonLink
-                    key={idx}
+                    key={link.href}
                     href={link.href}
                     label={link.label}
                     icon={
@@ -166,25 +170,23 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
 
         {pathname === "/" && (
           <>
-            <ContentBox heading={t("pages|startpage$datasets_by_category")}>
+            <ContentBox heading={t("pages.startpage.datasets_by_category")}>
               <ul className="flex flex-wrap justify-center gap-md lg:gap-lg">
-                {dataCategories?.map((category, idx: number) => (
-                  <li key={idx}>
+                {dataCategories?.map((category) => (
+                  <li key={category.href}>
                     <ButtonLink
                       className="text-center"
-                      aria-label={t("pages|startpage$search_datasets_format", {
-                        category: t(`resources|${category.href}`),
+                      aria-label={t("pages.startpage.search_datasets_format", {
+                        category: tResource(category.href),
                       })}
                       href={`/${t(
-                        "routes|datasets$path",
+                        "routes.datasets.path",
                       )}?f=${encodeURIComponent(
                         `http://www.w3.org/ns/dcat#theme||${
                           category.href
-                        }||FALSE||uri||${t(
-                          "resources|http://www.w3.org/ns/dcat#theme",
-                        )}||${t("resources|" + category.href)}`,
+                        }||FALSE||uri||${tResource("http://www.w3.org/ns/dcat#theme")}||${tResource(category.href)}`,
                       )}`}
-                      label={t(`resources|${category.href}`)}
+                      label={tResource(category.href)}
                     />
                   </li>
                 ))}
@@ -194,14 +196,13 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
             <section id="statistics" className="my-xl">
               <div className="mb-2xl flex flex-col justify-between gap-sm md:flex-row md:items-end">
                 <Heading level={2} size={"lg"}>
-                  {t("pages|statistic$statistic-numbers")}
+                  {t("pages.statistic.statistic-numbers")}
                 </Heading>
                 <Link
-                  href={`/${t("routes|statistics$path")}`}
-                  locale={lang}
+                  href={`/${t("routes.statistics.path")}`}
                   className="statistic-link"
                 >
-                  {t("pages|statistic$statistic-link")}
+                  {t("pages.statistic.statistic-link")}
                 </Link>
               </div>
 

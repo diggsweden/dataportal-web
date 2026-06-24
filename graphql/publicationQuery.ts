@@ -1,10 +1,10 @@
-import { gql } from "@apollo/client";
+import { gql } from "graphql-tag";
 
 import {
   BLOCK_FRAGMENT,
+  GOOD_EXAMPLE_FRAGMENT,
   MODULE_FRAGMENT,
   NEWS_ITEM_FRAGMENT,
-  GOOD_EXAMPLE_FRAGMENT,
   SEO_FRAGMENT,
 } from "./fragments";
 

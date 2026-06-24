@@ -1,10 +1,12 @@
+"use client";
+
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
-import { FC, Fragment, useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { type FC, Fragment, useEffect, useState } from "react";
 
 import GlobeIcon from "@/assets/icons/globe.svg";
 import { ButtonLink } from "@/components/button";
-import { MenuLinkIconFragment } from "@/graphql/__generated__/operations";
+import type { MenuLinkIconFragment } from "@/graphql/__generated__/operations";
 
 interface TopNavProps {
   setOpenSideBar: (_param: boolean) => void;
@@ -13,7 +15,8 @@ interface TopNavProps {
 
 const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
   const pathname = usePathname();
-  const { t, lang } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -26,17 +29,16 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
 
   return (
     <div className="flex flex-row items-center justify-end">
-      <nav aria-label={t("common|menu-service")}>
+      <nav aria-label={t("common.menu-service")}>
         <ul className="flex flex-row items-center space-x-xs">
           {serviceMenu?.length > 0 ? (
             serviceMenu.map((menu: MenuLinkIconFragment, idx: number) => (
-              <Fragment key={idx}>
+              <Fragment key={menu.link}>
                 <li className="group text-sm">
                   <ButtonLink
                     aria-label={menu.name}
                     variant="plain"
                     href={menu.link}
-                    locale={lang}
                     onClick={() => setOpenSideBar(false)}
                     hrefLang={lang === "sv" ? "en" : "sv"}
                     size={"sm"}
@@ -44,6 +46,7 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
                   >
                     <span
                       className="inline-flex"
+                      // biome-ignore lint/security/noDangerouslySetInnerHtml: Icon is HTML
                       dangerouslySetInnerHTML={{ __html: menu.icon }}
                       aria-hidden="true"
                     />
@@ -53,15 +56,14 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
                 {serviceMenu.length === idx + 1 && (
                   <li>
                     <ButtonLink
-                      aria-label={t("common|language")}
+                      aria-label={t("routes.language.title")}
                       variant="plain"
-                      href={`/${t(`routes|language$path`)}`}
+                      href={`/${t(`routes.language.path`)}`}
                       icon={GlobeIcon}
-                      locale={""}
                       onClick={() => setOpenSideBar(false)}
                       hrefLang={lang === "sv" ? "en" : "sv"}
                       iconPosition="left"
-                      label={t(`routes|language$title`)}
+                      label={t(`routes.language.title`)}
                       size={"sm"}
                     />
                   </li>
@@ -71,13 +73,12 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
           ) : (
             <ButtonLink
               variant="plain"
-              href={`/${t(`routes|language$path`)}`}
+              href={`/${t(`routes.language.path`)}`}
               icon={GlobeIcon}
-              locale={""}
               onClick={() => setOpenSideBar(false)}
               hrefLang={lang === "sv" ? "en" : "sv"}
               iconPosition="left"
-              label={t(`routes|language$title`)}
+              label={t(`routes.language.title`)}
               size={"sm"}
             />
           )}

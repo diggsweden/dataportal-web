@@ -1,6 +1,8 @@
+"use client";
+
 import FocusTrap from "focus-trap-react";
-import useTranslation from "next-translate/useTranslation";
-import { FC, PropsWithChildren, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { type FC, type PropsWithChildren, useEffect, useState } from "react";
 
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
@@ -25,7 +27,7 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
   const [open, setOpen] = useState(false);
   const [trapFocus, setTrapFocus] = useState(false);
   const ref = useClickOutside<HTMLDivElement>(() => handleOpen(false));
-  const { t } = useTranslation("common");
+  const t = useTranslations();
 
   const handleOpen = (value: boolean) => {
     setOpen(value);
@@ -44,6 +46,7 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
       active={trapFocus}
       focusTrapOptions={{ allowOutsideClick: true }}
     >
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: keyboard handler for Escape */}
       <div
         ref={ref}
         onKeyDown={(ev) => ev.key === "Escape" && handleOpen(false)}
@@ -52,13 +55,13 @@ export const SearchFilter: FC<PropsWithChildren<SearchFilterProps>> = ({
         <Button
           variant="secondary"
           size="md"
-          label={`${title} ${usedFilters || ""}` || t("open")}
+          label={`${title} ${usedFilters || ""}` || t("common.open")}
           aria-haspopup={true}
           aria-expanded={open}
           aria-label={`${
-            open ? t("close-filter") : t("open-filter")
+            open ? t("common.close-filter") : t("common.open-filter")
           } ${title} ${
-            usedFilters ? ` - ${usedFilters} ${t("active-filters")}` : ""
+            usedFilters ? ` - ${usedFilters} ${t("common.active-filters")}` : ""
           }`}
           onClick={() => handleOpen(!open)}
           className={

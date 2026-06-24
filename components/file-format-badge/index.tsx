@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { Badge } from "@/components/badge";
 
@@ -7,7 +7,8 @@ interface FileFormatBadgeProps {
 }
 
 export const FileFormatBadge: FC<FileFormatBadgeProps> = ({ badgeName }) => {
-  let text, className;
+  let text: string | undefined;
+  let className: string | undefined;
 
   switch (badgeName) {
     case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
@@ -80,11 +81,7 @@ export const FileFormatBadge: FC<FileFormatBadgeProps> = ({ badgeName }) => {
       className = "bc-2";
       break;
 
-    case "application/ld+json" && "application/json-ld":
-      text = "rdf";
-      className = "bc-2";
-      break;
-
+    case "application/ld+json":
     case "application/json-ld":
       text = "rdf";
       className = "bc-2";

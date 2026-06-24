@@ -7,6 +7,7 @@ import { Dataportal_LinkType } from "@/graphql/__generated__/types";
 
 export type FlexDirection = "column" | "row";
 
+// biome-ignore lint/correctness/noUnusedVariables: ambient type declaration used in other files
 type AddIcon = ComponentType<{
   className?: string;
   width?: number;
@@ -14,6 +15,7 @@ type AddIcon = ComponentType<{
   viewBox?: string;
 }>;
 
+// biome-ignore lint/correctness/noUnusedVariables: ambient type declaration used in other files
 type SubLink = {
   __typename: "dataportal_Digg_SubLink";
   title: string;
@@ -21,6 +23,7 @@ type SubLink = {
   links: MenuLinkFragment[];
 };
 
+// biome-ignore lint/correctness/noUnusedVariables: ambient type declaration used in other files
 type SubLinkFooter = {
   __typename: "dataportal_Digg_SubLink";
   title: string;

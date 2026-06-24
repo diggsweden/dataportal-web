@@ -1,5 +1,7 @@
+"use client";
+
 import FocusTrap from "focus-trap-react";
-import { FC, useContext, useState } from "react";
+import { type FC, useContext, useState } from "react";
 
 import CheckDoneIcon from "@/assets/icons/check-done.svg";
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
@@ -41,6 +43,7 @@ export const SearchSelectFilter: FC<SelectProps> = ({
       active={trapFocus}
       focusTrapOptions={{ allowOutsideClick: true }}
     >
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: keyboard handler for Escape */}
       <div
         ref={ref}
         onKeyDown={(ev) => ev.key === "Escape" && handleOpen(false)}
@@ -62,13 +65,13 @@ export const SearchSelectFilter: FC<SelectProps> = ({
           <div className={open ? "relative block" : "hidden"}>
             <ul
               className="absolute z-10 mt-sm border border-brown-200 bg-white shadow-lg"
-              role="listbox"
               aria-labelledby={id}
             >
               {options.map((option) => (
+                // biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-selected for selection state
+                // biome-ignore lint/a11y/useKeyWithClickEvents: keyboard handled by parent Escape handler
                 <li
                   key={option.value}
-                  role="option"
                   aria-selected={option.value === value}
                   className={`inline-flex w-full cursor-pointer hover:bg-brown-100`}
                   onClick={() => {
@@ -77,6 +80,7 @@ export const SearchSelectFilter: FC<SelectProps> = ({
                   }}
                 >
                   <button
+                    type="button"
                     className={`focus--in relative w-full text-nowrap py-sm pl-[2.25rem] pr-md text-left text-sm ${
                       selectedOption?.value === option.value
                         ? "bg-brown-100"

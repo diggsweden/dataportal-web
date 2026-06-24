@@ -9,10 +9,6 @@ interface StatisticListItemProps {
 }
 
 export class StatisticListItem extends Component<StatisticListItemProps> {
-  constructor(props: StatisticListItemProps) {
-    super(props);
-  }
-
   render() {
     return (
       <li className="mb-lg pl-sm last:mb-none">

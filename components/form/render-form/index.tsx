@@ -1,7 +1,13 @@
-import { Translate } from "next-translate";
-import useTranslation from "next-translate/useTranslation";
-import { ChangeEvent, DragEvent, FC, useCallback, useState } from "react";
+"use client";
 
+import { useTranslations } from "next-intl";
+import {
+  type ChangeEvent,
+  type DragEvent,
+  type FC,
+  useCallback,
+  useState,
+} from "react";
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import ChevronUpIcon from "@/assets/icons/chevron-up.svg";
 import { Button } from "@/components/button";
@@ -14,7 +20,8 @@ import { TextInput } from "@/components/form/text-input";
 import { Textarea } from "@/components/form/textarea";
 import { Heading } from "@/components/typography/heading";
 import { HtmlParser } from "@/components/typography/html-parser";
-import { FormTypes, FormChoice } from "@/types/form";
+import type { Translate } from "@/i18n/types";
+import type { FormChoice, FormTypes } from "@/types/form";
 
 const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
   const [visible, setVisible] = useState(false);
@@ -39,6 +46,7 @@ const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
         size={"xs"}
         className="mb-sm justify-between"
       />
+      {/* biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-labelledby links to toggle button */}
       <p
         id={popoverId}
         aria-labelledby={`${popoverId}-button`}
@@ -46,7 +54,7 @@ const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
           visible ? "visible" : "hidden"
         }`}
       >
-        {HtmlParser({ text })}
+        <HtmlParser text={text} />
       </p>
     </div>
   );
@@ -58,12 +66,12 @@ export const addLabel = (
   ID: number,
   title: string,
 ) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { t } = useTranslation("pages");
+  // biome-ignore lint/correctness/useHookAtTopLevel: addLabel is a JSX-returning helper; refactor to a component in the App Router port.
+  const t = useTranslations();
   return (
     <div className="flex flex-col gap-md">
       <span className="text-sm text-textSecondary">
-        {t("form$question")} {number}
+        {t("pages.form.question")} {number}
       </span>
       <Label htmlFor={`${Type}${ID}`}>{title}</Label>
     </div>
@@ -128,10 +136,10 @@ const FormItem = (
       return (
         <div className="form-item">
           {addLabel(item.number, Type, ID, item.title)}
-          {item.info && PopOver({ text: item.info, title: item.title })}
+          {item.info && <PopOver text={item.info} title={item.title} />}
           <TextInput
             id={`${Type}${ID}`}
-            placeholder={t("form$placeholder-text")}
+            placeholder={t("pages.form.placeholder-text")}
             name={`${Type}${ID}`}
             value={item.value}
             onChange={(e) => {
@@ -144,11 +152,11 @@ const FormItem = (
       return (
         <div className="form-item">
           {addLabel(item.number, Type, ID, item.title)}
-          {item.info && PopOver({ text: item.info, title: item.title })}
+          {item.info && <PopOver text={item.info} title={item.title} />}
           <Textarea
             name={`${Type}${ID}`}
             id={`${Type}${ID}`}
-            placeholder={t("form$placeholder-text")}
+            placeholder={t("pages.form.placeholder-text")}
             value={item.value}
             onChange={(e) => {
               UpdateFormDataArray(e, item, pageIndex);
@@ -165,6 +173,7 @@ const FormItem = (
     case "dataportal_Digg_FormRadio":
       return (
         <div className="form-item">
+          {/* biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-expanded used for conditional display */}
           <fieldset
             className="mb-md space-y-lg"
             aria-expanded={
@@ -177,7 +186,7 @@ const FormItem = (
             }
           >
             {addLabel(item.number, Type, ID, item.title)}
-            {item.info && PopOver({ text: item.info, title: item.title })}
+            {item.info && <PopOver text={item.info} title={item.title} />}
             <div className="flex flex-col gap-md lg:flex-row lg:items-center">
               {item.choices.map((choice) => {
                 return (
@@ -197,7 +206,7 @@ const FormItem = (
               {item.selected?.popup && item.selected.popup.length > 0 && (
                 <div className="w-fit border p-xs lg:ml-lg">
                   <span className="text-sm">
-                    {HtmlParser({ text: item.selected?.popup })}
+                    <HtmlParser text={item.selected?.popup ?? ""} />
                   </span>
                 </div>
               )}
@@ -209,12 +218,12 @@ const FormItem = (
             item.selected.popup.length > 0 && (
               <>
                 <span className="text-sm text-textSecondary">
-                  {HtmlParser({ text: item.selected?.popup })}
+                  <HtmlParser text={item.selected?.popup ?? ""} />
                 </span>
                 <Textarea
                   id={`${Type}${ID}`}
                   name={`${Type}${ID}`}
-                  placeholder={t("form$placeholder-text")}
+                  placeholder={t("pages.form.placeholder-text")}
                   value={item.value}
                   onChange={(e) => {
                     UpdateFormDataArray(e, item, pageIndex);
@@ -236,7 +245,7 @@ const FormItem = (
 
           {item.text.markdown?.length && item.text.markdown?.length > 9 && (
             <div className="text">
-              {HtmlParser({ text: item.text.markdown })}
+              <HtmlParser text={item.text.markdown} />
             </div>
           )}
         </div>
@@ -255,7 +264,7 @@ const FormItem = (
               value={item.selected?.value || ""}
             >
               <option value="" disabled>
-                {t("form$select-placeholder")}
+                {t("pages.form.select-placeholder")}
               </option>
               {item.items.map((option: FormChoice) => {
                 return (
@@ -270,7 +279,7 @@ const FormItem = (
               item.selected.popup.length > 0 && (
                 <div className="w-fit border p-xs">
                   <span className="text-sm">
-                    {HtmlParser({ text: item.selected?.popup })}
+                    <HtmlParser text={item.selected?.popup ?? ""} />
                   </span>
                 </div>
               )}
@@ -302,11 +311,7 @@ const FormItem = (
         </div>
       );
     case "organisationNumber":
-      return (
-        <>
-          <OrganisationNumber />
-        </>
-      );
+      return <OrganisationNumber />;
   }
 };
 
@@ -315,7 +320,7 @@ export const RenderForm = ({
   UpdateFormDataArray,
   pageIndex,
 }: Props) => {
-  const { t } = useTranslation("pages");
+  const t = useTranslations();
   return (
     <div className="mt-md space-y-lg lg:mt-xl">
       {formDataArray.map((item) => {

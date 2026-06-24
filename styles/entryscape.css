@@ -21,8 +21,7 @@
 
 .rdformsLabel,
 .information-container .title {
-  @apply mb-sm min-w-fit gap-xs border-none p-none font-ubuntu text-sm font-strong text-textSecondary !outline-offset-2 
-  focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-primary !important;
+  @apply mb-sm min-w-fit gap-xs border-none p-none font-ubuntu text-sm font-strong text-textSecondary !outline-offset-2 focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-primary !important;
 }
 
 .information-container .title span,
@@ -117,7 +116,7 @@
 }
 
 .modal-dialog-ux {
-  @apply absolute left-1/2 top-1/2 w-full max-w-md -translate-x-1/2  -translate-y-1/2;
+  @apply absolute left-1/2 top-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2;
 }
 
 .modal-ux-inner {
@@ -154,8 +153,7 @@
 }
 
 .modal-ux-inner .modal-ux-content .wrapper input {
-  @apply my-sm rounded-sm border border-brown-600 px-md hover:outline-offset-2 
-  hover:outline-brown-800 focus-visible:outline-offset-2 focus-visible:outline-brown-800 active:outline-offset-2 active:outline-brown-800;
+  @apply my-sm rounded-sm border border-brown-600 px-md hover:outline-offset-2 hover:outline-brown-800 focus-visible:outline-offset-2 focus-visible:outline-brown-800 active:outline-offset-2 active:outline-brown-800;
 }
 
 .modal-ux-inner .modal-ux-content .auth-btn-wrapper {
@@ -176,7 +174,7 @@
 }
 
 .esbRowHead .esbRowControl > button {
-  @apply m-none flex h-[2.75rem] w-full items-center justify-evenly gap-sm rounded-sm border-2  border-solid border-brown-600 p-md text-textSecondary shadow-none hover:bg-brown-100 hover:no-underline focus-visible:no-underline focus-visible:shadow-none !important;
+  @apply m-none flex h-[2.75rem] w-full items-center justify-evenly gap-sm rounded-sm border-2 border-solid border-brown-600 p-md text-textSecondary shadow-none hover:bg-brown-100 hover:no-underline focus-visible:no-underline focus-visible:shadow-none !important;
 }
 
 .esbExpandButton[aria-expanded="false"]::before {
@@ -600,7 +598,7 @@
 }
 
 .download-contents {
-  @apply absolute bottom-[10px] right-[50px]  flex h-[30px] cursor-pointer items-center bg-white px-sm pt-xs text-center text-textPrimary opacity-70 hover:opacity-90;
+  @apply absolute bottom-[10px] right-[50px] flex h-[30px] cursor-pointer items-center bg-white px-sm pt-xs text-center text-textPrimary opacity-70 hover:opacity-90;
 }
 
 .opblock-summary .copy-to-clipboard {
@@ -620,7 +618,7 @@
 }
 
 .opblock-section-header {
-  @apply flex items-center justify-between  text-lg;
+  @apply flex items-center justify-between text-lg;
 }
 
 .opblock-section-header span {

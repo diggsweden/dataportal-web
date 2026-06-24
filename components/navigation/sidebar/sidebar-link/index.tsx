@@ -1,11 +1,13 @@
-import { cx, cva, VariantProps } from "class-variance-authority";
+"use client";
+
+import { cva, cx, type VariantProps } from "class-variance-authority";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
-import React, {
-  FC,
-  HTMLAttributes,
-  PropsWithChildren,
+import { useLocale, useTranslations } from "next-intl";
+import {
+  type FC,
+  type HTMLAttributes,
+  type PropsWithChildren,
   useContext,
   useEffect,
   useState,
@@ -14,9 +16,10 @@ import React, {
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import PixelsImage from "@/assets/icons/pixels.svg";
-import { MenuLinkFragment } from "@/graphql/__generated__/operations";
+import type { MenuLinkFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 import { isExternalLink } from "@/utilities";
+import { includeLangInPath } from "@/utilities/check-lang";
 
 const sidebarLinkVariants = cva(
   [
@@ -55,13 +58,17 @@ const MenuLink: FC<MenuLinkProps> = ({
   tabIndex,
   setOpenSideBar,
 }) => {
-  const { t } = useTranslation();
+  const lang = useLocale();
   const pathname = usePathname();
-  const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
-  const vw = window.innerWidth;
+  const basePath = `/${(pathname ?? "").split("/").splice(1, 1)[0]}`;
 
-  const isActive =
-    (pathname === "/" && href === t(`common|lang-path`)) || href === basePath;
+  // The home item's `href` comes through as `/` for Swedish and `/en` for
+  // English (see `includeLangInPath`), but `basePath` on the home route
+  // collapses to `/` (sv) or `/en` (en) — so the straight `href === basePath`
+  // comparison handles both. Special-case the odd Swedish shape where
+  // `pathname` is exactly `/` but `includeLangInPath()` returned `""`.
+  const homeHref = includeLangInPath(lang) || "/";
+  const isActive = href === basePath || (pathname === "/" && href === homeHref);
 
   return (
     <Link
@@ -73,33 +80,36 @@ const MenuLink: FC<MenuLinkProps> = ({
       )}
       href={href}
       tabIndex={tabIndex}
-      onClick={() => vw < 600 && setOpenSideBar(false)}
+      // Read width inside the handler (not at render time) — event handlers
+      // never fire during SSR so `window` is guaranteed to exist here. Also
+      // catches post-mount viewport resizes, which the old render-time read
+      // missed (it captured width at first render and went stale).
+      onClick={() => window.innerWidth < 600 && setOpenSideBar(false)}
       data-tracking-name="sidebar-link"
     >
-      <>
-        {isActive && <PixelsImage className="absolute right-none text-white" />}
-        {icon && (
-          <span
-            dangerouslySetInnerHTML={{ __html: icon }}
-            className={`flex-shrink-0 ${isActive ? "text-pink-600" : ""}`}
-          />
-        )}
+      {isActive && <PixelsImage className="absolute right-none text-white" />}
+      {icon && (
         <span
-          className={`z-50 underline-offset-4 group-hover:underline ${
-            isActive ? "font-strong text-brown-900" : ""
-          }`}
-        >
-          {label}
-        </span>
-        {isExternalLink(href) && (
-          <ExternalLinkIcon
-            className="absolute right-md text-brown-400"
-            viewBox="0 0 24 24"
-            width={1.5 * iconSize}
-            height={1.5 * iconSize}
-          />
-        )}
-      </>
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: content is sanitized
+          dangerouslySetInnerHTML={{ __html: icon }}
+          className={`flex-shrink-0 ${isActive ? "text-pink-600" : ""}`}
+        />
+      )}
+      <span
+        className={`z-50 underline-offset-4 group-hover:underline ${
+          isActive ? "font-strong text-brown-900" : ""
+        }`}
+      >
+        {label}
+      </span>
+      {isExternalLink(href) && (
+        <ExternalLinkIcon
+          className="absolute right-md text-brown-400"
+          viewBox="0 0 24 24"
+          width={1.5 * iconSize}
+          height={1.5 * iconSize}
+        />
+      )}
     </Link>
   );
 };
@@ -127,11 +137,11 @@ export const SidebarLink: FC<
   openSideBar,
   setOpenSideBar,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const { iconSize } = useContext(SettingsContext);
   const pathname = usePathname();
-  const basePath = `/${pathname.split("/").splice(1, 1)[0]}`;
+  const basePath = `/${(pathname ?? "").split("/").splice(1, 1)[0]}`;
 
   useEffect(() => {
     if (!openSideBar && list) {
@@ -161,6 +171,7 @@ export const SidebarLink: FC<
     return (
       <>
         <button
+          type="button"
           className={`focus--in focus--underline group flex w-full cursor-pointer flex-row items-center
             gap-md whitespace-normal p-md text-left text-brown-600 ${
               open && "font-strong text-brown-900"
@@ -171,12 +182,13 @@ export const SidebarLink: FC<
           aria-controls={`submenu-${label.replace(/\s+/g, "-").toLowerCase()}`}
           aria-label={
             open
-              ? `${t("common|close")} ${t("common|menu-submenu")} ${label}`
-              : `${t("common|open")} ${t("common|menu-submenu")} ${label}`
+              ? `${t("common.close")} ${t("common.menu-submenu")} ${label}`
+              : `${t("common.open")} ${t("common.menu-submenu")} ${label}`
           }
         >
           {icon && (
             <span
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: Icon is HTML
               dangerouslySetInnerHTML={{ __html: icon }}
               className={`flex-shrink-0 ${open ? "text-pink-600" : ""}`}
             />
@@ -204,8 +216,8 @@ export const SidebarLink: FC<
             id={`submenu-${label.replace(/\s+/g, "-").toLowerCase()}`}
             className="flex flex-col"
           >
-            {list.map((menu: MenuLinkFragment, idx: number) => (
-              <li key={idx} className="group relative overflow-y-hidden">
+            {list.map((menu: MenuLinkFragment) => (
+              <li key={menu.link} className="group relative overflow-y-hidden">
                 <MenuLink
                   href={menu.link}
                   label={menu.name}

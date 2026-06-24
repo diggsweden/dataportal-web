@@ -1,15 +1,16 @@
+"use client";
+
 import dynamic from "next/dynamic";
-import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import { CustomLink } from "@/components/custom-link";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { ApiExplorerProps } from "@/features/entryscape/api-exploring";
+import type { ApiExplorerProps } from "@/features/entryscape/api-exploring";
 import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
 import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
@@ -28,11 +29,12 @@ export const DataSetExploreApiPage: FC<{
   dataSet: string | string[] | undefined;
   apieid: string | string[] | undefined;
 }> = ({ dataSet, apieid }) => {
-  const { query } = useRouter() || {};
+  const query = useParams();
   const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];
   const eid = ids[1];
-  const { t, lang } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
   const { env, setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
 
@@ -56,19 +58,19 @@ export const DataSetExploreApiPage: FC<{
 
   useEffect(() => {
     setBreadcrumb?.({
-      name: t("routes|api_explore$title"),
+      name: t("routes.api_explore.title"),
       crumbs: [
         { name: "start", link: { ...linkBase, link: "/" } },
         {
-          name: t("routes|datasets$title"),
-          link: { ...linkBase, link: `/${t("routes|datasets$path")}?q=&f=` },
+          name: t("routes.datasets.title"),
+          link: { ...linkBase, link: `/${t("routes.datasets.path")}?q=&f=` },
         },
         {
           name: (entry.title as string) || "",
           link: {
             ...linkBase,
-            link: `/${t("routes|datasets$path")}/${query.dataSet}/${
-              query.name
+            link: `/${t("routes.datasets.path")}/${query?.dataSet}/${
+              query?.name
             }`,
           },
         },
@@ -78,21 +80,10 @@ export const DataSetExploreApiPage: FC<{
 
   return (
     <Container>
-      <Head>
-        <title>{`${entry.title} - Sveriges dataportal`}</title>
-        <meta
-          property="og:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-        <meta
-          name="twitter:title"
-          content={`${entry.title} - Sveriges dataportal`}
-        />
-      </Head>
       <div>
         {/* Title */}
         <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
-          {t("pages|explore-api-page$explore-api")}
+          {t("pages.explore-api-page.explore-api")}
         </Heading>
 
         <div className="mb-md flex w-full flex-col gap-lg lg:mb-lg">
@@ -122,7 +113,7 @@ export const DataSetExploreApiPage: FC<{
         <div className="flex flex-col">
           {/* Refers to dataset - heading*/}
           <Heading level={2} size={"sm"} className="mb-sm md:mb-md">
-            {t("pages|explore-api-page$belongs-to-dataset")}
+            {t("pages.explore-api-page.belongs-to-dataset")}
           </Heading>
 
           {/* Refers to dataset - datset */}
@@ -133,9 +124,10 @@ export const DataSetExploreApiPage: FC<{
 
         {/* Tabs navigation */}
         <nav className="mb-lg">
-          <ul role="tablist" className="flex gap-xl">
+          <ul className="flex gap-xl">
             <li role="presentation">
               <button
+                type="button"
                 role="tab"
                 aria-selected={tab}
                 aria-controls="panel-api-contract"
@@ -147,11 +139,12 @@ export const DataSetExploreApiPage: FC<{
                 }
                 onClick={() => toggleTab(1)}
               >
-                {t("pages|explore-api-page$api-contract")}
+                {t("pages.explore-api-page.api-contract")}
               </button>
             </li>
             <li role="presentation">
               <button
+                type="button"
                 role="tab"
                 aria-selected={!tab}
                 aria-controls="panel-information"
@@ -191,22 +184,22 @@ export const DataSetExploreApiPage: FC<{
             <div className="max-w-md bg-pink-200 p-md [&_h2]:mb-xs [&_h2]:text-md [&_h2]:text-textSecondary [&_h2]:lg:text-lg [&_p]:mb-lg [&_p]:text-sm [&_p]:text-textPrimary [&_p]:lg:text-md">
               <div>
                 <Heading level={2} size={"sm"}>
-                  {t("pages|explore-api-page$access-to-api")}
+                  {t("pages.explore-api-page.access-to-api")}
                 </Heading>
-                <p>{t("pages|explore-api-page$access-to-api-txt")}</p>
+                <p>{t("pages.explore-api-page.access-to-api-txt")}</p>
                 <Heading level={2} size={"sm"}>
-                  {t("pages|explore-api-page$open-apis")}
+                  {t("pages.explore-api-page.open-apis")}
                 </Heading>
-                <p>{t("pages|explore-api-page$open-apis-txt")}</p>
+                <p>{t("pages.explore-api-page.open-apis-txt")}</p>
                 <Heading level={2} size={"sm"}>
-                  {t("pages|explore-api-page$api-key")}
+                  {t("pages.explore-api-page.api-key")}
                 </Heading>
-                <p>{t("pages|explore-api-page$api-key-txt")}</p>
+                <p>{t("pages.explore-api-page.api-key-txt")}</p>
               </div>
               {entry.contact && (
                 <div className="mb-md">
                   <Heading level={2} size={"sm"}>
-                    {t("pages|explore-api-page$contact-publisher")}
+                    {t("pages.explore-api-page.contact-publisher")}
                   </Heading>
 
                   <CustomLink

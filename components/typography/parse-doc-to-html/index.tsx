@@ -1,5 +1,5 @@
 import FortroendemodellenImage from "@/assets/logos/fortroendemodellen.png";
-import { FormTypes, TextArea } from "@/types/form";
+import type { FormTypes, TextArea } from "@/types/form";
 
 const renderTextAndImages = (field: TextArea) => {
   if (field.images && Object.keys(field.images).length > 0) {
@@ -185,6 +185,8 @@ export const ParseDocToHtml = (formData: FormTypes[][]) => {
 
               case "dataportal_Digg_FormPageBreak":
                 return `<h2>${field.title}</h2>`;
+              default:
+                return "";
             }
           })
           .join("");

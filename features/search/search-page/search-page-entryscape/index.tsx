@@ -1,7 +1,8 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useState, useMemo } from "react";
+"use client";
+
+import { usePathname, useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { type FC, useContext, useEffect, useMemo, useState } from "react";
 
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
@@ -24,15 +25,17 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
   searchType,
 }) => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
-  const { pathname } = useRouter() || {};
-  const { t, lang } = useTranslation();
+  const pathname = usePathname();
+  const t = useTranslations();
+  const lang = useLocale();
   const [query, setQuery] = useState("");
   const router = useRouter();
 
   // Remove locale from path if it's the default locale
   useEffect(() => {
-    handleLocale(window.location.pathname, lang, router.asPath, router);
-  }, [router.asPath]);
+    if (pathname)
+      handleLocale(window.location.pathname, lang, pathname, router);
+  }, [pathname]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -60,7 +63,7 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
     return () => window.removeEventListener("popstate", handleUrlChange);
   }, []);
 
-  const pageTitle = t(`routes|${searchType}$title`);
+  const pageTitle = t(`routes.${searchType}.title`);
 
   useEffect(() => {
     setBreadcrumb?.({
@@ -76,21 +79,19 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
 
   return (
     <div id="data-search">
-      <Head>
-        <title>{`${pageTitle} - Sveriges dataportal`}</title>
-        <meta
-          property="og:title"
-          content={`${pageTitle} - Sveriges dataportal`}
-          key="og:title"
-        />
-        <meta
-          name="twitter:title"
-          content={`${pageTitle} - Sveriges dataportal`}
-          key="twitter:title"
-        />
-      </Head>
+      <title>{`${pageTitle} - Sveriges dataportal`}</title>
+      <meta
+        property="og:title"
+        content={`${pageTitle} - Sveriges dataportal`}
+        key="og:title"
+      />
+      <meta
+        name="twitter:title"
+        content={`${pageTitle} - Sveriges dataportal`}
+        key="twitter:title"
+      />
 
-      <SearchProvider router={router} {...searchProviderSettings[searchType]}>
+      <SearchProvider {...searchProviderSettings[searchType]}>
         <SearchContext.Consumer>
           {(search) => (
             <>
@@ -117,7 +118,7 @@ export const SearchPageEntryscape: FC<SearchPageEntryscapeProps> = ({
                 />
               </Container>
 
-              <noscript>{t("common|no-js-text")}</noscript>
+              <noscript>{t("common.no-js-text")}</noscript>
               <div className="mt-xl bg-white py-xl">
                 <Container>
                   <div

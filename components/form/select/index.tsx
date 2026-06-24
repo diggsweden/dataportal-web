@@ -1,4 +1,11 @@
-import { FC, InputHTMLAttributes, PropsWithChildren, useContext } from "react";
+"use client";
+
+import {
+  type FC,
+  type InputHTMLAttributes,
+  type PropsWithChildren,
+  useContext,
+} from "react";
 
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
 import { SettingsContext } from "@/providers/settings-provider";

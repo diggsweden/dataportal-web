@@ -1,9 +1,9 @@
-import useTranslation from "next-translate/useTranslation";
-import { Dispatch, SetStateAction, FC } from "react";
+import { useTranslations } from "next-intl";
+import type { Dispatch, FC, SetStateAction } from "react";
 
-import { SearchMode } from "@/features/search/search-filters";
+import type { SearchMode } from "@/features/search/search-filters";
 import { SearchInput } from "@/features/search/search-input";
-import { SearchContextData } from "@/providers/search-provider";
+import type { SearchContextData } from "@/providers/search-provider";
 import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 
 interface SearchFormProps {
@@ -25,9 +25,11 @@ export const SearchForm: FC<SearchFormProps> = ({
   query,
   setQuery,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
-  const placeholder = t(`pages|${searchMode}$search`);
+  const placeholder = t(
+    `pages.${searchMode}.search` as Parameters<typeof t>[0],
+  );
 
   const submitSearch = (newQuery: string) => {
     search
@@ -41,6 +43,7 @@ export const SearchForm: FC<SearchFormProps> = ({
 
   return (
     <div className="my-lg max-w-md md:my-xl">
+      {/* biome-ignore lint/a11y/useSemanticElements: form with search role */}
       <form
         role={"search"}
         onSubmit={(e) => {

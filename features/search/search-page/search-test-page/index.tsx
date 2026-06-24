@@ -1,8 +1,9 @@
-import { MeiliSearch } from "meilisearch";
-import Head from "next/head";
-import { FC, useEffect, useState } from "react";
+"use client";
 
-import { SearchHit } from "@/types/search";
+import { MeiliSearch } from "meilisearch";
+import { type FC, useEffect, useState } from "react";
+
+import type { SearchHit } from "@/types/search";
 
 export const SearchTestPage: FC = () => {
   const [hits, setHits] = useState<SearchHit[]>();
@@ -19,7 +20,7 @@ export const SearchTestPage: FC = () => {
     const search = async () => {
       index
         .search(searchWord, { attributesToHighlight: ["*"] })
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // biome-ignore lint/suspicious/noExplicitAny: Unknown type
         .then((result: any) => {
           setHits(result.hits);
         });
@@ -30,17 +31,14 @@ export const SearchTestPage: FC = () => {
 
   return (
     <>
-      <Head>
-        <title>{`Söktest - Sveriges dataportal`}</title>
-        <meta property="og:title" content={`Söktest - Sveriges dataportal`} />
-        <meta name="twitter:title" content={`Söktest - Sveriges dataportal`} />
-      </Head>
+      <title>{`Söktest - Sveriges dataportal`}</title>
+      <meta property="og:title" content={`Söktest - Sveriges dataportal`} />
+      <meta name="twitter:title" content={`Söktest - Sveriges dataportal`} />
       <div className="container">
         <h2>Söktest </h2>
         <div className="content statistic-page">
           <h2>Sök direkt via Meiliclient</h2>
           <input
-            autoFocus
             id="search-field"
             name="q"
             value={searchWord}
@@ -48,11 +46,12 @@ export const SearchTestPage: FC = () => {
             type="text"
           ></input>
           <ul>
-            {hits &&
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              hits.map((r: any, index: number) => (
-                <li key={index}>{r.name}</li>
-              ))}
+            {
+              // biome-ignore lint/suspicious/noExplicitAny: Unknown type
+              hits?.map((r: any) => (
+                <li key={r.name}>{r.name}</li>
+              ))
+            }
           </ul>
         </div>
       </div>

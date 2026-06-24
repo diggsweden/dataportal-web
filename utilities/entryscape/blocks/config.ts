@@ -1,6 +1,5 @@
-import { Translate } from "next-translate";
-
-import { EnvSettings } from "@/env/env-settings";
+import type { EnvSettings } from "@/env/env-settings";
+import type { Translate } from "@/i18n/types";
 import { includeLangInPath } from "@/utilities/check-lang";
 
 import { apiexploreBlocks } from "./apiexplore";
@@ -138,7 +137,7 @@ export const createBlocksConfig = ({
         {
           ...baseConfig,
           clicks: {
-            "dataservice-link": "/" + lang + "/dataservice/${context}_${entry}",
+            "dataservice-link": `/${lang}/dataservice/\${context}_\${entry}`,
           },
           namespaces: {
             esterms: "http://entryscape.com/terms/",
@@ -205,7 +204,7 @@ export const createBlocksConfig = ({
                   ".xls",
                 ],
                 ods: ["application/vnd.oasis.opendocument.spreadsheet"],
-                [t("pages|datasetpage$fileformat")]: null,
+                [t("pages.datasetpage.fileformat")]: null,
               },
             },
           ],
@@ -228,7 +227,7 @@ export const createBlocksConfig = ({
         {
           ...baseConfig,
           clicks: {
-            "dataservice-link": "/" + lang + "/dataservice/${context}_${entry}",
+            "dataservice-link": `/${lang}/dataservice/\${context}_\${entry}`,
           },
           namespaces: {
             esterms: "http://entryscape.com/terms/",
@@ -295,7 +294,7 @@ export const createBlocksConfig = ({
                   ".xls",
                 ],
                 ods: ["application/vnd.oasis.opendocument.spreadsheet"],
-                [t("pages|datasetpage$fileformat")]: null,
+                [t("pages.datasetpage.fileformat")]: null,
               },
             },
           ],
@@ -309,6 +308,7 @@ export const createBlocksConfig = ({
           clicks: {
             katalog:
               includeLangInPath(lang) +
+              // biome-ignore lint/suspicious/noTemplateCurlyInString: entryscape template syntax
               "/metadatakvalitet/katalog/${entry}/${context}",
           },
         },

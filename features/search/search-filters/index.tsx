@@ -1,16 +1,17 @@
-import { createFocusTrap, FocusTrap } from "focus-trap";
-import useTranslation from "next-translate/useTranslation";
-import {
-  FC,
-  useContext,
-  useState,
-  useMemo,
-  Dispatch,
-  SetStateAction,
-  useRef,
-  useEffect,
-} from "react";
+"use client";
 
+import { createFocusTrap, type FocusTrap } from "focus-trap";
+import { useTranslations } from "next-intl";
+import {
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import CrossIcon from "@/assets/icons/cross.svg";
 import FilterIcon from "@/assets/icons/filter.svg";
 import InfoCircleIcon from "@/assets/icons/info-circle.svg";
@@ -19,10 +20,11 @@ import { Button } from "@/components/button";
 import { TextInput } from "@/components/form/text-input";
 import { Modal } from "@/components/modal";
 import { SearchFilter } from "@/features/search/search-filters/search-filter";
-import { SearchContextData } from "@/providers/search-provider";
+import { useResourceLabel } from "@/i18n/use-resource-label";
+import type { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { ESRdfType } from "@/types/entrystore-core";
-import { SearchFacet, SearchFacetValue } from "@/types/search";
+import type { SearchFacet, SearchFacetValue } from "@/types/search";
 import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 
 import { SearchActiveFilters } from "./search-active-filters";
@@ -62,22 +64,22 @@ const FilterSearch: FC<FilterSearchProps> = ({
   setFilter,
   fetchMore,
 }) => {
-  const { t } = useTranslation("pages");
+  const t = useTranslations();
 
   return (
     <div className="relative flex items-center">
       <TextInput
         id={filterKey}
         name={filterKey}
-        placeholder={t("search$filtersearch")}
+        placeholder={t("pages.search.filtersearch")}
         className="focus--in border-none"
         aria-label={title}
         value={filter[filterKey] || ""}
-        onChange={(e) => (
-          clearCurrentScrollPos(),
-          fetchMore(),
-          setFilter({ ...filter, [filterKey]: e.target.value })
-        )}
+        onChange={(e) => {
+          clearCurrentScrollPos();
+          fetchMore();
+          setFilter({ ...filter, [filterKey]: e.target.value });
+        }}
       />
       <SearchIcon
         height={24}
@@ -114,7 +116,8 @@ export const SearchFilters: FC<SearchFilterProps> = ({
   searchMode,
   query,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
+  const tResource = useResourceLabel();
   const { iconSize } = useContext(SettingsContext);
   const [showFilter, setShowFilter] = useState(false);
   const [showFilterInfo, setShowFilterInfo] = useState(false);
@@ -180,9 +183,9 @@ export const SearchFilters: FC<SearchFilterProps> = ({
         size="md"
         icon={showFilter ? CrossIcon : FilterIcon}
         iconPosition="left"
-        label={showFilter ? t("common|close-filter") : t("common|show-filter")}
+        label={showFilter ? t("common.close-filter") : t("common.show-filter")}
         aria-label={
-          showFilter ? t("common|close-filter") : t("common|show-filter")
+          showFilter ? t("common.close-filter") : t("common.show-filter")
         }
         aria-expanded={showFilter}
         aria-controls="filter-content"
@@ -210,13 +213,16 @@ export const SearchFilters: FC<SearchFilterProps> = ({
   }, [searchMode, search.allFacets]);
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: div with region role for filter section
     <div
       data-test-id="search-filters"
       role="region"
-      aria-label={t("common|filter")}
+      aria-label={t("common.filter")}
     >
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: click closes overlay */}
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: keyboard handled by Escape */}
       <div
-        className={`fixed inset-none z-40 overflow-hidden bg-brownOpaque5 md:hidden 
+        className={`fixed inset-none z-40 overflow-hidden bg-brownOpaque5 md:hidden
         ${showFilter ? "visible" : "hidden"}`}
         onClick={() => setShowFilter(false)}
       />
@@ -229,19 +235,25 @@ export const SearchFilters: FC<SearchFilterProps> = ({
             <Button
               variant="plain"
               size="md"
-              label={t("common|filter-info")}
+              label={t("common.filter-info")}
               icon={InfoCircleIcon}
               iconPosition="left"
               onClick={() => setShowFilterInfo(true)}
             />
             <Modal
-              heading={t("pages|search$search-tips")}
+              heading={t("pages.search.search-tips")}
               modalOpen={showFilterInfo}
               setModalOpen={setShowFilterInfo}
-              text={t("pages|search$search-tips-head")}
-              description={t(`pages|search$search-${searchMode}-tips-text`)}
+              text={t("pages.search.search-tips-head")}
+              description={
+                t.raw(
+                  `pages.search.search-${searchMode}-tips-text` as Parameters<
+                    typeof t
+                  >[0],
+                ) as string
+              }
               textSize="md"
-              closeBtn={t("common|close")}
+              closeBtn={t("common.close")}
               closeBtnClassName="ml-auto"
             />
           </>
@@ -265,13 +277,12 @@ export const SearchFilters: FC<SearchFilterProps> = ({
             >
               {groupName !== "default" && (
                 <h4 className="mb-sm mr-md shrink-0 text-sm text-textSecondary md:mb-none md:w-[6.25rem]">
-                  {t(`filters|group$${groupName}`)}:
+                  {t(`filters.group.${groupName}` as Parameters<typeof t>[0])}:
                 </h4>
               )}
               <ul
                 className="flex w-full flex-col flex-wrap gap-md md:flex-row"
-                role="list"
-                aria-label={t("common|available-filters")}
+                aria-label={t("common.available-filters")}
               >
                 {Object.entries(groupFacets)
                   .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
@@ -284,17 +295,16 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                       ).values(),
                     );
                     const facetValues = inputFilter[key]
-                      ? uniqueFacetValues.filter(
-                          (v) =>
-                            v.title
-                              ?.toLowerCase()
-                              .includes(inputFilter[key].toLowerCase()),
+                      ? uniqueFacetValues.filter((v) =>
+                          v.title
+                            ?.toLowerCase()
+                            .includes(inputFilter[key].toLowerCase()),
                         )
                       : uniqueFacetValues.slice(0, show);
 
                     if (!value.customFilter && !value.customSearch) {
                       return (
-                        <li key={`${value.title}-${idx}`} role="listitem">
+                        <li key={value.title}>
                           <SearchFilter
                             data-test-id="search-filter-select"
                             title={value.title}
@@ -321,9 +331,9 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                               />
 
                               {/* List of filter options within this category */}
+                              {/* biome-ignore lint/a11y/useAriaPropsSupportedByRole: multiselectable for filter list */}
                               <ul
                                 data-test-id="search-filter-select-list"
-                                role="listbox"
                                 aria-multiselectable="true"
                               >
                                 {search.loadingFacets &&
@@ -336,9 +346,9 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                     Array.from({
                                       length: Math.min(facetValues.length, 10),
                                     }).map((_, index) => (
+                                      // biome-ignore lint/a11y/useAriaPropsSupportedByRole: skeleton placeholders
                                       <li
-                                        key={`skeleton-${index}`}
-                                        role="option"
+                                        key={`skeleton-${String(index)}`}
                                         aria-busy="true"
                                         aria-selected={false}
                                       >
@@ -353,15 +363,17 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                         facetValue: SearchFacetValue,
                                         index: number,
                                       ) => (
+                                        // biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-selected for filter state
                                         <li
-                                          key={index}
-                                          role="option"
+                                          key={facetValue.resource}
                                           aria-selected={selected(
                                             key,
                                             facetValue,
                                           )}
                                         >
+                                          {/* biome-ignore lint/a11y/useSemanticElements: button with checkbox role for filter toggle */}
                                           <button
+                                            type="button"
                                             className={`focus--in group relative flex w-full items-center break-all py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
                                               selected(key, facetValue) &&
                                               "font-strong"
@@ -408,14 +420,14 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                   disabled={search.loadingFacets}
                                   label={
                                     search.loadingFacets
-                                      ? t("common|loading")
-                                      : t("common|load-more")
+                                      ? t("common.loading")
+                                      : t("common.load-more")
                                   }
                                 />
                               )}
-                              {facetValues.length == 0 && (
+                              {facetValues.length === 0 && (
                                 <div className="p-md">
-                                  {t("pages|search$nohits")}
+                                  {t("pages.search.nohits")}
                                 </div>
                               )}
                             </div>
@@ -424,7 +436,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                       );
                     } else {
                       return (
-                        <li key={key} role="listitem">
+                        <li key={key}>
                           <SearchCheckboxFilter
                             key={key}
                             id={value.predicate}
@@ -434,9 +446,8 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                 ? search.facetSelected(key, value.customFilter)
                                 : value.customSearch?.length ===
                                     search.request.esRdfTypes?.length &&
-                                  value.customSearch?.every(
-                                    (type) =>
-                                      search.request.esRdfTypes?.includes(type),
+                                  value.customSearch?.every((type) =>
+                                    search.request.esRdfTypes?.includes(type),
                                   )
                             }
                             onChange={() => {
@@ -468,7 +479,7 @@ export const SearchFilters: FC<SearchFilterProps> = ({
                                 doSearch(key, facetValues[0]);
                               }
                             }}
-                            label={t(`resources|${key}`)}
+                            label={tResource(key)}
                             iconSize={iconSize}
                           />
                         </li>

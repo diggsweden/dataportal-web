@@ -1,17 +1,18 @@
-import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import { useLocale } from "next-intl";
+import type { FC } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { CustomImage } from "@/components/custom-image";
 import { Heading } from "@/components/typography/heading";
-import {
+import type {
   GoodExampleBlockItemFragment,
   GoodExampleDataFragment,
   NewsBlockItemFragment,
   NewsItemDataFragment,
 } from "@/graphql/__generated__/operations";
 import { formatDate } from "@/utilities/date-helper";
+
+import { TeaserLink } from "./teaser-link";
 
 interface PublicationTeaserProps {
   publication:
@@ -35,7 +36,7 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
   publication,
 }) => {
   const { heading, publishedAt, slug, image, __typename } = publication;
-  const { lang } = useTranslation();
+  const lang = useLocale();
   const formattedDate = formatDate(lang, publishedAt);
   const goodExampleLink = (publication as GoodExampleDataFragment)?.reuse
     ? `/exempel-pa-ateranvandning${slug}`
@@ -68,17 +69,11 @@ export const PublicationTeaser: FC<PublicationTeaserProps> = ({
         />
         <div className="px-md pt-lg text-sm text-textPrimary">
           <span className="text-textSecondary">{`${type.name} | ${formattedDate}`}</span>
-          <Link
-            href={type.url}
-            className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
-            scroll={false}
-            data-tracking-name="publication-teaser"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          >
+          <TeaserLink href={type.url}>
             <Heading className="pb-md pt-sm" level={3} size={"sm"}>
               {heading}
             </Heading>
-          </Link>
+          </TeaserLink>
         </div>
       </div>
 

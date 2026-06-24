@@ -1,10 +1,12 @@
+"use client";
+
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import {
-  Dispatch,
-  FC,
-  RefObject,
-  SetStateAction,
+  type Dispatch,
+  type FC,
+  type RefObject,
+  type SetStateAction,
   useRef,
   useState,
 } from "react";
@@ -13,11 +15,11 @@ import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import { Button } from "@/components/button";
 import { Modal } from "@/components/modal";
-import { FormTypes } from "@/types/form";
+import type { FormTypes } from "@/types/form";
 import {
   GenerateJsonFile,
-  ImportFromJsonFile,
   handleScroll,
+  ImportFromJsonFile,
 } from "@/utilities/form-utils";
 
 type Props = {
@@ -26,7 +28,7 @@ type Props = {
   formDataArray: FormTypes[][];
   setFormDataArray: Dispatch<SetStateAction<FormTypes[][]>>;
   fortroendemodellen?: boolean;
-  scrollRef: RefObject<HTMLSpanElement>;
+  scrollRef: RefObject<HTMLSpanElement | null>;
 };
 
 export const FormBottomNav: FC<Props> = ({
@@ -40,7 +42,7 @@ export const FormBottomNav: FC<Props> = ({
   const [clearModalOpen, setClearModalOpen] = useState(false);
   const [saveModalOpen, setSaveModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { t } = useTranslation();
+  const t = useTranslations();
   const pathname = usePathname();
 
   const clearForm = () => {
@@ -65,12 +67,12 @@ export const FormBottomNav: FC<Props> = ({
   return (
     <nav
       className="z-40 space-y-lg pt-xl md:space-y-xl"
-      aria-label={t("common|menu-form-bottom")}
+      aria-label={t("common.menu-form-bottom")}
     >
       <div className={`flex ${page === 1 ? "justify-end" : "justify-between"}`}>
         {page > 1 && (
           <Button
-            label={t("pages|form$previous")}
+            label={t("pages.form.previous")}
             icon={ArrowLeftIcon}
             iconPosition="left"
             variant={"secondary"}
@@ -81,7 +83,7 @@ export const FormBottomNav: FC<Props> = ({
           />
         )}
         <Button
-          label={t("pages|form$next")}
+          label={t("pages.form.next")}
           icon={ArrowRightIcon}
           variant={"secondary"}
           iconPosition="right"
@@ -95,7 +97,7 @@ export const FormBottomNav: FC<Props> = ({
       {!fortroendemodellen && (
         <div className="flex flex-col gap-md md:flex-row md:justify-between">
           <Button
-            label={t("pages|form$save-form")}
+            label={t("pages.form.save-form")}
             onClick={() => setSaveModalOpen(true)}
             className="button--large w-full justify-center md:w-auto md:justify-start"
           />
@@ -110,7 +112,7 @@ export const FormBottomNav: FC<Props> = ({
             className="hidden"
           />
           <Button
-            label={t("pages|form$upload-json-file")}
+            label={t("pages.form.upload-json-file")}
             onClick={(e) => {
               e.preventDefault();
               fileInputRef.current?.click();
@@ -118,7 +120,7 @@ export const FormBottomNav: FC<Props> = ({
             className="button--large w-full justify-center md:w-auto md:justify-start"
           />
           <Button
-            label={t("pages|form$clear-all-text")}
+            label={t("pages.form.clear-all-text")}
             onClick={() => setClearModalOpen(true)}
             className="button--large w-full justify-center md:w-auto md:justify-start"
           />
@@ -126,12 +128,12 @@ export const FormBottomNav: FC<Props> = ({
       )}
 
       <Modal
-        heading={t("pages|form$clear-confirm-text")}
+        heading={t("pages.form.clear-confirm-text")}
         onClick={clearForm}
         modalOpen={clearModalOpen}
         setModalOpen={setClearModalOpen}
         closeBtn={"Avbryt"}
-        confirmBtn={t("common|yes")}
+        confirmBtn={t("common.yes")}
       />
 
       <Modal

@@ -1,14 +1,14 @@
-import useTranslation from "next-translate/useTranslation";
-
+import { useTranslations } from "next-intl";
 import CrossIcon from "@/assets/icons/cross.svg";
 import TrashIcon from "@/assets/icons/trash.svg";
 import { Button } from "@/components/button";
-import { SearchContextData } from "@/providers/search-provider";
+import { useResourceLabel } from "@/i18n/use-resource-label";
+import type { SearchContextData } from "@/providers/search-provider";
 import { ESRdfType } from "@/types/entrystore-core";
-import { SearchFacetValue } from "@/types/search";
+import type { SearchFacetValue } from "@/types/search";
 import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 
-import { SearchMode } from "../index";
+import type { SearchMode } from "../index";
 
 interface SearchActiveFiltersProps {
   search: SearchContextData;
@@ -25,7 +25,7 @@ export function ClearFiltersButton({
   searchMode: SearchMode;
   className?: string;
 }) {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <Button
@@ -49,7 +49,7 @@ export function ClearFiltersButton({
           })
           .then(() => search.doSearch());
       }}
-      label={t("common|clear-filters")}
+      label={t("common.clear-filters")}
       className={`whitespace-nowrap p-xs pr-sm ${className ?? ""}`}
     />
   );
@@ -60,7 +60,8 @@ export function SearchActiveFilters({
   query,
   searchMode,
 }: SearchActiveFiltersProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
+  const tResource = useResourceLabel();
 
   // Create an array of active special search filters
   const activecustomSearchFilters = Object.entries(search.allFacets || {})
@@ -69,8 +70,8 @@ export function SearchActiveFilters({
       ([_, facet]) =>
         facet.customSearch &&
         facet.customSearch.length === search.request.esRdfTypes?.length &&
-        facet.customSearch.every(
-          (type) => search.request.esRdfTypes?.includes(type),
+        facet.customSearch.every((type) =>
+          search.request.esRdfTypes?.includes(type),
         ),
     )
     .map(([key, facet]) => ({
@@ -93,7 +94,7 @@ export function SearchActiveFilters({
       className="flex flex-col gap-md md:mt-lg md:flex-row md:items-center"
     >
       <span className="w-[6.25rem] flex-shrink-0 text-textSecondary md:mb-auto md:mt-xs">
-        {t("common|active-filters")}:
+        {t("common.active-filters")}:
       </span>
       <div className="flex flex-col gap-lg">
         <div
@@ -105,17 +106,16 @@ export function SearchActiveFilters({
               const label =
                 !facetValue.customFilter && !facetValue.customSearch
                   ? facetValue.title || facetValue.resource
-                  : t(
-                      `resources|${facetValue.customLabel || facetValue.facet}`,
-                    );
+                  : tResource(facetValue.customLabel || facetValue.facet);
 
               return (
                 <Button
                   variant="filter"
                   size="md"
+                  // biome-ignore lint/suspicious/noArrayIndexKey: facetValues lack stable unique id
                   key={index}
                   label={label}
-                  aria-label={`${t("common|clear-filters")} ${label}`}
+                  aria-label={`${t("common.clear-filters")} ${label}`}
                   icon={CrossIcon}
                   iconPosition="right"
                   className="w-fit justify-between py-xs text-left font-strong"
@@ -134,11 +134,9 @@ export function SearchActiveFilters({
             <Button
               variant="filter"
               size="md"
-              key={`special-search-${index}`}
-              label={t(`resources|${filter.facet}`)}
-              aria-label={`${t("common|clear-filters")} ${t(
-                `resources|${filter.facet}`,
-              )}`}
+              key={filter.facet}
+              label={tResource(filter.facet)}
+              aria-label={`${t("common.clear-filters")} ${tResource(filter.facet)}`}
               icon={CrossIcon}
               iconPosition="right"
               className="w-fit justify-between py-xs text-left font-strong"

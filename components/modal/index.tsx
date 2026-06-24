@@ -1,4 +1,6 @@
-import { FC, useEffect, useRef, PropsWithChildren } from "react";
+"use client";
+
+import { type FC, type PropsWithChildren, useEffect, useRef } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ExternalIcon from "@/assets/icons/external-link.svg";
@@ -56,10 +58,10 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   };
 
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: Modal is a dialog
     <dialog
       data-test-id="modal"
       ref={ref}
-      role="dialog"
       aria-modal="true"
       className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] w-4/5 -translate-x-1/2 -translate-y-1/2 overflow-auto  
         bg-white p-xl shadow-2xl outline-none md:w-auto ${
@@ -67,6 +69,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
         } ${modalSize === "sm" ? "max-w-[24rem]" : "max-w-md"}
         [&::backdrop]:bg-brownOpaque5
         `}
+      onClose={handleClose}
       onClick={handleClose}
     >
       {heading && (
@@ -88,7 +91,9 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
         </p>
       )}
       {description && (
-        <div className="pb-lg">{HtmlParser({ text: description })}</div>
+        <div className="pb-lg">
+          <HtmlParser text={description} />
+        </div>
       )}
 
       {children && <div className="pb-lg">{children}</div>}

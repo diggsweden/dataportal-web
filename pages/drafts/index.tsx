@@ -1,19 +1,19 @@
-import { ParsedUrlQuery } from "querystring";
+import type { ParsedUrlQuery } from "node:querystring";
 
-import { FC } from "react";
+import type { FC } from "react";
 
 import { ContainerPage } from "@/features/pages/container-page";
+import { LandingPage } from "@/features/pages/landing-page";
 import { PublicationFull } from "@/features/publication/publication-full";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
 import {
-  DataportalPageProps,
+  type DataportalPageProps,
   getGoodExample,
   getMultiContainer,
   getNewsItem,
   getRootAggregate,
+  type MultiContainerResponse,
 } from "@/utilities";
-
-import { Page } from "../[...containerSlug]";
 
 const getQuery = async (
   slug: string,
@@ -25,7 +25,6 @@ const getQuery = async (
     return await getNewsItem(slug, locale, {
       state: Dataportal_ContainerState.Preview,
       secret,
-      revalidate: false,
     });
   }
 
@@ -33,7 +32,6 @@ const getQuery = async (
     return await getGoodExample(slug, locale, {
       state: Dataportal_ContainerState.Preview,
       secret,
-      revalidate: false,
     });
   }
 
@@ -42,13 +40,11 @@ const getQuery = async (
       return await getRootAggregate(locale, {
         state: Dataportal_ContainerState.Preview,
         secret,
-        revalidate: false,
       });
     default:
       return await getMultiContainer([slug.substring(1)], locale, {
         state: Dataportal_ContainerState.Preview,
         secret,
-        revalidate: false,
       });
   }
 };
@@ -57,8 +53,15 @@ const render = (props: DataportalPageProps) => {
   switch (props.type) {
     case "RootAggregate":
       return <ContainerPage {...props} />;
-    case "MultiContainer":
-      return <Page {...props} />;
+    case "MultiContainer": {
+      const { container, related } = props as MultiContainerResponse;
+      if (!container) return null;
+      return container.landingPage ? (
+        <LandingPage {...container} />
+      ) : (
+        <ContainerPage {...container} related={related} />
+      );
+    }
     case "Publication":
       return <PublicationFull {...props} />;
     // We don't have a preview for list pages
@@ -81,8 +84,9 @@ export const getServerSideProps = async ({
   const slug = (query?.slug as string) || "";
   const secret = (query?.secret as string) || "";
   const type = query?.type as string;
-  // Get external data from the file system, API, DB, etc.
-  return await getQuery(slug, locale || "sv", secret, type);
+  const result = await getQuery(slug, locale || "sv", secret, type);
+  if (!result) return { notFound: true as const };
+  return { props: result as DataportalPageProps };
 };
 
 export default Draft;

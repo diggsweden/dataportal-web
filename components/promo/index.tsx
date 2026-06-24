@@ -1,12 +1,14 @@
+"use client";
+
 import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
-import { FC, useContext } from "react";
+import { useTranslations } from "next-intl";
+import { type FC, useContext } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import { CustomImage } from "@/components/custom-image";
 import { Heading } from "@/components/typography/heading";
-import { LinkFragment } from "@/graphql/__generated__/operations";
+import type { LinkFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 import { isExternalLink } from "@/utilities";
 
@@ -23,7 +25,7 @@ export const Promo: FC<PromoProps> = ({
   showPreamble,
   heading,
 }) => {
-  const { t } = useTranslation("common");
+  const t = useTranslations();
   const { iconSize } = useContext(SettingsContext);
 
   const ingress = showPreamble
@@ -60,7 +62,7 @@ export const Promo: FC<PromoProps> = ({
           <p className="mb-lg line-clamp-3 text-brown-600">{ingress}</p>
         )}
         <span className="button button--small button--primary focus--none mt-auto group-focus-within:bg-brown-800">
-          {t("read-more")}
+          {t("common.read-more")}
           {isExternalLink(slug) ? (
             <>
               <ExternalLinkIcon
@@ -69,7 +71,7 @@ export const Promo: FC<PromoProps> = ({
                 viewBox="0 0 24 24"
                 className="flex-shrink-0"
               />
-              <span className="sr-only">{t("common|open-in-new-tab")}</span>
+              <span className="sr-only">{t("common.open-in-new-tab")}</span>
             </>
           ) : (
             <ArrowRightIcon

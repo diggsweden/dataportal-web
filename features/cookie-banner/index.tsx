@@ -1,12 +1,14 @@
+"use client";
+
 import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
-import React, { FC, useContext, useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import { Button } from "@/components/button";
 import { Container } from "@/components/layout/container";
 import { CookieOptions } from "@/features/cookie-banner/cookie-options";
+import { useMatomo } from "@/lib/matomo";
 import { LocalStoreContext } from "@/providers/local-store-provider";
-import { TrackingContext } from "@/providers/tracking-provider";
 
 export type CookieSetting = {
   [key: string]: CookieProperties;
@@ -29,13 +31,14 @@ export const CookieBanner: FC<{
   setSettingsOpen: (value: boolean) => void;
 }> = ({ settingsOpen, setSettingsOpen }) => {
   const { store, set } = useContext(LocalStoreContext);
-  const { setActivation } = useContext(TrackingContext);
-  const { t, lang } = useTranslation();
+  const { setConsent } = useMatomo();
+  const t = useTranslations();
+  const lang = useLocale();
 
   const initialCookieSetting: CookieSetting = {
     analytic: {
-      label: t("routes|cookies$analytic-heading"),
-      description: t("routes|cookies$analytic-description"),
+      label: t("routes.cookies.analytic-heading"),
+      description: t("routes.cookies.analytic-description"),
       accepted: true,
     },
   };
@@ -53,13 +56,13 @@ export const CookieBanner: FC<{
 
   useEffect(() => {
     if (store.cookieSettings?.analytic?.accepted) {
-      setActivation(true);
+      setConsent(true);
     }
   }, [store.cookieSettings?.analytic?.accepted]);
 
   const necessaryCookieText: NecessaryCookies = {
-    heading: t("routes|cookies$necessary-heading"),
-    description: t("routes|cookies$necessary-description"),
+    heading: t("routes.cookies.necessary-heading"),
+    description: t("routes.cookies.necessary-description"),
   };
 
   return store.cookieSettings &&
@@ -69,14 +72,14 @@ export const CookieBanner: FC<{
       aria-label="Cookie Banner"
     >
       <Container>
-        <div className="mb-lg">{t("routes|cookies$cookie-text")}</div>
+        <div className="mb-lg">{t("routes.cookies.cookie-text")}</div>
 
         <Link
-          href={`/${t("routes|cookies$path")}` || "/"}
+          href={`/${t("routes.cookies.path")}` || "/"}
           passHref
           className="text-green-600"
         >
-          {t("routes|cookies$link-title")}
+          {t("routes.cookies.link-title")}
         </Link>
 
         <form
@@ -88,7 +91,7 @@ export const CookieBanner: FC<{
           {settingsOpen && (
             <CookieOptions
               cookieSettingsHeading={t(
-                "routes|cookies$customize-cookies-heading",
+                "routes.cookies.customize-cookies-heading",
               )}
               cookieSettings={cookieSettings}
               setCookieSettings={setCookieSettings}
@@ -104,8 +107,8 @@ export const CookieBanner: FC<{
               }}
             >
               {settingsOpen
-                ? t("routes|cookies$cookie-setting-open")
-                : t("routes|cookies$cookie-setting")}
+                ? t("routes.cookies.cookie-setting-open")
+                : t("routes.cookies.cookie-setting")}
             </Button>
             {!settingsOpen && (
               <Button
@@ -115,14 +118,12 @@ export const CookieBanner: FC<{
                   setSettingsOpen(!settingsOpen);
                 }}
               >
-                {t("routes|cookies$settings-heading")}
+                {t("routes.cookies.settings-heading")}
               </Button>
             )}
           </div>
         </form>
       </Container>
     </section>
-  ) : (
-    <></>
-  );
+  ) : null;
 };

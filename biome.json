@@ -1,0 +1,102 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "includes": [
+      "**",
+      "!**/node_modules/**",
+      "!**/.next/**",
+      "!**/.yarn/**",
+      "!**/out/**",
+      "!**/build/**",
+      "!**/dist/**",
+      "!**/coverage/**",
+      "!**/.husky/**",
+      "!**/public/__ENV.js",
+      "!**/graphql/__generated__/**",
+      "!**/graphql/schema.json",
+      "!next-env.d.ts"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 80
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "jsxQuoteStyle": "double"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noConsole": {
+          "level": "error",
+          "options": { "allow": ["warn", "error"] }
+        },
+        "noDoubleEquals": "warn",
+        "noArrayIndexKey": "warn",
+        "useIterableCallbackReturn": "warn",
+        "noExplicitAny": "error",
+        "useBiomeIgnoreFolder": "off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off",
+        "noUnusedFunctionParameters": "off"
+      },
+      "a11y": {
+        "useButtonType": "warn",
+        "useSemanticElements": "warn",
+        "useKeyWithClickEvents": "warn",
+        "noStaticElementInteractions": "warn",
+        "noNoninteractiveElementToInteractiveRole": "warn",
+        "useAriaPropsSupportedByRole": "warn",
+        "noRedundantRoles": "warn",
+        "useFocusableInteractive": "warn",
+        "noNoninteractiveTabindex": "warn",
+        "noAutofocus": "warn",
+        "useMediaCaption": "warn",
+        "noLabelWithoutControl": "warn"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "warn"
+      },
+      "style": {
+        "noDescendingSpecificity": "off",
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "next-translate": "Use `next-intl` instead: `useTranslations()` from `next-intl`, or `getTranslations()` from `@/i18n/get-translations`. Resource URI lookups go through `useResourceLabel` / `getResourceLabel`.",
+              "next-translate/useTranslation": "Use `useTranslations()` / `useLocale()` from `next-intl`.",
+              "next-translate/getT": "Use `getTranslations()` from `@/i18n/get-translations`.",
+              "next-translate/withTranslation": "`withTranslation` is no longer available. Wrap class components in a functional component that calls `useTranslations()` and passes the result down."
+            }
+          }
+        }
+      }
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import winston, { createLogger, format, Logger } from "winston";
+import winston, { createLogger, format, type Logger } from "winston";
 
 const LogstashTransport = require("@alfalab/winston3-logstash-transport");
 
@@ -23,10 +23,9 @@ export class ServerLogger {
   constructor() {
     this._logger = createLogger();
 
-    const levels =
-      LOGGING_LEVELS && LOGGING_LEVELS.includes(",")
-        ? LOGGING_LEVELS.split(",")
-        : [LOGGING_LEVELS];
+    const levels = LOGGING_LEVELS?.includes(",")
+      ? LOGGING_LEVELS.split(",")
+      : [LOGGING_LEVELS];
 
     levels.forEach((level) => {
       //add console transports (OBS might lead to duplicates in console output)
@@ -91,15 +90,15 @@ export class ServerLogger {
     return ServerLogger.instance._logger;
   }
 
-  error(err: any) {
+  error(err: unknown) {
     this._logger?.error(err);
   }
 
-  warning(warn: any) {
+  warning(warn: unknown) {
     this._logger?.warning(warn);
   }
 
-  info(info: any) {
+  info(info: unknown) {
     this._logger?.info(info);
   }
 }

@@ -1,7 +1,6 @@
-import { NextRouter } from "next/router";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
-import i18n from "@/i18n";
+import { routing } from "@/i18n/routing";
 
 export interface IHeading {
   lang: string;
@@ -17,12 +16,12 @@ const en = "{en:";
  * @param {string} text
  */
 export const checkLang = (text: string | null) => {
-  if (text && text.includes(en)) {
+  if (text?.includes(en)) {
     const splitLanguageParts = (text: string) => {
       const arr = [];
       let index = 1;
       while (text.length > 0 && index < 25) {
-        const swedishPhraze = text.indexOf(en) != 0 ? true : false;
+        const swedishPhraze = text.indexOf(en) !== 0;
         arr.push(
           swedishPhraze ? (
             text.substring(
@@ -58,22 +57,20 @@ export const checkLang = (text: string | null) => {
 };
 
 export const includeLangInPath = (lang: string) => {
-  return lang === i18n.defaultLocale ? "" : `/${lang}`;
+  return lang === routing.defaultLocale ? "" : `/${lang}`;
 };
 
 export const handleLocale = (
   pathname: string,
   currentLocale: string,
   currentPath: string,
-  router: NextRouter,
+  router: { replace: (url: string) => void },
 ) => {
   if (
-    currentLocale === i18n.defaultLocale &&
+    currentLocale === routing.defaultLocale &&
     pathname.startsWith(`/${currentLocale}/`)
   ) {
-    router.replace(currentPath, undefined, {
-      shallow: true,
-    });
+    router.replace(currentPath);
   }
 };
 
@@ -81,6 +78,7 @@ export const parseLanguageMarkup = (heading: string) => {
   return heading.split(/(\{en:\s*[^}]+\})/g).map((headingSplit, index) => {
     const match = headingSplit.match(/\{en:\s*([^}]+)\}/);
     return match ? (
+      // biome-ignore lint/suspicious/noArrayIndexKey: split fragments lack stable id
       <span key={index} lang="en" dir="ltr">
         {match[1]}
       </span>

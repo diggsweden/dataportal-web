@@ -58,7 +58,7 @@ export const listChoices = async (
 
       if (property && dcatMeta) {
         const matchingNodes = dcatMeta.templates.filter(
-          (d) => d.type == "choice" && d.property == property,
+          (d) => d.type === "choice" && d.property === property,
         );
 
         if (matchingNodes && matchingNodes.length > 0) {

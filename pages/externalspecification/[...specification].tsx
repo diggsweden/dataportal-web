@@ -1,10 +1,12 @@
 import { useRouter } from "next/router";
+import { useLocale } from "next-intl";
 import { useEffect } from "react";
 
 import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
 
 export default function Specification() {
   const router = useRouter();
+  const locale = useLocale();
   const { specification } = router.query;
 
   useEffect(() => {
@@ -20,7 +22,7 @@ export default function Specification() {
           param: specification,
         },
         router,
-        router.locale || "sv",
+        locale,
         isSandbox,
       );
     };

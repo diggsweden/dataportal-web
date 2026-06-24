@@ -1,16 +1,15 @@
 import env from "@beam-australia/react-env";
 import Link from "next/link";
-import { FC } from "react";
-
-import DocumentPdfIcon from "@/assets/icons/document-pdf.svg";
+import type { FC } from "react";
 import DocumentIcon from "@/assets/icons/document.svg";
+import DocumentPdfIcon from "@/assets/icons/document-pdf.svg";
 import { CustomImage } from "@/components/custom-image";
 import { Heading } from "@/components/typography/heading";
-import {
+import type {
   MediaBaseFragment,
   MediaFragment,
 } from "@/graphql/__generated__/operations";
-import { isExternalLink, checkLang } from "@/utilities";
+import { checkLang, isExternalLink } from "@/utilities";
 
 export const handleUrl = ({ screen9, url, __typename }: MediaBaseFragment) => {
   const documentBaseUrl = env("DOCUMENT_BASE_URL");
@@ -19,10 +18,10 @@ export const handleUrl = ({ screen9, url, __typename }: MediaBaseFragment) => {
   if (screen9 || isExternalLink(url)) {
     return url;
   } else if (__typename === "dataportal_Digg_File") {
-    return (documentBaseUrl || mediaBaseUrl || "") + `${url}`;
+    return `${documentBaseUrl || mediaBaseUrl || ""}${url}`;
   }
 
-  return (mediaBaseUrl || "") + `${url}`;
+  return `${mediaBaseUrl || ""}${url}`;
 };
 
 const renderMedia = (

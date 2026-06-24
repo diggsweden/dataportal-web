@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 
 interface StatisticListItemHistoryProps {
   listText?: string;
@@ -6,10 +6,6 @@ interface StatisticListItemHistoryProps {
 }
 
 export class StatisticListItemHistory extends Component<StatisticListItemHistoryProps> {
-  constructor(props: StatisticListItemHistoryProps) {
-    super(props);
-  }
-
   render() {
     return (
       <li className="pl-sm">

@@ -1,8 +1,10 @@
-import { FC, useEffect } from "react";
+"use client";
+
+import { type FC, useEffect } from "react";
 
 import MainNav from "@/components/navigation/main-nav";
 import TopNav from "@/components/navigation/top-nav";
-import {
+import type {
   MenuLinkFragment,
   MenuLinkIconFragment,
 } from "@/graphql/__generated__/operations";
