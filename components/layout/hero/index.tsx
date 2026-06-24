@@ -89,7 +89,7 @@ export function Hero({
       aria-label="Hero"
       className={`relative flex flex-col justify-center py-2xl ${
         className ? className : ""
-      }`}
+      } ${isFrontpage ? "mb-lg md:mb-xl" : ""}`}
     >
       {image && (
         <div className="inset-0 absolute h-full w-full">

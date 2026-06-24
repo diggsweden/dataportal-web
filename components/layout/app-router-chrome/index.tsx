@@ -122,14 +122,13 @@ export const AppRouterChrome: FC<AppRouterChromeProps> = ({
             openSideBar ? "2xl:w-[calc(100vw-18.75rem)]" : "w-full"
           }`}
         >
-          {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
-            <Breadcrumbs {...breadcrumbState} />
-          )}
-
           <main
             id="main"
-            className="mt-lg min-h-[calc(100vh-46.5rem)] pb-lg md:mt-xl md:pb-xl lg:min-h-[calc(100vh-38.25rem)]"
+            className="flex min-h-[calc(100vh-46.5rem)] flex-col pb-lg lg:min-h-[calc(100vh-38.25rem)] [&>#Hero]:order-first"
           >
+            {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
+              <Breadcrumbs {...breadcrumbState} />
+            )}
             {children}
           </main>
         </div>
