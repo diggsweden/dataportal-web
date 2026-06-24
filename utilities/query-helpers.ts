@@ -1,6 +1,8 @@
-import { CONTAINER_MULTI_QUERY } from "@/graphql";
+import { CONTAINER_QUERY } from "@/graphql";
 import type {
   ContainerDataFragment,
+  ContainersQuery,
+  ContainersQueryVariables,
   FoertroendemodellenFormQuery,
   FoertroendemodellenFormQueryVariables,
   FormDataFragment,
@@ -14,8 +16,6 @@ import type {
   ModuleDataFragment,
   ModuleQuery,
   ModuleQueryVariables,
-  MultiContainersQuery,
-  MultiContainersQueryVariables,
   NavigationDataFragment,
   NavigationQuery,
   NavigationQueryVariables,
@@ -176,37 +176,49 @@ export const getMultiContainer = async (
   const slug = `/${slugs.join("/")}`;
 
   try {
-    const data = await gqlFetch<
-      MultiContainersQuery,
-      MultiContainersQueryVariables
-    >(CONTAINER_MULTI_QUERY, {
-      containerGroup: {
-        containerGroup: { slug: `/${slugs[0]}` },
-        locale,
-        limit: 50,
+    const data = await gqlFetch<ContainersQuery, ContainersQueryVariables>(
+      CONTAINER_QUERY,
+      {
+        filter: {
+          slug,
+          locale,
+          ...(secret ? { previewSecret: secret } : {}),
+          ...(state ? { state } : {}),
+        },
       },
-      container: {
-        slug,
-        locale,
-        ...(secret ? { previewSecret: secret } : {}),
-        ...(state ? { state } : {}),
-      },
-    });
+    );
 
-    const container = data.container[0];
+    const container = data.dataportal_Digg_Containers[0];
 
     if (!container) {
       console.warn(`No container found for: ${slug}`);
       return null;
     }
 
+    // Fetch related containers (siblings) as a separate best-effort query
+    let related: ContainerDataFragment[] = [];
+    try {
+      const groupData = await gqlFetch<
+        ContainersQuery,
+        ContainersQueryVariables
+      >(CONTAINER_QUERY, {
+        filter: {
+          containerGroup: { slug: `/${slugs[0]}` },
+          locale,
+          limit: 50,
+        },
+      });
+      related = groupData.dataportal_Digg_Containers.filter(
+        (c): c is ContainerDataFragment => c !== null,
+      );
+    } catch {
+      // containerGroup filter may not exist on newer backends — gracefully degrade
+    }
+
     return {
       type: "MultiContainer",
       container,
-      related:
-        data.containerGroup?.filter(
-          (c): c is ContainerDataFragment => c !== null,
-        ) || [],
+      related,
     };
   } catch (error) {
     logGqlError(error);
