@@ -12,7 +12,7 @@ interface generateCSPProps {
 
 /**
  * @param options nonce: string
- * @returns A string with multiple CSP directives and corresponding values
+ * @returns A string  with multiple CSP directives and corresponding values
  */
 const generateCSP = ({ nonce }: generateCSPProps = {}) => {
   const policy: Partial<Record<CSPDirective, string[]>> = {};
