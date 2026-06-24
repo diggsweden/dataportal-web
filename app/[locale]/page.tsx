@@ -20,7 +20,7 @@ import { includeLangInPath } from "@/utilities/check-lang";
 import { dataCategories } from "@/utilities/data-categories";
 import { getStartPage } from "@/utilities/query-helpers";
 
-export const revalidate = parseInt(process.env.REVALIDATE_INTERVAL || "60", 10);
+export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ locale: string }>;
