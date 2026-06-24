@@ -1,7 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import DataIcon from "@/assets/icons/data.svg";
@@ -21,10 +23,10 @@ import { Preamble } from "@/components/typography/preamble";
 import { highlightCode } from "@/features/pages/container-page";
 import { SettingsContext } from "@/providers/settings-provider";
 import {
-  GoodExampleResponse,
+  type GoodExampleResponse,
   isExternalLink,
   linkBase,
-  NewsItemResponse,
+  type NewsItemResponse,
   slugify,
 } from "@/utilities";
 import { formatDateWithTime } from "@/utilities/date-helper";
@@ -55,7 +57,8 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
           entity: publication.entity,
         };
 
-  const { t, lang } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
   const pathname = usePathname();
   const { setBreadcrumb } = useContext(SettingsContext);
   const [date, setDate] = useState("");
@@ -262,7 +265,7 @@ export const PublicationFull: FC<NewsItemResponse | GoodExampleResponse> = ({
         {publication.related && publication.related.length > 0 && (
           <GridList
             items={publication.related}
-            heading={"Fler " + type.name.toLowerCase()}
+            heading={`Fler ${type.name.toLowerCase()}`}
           />
         )}
       </article>

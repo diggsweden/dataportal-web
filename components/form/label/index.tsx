@@ -1,4 +1,4 @@
-import { FC, LabelHTMLAttributes, PropsWithChildren } from "react";
+import type { FC, LabelHTMLAttributes, PropsWithChildren } from "react";
 
 export const Label: FC<
   PropsWithChildren<LabelHTMLAttributes<HTMLLabelElement>>

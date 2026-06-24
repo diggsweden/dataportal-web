@@ -1,6 +1,6 @@
 import env from "@beam-australia/react-env";
 
-import { EnvSettings } from "./env-settings";
+import type { EnvSettings } from "./env-settings";
 import { Settings_Dev } from "./settings.dev";
 import { Settings_Prod } from "./settings.prod";
 import { Settings_Sandbox } from "./settings.sandbox";
@@ -23,9 +23,8 @@ export class SettingsUtil {
    */
   public static getCurrent(): EnvSettings {
     if (!SettingsUtil.current) {
-      this.current = this.getDefault();
-      // eslint-disable-next-line no-console
-      console.log("Missing runtimeconfig, creating default");
+      SettingsUtil.current = SettingsUtil.getDefault();
+      console.warn("Missing runtimeconfig, creating default");
     }
 
     return SettingsUtil.current;
@@ -63,8 +62,8 @@ export class SettingsUtil {
    * Creates default runtime env config (dev)
    */
   public static getDefault(): EnvSettings {
-    this.current = new Settings_Dev();
+    SettingsUtil.current = new Settings_Dev();
 
-    return this.current;
+    return SettingsUtil.current;
   }
 }

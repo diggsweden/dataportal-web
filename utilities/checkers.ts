@@ -1,14 +1,6 @@
 export const isExternalLink = (href: string) => {
-  let isExternal = false;
   const indicators = ["http", "www.", "mailto"];
-
-  indicators.map((indicator) => {
-    if (href.includes(indicator)) {
-      isExternal = true;
-    }
-  });
-
-  return isExternal;
+  return indicators.some((indicator) => href.includes(indicator));
 };
 
 export const isMailLink = (href: string) => {

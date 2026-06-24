@@ -1,3 +1,5 @@
+"use client";
+
 import { useContext, useEffect, useState } from "react";
 
 import { SettingsContext } from "@/providers/settings-provider";
@@ -17,7 +19,7 @@ export const StatisticNumbersDatasets = () => {
       )
         .then((response) => response.json())
         .then((data) => {
-          if (data && data.datasetCount)
+          if (data?.datasetCount)
             setState({
               datasets: data.datasetCount,
             });

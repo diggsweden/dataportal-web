@@ -1,7 +1,8 @@
+"use client";
+
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { type ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/button";
 import { FormEnding } from "@/components/form/form-ending";
@@ -10,15 +11,15 @@ import { Container } from "@/components/layout/container";
 import { FormBottomNav } from "@/components/navigation/form-bottom-nav";
 import { FormNav } from "@/components/navigation/form-nav";
 import { Heading } from "@/components/typography/heading";
-import {
-  FormDataFragment,
+import type {
   ContainerDataFragment,
+  FormDataFragment,
 } from "@/graphql/__generated__/operations";
-import { FormTypes } from "@/types/form";
+import type { FormTypes } from "@/types/form";
 import {
+  fetchFortroendemodellenForm,
   GetLocalstorageData,
   handleScroll,
-  fetchFortroendemodellenForm,
 } from "@/utilities/form-utils";
 
 import { BlockList } from "../block-list";
@@ -33,8 +34,8 @@ export interface FormData {
 }
 
 export const FortroendemodellenFrom = () => {
-  const router = useRouter();
-  const { t } = useTranslation();
+  const locale = useLocale();
+  const t = useTranslations();
   const pathname = usePathname();
   const [formData, setFormData] = useState<FormData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -58,7 +59,7 @@ export const FortroendemodellenFrom = () => {
       info: null,
       number: 1,
       required: false,
-      title: t("pages|form$organisation-number"),
+      title: t("pages.form.organisation-number"),
       value: "",
       __typename: "organisationNumber",
     },
@@ -67,7 +68,7 @@ export const FortroendemodellenFrom = () => {
       info: null,
       number: 2,
       required: false,
-      title: t("pages|form$organisation-name"),
+      title: t("pages.form.organisation-name"),
       value: "",
       __typename: "dataportal_Digg_FormText",
     },
@@ -76,7 +77,7 @@ export const FortroendemodellenFrom = () => {
       info: null,
       number: 3,
       required: false,
-      title: t("pages|form$ai-system-name"),
+      title: t("pages.form.ai-system-name"),
       value: "",
       __typename: "dataportal_Digg_FormText",
     },
@@ -85,7 +86,7 @@ export const FortroendemodellenFrom = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await fetchFortroendemodellenForm(router.locale || "sv");
+      const data = await fetchFortroendemodellenForm(locale);
       data.elements = [...informationSection, ...data.elements];
       // Add IDs to elements
       if (data.elements) {
@@ -103,12 +104,13 @@ export const FortroendemodellenFrom = () => {
     }
   };
 
-  // Fetch form data when router is ready
+  // Pages Router used `router.isReady` as a hydration gate before
+  // touching dynamic-route params; the App Router has no equivalent —
+  // `usePathname()` resolves on first render — so we just fetch on
+  // mount / locale change.
   useEffect(() => {
-    if (router.isReady) {
-      getFortroendemodellenForm();
-    }
-  }, [router.isReady, router.locale]);
+    getFortroendemodellenForm();
+  }, [locale]);
 
   // Process form elements when formData changes
   useEffect(() => {
@@ -118,7 +120,7 @@ export const FortroendemodellenFrom = () => {
 
     const elements = formData.elements;
     SetupPages(elements as FormTypes[]);
-    GetLocalstorageData(setFormDataArray, elements, pathname);
+    GetLocalstorageData(setFormDataArray, elements, pathname ?? "");
   }, [formData, pathname]);
 
   const SetupPages = (data: FormTypes[]) => {
@@ -173,7 +175,7 @@ export const FortroendemodellenFrom = () => {
             choice.popup = "";
             choice.exploratory = false;
           }
-          choice.ID = parseInt(`${item.ID}${i}`);
+          choice.ID = parseInt(`${item.ID}${i}`, 10);
         });
       }
       if (item.__typename === "dataportal_Digg_FormDescription") {
@@ -270,9 +272,9 @@ export const FortroendemodellenFrom = () => {
   useEffect(() => {
     const pageLastVisit = localStorage.getItem(`${pathname}Page`);
     if (!showFirstPage) {
-      setPage(pageLastVisit ? parseInt(pageLastVisit) : 1);
+      setPage(pageLastVisit ? parseInt(pageLastVisit, 10) : 1);
     } else {
-      setPage(pageLastVisit ? parseInt(pageLastVisit) : 0);
+      setPage(pageLastVisit ? parseInt(pageLastVisit, 10) : 0);
     }
   }, [showFirstPage, pathname]);
 
@@ -413,7 +415,7 @@ export const FortroendemodellenFrom = () => {
         >
           {page !== 0 && formSteps.length > 0 && (
             <FormNav
-              pageNames={[...formSteps, t("pages|form$summary")]}
+              pageNames={[...formSteps, t("pages.form.summary")]}
               countQuestionsPerSection={countQuestionsPerSection()}
               setPage={setPage}
               scrollRef={scrollRef}
@@ -421,67 +423,66 @@ export const FortroendemodellenFrom = () => {
             />
           )}
 
-          <>
-            {page === 0 && (
-              <>
-                {formIntroText.title.length > 0 && (
-                  <>
-                    <Heading level={1} size={"lg"}>
-                      {formIntroText.title}
-                    </Heading>
-                    <p className="text-md">{formIntroText.text}</p>
-                  </>
-                )}
-                <Button
-                  onClick={() => {
-                    setPage(page + 1);
-                    handleScroll(scrollRef);
-                  }}
-                  label={t("pages|form$start-evaluation-text")}
-                />
-              </>
-            )}
-            {formDataArray.map((data: FormTypes[], index) => {
-              index++;
-              if (page === index) {
-                return (
-                  <div
-                    key={`page${index}`}
-                    className="col-span-1 col-start-1 row-start-2 w-full max-w-md lg:col-start-2 lg:row-start-1"
-                  >
-                    <span ref={scrollRef} />
-
-                    <span className="text-lg text-textSecondary">
-                      {t("pages|form$questions")}
-                    </span>
-                    <RenderForm
-                      fortroendemodellen
-                      UpdateFormDataArray={UpdateFormDataArray}
-                      formDataArray={data}
-                      pageIndex={index}
-                    />
-                    <FormBottomNav
-                      fortroendemodellen
-                      key={`nav${index}`}
-                      setFormDataArray={setFormDataArray}
-                      formDataArray={formDataArray}
-                      setPage={setPage}
-                      page={page}
-                      scrollRef={scrollRef}
-                    />
-                  </div>
-                );
-              }
-            })}
-
-            {page === formDataArray.length + 1 && (
-              <FormEnding
-                countQuestionsPerSection={countQuestionsPerSection()}
-                formData={formData as FormData}
-                formDataArray={formDataArray}
+          {page === 0 && (
+            <>
+              {formIntroText.title.length > 0 && (
+                <>
+                  <Heading level={1} size={"lg"}>
+                    {formIntroText.title}
+                  </Heading>
+                  <p className="text-md">{formIntroText.text}</p>
+                </>
+              )}
+              <Button
+                onClick={() => {
+                  setPage(page + 1);
+                  handleScroll(scrollRef);
+                }}
+                label={t("pages.form.start-evaluation-text")}
               />
-            )}
-          </>
+            </>
+          )}
+          {formDataArray.map((data: FormTypes[], index) => {
+            index++;
+            if (page !== index) {
+              return null;
+            }
+            return (
+              <div
+                key={`page${index}`}
+                className="col-span-1 col-start-1 row-start-2 w-full max-w-md lg:col-start-2 lg:row-start-1"
+              >
+                <span ref={scrollRef} />
+
+                <span className="text-lg text-textSecondary">
+                  {t("pages.form.questions")}
+                </span>
+                <RenderForm
+                  fortroendemodellen
+                  UpdateFormDataArray={UpdateFormDataArray}
+                  formDataArray={data}
+                  pageIndex={index}
+                />
+                <FormBottomNav
+                  fortroendemodellen
+                  key={`nav${index}`}
+                  setFormDataArray={setFormDataArray}
+                  formDataArray={formDataArray}
+                  setPage={setPage}
+                  page={page}
+                  scrollRef={scrollRef}
+                />
+              </div>
+            );
+          })}
+
+          {page === formDataArray.length + 1 && (
+            <FormEnding
+              countQuestionsPerSection={countQuestionsPerSection()}
+              formData={formData as FormData}
+              formDataArray={formDataArray}
+            />
+          )}
         </div>
       )}
       {page === formDataArray.length + 1 && (

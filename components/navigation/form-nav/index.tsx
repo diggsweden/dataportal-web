@@ -1,11 +1,13 @@
-import { createFocusTrap, FocusTrap } from "focus-trap";
-import useTranslation from "next-translate/useTranslation";
+"use client";
+
+import { createFocusTrap, type FocusTrap } from "focus-trap";
+import { useTranslations } from "next-intl";
 import {
-  Dispatch,
-  FC,
-  KeyboardEvent,
-  RefObject,
-  SetStateAction,
+  type Dispatch,
+  type FC,
+  type KeyboardEvent,
+  type RefObject,
+  type SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -21,7 +23,7 @@ import { handleScroll } from "@/utilities/form-utils";
 interface ContainerDpDwnProps {
   pageNames: string[];
   setPage: Dispatch<SetStateAction<number>>;
-  scrollRef: RefObject<HTMLSpanElement>;
+  scrollRef: RefObject<HTMLSpanElement | null>;
   className?: string;
   forceUpdate?: number;
   countQuestionsPerSection?: {
@@ -41,7 +43,7 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [curActive, setCurActive] = useState("");
-  const { t } = useTranslation("");
+  const t = useTranslations();
   const [vw, setVw] = useState(0);
   const navRef = useRef<HTMLUListElement>(null);
   useClickOutside(() => setExpanded(false), [], navRef);
@@ -105,8 +107,7 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
 
   const doneSection = (idx: number) => {
     const done =
-      countQuestionsPerSection &&
-      countQuestionsPerSection[idx] &&
+      countQuestionsPerSection?.[idx] &&
       countQuestionsPerSection[idx].answered ===
         countQuestionsPerSection[idx].count;
 
@@ -116,19 +117,24 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
   return (
     <div>
       <span className="text-lg text-textSecondary">
-        {t("pages|form$sections")}
+        {t("pages.form.sections")}
       </span>
       <nav
         ref={navRef}
         className={`relative row-start-1 mb-lg mt-md flex h-fit w-full lg:col-span-1 lg:col-start-1 lg:row-span-2 
       lg:mb-xl lg:mt-xl ${className ? className : ""}`}
-        aria-label={t("common|menu-form")}
+        aria-label={t("common.menu-form")}
         onKeyDown={handleEscape}
       >
         {expanded && (
           <div
+            role="button"
+            tabIndex={0}
             className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden"
             onClick={() => setExpanded(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") setExpanded(false);
+            }}
           />
         )}
 
@@ -137,7 +143,7 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
           <Button
             iconPosition="right"
             icon={expanded ? ChevronUpIcon : ChevronDownIcon}
-            label={curActive === "" ? t("common:go-to") : curActive}
+            label={curActive === "" ? t("common.go-to") : curActive}
             onClick={() => setExpanded(!expanded)}
             className={`!button--large z-40 !w-full justify-between md:!w-[328px] lg:hidden`}
             aria-expanded={expanded}
@@ -145,8 +151,8 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
             aria-controls="form-nav"
             aria-label={
               expanded
-                ? `${t("common|close")} ${t("common|menu-form")} navigation`
-                : `${t("common|open")} ${t("common|menu-form")} navigation`
+                ? `${t("common.close")} ${t("common.menu-form")} navigation`
+                : `${t("common.open")} ${t("common.menu-form")} navigation`
             }
           />
         )}
@@ -159,13 +165,12 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
             shadow-2xl md:max-h-[calc(100svh-248px)]`
             : "hidden"
         }`}
-          aria-label={`${t("common|menu-form")} navigation`}
+          aria-label={`${t("common.menu-form")} navigation`}
         >
           {pageNames.map((name, idx: number) => {
             return (
               <li
                 key={`name-${idx}`}
-                tabIndex={0}
                 className={`focus--outline focus--primary focus--in relative flex cursor-pointer flex-col gap-sm border-b border-brown-600 p-md text-textPrimary lg:max-w-[200px] lg:rounded-md lg:border
                ${
                  isActive(name)
@@ -192,9 +197,9 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
                     <span className="relative flex items-center gap-sm">
                       - {countQuestionsPerSection[idx].count}{" "}
                       {countQuestionsPerSection[idx].count === 1
-                        ? t("pages|form$question").toLowerCase()
-                        : t("pages|form$questions").toLowerCase()}
-                      {doneSection(idx) && `/ ${t("pages|form$done")}`}
+                        ? t("pages.form.question").toLowerCase()
+                        : t("pages.form.questions").toLowerCase()}
+                      {doneSection(idx) && `/ ${t("pages.form.done")}`}
                     </span>
                   )}
                 {doneSection(idx) && (

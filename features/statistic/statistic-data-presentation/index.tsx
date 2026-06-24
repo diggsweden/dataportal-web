@@ -6,10 +6,6 @@ interface StatisticDataPresentationProps {
 }
 
 export class StatisticDataPresentation extends Component<StatisticDataPresentationProps> {
-  constructor(props: StatisticDataPresentationProps) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="w-full bg-white px-lg py-[3.125rem] text-center first:mb-lg">

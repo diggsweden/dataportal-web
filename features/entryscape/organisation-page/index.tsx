@@ -1,7 +1,9 @@
+"use client";
+
 import Link from "next/link";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
-import React, { FC, useContext, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import DataIcon from "@/assets/icons/data.svg";
@@ -16,14 +18,14 @@ import { Heading } from "@/components/typography/heading";
 import Showcase from "@/features/entryscape/showcase";
 import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
-import { DataInfo, TermInfo } from "@/types/organisation";
+import type { DataInfo, TermInfo } from "@/types/organisation";
 import { linkBase } from "@/utilities";
 
 export const OrganisationPage: FC = () => {
-  const { pathname } = useRouter() || {};
+  const pathname = usePathname();
   const { setBreadcrumb, iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
@@ -32,10 +34,10 @@ export const OrganisationPage: FC = () => {
       crumbs: [
         { name: "start", link: { ...linkBase, link: "/" } },
         {
-          name: t("routes|organisations$title"),
+          name: t("routes.organisations.title"),
           link: {
             ...linkBase,
-            link: `/${t("routes|organisations$path")}?q=&f=`,
+            link: `/${t("routes.organisations.path")}?q=&f=`,
           },
         },
       ],
@@ -65,12 +67,12 @@ export const OrganisationPage: FC = () => {
                 size={"md"}
                 className="mb-lg inline-flex items-center gap-[0.625rem]"
               >
-                {t("common|datasets")}
+                {t("common.datasets")}
                 <Button
                   data-test-id="data-info-button"
                   variant="plain"
                   className="rounded-full !p-xs"
-                  aria-label={t("pages|organisation_page$data-info")}
+                  aria-label={t("pages.organisation_page.data-info")}
                   icon={QuestionCircleIcon}
                   iconPosition="left"
                   onClick={() => setShowInfo(!showInfo)}
@@ -82,8 +84,8 @@ export const OrganisationPage: FC = () => {
                 modalOpen={showInfo}
                 setModalOpen={setShowInfo}
                 onClick={() => setShowInfo(false)}
-                description={t("pages|organisation_page$data-info-more")}
-                closeBtn={t("common|close")}
+                description={t("pages.organisation_page.data-info-more")}
+                closeBtn={t("common.close")}
                 closeBtnClassName="ml-auto"
                 modalSize="sm"
               />
@@ -129,7 +131,7 @@ export const OrganisationPage: FC = () => {
                   <ButtonLink
                     data-test-id="organisation-datasets-link"
                     href={entry.organisationData?.datasets.link}
-                    label={t("pages|organisation_page$view-all-data")}
+                    label={t("pages.organisation_page.view-all-data")}
                     icon={ArrowRightIcon}
                     iconPosition="right"
                   />
@@ -141,7 +143,7 @@ export const OrganisationPage: FC = () => {
             entry.organisationData?.specifications.total > 0 ? (
               <div data-test-id="organisation-specifications">
                 <Heading level={2} size={"md"} className="mb-lg">
-                  {t("common|specifications")}
+                  {t("common.specifications")}
                 </Heading>
                 <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
                   <div className="flex flex-col items-center gap-sm text-textSecondary md:flex-row md:gap-lg">
@@ -155,13 +157,13 @@ export const OrganisationPage: FC = () => {
                       <span className="text-xl md:text-2xl">
                         {entry.organisationData.specifications.total}
                       </span>
-                      <span>{t("common|specifications")}</span>
+                      <span>{t("common.specifications")}</span>
                     </span>
                   </div>
                   <ButtonLink
                     data-test-id="organisation-specifications-link"
                     href={entry.organisationData.specifications.link}
-                    label={t("pages|organisation_page$view-all-spec")}
+                    label={t("pages.organisation_page.view-all-spec")}
                     icon={ArrowRightIcon}
                     iconPosition="right"
                   />
@@ -173,7 +175,7 @@ export const OrganisationPage: FC = () => {
             entry.organisationData?.terms?.termsInfo?.length > 0 ? (
               <div data-test-id="organisation-terminology">
                 <Heading level={2} size={"md"} className="mb-lg">
-                  {t("common|term-with-concept")}
+                  {t("common.term-with-concept")}
                 </Heading>
                 <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
                   <div className="flex w-full flex-col items-center gap-sm text-textSecondary md:flex-row md:gap-lg">
@@ -189,7 +191,7 @@ export const OrganisationPage: FC = () => {
                         <span className="text-xl md:text-2xl">
                           {entry.organisationData.terms.total}
                         </span>
-                        <span>{t("common|terminologies")}</span>
+                        <span>{t("common.terminologies")}</span>
                       </span>
                       <div className="flex flex-col justify-center gap-sm">
                         {entry.organisationData?.terms?.termsInfo.map(
@@ -224,7 +226,7 @@ export const OrganisationPage: FC = () => {
                 size={"md"}
                 className="mb-md text-textSecondary md:mb-lg"
               >
-                {`${t("common|about")} ${entry.title}`}
+                {`${t("common.about")} ${entry.title}`}
               </Heading>
 
               <div className="space-y-lg text-sm">
@@ -234,9 +236,9 @@ export const OrganisationPage: FC = () => {
                     level={3}
                     size={"xxs"}
                   >
-                    {t("pages|organisation_page$contact")}
+                    {t("pages.organisation_page.contact")}
                   </Heading>
-                  {entry.contact && entry.contact.email ? (
+                  {entry.contact?.email ? (
                     <CustomLink
                       data-test-id="contact-link"
                       className="text-sm text-green-600 hover:no-underline"
@@ -246,7 +248,7 @@ export const OrganisationPage: FC = () => {
                     </CustomLink>
                   ) : (
                     <p data-test-id="no-contact">
-                      {t("pages|organisation_page$no-contact")}
+                      {t("pages.organisation_page.no-contact")}
                     </p>
                   )}
                 </div>
@@ -257,11 +259,11 @@ export const OrganisationPage: FC = () => {
                     level={3}
                     size={"xxs"}
                   >
-                    {t("pages|organisation_page$org-type")}
+                    {t("pages.organisation_page.org-type")}
                   </Heading>
                   <p>
                     {entry.organisationData?.orgType ||
-                      t("pages|organisation_page$no-org-type")}
+                      t("pages.organisation_page.no-org-type")}
                   </p>
                 </div>
 
@@ -272,7 +274,7 @@ export const OrganisationPage: FC = () => {
                       level={3}
                       size={"xxs"}
                     >
-                      {t("pages|organisation_page$org-no")}
+                      {t("pages.organisation_page.org-no")}
                     </Heading>
                     <p>{entry.organisationData.orgNumber}</p>
                   </div>
@@ -285,7 +287,7 @@ export const OrganisationPage: FC = () => {
                       level={3}
                       size={"xxs"}
                     >
-                      {t("pages|datasetpage$mqa")}
+                      {t("pages.datasetpage.mqa")}
                     </Heading>
                     <Link
                       className="text-sm text-green-600 hover:no-underline"
@@ -303,7 +305,7 @@ export const OrganisationPage: FC = () => {
                       level={3}
                       size={"xxs"}
                     >
-                      {t("pages|organisation_page$download_link")}
+                      {t("pages.organisation_page.download_link")}
                     </Heading>
                     <div className="flex flex-col gap-sm">
                       {entry.downloadFormats.map(({ title, url }, idx) => (
@@ -327,8 +329,9 @@ export const OrganisationPage: FC = () => {
           entry.organisationData?.showcases.length > 0 && (
             <div>
               <Heading level={2} size={"md"} className="mb-lg md:mb-xl">
-                {`${t("pages|organisation_page$showcases_heading")} (${entry
-                  .organisationData?.showcases.length})`}
+                {`${t("pages.organisation_page.showcases_heading")} (${
+                  entry.organisationData?.showcases.length
+                })`}
               </Heading>
               <div className="flex flex-col gap-xl md:grid md:grid-cols-2 lg:grid-cols-3">
                 {entry.organisationData?.showcases.map((showcase) => (

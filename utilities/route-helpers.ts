@@ -1,7 +1,5 @@
-import useTranslation from "next-translate/useTranslation";
-
-import { Dataportal_LinkType } from "@/graphql/__generated__/types";
-import { Breadcrumb, DiggLink } from "@/types/global";
+import type { Dataportal_LinkType } from "@/graphql/__generated__/types";
+import type { Breadcrumb, DiggLink } from "@/types/global";
 
 /**
  * Make @param str URL-friendly
@@ -26,29 +24,6 @@ export const slugify = (str: string) => {
     .replace(/--+/g, "-") // Replace multiple - with single -
     .replace(/^-+/, "") // Trim - from start of text
     .replace(/-+$/, ""); // Trim - from end of text
-};
-
-/**
- * Return relative path to search result page, with sent in @param resource and @param lang selected in search filters
- * @param resourceType
- * @param resource
- * @param lang
- */
-export const SearchDatasetsPagePath = (
-  lang: string,
-  resourceType: string,
-  resource: string,
-) => {
-  const { t } = useTranslation();
-  if (lang && lang.length > 0 && resource && resource.length > 0) {
-    return `/${t("routes|datasets$path")}?f=${encodeURIComponent(
-      `${resourceType}||${resource}||FALSE||uri||${t(
-        "resources|" + resourceType,
-      )}||${t("resources|" + resource)}`,
-    )}`;
-  }
-
-  return "";
 };
 
 // Used to satisfy typescript condition for DiggLink
@@ -76,7 +51,7 @@ export const makeBreadcrumbsFromPath = (path: string) => {
 
   const basePath: string[] = [];
 
-  paths.map((path, index) => {
+  paths.forEach((path, index) => {
     if (index !== paths.length - 1) {
       crumbs.push({
         name: path.replaceAll("-", " "),

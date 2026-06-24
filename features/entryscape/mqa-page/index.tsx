@@ -1,6 +1,8 @@
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect } from "react";
+"use client";
+
+import { usePathname, useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { type FC, useContext, useEffect } from "react";
 
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
@@ -10,9 +12,11 @@ import { handleLocale, linkBase } from "@/utilities";
 
 export const MQAPage: FC = () => {
   const { env, setBreadcrumb } = useContext(SettingsContext);
-  const { lang, t } = useTranslation();
+  const t = useTranslations();
+  const lang = useLocale();
   const router = useRouter();
-  const pageTitle = t("routes|metadata$title");
+  const pathname = usePathname();
+  const pageTitle = t("routes.metadata.title");
 
   useEntryScapeBlocks({
     entrystoreBase: `https://${env.ENTRYSCAPE_MQA_PATH}/store`,
@@ -25,13 +29,14 @@ export const MQAPage: FC = () => {
 
   useEffect(() => {
     // Remove locale from path if it's the default locale
-    handleLocale(window.location.pathname, lang, router.asPath, router);
+    if (pathname)
+      handleLocale(window.location.pathname, lang, pathname, router);
 
     setBreadcrumb?.({
       name: pageTitle,
       crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
     });
-  }, [router.asPath]);
+  }, [pathname]);
 
   return (
     <Container>

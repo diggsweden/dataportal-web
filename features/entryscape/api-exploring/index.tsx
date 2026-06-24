@@ -1,7 +1,9 @@
-import dynamic from "next/dynamic";
-import { FC, useContext } from "react";
+"use client";
 
-import { EnvSettings } from "@/env/env-settings";
+import dynamic from "next/dynamic";
+import { type FC, useContext } from "react";
+
+import type { EnvSettings } from "@/env/env-settings";
 import { ApiIndexContext } from "@/providers/api-index-context";
 
 export interface ApiExplorerProps {
@@ -15,7 +17,7 @@ export const ApiExplorer: FC<ApiExplorerProps> = (props) => {
     () =>
       import("swagger-ui-react").then(
         (c) => c.default,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
         (e) => e as any,
       ),
     { ssr: false },
@@ -29,7 +31,7 @@ export const ApiExplorer: FC<ApiExplorerProps> = (props) => {
       props.entryId,
     );
 
-    if (detection && detection.apiDefinition) return detection.apiDefinition;
+    if (detection?.apiDefinition) return detection.apiDefinition;
 
     return undefined;
   };

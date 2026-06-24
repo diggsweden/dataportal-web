@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "graphql-tag";
 
 import { NAVIGATION_FRAGMENT } from "./fragments";
 

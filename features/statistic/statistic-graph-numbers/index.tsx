@@ -1,5 +1,13 @@
-import useTranslation from "next-translate/useTranslation";
-import { FC, ReactNode, useContext, useEffect, useState } from "react";
+"use client";
+
+import { useTranslations } from "next-intl";
+import {
+  type FC,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import { Heading } from "@/components/typography/heading";
 import { StatisticListItemHistory } from "@/features/statistic/statistic-list-item-history";
@@ -18,7 +26,7 @@ interface StatisticState {
 
 export const StatisticGraphNumbers: FC = () => {
   const { env } = useContext(SettingsContext);
-  const { t } = useTranslation("pages");
+  const t = useTranslations();
 
   const [stats, setStats] = useState<StatisticState>({
     x: [],
@@ -65,22 +73,21 @@ export const StatisticGraphNumbers: FC = () => {
   return (
     <div>
       <Heading level={2} className="mb-lg md:mb-xl">
-        {t("statistic$dataset-numbers")}
+        {t("pages.statistic.dataset-numbers")}
       </Heading>
       <div className="bg-white p-xl">
         <ol className="list-decimal space-y-lg pl-lg">
-          {stats.yList &&
-            stats.yList
-              .slice(0, stats.topItemsToShow)
-              .map((item: number, index: number) => {
-                return (
-                  <StatisticListItemHistory
-                    key={"cat-" + index}
-                    listText={stats.xList && stats.xList[index]}
-                    listNumber={item}
-                  />
-                );
-              })}
+          {stats.yList
+            ?.slice(0, stats.topItemsToShow)
+            .map((item: number, index: number) => {
+              return (
+                <StatisticListItemHistory
+                  key={`cat-${index}`}
+                  listText={stats.xList?.[index]}
+                  listNumber={item}
+                />
+              );
+            })}
         </ol>
       </div>
     </div>

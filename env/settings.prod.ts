@@ -45,8 +45,4 @@ export class Settings_Prod extends EnvSettings {
   envName = "prod";
 
   nonce = generateRandomKey(256);
-
-  public constructor() {
-    super();
-  }
 }

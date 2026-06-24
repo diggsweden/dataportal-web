@@ -1,5 +1,7 @@
+"use client";
+
 import FocusTrap from "focus-trap-react";
-import { FC, useContext, useState } from "react";
+import { type FC, useContext, useState } from "react";
 
 import CheckDoneIcon from "@/assets/icons/check-done.svg";
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg";
@@ -62,13 +64,11 @@ export const SearchSelectFilter: FC<SelectProps> = ({
           <div className={open ? "relative block" : "hidden"}>
             <ul
               className="absolute z-10 mt-sm border border-brown-200 bg-white shadow-lg"
-              role="listbox"
               aria-labelledby={id}
             >
               {options.map((option) => (
                 <li
                   key={option.value}
-                  role="option"
                   aria-selected={option.value === value}
                   className={`inline-flex w-full cursor-pointer hover:bg-brown-100`}
                   onClick={() => {

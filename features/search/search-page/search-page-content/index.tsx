@@ -1,8 +1,9 @@
-import Head from "next/head";
+"use client";
+
 import Link from "next/link";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import { Container } from "@/components/layout/container";
 import { Pagination } from "@/components/pagination";
@@ -10,9 +11,9 @@ import { Heading } from "@/components/typography/heading";
 import { SearchInput } from "@/features/search/search-input";
 import { SearchPageSelector } from "@/features/search/search-page-selector";
 import { getSearchHit } from "@/features/search/utils/search-helpers";
-import { SearchHitFragment } from "@/graphql/__generated__/operations";
+import type { SearchHitFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
-import { SearchHit, SearchRequest, SearchResult } from "@/types/search";
+import type { SearchHit, SearchRequest, SearchResult } from "@/types/search";
 import { linkBase, querySearch } from "@/utilities";
 import {
   clearCurrentScrollPos,
@@ -24,22 +25,25 @@ interface SearchProps {
 }
 
 export const SearchPageContent: FC<SearchProps> = () => {
-  const router = useRouter() || {};
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { setBreadcrumb } = useContext(SettingsContext);
-  const { pathname, query: routerQuery } = router || {};
-  const { t, lang } = useTranslation("common");
-  const [query, setQuery] = useState((routerQuery?.q as string) || "");
-  const pageNumber = parseInt(routerQuery?.p as string) || 1;
+  const t = useTranslations();
+  const lang = useLocale();
+  const [query, setQuery] = useState(searchParams?.get("q") || "");
+  const pageNumber = parseInt(searchParams?.get("p") ?? "", 10) || 1;
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [searchRequest, setSearchRequest] = useState<SearchRequest>({
-    page: parseInt(routerQuery?.p as string),
-    query: routerQuery?.q as string,
+    page: parseInt(searchParams?.get("p") ?? "", 10),
+    query: searchParams?.get("q") ?? "",
   });
   const [loading, setLoading] = useState(false);
   const PER_PAGE = 10;
-  const searchKey = typeof location != "undefined" ? location.search : "server";
+  const searchKey =
+    typeof location !== "undefined" ? location.search : "server";
   const posY =
-    typeof localStorage != "undefined"
+    typeof localStorage !== "undefined"
       ? localStorage.getItem(`ScrollposY_${searchKey}`)
       : "0";
 
@@ -52,7 +56,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
       PER_PAGE,
       pageNumber && pageNumber > 1 ? (pageNumber - 1) * PER_PAGE : 0,
       true,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     )) as any;
 
     const hits: SearchHit[] = result?.dataportal_Digg_Search?.hits
@@ -94,7 +98,9 @@ export const SearchPageContent: FC<SearchProps> = () => {
   });
 
   useEffect(() => {
-    router.push({ query: { ...router.query, p: router.query.p } });
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    params.set("p", String(searchParams?.get("p") ?? "1"));
+    router.push(`${pathname}?${params.toString()}`);
     clearCurrentScrollPos();
     window.scrollTo({
       top: 0,
@@ -103,7 +109,9 @@ export const SearchPageContent: FC<SearchProps> = () => {
   }, [pageNumber]);
 
   const changePage = (page: number) => {
-    router.push({ query: { ...router.query, p: page } });
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    params.set("p", String(page));
+    router.push(`${pathname}?${params.toString()}`);
     clearCurrentScrollPos();
     window.scrollTo({
       top: 0,
@@ -117,26 +125,32 @@ export const SearchPageContent: FC<SearchProps> = () => {
 
   useEffect(() => {
     setBreadcrumb?.({
-      name: t("common|search-content"),
+      name: t("common.search-content"),
       crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
     });
   }, [pathname]);
 
   useEffect(() => {
+    const routerQuery = Object.fromEntries(searchParams?.entries() ?? []);
     if (!routerQuery.p) {
-      router.push({ query: { ...router.query, p: 1 } });
+      const params = new URLSearchParams(searchParams?.toString() ?? "");
+      params.set("p", "1");
+      router.push(`${pathname}?${params.toString()}`);
     }
     const q = (routerQuery.q as string) || "";
     setQuery(q);
     setSearchRequest({
       ...searchRequest,
-      page: parseInt(routerQuery.p as string),
+      page: parseInt(routerQuery.p as string, 10),
       query: q,
     });
-  }, [routerQuery]);
+  }, [searchParams]);
 
   const submitSearch = (newQuery: string) => {
-    router.push({ query: { ...router.query, q: newQuery, p: 1 } });
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    params.set("q", newQuery);
+    params.set("p", "1");
+    router.push(`${pathname}?${params.toString()}`);
     setSearchRequest({
       ...searchRequest,
       query: newQuery,
@@ -150,22 +164,9 @@ export const SearchPageContent: FC<SearchProps> = () => {
 
   return (
     <div className="SearchContentPage">
-      <Head>
-        <title>{`${t("common|search")} - Sveriges dataportal`}</title>
-        <meta
-          property="og:title"
-          content={`${t("common|search")} - Sveriges dataportal`}
-          key="og:title"
-        />
-        <meta
-          name="twitter:title"
-          content={`${t("common|search")} - Sveriges dataportal`}
-          key="twitter:title"
-        />
-      </Head>
       <Container>
         <Heading level={1} size="lg" className="mb-none">
-          {t("common|search-content")}
+          {t("common.search-content")}
         </Heading>
 
         <form
@@ -180,7 +181,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
           <SearchInput
             autoFocus
             id="search-field"
-            placeholder={t("pages|content$search")}
+            placeholder={t("pages.content.search")}
             isLoading={loading}
             query={query}
             setQuery={setQuery}
@@ -190,7 +191,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
               setQuery(e.target.value);
             }}
             key={searchRequest?.query ? "loaded" : "not loaded"}
-            ariaLabel={t("pages|content$search")}
+            ariaLabel={t("pages.content.search")}
           />
         </form>
 
@@ -202,11 +203,11 @@ export const SearchPageContent: FC<SearchProps> = () => {
           <div id="search-result" className="my-lg">
             <div className="mb-lg md:mb-xl">
               <Heading level={2} size="md">
-                {loading && <span>{t("common|loading")}</span>}
+                {loading && <span>{t("common.loading")}</span>}
                 {!loading &&
                   searchResult &&
                   (searchResult.count || 0) >= 0 &&
-                  `${searchResult.count} ${t("pages|search$content-hits")}`}
+                  `${searchResult.count} ${t("pages.search.content-hits")}`}
               </Heading>
             </div>
 
@@ -215,33 +216,32 @@ export const SearchPageContent: FC<SearchProps> = () => {
                 data-test-id="search-result-list"
                 className="space-y-lg md:space-y-xl"
               >
-                {searchResult.hits &&
-                  searchResult.hits.map((hit: SearchHit, index: number) => (
-                    <li className="group relative max-w-lg" key={index}>
-                      <Link
-                        href={`${cleanDoubleSlash(hit.url!)}#ref=${
-                          window ? window.location.search : ""
-                        }`}
-                        onClick={() => {
-                          saveCurrentScrollPos();
-                        }}
-                        data-tracking-name="search-hit"
-                        className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
+                {searchResult.hits?.map((hit: SearchHit, index: number) => (
+                  <li className="group relative max-w-lg" key={index}>
+                    <Link
+                      href={`${cleanDoubleSlash(hit.url!)}#ref=${
+                        window ? window.location.search : ""
+                      }`}
+                      onClick={() => {
+                        saveCurrentScrollPos();
+                      }}
+                      data-tracking-name="search-hit"
+                      className="before:focus--outline before:focus--out before:focus--primary focus--none no-underline before:absolute before:inset-none"
+                    >
+                      <Heading
+                        level={3}
+                        size="sm"
+                        className={`mb-sm font-normal text-green-600 group-focus-within:underline group-hover:underline`}
+                        lang={hit.titleLang}
                       >
-                        <Heading
-                          level={3}
-                          size="sm"
-                          className={`mb-sm font-normal text-green-600 group-focus-within:underline group-hover:underline`}
-                          lang={hit.titleLang}
-                        >
-                          {highlightWords(hit.title)}
-                        </Heading>
-                      </Link>
-                      {hit.description && (
-                        <p>{highlightWords(hit.description)}</p>
-                      )}
-                    </li>
-                  ))}
+                        {highlightWords(hit.title)}
+                      </Heading>
+                    </Link>
+                    {hit.description && (
+                      <p>{highlightWords(hit.description)}</p>
+                    )}
+                  </li>
+                ))}
               </ul>
             )}
             {searchResult?.hits && (

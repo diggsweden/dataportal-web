@@ -1,7 +1,6 @@
-import { Translate } from "next-translate";
-
-import { SearchHitFragment } from "@/graphql/__generated__/operations";
-import { SearchHit } from "@/types/search";
+import type { SearchHitFragment } from "@/graphql/__generated__/operations";
+import type { Translate } from "@/i18n/types";
+import type { SearchHit } from "@/types/search";
 
 /**
  * Parse Search_dataportal_Digg_Search
@@ -12,7 +11,7 @@ export const getSearchHit = (
   r: SearchHitFragment,
   t: Translate,
 ): SearchHit | null => {
-  if (r && r.hit) {
+  if (r?.hit) {
     switch (r.hit.__typename) {
       case "dataportal_Digg_Container":
         return {
@@ -31,7 +30,7 @@ export const getSearchHit = (
         } as SearchHit;
       case "dataportal_Digg_News_Item":
         return {
-          url: `/${t("routes|news$path")}/${r.hit.slug}`,
+          url: `/${t("routes.news.path")}/${r.hit.slug}`,
           title: r.hit?.heading ?? r.hit.name,
           description: r.highlights
             ?.map((c) => {
@@ -46,7 +45,7 @@ export const getSearchHit = (
         } as SearchHit;
       case "dataportal_Digg_Good_Example":
         return {
-          url: `/${t("routes|good-examples$path")}/${r.hit.slug}`,
+          url: `/${t("routes.good-examples.path")}/${r.hit.slug}`,
           title: r.hit?.heading ?? r.hit.name,
           description: r.highlights
             ?.map((c) => {

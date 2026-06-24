@@ -1,8 +1,16 @@
-import { Dispatch, FC, SetStateAction, useEffect, useRef } from "react";
+"use client";
+
+import {
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+  useEffect,
+  useRef,
+} from "react";
 
 import { Toggle } from "@/components/form/toggle";
 import { Heading } from "@/components/typography/heading";
-import { CookieSetting, NecessaryCookies } from "@/features/cookie-banner";
+import type { CookieSetting, NecessaryCookies } from "@/features/cookie-banner";
 
 export interface CookieOptionsProps {
   cookieSettingsHeading: string;
@@ -30,7 +38,7 @@ export const CookieOptions: FC<CookieOptionsProps> = ({
   };
 
   useEffect(() => {
-    if (firstInputElement && firstInputElement.current) {
+    if (firstInputElement?.current) {
       const input = firstInputElement.current as unknown as HTMLInputElement;
       input.focus();
     }

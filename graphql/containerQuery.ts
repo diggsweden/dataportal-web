@@ -1,11 +1,11 @@
-import { gql } from "@apollo/client";
+import { gql } from "graphql-tag";
 
 import {
   BLOCK_FRAGMENT,
   CONTAINER_FRAGMENT,
-  SEO_FRAGMENT,
   MODULE_FRAGMENT,
   PARENT_FRAGMENT,
+  SEO_FRAGMENT,
 } from "./fragments";
 
 export const CONTAINER_QUERY = gql`

@@ -1,11 +1,11 @@
 import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import { useTranslations } from "next-intl";
+import type { FC } from "react";
 
 import { Badge } from "@/components/badge";
 import { FileFormatBadge } from "@/components/file-format-badge";
 import { Heading } from "@/components/typography/heading";
-import { SearchHit as SearchHitType } from "@/types/search";
+import type { SearchHit as SearchHitType } from "@/types/search";
 
 interface SearchHitProps {
   hit: SearchHitType;
@@ -13,13 +13,15 @@ interface SearchHitProps {
   onLinkClick?: () => void;
 }
 
-const URL_BADGE_MAP: Record<string, string> = {
-  "/datasets": "pages|datasets$dataset_title",
-  "/dataservice": "pages|datasetpage$dataservice",
-  "/dataset-series": "pages|dataset-series$data-serie",
-};
+const URL_BADGE_MAP = {
+  "/datasets": "pages.datasets.dataset_title",
+  "/dataservice": "pages.datasetpage.dataservice",
+  "/dataset-series": "pages.dataset-series.data-serie",
+} as const satisfies Record<string, string>;
 
-const getBadgeForUrl = (url: string): string | null => {
+type BadgeKey = (typeof URL_BADGE_MAP)[keyof typeof URL_BADGE_MAP];
+
+const getBadgeForUrl = (url: string): BadgeKey | null => {
   for (const [prefix, translationKey] of Object.entries(URL_BADGE_MAP)) {
     if (url.startsWith(prefix)) {
       return translationKey;
@@ -33,7 +35,7 @@ export const SearchHit: FC<SearchHitProps> = ({
   isCompact,
   onLinkClick,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const badgeTranslationKey = getBadgeForUrl(hit.url);
 
   return (
@@ -83,13 +85,12 @@ export const SearchHit: FC<SearchHitProps> = ({
 
       <div className="block space-y-sm">
         <div className="mb-xs text-sm font-strong text-textSecondary">
-          {hit.metadata &&
-            hit.metadata.theme_literal &&
+          {hit.metadata?.theme_literal &&
             hit.metadata.theme_literal.length > 0 && (
               <span className="category">
                 {hit.metadata.theme_literal.length > 1
-                  ? t("pages|datasetpage$categories")
-                  : t("pages|datasetpage$category_tag")}
+                  ? t("pages.datasetpage.categories")
+                  : t("pages.datasetpage.category_tag")}
                 : {hit.metadata.theme_literal.join(",  ")}
               </span>
             )}
@@ -97,7 +98,9 @@ export const SearchHit: FC<SearchHitProps> = ({
         <div className="formats flex w-full flex-wrap gap-md">
           {badgeTranslationKey && <Badge text={t(badgeTranslationKey)} />}
           {hit.metadata?.custom_facet_literal?.map(
-            (m: string, index: number) => <Badge key={index} text={m} />,
+            (m: string, index: number) => (
+              <Badge key={index} text={m} />
+            ),
           )}
           {hit.metadata?.format_literal?.map((m: string, index: number) => (
             <FileFormatBadge key={index} badgeName={m} />

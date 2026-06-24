@@ -1,9 +1,9 @@
-import { EnvSettings } from "@/env";
+import type { EnvSettings } from "@/env";
 import { SearchSortOrder } from "@/providers/search-provider";
 import { ESRdfType, ESType } from "@/types/entrystore-core";
 import {
-  specsPathResolver,
   conceptsPathResolver,
+  specsPathResolver,
 } from "@/utilities/entrystore/entrystore-helpers";
 
 interface FacetConfig {

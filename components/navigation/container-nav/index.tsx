@@ -1,13 +1,21 @@
-import { createFocusTrap, FocusTrap } from "focus-trap";
+"use client";
+
+import { createFocusTrap, type FocusTrap } from "focus-trap";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
-import { FC, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+import {
+  type FC,
+  type KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import CrossIcon from "@/assets/icons/cross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import { Button } from "@/components/button";
-import { ContainerDataFragment } from "@/graphql/__generated__/operations";
+import type { ContainerDataFragment } from "@/graphql/__generated__/operations";
 import { useClickOutside } from "@/hooks/use-click-outside";
 
 interface ContainerDpDwnProps {
@@ -19,7 +27,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
   const [expanded, setExpanded] = useState(false);
   const pathname = usePathname();
   const [vw, setVw] = useState(0);
-  const { t } = useTranslation();
+  const t = useTranslations();
   const navRef = useRef<HTMLUListElement>(null);
   useClickOutside(() => setExpanded(false), [], navRef);
   const trapRef = useRef<FocusTrap | null>(null);
@@ -64,7 +72,7 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
     if (url === related[0].slug || url.endsWith(related[0].slug)) {
       return pathname === url;
     } else {
-      return pathname.startsWith(url) && pathname !== related[0].slug;
+      return (pathname ?? "").startsWith(url) && pathname !== related[0].slug;
     }
   };
 
@@ -72,13 +80,18 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
     <nav
       ref={navRef}
       className="relative"
-      aria-label={t("common|menu-container")}
+      aria-label={t("common.menu-container")}
       onKeyDown={handleEscape}
     >
       {expanded && (
         <div
+          role="button"
+          tabIndex={0}
           className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden"
           onClick={() => setExpanded(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") setExpanded(false);
+          }}
         />
       )}
 
@@ -94,8 +107,8 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
           aria-controls="container-nav"
           aria-label={
             expanded
-              ? `${t("common|close")} ${related[0].name}`
-              : `${t("common|open")} ${related[0].name}`
+              ? `${t("common.close")} ${related[0].name}`
+              : `${t("common.open")} ${related[0].name}`
           }
         />
       )}

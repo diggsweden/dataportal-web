@@ -1,20 +1,26 @@
-import { Entry, EntryStore, Metadata } from "@entryscape/entrystore-js";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import useTranslation from "next-translate/useTranslation";
-import { createContext, FC, ReactNode, useEffect, useState } from "react";
-
-import { EnvSettings } from "@/env";
-import { SettingsUtil } from "@/env/settings-util";
-import { ESEntry, PageType } from "@/types/entrystore-core";
-import { OrganisationData } from "@/types/organisation";
-import { ESFacetField, ESFacetFieldValue } from "@/types/search";
+import type { Entry, EntryStore, Metadata } from "@entryscape/entrystore-js";
+import { usePathname, useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import {
-  Choice,
+  createContext,
+  type FC,
+  type ReactNode,
+  useEffect,
+  useState,
+} from "react";
+import type { EnvSettings } from "@/env";
+import { SettingsUtil } from "@/env/settings-util";
+import { useResourceLabel } from "@/i18n/use-resource-label";
+import type { ESEntry, PageType } from "@/types/entrystore-core";
+import type { OrganisationData } from "@/types/organisation";
+import type { ESFacetField, ESFacetFieldValue } from "@/types/search";
+import {
+  type Choice,
   fetchDCATMeta,
   handleLocale,
   includeLangInPath,
 } from "@/utilities";
+import { EntrystoreService } from "@/utilities/entrystore/entrystore.service";
 import {
   formatTerminologyAddress,
   getContactEmail,
@@ -24,7 +30,6 @@ import {
   getTemplateChoices,
   termsPathResolver,
 } from "@/utilities/entrystore/entrystore-helpers";
-import { EntrystoreService } from "@/utilities/entrystore/entrystore.service";
 
 const defaultESEntry: ESEntry = {
   env: SettingsUtil.getDefault(),
@@ -74,7 +79,10 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 }) => {
   const [state, setState] = useState(defaultESEntry);
   const router = useRouter();
-  const { lang, t } = useTranslation();
+  const pathname = usePathname();
+  const t = useTranslations();
+  const lang = useLocale();
+  const resourceLabel = useResourceLabel();
   let entry: Entry;
   let resourceUri: string;
 
@@ -83,6 +91,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       `https://${entrystoreUrl}/store` || "https://admin.dataportal.se/store",
     lang,
     t,
+    resourceLabel,
   });
 
   entrystoreService.getEntryStoreUtil();
@@ -104,8 +113,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
   // Remove locale from path if it's the default locale
   useEffect(() => {
-    handleLocale(window.location.pathname, lang, router.asPath, router);
-  }, [router.asPath]);
+    if (pathname)
+      handleLocale(window.location.pathname, lang, pathname, router);
+  }, [pathname]);
 
   useEffect(() => {
     fetchEntry();
@@ -137,6 +147,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
               }admin.dataportal.se/store`,
               lang,
               t,
+              resourceLabel,
             })
           : entrystoreService;
       const publisherPromise =
@@ -373,14 +384,14 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       const data: OrganisationData = {
         datasets: {
           total: 0,
-          totTitle: t("pages|organisation_page$all-data"),
+          totTitle: t("pages.organisation_page.all-data"),
           dataInfo: [
-            { total: 0, title: t("pages|organisation_page$open-data") },
-            { total: 0, title: t("pages|organisation_page$protected-data") },
-            { total: 0, title: t("pages|organisation_page$api-data") },
-            { total: 0, title: t("pages|organisation_page$hvd-data") },
-            { total: 0, title: t("pages|organisation_page$fee-data") },
-            { total: 0, title: t("pages|organisation_page$spec-data") },
+            { total: 0, title: t("pages.organisation_page.open-data") },
+            { total: 0, title: t("pages.organisation_page.protected-data") },
+            { total: 0, title: t("pages.organisation_page.api-data") },
+            { total: 0, title: t("pages.organisation_page.hvd-data") },
+            { total: 0, title: t("pages.organisation_page.fee-data") },
+            { total: 0, title: t("pages.organisation_page.spec-data") },
           ],
           link: `/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${encodeURIComponent(
             uri,
@@ -411,6 +422,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         }editera.dataportal.se/store`,
         lang,
         t,
+        resourceLabel,
       });
 
       const dcatMeta = await fetchDCATMeta();
@@ -558,7 +570,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           data.terms.termsInfo = termsList
             .map((t) => ({
               title: getLocalizedValue(t.getAllMetadata(), "dcterms:title"),
-              url: `/${lang}/terminology/${t
+              url: `${includeLangInPath(lang)}/terminology/${t
                 .getContext()
                 .getId()}_${t.getId()}`,
             }))
@@ -578,35 +590,33 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
   return (
     <EntrystoreContext.Provider value={state}>
-      <Head>
-        <title>{`${state.title} - Sveriges dataportal`}</title>
-        <meta
-          property="og:title"
-          content={`${state.title} - Sveriges dataportal`}
-          key="og:title"
-        />
-        <meta
-          name="twitter:title"
-          content={`${state.title} - Sveriges dataportal`}
-          key="twitter:title"
-        />
-        <meta
-          name="description"
-          content={`${state.description} - Sveriges dataportal`}
-          key="description"
-        />
-        <meta
-          property="og:description"
-          content={`${state.description} - Sveriges dataportal`}
-          key="og:description"
-        />
-        <meta
-          name="twitter:description"
-          content={`${state.description} - Sveriges dataportal`}
-          key="twitter:description"
-        />
-        <meta name="robots" content="index, follow" />
-      </Head>
+      <title>{`${state.title} - Sveriges dataportal`}</title>
+      <meta
+        property="og:title"
+        content={`${state.title} - Sveriges dataportal`}
+        key="og:title"
+      />
+      <meta
+        name="twitter:title"
+        content={`${state.title} - Sveriges dataportal`}
+        key="twitter:title"
+      />
+      <meta
+        name="description"
+        content={`${state.description} - Sveriges dataportal`}
+        key="description"
+      />
+      <meta
+        property="og:description"
+        content={`${state.description} - Sveriges dataportal`}
+        key="og:description"
+      />
+      <meta
+        name="twitter:description"
+        content={`${state.description} - Sveriges dataportal`}
+        key="twitter:description"
+      />
+      <meta name="robots" content="index, follow" />
       {children}
     </EntrystoreContext.Provider>
   );

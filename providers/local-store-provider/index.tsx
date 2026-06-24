@@ -1,6 +1,6 @@
-import { createContext, FC, ReactNode, useEffect } from "react";
+import { createContext, type FC, type ReactNode, useEffect } from "react";
 
-import { CookieSetting } from "@/features/cookie-banner";
+import type { CookieSetting } from "@/features/cookie-banner";
 import { useStateCallback } from "@/hooks/use-state-callback";
 
 export interface LocalStore {

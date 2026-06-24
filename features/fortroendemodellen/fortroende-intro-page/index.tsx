@@ -1,12 +1,14 @@
+"use client";
+
 import { usePathname } from "next/navigation";
-import { FC, useContext, useEffect } from "react";
+import { type FC, useContext, useEffect } from "react";
 
 import ArrowIcon from "@/assets/icons/arrow-right.svg";
 import { BlockList } from "@/components/blocks/block-list";
 import { ButtonLink } from "@/components/button";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
-import { ModuleDataFragment } from "@/graphql/__generated__/operations";
+import type { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
 
@@ -34,19 +36,19 @@ export const FortroendeIntroPage: FC<ModuleDataFragment> = ({ blocks }) => {
 
       <div className="my-xl flex max-w-md flex-col gap-md md:flex-row md:justify-between">
         <ButtonLink
-          href={pathname + "/infor-utveckling"}
+          href={`${pathname}/infor-utveckling`}
           label="Inför utveckling"
           icon={ArrowIcon}
           iconPosition="right"
         />
         <ButtonLink
-          href={pathname + "/utveckling"}
+          href={`${pathname}/utveckling`}
           label="Utveckling och drift"
           icon={ArrowIcon}
           iconPosition="right"
         />
         <ButtonLink
-          href={pathname + "/uppfoljning"}
+          href={`${pathname}/uppfoljning`}
           label="Uppföljning"
           icon={ArrowIcon}
           iconPosition="right"

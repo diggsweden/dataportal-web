@@ -1,11 +1,13 @@
-import useTranslation from "next-translate/useTranslation";
-import { FC, Fragment, useContext } from "react";
+"use client";
+
+import { useTranslations } from "next-intl";
+import { type FC, Fragment, useContext } from "react";
 
 import { CustomLink } from "@/components/custom-link";
 import { Heading } from "@/components/typography/heading";
-import { MenuLinkFragment } from "@/graphql/__generated__/operations";
+import type { MenuLinkFragment } from "@/graphql/__generated__/operations";
 import { LocalStoreContext } from "@/providers/local-store-provider";
-import { SubLinkFooter } from "@/types/global";
+import type { SubLinkFooter } from "@/types/global";
 
 interface FooterNavProps {
   footerData: SubLinkFooter[];
@@ -18,12 +20,12 @@ export const FooterNav: FC<FooterNavProps> = ({
   setOpenSideBar,
   setSettingsOpen,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { set } = useContext(LocalStoreContext);
 
   return (
     <nav
-      aria-label={t("common|menu-footer")}
+      aria-label={t("common.menu-footer")}
       className="flex flex-col gap-xl lg:grid lg:grid-cols-2"
     >
       {footerData?.length > 0 ? (
@@ -47,13 +49,14 @@ export const FooterNav: FC<FooterNavProps> = ({
                   {footerIdx === 0 && linkIdx === footer.links.length - 1 && (
                     <li className="text-md text-green-600">
                       <button
+                        type="button"
                         onClick={() => {
                           set({ cookieSettings: {} });
                           setSettingsOpen(true);
                         }}
                         className="cursor-pointer underline underline-offset-4 hover:no-underline"
                       >
-                        {t("common|cookie-settings")}
+                        {t("common.cookie-settings")}
                       </button>
                     </li>
                   )}
@@ -65,16 +68,17 @@ export const FooterNav: FC<FooterNavProps> = ({
       ) : (
         <div className="flex flex-col gap-sm">
           <Heading className="!text-lg" size={"sm"} level={2}>
-            {t("common|dataportal")}
+            {t("common.dataportal")}
           </Heading>
           <button
+            type="button"
             onClick={() => {
               set({ cookieSettings: {} });
               setSettingsOpen(true);
             }}
             className="inline-flex w-fit cursor-pointer text-md text-green-600 underline underline-offset-4 hover:no-underline"
           >
-            {t("common|cookie-settings")}
+            {t("common.cookie-settings")}
           </button>
         </div>
       )}

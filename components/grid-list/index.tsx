@@ -1,13 +1,15 @@
-import useTranslation from "next-translate/useTranslation";
-import { FC } from "react";
+import { useTranslations } from "next-intl";
+import type { FC } from "react";
 
 import { ButtonLink } from "@/components/button";
 import { Heading } from "@/components/typography/heading";
 import { PublicationTeaser } from "@/features/publication/publication-teaser";
 import { Toolteaser } from "@/features/tool";
-import {
+import type {
   GoodExampleBlockItemFragment,
+  GoodExampleDataFragment,
   NewsBlockItemFragment,
+  NewsItemDataFragment,
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
 
@@ -16,6 +18,8 @@ interface ListProps {
     | ToolDataFragment
     | GoodExampleBlockItemFragment
     | NewsBlockItemFragment
+    | NewsItemDataFragment
+    | GoodExampleDataFragment
   )[];
   heading?: string;
   showMoreLink?: {
@@ -31,7 +35,7 @@ export const GridList: FC<ListProps> = ({
   showMoreLink,
   className,
 }) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <div
@@ -48,7 +52,7 @@ export const GridList: FC<ListProps> = ({
             {heading}
           </Heading>
         )}
-        {showMoreLink && showMoreLink.slug && (
+        {showMoreLink?.slug && (
           <ButtonLink
             size="sm"
             href={showMoreLink.slug}
@@ -81,7 +85,7 @@ export const GridList: FC<ListProps> = ({
         </ul>
       ) : (
         <span data-test-id="grid-list-empty">
-          {t("pages|listpage$no-content")}
+          {t("pages.listpage.no-content")}
         </span>
       )}
     </div>

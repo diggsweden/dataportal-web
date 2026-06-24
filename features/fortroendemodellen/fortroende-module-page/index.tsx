@@ -1,19 +1,21 @@
+"use client";
+
 import { usePathname } from "next/navigation";
-import useTranslation from "next-translate/useTranslation";
-import { FC, useContext, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { type FC, useContext, useEffect, useState } from "react";
 
 import { BlockList } from "@/components/blocks/block-list";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { highlightCode } from "@/features/pages/container-page";
-import { ModuleDataFragment } from "@/graphql/__generated__/operations";
+import type { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
 
 export const FortroendeModulePage: FC<ModuleDataFragment> = ({ blocks }) => {
   const [heading, setHeading] = useState<string | null>(null);
   const { setBreadcrumb } = useContext(SettingsContext);
-  const { t } = useTranslation();
+  const t = useTranslations();
   const pathname = usePathname();
 
   const getHeading = () => {

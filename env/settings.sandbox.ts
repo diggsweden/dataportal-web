@@ -48,8 +48,4 @@ export class Settings_Sandbox extends EnvSettings {
   envName = "sandbox";
 
   nonce = generateRandomKey(256);
-
-  public constructor() {
-    super();
-  }
 }
