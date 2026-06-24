@@ -243,7 +243,7 @@ const DataportalChrome: FC<DataportalenProps> = ({
 
               <main
                 id="main"
-                className={`mt-lg min-h-[calc(100vh-46.5rem)] pb-lg md:mt-xl md:pb-xl lg:min-h-[calc(100vh-38.25rem)]`}
+                className={`min-h-[calc(100vh-46.5rem)] pb-lg lg:min-h-[calc(100vh-38.25rem)]`}
               >
                 <Component {...pageProps} />
               </main>
