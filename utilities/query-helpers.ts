@@ -24,6 +24,7 @@ import type {
   NewsItemQuery,
   NewsItemQueryVariables,
   ParentFragment,
+  ParentSimplifiedFragment,
   RootAggregateQuery,
   RootAggregateQueryVariables,
   SearchQuery,
@@ -53,7 +54,7 @@ import { TOOL_QUERY } from "@/graphql/toolQuery";
 export interface MultiContainerResponse {
   type: "MultiContainer";
   container?: ContainerDataFragment;
-  related?: ContainerDataFragment[];
+  related?: ParentSimplifiedFragment[];
   parent?: ParentFragment | null;
 }
 
@@ -195,24 +196,15 @@ export const getMultiContainer = async (
       return null;
     }
 
-    // Fetch related containers (siblings) as a separate best-effort query
-    let related: ContainerDataFragment[] = [];
-    try {
-      const groupData = await gqlFetch<
-        ContainersQuery,
-        ContainersQueryVariables
-      >(CONTAINER_QUERY, {
-        filter: {
-          containerGroup: { slug: `/${slugs[0]}` },
-          locale,
-          limit: 50,
-        },
-      });
-      related = groupData.dataportal_Digg_Containers.filter(
-        (c): c is ContainerDataFragment => c !== null,
-      );
-    } catch {
-      // containerGroup filter may not exist on newer backends — gracefully degrade
+    // Use pageNavigation from the container itself, or fall back to parent's
+    let related: ParentSimplifiedFragment[] = [];
+    if (container.pageNavigation && container.pageNavigation.length > 0) {
+      related = container.pageNavigation;
+    } else if (
+      container.parent?.pageNavigation &&
+      container.parent.pageNavigation.length > 0
+    ) {
+      related = container.parent.pageNavigation;
     }
 
     return {

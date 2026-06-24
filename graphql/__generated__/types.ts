@@ -31,14 +31,7 @@ export enum Dataportal_LinkType {
   Internal = 'INTERNAL'
 }
 
-export interface Dataportal_QueryCategoryArgs {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  locale?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
-}
-
 export interface Dataportal_QueryContainerArgs {
-  containerGroup?: InputMaybe<Dataportal_QueryCategoryArgs>;
   id?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
