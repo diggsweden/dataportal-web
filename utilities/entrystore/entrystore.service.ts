@@ -413,12 +413,9 @@ export class EntrystoreService {
     }
   }
 
-  // biome-ignore lint/suspicious/noExplicitAny: Unknown type
   public async getResources(resources: string[]): Promise<any> {
-    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     const result: any[] = [];
     const maxRequestUriLength = 1500;
-    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     const requestPromises: Promise<any>[] = [];
 
     while (resources.length) {
@@ -678,13 +675,15 @@ export class EntrystoreService {
         (spec) => spec.resource === "http://www.w3.org/ns/dcat#theme",
       );
 
-      if (themeFacetSpec?.dcatFilterEnabled && themeFacetSpec.dcatProperty) {
+      if (
+        themeFacetSpec?.dcatFilterEnabled &&
+        themeFacetSpec.dcatProperty &&
+        dcat
+      ) {
         try {
-          // biome-ignore lint/style/noNonNullAssertion: value is guaranteed to exist
-          const whitelist = await listChoices("dcat:theme", dcat!);
+          const whitelist = await listChoices("dcat:theme", dcat);
           values.theme_literal = metadata
             .find(null, "http://www.w3.org/ns/dcat#theme")
-            // biome-ignore lint/suspicious/noExplicitAny: Unknown type
             .map((f: any) => f.getValue())
             .filter((value: string) => whitelist.includes(value))
             .map((value: string) => this.resourceLabel(value));
@@ -694,7 +693,6 @@ export class EntrystoreService {
       } else {
         values.theme_literal = metadata
           .find(null, "http://www.w3.org/ns/dcat#theme")
-          // biome-ignore lint/suspicious/noExplicitAny: Unknown type
           .map((f: any) => this.resourceLabel(f.getValue()));
       }
 
@@ -702,13 +700,15 @@ export class EntrystoreService {
         (spec) => spec.resource === "http://purl.org/dc/terms/format",
       );
 
-      if (formatFacetSpec?.dcatFilterEnabled && formatFacetSpec.dcatProperty) {
+      if (
+        formatFacetSpec?.dcatFilterEnabled &&
+        formatFacetSpec.dcatProperty &&
+        dcat
+      ) {
         try {
-          // biome-ignore lint/style/noNonNullAssertion: value is guaranteed to exist
-          const whitelist = await listChoices("dcterms:format", dcat!);
+          const whitelist = await listChoices("dcterms:format", dcat);
           values.format_literal = metadata
             .find(null, "http://purl.org/dc/terms/format")
-            // biome-ignore lint/suspicious/noExplicitAny: Unknown type
             .map((f: any) => f.getValue())
             .filter((value: string) => whitelist.includes(value))
             .map((value: string) => this.resourceLabel(value));
@@ -718,7 +718,6 @@ export class EntrystoreService {
       } else {
         values.format_literal = metadata
           .find(null, "http://purl.org/dc/terms/format")
-          // biome-ignore lint/suspicious/noExplicitAny: Unknown type
           .map((f: any) => this.resourceLabel(f.getValue()));
       }
 
@@ -731,7 +730,6 @@ export class EntrystoreService {
         for (const facet of customFacets) {
           const hasResource = metadata
             .find(entry.getResourceURI(), facet.resource)
-            // biome-ignore lint/suspicious/noExplicitAny: Unknown type
             .some((f: any) => {
               const value = f.getValue();
 
@@ -765,7 +763,6 @@ export class EntrystoreService {
 
       values.modified = metadata
         .find(null, "http://purl.org/dc/terms/modified")
-        // biome-ignore lint/suspicious/noExplicitAny: Unknown type
         .map((f: any) => f.getValue());
     } else {
       const metadata = entry.getAllMetadata();

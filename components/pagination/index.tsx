@@ -122,29 +122,32 @@ export const Pagination: FC<PaginationProps> = ({
           </span>
           <ChevronLeftIcon className={currentPage === 1 ? "opacity-20" : ""} />
         </button>
-        {pagination().map((value: number | string, idx: number) => (
-          <button
-            type="button"
-            onClick={
-              value === "..." || value === currentPage
-                ? () => null
-                : () => changePageNumber(value as number)
-            }
-            tabIndex={value === "..." || value === currentPage ? -1 : 0}
-            // biome-ignore lint/suspicious/noArrayIndexKey: pagination items
-            key={idx}
-            aria-label={`${t("pages.search.page")} ${value}`}
-            className={`focus--in focus-visible:bg-brown-200 ${
-              value === currentPage
-                ? "cursor-auto bg-brown-800 text-white"
-                : `bg-white ${
-                    value !== "..." ? "hover:bg-brown-200" : "cursor-auto"
-                  } `
-            } flex h-xl w-xl cursor-pointer items-center justify-center`}
-          >
-            <span>{value}</span>
-          </button>
-        ))}
+        {pagination().map((value: number | string, idx: number) => {
+          const key =
+            typeof value === "number" ? `page-${value}` : `ellipsis-${idx}`;
+          return (
+            <button
+              type="button"
+              onClick={
+                value === "..." || value === currentPage
+                  ? () => null
+                  : () => changePageNumber(value as number)
+              }
+              tabIndex={value === "..." || value === currentPage ? -1 : 0}
+              key={key}
+              aria-label={`${t("pages.search.page")} ${value}`}
+              className={`focus--in focus-visible:bg-brown-200 ${
+                value === currentPage
+                  ? "cursor-auto bg-brown-800 text-white"
+                  : `bg-white ${
+                      value !== "..." ? "hover:bg-brown-200" : "cursor-auto"
+                    } `
+              } flex h-xl w-xl cursor-pointer items-center justify-center`}
+            >
+              <span>{value}</span>
+            </button>
+          );
+        })}
         <button
           type="button"
           tabIndex={currentPage === totalPages ? -1 : 0}

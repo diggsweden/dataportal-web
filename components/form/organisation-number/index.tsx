@@ -9,7 +9,7 @@ import { type FC, useEffect, useState } from "react";
 import CheckIcon from "@/assets/icons/check-circle.svg";
 import { Button } from "@/components/button";
 
-import { addLabel } from "../render-form";
+import { AddLabel } from "../render-form";
 import { TextInput } from "../text-input";
 
 interface OrganisationNumberProps {
@@ -99,12 +99,12 @@ export const OrganisationNumber: FC<OrganisationNumberProps> = ({
             : "bg-red-50",
       )}
     >
-      {addLabel(
-        1,
-        "organisationNumber",
-        1,
-        t("pages.form.organisation-number"),
-      )}
+      <AddLabel
+        number={1}
+        Type="organisationNumber"
+        ID={1}
+        title={t("pages.form.organisation-number")}
+      />
       <div className="flex gap-sm">
         <TextInput
           placeholder="XXXXXX-XXXX"

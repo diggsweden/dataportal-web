@@ -46,7 +46,6 @@ const TopNav: FC<TopNavProps> = ({ setOpenSideBar, serviceMenu }) => {
                   >
                     <span
                       className="inline-flex"
-                      // biome-ignore lint/security/noDangerouslySetInnerHtml: Icon is HTML
                       dangerouslySetInnerHTML={{ __html: menu.icon }}
                       aria-hidden="true"
                     />

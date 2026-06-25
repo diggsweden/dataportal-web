@@ -1,6 +1,7 @@
 "use client";
 
 import { cva, cx, type VariantProps } from "class-variance-authority";
+import parse from "html-react-parser";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
@@ -90,10 +91,11 @@ const MenuLink: FC<MenuLinkProps> = ({
       {isActive && <PixelsImage className="absolute right-none text-white" />}
       {icon && (
         <span
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: content is sanitized
-          dangerouslySetInnerHTML={{ __html: icon }}
           className={`flex-shrink-0 ${isActive ? "text-pink-600" : ""}`}
-        />
+          aria-hidden="true"
+        >
+          {parse(icon)}
+        </span>
       )}
       <span
         className={`z-50 underline-offset-4 group-hover:underline ${
@@ -188,10 +190,11 @@ export const SidebarLink: FC<
         >
           {icon && (
             <span
-              // biome-ignore lint/security/noDangerouslySetInnerHtml: Icon is HTML
-              dangerouslySetInnerHTML={{ __html: icon }}
               className={`flex-shrink-0 ${open ? "text-pink-600" : ""}`}
-            />
+              aria-hidden="true"
+            >
+              {parse(icon)}
+            </span>
           )}
           <span
             className={`mr-auto underline-offset-4 group-hover:underline ${

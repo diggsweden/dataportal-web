@@ -732,19 +732,20 @@ class SearchProviderClass extends Component<
     }
 
     let fetchResults = false;
-    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
-    const qs = decode(window.location.search.substring(1)) as any;
+    const qs: Record<string, string | undefined> = decode(
+      window.location.search.substring(1),
+    );
 
     // Parse query parameters
-    const querytext = qs.q?.toString().length > 0 ? qs.q.toString() : "";
-    const page = qs.p?.toString().length > 0 ? qs.p.toString() : null;
-    const take = qs.t?.toString().length > 0 ? qs.t.toString() : 20;
+    const querytext = qs.q?.length ? qs.q : "";
+    const page = qs.p?.length ? Number(qs.p) : null;
+    const take = qs.t?.length ? Number(qs.t) : 20;
     const sortOrder: SearchSortOrder =
-      (qs.s as SearchSortOrder) || SearchSortOrder.score_desc;
+      (Number(qs.s) as SearchSortOrder) || SearchSortOrder.score_desc;
 
     // Parse RDF types
     const rdftypes: ESRdfType[] = [];
-    if (qs.rt?.length > 0) {
+    if (qs.rt && qs.rt.length > 0) {
       qs.rt.split("$").forEach((e: string) => {
         const rdf = ESRdfType[e as keyof typeof ESRdfType];
         if (rdf) rdftypes.push(rdf);
@@ -753,10 +754,10 @@ class SearchProviderClass extends Component<
 
     // Parse facets
     const queryfacets: SearchFacetValue[] = [];
-    if (qs.f?.length > 0) {
+    if (qs.f && qs.f.length > 0) {
       const locationfacets = qs.f.indexOf("$") > -1 ? qs.f.split("$") : [qs.f];
 
-      locationfacets.forEach((f: string) => {
+      locationfacets.forEach((f) => {
         if (!f.includes("||")) return;
 
         const facetstring = f.split("||");
@@ -931,10 +932,10 @@ class SearchProviderClass extends Component<
     reSortOnDone: boolean,
   ): Promise<void> => {
     try {
+      if (!this.state.dcatmeta) return;
       const facets = await this.entrystoreService.getFacets(
         esFacets,
-        // biome-ignore lint/style/noNonNullAssertion: value is guaranteed to exist
-        this.state.dcatmeta!,
+        this.state.dcatmeta,
       );
 
       await this.batchStateUpdate({

@@ -55,8 +55,7 @@ export const RelatedContentBlock: FC<RelatedContentProps> = ({
         {links.map((link: PromoProps, idx: number) => {
           return (
             <li
-              // biome-ignore lint/suspicious/noArrayIndexKey: no unique id available
-              key={`related-content-${idx}`}
+              key={link.slug}
               className="group relative flex h-full flex-col bg-white text-brown-900"
             >
               <Promo {...link} heading={heading} />

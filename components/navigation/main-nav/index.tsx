@@ -100,31 +100,31 @@ const MainNav: FC<MainNavProps> = ({
               className="w-[2.75rem] cursor-pointer p-[0.625rem]"
             />
           ) : (
-            // biome-ignore lint/a11y/useSemanticElements: form with search role for compatibility
-            <form
-              ref={formRef}
-              className={`transition-width max-w-[17.125rem] text-sm duration-100 md:w-[17.125rem] [&_div]:mr-none [&_div_div_button]:p-[0.625rem] hover:first:[&_div_div_button]:bg-brown-200  ${
-                openSearch
-                  ? `w-full ${
-                      query
-                        ? "first:[&_div_div_button]:bg-transparent first:focus-visible:[&_div_div_button]:bg-brown-200 first:focus-visible:[&_div_div_button]:-outline-offset-2 first:focus-visible:[&_div_div_button]:outline-pink-600"
-                        : ""
-                    } [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900 focus-visible:[&_div_div_button]:-outline-offset-2 focus-visible:[&_div_div_button]:outline-white`
-                  : "w-none overflow-hidden"
-              }`}
-              action={`${includeLangInPath(lang)}/search`}
-              role={"search"}
-            >
-              <SearchInput
-                id="header-search"
-                placeholder={t("common.search")}
-                ariaLabel={t("common.search-content")}
-                query={query}
-                setQuery={setQuery}
-                type="small"
-                className="focus-in !h-[2.75rem] border-none !bg-brown-100 pr-[5.625rem] hover:outline-0"
-              />
-            </form>
+            <search>
+              <form
+                ref={formRef}
+                className={`transition-width max-w-[17.125rem] text-sm duration-100 md:w-[17.125rem] [&_div]:mr-none [&_div_div_button]:p-[0.625rem] hover:first:[&_div_div_button]:bg-brown-200  ${
+                  openSearch
+                    ? `w-full ${
+                        query
+                          ? "first:[&_div_div_button]:bg-transparent first:focus-visible:[&_div_div_button]:bg-brown-200 first:focus-visible:[&_div_div_button]:-outline-offset-2 first:focus-visible:[&_div_div_button]:outline-pink-600"
+                          : ""
+                      } [&_div_div_button]:bg-brown-800 last:hover:[&_div_div_button]:bg-brown-900 focus-visible:[&_div_div_button]:-outline-offset-2 focus-visible:[&_div_div_button]:outline-white`
+                    : "w-none overflow-hidden"
+                }`}
+                action={`${includeLangInPath(lang)}/search`}
+              >
+                <SearchInput
+                  id="header-search"
+                  placeholder={t("common.search")}
+                  ariaLabel={t("common.search-content")}
+                  query={query}
+                  setQuery={setQuery}
+                  type="small"
+                  className="focus-in !h-[2.75rem] border-none !bg-brown-100 pr-[5.625rem] hover:outline-0"
+                />
+              </form>
+            </search>
           )}
         </div>
 

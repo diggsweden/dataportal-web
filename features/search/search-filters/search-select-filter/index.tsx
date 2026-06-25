@@ -43,7 +43,6 @@ export const SearchSelectFilter: FC<SelectProps> = ({
       active={trapFocus}
       focusTrapOptions={{ allowOutsideClick: true }}
     >
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: keyboard handler for Escape */}
       <div
         ref={ref}
         onKeyDown={(ev) => ev.key === "Escape" && handleOpen(false)}
@@ -64,20 +63,17 @@ export const SearchSelectFilter: FC<SelectProps> = ({
         {open && (
           <div className={open ? "relative block" : "hidden"}>
             <ul
+              role="listbox"
               className="absolute z-10 mt-sm border border-brown-200 bg-white shadow-lg"
               aria-labelledby={id}
             >
               {options.map((option) => (
-                // biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-selected for selection state
-                // biome-ignore lint/a11y/useKeyWithClickEvents: keyboard handled by parent Escape handler
                 <li
                   key={option.value}
+                  role="option"
+                  tabIndex={-1}
                   aria-selected={option.value === value}
                   className={`inline-flex w-full cursor-pointer hover:bg-brown-100`}
-                  onClick={() => {
-                    onChange({ target: { value: option.value } });
-                    handleOpen(false);
-                  }}
                 >
                   <button
                     type="button"
@@ -86,6 +82,10 @@ export const SearchSelectFilter: FC<SelectProps> = ({
                         ? "bg-brown-100"
                         : ""
                     }`}
+                    onClick={() => {
+                      onChange({ target: { value: option.value } });
+                      handleOpen(false);
+                    }}
                   >
                     {selectedOption?.value === option.value && (
                       <CheckDoneIcon

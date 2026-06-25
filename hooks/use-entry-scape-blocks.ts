@@ -82,12 +82,9 @@ export const useEntryScapeBlocks = ({
   }, [pageType, context, esId]);
 
   useEffect(() => {
-    // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-    if (!(window as any).__entryscape_blocks_ready) {
-      // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-      (window as any).__entryscape_blocks_ready = new Promise((resolve) => {
-        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-        (window as any).__entryscape_blocks_resolve = resolve;
+    if (!window.__entryscape_blocks_ready) {
+      window.__entryscape_blocks_ready = new Promise((resolve) => {
+        window.__entryscape_blocks_resolve = resolve;
       });
     }
 
@@ -108,16 +105,13 @@ export const useEntryScapeBlocks = ({
           esId,
         });
 
-        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-        (window as any).__entryscape_config =
-          // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-          ((window as any).__entryscape_config || []).concat(newConfig);
+        window.__entryscape_config = (window.__entryscape_config || []).concat(
+          newConfig,
+        );
 
         // Create the ready promise
-        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-        (window as any).__entryscape_blocks_ready = new Promise((resolve) => {
-          // biome-ignore lint/suspicious/noExplicitAny: <>
-          (window as any).__entryscape_blocks_resolve = resolve;
+        window.__entryscape_blocks_ready = new Promise((resolve) => {
+          window.__entryscape_blocks_resolve = resolve;
         });
 
         if (pageType !== "mqa") {
@@ -136,15 +130,12 @@ export const useEntryScapeBlocks = ({
 
         await loadScript(envRef.current.ENTRYSCAPE_BLOCKS_URL);
 
-        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-        await (window as any).__entryscape_blocks_ready;
+        await window.__entryscape_blocks_ready;
 
         if (cancelled) return;
 
-        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-        if ((window as any).__entryscape_blocks) {
-          // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-          (window as any).__entryscape_blocks.init();
+        if (window.__entryscape_blocks) {
+          window.__entryscape_blocks.init();
         }
       } catch (error) {
         console.error("Error initializing EntryScape blocks:", error);
@@ -155,12 +146,9 @@ export const useEntryScapeBlocks = ({
 
     return () => {
       cancelled = true;
-      // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-      (window as any).__entryscape_config = [];
-      // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-      if ((window as any).__entryscape_blocks?.clear) {
-        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-        (window as any).__entryscape_blocks.clear();
+      window.__entryscape_config = [];
+      if (window.__entryscape_blocks?.clear) {
+        window.__entryscape_blocks.clear();
       }
     };
   }, [entrystoreBase, lang, pageType, context, esId, iconSize]);

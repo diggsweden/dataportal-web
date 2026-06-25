@@ -112,8 +112,7 @@ export function SearchActiveFilters({
                 <Button
                   variant="filter"
                   size="md"
-                  // biome-ignore lint/suspicious/noArrayIndexKey: facetValues lack stable unique id
-                  key={index}
+                  key={`${facetValue.facet}-${facetValue.resource}`}
                   label={label}
                   aria-label={`${t("common.clear-filters")} ${label}`}
                   icon={CrossIcon}

@@ -7,28 +7,45 @@ import { Dataportal_LinkType } from "@/graphql/__generated__/types";
 
 export type FlexDirection = "column" | "row";
 
-// biome-ignore lint/correctness/noUnusedVariables: ambient type declaration used in other files
-type AddIcon = ComponentType<{
+export type AddIcon = ComponentType<{
   className?: string;
   width?: number;
   height?: number;
   viewBox?: string;
 }>;
 
-// biome-ignore lint/correctness/noUnusedVariables: ambient type declaration used in other files
-type SubLink = {
+export type SubLink = {
   __typename: "dataportal_Digg_SubLink";
   title: string;
   icon: string;
   links: MenuLinkFragment[];
 };
 
-// biome-ignore lint/correctness/noUnusedVariables: ambient type declaration used in other files
-type SubLinkFooter = {
+export type SubLinkFooter = {
   __typename: "dataportal_Digg_SubLink";
   title: string;
   links: MenuLinkFragment[];
 };
+
+declare global {
+  interface Window {
+    __entryscape_blocks_ready?: Promise<void>;
+    __entryscape_blocks_resolve?: () => void;
+    __entryscape_config?: unknown[];
+    __entryscape_blocks?: {
+      init(): void;
+      clear(): void;
+    };
+    __es_has_apis?: string[];
+    screen9?: {
+      Player: new (options: {
+        mediaid: string;
+        containerid: string;
+        token?: string;
+      }) => { dispose(): void };
+    };
+  }
+}
 
 export type DiggStrapiTheme =
   | "brownTheme"

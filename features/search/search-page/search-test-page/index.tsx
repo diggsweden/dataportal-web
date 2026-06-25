@@ -20,9 +20,8 @@ export const SearchTestPage: FC = () => {
     const search = async () => {
       index
         .search(searchWord, { attributesToHighlight: ["*"] })
-        // biome-ignore lint/suspicious/noExplicitAny: Unknown type
-        .then((result: any) => {
-          setHits(result.hits);
+        .then((result) => {
+          setHits(result.hits as SearchHit[]);
         });
     };
 
@@ -46,12 +45,9 @@ export const SearchTestPage: FC = () => {
             type="text"
           ></input>
           <ul>
-            {
-              // biome-ignore lint/suspicious/noExplicitAny: Unknown type
-              hits?.map((r: any) => (
-                <li key={r.name}>{r.name}</li>
-              ))
-            }
+            {hits?.map((r) => (
+              <li key={r.title}>{r.title}</li>
+            ))}
           </ul>
         </div>
       </div>
