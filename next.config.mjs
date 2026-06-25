@@ -59,6 +59,10 @@ const coreNextConfig = {
         as: "*.js",
       },
     },
+    resolveAlias: {
+      "swagger-client/es/resolver/strategies/openapi-3-1-apidom":
+        "swagger-client/es/resolver/strategies/openapi-3-0",
+    },
   },
   // Keep Node-only deps out of the browser bundle. `winston` and the
   // logstash transport import `net`/`tls`/`fs`; with Turbopack default in
