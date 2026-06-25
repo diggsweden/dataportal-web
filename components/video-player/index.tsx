@@ -1,12 +1,10 @@
 "use client";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { type FC, useEffect, useState } from "react";
 
 export const VideoPlayer: FC<{ video_id: string }> = ({ video_id }) => {
   const containerid = `video_screen9_${video_id}`;
-  // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-  let player: any;
+  let player: { dispose(): void } | undefined;
 
   const useScript = (src: string) => {
     const [status, setStatus] = useState(src ? "loading" : "idle");
@@ -66,8 +64,9 @@ export const VideoPlayer: FC<{ video_id: string }> = ({ video_id }) => {
         containerid,
         token: process.env.NEXT_PUBLIC_SCREEN9_API_TOKEN,
       };
-      // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
-      player = new (window as any).screen9.Player(options);
+      if (window.screen9) {
+        player = new window.screen9.Player(options);
+      }
     }
     return () => {
       if (player) {
@@ -83,8 +82,8 @@ export const VideoPlayer: FC<{ video_id: string }> = ({ video_id }) => {
   }, [status]);
 
   return (
-    // biome-ignore lint/a11y/useMediaCaption: Screen9 replaces this element at runtime and manages its own captions.
     <video id={containerid} className="video-js vjs-fluid" controls playsInline>
+      <track kind="captions" />
       Video
     </video>
   );

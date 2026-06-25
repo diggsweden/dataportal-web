@@ -1,4 +1,3 @@
-// biome-ignore-all lint/suspicious/noExplicitAny: Unknown types from entrystore-js
 declare module "@entryscape/entrystore-js" {
   export class EntryStore {
     constructor(_url: string);
@@ -19,7 +18,7 @@ declare module "@entryscape/entrystore-js" {
       _uris: string[],
       _context: Context | null,
       _all: boolean,
-      _asyncCallType?: any,
+      _asyncCallType?: unknown,
     ): Promise<Entry[]>;
     loadOnlyPublicEntries(_all: boolean): void;
     getEntryByResourceURI(_uri: string): Promise<Entry>;
@@ -63,7 +62,7 @@ declare module "@entryscape/entrystore-js" {
     disjunctiveProperties(): this;
 
     // List creation and execution
-    list(_asyncCallType?: any): SearchList;
+    list(_asyncCallType?: unknown): SearchList;
     getEntries(_page?: number): Promise<Entry[]>;
     getEntry(): Promise<Entry>;
     size(): Promise<number>;
@@ -80,7 +79,7 @@ declare module "@entryscape/entrystore-js" {
     constructor(
       _entrystore: EntryStore,
       _query: SolrQuery,
-      _asyncCallType?: any,
+      _asyncCallType?: unknown,
     );
     getEntries(_page?: number): Promise<Entry[]>;
     getSize(): number;
@@ -99,8 +98,8 @@ declare module "@entryscape/entrystore-js" {
   }
 
   export class Metadata {
-    find(_subject: any, _predicate: string): MetadataValue[];
-    findFirstValue(_subject: any, _predicate: string): string;
+    find(_subject: string | null, _predicate: string): MetadataValue[];
+    findFirstValue(_subject: string | null, _predicate: string): string;
   }
 
   export interface MetadataValue {

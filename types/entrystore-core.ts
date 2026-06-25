@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import type { Entry, EntryStore } from "@entryscape/entrystore-js";
 
+import type { EnvSettings } from "@/env/env-settings";
 import type { OrganisationData } from "./organisation";
 
 // Core EntryStore Types
@@ -72,8 +73,7 @@ export interface DownloadFormat {
 
 // Entry Types
 export interface ESEntry {
-  // biome-ignore lint/suspicious/noExplicitAny: Unknown type
-  env: any;
+  env: EnvSettings;
   entrystore: EntryStore;
   entry: Entry;
   loading: boolean;

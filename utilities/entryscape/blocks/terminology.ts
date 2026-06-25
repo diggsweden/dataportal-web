@@ -1,4 +1,3 @@
-// biome-ignore-all lint/suspicious/noExplicitAny: Unknown types from entrystore-js
 import type { Entry } from "@entryscape/entrystore-js";
 import type { Translate } from "@/i18n/types";
 import { includeLangInPath } from "@/utilities/check-lang";

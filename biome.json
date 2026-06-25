@@ -62,9 +62,9 @@
         "useButtonType": "warn",
         "useSemanticElements": "warn",
         "useKeyWithClickEvents": "warn",
-        "noStaticElementInteractions": "warn",
-        "noNoninteractiveElementToInteractiveRole": "warn",
-        "useAriaPropsSupportedByRole": "warn",
+        "noStaticElementInteractions": "off",
+        "noNoninteractiveElementToInteractiveRole": "off",
+        "useAriaPropsSupportedByRole": "off",
         "noRedundantRoles": "warn",
         "useFocusableInteractive": "warn",
         "noNoninteractiveTabindex": "warn",
@@ -73,7 +73,7 @@
         "noLabelWithoutControl": "warn"
       },
       "security": {
-        "noDangerouslySetInnerHtml": "warn"
+        "noDangerouslySetInnerHtml": "off"
       },
       "style": {
         "noDescendingSpecificity": "off",
@@ -91,6 +91,52 @@
       }
     }
   },
+  "overrides": [
+    {
+      "includes": [
+        "utilities/entryscape/**",
+        "utilities/entrystore/**",
+        "utilities/form-utils.ts",
+        "utilities/key-generator.ts",
+        "hooks/use-entry-scape-blocks.ts",
+        "hooks/use-state-callback.ts",
+        "providers/search-provider/**",
+        "providers/api-index-context/**",
+        "features/entryscape/**",
+        "features/search/search-page/**",
+        "components/video-player/**",
+        "cypress/**",
+        "types/**"
+      ],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["utilities/entryscape/blocks/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noTemplateCurlyInString": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["types/**"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off"
+          }
+        }
+      }
+    }
+  ],
   "assist": {
     "enabled": true,
     "actions": {

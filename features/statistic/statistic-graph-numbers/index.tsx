@@ -82,8 +82,7 @@ export const StatisticGraphNumbers: FC = () => {
             .map((item: number, index: number) => {
               return (
                 <StatisticListItemHistory
-                  // biome-ignore lint/suspicious/noArrayIndexKey: index maps to labels array
-                  key={`cat-${index}`}
+                  key={stats.xList?.[index] ?? `cat-${index}`}
                   listText={stats.xList?.[index]}
                   listNumber={item}
                 />

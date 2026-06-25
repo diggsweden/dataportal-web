@@ -239,8 +239,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
               </div>
             )}
 
-            {/* biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-label for content landmark */}
-            <div
+            <section
               id="content"
               aria-label="Main content"
               className={`${
@@ -251,7 +250,7 @@ export const ContainerPage: React.FC<ContainerPageProps> = ({
             >
               {!image && preamble && <Preamble>{checkLang(preamble)}</Preamble>}
               {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
-            </div>
+            </section>
           </div>
         </div>
       </article>

@@ -36,8 +36,7 @@ export const FortroendeModulePage: FC<ModuleDataFragment> = ({ blocks }) => {
 
   useEffect(() => {
     setBreadcrumb?.({
-      // biome-ignore lint/style/noNonNullAssertion: value is guaranteed to exist
-      name: heading!,
+      name: heading ?? "",
       crumbs: [
         { name: "start", link: { ...linkBase, link: "/" } },
         {

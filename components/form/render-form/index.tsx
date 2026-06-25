@@ -46,10 +46,8 @@ const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
         size={"xs"}
         className="mb-sm justify-between"
       />
-      {/* biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-labelledby links to toggle button */}
       <p
         id={popoverId}
-        aria-labelledby={`${popoverId}-button`}
         className={`text-sm text-textSecondary ${
           visible ? "visible" : "hidden"
         }`}
@@ -60,13 +58,17 @@ const PopOver: FC<{ text: string; title: string }> = ({ text, title }) => {
   );
 };
 
-export const addLabel = (
-  number: number,
-  Type: string,
-  ID: number,
-  title: string,
-) => {
-  // biome-ignore lint/correctness/useHookAtTopLevel: addLabel is a JSX-returning helper; refactor to a component in the App Router port.
+export const AddLabel = ({
+  number,
+  Type,
+  ID,
+  title,
+}: {
+  number: number;
+  Type: string;
+  ID: number;
+  title: string;
+}) => {
   const t = useTranslations();
   return (
     <div className="flex flex-col gap-md">
@@ -135,7 +137,12 @@ const FormItem = (
     case "dataportal_Digg_FormText":
       return (
         <div className="form-item">
-          {addLabel(item.number, Type, ID, item.title)}
+          <AddLabel
+            number={item.number}
+            Type={Type}
+            ID={ID}
+            title={item.title}
+          />
           {item.info && <PopOver text={item.info} title={item.title} />}
           <TextInput
             id={`${Type}${ID}`}
@@ -151,7 +158,12 @@ const FormItem = (
     case "dataportal_Digg_FormTextArea":
       return (
         <div className="form-item">
-          {addLabel(item.number, Type, ID, item.title)}
+          <AddLabel
+            number={item.number}
+            Type={Type}
+            ID={ID}
+            title={item.title}
+          />
           {item.info && <PopOver text={item.info} title={item.title} />}
           <Textarea
             name={`${Type}${ID}`}
@@ -173,7 +185,6 @@ const FormItem = (
     case "dataportal_Digg_FormRadio":
       return (
         <div className="form-item">
-          {/* biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-expanded used for conditional display */}
           <fieldset
             className="mb-md space-y-lg"
             aria-expanded={
@@ -185,7 +196,12 @@ const FormItem = (
                 : false
             }
           >
-            {addLabel(item.number, Type, ID, item.title)}
+            <AddLabel
+              number={item.number}
+              Type={Type}
+              ID={ID}
+              title={item.title}
+            />
             {item.info && <PopOver text={item.info} title={item.title} />}
             <div className="flex flex-col gap-md lg:flex-row lg:items-center">
               {item.choices.map((choice) => {
@@ -253,7 +269,12 @@ const FormItem = (
     case "dataportal_Digg_FormDropdown":
       return (
         <div className="form-item">
-          {addLabel(item.number, Type, ID, item.title)}
+          <AddLabel
+            number={item.number}
+            Type={Type}
+            ID={ID}
+            title={item.title}
+          />
           <div>
             <Select
               id={`${Type}${ID}`}
@@ -289,7 +310,12 @@ const FormItem = (
     case "dataportal_Digg_FormCheckbox":
       return (
         <div className="form-item">
-          {addLabel(item.number, Type, ID, item.title)}
+          <AddLabel
+            number={item.number}
+            Type={Type}
+            ID={ID}
+            title={item.title}
+          />
           <div className="grid grid-cols-2 gap-md">
             {item.choices.map((choice) => (
               <MultiSelect

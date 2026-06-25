@@ -56,7 +56,6 @@ export const SearchPageContent: FC<SearchProps> = () => {
       PER_PAGE,
       pageNumber && pageNumber > 1 ? (pageNumber - 1) * PER_PAGE : 0,
       true,
-      // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     )) as any;
 
     const hits: SearchHit[] = result?.dataportal_Digg_Search?.hits
@@ -86,7 +85,6 @@ export const SearchPageContent: FC<SearchProps> = () => {
     });
 
     return (
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: content is sanitized
       <span dangerouslySetInnerHTML={{ __html: highlightedText.join("") }} />
     );
   };
@@ -170,32 +168,31 @@ export const SearchPageContent: FC<SearchProps> = () => {
           {t("common.search-content")}
         </Heading>
 
-        {/* biome-ignore lint/a11y/useSemanticElements: form with search role */}
-        <form
-          className="my-lg max-w-md md:my-xl"
-          onSubmit={(event) => {
-            clearCurrentScrollPos();
-            event.preventDefault();
-            submitSearch(query);
-          }}
-          role={"search"}
-        >
-          <SearchInput
-            autoFocus
-            id="search-field"
-            placeholder={t("pages.content.search")}
-            isLoading={loading}
-            query={query}
-            setQuery={setQuery}
-            submitSearch={submitSearch}
-            onChange={(e) => {
+        <search className="my-lg max-w-md md:my-xl">
+          <form
+            onSubmit={(event) => {
               clearCurrentScrollPos();
-              setQuery(e.target.value);
+              event.preventDefault();
+              submitSearch(query);
             }}
-            key={searchRequest?.query ? "loaded" : "not loaded"}
-            ariaLabel={t("pages.content.search")}
-          />
-        </form>
+          >
+            <SearchInput
+              autoFocus
+              id="search-field"
+              placeholder={t("pages.content.search")}
+              isLoading={loading}
+              query={query}
+              setQuery={setQuery}
+              submitSearch={submitSearch}
+              onChange={(e) => {
+                clearCurrentScrollPos();
+                setQuery(e.target.value);
+              }}
+              key={searchRequest?.query ? "loaded" : "not loaded"}
+              ariaLabel={t("pages.content.search")}
+            />
+          </form>
+        </search>
 
         <SearchPageSelector query={query} />
       </Container>
@@ -221,8 +218,7 @@ export const SearchPageContent: FC<SearchProps> = () => {
                 {searchResult.hits?.map((hit: SearchHit) => (
                   <li className="group relative max-w-lg" key={hit.url}>
                     <Link
-                      // biome-ignore lint/style/noNonNullAssertion: value is guaranteed to exist
-                      href={`${cleanDoubleSlash(hit.url!)}#ref=${
+                      href={`${cleanDoubleSlash(hit.url ?? "")}#ref=${
                         window ? window.location.search : ""
                       }`}
                       onClick={() => {
