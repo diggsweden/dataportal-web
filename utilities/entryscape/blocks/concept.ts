@@ -23,7 +23,6 @@ export const conceptBlocks = (t: Translate, iconSize: number, lang: string) => [
     click: "./",
     class: "text-md link",
     limit: 20,
-    // biome-ignore lint/suspicious/noTemplateCurlyInString: entryscape template syntax
     content: "${skos:prefLabel}",
   },
   {
@@ -34,13 +33,11 @@ export const conceptBlocks = (t: Translate, iconSize: number, lang: string) => [
     click: "./",
     limit: 20,
     class: "text-md link",
-    // biome-ignore lint/suspicious/noTemplateCurlyInString: entryscape template syntax
     content: "${skos:prefLabel}",
     rowhead: "{{conceptLink}}",
   },
   {
     block: "conceptLink",
-    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
     run: (node: any, a2: any, a3: any, entry: Entry) => {
       if (node?.firstElementChild && entry) {
         const baseUrl = window.location.origin;
@@ -71,12 +68,10 @@ export const conceptBlocks = (t: Translate, iconSize: number, lang: string) => [
       '{{#ifprop "skos:altLabel"}}' +
       "<div data-test-id='alternative-terms'><h2>" +
       t("pages.concept_page.alternativ_term") +
-      // biome-ignore lint/suspicious/noTemplateCurlyInString: entryscape template syntax
       '</h2><span>{{ text content="${skos:altLabel}" }}</span></div>' +
       "{{/ifprop}}" +
       '{{#ifprop "skos:example"}}<div><h2>' +
       t("pages.concept_page.example") +
-      // biome-ignore lint/suspicious/noTemplateCurlyInString: entryscape template syntax
       '</h2><span>{{ text content="${skos:example}" }}</span></div>' +
       "{{/ifprop}}" +
       '{{#ifprop "rdf:type" uri="skos:ConceptScheme" invert="true"}}' +
@@ -113,7 +108,6 @@ export const conceptBlocks = (t: Translate, iconSize: number, lang: string) => [
       "<h2>" +
       t("pages.concept_page.historical_note") +
       "</h2>" +
-      // biome-ignore lint/suspicious/noTemplateCurlyInString: entryscape template syntax
       '<span>{{ text content="${skos:historyNote}" }}</span>' +
       "</div>" +
       "{{/ifprop}}" +
@@ -122,7 +116,6 @@ export const conceptBlocks = (t: Translate, iconSize: number, lang: string) => [
       "<h2>" +
       t("pages.concept_page.editorial_note") +
       "</h2>" +
-      // biome-ignore lint/suspicious/noTemplateCurlyInString: entryscape template syntax
       '<span>{{ text content="${skos:editorialNote}" }}</span>' +
       "</div>" +
       "{{/ifprop}}" +
@@ -131,7 +124,6 @@ export const conceptBlocks = (t: Translate, iconSize: number, lang: string) => [
       "<h2>" +
       t("pages.concept_page.note") +
       "</h2>" +
-      // biome-ignore lint/suspicious/noTemplateCurlyInString: entryscape template syntax
       '<span>{{ text content="${skos:note}" }}</span>' +
       "</div>" +
       "{{/ifprop}}",

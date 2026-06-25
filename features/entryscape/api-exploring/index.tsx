@@ -17,7 +17,6 @@ export const ApiExplorer: FC<ApiExplorerProps> = (props) => {
     () =>
       import("swagger-ui-react").then(
         (c) => c.default,
-        // biome-ignore lint/suspicious/noExplicitAny: <unknown type>
         (e) => e as any,
       ),
     { ssr: false },

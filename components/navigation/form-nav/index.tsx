@@ -127,15 +127,10 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
         onKeyDown={handleEscape}
       >
         {expanded && (
-          // biome-ignore lint/a11y/useSemanticElements: overlay backdrop with click handler
-          <div
-            role="button"
-            tabIndex={0}
+          <button
+            type="button"
             className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden"
             onClick={() => setExpanded(false)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") setExpanded(false);
-            }}
           />
         )}
 
@@ -171,8 +166,7 @@ export const FormNav: FC<ContainerDpDwnProps> = ({
           {pageNames.map((name, idx: number) => {
             return (
               <li
-                // biome-ignore lint/suspicious/noArrayIndexKey: stable page name order
-                key={`name-${idx}`}
+                key={name}
                 className={`focus--outline focus--primary focus--in relative flex cursor-pointer flex-col gap-sm border-b border-brown-600 p-md text-textPrimary lg:max-w-[200px] lg:rounded-md lg:border
                ${
                  isActive(name)

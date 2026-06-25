@@ -42,10 +42,8 @@ export const SearchForm: FC<SearchFormProps> = ({
   };
 
   return (
-    <div className="my-lg max-w-md md:my-xl">
-      {/* biome-ignore lint/a11y/useSemanticElements: form with search role */}
+    <search className="my-lg max-w-md md:my-xl">
       <form
-        role={"search"}
         onSubmit={(e) => {
           clearCurrentScrollPos();
           e.preventDefault();
@@ -65,6 +63,6 @@ export const SearchForm: FC<SearchFormProps> = ({
           ariaLabel={placeholder}
         />
       </form>
-    </div>
+    </search>
   );
 };

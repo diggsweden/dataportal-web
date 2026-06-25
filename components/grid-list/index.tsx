@@ -70,10 +70,13 @@ export const GridList: FC<ListProps> = ({
           data-test-id="grid-list"
           className="gap-4 grid grid-cols-1 gap-xl md:grid-cols-2 lg:grid-cols-3"
         >
-          {items.map((item, idx) => (
+          {items.map((item) => (
             <li
-              // biome-ignore lint/suspicious/noArrayIndexKey: no stable unique id
-              key={idx}
+              key={
+                item.__typename === "dataportal_Digg_Tool"
+                  ? item.link
+                  : item.slug
+              }
               className="group relative flex h-full flex-col justify-between no-underline"
             >
               {item.__typename === "dataportal_Digg_Tool" ? (

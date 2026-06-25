@@ -24,8 +24,7 @@ export const Breadcrumbs: FC<BreadcrumbProps> = ({ crumbs, name }) => {
             {crumbs.map((crumb, index) => {
               return (
                 <li
-                  // biome-ignore lint/suspicious/noArrayIndexKey: stable breadcrumb order
-                  key={index}
+                  key={crumb.link.link}
                   className="flex items-center gap-md text-sm text-textSecondary hover:text-textPrimary"
                 >
                   <Link

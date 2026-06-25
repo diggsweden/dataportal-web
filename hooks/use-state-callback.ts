@@ -1,16 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-// biome-ignore lint/suspicious/noExplicitAny: Unknown type
-export function useStateCallback(initialState: any) {
-  const [state, setState] = useState(initialState);
-  // biome-ignore lint/suspicious/noExplicitAny: Unknown type
-  const cbRef = useRef(null) as any; // init mutable ref container for callbacks
+export function useStateCallback<T>(initialState: T) {
+  const [state, setState] = useState<T>(initialState);
+  const cbRef = useRef<((state: T) => void) | null>(null);
 
-  // biome-ignore lint/suspicious/noExplicitAny: Unknown type
-  const setStateCallback = useCallback((state: any, cb: any) => {
-    cbRef.current = cb; // store current, passed callback in ref
+  const setStateCallback = useCallback((state: T, cb?: (state: T) => void) => {
+    cbRef.current = cb ?? null;
     setState(state);
-  }, []); // keep object reference stable, exactly like `useState`
+  }, []);
 
   useEffect(() => {
     // cb.current is `null` on initial render,
@@ -21,5 +18,5 @@ export function useStateCallback(initialState: any) {
     }
   }, [state]);
 
-  return [state, setStateCallback];
+  return [state, setStateCallback] as const;
 }

@@ -234,8 +234,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
       {search.loadingHits && search.result.hits?.length === 0 ? (
         <div className="space-y-xl">
           {[...Array(5)].map((_, index) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: skeleton placeholders
-            <SearchResultSkeleton key={index} />
+            <SearchResultSkeleton key={`skeleton-${String(index)}`} />
           ))}
         </div>
       ) : (

@@ -144,8 +144,7 @@ export const ApiIndexProvider: FC<ApiIndexProviderProps> = ({
       });
 
     const parsedResult = result.join(",").replace(/'/g, "").split(",");
-    // biome-ignore lint/suspicious/noExplicitAny: Unknown type
-    (window as any).__es_has_apis = parsedResult;
+    window.__es_has_apis = parsedResult;
   };
 
   return (

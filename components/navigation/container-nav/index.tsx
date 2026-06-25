@@ -87,15 +87,10 @@ export const ContainerNav: FC<ContainerDpDwnProps> = ({ related }) => {
       onKeyDown={handleEscape}
     >
       {expanded && (
-        // biome-ignore lint/a11y/useSemanticElements: overlay backdrop with click handler
-        <div
-          role="button"
-          tabIndex={0}
+        <button
+          type="button"
           className="fixed left-none top-none z-30 h-screen w-screen bg-brownOpaque5 md:hidden"
           onClick={() => setExpanded(false)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") setExpanded(false);
-          }}
         />
       )}
 

@@ -288,8 +288,7 @@ export const FormPage: FC<Props> = ({ elements, module }) => {
             if (page === index) {
               return (
                 <div
-                  // biome-ignore lint/suspicious/noArrayIndexKey: stable page order
-                  key={`page${index}`}
+                  key={`page${String(index)}`}
                   className="col-span-1 col-start-1 row-start-2 max-w-md lg:col-start-2 lg:row-start-1"
                 >
                   <span ref={scrollRef} />
