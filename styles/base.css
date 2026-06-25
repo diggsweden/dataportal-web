@@ -253,6 +253,10 @@ input[type="radio"] {
   @apply relative space-y-lg rounded-lg border border-brown-200 bg-red-50 p-lg lg:p-xl;
 }
 
+.asg {
+  background: linear-gradient(90deg, #ffe4b5 0%, #800000 100%);
+}
+
 .checkbox {
   accent-color: #6e615a;
 }

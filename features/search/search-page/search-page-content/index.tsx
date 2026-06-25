@@ -10,7 +10,10 @@ import { Pagination } from "@/components/pagination";
 import { Heading } from "@/components/typography/heading";
 import { SearchInput } from "@/features/search/search-input";
 import { SearchPageSelector } from "@/features/search/search-page-selector";
-import { getSearchHit } from "@/features/search/utils/search-helpers";
+import {
+  formatHitCount,
+  getSearchHit,
+} from "@/features/search/utils/search-helpers";
 import type { SearchHitFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 import type { SearchHit, SearchRequest, SearchResult } from "@/types/search";
@@ -206,7 +209,11 @@ export const SearchPageContent: FC<SearchProps> = () => {
                 {!loading &&
                   searchResult &&
                   (searchResult.count || 0) >= 0 &&
-                  `${searchResult.count} ${t("pages.search.content-hits")}`}
+                  formatHitCount(
+                    searchResult.count || 0,
+                    searchRequest.query || "",
+                    t("pages.search.content-hits"),
+                  )}
               </Heading>
             </div>
 
