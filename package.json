@@ -19,7 +19,7 @@
     "@beam-australia/react-env": "^3.1.1",
     "@entryscape/entrystore-js": "^4.14.3",
     "@types/node-fetch": "^2.6.2",
-    "@types/swagger-ui-react": "^4.11.0",
+    "@types/swagger-ui-react": "^5.18.0",
     "class-variance-authority": "^0.7.0",
     "fetch-enhanced": "^8.1.1",
     "focus-trap": "^7.6.0",
@@ -44,7 +44,7 @@
     "rehype-raw": "^6.1.1",
     "remark-gfm": "^3.0.1",
     "sharp": "^0.33.0",
-    "swagger-ui-react": "4.14.0",
+    "swagger-ui-react": "^5.32.8",
     "winston": "^3.8.2"
   },
   "devDependencies": {
