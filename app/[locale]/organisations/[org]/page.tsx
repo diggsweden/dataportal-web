@@ -1,16 +1,26 @@
-"use client";
+import { headers } from "next/headers";
+import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
-import { useParams } from "next/navigation";
-import { useContext } from "react";
-
+import { Settings_Prod } from "@/env/settings.prod";
+import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { OrganisationPage } from "@/features/entryscape/organisation-page";
+import { isAppLocale } from "@/i18n/routing";
 import { EntrystoreProvider } from "@/providers/entrystore-provider";
-import { SettingsContext } from "@/providers/settings-provider";
 
-export default function Organisation() {
-  const { env } = useContext(SettingsContext);
-  const params = useParams<{ org: string }>();
-  const org = params?.org;
+interface PageProps {
+  params: Promise<{ locale: string; org: string }>;
+}
+
+export default async function Organisation({ params }: PageProps) {
+  const { locale, org } = await params;
+  if (!isAppLocale(locale)) notFound();
+  setRequestLocale(locale);
+
+  const host = (await headers()).get("host") ?? "";
+  const isSandbox = host.includes("sandbox");
+  const env = isSandbox ? new Settings_Sandbox() : new Settings_Prod();
+
   const ids = (typeof org === "string" && org.split("_")) || [];
   const eid = ids.pop() || "";
   const cid = ids.join("_");

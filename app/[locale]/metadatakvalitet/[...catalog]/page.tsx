@@ -1,21 +1,30 @@
-"use client";
+import { headers } from "next/headers";
+import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
-import { usePathname } from "next/navigation";
-import { useContext } from "react";
-
+import { Settings_Prod } from "@/env/settings.prod";
+import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { MQACategoryPage } from "@/features/entryscape/mqa-category-page";
+import { isAppLocale } from "@/i18n/routing";
 import { EntrystoreProvider } from "@/providers/entrystore-provider";
-import { SettingsContext } from "@/providers/settings-provider";
 
-export default function MqaCategoryPage() {
-  const { env } = useContext(SettingsContext);
-  const pathname = usePathname() ?? "";
-  const ids = pathname.split("/");
-  const mqaIndex = ids.indexOf("metadatakvalitet");
-  const eid = ids[mqaIndex + 1];
-  const cid = ids[mqaIndex + 2];
+interface PageProps {
+  params: Promise<{ locale: string; catalog: string[] }>;
+}
 
-  if (!cid || !eid) return null;
+export default async function MqaCategoryPage({ params }: PageProps) {
+  const { locale, catalog } = await params;
+  if (!isAppLocale(locale)) notFound();
+  setRequestLocale(locale);
+
+  const eid = catalog[0];
+  const cid = catalog[1];
+
+  if (!cid || !eid) notFound();
+
+  const host = (await headers()).get("host") ?? "";
+  const isSandbox = host.includes("sandbox");
+  const env = isSandbox ? new Settings_Sandbox() : new Settings_Prod();
 
   return (
     <EntrystoreProvider

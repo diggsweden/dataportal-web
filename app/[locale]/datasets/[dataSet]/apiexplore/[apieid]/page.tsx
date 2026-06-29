@@ -1,18 +1,27 @@
-"use client";
+import { headers } from "next/headers";
+import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
-import { useParams } from "next/navigation";
-import { useContext } from "react";
-
+import { Settings_Prod } from "@/env/settings.prod";
+import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { DataSetExploreApiPage } from "@/features/entryscape/dataset-explore-api-page";
+import { isAppLocale } from "@/i18n/routing";
 import { ApiIndexProvider } from "@/providers/api-index-context";
 import { EntrystoreProvider } from "@/providers/entrystore-provider";
-import { SettingsContext } from "@/providers/settings-provider";
 
-export default function ExploreApiPage() {
-  const { env } = useContext(SettingsContext);
-  const params = useParams<{ dataSet: string; apieid: string }>();
-  const dataSet = params?.dataSet;
-  const apieid = params?.apieid;
+interface PageProps {
+  params: Promise<{ locale: string; dataSet: string; apieid: string }>;
+}
+
+export default async function ExploreApiPage({ params }: PageProps) {
+  const { locale, dataSet, apieid } = await params;
+  if (!isAppLocale(locale)) notFound();
+  setRequestLocale(locale);
+
+  const host = (await headers()).get("host") ?? "";
+  const isSandbox = host.includes("sandbox");
+  const env = isSandbox ? new Settings_Sandbox() : new Settings_Prod();
+
   const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];
   const eid = ids[1];
