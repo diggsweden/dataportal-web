@@ -6,8 +6,6 @@ import {
   type FC,
   type ReactNode,
   type SetStateAction,
-  useEffect,
-  useState,
 } from "react";
 
 import type { BreadcrumbProps } from "@/components/navigation/breadcrumbs";
@@ -62,28 +60,8 @@ export const SettingsProvider: FC<{
   value: SettingsContextProps;
   children: ReactNode;
 }> = ({ value, children }) => {
-  const [iconSize, setIconSize] = useState(16);
-
-  useEffect(() => {
-    const calculateRemSize = () => {
-      const remInPixels = parseFloat(
-        getComputedStyle(document.documentElement).fontSize,
-      );
-      setIconSize(remInPixels);
-    };
-    calculateRemSize();
-
-    window.addEventListener("resize", calculateRemSize);
-    return () => window.removeEventListener("resize", calculateRemSize);
-  }, []);
-
-  const contextValue = {
-    ...value,
-    iconSize,
-  };
-
   return (
-    <SettingsContext.Provider value={contextValue}>
+    <SettingsContext.Provider value={value}>
       {children}
     </SettingsContext.Provider>
   );

@@ -1,37 +1,35 @@
-"use client";
+import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
-import { useParams, useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
-import { useEffect } from "react";
+import { isAppLocale } from "@/i18n/routing";
+import { resolveEntryStoreRoute } from "@/utilities/entrystore/resolve-entry-store-route";
 
-import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
+interface PageProps {
+  params: Promise<{ locale: string; specification: string[] }>;
+}
 
-export default function ExternalSpecificationCatchAll() {
-  const router = useRouter();
-  const locale = useLocale();
-  const params = useParams<{ specification: string[] }>();
-  const specification = params?.specification;
+export default async function ExternalSpecificationCatchAll({
+  params,
+}: PageProps) {
+  const { locale, specification } = await params;
+  if (!isAppLocale(locale)) notFound();
+  setRequestLocale(locale);
 
-  useEffect(() => {
-    const fetchEntryStoreProps = async () => {
-      if (!specification) return;
-      const isSandbox = window.location.host.includes("sandbox");
+  const host = (await headers()).get("host") ?? "";
+  const isSandbox = host.includes("sandbox");
 
-      await handleEntryStoreRedirect(
-        {
-          pathPrefix: "/concepts",
-          redirectPath: "/concepts",
-          entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
-          param: specification,
-        },
-        router,
-        locale,
-        isSandbox,
-      );
-    };
+  const result = await resolveEntryStoreRoute(
+    {
+      pathPrefix: "/concepts",
+      redirectPath: "/concepts",
+      entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
+      param: specification,
+    },
+    locale,
+    isSandbox,
+  );
 
-    fetchEntryStoreProps();
-  }, [specification]);
-
-  return null;
+  if (result.type === "redirect") redirect(result.url);
+  notFound();
 }

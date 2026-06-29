@@ -1,55 +1,47 @@
-"use client";
+import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
-import { useParams, useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
-import { useContext, useEffect, useState } from "react";
-
+import { Settings_Prod } from "@/env/settings.prod";
+import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { ConceptPage } from "@/features/entryscape/concept-page";
+import { isAppLocale } from "@/i18n/routing";
 import { EntrystoreProvider } from "@/providers/entrystore-provider";
-import { SettingsContext } from "@/providers/settings-provider";
-import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
+import { resolveEntryStoreRoute } from "@/utilities/entrystore/resolve-entry-store-route";
 
-export default function ConceptParam() {
-  const { env } = useContext(SettingsContext);
-  const router = useRouter();
-  const locale = useLocale();
-  const params = useParams<{ concept: string; param: string }>();
-  const concept = params?.concept;
-  const param = params?.param;
-  const [resourceUri, setResourceUri] = useState<string | null>(null);
+interface PageProps {
+  params: Promise<{ locale: string; concept: string; param: string }>;
+}
 
-  useEffect(() => {
-    const fetchEntryStoreProps = async () => {
-      if (!concept || !param) return;
-      const isSandbox = window.location.host.includes("sandbox");
+export default async function ConceptParam({ params }: PageProps) {
+  const { locale, concept, param } = await params;
+  if (!isAppLocale(locale)) notFound();
+  setRequestLocale(locale);
 
-      const data = await handleEntryStoreRedirect(
-        {
-          pathPrefix: "/concepts",
-          redirectPath: "/concepts",
-          entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
-          param: concept,
-          secondParam: param as string,
-        },
-        router,
-        locale,
-        isSandbox,
-      );
+  const host = (await headers()).get("host") ?? "";
+  const isSandbox = host.includes("sandbox");
+  const env = isSandbox ? new Settings_Sandbox() : new Settings_Prod();
 
-      if (data?.resourceUri) {
-        setResourceUri(data.resourceUri);
-      }
-    };
+  const result = await resolveEntryStoreRoute(
+    {
+      pathPrefix: "/concepts",
+      redirectPath: "/concepts",
+      entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
+      param: concept,
+      secondParam: param,
+    },
+    locale,
+    isSandbox,
+  );
 
-    fetchEntryStoreProps();
-  }, [concept, param]);
-
-  if (!resourceUri) return null;
+  if (result.type === "redirect") redirect(result.url);
+  if (result.type === "notFound") notFound();
+  if (result.type !== "resourceUri") notFound();
 
   return (
     <EntrystoreProvider
       env={env}
-      rUri={resourceUri}
+      rUri={result.resourceUri}
       entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
       pageType="concept"
     >
