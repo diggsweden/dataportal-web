@@ -4,7 +4,7 @@ import { FC, useContext, useEffect } from "react";
 
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
-import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
+import { useBlocksSpa } from "@/hooks/use-blocks-spa";
 import { SettingsContext } from "@/providers/settings-provider";
 import { handleLocale, linkBase } from "@/utilities";
 
@@ -14,7 +14,7 @@ export const MQAPage: FC = () => {
   const router = useRouter();
   const pageTitle = t("routes|metadata$title");
 
-  useEntryScapeBlocks({
+  useBlocksSpa({
     entrystoreBase: `https://${env.ENTRYSCAPE_MQA_PATH}/store`,
     env: env,
     lang: lang,

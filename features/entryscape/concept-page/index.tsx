@@ -6,7 +6,7 @@ import { FC, useContext, useEffect } from "react";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
+import { useBlocksSpa } from "@/hooks/use-blocks-spa";
 import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
@@ -18,7 +18,7 @@ export const ConceptPage: FC = () => {
   const { pathname } = useRouter() || {};
   const isTerminology = pathname.startsWith("/terminology");
 
-  useEntryScapeBlocks({
+  useBlocksSpa({
     entrystoreBase: entry.entrystore.getBaseURI(),
     env: entry.env,
     lang,

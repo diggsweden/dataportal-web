@@ -7,7 +7,7 @@ import { Button } from "@/components/button";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
+import { useBlocksSpa } from "@/hooks/use-blocks-spa";
 import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
@@ -28,7 +28,7 @@ export const DatasetPage: FC = () => {
   //   ? entry.keywords
   //   : entry.keywords?.slice(0, 4);
 
-  useEntryScapeBlocks({
+  useBlocksSpa({
     entrystoreBase: entry.entrystore.getBaseURI(),
     env: entry.env,
     lang,

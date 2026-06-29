@@ -29,6 +29,7 @@ import {
   MenuLinkIconFragment,
   NavigationDataFragment,
 } from "@/graphql/__generated__/operations";
+import { useBlocksRouterBridge } from "@/hooks/use-blocks-router-bridge";
 import {
   LocalStore,
   LocalStoreProvider,
@@ -110,6 +111,8 @@ function Dataportal({
     name: heading || "",
     crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
   });
+
+  useBlocksRouterBridge();
 
   const navigationData = useMemo(() => {
     if (!initialNavigationData?.items?.length) {
