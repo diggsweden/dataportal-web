@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, type FC, type ReactNode, useEffect } from "react";
 
 import type { CookieSetting } from "@/features/cookie-banner";

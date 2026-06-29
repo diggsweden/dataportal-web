@@ -19,7 +19,7 @@ export default async function DataServiceDetail({ params }: PageProps) {
 
   const host = (await headers()).get("host") ?? "";
   const isSandbox = host.includes("sandbox");
-  const env = isSandbox ? new Settings_Sandbox() : new Settings_Prod();
+  const env = { ...(isSandbox ? new Settings_Sandbox() : new Settings_Prod()) };
 
   const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];

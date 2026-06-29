@@ -19,7 +19,7 @@ export default async function DataSeries({ params }: PageProps) {
 
   const host = (await headers()).get("host") ?? "";
   const isSandbox = host.includes("sandbox");
-  const env = isSandbox ? new Settings_Sandbox() : new Settings_Prod();
+  const env = { ...(isSandbox ? new Settings_Sandbox() : new Settings_Prod()) };
 
   const ids = (typeof id === "string" && id.split("_")) || [];
   const eid = ids.pop() || "";

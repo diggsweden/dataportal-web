@@ -19,7 +19,7 @@ export default async function Organisation({ params }: PageProps) {
 
   const host = (await headers()).get("host") ?? "";
   const isSandbox = host.includes("sandbox");
-  const env = isSandbox ? new Settings_Sandbox() : new Settings_Prod();
+  const env = { ...(isSandbox ? new Settings_Sandbox() : new Settings_Prod()) };
 
   const ids = (typeof org === "string" && org.split("_")) || [];
   const eid = ids.pop() || "";

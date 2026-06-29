@@ -1,3 +1,5 @@
+"use client";
+
 import type { Entry } from "@entryscape/entrystore-js";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
