@@ -5,8 +5,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useEffect } from "react";
 
 import { Container } from "@/components/layout/container";
-import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
-import { EntrystoreContext } from "@/providers/entrystore-provider";
+import { useEntryScapeBlocks } from "@/lib/entryscape-blocks/use-blocks";
+import { EntrystoreContext } from "@/lib/entrystore/provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
 

@@ -7,7 +7,6 @@ import {
 // @ts-expect-error no types.
 import { namespaces } from "@entryscape/rdfjson";
 import type { ResourceLabel, Translate } from "@/i18n/types";
-import { SearchSortOrder } from "@/providers/search-provider";
 import {
   type ESFacetField,
   type ESFacetFieldValue,
@@ -15,7 +14,8 @@ import {
   ESType,
   type PageType,
   type RelatedTerm,
-} from "@/types/entrystore-core";
+} from "@/lib/entrystore/entrystore-core";
+import { SearchSortOrder } from "@/providers/search-provider";
 import type {
   FacetSpecification,
   HitSpecification,
@@ -37,8 +37,7 @@ import {
   listChoices,
   resourcesSearch,
 } from "@/utilities";
-
-import type { DCATData } from "../dcat-utils";
+import type { DCATData } from "@/utilities/dcat-utils";
 import {
   parseEmail,
   specsPathResolver,

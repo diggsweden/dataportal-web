@@ -5,7 +5,7 @@ import { getResourceLabel } from "@/i18n/get-resource-label";
 import { getTranslations } from "@/i18n/get-translations";
 import { isAppLocale, routing } from "@/i18n/routing";
 import type { RedirectConfig } from "@/types/global";
-import { includeLangInPath } from "../check-lang";
+import { includeLangInPath } from "@/utilities/check-lang";
 import { EntrystoreService } from "./entrystore.service";
 
 /** Minimal router interface — works with both Pages Router and App Router. */

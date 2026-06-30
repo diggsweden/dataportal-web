@@ -6,8 +6,8 @@ import { Settings_Prod } from "@/env/settings.prod";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { DataSetExploreApiPage } from "@/features/entryscape/dataset-explore-api-page";
 import { isAppLocale } from "@/i18n/routing";
+import { EntrystoreProvider } from "@/lib/entrystore/provider";
 import { ApiIndexProvider } from "@/providers/api-index-context";
-import { EntrystoreProvider } from "@/providers/entrystore-provider";
 
 interface PageProps {
   params: Promise<{ locale: string; dataSet: string; apieid: string }>;

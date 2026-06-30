@@ -7,9 +7,9 @@ import { type FC, useContext, useEffect } from "react";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
+import { useEntryScapeBlocks } from "@/lib/entryscape-blocks/use-blocks";
+import { EntrystoreContext } from "@/lib/entrystore/provider";
 import { ApiIndexContext } from "@/providers/api-index-context";
-import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
 

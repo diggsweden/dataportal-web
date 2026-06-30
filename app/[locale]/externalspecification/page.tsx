@@ -3,7 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 import { isAppLocale } from "@/i18n/routing";
-import { resolveEntryStoreRoute } from "@/utilities/entrystore/resolve-entry-store-route";
+import { resolveEntryStoreRoute } from "@/lib/entrystore/resolve-entry-store-route";
 
 interface PageProps {
   params: Promise<{ locale: string }>;

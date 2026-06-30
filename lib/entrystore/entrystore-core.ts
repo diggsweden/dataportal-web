@@ -2,7 +2,7 @@
 import type { Entry, EntryStore } from "@entryscape/entrystore-js";
 
 import type { EnvSettings } from "@/env/env-settings";
-import type { OrganisationData } from "./organisation";
+import type { OrganisationData } from "@/types/organisation";
 
 // Core EntryStore Types
 export enum ESType {

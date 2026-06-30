@@ -16,7 +16,7 @@ import { Container } from "@/components/layout/container";
 import { Modal } from "@/components/modal";
 import { Heading } from "@/components/typography/heading";
 import Showcase from "@/features/entryscape/showcase";
-import { EntrystoreContext } from "@/providers/entrystore-provider";
+import { EntrystoreContext } from "@/lib/entrystore/provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import type { DataInfo, TermInfo } from "@/types/organisation";
 import { linkBase } from "@/utilities";

@@ -1,10 +1,10 @@
 import type { EnvSettings } from "@/env";
-import { SearchSortOrder } from "@/providers/search-provider";
-import { ESRdfType, ESType } from "@/types/entrystore-core";
+import { ESRdfType, ESType } from "@/lib/entrystore/entrystore-core";
 import {
   conceptsPathResolver,
   specsPathResolver,
-} from "@/utilities/entrystore/entrystore-helpers";
+} from "@/lib/entrystore/entrystore-helpers";
+import { SearchSortOrder } from "@/providers/search-provider";
 
 interface FacetConfig {
   resource: string;

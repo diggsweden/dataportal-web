@@ -1,55 +1,34 @@
-import { CONTAINER_QUERY } from "@/graphql";
 import type {
   ContainerDataFragment,
-  ContainersQuery,
-  ContainersQueryVariables,
-  FoertroendemodellenFormQuery,
-  FoertroendemodellenFormQueryVariables,
   FormDataFragment,
-  FormQuery,
-  FormQueryVariables,
   GoodExampleBlockItemFragment,
   GoodExampleDataFragment,
-  GoodExampleQuery,
-  GoodExampleQueryVariables,
   ImageFragment,
   ModuleDataFragment,
-  ModuleQuery,
-  ModuleQueryVariables,
   NavigationDataFragment,
-  NavigationQuery,
-  NavigationQueryVariables,
   NewsBlockItemFragment,
   NewsItemDataFragment,
-  NewsItemQuery,
-  NewsItemQueryVariables,
   ParentFragment,
   ParentSimplifiedFragment,
-  RootAggregateQuery,
-  RootAggregateQueryVariables,
-  SearchQuery,
-  SearchQueryVariables,
   SeoDataFragment,
   StartPageDataFragment,
-  StartPageQuery,
-  StartPageQueryVariables,
   ToolDataFragment,
-  ToolQuery,
-  ToolQueryVariables,
+} from "@/graphql/__generated__/operations";
+import {
+  ContainersDocument,
+  FoertroendemodellenFormDocument,
+  FormDocument,
+  GoodExampleDocument,
+  ModuleDocument,
+  NavigationDocument,
+  NewsItemDocument,
+  RootAggregateDocument,
+  SearchDocument,
+  StartPageDocument,
+  ToolDocument,
 } from "@/graphql/__generated__/operations";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
-import { ROOT_AGGREGATE_QUERY } from "@/graphql/aggregateQuery";
 import { gqlFetch, logGqlError } from "@/graphql/fetcher";
-import { FOETROENDEMODELLEN_FORM_QUERY, FORM_QUERY } from "@/graphql/formQuery";
-import { MODULE_QUERY } from "@/graphql/moduleQuery";
-import { NAVIGATION_QUERY } from "@/graphql/navigationQuery";
-import {
-  GOOD_EXAMPLE_QUERY,
-  NEWS_ITEM_QUERY,
-} from "@/graphql/publicationQuery";
-import { SEARCH_QUERY } from "@/graphql/searchQuery";
-import { START_PAGE_QUERY } from "@/graphql/startpageQuery";
-import { TOOL_QUERY } from "@/graphql/toolQuery";
 
 export interface MultiContainerResponse {
   type: "MultiContainer";
@@ -177,17 +156,14 @@ export const getMultiContainer = async (
   const slug = `/${slugs.join("/")}`;
 
   try {
-    const data = await gqlFetch<ContainersQuery, ContainersQueryVariables>(
-      CONTAINER_QUERY,
-      {
-        filter: {
-          slug,
-          locale,
-          ...(secret ? { previewSecret: secret } : {}),
-          ...(state ? { state } : {}),
-        },
+    const data = await gqlFetch(ContainersDocument, {
+      filter: {
+        slug,
+        locale,
+        ...(secret ? { previewSecret: secret } : {}),
+        ...(state ? { state } : {}),
       },
-    );
+    });
 
     const container = data.dataportal_Digg_Containers[0];
 
@@ -225,16 +201,13 @@ export const getNewsList = async (
   const { seo, basePath, heading, preamble, heroImage } = opts || {};
 
   try {
-    const data = await gqlFetch<NewsItemQuery, NewsItemQueryVariables>(
-      NEWS_ITEM_QUERY,
-      {
-        filter: {
-          locale,
-          state: Dataportal_ContainerState.Live,
-          limit: 1000,
-        },
+    const data = await gqlFetch(NewsItemDocument, {
+      filter: {
+        locale,
+        state: Dataportal_ContainerState.Live,
+        limit: 1000,
       },
-    );
+    });
 
     const publications = data?.dataportal_Digg_News_Items;
 
@@ -271,16 +244,13 @@ export const getGoodExamplesList = async (
   const { seo, basePath, heading, preamble, heroImage, reuse, breadcrumb } =
     opts || {};
   try {
-    const data = await gqlFetch<GoodExampleQuery, GoodExampleQueryVariables>(
-      GOOD_EXAMPLE_QUERY,
-      {
-        filter: {
-          locale,
-          state: Dataportal_ContainerState.Live,
-          limit: 1000,
-        },
+    const data = await gqlFetch(GoodExampleDocument, {
+      filter: {
+        locale,
+        state: Dataportal_ContainerState.Live,
+        limit: 1000,
       },
-    );
+    });
 
     const publications = data?.dataportal_Digg_Good_Examples?.filter(
       (publication) => publication && publication.reuse === reuse,
@@ -320,7 +290,7 @@ export const getToolsList = async (
   const { heading, preamble, heroImage, seo, basePath } = opts || {};
 
   try {
-    const data = await gqlFetch<ToolQuery, ToolQueryVariables>(TOOL_QUERY, {
+    const data = await gqlFetch(ToolDocument, {
       filter: { limit: 100 },
     });
 
@@ -360,10 +330,7 @@ export const getNewsItem = async (
   const { state, secret } = opts;
 
   try {
-    const mainPublicationResult = await gqlFetch<
-      NewsItemQuery,
-      NewsItemQueryVariables
-    >(NEWS_ITEM_QUERY, {
+    const mainPublicationResult = await gqlFetch(NewsItemDocument, {
       filter: {
         slug,
         limit: 1,
@@ -380,10 +347,9 @@ export const getNewsItem = async (
       return null;
     }
 
-    const relatedPublicationResult = await gqlFetch<
-      NewsItemQuery,
-      NewsItemQueryVariables
-    >(NEWS_ITEM_QUERY, { filter: { limit: 4, locale } });
+    const relatedPublicationResult = await gqlFetch(NewsItemDocument, {
+      filter: { limit: 4, locale },
+    });
 
     const relatedPreviews: NewsBlockItemFragment[] =
       relatedPublicationResult.dataportal_Digg_News_Items
@@ -430,10 +396,7 @@ export const getGoodExample = async (
 ): Promise<GoodExampleResponse | null> => {
   const { state, secret } = opts;
   try {
-    const mainPublicationResult = await gqlFetch<
-      GoodExampleQuery,
-      GoodExampleQueryVariables
-    >(GOOD_EXAMPLE_QUERY, {
+    const mainPublicationResult = await gqlFetch(GoodExampleDocument, {
       filter: {
         slug,
         limit: 1,
@@ -462,10 +425,9 @@ export const getGoodExample = async (
       return null;
     }
 
-    const relatedPublicationResult = await gqlFetch<
-      GoodExampleQuery,
-      GoodExampleQueryVariables
-    >(GOOD_EXAMPLE_QUERY, { filter: { limit: 4, locale } });
+    const relatedPublicationResult = await gqlFetch(GoodExampleDocument, {
+      filter: { limit: 4, locale },
+    });
 
     const relatedPreviews: GoodExampleBlockItemFragment[] =
       relatedPublicationResult.dataportal_Digg_Good_Examples
@@ -512,10 +474,7 @@ export const getRootAggregate = async (
   const { state, secret } = opts;
 
   try {
-    const data = await gqlFetch<
-      RootAggregateQuery,
-      RootAggregateQueryVariables
-    >(ROOT_AGGREGATE_QUERY, {
+    const data = await gqlFetch(RootAggregateDocument, {
       locale,
       state: state || Dataportal_ContainerState.Live,
       ...(secret ? { previewSecret: secret } : {}),
@@ -548,10 +507,7 @@ export const getStartPage = async (
   locale: string,
 ): Promise<StartPageResponse> => {
   try {
-    const data = await gqlFetch<StartPageQuery, StartPageQueryVariables>(
-      START_PAGE_QUERY,
-      { filter: { locale } },
-    );
+    const data = await gqlFetch(StartPageDocument, { filter: { locale } });
 
     const startPage = data.dataportal_Digg_Start_Page;
 
@@ -571,10 +527,7 @@ export const getNavigationData = async (
   locale: string,
 ): Promise<NavigationResponse> => {
   try {
-    const data = await gqlFetch<NavigationQuery, NavigationQueryVariables>(
-      NAVIGATION_QUERY,
-      { filter: { locale } },
-    );
+    const data = await gqlFetch(NavigationDocument, { filter: { locale } });
 
     const navigationData = data.dataportal_Digg_Navigation;
 
@@ -602,21 +555,18 @@ export const querySearch = async (
   _clientQuery: boolean,
 ) => {
   try {
-    const data = await gqlFetch<SearchQuery, SearchQueryVariables>(
-      SEARCH_QUERY,
-      {
-        filter: {
-          highlightPreText: "**",
-          highlightPostText: "**",
-          highlightsLength: 10,
-          getHighlights: true,
-          query: query,
-          limit: limit || 10,
-          offset: offset || 0,
-          locale,
-        },
+    const data = await gqlFetch(SearchDocument, {
+      filter: {
+        highlightPreText: "**",
+        highlightPostText: "**",
+        highlightsLength: 10,
+        getHighlights: true,
+        query: query,
+        limit: limit || 10,
+        offset: offset || 0,
+        locale,
       },
-    );
+    });
 
     return data;
   } catch (error) {
@@ -630,7 +580,7 @@ export const getForm = async (
   locale?: string,
 ): Promise<FormResponse> => {
   try {
-    const data = await gqlFetch<FormQuery, FormQueryVariables>(FORM_QUERY, {
+    const data = await gqlFetch(FormDocument, {
       identifier,
       locale,
     });
@@ -646,10 +596,9 @@ export const getForm = async (
 
 export const getFoertroendemodellenForm = async (locale?: string) => {
   try {
-    const data = await gqlFetch<
-      FoertroendemodellenFormQuery,
-      FoertroendemodellenFormQueryVariables
-    >(FOETROENDEMODELLEN_FORM_QUERY, { filter: { locale } });
+    const data = await gqlFetch(FoertroendemodellenFormDocument, {
+      filter: { locale },
+    });
 
     const formData = data?.dataportal_Digg_FoertroendemodellenForm;
 
@@ -679,10 +628,7 @@ export const getModule = async (
   };
 
   try {
-    const data = await gqlFetch<ModuleQuery, ModuleQueryVariables>(
-      MODULE_QUERY,
-      { identifier, locale },
-    );
+    const data = await gqlFetch(ModuleDocument, { identifier, locale });
 
     const mod = data.dataportal_Digg_Module;
 

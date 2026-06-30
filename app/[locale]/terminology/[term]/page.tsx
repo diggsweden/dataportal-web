@@ -6,8 +6,8 @@ import { Settings_Prod } from "@/env/settings.prod";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { ConceptPage } from "@/features/entryscape/concept-page";
 import { isAppLocale } from "@/i18n/routing";
-import { EntrystoreProvider } from "@/providers/entrystore-provider";
-import { resolveEntryStoreRoute } from "@/utilities/entrystore/resolve-entry-store-route";
+import { EntrystoreProvider } from "@/lib/entrystore/provider";
+import { resolveEntryStoreRoute } from "@/lib/entrystore/resolve-entry-store-route";
 
 interface PageProps {
   params: Promise<{ locale: string; term: string }>;

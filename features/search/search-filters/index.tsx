@@ -21,9 +21,9 @@ import { TextInput } from "@/components/form/text-input";
 import { Modal } from "@/components/modal";
 import { SearchFilter } from "@/features/search/search-filters/search-filter";
 import { useResourceLabel } from "@/i18n/use-resource-label";
+import { ESRdfType } from "@/lib/entrystore/entrystore-core";
 import type { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
-import { ESRdfType } from "@/types/entrystore-core";
 import type { SearchFacet, SearchFacetValue } from "@/types/search";
 import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 

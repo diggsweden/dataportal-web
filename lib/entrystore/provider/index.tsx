@@ -13,16 +13,8 @@ import {
 import type { EnvSettings } from "@/env";
 import { SettingsUtil } from "@/env/settings-util";
 import { useResourceLabel } from "@/i18n/use-resource-label";
-import type { ESEntry, PageType } from "@/types/entrystore-core";
-import type { OrganisationData } from "@/types/organisation";
-import type { ESFacetField, ESFacetFieldValue } from "@/types/search";
-import {
-  type Choice,
-  fetchDCATMeta,
-  handleLocale,
-  includeLangInPath,
-} from "@/utilities";
-import { EntrystoreService } from "@/utilities/entrystore/entrystore.service";
+import { EntrystoreService } from "@/lib/entrystore/entrystore.service";
+import type { ESEntry, PageType } from "@/lib/entrystore/entrystore-core";
 import {
   formatTerminologyAddress,
   getContactEmail,
@@ -31,7 +23,15 @@ import {
   getLocalizedValue,
   getTemplateChoices,
   termsPathResolver,
-} from "@/utilities/entrystore/entrystore-helpers";
+} from "@/lib/entrystore/entrystore-helpers";
+import type { OrganisationData } from "@/types/organisation";
+import type { ESFacetField, ESFacetFieldValue } from "@/types/search";
+import {
+  type Choice,
+  fetchDCATMeta,
+  handleLocale,
+  includeLangInPath,
+} from "@/utilities";
 
 const defaultESEntry: ESEntry = {
   env: SettingsUtil.getDefault(),

@@ -6,7 +6,7 @@ import { Settings_Prod } from "@/env/settings.prod";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { OrganisationPage } from "@/features/entryscape/organisation-page";
 import { isAppLocale } from "@/i18n/routing";
-import { EntrystoreProvider } from "@/providers/entrystore-provider";
+import { EntrystoreProvider } from "@/lib/entrystore/provider";
 
 interface PageProps {
   params: Promise<{ locale: string; org: string }>;

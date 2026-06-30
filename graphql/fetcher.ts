@@ -1,4 +1,5 @@
 import reactEnv from "@beam-australia/react-env";
+import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import type {
   DocumentNode,
   FieldNode,
@@ -100,7 +101,7 @@ const getEndpoint = (): string => {
 };
 
 export const gqlFetch = async <TData, TVariables = Record<string, unknown>>(
-  document: DocumentNode,
+  document: TypedDocumentNode<TData, TVariables> | DocumentNode,
   variables?: TVariables,
   options: GqlFetchOptions = {},
 ): Promise<TData> => {
@@ -115,7 +116,10 @@ export const gqlFetch = async <TData, TVariables = Record<string, unknown>>(
       accept: "application/json",
       ...headers,
     },
-    body: JSON.stringify({ query: print(addTypename(document)), variables }),
+    body: JSON.stringify({
+      query: print(addTypename(document as DocumentNode)),
+      variables,
+    }),
     signal,
     ...(hasNextHint
       ? {

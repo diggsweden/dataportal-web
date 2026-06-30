@@ -10,8 +10,8 @@ import { Settings_Sandbox } from "@/env/settings.sandbox";
 import type { ResourceLabel } from "@/i18n/types";
 import type { RedirectConfig } from "@/types/global";
 
-import { includeLangInPath } from "../check-lang";
-import type { Choice, ChoiceTemplate, DCATData } from "../dcat-utils";
+import { includeLangInPath } from "@/utilities/check-lang";
+import type { Choice, ChoiceTemplate, DCATData } from "@/utilities/dcat-utils";
 import { entryCache } from "./local-cache";
 
 // ============================================================================

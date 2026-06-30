@@ -3,8 +3,8 @@ import CrossIcon from "@/assets/icons/cross.svg";
 import TrashIcon from "@/assets/icons/trash.svg";
 import { Button } from "@/components/button";
 import { useResourceLabel } from "@/i18n/use-resource-label";
+import { ESRdfType } from "@/lib/entrystore/entrystore-core";
 import type { SearchContextData } from "@/providers/search-provider";
-import { ESRdfType } from "@/types/entrystore-core";
 import type { SearchFacetValue } from "@/types/search";
 import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 

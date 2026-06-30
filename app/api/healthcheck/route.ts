@@ -1,11 +1,7 @@
 import type { NextRequest } from "next/server";
 
-import type {
-  NewsItemQuery,
-  NewsItemQueryVariables,
-} from "@/graphql/__generated__/operations";
+import { NewsItemDocument } from "@/graphql/__generated__/operations";
 import { gqlFetch } from "@/graphql/fetcher";
-import { NEWS_ITEM_QUERY } from "@/graphql/publicationQuery";
 
 /**
  * Liveness / readiness probe. Verifies GraphQL connectivity by running a
@@ -33,7 +29,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    await gqlFetch<NewsItemQuery, NewsItemQueryVariables>(NEWS_ITEM_QUERY, {
+    await gqlFetch(NewsItemDocument, {
       filter: { limit: 3 },
     });
 

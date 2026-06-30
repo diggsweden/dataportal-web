@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
 import type { EnvSettings } from "@/env/env-settings";
-import { createBlocksConfig } from "@/utilities/entryscape/blocks/config";
+import { createBlocksConfig } from "@/lib/entryscape-blocks/config";
 
 interface BlocksConfig {
   entrystoreBase: string;
