@@ -63,15 +63,10 @@ export const getSearchHit = (
   return null;
 };
 
-const _k = [
-  111, 114, 100, 110, 97, 115, 115, 101, 108, 97, 105, 110, 105, 114, 101, 112,
-  115, 97, 103,
-];
-const _v = [79, 108, 105, 98, 111, 102];
-
-export const formatHitCount = (count: number, query: string, label: string) => {
-  const k = _k.map((c) => String.fromCharCode(c)).join("");
-  if (count === 0 && query === k)
-    return _v.map((c) => String.fromCharCode(c)).join("");
+export const formatHitCount = (
+  count: number,
+  _query: string,
+  label: string,
+) => {
   return `${count} ${label}`;
 };
