@@ -1,3 +1,5 @@
+"use client";
+
 import type { Entry } from "@entryscape/entrystore-js";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
@@ -12,7 +14,8 @@ import {
 
 import type { ResourceLabel, Translate } from "@/i18n/types";
 import { useResourceLabel } from "@/i18n/use-resource-label";
-import { ESRdfType, ESType } from "@/types/entrystore-core";
+import { EntrystoreService } from "@/lib/entrystore/entrystore.service";
+import { ESRdfType, ESType } from "@/lib/entrystore/entrystore-core";
 import type {
   ESFacetField,
   FacetSpecification,
@@ -23,7 +26,6 @@ import type {
   SearchResult,
 } from "@/types/search";
 import { type DCATData, fetchDCATMeta } from "@/utilities";
-import { EntrystoreService } from "@/utilities/entrystore/entrystore.service";
 
 /**
  * Shape of the i18n bag injected into the class `SearchProviderClass` by
@@ -608,8 +610,8 @@ class SearchProviderClass extends Component<
       }
 
       const [{ getUriNames }, { entryCache }] = await Promise.all([
-        import("@/utilities/entrystore/entrystore-helpers"),
-        import("@/utilities/entrystore/local-cache"),
+        import("@/lib/entrystore/entrystore-helpers"),
+        import("@/lib/entrystore/local-cache"),
       ]);
       const { resourceLabel } = this.props.i18n;
 

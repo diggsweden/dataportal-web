@@ -38,6 +38,7 @@ const config: CodegenConfig = {
           },
         },
         "typescript-operations",
+        "typed-document-node",
       ],
       presetConfig: {
         typesPath: "./types",

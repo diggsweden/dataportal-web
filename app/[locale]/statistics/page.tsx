@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+
+import { BreadcrumbSetter } from "@/components/navigation/breadcrumbs/breadcrumb-setter";
 import { SettingsUtil } from "@/env";
 import { StatisticPage } from "@/features/statistic/statistic-page";
 import { isAppLocale } from "@/i18n/routing";
+import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
 import { includeLangInPath } from "@/utilities/check-lang";
 
 interface PageProps {
@@ -38,5 +41,16 @@ export default async function StatisticsRSCPage({ params }: PageProps) {
   if (!isAppLocale(locale)) notFound();
   setRequestLocale(locale);
 
-  return <StatisticPage />;
+  const t = await getTranslations({ locale });
+  const breadcrumb = buildBreadcrumb(
+    t("pages.statistic.statistic-page-header"),
+    [],
+  );
+
+  return (
+    <>
+      <BreadcrumbSetter {...breadcrumb} />
+      <StatisticPage />
+    </>
+  );
 }

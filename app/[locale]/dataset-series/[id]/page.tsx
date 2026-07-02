@@ -1,16 +1,26 @@
-"use client";
+import { headers } from "next/headers";
+import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
-import { useParams } from "next/navigation";
-import { useContext } from "react";
-
+import { Settings_Prod } from "@/env/settings.prod";
+import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { DatasetSeriesPage } from "@/features/entryscape/dataset-series-page";
-import { EntrystoreProvider } from "@/providers/entrystore-provider";
-import { SettingsContext } from "@/providers/settings-provider";
+import { isAppLocale } from "@/i18n/routing";
+import { EntrystoreProvider } from "@/lib/entrystore/provider";
 
-export default function DataSeries() {
-  const { env } = useContext(SettingsContext);
-  const params = useParams<{ id: string }>();
-  const id = params?.id;
+interface PageProps {
+  params: Promise<{ locale: string; id: string }>;
+}
+
+export default async function DataSeries({ params }: PageProps) {
+  const { locale, id } = await params;
+  if (!isAppLocale(locale)) notFound();
+  setRequestLocale(locale);
+
+  const host = (await headers()).get("host") ?? "";
+  const isSandbox = host.includes("sandbox");
+  const env = { ...(isSandbox ? new Settings_Sandbox() : new Settings_Prod()) };
+
   const ids = (typeof id === "string" && id.split("_")) || [];
   const eid = ids.pop() || "";
   const cid = ids.join("_");

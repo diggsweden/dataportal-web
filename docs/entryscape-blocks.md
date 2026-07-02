@@ -27,7 +27,7 @@ flowchart LR
 
 The entire lifecycle lives in the [`useEntryScapeBlocks`](../hooks/use-entry-scape-blocks.ts) hook and a single DOM anchor:
 
-- `#scriptsPlaceholder` is rendered once in [`pages/_app.tsx`](../pages/_app.tsx) and is the container that all Entryscape `<script>` tags are appended to.
+- `#scriptsPlaceholder` is rendered once in the App Router chrome ([`components/layout/app-router-chrome/index.tsx`](../components/layout/app-router-chrome/index.tsx)) and is the container that all Entryscape `<script>` tags are appended to.
 - On mount, the hook:
   1. Creates `window.__entryscape_blocks_ready` (a promise resolved by the bundle when `init` is available).
   2. Builds a config via `createBlocksConfig({ pageType, lang, env, t, context, esId, ... })` and concatenates it onto `window.__entryscape_config`.
@@ -170,7 +170,7 @@ All four live in [`utilities/entryscape/blocks/global.ts`](../utilities/entrysca
 
 ### 5.4 i18n, CSS, and navigation overrides
 
-- **Translations.** `next-translate`'s `t(...)` is threaded through `createBlocksConfig` and embedded directly in template strings (labels, tooltips, expand/collapse buttons, section headings), so block text matches the site's translations instead of Blocks' defaults.
+- **Translations.** `next-intl`'s `t(...)` is threaded through `createBlocksConfig` and embedded directly in template strings (labels, tooltips, expand/collapse buttons, section headings), so block text matches the site's translations instead of Blocks' defaults.
 - **Styling.** [`styles/entryscape.css`](../styles/entryscape.css) and [`styles/entryscape-mqa.css`](../styles/entryscape-mqa.css) (imported via `styles/main.css`) restyle Entryscape's generated markup — `.rdforms*`, `.entryscape` links/headings, `.esbRowHead`, `.concept_hierarchy`, etc. — primarily with Tailwind `@apply` so hosted output aligns with the design system.
 - **Navigation workaround.** Blocks hydrates state tied to the current page. To avoid stale state when users click a link rendered inside a block, `useEntryScapeBlocks` installs a document-level click listener that intercepts same-origin anchors and forces `window.location.href = link.href` (full navigation) instead of Next's client-side routing:
 
@@ -200,7 +200,7 @@ This is a trade-off: we lose client-side transitions between entryscape-mounted 
 - [`utilities/entryscape/blocks/concept.ts`](../utilities/entryscape/blocks/concept.ts) — SKOS concept blocks and hierarchy.
 - [`utilities/entryscape/blocks/terminology.ts`](../utilities/entryscape/blocks/terminology.ts) — terminology list/link blocks.
 - [`utilities/entryscape/blocks/global.ts`](../utilities/entryscape/blocks/global.ts) — shared indicators, license, explore link, hemvist.
-- [`pages/_app.tsx`](../pages/_app.tsx) — `#scriptsPlaceholder` anchor.
+- [`components/layout/app-router-chrome/index.tsx`](../components/layout/app-router-chrome/index.tsx) — `#scriptsPlaceholder` anchor.
 - [`env/env-settings.ts`](../env/env-settings.ts) — `ENTRYSCAPE_*` script URLs.
 - [`utilities/generate-csp.ts`](../utilities/generate-csp.ts) — CSP allowlist.
 - [`styles/entryscape.css`](../styles/entryscape.css), [`styles/entryscape-mqa.css`](../styles/entryscape-mqa.css) — visual overrides.

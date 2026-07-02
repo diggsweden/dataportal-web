@@ -7,13 +7,9 @@ import type {
 } from "react";
 
 import { ParseDocToHtml } from "@/components/typography/parse-doc-to-html";
-import type {
-  FoertroendemodellenFormClientQuery,
-  FoertroendemodellenFormClientQueryVariables,
-  FormDataFragment,
-} from "@/graphql/__generated__/operations";
+import type { FormDataFragment } from "@/graphql/__generated__/operations";
+import { FoertroendemodellenFormClientDocument } from "@/graphql/__generated__/operations";
 import { gqlFetch } from "@/graphql/fetcher";
-import { FOETROENDEMODELLEN_FORM_CLIENT_QUERY } from "@/graphql/formQuery";
 import type { FormTypes } from "@/types/form";
 
 /* Import json */
@@ -203,10 +199,9 @@ export const handleScroll = (scrollRef: RefObject<HTMLSpanElement | null>) => {
 };
 
 export const fetchFortroendemodellenForm = async (locale: string) => {
-  const data = await gqlFetch<
-    FoertroendemodellenFormClientQuery,
-    FoertroendemodellenFormClientQueryVariables
-  >(FOETROENDEMODELLEN_FORM_CLIENT_QUERY, { locale });
+  const data = await gqlFetch(FoertroendemodellenFormClientDocument, {
+    locale,
+  });
 
   const formData = data?.dataportal_Digg_FoertroendemodellenForm;
 

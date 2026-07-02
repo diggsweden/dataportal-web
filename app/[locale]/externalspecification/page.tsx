@@ -1,37 +1,40 @@
-"use client";
+import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useLocale } from "next-intl";
-import { useEffect } from "react";
+import { isAppLocale } from "@/i18n/routing";
+import { resolveEntryStoreRoute } from "@/lib/entrystore/resolve-entry-store-route";
 
-import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
+interface PageProps {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ resource?: string }>;
+}
 
-export default function ExternalSpecification() {
-  const router = useRouter();
-  const locale = useLocale();
-  const searchParams = useSearchParams();
-  const resource = searchParams?.get("resource");
+export default async function ExternalSpecification({
+  params,
+  searchParams,
+}: PageProps) {
+  const { locale } = await params;
+  if (!isAppLocale(locale)) notFound();
+  setRequestLocale(locale);
 
-  useEffect(() => {
-    const fetchEntryStoreProps = async () => {
-      if (!resource) return;
-      const isSandbox = window.location.host.includes("sandbox");
+  const { resource } = await searchParams;
+  if (!resource) notFound();
 
-      await handleEntryStoreRedirect(
-        {
-          pathPrefix: "/specifications",
-          redirectPath: "/specifications",
-          entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
-        },
-        router,
-        locale,
-        isSandbox,
-        resource,
-      );
-    };
+  const host = (await headers()).get("host") ?? "";
+  const isSandbox = host.includes("sandbox");
 
-    fetchEntryStoreProps();
-  }, [resource]);
+  const result = await resolveEntryStoreRoute(
+    {
+      pathPrefix: "/specifications",
+      redirectPath: "/specifications",
+      entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
+    },
+    locale,
+    isSandbox,
+    resource,
+  );
 
-  return null;
+  if (result.type === "redirect") redirect(result.url);
+  notFound();
 }

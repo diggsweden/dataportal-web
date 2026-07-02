@@ -1,37 +1,35 @@
-"use client";
+import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
-import { useParams, useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
-import { useEffect } from "react";
+import { isAppLocale } from "@/i18n/routing";
+import { resolveEntryStoreRoute } from "@/lib/entrystore/resolve-entry-store-route";
 
-import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
+interface PageProps {
+  params: Promise<{ locale: string; terminology: string[] }>;
+}
 
-export default function ExternalTerminologyCatchAll() {
-  const router = useRouter();
-  const locale = useLocale();
-  const params = useParams<{ terminology: string[] }>();
-  const terminology = params?.terminology;
+export default async function ExternalTerminologyCatchAll({
+  params,
+}: PageProps) {
+  const { locale, terminology } = await params;
+  if (!isAppLocale(locale)) notFound();
+  setRequestLocale(locale);
 
-  useEffect(() => {
-    const fetchEntryStoreProps = async () => {
-      if (!terminology) return;
-      const isSandbox = window.location.host.includes("sandbox");
+  const host = (await headers()).get("host") ?? "";
+  const isSandbox = host.includes("sandbox");
 
-      await handleEntryStoreRedirect(
-        {
-          pathPrefix: "/concepts",
-          redirectPath: "/terminology",
-          entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
-          param: terminology,
-        },
-        router,
-        locale,
-        isSandbox,
-      );
-    };
+  const result = await resolveEntryStoreRoute(
+    {
+      pathPrefix: "/concepts",
+      redirectPath: "/terminology",
+      entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
+      param: terminology,
+    },
+    locale,
+    isSandbox,
+  );
 
-    fetchEntryStoreProps();
-  }, [terminology]);
-
-  return null;
+  if (result.type === "redirect") redirect(result.url);
+  notFound();
 }
