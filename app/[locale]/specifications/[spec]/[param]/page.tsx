@@ -1,55 +1,47 @@
-"use client";
+import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
-import { useParams, useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
-import { useContext, useEffect, useState } from "react";
-
+import { Settings_Prod } from "@/env/settings.prod";
+import { Settings_Sandbox } from "@/env/settings.sandbox";
 import { SpecificationPage } from "@/features/entryscape/specification-page";
-import { EntrystoreProvider } from "@/providers/entrystore-provider";
-import { SettingsContext } from "@/providers/settings-provider";
-import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
+import { isAppLocale } from "@/i18n/routing";
+import { EntrystoreProvider } from "@/lib/entrystore/provider";
+import { resolveEntryStoreRoute } from "@/lib/entrystore/resolve-entry-store-route";
 
-export default function SpecificationParam() {
-  const { env } = useContext(SettingsContext);
-  const router = useRouter();
-  const locale = useLocale();
-  const params = useParams<{ spec: string; param: string }>();
-  const spec = params?.spec;
-  const param = params?.param;
-  const [resourceUri, setResourceUri] = useState<string | null>(null);
+interface PageProps {
+  params: Promise<{ locale: string; spec: string; param: string }>;
+}
 
-  useEffect(() => {
-    const fetchEntryStoreProps = async () => {
-      if (!spec || !param) return;
-      const isSandbox = window.location.host.includes("sandbox");
+export default async function SpecificationParam({ params }: PageProps) {
+  const { locale, spec, param } = await params;
+  if (!isAppLocale(locale)) notFound();
+  setRequestLocale(locale);
 
-      const data = await handleEntryStoreRedirect(
-        {
-          pathPrefix: "/specifications",
-          redirectPath: "/specifications",
-          entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
-          param: spec,
-          secondParam: param as string,
-        },
-        router,
-        locale,
-        isSandbox,
-      );
+  const host = (await headers()).get("host") ?? "";
+  const isSandbox = host.includes("sandbox");
+  const env = { ...(isSandbox ? new Settings_Sandbox() : new Settings_Prod()) };
 
-      if (data?.resourceUri) {
-        setResourceUri(data.resourceUri);
-      }
-    };
+  const result = await resolveEntryStoreRoute(
+    {
+      pathPrefix: "/specifications",
+      redirectPath: "/specifications",
+      entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
+      param: spec,
+      secondParam: param,
+    },
+    locale,
+    isSandbox,
+  );
 
-    fetchEntryStoreProps();
-  }, [spec, param]);
-
-  if (!resourceUri) return null;
+  if (result.type === "redirect") redirect(result.url);
+  if (result.type === "notFound") notFound();
+  if (result.type !== "resourceUri") notFound();
 
   return (
     <EntrystoreProvider
       env={env}
-      rUri={resourceUri}
+      rUri={result.resourceUri}
       entrystoreUrl={env.ENTRYSCAPE_SPECS_PATH}
       pageType="specification"
     >

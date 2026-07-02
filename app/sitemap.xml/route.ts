@@ -6,23 +6,17 @@ import { HttpsProxyAgent } from "https-proxy-agent";
 import nodeFetch from "node-fetch";
 
 import { SettingsUtil } from "@/env";
-import { CONTAINER_QUERY } from "@/graphql";
 import type {
   ContainerDataFragment,
-  ContainersQuery,
-  ContainersQueryVariables,
   GoodExampleDataFragment,
-  GoodExampleQuery,
-  GoodExampleQueryVariables,
   NewsItemDataFragment,
-  NewsItemQuery,
-  NewsItemQueryVariables,
+} from "@/graphql/__generated__/operations";
+import {
+  ContainersDocument,
+  GoodExampleDocument,
+  NewsItemDocument,
 } from "@/graphql/__generated__/operations";
 import { gqlFetch, logGqlError } from "@/graphql/fetcher";
-import {
-  GOOD_EXAMPLE_QUERY,
-  NEWS_ITEM_QUERY,
-} from "@/graphql/publicationQuery";
 import { routing } from "@/i18n/routing";
 import { includeLangInPath } from "@/utilities/check-lang";
 
@@ -120,17 +114,15 @@ export async function GET(): Promise<Response> {
       try {
         const [containerResult, newsResult, goodExampleResult] =
           await Promise.all([
-            gqlFetch<ContainersQuery, ContainersQueryVariables>(
-              CONTAINER_QUERY,
-              { filter: { locale, limit: 9999 } },
-            ),
-            gqlFetch<NewsItemQuery, NewsItemQueryVariables>(NEWS_ITEM_QUERY, {
+            gqlFetch(ContainersDocument, {
               filter: { locale, limit: 9999 },
             }),
-            gqlFetch<GoodExampleQuery, GoodExampleQueryVariables>(
-              GOOD_EXAMPLE_QUERY,
-              { filter: { locale, limit: 9999 } },
-            ),
+            gqlFetch(NewsItemDocument, {
+              filter: { locale, limit: 9999 },
+            }),
+            gqlFetch(GoodExampleDocument, {
+              filter: { locale, limit: 9999 },
+            }),
           ]);
 
         if (containerResult?.dataportal_Digg_Containers) {

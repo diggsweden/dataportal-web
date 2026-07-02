@@ -6,7 +6,7 @@ import { type FC, useContext, useEffect } from "react";
 
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
-import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
+import { useEntryScapeBlocks } from "@/lib/entryscape-blocks/use-blocks";
 import { SettingsContext } from "@/providers/settings-provider";
 import { handleLocale, linkBase } from "@/utilities";
 

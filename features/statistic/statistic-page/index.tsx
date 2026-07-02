@@ -1,50 +1,17 @@
-"use client";
-
-import dynamic from "next/dynamic";
-import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { type FC, useContext, useEffect } from "react";
+import type { FC } from "react";
 
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
-import { SettingsContext } from "@/providers/settings-provider";
-import { linkBase } from "@/utilities";
 
-const DynamicStatisticGraphNumbers = dynamic(
-  () =>
-    import("@/features/statistic/statistic-graph-numbers").then(
-      (c) => c.StatisticGraphNumbers,
-    ),
-  {
-    ssr: false,
-  },
-);
-
-const DynamicStatisticNumbersDatasets = dynamic(
-  () =>
-    import("@/features/statistic/statistic-numbers-datasets").then(
-      (c) => c.StatisticNumbersDatasets,
-    ),
-  {
-    ssr: false,
-  },
-);
-
-const DynamicStatistic = dynamic(() => import("@/features/statistic"), {
-  ssr: false,
-});
+import {
+  DynamicStatistic,
+  DynamicStatisticGraphNumbers,
+  DynamicStatisticNumbersDatasets,
+} from "./statistic-charts";
 
 export const StatisticPage: FC = () => {
   const t = useTranslations();
-  const pathname = usePathname();
-  const { setBreadcrumb } = useContext(SettingsContext);
-
-  useEffect(() => {
-    setBreadcrumb?.({
-      name: t("pages.statistic.statistic-page-header"),
-      crumbs: [{ name: "start", link: { ...linkBase, link: "/" } }],
-    });
-  }, [pathname]);
 
   return (
     <Container>

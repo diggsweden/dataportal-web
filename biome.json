@@ -94,11 +94,10 @@
   "overrides": [
     {
       "includes": [
-        "utilities/entryscape/**",
-        "utilities/entrystore/**",
+        "lib/entryscape-blocks/**",
+        "lib/entrystore/**",
         "utilities/form-utils.ts",
         "utilities/key-generator.ts",
-        "hooks/use-entry-scape-blocks.ts",
         "hooks/use-state-callback.ts",
         "providers/search-provider/**",
         "providers/api-index-context/**",
@@ -117,7 +116,7 @@
       }
     },
     {
-      "includes": ["utilities/entryscape/blocks/**"],
+      "includes": ["lib/entryscape-blocks/**"],
       "linter": {
         "rules": {
           "suspicious": {
