@@ -17,8 +17,8 @@
       "!**/coverage/**",
       "!**/.husky/**",
       "!**/public/__ENV.js",
-      "!**/graphql/__generated__/**",
-      "!**/graphql/schema.json",
+      "!**/src/graphql/gql/**",
+      "!**/src/graphql/schema.json",
       "!next-env.d.ts"
     ]
   },
@@ -94,18 +94,18 @@
   "overrides": [
     {
       "includes": [
-        "lib/entryscape-blocks/**",
-        "lib/entrystore/**",
-        "utilities/form-utils.ts",
-        "utilities/key-generator.ts",
-        "hooks/use-state-callback.ts",
-        "providers/search-provider/**",
-        "providers/api-index-context/**",
-        "features/entryscape/**",
-        "features/search/search-page/**",
-        "components/video-player/**",
+        "src/lib/entryscape-blocks/**",
+        "src/lib/entrystore/**",
+        "src/utilities/form-utils.ts",
+        "src/utilities/key-generator.ts",
+        "src/hooks/use-state-callback.ts",
+        "src/providers/search-provider/**",
+        "src/providers/api-index-context/**",
+        "src/app/\\[locale\\]/(entryscape)/components/**",
+        "src/app/\\[locale\\]/(content)/search/page.tsx",
+        "src/components/video-player/**",
         "cypress/**",
-        "types/**"
+        "src/types/**"
       ],
       "linter": {
         "rules": {
@@ -116,7 +116,7 @@
       }
     },
     {
-      "includes": ["lib/entryscape-blocks/**"],
+      "includes": ["src/lib/entryscape-blocks/**"],
       "linter": {
         "rules": {
           "suspicious": {
@@ -126,7 +126,7 @@
       }
     },
     {
-      "includes": ["types/**"],
+      "includes": ["src/types/**"],
       "linter": {
         "rules": {
           "correctness": {

@@ -1,0 +1,128 @@
+"use client";
+
+import { useLocale, useTranslations } from "next-intl";
+import { type FC, useContext, useEffect, useState } from "react";
+import { Button } from "@/components/button";
+import { CookieOptions } from "@/components/cookie-banner/cookie-options";
+import { Container } from "@/components/layout/container";
+import { AppLink } from "@/components/link";
+import { useMatomo } from "@/lib/matomo";
+import { LocalStoreContext } from "@/providers/local-store-provider";
+
+export type CookieSetting = {
+  [key: string]: CookieProperties;
+};
+
+export type NecessaryCookies = {
+  heading: string;
+  description: string;
+};
+
+export type CookieProperties = {
+  label: string;
+  description: string;
+  accepted: boolean;
+};
+
+export const CookieBanner: FC<{
+  settingsOpen: boolean;
+  // eslint-disable-next-line no-unused-vars
+  setSettingsOpen: (value: boolean) => void;
+}> = ({ settingsOpen, setSettingsOpen }) => {
+  const { store, set } = useContext(LocalStoreContext);
+  const { setConsent } = useMatomo();
+  const t = useTranslations();
+  const lang = useLocale();
+
+  const initialCookieSetting: CookieSetting = {
+    analytic: {
+      label: t("routes.cookies.analytic-heading"),
+      description: t("routes.cookies.analytic-description"),
+      accepted: true,
+    },
+  };
+
+  const [cookieSettings, setCookieSettings] =
+    useState<CookieSetting>(initialCookieSetting);
+
+  useEffect(() => {
+    setCookieSettings(cookieSettings);
+  }, [cookieSettings]);
+
+  useEffect(() => {
+    setCookieSettings(initialCookieSetting);
+  }, [lang]);
+
+  useEffect(() => {
+    if (store.cookieSettings?.analytic?.accepted) {
+      setConsent(true);
+    }
+  }, [store.cookieSettings?.analytic?.accepted]);
+
+  const necessaryCookieText: NecessaryCookies = {
+    heading: t("routes.cookies.necessary-heading"),
+    description: t("routes.cookies.necessary-description"),
+  };
+
+  return store.cookieSettings &&
+    Object.keys(store.cookieSettings).length === 0 ? (
+    <section
+      className="fixed bottom-none z-50 w-full bg-brown-100 py-xl"
+      aria-label="Cookie Banner"
+    >
+      <Container>
+        <div className="mb-lg">{t("routes.cookies.cookie-text")}</div>
+
+        <AppLink
+          href={`/${t("routes.cookies.path")}` || "/"}
+          passHref
+          className="text-green-600"
+        >
+          {t("routes.cookies.link-title")}
+        </AppLink>
+
+        <form
+          className="mt-lg"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          {settingsOpen && (
+            <CookieOptions
+              cookieSettingsHeading={t(
+                "routes.cookies.customize-cookies-heading",
+              )}
+              cookieSettings={cookieSettings}
+              setCookieSettings={setCookieSettings}
+              necessaryCookieText={necessaryCookieText}
+            />
+          )}
+          <div className="flex space-x-lg">
+            <Button
+              data-test-id="cookie-setting-button"
+              type="submit"
+              onClick={() => {
+                set({ cookieSettings: cookieSettings });
+              }}
+            >
+              {settingsOpen
+                ? t("routes.cookies.cookie-setting-open")
+                : t("routes.cookies.cookie-setting")}
+            </Button>
+            {!settingsOpen && (
+              <Button
+                variant="secondary"
+                type="button"
+                onClick={() => {
+                  setSettingsOpen(!settingsOpen);
+                }}
+              >
+                {t("routes.cookies.settings-heading")}
+              </Button>
+            )}
+          </div>
+        </form>
+      </Container>
+    </section>
+  ) : null;
+};

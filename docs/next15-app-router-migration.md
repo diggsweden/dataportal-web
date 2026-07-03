@@ -4,11 +4,35 @@ Incrementally upgrade to Next 16 / React 19, replace Apollo Client with a plain 
 
 > **Note:** this plan was originally scoped to Next 15. By the time Phase 2 landed, Next 16 was stable and is a small hop from 15 (mostly App Router async-request tightening + Turbopack default for `next build`). We target 16 to avoid a near-term re-upgrade. Filename is kept for continuity.
 
+## Current project layout
+
+All application source lives under `src/`:
+
+```
+src/
+├── app/              # Next.js App Router (route groups: content, entryscape, statistic)
+├── components/       # Shared UI (layout, blocks, statistic, cookie-banner, …)
+├── lib/              # Domain modules (entrystore, entryscape-blocks, statistic, matomo)
+├── utilities/        # Pure helpers (breadcrumb, check-lang, generate-csp, …)
+├── providers/        # React context providers
+├── hooks/
+├── i18n/
+├── env/
+├── graphql/          # Fragments + codegen output (gql/)
+├── types/
+├── assets/           # SVG icons
+├── styles/           # Global CSS
+├── locales/          # next-intl JSON messages
+└── proxy.ts          # Next 16 middleware (CSP nonce + locale rewrite)
+```
+
+The repo root holds config and tooling only: `next.config.mjs`, `tailwind.config.js`, `codegen.ts`, `cypress/`, `docs/`, `public/`, etc. The `@/*` path alias resolves to `src/*`.
+
 ## Target end state
 
 - Next `^16`, React `^19`, TypeScript unchanged, Node `>=20` recommended.
-- No `@apollo/client`, no `apollo` CLI. All GraphQL traffic goes through a single `graphql/fetcher.ts` (`gqlFetch<TData, TVars>(doc, vars, { revalidate, tags, cache })`) that works on server and client.
-- No `pages/` directory. All routing under `app/[locale]/...` with `next-intl`.
+- No `@apollo/client`, no `apollo` CLI. All GraphQL traffic goes through a single `src/graphql/fetcher.ts` (`gqlFetch<TData, TVars>(doc, vars, { revalidate, tags, cache })`) that works on server and client.
+- No `pages/` directory. All routing under `src/app/[locale]/...` with `next-intl`.
 - Data fetching happens in **Server Components** by default. Client Components only where strictly required: state, effects, browser APIs, Entryscape, Matomo, Swagger UI, react-player, react-vis, focus-trap, cookie banner, interactive nav.
 
 ## Architecture
@@ -102,7 +126,7 @@ _Pragmatic deviation — `next/router` → `next/navigation` sweep:_ the origina
 - **URI-keyed resources travel out-of-band.** `next-intl` validates message keys at load time and throws `INVALID_KEY` on any `.` or `/` in a namespace path, so the `resources` namespace (URIs like `http://purl.org/dc/terms/license`) can't ride inside the `NextIntlClientProvider` message tree. `i18n/load-messages.ts#loadLocaleMessages` returns the four safe namespaces (`common`, `pages`, `filters`, `routes`); a sibling `loadResourceLabels` returns the URI map separately. `i18n/resources-provider.tsx` stores it in its own React context; `useResourceLabel` / `getResourceLabel` read from that context and completely bypass `next-intl`. Both `app/[locale]/layout.tsx` and `pages/_app.tsx` load messages + resources in one `Promise.all`, pass messages to `NextIntlClientProvider` and resources to `ResourcesProvider` wrapping it. Same rationale forced the removal of the unused `filters.allchecktext` subtree (it keyed on URIs too). **Implication for Phase 4:** any new Entryscape/SKOS label you'd have added to `resources` still goes in `locales/{sv,en}/resources.json`; don't try to fold it into `common` or `filters`.
 - **Pages Router = Swedish-only during the migration (Option B).** We initially kept Next's native `i18n: { locales, defaultLocale, localeDetection: false }` block to preserve `/en` on Pages Router, but Next 16 logs a hard deprecation warning whenever that option is combined with the App Router, and `next-intl` adds its own warning on top — so the block is now gone. Every Pages Router component reads `useLocale()` from `next-intl` (which resolves to `routing.defaultLocale` outside `app/[locale]/`), `pages/_app.tsx` hard-codes `locale = routing.defaultLocale` in `getInitialProps`, and `/en/*` on the Pages Router effectively 404s until each route family moves under `app/[locale]/` in Phase 4. `proxy.ts` stays nonce-only; `NextIntlClientProvider` is still mounted in `pages/_app.tsx` with messages preloaded via `loadLocaleMessages`, so all Swedish copy and SSR continue to work.
 - **URL builders go through `includeLangInPath()`.** All hardcoded `` `/${lang}/…` `` interpolations (main-nav logo + search form, `pages/_app.tsx` search destination, `entrystore-provider` terminology links, `entrystore-helpers` dataset + external-spec URLs) now route through `utilities/check-lang.ts#includeLangInPath(lang)`, which returns `""` for the default locale and `` `/${lang}` `` otherwise. Same shape means Swedish URLs collapse to `/datasets/…` today (matching the route with the `i18n` block gone) and restore to `/en/datasets/…` per-family during Phase 4 without another edit. The `common.lang-path` translation key (which stored `"/sv"` / `"/en"` purely to build URLs) has been deleted from both locale JSONs; the sidebar "home" active-state check reads `includeLangInPath()` directly. **Rule for Phase 4:** never interpolate `` `/${lang}/…` `` by hand — always go through the helper, otherwise the link will 404 for the default locale.
-- **ICU + `t.raw` gotchas.** `next-translate`'s `{{variable}}` placeholder syntax is silently incompatible with `next-intl`; messages load fine but throw `INVALID_MESSAGE: MALFORMED_ARGUMENT` at render time. All single-brace conversions (`{variable}`) are applied in `locales/{sv,en}/pages.json`. A second class of breakage: messages that contain raw HTML tags (the `pages.search.search-${mode}-tips-text` copy has `<div>…<li><p>` with class attributes). Plain `t(…)` parses those as rich-text tags and rejects attributes → `INVALID_TAG`. Those call sites use `t.raw(…)` (in `features/search/search-filters/index.tsx`), which skips ICU parsing and returns the string verbatim. Dynamic keys need `as Parameters<typeof t>[0]` when going through `t.raw`.
+- **ICU + `t.raw` gotchas.** … Those call sites use `t.raw(…)` (in `src/app/[locale]/(entryscape)/_search/components/search-filters/index.tsx`), which skips ICU parsing …
 - **`timeZone` must be set explicitly.** `use-intl` throws `ENVIRONMENT_FALLBACK` during SSR if no `timeZone` is configured (server + client must agree to avoid hydration mismatch). Set to `"Europe/Stockholm"` in three places — `NextIntlClientProvider` in `providers/app-router-providers/index.tsx` (App Router), `NextIntlClientProvider` in `pages/_app.tsx` (Pages Router), and the object returned from `getRequestConfig` in `i18n/request.ts` (RSC loader). Keep those three in sync if the default ever changes.
 - **Server-side helpers.** `i18n/get-translations.ts` (mirrors `useTranslations` for `getServerSideProps`), `i18n/get-resource-label.ts` (mirrors `useResourceLabel`), and `i18n/load-messages.ts` (single source for loading all five namespaces). Used by `utilities/entrystore/entrystore-redirect.ts` among others.
 - **Biome guardrail.** `biome.json` bans every `next-translate/*` import via `noRestrictedImports` so legacy calls can't sneak back.
@@ -153,9 +177,9 @@ Default rule of thumb: if a component doesn't import `react`'s state/effect hook
 - Update `docs/entryscape-blocks.md` to describe the client-boundary model.
 - Run the full Cypress suite; compare Lighthouse numbers against pre-migration baseline (LCP, CLS, TBT).
 
-## Phase 6 - `lib/` consolidation (optional, post-migration cleanup)
+## Phase 6 - `lib/` consolidation (done)
 
-Goal: finish the move started by `lib/matomo/` in Phase 2. Pull third-party integrations out of `utilities/` and `hooks/` into self-contained `lib/<integration>/` modules so the public API of each integration is a single import surface and route-local code in `app/` only imports from stable, well-named entry points.
+Goal: finish the move started by `src/lib/matomo/` in Phase 2. Pull third-party integrations out of `src/utilities/` and `src/hooks/` into self-contained `src/lib/<integration>/` modules so the public API of each integration is a single import surface and route-local code in `src/app/` only imports from stable, well-named entry points.
 
 Rule of thumb:
 
@@ -178,24 +202,21 @@ Sequencing:
   - PR B: `utilities/entryscape/blocks/*` + `use-entry-scape-blocks` → `lib/entryscape-blocks/*`.
 - Each PR is just renames + import path rewrites; Biome and `yarn check-types` flag stale imports immediately. No behavior change.
 
-End-state example:
+End-state (under `src/`):
 
 ```
-lib/
+src/lib/
 ├── matomo/                    # Phase 2 (done)
-├── entrystore/                # PR A
-│   ├── client.ts              # ← entrystore.service.ts
-│   ├── helpers.ts             # ← entrystore-helpers.ts
-│   ├── redirect.ts            # ← entrystore-redirect.ts
+├── entrystore/                # PR A (done)
+│   ├── entrystore.service.ts
+│   ├── entrystore-helpers.ts
 │   ├── local-cache.ts
-│   ├── types.ts               # ← types/entrystore-*
-│   ├── entrystore-provider.tsx (optional co-locate)
-│   └── index.ts
-└── entryscape-blocks/         # PR B
-    ├── blocks/                # ← utilities/entryscape/blocks/*
-    ├── config.ts
-    ├── use-blocks.ts          # ← hooks/use-entry-scape-blocks.ts
-    └── index.ts
+│   ├── provider/              # ← providers/entrystore-provider/
+│   └── …
+├── entryscape-blocks/         # PR B (done)
+│   ├── config.ts, datasets.ts, …
+│   └── use-blocks.ts          # ← hooks/use-entry-scape-blocks.ts
+└── statistic/                 # statistic data fetchers
 ```
 
 ## Risks and open items
@@ -229,4 +250,6 @@ lib/
   - If we adopt `preset: "client"` with `documentMode: "string"` (the "other project" setup), codegen will bake `__typename` into every operation/fragment at build time. At that point, delete the `addTypename(doc)` transform in `graphql/fetcher.ts` — it becomes redundant and just adds latency per request.
   - If we stop at the plain `typed-document-node` preset, `__typename` is **not** injected (that preset only emits `TypedDocumentNode<TData, TVars>` types around the existing source) and the runtime `addTypename` transform in `gqlFetch` must stay.
   - Either way, verify post-migration by diffing an outgoing request body against a pre-migration capture: `__typename` selections must still be present on every nested selection set, otherwise `components/grid-list` and any other discriminator-based component will silently render the wrong variant.
-- [x] **Phase 6:** moved `utilities/entrystore/*` → `lib/entrystore/*`, colocated `types/entrystore-core.ts`, `types/entrystore-js.d.ts`, and `providers/entrystore-provider/` → `lib/entrystore/provider/`. Moved `utilities/entryscape/blocks/*` → `lib/entryscape-blocks/*` and renamed `hooks/use-entry-scape-blocks.ts` → `lib/entryscape-blocks/use-blocks.ts`. All import paths updated across ~30 files.
+- [x] **Phase 6:** moved `utilities/entrystore/*` → `src/lib/entrystore/*`, colocated `types/entrystore-core.ts`, `types/entrystore-js.d.ts`, and `providers/entrystore-provider/` → `src/lib/entrystore/provider/`. Moved `utilities/entryscape/blocks/*` → `src/lib/entryscape-blocks/*` and renamed `hooks/use-entry-scape-blocks.ts` → `src/lib/entryscape-blocks/use-blocks.ts`. All import paths updated across ~30 files.
+- [x] **Post Phase 6:** moved all application source into `src/` (`app`, `components`, `lib`, `utilities`, `providers`, `hooks`, `i18n`, `env`, `graphql`, `types`, `assets`, `styles`, `locales`, `proxy.ts`). Updated `tsconfig.json` (`@/*` → `./src/*`), `next.config.mjs`, `codegen.ts`, `tailwind.config.js`, `biome.json`, and `Dockerfile`. No import path changes needed in application code thanks to the `@/` alias.
+- [x] **Post Phase 6 (next-intl middleware):** replaced the hand-rolled locale rewrite/redirect block in `src/proxy.ts` with `createMiddleware(routing)` from `next-intl/middleware`, composed with the existing CSP nonce work. This makes `usePathname()` / `router.replace(…, { locale })` from `@/i18n/navigation` work without `useInternalPathname()` / `stripLocalePrefix()` workarounds. Language switch stays on the current page; Swedish URLs stay unprefixed (`localePrefix: "as-needed"`); explicit `/sv/…` redirects to canonical unprefixed paths.

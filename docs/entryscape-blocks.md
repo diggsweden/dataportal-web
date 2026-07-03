@@ -2,6 +2,8 @@
 
 This document explains how the dataportal integrates **Entryscape Blocks**, where the block configurations live, and why we apply a number of custom overrides on top of the hosted bundle. Scope: enough context to onboard a developer and find the right file; not an exhaustive per-block reference.
 
+All paths below are relative to `src/` (application source root). In code, import via the `@/` alias (e.g. `@/lib/entryscape-blocks/use-blocks`).
+
 ## 1. What Entryscape is here
 
 Two cooperating layers are used:
@@ -25,9 +27,9 @@ flowchart LR
 
 ## 2. How blocks are loaded at runtime
 
-The entire lifecycle lives in the [`useEntryScapeBlocks`](../hooks/use-entry-scape-blocks.ts) hook and a single DOM anchor:
+The entire lifecycle lives in the [`useEntryScapeBlocks`](../src/lib/entryscape-blocks/use-blocks.ts) hook and a single DOM anchor:
 
-- `#scriptsPlaceholder` is rendered once in the App Router chrome ([`components/layout/app-router-chrome/index.tsx`](../components/layout/app-router-chrome/index.tsx)) and is the container that all Entryscape `<script>` tags are appended to.
+- `#scriptsPlaceholder` is rendered once in the App Router chrome ([`components/layout/app-router-chrome/index.tsx`](../src/components/layout/app-router-chrome/index.tsx)) and is the container that all Entryscape `<script>` tags are appended to.
 - On mount, the hook:
   1. Creates `window.__entryscape_blocks_ready` (a promise resolved by the bundle when `init` is available).
   2. Builds a config via `createBlocksConfig({ pageType, lang, env, t, context, esId, ... })` and concatenates it onto `window.__entryscape_config`.
@@ -38,7 +40,7 @@ The entire lifecycle lives in the [`useEntryScapeBlocks`](../hooks/use-entry-sca
 
 Key snippet:
 
-```67:113:hooks/use-entry-scape-blocks.ts
+```67:113:src/lib/entryscape-blocks/use-blocks.ts
     const initializeBlocks = async () => {
       try {
         const newConfig = createBlocksConfig({
@@ -76,21 +78,21 @@ Key snippet:
 
 Supporting pieces:
 
-- **Script URLs** are read from [`env/env-settings.ts`](../env/env-settings.ts): `ENTRYSCAPE_BLOCKS_URL`, `ENTRYSCAPE_OPENDATA_SV_URL` / `_EN_URL`, `ENTRYSCAPE_MQA_SV_URL` / `_EN_URL`. Values vary by environment (prod vs sandbox).
-- **CSP** is adjusted in [`utilities/generate-csp.ts`](../utilities/generate-csp.ts) to allowlist `*.entryscape.com` and `static.cdn.entryscape.com` so the hosted scripts and their XHRs are not blocked.
+- **Script URLs** are read from [`env/env-settings.ts`](../src/env/env-settings.ts): `ENTRYSCAPE_BLOCKS_URL`, `ENTRYSCAPE_OPENDATA_SV_URL` / `_EN_URL`, `ENTRYSCAPE_MQA_SV_URL` / `_EN_URL`. Values vary by environment (prod vs sandbox).
+- **CSP** is adjusted in [`utilities/generate-csp.ts`](../src/utilities/generate-csp.ts) to allowlist `*.entryscape.com` and `static.cdn.entryscape.com` so the hosted scripts and their XHRs are not blocked.
 
 ## 3. Where block configurations live
 
-All block definitions live under [`utilities/entryscape/blocks/`](../utilities/entryscape/blocks). A single factory picks the right set based on `pageType`:
+All block definitions live under [`lib/entryscape-blocks/`](../src/lib/entryscape-blocks). A single factory picks the right set based on `pageType`:
 
-- [`config.ts`](../utilities/entryscape/blocks/config.ts) — `createBlocksConfig(...)` builds the shared `block: "config"` entry (entrystore URL, `page_language`, `spa: true`, optional `context`/`entry`, `clicks`, facet `collections`, RDForms `itemstore.bundles`, `namespaces`) and returns the per-page `blocks: [...]` array.
-- [`datasets.ts`](../utilities/entryscape/blocks/datasets.ts) — dataset detail: `formatBadge`/`formatBadges2`, `distributionListCustom`, `accessServiceCustom`, `aboutDataset`, plus imports from `global.ts`.
-- [`dataservice.ts`](../utilities/entryscape/blocks/dataservice.ts) — data service detail: indicators, explore link, keyword/theme, `aboutDaservice`.
-- [`apiexplore.ts`](../utilities/entryscape/blocks/apiexplore.ts) — minimal indicator set for the API explore subpage.
-- [`specification.ts`](../utilities/entryscape/blocks/specification.ts) — `resourceDescriptors2` list with a rich `rowhead` layout for profile resources.
-- [`concept.ts`](../utilities/entryscape/blocks/concept.ts) — SKOS blocks: `broaderList`, `narrowerList`, `relatedList`, `conceptLink`, `conceptBlock`, `conceptHierarchy`.
-- [`terminology.ts`](../utilities/entryscape/blocks/terminology.ts) — terminology-specific `conceptLink`, `toppbegrepp`, `toppbegreppLista`.
-- [`global.ts`](../utilities/entryscape/blocks/global.ts) — shared blocks reused across pages: `customIndicators`, `keyword`, `theme`, `catalog`, `exploreApiLink`, `customLicenseIndicator`, `hemvist`.
+- [`config.ts`](../src/lib/entryscape-blocks/config.ts) — `createBlocksConfig(...)` builds the shared `block: "config"` entry (entrystore URL, `page_language`, `spa: true`, optional `context`/`entry`, `clicks`, facet `collections`, RDForms `itemstore.bundles`, `namespaces`) and returns the per-page `blocks: [...]` array.
+- [`datasets.ts`](../src/lib/entryscape-blocks/datasets.ts) — dataset detail: `formatBadge`/`formatBadges2`, `distributionListCustom`, `accessServiceCustom`, `aboutDataset`, plus imports from `global.ts`.
+- [`dataservice.ts`](../src/lib/entryscape-blocks/dataservice.ts) — data service detail: indicators, explore link, keyword/theme, `aboutDaservice`.
+- [`apiexplore.ts`](../src/lib/entryscape-blocks/apiexplore.ts) — minimal indicator set for the API explore subpage.
+- [`specification.ts`](../src/lib/entryscape-blocks/specification.ts) — `resourceDescriptors2` list with a rich `rowhead` layout for profile resources.
+- [`concept.ts`](../src/lib/entryscape-blocks/concept.ts) — SKOS blocks: `broaderList`, `narrowerList`, `relatedList`, `conceptLink`, `conceptBlock`, `conceptHierarchy`.
+- [`terminology.ts`](../src/lib/entryscape-blocks/terminology.ts) — terminology-specific `conceptLink`, `toppbegrepp`, `toppbegreppLista`.
+- [`global.ts`](../src/lib/entryscape-blocks/global.ts) — shared blocks reused across pages: `customIndicators`, `keyword`, `theme`, `catalog`, `exploreApiLink`, `customLicenseIndicator`, `hemvist`.
 
 MQA has no dedicated file; the MQA extension script ships the `totMQA` / `catalogMQA` blocks and we only supply the base `config` entry.
 
@@ -98,18 +100,18 @@ MQA has no dedicated file; the MQA extension script ships the `totMQA` / `catalo
 
 Every page that uses blocks calls `useEntryScapeBlocks` with a specific `pageType`. Placeholders are declared inline in each feature component.
 
-- **Dataset** — [`features/entryscape/dataset-page/index.tsx`](../features/entryscape/dataset-page/index.tsx). Renders `customIndicators`, `distributionListCustom`, RDForms `view`, `autoVisualizations`, `aboutDataset`, `catalog`.
-- **Dataset API explore** — [`features/entryscape/dataset-explore-api-page/index.tsx`](../features/entryscape/dataset-explore-api-page/index.tsx). Indicators + RDForms `view`.
-- **Data service** — [`features/entryscape/data-service-page/index.tsx`](../features/entryscape/data-service-page/index.tsx). Indicators, `view`, `aboutDaservice`.
-- **Specification** — [`features/entryscape/specification-page/index.tsx`](../features/entryscape/specification-page/index.tsx). `resourceDescriptors2`, RDForms `view`, contact dialog.
-- **Concept / Terminology** — [`features/entryscape/concept-page/index.tsx`](../features/entryscape/concept-page/index.tsx). `conceptBlock`, `toppbegrepp`, `conceptHierarchy` (the same page switches `pageType` between `"concept"` and `"terminology"` based on route).
-- **MQA** — [`features/entryscape/mqa-page/index.tsx`](../features/entryscape/mqa-page/index.tsx) (`totMQA`) and [`features/entryscape/mqa-category-page/index.tsx`](../features/entryscape/mqa-category-page/index.tsx) (`catalogMQA`).
+- **Dataset** — [`app/[locale]/(entryscape)/components/dataset-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/dataset-page/index.tsx>). Renders `customIndicators`, `distributionListCustom`, RDForms `view`, `autoVisualizations`, `aboutDataset`, `catalog`.
+- **Dataset API explore** — [`app/[locale]/(entryscape)/components/dataset-explore-api-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/dataset-explore-api-page/index.tsx>). Indicators + RDForms `view`.
+- **Data service** — [`app/[locale]/(entryscape)/components/data-service-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/data-service-page/index.tsx>). Indicators, `view`, `aboutDaservice`.
+- **Specification** — [`app/[locale]/(entryscape)/components/specification-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/specification-page/index.tsx>). `resourceDescriptors2`, RDForms `view`, contact dialog.
+- **Concept / Terminology** — [`app/[locale]/(entryscape)/components/concept-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/concept-page/index.tsx>). `conceptBlock`, `toppbegrepp`, `conceptHierarchy` (the same page switches `pageType` between `"concept"` and `"terminology"` based on route).
+- **MQA** — [`app/[locale]/(entryscape)/metadatakvalitet/page.tsx`](<../src/app/[locale]/(entryscape)/metadatakvalitet/page.tsx>) (`totMQA`) and [`app/[locale]/(entryscape)/metadatakvalitet/[...catalog]/mqa-category-page.tsx`](<../src/app/[locale]/(entryscape)/metadatakvalitet/[...catalog]/mqa-category-page.tsx>) (`catalogMQA`).
 
 Pages that use **Entrystore but not Blocks** (for reference, so you do not look for block configs there):
 
-- Search/listing pages under `features/search/` — use [`providers/search-provider/index.tsx`](../providers/search-provider/index.tsx) with direct `entrystore-js` queries.
-- [`features/entryscape/organisation-page/index.tsx`](../features/entryscape/organisation-page/index.tsx) — custom React UI.
-- [`features/entryscape/dataset-series-page/index.tsx`](../features/entryscape/dataset-series-page/index.tsx) — `SearchProvider` for series members.
+- Search/listing pages under [`src/app/[locale]/(entryscape)/_search/`](../src/app/[locale]/(entryscape)/_search/) — use [`providers/search-provider/index.tsx`](../src/providers/search-provider/index.tsx) with direct `entrystore-js` queries.
+- [`app/[locale]/(entryscape)/components/organisation-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/organisation-page/index.tsx>) — custom React UI.
+- [`app/[locale]/(entryscape)/components/dataset-series-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/dataset-series-page/index.tsx>) — `SearchProvider` for series members.
 
 ## 5. Types of customizations and why we do them
 
@@ -119,13 +121,13 @@ The hosted blocks cover most of the content, but the portal has a distinct desig
 
 Handlebars-like templates that slot custom HTML and classes into the block's output. Used when we keep the block's data logic but want a different DOM shape so Tailwind utilities apply cleanly.
 
-Example: `conceptBlock` in [`utilities/entryscape/blocks/concept.ts`](../utilities/entryscape/blocks/concept.ts) composes its own `<h2>` / `<div>` structure around `{{text}}`, `{{#ifprop}}`, and nested blocks like `{{broaderList}}`.
+Example: `conceptBlock` in [`lib/entryscape-blocks/concept.ts`](../src/lib/entryscape-blocks/concept.ts) composes its own `<h2>` / `<div>` structure around `{{text}}`, `{{#ifprop}}`, and nested blocks like `{{broaderList}}`.
 
 ### 5.2 List customizations (`extends: "list"`)
 
 The built-in `list` block is extended with custom `rowhead`, `rowexpand`, `listbody`, `listplaceholder`, `expandTooltip`, and translated labels. This is how lists of distributions, resource descriptors, narrower concepts, and top concepts render in our layout while still using Blocks for data binding.
 
-Example: `distributionListCustom` in [`utilities/entryscape/blocks/datasets.ts`](../utilities/entryscape/blocks/datasets.ts) builds a flex container, embeds an RDForms `{{view rdformsid="dcat:Distribution" filterpredicates="..."}}` inside the expanded row, and uses translated tooltips.
+Example: `distributionListCustom` in [`lib/entryscape-blocks/datasets.ts`](../src/lib/entryscape-blocks/datasets.ts) builds a flex container, embeds an RDForms `{{view rdformsid="dcat:Distribution" filterpredicates="..."}}` inside the expanded row, and uses translated tooltips.
 
 ### 5.3 Imperative `run` blocks
 
@@ -135,7 +137,7 @@ Used for:
 
 - **Internal Next.js links** — `conceptLink` writes a same-origin anchor so users stay inside the app. The URL is assembled through the shared `includeLangInPath()` helper so it collapses to `/concepts/…` for Swedish (default locale, no prefix) and `/en/concepts/…` once the route is re-enabled under `app/[locale]/`:
 
-```39:63:utilities/entryscape/blocks/concept.ts
+```39:63:src/lib/entryscape-blocks/concept.ts
   {
     block: "conceptLink",
     run: (node: any, a2: any, a3: any, entry: Entry) => {
@@ -166,15 +168,15 @@ Used for:
 - **Explore API button** — `exploreApiLink` builds a CTA that deep-links into the API explore subpage.
 - **Publisher / "hemvist" resolution** — `hemvist` looks up the owning organization from the Entry's graph.
 
-All four live in [`utilities/entryscape/blocks/global.ts`](../utilities/entryscape/blocks/global.ts).
+All four live in [`lib/entryscape-blocks/global.ts`](../src/lib/entryscape-blocks/global.ts).
 
 ### 5.4 i18n, CSS, and navigation overrides
 
 - **Translations.** `next-intl`'s `t(...)` is threaded through `createBlocksConfig` and embedded directly in template strings (labels, tooltips, expand/collapse buttons, section headings), so block text matches the site's translations instead of Blocks' defaults.
-- **Styling.** [`styles/entryscape.css`](../styles/entryscape.css) and [`styles/entryscape-mqa.css`](../styles/entryscape-mqa.css) (imported via `styles/main.css`) restyle Entryscape's generated markup — `.rdforms*`, `.entryscape` links/headings, `.esbRowHead`, `.concept_hierarchy`, etc. — primarily with Tailwind `@apply` so hosted output aligns with the design system.
+- **Styling.** [`styles/entryscape.css`](../src/styles/entryscape.css) and [`styles/entryscape-mqa.css`](../src/styles/entryscape-mqa.css) (imported via `src/styles/main.css`) restyle Entryscape's generated markup — `.rdforms*`, `.entryscape` links/headings, `.esbRowHead`, `.concept_hierarchy`, etc. — primarily with Tailwind `@apply` so hosted output aligns with the design system.
 - **Navigation workaround.** Blocks hydrates state tied to the current page. To avoid stale state when users click a link rendered inside a block, `useEntryScapeBlocks` installs a document-level click listener that intercepts same-origin anchors and forces `window.location.href = link.href` (full navigation) instead of Next's client-side routing:
 
-```40:49:hooks/use-entry-scape-blocks.ts
+```40:49:src/lib/entryscape-blocks/use-blocks.ts
     const handleClick = (event: MouseEvent) => {
       const link = (event.target as HTMLElement).closest("a");
 
@@ -191,27 +193,27 @@ This is a trade-off: we lose client-side transitions between entryscape-mounted 
 
 ## 6. Quick file map
 
-- [`hooks/use-entry-scape-blocks.ts`](../hooks/use-entry-scape-blocks.ts) — script loader, lifecycle, click workaround.
-- [`utilities/entryscape/blocks/config.ts`](../utilities/entryscape/blocks/config.ts) — `createBlocksConfig` factory; per-page `config` entries.
-- [`utilities/entryscape/blocks/datasets.ts`](../utilities/entryscape/blocks/datasets.ts) — dataset blocks (distributions, formats, about).
-- [`utilities/entryscape/blocks/dataservice.ts`](../utilities/entryscape/blocks/dataservice.ts) — data service blocks.
-- [`utilities/entryscape/blocks/apiexplore.ts`](../utilities/entryscape/blocks/apiexplore.ts) — API explore indicators.
-- [`utilities/entryscape/blocks/specification.ts`](../utilities/entryscape/blocks/specification.ts) — specification resource list.
-- [`utilities/entryscape/blocks/concept.ts`](../utilities/entryscape/blocks/concept.ts) — SKOS concept blocks and hierarchy.
-- [`utilities/entryscape/blocks/terminology.ts`](../utilities/entryscape/blocks/terminology.ts) — terminology list/link blocks.
-- [`utilities/entryscape/blocks/global.ts`](../utilities/entryscape/blocks/global.ts) — shared indicators, license, explore link, hemvist.
-- [`components/layout/app-router-chrome/index.tsx`](../components/layout/app-router-chrome/index.tsx) — `#scriptsPlaceholder` anchor.
-- [`env/env-settings.ts`](../env/env-settings.ts) — `ENTRYSCAPE_*` script URLs.
-- [`utilities/generate-csp.ts`](../utilities/generate-csp.ts) — CSP allowlist.
-- [`styles/entryscape.css`](../styles/entryscape.css), [`styles/entryscape-mqa.css`](../styles/entryscape-mqa.css) — visual overrides.
-- [`providers/entrystore-provider/index.tsx`](../providers/entrystore-provider/index.tsx) — Entrystore context for feature pages (separate from the blocks runtime).
-- [`features/entryscape/*`](../features/entryscape) — pages that mount blocks.
+- [`hooks/use-entry-scape-blocks.ts`](../src/lib/entryscape-blocks/use-blocks.ts) — script loader, lifecycle, click workaround.
+- [`lib/entryscape-blocks/config.ts`](../src/lib/entryscape-blocks/config.ts) — `createBlocksConfig` factory; per-page `config` entries.
+- [`lib/entryscape-blocks/datasets.ts`](../src/lib/entryscape-blocks/datasets.ts) — dataset blocks (distributions, formats, about).
+- [`lib/entryscape-blocks/dataservice.ts`](../src/lib/entryscape-blocks/dataservice.ts) — data service blocks.
+- [`lib/entryscape-blocks/apiexplore.ts`](../src/lib/entryscape-blocks/apiexplore.ts) — API explore indicators.
+- [`lib/entryscape-blocks/specification.ts`](../src/lib/entryscape-blocks/specification.ts) — specification resource list.
+- [`lib/entryscape-blocks/concept.ts`](../src/lib/entryscape-blocks/concept.ts) — SKOS concept blocks and hierarchy.
+- [`lib/entryscape-blocks/terminology.ts`](../src/lib/entryscape-blocks/terminology.ts) — terminology list/link blocks.
+- [`lib/entryscape-blocks/global.ts`](../src/lib/entryscape-blocks/global.ts) — shared indicators, license, explore link, hemvist.
+- [`components/layout/app-router-chrome/index.tsx`](../src/components/layout/app-router-chrome/index.tsx) — `#scriptsPlaceholder` anchor.
+- [`env/env-settings.ts`](../src/env/env-settings.ts) — `ENTRYSCAPE_*` script URLs.
+- [`utilities/generate-csp.ts`](../src/utilities/generate-csp.ts) — CSP allowlist.
+- [`styles/entryscape.css`](../src/styles/entryscape.css), [`styles/entryscape-mqa.css`](../src/styles/entryscape-mqa.css) — visual overrides.
+- [`lib/entrystore/provider/index.tsx`](../src/lib/entrystore/provider/index.tsx) — Entrystore context for entryscape pages (separate from the blocks runtime).
+- [`app/[locale]/(entryscape)/components/*`](<../src/app/[locale]/(entryscape)/components>) — pages that mount blocks.
 
 ## 7. Known inconsistency worth verifying
 
 `entrystoreBase` is passed differently to `useEntryScapeBlocks` on the two MQA pages:
 
-- [`features/entryscape/mqa-page/index.tsx`](../features/entryscape/mqa-page/index.tsx) passes a full URL: `https://${env.ENTRYSCAPE_MQA_PATH}/store`.
-- [`features/entryscape/mqa-category-page/index.tsx`](../features/entryscape/mqa-category-page/index.tsx) passes a bare hostname: `env.ENTRYSCAPE_MQA_PATH`.
+- [`app/[locale]/(entryscape)/metadatakvalitet/page.tsx`](<../src/app/[locale]/(entryscape)/metadatakvalitet/page.tsx>) passes a full URL: `https://${env.ENTRYSCAPE_MQA_PATH}/store`.
+- [`app/[locale]/(entryscape)/metadatakvalitet/[...catalog]/mqa-category-page.tsx`](<../src/app/[locale]/(entryscape)/metadatakvalitet/[...catalog]/mqa-category-page.tsx>) passes a bare hostname: `env.ENTRYSCAPE_MQA_PATH`.
 
 Both values end up in the same `baseConfig.entrystore` field in `createBlocksConfig`. This is a candidate for normalization (pick one form and fix the other), but it is out of scope for this documentation.

@@ -1,0 +1,507 @@
+"use client";
+
+import { createFocusTrap, type FocusTrap } from "focus-trap";
+import { useTranslations } from "next-intl";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { SearchFilter } from "@/app/[locale]/(entryscape)/_search/components/search-filters/search-filter";
+import CrossIcon from "@/assets/icons/cross.svg";
+import FilterIcon from "@/assets/icons/filter.svg";
+import InfoCircleIcon from "@/assets/icons/info-circle.svg";
+import SearchIcon from "@/assets/icons/search.svg";
+import { Button } from "@/components/button";
+import { TextInput } from "@/components/form/text-input";
+import { Modal } from "@/components/modal";
+import { useResourceLabel } from "@/i18n/use-resource-label";
+import { ESRdfType } from "@/lib/entrystore/entrystore-core";
+import type { SearchContextData } from "@/providers/search-provider";
+import { SettingsContext } from "@/providers/settings-provider";
+import type { SearchFacet, SearchFacetValue } from "@/types/search";
+import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
+
+import { SearchActiveFilters } from "./search-active-filters";
+import {
+  SearchCheckboxFilter,
+  SearchCheckboxFilterIcon,
+} from "./search-checkbox-filter";
+
+interface SearchFilterProps {
+  search: SearchContextData;
+  searchMode: SearchMode;
+  query: string;
+  showTip?: boolean;
+}
+
+interface FilterSearchProps {
+  filterKey: string;
+  filter: InputFilter;
+  setFilter: Dispatch<SetStateAction<InputFilter>>;
+  title: string;
+  fetchMore: () => void;
+}
+
+type InputFilter = { [key: string]: string };
+export type SearchMode =
+  | "content"
+  | "datasets"
+  | "concepts"
+  | "specifications"
+  | "organisations"
+  | "datasets-series";
+
+function FilterSearch({
+  filterKey,
+  title,
+  filter,
+  setFilter,
+  fetchMore,
+}: FilterSearchProps) {
+  const t = useTranslations();
+
+  return (
+    <div className="relative flex items-center">
+      <TextInput
+        id={filterKey}
+        name={filterKey}
+        placeholder={t("pages.search.filtersearch")}
+        className="focus--in border-none"
+        aria-label={title}
+        value={filter[filterKey] || ""}
+        onChange={(e) => {
+          clearCurrentScrollPos();
+          fetchMore();
+          setFilter({ ...filter, [filterKey]: e.target.value });
+        }}
+      />
+      <SearchIcon
+        height={24}
+        width={24}
+        className="absolute right-sm text-brown-500"
+        aria-hidden="true"
+      />
+    </div>
+  );
+}
+
+const findFilters = (
+  categoryFilters: SearchFacetValue[],
+  checkedFilters: SearchFacetValue[] | undefined,
+) => {
+  if (!checkedFilters?.length) return "";
+  const allResources = new Set(categoryFilters.map((v) => v.resource));
+  const count = checkedFilters.filter((v) =>
+    allResources.has(v.resource),
+  ).length;
+  return count > 0 ? ` (${count})` : "";
+};
+
+/**
+ * Controls for filtering searchhits
+ *
+ * @param search context for handling searchstate
+ * @param searchMode
+ * @param query
+ * @returns JSX-elements of selects and checkboxes
+ */
+export function SearchFilters({
+  search,
+  searchMode,
+  query,
+}: SearchFilterProps) {
+  const t = useTranslations();
+  const tResource = useResourceLabel();
+  const { iconSize } = useContext(SettingsContext);
+  const [showFilter, setShowFilter] = useState(false);
+  const [showFilterInfo, setShowFilterInfo] = useState(false);
+  const [inputFilter, setInputFilter] = useState<InputFilter>({});
+  const ref = useRef<HTMLDivElement>(null);
+  const trapRef = useRef<FocusTrap | null>(null);
+
+  useEffect(() => {
+    if (showFilter && ref.current && window.innerWidth < 600) {
+      trapRef.current = createFocusTrap(ref.current, {
+        escapeDeactivates: false,
+        allowOutsideClick: true,
+      });
+      trapRef.current.activate();
+    }
+
+    if (showFilter && window.innerWidth < 600) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      if (trapRef.current) {
+        trapRef.current.deactivate();
+      }
+      document.body.style.overflow = "auto";
+    };
+  }, [showFilter]);
+
+  useEffect(() => {
+    if (search.request.facetValues?.length) setShowFilter(true);
+  }, [search.request.facetValues]);
+
+  const selected = (key: string, facetValue: SearchFacetValue) => {
+    return search.facetSelected(key, facetValue.resource);
+  };
+
+  const doSearch = async (key: string, facetValue: SearchFacetValue) => {
+    clearCurrentScrollPos();
+
+    await search.toggleFacet(facetValue);
+
+    await search.doSearch(false, true, false);
+
+    if (selected(key, facetValue)) {
+      search.sortAllFacets(key);
+    } else {
+      search.sortAllFacets();
+    }
+  };
+
+  function updateFilters() {
+    search.updateFacetStats();
+    setShowFilter(!showFilter);
+  }
+
+  const ToggleFilterButton = ({ className }: { className?: string }) => {
+    return (
+      <Button
+        data-test-id="search-filters-toggle"
+        variant="secondary"
+        size="md"
+        icon={showFilter ? CrossIcon : FilterIcon}
+        iconPosition="left"
+        label={showFilter ? t("common.close-filter") : t("common.show-filter")}
+        aria-label={
+          showFilter ? t("common.close-filter") : t("common.show-filter")
+        }
+        aria-expanded={showFilter}
+        aria-controls="filter-content"
+        onClick={() => updateFilters()}
+        className={`py-sm ${className ? className : ""}`}
+        disabled={
+          search.loadingFacets && Object.keys(groupedFacets).length === 0
+        }
+      />
+    );
+  };
+
+  const groupedFacets = useMemo(() => {
+    const grouped: { [key: string]: { [key: string]: SearchFacet } } = {};
+
+    Object.entries(search.allFacets || {}).forEach(([key, facet]) => {
+      const group = facet.group || "default";
+      if (!grouped[group]) {
+        grouped[group] = {};
+      }
+      grouped[group][key] = facet;
+    });
+
+    return grouped;
+  }, [searchMode, search.allFacets]);
+
+  return (
+    <section data-test-id="search-filters" aria-label={t("common.filter")}>
+      <div
+        className={`fixed inset-none z-40 overflow-hidden bg-brownOpaque5 md:hidden
+        ${showFilter ? "visible" : "hidden"}`}
+        role="presentation"
+        aria-hidden="true"
+        onClick={() => setShowFilter(false)}
+      />
+
+      <div className="my-xl flex items-center justify-between md:my-lg">
+        <ToggleFilterButton />
+
+        {(searchMode === "datasets" || searchMode === "organisations") && (
+          <>
+            <Button
+              variant="plain"
+              size="md"
+              label={t("common.filter-info")}
+              icon={InfoCircleIcon}
+              iconPosition="left"
+              onClick={() => setShowFilterInfo(true)}
+            />
+            <Modal
+              heading={t("pages.search.search-tips")}
+              modalOpen={showFilterInfo}
+              setModalOpen={setShowFilterInfo}
+              text={t("pages.search.search-tips-head")}
+              description={
+                t.raw(
+                  `pages.search.search-${searchMode}-tips-text` as Parameters<
+                    typeof t
+                  >[0],
+                ) as string
+              }
+              textSize="md"
+              closeBtn={t("common.close")}
+              closeBtnClassName="ml-auto"
+            />
+          </>
+        )}
+      </div>
+      <div
+        ref={ref}
+        id="filter-content"
+        className={`fixed inset-md z-50 w-auto rounded-md border-t border-brown-400 bg-pink-50 md:static md:rounded-sm md:bg-transparent ${
+          showFilter ? "block" : "hidden"
+        }`}
+      >
+        <div className="flex h-full flex-col space-y-xl overflow-y-auto overscroll-contain p-lg md:my-xl md:gap-none md:space-y-sm md:p-none">
+          <ToggleFilterButton className="md:hidden" />
+          <span className="!mt-lg border-b border-brown-500 md:hidden" />
+          {Object.entries(groupedFacets).map(([groupName, groupFacets]) => (
+            <div
+              id="group-container"
+              key={groupName}
+              className="mb-md items-center md:!mb-sm md:flex"
+            >
+              {groupName !== "default" && (
+                <h4 className="mb-sm mr-md shrink-0 text-sm text-textSecondary md:mb-none md:w-[6.25rem]">
+                  {t(`filters.group.${groupName}` as Parameters<typeof t>[0])}:
+                </h4>
+              )}
+              <ul
+                className="flex w-full flex-col flex-wrap gap-md md:flex-row"
+                aria-label={t("common.available-filters")}
+              >
+                {Object.entries(groupFacets)
+                  .sort((a, b) => (a[1].indexOrder > b[1].indexOrder ? 1 : -1))
+                  .map(([key, value], idx: number) => {
+                    const shouldFetchMore = value.show <= value.count;
+                    const show = value?.show || 20;
+                    const uniqueFacetValues = Array.from(
+                      new Map(
+                        value?.facetValues.map((v) => [v.resource, v]),
+                      ).values(),
+                    );
+                    const facetValues = inputFilter[key]
+                      ? uniqueFacetValues.filter((v) =>
+                          v.title
+                            ?.toLowerCase()
+                            .includes(inputFilter[key].toLowerCase()),
+                        )
+                      : uniqueFacetValues.slice(0, show);
+
+                    if (!value.customFilter && !value.customSearch) {
+                      return (
+                        <li key={value.title}>
+                          <SearchFilter
+                            data-test-id="search-filter-select"
+                            title={value.title}
+                            usedFilters={findFilters(
+                              value.facetValues,
+                              search.request.facetValues,
+                            )}
+                            onOpen={
+                              value.predicate ===
+                              "http://purl.org/dc/terms/publisher"
+                                ? () => search.fetchFacetNames(key)
+                                : undefined
+                            }
+                          >
+                            <div className="absolute z-10 mr-lg mt-sm max-h-[200px] w-[calc(100vw-4rem)] overflow-y-auto overscroll-contain border border-brown-200 bg-white shadow-md md:max-h-[600px] md:w-full md:max-w-[20.625rem]">
+                              <FilterSearch
+                                filterKey={key}
+                                filter={inputFilter}
+                                setFilter={setInputFilter}
+                                title={value.title}
+                                fetchMore={() =>
+                                  shouldFetchMore && search.fetchMoreFacets(key)
+                                }
+                              />
+
+                              {/* List of filter options within this category */}
+                              <ul
+                                role="listbox"
+                                data-test-id="search-filter-select-list"
+                                aria-multiselectable="true"
+                              >
+                                {search.loadingFacets &&
+                                value.predicate ===
+                                  "http://purl.org/dc/terms/publisher" &&
+                                facetValues.some(
+                                  (v) => !v.title || v.title === v.resource,
+                                )
+                                  ? // Show skeleton while fetching organization names
+                                    Array.from({
+                                      length: Math.min(facetValues.length, 10),
+                                    }).map((_, index) => (
+                                      <li
+                                        key={`skeleton-${String(index)}`}
+                                        role="option"
+                                        tabIndex={-1}
+                                        aria-busy="true"
+                                        aria-selected={false}
+                                      >
+                                        <div className="animate-pulse py-md pl-md pr-[3rem]">
+                                          <div className="rounded h-md w-3/4 bg-brown-200" />
+                                          <div className="rounded mt-xs h-sm w-1/4 bg-brown-100" />
+                                        </div>
+                                      </li>
+                                    ))
+                                  : facetValues.map(
+                                      (
+                                        facetValue: SearchFacetValue,
+                                        index: number,
+                                      ) => (
+                                        <li
+                                          key={facetValue.resource}
+                                          role="option"
+                                          tabIndex={-1}
+                                          aria-selected={selected(
+                                            key,
+                                            facetValue,
+                                          )}
+                                        >
+                                          <button
+                                            type="button"
+                                            className={`focus--in group relative flex w-full items-center break-all py-md pl-md pr-[3rem] text-left hover:bg-brown-100 ${
+                                              selected(key, facetValue) &&
+                                              "font-strong"
+                                            }`}
+                                            onClick={() => {
+                                              doSearch(key, facetValue);
+                                            }}
+                                            aria-pressed={selected(
+                                              key,
+                                              facetValue,
+                                            )}
+                                          >
+                                            {facetValue.title ||
+                                              facetValue.resource}{" "}
+                                            ({facetValue.count})
+                                            {/* Decorative checkbox icon */}
+                                            <span
+                                              className="absolute right-md top-1/2 -translate-y-1/2 "
+                                              aria-hidden="true"
+                                            >
+                                              <SearchCheckboxFilterIcon
+                                                isChecked={selected(
+                                                  key,
+                                                  facetValue,
+                                                )}
+                                                iconSize={iconSize}
+                                              />
+                                            </span>
+                                          </button>
+                                        </li>
+                                      ),
+                                    )}
+                              </ul>
+
+                              {value.facetValues.length > value.show && (
+                                <Button
+                                  variant="secondary"
+                                  size="sm"
+                                  className="mx-sm my-md"
+                                  onClick={() => {
+                                    search.fetchMoreFacets(key);
+                                  }}
+                                  disabled={search.loadingFacets}
+                                  label={
+                                    search.loadingFacets
+                                      ? t("common.loading")
+                                      : t("common.load-more")
+                                  }
+                                />
+                              )}
+                              {facetValues.length === 0 && (
+                                <div className="p-md">
+                                  {t("pages.search.nohits")}
+                                </div>
+                              )}
+                            </div>
+                          </SearchFilter>
+                        </li>
+                      );
+                    } else {
+                      return (
+                        <li key={key}>
+                          <SearchCheckboxFilter
+                            key={key}
+                            id={value.predicate}
+                            name={value.title}
+                            checked={
+                              value.customFilter
+                                ? search.facetSelected(key, value.customFilter)
+                                : value.customSearch?.length ===
+                                    search.request.esRdfTypes?.length &&
+                                  value.customSearch?.every((type) =>
+                                    search.request.esRdfTypes?.includes(type),
+                                  )
+                            }
+                            onChange={() => {
+                              if (value.customSearch) {
+                                clearCurrentScrollPos();
+                                if (
+                                  value.customSearch !==
+                                  search.request.esRdfTypes
+                                ) {
+                                  search
+                                    .set({
+                                      esRdfTypes: value.customSearch,
+                                      query,
+                                    })
+                                    .then(() => search.doSearch());
+                                } else {
+                                  search
+                                    .set({
+                                      esRdfTypes: [
+                                        ESRdfType.dataset,
+                                        ESRdfType.data_service,
+                                        ESRdfType.dataset_series,
+                                      ],
+                                      query,
+                                    })
+                                    .then(() => search.doSearch());
+                                }
+                              } else {
+                                doSearch(key, facetValues[0]);
+                              }
+                            }}
+                            label={tResource(key)}
+                            iconSize={iconSize}
+                          />
+                        </li>
+                      );
+                    }
+                  })}
+              </ul>
+            </div>
+          ))}
+          {/* Mobile active filters */}
+          <div className="md:hidden">
+            <SearchActiveFilters
+              search={search}
+              query={query}
+              searchMode={searchMode}
+            />
+          </div>
+          <ToggleFilterButton className="!mt-xl md:hidden" />
+        </div>
+      </div>
+
+      <SearchActiveFilters
+        search={search}
+        query={query}
+        searchMode={searchMode}
+      />
+    </section>
+  );
+}
+
+export default SearchFilters;

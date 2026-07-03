@@ -24,7 +24,7 @@ COPY --from=builder /build/.next ./.next
 COPY --from=builder /build/node_modules ./node_modules
 COPY --from=builder /build/.yarn ./yarn
 COPY --from=builder /build/package.json ./package.json
-COPY --from=builder /build/locales ./locales
+COPY --from=builder /build/src/locales ./src/locales
 
 COPY --from=builder /build/pages ./pages
 COPY --from=builder /build/.env.production ./.env.production
