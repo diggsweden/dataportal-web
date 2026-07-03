@@ -26,7 +26,6 @@ COPY --from=builder /build/.yarn ./yarn
 COPY --from=builder /build/package.json ./package.json
 COPY --from=builder /build/locales ./locales
 
-COPY --from=builder /build/pages ./pages
 COPY --from=builder /build/.env.production ./.env.production
 COPY --from=builder /build/entrypoint.sh /usr/local/bin/entrypoint.sh
 
