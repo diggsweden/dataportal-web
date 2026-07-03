@@ -6,7 +6,7 @@ import { FormPage } from "@/features/pages/form-page";
 import { isAppLocale } from "@/i18n/routing";
 import { getForm, getModule } from "@/utilities/query-helpers";
 
-export const revalidate = parseInt(process.env.REVALIDATE_INTERVAL || "60", 10);
+export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ locale: string }>;
