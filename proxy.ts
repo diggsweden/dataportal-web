@@ -29,22 +29,30 @@ export function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
   const firstSegment = pathname.split("/").filter(Boolean)[0] ?? "";
-
-  // Path already starts with a locale prefix (e.g. `/en/nyheter`) — the
-  // App Router resolves it directly via `app/[locale]/`.
-  const hasLocalePrefix = (routing.locales as readonly string[]).includes(
+  const isDefaultLocale = firstSegment === routing.defaultLocale;
+  const isKnownLocale = (routing.locales as readonly string[]).includes(
     firstSegment,
   );
 
-  const response = hasLocalePrefix
+  // `/sv` should never appear in the URL — redirect to the unprefixed path.
+  if (isDefaultLocale) {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname.replace(/^\/sv\/?/, "/") || "/";
+    return NextResponse.redirect(url, 308);
+  }
+
+  // `/en/...` — pass through, App Router resolves via `app/[locale]/`.
+  // Unprefixed paths — rewrite internally to `/sv/...`.
+  const response = isKnownLocale
     ? NextResponse.next({ request: { headers: request.headers } })
-    : (() => {
-        const url = request.nextUrl.clone();
-        url.pathname = `/${routing.defaultLocale}${pathname}`;
-        return NextResponse.rewrite(url, {
-          request: { headers: request.headers },
-        });
-      })();
+    : NextResponse.rewrite(
+        (() => {
+          const url = request.nextUrl.clone();
+          url.pathname = `/${routing.defaultLocale}${pathname}`;
+          return url;
+        })(),
+        { request: { headers: request.headers } },
+      );
 
   response.headers.set("x-nonce", nonce);
   response.headers.set("Content-Security-Policy", csp);

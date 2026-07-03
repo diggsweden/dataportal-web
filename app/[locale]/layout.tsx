@@ -23,10 +23,9 @@ export function generateStaticParams() {
  * Server-rendered locale shell. Owns:
  *  - `<html lang>` / `<body>` (pulled out of `pages/_document.tsx` once
  *    every route lives under `app/`).
- *  - `/__ENV.js` injection so client components reading `react-env` get
- *    runtime config before they hydrate. Rendered as a raw `<script>`
- *    rather than `next/script` — see the inline comment on the tag and
- *    https://github.com/vercel/next.js/pull/86330 for the reason.
+ *  - `/__ENV.js` injection (via `next/script` `beforeInteractive`) so
+ *    client components reading `react-env` get runtime config before
+ *    they hydrate.
  *  - The `<head>` link/preconnect tags previously in `pages/_document.tsx`.
  *  - CSP nonce bridge from `proxy.ts` (`x-nonce` header) to client scripts.
  *    `proxy.ts` also emits the `Content-Security-Policy` response header,
@@ -74,29 +73,6 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} data-scroll-behavior="smooth">
       <head>
-        {/* Raw <script> instead of `next/script`, per
-            https://github.com/vercel/next.js/pull/86330 (fix for
-            https://github.com/vercel/next.js/issues/77952):
-            `<Script nonce={…}>` in App Router currently renders an
-            internal RSC-state sidecar (`self.__next_f.push(...)`) whose
-            nonce attribute hydrates empty on the client because Next's
-            `HeadManagerContext` carries the nonce only during SSR.
-            `<script src>` avoids generating that sidecar entirely.
-
-            `suppressHydrationWarning`: browsers wipe `nonce` from the DOM
-            after the script is processed (CSP3 spec,
-            https://www.w3.org/TR/CSP3/#is-element-nonceable), so React's
-            reconciler always sees `nonce=""` on the client for this one
-            element. This is the React-docs-sanctioned escape hatch for
-            deliberate server/client attribute differences on a specific
-            node. Framework/page bundles don't need this — Next applies
-            their nonces via its CSP pipeline, outside React hydration. */}
-        <script
-          suppressHydrationWarning
-          nonce={nonce}
-          type="text/javascript"
-          src="/__ENV.js"
-        />
         <link
           rel="stylesheet"
           href="https://cdn.screen9.com/players/amber-player.css"
@@ -114,6 +90,18 @@ export default async function LocaleLayout({
         <meta name="theme-color" content="#FBF2F0" />
       </head>
       <body className="font-ubuntu text-md text-textPrimary">
+        {/* Inject __ENV.js via dangerouslySetInnerHTML so React never sees a
+            <script> JSX element (which triggers a dev warning and never
+            executes on client navigation). The browser executes the script
+            from the SSR HTML on initial load; on client navigations innerHTML
+            scripts don't re-execute, which is fine — window.__ENV persists. */}
+        <div
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: `<script src="/__ENV.js" nonce="${nonce}"></script>`,
+          }}
+          style={{ display: "none" }}
+        />
         <AppRouterProviders
           locale={locale}
           messages={messages}
