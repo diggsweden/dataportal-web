@@ -1,19 +1,20 @@
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
-import { ContainerPage } from "@/features/pages/container-page";
-import { LandingPage } from "@/features/pages/landing-page";
+import { ContainerPage } from "@/app/[locale]/[...containerSlug]/components/container-page";
+import { LandingPage } from "@/app/[locale]/[...containerSlug]/components/landing-page";
+import { getMultiContainer } from "@/app/[locale]/[...containerSlug]/queries";
 import { PublicationFull } from "@/features/publication/publication-full";
 import { Dataportal_ContainerState } from "@/graphql/__generated__/types";
-import { isAppLocale } from "@/i18n/routing";
+import { type AppLocale, isAppLocale } from "@/i18n/routing";
 import {
   type DataportalPageProps,
   getGoodExample,
-  getMultiContainer,
   getNewsItem,
   getRootAggregate,
   type MultiContainerResponse,
 } from "@/utilities";
+import { includeLangInPath } from "@/utilities/check-lang";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -54,7 +55,7 @@ async function getQuery(
   }
 }
 
-function RenderDraft(props: DataportalPageProps) {
+function RenderDraft(props: DataportalPageProps & { locale: AppLocale }) {
   switch (props.type) {
     case "RootAggregate":
       return <ContainerPage {...props} />;
@@ -62,7 +63,11 @@ function RenderDraft(props: DataportalPageProps) {
       const { container, related } = props as MultiContainerResponse;
       if (!container) return null;
       return container.landingPage ? (
-        <LandingPage {...container} />
+        <LandingPage
+          {...container}
+          locale={props.locale}
+          pathname={`${includeLangInPath(props.locale)}/drafts`}
+        />
       ) : (
         <ContainerPage {...container} related={related} />
       );
@@ -87,5 +92,5 @@ export default async function DraftsPage({ params, searchParams }: PageProps) {
     notFound();
   }
 
-  return <RenderDraft {...(result as DataportalPageProps)} />;
+  return <RenderDraft {...(result as DataportalPageProps)} locale={locale} />;
 }

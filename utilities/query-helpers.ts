@@ -15,7 +15,6 @@ import type {
   ToolDataFragment,
 } from "@/graphql/__generated__/operations";
 import {
-  ContainersDocument,
   FoertroendemodellenFormDocument,
   FormDocument,
   GoodExampleDocument,
@@ -145,54 +144,6 @@ export interface ModuleOptions {
   basePath?: string;
   heading?: string;
 }
-
-export const getMultiContainer = async (
-  slugs: string[],
-  locale: string,
-  opts: QueryOptions = {},
-): Promise<MultiContainerResponse | null> => {
-  const { state, secret } = opts;
-
-  const slug = `/${slugs.join("/")}`;
-
-  try {
-    const data = await gqlFetch(ContainersDocument, {
-      filter: {
-        slug,
-        locale,
-        ...(secret ? { previewSecret: secret } : {}),
-        ...(state ? { state } : {}),
-      },
-    });
-
-    const container = data.dataportal_Digg_Containers[0];
-
-    if (!container) {
-      console.warn(`No container found for: ${slug}`);
-      return null;
-    }
-
-    // Use pageNavigation from the container itself, or fall back to parent's
-    let related: ParentSimplifiedFragment[] = [];
-    if (container.pageNavigation && container.pageNavigation.length > 0) {
-      related = container.pageNavigation;
-    } else if (
-      container.parent?.pageNavigation &&
-      container.parent.pageNavigation.length > 0
-    ) {
-      related = container.parent.pageNavigation;
-    }
-
-    return {
-      type: "MultiContainer",
-      container,
-      related,
-    };
-  } catch (error) {
-    logGqlError(error);
-    return null;
-  }
-};
 
 export const getNewsList = async (
   locale: string,

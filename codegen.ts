@@ -3,7 +3,7 @@ import type { CodegenConfig } from "@graphql-codegen/cli";
 const config: CodegenConfig = {
   overwrite: true,
   schema: process.env.APOLLO_URL,
-  documents: ["./graphql/*.ts"],
+  documents: ["./graphql/*.ts", "./app/**/*.{ts,tsx}"],
   generates: {
     "graphql/__generated__/types.ts": {
       plugins: [

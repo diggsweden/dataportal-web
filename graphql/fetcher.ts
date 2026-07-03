@@ -133,8 +133,13 @@ export const gqlFetch = async <TData, TVariables = Record<string, unknown>>(
   });
 
   if (!res.ok) {
+    // Capture the response body so the actual server-side reason for a
+    // non-2xx (e.g. a GraphQL validation error returned with HTTP 400)
+    // isn't lost — `res.status` alone rarely explains the failure.
+    const body = await res.text().catch(() => "");
     throw new GqlError(`GraphQL request failed with HTTP ${res.status}`, {
       status: res.status,
+      graphQLErrors: body ? [body] : undefined,
     });
   }
 

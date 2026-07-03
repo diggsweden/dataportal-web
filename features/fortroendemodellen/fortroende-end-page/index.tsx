@@ -10,10 +10,10 @@ import fortroendemodellImage from "@/assets/logos/fortroendemodellen.png";
 import { BlockList } from "@/components/blocks/block-list";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
-import { highlightCode } from "@/features/pages/container-page";
 import type { ModuleDataFragment } from "@/graphql/__generated__/operations";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
+import { highlightCode } from "@/utilities/highlight-code";
 
 export const FortroendeEndPage: FC<ModuleDataFragment> = ({ blocks }) => {
   const [heading, setHeading] = useState<string | null>(null);

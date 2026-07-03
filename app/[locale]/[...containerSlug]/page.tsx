@@ -4,11 +4,12 @@ import { setRequestLocale } from "next-intl/server";
 
 import { Hero } from "@/components/layout/hero";
 import { SettingsUtil } from "@/env";
-import { ContainerPage } from "@/features/pages/container-page";
-import { LandingPage } from "@/features/pages/landing-page";
 import { isAppLocale } from "@/i18n/routing";
 import { includeLangInPath } from "@/utilities/check-lang";
-import { getMultiContainer } from "@/utilities/query-helpers";
+
+import { ContainerPage } from "./components/container-page";
+import { LandingPage } from "./components/landing-page";
+import { getMultiContainer } from "./queries";
 
 export const revalidate = 60;
 
@@ -89,7 +90,11 @@ export default async function ContainerSlugPage({ params }: PageProps) {
         />
       )}
       {container.landingPage ? (
-        <LandingPage {...container} />
+        <LandingPage
+          {...container}
+          locale={locale}
+          pathname={`${includeLangInPath(locale)}/${containerSlug.join("/")}`}
+        />
       ) : (
         <ContainerPage
           {...container}

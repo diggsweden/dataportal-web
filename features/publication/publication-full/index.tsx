@@ -20,7 +20,6 @@ import { GridList } from "@/components/grid-list";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { highlightCode } from "@/features/pages/container-page";
 import { SettingsContext } from "@/providers/settings-provider";
 import {
   type GoodExampleResponse,
@@ -30,6 +29,7 @@ import {
   slugify,
 } from "@/utilities";
 import { formatDateWithTime } from "@/utilities/date-helper";
+import { highlightCode } from "@/utilities/highlight-code";
 
 type infoSection = {
   title: string;
