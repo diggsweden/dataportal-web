@@ -1,4 +1,5 @@
 import { BlockList } from "@/components/blocks/block-list";
+import { CodeHighlighter } from "@/components/code-highlighter";
 import { Container } from "@/components/layout/container";
 import { ContainerNav } from "@/components/navigation/container-nav";
 import { Heading } from "@/components/typography/heading";
@@ -9,7 +10,7 @@ import type {
 } from "@/graphql/gql/graphql";
 import { checkLang } from "@/utilities";
 
-import { ContainerPageClient } from "./container-page-client";
+import { ContainerStickyNav } from "./container-sticky-nav";
 
 interface ContainerPageProps extends ContainerDataFragment {
   related?: ParentSimplifiedFragment[];
@@ -44,7 +45,7 @@ export function ContainerPage({
             </Heading>
           )}
           <div className="flex w-full flex-col items-start justify-end gap-xl md:flex-row-reverse">
-            <ContainerPageClient />
+            <ContainerStickyNav />
 
             <section
               id="content"
@@ -57,6 +58,7 @@ export function ContainerPage({
             >
               {!image && preamble && <Preamble>{checkLang(preamble)}</Preamble>}
               {blocks && blocks.length > 0 && <BlockList blocks={blocks} />}
+              <CodeHighlighter />
             </section>
           </div>
         </div>

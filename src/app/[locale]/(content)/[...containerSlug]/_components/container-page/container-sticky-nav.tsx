@@ -6,14 +6,9 @@ import { useEffect, useState } from "react";
 
 import { StickyNav } from "@/components/navigation/sticky-nav";
 import type { Anchorlink } from "@/types/global";
-import { highlightCode } from "@/utilities/highlight-code";
 
-/**
- * Gets all h2 elements on the page and sets id:s to a visibility:hidden sibling be used
- * in the anchorLinkMenu
- * @returns {Array} An array of id:s to all h2-elements on the page
- */
-const getLinks = () => {
+/** Gets h2 headings in `#content` and builds anchor-link menu items. */
+function getLinks(): Anchorlink[] {
   const menuItems: Anchorlink[] = [];
   const cont: HTMLElement =
     document.querySelector("#content") || document.createElement("div");
@@ -48,23 +43,18 @@ const getLinks = () => {
   }
 
   return menuItems;
-};
+}
 
 /**
- * Client island for the container page. Handles the browser-only work that
- * can't run on the server: code highlighting and the DOM-derived anchor-link
- * menu (`StickyNav`).
+ * Client island for container pages. Builds the in-page anchor menu from `#content`
+ * h2 headings and renders it as `StickyNav`.
  */
-export function ContainerPageClient() {
-  const [menuItems, setMenuItems] = useState<Anchorlink[] | []>([]);
+export function ContainerStickyNav() {
+  const [menuItems, setMenuItems] = useState<Anchorlink[]>([]);
   const pathname = usePathname();
   const t = useTranslations();
 
   useEffect(() => {
-    //Highlights code using prismjs
-    highlightCode(t);
-
-    //Creates anchorlinks for the content menu
     const newMenuItems = getLinks();
     setMenuItems(newMenuItems);
   }, [pathname]);
