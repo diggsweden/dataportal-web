@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
-import { FortroendeIntroPage } from "@/app/[locale]/(content)/fortroendemodellen/components/fortroende-intro-page";
+import { FortroendeIntroPage } from "@/app/[locale]/(content)/fortroendemodellen/_components/fortroende-intro-page";
 import { getModule } from "@/app/[locale]/(content)/fortroendemodellen/data";
 import { isAppLocale } from "@/i18n/routing";
 

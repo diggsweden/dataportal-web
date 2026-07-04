@@ -101,7 +101,7 @@
         "src/hooks/use-state-callback.ts",
         "src/providers/search-provider/**",
         "src/providers/api-index-context/**",
-        "src/app/\\[locale\\]/(entryscape)/components/**",
+        "src/app/\\[locale\\]/(entryscape)/_components/**",
         "src/app/\\[locale\\]/(content)/search/page.tsx",
         "src/components/video-player/**",
         "cypress/**",

@@ -1,13 +1,12 @@
 import NextLink from "next/link";
 import type { ComponentProps } from "react";
 
-import { Link as IntlLink } from "@/i18n/navigation";
+import { Link as IntlLink, type LocalizedLinkProps } from "@/i18n/navigation";
 import { isExternalLink } from "@/utilities/checkers";
 
 type NextLinkProps = ComponentProps<typeof NextLink>;
-type IntlLinkProps = ComponentProps<typeof IntlLink>;
 
-export type AppLinkProps = NextLinkProps & IntlLinkProps;
+export type AppLinkProps = NextLinkProps & LocalizedLinkProps;
 
 /**
  * Picks the locale-aware `Link` for same-origin paths and falls back

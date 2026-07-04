@@ -1,5 +1,5 @@
+import { SpecificationPage } from "@/app/[locale]/(entryscape)/_components/specification-page";
 import { renderEntryStoreResourcePage } from "@/app/[locale]/(entryscape)/_server/render-resource-page";
-import { SpecificationPage } from "@/app/[locale]/(entryscape)/components/specification-page";
 
 interface PageProps {
   params: Promise<{ locale: string; spec: string; param: string }>;

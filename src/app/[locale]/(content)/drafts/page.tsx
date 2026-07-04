@@ -1,16 +1,16 @@
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
+import { PublicationFull } from "@/app/[locale]/(content)/(publications)/_components/publication-full";
 import {
   type GoodExampleResponse,
   getGoodExample,
 } from "@/app/[locale]/(content)/(publications)/(examples)/data";
-import { PublicationFull } from "@/app/[locale]/(content)/(publications)/components/publication-full";
 import {
   getNewsItem,
   type NewsItemResponse,
 } from "@/app/[locale]/(content)/(publications)/nyheter/data";
-import { ContainerPage } from "@/app/[locale]/(content)/[...containerSlug]/components/container-page";
-import { LandingPage } from "@/app/[locale]/(content)/[...containerSlug]/components/landing-page";
+import { ContainerPage } from "@/app/[locale]/(content)/[...containerSlug]/_components/container-page";
+import { LandingPage } from "@/app/[locale]/(content)/[...containerSlug]/_components/landing-page";
 import {
   getMultiContainer,
   type MultiContainerResponse,

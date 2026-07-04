@@ -198,7 +198,7 @@ export default async function LocaleStartPage({ params }: PageProps) {
                 {t("pages.statistic.statistic-numbers")}
               </Heading>
               <Link
-                href={`/${t("routes.statistics.path")}`}
+                href="/statistics"
                 className="statistic-link"
                 aria-label={t("pages.statistic.statistic-link-aria")}
               >

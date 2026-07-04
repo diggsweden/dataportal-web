@@ -20,6 +20,7 @@ import type {
   GoodExampleDataFragment,
   NewsItemDataFragment,
 } from "@/graphql/gql/graphql";
+import { getPathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { includeLangInPath } from "@/utilities/check-lang";
 
@@ -151,16 +152,15 @@ export async function GET(): Promise<Response> {
     }),
   );
 
-  // Localised slugs (`/statistik` vs `/en/statistics`) will move to
-  // `next-intl` `pathnames` as each route family is ported. Until then
-  // we emit both variants literally.
   const staticPaths = [
     "",
     "/datasets?datasets?p=1&q=&s=2&t=20&f=&rt=dataset%24data_service%24dataset_series",
     "/concepts?p=1&q=&s=2&t=20&f=&rt=term",
     "/specifications?specifications?p=1&q=&s=2&t=20&f=&rt=spec_standard%24spec_profile",
-    "/statistik",
-    "/en/statistics",
+    getPathname({ locale: "sv", href: "/statistics" }),
+    getPathname({ locale: "en", href: "/statistics" }),
+    getPathname({ locale: "sv", href: "/search" }),
+    getPathname({ locale: "en", href: "/search" }),
     "/metadatakvalitet",
   ];
 

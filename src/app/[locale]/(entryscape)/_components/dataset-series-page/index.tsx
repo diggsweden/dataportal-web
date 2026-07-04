@@ -3,8 +3,8 @@
 import type { Entry } from "@entryscape/entrystore-js";
 import { useLocale, useTranslations } from "next-intl";
 import { useContext, useEffect, useMemo } from "react";
-import { SearchResults } from "@/app/[locale]/(entryscape)/_search/components/search-results";
 import { createSearchProviderSettings } from "@/app/[locale]/(entryscape)/_search/search-page/search-page-provider-settings";
+import { SearchResults } from "@/app/[locale]/(entryscape)/_search/search-results";
 import { Badge } from "@/components/badge";
 import { Container } from "@/components/layout/container";
 import { AppLink } from "@/components/link";

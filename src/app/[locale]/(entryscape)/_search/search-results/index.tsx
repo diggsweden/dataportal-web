@@ -2,9 +2,9 @@
 
 import { useTranslations } from "next-intl";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
-import type { SearchMode } from "@/app/[locale]/(entryscape)/_search/components/search-filters";
-import { SearchSelectFilter } from "@/app/[locale]/(entryscape)/_search/components/search-filters/search-select-filter";
-import { SearchHit } from "@/app/[locale]/(entryscape)/_search/components/search-hit";
+import type { SearchMode } from "@/app/[locale]/(entryscape)/_search/search-filters";
+import { SearchSelectFilter } from "@/app/[locale]/(entryscape)/_search/search-filters/search-select-filter";
+import { SearchHit } from "@/app/[locale]/(entryscape)/_search/search-hit";
 import ListCompactIcon from "@/assets/icons/list-compact.svg";
 import ListDetailedIcon from "@/assets/icons/list-detailed.svg";
 import { Button } from "@/components/button";

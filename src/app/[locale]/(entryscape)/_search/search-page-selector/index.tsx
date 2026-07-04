@@ -3,9 +3,9 @@
  * for different search categories (datasets, concepts, specifications, content).
  */
 
-import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { ButtonLink } from "@/components/button";
+import { usePathname } from "@/i18n/navigation";
 
 /**
  * Props for the SearchPageSelector component

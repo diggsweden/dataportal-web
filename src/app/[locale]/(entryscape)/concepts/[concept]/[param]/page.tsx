@@ -1,5 +1,5 @@
+import { ConceptPage } from "@/app/[locale]/(entryscape)/_components/concept-page";
 import { renderEntryStoreResourcePage } from "@/app/[locale]/(entryscape)/_server/render-resource-page";
-import { ConceptPage } from "@/app/[locale]/(entryscape)/components/concept-page";
 
 interface PageProps {
   params: Promise<{ locale: string; concept: string; param: string }>;

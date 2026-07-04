@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useContext, useState } from "react";
-import Showcase from "@/app/[locale]/(entryscape)/components/showcase";
+import Showcase from "@/app/[locale]/(entryscape)/_components/showcase";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import DataIcon from "@/assets/icons/data.svg";
 import DiamondIcon from "@/assets/icons/diamond.svg";

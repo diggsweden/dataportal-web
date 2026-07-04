@@ -3,8 +3,8 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useContext, useEffect, useState } from "react";
-import { SearchInput } from "@/app/[locale]/(entryscape)/_search/components/search-input";
-import { SearchPageSelector } from "@/app/[locale]/(entryscape)/_search/components/search-page-selector";
+import { SearchInput } from "@/app/[locale]/(entryscape)/_search/search-input";
+import { SearchPageSelector } from "@/app/[locale]/(entryscape)/_search/search-page-selector";
 import { Container } from "@/components/layout/container";
 import { AppLink } from "@/components/link";
 import { Pagination } from "@/components/pagination";

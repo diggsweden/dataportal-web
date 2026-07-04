@@ -100,18 +100,18 @@ MQA has no dedicated file; the MQA extension script ships the `totMQA` / `catalo
 
 Every page that uses blocks calls `useEntryScapeBlocks` with a specific `pageType`. Placeholders are declared inline in each feature component.
 
-- **Dataset** — [`app/[locale]/(entryscape)/components/dataset-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/dataset-page/index.tsx>). Renders `customIndicators`, `distributionListCustom`, RDForms `view`, `autoVisualizations`, `aboutDataset`, `catalog`.
-- **Dataset API explore** — [`app/[locale]/(entryscape)/components/dataset-explore-api-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/dataset-explore-api-page/index.tsx>). Indicators + RDForms `view`.
-- **Data service** — [`app/[locale]/(entryscape)/components/data-service-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/data-service-page/index.tsx>). Indicators, `view`, `aboutDaservice`.
-- **Specification** — [`app/[locale]/(entryscape)/components/specification-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/specification-page/index.tsx>). `resourceDescriptors2`, RDForms `view`, contact dialog.
-- **Concept / Terminology** — [`app/[locale]/(entryscape)/components/concept-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/concept-page/index.tsx>). `conceptBlock`, `toppbegrepp`, `conceptHierarchy` (the same page switches `pageType` between `"concept"` and `"terminology"` based on route).
+- **Dataset** — [`app/[locale]/(entryscape)/_components/dataset-page/index.tsx`](<../src/app/[locale]/(entryscape)/_components/dataset-page/index.tsx>). Renders `customIndicators`, `distributionListCustom`, RDForms `view`, `autoVisualizations`, `aboutDataset`, `catalog`.
+- **Dataset API explore** — [`app/[locale]/(entryscape)/_components/dataset-explore-api-page/index.tsx`](<../src/app/[locale]/(entryscape)/_components/dataset-explore-api-page/index.tsx>). Indicators + RDForms `view`.
+- **Data service** — [`app/[locale]/(entryscape)/_components/data-service-page/index.tsx`](<../src/app/[locale]/(entryscape)/_components/data-service-page/index.tsx>). Indicators, `view`, `aboutDaservice`.
+- **Specification** — [`app/[locale]/(entryscape)/_components/specification-page/index.tsx`](<../src/app/[locale]/(entryscape)/_components/specification-page/index.tsx>). `resourceDescriptors2`, RDForms `view`, contact dialog.
+- **Concept / Terminology** — [`app/[locale]/(entryscape)/_components/concept-page/index.tsx`](<../src/app/[locale]/(entryscape)/_components/concept-page/index.tsx>). `conceptBlock`, `toppbegrepp`, `conceptHierarchy` (the same page switches `pageType` between `"concept"` and `"terminology"` based on route).
 - **MQA** — [`app/[locale]/(entryscape)/metadatakvalitet/page.tsx`](<../src/app/[locale]/(entryscape)/metadatakvalitet/page.tsx>) (`totMQA`) and [`app/[locale]/(entryscape)/metadatakvalitet/[...catalog]/mqa-category-page.tsx`](<../src/app/[locale]/(entryscape)/metadatakvalitet/[...catalog]/mqa-category-page.tsx>) (`catalogMQA`).
 
 Pages that use **Entrystore but not Blocks** (for reference, so you do not look for block configs there):
 
 - Search/listing pages under [`src/app/[locale]/(entryscape)/_search/`](../src/app/[locale]/(entryscape)/_search/) — use [`providers/search-provider/index.tsx`](../src/providers/search-provider/index.tsx) with direct `entrystore-js` queries.
-- [`app/[locale]/(entryscape)/components/organisation-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/organisation-page/index.tsx>) — custom React UI.
-- [`app/[locale]/(entryscape)/components/dataset-series-page/index.tsx`](<../src/app/[locale]/(entryscape)/components/dataset-series-page/index.tsx>) — `SearchProvider` for series members.
+- [`app/[locale]/(entryscape)/_components/organisation-page/index.tsx`](<../src/app/[locale]/(entryscape)/_components/organisation-page/index.tsx>) — custom React UI.
+- [`app/[locale]/(entryscape)/_components/dataset-series-page/index.tsx`](<../src/app/[locale]/(entryscape)/_components/dataset-series-page/index.tsx>) — `SearchProvider` for series members.
 
 ## 5. Types of customizations and why we do them
 
@@ -207,7 +207,7 @@ This is a trade-off: we lose client-side transitions between entryscape-mounted 
 - [`utilities/generate-csp.ts`](../src/utilities/generate-csp.ts) — CSP allowlist.
 - [`styles/entryscape.css`](../src/styles/entryscape.css), [`styles/entryscape-mqa.css`](../src/styles/entryscape-mqa.css) — visual overrides.
 - [`lib/entrystore/provider/index.tsx`](../src/lib/entrystore/provider/index.tsx) — Entrystore context for entryscape pages (separate from the blocks runtime).
-- [`app/[locale]/(entryscape)/components/*`](<../src/app/[locale]/(entryscape)/components>) — pages that mount blocks.
+- [`app/[locale]/(entryscape)/_components/*`](<../src/app/[locale]/(entryscape)/components>) — pages that mount blocks.
 
 ## 7. Known inconsistency worth verifying
 

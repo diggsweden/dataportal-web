@@ -12,8 +12,8 @@ import { isAppLocale } from "@/i18n/routing";
 import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
 import { includeLangInPath } from "@/utilities/check-lang";
 
-import { ContainerPage } from "./components/container-page";
-import { LandingPage } from "./components/landing-page";
+import { ContainerPage } from "./_components/container-page";
+import { LandingPage } from "./_components/landing-page";
 import { getMultiContainer } from "./data";
 
 export const revalidate = 60;

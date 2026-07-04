@@ -11,7 +11,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { SearchFilter } from "@/app/[locale]/(entryscape)/_search/components/search-filters/search-filter";
+import { SearchFilter } from "@/app/[locale]/(entryscape)/_search/search-filters/search-filter";
 import CrossIcon from "@/assets/icons/cross.svg";
 import FilterIcon from "@/assets/icons/filter.svg";
 import InfoCircleIcon from "@/assets/icons/info-circle.svg";

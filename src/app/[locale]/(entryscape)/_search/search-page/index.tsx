@@ -3,10 +3,10 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { SearchFilters } from "@/app/[locale]/(entryscape)/_search/components/search-filters";
-import { SearchForm } from "@/app/[locale]/(entryscape)/_search/components/search-form";
-import { SearchPageSelector } from "@/app/[locale]/(entryscape)/_search/components/search-page-selector";
-import { SearchResults } from "@/app/[locale]/(entryscape)/_search/components/search-results";
+import { SearchFilters } from "@/app/[locale]/(entryscape)/_search/search-filters";
+import { SearchForm } from "@/app/[locale]/(entryscape)/_search/search-form";
+import { SearchPageSelector } from "@/app/[locale]/(entryscape)/_search/search-page-selector";
+import { SearchResults } from "@/app/[locale]/(entryscape)/_search/search-results";
 import { Container } from "@/components/layout/container";
 import { BreadcrumbSetter } from "@/components/navigation/breadcrumbs/breadcrumb-setter";
 import { Heading } from "@/components/typography/heading";

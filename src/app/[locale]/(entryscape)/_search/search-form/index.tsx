@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
 import type { Dispatch, SetStateAction } from "react";
 
-import type { SearchMode } from "@/app/[locale]/(entryscape)/_search/components/search-filters";
-import { SearchInput } from "@/app/[locale]/(entryscape)/_search/components/search-input";
+import type { SearchMode } from "@/app/[locale]/(entryscape)/_search/search-filters";
+import { SearchInput } from "@/app/[locale]/(entryscape)/_search/search-input";
 import type { SearchContextData } from "@/providers/search-provider";
 import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 

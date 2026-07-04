@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
+import { PublicationList } from "@/app/[locale]/(content)/(publications)/_components/publication-list";
 import { getGoodExamplesList } from "@/app/[locale]/(content)/(publications)/(examples)/data";
-import { PublicationList } from "@/app/[locale]/(content)/(publications)/components/publication-list";
 import { ImageFragment } from "@/components/custom-image";
 import { PageShell } from "@/components/layout/page-shell";
 import { SettingsUtil } from "@/env";

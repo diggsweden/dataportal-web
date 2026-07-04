@@ -2,7 +2,7 @@
 
 import { type FC, useState } from "react";
 
-import { SearchInput } from "@/app/[locale]/(entryscape)/_search/components/search-input";
+import { SearchInput } from "@/app/[locale]/(entryscape)/_search/search-input";
 
 interface HeroSearchProps {
   destination: string;

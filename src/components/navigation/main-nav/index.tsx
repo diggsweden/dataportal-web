@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { type FC, useContext, useRef, useState } from "react";
-import { SearchInput } from "@/app/[locale]/(entryscape)/_search/components/search-input";
+import { SearchInput } from "@/app/[locale]/(entryscape)/_search/search-input";
 import CrossIcon from "@/assets/icons/cross.svg";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 import SearchIcon from "@/assets/icons/search.svg";
