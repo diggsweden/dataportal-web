@@ -55,14 +55,18 @@ export const getMultiContainer = async (
   const slug = `/${slugs.join("/")}`;
 
   try {
-    const data = await gqlFetch(ContainersDocument, {
-      filter: {
-        slug,
-        locale,
-        ...(secret ? { previewSecret: secret } : {}),
-        ...(state ? { state } : {}),
+    const data = await gqlFetch(
+      ContainersDocument,
+      {
+        filter: {
+          slug,
+          locale,
+          ...(secret ? { previewSecret: secret } : {}),
+          ...(state ? { state } : {}),
+        },
       },
-    });
+      { revalidate: 120 },
+    );
 
     const rawContainer = data.dataportal_Digg_Containers[0];
 

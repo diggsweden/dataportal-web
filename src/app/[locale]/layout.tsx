@@ -4,6 +4,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { getNavigationData } from "@/app/[locale]/data";
 import { AppRouterChrome } from "@/components/layout/app-router-chrome";
+import { buildInlineEnvScriptBody } from "@/env/browser-env";
 import type { NavigationDataFragment } from "@/graphql/gql/graphql";
 import { loadResourceLabels } from "@/i18n/load-messages";
 import { isAppLocale, routing } from "@/i18n/routing";
@@ -21,11 +22,10 @@ export function generateStaticParams() {
 /**
  * Server-rendered locale shell. Owns:
  *  - `<html lang>` / `<body>`.
- *  - `/__ENV.js` injection so client components reading `react-env` get
- *    runtime config before they hydrate. Rendered as a raw `<script>`
- *    rather than `next/script` — see the inline comment on the tag and
- *    https://github.com/vercel/next.js/pull/86330 for the reason.
- *  - The `<head>` link/preconnect tags.
+ *  - Inline `window.__ENV` bootstrap so client components reading
+ *    `react-env` get runtime config before they hydrate. Inlined in
+ *    `<head>` to avoid a critical-path fetch to `/__ENV.js`.
+ *  - The `<head>` preconnect tags.
  *  - CSP nonce bridge from `proxy.ts` (`x-nonce` header) to client scripts.
  *    `proxy.ts` also emits the `Content-Security-Policy` response header,
  *    which activates Next's auto-nonce pipeline for framework scripts and
@@ -73,10 +73,6 @@ export default async function LocaleLayout({
     <html lang={locale} data-scroll-behavior="smooth">
       <head>
         <link
-          rel="stylesheet"
-          href="https://cdn.screen9.com/players/amber-player.css"
-        />
-        <link
           rel="preconnect"
           href="https://editera.dataportal.se"
           crossOrigin="anonymous"
@@ -87,20 +83,13 @@ export default async function LocaleLayout({
           crossOrigin="anonymous"
         />
         <meta name="theme-color" content="#FBF2F0" />
+        <script
+          nonce={nonce}
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: buildInlineEnvScriptBody() }}
+        />
       </head>
       <body className="font-ubuntu text-md text-textPrimary">
-        {/* Inject __ENV.js via dangerouslySetInnerHTML so React never sees a
-            <script> JSX element (which triggers a dev warning and never
-            executes on client navigation). The browser executes the script
-            from the SSR HTML on initial load; on client navigations innerHTML
-            scripts don't re-execute, which is fine — window.__ENV persists. */}
-        <div
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{
-            __html: `<script src="/__ENV.js" nonce="${nonce}"></script>`,
-          }}
-          style={{ display: "none" }}
-        />
         <AppRouterProviders
           locale={locale}
           messages={messages}

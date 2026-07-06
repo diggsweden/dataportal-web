@@ -30,7 +30,11 @@ export const getNavigationData = async (
   locale: string,
 ): Promise<NavigationResponse> => {
   try {
-    const data = await gqlFetch(NavigationDocument, { filter: { locale } });
+    const data = await gqlFetch(
+      NavigationDocument,
+      { filter: { locale } },
+      { revalidate: 120 },
+    );
 
     const navigationData = data.dataportal_Digg_Navigation;
 
@@ -52,7 +56,11 @@ export const getStartPage = async (
   locale: string,
 ): Promise<StartPageResponse> => {
   try {
-    const data = await gqlFetch(StartPageDocument, { filter: { locale } });
+    const data = await gqlFetch(
+      StartPageDocument,
+      { filter: { locale } },
+      { revalidate: 120 },
+    );
 
     const startPage = data.dataportal_Digg_Start_Page;
 

@@ -2,9 +2,25 @@
 
 import { type FC, useEffect, useState } from "react";
 
+const SCREEN9_PLAYER_JS = "https://cdn.screen9.com/players/amber-player.js";
+const SCREEN9_PLAYER_CSS = "https://cdn.screen9.com/players/amber-player.css";
+
+function useStylesheet(href: string) {
+  useEffect(() => {
+    if (!href || document.querySelector(`link[href="${href}"]`)) return;
+
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = href;
+    document.head.appendChild(link);
+  }, [href]);
+}
+
 export const VideoPlayer: FC<{ video_id: string }> = ({ video_id }) => {
   const containerid = `video_screen9_${video_id}`;
   let player: { dispose(): void } | undefined;
+
+  useStylesheet(SCREEN9_PLAYER_CSS);
 
   const useScript = (src: string) => {
     const [status, setStatus] = useState(src ? "loading" : "idle");
@@ -55,7 +71,7 @@ export const VideoPlayer: FC<{ video_id: string }> = ({ video_id }) => {
     return status;
   };
 
-  const status = useScript("https://cdn.screen9.com/players/amber-player.js");
+  const status = useScript(SCREEN9_PLAYER_JS);
 
   useEffect(() => {
     if (status === "ready" && video_id) {
@@ -72,7 +88,7 @@ export const VideoPlayer: FC<{ video_id: string }> = ({ video_id }) => {
       if (player) {
         player.dispose();
         const script = document.querySelector(
-          `script[src="https://cdn.screen9.com/players/amber-player.js"]`,
+          `script[src="${SCREEN9_PLAYER_JS}"]`,
         );
         if (script) {
           script.remove();
