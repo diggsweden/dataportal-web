@@ -18,6 +18,7 @@ interface CustomImageProps {
   sizes?: string;
   className?: string;
   priority?: boolean;
+  fetchPriority?: "high" | "low" | "auto";
   width?: number;
   quality?: number;
 }
@@ -59,6 +60,7 @@ export const CustomImage: FC<CustomImageProps> = ({
   sizes = DEFAULT_SIZES,
   className = "",
   priority = false,
+  fetchPriority,
   width = DEFAULT_WIDTH,
   quality = DEFAULT_QUALITY,
 }) => {
@@ -85,6 +87,7 @@ export const CustomImage: FC<CustomImageProps> = ({
     alt: image.alt || "",
     sizes,
     priority,
+    fetchPriority: fetchPriority ?? (priority ? "high" : undefined),
   };
 
   if (isNextStatic(image.url)) {

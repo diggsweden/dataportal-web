@@ -97,7 +97,7 @@ export async function Hero({
             sizes="(max-width: 640px) 90vw, (max-width: 1200px) 90vw, 90vw"
             className="h-full w-full object-cover"
             aria-label="Hero image"
-            priority={true}
+            priority
           />
           <div className="inset-0 absolute top-none h-full w-full bg-blackOpaque3 opacity-10"></div>
         </div>
