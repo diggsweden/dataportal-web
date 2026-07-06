@@ -91,7 +91,7 @@ module.exports = {
       full: "9999px",
     },
     fontFamily: {
-      ubuntu: ["var(--font-ubuntu)", "sans-serif"],
+      ubuntu: ["Ubuntu", "sans-serif"],
     },
     fontWeight: {
       thin: 300,
