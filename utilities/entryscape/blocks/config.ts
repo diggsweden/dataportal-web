@@ -84,7 +84,7 @@ export const createBlocksConfig = ({
         {
           ...baseConfig,
           clicks: {
-            concept: "details",
+            concept: `esb:/${lang === "en" ? "en/" : ""}concepts/\${context}_\${entry}`,
             concepts: "index",
             test: "test.html",
           },
@@ -110,7 +110,7 @@ export const createBlocksConfig = ({
         {
           ...baseConfig,
           clicks: {
-            concept: "details",
+            concept: `esb:/${lang === "en" ? "en/" : ""}concepts/\${context}_\${entry}`,
             concepts: "index",
             test: "test.html",
           },
