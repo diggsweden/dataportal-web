@@ -205,8 +205,12 @@ export const exploreApiLink = (
             el.appendChild(label);
             el.appendChild(svgIcon);
             label.innerHTML = t("pages|datasetpage$explore-api");
-            el.setAttribute("href", getApiExploreUrl(cid, entryId, eid));
+            const uri = getApiExploreUrl(cid, entryId, eid);
+            el.setAttribute("href", uri);
             el.setAttribute("class", "explore-api-btn noUnderline");
+            el.onclick = function (ev) {
+              window.__entryscape_blocks_click?.(uri, ev);
+            };
           }
         }
       },

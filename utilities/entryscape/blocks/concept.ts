@@ -58,6 +58,9 @@ export const conceptBlocks = (t: Translate, iconSize: number, lang: string) => [
           entry,
         )}`;
         el.setAttribute("href", uri);
+        el.onclick = function (ev) {
+          window.__entryscape_blocks_click?.(uri, ev);
+        };
       }
     },
     loadEntry: true,
