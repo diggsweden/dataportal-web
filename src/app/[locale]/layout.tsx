@@ -8,6 +8,7 @@ import { buildInlineEnvScriptBody } from "@/env/browser-env";
 import type { NavigationDataFragment } from "@/graphql/gql/graphql";
 import { loadResourceLabels } from "@/i18n/load-messages";
 import { isAppLocale, routing } from "@/i18n/routing";
+import { ubuntu } from "@/lib/fonts/ubuntu";
 import { AppRouterProviders } from "@/providers/app-router-providers";
 import { generateRandomKey } from "@/utilities/key-generator";
 
@@ -25,7 +26,7 @@ export function generateStaticParams() {
  *  - Inline `window.__ENV` bootstrap so client components reading
  *    `react-env` get runtime config before they hydrate. Inlined in
  *    `<head>` to avoid a critical-path fetch to `/__ENV.js`.
- *  - The `<head>` preconnect tags.
+ *  - Ubuntu via `next/font/local` (`--font-ubuntu` on `<html>`).
  *  - CSP nonce bridge from `proxy.ts` (`x-nonce` header) to client scripts.
  *    `proxy.ts` also emits the `Content-Security-Policy` response header,
  *    which activates Next's auto-nonce pipeline for framework scripts and
@@ -70,18 +71,12 @@ export default async function LocaleLayout({
   const nonce = requestHeaders.get("x-nonce") ?? generateRandomKey(32);
 
   return (
-    <html lang={locale} data-scroll-behavior="smooth">
+    <html
+      lang={locale}
+      className={ubuntu.variable}
+      data-scroll-behavior="smooth"
+    >
       <head>
-        <link
-          rel="preconnect"
-          href="https://editera.dataportal.se"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://admin.dataportal.se"
-          crossOrigin="anonymous"
-        />
         <meta name="theme-color" content="#FBF2F0" />
         <script
           nonce={nonce}
@@ -89,7 +84,9 @@ export default async function LocaleLayout({
           dangerouslySetInnerHTML={{ __html: buildInlineEnvScriptBody() }}
         />
       </head>
-      <body className="font-ubuntu text-md text-textPrimary">
+      <body
+        className={`${ubuntu.className} font-ubuntu text-md text-textPrimary`}
+      >
         <AppRouterProviders
           locale={locale}
           messages={messages}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { routing } from "@/i18n/routing";
+import { ubuntu } from "@/lib/fonts/ubuntu";
 
 /**
  * Root-level 404 fallback. Triggered when Next can't route a request into
@@ -19,8 +20,10 @@ import { routing } from "@/i18n/routing";
  */
 export default function RootNotFound() {
   return (
-    <html lang={routing.defaultLocale}>
-      <body className="font-ubuntu text-md text-textPrimary">
+    <html lang={routing.defaultLocale} className={ubuntu.variable}>
+      <body
+        className={`${ubuntu.className} font-ubuntu text-md text-textPrimary`}
+      >
         <div className="mx-auto max-w-lg px-md py-xl">
           <h1 className="mb-md text-2xl font-semibold">
             404 - Sidan hittades inte

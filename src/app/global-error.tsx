@@ -1,5 +1,7 @@
 "use client";
 
+import { ubuntu } from "@/lib/fonts/ubuntu";
+
 /**
  * Global error boundary — only triggers if something throws inside
  * `app/layout.tsx` itself (i.e. before `[locale]/error.tsx` can catch it).
@@ -15,8 +17,8 @@ export default function GlobalError({
   reset: () => void;
 }) {
   return (
-    <html lang="sv">
-      <body className="font-ubuntu text-md">
+    <html lang="sv" className={ubuntu.variable}>
+      <body className={`${ubuntu.className} font-ubuntu text-md`}>
         <div style={{ maxWidth: 480, margin: "4rem auto", padding: "0 1rem" }}>
           <h1>Något gick fel</h1>
           <p>{error.message}</p>
