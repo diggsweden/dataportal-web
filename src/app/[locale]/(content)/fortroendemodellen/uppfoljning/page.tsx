@@ -5,7 +5,7 @@ import { FortroendeModulePage } from "@/app/[locale]/(content)/fortroendemodelle
 import { getModule } from "@/app/[locale]/(content)/fortroendemodellen/data";
 import { isAppLocale } from "@/i18n/routing";
 
-export const revalidate = parseInt(process.env.REVALIDATE_INTERVAL || "60", 10);
+export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ locale: string }>;

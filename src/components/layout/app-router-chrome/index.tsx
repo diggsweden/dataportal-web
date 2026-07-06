@@ -117,9 +117,10 @@ export const AppRouterChrome: FC<AppRouterChromeProps> = ({
             id="main"
             className="flex min-h-[calc(100vh-46.5rem)] flex-col pb-lg lg:min-h-[calc(100vh-38.25rem)] [&>#Hero]:order-first"
           >
-            {breadcrumbState.crumbs.length > 0 && pathname !== "/" && (
-              <Breadcrumbs {...breadcrumbState} />
-            )}
+            {breadcrumbState.crumbs.length > 0 &&
+              !/^\/(en|sv)?$/.test(pathname) && (
+                <Breadcrumbs {...breadcrumbState} />
+              )}
             {children}
           </main>
         </div>
