@@ -1,11 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { type ComponentType, useContext } from "react";
-import type { SwaggerUIProps } from "swagger-ui-react";
+import { type ComponentProps, type ComponentType, useContext } from "react";
 
 import type { EnvSettings } from "@/env/env-settings";
 import { ApiIndexContext } from "@/providers/api-index-context";
+
+type SwaggerUIProps = ComponentProps<typeof import("swagger-ui-react").default>;
 
 export interface ApiExplorerProps {
   env: EnvSettings;
