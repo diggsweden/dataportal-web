@@ -109,7 +109,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
   useEffect(() => {
     fetchEntry();
-  }, []);
+  }, [cid, eid]);
 
   const fetchEntry = async () => {
     try {

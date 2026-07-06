@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 
-import { ConceptPage } from "@/features/entryscape/concept-page";
+import { TerminologyPage } from "@/features/entryscape/terminology-page";
 import { EntrystoreProvider } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { handleEntryStoreRedirect } from "@/utilities/entrystore/entrystore-redirect";
@@ -51,7 +51,7 @@ export default function Terminology() {
         entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
         pageType="terminology"
       >
-        <ConceptPage />
+        <TerminologyPage />
       </EntrystoreProvider>
     );
   }
@@ -68,7 +68,7 @@ export default function Terminology() {
       entrystoreUrl={env.ENTRYSCAPE_TERMS_PATH}
       pageType="terminology"
     >
-      <ConceptPage />
+      <TerminologyPage />
     </EntrystoreProvider>
   );
 }

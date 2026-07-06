@@ -1,0 +1,159 @@
+.entryscape .demoView {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-areas:
+    'heading heading'
+    'main    aside';
+    column-gap: 2rem;
+    row-gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.demoHomeLink {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 4px;
+    background: #3d5c3a;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+.demoHomeLink:hover {
+    background: #2d4429;
+}
+
+.entryscape .esbBadge {
+    display: inline-block;
+    background: #3d5c3a;
+    color: #fff;
+    padding: 0.35em 0.75em;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Inherits base styling from esbBadge; only the float differs. */
+.entryscape .esbResourceTypeBadge {
+    float: right;
+}
+
+.entryscape .esbVanityNumber {
+    font-size: 3.5rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #a85d4d;
+}
+
+.entryscape .esbHeading {
+    grid-area: heading;
+}
+
+.entryscape .esbMainContent {
+    grid-area: main;
+    min-width: 0;
+}
+
+.entryscape .esbDiagramImage {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.entryscape .esbAside {
+    grid-area: aside;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.entryscape .esbInfobox,
+.entryscape .esbVanity {
+    padding: 1.5rem;
+    border: 1px solid #e0ddd5;
+    border-radius: 4px;
+    background: #faf8f4;
+}
+
+.entryscape .esbDescription {
+    padding-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .entryscape .demoView {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+      'heading'
+      'main'
+      'aside';
+    }
+}
+
+.entryscape .esbConceptsInTerminologyContainer,
+.entryscape .esbSpecUsageContainer,
+.entryscape .esbConceptsInConceptContainer,
+.entryscape .esbMatchingConceptsContainer,
+.entryscape .esbClassesInDatavocContainer,
+.entryscape .esbPropertiesInDatavocContainer,
+.entryscape .esbCPInSpecContainer,
+.entryscape .esbResourcesInSpecContainer {
+    background-color: #faf8f4;
+}
+
+.entryscape a.esbExtLinkButton[href] {
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    /* inline-flex so vertical padding is part of the line box (a plain inline
+         element's padding bleeds into the preceding line and overlapped the
+         diagram image); also makes the gap above take effect */
+    display: inline-flex;
+    align-items: center;
+    vertical-align: top;
+    gap: 0.5rem;
+    border: none;
+    background: none;
+    padding: 0.5rem 0.75rem;
+    text-decoration: none;
+    background: rgb(110 97 90);
+    color: rgb(240 239 238);
+}
+.entryscape a.esbExtLinkButton:hover[href] {
+    background: rgb(226 223 223);
+    color: rgb(110 97 90);
+}
+
+.entryscape a.esbSpecLink[href]::after,
+.entryscape a.esbExternalConceptLink[href]::after,
+.entryscape a.esbExtLinkButton[href]::after {
+    content: '\f35d' / ''; /* fa-external-link-alt */
+    font-family: 'Font Awesome 6 Free', 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: 0.85em;
+    margin-left: 0.4em;
+    vertical-align: baseline;
+}
+
+/* Inline text link: raise the icon onto the text baseline (≈ descender depth,
+   scales with font size). The flex buttons center it via align-items instead. */
+.entryscape a.esbExternalConceptLink[href]::after {
+    vertical-align: 0.22em;
+}
+
+/* Vertical inline lists stack one item per row, so the comma separator from
+   src/style.css is unwanted — counteract it. */
+.esbInlineList.esbInlineVerticalList .entryList > *:not(:last-child)::after {
+    content: '';
+    margin-right: 0;
+}

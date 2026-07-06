@@ -33,7 +33,7 @@ export const createBlocksConfig = ({
 }: CreateBlocksConfigProps) => {
   const baseConfig = {
     block: "config",
-    page_language: lang,
+    pageLanguage: lang,
     spa: true,
     entrystore: entrystoreBase || "https://admin.dataportal.se/store",
     ...(context !== "" && { context }),
@@ -63,21 +63,19 @@ export const createBlocksConfig = ({
             adms: "http://www.w3.org/ns/adms#",
             prof: "http://www.w3.org/ns/dx/prof/",
           },
-          itemstore: {
-            bundles: [
-              "dcat",
-              `https://${
-                env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
-                  ? "sandbox.admin.dataportal.se"
-                  : "editera.dataportal.se"
-              }/theme/templates/adms.json`,
-              `https://${
-                env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
-                  ? "sandbox.editera.dataportal.se"
-                  : "editera.dataportal.se"
-              }/theme/templates/prof.json`,
-            ],
-          },
+          bundles: [
+            "dcat",
+            `https://${
+              env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
+                ? "sandbox.admin.dataportal.se"
+                : "editera.dataportal.se"
+            }/theme/templates/adms.json`,
+            `https://${
+              env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
+                ? "sandbox.editera.dataportal.se"
+                : "editera.dataportal.se"
+            }/theme/templates/prof.json`,
+          ],
           blocks: specificationBlocks(t, iconSize || 24),
         },
       ];
@@ -86,7 +84,7 @@ export const createBlocksConfig = ({
         {
           ...baseConfig,
           clicks: {
-            concept: "details",
+            concept: `esb:/${lang === "en" ? "en/" : ""}concepts/\${context}_\${entry}`,
             concepts: "index",
             test: "test.html",
           },
@@ -112,7 +110,7 @@ export const createBlocksConfig = ({
         {
           ...baseConfig,
           clicks: {
-            concept: "details",
+            concept: `esb:/${lang === "en" ? "en/" : ""}concepts/\${context}_\${entry}`,
             concepts: "index",
             test: "test.html",
           },

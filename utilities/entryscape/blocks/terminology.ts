@@ -30,6 +30,9 @@ export const terminologyBlocks = (t: Translate, lang: string) => [
           entry,
         )}`;
         el.setAttribute("href", uri);
+        el.onclick = function (ev) {
+          window.__entryscape_blocks_click?.(uri, ev);
+        };
       }
     },
     loadEntry: true,

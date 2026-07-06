@@ -3,7 +3,7 @@ import useTranslation from "next-translate/useTranslation";
 import { FC, useContext, useEffect } from "react";
 
 import { Container } from "@/components/layout/container";
-import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
+import { useBlocksSpa } from "@/hooks/use-blocks-spa";
 import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { linkBase } from "@/utilities";
@@ -14,7 +14,7 @@ export const MQACategoryPage: FC = () => {
   const { setBreadcrumb } = useContext(SettingsContext);
   const pathname = usePathname();
 
-  useEntryScapeBlocks({
+  useBlocksSpa({
     entrystoreBase: entry.env.ENTRYSCAPE_MQA_PATH,
     env: entry.env,
     lang: lang,

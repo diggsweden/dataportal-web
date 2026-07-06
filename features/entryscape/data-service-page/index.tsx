@@ -6,7 +6,7 @@ import { FC, useContext, useEffect } from "react";
 import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
-import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
+import { useBlocksSpa } from "@/hooks/use-blocks-spa";
 import { ApiIndexContext } from "@/providers/api-index-context";
 import { EntrystoreContext } from "@/providers/entrystore-provider";
 import { SettingsContext } from "@/providers/settings-provider";
@@ -24,7 +24,7 @@ export const DataServicePage: FC<{
   const cid = ids[0];
   const eid = ids[1];
 
-  useEntryScapeBlocks({
+  useBlocksSpa({
     entrystoreBase: entry.entrystore.getBaseURI(),
     env: entry.env,
     lang,

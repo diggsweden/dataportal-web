@@ -9,7 +9,7 @@ import { Container } from "@/components/layout/container";
 import { Heading } from "@/components/typography/heading";
 import { createSearchProviderSettings } from "@/features/search/search-page/search-page-entryscape/search-page-provider-settings";
 import { SearchResults } from "@/features/search/search-results";
-import { useEntryScapeBlocks } from "@/hooks/use-entry-scape-blocks";
+import { useBlocksSpa } from "@/hooks/use-blocks-spa";
 import { EntrystoreContext } from "@/providers/entrystore-provider";
 import SearchProvider, {
   SearchContext,
@@ -45,7 +45,7 @@ export const DatasetSeriesPage: FC = () => {
   const { t, lang } = useTranslation();
   const router = useRouter();
 
-  useEntryScapeBlocks({
+  useBlocksSpa({
     entrystoreBase: entry.entrystore.getBaseURI(),
     env: entry.env,
     lang,
