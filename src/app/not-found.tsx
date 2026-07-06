@@ -1,4 +1,4 @@
-import { AppLink } from "@/components/link";
+import Link from "next/link";
 
 import { routing } from "@/i18n/routing";
 
@@ -28,9 +28,9 @@ export default function RootNotFound() {
           <p className="mb-lg">
             Vi kunde tyvärr inte hitta sidan du letade efter.
           </p>
-          <AppLink href="/" className="text-lg underline">
+          <Link href="/" className="text-lg underline">
             Till startsidan
-          </AppLink>
+          </Link>
         </div>
       </body>
     </html>
