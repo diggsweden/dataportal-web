@@ -1,0 +1,55 @@
+"use client";
+
+import { cx } from "class-variance-authority";
+import { useTranslations } from "next-intl";
+import {
+  type FC,
+  type LinkHTMLAttributes,
+  type PropsWithChildren,
+  useContext,
+} from "react";
+
+import ExternalLinkIcon from "@/assets/icons/external-link.svg";
+import MailIcon from "@/assets/icons/mail.svg";
+import { AppLink } from "@/components/link";
+import { SettingsContext } from "@/providers/settings-provider";
+import { isExternalLink, isMailLink } from "@/utilities";
+
+type CustomLinkProps = {
+  href: string;
+};
+
+export const CustomLink: FC<
+  PropsWithChildren<CustomLinkProps & LinkHTMLAttributes<HTMLAnchorElement>>
+> = ({ className, children, href, ...rest }) => {
+  const { iconSize } = useContext(SettingsContext);
+  const t = useTranslations();
+
+  return (
+    <AppLink
+      href={href}
+      className={cx(
+        "cursor-pointer [&_svg]:mb-[2px] [&_svg]:ml-xs [&_svg]:inline-block",
+        className,
+      )}
+      {...rest}
+    >
+      {children}
+      {isMailLink(href) ? (
+        <>
+          <MailIcon width={iconSize} height={iconSize} viewBox="0 0 24 24" />
+          <span className="sr-only">{t("common.open-in-email")}</span>
+        </>
+      ) : isExternalLink(href) ? (
+        <>
+          <ExternalLinkIcon
+            width={iconSize}
+            height={iconSize}
+            viewBox="0 0 24 24"
+          />
+          <span className="sr-only">{t("common.open-in-new-tab")}</span>
+        </>
+      ) : null}
+    </AppLink>
+  );
+};

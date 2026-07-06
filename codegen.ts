@@ -3,60 +3,32 @@ import type { CodegenConfig } from "@graphql-codegen/cli";
 const config: CodegenConfig = {
   overwrite: true,
   schema: process.env.APOLLO_URL,
-  documents: ["./graphql/*.ts"],
+  documents: [
+    "./src/graphql/**/*.ts",
+    "./src/app/**/*.{ts,tsx}",
+    "./src/components/**/*.{ts,tsx}",
+    "./src/utilities/**/*.ts",
+    "./src/providers/**/*.{ts,tsx}",
+    "!./src/graphql/gql/**",
+  ],
   generates: {
-    "graphql/__generated__/types.ts": {
-      plugins: [
-        {
-          add: {
-            content:
-              "/** THIS FILE IS AUTO-GENERATED **/\n" +
-              "/** DO NOT EDIT **/\n" +
-              "/* eslint-disable */",
-          },
-        },
-        "typescript",
-      ],
+    "src/graphql/gql/": {
+      preset: "client",
       config: {
         avoidOptionals: {
           field: true,
         },
         nonOptionalTypename: true,
-        declarationKind: "interface",
-        onlyOperationTypes: true,
-      },
-    },
-    "graphql/__generated__/operations.ts": {
-      preset: "import-types",
-      plugins: [
-        {
-          add: {
-            content:
-              "/** THIS FILE IS AUTO-GENERATED **/\n" +
-              "/** DO NOT EDIT **/\n" +
-              "/* eslint-disable */",
-          },
-        },
-        "typescript-operations",
-        "typed-document-node",
-      ],
-      presetConfig: {
-        typesPath: "./types",
-      },
-      config: {
-        avoidOptionals: {
-          field: true,
-        },
-        nonOptionalTypename: true,
-        skipTypeNameForRoot: true,
-        declarationKind: "interface",
         arrayInputCoercion: false,
-        onlyOperationTypes: true,
-        // omitOperationSuffix: true,
-        exportFragmentSpreadSubTypes: true,
+        useTypeImports: true,
+      },
+      presetConfig: {
+        fragmentMasking: {
+          unmaskFunctionName: "getFragmentData",
+        },
       },
     },
-    "graphql/schema.json": {
+    "src/graphql/schema.json": {
       plugins: ["introspection"],
       config: {
         schemaDescription: true,
