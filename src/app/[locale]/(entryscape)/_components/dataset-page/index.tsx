@@ -2,10 +2,10 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useContext, useEffect, useState } from "react";
+import { ContactPublisherBlock } from "@/app/[locale]/(entryscape)/_components/contact-publisher-block";
+import { EntryscapeResourcePage } from "@/app/[locale]/(entryscape)/_components/entryscape-resource-page";
 import { Button } from "@/components/button";
-import { Container } from "@/components/layout/container";
 import { AppLink } from "@/components/link";
-import { BreadcrumbSetter } from "@/components/navigation/breadcrumbs/breadcrumb-setter";
 import { Heading } from "@/components/typography/heading";
 import { Preamble } from "@/components/typography/preamble";
 import { useEntryScapeBlocks } from "@/lib/entryscape-blocks/use-blocks";
@@ -45,161 +45,131 @@ export function DatasetPage() {
   });
 
   return (
-    <Container>
-      <BreadcrumbSetter
-        {...buildBreadcrumb(entry.title, [
-          {
-            name: t("routes.datasets.title"),
-            link: `/${t("routes.datasets.path")}?q=&f=`,
-          },
-        ])}
-      />
-      <div>
-        <Heading level={1} size={"lg"} className="mb-lg md:mb-xl">
-          {entry.title}
-        </Heading>
-        <div className="mb-lg gap-2xl md:mb-xl lg:flex">
-          {/* Left column */}
-          <div className="mb-lg flex w-full max-w-md flex-col gap-lg lg:mb-xl">
-            {/* Publisher */}
-            <div className="mb-md flex flex-col gap-md">
-              {entry.organisationLink ? (
-                <AppLink
-                  className="text-lg font-normal text-green-600 hover:!no-underline"
-                  href={entry.organisationLink}
-                >
-                  {entry.publisher}
-                </AppLink>
-              ) : (
-                entry.publisher && <Preamble>{entry.publisher}</Preamble>
-              )}
+    <EntryscapeResourcePage
+      breadcrumb={buildBreadcrumb(entry.title, [
+        {
+          name: t("routes.datasets.title"),
+          link: `/${t("routes.datasets.path")}?q=&f=`,
+        },
+      ])}
+      title={entry.title}
+      main={
+        <>
+          {/* Publisher */}
+          <div className="mb-md flex flex-col gap-md">
+            {entry.organisationLink ? (
+              <AppLink
+                className="text-lg font-normal text-green-600 hover:!no-underline"
+                href={entry.organisationLink}
+              >
+                {entry.publisher}
+              </AppLink>
+            ) : (
+              entry.publisher && <Preamble>{entry.publisher}</Preamble>
+            )}
 
-              {/* Related dataset series */}
-              {entry.relatedDatasetSeries &&
-                entry.relatedDatasetSeries.length > 0 && (
-                  <div className="inline-flex flex-wrap items-center gap-sm text-sm">
-                    <span className="text-textSecondary">
-                      {t("pages.datasetpage.related_dataset_series")}
+            {/* Related dataset series */}
+            {entry.relatedDatasetSeries &&
+              entry.relatedDatasetSeries.length > 0 && (
+                <div className="inline-flex flex-wrap items-center gap-sm text-sm">
+                  <span className="text-textSecondary">
+                    {t("pages.datasetpage.related_dataset_series")}
+                  </span>
+                  {entry.relatedDatasetSeries.map((ds, idx) => (
+                    <span key={ds.url} className="inline-flex items-center">
+                      <AppLink
+                        href={ds.url}
+                        className="text-sm text-green-600 hover:no-underline"
+                      >
+                        {ds.title}
+                      </AppLink>
+                      {idx < (entry.relatedDatasetSeries?.length ?? 0) - 1 &&
+                        ", "}
                     </span>
-                    {entry.relatedDatasetSeries.map((ds, idx) => (
-                      <span key={ds.url} className="inline-flex items-center">
-                        <AppLink
-                          href={ds.url}
-                          className="text-sm text-green-600 hover:no-underline"
-                        >
-                          {ds.title}
-                        </AppLink>
-                        {idx < (entry.relatedDatasetSeries?.length ?? 0) - 1 &&
-                          ", "}
-                      </span>
-                    ))}
-                  </div>
-                )}
-            </div>
-
-            {/* Indicators */}
-            <div
-              data-test-id="indicators"
-              data-entryscape="customIndicators"
-              className="indicators flex flex-col flex-wrap gap-x-lg gap-y-sm text-textSecondary md:flex-row"
-            />
-
-            {/* Description */}
-            <div className="flex flex-col items-end gap-sm">
-              <pre
-                id="pre-description"
-                className={`w-full whitespace-pre-line text-left font-ubuntu text-md ${
-                  showText ? "line-clamp-none" : "line-clamp-[8]"
-                }`}
-              >
-                {entry.description}
-              </pre>
-              {descriptionHeight > 191 && (
-                <Button
-                  size={"sm"}
-                  variant={"plain"}
-                  label={
-                    showText
-                      ? t("pages.datasetpage.view_less")
-                      : t("pages.datasetpage.view_more")
-                  }
-                  onClick={() => setShowText(!showText)}
-                />
+                  ))}
+                </div>
               )}
-            </div>
-
-            <div>
-              {/* Distribution list */}
-              <div
-                data-test-id="datasets-block"
-                className="distribution__list"
-                data-entryscape="distributionListCustom"
-                data-entryscape-registry="true"
-              />
-
-              {/* Dataset maps */}
-              <div
-                className="dataset__map"
-                data-entryscape="view"
-                data-entryscape-rdformsid="dcat:dcterms:spatial_bb_da"
-                data-entryscape-label="true"
-              ></div>
-
-              <div
-                className="dataset__map"
-                data-entryscape="autoVisualizations"
-                data-entryscape-include-auto-visualizations="true"
-              ></div>
-
-              {/* Questions  or comments */}
-              <div
-                data-test-id="contact-publisher"
-                className="contact__publisher mt-md md:mt-lg"
-              >
-                <Heading
-                  level={2}
-                  size={"sm"}
-                  className="mb-sm text-textSecondary md:mb-md"
-                >
-                  {t("pages.datasetpage.contact-publisher")}
-                </Heading>
-                <p>
-                  {t("pages.datasetpage.contact-publisher-text")}
-                  {t("pages.datasetpage.contact-publisher-text2")}{" "}
-                  <a
-                    className="link text-md"
-                    href="https://community.dataportal.se/"
-                    lang="en"
-                  >
-                    community
-                  </a>
-                  .
-                </p>
-              </div>
-            </div>
           </div>
 
-          {/* Right column */}
-          <div className="mb-lg w-full max-w-md space-y-lg pt-none lg:mb-none lg:max-w-[18.5rem]">
-            {/* About dataset - wrapper  */}
-            <div
-              data-test-id="about-section"
-              className="box-border w-full bg-white p-md"
-            >
-              <Heading
-                level={2}
-                size={"sm"}
-                className="mb-md font-strong text-textSecondary md:mb-lg"
-              >
-                {t("pages.datasetpage.about-dataset")}
-              </Heading>
+          {/* Indicators */}
+          <div
+            data-test-id="indicators"
+            data-entryscape="customIndicators"
+            className="indicators flex flex-col flex-wrap gap-x-lg gap-y-sm text-textSecondary md:flex-row"
+          />
 
-              <div className="space-y-lg">
-                {/* About dataset */}
-                <div data-entryscape="aboutDataset" />
-                {/* TODO: Fix the order of the datasets so the keywords can be 
+          {/* Description */}
+          <div className="flex flex-col items-end gap-sm">
+            <pre
+              id="pre-description"
+              className={`w-full whitespace-pre-line text-left font-ubuntu text-md ${
+                showText ? "line-clamp-none" : "line-clamp-[8]"
+              }`}
+            >
+              {entry.description}
+            </pre>
+            {descriptionHeight > 191 && (
+              <Button
+                size={"sm"}
+                variant={"plain"}
+                label={
+                  showText
+                    ? t("pages.datasetpage.view_less")
+                    : t("pages.datasetpage.view_more")
+                }
+                onClick={() => setShowText(!showText)}
+              />
+            )}
+          </div>
+
+          <div>
+            {/* Distribution list */}
+            <div
+              data-test-id="datasets-block"
+              className="distribution__list"
+              data-entryscape="distributionListCustom"
+              data-entryscape-registry="true"
+            />
+
+            {/* Dataset maps */}
+            <div
+              className="dataset__map"
+              data-entryscape="view"
+              data-entryscape-rdformsid="dcat:dcterms:spatial_bb_da"
+              data-entryscape-label="true"
+            ></div>
+
+            <div
+              className="dataset__map"
+              data-entryscape="autoVisualizations"
+              data-entryscape-include-auto-visualizations="true"
+            ></div>
+
+            <ContactPublisherBlock variant="dataset" />
+          </div>
+        </>
+      }
+      sidebar={
+        <>
+          {/* About dataset - wrapper  */}
+          <div
+            data-test-id="about-section"
+            className="box-border w-full bg-white p-md"
+          >
+            <Heading
+              level={2}
+              size={"sm"}
+              className="mb-md font-strong text-textSecondary md:mb-lg"
+            >
+              {t("pages.datasetpage.about-dataset")}
+            </Heading>
+
+            <div className="space-y-lg">
+              {/* About dataset */}
+              <div data-entryscape="aboutDataset" />
+              {/* TODO: Fix the order of the datasets so the keywords can be 
                 handled the same way on all pages */}
-                {/*             
+              {/*             
                 {entry.keywords && entry.keywords?.length > 0 && (
                   <div>
                     <Heading
@@ -233,114 +203,112 @@ export function DatasetPage() {
                   </div>
                 )}
                 */}
-                {entry.relatedSpecifications &&
-                  entry.relatedSpecifications.length > 0 && (
-                    <div>
-                      <Heading
-                        className="font-strong text-textSecondary"
-                        level={3}
-                        size={"xxs"}
-                      >
-                        {t("pages.datasetpage.related_specifications")}
-                      </Heading>
-                      {relatedSpecs?.map((spec, idx) => (
-                        <a
-                          className="fit mb-sm block text-sm text-green-600 hover:no-underline"
-                          key={spec.url}
-                          href={spec.url}
-                        >
-                          {spec.title}
-                        </a>
-                      ))}
-                      {entry.relatedSpecifications?.length > 4 && (
-                        <Button
-                          size={"xs"}
-                          className="mt-xs px-sm py-xs !font-strong text-brown-600"
-                          variant={"plain"}
-                          label={
-                            showAllSpecs
-                              ? t("pages.datasetpage.view_less")
-                              : t("pages.datasetpage.view_more")
-                          }
-                          onClick={() => setShowAllSpecs(!showAllSpecs)}
-                        />
-                      )}
-                    </div>
-                  )}
-                {/* Download formats */}
-                {entry.downloadFormats && entry.downloadFormats?.length > 0 && (
-                  <div data-test-id="download-formats">
-                    <Heading
-                      className="font-strong text-textSecondary"
-                      level={3}
-                      size={"xxs"}
-                    >
-                      {t("pages.datasetpage.download_link")}
-                    </Heading>
-                    <div className="flex flex-col gap-xs">
-                      {entry.downloadFormats.map(({ title, url }, idx) => (
-                        <a
-                          key={url}
-                          href={url}
-                          className="text-sm text-green-600 hover:no-underline"
-                        >
-                          {title}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Catalog information wrapper */}
-            <div
-              data-test-id="catalog-information"
-              className="box-border w-full bg-white p-md"
-            >
-              <Heading
-                level={2}
-                size={"sm"}
-                className="mb-sm font-strong text-textSecondary md:mb-md"
-              >
-                {t("pages.datasetpage.catalog")}
-              </Heading>
-              <div className="space-y-lg">
-                {entry.mqaCatalog && (
+              {entry.relatedSpecifications &&
+                entry.relatedSpecifications.length > 0 && (
                   <div>
                     <Heading
                       className="font-strong text-textSecondary"
                       level={3}
                       size={"xxs"}
                     >
-                      {t("pages.datasetpage.mqa-catalog")}
+                      {t("pages.datasetpage.related_specifications")}
                     </Heading>
-                    <AppLink
-                      className="text-sm text-green-600 underline-offset-2 hover:no-underline"
-                      href={entry.mqaCatalog.url}
-                    >
-                      {entry.mqaCatalog.title}
-                    </AppLink>
+                    {relatedSpecs?.map((spec, idx) => (
+                      <a
+                        className="fit mb-sm block text-sm text-green-600 hover:no-underline"
+                        key={spec.url}
+                        href={spec.url}
+                      >
+                        {spec.title}
+                      </a>
+                    ))}
+                    {entry.relatedSpecifications?.length > 4 && (
+                      <Button
+                        size={"xs"}
+                        className="mt-xs px-sm py-xs !font-strong text-brown-600"
+                        variant={"plain"}
+                        label={
+                          showAllSpecs
+                            ? t("pages.datasetpage.view_less")
+                            : t("pages.datasetpage.view_more")
+                        }
+                        onClick={() => setShowAllSpecs(!showAllSpecs)}
+                      />
+                    )}
                   </div>
                 )}
-                <div />
-
-                {/* Catalog */}
-                <div data-entryscape="catalog" />
-
-                <div
-                  data-entryscape="view"
-                  data-entryscape-rdformsid="dcat:OnlyCatalog"
-                  data-entryscape-relationinverse="dcat:dataset"
-                  data-entryscape-onecol="true"
-                  data-entryscape-filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi"
-                />
-              </div>
+              {/* Download formats */}
+              {entry.downloadFormats && entry.downloadFormats?.length > 0 && (
+                <div data-test-id="download-formats">
+                  <Heading
+                    className="font-strong text-textSecondary"
+                    level={3}
+                    size={"xxs"}
+                  >
+                    {t("pages.datasetpage.download_link")}
+                  </Heading>
+                  <div className="flex flex-col gap-xs">
+                    {entry.downloadFormats.map(({ title, url }, idx) => (
+                      <a
+                        key={url}
+                        href={url}
+                        className="text-sm text-green-600 hover:no-underline"
+                      >
+                        {title}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-          {/* End right column */}
-        </div>
-      </div>
-    </Container>
+
+          {/* Catalog information wrapper */}
+          <div
+            data-test-id="catalog-information"
+            className="box-border w-full bg-white p-md"
+          >
+            <Heading
+              level={2}
+              size={"sm"}
+              className="mb-sm font-strong text-textSecondary md:mb-md"
+            >
+              {t("pages.datasetpage.catalog")}
+            </Heading>
+            <div className="space-y-lg">
+              {entry.mqaCatalog && (
+                <div>
+                  <Heading
+                    className="font-strong text-textSecondary"
+                    level={3}
+                    size={"xxs"}
+                  >
+                    {t("pages.datasetpage.mqa-catalog")}
+                  </Heading>
+                  <AppLink
+                    className="text-sm text-green-600 underline-offset-2 hover:no-underline"
+                    href={entry.mqaCatalog.url}
+                  >
+                    {entry.mqaCatalog.title}
+                  </AppLink>
+                </div>
+              )}
+              <div />
+
+              {/* Catalog */}
+              <div data-entryscape="catalog" />
+
+              <div
+                data-entryscape="view"
+                data-entryscape-rdformsid="dcat:OnlyCatalog"
+                data-entryscape-relationinverse="dcat:dataset"
+                data-entryscape-onecol="true"
+                data-entryscape-filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi"
+              />
+            </div>
+          </div>
+        </>
+      }
+    />
   );
 }
