@@ -5,10 +5,10 @@ import { type FC, type MouseEvent, useEffect, useRef, useState } from "react";
 import { AppLink } from "@/components/link";
 
 import { Heading } from "@/components/typography/heading";
-import type { Anchorlink } from "@/types/global";
+import type { AnchorLink } from "@/types/global";
 
 interface StickyNavProps {
-  menuItems: Anchorlink[];
+  menuItems: AnchorLink[];
   menuHeading: string;
 }
 

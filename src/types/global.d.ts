@@ -1,6 +1,6 @@
 /// <reference types="@digg/design-system/lib/emotion-extention" />
 
-import { ComponentType } from "react";
+import type { ComponentType } from "react";
 
 import type {
   Dataportal_LinkType,
@@ -74,7 +74,7 @@ export type Breadcrumb = {
   name: string;
 };
 
-export type Anchorlink = {
+export type AnchorLink = {
   id: string;
   text: string;
 };

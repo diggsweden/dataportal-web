@@ -5,11 +5,11 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import { StickyNav } from "@/components/navigation/sticky-nav";
-import type { Anchorlink } from "@/types/global";
+import type { AnchorLink } from "@/types/global";
 
 /** Gets h2 headings in `#content` and builds anchor-link menu items. */
-function getLinks(): Anchorlink[] {
-  const menuItems: Anchorlink[] = [];
+function getLinks(): AnchorLink[] {
+  const menuItems: AnchorLink[] = [];
   const cont: HTMLElement =
     document.querySelector("#content") || document.createElement("div");
 
@@ -38,7 +38,7 @@ function getLinks(): Anchorlink[] {
       menuItems.push({
         id: id,
         text: element.textContent,
-      } as Anchorlink);
+      } as AnchorLink);
     });
   }
 
@@ -50,7 +50,7 @@ function getLinks(): Anchorlink[] {
  * h2 headings and renders it as `StickyNav`.
  */
 export function ContainerStickyNav() {
-  const [menuItems, setMenuItems] = useState<Anchorlink[]>([]);
+  const [menuItems, setMenuItems] = useState<AnchorLink[]>([]);
   const pathname = usePathname();
   const t = useTranslations();
 
