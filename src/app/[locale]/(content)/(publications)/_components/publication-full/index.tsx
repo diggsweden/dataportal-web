@@ -24,11 +24,16 @@ import { formatDateWithTime } from "@/utilities/date-helper";
 
 type infoSection = {
   title: string;
-  value?: string;
+  values: string[];
   icon: React.ReactNode;
-  type?: "tag" | "plain";
   onlyReuse?: boolean;
 };
+
+/** Coerces a single string or a (possibly null-laden) list into a clean list of non-empty strings. */
+const toList = (value?: string | Array<string | null> | null): string[] =>
+  (Array.isArray(value) ? value : [value]).filter((entry): entry is string =>
+    Boolean(entry),
+  );
 
 export function PublicationFull({
   ...publication
@@ -56,38 +61,36 @@ export function PublicationFull({
   const infoSection: infoSection[] = [
     {
       title: isReuse ? "Avsändare" : "Om",
-      value: type.publisher ?? undefined,
+      values: toList(type.publisher),
       icon: <StarIcon className="mr-sm" />,
-      type: "plain",
     },
     {
       title: "Typ av aktör",
-      value: type.entity ?? undefined,
+      values: toList(type.entity),
       icon: <OrganisationIcon className="mr-sm" />,
-      type: "plain",
     },
     {
       title: "Typ av användning",
-      value: type.typeOfReuse ?? undefined,
+      values: toList(type.typeOfReuse),
       icon: <NewsIcon className="mr-sm" />,
-      type: "plain",
       onlyReuse: true,
     },
     {
       title: "Nytta",
-      value: type.benefit ?? undefined,
+      values: toList(type.benefit),
       icon: <HoldingHandsIcon className="mr-sm" />,
-      type: "plain",
       onlyReuse: true,
     },
     {
       title: "Kategori",
-      value: type.category ?? undefined,
+      values: toList(type.category),
       icon: <KeywordTagIcon className="mr-sm" />,
-      type: "plain",
       onlyReuse: true,
     },
-  ];
+  ].filter(
+    (item) =>
+      item.values.length > 0 && (item.onlyReuse === isReuse || !item.onlyReuse),
+  );
 
   return (
     <Container>
@@ -102,31 +105,23 @@ export function PublicationFull({
             id="publication-info"
             className="w-full space-y-lg lg:max-w-[296px]"
           >
-            {infoSection.map(
-              (item) =>
-                item.value &&
-                (item.onlyReuse === isReuse || !item.onlyReuse) && (
-                  <div key={item.title}>
-                    <Heading
-                      level={2}
-                      size="sm"
-                      className="mb-md flex text-textSecondary"
-                    >
-                      {item.icon}
-                      {item.title}
-                    </Heading>
-                    {item.type === "plain" ? (
-                      <p className="ml-lg pl-md">{item.value}</p>
-                    ) : (
-                      <div className="ml-lg pl-md">
-                        <span className="button--pink button--xs hover:bg-pink-200">
-                          {item.value}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                ),
-            )}
+            {infoSection.map((item) => (
+              <div key={item.title}>
+                <Heading
+                  level={2}
+                  size="sm"
+                  className="mb-md flex text-textSecondary"
+                >
+                  {item.icon}
+                  {item.title}
+                </Heading>
+                {item.values.map((value) => (
+                  <p key={value} className="ml-lg pl-md">
+                    {value}
+                  </p>
+                ))}
+              </div>
+            ))}
             {isReuse && type.apiAndDataset && type.apiAndDataset.length > 0 ? (
               <div>
                 <Heading
