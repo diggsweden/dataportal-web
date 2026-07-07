@@ -339,11 +339,11 @@ export type Dataportal_Digg_GoodExample_Preview = {
 export type Dataportal_Digg_Good_Example = Dataportal_Digg_IEntity & Dataportal_Digg_IGood_Example & {
   __typename: 'dataportal_Digg_Good_Example';
   apiAndDataset: Maybe<Array<Dataportal_Digg_Tag>>;
-  benefit: Maybe<Scalars['String']['output']>;
+  benefit: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   blocks: Array<Dataportal_Digg_IBlock>;
-  category: Maybe<Scalars['String']['output']>;
+  category: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   createdAt: Scalars['dataportal_DateTime']['output'];
-  entity: Maybe<Scalars['String']['output']>;
+  entity: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   heading: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   image: Maybe<Dataportal_Digg_Image>;
@@ -358,7 +358,7 @@ export type Dataportal_Digg_Good_Example = Dataportal_Digg_IEntity & Dataportal_
   reuse: Scalars['Boolean']['output'];
   seo: Maybe<Dataportal_Digg_Seo>;
   slug: Scalars['String']['output'];
-  typeOfReuse: Maybe<Scalars['String']['output']>;
+  typeOfReuse: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   updatedAt: Scalars['dataportal_DateTime']['output'];
 };
 
@@ -444,11 +444,11 @@ export type Dataportal_Digg_IFormInput = {
 
 export type Dataportal_Digg_IGood_Example = {
   apiAndDataset: Maybe<Array<Dataportal_Digg_Tag>>;
-  benefit: Maybe<Scalars['String']['output']>;
+  benefit: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   blocks: Array<Dataportal_Digg_IBlock>;
-  category: Maybe<Scalars['String']['output']>;
+  category: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   createdAt: Scalars['dataportal_DateTime']['output'];
-  entity: Maybe<Scalars['String']['output']>;
+  entity: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   heading: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   image: Maybe<Dataportal_Digg_Image>;
@@ -463,7 +463,7 @@ export type Dataportal_Digg_IGood_Example = {
   reuse: Scalars['Boolean']['output'];
   seo: Maybe<Dataportal_Digg_Seo>;
   slug: Scalars['String']['output'];
-  typeOfReuse: Maybe<Scalars['String']['output']>;
+  typeOfReuse: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   updatedAt: Scalars['dataportal_DateTime']['output'];
 };
 
@@ -1163,7 +1163,7 @@ export type ContainerDataFragment = { __typename: 'dataportal_Digg_Container', i
     & { ' $fragmentRefs'?: { 'SeoDataFragment': SeoDataFragment } }
   ) | null } & { ' $fragmentName'?: 'ContainerDataFragment' };
 
-export type GoodExampleDataFragment = { __typename: 'dataportal_Digg_Good_Example', id: string, name: string, locale: string, heading: string, preamble: string | null, publisher: string, link: string | null, reuse: boolean, updatedAt: any, createdAt: any, slug: string, category: string | null, typeOfReuse: string | null, benefit: string | null, entity: string | null, publishedAt: any, image: (
+export type GoodExampleDataFragment = { __typename: 'dataportal_Digg_Good_Example', id: string, name: string, locale: string, heading: string, preamble: string | null, publisher: string, link: string | null, reuse: boolean, updatedAt: any, createdAt: any, slug: string, category: Array<string | null> | null, typeOfReuse: Array<string | null> | null, benefit: Array<string | null> | null, entity: Array<string | null> | null, publishedAt: any, image: (
     { __typename: 'dataportal_Digg_Image' }
     & { ' $fragmentRefs'?: { 'MediaType_Dataportal_Digg_Image_Fragment': MediaType_Dataportal_Digg_Image_Fragment } }
   ) | null, blocks: Array<(
