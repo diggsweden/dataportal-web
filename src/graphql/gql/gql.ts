@@ -23,7 +23,10 @@ const documents = {
     "\n  fragment FormData on dataportal_Digg_Form {\n    id\n    identifier\n    elements {\n      ...FormElement\n    }\n  }\n": types.FormDataFragmentDoc,
     "\n  query Form($identifier: String!, $locale: String) {\n    dataportal_Digg_Form(identifier: $identifier, locale: $locale) {\n      ...FormData\n    }\n  }\n": types.FormDocument,
     "\n  query Module($identifier: String!, $locale: String) {\n    dataportal_Digg_Module(identifier: $identifier, locale: $locale) {\n      ...ModuleData\n    }\n  }\n": types.ModuleDocument,
-    "\n  fragment SearchHit on dataportal_Digg_SearchHit {\n    highlights {\n      name\n      value\n    }\n    hit {\n      ...ContainerData\n      ...NewsItemData\n      ...GoodExampleData\n    }\n  }\n": types.SearchHitFragmentDoc,
+    "\n  fragment SearchContainer on dataportal_Digg_IContainer {\n    __typename\n    heading\n    name\n    slug\n  }\n": types.SearchContainerFragmentDoc,
+    "\n  fragment SearchNewsItem on dataportal_Digg_INews_Item {\n    __typename\n    heading\n    name\n    slug\n  }\n": types.SearchNewsItemFragmentDoc,
+    "\n  fragment SearchGoodExample on dataportal_Digg_IGood_Example {\n    __typename\n    heading\n    name\n    slug\n  }\n": types.SearchGoodExampleFragmentDoc,
+    "\n  fragment SearchHit on dataportal_Digg_SearchHit {\n    highlights {\n      name\n      value\n    }\n    hit {\n      ...SearchContainer\n      ...SearchNewsItem\n      ...SearchGoodExample\n    }\n  }\n": types.SearchHitFragmentDoc,
     "\n  query Search($filter: dataportal_QuerySearchArgs) {\n    dataportal_Digg_Search(filter: $filter) {\n      totalNrOfHits\n      hits {\n        ...SearchHit\n      }\n    }\n  }\n": types.SearchDocument,
     "\n  query Navigation($filter: dataportal_QueryLocaleArgs) {\n    dataportal_Digg_Navigation(filter: $filter) {\n      ...NavigationData\n    }\n  }\n": types.NavigationDocument,
     "\n  query StartPage($filter: dataportal_QueryLocaleArgs) {\n    dataportal_Digg_Start_Page(filter: $filter) {\n      ...StartPageData\n    }\n  }\n": types.StartPageDocument,
@@ -118,7 +121,19 @@ export function graphql(source: "\n  query Module($identifier: String!, $locale:
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment SearchHit on dataportal_Digg_SearchHit {\n    highlights {\n      name\n      value\n    }\n    hit {\n      ...ContainerData\n      ...NewsItemData\n      ...GoodExampleData\n    }\n  }\n"): (typeof documents)["\n  fragment SearchHit on dataportal_Digg_SearchHit {\n    highlights {\n      name\n      value\n    }\n    hit {\n      ...ContainerData\n      ...NewsItemData\n      ...GoodExampleData\n    }\n  }\n"];
+export function graphql(source: "\n  fragment SearchContainer on dataportal_Digg_IContainer {\n    __typename\n    heading\n    name\n    slug\n  }\n"): (typeof documents)["\n  fragment SearchContainer on dataportal_Digg_IContainer {\n    __typename\n    heading\n    name\n    slug\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment SearchNewsItem on dataportal_Digg_INews_Item {\n    __typename\n    heading\n    name\n    slug\n  }\n"): (typeof documents)["\n  fragment SearchNewsItem on dataportal_Digg_INews_Item {\n    __typename\n    heading\n    name\n    slug\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment SearchGoodExample on dataportal_Digg_IGood_Example {\n    __typename\n    heading\n    name\n    slug\n  }\n"): (typeof documents)["\n  fragment SearchGoodExample on dataportal_Digg_IGood_Example {\n    __typename\n    heading\n    name\n    slug\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment SearchHit on dataportal_Digg_SearchHit {\n    highlights {\n      name\n      value\n    }\n    hit {\n      ...SearchContainer\n      ...SearchNewsItem\n      ...SearchGoodExample\n    }\n  }\n"): (typeof documents)["\n  fragment SearchHit on dataportal_Digg_SearchHit {\n    highlights {\n      name\n      value\n    }\n    hit {\n      ...SearchContainer\n      ...SearchNewsItem\n      ...SearchGoodExample\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
