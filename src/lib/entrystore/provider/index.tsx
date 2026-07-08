@@ -119,9 +119,12 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       handleLocale(window.location.pathname, lang, pathname, router);
   }, [pathname]);
 
+  // Refetch when the entry identifiers change so SPA navigation between two
+  // resources of the same type loads the new entry instead of reusing the
+  // first mount's data (the provider instance persists across such navigation).
   useEffect(() => {
     fetchEntry();
-  }, []);
+  }, [cid, eid]);
 
   const fetchEntry = async () => {
     try {
