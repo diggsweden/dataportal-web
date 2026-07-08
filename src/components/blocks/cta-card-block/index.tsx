@@ -29,12 +29,13 @@ export const CtaCardBlock: FC<{
   return (
     <ContentBox heading={heading || ""} description={description || ""}>
       <div className="flex flex-wrap justify-center gap-md lg:gap-xl">
-        {ctaLinks?.map((maskedLink) => {
+        {ctaLinks?.map((maskedLink, index) => {
           const link = getFragmentData(MenuLinkFragment, maskedLink);
           return (
             link && (
               <ButtonLink
-                key={link.name}
+                // biome-ignore lint/suspicious/noArrayIndexKey: cta links can share the same name and url, so the index guarantees a unique key
+                key={`${link.name}-${link.link}-${index}`}
                 href={link.link}
                 label={link.name}
                 icon={
