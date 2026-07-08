@@ -93,7 +93,7 @@ export default async function LocaleLayout({
           dangerouslySetInnerHTML={{ __html: buildInlineEnvScriptBody() }}
         />
       </head>
-      <body className="font-ubuntu text-md text-textPrimary">
+      <body className="flex min-h-full flex-col font-ubuntu text-md text-textPrimary">
         <AppRouterProviders
           locale={locale}
           messages={messages}

@@ -1,5 +1,6 @@
 "use client";
 
+import { cx } from "class-variance-authority";
 import { useTranslations } from "next-intl";
 import { type FC, type ReactNode, useEffect } from "react";
 import { CookieBanner } from "@/components/cookie-banner";
@@ -78,9 +79,10 @@ export const AppRouterChrome: FC<AppRouterChromeProps> = ({
       />
       <div
         id="top"
-        className={`relative h-[100dvh] md:h-full ${
-          openSideBar ? "overflow-y-hidden md:overflow-y-auto" : ""
-        }`}
+        className={cx(
+          "relative flex min-h-[100dvh] flex-col",
+          openSideBar && "overflow-y-hidden md:overflow-y-auto",
+        )}
       >
         <SkipToContent text={t("common.skiptocontent")} />
         <Header
@@ -109,13 +111,14 @@ export const AppRouterChrome: FC<AppRouterChromeProps> = ({
 
         <div
           id="siteWrapper"
-          className={`transition-all duration-300 ease-in-out ${
-            openSideBar ? "2xl:w-[calc(100vw-18.75rem)]" : "w-full"
-          }`}
+          className={cx(
+            "flex-1 transition-all duration-300 ease-in-out",
+            openSideBar ? "2xl:w-[calc(100vw-18.75rem)]" : "w-full",
+          )}
         >
           <main
             id="main"
-            className="flex min-h-[calc(100vh-46.5rem)] flex-col pb-lg lg:min-h-[calc(100vh-38.25rem)] [&>#Hero]:order-first"
+            className="flex flex-1 flex-col pb-lg [&>#Hero]:order-first"
           >
             {breadcrumbState.crumbs.length > 0 &&
               !/^\/(en|sv)?$/.test(pathname) && (

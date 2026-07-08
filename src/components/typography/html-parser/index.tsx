@@ -1,7 +1,6 @@
 import parse, {
   type DOMNode,
   domToReact,
-  Element,
   type HTMLReactParserOptions,
 } from "html-react-parser";
 import type { FC } from "react";
@@ -13,7 +12,7 @@ import { makeFragmentData } from "@/graphql/gql";
 export const HtmlParser: FC<{ text: string }> = ({ text }) => {
   const options: HTMLReactParserOptions = {
     replace: (node) => {
-      if (node instanceof Element) {
+      if (node.type === "tag" && "name" in node) {
         const { name, attribs, children, prev } = node;
 
         if (

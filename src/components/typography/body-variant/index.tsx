@@ -50,11 +50,7 @@ const BodyVariant: FC<PropsWithChildren<BodyProps>> = ({
       );
     }
     return (
-      <AppLink
-        href={href}
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className={cx(bodyVariants({ variant }), className)}
-      >
+      <AppLink href={href} className={cx(bodyVariants({ variant }), className)}>
         {children}
       </AppLink>
     );
