@@ -46,11 +46,6 @@
   unicode-range: U+000-5FF;
 }
 
-html,
-body {
-  height: 100%;
-}
-
 body {
   background: linear-gradient(
     90deg,
