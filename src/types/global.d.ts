@@ -37,7 +37,10 @@ declare global {
     __entryscape_blocks?: {
       init(): void;
       clear(): void;
+      setEntryStore(entrystoreBase: string): void;
+      addConfig(config: unknown[]): Promise<void>;
     };
+    __entryscape_blocks_click?: (href: string, event?: MouseEvent) => boolean;
     __es_has_apis?: string[];
     screen9?: {
       Player: new (options: {

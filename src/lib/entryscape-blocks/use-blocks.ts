@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
@@ -24,11 +25,54 @@ interface BlocksConfig {
     | "mqa";
 }
 
-// Selector used to decide whether an anchor lives inside Entryscape-rendered
-// content. Entryscape markup is tagged with either `data-entryscape="..."`,
-// the `entryscape` class (set by some custom `run` blocks), or RDForms output.
-const ENTRYSCAPE_CONTAINER_SELECTOR =
-  "[data-entryscape], .entryscape, .rdforms";
+// Loads the base configs + blocks library exactly once for the whole SPA
+// session. Subsequent page navigations reuse the same runtime instead of
+// re-injecting the scripts on every render.
+let libPromise: Promise<void> | null = null;
+
+// Guards the async init against navigations that happen mid-flight: each mount
+// bumps the token, and stale async continuations bail out when it no longer
+// matches.
+let mountToken = 0;
+
+// The blocks runtime is a singleton; only re-point it at a new EntryStore when
+// the base URI actually changes.
+let currentEntryStore: string | null = null;
+
+const loadScript = (url: string): Promise<void> =>
+  new Promise((resolve, reject) => {
+    const container = document.getElementById("scriptsPlaceholder");
+    if (!container) {
+      reject(new Error("scriptsPlaceholder element not found"));
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = url;
+    // Keep async false so the scripts execute in the order they are appended;
+    // the library expects its base configs to be present before it boots.
+    script.async = false;
+    script.onload = () => resolve();
+    script.onerror = reject;
+    container.appendChild(script);
+  });
+
+const ensureLib = (env: EnvSettings): Promise<void> => {
+  if (libPromise) return libPromise;
+  libPromise = (async () => {
+    window.__entryscape_blocks_ready = new Promise<void>((resolve) => {
+      window.__entryscape_blocks_resolve = resolve;
+    });
+    window.__entryscape_config = [{ block: "config", spa: true }];
+    // TODO: temporary staging bundle that provides addConfig(); remove once the
+    // capability ships in the production blocks bundle (ENTRYSCAPE_BLOCKS_URL).
+    await loadScript("https://sandbox.admin.dataportal.se/tmp/blocks.js");
+    await loadScript(env.ENTRYSCAPE_OPENDATA_URL);
+    await loadScript(env.ENTRYSCAPE_MQA_URL);
+    await loadScript(env.ENTRYSCAPE_BLOCKS_URL);
+    await window.__entryscape_blocks_ready;
+  })();
+  return libPromise;
+};
 
 export const useEntryScapeBlocks = ({
   entrystoreBase,
@@ -40,6 +84,7 @@ export const useEntryScapeBlocks = ({
   esId,
 }: BlocksConfig) => {
   const t = useTranslations();
+  const router = useRouter();
 
   // `t` and `env` change identity on most renders but should always be read
   // fresh inside the async init. Keep them in refs so they don't force the
@@ -49,52 +94,66 @@ export const useEntryScapeBlocks = ({
   tRef.current = t;
   envRef.current = env;
 
+  // Bridge between the links rendered by Entryscape blocks and the Next.js
+  // router. The link blocks call `window.__entryscape_blocks_click(href, event)`
+  // on click; returning `true` means we took over navigation (SPA push),
+  // `false` lets the browser handle it (new tab, modified click, external, or
+  // in-page hash change).
   useEffect(() => {
-    // Force a full page navigation for links *inside Entryscape output* so the
-    // blocks bundle re-initializes cleanly on the next page. Scoped to
-    // Entryscape containers so the rest of the app keeps Next.js client-side
-    // routing. Modifier keys / non-primary clicks / target="_blank" are
-    // respected so "open in new tab" still works.
-    const handleClick = (event: MouseEvent) => {
-      if (event.defaultPrevented) return;
-      if (event.button !== 0) return;
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
-        return;
+    const handler = (href: string, event?: MouseEvent): boolean => {
+      if (
+        event &&
+        (event.defaultPrevented ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey ||
+          event.button === 1)
+      ) {
+        return false;
+      }
 
-      const target = event.target as HTMLElement | null;
-      const link = target?.closest("a");
-      if (!link) return;
-
-      if (!link.closest(ENTRYSCAPE_CONTAINER_SELECTOR)) return;
-
-      if (link.target && link.target !== "_self") return;
-      if (!link.href.startsWith(window.location.origin)) return;
-
-      event.preventDefault();
-      window.location.href = link.href;
-    };
-
-    document.addEventListener("click", handleClick);
-
-    return () => {
-      document.removeEventListener("click", handleClick);
-    };
-  }, [pageType, context, esId]);
-
-  useEffect(() => {
-    if (!window.__entryscape_blocks_ready) {
-      window.__entryscape_blocks_ready = new Promise((resolve) => {
-        window.__entryscape_blocks_resolve = resolve;
-      });
-    }
-
-    // Guard async init against being resolved after the effect has been torn
-    // down (deps changed mid-flight, or the component unmounted).
-    let cancelled = false;
-
-    const initializeBlocks = async () => {
+      let url: URL;
       try {
-        const newConfig = createBlocksConfig({
+        url = new URL(href, window.location.origin);
+      } catch {
+        return false;
+      }
+
+      if (url.origin !== window.location.origin) return false;
+
+      // Pure in-page hash change: let the browser scroll instead of pushing.
+      if (
+        url.pathname === window.location.pathname &&
+        url.search === window.location.search &&
+        url.hash
+      ) {
+        return false;
+      }
+
+      event?.preventDefault();
+      router.push(`${url.pathname}${url.search}${url.hash}`);
+      return true;
+    };
+
+    window.__entryscape_blocks_click = handler;
+    return () => {
+      if (window.__entryscape_blocks_click === handler) {
+        delete window.__entryscape_blocks_click;
+      }
+    };
+  }, [router]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const token = ++mountToken;
+
+    (async () => {
+      try {
+        await ensureLib(envRef.current);
+        if (token !== mountToken) return;
+
+        const page = createBlocksConfig({
           entrystoreBase,
           env: envRef.current,
           lang,
@@ -105,75 +164,21 @@ export const useEntryScapeBlocks = ({
           esId,
         });
 
-        window.__entryscape_config = (window.__entryscape_config || []).concat(
-          newConfig,
-        );
-
-        // Create the ready promise
-        window.__entryscape_blocks_ready = new Promise((resolve) => {
-          window.__entryscape_blocks_resolve = resolve;
+        queueMicrotask(async () => {
+          if (token !== mountToken) return;
+          window.__entryscape_blocks?.clear();
+          if (entrystoreBase !== currentEntryStore) {
+            window.__entryscape_blocks?.setEntryStore(entrystoreBase);
+            currentEntryStore = entrystoreBase;
+          }
+          // addConfig instead of seeding __entryscape_config directly: it
+          // overrides the custom blocks so we keep the correct localization.
+          await window.__entryscape_blocks?.addConfig(page);
+          window.__entryscape_blocks?.init();
         });
-
-        if (pageType !== "mqa") {
-          await loadScript(
-            lang === "sv"
-              ? envRef.current.ENTRYSCAPE_OPENDATA_SV_URL
-              : envRef.current.ENTRYSCAPE_OPENDATA_EN_URL,
-          );
-        } else {
-          await loadScript(
-            lang === "sv"
-              ? envRef.current.ENTRYSCAPE_MQA_SV_URL
-              : envRef.current.ENTRYSCAPE_MQA_EN_URL,
-          );
-        }
-
-        await loadScript(envRef.current.ENTRYSCAPE_BLOCKS_URL);
-
-        await window.__entryscape_blocks_ready;
-
-        if (cancelled) return;
-
-        if (window.__entryscape_blocks) {
-          window.__entryscape_blocks.init();
-        }
       } catch (error) {
         console.error("Error initializing EntryScape blocks:", error);
       }
-    };
-
-    initializeBlocks();
-
-    return () => {
-      cancelled = true;
-      window.__entryscape_config = [];
-      if (window.__entryscape_blocks?.clear) {
-        window.__entryscape_blocks.clear();
-      }
-    };
+    })();
   }, [entrystoreBase, lang, pageType, context, esId, iconSize]);
-};
-
-const loadScript = (url: string): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    // Get the scriptsPlaceholder element
-    const container = document.getElementById("scriptsPlaceholder");
-    if (!container) {
-      reject(new Error("scriptsPlaceholder element not found"));
-      return;
-    }
-
-    // Check if script already exists
-    const existingScript = document.querySelector(`script[src="${url}"]`);
-    if (existingScript) {
-      existingScript.remove();
-    }
-
-    const script = document.createElement("script");
-    script.src = url;
-    script.async = false;
-    script.onload = () => resolve();
-    script.onerror = reject;
-    container.appendChild(script); // Append to container instead of body
-  });
 };
