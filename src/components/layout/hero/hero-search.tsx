@@ -1,9 +1,10 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { type FC, useState } from "react";
 
 import { SearchInput } from "@/app/[locale]/(entryscape)/_search/search-input";
+import { includeLangInPath } from "@/utilities/check-lang";
 
 interface HeroSearchProps {
   isFrontpage: boolean;
@@ -11,9 +12,10 @@ interface HeroSearchProps {
 
 export const HeroSearch: FC<HeroSearchProps> = ({ isFrontpage }) => {
   const t = useTranslations();
+  const locale = useLocale();
   const [query, setQuery] = useState("");
 
-  const destination = `/${t("routes.datasets.path")}`;
+  const destination = `${includeLangInPath(locale)}/${t("routes.datasets.path")}`;
   const placeholder = t("pages.startpage.search_placeholder");
 
   return (
