@@ -136,7 +136,7 @@
 }
 
 .modal-ux-inner .modal-ux-header button::after {
-  content: url("../assets/icons/cross.svg");
+  content: url("/icons/cross.svg");
 }
 
 .modal-ux-inner .modal-ux-content h4,
@@ -182,7 +182,7 @@
 }
 
 .esbExpandButton[aria-expanded="false"]::after {
-  content: url("../assets/icons/chevron-down.svg");
+  content: url("/icons/chevron-down.svg");
   @apply h-[1.5rem] w-[1.5rem];
 }
 
@@ -191,7 +191,7 @@
 }
 
 .esbExpandButton[aria-expanded="true"]::after {
-  content: url("../assets/icons/chevron-up.svg");
+  content: url("/icons/chevron-up.svg");
   @apply h-[1.5rem] w-[1.5rem];
 }
 
@@ -246,7 +246,7 @@
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-  background-image: url("../assets/icons/chevron-down.svg");
+  background-image: url("/icons/chevron-down.svg");
   background-repeat: no-repeat;
   background-position: right 5px center;
   background-size: 24px;
@@ -560,22 +560,22 @@
 }
 
 .opblock-summary-control[aria-expanded="false"]::after {
-  content: url("../assets/icons/chevron-down.svg");
+  content: url("/icons/chevron-down.svg");
   @apply ml-auto h-[1.5rem] w-[1.5rem];
 }
 
 .opblock-summary-control[aria-expanded="true"]::after {
-  content: url("../assets/icons/chevron-up.svg");
+  content: url("/icons/chevron-up.svg");
   @apply ml-auto h-[1.5rem] w-[1.5rem];
 }
 
 .expand-operation[aria-expanded="false"]::after {
-  content: url("../assets/icons/chevron-down.svg");
+  content: url("/icons/chevron-down.svg");
   @apply ml-auto h-[1.5rem] w-[1.5rem];
 }
 
 .expand-operation[aria-expanded="true"]::after {
-  content: url("../assets/icons/chevron-up.svg");
+  content: url("/icons/chevron-up.svg");
   @apply ml-auto h-[1.5rem] w-[1.5rem];
 }
 
@@ -586,7 +586,7 @@
 
 .copy-to-clipboard button {
   background:
-    url("../assets/icons/copy-to-clipboard.svg"),
+    url("/icons/copy-to-clipboard.svg"),
     no-repeat center;
   @apply h-[20px] w-[20px] bg-contain;
 }
@@ -603,6 +603,10 @@
 
 .opblock-summary .copy-to-clipboard {
   @apply absolute right-[3rem] hidden h-[30px] cursor-pointer bg-brown-600 hover:bg-pink-600 !important;
+}
+
+.opblock-control-arrow {
+  @apply hidden;
 }
 
 .opblock-summary:hover > .copy-to-clipboard {

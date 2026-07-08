@@ -78,7 +78,7 @@ export const AppRouterChrome: FC<AppRouterChromeProps> = ({
       />
       <div
         id="top"
-        className={`relative h-[100dvh] md:h-full ${
+        className={`relative flex min-h-[100dvh] flex-col ${
           openSideBar ? "overflow-y-hidden md:overflow-y-auto" : ""
         }`}
       >
@@ -109,13 +109,13 @@ export const AppRouterChrome: FC<AppRouterChromeProps> = ({
 
         <div
           id="siteWrapper"
-          className={`transition-all duration-300 ease-in-out ${
+          className={`flex-1 transition-all duration-300 ease-in-out ${
             openSideBar ? "2xl:w-[calc(100vw-18.75rem)]" : "w-full"
           }`}
         >
           <main
             id="main"
-            className="flex min-h-[calc(100vh-46.5rem)] flex-col pb-lg lg:min-h-[calc(100vh-38.25rem)] [&>#Hero]:order-first"
+            className="flex flex-1 flex-col pb-lg [&>#Hero]:order-first"
           >
             {breadcrumbState.crumbs.length > 0 &&
               !/^\/(en|sv)?$/.test(pathname) && (

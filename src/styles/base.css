@@ -46,6 +46,11 @@
   unicode-range: U+000-5FF;
 }
 
+html,
+body {
+  height: 100%;
+}
+
 body {
   background: linear-gradient(
     90deg,
@@ -208,12 +213,12 @@ input[type="radio"] {
 }
 
 .auth-wrapper .btn.unlocked::after {
-  content: url("../assets/icons/lock-open.svg");
+  content: url("/icons/lock-open.svg");
   @apply h-[1.5rem] w-[1.5rem] text-brown-100;
 }
 
 .authorization__btn.unlocked::after {
-  content: url("../assets/icons/lock-open.svg");
+  content: url("/icons/lock-open.svg");
   @apply h-[1.5rem] w-[1.5rem] text-textSecondary;
 }
 
