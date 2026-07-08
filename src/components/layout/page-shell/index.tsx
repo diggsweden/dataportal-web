@@ -11,6 +11,7 @@ interface PageShellProps {
   heading?: string | null;
   preamble?: string | null;
   image?: HeroImage;
+  search?: ComponentProps<typeof Hero>["search"];
   children: ReactNode;
 }
 
@@ -25,12 +26,20 @@ export function PageShell({
   heading,
   preamble,
   image,
+  search,
   children,
 }: PageShellProps) {
   return (
     <>
       <BreadcrumbSetter {...breadcrumb} />
-      {image && <Hero heading={heading} preamble={preamble} image={image} />}
+      {(image || search) && (
+        <Hero
+          heading={heading}
+          preamble={preamble}
+          image={image ?? null}
+          search={search}
+        />
+      )}
       {children}
     </>
   );

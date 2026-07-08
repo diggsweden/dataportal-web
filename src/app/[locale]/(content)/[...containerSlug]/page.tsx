@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { ImageFragment, mediaTypeToImage } from "@/components/custom-image";
 import { PageShell } from "@/components/layout/page-shell";
@@ -90,6 +90,17 @@ export default async function ContainerSlugPage({ params }: PageProps) {
   const { container, related } = result;
   if (!container) notFound();
 
+  const t = await getTranslations({ locale });
+  const slug = containerSlug.join("/");
+  const isSearchApiPage = slug === t("routes.search-api.path");
+
+  const searchProps = isSearchApiPage
+    ? {
+        destination: `/${t("routes.datasets.path")}`,
+        placeholder: t("pages.startpage.search_placeholder"),
+      }
+    : undefined;
+
   const parentData = getFragmentData(ParentFragment, container.parent);
   const parentCrumbs =
     parentData?.heading && parentData.slug
@@ -99,9 +110,10 @@ export default async function ContainerSlugPage({ params }: PageProps) {
   return (
     <PageShell
       heading={container.heading}
-      preamble={container.preamble}
+      preamble={isSearchApiPage ? null : container.preamble}
       image={container.image ? mediaTypeToImage(container.image) : undefined}
       breadcrumb={buildBreadcrumb(container.heading ?? "", parentCrumbs)}
+      search={searchProps}
     >
       {container.landingPage ? (
         <LandingPage
