@@ -137,11 +137,6 @@ export default async function LocaleStartPage({ params }: PageProps) {
     getTopCategories(env, locale),
   ]);
 
-  const searchProps = {
-    destination: getPathname({ locale, href: "/datasets" }),
-    placeholder: t("pages.startpage.search_placeholder"),
-  };
-
   return (
     <>
       {image && (
@@ -149,7 +144,7 @@ export default async function LocaleStartPage({ params }: PageProps) {
           heading={heading}
           preamble={preamble}
           image={mediaTypeToImage(image)}
-          search={searchProps}
+          search
           isFrontpage
         />
       )}

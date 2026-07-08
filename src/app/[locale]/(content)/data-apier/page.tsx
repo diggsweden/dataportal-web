@@ -6,52 +6,52 @@ import { ImageFragment, mediaTypeToImage } from "@/components/custom-image";
 import { PageShell } from "@/components/layout/page-shell";
 import { SeoDataFragment } from "@/components/meta-data";
 import { SettingsUtil } from "@/env";
-import { ParentFragment } from "@/graphql/fragments";
 import { getFragmentData } from "@/graphql/gql";
 import { isAppLocale } from "@/i18n/routing";
 import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
 import { includeLangInPath } from "@/utilities/check-lang";
 
-import { ContainerPage } from "./_components/container-page";
-import { LandingPage } from "./_components/landing-page";
-import { getMultiContainer } from "./data";
+import { LandingPage } from "../[...containerSlug]/_components/landing-page";
+import { getMultiContainer } from "../[...containerSlug]/data";
 
 export const revalidate = 60;
 
+const SLUG_BY_LOCALE: Record<string, string> = {
+  sv: "data-apier",
+  en: "data-apis",
+};
+
 interface PageProps {
-  params: Promise<{ locale: string; containerSlug: string[] }>;
+  params: Promise<{ locale: string }>;
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { locale, containerSlug } = await params;
+  const { locale } = await params;
   if (!isAppLocale(locale)) return {};
 
-  const result = await getMultiContainer(containerSlug, locale);
-  if (!result) return {};
-
-  const container = result.container;
+  const slug = SLUG_BY_LOCALE[locale] ?? SLUG_BY_LOCALE.sv;
+  const container = (await getMultiContainer([slug], locale))?.container;
   if (!container) return {};
 
+  const env = SettingsUtil.create();
   const seo = getFragmentData(SeoDataFragment, container.seo);
   const seoImage = getFragmentData(ImageFragment, seo?.image);
   const containerImage = getFragmentData(
     ImageFragment,
     mediaTypeToImage(container.image),
   );
-  const env = SettingsUtil.create();
-  const slug = `/${containerSlug.join("/")}`;
-  const canonicalPath = `${includeLangInPath(locale)}${slug}`;
-  const canonicalUrl = `${env.CANONICAL_URL}${canonicalPath}`;
+  const allowSEO = env.envName === "prod";
+  const mediaBase = process.env.REACT_APP_MEDIA_BASE_URL ?? "";
+  const canonicalUrl = `${env.CANONICAL_URL}${includeLangInPath(locale)}/${slug}`;
+
   const title = seo?.title
     ? `${seo.title} - Sveriges Dataportal`
     : container.heading
       ? `${container.heading} - Sveriges Dataportal`
       : "Sveriges Dataportal";
   const description = seo?.description ?? container.preamble ?? undefined;
-  const allowSEO = env.envName === "prod";
-  const mediaBase = process.env.REACT_APP_MEDIA_BASE_URL ?? "";
   const ogImage = seoImage?.url
     ? `${mediaBase}${seoImage.url}`
     : containerImage?.url
@@ -79,44 +79,29 @@ export async function generateMetadata({
   };
 }
 
-export default async function ContainerSlugPage({ params }: PageProps) {
-  const { locale, containerSlug } = await params;
+export default async function SearchApiPage({ params }: PageProps) {
+  const { locale } = await params;
   if (!isAppLocale(locale)) notFound();
   setRequestLocale(locale);
 
-  const result = await getMultiContainer(containerSlug, locale);
-  if (!result) notFound();
+  const slug = SLUG_BY_LOCALE[locale] ?? SLUG_BY_LOCALE.sv;
+  const result = await getMultiContainer([slug], locale);
+  if (!result?.container) notFound();
 
-  const { container, related } = result;
-  if (!container) notFound();
-
-  const parentData = getFragmentData(ParentFragment, container.parent);
-  const parentCrumbs =
-    parentData?.heading && parentData.slug
-      ? [{ name: parentData.heading, link: parentData.slug }]
-      : [];
+  const { container } = result;
 
   return (
     <PageShell
       heading={container.heading}
-      preamble={container.preamble}
       image={container.image ? mediaTypeToImage(container.image) : undefined}
-      breadcrumb={buildBreadcrumb(container.heading ?? "", parentCrumbs)}
+      breadcrumb={buildBreadcrumb(container.heading ?? "", [])}
+      search
     >
-      {container.landingPage ? (
-        <LandingPage
-          {...container}
-          locale={locale}
-          pathname={`${includeLangInPath(locale)}/${containerSlug.join("/")}`}
-        />
-      ) : (
-        <ContainerPage
-          {...container}
-          related={related?.filter(
-            (r): r is NonNullable<typeof r> => r !== null,
-          )}
-        />
-      )}
+      <LandingPage
+        {...container}
+        locale={locale}
+        pathname={`${includeLangInPath(locale)}/${slug}`}
+      />
     </PageShell>
   );
 }

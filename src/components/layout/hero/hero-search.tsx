@@ -1,28 +1,20 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { type FC, useState } from "react";
 
 import { SearchInput } from "@/app/[locale]/(entryscape)/_search/search-input";
 
 interface HeroSearchProps {
-  destination: string;
-  placeholder: string;
   isFrontpage: boolean;
 }
 
-/**
- * Client boundary for the hero search form. The form itself is a
- * vanilla `method="GET"` submit (no server action needed — the
- * browser navigates to `${destination}?q=…`), but `<SearchInput>` is
- * controlled so its conditional clear-button can read the current
- * value. That's the only reason we need `useState` here.
- */
-export const HeroSearch: FC<HeroSearchProps> = ({
-  destination,
-  placeholder,
-  isFrontpage,
-}) => {
+export const HeroSearch: FC<HeroSearchProps> = ({ isFrontpage }) => {
+  const t = useTranslations();
   const [query, setQuery] = useState("");
+
+  const destination = `/${t("routes.datasets.path")}`;
+  const placeholder = t("pages.startpage.search_placeholder");
 
   return (
     <search>
