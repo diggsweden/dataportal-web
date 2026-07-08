@@ -1,6 +1,42 @@
 import { gqlFetch, logGqlError } from "@/graphql/fetcher";
 import { graphql } from "@/graphql/gql";
 
+/**
+ * Slim fragments dedicated to the search result list. Search hits are
+ * reconstructed from the Meilisearch index and cannot resolve deep relational
+ * fields (e.g. `parent.pageNavigation`), which the full `ContainerData` /
+ * `NewsItemData` / `GoodExampleData` fragments request. Selecting only the
+ * fields the result list actually renders (see `getSearchHit`) avoids those
+ * subgraph errors — which the fetcher treats as fatal — and shrinks the
+ * payload considerably.
+ */
+export const SearchContainerFragment = graphql(`
+  fragment SearchContainer on dataportal_Digg_IContainer {
+    __typename
+    heading
+    name
+    slug
+  }
+`);
+
+export const SearchNewsItemFragment = graphql(`
+  fragment SearchNewsItem on dataportal_Digg_INews_Item {
+    __typename
+    heading
+    name
+    slug
+  }
+`);
+
+export const SearchGoodExampleFragment = graphql(`
+  fragment SearchGoodExample on dataportal_Digg_IGood_Example {
+    __typename
+    heading
+    name
+    slug
+  }
+`);
+
 graphql(`
   fragment SearchHit on dataportal_Digg_SearchHit {
     highlights {
@@ -8,9 +44,9 @@ graphql(`
       value
     }
     hit {
-      ...ContainerData
-      ...NewsItemData
-      ...GoodExampleData
+      ...SearchContainer
+      ...SearchNewsItem
+      ...SearchGoodExample
     }
   }
 `);

@@ -1,12 +1,12 @@
-import {
-  ContainerDataFragment,
-  GoodExampleDataFragment,
-  NewsItemDataFragment,
-} from "@/graphql/fragments";
 import { getFragmentData } from "@/graphql/gql";
 import type { SearchHitFragment } from "@/graphql/gql/graphql";
 import type { Translate } from "@/i18n/types";
 import type { SearchHit } from "@/types/search";
+import {
+  SearchContainerFragment,
+  SearchGoodExampleFragment,
+  SearchNewsItemFragment,
+} from "./data";
 
 /**
  * Parse Search_dataportal_Digg_Search
@@ -22,7 +22,7 @@ export const getSearchHit = (
 
     switch (r.hit.__typename) {
       case "dataportal_Digg_Container": {
-        const hit = getFragmentData(ContainerDataFragment, r.hit);
+        const hit = getFragmentData(SearchContainerFragment, r.hit);
         return {
           url: `/${hit.slug}`,
           title: hit.heading ?? hit.name,
@@ -31,7 +31,7 @@ export const getSearchHit = (
         } as SearchHit;
       }
       case "dataportal_Digg_News_Item": {
-        const hit = getFragmentData(NewsItemDataFragment, r.hit);
+        const hit = getFragmentData(SearchNewsItemFragment, r.hit);
         return {
           url: `/${t("routes.news.path")}/${hit.slug}`,
           title: hit.heading ?? hit.name,
@@ -40,7 +40,7 @@ export const getSearchHit = (
         } as SearchHit;
       }
       case "dataportal_Digg_Good_Example": {
-        const hit = getFragmentData(GoodExampleDataFragment, r.hit);
+        const hit = getFragmentData(SearchGoodExampleFragment, r.hit);
         return {
           url: `/${t("routes.good-examples.path")}/${hit.slug}`,
           title: hit.heading ?? hit.name,
