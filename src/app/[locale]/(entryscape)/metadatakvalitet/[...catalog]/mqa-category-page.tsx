@@ -15,7 +15,7 @@ export function MQACategoryPage() {
   const lang = useLocale();
 
   useEntryScapeBlocks({
-    entrystoreBase: entry.env.ENTRYSCAPE_MQA_PATH,
+    entrystoreBase: `https://${entry.env.ENTRYSCAPE_MQA_PATH}/store`,
     env: entry.env,
     lang: lang,
     pageType: "mqa",
