@@ -17,16 +17,11 @@ import { checkLang } from "@/utilities";
 
 import { HeroSearch } from "./hero-search";
 
-interface SearchProps {
-  destination: string;
-  placeholder: string;
-}
-
 interface HeroProps {
   heading?: string | null;
   preamble?: string | null;
   image: FragmentType<typeof ImageFragment> | null;
-  search?: SearchProps | null;
+  search?: boolean;
   className?: string;
   /**
    * Centers the heading + search block (used on the start page). Callers
@@ -163,11 +158,7 @@ export async function Hero({
                     />
                   </div>
                 </div>
-                <HeroSearch
-                  destination={search.destination}
-                  placeholder={search.placeholder}
-                  isFrontpage={isFrontpage}
-                />
+                <HeroSearch isFrontpage={isFrontpage} />
               </div>
             )}
           </div>

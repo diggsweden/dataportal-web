@@ -90,6 +90,9 @@ export default async function ContainerSlugPage({ params }: PageProps) {
   const { container, related } = result;
   if (!container) notFound();
 
+  const slug = containerSlug.join("/");
+  const isSearchPage = slug === "data-apier" || slug === "data-apis";
+
   const parentData = getFragmentData(ParentFragment, container.parent);
   const parentCrumbs =
     parentData?.heading && parentData.slug
@@ -99,9 +102,10 @@ export default async function ContainerSlugPage({ params }: PageProps) {
   return (
     <PageShell
       heading={container.heading}
-      preamble={container.preamble}
+      preamble={isSearchPage ? null : container.preamble}
       image={container.image ? mediaTypeToImage(container.image) : undefined}
       breadcrumb={buildBreadcrumb(container.heading ?? "", parentCrumbs)}
+      search={isSearchPage}
     >
       {container.landingPage ? (
         <LandingPage
