@@ -198,7 +198,7 @@ class SearchProviderClass extends Component<
     await this.set({ fetchFacets: true });
 
     if (this.state.fetchHitsWithFacets) {
-      await this.doSearch(false, false);
+      await this.doSearch(false, false, true, false, false);
     }
   };
 
@@ -852,9 +852,10 @@ class SearchProviderClass extends Component<
     setStateToLocation = true,
     reSortOnDone = true,
     hitsOnly = false,
+    trackHitsLoading = true,
   ): Promise<void> => {
     this.setState({
-      loadingHits: true,
+      loadingHits: trackHitsLoading,
       loadingFacets: !hitsOnly,
     });
 

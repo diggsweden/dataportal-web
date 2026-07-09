@@ -3,7 +3,7 @@
 import reactenv from "@beam-australia/react-env";
 import type { AbstractIntlMessages, Locale } from "next-intl";
 import { NextIntlClientProvider } from "next-intl";
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useState } from "react";
 
 import { type EnvSettings, SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
@@ -29,6 +29,10 @@ interface AppRouterProvidersProps {
   resources: ResourceMap;
   /** CSP nonce stamped on the request by `proxy.ts`. */
   nonce: string;
+  /**
+   * Runtime env name resolved server-side from the request host.
+   */
+  initialEnvName: string;
   /** Optional initial breadcrumb forwarded to `LayoutStateProvider`. */
   initialBreadcrumb?: LayoutState["breadcrumbState"];
 }
@@ -108,19 +112,12 @@ export function AppRouterProviders({
   messages,
   resources,
   nonce,
+  initialEnvName,
   initialBreadcrumb,
 }: AppRouterProvidersProps) {
-  const [env, setEnv] = useState<EnvSettings | null>(null);
-
-  useEffect(() => {
-    const isSandbox =
-      typeof window !== "undefined" && window.location.host.includes("sandbox");
-    setEnv(isSandbox ? new Settings_Sandbox() : SettingsUtil.create());
-  }, []);
-
-  // Until env hydrates, render with default (dev) settings so SSR markup
-  // matches and downstream code never sees `env === null`.
-  const resolvedEnv = env ?? SettingsUtil.getDefault();
+  const [resolvedEnv] = useState<EnvSettings>(() =>
+    SettingsUtil.fromEnvName(initialEnvName),
+  );
 
   const matomoDisabled =
     process.env.NEXT_PUBLIC_DISABLE_MATOMO === "1" ||
