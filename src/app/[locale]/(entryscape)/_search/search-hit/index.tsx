@@ -31,6 +31,9 @@ const getBadgeForUrl = (url: string): BadgeKey | null => {
 export function SearchHit({ hit, isCompact, onLinkClick }: SearchHitProps) {
   const t = useTranslations();
   const badgeTranslationKey = getBadgeForUrl(hit.url);
+  const terminologyName = hit.metadata?.inScheme_resource?.[0];
+  const terminologyUrl = hit.metadata?.inScheme_url?.[0];
+  const terminologyPublisher = hit.metadata?.publisher_literal?.[0];
 
   return (
     <li className="group relative max-w-lg space-y-sm">
@@ -50,13 +53,31 @@ export function SearchHit({ hit, isCompact, onLinkClick }: SearchHitProps) {
         </Heading>
       </AppLink>
 
-      {hit.metadata?.inScheme_resource?.[0] && (
-        <span className="inScheme_resource text-sm font-strong text-textSecondary">
-          {hit.metadata.inScheme_resource[0]}
+      {terminologyName && (
+        <span className="inScheme_resource block text-sm text-textSecondary">
+          {t("pages.concept_page.terminology_concept")}:{" "}
+          {terminologyUrl ? (
+            <AppLink
+              href={terminologyUrl}
+              onClick={onLinkClick}
+              className="relative z-10 font-strong hover:no-underline"
+            >
+              {terminologyName}
+            </AppLink>
+          ) : (
+            <span className="font-strong">{terminologyName}</span>
+          )}
         </span>
       )}
 
-      {hit.metadata?.organisation_literal && (
+      {terminologyPublisher && (
+        <span className="block break-words text-sm text-textSecondary">
+          {t("common.publisher")}:{" "}
+          <span className="font-strong">{terminologyPublisher}</span>
+        </span>
+      )}
+
+      {hit.metadata?.organisation_literal?.[0] && (
         <span className="break-words text-sm font-strong text-textSecondary">
           {hit.metadata.organisation_literal}
         </span>

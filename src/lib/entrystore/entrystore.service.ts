@@ -656,7 +656,6 @@ export class EntrystoreService {
 
     if (entry && path !== "/organisations/") {
       const metadata = entry.getAllMetadata();
-
       try {
         const publisherUri = getLocalizedValue(
           metadata,
@@ -752,13 +751,57 @@ export class EntrystoreService {
         }
       }
 
-      const inSchemeUris = metadata.findFirstValue(
-        null,
-        "http://www.w3.org/2004/02/skos/core#inScheme",
-      );
-      const inSchemeName = entryCache.getValue(inSchemeUris);
+      // Link to the hit's parent container ("Terminologi" / "Datavokabulär").
+      // Concepts reference it via skos:inScheme (a skos:ConceptScheme); classes
+      // and properties via rdfs:isDefinedBy (an owl:Ontology).
+      const inSchemeUri = metadata.findFirstValue(null, "skos:inScheme");
+      const parentUri =
+        inSchemeUri || metadata.findFirstValue(null, "rdfs:isDefinedBy");
 
-      values.inScheme_resource = [inSchemeName || ""];
+      if (parentUri) {
+        let parentName = entryCache.getValue(parentUri) || "";
+        let parentUrl = "";
+
+        // Only concepts have an internal terminology page today. Classes and
+        // properties link to a Datavokabulär, which has no route yet, so their
+        // parent renders as plain text until that route exists.
+        // TODO(DIGG-621 follow-up): resolve the Datavokabulär link once the
+        // /datavokabulär (owl:Ontology) route is added.
+        if (inSchemeUri) {
+          try {
+            const schemeEntry = await this.getEntryByResourceURI(inSchemeUri);
+            if (schemeEntry) {
+              parentUrl = termsPathResolver(schemeEntry);
+              parentName =
+                parentName ||
+                getLocalizedValue(
+                  schemeEntry.getAllMetadata(),
+                  "dcterms:title",
+                  inSchemeUri,
+                );
+
+              // "Utgivare" in the design is the terminology's publisher, not
+              // the concept's own (concepts usually have none of their own).
+              const { name: publisherName } = await this.getPublisherInfo(
+                schemeEntry.getResourceURI(),
+                schemeEntry.getAllMetadata(),
+              );
+              if (publisherName) {
+                values.publisher_literal = [publisherName];
+              }
+            }
+          } catch (error) {
+            console.error("Error resolving terminology link:", error);
+          }
+        }
+
+        values.inScheme_resource = [parentName];
+        if (parentUrl) {
+          values.inScheme_url = [parentUrl];
+        }
+      } else {
+        values.inScheme_resource = [""];
+      }
 
       values.modified = metadata
         .find(null, "http://purl.org/dc/terms/modified")
