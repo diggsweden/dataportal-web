@@ -148,7 +148,7 @@ export async function Hero({
                   <div className="grid grid-cols-2  gap-md md:gap-lg">
                     <HeroButton
                       href={`/${t("routes.concepts.path")}?q=&f=`}
-                      label={t("common.all-concepts")}
+                      label={t("common.all-datastructures")}
                       icon={ConceptIcon}
                     />
                     <HeroButton

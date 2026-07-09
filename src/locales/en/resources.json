@@ -28,7 +28,7 @@
   "http://purl.org/dc/terms/publisher": "Organisation",
   "http://purl.org/dc/terms/subject": "National basic data",
   "http://purl.org/dc/terms/type": "Organisation type",
-  "http://www.w3.org/2004/02/skos/core#inScheme": "Terminologies",
+  "http://www.w3.org/2004/02/skos/core#inScheme": "Terminologies (concept collection)",
   "http://www.w3.org/ns/dcat#DataService": "API/Data service",
   "http://www.w3.org/ns/dcat#DatasetSeries": "Dataset series",
   "http://www.w3.org/ns/dcat#theme": "Theme",

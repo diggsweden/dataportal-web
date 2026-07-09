@@ -394,7 +394,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             type: ESType.uri,
             dcatProperty: "dcterms:type",
             indexOrder: 0,
-            group: "default",
+            group: "concept",
           },
         ],
       },

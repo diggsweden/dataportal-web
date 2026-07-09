@@ -28,7 +28,7 @@
   "http://purl.org/dc/terms/publisher": "Organisation",
   "http://purl.org/dc/terms/subject": "Nationella grunddata",
   "http://purl.org/dc/terms/type": "Organisationstyp",
-  "http://www.w3.org/2004/02/skos/core#inScheme": "Terminologier",
+  "http://www.w3.org/2004/02/skos/core#inScheme": "Terminologier (begreppssamling)",
   "http://www.w3.org/ns/dcat#DataService": "API/Datatjänst",
   "http://www.w3.org/ns/dcat#DatasetSeries": "Datamängdsserier",
   "http://www.w3.org/ns/dcat#theme": "Kategori",

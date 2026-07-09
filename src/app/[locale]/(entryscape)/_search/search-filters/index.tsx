@@ -224,7 +224,7 @@ export function SearchFilters({
       <div className="my-xl flex items-center justify-between md:my-lg">
         <ToggleFilterButton />
 
-        {(searchMode === "datasets" || searchMode === "organisations") && (
+        {searchMode !== "content" && (
           <>
             <Button
               variant="plain"
