@@ -11,7 +11,7 @@ import { EntrystoreContext } from "@/lib/entrystore/provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
 
-export function ConceptPage() {
+export function TerminologyPage() {
   const { iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const t = useTranslations();
@@ -22,7 +22,7 @@ export function ConceptPage() {
     env: entry.env,
     lang,
     iconSize,
-    pageType: "concept",
+    pageType: "terminology",
     context: entry.context,
     esId: entry.esId,
   });
@@ -61,10 +61,10 @@ export function ConceptPage() {
               {entry.description}
             </p>
           )}
-          <div
-            data-test-id="concept-block"
-            className="flex flex-col gap-lg"
-            data-entryscape="conceptBlock"
+          <span
+            data-test-id="terminology-block"
+            data-entryscape="terminologyBlock"
+            className="totTerminology conceptDetail"
           />
         </>
       }
@@ -75,7 +75,7 @@ export function ConceptPage() {
             size="sm"
             className="mb-sm font-strong text-textSecondary md:mb-md"
           >
-            {t("pages.concept_page.about_concept")}
+            {t("pages.concept_page.about_terminology")}
           </Heading>
           <div className="space-y-lg">
             <div data-test-id="address">
@@ -84,7 +84,7 @@ export function ConceptPage() {
                 level={3}
                 size="xxs"
               >
-                {t("pages.concept_page.concept_adress")}
+                {t("pages.concept_page.term_adress")}
               </Heading>
               <AppLink
                 className="break-words text-sm text-green-600 hover:no-underline"
@@ -155,9 +155,6 @@ export function ConceptPage() {
             )}
           </div>
         </>
-      }
-      footer={
-        <div data-entryscape="conceptHierarchy" className="conceptDetail" />
       }
     />
   );

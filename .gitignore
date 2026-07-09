@@ -66,3 +66,5 @@ cypress/screenshots
 
 #meilisearch
 **/data.ms
+
+docs/superpowers/

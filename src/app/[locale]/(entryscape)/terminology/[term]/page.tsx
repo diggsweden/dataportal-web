@@ -1,4 +1,4 @@
-import { ConceptPage } from "@/app/[locale]/(entryscape)/_components/concept-page";
+import { TerminologyPage } from "@/app/[locale]/(entryscape)/_components/terminology-page";
 import { renderEntryStoreResourcePage } from "@/app/[locale]/(entryscape)/_server/render-resource-page";
 
 interface PageProps {
@@ -17,6 +17,6 @@ export default async function Terminology({ params }: PageProps) {
       entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
       param: term,
     },
-    body: <ConceptPage />,
+    body: <TerminologyPage />,
   });
 }
