@@ -35,27 +35,40 @@ export class SettingsUtil {
    *
    */
   public static create(): EnvSettings {
-    const envName = env("RUNTIME_ENV") || "prod"; //always default to prod
+    SettingsUtil.current = SettingsUtil.fromEnvName(
+      env("RUNTIME_ENV") || "prod",
+    );
+    return SettingsUtil.current;
+  }
 
+  /**
+   * Maps a runtime env name to its settings instance. Pure — does not touch the
+   * singleton, so it is safe to call per-request during SSR.
+   */
+  public static fromEnvName(envName: string): EnvSettings {
     switch (envName) {
       case "dev":
-        SettingsUtil.current = new Settings_Dev();
-        break;
+        return new Settings_Dev();
       case "test":
-        SettingsUtil.current = new Settings_Test();
-        break;
+        return new Settings_Test();
       case "stage":
-        SettingsUtil.current = new Settings_Prod();
-        break;
+        return new Settings_Prod();
       case "sandbox":
-        SettingsUtil.current = new Settings_Sandbox();
-        break;
+        return new Settings_Sandbox();
       default:
-        SettingsUtil.current = new Settings_Prod();
-        break;
+        return new Settings_Prod();
     }
+  }
 
-    return SettingsUtil.current;
+  /**
+   * Resolves the runtime env NAME for a request. A `*sandbox*` host always wins
+   * (sandbox is selectable purely via the URL, e.g. `sandbox.localhost:3000` or
+   * `sandbox.dev.beta…`), otherwise falls back to the build-time `RUNTIME_ENV`,
+   * then prod. Pass the request `Host` header on the server.
+   */
+  public static resolveEnvName(host?: string): string {
+    if (host?.includes("sandbox")) return "sandbox";
+    return env("RUNTIME_ENV") || "prod"; //always default to prod
   }
 
   /**

@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { getNavigationData } from "@/app/[locale]/data";
 import { AppRouterChrome } from "@/components/layout/app-router-chrome";
 import { buildInlineEnvScriptBody } from "@/env/browser-env";
+import { SettingsUtil } from "@/env/settings-util";
 import type { NavigationDataFragment } from "@/graphql/gql/graphql";
 import { loadResourceLabels } from "@/i18n/load-messages";
 import { isAppLocale, routing } from "@/i18n/routing";
@@ -69,6 +70,13 @@ export default async function LocaleLayout({
   // pass) still has a stable value to pass through.
   const nonce = requestHeaders.get("x-nonce") ?? generateRandomKey(32);
 
+  // Resolve the runtime env server-side from the request host so a `*sandbox*`
+  // host (e.g. `sandbox.localhost:3000`) serves sandbox data from the very
+  // first render — no client-side host check, no hydration race.
+  const initialEnvName = SettingsUtil.resolveEnvName(
+    requestHeaders.get("host") ?? undefined,
+  );
+
   return (
     <html lang={locale} data-scroll-behavior="smooth">
       <head>
@@ -99,6 +107,7 @@ export default async function LocaleLayout({
           messages={messages}
           resources={resources}
           nonce={nonce}
+          initialEnvName={initialEnvName}
         >
           <AppRouterChrome navigationData={navigationData}>
             {children}
