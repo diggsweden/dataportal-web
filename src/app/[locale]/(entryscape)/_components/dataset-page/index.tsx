@@ -300,10 +300,10 @@ export function DatasetPage() {
 
               <div
                 data-entryscape="view"
-                data-entryscape-rdformsid="dcat:OnlyCatalog"
+                data-entryscape-rdformsid="dcat:Catalog"
                 data-entryscape-relationinverse="dcat:dataset"
                 data-entryscape-onecol="true"
-                data-entryscape-filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi"
+                data-entryscape-filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi,dcat:service"
               />
             </div>
           </div>

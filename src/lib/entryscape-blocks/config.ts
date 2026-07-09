@@ -48,16 +48,6 @@ export const createBlocksConfig = ({
             specification: "details.html",
             specifications: "index.html",
           },
-          collections: [
-            {
-              type: "facet",
-              name: "theme",
-              label: "Theme",
-              property: "dcat:theme",
-              nodetype: "uri",
-              templatesource: "dcat:theme-isa",
-            },
-          ],
           namespaces: {
             adms: "http://www.w3.org/ns/adms#",
             prof: "http://www.w3.org/ns/dx/prof/",

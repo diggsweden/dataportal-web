@@ -67,6 +67,7 @@ const ensureLib = (env: EnvSettings): Promise<void> => {
     // They register the base blocks (e.g. catalogMQA) and RDForms bundles that
     // the pages rely on; addConfig()/setEntryStore()/init() come from the engine
     // itself (ENTRYSCAPE_BLOCKS_URL), so no extra bundle is needed.
+    await loadScript("https://sandbox.admin.dataportal.se/tmp/blocks.js");
     await loadScript(env.ENTRYSCAPE_OPENDATA_URL);
     await loadScript(env.ENTRYSCAPE_MQA_URL);
     await loadScript(env.ENTRYSCAPE_BLOCKS_URL);
