@@ -2,6 +2,7 @@
   "group": {
     "access": "Availability",
     "actor": "Actors",
+    "concept": "Concepts",
     "distribution": "Distribution",
     "share": "Share",
     "type": "Type of data"
