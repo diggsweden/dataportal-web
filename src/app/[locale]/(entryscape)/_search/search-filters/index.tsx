@@ -20,7 +20,6 @@ import { Button } from "@/components/button";
 import { TextInput } from "@/components/form/text-input";
 import { Modal } from "@/components/modal";
 import { useResourceLabel } from "@/i18n/use-resource-label";
-import { ESRdfType } from "@/lib/entrystore/entrystore-core";
 import type { SearchContextData } from "@/providers/search-provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import type { SearchFacet, SearchFacetValue } from "@/types/search";
@@ -51,7 +50,7 @@ type InputFilter = { [key: string]: string };
 export type SearchMode =
   | "content"
   | "datasets"
-  | "concepts"
+  | "data-structures"
   | "specifications"
   | "organisations"
   | "datasets-series";
@@ -285,7 +284,12 @@ export function SearchFilters({
                     const show = value?.show || 20;
                     const uniqueFacetValues = Array.from(
                       new Map(
-                        value?.facetValues.map((v) => [v.resource, v]),
+                        value?.facetValues
+                          .filter(
+                            (v) =>
+                              v.resource || v.customFilter || v.customSearch,
+                          )
+                          .map((v) => [v.resource, v]),
                       ).values(),
                     );
                     const facetValues = inputFilter[key]
@@ -460,11 +464,7 @@ export function SearchFilters({
                                 } else {
                                   search
                                     .set({
-                                      esRdfTypes: [
-                                        ESRdfType.dataset,
-                                        ESRdfType.data_service,
-                                        ESRdfType.dataset_series,
-                                      ],
+                                      esRdfTypes: search.defaultEsRdfTypes,
                                       query,
                                     })
                                     .then(() => search.doSearch());
@@ -485,21 +485,13 @@ export function SearchFilters({
           ))}
           {/* Mobile active filters */}
           <div className="md:hidden">
-            <SearchActiveFilters
-              search={search}
-              query={query}
-              searchMode={searchMode}
-            />
+            <SearchActiveFilters search={search} query={query} />
           </div>
           <ToggleFilterButton className="!mt-xl md:hidden" />
         </div>
       </div>
 
-      <SearchActiveFilters
-        search={search}
-        query={query}
-        searchMode={searchMode}
-      />
+      <SearchActiveFilters search={search} query={query} />
     </section>
   );
 }

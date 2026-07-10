@@ -19,7 +19,11 @@ import { createSearchProviderSettings } from "./search-page-provider-settings";
 
 interface SearchPageProps {
   activeLink?: string;
-  searchType: "datasets" | "concepts" | "specifications" | "organisations";
+  searchType:
+    | "datasets"
+    | "data-structures"
+    | "specifications"
+    | "organisations";
 }
 
 export function SearchPage({ searchType }: SearchPageProps) {

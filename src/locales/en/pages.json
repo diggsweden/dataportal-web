@@ -40,6 +40,16 @@
     "social_meta_description": "Concepts on Sweden's data portal",
     "social_meta_title": "Search concepts"
   },
+  "data-structures": {
+    "data-vocabulary": "Data vocabulary",
+    "search": "Search concepts, classes and properties",
+    "terminology": "Terminology",
+    "types": {
+      "class": "Class",
+      "concept": "Concept",
+      "property": "Property"
+    }
+  },
   "content": {
     "content": "Content",
     "search": "Search",
@@ -204,6 +214,7 @@
     "concepts": "Concepts",
     "content": "Content",
     "content-hits": "results",
+    "data-structures": "Data structures",
     "dataset-hits": "results ",
     "datasets": "Data & APIs",
     "datastructures": "Datastructures",

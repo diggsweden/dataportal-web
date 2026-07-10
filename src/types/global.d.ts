@@ -92,7 +92,12 @@ export interface DataportalSettings {
 
 export type RedirectConfig = {
   pathPrefix: string;
-  redirectPath: "/concepts" | "/specifications" | "/terminology";
+  redirectPath:
+    | "/concepts"
+    | "/specifications"
+    | "/terminology"
+    | "/class"
+    | "/property";
   entrystorePathKey: "ENTRYSCAPE_TERMS_PATH" | "ENTRYSCAPE_SPECS_PATH";
   param?: string | string[];
   secondParam?: string;

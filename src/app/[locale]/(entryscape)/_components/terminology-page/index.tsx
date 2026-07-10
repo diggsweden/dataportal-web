@@ -31,8 +31,8 @@ export function TerminologyPage() {
     <EntryscapeResourcePage
       breadcrumb={buildBreadcrumb(entry.title, [
         {
-          name: t("routes.concepts.title"),
-          link: `/${t("routes.concepts.path")}?q=&f=`,
+          name: t("routes.data-structures.title"),
+          link: `/${t("routes.data-structures.path")}?q=&f=`,
         },
       ])}
       title={entry.title}

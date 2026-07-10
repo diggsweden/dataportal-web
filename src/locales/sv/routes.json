@@ -19,6 +19,10 @@
     "path": "concepts",
     "title": "Sök datastrukturer"
   },
+  "data-structures": {
+    "path": "data-structures",
+    "title": "Sök datastrukturer"
+  },
   "cookies": {
     "analytic-description": "Ger oss information om hur vår webbplats används som gör att vi kan underhålla, driva och förbättra användarupplevelsen.",
     "analytic-heading": "Analytiska kakor",

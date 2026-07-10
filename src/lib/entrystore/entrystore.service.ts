@@ -389,6 +389,8 @@ export class EntrystoreService {
             hitSpecification.descriptionResource || "dcterms:description",
             lang,
           ),
+          badge: hitSpecification.badge,
+          parentLabel: hitSpecification.parentLabel,
         };
 
         hit.url = hitSpecification.pathResolver
@@ -755,36 +757,35 @@ export class EntrystoreService {
       // Concepts reference it via skos:inScheme (a skos:ConceptScheme); classes
       // and properties via rdfs:isDefinedBy (an owl:Ontology).
       const inSchemeUri = metadata.findFirstValue(null, "skos:inScheme");
-      const parentUri =
-        inSchemeUri || metadata.findFirstValue(null, "rdfs:isDefinedBy");
+      const definedByUri = metadata.findFirstValue(null, "rdfs:isDefinedBy");
+
+      const parentUri = inSchemeUri || definedByUri;
 
       if (parentUri) {
-        let parentName = entryCache.getValue(parentUri) || "";
+        // Default to the cached name, else the URI itself. Classes/properties
+        // reference a bare namespace via rdfs:isDefinedBy that isn't a store
+        // entry, so we just show that URI as-is — no per-hit lookup (perf).
+        let parentName = entryCache.getValue(parentUri) || parentUri;
         let parentUrl = "";
 
-        // Only concepts have an internal terminology page today. Classes and
-        // properties link to a Datavokabulär, which has no route yet, so their
-        // parent renders as plain text until that route exists.
-        // TODO(DIGG-621 follow-up): resolve the Datavokabulär link once the
-        // /datavokabulär (owl:Ontology) route is added.
+        // Only concepts have a resolvable ConceptScheme entry (internal
+        // terminology page + publisher), so load it for those only.
         if (inSchemeUri) {
           try {
             const schemeEntry = await this.getEntryByResourceURI(inSchemeUri);
             if (schemeEntry) {
+              const schemeMeta = schemeEntry.getAllMetadata();
               parentUrl = termsPathResolver(schemeEntry);
               parentName =
-                parentName ||
-                getLocalizedValue(
-                  schemeEntry.getAllMetadata(),
-                  "dcterms:title",
-                  inSchemeUri,
-                );
+                getLocalizedValue(schemeMeta, "dcterms:title", inSchemeUri) ||
+                getLocalizedValue(schemeMeta, "rdfs:label", inSchemeUri) ||
+                parentName;
 
               // "Utgivare" in the design is the terminology's publisher, not
               // the concept's own (concepts usually have none of their own).
               const { name: publisherName } = await this.getPublisherInfo(
                 schemeEntry.getResourceURI(),
-                schemeEntry.getAllMetadata(),
+                schemeMeta,
               );
               if (publisherName) {
                 values.publisher_literal = [publisherName];

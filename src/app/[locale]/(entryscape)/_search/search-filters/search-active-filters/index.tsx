@@ -3,26 +3,20 @@ import CrossIcon from "@/assets/icons/cross.svg";
 import TrashIcon from "@/assets/icons/trash.svg";
 import { Button } from "@/components/button";
 import { useResourceLabel } from "@/i18n/use-resource-label";
-import { ESRdfType } from "@/lib/entrystore/entrystore-core";
 import type { SearchContextData } from "@/providers/search-provider";
 import type { SearchFacetValue } from "@/types/search";
 import { clearCurrentScrollPos } from "@/utilities/scroll-helper";
 
-import type { SearchMode } from "../index";
-
 interface SearchActiveFiltersProps {
   search: SearchContextData;
   query: string;
-  searchMode: SearchMode;
 }
 
 export function ClearFiltersButton({
   search,
-  searchMode,
   className,
 }: {
   search: SearchContextData;
-  searchMode: SearchMode;
   className?: string;
 }) {
   const t = useTranslations();
@@ -38,14 +32,7 @@ export function ClearFiltersButton({
         search
           .set({
             facetValues: [],
-            esRdfTypes:
-              searchMode === "datasets"
-                ? [
-                    ESRdfType.dataset,
-                    ESRdfType.data_service,
-                    ESRdfType.dataset_series,
-                  ]
-                : search.request.esRdfTypes,
+            esRdfTypes: search.defaultEsRdfTypes,
           })
           .then(() => search.doSearch());
       }}
@@ -58,7 +45,6 @@ export function ClearFiltersButton({
 export function SearchActiveFilters({
   search,
   query,
-  searchMode,
 }: SearchActiveFiltersProps) {
   const t = useTranslations();
   const tResource = useResourceLabel();
@@ -101,35 +87,33 @@ export function SearchActiveFilters({
           data-test-id="search-active-filters-list"
           className="flex flex-row flex-wrap gap-md md:items-center"
         >
-          {search.request.facetValues?.map(
-            (facetValue: SearchFacetValue, index: number) => {
-              const label =
-                !facetValue.customFilter && !facetValue.customSearch
-                  ? facetValue.title || facetValue.resource
-                  : tResource(facetValue.customLabel || facetValue.facet);
+          {search.request.facetValues?.map((facetValue: SearchFacetValue) => {
+            const label =
+              !facetValue.customFilter && !facetValue.customSearch
+                ? facetValue.title || facetValue.resource
+                : tResource(facetValue.customLabel || facetValue.facet);
 
-              return (
-                <Button
-                  variant="filter"
-                  size="md"
-                  key={`${facetValue.facet}-${facetValue.resource}`}
-                  label={label}
-                  aria-label={`${t("common.clear-filters")} ${label}`}
-                  icon={CrossIcon}
-                  iconPosition="right"
-                  className="w-fit justify-between py-xs text-left font-strong"
-                  onClick={() => {
-                    clearCurrentScrollPos();
-                    search.toggleFacet(facetValue).then(() => {
-                      search.doSearch();
-                    });
-                  }}
-                />
-              );
-            },
-          )}
+            return (
+              <Button
+                variant="filter"
+                size="md"
+                key={`${facetValue.facet}-${facetValue.resource}`}
+                label={label}
+                aria-label={`${t("common.clear-filters")} ${label}`}
+                icon={CrossIcon}
+                iconPosition="right"
+                className="w-fit justify-between py-xs text-left font-strong"
+                onClick={() => {
+                  clearCurrentScrollPos();
+                  search.toggleFacet(facetValue).then(() => {
+                    search.doSearch();
+                  });
+                }}
+              />
+            );
+          })}
 
-          {activecustomSearchFilters.map((filter, index) => (
+          {activecustomSearchFilters.map((filter) => (
             <Button
               variant="filter"
               size="md"
@@ -143,11 +127,7 @@ export function SearchActiveFilters({
                 clearCurrentScrollPos();
                 search
                   .set({
-                    esRdfTypes: [
-                      ESRdfType.dataset,
-                      ESRdfType.data_service,
-                      ESRdfType.dataset_series,
-                    ],
+                    esRdfTypes: search.defaultEsRdfTypes,
                     query: query,
                   })
                   .then(() => search.doSearch());
@@ -157,21 +137,13 @@ export function SearchActiveFilters({
           {/* Desktop clear filters button */}
           {search.request.facetValues &&
             search.request.facetValues.length >= 2 && (
-              <ClearFiltersButton
-                search={search}
-                searchMode={searchMode}
-                className="hidden md:flex"
-              />
+              <ClearFiltersButton search={search} className="hidden md:flex" />
             )}
         </div>
         {/* Mobile clear filters button */}
         {search.request.facetValues &&
           search.request.facetValues.length >= 2 && (
-            <ClearFiltersButton
-              search={search}
-              searchMode={searchMode}
-              className="md:hidden"
-            />
+            <ClearFiltersButton search={search} className="md:hidden" />
           )}
       </div>
     </div>

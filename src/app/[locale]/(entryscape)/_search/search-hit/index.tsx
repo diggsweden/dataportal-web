@@ -30,13 +30,15 @@ const getBadgeForUrl = (url: string): BadgeKey | null => {
 
 export function SearchHit({ hit, isCompact, onLinkClick }: SearchHitProps) {
   const t = useTranslations();
+  const translateKey = (key: string) => t(key as Parameters<typeof t>[0]);
   const badgeTranslationKey = getBadgeForUrl(hit.url);
   const terminologyName = hit.metadata?.inScheme_resource?.[0];
   const terminologyUrl = hit.metadata?.inScheme_url?.[0];
   const terminologyPublisher = hit.metadata?.publisher_literal?.[0];
+  const parentLabel = hit.parentLabel ? translateKey(hit.parentLabel) : "";
 
   return (
-    <li className="group relative max-w-lg space-y-sm">
+    <li className="group relative max-w-lg space-y-md">
       <AppLink
         href={hit.url}
         onClick={onLinkClick}
@@ -53,14 +55,20 @@ export function SearchHit({ hit, isCompact, onLinkClick }: SearchHitProps) {
         </Heading>
       </AppLink>
 
+      {hit.badge && (
+        <div>
+          <Badge text={translateKey(hit.badge)} color="dark-green" />
+        </div>
+      )}
+
       {terminologyName && (
         <span className="inScheme_resource block text-sm text-textSecondary">
-          {t("pages.concept_page.terminology_concept")}:{" "}
+          {parentLabel && `${parentLabel}: `}
           {terminologyUrl ? (
             <AppLink
               href={terminologyUrl}
               onClick={onLinkClick}
-              className="relative z-10 font-strong hover:no-underline"
+              className="relative z-5 font-strong hover:no-underline"
             >
               {terminologyName}
             </AppLink>

@@ -202,6 +202,18 @@ export const termsPathResolver = createPathResolver({
   entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
 });
 
+export const classPathResolver = createPathResolver({
+  pathPrefix: "/concepts",
+  redirectPath: "/class",
+  entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
+});
+
+export const propertyPathResolver = createPathResolver({
+  pathPrefix: "/concepts",
+  redirectPath: "/property",
+  entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
+});
+
 // ============================================================================
 // Template and Choice Helpers
 // ============================================================================
