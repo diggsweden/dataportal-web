@@ -1,7 +1,9 @@
 import type { EnvSettings } from "@/env";
 import { ESRdfType, ESType } from "@/lib/entrystore/entrystore-core";
 import {
+  classPathResolver,
   conceptsPathResolver,
+  propertyPathResolver,
   specsPathResolver,
 } from "@/lib/entrystore/entrystore-helpers";
 import { SearchSortOrder } from "@/providers/search-provider";
@@ -20,12 +22,15 @@ interface FacetConfig {
   showInSearchResult?: boolean;
   customFilter?: string; // Special case for special filters with checkbox
   customSearch?: ESRdfType[]; // Special case for special filters with search
+  customLabel?: string; // Overrides the facet key used for its display label
 }
 
 interface HitSpecification {
   path: string;
   titleResource: string;
   descriptionResource: string;
+  badge?: string; // Translation key for the hit's type badge
+  parentLabel?: string; // Translation key for the parent-container label
 }
 
 interface SearchProviderConfig {
@@ -375,7 +380,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
         },
       },
     },
-    concepts: {
+    "data-structures": {
       entryscapeUrl: env.ENTRYSCAPE_TERMS_PATH
         ? `https://${env.ENTRYSCAPE_TERMS_PATH}/store`
         : "https://editera.dataportal.se/store",
@@ -385,6 +390,24 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
           titleResource: "http://www.w3.org/2004/02/skos/core#prefLabel",
           descriptionResource: "http://www.w3.org/2004/02/skos/core#definition",
           pathResolver: conceptsPathResolver,
+          badge: "pages.data-structures.types.concept",
+          parentLabel: "pages.data-structures.terminology",
+        },
+        "http://www.w3.org/2000/01/rdf-schema#Class": {
+          path: `/class/`,
+          titleResource: "http://www.w3.org/2000/01/rdf-schema#label",
+          descriptionResource: "http://www.w3.org/2000/01/rdf-schema#comment",
+          pathResolver: classPathResolver,
+          badge: "pages.data-structures.types.class",
+          parentLabel: "pages.data-structures.data-vocabulary",
+        },
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property": {
+          path: `/property/`,
+          titleResource: "http://www.w3.org/2000/01/rdf-schema#label",
+          descriptionResource: "http://www.w3.org/2000/01/rdf-schema#comment",
+          pathResolver: propertyPathResolver,
+          badge: "pages.data-structures.types.property",
+          parentLabel: "pages.data-structures.data-vocabulary",
         },
       },
       facetSpecification: {
@@ -393,13 +416,57 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
             resource: "http://www.w3.org/2004/02/skos/core#inScheme",
             type: ESType.uri,
             dcatProperty: "dcterms:type",
-            indexOrder: 0,
+            indexOrder: 1,
             group: "concept",
+          },
+          {
+            resource: ESRdfType.term,
+            type: ESType.wildcard,
+            dcatProperty: "rdf:type",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 2,
+            group: "concept",
+            customSearch: [ESRdfType.term],
+            customLabel: "http://dataportal.se/filter/only-concepts",
+          },
+          {
+            resource: "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
+            type: ESType.uri,
+            dcatProperty: "dcterms:type",
+            indexOrder: 3,
+            group: "class-property",
+          },
+          {
+            resource: ESRdfType.term_class,
+            type: ESType.wildcard,
+            dcatProperty: "rdf:type",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 4,
+            group: "class-property",
+            customSearch: [ESRdfType.term_class],
+            customLabel: "http://dataportal.se/filter/only-classes",
+          },
+          {
+            resource: ESRdfType.term_property,
+            type: ESType.wildcard,
+            dcatProperty: "rdf:type",
+            dcatType: "choice",
+            dcatFilterEnabled: false,
+            indexOrder: 5,
+            group: "class-property",
+            customSearch: [ESRdfType.term_property],
+            customLabel: "http://dataportal.se/filter/only-properties",
           },
         ],
       },
       initRequest: {
-        esRdfTypes: [ESRdfType.term],
+        esRdfTypes: [
+          ESRdfType.term,
+          ESRdfType.term_class,
+          ESRdfType.term_property,
+        ],
         language: lang,
         takeFacets: 30,
       },

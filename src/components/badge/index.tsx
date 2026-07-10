@@ -1,18 +1,35 @@
+import { cva, cx, type VariantProps } from "class-variance-authority";
 import type { FC } from "react";
 
-interface BadgeProps {
+const badgeVariants = cva(["px-sm py-xs text-sm uppercase"], {
+  variants: {
+    color: {
+      "light-green": "bg-green-200",
+      "dark-green": "bg-green-600 text-white",
+    },
+  },
+  defaultVariants: {
+    color: "light-green",
+  },
+});
+
+interface BadgeProps extends VariantProps<typeof badgeVariants> {
   text: string;
   className?: string;
   id?: string;
 }
 
-export const Badge: FC<BadgeProps> = ({ text, className, id, ...props }) => {
+export const Badge: FC<BadgeProps> = ({
+  text,
+  color,
+  className,
+  id,
+  ...props
+}) => {
   return (
     <span
       id={id}
-      className={`bg-green-200 px-sm py-xs text-sm uppercase ${
-        className || ""
-      }`}
+      className={cx(badgeVariants({ color }), className)}
       {...props}
     >
       {text}

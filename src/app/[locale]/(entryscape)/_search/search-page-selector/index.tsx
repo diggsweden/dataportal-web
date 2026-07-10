@@ -23,7 +23,10 @@ interface SearchTabsProps {
 const SEARCH_TABS = [
   { path: "/datasets", translationKey: "pages.search.datasets" },
   { path: "/specifications", translationKey: "pages.search.specifications" },
-  { path: "/concepts", translationKey: "pages.search.datastructures" },
+  {
+    path: "/data-structures",
+    translationKey: "pages.search.data-structures",
+  },
   { path: "/organisations", translationKey: "pages.search.organisations" },
   { path: "/search", translationKey: "pages.search.content" },
 ] as const;

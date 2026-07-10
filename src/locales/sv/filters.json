@@ -2,8 +2,10 @@
   "group": {
     "access": "Tillgänglighet",
     "actor": "Aktörer",
+    "class-property": "Klasser och Egenskaper",
     "concept": "Begrepp",
     "distribution": "Distribution",
+    "publisher": "Utgivare",
     "share": "Delar",
     "type": "Typ av data"
   },

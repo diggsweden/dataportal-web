@@ -27,6 +27,8 @@ export interface HitSpecification {
   titleResource?: string;
   descriptionResource?: string;
   pathResolver?: (_entry: ESEntry) => string;
+  badge?: string;
+  parentLabel?: string;
 }
 
 export interface FacetSpecification {
@@ -69,6 +71,8 @@ export interface SearchHit {
   esEntry?: ESEntry;
   titleLang?: string;
   descriptionLang?: string;
+  badge?: string;
+  parentLabel?: string;
 }
 
 interface SearchFacet {

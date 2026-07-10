@@ -2,8 +2,10 @@
   "group": {
     "access": "Availability",
     "actor": "Actors",
+    "class-property": "Classes and Properties",
     "concept": "Concepts",
     "distribution": "Distribution",
+    "publisher": "Publisher",
     "share": "Share",
     "type": "Type of data"
   },

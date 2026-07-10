@@ -89,6 +89,19 @@ const coreNextConfig = {
 
   async redirects() {
     return [
+      // The concept search moved to /data-structures (DIGG-622). Redirect the
+      // search index only — concept detail pages stay under /concepts/:id.
+      // `localePrefix: "as-needed"` means sv is unprefixed and en is /en/*.
+      {
+        source: "/concepts",
+        destination: "/data-structures",
+        permanent: true,
+      },
+      {
+        source: "/en/concepts",
+        destination: "/en/data-structures",
+        permanent: true,
+      },
       {
         source: "/fortroendemodellen",
         destination: "https://fortroendemodellen.dataportal.se/",

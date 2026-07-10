@@ -19,6 +19,10 @@
     "path": "concepts",
     "title": "Search datastructures"
   },
+  "data-structures": {
+    "path": "data-structures",
+    "title": "Search data structures"
+  },
   "cookies": {
     "analytic-description": "Analytical cookies gives us information about how visitors interact with the site. We use this information to maintain, operate and improve the user experience.",
     "analytic-heading": "Analytical cookies",

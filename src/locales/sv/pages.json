@@ -41,6 +41,16 @@
     "social_meta_description": "Begrepp på Sveriges Dataportal",
     "social_meta_title": "Sök begrepp"
   },
+  "data-structures": {
+    "data-vocabulary": "Datavokabulär",
+    "search": "Sök begrepp, klasser och egenskaper",
+    "terminology": "Terminologi",
+    "types": {
+      "class": "Klass",
+      "concept": "Begrepp",
+      "property": "Egenskap"
+    }
+  },
   "content": {
     "content": "Webbplatsinnehåll",
     "search": "Sök webbplatsinnehåll",
@@ -211,6 +221,7 @@
     "concepts": "Begrepp",
     "content": "Webbplatsinnehåll",
     "content-hits": "resultat",
+    "data-structures": "Datastrukturer",
     "dataset-hits": "resultat",
     "datasets": "Data & API:er",
     "datastructures": "Datastrukturer",

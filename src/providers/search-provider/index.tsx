@@ -60,7 +60,7 @@ export interface SearchProviderProps {
   children?: ReactNode;
   fetchHitsWithFacets?: boolean;
   entry?: Entry;
-  router: { push: (url: string) => void };
+  router: { push: (url: string, options?: { scroll?: boolean }) => void };
 }
 
 /**
@@ -95,6 +95,11 @@ export interface SearchContextData {
    * Enable this if you need to fetch facets to display facet info in search results.
    */
   fetchHitsWithFacets: boolean;
+  /**
+   * The search's initial `esRdfTypes` (from `initRequest`) — i.e. "all types"
+   * for this search. Used to reset the type filter back to everything.
+   */
+  defaultEsRdfTypes: ESRdfType[];
 }
 
 /**
@@ -128,6 +133,7 @@ export const defaultSearchSettings: SearchContextData = {
   fetchHitsWithFacets: true,
   dcatmeta: undefined,
   allFacets: {},
+  defaultEsRdfTypes: [],
 };
 
 /* eslint-enable no-unused-vars */
@@ -719,8 +725,10 @@ class SearchProviderClass extends Component<
     });
 
     const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
-    // Use the router from props
-    this.props.router.push(newUrl);
+    // Use the router from props. `scroll: false` keeps the viewport in place —
+    // App Router's push scrolls to top by default, which would jump the page up
+    // on every filter/search change (the Pages Router did not).
+    this.props.router.push(newUrl, { scroll: false });
   };
 
   /**
@@ -1017,6 +1025,7 @@ class SearchProviderClass extends Component<
       fetchAllFacetsOnMount: true,
       allFacets: this.state.allFacets,
       fetchHitsWithFacets: this.state.fetchHitsWithFacets,
+      defaultEsRdfTypes: this.props.initRequest.esRdfTypes || [],
     };
 
     return (
