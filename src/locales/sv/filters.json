@@ -7,6 +7,8 @@
     "distribution": "Distribution",
     "publisher": "Utgivare",
     "share": "Delar",
+    "specType": "Typ av specifikation",
+    "subject": "Ämnesområde",
     "type": "Typ av data"
   },
   "theme-input-label": "Sök inom filter"

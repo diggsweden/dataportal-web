@@ -55,12 +55,6 @@ export function SearchHit({ hit, isCompact, onLinkClick }: SearchHitProps) {
         </Heading>
       </AppLink>
 
-      {hit.badge && (
-        <div>
-          <Badge text={translateKey(hit.badge)} color="dark-green" />
-        </div>
-      )}
-
       {terminologyName && (
         <span className="inScheme_resource block text-sm text-textSecondary">
           {parentLabel && `${parentLabel}: `}
@@ -120,6 +114,7 @@ export function SearchHit({ hit, isCompact, onLinkClick }: SearchHitProps) {
         </div>
         <div className="formats flex w-full flex-wrap gap-md">
           {badgeTranslationKey && <Badge text={t(badgeTranslationKey)} />}
+          {hit.badge && <Badge text={translateKey(hit.badge)} />}
           {hit.metadata?.custom_facet_literal?.map((m: string) => (
             <Badge key={m} text={m} />
           ))}

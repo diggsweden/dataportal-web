@@ -272,12 +272,20 @@ export class EntrystoreService {
               }
               // Special case for special filters with regular checkbox
               if (fvalue[0].customFilter) {
-                esQuery.uriProperty(
-                  key,
-                  fvalue[0].customFilter,
-                  null,
-                  fvalue[0].related,
-                );
+                if (fvalue[0].customFilter.startsWith("!")) {
+                  esQuery.uriProperty(
+                    key,
+                    [fvalue[0].customFilter.slice(1)],
+                    "not",
+                  );
+                } else {
+                  esQuery.uriProperty(
+                    key,
+                    fvalue[0].customFilter,
+                    null,
+                    fvalue[0].related,
+                  );
+                }
                 break;
               }
               esQuery.uriProperty(
@@ -305,6 +313,15 @@ export class EntrystoreService {
           esQuery.sort("score+desc");
           break;
       }
+    }
+
+    // If filtering to a single spec type, require introduces (interoperable only)
+    if (
+      request.esRdfTypes?.length === 1 &&
+      (request.esRdfTypes[0] === ESRdfType.spec_standard ||
+        request.esRdfTypes[0] === ESRdfType.spec_profile)
+    ) {
+      esQuery.uriProperty("https://w3id.org/inspec/datavoc/introduces", "*");
     }
 
     const searchList = esQuery
@@ -411,7 +428,9 @@ export class EntrystoreService {
             hitSpecification.descriptionResource || "dcterms:description",
             lang,
           ),
-          badge: hitSpecification.badge,
+          badge:
+            this.resolveSpecBadge(metaData, resourceURI, rdfType) ||
+            hitSpecification.badge,
           parentLabel: hitSpecification.parentLabel,
         };
 
@@ -665,6 +684,31 @@ export class EntrystoreService {
       }
     }
     return facets;
+  }
+
+  private resolveSpecBadge(
+    metaData: any,
+    resourceURI: string,
+    rdfType: string,
+  ): string | undefined {
+    const isProfile = rdfType === "http://www.w3.org/ns/dx/prof/Profile";
+    const isStandard = rdfType === "http://purl.org/dc/terms/Standard";
+    if (!isProfile && !isStandard) return undefined;
+
+    const hasIntroduces =
+      metaData.find(resourceURI, "https://w3id.org/inspec/datavoc/introduces")
+        .length > 0;
+    const hasReuses =
+      metaData.find(resourceURI, "https://w3id.org/inspec/datavoc/reuses")
+        .length > 0;
+
+    if (hasIntroduces || hasReuses) {
+      return isStandard
+        ? "pages.specifications.types.standard"
+        : "pages.specifications.types.profile";
+    }
+
+    return undefined;
   }
 
   // ============================================================================

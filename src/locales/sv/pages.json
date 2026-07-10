@@ -295,7 +295,12 @@
     "search": "Sök specifikationer",
     "social_meta_description": "Specifikationer på Sveriges Dataportal",
     "social_meta_title": "Sök specifikationer",
-    "specifications": "specifikationer"
+    "specifications": "specifikationer",
+    "types": {
+      "non-interoperable": "Ej Interoperabel",
+      "profile": "Interoperabel Profilspecifikation",
+      "standard": "Interoperabel Basspecifikation"
+    }
   },
   "startpage": {
     "data-api-header": "Data och API:er",

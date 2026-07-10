@@ -288,7 +288,12 @@
     "search": "Search",
     "social_meta_description": "Specifications on Sweden's data portal",
     "social_meta_title": "Search specifications",
-    "specifications": "specifications"
+    "specifications": "specifications",
+    "types": {
+      "non-interoperable": "Non-interoperable",
+      "profile": "Interoperable Profile Specification",
+      "standard": "Interoperable Base Specification"
+    }
   },
   "startpage": {
     "data-api-header": "Data & APIs",

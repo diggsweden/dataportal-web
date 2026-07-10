@@ -7,6 +7,8 @@
     "distribution": "Distribution",
     "publisher": "Publisher",
     "share": "Share",
+    "specType": "Specification type",
+    "subject": "Subject area",
     "type": "Type of data"
   },
   "theme-input-label": "Search within filters"
