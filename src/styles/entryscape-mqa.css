@@ -14,6 +14,10 @@
   @apply hidden md:block;
 }
 
+.totMQA .entryList .entryListRow {
+  @apply bg-white shadow-sm !important;
+}
+
 .catalogMQA > .esbChartsContainer--grid > h2 {
   @apply mb-lg text-xl font-normal md:mb-xl md:text-2xl !important;
 }
@@ -120,30 +124,8 @@
   @apply flex flex-col md:flex-row md:items-center !important;
 }
 
-/* Styling for total MQA list pagination */
-.page-text {
-  @apply mx-md md:mx-lg !important;
-}
-
-.page-item > button {
-  @apply rounded-sm !important;
-}
-.totMQA .page-link:not(:disabled),
-.subordinateConcepts .page-link:not(:disabled),
-.totTerminology .page-link:not(:disabled) {
-  @apply border-none bg-white text-brown-900 shadow-none hover:bg-brown-200 focus-visible:bg-brown-200 focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:-outline-offset-2 focus-visible:outline-primary !important;
-}
-
-.totMQA .page-link[disabled="true"],
-.subordinateConcepts .page-link[disabled="true"],
-.totTerminology .page-link[disabled="true"] {
-  @apply border-none bg-white text-brown-400 !important;
-}
-
-.totMQA .entryPagination,
-.subordinateConcepts .entryPagination,
-.totTerminology .entryPagination {
-  @apply pb-none pt-lg md:pt-xl;
+.totMQA .entryList {
+  @apply mb-lg md:mb-xl;
 }
 
 /* Styling for MQA catalog searh bar */

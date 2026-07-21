@@ -1,41 +1,35 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
-import { useContext, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useContext } from "react";
 import { ContactPublisherBlock } from "@/app/[locale]/(entryscape)/_components/contact-publisher-block";
 import { EntryscapeResourcePage } from "@/app/[locale]/(entryscape)/_components/entryscape-resource-page";
-import { Button } from "@/components/button";
-import { AppLink } from "@/components/link";
+
+import { LabelLink } from "@/components/label-link";
+import { SidebarSection } from "@/components/sidebar-section";
 import { Heading } from "@/components/typography/heading";
-import { Preamble } from "@/components/typography/preamble";
-import { useEntryScapeBlocks } from "@/lib/entryscape-blocks/use-blocks";
 import { EntrystoreContext } from "@/lib/entrystore/provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
 
 export function SpecificationPage() {
-  const { iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
+  const { iconSize } = useContext(SettingsContext);
   const t = useTranslations();
-  const lang = useLocale();
-  const [showAllDatasets, setShowAllDatasets] = useState(false);
-  const [showAllKeywords, setShowAllKeywords] = useState(false);
-  const relatedDatasets = showAllDatasets
-    ? entry.relatedDatasets
-    : entry.relatedDatasets?.slice(0, 4);
-  const keywords = showAllKeywords
-    ? entry.keywords
-    : entry.keywords?.slice(0, 4);
+  const s = 1.5 * iconSize;
 
-  useEntryScapeBlocks({
-    entrystoreBase: entry.entrystore.getBaseURI(),
-    env: entry.env,
-    lang,
-    iconSize,
-    pageType: "specification",
-    context: entry.context,
-    esId: entry.esId,
-  });
+  const resourceRowhead =
+    "<span>{{text}}</span>" +
+    '<span class="block mb-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: Entryscape template-content syntax, not a JS placeholder
+    '<div>{{ text content="${skos:definition}" }}</div>' +
+    '<div class="flex justify-between items-end md:items-center mt-md md:mt-lg gap-lg">' +
+    '<a class="resource-download" href="{{#ifprop "prof:hasArtifact"}}{{prop "prof:hasArtifact"}}{{/ifprop}}{{#ifprop "prof:hasArtifact" invert=true}}{{resourceURI}}{{/ifprop}}">' +
+    '<span class="button button--primary button--large text-white">' +
+    t("pages.specification_page.specification_download") +
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="resource-download__icon--internal flex-shrink-0"><path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.97917 19.8042 4.5875 19.4125C4.19583 19.0208 4 18.55 4 18V15H6V18H18V15H20V18C20 18.55 19.8042 19.0208 19.4125 19.4125C19.0208 19.8042 18.55 20 18 20H6Z" fill="#6E615A"/></svg>` +
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" class="resource-download__icon--external flex-shrink-0"><path d="M14 3V5H17.59L7.76 14.83L9.17 16.24L19 6.41V10H21V3M19 19H5V5H12V3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V12H19V19Z" fill="#6E615A"/></svg>` +
+    "</span></a></div>";
 
   return (
     <EntryscapeResourcePage
@@ -51,36 +45,37 @@ export function SpecificationPage() {
       sidebarLayout="panelFlush"
       main={
         <>
-          {entry.organisationLink ? (
-            <AppLink
-              data-test-id="publisher"
-              className="mb-lg text-lg font-normal text-green-600 hover:!no-underline"
-              href={entry.organisationLink}
-            >
-              {entry.publisher}
-            </AppLink>
-          ) : (
-            entry.publisher && (
-              <Preamble data-test-id="publisher" className="mb-lg">
-                {entry.publisher}
-              </Preamble>
-            )
-          )}
-          <Preamble
+          <LabelLink
+            testId="publisher"
+            value={entry.relatedResource}
+            className="mb-lg"
+          />
+
+          <p
             data-test-id="description"
-            className="mb-lg mt-md md:mb-xl md:mt-lg"
-          >
-            {entry.description}
-          </Preamble>
+            data-entryscape="text"
+            data-entryscape-property="dcterms:description"
+            className="text-textSecondary whitespace-pre-line mb-lg"
+          />
+
           <Heading level={2} size="md" className="mb-md md:mb-lg">
             {t("pages.specification_page.resource_specification")}
           </Heading>
+
+          {/* Resource-descriptor list (was the resourceDescriptors2 block) */}
           <div
             data-test-id="resource-descriptors"
-            data-entryscape="resourceDescriptors2"
+            data-entryscape="listStandard"
+            data-entryscape-relation="prof:hasResource"
+            data-entryscape-template="prof:ResourceDescriptor"
             data-entryscape-rdftype="prof:ResourceDescriptor"
+            data-entryscape-expand-button="false"
+            data-entryscape-listbody='<div class="[&_li]:bg-white [&_li]:mb-lg [&_li]:shadow-sm">{{body}}</div>'
+            data-entryscape-listplaceholder='<div class="alert alert-info" role="alert">Denna specifikation har inga resurser.</div>'
+            data-entryscape-rowhead={resourceRowhead}
           />
-          <ContactPublisherBlock variant="specification" />
+
+          <ContactPublisherBlock />
         </>
       }
       sidebar={
@@ -93,117 +88,36 @@ export function SpecificationPage() {
             {t("pages.specification_page.about_specification")}
           </Heading>
           <div className="space-y-lg">
-            <div data-test-id="address">
-              <Heading
-                className="font-strong text-textSecondary"
-                level={3}
-                size="xxs"
-              >
-                {t("pages.specification_page.address")}
-              </Heading>
-              <AppLink
-                className="break-words text-sm text-green-600 hover:no-underline"
-                href={entry.address}
-              >
-                {entry.address}
-              </AppLink>
-            </div>
-            {entry.keywords && entry.keywords?.length > 0 && (
-              <div data-test-id="keywords">
-                <Heading
-                  className="font-strong text-textSecondary"
-                  level={3}
-                  size="xxs"
-                >
-                  {t("pages.datasetpage.keyword")}
-                </Heading>
-                <div className="flex flex-col">
-                  {keywords?.map((k) => (
-                    <span
-                      className="mb-sm w-fit bg-pink-200 px-sm py-xs text-sm font-strong"
-                      key={k}
-                    >
-                      {k}
-                    </span>
-                  ))}
-                </div>
-                <Button
-                  size="xs"
-                  className="mt-xs px-sm py-xs !font-strong text-brown-600"
-                  variant="plain"
-                  label={
-                    showAllKeywords
-                      ? t("pages.datasetpage.view_less")
-                      : t("pages.datasetpage.view_more")
-                  }
-                  onClick={() => setShowAllKeywords(!showAllKeywords)}
-                />
-              </div>
-            )}
-            <div
-              data-entryscape-dialog
-              data-entryscape-rdformsid="dcat:contactPoint"
+            <SidebarSection
+              testId="address"
+              heading={t("pages.specification_page.address")}
+              items={[{ title: entry.address, url: entry.address }]}
             />
+            <SidebarSection
+              heading={t("pages.datasetpage.keyword")}
+              items={entry.keywords ?? []}
+              variant="pill"
+              collapseAt={4}
+            />
+
             <div
               data-entryscape="view"
+              data-entryscape-onecol="true"
               data-entryscape-rdformsid="prof:Profile"
               data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:distribution,dcterms:publisher,prof:hasResource,adms:prev,dcat:keyword"
             />
-            {entry.relatedDatasets && entry.relatedDatasets.length > 0 && (
-              <div data-test-id="related-datasets">
-                <Heading
-                  className="font-strong text-textSecondary"
-                  level={3}
-                  size="xxs"
-                >
-                  {t("pages.specification_page.related_datasets")}
-                </Heading>
-                {relatedDatasets?.map((ds) => (
-                  <AppLink
-                    className="fit mb-sm block text-sm text-green-600 hover:no-underline"
-                    key={ds.url}
-                    href={ds.url}
-                  >
-                    {ds.title}
-                  </AppLink>
-                ))}
-                {entry.relatedDatasets?.length > 4 && (
-                  <Button
-                    size="xs"
-                    className="mt-xs px-sm py-xs !font-strong text-brown-600"
-                    variant="plain"
-                    label={
-                      showAllDatasets
-                        ? t("pages.datasetpage.view_less")
-                        : t("pages.datasetpage.view_more")
-                    }
-                    onClick={() => setShowAllDatasets(!showAllDatasets)}
-                  />
-                )}
-              </div>
-            )}
-            {entry.downloadFormats && entry.downloadFormats?.length > 0 && (
-              <div data-test-id="download-formats">
-                <Heading
-                  className="font-strong text-textSecondary"
-                  level={3}
-                  size="xxs"
-                >
-                  {t("pages.datasetpage.download_link")}
-                </Heading>
-                <div className="flex flex-col gap-xs">
-                  {entry.downloadFormats.map(({ title, url }) => (
-                    <a
-                      key={url}
-                      href={url}
-                      className="text-sm text-green-600 hover:no-underline"
-                    >
-                      {title}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
+            <SidebarSection
+              testId="related-datasets"
+              heading={t("pages.specification_page.related_datasets")}
+              items={entry.relatedDatasets ?? []}
+              collapseAt={4}
+            />
+
+            <SidebarSection
+              heading={t("pages.datasetpage.download_link")}
+              items={entry.downloadFormats ?? []}
+              testId="download-formats"
+            />
           </div>
         </div>
       }

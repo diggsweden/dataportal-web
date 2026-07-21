@@ -4,6 +4,7 @@ module.exports = {
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./src/lib/entryscape-blocks/**/*.{js,ts,jsx,tsx}",
   ],
   darkMode: "media",
   theme: {

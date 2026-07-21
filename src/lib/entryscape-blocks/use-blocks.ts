@@ -1,9 +1,9 @@
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
-
 import type { EnvSettings } from "@/env/env-settings";
 import { createBlocksConfig } from "@/lib/entryscape-blocks/config";
+import type { PageType } from "@/lib/entrystore/entrystore-core";
 
 interface BlocksConfig {
   entrystoreBase: string;
@@ -11,18 +11,9 @@ interface BlocksConfig {
   esId: string;
   env: EnvSettings;
   lang: string;
+  pageType: PageType;
   curi?: string;
   uri?: string;
-  iconSize?: number;
-  pageType:
-    | "specification"
-    | "dataset"
-    | "concept"
-    | "terminology"
-    | "dataservice"
-    | "apiexplore"
-    | "organisation"
-    | "mqa";
 }
 
 // Loads the base configs + blocks library exactly once for the whole SPA
@@ -80,7 +71,6 @@ export const useEntryScapeBlocks = ({
   entrystoreBase,
   env,
   lang,
-  iconSize,
   pageType,
   context,
   esId,
@@ -159,7 +149,6 @@ export const useEntryScapeBlocks = ({
           entrystoreBase,
           env: envRef.current,
           lang,
-          iconSize,
           t: tRef.current,
           pageType,
           context,
@@ -183,5 +172,5 @@ export const useEntryScapeBlocks = ({
         console.error("Error initializing EntryScape blocks:", error);
       }
     })();
-  }, [entrystoreBase, lang, pageType, context, esId, iconSize]);
+  }, [entrystoreBase, lang, pageType, context, esId]);
 };

@@ -12,8 +12,8 @@ import {
   type ESFacetFieldValue,
   ESRdfType,
   ESType,
+  type LabelLink,
   type PageType,
-  type RelatedTerm,
 } from "@/lib/entrystore/entrystore-core";
 import { SearchSortOrder } from "@/providers/search-provider";
 import type {
@@ -867,18 +867,18 @@ export class EntrystoreService {
 
   public async getContactInfo(metadata: Metadata) {
     const contactPoint = metadata.findFirstValue(null, "dcat:contactPoint");
-    if (!contactPoint) return { name: "", email: "" };
+    if (!contactPoint) return { title: "", url: "" };
 
     const contactEntry =
       await this.entryStoreUtil.getEntryByResourceURI(contactPoint);
     const contactMetadata = contactEntry.getAllMetadata();
 
     return {
-      name: getLocalizedValue(
+      title: getLocalizedValue(
         contactMetadata,
         "http://www.w3.org/2006/vcard/ns#fn",
       ),
-      email: parseEmail(
+      url: parseEmail(
         getLocalizedValue(
           contactMetadata,
           "http://www.w3.org/2006/vcard/ns#hasEmail",
@@ -890,7 +890,7 @@ export class EntrystoreService {
   public async getKeywords(entry: Entry): Promise<string[]> {
     return entry
       .getAllMetadata()
-      .find(null, "dcat:keyword")
+      .find(entry.getResourceURI(), "dcat:keyword")
       .map((k: { getValue: () => string }) => k.getValue());
   }
 
@@ -991,6 +991,37 @@ export class EntrystoreService {
     }
   }
 
+  /**
+   * Resolves a class/property's data vocabulary (`rdfs:isDefinedBy`) to a
+   * /data-vocabulary link, or the raw URI if it has no store entry.
+   * (Route not built yet.)
+   */
+  public async getDataVocabularyLink(
+    metadata: Metadata,
+    adminService: EntrystoreService = this,
+  ): Promise<LabelLink | undefined> {
+    const uri = metadata.findFirstValue(null, "rdfs:isDefinedBy");
+    if (!uri) return undefined;
+
+    try {
+      const ref = await adminService.getEntryByResourceURI(uri);
+
+      const refMeta = ref.getAllMetadata();
+      const label =
+        getLocalizedValue(refMeta, "dcterms:title") ||
+        getLocalizedValue(refMeta, "rdfs:label");
+      return {
+        title: label || uri,
+        url: `${includeLangInPath(this.lang)}/data-vocabulary/${ref
+          .getContext()
+          .getId()}_${ref.getId()}`,
+      };
+    } catch {
+      // No store entry for this URI, fall back to a plain external link on the raw URI.
+      return { title: uri, url: uri };
+    }
+  }
+
   public async getRelatedMQA(entry: Entry, pageType?: PageType) {
     let contextId = entry.getContext().getId();
     try {
@@ -1025,7 +1056,7 @@ export class EntrystoreService {
   async getRelatedTerm(
     metadata: Metadata,
     returnEntry = false,
-  ): Promise<RelatedTerm | Entry> {
+  ): Promise<LabelLink | Entry> {
     const termUri = metadata.findFirstValue(null, "skos:inScheme");
     const termEntry = await this.getEntryByResourceURI(termUri);
 
@@ -1079,19 +1110,19 @@ export class EntrystoreService {
     return [
       {
         title: `${this.t("pages.datasetpage.download-metadata-as")} RDF/XML`,
-        url: baseUri,
+        url: `${baseUri}?recursive=dcat&format=application/rdf+xml`,
       },
       {
         title: `${this.t("pages.datasetpage.download-metadata-as")} TURTLE`,
-        url: `${baseUri}?format=text/turtle`,
+        url: `${baseUri}?recursive=dcat&format=text/turtle`,
       },
       {
         title: `${this.t("pages.datasetpage.download-metadata-as")} N-TRIPLES`,
-        url: `${baseUri}?format=text/n-triples`,
+        url: `${baseUri}?recursive=dcat&format=text/n-triples`,
       },
       {
         title: `${this.t("pages.datasetpage.download-metadata-as")} JSON-LD`,
-        url: `${baseUri}?format=application/ld+json`,
+        url: `${baseUri}?recursive=dcat&format=application/ld+json`,
       },
     ];
   }

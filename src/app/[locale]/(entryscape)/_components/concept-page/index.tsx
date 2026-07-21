@@ -1,31 +1,76 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useContext } from "react";
 import { EntryscapeResourcePage } from "@/app/[locale]/(entryscape)/_components/entryscape-resource-page";
-import { AppLink } from "@/components/link";
+import { Badge } from "@/components/badge";
+import { LabelLink } from "@/components/label-link";
+import { SidebarSection } from "@/components/sidebar-section";
 import { Heading } from "@/components/typography/heading";
-import { Preamble } from "@/components/typography/preamble";
-import { useEntryScapeBlocks } from "@/lib/entryscape-blocks/use-blocks";
 import { EntrystoreContext } from "@/lib/entrystore/provider";
-import { SettingsContext } from "@/providers/settings-provider";
 import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
 
+const CONCEPT_RELATIONS = [
+  {
+    relation: "skos:broader",
+    heading: "pages.concept_page.superior_concept",
+    placeholder: "pages.concept_page.no_superior_concept",
+  },
+  {
+    relation: "skos:narrower",
+    heading: "pages.concept_page.subordinate_concepts",
+    placeholder: "pages.concept_page.no_subordinate_concepts",
+  },
+  {
+    relation: "skos:related",
+    heading: "pages.concept_page.related_concepts",
+    placeholder: "pages.concept_page.no_related_concepts",
+  },
+] as const;
+
+/**
+ * SKOS documentation notes shown (each only when present) below the concept's
+ * definition. `heading` is an app i18n key; the value is rendered by the block.
+ */
+const CONCEPT_NOTES = [
+  { property: "skos:example", heading: "pages.concept_page.example" },
+  {
+    property: "skos:historyNote",
+    heading: "pages.concept_page.historical_note",
+  },
+  {
+    property: "skos:editorialNote",
+    heading: "pages.concept_page.editorial_note",
+  },
+  { property: "skos:note", heading: "pages.concept_page.note" },
+] as const;
+
+function RelationSection({
+  relation,
+  heading,
+  placeholder,
+}: (typeof CONCEPT_RELATIONS)[number]) {
+  const t = useTranslations();
+
+  return (
+    <section className="mb-lg">
+      <Heading level={2} size="md" className="mb-sm">
+        {t(heading)}
+      </Heading>
+      <div
+        data-entryscape="listStandard"
+        data-entryscape-relation={relation}
+        data-entryscape-listplaceholder={t(placeholder)}
+        data-entryscape-rowhead="{{conceptLink}}"
+        data-entryscape-limit={15}
+      />
+    </section>
+  );
+}
+
 export function ConceptPage() {
-  const { iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const t = useTranslations();
-  const lang = useLocale();
-
-  useEntryScapeBlocks({
-    entrystoreBase: entry.entrystore.getBaseURI(),
-    env: entry.env,
-    lang,
-    iconSize,
-    pageType: "concept",
-    context: entry.context,
-    esId: entry.esId,
-  });
 
   return (
     <EntryscapeResourcePage
@@ -42,30 +87,47 @@ export function ConceptPage() {
       sidebarTestId="about-section"
       main={
         <>
-          {entry.organisationLink ? (
-            <AppLink
-              className="mb-lg text-lg font-normal text-green-600 hover:!no-underline"
-              href={entry.organisationLink}
-            >
-              {entry.publisher}
-            </AppLink>
-          ) : (
-            entry.publisher && (
-              <Preamble data-test-id="publisher" className="mb-lg">
-                {entry.publisher}
-              </Preamble>
-            )
-          )}
-          {entry.description !== "" && (
-            <p data-test-id="description" className="mb-lg text-textSecondary">
-              {entry.description}
-            </p>
-          )}
-          <div
-            data-test-id="concept-block"
-            className="flex flex-col gap-lg"
-            data-entryscape="conceptBlock"
+          <LabelLink
+            value={entry.relatedResource}
+            testId="related-term"
+            size="large"
+            className="mb-xl"
           />
+
+          <Badge
+            color="dark-green"
+            className="w-fit mb-lg"
+            text={t("pages.data-structures.types.concept")}
+          />
+
+          <p
+            className="mb-lg text-textSecondary whitespace-pre-line"
+            data-test-id="description"
+            data-entryscape="text"
+            data-entryscape-property="skos:definition"
+          />
+
+          <div
+            data-entryscape="template"
+            data-entryscape-template={`{{#ifprop "skos:altLabel"}}
+              <h2>{{nls "concept.altLabel"}}</h2>
+              <p>{{#eachprop "skos:altLabel" separator=", "}}{{value}}{{separator}}{{/eachprop}}</p>
+              {{/ifprop}}`}
+          />
+
+          {CONCEPT_RELATIONS.map((r) => (
+            <RelationSection key={r.relation} {...r} />
+          ))}
+
+          {CONCEPT_NOTES.map(({ property, heading }) => (
+            <div
+              key={property}
+              data-entryscape="template"
+              data-entryscape-template={`{{#ifprop "${property}"}}
+              <h2>${t(heading)}</h2>
+              <p>{{prop "${property}"}}</p>{{/ifprop}}`}
+            />
+          ))}
         </>
       }
       sidebar={
@@ -78,86 +140,44 @@ export function ConceptPage() {
             {t("pages.concept_page.about_concept")}
           </Heading>
           <div className="space-y-lg">
-            <div data-test-id="address">
-              <Heading
-                className="font-strong text-textSecondary"
-                level={3}
-                size="xxs"
-              >
-                {t("pages.concept_page.concept_adress")}
-              </Heading>
-              <AppLink
-                className="break-words text-sm text-green-600 hover:no-underline"
-                href={entry.address}
-              >
-                {entry.address}
-              </AppLink>
-            </div>
-            {entry.relatedSpecifications &&
-              entry.relatedSpecifications?.length > 0 && (
-                <div>
-                  <Heading
-                    className="font-strong text-textSecondary"
-                    level={3}
-                    size="xxs"
-                  >
-                    {t("pages.datasetpage.related_specifications")}
-                  </Heading>
-                  {entry.relatedSpecifications.map(({ title, url }) => (
-                    <AppLink
-                      className="block text-sm text-green-600 hover:no-underline"
-                      key={url}
-                      href={url}
-                    >
-                      {title}
-                    </AppLink>
-                  ))}
-                </div>
+            <SidebarSection
+              heading={t("pages.concept_page.concept_adress")}
+              items={[{ title: entry.address, url: entry.address }]}
+              testId="address"
+            />
+            <SidebarSection
+              heading={t("pages.datasetpage.related_specifications")}
+              items={entry.relatedSpecifications ?? []}
+            />
+            <SidebarSection
+              heading={t("pages.concept_page.terminology_concept")}
+              items={[entry.relatedResource]}
+              testId="related-terminology"
+            />
+            <SidebarSection
+              heading={t("pages.datasetpage.download_link")}
+              items={(entry.downloadFormats ?? []).map(
+                ({ title, url }, idx) => ({
+                  title,
+                  url: idx === 0 ? url : `${url}&recursive=conceptscheme`,
+                }),
               )}
-            {entry.relatedTerm && (
-              <div data-test-id="related-terminology">
-                <Heading
-                  className="font-strong text-textSecondary"
-                  level={3}
-                  size="xxs"
-                >
-                  {t("pages.concept_page.terminology_concept")}
-                </Heading>
-                <AppLink
-                  className="block text-sm text-green-600 hover:no-underline"
-                  href={entry.relatedTerm.url}
-                >
-                  {entry.relatedTerm.title}
-                </AppLink>
-              </div>
-            )}
-            {entry.downloadFormats && entry.downloadFormats?.length > 0 && (
-              <div data-test-id="download-formats">
-                <Heading
-                  className="font-strong text-textSecondary"
-                  level={3}
-                  size="xxs"
-                >
-                  {t("pages.datasetpage.download_link")}
-                </Heading>
-                <div className="flex flex-col gap-xs">
-                  {entry.downloadFormats.map(({ title, url }, idx) => (
-                    <a
-                      key={url}
-                      href={url + (idx === 0 ? "" : "&recursive=conceptscheme")}
-                      className="text-sm text-green-600 hover:no-underline"
-                    >
-                      {title}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
+              testId="download-formats"
+            />
           </div>
         </>
       }
       footer={
-        <div data-entryscape="conceptHierarchy" className="conceptDetail" />
+        <>
+          <Heading level={2} size="md" className="mb-sm">
+            {t("pages.concept_page.visualization_concepts")}
+          </Heading>
+          <div
+            data-entryscape="hierarchy"
+            data-entryscape-scale="1.7"
+            className="concept_hierarchy bg-white py-md overflow-auto"
+          />
+        </>
       }
     />
   );

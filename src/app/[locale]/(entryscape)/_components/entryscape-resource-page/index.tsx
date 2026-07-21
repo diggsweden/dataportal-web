@@ -114,6 +114,7 @@ export function EntryscapeResourcePage({
           })}
         >
           <div
+            data-attribute="entryscape-page-main"
             className={entryscapeResourcePageMainVariants({
               layout: mainLayout,
               className: mainClassName,
@@ -122,6 +123,7 @@ export function EntryscapeResourcePage({
             {main}
           </div>
           <div
+            data-attribute="entryscape-page-sidebar"
             className={entryscapeResourcePageSidebarVariants({
               layout: sidebarLayout,
               className: sidebarClassName,

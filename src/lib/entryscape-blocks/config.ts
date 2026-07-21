@@ -2,18 +2,17 @@ import type { EnvSettings } from "@/env/env-settings";
 import type { Translate } from "@/i18n/types";
 import { includeLangInPath } from "@/utilities/check-lang";
 
-import { apiexploreBlocks } from "./apiexplore";
-import { conceptBlocks } from "./concept";
-import { dataserviceBlocks } from "./dataservice";
-import { datasetBlocks } from "./datasets";
-import { specificationBlocks } from "./specification";
-import { terminologyBlocks } from "./terminology";
+import {
+  accessServiceCustom,
+  conceptLink,
+  exploreApiLink,
+  specificationLink,
+} from "./global";
 
 interface CreateBlocksConfigProps {
   entrystoreBase: string;
   env: EnvSettings;
   lang: string;
-  iconSize?: number;
   t: Translate;
   pageType: string;
   context: string;
@@ -24,7 +23,6 @@ export const createBlocksConfig = ({
   entrystoreBase,
   env,
   lang,
-  iconSize,
   context,
   esId,
   t,
@@ -37,6 +35,9 @@ export const createBlocksConfig = ({
     entrystore: entrystoreBase || "https://admin.dataportal.se/store",
     ...(context !== "" && { context }),
     ...(esId !== "" && { entry: esId }),
+    clicks: {
+      concept: `${includeLangInPath(lang)}/concepts/\${context}_\${entry}`,
+    },
   };
 
   switch (pageType) {
@@ -44,67 +45,36 @@ export const createBlocksConfig = ({
       return [
         {
           ...baseConfig,
-          clicks: {
-            specification: "details.html",
-            specifications: "index.html",
-          },
-          namespaces: {
-            adms: "http://www.w3.org/ns/adms#",
-            prof: "http://www.w3.org/ns/dx/prof/",
-          },
           itemstore: {
             bundles: [
-              "dcat",
               `https://${
                 env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
                   ? "sandbox.admin.dataportal.se"
                   : "editera.dataportal.se"
               }/theme/templates/adms.json`,
-              `https://${
-                env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
-                  ? "sandbox.editera.dataportal.se"
-                  : "editera.dataportal.se"
-              }/theme/templates/prof.json`,
             ],
           },
-          blocks: specificationBlocks(t, iconSize || 24),
         },
       ];
     case "concept":
       return [
         {
           ...baseConfig,
-          clicks: {
-            concept: "details",
-            concepts: "index",
-            test: "test.html",
-          },
-          collections: [
-            {
-              type: "facet",
-              name: "terminology",
-              label: "Terminologier",
-              property: "skos:inScheme",
-              nodetype: "uri",
-              limit: 10,
-            },
-          ],
-          namespaces: {
-            adms: "http://www.w3.org/ns/adms#",
-            prof: "http://www.w3.org/ns/dx/prof/",
-          },
-          blocks: conceptBlocks(t, iconSize || 24, lang),
+          blocks: [conceptLink(lang)],
+        },
+      ];
+    case "class":
+    case "property":
+      return [
+        {
+          ...baseConfig,
+          blocks: [specificationLink(lang)],
         },
       ];
     case "terminology":
       return [
         {
           ...baseConfig,
-          clicks: {
-            concept: "details",
-            concepts: "index",
-            test: "test.html",
-          },
           collections: [
             {
               type: "facet",
@@ -115,101 +85,32 @@ export const createBlocksConfig = ({
               limit: 10,
             },
           ],
-          namespaces: {
-            adms: "http://www.w3.org/ns/adms#",
-            prof: "http://www.w3.org/ns/dx/prof/",
-          },
-          blocks: terminologyBlocks(t, lang),
+          blocks: [conceptLink(lang)],
         },
       ];
     case "dataset":
+    case "dataset-series":
       return [
         {
           ...baseConfig,
           clicks: {
             "dataservice-link": `/${lang}/dataservice/\${context}_\${entry}`,
+            exploreApi: `${includeLangInPath(lang)}/datasets/${context}_${esId}/apiexplore/\${entry}`,
           },
-          namespaces: {
-            esterms: "http://entryscape.com/terms/",
-            peu: "http://publications.europa.eu/resource/authority/",
-          },
-          collections: [
-            {
-              type: "facet",
-              name: "format",
-              label: "Format",
-              property: "dcterms:format",
-              related: false,
-              nodetype: "literal",
-              searchIndextype: "string",
-              limit: 7,
-              options: {
-                pdf: ["PDF", "application/pdf"],
-                html: ["text/html", "application/xhtml+xml", "HTML"],
-                xml: ["application/xml", "text/xml", "XML"],
-                json: [
-                  "application/json",
-                  "application/ld+json",
-                  "application/json-ld",
-                  "application/json+zip",
-                ],
-                csv: [
-                  "text/csv",
-                  "CSV",
-                  ".csv",
-                  "application/zip+csv",
-                  "text/csv+zip",
-                ],
-                text: ["text/plain", ".txt"],
-                rdf: ["application/rdf+xml", "application/sparql-query"],
-                zip: ["ZIP", "application/zip", "application/x-zip-compressed"],
-                image: [
-                  "jpg",
-                  "image/jpeg",
-                  "image/jpg",
-                  "image/png",
-                  "tiff",
-                  "image/tiff",
-                ],
-                atom: ["application/atom+xml"],
-                wfs: [
-                  "application/vnd.ogc.wfs_xml",
-                  "application/gml+xml",
-                  "wfs",
-                ],
-                wms: [
-                  "application/vnd.ogc.wms_xml",
-                  "application/vnd.iso.19139+xml",
-                  "WMS",
-                ],
-                wmts: ["application/vnd.ogc.wmts_xml"],
-                wcs: ["application/vnd.ogc.wcs_xml"],
-                kml: ["application/vnd.google-earth.kml+xml"],
-                geojson: ["application/vnd.geo+json"],
-                shp: ["application/x-shapefile", "application/x-shp"],
-                xls: [
-                  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                  "application/vnd.ms-excel",
-                  ".xlsx",
-                  ".xls",
-                ],
-                ods: ["application/vnd.oasis.opendocument.spreadsheet"],
-                [t("pages.datasetpage.fileformat")]: null,
-              },
-            },
+          blocks: [
+            exploreApiLink(context, t, "mt-md md:mt-none md:ml-md"),
+            accessServiceCustom(t),
           ],
-          blocks: datasetBlocks(t, iconSize || 24, lang, context, esId),
         },
       ];
     case "dataservice":
       return [
         {
           ...baseConfig,
-          namespaces: {
-            esterms: "http://entryscape.com/terms/",
-            peu: "http://publications.europa.eu/resource/authority/",
+          clicks: {
+            exploreApi: `${includeLangInPath(lang)}/datasets/${context}_${esId}/apiexplore/\${entry}`,
           },
-          blocks: dataserviceBlocks(t, iconSize || 24, lang, context, esId),
+          blocks: [exploreApiLink(context, t)],
         },
       ];
     case "apiexplore":
@@ -219,76 +120,6 @@ export const createBlocksConfig = ({
           clicks: {
             "dataservice-link": `/${lang}/dataservice/\${context}_\${entry}`,
           },
-          namespaces: {
-            esterms: "http://entryscape.com/terms/",
-            peu: "http://publications.europa.eu/resource/authority/",
-          },
-          collections: [
-            {
-              type: "facet",
-              name: "format",
-              label: "Format",
-              property: "dcterms:format",
-              related: false,
-              nodetype: "literal",
-              searchIndextype: "string",
-              limit: 7,
-              options: {
-                pdf: ["PDF", "application/pdf"],
-                html: ["text/html", "application/xhtml+xml", "HTML"],
-                xml: ["application/xml", "text/xml", "XML"],
-                json: [
-                  "application/json",
-                  "application/ld+json",
-                  "application/json-ld",
-                  "application/json+zip",
-                ],
-                csv: [
-                  "text/csv",
-                  "CSV",
-                  ".csv",
-                  "application/zip+csv",
-                  "text/csv+zip",
-                ],
-                text: ["text/plain", ".txt"],
-                rdf: ["application/rdf+xml", "application/sparql-query"],
-                zip: ["ZIP", "application/zip", "application/x-zip-compressed"],
-                image: [
-                  "jpg",
-                  "image/jpeg",
-                  "image/jpg",
-                  "image/png",
-                  "tiff",
-                  "image/tiff",
-                ],
-                atom: ["application/atom+xml"],
-                wfs: [
-                  "application/vnd.ogc.wfs_xml",
-                  "application/gml+xml",
-                  "wfs",
-                ],
-                wms: [
-                  "application/vnd.ogc.wms_xml",
-                  "application/vnd.iso.19139+xml",
-                  "WMS",
-                ],
-                wmts: ["application/vnd.ogc.wmts_xml"],
-                wcs: ["application/vnd.ogc.wcs_xml"],
-                kml: ["application/vnd.google-earth.kml+xml"],
-                geojson: ["application/vnd.geo+json"],
-                shp: ["application/x-shapefile", "application/x-shp"],
-                xls: [
-                  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                  "application/vnd.ms-excel",
-                  ".xlsx",
-                  ".xls",
-                ],
-                ods: ["application/vnd.oasis.opendocument.spreadsheet"],
-                [t("pages.datasetpage.fileformat")]: null,
-              },
-            },
-          ],
-          blocks: apiexploreBlocks(t, iconSize || 24),
         },
       ];
     case "mqa":

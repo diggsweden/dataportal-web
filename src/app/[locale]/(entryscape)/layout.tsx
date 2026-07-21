@@ -1,19 +1,30 @@
 import type { ReactNode } from "react";
 
+import { getEntryscapeEnv } from "@/lib/entrystore/route-helpers";
 import "@/styles/entryscape.css";
 import "@/styles/entryscape-mqa.css";
 
 /**
- * Entryscape routes load data from admin/editera EntryStore origins in the
- * browser. Preconnect here (not in the locale layout) so CMS-only pages
- * don't open unused connections. Entryscape/MQA styles are imported here
- * rather than in `main.css` so CMS pages skip that CSS weight.
+ * Preconnect/preload the EntryStore origins and blocks scripts here (not the
+ * locale layout) so CMS-only pages don't pay for it, and so the block scripts
+ * start downloading during the initial HTML stream rather than after mount.
+ * Entryscape/MQA CSS is imported here for the same reason.
  */
-export default function EntryscapeLayout({
+export default async function EntryscapeLayout({
   children,
 }: {
   children: ReactNode;
 }) {
+  const { env } = await getEntryscapeEnv();
+
+  // Same list as ensureLib() in use-blocks.ts (tmp bundle host hardcoded there).
+  const blockScripts = [
+    "https://sandbox.admin.dataportal.se/tmp/blocks.js",
+    env.ENTRYSCAPE_OPENDATA_URL,
+    env.ENTRYSCAPE_MQA_URL,
+    env.ENTRYSCAPE_BLOCKS_URL,
+  ];
+
   return (
     <>
       <link
@@ -26,6 +37,13 @@ export default function EntryscapeLayout({
         href="https://admin.dataportal.se"
         crossOrigin="anonymous"
       />
+      {/* No crossOrigin: the engine loads these as classic (no-cors) scripts. */}
+      <link rel="preconnect" href="https://static.cdn.entryscape.com" />
+      <link rel="preconnect" href="https://static.entryscape.com" />
+      <link rel="preconnect" href="https://sandbox.admin.dataportal.se" />
+      {blockScripts.map((href) => (
+        <link key={href} rel="preload" as="script" href={href} />
+      ))}
       {children}
     </>
   );

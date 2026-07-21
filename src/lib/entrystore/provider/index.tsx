@@ -13,6 +13,7 @@ import {
 import type { EnvSettings } from "@/env";
 import { SettingsUtil } from "@/env/settings-util";
 import { useResourceLabel } from "@/i18n/use-resource-label";
+import { useEntryScapeBlocks } from "@/lib/entryscape-blocks/use-blocks";
 import { EntrystoreService } from "@/lib/entrystore/entrystore.service";
 import type { ESEntry, PageType } from "@/lib/entrystore/entrystore-core";
 import {
@@ -40,7 +41,6 @@ const defaultESEntry: ESEntry = {
   loading: true,
   title: "",
   description: "",
-  publisher: "",
   termPublisher: "",
   definition: "",
   conformsTo: [],
@@ -72,6 +72,7 @@ export const EntrystoreContext = createContext<ESEntry>(defaultESEntry);
  */
 export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   children,
+  env,
   cid,
   eid,
   rUri,
@@ -97,6 +98,15 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   });
 
   entrystoreService.getEntryStoreUtil();
+
+  useEntryScapeBlocks({
+    entrystoreBase: entrystoreService.getEntryStore().getBaseURI(),
+    env,
+    lang,
+    pageType,
+    context: state.context,
+    esId: state.esId,
+  });
 
   // Add background class based on page type
   useEffect(() => {
@@ -142,19 +152,23 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       // Parallel fetch for publisher info
       // TODO: Remove this when concepts and terminologies are moved to admin.dataportal.se
-      const adminEntrystoreService =
-        pageType === "concept" || pageType === "terminology"
-          ? EntrystoreService.getInstance({
-              baseUrl: `https://${
-                entry.getEntryInfo().getMetadataURI().includes("sandbox")
-                  ? "sandbox."
-                  : ""
-              }admin.dataportal.se/store`,
-              lang,
-              t,
-              resourceLabel,
-            })
-          : entrystoreService;
+      const adminEntrystoreService = [
+        "concept",
+        "terminology",
+        "class",
+        "property",
+      ].includes(pageType)
+        ? EntrystoreService.getInstance({
+            baseUrl: `https://${
+              entry.getEntryInfo().getMetadataURI().includes("sandbox")
+                ? "sandbox."
+                : ""
+            }admin.dataportal.se/store`,
+            lang,
+            t,
+            resourceLabel,
+          })
+        : entrystoreService;
       const publisherPromise =
         pageType !== "mqa"
           ? await adminEntrystoreService.getPublisherInfo(resourceUri, metadata)
@@ -169,19 +183,22 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           "dcterms:title",
           "skos:prefLabel",
           "foaf:name",
+          "rdfs:label",
         ]),
         description: getFirstMatchingValue(metadata, resourceUri, [
           "skos:definition",
           "dcterms:description",
         ]),
         address: resourceUri,
-        organisationLink: undefined,
         loading: false,
       };
 
       const { name, entry: publisherEntry } = await publisherPromise;
 
-      entryData.publisher = name;
+      // The publisher name is the default related resource (shown as plain text
+      // where there is no link). Org-based pages add the organisation-page link
+      // in getPageSpecificData, and concept/class/property override it entirely.
+      entryData.relatedResource = name ? { title: name } : undefined;
       if (includeContact) {
         entryData.contact = await entrystoreService.getContactInfo(metadata);
       }
@@ -194,6 +211,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         entrystoreService,
         adminEntrystoreService,
         publisherEntry,
+        name,
         defaultESEntry.env,
       );
 
@@ -216,6 +234,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     entrystoreService: EntrystoreService,
     adminEntrystoreService: EntrystoreService,
     publisherEntry: Entry | null,
+    publisherName: string,
     env: EnvSettings,
   ): Promise<Partial<ESEntry>> {
     switch (pageType) {
@@ -243,7 +262,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           downloadFormats: formats,
           mqaCatalog: mqa,
           relatedDatasetSeries: dataseries,
-          organisationLink,
+          relatedResource: publisherName
+            ? { title: publisherName, url: organisationLink || undefined }
+            : undefined,
         };
       }
 
@@ -274,7 +295,12 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           entrystoreService.getContactInfo(metadata),
           entrystoreService.getOrganisationLink(publisherEntry),
         ]);
-        return { contact, organisationLink };
+        return {
+          contact,
+          relatedResource: publisherName
+            ? { title: publisherName, url: organisationLink || undefined }
+            : undefined,
+        };
       }
 
       case "organisation": {
@@ -290,8 +316,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         return {
           organisationData: orgData,
           contact: {
-            name: metadata.findFirstValue(null, "foaf:name"),
-            email: getContactEmail(metadata),
+            title: metadata.findFirstValue(null, "foaf:name"),
+            url: getContactEmail(metadata),
           },
           downloadFormats: formats,
           mqaCatalog: mqa,
@@ -320,7 +346,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
             env.SANDBOX_BASE_URL,
           ]),
           downloadFormats: formats,
-          organisationLink,
+          relatedResource: publisherName
+            ? { title: publisherName, url: organisationLink || undefined }
+            : undefined,
         };
       }
 
@@ -340,7 +368,9 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           relatedDatasets: datasets,
           keywords,
           downloadFormats: formats,
-          organisationLink,
+          relatedResource: publisherName
+            ? { title: publisherName, url: organisationLink || undefined }
+            : undefined,
         };
       }
 
@@ -360,7 +390,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         );
 
         return {
-          relatedTerm: {
+          relatedResource: {
             title: getLocalizedValue(
               termEntry.getAllMetadata(),
               "dcterms:title",
@@ -369,6 +399,25 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           },
           downloadFormats: formats,
           relatedSpecifications: spec,
+        };
+      }
+
+      case "class":
+      case "property": {
+        // Fetch data structure details and formats in parallel
+        const [definedBy, formats] = await Promise.all([
+          entrystoreService.getDataVocabularyLink(
+            metadata,
+            adminEntrystoreService,
+          ),
+          entrystoreService.getDownloadFormats(
+            entry.getEntryInfo().getMetadataURI(),
+          ),
+        ]);
+
+        return {
+          relatedResource: definedBy,
+          downloadFormats: formats,
         };
       }
 
