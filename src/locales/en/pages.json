@@ -42,6 +42,11 @@
   },
   "data-structures": {
     "data-vocabulary": "Data vocabulary",
+    "details": "Details",
+    "introduced-in-specification": "Introduced in specification",
+    "no-introduced-in-specification": "Not introduced in any specification",
+    "no-reused-in-specification": "Not reused in any specification",
+    "reused-in-specification": "Reused in specification",
     "search": "Search concepts, classes and properties",
     "terminology": "Terminology",
     "types": {

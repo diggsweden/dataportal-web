@@ -43,6 +43,11 @@
   },
   "data-structures": {
     "data-vocabulary": "Datavokabulär",
+    "details": "Detaljer",
+    "introduced-in-specification": "Introduceras i specifikation",
+    "no-introduced-in-specification": "Introduceras inte i någon specifikation",
+    "no-reused-in-specification": "Återanvänds inte i någon specifikation",
+    "reused-in-specification": "Återanvänds i specifikation",
     "search": "Sök begrepp, klasser och egenskaper",
     "terminology": "Terminologi",
     "types": {
