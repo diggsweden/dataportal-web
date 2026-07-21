@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { ContactPublisherBlock } from "@/app/[locale]/(entryscape)/_components/contact-publisher-block";
 import { EntryscapeResourcePage } from "@/app/[locale]/(entryscape)/_components/entryscape-resource-page";
 import { Indicators } from "@/app/[locale]/(entryscape)/_components/indicators";
+import { Box } from "@/components/box";
 import { LabelLink } from "@/components/label-link";
 import { SidebarSection } from "@/components/sidebar-section";
 import { Heading } from "@/components/typography/heading";
@@ -128,14 +129,11 @@ export function DatasetPage() {
       sidebar={
         <>
           {/* About dataset - wrapper  */}
-          <div
-            data-test-id="about-section"
-            className="box-border w-full bg-white p-md"
-          >
+          <Box testId="about-section" color="white" padding="xl" rounded={true}>
             <Heading
               level={2}
-              size={"sm"}
-              className="mb-md font-strong text-textSecondary md:mb-lg"
+              size={"md"}
+              className="mb-md text-textSecondary md:mb-lg"
             >
               {t("pages.datasetpage.about-dataset")}
             </Heading>
@@ -180,17 +178,19 @@ export function DatasetPage() {
                 testId="download-formats"
               />
             </div>
-          </div>
+          </Box>
 
           {/* Catalog information wrapper */}
-          <div
-            data-test-id="catalog-information"
-            className="box-border w-full bg-white p-md"
+          <Box
+            testId="catalog-information"
+            color="white"
+            padding="xl"
+            rounded={true}
           >
             <Heading
               level={2}
-              size={"sm"}
-              className="mb-sm font-strong text-textSecondary md:mb-md"
+              size={"md"}
+              className="mb-md text-textSecondary md:mb-lg"
             >
               {t("pages.datasetpage.catalog")}
             </Heading>
@@ -209,7 +209,7 @@ export function DatasetPage() {
                 data-entryscape-filterpredicates={CATALOG_EXCLUDED.join(",")}
               />
             </div>
-          </div>
+          </Box>
         </>
       }
     />

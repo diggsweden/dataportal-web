@@ -35,8 +35,6 @@ export function OrganisationPage() {
         },
       ])}
       title={entry.title}
-      mainLayout="organisation"
-      sidebarLayout="panelsWide"
       main={
         <>
           {/* Description */}
@@ -215,58 +213,53 @@ export function OrganisationPage() {
         </>
       }
       sidebar={
-        <>
-          {/* About dataset - wrapper  */}
-          <Box testId="about-section" color="white" padding="xl" rounded={true}>
-            <Heading
-              level={2}
-              size={"md"}
-              className="mb-md text-textSecondary md:mb-lg break-words hyphens-auto"
-            >
-              {`${t("common.about")} ${entry.title}`}
-            </Heading>
+        <Box testId="about-section" color="white" padding="xl" rounded={true}>
+          <Heading
+            level={2}
+            size={"md"}
+            className="mb-md text-textSecondary md:mb-lg break-words hyphens-auto"
+          >
+            {`${t("common.about")} ${entry.title}`}
+          </Heading>
 
-            <div className="space-y-lg text-sm">
-              <SidebarSection
-                testId="contact"
-                heading={t("pages.organisation_page.contact")}
-                items={[
-                  entry.contact ?? t("pages.organisation_page.no-contact"),
-                ]}
-                color="primary"
-              />
+          <div className="space-y-lg text-sm">
+            <SidebarSection
+              testId="contact"
+              heading={t("pages.organisation_page.contact")}
+              items={[entry.contact ?? t("pages.organisation_page.no-contact")]}
+              color="primary"
+            />
 
-              <SidebarSection
-                testId="organisation-type"
-                heading={t("pages.organisation_page.org-type")}
-                items={[
-                  entry.organisationData?.orgType ||
-                    t("pages.organisation_page.no-org-type"),
-                ]}
-                color="primary"
-              />
+            <SidebarSection
+              testId="organisation-type"
+              heading={t("pages.organisation_page.org-type")}
+              items={[
+                entry.organisationData?.orgType ||
+                  t("pages.organisation_page.no-org-type"),
+              ]}
+              color="primary"
+            />
 
-              <SidebarSection
-                testId="organisation-number"
-                heading={t("pages.organisation_page.org-no")}
-                items={[entry.organisationData?.orgNumber]}
-                color="primary"
-              />
+            <SidebarSection
+              testId="organisation-number"
+              heading={t("pages.organisation_page.org-no")}
+              items={[entry.organisationData?.orgNumber]}
+              color="primary"
+            />
 
-              <SidebarSection
-                testId="mqa-link"
-                heading={t("pages.datasetpage.mqa")}
-                items={[entry.mqaCatalog]}
-              />
+            <SidebarSection
+              testId="mqa-link"
+              heading={t("pages.datasetpage.mqa")}
+              items={[entry.mqaCatalog]}
+            />
 
-              <SidebarSection
-                testId="download-formats"
-                heading={t("pages.organisation_page.download_link")}
-                items={entry.downloadFormats ?? []}
-              />
-            </div>
-          </Box>
-        </>
+            <SidebarSection
+              testId="download-formats"
+              heading={t("pages.organisation_page.download_link")}
+              items={entry.downloadFormats ?? []}
+            />
+          </div>
+        </Box>
       }
       footer={
         entry.organisationData?.showcases &&

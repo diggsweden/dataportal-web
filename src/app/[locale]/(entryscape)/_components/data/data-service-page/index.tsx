@@ -42,9 +42,6 @@ export function DataServicePage() {
         },
       ])}
       title={entry.title}
-      columnsLayout="compact"
-      mainLayout="compact"
-      sidebarLayout="panel"
       main={
         <>
           <LabelLink value={entry.relatedResource} />
@@ -58,7 +55,7 @@ export function DataServicePage() {
             data-entryscape-property="dcterms:description"
           />
 
-          <Box color="white" padding="lg">
+          <Box color="white" padding="lg" rounded={true}>
             <div
               data-entryscape="view"
               data-entryscape-onecol="true"
@@ -71,11 +68,11 @@ export function DataServicePage() {
         </>
       }
       sidebar={
-        <>
+        <Box testId="api-section" color="white" padding="xl" rounded={true}>
           <Heading
             level={2}
-            size="sm"
-            className="mb-md font-strong text-textSecondary md:mb-lg"
+            size="md"
+            className="mb-md text-textSecondary md:mb-lg"
           >
             {t("pages.dataservicepage.api")}
           </Heading>
@@ -85,7 +82,7 @@ export function DataServicePage() {
             data-entryscape-rdformsid={ABOUT_FIELDS.join(",")}
             className="lg:w-full space-y-lg"
           />
-        </>
+        </Box>
       }
     />
   );

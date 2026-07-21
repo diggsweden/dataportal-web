@@ -38,10 +38,6 @@ export function TerminologyPage() {
         },
       ])}
       title={entry.title}
-      columnsLayout="rowSpaced"
-      mainLayout="content"
-      sidebarLayout="panels"
-      sidebarTestId="about-section"
       intro={
         <>
           <LabelLink
@@ -79,7 +75,8 @@ export function TerminologyPage() {
       }
       sidebar={
         <>
-          <Box color="white" className="mb-lg md:mb-xl">
+          <InteroperableSpecificationsCard labelKey="pages.terminology.specifications_use" />
+          <Box testId="about-section" color="white" padding="xl" rounded={true}>
             <Heading
               level={2}
               size="sm"
@@ -107,7 +104,6 @@ export function TerminologyPage() {
               />
             </div>
           </Box>
-          <InteroperableSpecificationsCard labelKey="pages.terminology.specifications_use" />
         </>
       }
     />

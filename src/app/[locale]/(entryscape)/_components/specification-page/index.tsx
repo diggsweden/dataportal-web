@@ -31,9 +31,6 @@ export function SpecificationPage() {
         },
       ])}
       title={entry.title}
-      columnsLayout="row"
-      mainLayout="content"
-      sidebarLayout="panels"
       intro={
         <>
           <LabelLink
@@ -109,11 +106,11 @@ export function SpecificationPage() {
             )}
           </Box>
 
-          <Box testId="about-section" color="white" padding="md">
+          <Box testId="about-section" color="white" padding="xl" rounded={true}>
             <Heading
               level={2}
-              size="sm"
-              className="mb-sm text-textSecondary md:mb-md"
+              size="md"
+              className="mb-md text-textSecondary md:mb-lg"
             >
               {t("pages.specification_page.about_specification")}
             </Heading>

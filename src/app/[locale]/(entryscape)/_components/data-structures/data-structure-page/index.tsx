@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useContext } from "react";
 import { EntryscapeResourcePage } from "@/app/[locale]/(entryscape)/_components/entryscape-resource-page";
 import { Badge } from "@/components/badge";
+import { Box } from "@/components/box";
 import { LabelLink } from "@/components/label-link";
 import { SidebarSection } from "@/components/sidebar-section";
 import { Heading } from "@/components/typography/heading";
@@ -71,10 +72,6 @@ export function DataStructurePage({ pageType }: DataStructurePageProps) {
         },
       ])}
       title={entry.title}
-      columnsLayout="rowSpaced"
-      mainLayout="content"
-      sidebarLayout="panelRaised"
-      sidebarTestId="about-section"
       intro={
         <Badge
           text={t(`pages.data-structures.types.${pageType}`)}
@@ -102,11 +99,11 @@ export function DataStructurePage({ pageType }: DataStructurePageProps) {
         </>
       }
       sidebar={
-        <>
+        <Box testId="about-section" color="white" padding="xl" rounded={true}>
           <Heading
             level={2}
-            size="sm"
-            className="mb-sm font-strong text-textSecondary md:mb-md"
+            size="md"
+            className="mb-md text-textSecondary md:mb-lg"
           >
             {t("common.details")}
           </Heading>
@@ -124,7 +121,7 @@ export function DataStructurePage({ pageType }: DataStructurePageProps) {
               testId="download-formats"
             />
           </div>
-        </>
+        </Box>
       }
     />
   );

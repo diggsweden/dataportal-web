@@ -102,7 +102,7 @@ export function DatasetSeriesPage() {
               <Container>
                 <div className="mb-lg gap-2xl md:mb-xl lg:flex">
                   {/* Left column - Search results */}
-                  <div className="mb-lg flex w-full flex-col gap-lg lg:mb-xl lg:max-w-md">
+                  <div className="mb-lg flex w-full flex-col gap-lg lg:mb-xl lg:max-w-md flex-shrink-0">
                     <div
                       className={
                         search.result.hits && search.result.hits.length === 0
@@ -119,7 +119,7 @@ export function DatasetSeriesPage() {
                   </div>
 
                   {/* Right column - About and Catalog */}
-                  <div className="mb-lg w-full max-w-md space-y-lg bg-white pt-none lg:mb-none lg:max-w-[18.5rem]">
+                  <div className="mb-lg w-full max-w-md space-y-lg bg-white pt-none lg:mb-none lg:max-w-[26.25rem]">
                     {/* About dataset series - wrapper */}
                     <div
                       data-test-id="about-section"
@@ -127,8 +127,8 @@ export function DatasetSeriesPage() {
                     >
                       <Heading
                         level={2}
-                        size={"sm"}
-                        className="mb-md font-strong text-textSecondary md:mb-lg"
+                        size={"md"}
+                        className="mb-md text-textSecondary md:mb-lg"
                       >
                         {t("pages.dataset-series.about-dataset-serie")}
                       </Heading>
@@ -138,8 +138,25 @@ export function DatasetSeriesPage() {
                         <div
                           data-entryscape="view"
                           data-entryscape-onecol="true"
+                          data-entryscape-rdformsid="dcat:contactPoint_da"
+                        />
+                        <div
+                          data-entryscape="view"
+                          className="pill-list"
+                          data-entryscape-onecol="true"
+                          data-entryscape-rdformsid="dcat:keyword_da"
+                        />
+                        <div
+                          data-entryscape="view"
+                          className="pill-list"
+                          data-entryscape-onecol="true"
+                          data-entryscape-rdformsid="dcat:theme-da"
+                        />
+                        <div
+                          data-entryscape="view"
+                          data-entryscape-onecol="true"
                           data-entryscape-rdformsid="dcat:DatasetSeries"
-                          data-entryscape-filterpredicates="dcterms:title,dcterms:description"
+                          data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcat:contactPoint,dcterms:spatial,dcat:keyword,dcat:theme"
                         />
                       </div>
                     </div>
@@ -151,8 +168,8 @@ export function DatasetSeriesPage() {
                     >
                       <Heading
                         level={2}
-                        size={"sm"}
-                        className="mb-sm font-strong text-textSecondary md:mb-md"
+                        size={"md"}
+                        className="mb-md text-textSecondary md:mb-lg"
                       >
                         {t("pages.datasetpage.catalog")}
                       </Heading>

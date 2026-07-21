@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useContext } from "react";
 import { EntryscapeResourcePage } from "@/app/[locale]/(entryscape)/_components/entryscape-resource-page";
 import { Badge } from "@/components/badge";
+import { Box } from "@/components/box";
 import { LabelLink } from "@/components/label-link";
 import { SidebarSection } from "@/components/sidebar-section";
 import { Heading } from "@/components/typography/heading";
@@ -81,10 +82,6 @@ export function ConceptPage() {
         },
       ])}
       title={entry.title}
-      columnsLayout="rowSpaced"
-      mainLayout="content"
-      sidebarLayout="panelRaised"
-      sidebarTestId="about-section"
       intro={
         <>
           <LabelLink
@@ -134,11 +131,11 @@ export function ConceptPage() {
         </>
       }
       sidebar={
-        <>
+        <Box testId="about-section" color="white" padding="xl" rounded={true}>
           <Heading
             level={2}
-            size="sm"
-            className="mb-sm font-strong text-textSecondary md:mb-md"
+            size="md"
+            className="mb-md text-textSecondary md:mb-lg"
           >
             {t("pages.concept_page.about_concept")}
           </Heading>
@@ -168,7 +165,7 @@ export function ConceptPage() {
               testId="download-formats"
             />
           </div>
-        </>
+        </Box>
       }
       footer={
         <>
