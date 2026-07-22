@@ -61,21 +61,35 @@ export function Indicators() {
 
   const template =
     '{{#ifprop "dcterms:accessRights"}}<span class="flex items-center gap-xs">' +
-    `{{#ifprop "dcterms:accessRights" uri="peu:access-right/PUBLIC"}}${ICON.accessPublic}{{/ifprop}}` +
-    `{{#ifprop "dcterms:accessRights" uri="peu:access-right/NON_PUBLIC"}}${ICON.accessNonPublic}{{/ifprop}}` +
-    `{{#ifprop "dcterms:accessRights" uri="peu:access-right/RESTRICTED"}}${ICON.accessRestricted}{{/ifprop}}` +
+    '{{#ifprop "dcterms:accessRights" uri="peu:access-right/PUBLIC"}}' +
+    ICON.accessPublic +
+    "{{/ifprop}}" +
+    '{{#ifprop "dcterms:accessRights" uri="peu:access-right/NON_PUBLIC"}}' +
+    ICON.accessNonPublic +
+    "{{/ifprop}}" +
+    '{{#ifprop "dcterms:accessRights" uri="peu:access-right/RESTRICTED"}}' +
+    ICON.accessRestricted +
+    "{{/ifprop}}" +
     '{{#eachprop "dcterms:accessRights"}}<span>{{label}}</span>{{/eachprop}}' +
     "</span>{{/ifprop}}" +
-    `{{#ifprop "dcterms:type"}}<span class="flex items-center gap-xs" title="{{nls 'opendata.indicators.architecture'}}">${ICON.architecture}` +
+    `{{#ifprop "dcterms:type"}}<span class="flex items-center gap-xs" title="{{nls 'opendata.indicators.architecture'}}">` +
+    ICON.architecture +
     '<span>{{#eachprop "dcterms:type" separator=", "}}{{label}}{{separator}}{{/eachprop}}</span>' +
     "</span>{{/ifprop}}" +
-    `{{#ifprop "dcterms:accrualPeriodicity"}}<span class="flex items-center gap-xs" title="{{nls 'opendata.indicators.periodicity'}}">${ICON.updateFrequency}` +
+    `{{#ifprop "dcterms:accrualPeriodicity"}}<span class="flex items-center gap-xs" title="{{nls 'opendata.indicators.periodicity'}}">` +
+    ICON.updateFrequency +
     '<span>{{#eachprop "dcterms:accrualPeriodicity" separator=", "}}{{label}}{{separator}}{{/eachprop}}</span>' +
     "</span>{{/ifprop}}" +
     licenseBlock +
-    `{{#eachprop "http://data.europa.eu/r5r/applicableLegislation"}}<span class="flex items-center gap-xs">${ICON.valuable}<span>{{label}}</span></span>{{/eachprop}}` +
-    `{{#ifprop "dcterms:subject"}}<span class="flex items-center gap-xs">${ICON.national}<span>${t("common.national-dataset")}</span></span>{{/ifprop}}` +
-    `{{#ifprop "schema:offers"}}<span class="flex items-center gap-xs">${ICON.fee}<span>${t("common.fee")}</span></span>{{/ifprop}}`;
+    '{{#eachprop "http://data.europa.eu/r5r/applicableLegislation"}}<span class="flex items-center gap-xs">' +
+    ICON.valuable +
+    "<span>{{label}}</span></span>{{/eachprop}}" +
+    '{{#ifprop "dcterms:subject"}}<span class="flex items-center gap-xs">' +
+    ICON.national +
+    `<span>${t("common.national-dataset")}</span></span>{{/ifprop}}` +
+    '{{#ifprop "schema:offers"}}<span class="flex items-center gap-xs">' +
+    ICON.fee +
+    `<span>${t("common.fee")}</span></span>{{/ifprop}}`;
 
   return (
     <div
