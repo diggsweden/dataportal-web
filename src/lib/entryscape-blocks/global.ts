@@ -5,6 +5,7 @@ import {
   getLocalizedValue,
   includeLangInPath,
 } from "@/utilities";
+import { esbIcon } from "./icons";
 
 /**
  * Builds a `run` block that renders a single anchor to an in-app resource page
@@ -102,7 +103,7 @@ export const exploreApiLink = (cid: string, t: Translate, linkClass = "") => ({
     "{{#if hasApi}}" +
     `{{link namedclick="exploreApi" class="button button--primary button--large ${linkClass}" content="` +
     t("pages.datasetpage.explore-api") +
-    " <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'><path d='M4.08008 11V13H16.0801L10.5801 18.5L12.0001 19.92L19.9201 12L12.0001 4.08002L10.5801 5.50002L16.0801 11H4.08008Z' fill='currentColor'/></svg>" +
+    ` ${esbIcon("arrow")}` +
     '"}}' +
     "{{/if}}",
 });
@@ -121,7 +122,7 @@ export const accessServiceCustom = (t: Translate) => ({
     '{{view rdformsid="dcat:endpointDescription,dcat:dcterms:type_ds"}}' +
     '{{link namedclick="dataservice-link" class="button button--primary button--large" content="' +
     t("pages.datasetpage.read_about_api") +
-    " <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' class='flex-shrink-0'><path d='M4.08008 11V13H16.0801L10.5801 18.5L12.0001 19.92L19.9201 12L12.0001 4.08002L10.5801 5.50002L16.0801 11H4.08008Z' fill='currentColor'/></svg>" +
+    ` ${esbIcon("arrow")}` +
     '"}}' +
     "</span>",
 });

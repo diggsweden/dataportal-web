@@ -1,6 +1,6 @@
 "use client";
 
-import { cva, cx } from "class-variance-authority";
+import { cva, cx, type VariantProps } from "class-variance-authority";
 import { useTranslations } from "next-intl";
 import { useContext } from "react";
 import MailIcon from "@/assets/icons/mail.svg";
@@ -9,8 +9,6 @@ import type { LabelLink as LabelLinkValue } from "@/lib/entrystore/entrystore-co
 import { SettingsContext } from "@/providers/settings-provider";
 import { isMailLink } from "@/utilities";
 
-// `color` doubles as the link colour: the url branch always selects "link"
-// (green); the no-url text branch uses the caller's colour (default "dark").
 const linkVariants = cva("inline-block w-fit hover:no-underline", {
   variants: {
     size: {
@@ -31,18 +29,19 @@ const linkVariants = cva("inline-block w-fit hover:no-underline", {
   },
 });
 
-interface LabelLinkProps {
+/** The `color` options accepted by `<LabelLink>`. */
+export type LabelLinkColor = VariantProps<typeof linkVariants>["color"];
+
+interface LabelLinkProps extends VariantProps<typeof linkVariants> {
   value?: LabelLinkValue | null;
-  size?: "large" | "medium" | "small";
-  color?: "light" | "dark" | "primary";
   className?: string;
   testId?: string;
 }
 
 export function LabelLink({
   value,
-  size = "large",
-  color = "dark",
+  size,
+  color,
   className,
   testId,
 }: LabelLinkProps) {
@@ -58,7 +57,7 @@ export function LabelLink({
         data-test-id={testId}
         href={url}
         className={cx(
-          linkVariants({ size, color: "link" }),
+          linkVariants({ size, color: color || "link" }),
           isUrlText ? "break-all" : "break-words",
           className,
         )}

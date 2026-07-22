@@ -3,7 +3,6 @@
 import { useTranslations } from "next-intl";
 import { useContext } from "react";
 import { ContactPublisherBlock } from "@/app/[locale]/(entryscape)/_components/contact-publisher-block";
-import { DistributionList } from "@/app/[locale]/(entryscape)/_components/distribution-list";
 import { EntryscapeResourcePage } from "@/app/[locale]/(entryscape)/_components/entryscape-resource-page";
 import { Indicators } from "@/app/[locale]/(entryscape)/_components/indicators";
 import { LabelLink } from "@/components/label-link";
@@ -11,6 +10,7 @@ import { SidebarSection } from "@/components/sidebar-section";
 import { Heading } from "@/components/typography/heading";
 import { EntrystoreContext } from "@/lib/entrystore/provider";
 import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
+import { DistributionList } from "./distribution-list";
 
 /** RDForms item IDs shown, in order, in the top "About dataset" block. */
 const ABOUT_FIELDS = [

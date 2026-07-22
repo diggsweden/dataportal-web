@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { type ReactNode, useState } from "react";
 import { Button } from "@/components/button";
-import { LabelLink } from "@/components/label-link";
+import { LabelLink, type LabelLinkColor } from "@/components/label-link";
 import { Heading } from "@/components/typography/heading";
 import type { LabelLink as LabelLinkValue } from "@/lib/entrystore/entrystore-core";
 
@@ -14,7 +14,7 @@ interface SidebarSectionProps {
   items: (SidebarItem | null | undefined)[];
   variant?: "link" | "pill";
   /** Colour forwarded to LabelLink for text (no-url) items; links stay green. */
-  color?: "light" | "dark" | "primary";
+  color?: LabelLinkColor;
   testId?: string;
   /**
    * When set, only the first `collapseAt` items show and a view more/less
@@ -56,7 +56,7 @@ export function SidebarSection({
 
   return (
     <div data-test-id={testId}>
-      <Heading level={3} size="xxs" className="font-strong text-textSecondary">
+      <Heading level={3} size="xxs" className="text-textSecondary mb-sm">
         {heading}
       </Heading>
       <div className="flex flex-col gap-xs">

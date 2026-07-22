@@ -178,7 +178,8 @@ a,
 h1,
 button,
 .button:not(.focus--none),
-input[type="radio"] {
+input[type="radio"],
+summary {
   @apply focus--outline focus--primary focus--out;
 }
 

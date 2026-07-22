@@ -1,15 +1,37 @@
 "use client";
 
+import { cva, cx, type VariantProps } from "class-variance-authority";
 import { type FC, type PropsWithChildren, useEffect, useRef } from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ExternalIcon from "@/assets/icons/external-link.svg";
-import { Button, ButtonLink } from "@/components/button";
+import { Button, ButtonLink, type ButtonVariant } from "@/components/button";
 import { Heading } from "@/components/typography/heading";
 import { HtmlParser } from "@/components/typography/html-parser";
 import { isExternalLink } from "@/utilities";
 
-interface ModalProps {
+const modalVariants = cva(
+  "fixed left-1/2 top-1/2 z-50 !mt-none w-4/5 -translate-x-1/2 -translate-y-1/2 overflow-auto p-xl shadow-2xl outline-none [&::backdrop]:bg-brownOpaque5",
+  {
+    variants: {
+      size: {
+        sm: "max-w-[24rem] max-h-[60vh]",
+        md: "max-w-md max-h-[60vh]",
+        lg: "max-w-4xl max-h-[90vh]",
+      },
+      color: {
+        white: "bg-white",
+        pink: "bg-pink-100",
+      },
+    },
+    defaultVariants: {
+      size: "md",
+      color: "white",
+    },
+  },
+);
+
+interface ModalProps extends VariantProps<typeof modalVariants> {
   heading?: string;
   text?: string;
   onClick?: () => void;
@@ -17,12 +39,14 @@ interface ModalProps {
   setModalOpen: (_param: boolean) => void;
   closeBtn?: string;
   closeBtnClassName?: string;
+  closeBtnVariant?: ButtonVariant;
   confirmBtn?: string;
+  confirmBtnVariant?: ButtonVariant;
   description?: string | null;
   href?: string;
-  modalSize?: "sm" | "md";
   textSize?: "sm" | "md";
   ariaLabel?: string;
+  className?: string;
 }
 
 export const Modal: FC<PropsWithChildren<ModalProps>> = ({
@@ -34,10 +58,14 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   description,
   closeBtn,
   closeBtnClassName,
+  closeBtnVariant = "secondary",
   confirmBtn,
+  confirmBtnVariant = "primary",
   href,
-  modalSize = "md",
+  size,
+  color,
   textSize = "sm",
+  className,
   children,
 }) => {
   const ref = useRef<HTMLDialogElement>(null);
@@ -62,14 +90,15 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
       data-test-id="modal"
       ref={ref}
       aria-modal="true"
-      className={`fixed left-1/2 top-1/2 z-50 !mt-none max-h-[60vh] w-4/5 -translate-x-1/2 -translate-y-1/2 overflow-auto
-        bg-white p-xl shadow-2xl outline-none md:w-auto ${
-          modalOpen ? "visible" : "hidden"
-        } ${modalSize === "sm" ? "max-w-[24rem]" : "max-w-md"}
-        [&::backdrop]:bg-brownOpaque5
-        `}
+      className={cx(
+        modalVariants({ size, color }),
+        modalOpen ? "visible" : "hidden",
+        className,
+      )}
       onClose={handleClose}
-      onClick={handleClose}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) handleClose();
+      }}
       onKeyDown={(e) => {
         if (e.key === "Escape") handleClose();
       }}
@@ -105,10 +134,12 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
           <Button
             data-test-id="modal-close-btn"
             onClick={() => setModalOpen(false)}
-            className={`min-w-[3.125rem] justify-center hover:bg-brown-200 ${
-              closeBtnClassName ? closeBtnClassName : ""
-            }`}
-            variant={"secondary"}
+            className={cx(
+              "min-w-[3.125rem] justify-center",
+              closeBtnVariant === "secondary" && "hover:bg-brown-200",
+              closeBtnClassName,
+            )}
+            variant={closeBtnVariant}
             label={closeBtn}
             aria-label={`${closeBtn} modal ${heading}`}
           />
@@ -118,6 +149,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
             href={href}
             onClick={onClick}
             label={confirmBtn}
+            variant={confirmBtnVariant}
             icon={!isExternalLink(href) ? ArrowRightIcon : ExternalIcon}
             iconPosition="right"
             className="min-w-[3.125rem] justify-center"
@@ -126,6 +158,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
           <Button
             onClick={onClick}
             label={confirmBtn}
+            variant={confirmBtnVariant}
             className="min-w-[3.125rem] justify-center"
             aria-label={`${confirmBtn} modal ${heading}`}
           />

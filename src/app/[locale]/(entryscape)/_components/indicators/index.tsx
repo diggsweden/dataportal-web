@@ -6,6 +6,10 @@ import { EntrystoreContext } from "@/lib/entrystore/provider";
 
 // Icons inlined as markup so they can live inside the Handlebars template.
 const ICON = {
+  inspec:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path stroke="currentColor" stroke-width="2" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 8V6m0 0V3m0 3L9 4m3 2 3-2m1 8h2m0 0h3m-3 0 2-3m-2 3 2 3m-8 1v2m0 0v3m0-3-3 2m3-2 3 2m-7-8H6m0 0H3m3 0L4 9m2 3-2 3"/></svg>',
+  grunddata:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M10.987 1.013v5.974h-2.5v2.026h2.5v2h3.026v-2h6.974v5.974h-6.974v-2h-3.026v2h-2.5v2.026h2.5v5.974H4.013v-5.974h2.5v-2.026h-2.5V9.013h2.5V6.987h-2.5V1.013h6.974Zm-5 20h3.026v-2.026H5.987v2.026Zm0-8h3.026v-2.026H5.987v2.026Zm10 0h3.026v-2.026h-3.026v2.026Zm-10-8h3.026V2.987H5.987v2.026Z"/></svg>',
   accessPublic:
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 17C13.1 17 14 16.1 14 15C14 13.9 13.1 13 12 13C10.9 13 10 13.9 10 15C10 16.1 10.9 17 12 17ZM18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6H8.9C8.9 4.29 10.29 2.9 12 2.9C13.71 2.9 15.1 4.29 15.1 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8ZM18 20H6V10H18V20Z" fill="currentColor"/></svg>',
   accessNonPublic:
@@ -76,6 +80,54 @@ export function Indicators() {
   return (
     <div
       data-test-id="indicators"
+      data-entryscape="template"
+      data-entryscape-template={template}
+      className="indicators flex flex-col flex-wrap gap-x-lg gap-y-sm text-textSecondary md:flex-row"
+    />
+  );
+}
+
+/**
+ * Interop + grunddata indicators for the spec page. Bas/Profil comes from the
+ * template (INSPEC + rdf:type); grunddata is checked in TS and spliced in
+ * because dcterms:subject is overloaded (same trick as the CC licence above).
+ */
+export function SpecIndicators() {
+  const t = useTranslations();
+  const { entry } = useContext(EntrystoreContext);
+
+  const md = entry?.getAllMetadata?.();
+  const resourceUri = entry?.getResourceURI?.();
+  const isGrunddata =
+    !!md &&
+    !!resourceUri &&
+    md
+      .find(resourceUri, "http://purl.org/dc/terms/subject")
+      .some((s: { getValue: () => string }) =>
+        s.getValue().includes("/concepts/grunddata/"),
+      );
+
+  const grunddataBlock = isGrunddata
+    ? `<span class="flex items-center gap-xs">${ICON.grunddata}<span>${t(
+        "common.national-dataset",
+      )}</span></span>`
+    : "";
+
+  const template =
+    '{{#ifprop "inspec:introduces,inspec:reuses"}}<span class="flex items-center gap-xs">' +
+    ICON.inspec +
+    '{{#ifprop "rdf:type" uri="http://purl.org/dc/terms/Standard"}}' +
+    `<span>${t("pages.specification_page.interop_bas")}</span>` +
+    "{{/ifprop}}" +
+    '{{#ifprop "rdf:type" uri="http://www.w3.org/ns/dx/prof/Profile"}}' +
+    `<span>${t("pages.specification_page.interop_profil")}</span>` +
+    "{{/ifprop}}" +
+    "</span>{{/ifprop}}" +
+    grunddataBlock;
+
+  return (
+    <div
+      data-test-id="spec-indicators"
       data-entryscape="template"
       data-entryscape-template={template}
       className="indicators flex flex-col flex-wrap gap-x-lg gap-y-sm text-textSecondary md:flex-row"

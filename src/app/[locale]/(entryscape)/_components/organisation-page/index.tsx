@@ -72,7 +72,7 @@ export function OrganisationPage() {
               description={t("pages.organisation_page.data-info-more")}
               closeBtn={t("common.close")}
               closeBtnClassName="ml-auto"
-              modalSize="sm"
+              size="sm"
             />
             <Box
               color="white"

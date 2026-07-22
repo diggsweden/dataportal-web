@@ -84,6 +84,7 @@ export interface ESEntry {
   definition?: string;
   conformsTo?: string[];
   hasResource?: string[];
+  image?: string;
   address: string;
   context: string;
   esId: string;
@@ -97,4 +98,9 @@ export interface ESEntry {
   relatedDatasetSeries?: LabelLink[];
   organisationData?: OrganisationData;
   relatedDatasets?: LabelLink[];
+  relatedDatasetsGrunddata?: LabelLink[];
+  introducedClasses?: LabelLink[];
+  introducedProperties?: LabelLink[];
+  reusedClasses?: LabelLink[];
+  reusedProperties?: LabelLink[];
 }

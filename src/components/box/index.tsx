@@ -1,4 +1,4 @@
-import { cva, cx } from "class-variance-authority";
+import { cva, cx, type VariantProps } from "class-variance-authority";
 import type { ReactNode } from "react";
 
 const boxVariants = cva("box-border w-full shadow-sm", {
@@ -7,6 +7,7 @@ const boxVariants = cva("box-border w-full shadow-sm", {
       white: "bg-white",
       pink: "bg-pink-100",
       pinkStrong: "bg-pink-200",
+      green: "bg-green-100",
     },
     padding: {
       md: "p-md",
@@ -25,10 +26,7 @@ const boxVariants = cva("box-border w-full shadow-sm", {
   },
 });
 
-interface BoxProps {
-  color?: "white" | "pink" | "pinkStrong";
-  padding?: "md" | "lg" | "xl";
-  rounded?: boolean;
+interface BoxProps extends VariantProps<typeof boxVariants> {
   className?: string;
   testId?: string;
   children: ReactNode;

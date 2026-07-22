@@ -169,6 +169,17 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
             resourceLabel,
           })
         : entrystoreService;
+
+      // TODO: Remove this when concepts and terminologies are moved to admin.dataportal.se
+      const termsEntrystoreService =
+        pageType === "specification"
+          ? EntrystoreService.getInstance({
+              baseUrl: `https://${env.ENTRYSCAPE_TERMS_PATH}/store`,
+              lang,
+              t,
+              resourceLabel,
+            })
+          : entrystoreService;
       const publisherPromise =
         pageType !== "mqa"
           ? await adminEntrystoreService.getPublisherInfo(resourceUri, metadata)
@@ -210,6 +221,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         resourceUri,
         entrystoreService,
         adminEntrystoreService,
+        termsEntrystoreService,
         publisherEntry,
         name,
         defaultESEntry.env,
@@ -233,6 +245,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     resourceUri: string,
     entrystoreService: EntrystoreService,
     adminEntrystoreService: EntrystoreService,
+    termsEntrystoreService: EntrystoreService,
     publisherEntry: Entry | null,
     publisherName: string,
     env: EnvSettings,
@@ -354,7 +367,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       case "specification": {
         // Fetch all data in parallel
-        const [datasets, keywords, formats, organisationLink] =
+        const [datasets, keywords, formats, organisationLink, image, terms] =
           await Promise.all([
             entrystoreService.getRelatedDatasets(entry),
             entrystoreService.getKeywords(entry),
@@ -362,12 +375,17 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
               entry.getEntryInfo().getMetadataURI(),
             ),
             entrystoreService.getOrganisationLink(publisherEntry),
+            entrystoreService.getSpecificationImage(entry),
+            entrystoreService.getSpecTerms(entry, termsEntrystoreService),
           ]);
 
         return {
-          relatedDatasets: datasets,
+          relatedDatasets: datasets.all,
+          relatedDatasetsGrunddata: datasets.grunddata,
           keywords,
           downloadFormats: formats,
+          image,
+          ...terms,
           relatedResource: publisherName
             ? { title: publisherName, url: organisationLink || undefined }
             : undefined,

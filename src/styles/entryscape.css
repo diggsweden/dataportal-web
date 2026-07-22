@@ -22,13 +22,18 @@
   @apply text-sm pt-none mb-lg;
 }
 .entryscape .rdformsPresenter .rdformsLabel {
-  @apply inline-block text-textSecondary font-strong underline-offset-2 mb-sm border-none;
+  @apply inline-block text-textSecondary underline-offset-2 mb-sm border-none;
 }
 
 .entryscape .rdformsFields .rdformsGroup a,
 .entryscape .rdformsFields .rdformsField a,
 .entryscape .rdformsPresenter .rdformsLabel .popover a {
   @apply text-sm break-all;
+}
+
+.entryscape .escoList .esbPadding.entryListRow .esbRowMain,
+.entryscape .escoList .esbPadding.entryListRow .esbRowExpand {
+  @apply p-lg;
 }
 
 .entryscape .rdformsFields {
@@ -142,18 +147,52 @@
 
 /* End of entrysvpe pagination styles */
 
-/* Specification resource download link: internal (dataportal.se) links show the
-   arrow icon, external links the external-link icon. Both are in the markup; the
-   href-prefix selector decides which one is visible. The `.resource-download`
-   prefix keeps this above `.button svg { display: inline-flex }` in base.css. */
-.resource-download .resource-download__icon--internal {
+/* Resource button label + icon by href host: store (editera/admin) = download,
+   other dataportal.se = internal link, else external. Store rules come last to
+   override the generic dataportal one. */
+.resource-download .resource-download__icon--download,
+.resource-download .resource-download__icon--link {
   @apply hidden;
 }
 
+/* Internal portal link (any dataportal.se host): arrow instead of external. */
 .resource-download[href*="dataportal.se"] .resource-download__icon--external {
   @apply hidden;
 }
 
-.resource-download[href*="dataportal.se"] .resource-download__icon--internal {
+.resource-download[href*="dataportal.se"] .resource-download__icon--link {
+  @apply inline;
+}
+
+/* Store host = downloadable file: download icon overrides the link arrow. */
+.resource-download[href*="editera.dataportal.se"]
+.resource-download__icon--link,
+.resource-download[href*="admin.dataportal.se"] .resource-download__icon--link {
+  @apply hidden;
+}
+
+.resource-download[href*="editera.dataportal.se"]
+  .resource-download__icon--download,
+.resource-download[href*="admin.dataportal.se"]
+  .resource-download__icon--download {
+  @apply inline;
+}
+
+/* Label: "Ladda ner" only for store (download) hosts, "Gå till resurs" else. */
+.resource-download .resource-download__label--download {
+  @apply hidden;
+}
+
+.resource-download[href*="editera.dataportal.se"]
+  .resource-download__label--goto,
+.resource-download[href*="admin.dataportal.se"]
+  .resource-download__label--goto {
+  @apply hidden;
+}
+
+.resource-download[href*="editera.dataportal.se"]
+  .resource-download__label--download,
+.resource-download[href*="admin.dataportal.se"]
+  .resource-download__label--download {
   @apply inline;
 }
