@@ -6000,6 +6000,7 @@ __metadata:
     node-fetch: "npm:^3.2.10"
     organisationsnummer: "npm:^1.2.0"
     postcss: "npm:^8.4.32"
+    postcss-import: "npm:^15.1.0"
     prismjs: "npm:^1.29.0"
     qss: "npm:^2.0.3"
     react: "npm:19.2.5"
