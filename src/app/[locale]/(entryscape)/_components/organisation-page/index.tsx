@@ -9,10 +9,11 @@ import DataIcon from "@/assets/icons/data.svg";
 import DiamondIcon from "@/assets/icons/diamond.svg";
 import ListBlockIcon from "@/assets/icons/list-block.svg";
 import QuestionCircleIcon from "@/assets/icons/question-circle.svg";
+import { Box } from "@/components/box";
 import { Button, ButtonLink } from "@/components/button";
-import { CustomLink } from "@/components/custom-link";
 import { AppLink } from "@/components/link";
 import { Modal } from "@/components/modal";
+import { SidebarSection } from "@/components/sidebar-section";
 import { Heading } from "@/components/typography/heading";
 import { EntrystoreContext } from "@/lib/entrystore/provider";
 import { SettingsContext } from "@/providers/settings-provider";
@@ -71,9 +72,14 @@ export function OrganisationPage() {
               description={t("pages.organisation_page.data-info-more")}
               closeBtn={t("common.close")}
               closeBtnClassName="ml-auto"
-              modalSize="sm"
+              size="sm"
             />
-            <div className="box-border flex w-full flex-col items-center gap-xl rounded-lg bg-white p-xl md:items-end">
+            <Box
+              color="white"
+              padding="xl"
+              rounded={true}
+              className="flex flex-col gap-xl items-center md:items-end"
+            >
               <div className="flex w-full flex-col items-center py-lg md:flex-row">
                 <div className="flex flex-shrink-0 flex-col items-center gap-sm">
                   <DiamondIcon
@@ -95,7 +101,7 @@ export function OrganisationPage() {
                 />
                 <div className="grid grid-cols-2 gap-x-sm gap-y-xl">
                   {entry.organisationData?.datasets.dataInfo.map(
-                    (data: DataInfo, idx: number) => (
+                    (data: DataInfo) => (
                       <div
                         key={data.title}
                         className="flex flex-col items-center gap-sm"
@@ -120,7 +126,7 @@ export function OrganisationPage() {
                   iconPosition="right"
                 />
               )}
-            </div>
+            </Box>
           </div>
           {/* Specifications wrapper */}
           {entry.organisationData?.specifications.total &&
@@ -129,7 +135,12 @@ export function OrganisationPage() {
               <Heading level={2} size={"md"} className="mb-lg">
                 {t("common.specifications")}
               </Heading>
-              <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
+              <Box
+                color="white"
+                padding="xl"
+                rounded={true}
+                className="flex flex-col items-center gap-lg md:flex-row md:justify-between md:gap-xl"
+              >
                 <div className="flex flex-col items-center gap-sm text-textSecondary md:flex-row md:gap-lg">
                   <ListBlockIcon
                     className="flex-shrink-0"
@@ -151,7 +162,7 @@ export function OrganisationPage() {
                   icon={ArrowRightIcon}
                   iconPosition="right"
                 />
-              </div>
+              </Box>
             </div>
           ) : null}
           {/* Terminology wrapper */}
@@ -161,7 +172,12 @@ export function OrganisationPage() {
               <Heading level={2} size={"md"} className="mb-lg">
                 {t("common.term-with-concept")}
               </Heading>
-              <div className="box-border flex w-full flex-col items-center gap-lg rounded-lg bg-white p-xl md:flex-row md:justify-between md:gap-xl">
+              <Box
+                color="white"
+                padding="xl"
+                rounded={true}
+                className="flex w-full flex-col items-center gap-lg md:flex-row md:justify-between md:gap-xl"
+              >
                 <div className="flex w-full flex-col items-center gap-sm text-textSecondary md:flex-row md:gap-lg">
                   <DataIcon
                     className="flex-shrink-0"
@@ -193,7 +209,7 @@ export function OrganisationPage() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Box>
             </div>
           ) : null}
         </>
@@ -201,10 +217,7 @@ export function OrganisationPage() {
       sidebar={
         <>
           {/* About dataset - wrapper  */}
-          <div
-            data-test-id="about-section"
-            className="box-border w-full rounded-lg bg-white p-xl"
-          >
+          <Box testId="about-section" color="white" padding="xl" rounded={true}>
             <Heading
               level={2}
               size={"md"}
@@ -214,98 +227,45 @@ export function OrganisationPage() {
             </Heading>
 
             <div className="space-y-lg text-sm">
-              <div data-test-id="contact">
-                <Heading
-                  className="font-strong text-textSecondary"
-                  level={3}
-                  size={"xxs"}
-                >
-                  {t("pages.organisation_page.contact")}
-                </Heading>
-                {entry.contact?.email ? (
-                  <CustomLink
-                    data-test-id="contact-link"
-                    className="text-sm text-green-600 hover:no-underline"
-                    href={entry.contact.email}
-                  >
-                    {entry.contact.name}
-                  </CustomLink>
-                ) : (
-                  <p data-test-id="no-contact">
-                    {t("pages.organisation_page.no-contact")}
-                  </p>
-                )}
-              </div>
+              <SidebarSection
+                testId="contact"
+                heading={t("pages.organisation_page.contact")}
+                items={[
+                  entry.contact ?? t("pages.organisation_page.no-contact"),
+                ]}
+                color="primary"
+              />
 
-              <div data-test-id="organisation-type">
-                <Heading
-                  className="font-strong text-textSecondary"
-                  level={3}
-                  size={"xxs"}
-                >
-                  {t("pages.organisation_page.org-type")}
-                </Heading>
-                <p>
-                  {entry.organisationData?.orgType ||
-                    t("pages.organisation_page.no-org-type")}
-                </p>
-              </div>
+              <SidebarSection
+                testId="organisation-type"
+                heading={t("pages.organisation_page.org-type")}
+                items={[
+                  entry.organisationData?.orgType ||
+                    t("pages.organisation_page.no-org-type"),
+                ]}
+                color="primary"
+              />
 
-              {entry.organisationData?.orgNumber && (
-                <div data-test-id="organisation-number">
-                  <Heading
-                    className="font-strong text-textSecondary"
-                    level={3}
-                    size={"xxs"}
-                  >
-                    {t("pages.organisation_page.org-no")}
-                  </Heading>
-                  <p>{entry.organisationData.orgNumber}</p>
-                </div>
-              )}
+              <SidebarSection
+                testId="organisation-number"
+                heading={t("pages.organisation_page.org-no")}
+                items={[entry.organisationData?.orgNumber]}
+                color="primary"
+              />
 
-              {entry.mqaCatalog && (
-                <div data-test-id="mqa-link">
-                  <Heading
-                    className="font-strong text-textSecondary"
-                    level={3}
-                    size={"xxs"}
-                  >
-                    {t("pages.datasetpage.mqa")}
-                  </Heading>
-                  <AppLink
-                    className="text-sm text-green-600 hover:no-underline"
-                    href={entry.mqaCatalog.url}
-                  >
-                    {entry.mqaCatalog.title}
-                  </AppLink>
-                </div>
-              )}
+              <SidebarSection
+                testId="mqa-link"
+                heading={t("pages.datasetpage.mqa")}
+                items={[entry.mqaCatalog]}
+              />
 
-              {entry.downloadFormats && entry.downloadFormats?.length > 0 && (
-                <div data-test-id="download-formats">
-                  <Heading
-                    className="font-strong text-textSecondary"
-                    level={3}
-                    size={"xxs"}
-                  >
-                    {t("pages.organisation_page.download_link")}
-                  </Heading>
-                  <div className="flex flex-col gap-sm">
-                    {entry.downloadFormats.map(({ title, url }, idx) => (
-                      <a
-                        key={url}
-                        href={url}
-                        className="text-sm text-green-600 hover:no-underline"
-                      >
-                        {title}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <SidebarSection
+                testId="download-formats"
+                heading={t("pages.organisation_page.download_link")}
+                items={entry.downloadFormats ?? []}
+              />
             </div>
-          </div>
+          </Box>
         </>
       }
       footer={

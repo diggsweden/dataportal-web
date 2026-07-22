@@ -66,6 +66,7 @@ type SidebarLayout = VariantProps<
 interface EntryscapeResourcePageProps {
   breadcrumb: BreadcrumbProps;
   title: string;
+  intro?: ReactNode;
   main: ReactNode;
   sidebar: ReactNode;
   footer?: ReactNode;
@@ -87,6 +88,7 @@ interface EntryscapeResourcePageProps {
 export function EntryscapeResourcePage({
   breadcrumb,
   title,
+  intro,
   main,
   sidebar,
   footer,
@@ -103,10 +105,13 @@ export function EntryscapeResourcePage({
     <Container>
       <BreadcrumbSetter {...breadcrumb} />
       {head}
-      <main>
-        <Heading level={1} size="lg" className="mb-lg md:mb-xl">
-          {title}
-        </Heading>
+      <main className="space-y-lg md:space-y-xl">
+        <div>
+          <Heading level={1} size="lg" className="mb-lg md:mb-xl">
+            {title}
+          </Heading>
+          {intro}
+        </div>
         <div
           className={entryscapeResourcePageColumnsVariants({
             layout: columnsLayout,
@@ -114,6 +119,7 @@ export function EntryscapeResourcePage({
           })}
         >
           <div
+            data-attribute="entryscape-page-main"
             className={entryscapeResourcePageMainVariants({
               layout: mainLayout,
               className: mainClassName,
@@ -122,6 +128,7 @@ export function EntryscapeResourcePage({
             {main}
           </div>
           <div
+            data-attribute="entryscape-page-sidebar"
             className={entryscapeResourcePageSidebarVariants({
               layout: sidebarLayout,
               className: sidebarClassName,

@@ -6,11 +6,11 @@ import { useContext, useEffect, useMemo } from "react";
 import { createSearchProviderSettings } from "@/app/[locale]/(entryscape)/_search/search-page/search-page-provider-settings";
 import { SearchResults } from "@/app/[locale]/(entryscape)/_search/search-results";
 import { Badge } from "@/components/badge";
+import { LabelLink } from "@/components/label-link";
 import { Container } from "@/components/layout/container";
-import { AppLink } from "@/components/link";
 import { BreadcrumbSetter } from "@/components/navigation/breadcrumbs/breadcrumb-setter";
+import { SidebarSection } from "@/components/sidebar-section";
 import { Heading } from "@/components/typography/heading";
-import { useEntryScapeBlocks } from "@/lib/entryscape-blocks/use-blocks";
 import { EntrystoreContext } from "@/lib/entrystore/provider";
 import SearchProvider, {
   SearchContext,
@@ -43,20 +43,10 @@ function SearchTrigger({
 }
 
 export function DatasetSeriesPage() {
-  const { env, iconSize } = useContext(SettingsContext);
+  const { env } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
   const t = useTranslations();
   const lang = useLocale();
-
-  useEntryScapeBlocks({
-    entrystoreBase: entry.entrystore.getBaseURI(),
-    env: entry.env,
-    lang,
-    iconSize,
-    pageType: "dataset",
-    context: entry.context,
-    esId: entry.esId,
-  });
 
   const searchProviderSettings = useMemo(
     () => createSearchProviderSettings(env, lang),
@@ -82,18 +72,21 @@ export function DatasetSeriesPage() {
           <Heading level={1} size="lg" className="mb-none">
             {entry.title}
           </Heading>
-          <div className="space-y-md">
-            {entry.description && (
-              <div className="my-md text-md text-textSecondary">
-                {entry.description}
-              </div>
-            )}
-            {entry.publisher && (
-              <div data-test-id="publisher" className="text-sm font-strong">
-                {entry.publisher}
-              </div>
-            )}
-          </div>
+
+          <p
+            data-test-id="description"
+            data-entryscape="text"
+            data-entryscape-property="dcterms:description"
+            className="text-textSecondary whitespace-pre-line mb-lg"
+          />
+
+          <LabelLink
+            testId="publisher"
+            value={entry.relatedResource}
+            size="small"
+            color="primary"
+            className="font-strong"
+          />
         </Container>
       </div>
 
@@ -141,7 +134,12 @@ export function DatasetSeriesPage() {
 
                       <div className="space-y-lg">
                         {/* About dataset series */}
-                        <div data-entryscape="aboutDatasetSeries" />
+                        <div
+                          data-entryscape="view"
+                          data-entryscape-onecol="true"
+                          data-entryscape-rdformsid="dcat:DatasetSeries"
+                          data-entryscape-filterpredicates="dcterms:title,dcterms:description"
+                        />
                       </div>
                     </div>
 
@@ -158,62 +156,26 @@ export function DatasetSeriesPage() {
                         {t("pages.datasetpage.catalog")}
                       </Heading>
                       <div className="space-y-lg">
-                        {entry.mqaCatalog && (
-                          <div>
-                            <Heading
-                              className="font-strong text-textSecondary"
-                              level={3}
-                              size={"xxs"}
-                            >
-                              {t("pages.datasetpage.mqa-catalog")}
-                            </Heading>
-                            <AppLink
-                              className="text-sm text-green-600 underline-offset-2 hover:no-underline"
-                              href={entry.mqaCatalog.url}
-                            >
-                              {entry.mqaCatalog.title}
-                            </AppLink>
-                          </div>
-                        )}
-                        <div />
+                        <SidebarSection
+                          heading={t("pages.datasetpage.mqa-catalog")}
+                          items={[entry.mqaCatalog]}
+                        />
 
                         {/* Catalog */}
-                        <div data-entryscape="catalog" />
-
                         <div
                           data-entryscape="view"
-                          data-entryscape-rdformsid="dcat:Catalog"
-                          data-entryscape-relationinverse="dcat:datasetSeries"
                           data-entryscape-onecol="true"
-                          data-entryscape-filterpredicates="dcterms:issued,dcterms:language,dcterms:modified,dcterms:spatial,dcterms:license,dcat:themeTaxonomi,dcat:service"
+                          data-entryscape-rdformsid="dcat:Catalog"
+                          data-entryscape-relationinverse="dcat:inSeries"
+                          data-entryscape-filterpredicates="dcterms:title,dcterms:description,dcterms:publisher"
                         />
 
                         {/* Download formats */}
-                        {entry.downloadFormats &&
-                          entry.downloadFormats?.length > 0 && (
-                            <div data-test-id="download-formats">
-                              <Heading
-                                className="font-strong text-textSecondary"
-                                level={3}
-                                size={"xxs"}
-                              >
-                                {t("pages.datasetpage.download_link")}
-                              </Heading>
-                              <div className="flex flex-col gap-xs">
-                                {entry.downloadFormats.map(
-                                  ({ title, url }, idx) => (
-                                    <a
-                                      key={url}
-                                      href={url}
-                                      className="text-sm text-green-600 hover:no-underline"
-                                    >
-                                      {title}
-                                    </a>
-                                  ),
-                                )}
-                              </div>
-                            </div>
-                          )}
+                        <SidebarSection
+                          heading={t("pages.datasetpage.download_link")}
+                          items={entry.downloadFormats ?? []}
+                          testId="download-formats"
+                        />
                       </div>
                     </div>
                   </div>

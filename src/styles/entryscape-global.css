@@ -1,0 +1,18 @@
+/* This file is for all entryscape global styles that needs the sites own utility classes */
+
+.entryscape a.button {
+  @apply flex items-center gap-sm button--primary button--large hover:text-white hover:no-underline !important;
+}
+
+/* SWAGGER UI */
+.opblock-section-header button {
+  @apply button--secondary button--small;
+}
+
+.modal-ux-inner .modal-ux-content .auth-btn-wrapper .btn-done {
+  @apply button--secondary;
+}
+
+.auth-wrapper .btn {
+  @apply button button--primary button--large [&_svg]:fill-white !important;
+}

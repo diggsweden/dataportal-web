@@ -41,16 +41,6 @@
     "social_meta_description": "Begrepp på Sveriges Dataportal",
     "social_meta_title": "Sök begrepp"
   },
-  "data-structures": {
-    "data-vocabulary": "Datavokabulär",
-    "search": "Sök begrepp, klasser och egenskaper",
-    "terminology": "Terminologi",
-    "types": {
-      "class": "Klass",
-      "concept": "Begrepp",
-      "property": "Egenskap"
-    }
-  },
   "content": {
     "content": "Webbplatsinnehåll",
     "search": "Sök webbplatsinnehåll",
@@ -61,26 +51,41 @@
     "heading": "Data för ökad innovationskraft",
     "preamble": "Data är en strategisk resurs för samhällets utveckling. Det är en väg till transparens, innovation och tillväxt som skapas av medborgarna, näringslivet, akademin och myndigheter tillsammans. Här kan du utforska data och API:er, begrepp och terminologier samt specifikationer (informations- och datamodeller)"
   },
+  "data-structures": {
+    "data-vocabulary": "Datavokabulär",
+    "details": "Detaljer",
+    "introduced-in-specification": "Introduceras i specifikation",
+    "no-introduced-in-specification": "Introduceras inte i någon specifikation",
+    "no-reused-in-specification": "Återanvänds inte i någon specifikation",
+    "reused-in-specification": "Återanvänds i specifikation",
+    "search": "Sök begrepp, klasser och egenskaper",
+    "terminology": "Terminologi",
+    "types": {
+      "class": "Klass",
+      "concept": "Begrepp",
+      "property": "Egenskap"
+    }
+  },
   "dataservicepage": {
     "api": "Om API"
   },
   "dataset-series": {
-    "data-serie": "Datamängdsserie",
-    "about-dataset-serie": "Om datamängdsserie"
+    "about-dataset-serie": "Om datamängdsserie",
+    "data-serie": "Datamängdsserie"
   },
   "datasetpage": {
     "about-dataset": "Om datamängd",
     "catalog": "Hämtad från katalog",
-    "category_tag": "Kategori",
     "categories": "Kategorier",
+    "category_tag": "Kategori",
     "contact-publisher": "Har du frågor eller synpunkter?",
     "contact-publisher-text": "Kontakta publicerande organisation för frågor, synpunkter och önskemål kring informationen på den här sidan. ",
     "contact-publisher-text2": "Du kan även vända dig till dataportalens ",
     "dataservice": "Datatjänst",
-    "download-dataset": "Hämta datamängd",
-    "download-metadata-as": "Ladda ner metadata som",
     "download_link": "Ladda ner",
     "download_link_adress": "Åtkomst",
+    "download-dataset": "Hämta datamängd",
+    "download-metadata-as": "Ladda ner metadata som",
     "explore-api": "Utforska API",
     "fileformat": "övrigt filformat",
     "keyword": "Nyckelord",
@@ -99,9 +104,9 @@
     "view_more": "Visa mer"
   },
   "datasets": {
+    "dataset_title": "Datamängd",
     "datasets": "datamängder",
     "search": "Sök Data & Api:er",
-    "dataset_title": "Datamängd",
     "social_meta_description": "Data & API:er på Sveriges Dataportal",
     "social_meta_title": "Sök data & API:er"
   },
@@ -133,9 +138,12 @@
     "organisation-number": "Organisationsnummer",
     "organisation-number-validation": "Ange ett giltligt organisationsnummer (XXXXXX-XXXX)",
     "organisation-number-validation-public": "Endast offentliga aktörer kan använda detta verktyg. Se till att organisationsnumret tillhör en myndighet, kommun eller annan offentlig institution",
-    "validate": "Validera",
     "placeholder-text": "Fyll i ditt svar",
     "previous": "Föregående",
+    "question": "Fråga",
+    "question-remaining": " fråga kvar",
+    "questions": "Frågor",
+    "questions-remaining": " frågor kvar",
     "risks-title": "Möjliga risker i era svar",
     "save-form": "Spara era svar på din dator",
     "sections": "Sektioner",
@@ -143,10 +151,7 @@
     "start-evaluation-text": "Starta utvärdering",
     "summary": "Sammanställning",
     "upload-json-file": "Ladda upp sparade svar",
-    "questions": "Frågor",
-    "question": "Fråga",
-    "question-remaining": " fråga kvar",
-    "questions-remaining": " frågor kvar"
+    "validate": "Validera"
   },
   "good-examples": {
     "social_meta_description": "Goda exempel på Sveriges Dataportal",
@@ -192,10 +197,10 @@
     "org-no": "Organisationens id",
     "org-type": "Organisationstyp",
     "protected-data": "Skyddade datamängder",
+    "showcases_heading": "Exempel på användningsfall",
     "spec-data": "Datamängder som följer specifikation",
     "view-all-data": "Visa datamängderna",
-    "view-all-spec": "Visa specifikationerna",
-    "showcases_heading": "Exempel på användningsfall"
+    "view-all-spec": "Visa specifikationerna"
   },
   "organisations": {
     "organisations": "organisationer",
@@ -208,11 +213,11 @@
     "preamble": "Öppen källkod - även kallad open source och öppen programvara - ökar betydligt innovationstakten då aktörer kan samutveckla, anpassa och bygga vidare på befintliga lösningar."
   },
   "redirect": {
+    "pagenotfound_header": "Oj, sidan kan inte hittas!",
     "pagenotfound-label": "Sveriges Dataportal",
     "pagenotfound-link": "Startsidan",
     "pagenotfound-link2": "Sök data",
-    "pagenotfound-text": "Det kan bero på att oppnadata.se flyttade till dataportal.se den 23 september 2020. Förhoppningsvis kan de här länkarna hjälpa dig att hitta det du söker.",
-    "pagenotfound_header": "Oj, sidan kan inte hittas!"
+    "pagenotfound-text": "Det kan bero på att oppnadata.se flyttade till dataportal.se den 23 september 2020. Förhoppningsvis kan de här länkarna hjälpa dig att hitta det du söker."
   },
   "search": {
     "compact-list": "Kompakt lista",
@@ -264,10 +269,24 @@
   "specification_page": {
     "about_specification": "Om specifikation",
     "address": "Adress för specifikation",
+    "classes_and_properties": "Klasser och Egenskaper",
+    "datasets-follows-specification": "Datamängder följer denna specifikation",
+    "national_grunddata_count": "Varav {count} är nationell grunddatamängd:",
+    "view_image": "Visa i full storlek",
     "download": "Ladda ner",
     "guidance_download": "Ladda ner guidance",
+    "interop_bas": "Interoperabel Basspecifikation",
+    "interop_profil": "Interoperabel Profilspecifikation",
+    "introduced_classes": "introducerade klasser",
+    "introduced_properties": "introducerade egenskaper",
+    "go_to_resource": "Gå till resurs",
+    "introduced_resources": "Introducerade (i denna specifikation)",
+    "no_resources": "Denna specifikation har inga resurser.",
     "related_datasets": "Specifikationen följs av",
-    "resource_specification": "Resurs",
+    "resource_specification": "Resurser",
+    "reused_classes": "återanvända klasser",
+    "reused_properties": "återanvända egenskaper",
+    "reused_resources": "Återanvända (från andra specifikationer)",
     "scheme_download": "Ladda ner schema",
     "specification_download": "Åtkomst"
   },

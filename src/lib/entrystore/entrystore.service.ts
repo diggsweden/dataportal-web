@@ -12,8 +12,8 @@ import {
   type ESFacetFieldValue,
   ESRdfType,
   ESType,
+  type LabelLink,
   type PageType,
-  type RelatedTerm,
 } from "@/lib/entrystore/entrystore-core";
 import { SearchSortOrder } from "@/providers/search-provider";
 import type {
@@ -867,18 +867,18 @@ export class EntrystoreService {
 
   public async getContactInfo(metadata: Metadata) {
     const contactPoint = metadata.findFirstValue(null, "dcat:contactPoint");
-    if (!contactPoint) return { name: "", email: "" };
+    if (!contactPoint) return { title: "", url: "" };
 
     const contactEntry =
       await this.entryStoreUtil.getEntryByResourceURI(contactPoint);
     const contactMetadata = contactEntry.getAllMetadata();
 
     return {
-      name: getLocalizedValue(
+      title: getLocalizedValue(
         contactMetadata,
         "http://www.w3.org/2006/vcard/ns#fn",
       ),
-      email: parseEmail(
+      url: parseEmail(
         getLocalizedValue(
           contactMetadata,
           "http://www.w3.org/2006/vcard/ns#hasEmail",
@@ -890,7 +890,7 @@ export class EntrystoreService {
   public async getKeywords(entry: Entry): Promise<string[]> {
     return entry
       .getAllMetadata()
-      .find(null, "dcat:keyword")
+      .find(entry.getResourceURI(), "dcat:keyword")
       .map((k: { getValue: () => string }) => k.getValue());
   }
 
@@ -906,14 +906,29 @@ export class EntrystoreService {
       .uriProperty("dcterms:conformsTo", entry.getResourceURI())
       .getEntries();
 
-    return datasets.map((ds: Entry) => ({
-      title: getLocalizedValue(ds.getAllMetadata(), "dcterms:title"),
-      url: `${includeLangInPath(
-        this.lang,
-      )}/datasets/${this.entryStore.getContextId(
-        ds.getEntryInfo().getMetadataURI(),
-      )}_${ds.getId()}`,
-    }));
+    const all: LabelLink[] = [];
+    const grunddata: LabelLink[] = [];
+    for (const ds of datasets) {
+      const meta = ds.getAllMetadata();
+      const item = {
+        title: getLocalizedValue(meta, "dcterms:title"),
+        url: `${includeLangInPath(
+          this.lang,
+        )}/datasets/${this.entryStore.getContextId(
+          ds.getEntryInfo().getMetadataURI(),
+        )}_${ds.getId()}`,
+      };
+      all.push(item);
+
+      const isGrunddata = meta
+        .find(ds.getResourceURI(), "http://purl.org/dc/terms/subject")
+        .some((s: { getValue: () => string }) =>
+          s.getValue().includes("/concepts/grunddata/"),
+        );
+      if (isGrunddata) grunddata.push(item);
+    }
+
+    return { all, grunddata };
   }
 
   public async getShowcases(entry: Entry) {
@@ -991,6 +1006,144 @@ export class EntrystoreService {
     }
   }
 
+  /**
+   * Resolves a class/property's data vocabulary (`rdfs:isDefinedBy`) to a
+   * /data-vocabulary link, or the raw URI if it has no store entry.
+   * (Route not built yet.)
+   */
+  public async getDataVocabularyLink(
+    metadata: Metadata,
+    adminService: EntrystoreService = this,
+  ): Promise<LabelLink | undefined> {
+    const uri = metadata.findFirstValue(null, "rdfs:isDefinedBy");
+    if (!uri) return undefined;
+
+    try {
+      const ref = await adminService.getEntryByResourceURI(uri);
+
+      const refMeta = ref.getAllMetadata();
+      const label =
+        getLocalizedValue(refMeta, "dcterms:title") ||
+        getLocalizedValue(refMeta, "rdfs:label");
+      return {
+        title: label || uri,
+        url: `${includeLangInPath(this.lang)}/data-vocabulary/${ref
+          .getContext()
+          .getId()}_${ref.getId()}`,
+      };
+    } catch {
+      // No store entry for this URI, fall back to a plain external link on the raw URI.
+      return { title: uri, url: uri };
+    }
+  }
+
+  /** The spec's diagram: first image/* `prof:hasResource` URL, or undefined. */
+  public async getSpecificationImage(
+    entry: Entry,
+  ): Promise<string | undefined> {
+    const PROF = "http://www.w3.org/ns/dx/prof/";
+    const resourceUris = entry
+      .getAllMetadata()
+      .find(entry.getResourceURI(), `${PROF}hasResource`)
+      .map((s: { getValue: () => string }) => s.getValue());
+    if (resourceUris.length === 0) return undefined;
+
+    const refs = await Promise.allSettled(
+      resourceUris.map((uri: string) =>
+        this.entryStoreUtil.getEntryByResourceURI(uri),
+      ),
+    );
+    for (const r of refs) {
+      if (r.status !== "fulfilled") continue;
+      const refMeta = r.value.getAllMetadata();
+      const format =
+        refMeta.findFirstValue(null, "http://purl.org/dc/terms/format") ?? "";
+      if (format.startsWith("image/")) {
+        return (
+          refMeta.findFirstValue(null, `${PROF}hasArtifact`) ||
+          r.value.getResourceURI()
+        );
+      }
+    }
+    return undefined;
+  }
+
+  /** Resolve a spec relation's targets into class/property links, split by type. */
+  private async termsByType(
+    entry: Entry,
+    predicate: string,
+    resolver: EntrystoreService = this,
+  ): Promise<{ classes: LabelLink[]; properties: LabelLink[] }> {
+    const CLASS = "http://www.w3.org/2000/01/rdf-schema#Class";
+    const PROP = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property";
+
+    const classes: LabelLink[] = [];
+    const properties: LabelLink[] = [];
+    const uris = entry
+      .getAllMetadata()
+      .find(entry.getResourceURI(), predicate)
+      .map((s: { getValue: () => string }) => s.getValue());
+    if (uris.length === 0) return { classes, properties };
+
+    const refs = await Promise.allSettled(
+      uris.map((uri: string) => resolver.getEntryByResourceURI(uri)),
+    );
+    for (const r of refs) {
+      if (r.status !== "fulfilled") continue;
+      const ref = r.value;
+      const refMeta = ref.getAllMetadata();
+      const types = refMeta
+        .find(
+          ref.getResourceURI(),
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        )
+        .map((s: { getValue: () => string }) => s.getValue());
+      const isClass = types.includes(CLASS);
+      if (!isClass && !types.includes(PROP)) continue;
+      const item = {
+        title:
+          getLocalizedValue(refMeta, "rdfs:label") ||
+          getLocalizedValue(refMeta, "dcterms:title") ||
+          ref.getResourceURI(),
+        url: `${includeLangInPath(this.lang)}/${
+          isClass ? "class" : "property"
+        }/${ref.getContext().getId()}_${ref.getId()}`,
+      };
+      (isClass ? classes : properties).push(item);
+    }
+    return { classes, properties };
+  }
+
+  /** A spec's introduced + reused classes/properties (`inspec:introduces`/`reuses`). */
+  public async getSpecTerms(
+    entry: Entry,
+    resolver: EntrystoreService = this,
+  ): Promise<{
+    introducedClasses: LabelLink[];
+    introducedProperties: LabelLink[];
+    reusedClasses: LabelLink[];
+    reusedProperties: LabelLink[];
+  }> {
+    const [introduced, reused] = await Promise.all([
+      this.termsByType(
+        entry,
+        "https://w3id.org/inspec/datavoc/introduces",
+        resolver,
+      ),
+      this.termsByType(
+        entry,
+        "https://w3id.org/inspec/datavoc/reuses",
+        resolver,
+      ),
+    ]);
+    return {
+      introducedClasses: introduced.classes,
+      introducedProperties: introduced.properties,
+      reusedClasses: reused.classes,
+      reusedProperties: reused.properties,
+    };
+  }
+
   public async getRelatedMQA(entry: Entry, pageType?: PageType) {
     let contextId = entry.getContext().getId();
     try {
@@ -1025,7 +1178,7 @@ export class EntrystoreService {
   async getRelatedTerm(
     metadata: Metadata,
     returnEntry = false,
-  ): Promise<RelatedTerm | Entry> {
+  ): Promise<LabelLink | Entry> {
     const termUri = metadata.findFirstValue(null, "skos:inScheme");
     const termEntry = await this.getEntryByResourceURI(termUri);
 
@@ -1079,19 +1232,19 @@ export class EntrystoreService {
     return [
       {
         title: `${this.t("pages.datasetpage.download-metadata-as")} RDF/XML`,
-        url: baseUri,
+        url: `${baseUri}?recursive=dcat&format=application/rdf+xml`,
       },
       {
         title: `${this.t("pages.datasetpage.download-metadata-as")} TURTLE`,
-        url: `${baseUri}?format=text/turtle`,
+        url: `${baseUri}?recursive=dcat&format=text/turtle`,
       },
       {
         title: `${this.t("pages.datasetpage.download-metadata-as")} N-TRIPLES`,
-        url: `${baseUri}?format=text/n-triples`,
+        url: `${baseUri}?recursive=dcat&format=text/n-triples`,
       },
       {
         title: `${this.t("pages.datasetpage.download-metadata-as")} JSON-LD`,
-        url: `${baseUri}?format=application/ld+json`,
+        url: `${baseUri}?recursive=dcat&format=application/ld+json`,
       },
     ];
   }

@@ -1,5 +1,5 @@
 import { cva, cx, type VariantProps } from "class-variance-authority";
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 
 const badgeVariants = cva(["px-sm py-xs text-sm uppercase"], {
   variants: {
@@ -14,9 +14,10 @@ const badgeVariants = cva(["px-sm py-xs text-sm uppercase"], {
 });
 
 interface BadgeProps extends VariantProps<typeof badgeVariants> {
-  text: string;
+  text?: string;
   className?: string;
   id?: string;
+  children?: ReactNode;
 }
 
 export const Badge: FC<BadgeProps> = ({
@@ -24,6 +25,7 @@ export const Badge: FC<BadgeProps> = ({
   color,
   className,
   id,
+  children,
   ...props
 }) => {
   return (
@@ -32,7 +34,8 @@ export const Badge: FC<BadgeProps> = ({
       className={cx(badgeVariants({ color }), className)}
       {...props}
     >
-      {text}
+      {text && text}
+      {children}
     </span>
   );
 };

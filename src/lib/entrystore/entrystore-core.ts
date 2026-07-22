@@ -56,16 +56,14 @@ export type PageType =
   | "terminology"
   | "specification"
   | "concept"
+  | "class"
+  | "property"
   | "mqa";
 
-export interface ContactInfo {
-  name: string;
-  email: string;
-}
-
-export interface RelatedTerm {
+/** A label that is optionally a link (url absent/empty ⇒ render as text). */
+export interface LabelLink {
   title: string;
-  url: string;
+  url?: string;
 }
 
 export interface DownloadFormat {
@@ -81,22 +79,28 @@ export interface ESEntry {
   loading: boolean;
   title: string;
   description: string;
-  publisher: string;
+  relatedResource?: LabelLink;
   termPublisher?: string;
   definition?: string;
   conformsTo?: string[];
   hasResource?: string[];
+  image?: string;
   address: string;
   context: string;
   esId: string;
-  contact?: ContactInfo;
-  relatedSpecifications?: RelatedTerm[];
+  contact?: LabelLink;
+  relatedSpecifications?: LabelLink[];
+  domain?: LabelLink;
+  range?: LabelLink;
   keywords?: string[];
   downloadFormats?: DownloadFormat[];
-  mqaCatalog?: RelatedTerm | null;
-  relatedDatasetSeries?: RelatedTerm[];
+  mqaCatalog?: LabelLink | null;
+  relatedDatasetSeries?: LabelLink[];
   organisationData?: OrganisationData;
-  relatedTerm?: RelatedTerm;
-  relatedDatasets?: RelatedTerm[];
-  organisationLink?: string | null;
+  relatedDatasets?: LabelLink[];
+  relatedDatasetsGrunddata?: LabelLink[];
+  introducedClasses?: LabelLink[];
+  introducedProperties?: LabelLink[];
+  reusedClasses?: LabelLink[];
+  reusedProperties?: LabelLink[];
 }

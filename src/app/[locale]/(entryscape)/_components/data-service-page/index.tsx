@@ -1,42 +1,37 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useContext } from "react";
 import { ContactPublisherBlock } from "@/app/[locale]/(entryscape)/_components/contact-publisher-block";
 import { EntryscapeResourcePage } from "@/app/[locale]/(entryscape)/_components/entryscape-resource-page";
-import { AppLink } from "@/components/link";
+import { Box } from "@/components/box";
+import { LabelLink } from "@/components/label-link";
 import { Heading } from "@/components/typography/heading";
-import { Preamble } from "@/components/typography/preamble";
-import { useEntryScapeBlocks } from "@/lib/entryscape-blocks/use-blocks";
 import { EntrystoreContext } from "@/lib/entrystore/provider";
-import { ApiIndexContext } from "@/providers/api-index-context";
-import { SettingsContext } from "@/providers/settings-provider";
 import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
+import { Indicators } from "../indicators";
 
-interface DataServicePageProps {
-  dataSet: string | string[] | undefined;
-  name: string | string[] | undefined;
-}
+const ABOUT_FIELDS = [
+  "dcat:contactPoint_ds",
+  "dcat:keyword_ds",
+  "dcat:theme-ds",
+  "dcatap:applicableLegislation_ds",
+  "dcatap:hvdCategory",
+  "dcat:dcterms:license_ds",
+  "dcat:dcterms:accessRights",
+  "dcat:landingPage_ds",
+  "dcat:foaf:page_ds",
+];
 
-export function DataServicePage({ dataSet, name }: DataServicePageProps) {
+const DETAILS_EXCLUDED = [
+  "dcterms:title",
+  "dcterms:description",
+  ...ABOUT_FIELDS,
+];
+
+export function DataServicePage() {
   const t = useTranslations();
-  const lang = useLocale();
-  const { findDetection } = useContext(ApiIndexContext);
-  const { iconSize } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
-  const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
-  const cid = ids[0];
-  const eid = ids[1];
-
-  useEntryScapeBlocks({
-    entrystoreBase: entry.entrystore.getBaseURI(),
-    env: entry.env,
-    lang,
-    iconSize,
-    pageType: "dataservice",
-    context: entry.context,
-    esId: entry.esId,
-  });
 
   return (
     <EntryscapeResourcePage
@@ -47,55 +42,32 @@ export function DataServicePage({ dataSet, name }: DataServicePageProps) {
         },
       ])}
       title={entry.title}
-      head={
-        <>
-          <title>{`${entry.title} - Sveriges dataportal`}</title>
-          <meta
-            property="og:title"
-            content={`${entry.title} - Sveriges dataportal`}
-          />
-          <meta
-            name="twitter:title"
-            content={`${entry.title} - Sveriges dataportal`}
-          />
-        </>
-      }
       columnsLayout="compact"
       mainLayout="compact"
       sidebarLayout="panel"
       main={
         <>
-          {entry.publisher && <Preamble>{entry.publisher}</Preamble>}
-          <div
-            data-test-id="indicators"
-            data-entryscape="customIndicators"
-            className="indicators flex flex-col flex-wrap gap-x-lg gap-y-sm text-textSecondary md:flex-row"
+          <LabelLink value={entry.relatedResource} />
+
+          <Indicators />
+
+          <p
+            className="mb-lg text-textSecondary whitespace-pre-line"
+            data-test-id="description"
+            data-entryscape="text"
+            data-entryscape-property="dcterms:description"
           />
-          <span className="!font-ubuntu text-lg text-textSecondary">
-            {entry.description}
-          </span>
-          <div className="bg-white p-lg">
+
+          <Box color="white" padding="lg">
             <div
               data-entryscape="view"
-              data-entryscape-rdformsid="dcat:DataService"
-              data-entryscape-filterpredicates="dcterms:title,dcterms:publisher,dcterms:type,dcterms:license,dcterms:accessRights,dcat:landingPage,foaf:page"
-              className="dataservice__access"
+              data-entryscape-onecol="true"
+              data-entryscape-filterpredicates={DETAILS_EXCLUDED.join(",")}
             />
-            {findDetection(cid, eid) && (
-              <span className="esbRowAlignSecondary">
-                <AppLink
-                  href={`/${t(
-                    "routes.dataservices.path",
-                  )}/${cid}_${eid}/${name}/apiexplore/${eid}`}
-                  className="dataservice-explore-api-link entryscape link text-md"
-                >
-                  Utforska API
-                </AppLink>
-                <br />
-              </span>
-            )}
-          </div>
-          <ContactPublisherBlock variant="highlighted" />
+            {/* "Explore API" link — renders only when this service has a detected API */}
+            <div data-entryscape="exploreApiLink" />
+          </Box>
+          <ContactPublisherBlock />
         </>
       }
       sidebar={
@@ -107,12 +79,11 @@ export function DataServicePage({ dataSet, name }: DataServicePageProps) {
           >
             {t("pages.dataservicepage.api")}
           </Heading>
-          <div data-entryscape="aboutDaservice" className="mb-lg" />
           <div
             data-entryscape="view"
-            data-entryscape-rdformsid="dcat:DataService"
-            data-entryscape-filterpredicates="dcterms:title,dcterms:publisher,dcat:endpointURL"
-            className="lg:w-full"
+            data-entryscape-onecol="true"
+            data-entryscape-rdformsid={ABOUT_FIELDS.join(",")}
+            className="lg:w-full space-y-lg"
           />
         </>
       }

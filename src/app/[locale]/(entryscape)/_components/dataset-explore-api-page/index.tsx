@@ -2,15 +2,14 @@
 
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useContext, useState } from "react";
+import { Indicators } from "@/app/[locale]/(entryscape)/_components/indicators";
 import { CustomLink } from "@/components/custom-link";
+import { LabelLink } from "@/components/label-link";
 import { Container } from "@/components/layout/container";
-import { AppLink } from "@/components/link";
 import { BreadcrumbSetter } from "@/components/navigation/breadcrumbs/breadcrumb-setter";
 import { Heading } from "@/components/typography/heading";
-import { Preamble } from "@/components/typography/preamble";
-import { useEntryScapeBlocks } from "@/lib/entryscape-blocks/use-blocks";
 import { EntrystoreContext } from "@/lib/entrystore/provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
@@ -35,10 +34,8 @@ export function DataSetExploreApiPage({
   const query = useParams();
   const ids = (typeof dataSet === "string" && dataSet.split("_")) || [];
   const cid = ids[0];
-  const eid = ids[1];
   const t = useTranslations();
-  const lang = useLocale();
-  const { env, iconSize } = useContext(SettingsContext);
+  const { env } = useContext(SettingsContext);
   const entry = useContext(EntrystoreContext);
 
   const [toggleTabs, setToggleTabs] = useState(1);
@@ -48,16 +45,6 @@ export function DataSetExploreApiPage({
   const toggleTab = (index: number) => {
     setToggleTabs(index);
   };
-
-  useEntryScapeBlocks({
-    entrystoreBase: entry.entrystore.getBaseURI(),
-    env: entry.env,
-    lang,
-    iconSize,
-    pageType: "apiexplore",
-    context: entry.context,
-    esId: entry.esId,
-  });
 
   return (
     <Container>
@@ -69,7 +56,11 @@ export function DataSetExploreApiPage({
           },
           {
             name: (entry.title as string) || "",
-            link: `/${t("routes.datasets.path")}/${query?.dataSet}/${query?.name}`,
+            // `query.name` is absent on the no-name apiexplore route; only
+            // append it when present to avoid a "/undefined" crumb link.
+            link: `/${t("routes.datasets.path")}/${dataSet}${
+              query?.name ? `/${query.name}` : ""
+            }`,
           },
         ])}
       />
@@ -81,27 +72,10 @@ export function DataSetExploreApiPage({
 
         <div className="mb-md flex w-full flex-col gap-lg lg:mb-lg">
           {/* Publisher */}
-          {entry.organisationLink ? (
-            <AppLink
-              className="mb-lg text-lg font-normal text-green-600 hover:!no-underline"
-              href={entry.organisationLink}
-            >
-              {entry.publisher}
-            </AppLink>
-          ) : (
-            entry.publisher && (
-              <Preamble className="mb-lg">{entry.publisher}</Preamble>
-            )
-          )}
+          <LabelLink value={entry.relatedResource} />
 
           {/* Indicators */}
-          <div
-            data-test-id="indicators"
-            data-entryscape="customIndicators"
-            data-entryscape-entry={eid}
-            data-entryscape-context={cid}
-            className="indicators flex flex-col flex-wrap gap-x-lg gap-y-sm text-textSecondary md:flex-row"
-          />
+          <Indicators />
         </div>
         <div className="flex flex-col">
           {/* Refers to dataset - heading*/}
@@ -172,7 +146,11 @@ export function DataSetExploreApiPage({
             aria-labelledby="tab-information"
             className={!tab ? "block" : "hidden"}
           >
-            <div className="mb-xl" data-entryscape="view"></div>
+            <div
+              className="mb-xl"
+              data-entryscape="view"
+              data-entryscape-onecol="true"
+            />
 
             <div className="max-w-md bg-pink-200 p-md [&_h2]:mb-xs [&_h2]:text-md [&_h2]:text-textSecondary [&_h2]:lg:text-lg [&_p]:mb-lg [&_p]:text-sm [&_p]:text-textPrimary [&_p]:lg:text-md">
               <div>
@@ -197,9 +175,9 @@ export function DataSetExploreApiPage({
 
                   <CustomLink
                     className="!mb-lg text-brown-800"
-                    href={`${entry.contact.email}`}
+                    href={`${entry.contact.url}`}
                   >
-                    {entry.contact.name}
+                    {entry.contact.title}
                   </CustomLink>
                 </div>
               )}

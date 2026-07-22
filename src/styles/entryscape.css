@@ -1,747 +1,198 @@
-.esbRowHead {
-  @apply relative max-h-none !important;
+.entryscape {
+  @apply font-ubuntu !important;
 }
 
-.about-dataset h2 {
-  @apply text-sm !important;
+.entryscape a:not(.button) {
+  @apply inline-flex text-green-600 hover:text-green-600 underline hover:no-underline !important;
 }
 
-.rdforms {
-  @apply mr-none !important;
+[data-attribute="entryscape-page-main"] .entryscape h2 {
+  @apply text-wrap font-normal text-lg md:text-xl mt-none mb-sm;
 }
 
-.rdformsRow {
-  @apply !mb-md inline-flex w-full flex-col p-none md:mb-lg !important;
+[data-attribute="entryscape-page-main"] .entryscape li > a {
+  @apply text-md mb-xs;
 }
 
-.rdformsRow .rdformsRow,
-.rdformsRow:last-child {
-  @apply mb-none !important;
+.entryscape .cardgroup .rdformsFields .rdformsGroup {
+  @apply bg-transparent border-none p-none m-none space-y-md;
 }
 
-.rdformsLabel,
-.information-container .title {
-  @apply mb-sm min-w-fit gap-xs border-none p-none font-ubuntu text-sm font-strong text-textSecondary !outline-offset-2 focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-primary !important;
+.entryscape .rdformsPresenter .rdformsRow.rdformsTopLevel {
+  @apply text-sm pt-none mb-lg;
 }
-
-.information-container .title span,
-.info .description p {
-  @apply inline-flex gap-sm;
-}
-
-.info .description .renderedMarkdown {
-  @apply flex flex-col gap-sm;
-}
-
-.rdformsRepeatedValue {
-  @apply border-none !important;
-}
-
-.rdformsUrl {
-  @apply text-sm text-green-600 underline underline-offset-2 hover:text-brown-800 !important;
-}
-
-.keywordHeading {
-  @apply mb-sm text-sm text-textSecondary !important;
-}
-
-.keywordTitle {
-  @apply mb-xs text-sm text-textPrimary !important;
-}
-
-.rdformsOrigin {
-  @apply ml-none grid pl-none !important;
-}
-
-.rdformsOrigin {
-  @apply mt-none !important;
-}
-
-.rdformsOrigin > .rdformsLanguage {
-  @apply hidden !important;
-}
-
-.rdformsPresenter .compact {
-  @apply bg-primary;
-}
-
-.escoPosition {
-  @apply mt-lg !important;
-}
-
-.format-badge span {
-  @apply mr-sm !important;
-}
-
-.eachprop__ellipsis,
-.eachprop__restseparator {
-  @apply hidden !important;
-}
-
-.eachprop__expandbutton,
-.eachprop__unexpandbutton {
-  @apply ml-none mt-xs px-sm py-xs font-ubuntu text-sm font-normal text-textSecondary hover:bg-brown-200 !important;
-}
-
-.rdformsFields {
-  @apply mb-md space-y-sm !important;
-}
-
-.rdformsFields div {
-  @apply border-none bg-transparent p-none !important;
-}
-
-.rdformsRow .rdformsPresenter .rdformsLabel {
-  @apply !mb-none;
-}
-
-.contact__publisher {
-  @apply bg-pink-100 p-lg !important;
-}
-
-.contact__publisher h3 {
-  @apply mb-md text-lg !important;
-}
-
-.indicators .indicator {
-  @apply flex items-center gap-xs;
-}
-
-.swagger-ui .dialog-ux {
-  @apply fixed bottom-none left-none right-none top-none z-40 bg-brownOpaque5 !important;
-}
-
-.swagger-ui .dialog-ux .moadal-ux {
-  @apply relative !important;
-}
-
-.modal-dialog-ux {
-  @apply absolute left-1/2 top-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2;
-}
-
-.modal-ux-inner {
-  @apply mx-lg space-y-md bg-white p-lg;
-}
-
-.modal-ux-inner .modal-ux-header {
-  @apply flex items-center justify-between gap-lg border-b border-brown-200 pb-sm text-lg;
-}
-
-.modal-ux-inner .modal-ux-header button svg {
-  @apply hidden;
-}
-
-.modal-ux-inner .modal-ux-header button {
-  @apply flex items-center justify-center;
-}
-
-.modal-ux-inner .modal-ux-header button::after {
-  content: url("/icons/cross.svg");
-}
-
-.modal-ux-inner .modal-ux-content h4,
-.modal-ux-inner .modal-ux-content h4 > code {
-  @apply mb-sm text-md font-strong !important;
-}
-
-.modal-ux-inner .modal-ux-content .wrapper {
-  @apply mt-xs text-sm;
-}
-
-.modal-ux-inner .modal-ux-content .wrapper label {
-  @apply mt-md font-strong;
-}
-
-.modal-ux-inner .modal-ux-content .wrapper input {
-  @apply my-sm rounded-sm border border-brown-600 px-md hover:outline-offset-2 hover:outline-brown-800 focus-visible:outline-offset-2 focus-visible:outline-brown-800 active:outline-offset-2 active:outline-brown-800;
-}
-
-.modal-ux-inner .modal-ux-content .auth-btn-wrapper {
-  @apply mt-md flex justify-start gap-lg;
-}
-
-.esbRow,
-.esbRowExpand {
-  @apply bg-white shadow-none !important;
-}
-
-.esbRow {
-  @apply mb-lg !important;
-}
-
-.esbRowMain {
-  @apply w-full p-lg !important;
-}
-
-.esbRowHead .esbRowControl > button {
-  @apply m-none flex h-[2.75rem] w-full items-center justify-evenly gap-sm rounded-sm border-2 border-solid border-brown-600 p-md text-textSecondary shadow-none hover:bg-brown-100 hover:no-underline focus-visible:no-underline focus-visible:shadow-none !important;
-}
-
-.esbExpandButton[aria-expanded="false"]::before {
-  content: attr(Open);
-}
-
-.esbExpandButton[aria-expanded="false"]::after {
-  content: url("/icons/chevron-down.svg");
-  @apply h-[1.5rem] w-[1.5rem];
-}
-
-.esbExpandButton[aria-expanded="true"]::before {
-  content: attr(Close);
-}
-
-.esbExpandButton[aria-expanded="true"]::after {
-  content: url("/icons/chevron-up.svg");
-  @apply h-[1.5rem] w-[1.5rem];
-}
-
-.btn-link {
-  @apply no-underline focus-visible:bg-brown-100 focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:outline-primary !important;
-}
-
-.rdformsField,
-.rdformsSingleline {
-  @apply mt-none text-sm !important;
-}
-
-.svg-assets {
-  @apply hidden;
-}
-
-/* SWAGGER UI */
-
-.swagger-ui .table-container,
-.responses-inner {
-  @apply p-md;
-}
-
-.response-col_description {
-  @apply mr-auto max-w-lg space-y-sm p-none md:p-sm;
-}
-
-.responses-header td,
-.parameters th {
-  @apply p-md font-strong;
-}
-
-.response > td,
-.parameters tbody td {
-  @apply mb-md space-y-sm px-md py-sm !important;
-}
-
-.response-col_status {
-  @apply flex font-strong;
-}
-
-.response-col_links {
-  @apply ml-auto w-fit align-top !important;
-}
-
-.microlight {
-  @apply whitespace-pre-wrap bg-[#fefefe] p-md text-sm !important;
-}
-
-.content-type-wrapper .content-type {
-  @apply w-fit px-sm py-xs pr-xl;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image: url("/icons/chevron-down.svg");
-  background-repeat: no-repeat;
-  background-position: right 5px center;
-  background-size: 24px;
-}
-
-.microlight code {
-  @apply text-sm !important;
+.entryscape .rdformsPresenter .rdformsLabel {
+  @apply inline-block text-textSecondary underline-offset-2 mb-sm border-none;
 }
 
-.microlight span[style="color: rgb(162, 252, 162);"] {
-  @apply text-[#258659] !important;
+.entryscape .rdformsFields .rdformsGroup a,
+.entryscape .rdformsFields .rdformsField a,
+.entryscape .rdformsPresenter .rdformsLabel .popover a {
+  @apply text-sm break-all;
 }
 
-.responses-inner h4 {
-  @apply my-sm;
+.entryscape .escoList .esbPadding.entryListRow .esbRowMain,
+.entryscape .escoList .esbPadding.entryListRow .esbRowExpand {
+  @apply p-lg;
 }
 
-.request-url pre {
-  @apply break-all p-sm text-sm;
+.entryscape .rdformsFields {
+  @apply space-y-sm;
 }
 
-.language-json span {
-  @apply whitespace-pre-wrap break-all !important;
+.entryscape .rdformsFields .rdformsGroup {
+  @apply m-none;
 }
 
-.highlight-code .microlight {
-  @apply max-h-[500px] overflow-y-auto;
+.entryscape .rdformsFields .rdformsField,
+.entryscape#entryscape_dialogs
+  .popover-body
+  .rdformsPresenter
+  .rdformsRow.rdformsTopLevel
+  .rdformsField,
+.entryscape#entryscape_dialogs
+  .popover-body
+  .rdformsPresenter
+  .rdformsRow.rdformsTopLevel
+  .rdformsGroup,
+.entryscape#entryscape_dialogs
+  .popover-body
+  .rdformsPresenter
+  .rdformsRow.rdformsTopLevel
+  .rdformsGroup
+  .rdformsRow {
+  @apply m-none p-none;
 }
 
-.swagger-ui td,
-.swagger-ui th,
-.swagger-ui table {
+.entryscape .rdformsPresenter .rdformsRepeatedValue {
   @apply border-none;
 }
 
-.swagger-ui .parameters-col_name {
-  @apply w-1/5;
-}
-
-.opblock-summary {
-  @apply relative flex items-center gap-md px-md py-sm;
-}
-
-.swagger-ui .opblock-get,
-.opblock-get tr {
-  @apply bg-[#cce2fa];
-}
-
-.swagger-ui .opblock-post,
-.opblock-post tr {
-  @apply bg-[#c8ebd9];
-}
-
-.swagger-ui .opblock-put,
-.opblock-put tr {
-  @apply bg-[#fadebf];
-}
-
-.swagger-ui .opblock-patch,
-.opblock-patch tr {
-  @apply bg-[#e3eeed];
-}
-
-.swagger-ui .opblock-delete,
-.opblock-delete tr {
-  @apply bg-[#fad5d3];
-}
-
-.opblock-summary-method {
-  @apply w-full max-w-[80px] py-xs text-center text-md font-strong text-white !important;
-}
-
-.swagger-ui .btn-group {
-  @apply flex gap-md p-lg;
-}
-
-.execute {
-  @apply w-1/2 py-sm text-white;
-}
-
-.execute:hover {
-  @apply opacity-80;
-}
-
-.opblock-get .execute {
-  @apply bg-[#0173e4];
-}
-
-.opblock-post .execute {
-  @apply bg-[#258659];
-}
-
-.opblock-put .execute {
-  @apply bg-[#a86629];
-}
-
-.opblock-patch .execute {
-  @apply bg-[#14827b];
-}
-
-.opblock-delete .execute {
-  @apply bg-[#ed0908];
-}
-
-.btn-clear {
-  @apply w-1/2 bg-brownOpaque5 text-white;
-}
-
-.btn-clear:hover {
-  @apply opacity-70;
-}
-
-.opblock-get .opblock-summary-method {
-  @apply bg-[#0173e4];
-}
-
-.opblock-post .opblock-summary-method {
-  @apply bg-[#258659];
-}
-
-.opblock-put .opblock-summary-method {
-  @apply bg-[#a86629];
-}
-
-.opblock-patch .opblock-summary-method {
-  @apply bg-[#14827b];
-}
-
-.opblock-delete .opblock-summary-method {
-  @apply bg-[#ed0908];
-}
-
-.opblock-section-header,
-.view-line-link {
-  @apply px-md py-sm;
-}
-
-.opblock-get .opblock-section-header,
-.view-line-link {
-  @apply bg-[#f5f9ff];
-}
-
-.opblock-post .opblock-section-header,
-.view-line-link {
-  @apply bg-[#f4fbf8];
-}
-
-.opblock-put .opblock-section-header,
-.view-line-link {
-  @apply bg-[#fdf8f3];
-}
-
-.opblock-patch .opblock-section-header,
-.view-line-link {
-  @apply bg-[#f5fffb];
-}
-
-.opblock-delete .opblock-section-header,
-.view-line-link {
-  @apply bg-[#fff7f7];
-}
-
-.execute-wrapper {
-  @apply p-lg;
-}
-.execute-wrapper button {
-  @apply flex h-md w-full items-center justify-center p-lg text-white;
-}
-
-.opblock-get .execute-wrapper button {
-  @apply bg-[#0173e4];
-}
-
-.opblock-post .execute-wrapper button {
-  @apply bg-[#258659];
-}
-
-.opblock-put .execute-wrapper button {
-  @apply bg-[#a86629];
-}
-
-.opblock-patch .execute-wrapper button {
-  @apply bg-[#14827b];
-}
-
-.opblock-delete .execute-wrapper button {
-  @apply bg-[#ed0908];
-}
-
-.swagger-ui input,
-.swagger-ui .markdown p {
-  @apply w-full max-w-md py-sm;
-}
-.swagger-ui thead {
-  @apply border-b-2 border-brownOpaque5 text-textPrimary !important;
-}
-.view-line-link {
+.entryscape .rdformsPresenter .rdformsLanguage {
   @apply hidden;
 }
 
-.swagger-ui table {
-  @apply !mt-none;
+.entryscape .escoPosition {
+  @apply mt-sm;
 }
 
-.swagger-ui .title {
-  @apply mb-md md:flex lg:text-lg;
-}
-
-.swagger-ui .version {
-  @apply ml-[-8px] md:ml-none;
-}
-
-.swagger-ui .base-url {
-  @apply overflow-auto pb-sm text-sm;
-}
-
-.scheme-container label {
-  @apply flex flex-col gap-xs break-words;
-}
-
-.swagger-ui a.nostyle {
-  color: inherit;
-  cursor: pointer;
-  text-decoration: inherit;
-}
-
-.swagger-ui .info a:not(.nostyle) {
-  @apply break-words text-green-600 hover:text-brown-800;
-}
-
-.main,
-.info,
-.scheme-container {
+.entryscape .escoMap {
   @apply mb-lg;
 }
 
-.information-container,
-.information-container pre {
-  @apply font-ubuntu text-sm;
+.entryscape#entryscape_dialogs h3.popover-head {
+  @apply text-textSecondary;
 }
 
-.operation-tag-content > span:not(:last-child) .opblock {
-  @apply border-b-2 border-white !important;
+.entryscape#entryscape_dialogs
+  .popover-body
+  .rdformsPresenter
+  .rdformsRow.rdformsTopLevel {
+  @apply inline-flex flex-col;
 }
 
-.opblock-tag-section.is-open {
-  @apply mb-md !important;
+.entryscape .entryList .esbRowHead {
+  @apply max-h-none;
 }
 
-.opblock-tag {
-  @apply mb-xs flex cursor-pointer items-center justify-between bg-[#d8d8d8] p-md text-textPrimary [&_svg]:fill-textPrimary;
-}
-
-.opblock-deprecated {
-  background-color: #f8f8f8;
-}
-
-.opblock-deprecated .opblock-summary {
-  background-color: #ebebeb;
-}
-
-.opblock-deprecated .opblock-summary-method {
-  background-color: #5e5e5e;
-}
-
-.opblock-deprecated .table-container,
-.opblock-deprecated .responses-inner {
-  @apply p-none;
-}
-
-.opblock-deprecated .table-container thead,
-.opblock-deprecated .responses-inner thead {
+.entryscape .entryListRow .esbRowExpand {
   @apply bg-white;
 }
 
-.opblock-section-header .opblock-title span {
-  @apply text-md !important;
+.entryscape.pill-list .rdformsRow.rdformsTopLevel .rdformsFields .rdformsField {
+  @apply mb-sm w-fit bg-pink-200 px-sm py-xs font-strong;
 }
 
-.opblock-deprecated .opblock-title_normal {
-  @apply p-md;
-}
-
-.opblock-description-wrapper {
-  @apply mb-lg p-md;
-}
-
-.opblock-deprecated .opblock-section-header {
-  @apply hidden;
-}
-
-.opblock-summary-path__deprecated {
-  @apply line-through;
-}
-
-.opblock-summary-control {
-  @apply relative flex w-full items-center gap-lg text-left;
-}
-
-.opblock-summary-control .opblock-summary-path {
-  @apply break-keep text-left underline underline-offset-4;
-}
-
-.opblock-summary-control svg,
-.expand-operation svg {
-  @apply hidden;
-}
-
-.expand-operation {
-  @apply flex items-center;
-}
-
-.opblock-summary-control[aria-expanded="false"]::after {
-  content: url("/icons/chevron-down.svg");
-  @apply ml-auto h-[1.5rem] w-[1.5rem];
-}
-
-.opblock-summary-control[aria-expanded="true"]::after {
-  content: url("/icons/chevron-up.svg");
-  @apply ml-auto h-[1.5rem] w-[1.5rem];
-}
-
-.expand-operation[aria-expanded="false"]::after {
-  content: url("/icons/chevron-down.svg");
-  @apply ml-auto h-[1.5rem] w-[1.5rem];
-}
-
-.expand-operation[aria-expanded="true"]::after {
-  content: url("/icons/chevron-up.svg");
-  @apply ml-auto h-[1.5rem] w-[1.5rem];
-}
-
-.curl-command .copy-to-clipboard,
-.highlight-code .copy-to-clipboard {
-  @apply absolute bottom-[0.625rem] right-[0.625rem] flex h-[30px] w-[30px] items-center justify-center bg-white opacity-70 hover:opacity-90;
-}
-
-.copy-to-clipboard button {
-  background:
-    url("/icons/copy-to-clipboard.svg"),
-    no-repeat center;
-  @apply h-[20px] w-[20px] bg-contain;
-}
-
-.curl-command,
-.highlight-code,
-.request-url {
-  @apply relative mb-xl;
-}
-
-.download-contents {
-  @apply absolute bottom-[10px] right-[50px] flex h-[30px] cursor-pointer items-center bg-white px-sm pt-xs text-center text-textPrimary opacity-70 hover:opacity-90;
-}
-
-.opblock-summary .copy-to-clipboard {
-  @apply absolute right-[3rem] hidden h-[30px] cursor-pointer bg-brown-600 hover:bg-pink-600 !important;
-}
-
-.opblock-control-arrow {
-  @apply hidden;
-}
-
-.opblock-summary:hover > .copy-to-clipboard {
-  @apply md:flex !important;
-}
-
-.opblock-summary-control .opblock-summary-description {
-  @apply mr-xl hidden text-left text-sm md:block;
-}
-
-#operations-default-datasetQuery {
-  @apply relative;
-}
-
-.opblock-section-header {
-  @apply flex items-center justify-between text-lg;
-}
-
-.opblock-section-header span {
-  @apply text-sm;
-}
-.opblock-section-header label {
-  @apply flex items-center gap-md;
-}
-.opblock-section-header select,
-.scheme-container select {
-  @apply w-fit cursor-pointer border-r-8 border-transparent bg-[#d8d8d8] px-md py-sm text-md uppercase outline-none;
-}
-
-.parameters-col_description input {
-  @apply p-sm text-brown-900;
-}
-
-.entryscape a:not(.noUnderline),
-.entryscape a:not(.nostyle),
-.information-container a {
-  @apply block w-fit break-all text-sm text-green-600 underline hover:text-brown-900;
-}
-
-.entryscape a:hover,
-.information-container a:hover,
-.entryscape a.noUnderline {
-  @apply no-underline !important;
-}
-
-.entryscape h3 {
-  @apply mb-sm text-sm font-strong text-textSecondary !important;
-}
-
-.preamble {
-  @apply mb-lg font-ubuntu text-lg text-textSecondary md:mb-xl !important;
-}
-
-.conceptDetail h2 {
-  @apply mb-sm mt-none text-lg font-normal !important;
-}
-
-.conceptDetail span {
-  @apply text-md !important;
-}
-
-.conceptDetail a {
-  @apply mb-none w-fit text-md text-green-600 hover:text-green-600 !important;
-}
-
-.conceptDetail .entryList {
-  @apply space-y-sm !important;
-}
-
-.relatedList-label {
-  @apply mt-none text-lg !important;
-}
-
-.concept-header {
-  @apply mb-md text-lg !important;
-}
-
-.linkInBtn {
-  @apply text-white !important;
-}
-
-.concept_hierarchy {
-  @apply overflow-x-auto overflow-y-auto bg-white py-md;
-}
-
+/* Concept hierarchy styles */
 .concept_hierarchy svg {
-  @apply overflow-x-auto overflow-y-auto !important;
+  @apply overflow-x-auto overflow-y-auto;
 }
 
-.concept_hierarchy rect {
-  @apply max-w-sm fill-green-600 stroke-none text-white !important;
+.concept_hierarchy .esbHierarchy__rootNode rect {
+  @apply max-w-sm fill-green-600 stroke-green-600 text-white;
 }
 
 .concept_hierarchy text {
-  @apply fill-white !important;
+  @apply fill-white;
 }
 
-.esbHierarchy__expandableNode rect {
-  @apply fill-brown-900 !important;
+.concept_hierarchy .esbHierarchy__expandableNode rect {
+  @apply fill-brown-900 stroke-brown-900;
 }
 
-.esbHierarchy__leafNode rect {
-  @apply fill-brown-600 !important;
+.concept_hierarchy .esbHierarchy__leafNode rect {
+  @apply fill-brown-600 stroke-brown-600;
+}
+/* End of concept hierarchy styles */
+
+/* Entrysvpe pagination styles */
+.entryscape .entryPagination {
+  @apply p-none;
+}
+.entryscape .entryPagination .pagination .page-item .page-link {
+  @apply rounded-sm;
 }
 
-.entryListRow {
-  @apply mb-xs;
+.entryscape .entryPagination .pagination .page-item .page-link:not(:disabled) {
+  @apply border-none bg-white text-brown-900 shadow-none hover:bg-brown-200 focus-visible:bg-brown-200 focus-visible:outline-dashed focus-visible:outline-[3px] focus-visible:-outline-offset-2 focus-visible:outline-primary;
 }
 
-.responses-inner h4 {
-  @apply text-lg;
+.entryscape
+  .entryPagination
+  .pagination
+  .page-item
+  .page-link[disabled="true"] {
+  @apply border-none bg-white text-brown-400;
 }
 
-.responses-inner h5 {
-  @apply mb-sm;
+/* End of entrysvpe pagination styles */
+
+/* Resource button label + icon by href host: store (editera/admin) = download,
+   other dataportal.se = internal link, else external. Store rules come last to
+   override the generic dataportal one. */
+.resource-download .resource-download__icon--download,
+.resource-download .resource-download__icon--link {
+  @apply hidden;
 }
 
-.swagger-ui .no-margin {
-  overflow: auto;
+/* Internal portal link (any dataportal.se host): arrow instead of external. */
+.resource-download[href*="dataportal.se"] .resource-download__icon--external {
+  @apply hidden;
 }
 
-.swagger-ui .no-margin {
-  overflow: auto;
+.resource-download[href*="dataportal.se"] .resource-download__icon--link {
+  @apply inline;
 }
 
-.swagger-ui .opblock-body {
-  min-width: 500px;
+/* Store host = downloadable file: download icon overrides the link arrow. */
+.resource-download[href*="editera.dataportal.se"]
+.resource-download__icon--link,
+.resource-download[href*="admin.dataportal.se"] .resource-download__icon--link {
+  @apply hidden;
 }
 
-.eachprop__expandbutton,
-.eachprop__unexpandbutton {
-  @apply px-sm py-xs font-strong hover:bg-brown-200 focus-visible:bg-brown-200 !important;
+.resource-download[href*="editera.dataportal.se"]
+  .resource-download__icon--download,
+.resource-download[href*="admin.dataportal.se"]
+  .resource-download__icon--download {
+  @apply inline;
 }
 
-.esbLayerLegend__button span,
-.fa-chevron-up:before {
-  @apply text-sm text-textPrimary;
+/* Label: "Ladda ner" only for store (download) hosts, "Gå till resurs" else. */
+.resource-download .resource-download__label--download {
+  @apply hidden;
+}
+
+.resource-download[href*="editera.dataportal.se"]
+  .resource-download__label--goto,
+.resource-download[href*="admin.dataportal.se"]
+  .resource-download__label--goto {
+  @apply hidden;
+}
+
+.resource-download[href*="editera.dataportal.se"]
+  .resource-download__label--download,
+.resource-download[href*="admin.dataportal.se"]
+  .resource-download__label--download {
+  @apply inline;
 }

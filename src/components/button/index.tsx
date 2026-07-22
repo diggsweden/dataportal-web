@@ -35,6 +35,8 @@ const buttonVariants = cva(["button"], {
   },
 });
 
+export type ButtonVariant = VariantProps<typeof buttonVariants>["variant"];
+
 // Used to come from `SettingsContext.iconSize` (responsive to root
 // font-size). The context dance forced `<Button>` into a client tree
 // because `useContext` is client-only, which in turn made server

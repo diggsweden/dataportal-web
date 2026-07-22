@@ -1,5 +1,6 @@
 "use client";
 
+import "@/styles/entryscape-swagger.css";
 import dynamic from "next/dynamic";
 import { type ComponentProps, type ComponentType, useContext } from "react";
 
