@@ -85,7 +85,7 @@ export function ConceptPage() {
       mainLayout="content"
       sidebarLayout="panelRaised"
       sidebarTestId="about-section"
-      main={
+      intro={
         <>
           <LabelLink
             value={entry.relatedResource}
@@ -96,12 +96,15 @@ export function ConceptPage() {
 
           <Badge
             color="dark-green"
-            className="w-fit mb-lg"
+            className="flex w-fit mb-lg"
             text={t("pages.data-structures.types.concept")}
           />
-
+        </>
+      }
+      main={
+        <>
           <p
-            className="mb-lg text-textSecondary whitespace-pre-line"
+            className="mb-lg empty:mb-none text-textSecondary whitespace-pre-line"
             data-test-id="description"
             data-entryscape="text"
             data-entryscape-property="skos:definition"

@@ -75,17 +75,16 @@ export function DataStructurePage({ pageType }: DataStructurePageProps) {
       mainLayout="content"
       sidebarLayout="panelRaised"
       sidebarTestId="about-section"
+      intro={
+        <Badge
+          text={t(`pages.data-structures.types.${pageType}`)}
+          color="dark-green"
+        />
+      }
       main={
         <>
-          <div className="mb-lg">
-            <Badge
-              text={t(`pages.data-structures.types.${pageType}`)}
-              color="dark-green"
-            />
-          </div>
-
           <p
-            className="mb-lg text-textSecondary whitespace-pre-line"
+            className="mb-lg empty:mb-none text-textSecondary whitespace-pre-line"
             data-test-id="description"
             data-entryscape="text"
             data-entryscape-property="rdfs:comment"

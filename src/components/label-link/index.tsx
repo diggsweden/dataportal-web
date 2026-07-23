@@ -9,7 +9,7 @@ import type { LabelLink as LabelLinkValue } from "@/lib/entrystore/entrystore-co
 import { SettingsContext } from "@/providers/settings-provider";
 import { isMailLink } from "@/utilities";
 
-const linkVariants = cva("inline-block w-fit hover:no-underline", {
+const linkVariants = cva("inline-block w-fit", {
   variants: {
     size: {
       large: "text-lg",
@@ -22,10 +22,15 @@ const linkVariants = cva("inline-block w-fit hover:no-underline", {
       primary: "text-textPrimary",
       link: "text-green-600",
     },
+    underline: {
+      true: "underline hover:no-underline",
+      false: "no-underline hover:underline",
+    },
   },
   defaultVariants: {
     size: "large",
     color: "dark",
+    underline: true,
   },
 });
 
@@ -42,6 +47,7 @@ export function LabelLink({
   value,
   size,
   color,
+  underline,
   className,
   testId,
 }: LabelLinkProps) {
@@ -57,7 +63,7 @@ export function LabelLink({
         data-test-id={testId}
         href={url}
         className={cx(
-          linkVariants({ size, color: color || "link" }),
+          linkVariants({ size, color: color || "link", underline }),
           isUrlText ? "break-all" : "break-words",
           className,
         )}

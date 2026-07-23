@@ -32,7 +32,7 @@ export function Accordion({
         <ChevronDownIcon
           width={24}
           height={24}
-          className="flex-shrink-0 duration-300 transition-transform group-open/accordion:rotate-180"
+          className="flex-shrink-0 duration-300 transition-transform rotate-180 group-open/accordion:rotate-0"
         />
         <span>{title}</span>
       </summary>
