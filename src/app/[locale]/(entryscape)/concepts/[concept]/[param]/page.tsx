@@ -11,13 +11,8 @@ export default async function ConceptParam({ params }: PageProps) {
   return renderEntryStoreResourcePage({
     locale,
     pageType: "concept",
-    config: {
-      pathPrefix: "/concepts",
-      redirectPath: "/concepts",
-      entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
-      param: concept,
-      secondParam: param,
-    },
+    param: concept,
+    secondParam: param,
     body: <ConceptPage />,
   });
 }

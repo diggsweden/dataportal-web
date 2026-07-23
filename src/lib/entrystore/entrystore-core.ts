@@ -60,6 +60,70 @@ export type PageType =
   | "property"
   | "mqa";
 
+/** The two physical EntryStores a page can use. */
+export type EntryStoreName = "admin" | "editera";
+
+/** Canonical pretty-URL prefixes for resource pages. */
+export type RedirectPath =
+  | "/concepts"
+  | "/specifications"
+  | "/terminology"
+  | "/class"
+  | "/property";
+
+/** Page types that resolve a resource URI into a canonical redirect. */
+export type ResolverPageType =
+  | "specification"
+  | "terminology"
+  | "concept"
+  | "class"
+  | "property";
+
+/**
+ * Per-page routing config. `store` is required for every page; `pathPrefix`
+ * and `redirectPath` exist only for resolver pages (those reachable by URI).
+ */
+export interface RouteConfig {
+  store: EntryStoreName;
+  pathPrefix?: string;
+  redirectPath?: RedirectPath;
+}
+
+/**
+ * Single source of truth for which store each page uses and — for resolver
+ * pages — its URI/redirect paths. `satisfies Record<PageType, …>` forces every
+ * PageType to be listed, so a new page can't be added without a store.
+ */
+export const ROUTE_CONFIG = {
+  dataset: { store: "admin" },
+  "dataset-series": { store: "admin" },
+  dataservice: { store: "admin" },
+  apiexplore: { store: "admin" },
+  organisation: { store: "admin" },
+  mqa: { store: "admin" },
+  specification: {
+    store: "admin",
+    pathPrefix: "/specifications",
+    redirectPath: "/specifications",
+  },
+  terminology: {
+    store: "editera",
+    pathPrefix: "/concepts",
+    redirectPath: "/terminology",
+  },
+  concept: {
+    store: "editera",
+    pathPrefix: "/concepts",
+    redirectPath: "/concepts",
+  },
+  class: { store: "editera", pathPrefix: "/concepts", redirectPath: "/class" },
+  property: {
+    store: "editera",
+    pathPrefix: "/concepts",
+    redirectPath: "/property",
+  },
+} as const satisfies Record<PageType, RouteConfig>;
+
 /** A label that is optionally a link (url absent/empty ⇒ render as text). */
 export interface LabelLink {
   title: string;
@@ -90,6 +154,7 @@ export interface ESEntry {
   esId: string;
   contact?: LabelLink;
   relatedSpecifications?: LabelLink[];
+  relatedSpecificationsInteroperable?: LabelLink[];
   domain?: LabelLink;
   range?: LabelLink;
   keywords?: string[];

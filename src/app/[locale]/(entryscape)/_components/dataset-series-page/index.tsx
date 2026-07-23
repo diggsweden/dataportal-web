@@ -49,8 +49,8 @@ export function DatasetSeriesPage() {
   const lang = useLocale();
 
   const searchProviderSettings = useMemo(
-    () => createSearchProviderSettings(env, lang),
-    [env, lang],
+    () => createSearchProviderSettings(lang),
+    [lang],
   );
 
   return (
@@ -92,6 +92,7 @@ export function DatasetSeriesPage() {
 
       <SearchProvider
         {...searchProviderSettings["datasets-series"]}
+        env={env}
         entry={entry.entry}
       >
         <SearchContext.Consumer>

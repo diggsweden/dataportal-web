@@ -27,13 +27,7 @@ export default async function MqaCategoryPage({ params }: PageProps) {
   const { env } = await getEntryscapeEnv();
 
   return (
-    <EntrystoreProvider
-      env={env}
-      cid={cid}
-      eid={eid}
-      entrystoreUrl={env.ENTRYSCAPE_MQA_PATH}
-      pageType="mqa"
-    >
+    <EntrystoreProvider env={env} cid={cid} eid={eid} pageType="mqa">
       <MQACategoryPage />
     </EntrystoreProvider>
   );

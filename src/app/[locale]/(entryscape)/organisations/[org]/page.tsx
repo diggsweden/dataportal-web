@@ -19,13 +19,7 @@ export default async function Organisation({ params }: PageProps) {
   const { cid, eid } = splitEntryId(org);
 
   return (
-    <EntrystoreProvider
-      env={env}
-      cid={cid}
-      eid={eid}
-      entrystoreUrl={env.ENTRYSCAPE_DATASETS_PATH}
-      pageType="organisation"
-    >
+    <EntrystoreProvider env={env} cid={cid} eid={eid} pageType="organisation">
       <OrganisationPage />
     </EntrystoreProvider>
   );

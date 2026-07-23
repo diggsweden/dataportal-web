@@ -98,7 +98,8 @@ export type RedirectConfig = {
     | "/terminology"
     | "/class"
     | "/property";
-  entrystorePathKey: "ENTRYSCAPE_TERMS_PATH" | "ENTRYSCAPE_SPECS_PATH";
+  /** Which physical store this page's entry lives in. */
+  store: "admin" | "editera";
   param?: string | string[];
   secondParam?: string;
 };

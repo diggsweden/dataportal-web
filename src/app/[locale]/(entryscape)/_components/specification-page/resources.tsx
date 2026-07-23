@@ -74,6 +74,7 @@ export function SpecificationResources() {
       data-entryscape-template="prof:ResourceDescriptor"
       data-entryscape-rdftype="prof:ResourceDescriptor"
       data-entryscape-expand-button="false"
+      data-entryscape-limit="100"
       data-entryscape-listbody={listbody}
       data-entryscape-listplaceholder={placeholder}
       data-entryscape-rowhead={wrap(introduced, rowContent)}

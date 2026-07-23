@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 import { isAppLocale } from "@/i18n/routing";
+import { ROUTE_CONFIG } from "@/lib/entrystore/entrystore-core";
 import { resolveEntryStoreRoute } from "@/lib/entrystore/resolve-entry-store-route";
 import { getEntryscapeEnv } from "@/lib/entrystore/route-helpers";
 
@@ -24,11 +25,7 @@ export default async function ExternalConcept({
   const { isSandbox } = await getEntryscapeEnv();
 
   const result = await resolveEntryStoreRoute(
-    {
-      pathPrefix: "/concepts",
-      redirectPath: "/concepts",
-      entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
-    },
+    ROUTE_CONFIG.concept,
     locale,
     isSandbox,
     resource,

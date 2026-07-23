@@ -11,12 +11,7 @@ export default async function Class({ params }: PageProps) {
   return renderEntryStoreResourcePage({
     locale,
     pageType: "class",
-    config: {
-      pathPrefix: "/concepts",
-      redirectPath: "/class",
-      entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
-      param: classId,
-    },
+    param: classId,
     body: <DataStructurePage pageType="class" />,
   });
 }

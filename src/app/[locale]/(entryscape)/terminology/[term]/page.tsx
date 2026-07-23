@@ -11,12 +11,7 @@ export default async function Terminology({ params }: PageProps) {
   return renderEntryStoreResourcePage({
     locale,
     pageType: "terminology",
-    config: {
-      pathPrefix: "/concepts",
-      redirectPath: "/terminology",
-      entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
-      param: term,
-    },
-    body: <TerminologyPage />,
+    param: term,
+    body: <TerminologyPage pageType="terminology" />,
   });
 }

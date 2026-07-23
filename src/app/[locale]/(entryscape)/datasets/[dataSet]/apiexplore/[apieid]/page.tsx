@@ -21,13 +21,7 @@ export default async function ExploreApiPage({ params }: PageProps) {
 
   return (
     <ApiIndexProvider apiIndexFileUrl={env.API_DETECTION_PATH}>
-      <EntrystoreProvider
-        env={env}
-        cid={cid}
-        eid={eid}
-        entrystoreUrl={env.ENTRYSCAPE_DATASETS_PATH}
-        pageType="apiexplore"
-      >
+      <EntrystoreProvider env={env} cid={cid} eid={eid} pageType="apiexplore">
         <DataSetExploreApiPage dataSet={dataSet} apieid={apieid} />
       </EntrystoreProvider>
     </ApiIndexProvider>

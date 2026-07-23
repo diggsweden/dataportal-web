@@ -11,12 +11,7 @@ export default async function Property({ params }: PageProps) {
   return renderEntryStoreResourcePage({
     locale,
     pageType: "property",
-    config: {
-      pathPrefix: "/concepts",
-      redirectPath: "/property",
-      entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
-      param: property,
-    },
+    param: property,
     body: <DataStructurePage pageType="property" />,
   });
 }

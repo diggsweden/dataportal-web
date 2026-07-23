@@ -35,9 +35,8 @@ export async function resolveEntryStoreRoute(
     getResourceLabel(lang),
   ]);
   const entrystoreService = EntrystoreService.getInstance({
-    baseUrl:
-      `https://${env[config.entrystorePathKey]}/store` ||
-      "https://admin.dataportal.se/store",
+    store: config.store,
+    env,
     lang,
     t,
     resourceLabel,

@@ -5,9 +5,14 @@ import type {
   Metadata,
   MetadataValue,
 } from "@entryscape/entrystore-js";
+import type { EnvSettings } from "@/env";
 import { SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
 import type { ResourceLabel } from "@/i18n/types";
+import {
+  type EntryStoreName,
+  ROUTE_CONFIG,
+} from "@/lib/entrystore/entrystore-core";
 import type { RedirectConfig } from "@/types/global";
 
 import { includeLangInPath } from "@/utilities/check-lang";
@@ -156,13 +161,34 @@ export function formatTerminologyAddress(
     : resourceUri;
 }
 
+/** Search URL with one URI facet pre-selected (the `f=` facet-value format). */
+export function buildFacetSearchLink(
+  path: string,
+  predicate: string,
+  resource: string,
+  facetLabel: string,
+  title: string,
+): string {
+  const facetValue = `${predicate}||${resource}||false||uri||${facetLabel}||${title}`;
+  return `/${path}?q=&f=${encodeURIComponent(facetValue)}`;
+}
+
+/** Base URL of a page's chosen store, resolved against the given env. */
+export function entryStoreBaseUrl(env: EnvSettings, store: EntryStoreName) {
+  const host =
+    store === "editera"
+      ? env.ENTRYSCAPE_EDITERA_PATH
+      : env.ENTRYSCAPE_ADMIN_PATH;
+  return `https://${host}/store`;
+}
+
 export function createPathResolver(config: RedirectConfig) {
   return (hitMeta: Entry) => {
     const resourceUri = hitMeta.getResourceURI();
     const env = resourceUri.includes("sandbox")
       ? new Settings_Sandbox()
       : SettingsUtil.create();
-    const baseUrl = env[config.entrystorePathKey].includes("sandbox")
+    const baseUrl = resourceUri.includes("sandbox")
       ? env.SANDBOX_BASE_URL
       : env.PRODUCTION_BASE_URL;
 
@@ -184,35 +210,11 @@ export function createPathResolver(config: RedirectConfig) {
   };
 }
 
-export const specsPathResolver = createPathResolver({
-  pathPrefix: "/specifications",
-  redirectPath: "/specifications",
-  entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
-});
-
-export const conceptsPathResolver = createPathResolver({
-  pathPrefix: "/concepts",
-  redirectPath: "/concepts",
-  entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
-});
-
-export const termsPathResolver = createPathResolver({
-  pathPrefix: "/concepts",
-  redirectPath: "/terminology",
-  entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
-});
-
-export const classPathResolver = createPathResolver({
-  pathPrefix: "/concepts",
-  redirectPath: "/class",
-  entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
-});
-
-export const propertyPathResolver = createPathResolver({
-  pathPrefix: "/concepts",
-  redirectPath: "/property",
-  entrystorePathKey: "ENTRYSCAPE_TERMS_PATH",
-});
+export const specsPathResolver = createPathResolver(ROUTE_CONFIG.specification);
+export const conceptsPathResolver = createPathResolver(ROUTE_CONFIG.concept);
+export const termsPathResolver = createPathResolver(ROUTE_CONFIG.terminology);
+export const classPathResolver = createPathResolver(ROUTE_CONFIG.class);
+export const propertyPathResolver = createPathResolver(ROUTE_CONFIG.property);
 
 // ============================================================================
 // Template and Choice Helpers

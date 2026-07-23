@@ -21,7 +21,7 @@ export default function MetadatakvalitetPage() {
   const pageTitle = t("routes.metadata.title");
 
   useEntryScapeBlocks({
-    entrystoreBase: `https://${env.ENTRYSCAPE_MQA_PATH}/store`,
+    entrystoreBase: `https://${env.ENTRYSCAPE_ADMIN_PATH}/store`,
     env: env,
     lang: lang,
     pageType: "mqa",
@@ -44,7 +44,7 @@ export default function MetadatakvalitetPage() {
 
       <div
         data-entryscape="config"
-        data-entryscape-entrystore={`https://${env.ENTRYSCAPE_MQA_PATH}/store`}
+        data-entryscape-entrystore={`https://${env.ENTRYSCAPE_ADMIN_PATH}/store`}
       />
 
       <div data-entryscape="totMQA" className="totMQA" />

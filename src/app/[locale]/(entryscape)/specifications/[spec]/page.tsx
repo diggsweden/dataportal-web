@@ -11,12 +11,7 @@ export default async function Specification({ params }: PageProps) {
   return renderEntryStoreResourcePage({
     locale,
     pageType: "specification",
-    config: {
-      pathPrefix: "/specifications",
-      redirectPath: "/specifications",
-      entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
-      param: spec,
-    },
+    param: spec,
     body: <SpecificationPage />,
   });
 }

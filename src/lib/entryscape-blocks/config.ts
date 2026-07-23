@@ -48,7 +48,7 @@ export const createBlocksConfig = ({
           itemstore: {
             bundles: [
               `https://${
-                env.ENTRYSCAPE_SPECS_PATH.includes("sandbox")
+                env.ENTRYSCAPE_ADMIN_PATH.includes("sandbox")
                   ? "sandbox.admin.dataportal.se"
                   : "editera.dataportal.se"
               }/theme/templates/adms.json`,

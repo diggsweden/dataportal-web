@@ -4,7 +4,6 @@ import type { EnvSettings } from "./env-settings";
 import { Settings_Dev } from "./settings.dev";
 import { Settings_Prod } from "./settings.prod";
 import { Settings_Sandbox } from "./settings.sandbox";
-import { Settings_Test } from "./settings.test";
 
 /**
  * Utility for non secret application runtime settings.
@@ -49,8 +48,6 @@ export class SettingsUtil {
     switch (envName) {
       case "dev":
         return new Settings_Dev();
-      case "test":
-        return new Settings_Test();
       case "stage":
         return new Settings_Prod();
       case "sandbox":

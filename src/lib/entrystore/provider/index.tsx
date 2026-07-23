@@ -15,8 +15,14 @@ import { SettingsUtil } from "@/env/settings-util";
 import { useResourceLabel } from "@/i18n/use-resource-label";
 import { useEntryScapeBlocks } from "@/lib/entryscape-blocks/use-blocks";
 import { EntrystoreService } from "@/lib/entrystore/entrystore.service";
-import type { ESEntry, PageType } from "@/lib/entrystore/entrystore-core";
 import {
+  type EntryStoreName,
+  type ESEntry,
+  type PageType,
+  ROUTE_CONFIG,
+} from "@/lib/entrystore/entrystore-core";
+import {
+  buildFacetSearchLink,
   formatTerminologyAddress,
   getContactEmail,
   getFirstMatchingValue,
@@ -57,9 +63,20 @@ export interface EntrystoreProviderProps {
   eid?: string;
   rUri?: string;
   entryUri?: string;
-  entrystoreUrl?: string;
   includeContact?: boolean;
   pageType: PageType;
+}
+
+/**
+ * The two physical EntryStores. `admin` (admin.dataportal.se) holds datasets,
+ * specifications, MQA and data vocabularies; `editera` (editera.dataportal.se)
+ * holds concepts, terminologies, classes and properties. A page uses its
+ * primary store and reaches across to the other explicitly for cross-store
+ * links (e.g. a property → its data vocabulary).
+ */
+export interface EntryStores {
+  admin: EntrystoreService;
+  editera: EntrystoreService;
 }
 
 export const EntrystoreContext = createContext<ESEntry>(defaultESEntry);
@@ -76,7 +93,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   cid,
   eid,
   rUri,
-  entrystoreUrl,
   includeContact,
   pageType,
 }) => {
@@ -89,13 +105,16 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   let entry: Entry;
   let resourceUri: string;
 
-  const entrystoreService = EntrystoreService.getInstance({
-    baseUrl:
-      `https://${entrystoreUrl}/store` || "https://admin.dataportal.se/store",
-    lang,
-    t,
-    resourceLabel,
-  });
+  // Both physical stores, always available. The page's `store` picks the
+  // primary (used to load the entry and for its own-store fetches); cross-store
+  // work names the other one explicitly.
+  const makeStore = (name: EntryStoreName) =>
+    EntrystoreService.getInstance({ store: name, env, lang, t, resourceLabel });
+  const stores: EntryStores = {
+    admin: makeStore("admin"),
+    editera: makeStore("editera"),
+  };
+  const entrystoreService = stores[ROUTE_CONFIG[pageType].store];
 
   entrystoreService.getEntryStoreUtil();
 
@@ -150,39 +169,10 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       const metadata = entry.getAllMetadata();
 
-      // Parallel fetch for publisher info
-      // TODO: Remove this when concepts and terminologies are moved to admin.dataportal.se
-      const adminEntrystoreService = [
-        "concept",
-        "terminology",
-        "class",
-        "property",
-      ].includes(pageType)
-        ? EntrystoreService.getInstance({
-            baseUrl: `https://${
-              entry.getEntryInfo().getMetadataURI().includes("sandbox")
-                ? "sandbox."
-                : ""
-            }admin.dataportal.se/store`,
-            lang,
-            t,
-            resourceLabel,
-          })
-        : entrystoreService;
-
-      // TODO: Remove this when concepts and terminologies are moved to admin.dataportal.se
-      const termsEntrystoreService =
-        pageType === "specification"
-          ? EntrystoreService.getInstance({
-              baseUrl: `https://${env.ENTRYSCAPE_TERMS_PATH}/store`,
-              lang,
-              t,
-              resourceLabel,
-            })
-          : entrystoreService;
+      // Publishers live in the admin store.
       const publisherPromise =
         pageType !== "mqa"
-          ? await adminEntrystoreService.getPublisherInfo(resourceUri, metadata)
+          ? await stores.admin.getPublisherInfo(resourceUri, metadata)
           : Promise.resolve({ name: "", entry: null });
 
       const entryData: Partial<ESEntry> = {
@@ -220,8 +210,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         metadata,
         resourceUri,
         entrystoreService,
-        adminEntrystoreService,
-        termsEntrystoreService,
+        stores,
         publisherEntry,
         name,
         defaultESEntry.env,
@@ -244,8 +233,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     metadata: Metadata,
     resourceUri: string,
     entrystoreService: EntrystoreService,
-    adminEntrystoreService: EntrystoreService,
-    termsEntrystoreService: EntrystoreService,
+    stores: EntryStores,
     publisherEntry: Entry | null,
     publisherName: string,
     env: EnvSettings,
@@ -270,7 +258,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           ]);
 
         return {
-          relatedSpecifications: specs,
+          relatedSpecifications: specs.all,
           keywords,
           downloadFormats: formats,
           mqaCatalog: mqa,
@@ -319,7 +307,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       case "organisation": {
         // Fetch all organisation data in parallel
         const [orgData, formats, mqa] = await Promise.all([
-          getOrganisationDatasets(entry, resourceUri, metadata),
+          getOrganisationDatasets(entry, resourceUri, metadata, stores),
           entrystoreService.getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
           ),
@@ -338,14 +326,10 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       }
 
       case "terminology": {
-        // Fetch specifications and formats in parallel
-        // TODO: replace adminEntrystoreService with entrystoreService when concepts and terminologies are moved to admin.dataportal.se
+        // Fetch specifications and formats in parallel. Specs live in the
+        // admin store.
         const [specs, formats, organisationLink] = await Promise.all([
-          adminEntrystoreService.getRelatedSpecifications(
-            entry,
-            metadata,
-            pageType,
-          ),
+          stores.admin.getRelatedSpecifications(entry, metadata, pageType),
           entrystoreService.getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
           ),
@@ -353,7 +337,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         ]);
 
         return {
-          relatedSpecifications: specs,
+          relatedSpecifications: specs.all,
           address: formatTerminologyAddress(resourceUri, [
             env.PRODUCTION_BASE_URL,
             env.SANDBOX_BASE_URL,
@@ -376,7 +360,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
             ),
             entrystoreService.getOrganisationLink(publisherEntry),
             entrystoreService.getSpecificationImage(entry),
-            entrystoreService.getSpecTerms(entry, termsEntrystoreService),
+            entrystoreService.getSpecTerms(entry, stores.editera),
           ]);
 
         return {
@@ -400,8 +384,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
             entry.getEntryInfo().getMetadataURI(),
           ),
         ]);
-        // TODO: replace adminEntrystoreService with entrystoreService when concepts and terminologies are moved to admin.dataportal.se
-        const spec = await adminEntrystoreService.getRelatedSpecifications(
+        // Specs live in the admin store.
+        const spec = await stores.admin.getRelatedSpecifications(
           termEntry,
           termEntry.getAllMetadata(),
           pageType,
@@ -416,7 +400,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
             url: `${includeLangInPath(lang)}${termsPathResolver(termEntry)}`,
           },
           downloadFormats: formats,
-          relatedSpecifications: spec,
+          relatedSpecifications: spec.all,
         };
       }
 
@@ -424,10 +408,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       case "property": {
         // Fetch data structure details and formats in parallel
         const [definedBy, formats] = await Promise.all([
-          entrystoreService.getDataVocabularyLink(
-            metadata,
-            adminEntrystoreService,
-          ),
+          entrystoreService.getDataVocabularyLink(metadata, stores.admin),
           entrystoreService.getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
           ),
@@ -451,6 +432,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     entry: Entry,
     uri: string,
     metadata: Metadata,
+    stores: EntryStores,
   ) => {
     try {
       const data: OrganisationData = {
@@ -465,19 +447,23 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
             { total: 0, title: t("pages.organisation_page.fee-data") },
             { total: 0, title: t("pages.organisation_page.spec-data") },
           ],
-          link: `/datasets?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${encodeURIComponent(
+          link: buildFacetSearchLink(
+            "datasets",
+            "http://purl.org/dc/terms/publisher",
             uri,
-          )}%7C%7Cfalse%7C%7Curi%7C%7COrganisationer%7C%7C${encodeURIComponent(
+            "Organisationer",
             metadata.findFirstValue(null, "foaf:name"),
-          )}`,
+          ),
         },
         specifications: {
           total: 0,
-          link: `/specifications?f=http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Fpublisher%7C%7C${encodeURIComponent(
+          link: buildFacetSearchLink(
+            "specifications",
+            "http://purl.org/dc/terms/publisher",
             uri,
-          )}%7C%7Cfalse%7C%7Curi%7C%7CStandarder%7C%7C${encodeURIComponent(
+            "Standarder",
             metadata.findFirstValue(null, "foaf:name"),
-          )}`,
+          ),
         },
         terms: { total: 0, termsInfo: [] },
         orgClassification: metadata.findFirstValue(null, "org:classification"),
@@ -485,17 +471,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         orgType: "",
         showcases: [],
       };
-
-      const termsEntrystoreService = EntrystoreService.getInstance({
-        baseUrl: `https://${
-          entry.getEntryInfo().getMetadataURI().includes("sandbox")
-            ? "sandbox."
-            : ""
-        }editera.dataportal.se/store`,
-        lang,
-        t,
-        resourceLabel,
-      });
 
       const dcatMeta = await fetchDCATMeta();
 
@@ -626,7 +601,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       // Fetch terms counts
       try {
-        const terms = termsEntrystoreService
+        const terms = stores.editera
           .getEntryStore()
           .newSolrQuery()
           .publicRead(true)

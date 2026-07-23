@@ -19,13 +19,7 @@ export default async function DataSeries({ params }: PageProps) {
   const { cid, eid } = splitEntryId(id);
 
   return (
-    <EntrystoreProvider
-      env={env}
-      cid={cid}
-      eid={eid}
-      entrystoreUrl={env.ENTRYSCAPE_DATASETS_PATH}
-      pageType="dataset-series"
-    >
+    <EntrystoreProvider env={env} cid={cid} eid={eid} pageType="dataset-series">
       <DatasetSeriesPage />
     </EntrystoreProvider>
   );

@@ -101,6 +101,7 @@ export function DistributionList() {
       data-entryscape-registry="true"
       data-entryscape-expand-button="false"
       data-entryscape-listbody="{{body}}"
+      data-entryscape-limit="100"
       data-entryscape-listplaceholder={listplaceholder}
       data-entryscape-rowhead={rowhead}
       data-entryscape-rowexpand={rowexpand}

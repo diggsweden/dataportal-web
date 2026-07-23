@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 import { isAppLocale } from "@/i18n/routing";
+import { ROUTE_CONFIG } from "@/lib/entrystore/entrystore-core";
 import { resolveEntryStoreRoute } from "@/lib/entrystore/resolve-entry-store-route";
 import { getEntryscapeEnv } from "@/lib/entrystore/route-helpers";
 
@@ -24,11 +25,7 @@ export default async function ExternalSpecification({
   const { isSandbox } = await getEntryscapeEnv();
 
   const result = await resolveEntryStoreRoute(
-    {
-      pathPrefix: "/specifications",
-      redirectPath: "/specifications",
-      entrystorePathKey: "ENTRYSCAPE_SPECS_PATH",
-    },
+    ROUTE_CONFIG.specification,
     locale,
     isSandbox,
     resource,

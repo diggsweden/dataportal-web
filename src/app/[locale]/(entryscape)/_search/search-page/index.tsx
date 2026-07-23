@@ -69,8 +69,8 @@ export function SearchPage({ searchType }: SearchPageProps) {
   const pageTitle = t(`routes.${searchType}.title`);
 
   const searchProviderSettings = useMemo(
-    () => createSearchProviderSettings(env, lang),
-    [env, lang],
+    () => createSearchProviderSettings(lang),
+    [lang],
   );
 
   return (
@@ -88,7 +88,7 @@ export function SearchPage({ searchType }: SearchPageProps) {
         key="twitter:title"
       />
 
-      <SearchProvider {...searchProviderSettings[searchType]}>
+      <SearchProvider {...searchProviderSettings[searchType]} env={env}>
         <SearchContext.Consumer>
           {(search) => (
             <>

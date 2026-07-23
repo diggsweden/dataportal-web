@@ -2,16 +2,19 @@ import { notFound, redirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { isAppLocale } from "@/i18n/routing";
-import type { PageType } from "@/lib/entrystore/entrystore-core";
+import {
+  type ResolverPageType,
+  ROUTE_CONFIG,
+} from "@/lib/entrystore/entrystore-core";
 import { EntrystoreProvider } from "@/lib/entrystore/provider";
 import { resolveEntryStoreRoute } from "@/lib/entrystore/resolve-entry-store-route";
 import { getEntryscapeEnv } from "@/lib/entrystore/route-helpers";
-import type { RedirectConfig } from "@/types/global";
 
 interface RenderEntryStoreResourcePageArgs {
   locale: string;
-  config: RedirectConfig;
-  pageType: PageType;
+  pageType: ResolverPageType;
+  param?: string | string[];
+  secondParam?: string;
   body: ReactNode;
   /** Resource URI for `external*` entry points that resolve via `?resource=`. */
   resourceUri?: string;
@@ -25,8 +28,9 @@ interface RenderEntryStoreResourcePageArgs {
  */
 export async function renderEntryStoreResourcePage({
   locale,
-  config,
   pageType,
+  param,
+  secondParam,
   body,
   resourceUri,
 }: RenderEntryStoreResourcePageArgs) {
@@ -35,7 +39,7 @@ export async function renderEntryStoreResourcePage({
 
   const { env, isSandbox } = await getEntryscapeEnv();
   const result = await resolveEntryStoreRoute(
-    config,
+    { ...ROUTE_CONFIG[pageType], param, secondParam },
     locale,
     isSandbox,
     resourceUri,
@@ -50,12 +54,7 @@ export async function renderEntryStoreResourcePage({
       : { cid: result.cid, eid: result.eid };
 
   return (
-    <EntrystoreProvider
-      env={env}
-      entrystoreUrl={env[config.entrystorePathKey]}
-      pageType={pageType}
-      {...idProps}
-    >
+    <EntrystoreProvider env={env} pageType={pageType} {...idProps}>
       {body}
     </EntrystoreProvider>
   );

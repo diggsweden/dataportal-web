@@ -6,8 +6,10 @@ import {
 } from "@entryscape/entrystore-js";
 // @ts-expect-error no types.
 import { namespaces } from "@entryscape/rdfjson";
+import type { EnvSettings } from "@/env";
 import type { ResourceLabel, Translate } from "@/i18n/types";
 import {
+  type EntryStoreName,
   type ESFacetField,
   type ESFacetFieldValue,
   ESRdfType,
@@ -39,6 +41,7 @@ import {
 } from "@/utilities";
 import type { DCATData } from "@/utilities/dcat-utils";
 import {
+  entryStoreBaseUrl,
   parseEmail,
   specsPathResolver,
   termsPathResolver,
@@ -46,7 +49,11 @@ import {
 import { entryCache } from "./local-cache";
 
 interface EntryStoreConfig {
-  baseUrl: string;
+  /** The store this service reads/queries (its primary store). */
+  store: EntryStoreName;
+  /** Resolves store hosts; the admin store is always reachable for cross-store
+   *  links (e.g. a data structure's data vocabulary, which lives in admin). */
+  env: EnvSettings;
   lang: string;
   t: Translate;
   /**
@@ -68,6 +75,9 @@ export class EntrystoreService {
   // ============================================================================
   private entryStore: EntryStore;
   private entryStoreUtil: EntryStoreUtil;
+  /** Admin-store util for cross-store links; equals entryStoreUtil when this
+   *  service's primary store is already admin. */
+  private adminEntryStoreUtil: EntryStoreUtil;
   private t: Translate;
   private resourceLabel: ResourceLabel;
   private lang: string;
@@ -81,9 +91,21 @@ export class EntrystoreService {
   private facetSpecification: FacetSpecification = {};
 
   private constructor(config: EntryStoreConfig) {
-    this.entryStore = new EntryStore(config.baseUrl);
+    this.entryStore = new EntryStore(
+      entryStoreBaseUrl(config.env, config.store),
+    );
     this.entryStoreUtil = new EntryStoreUtil(this.entryStore);
     this.entryStoreUtil.loadOnlyPublicEntries(true);
+
+    if (config.store === "admin") {
+      this.adminEntryStoreUtil = this.entryStoreUtil;
+    } else {
+      this.adminEntryStoreUtil = new EntryStoreUtil(
+        new EntryStore(entryStoreBaseUrl(config.env, "admin")),
+      );
+      this.adminEntryStoreUtil.loadOnlyPublicEntries(true);
+    }
+
     this.lang = config.lang;
     this.t = config.t;
     this.resourceLabel = config.resourceLabel;
@@ -794,6 +816,23 @@ export class EntrystoreService {
           } catch (error) {
             console.error("Error resolving terminology link:", error);
           }
+        } else if (definedByUri) {
+          try {
+            const vocabEntry =
+              await this.adminEntryStoreUtil.getEntryByResourceURI(
+                definedByUri,
+              );
+            if (vocabEntry) {
+              const vocabMeta = vocabEntry.getAllMetadata();
+              parentUrl = `${includeLangInPath(this.lang)}/data-vocabulary/${vocabEntry
+                .getContext()
+                .getId()}_${vocabEntry.getId()}`;
+              parentName =
+                getLocalizedValue(vocabMeta, "dcterms:title", definedByUri) ||
+                getLocalizedValue(vocabMeta, "rdfs:label", definedByUri) ||
+                parentName;
+            }
+          } catch {}
         }
 
         values.inScheme_resource = [parentName];
@@ -967,12 +1006,15 @@ export class EntrystoreService {
             true,
           );
 
-        return resourceEntries
-          .filter((e: Entry) => e)
-          .map((e: Entry) => ({
-            title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-            url: `${includeLangInPath(this.lang)}${specsPathResolver(e)}`,
-          }));
+        return {
+          all: resourceEntries
+            .filter((e: Entry) => e)
+            .map((e: Entry) => ({
+              title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
+              url: `${includeLangInPath(this.lang)}${specsPathResolver(e)}`,
+            })),
+          interoperable: [] as LabelLink[],
+        };
       } else if (pageType === "terminology" || pageType === "concept") {
         const resourceUri = entry
           .getResourceURI()
@@ -992,24 +1034,41 @@ export class EntrystoreService {
           .rdfType([ESRdfType.spec_standard, ESRdfType.spec_profile])
           .getEntries();
 
-        return specifications
-          .filter((e: Entry) => e)
-          .map((e: Entry) => ({
-            title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
+        const all: LabelLink[] = [];
+        const interoperable: LabelLink[] = [];
+        for (const e of specifications.filter((e: Entry) => e)) {
+          const meta = e.getAllMetadata();
+          const item = {
+            title: getLocalizedValue(meta, "dcterms:title"),
             url: `${includeLangInPath(this.lang)}${specsPathResolver(e)}`,
-          }));
+          };
+          all.push(item);
+
+          // Interoperable specs declare their terms via INSPEC predicates.
+          const isInteroperable =
+            meta.find(
+              e.getResourceURI(),
+              "https://w3id.org/inspec/datavoc/introduces",
+            ).length > 0 ||
+            meta.find(
+              e.getResourceURI(),
+              "https://w3id.org/inspec/datavoc/reuses",
+            ).length > 0;
+          if (isInteroperable) interoperable.push(item);
+        }
+
+        return { all, interoperable };
       }
-      return [];
+      return { all: [] as LabelLink[], interoperable: [] as LabelLink[] };
     } catch (error) {
       console.error("Error fetching specifications:", error);
-      return [];
+      return { all: [] as LabelLink[], interoperable: [] as LabelLink[] };
     }
   }
 
   /**
    * Resolves a class/property's data vocabulary (`rdfs:isDefinedBy`) to a
    * /data-vocabulary link, or the raw URI if it has no store entry.
-   * (Route not built yet.)
    */
   public async getDataVocabularyLink(
     metadata: Metadata,

@@ -24,7 +24,7 @@ export function MQACategoryPage() {
       />
       <div
         data-entryscape="config"
-        data-entryscape-entrystore={`https://${entry.env.ENTRYSCAPE_MQA_PATH}/store`}
+        data-entryscape-entrystore={`https://${entry.env.ENTRYSCAPE_ADMIN_PATH}/store`}
       />
       <div data-entryscape="catalogMQA" className="catalogMQA" />
     </Container>

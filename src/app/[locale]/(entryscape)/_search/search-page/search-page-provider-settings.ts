@@ -1,5 +1,8 @@
-import type { EnvSettings } from "@/env";
-import { ESRdfType, ESType } from "@/lib/entrystore/entrystore-core";
+import {
+  type EntryStoreName,
+  ESRdfType,
+  ESType,
+} from "@/lib/entrystore/entrystore-core";
 import {
   classPathResolver,
   conceptsPathResolver,
@@ -34,7 +37,7 @@ interface HitSpecification {
 }
 
 interface SearchProviderConfig {
-  entryscapeUrl: string;
+  store: EntryStoreName;
   hitSpecifications: Record<string, HitSpecification>;
   facetSpecification: {
     facets: FacetConfig[];
@@ -59,12 +62,10 @@ interface SearchProviderConfig {
   };
 }
 
-export function createSearchProviderSettings(env: EnvSettings, lang: string) {
+export function createSearchProviderSettings(lang: string) {
   return {
     datasets: {
-      entryscapeUrl: env.ENTRYSCAPE_DATASETS_PATH
-        ? `https://${env.ENTRYSCAPE_DATASETS_PATH}/store`
-        : "https://admin.dataportal.se/store",
+      store: "admin",
       hitSpecifications: {
         "http://www.w3.org/ns/dcat#Dataset": {
           path: `/datasets/`,
@@ -245,9 +246,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
       },
     },
     "datasets-series": {
-      entryscapeUrl: env.ENTRYSCAPE_DATASETS_PATH
-        ? `https://${env.ENTRYSCAPE_DATASETS_PATH}/store`
-        : "https://admin.dataportal.se/store",
+      store: "admin",
       hitSpecifications: {
         "http://www.w3.org/ns/dcat#Dataset": {
           path: `/datasets/`,
@@ -287,9 +286,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
       },
     },
     specifications: {
-      entryscapeUrl: env.ENTRYSCAPE_SPECS_PATH
-        ? `https://${env.ENTRYSCAPE_SPECS_PATH}/store`
-        : "https://editera.dataportal.se/store",
+      store: "admin",
       hitSpecifications: {
         "http://www.w3.org/ns/dx/prof/Profile": {
           path: `/specifications/`,
@@ -331,9 +328,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
       },
     },
     organisations: {
-      entryscapeUrl: env.ENTRYSCAPE_DATASETS_PATH
-        ? `https://${env.ENTRYSCAPE_DATASETS_PATH}/store`
-        : "https://admin.dataportal.se/store",
+      store: "admin",
       hitSpecifications: {
         "http://xmlns.com/foaf/0.1/Agent": {
           path: `/organisations/`,
@@ -381,9 +376,7 @@ export function createSearchProviderSettings(env: EnvSettings, lang: string) {
       },
     },
     "data-structures": {
-      entryscapeUrl: env.ENTRYSCAPE_TERMS_PATH
-        ? `https://${env.ENTRYSCAPE_TERMS_PATH}/store`
-        : "https://editera.dataportal.se/store",
+      store: "editera",
       hitSpecifications: {
         "http://www.w3.org/2004/02/skos/core#Concept": {
           path: `/concepts/`,

@@ -5,10 +5,8 @@ export class Settings_Dev extends EnvSettings {
   PRODUCTION_BASE_URL = "https://dataportal.se";
   SANDBOX_BASE_URL = "https://www-sandbox.dataportal.se";
 
-  ENTRYSCAPE_DATASETS_PATH = "admin.dataportal.se";
-  ENTRYSCAPE_SPECS_PATH = "admin.dataportal.se";
-  ENTRYSCAPE_TERMS_PATH = "editera.dataportal.se";
-  ENTRYSCAPE_MQA_PATH = "admin.dataportal.se";
+  ENTRYSCAPE_ADMIN_PATH = "admin.dataportal.se";
+  ENTRYSCAPE_EDITERA_PATH = "editera.dataportal.se";
 
   ENTRYSCAPE_ORG_STATS_URL = "https://admin.dataportal.se/charts/orgData.json";
   ENTRYSCAPE_THEME_STATS_URL =

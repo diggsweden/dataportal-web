@@ -21,13 +21,7 @@ export default async function DataSet({ params }: PageProps) {
 
   return (
     <ApiIndexProvider apiIndexFileUrl={env.API_DETECTION_PATH}>
-      <EntrystoreProvider
-        env={env}
-        cid={cid}
-        eid={eid}
-        entrystoreUrl={env.ENTRYSCAPE_DATASETS_PATH}
-        pageType="dataset"
-      >
+      <EntrystoreProvider env={env} cid={cid} eid={eid} pageType="dataset">
         <DatasetPage />
       </EntrystoreProvider>
     </ApiIndexProvider>
