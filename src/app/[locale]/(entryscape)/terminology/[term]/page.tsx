@@ -12,6 +12,6 @@ export default async function Terminology({ params }: PageProps) {
     locale,
     pageType: "terminology",
     param: term,
-    body: <TerminologyPage pageType="terminology" />,
+    body: <TerminologyPage />,
   });
 }

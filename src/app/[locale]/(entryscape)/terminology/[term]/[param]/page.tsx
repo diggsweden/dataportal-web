@@ -13,6 +13,6 @@ export default async function TerminologyParam({ params }: PageProps) {
     pageType: "terminology",
     param: term,
     secondParam: param,
-    body: <TerminologyPage pageType="terminology" />,
+    body: <TerminologyPage />,
   });
 }
