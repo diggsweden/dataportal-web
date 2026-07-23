@@ -1,4 +1,4 @@
-import { DataStructurePage } from "@/app/[locale]/(entryscape)/_components/data-structure-page";
+import { DataStructurePage } from "@/app/[locale]/(entryscape)/_components/data-structures/data-structure-page";
 import { renderEntryStoreResourcePage } from "@/app/[locale]/(entryscape)/_server/render-resource-page";
 
 interface PageProps {

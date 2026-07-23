@@ -1,4 +1,4 @@
-import { ConceptPage } from "@/app/[locale]/(entryscape)/_components/concept-page";
+import { ConceptPage } from "@/app/[locale]/(entryscape)/_components/data-structures/concept-page";
 import { renderEntryStoreResourcePage } from "@/app/[locale]/(entryscape)/_server/render-resource-page";
 
 interface PageProps {

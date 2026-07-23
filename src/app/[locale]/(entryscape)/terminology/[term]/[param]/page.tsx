@@ -1,4 +1,4 @@
-import { TerminologyPage } from "@/app/[locale]/(entryscape)/_components/terminology-page";
+import { TerminologyPage } from "@/app/[locale]/(entryscape)/_components/data-structures/terminology-page";
 import { renderEntryStoreResourcePage } from "@/app/[locale]/(entryscape)/_server/render-resource-page";
 
 interface PageProps {

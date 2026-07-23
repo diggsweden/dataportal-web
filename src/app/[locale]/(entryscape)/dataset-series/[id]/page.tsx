@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
-import { DatasetSeriesPage } from "@/app/[locale]/(entryscape)/_components/dataset-series-page";
+import { DatasetSeriesPage } from "@/app/[locale]/(entryscape)/_components/data/dataset-series-page";
 import { isAppLocale } from "@/i18n/routing";
 import { EntrystoreProvider } from "@/lib/entrystore/provider";
 import { getEntryscapeEnv, splitEntryId } from "@/lib/entrystore/route-helpers";

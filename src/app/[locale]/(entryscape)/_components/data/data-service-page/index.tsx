@@ -9,7 +9,7 @@ import { LabelLink } from "@/components/label-link";
 import { Heading } from "@/components/typography/heading";
 import { EntrystoreContext } from "@/lib/entrystore/provider";
 import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
-import { Indicators } from "../indicators";
+import { Indicators } from "../../indicators";
 
 const ABOUT_FIELDS = [
   "dcat:contactPoint_ds",

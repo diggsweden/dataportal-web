@@ -3,7 +3,6 @@
 import { useTranslations } from "next-intl";
 import { useContext, useState } from "react";
 import { EntryscapeResourcePage } from "@/app/[locale]/(entryscape)/_components/entryscape-resource-page";
-import Showcase from "@/app/[locale]/(entryscape)/_components/showcase";
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import DataIcon from "@/assets/icons/data.svg";
 import DiamondIcon from "@/assets/icons/diamond.svg";
@@ -19,6 +18,7 @@ import { EntrystoreContext } from "@/lib/entrystore/provider";
 import { SettingsContext } from "@/providers/settings-provider";
 import type { DataInfo, TermInfo } from "@/types/organisation";
 import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
+import Showcase from "./showcase";
 
 export function OrganisationPage() {
   const { iconSize } = useContext(SettingsContext);

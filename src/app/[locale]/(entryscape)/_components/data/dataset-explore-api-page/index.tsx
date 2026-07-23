@@ -16,7 +16,7 @@ import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
 
 const ApiExplorer = dynamic(
   () =>
-    import("@/app/[locale]/(entryscape)/_components/api-exploring").then(
+    import("@/app/[locale]/(entryscape)/_components/data/api-exploring").then(
       (c) => c.ApiExplorer,
     ),
   { ssr: false },
