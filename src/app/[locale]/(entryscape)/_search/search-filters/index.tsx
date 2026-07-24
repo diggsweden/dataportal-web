@@ -168,6 +168,54 @@ export function SearchFilters({
     }
   };
 
+  // Toggle a checkbox facet; exclusive facets are single-select within a group.
+  const toggleFilterFacet = (
+    facet: SearchFacet,
+    key: string,
+    groupFacets: { [key: string]: SearchFacet },
+    facetValue: SearchFacetValue,
+  ) => {
+    clearCurrentScrollPos();
+    const active = facet.customSearch
+      ? facet.customSearch.length === search.request.esRdfTypes?.length &&
+        facet.customSearch.every((t) => search.request.esRdfTypes?.includes(t))
+      : !!facet.customFilter && search.facetSelected(key, facet.customFilter);
+
+    if (!facet.exclusive) {
+      if (facet.customSearch) {
+        search
+          .set({
+            esRdfTypes: active ? search.defaultEsRdfTypes : facet.customSearch,
+            query,
+          })
+          .then(() => search.doSearch());
+      } else {
+        doSearch(key, facetValue);
+      }
+      return;
+    }
+
+    const exclusiveFilters = Object.values(groupFacets)
+      .filter((f) => f.exclusive)
+      .map((f) => f.customFilter);
+    const withoutGroup = (search.request.facetValues || []).filter(
+      (v) => !exclusiveFilters.includes(v.customFilter),
+    );
+    search
+      .set({
+        esRdfTypes:
+          !active && facet.customSearch
+            ? facet.customSearch
+            : search.defaultEsRdfTypes,
+        facetValues:
+          !active && facet.customFilter
+            ? [...withoutGroup, facetValue]
+            : withoutGroup,
+        query,
+      })
+      .then(() => search.doSearch());
+  };
+
   function updateFilters() {
     search.updateFacetStats();
     setShowFilter(!showFilter);
@@ -448,31 +496,14 @@ export function SearchFilters({
                                     search.request.esRdfTypes?.includes(type),
                                   )
                             }
-                            onChange={() => {
-                              if (value.customSearch) {
-                                clearCurrentScrollPos();
-                                if (
-                                  value.customSearch !==
-                                  search.request.esRdfTypes
-                                ) {
-                                  search
-                                    .set({
-                                      esRdfTypes: value.customSearch,
-                                      query,
-                                    })
-                                    .then(() => search.doSearch());
-                                } else {
-                                  search
-                                    .set({
-                                      esRdfTypes: search.defaultEsRdfTypes,
-                                      query,
-                                    })
-                                    .then(() => search.doSearch());
-                                }
-                              } else {
-                                doSearch(key, facetValues[0]);
-                              }
-                            }}
+                            onChange={() =>
+                              toggleFilterFacet(
+                                value,
+                                key,
+                                groupFacets,
+                                facetValues[0],
+                              )
+                            }
                             label={tResource(key)}
                             iconSize={iconSize}
                           />

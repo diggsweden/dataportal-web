@@ -168,6 +168,15 @@ export class EntrystoreService {
   // Search and Query Operations
   // ============================================================================
 
+  /** Solr field for a URI predicate, hashed by the SDK (no dep, no literal hash). */
+  private uriPredicateField(predicate: string): string {
+    const probe = this.entryStore.newSolrQuery();
+    probe.uriProperty(predicate, "*");
+    const { md5 } = (probe as unknown as { properties: { md5: string }[] })
+      .properties[0];
+    return `metadata.predicate.uri.${md5}`;
+  }
+
   public async solrSearch(
     request: SearchRequest,
     dcat?: DCATData,
@@ -272,12 +281,13 @@ export class EntrystoreService {
               }
               // Special case for special filters with regular checkbox
               if (fvalue[0].customFilter) {
-                if (fvalue[0].customFilter.startsWith("!")) {
-                  esQuery.uriProperty(
-                    key,
-                    [fvalue[0].customFilter.slice(1)],
-                    "not",
-                  );
+                const excludeProperties = this.facetSpecification?.facets?.find(
+                  (f) => f.customFilter === fvalue[0].customFilter,
+                )?.excludeProperties;
+                if (excludeProperties?.length) {
+                  for (const predicate of excludeProperties) {
+                    esQuery.uriProperty(predicate, "*", "not");
+                  }
                 } else {
                   esQuery.uriProperty(
                     key,
@@ -315,13 +325,23 @@ export class EntrystoreService {
       }
     }
 
-    // If filtering to a single spec type, require introduces (interoperable only)
-    if (
-      request.esRdfTypes?.length === 1 &&
-      (request.esRdfTypes[0] === ESRdfType.spec_standard ||
-        request.esRdfTypes[0] === ESRdfType.spec_profile)
-    ) {
-      esQuery.uriProperty("https://w3id.org/inspec/datavoc/introduces", "*");
+    // Apply the active type facet's includeProperties (require p1 OR p2 …).
+    const activeTypeFacet = this.facetSpecification?.facets?.find(
+      (f) =>
+        f.includeProperties?.length &&
+        f.customSearch &&
+        f.customSearch.length === request.esRdfTypes?.length &&
+        f.customSearch.every((t) => request.esRdfTypes?.includes(t)),
+    );
+    if (activeTypeFacet?.includeProperties) {
+      esQuery.or(
+        Object.fromEntries(
+          activeTypeFacet.includeProperties.map((predicate) => [
+            this.uriPredicateField(predicate),
+            "*",
+          ]),
+        ),
+      );
     }
 
     const searchList = esQuery
@@ -511,6 +531,7 @@ export class EntrystoreService {
           customFilter: f.customFilter,
           customLabel: f.customLabel,
           customSearch: f.customSearch,
+          exclusive: f.exclusive,
           facetValues:
             metaFacet.values.length > 0
               ? metaFacet.values
@@ -626,6 +647,7 @@ export class EntrystoreService {
           group: facetSpec.group,
           customFilter: facetSpec.customFilter,
           customSearch: facetSpec.customSearch,
+          exclusive: facetSpec.exclusive,
           facetValues: f.values
             .filter((value: ESFacetFieldValue) => {
               if (!value.name || value.name.trim() === "") return false;

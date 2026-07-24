@@ -313,6 +313,11 @@ export function createSearchProviderSettings(lang: string) {
             group: "specType",
             customSearch: [ESRdfType.spec_standard],
             customLabel: "http://dataportal.se/filter/spec-standard",
+            exclusive: true,
+            includeProperties: [
+              "https://w3id.org/inspec/datavoc/introduces",
+              "https://w3id.org/inspec/datavoc/reuses",
+            ],
           },
           {
             resource: ESRdfType.spec_profile,
@@ -324,6 +329,11 @@ export function createSearchProviderSettings(lang: string) {
             group: "specType",
             customSearch: [ESRdfType.spec_profile],
             customLabel: "http://dataportal.se/filter/spec-profile",
+            exclusive: true,
+            includeProperties: [
+              "https://w3id.org/inspec/datavoc/introduces",
+              "https://w3id.org/inspec/datavoc/reuses",
+            ],
           },
           {
             resource: "https://w3id.org/inspec/datavoc/introduces",
@@ -331,8 +341,13 @@ export function createSearchProviderSettings(lang: string) {
             dcatProperty: "inspec:introduces",
             indexOrder: 2,
             group: "specType",
-            customFilter: "!*",
+            customFilter: "http://dataportal.se/filter/spec-non-interoperable",
             customLabel: "http://dataportal.se/filter/spec-non-interoperable",
+            excludeProperties: [
+              "https://w3id.org/inspec/datavoc/introduces",
+              "https://w3id.org/inspec/datavoc/reuses",
+            ],
+            exclusive: true,
           },
           {
             resource: "http://purl.org/dc/terms/subject",

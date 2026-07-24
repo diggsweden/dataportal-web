@@ -50,6 +50,9 @@ export interface FacetSpecificationItem {
   customSearch?: ESRdfType[];
   customProperties?: string[];
   showInSearchResult?: boolean;
+  exclusive?: boolean;
+  excludeProperties?: string[];
+  includeProperties?: string[];
 }
 
 export interface SearchResult {
@@ -89,6 +92,7 @@ interface SearchFacet {
   customFilter?: string;
   customLabel?: string;
   customSearch?: ESRdfType[];
+  exclusive?: boolean;
 }
 
 export interface SearchFacetValue {
