@@ -14,9 +14,9 @@
   "clear-filters": "Clear filters",
   "clear-search": "Clear search field",
   "close": "Close",
-  "close-filter": "Close filter",
   "close_menu": "Menu",
   "close_search": "Search",
+  "close-filter": "Close filter",
   "code-block": "Code block",
   "code-copied-successfully": "Code copied successfully",
   "code-copy-failed": "Failed to copy code",
@@ -32,6 +32,7 @@
   "datasets": "Datasets",
   "datastructures": "Datastructures",
   "description": "Description",
+  "details": "Details",
   "digg-logo_text": "DIGG - Agency for digital government",
   "digg-managed_text": "DIGG is managed by the Swedish Agency for Digital Government",
   "documentation-services": "Documentation och services - Sweden's dataportal",
@@ -54,6 +55,7 @@
   "illustration-1": "Illustration av kommunikation mellan dator och mobil",
   "illustration-2": "Illustration av ett hus",
   "illustration-3": "Illustration av dator som tar emot data",
+  "interoperable-specifications": "interoperable specifications",
   "lang-linktext": "Svenska",
   "load-more": "Load more",
   "loading": "Loading",
@@ -110,5 +112,6 @@
   "toolbox-share-data": "Toolbox for sharing data",
   "top-image": "View of Stockholm",
   "training": "Training for managers and leaders",
+  "used-in": "Used in",
   "yes": "Yes"
 }

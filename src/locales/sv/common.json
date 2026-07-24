@@ -15,9 +15,9 @@
   "clear-filters": "Rensa filter",
   "clear-search": "Rensa sökfält",
   "close": "Stäng",
-  "close-filter": "Stäng filter",
   "close_menu": "Meny",
   "close_search": "Sök",
+  "close-filter": "Stäng filter",
   "code-block": "Kodblock",
   "code-copied-successfully": "Kod kopierad",
   "code-copy-failed": "Misslyckades med kodkopiering",
@@ -32,6 +32,7 @@
   "datasets": "Datamängder",
   "datastructures": "Datastrukturer",
   "description": "Beskrivning",
+  "details": "Detaljer",
   "digg-logo_text": "DIGG - Myndigheten för digital förvaltning",
   "digg-managed_text": "Webbplatsen förvaltas av DIGG – Myndigheten för digital förvaltning",
   "documentation-services": "Dokumentation och tjänster - Sveriges dataportal",
@@ -54,6 +55,7 @@
   "illustration-1": "Illustration av kommunikation mellan dator och mobil",
   "illustration-2": "Illustration av ett hus",
   "illustration-3": "Illustration av dator som tar emot data",
+  "interoperable-specifications": "interoperabla specifikationer",
   "lang-linktext": "English",
   "load-more": "Ladda fler",
   "loading": "Laddar...",
@@ -110,5 +112,6 @@
   "toolbox-share-data": "Verktygslåda för att dela data",
   "top-image": "Vy över Stockholm",
   "training": "Utbildning för chefer och ledare",
+  "used-in": "Används i",
   "yes": "Ja"
 }

@@ -17,17 +17,22 @@ import { buildFacetSearchLink } from "@/lib/entrystore/entrystore-helpers";
 import { EntrystoreContext } from "@/lib/entrystore/provider";
 import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
 
-export function TerminologyPage() {
+export function DataVocabularyPage() {
   const entry = useContext(EntrystoreContext);
   const t = useTranslations();
 
-  const viewAllHref = buildFacetSearchLink(
-    t("routes.data-structures.path"),
-    "http://www.w3.org/2004/02/skos/core#inScheme",
-    entry.address,
-    t("pages.terminology.terminology"),
-    entry.title,
-  );
+  // Classes/properties reference their data vocabulary via rdfs:isDefinedBy.
+  // The "view all" link filters the data-structures search to this vocabulary
+  // and, per list, to only classes / only properties.
+  const buildViewAllHref = (rdfType: "term_class" | "term_property") =>
+    buildFacetSearchLink(
+      t("routes.data-structures.path"),
+      "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
+      entry.address,
+      t("pages.data-vocabulary.data-vocabulary"),
+      entry.title,
+      rdfType,
+    );
 
   return (
     <EntryscapeResourcePage
@@ -50,7 +55,7 @@ export function TerminologyPage() {
             className="mb-xl"
           />
           <Badge
-            text={t("pages.terminology.terminology")}
+            text={t("pages.data-vocabulary.data-vocabulary")}
             color="dark-green"
             className="flex w-fit"
           />
@@ -60,18 +65,28 @@ export function TerminologyPage() {
         <>
           <p
             data-entryscape="text"
-            data-entryscape-property="dcterms:description"
+            data-entryscape-property="rdfs:comment"
             className="mb-lg empty:mb-none text-textSecondary whitespace-pre-line"
           />
 
           <MembersAccordion
-            relationinverse="skos:inScheme"
-            rdftype="skos:Concept"
-            rowLink="{{conceptLink}}"
-            countPrefixKey="pages.terminology.includes"
-            unitKey="concepts"
-            viewAllKey="pages.terminology.view_all"
-            viewAllHref={viewAllHref}
+            relationinverse="rdfs:isDefinedBy"
+            rdftype="rdfs:Class"
+            rowLink={'{{link namedclick="class"}}'}
+            countPrefixKey="pages.data-vocabulary.includes"
+            unitKey="classes"
+            viewAllKey="pages.data-vocabulary.view_all_classes"
+            viewAllHref={buildViewAllHref("term_class")}
+          />
+          <MembersAccordion
+            relationinverse="rdfs:isDefinedBy"
+            rdftype="rdf:Property"
+            rowLink={'{{link namedclick="property"}}'}
+            countPrefixKey="pages.data-vocabulary.includes"
+            unitKey="properties"
+            viewAllKey="pages.data-vocabulary.view_all_properties"
+            viewAllHref={buildViewAllHref("term_property")}
+            className="mt-lg"
           />
 
           <InteroperableSpecificationsAccordion />
@@ -83,14 +98,14 @@ export function TerminologyPage() {
             <Heading
               level={2}
               size="sm"
-              className="mb-sm font-strong text-textSecondary md:mb-md"
+              className="mb-sm text-textSecondary md:mb-md"
             >
               {t("common.details")}
             </Heading>
             <div className="space-y-lg">
               <SidebarSection
                 testId="address"
-                heading={t("pages.terminology.address")}
+                heading={t("pages.data-vocabulary.address")}
                 items={[{ title: entry.address, url: entry.address }]}
               />
 
@@ -107,7 +122,7 @@ export function TerminologyPage() {
               />
             </div>
           </Box>
-          <InteroperableSpecificationsCard labelKey="pages.terminology.specifications_use" />
+          <InteroperableSpecificationsCard labelKey="pages.data-vocabulary.specifications_use" />
         </>
       }
     />

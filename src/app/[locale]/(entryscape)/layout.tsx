@@ -1,30 +1,18 @@
 import type { ReactNode } from "react";
 
-import { getEntryscapeEnv } from "@/lib/entrystore/route-helpers";
 import "@/styles/entryscape.css";
 import "@/styles/entryscape-mqa.css";
 
 /**
- * Preconnect/preload the EntryStore origins and blocks scripts here (not the
- * locale layout) so CMS-only pages don't pay for it, and so the block scripts
- * start downloading during the initial HTML stream rather than after mount.
- * Entryscape/MQA CSS is imported here for the same reason.
+ * Preconnect to the EntryStore / blocks origins so store fetches (search and
+ * resource pages) start early. The block-script `preload` lives in
+ * EntrystoreProvider so only resource pages request it — search pages don't.
  */
-export default async function EntryscapeLayout({
+export default function EntryscapeLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  const { env } = await getEntryscapeEnv();
-
-  // Same list as ensureLib() in use-blocks.ts (tmp bundle host hardcoded there).
-  const blockScripts = [
-    "https://sandbox.admin.dataportal.se/tmp/blocks.js",
-    env.ENTRYSCAPE_OPENDATA_URL,
-    env.ENTRYSCAPE_MQA_URL,
-    env.ENTRYSCAPE_BLOCKS_URL,
-  ];
-
   return (
     <>
       <link
@@ -41,9 +29,6 @@ export default async function EntryscapeLayout({
       <link rel="preconnect" href="https://static.cdn.entryscape.com" />
       <link rel="preconnect" href="https://static.entryscape.com" />
       <link rel="preconnect" href="https://sandbox.admin.dataportal.se" />
-      {blockScripts.map((href) => (
-        <link key={href} rel="preload" as="script" href={href} />
-      ))}
       {children}
     </>
   );

@@ -91,8 +91,8 @@ export interface DataportalSettings {
 }
 
 export type RedirectConfig = {
-  pathPrefix: string;
-  redirectPath:
+  pathPrefix?: string;
+  redirectPath?:
     | "/concepts"
     | "/specifications"
     | "/terminology"
