@@ -147,7 +147,6 @@ export const useEntryScapeBlocks = ({
 
         const page = createBlocksConfig({
           entrystoreBase,
-          env: envRef.current,
           lang,
           t: tRef.current,
           pageType,

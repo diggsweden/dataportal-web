@@ -1,4 +1,3 @@
-import type { EnvSettings } from "@/env/env-settings";
 import type { Translate } from "@/i18n/types";
 import { includeLangInPath } from "@/utilities/check-lang";
 
@@ -11,7 +10,6 @@ import {
 
 interface CreateBlocksConfigProps {
   entrystoreBase: string;
-  env: EnvSettings;
   lang: string;
   t: Translate;
   pageType: string;
@@ -21,7 +19,6 @@ interface CreateBlocksConfigProps {
 
 export const createBlocksConfig = ({
   entrystoreBase,
-  env,
   lang,
   context,
   esId,
@@ -37,26 +34,14 @@ export const createBlocksConfig = ({
     ...(esId !== "" && { entry: esId }),
     clicks: {
       concept: `${includeLangInPath(lang)}/concepts/\${context}_\${entry}`,
+      "dataservice-link": `${includeLangInPath(lang)}/dataservice/\${context}_\${entry}`,
+      katalog: `${includeLangInPath(lang)}/metadatakvalitet/katalog/\${entry}/\${context}`,
     },
   };
 
   switch (pageType) {
-    case "specification":
-      return [
-        {
-          ...baseConfig,
-          itemstore: {
-            bundles: [
-              `https://${
-                env.ENTRYSCAPE_ADMIN_PATH.includes("sandbox")
-                  ? "sandbox.admin.dataportal.se"
-                  : "editera.dataportal.se"
-              }/theme/templates/adms.json`,
-            ],
-          },
-        },
-      ];
     case "concept":
+    case "terminology":
       return [
         {
           ...baseConfig,
@@ -71,30 +56,13 @@ export const createBlocksConfig = ({
           blocks: [specificationLink(lang)],
         },
       ];
-    case "terminology":
-      return [
-        {
-          ...baseConfig,
-          collections: [
-            {
-              type: "facet",
-              name: "terminology",
-              label: "Terminologier",
-              property: "skos:inScheme",
-              nodetype: "uri",
-              limit: 10,
-            },
-          ],
-          blocks: [conceptLink(lang)],
-        },
-      ];
     case "dataset":
     case "dataset-series":
       return [
         {
           ...baseConfig,
           clicks: {
-            "dataservice-link": `/${lang}/dataservice/\${context}_\${entry}`,
+            ...baseConfig.clicks,
             exploreApi: `${includeLangInPath(lang)}/datasets/${context}_${esId}/apiexplore/\${entry}`,
           },
           blocks: [
@@ -108,29 +76,10 @@ export const createBlocksConfig = ({
         {
           ...baseConfig,
           clicks: {
+            ...baseConfig.clicks,
             exploreApi: `${includeLangInPath(lang)}/datasets/${context}_${esId}/apiexplore/\${entry}`,
           },
           blocks: [exploreApiLink(context, t)],
-        },
-      ];
-    case "apiexplore":
-      return [
-        {
-          ...baseConfig,
-          clicks: {
-            "dataservice-link": `/${lang}/dataservice/\${context}_\${entry}`,
-          },
-        },
-      ];
-    case "mqa":
-      return [
-        {
-          ...baseConfig,
-          clicks: {
-            katalog:
-              includeLangInPath(lang) +
-              "/metadatakvalitet/katalog/${entry}/${context}",
-          },
         },
       ];
     default:
