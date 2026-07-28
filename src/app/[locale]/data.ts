@@ -32,7 +32,7 @@ export const getNavigationData = async (
   try {
     const data = await gqlFetch(
       NavigationDocument,
-      { filter: { locale } },
+      locale === "all" ? {} : { filter: { locale } },
       { revalidate: 120 },
     );
 
