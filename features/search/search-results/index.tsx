@@ -248,7 +248,11 @@ export const SearchResults: FC<SearchResultsProps> = ({
         <Pagination
           totalResults={search.result.count || 0}
           itemsPerPage={search.request.take ? search.request.take : 20}
-          pageNumber={search?.request.page && search?.request.page + 1}
+          pageNumber={
+            search?.request.page !== undefined
+              ? search.request.page + 1
+              : undefined
+          }
           changePage={changePage}
         />
       )}
