@@ -1081,7 +1081,11 @@ export class EntrystoreService {
             })),
           interoperable: [] as LabelLink[],
         };
-      } else if (pageType === "terminology" || pageType === "concept") {
+      } else if (
+        pageType === "terminology" ||
+        pageType === "concept" ||
+        pageType === "data-vocabulary"
+      ) {
         const resourceUri = entry
           .getResourceURI()
           .replace(
@@ -1138,13 +1142,12 @@ export class EntrystoreService {
    */
   public async getDataVocabularyLink(
     metadata: Metadata,
-    adminService: EntrystoreService = this,
   ): Promise<LabelLink | undefined> {
     const uri = metadata.findFirstValue(null, "rdfs:isDefinedBy");
     if (!uri) return undefined;
 
     try {
-      const ref = await adminService.getEntryByResourceURI(uri);
+      const ref = await this.getEntryByResourceURI(uri);
 
       const refMeta = ref.getAllMetadata();
       const label =

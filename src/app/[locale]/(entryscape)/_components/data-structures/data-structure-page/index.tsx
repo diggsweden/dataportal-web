@@ -108,7 +108,7 @@ export function DataStructurePage({ pageType }: DataStructurePageProps) {
             size="sm"
             className="mb-sm font-strong text-textSecondary md:mb-md"
           >
-            {t("pages.data-structures.details")}
+            {t("common.details")}
           </Heading>
           <div className="space-y-lg">
             <div

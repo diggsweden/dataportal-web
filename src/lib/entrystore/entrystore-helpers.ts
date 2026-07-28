@@ -161,16 +161,22 @@ export function formatTerminologyAddress(
     : resourceUri;
 }
 
-/** Search URL with one URI facet pre-selected (the `f=` facet-value format). */
+/**
+ * Search URL with one URI facet pre-selected (the `f=` facet-value format).
+ * `rdfType` optionally restricts the result type via `rt=` (an `ESRdfType`
+ * key, e.g. `term_class` / `term_property`).
+ */
 export function buildFacetSearchLink(
   path: string,
   predicate: string,
   resource: string,
   facetLabel: string,
   title: string,
+  rdfType?: string,
 ): string {
   const facetValue = `${predicate}||${resource}||false||uri||${facetLabel}||${title}`;
-  return `/${path}?q=&f=${encodeURIComponent(facetValue)}`;
+  const rt = rdfType ? `&rt=${rdfType}` : "";
+  return `/${path}?q=&f=${encodeURIComponent(facetValue)}${rt}`;
 }
 
 /** Base URL of a page's chosen store, resolved against the given env. */

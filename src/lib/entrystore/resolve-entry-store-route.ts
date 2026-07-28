@@ -64,10 +64,11 @@ export async function resolveEntryStoreRoute(
         const entry = await entrystoreService.getEntry(cid, eid);
         const entryResourceUri = entry.getResourceURI();
 
-        if (entryResourceUri.startsWith(baseUrl)) {
+        // Only redirect in-store URIs; external-URI pages render directly.
+        if (config.redirectPath && entryResourceUri.startsWith(baseUrl)) {
           return {
             type: "redirect",
-            url: `${includeLangInPath(locale)}${config.redirectPath}${entryResourceUri.replace(`${baseUrl}${config.pathPrefix}`, "")}`,
+            url: `${includeLangInPath(locale)}${config.redirectPath}${entryResourceUri.replace(`${baseUrl}${config.pathPrefix ?? ""}`, "")}`,
           };
         }
         return { type: "entry", cid, eid };
@@ -76,7 +77,9 @@ export async function resolveEntryStoreRoute(
       }
     }
 
-    // Construct resourceUri from param(s)
+    // A resourceUri can only be built when the page declares a pathPrefix.
+    if (!config.pathPrefix) return { type: "notFound" };
+
     const pathSuffix = config.secondParam
       ? `${param}/${config.secondParam}`
       : param;
@@ -93,7 +96,7 @@ export async function resolveEntryStoreRoute(
       resourceUri || "",
     );
 
-    if (entry) {
+    if (entry && config.redirectPath) {
       return {
         type: "redirect",
         url: `${includeLangInPath(locale)}${config.redirectPath}/${entry.getContext().getId()}_${entry.getId()}`,

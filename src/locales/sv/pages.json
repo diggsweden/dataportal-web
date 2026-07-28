@@ -8,7 +8,6 @@
   },
   "concept_page": {
     "about_concept": "Om begrepp",
-    "about_terminology": "Om terminologi",
     "alternativ_term": "Alternativ term",
     "close_match": "Har snarlikt motsvarande begrepp ",
     "concept_adress": "Adress för begrepp",
@@ -31,12 +30,13 @@
     "subordinate_match": "Har underordnat motsvarande begrepp",
     "superior_concept": "Överordnade begrepp",
     "superior_match": "Har överordnat motsvarande begrepp",
-    "term_adress": "Adress för terminologi",
     "terminology_concept": "Terminologi",
     "visualization_concepts": "Visualisering av underordnade begrepp"
   },
   "concepts": {
+    "classes": "klasser",
     "concepts": "begrepp",
+    "properties": "egenskaper",
     "search": "Sök begrepp",
     "social_meta_description": "Begrepp på Sveriges Dataportal",
     "social_meta_title": "Sök begrepp"
@@ -53,7 +53,6 @@
   },
   "data-structures": {
     "data-vocabulary": "Datavokabulär",
-    "details": "Detaljer",
     "introduced-in-specification": "Introduceras i specifikation",
     "no-introduced-in-specification": "Introduceras inte i någon specifikation",
     "no-reused-in-specification": "Återanvänds inte i någon specifikation",
@@ -65,6 +64,14 @@
       "concept": "Begrepp",
       "property": "Egenskap"
     }
+  },
+  "data-vocabulary": {
+    "address": "Adress för datavokabulär",
+    "data-vocabulary": "Datavokabulär",
+    "includes": "I datavokabuläret ingår",
+    "specifications_use": "Interoperabla specifikationer använder detta datavokabulär",
+    "view_all_classes": "Visa alla klasser",
+    "view_all_properties": "Visa alla egenskaper"
   },
   "dataservicepage": {
     "api": "Om API"
@@ -96,7 +103,7 @@
     "rdf": "Ladda ner metadata som RDF",
     "read_about_api": "Läs mer om API",
     "related_dataset_series": "Tillhör datamängdsserie: ",
-    "related_specifications": "Specifikation",
+    "related_specifications": "Specifikationer",
     "several_links": "Datat har flertalet länkar för nedladdning",
     "several_links_header": "Dataresursen består av följande filer",
     "use-data": "Använd data",
@@ -337,5 +344,12 @@
     "statistic-page-text": "Statistiken som visualiseras på startsidan presenteras här i textform.  Statistiken visar mängden data på Sveriges Dataportal per månad, topp 5 gällande datamängder för organisationer och kategorier.",
     "top-categories": "Kategorier med flest datamängder",
     "top-organisations": "Organisationer med flest datamängder"
+  },
+  "terminology": {
+    "address": "Adress för terminologi",
+    "includes": "I terminologin ingår",
+    "specifications_use": "Interoperabla specifikationer använder denna terminologi",
+    "terminology": "Terminologi",
+    "view_all": "Visa alla begrepp"
   }
 }

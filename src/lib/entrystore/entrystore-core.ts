@@ -54,6 +54,7 @@ export type PageType =
   | "apiexplore"
   | "organisation"
   | "terminology"
+  | "data-vocabulary"
   | "specification"
   | "concept"
   | "class"
@@ -71,13 +72,14 @@ export type RedirectPath =
   | "/class"
   | "/property";
 
-/** Page types that resolve a resource URI into a canonical redirect. */
+/** Page types routed through the resolver (existence check + optional redirect). */
 export type ResolverPageType =
   | "specification"
   | "terminology"
   | "concept"
   | "class"
-  | "property";
+  | "property"
+  | "data-vocabulary";
 
 /**
  * Per-page routing config. `store` is required for every page; `pathPrefix`
@@ -106,6 +108,7 @@ export const ROUTE_CONFIG = {
     pathPrefix: "/specifications",
     redirectPath: "/specifications",
   },
+  "data-vocabulary": { store: "admin" },
   terminology: {
     store: "editera",
     pathPrefix: "/concepts",
@@ -116,12 +119,8 @@ export const ROUTE_CONFIG = {
     pathPrefix: "/concepts",
     redirectPath: "/concepts",
   },
-  class: { store: "editera", pathPrefix: "/concepts", redirectPath: "/class" },
-  property: {
-    store: "editera",
-    pathPrefix: "/concepts",
-    redirectPath: "/property",
-  },
+  class: { store: "editera", redirectPath: "/class" },
+  property: { store: "editera", redirectPath: "/property" },
 } as const satisfies Record<PageType, RouteConfig>;
 
 /** A label that is optionally a link (url absent/empty ⇒ render as text). */

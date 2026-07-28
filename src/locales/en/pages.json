@@ -7,7 +7,6 @@
   },
   "concept_page": {
     "about_concept": "About concept",
-    "about_terminology": "About terminology",
     "alternativ_term": "Alternative term",
     "close_match": "Has close match",
     "concept_adress": "Address for concept",
@@ -30,12 +29,13 @@
     "subordinate_match": "Has subordinate match",
     "superior_concept": "Superior concept",
     "superior_match": "Has superior match",
-    "term_adress": "Address for terminology",
     "terminology_concept": "Terminology",
     "visualization_concepts": "Visualization of subordinate concepts"
   },
   "concepts": {
+    "classes": "classes",
     "concepts": "concepts",
+    "properties": "properties",
     "search": "Search",
     "social_meta_description": "Concepts on Sweden's data portal",
     "social_meta_title": "Search concepts"
@@ -53,7 +53,6 @@
   },
   "data-structures": {
     "data-vocabulary": "Data vocabulary",
-    "details": "Details",
     "introduced-in-specification": "Introduced in specification",
     "no-introduced-in-specification": "Not introduced in any specification",
     "no-reused-in-specification": "Not reused in any specification",
@@ -65,6 +64,14 @@
       "concept": "Concept",
       "property": "Property"
     }
+  },
+  "data-vocabulary": {
+    "address": "Address for data vocabulary",
+    "data-vocabulary": "Data vocabulary",
+    "includes": "The data vocabulary includes",
+    "specifications_use": "Interoperable specifications use this data vocabulary",
+    "view_all_classes": "View all classes",
+    "view_all_properties": "View all properties"
   },
   "dataservicepage": {
     "api": "About API"
@@ -96,7 +103,7 @@
     "rdf": "Download metadata as RDF",
     "read_about_api": "Read more about API",
     "related_dataset_series": "Belongs to dataset serie: ",
-    "related_specifications": "Specification",
+    "related_specifications": "Specifications",
     "several_links": "The data has several links for download",
     "several_links_header": "The data resource consists of the following files",
     "use-data": "Use data",
@@ -330,5 +337,12 @@
     "statistic-page-text": "Statistics visualized on the startpage is here available in text. The statistics shows the amount of data on Sweden´s dataportal per month, top 5 organisations and categories.",
     "top-categories": "Categories with the most datasets",
     "top-organisations": "Organisations with the most datasets"
+  },
+  "terminology": {
+    "address": "Address for terminology",
+    "includes": "The terminology includes",
+    "specifications_use": "Interoperable specifications use this terminology",
+    "terminology": "Terminology",
+    "view_all": "View all concepts"
   }
 }

@@ -13,7 +13,10 @@ import {
 import type { EnvSettings } from "@/env";
 import { SettingsUtil } from "@/env/settings-util";
 import { useResourceLabel } from "@/i18n/use-resource-label";
-import { useEntryScapeBlocks } from "@/lib/entryscape-blocks/use-blocks";
+import {
+  blockScriptUrls,
+  useEntryScapeBlocks,
+} from "@/lib/entryscape-blocks/use-blocks";
 import { EntrystoreService } from "@/lib/entrystore/entrystore.service";
 import {
   type EntryStoreName,
@@ -189,6 +192,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         description: getFirstMatchingValue(metadata, resourceUri, [
           "skos:definition",
           "dcterms:description",
+          "rdfs:comment",
         ]),
         address: resourceUri,
         loading: false,
@@ -325,7 +329,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         };
       }
 
-      case "terminology": {
+      case "terminology":
+      case "data-vocabulary": {
         // Fetch specifications and formats in parallel. Specs live in the
         // admin store.
         const [specs, formats, organisationLink] = await Promise.all([
@@ -338,6 +343,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
         return {
           relatedSpecifications: specs.all,
+          relatedSpecificationsInteroperable: specs.interoperable,
           address: formatTerminologyAddress(resourceUri, [
             env.PRODUCTION_BASE_URL,
             env.SANDBOX_BASE_URL,
@@ -408,7 +414,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       case "property": {
         // Fetch data structure details and formats in parallel
         const [definedBy, formats] = await Promise.all([
-          entrystoreService.getDataVocabularyLink(metadata, stores.admin),
+          stores.admin.getDataVocabularyLink(metadata),
           entrystoreService.getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
           ),
@@ -633,10 +639,17 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     }
   };
 
-  if (state.loading) return null;
+  // Block-script preload lives here (not the layout) so only resource pages
+  // request it — search pages would preload-but-never-use it.
+  const blockScriptPreloads = blockScriptUrls(env).map((href) => (
+    <link key={href} rel="preload" as="script" href={href} />
+  ));
+
+  if (state.loading) return <>{blockScriptPreloads}</>;
 
   return (
     <EntrystoreContext.Provider value={state}>
+      {blockScriptPreloads}
       <title>{`${state.title} - Sveriges dataportal`}</title>
       <meta
         property="og:title"

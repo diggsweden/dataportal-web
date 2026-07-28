@@ -47,6 +47,14 @@ const loadScript = (url: string): Promise<void> =>
     container.appendChild(script);
   });
 
+/** Ordered block-engine scripts, shared by ensureLib (loads) + provider (preloads). */
+export const blockScriptUrls = (env: EnvSettings): string[] => [
+  "https://sandbox.admin.dataportal.se/tmp/blocks.js",
+  env.ENTRYSCAPE_OPENDATA_URL,
+  env.ENTRYSCAPE_MQA_URL,
+  env.ENTRYSCAPE_BLOCKS_URL,
+];
+
 const ensureLib = (env: EnvSettings): Promise<void> => {
   if (libPromise) return libPromise;
   libPromise = (async () => {
@@ -58,10 +66,7 @@ const ensureLib = (env: EnvSettings): Promise<void> => {
     // They register the base blocks (e.g. catalogMQA) and RDForms bundles that
     // the pages rely on; addConfig()/setEntryStore()/init() come from the engine
     // itself (ENTRYSCAPE_BLOCKS_URL), so no extra bundle is needed.
-    await loadScript("https://sandbox.admin.dataportal.se/tmp/blocks.js");
-    await loadScript(env.ENTRYSCAPE_OPENDATA_URL);
-    await loadScript(env.ENTRYSCAPE_MQA_URL);
-    await loadScript(env.ENTRYSCAPE_BLOCKS_URL);
+    for (const url of blockScriptUrls(env)) await loadScript(url);
     await window.__entryscape_blocks_ready;
   })();
   return libPromise;

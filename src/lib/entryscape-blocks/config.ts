@@ -34,6 +34,8 @@ export const createBlocksConfig = ({
     ...(esId !== "" && { entry: esId }),
     clicks: {
       concept: `${includeLangInPath(lang)}/concepts/\${context}_\${entry}`,
+      class: `${includeLangInPath(lang)}/class/\${context}_\${entry}`,
+      property: `${includeLangInPath(lang)}/property/\${context}_\${entry}`,
       "dataservice-link": `${includeLangInPath(lang)}/dataservice/\${context}_\${entry}`,
       katalog: `${includeLangInPath(lang)}/metadatakvalitet/katalog/\${entry}/\${context}`,
     },
