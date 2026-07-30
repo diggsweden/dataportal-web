@@ -25,12 +25,9 @@ describe("Check tools and support page", () => {
     cy.get("[data-test-id='grid-list-container']", { timeout: 10000 })
       .should("exist")
       .within(() => {
-        // Check if either grid-list or grid-list-empty exists
-        cy.get("body").then(() => {
-          cy.get(
-            "[data-test-id='grid-list'], [data-test-id='grid-list-empty']",
-          ).should("exist");
-        });
+        cy.get(
+          "[data-test-id='grid-list'], [data-test-id='grid-list-empty']",
+        ).should("exist");
       });
 
     // Get the total count from the heading outside grid-list-container
