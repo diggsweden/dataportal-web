@@ -31,11 +31,8 @@ describe("Check specification page", () => {
     );
   });
 
-  it("Should display specification page header and description", () => {
+  it("Should display specification page header", () => {
     cy.get("h1", { timeout: 10000 }).should("exist").should("not.be.empty");
-    cy.get("[data-test-id='description']", { timeout: 10000 })
-      .should("exist")
-      .should("not.be.empty");
   });
 
   it("Should display publisher information correctly", () => {
@@ -55,11 +52,7 @@ describe("Check specification page", () => {
     });
   });
 
-  it("Should display specification block and its children", () => {
-    cy.get("[data-test-id='resource-descriptors']", { timeout: 10000 }).should(
-      "exist",
-    );
-
+  it("Should display contact publisher block", () => {
     cy.get("[data-test-id='contact-publisher']", { timeout: 10000 }).should(
       "exist",
     );

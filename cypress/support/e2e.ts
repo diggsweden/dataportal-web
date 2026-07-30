@@ -36,6 +36,17 @@ if (Cypress.config("hideXHRInCommandLog")) {
   }
 }
 
+// Ignore hydration mismatches — expected in dev mode due to the server-generated
+// nonce / inline env script that can't match perfectly on first client render.
+Cypress.on("uncaught:exception", (e) => {
+  if (
+    e.message.includes("Hydration failed") ||
+    e.message.includes("hydration mismatch")
+  ) {
+    return false;
+  }
+});
+
 // This is set to make sure that the cookie settings are set to accepted before each test
 beforeEach(() => {
   cy.window().then((window) => {

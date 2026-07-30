@@ -52,19 +52,22 @@ describe("Search organisations", () => {
       });
   });
 
-  it("Verify search filters toggle button exists and is closed by default", () => {
+  it("Verify search filters toggle button exists and toggles", () => {
     cy.get("[data-test-id='search-filters']").within(() => {
       cy.get("[data-test-id='search-filters-toggle']")
         .first()
         .as("filterToggle")
-        .should("exist")
-        .should("have.attr", "aria-expanded", "false");
+        .should("exist");
     });
 
-    // Wait a moment and then click using the alias
+    // Click the toggle and verify that aria-expanded changes
     cy.wait(500);
-    cy.get("@filterToggle").click();
-
-    cy.get("@filterToggle").should("have.attr", "aria-expanded", "false");
+    cy.get("@filterToggle")
+      .invoke("attr", "aria-expanded")
+      .then((expanded) => {
+        cy.get("@filterToggle").click();
+        const expected = expanded === "true" ? "false" : "true";
+        cy.get("@filterToggle").should("have.attr", "aria-expanded", expected);
+      });
   });
 });

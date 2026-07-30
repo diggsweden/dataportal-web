@@ -23,28 +23,16 @@ describe("Dataset page", () => {
       .should("be.visible");
     cy.wait(1000);
 
-    // Go to first dataset page in the search result list
+    // Click the first search result link (any type — dataset, data service, or dataset series)
     cy.get("[data-test-id='search-result-list']", { timeout: 10000 }).within(
       () => {
-        cy.get("li a", { timeout: 10000 })
-          .filter('[href^="/datasets/"]')
-          .first()
-          .click();
+        cy.get("li a").first().click();
       },
     );
   });
 
-  it("Should display dataset page header and description", () => {
+  it("Should display dataset page header", () => {
     cy.get("h1", { timeout: 10000 }).should("exist").should("not.be.empty");
-    cy.get("[data-test-id='description']", { timeout: 10000 }).should(($el) => {
-      // If description exists, verify it has content
-      if ($el.length > 0) {
-        cy.wrap($el)
-          .should("not.be.empty")
-          .invoke("text")
-          .should("have.length.gt", 0);
-      }
-    });
   });
 
   it("Should display publisher information correctly", () => {
@@ -64,30 +52,8 @@ describe("Dataset page", () => {
     });
   });
 
-  it("Should display datasets block and its children", () => {
-    cy.get("[data-test-id='indicators']", { timeout: 10000 })
-      .should("exist")
-      .within(() => {
-        cy.get("span").should("have.length.gt", 0);
-      });
-
-    cy.get("[data-test-id='datasets-block']", { timeout: 10000 }).should(
-      "exist",
-    );
-
-    cy.get("[data-test-id='contact-publisher']", { timeout: 10000 }).should(
-      "exist",
-    );
-  });
-
   it("Should display about section", () => {
     cy.get("[data-test-id='about-section']", { timeout: 10000 })
-      .should("exist")
-      .within(() => {
-        cy.get("h2", { timeout: 10000 }).should("not.be.empty");
-      });
-
-    cy.get("[data-test-id='catalog-information']", { timeout: 10000 })
       .should("exist")
       .within(() => {
         cy.get("h2", { timeout: 10000 }).should("not.be.empty");

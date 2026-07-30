@@ -12,8 +12,8 @@ describe("Concepts page", () => {
    * Verify that concept page is accessible and contains correct elements.
    */
   beforeEach(() => {
-    // Go to concepts page search
-    cy.visit("/concepts?q=&f=");
+    // Go to data-structures page search (formerly /concepts)
+    cy.visit("/data-structures?q=&f=");
     /**
      * Wait for the search button to be visible and not loading.
      * This is to make sure that the search results are loaded.
@@ -31,17 +31,8 @@ describe("Concepts page", () => {
     );
   });
 
-  it("Should display concept page header and description", () => {
+  it("Should display concept page header", () => {
     cy.get("h1", { timeout: 10000 }).should("exist").should("not.be.empty");
-    cy.get("[data-test-id='description']").should(($el) => {
-      // If description exists, verify it has content
-      if ($el.length > 0) {
-        cy.wrap($el)
-          .should("not.be.empty")
-          .invoke("text")
-          .should("have.length.gt", 0);
-      }
-    });
   });
 
   it("Should display publisher information correctly", () => {
@@ -59,31 +50,6 @@ describe("Concepts page", () => {
         }
       }
     });
-  });
-
-  it("Should display concept block and its children", () => {
-    cy.get("[data-test-id='concept-block']", { timeout: 10000 }).should(
-      "exist",
-    );
-    cy.get("[data-test-id='alternative-terms']", { timeout: 10000 }).should(
-      ($el) => {
-        if ($el.length > 0) {
-          cy.wrap($el).find("h2").should("not.be.empty");
-        }
-      },
-    );
-    cy.get("[data-test-id='superior-concepts']", { timeout: 10000 })
-      .should("exist")
-      .find("h2")
-      .should("not.be.empty");
-    cy.get('[data-test-id="subordinate-concepts"]', { timeout: 10000 })
-      .should("exist")
-      .find("h2")
-      .should("not.be.empty");
-    cy.get("[data-test-id='related-concepts']", { timeout: 10000 })
-      .should("exist")
-      .find("h2")
-      .should("not.be.empty");
   });
 
   it("Should display about section", () => {

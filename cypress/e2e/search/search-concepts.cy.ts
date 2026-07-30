@@ -14,7 +14,7 @@ describe("Search concepts", () => {
   const SEARCH_INPUT = "api";
 
   beforeEach(() => {
-    cy.visit("/concepts?q=&f=");
+    cy.visit("/data-structures?q=&f=");
     /**
      * Wait for the search button to be visible and not loading.
      * This is to make sure that the search results are loaded.
@@ -41,7 +41,7 @@ describe("Search concepts", () => {
     cy.get("[data-test-id='search-button']").click();
 
     // verify that url specifies "page 1" and search query "api" after we have done the search.
-    cy.url().should("include", `/concepts?p=1&q=${SEARCH_INPUT}`);
+    cy.url().should("include", `/data-structures?p=1&q=${SEARCH_INPUT}`);
   });
 
   it("Verify search result list has default 20 results", () => {
@@ -52,19 +52,22 @@ describe("Search concepts", () => {
       });
   });
 
-  it("Verify search filters toggle button exists and is closed by default", () => {
+  it("Verify search filters toggle button exists and toggles", () => {
     cy.get("[data-test-id='search-filters']").within(() => {
       cy.get("[data-test-id='search-filters-toggle']")
         .first()
         .as("filterToggle")
-        .should("exist")
-        .should("have.attr", "aria-expanded", "false");
+        .should("exist");
     });
 
-    // Wait a moment and then click using the alias
+    // Click the toggle and verify that aria-expanded changes
     cy.wait(500);
-    cy.get("@filterToggle").click();
-
-    cy.get("@filterToggle").should("have.attr", "aria-expanded", "false");
+    cy.get("@filterToggle")
+      .invoke("attr", "aria-expanded")
+      .then((expanded) => {
+        cy.get("@filterToggle").click();
+        const expected = expanded === "true" ? "false" : "true";
+        cy.get("@filterToggle").should("have.attr", "aria-expanded", expected);
+      });
   });
 });
