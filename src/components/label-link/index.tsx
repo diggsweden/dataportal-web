@@ -87,7 +87,11 @@ export function LabelLink({
   return (
     <div
       data-test-id={testId}
-      className={cx(linkVariants({ size, color }), "break-words", className)}
+      className={cx(
+        linkVariants({ size, color, underline: false }),
+        "break-words no-underline hover:no-underline",
+        className,
+      )}
     >
       {title}
     </div>

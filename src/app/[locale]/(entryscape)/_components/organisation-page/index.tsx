@@ -221,7 +221,7 @@ export function OrganisationPage() {
             <Heading
               level={2}
               size={"md"}
-              className="mb-md text-textSecondary md:mb-lg"
+              className="mb-md text-textSecondary md:mb-lg break-words hyphens-auto"
             >
               {`${t("common.about")} ${entry.title}`}
             </Heading>
