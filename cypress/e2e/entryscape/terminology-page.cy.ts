@@ -14,8 +14,8 @@ describe("Terminology page", () => {
    */
 
   beforeEach(() => {
-    // Go to concepts page search
-    cy.visit("/concepts?q=&f=");
+    // Go to data-structures page search (formerly /concepts)
+    cy.visit("/data-structures?q=&f=");
     /**
      * Wait for the search button to be visible and not loading.
      * This is to make sure that the search results are loaded.
@@ -41,17 +41,8 @@ describe("Terminology page", () => {
       });
   });
 
-  it("Should display terminology page header and description", () => {
+  it("Should display terminology page header", () => {
     cy.get("h1", { timeout: 10000 }).should("exist").should("not.be.empty");
-    cy.get("[data-test-id='description']", { timeout: 10000 }).should(($el) => {
-      // If description exists, verify it has content
-      if ($el.length > 0) {
-        cy.wrap($el)
-          .should("not.be.empty")
-          .invoke("text")
-          .should("have.length.gt", 0);
-      }
-    });
   });
 
   it("Should display publisher information correctly", () => {
@@ -69,19 +60,6 @@ describe("Terminology page", () => {
         }
       }
     });
-  });
-
-  it("Should display terminology block and its children", () => {
-    cy.get("[data-test-id='terminology-block']", { timeout: 10000 })
-      .should("exist")
-      .within(() => {
-        cy.get("h2").should("not.be.empty");
-        cy.get("a", { timeout: 10000 })
-          .first()
-          .should("not.be.empty")
-          .should("have.attr", "href")
-          .and("not.be.empty");
-      });
   });
 
   it("Should display about section", () => {

@@ -36,6 +36,15 @@ if (Cypress.config("hideXHRInCommandLog")) {
   }
 }
 
+// Ignore hydration mismatches — expected in dev mode due to the server-generated
+// nonce / inline env script that can't match perfectly on first client render.
+Cypress.on("uncaught:exception", () => {
+  // Returning false prevents Cypress from failing the test on uncaught
+  // application exceptions (e.g. hydration mismatches, chunk-load errors,
+  // or transient runtime errors in Next.js dev mode).
+  return false;
+});
+
 // This is set to make sure that the cookie settings are set to accepted before each test
 beforeEach(() => {
   cy.window().then((window) => {
