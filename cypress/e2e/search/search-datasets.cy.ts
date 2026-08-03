@@ -67,4 +67,64 @@ describe("Search datasets", () => {
 
     cy.get("@filterToggle").should("have.attr", "aria-expanded", "false");
   });
+
+  /**
+   * Verify that the active page marking in the pagination follows the user
+   * back to page 1.
+   *
+   * Regression test: `search.request.page` is 0-indexed, so page 1 is stored as
+   * 0. The previous logic (`search?.request.page && search?.request.page + 1`)
+   * short-circuited on the falsy 0 and passed 0 to <Pagination />, where a
+   * second falsy guard kept the active marking stuck on "2".
+   */
+  it("Verify pagination active page marking returns to page 1", () => {
+    // Search for a term that yields enough hits to render more than one page.
+    cy.get("[data-test-id='search-input']").find("input").type(SEARCH_INPUT);
+    cy.get("[data-test-id='search-button']").click();
+
+    // Wait for the search results to finish loading.
+    cy.get("[data-test-id='search-button']", { timeout: 10000 }).should(
+      "have.attr",
+      "data-test-loading",
+      "false",
+    );
+
+    cy.get("[data-test-id='pagination']").should("be.visible");
+
+    // Page 1 is the active page when the search results are first rendered.
+    cy.get("[data-test-id='pagination']")
+      .find('button[aria-label="sida 1"]')
+      .should("have.class", "bg-brown-800");
+
+    // Navigate to page 2 and verify that the active marking moves along.
+    cy.get("[data-test-id='pagination']")
+      .find('button[aria-label="sida 2"]')
+      .click();
+
+    cy.url().should("include", "p=2");
+
+    cy.get("[data-test-id='pagination']")
+      .find('button[aria-label="sida 2"]')
+      .should("have.class", "bg-brown-800");
+
+    cy.get("[data-test-id='pagination']")
+      .find('button[aria-label="sida 1"]')
+      .should("not.have.class", "bg-brown-800");
+
+    // Navigate back to page 1 and verify that the active marking returns
+    // instead of getting stuck on page 2.
+    cy.get("[data-test-id='pagination']")
+      .find('button[aria-label="sida 1"]')
+      .click();
+
+    cy.url().should("include", "p=1");
+
+    cy.get("[data-test-id='pagination']")
+      .find('button[aria-label="sida 1"]')
+      .should("have.class", "bg-brown-800");
+
+    cy.get("[data-test-id='pagination']")
+      .find('button[aria-label="sida 2"]')
+      .should("not.have.class", "bg-brown-800");
+  });
 });
