@@ -307,7 +307,7 @@ export function SearchFilters({
           showFilter ? "block" : "hidden"
         }`}
       >
-        <div className="flex h-full flex-col space-y-xl overflow-y-auto overscroll-contain p-lg md:my-xl md:gap-none md:space-y-sm md:p-none">
+        <div className="flex h-full flex-col space-y-xl overflow-y-auto overscroll-contain md:overflow-y-visible p-lg md:my-xl md:gap-none md:space-y-sm md:p-none">
           <ToggleFilterButton className="md:hidden" />
           <span className="!mt-lg border-b border-brown-500 md:hidden" />
           {Object.entries(groupedFacets).map(([groupName, groupFacets]) => (

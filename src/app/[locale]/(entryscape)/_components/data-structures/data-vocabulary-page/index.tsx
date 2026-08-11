@@ -43,10 +43,6 @@ export function DataVocabularyPage() {
         },
       ])}
       title={entry.title}
-      columnsLayout="rowSpaced"
-      mainLayout="content"
-      sidebarLayout="panels"
-      sidebarTestId="about-section"
       intro={
         <>
           <LabelLink
@@ -94,11 +90,12 @@ export function DataVocabularyPage() {
       }
       sidebar={
         <>
-          <Box color="white" className="mb-lg md:mb-xl">
+          <InteroperableSpecificationsCard labelKey="pages.data-vocabulary.specifications_use" />
+          <Box testId="about-section" color="white" padding="xl" rounded={true}>
             <Heading
               level={2}
-              size="sm"
-              className="mb-sm text-textSecondary md:mb-md"
+              size="md"
+              className="mb-md text-textSecondary md:mb-lg"
             >
               {t("common.details")}
             </Heading>
@@ -122,7 +119,6 @@ export function DataVocabularyPage() {
               />
             </div>
           </Box>
-          <InteroperableSpecificationsCard labelKey="pages.data-vocabulary.specifications_use" />
         </>
       }
     />
