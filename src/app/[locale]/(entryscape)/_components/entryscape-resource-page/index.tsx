@@ -60,7 +60,7 @@ export function EntryscapeResourcePage({
           <div
             data-attribute="entryscape-page-sidebar"
             className={cx(
-              "mb-lg w-full max-w-md space-y-lg pt-none lg:mb-none lg:max-w-[26.25rem]",
+              "mb-lg w-full max-w-md space-y-xl pt-none lg:mb-none lg:max-w-[26.25rem]",
               sidebarClassName,
             )}
           >
