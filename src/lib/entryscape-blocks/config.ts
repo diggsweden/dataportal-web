@@ -36,8 +36,17 @@ export const createBlocksConfig = ({
       concept: `${includeLangInPath(lang)}/concepts/\${context}_\${entry}`,
       class: `${includeLangInPath(lang)}/class/\${context}_\${entry}`,
       property: `${includeLangInPath(lang)}/property/\${context}_\${entry}`,
+      datavoc: `${includeLangInPath(lang)}/data-vocabulary/\${context}_\${entry}`,
+      terminology: `${includeLangInPath(lang)}/terminology/\${context}_\${entry}`,
+      organization: `${includeLangInPath(lang)}/organisations/\${context}_\${entry}`,
+      dataset: `${includeLangInPath(lang)}/datasets/\${context}_\${entry}`,
+      spec: `${includeLangInPath(lang)}/specifications/\${context}_\${entry}`,
+      ap: `${includeLangInPath(lang)}/specifications/\${context}_\${entry}/ap`,
       "dataservice-link": `${includeLangInPath(lang)}/dataservice/\${context}_\${entry}`,
       katalog: `${includeLangInPath(lang)}/metadatakvalitet/katalog/\${entry}/\${context}`,
+      conceptSearch: `esb:${includeLangInPath(lang)}/data-structure?f=\${uri}&rt=term`,
+      classSearch: `esb:${includeLangInPath(lang)}/data-structure?f=\${uri}&rt=term_class`,
+      propertySearch: `esb:${includeLangInPath(lang)}/data-structure?f=\${uri}&rt=term_property`,
     },
   };
 
