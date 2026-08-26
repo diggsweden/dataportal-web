@@ -506,6 +506,9 @@ export function SearchFilters({
                             }
                             label={tResource(key)}
                             iconSize={iconSize}
+                            singleSelect={
+                              !!value.exclusive || !!value.customSearch?.length
+                            }
                           />
                         </li>
                       );

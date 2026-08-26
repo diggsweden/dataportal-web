@@ -1,5 +1,7 @@
 import CheckboxIcon from "@/assets/icons/checkbox.svg";
 import CheckboxCheckedIcon from "@/assets/icons/checkbox-checked.svg";
+import RadioIcon from "@/assets/icons/radio.svg";
+import RadioCheckedIcon from "@/assets/icons/radio-checked.svg";
 
 interface SearchCheckboxFilterProps {
   id: string;
@@ -8,6 +10,8 @@ interface SearchCheckboxFilterProps {
   onChange: () => void;
   label: string;
   iconSize: number;
+  /** Single-select filters show a radio icon instead of a checkbox. */
+  singleSelect?: boolean;
 }
 
 export interface SearchCheckboxFilterIconProps {
@@ -32,6 +36,22 @@ export function SearchCheckboxFilterIcon({
   );
 }
 
+export function SearchRadioFilterIcon({
+  isChecked,
+  iconSize,
+  className = "",
+}: SearchCheckboxFilterIconProps) {
+  const Icon = isChecked ? RadioCheckedIcon : RadioIcon;
+  return (
+    <Icon
+      height={iconSize}
+      width={iconSize}
+      viewBox="0 0 16 16"
+      className={className}
+    />
+  );
+}
+
 export function SearchCheckboxFilter({
   id,
   name,
@@ -39,7 +59,12 @@ export function SearchCheckboxFilter({
   onChange,
   label,
   iconSize,
+  singleSelect = false,
 }: SearchCheckboxFilterProps) {
+  const FilterIcon = singleSelect
+    ? SearchRadioFilterIcon
+    : SearchCheckboxFilterIcon;
+
   return (
     <div data-test-id="search-checkbox-filter" className="relative w-fit">
       <input
@@ -58,7 +83,7 @@ export function SearchCheckboxFilter({
       >
         {label}
       </label>
-      <SearchCheckboxFilterIcon
+      <FilterIcon
         isChecked={checked}
         iconSize={iconSize}
         className="pointer-events-none absolute left-md top-1/2 -translate-y-1/2"
