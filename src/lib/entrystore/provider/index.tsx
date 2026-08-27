@@ -278,6 +278,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       }
 
       case "dataservice":
+      case "application-profile":
         return {};
 
       case "apiexplore": {

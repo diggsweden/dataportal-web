@@ -8,12 +8,15 @@ const container = cva(["container"], {
       md: ["max-w-md"],
       lg: ["max-w-lg"],
       xl: ["max-w-xl"],
+      full: ["max-w-none"],
     },
   },
   defaultVariants: {
     size: "xl",
   },
 });
+
+export type ContainerSize = NonNullable<VariantProps<typeof container>["size"]>;
 
 type ContainerProps = VariantProps<typeof container>;
 

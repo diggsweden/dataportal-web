@@ -56,6 +56,7 @@ export type PageType =
   | "terminology"
   | "data-vocabulary"
   | "specification"
+  | "application-profile"
   | "concept"
   | "class"
   | "property"
@@ -102,6 +103,7 @@ export const ROUTE_CONFIG = {
     pathPrefix: "/specifications",
     redirectPath: "/specifications",
   },
+  "application-profile": {},
   "data-vocabulary": {},
   terminology: {
     pathPrefix: "/concepts",

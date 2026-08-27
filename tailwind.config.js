@@ -21,6 +21,7 @@ module.exports = {
       lg: "60rem", // 960px
       xl: "71.25rem", // 1140px
       fit: "fit-content",
+      none: "none",
     },
     colors: {
       primary: "#CD7A6E",

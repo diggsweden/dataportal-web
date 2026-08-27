@@ -1,7 +1,7 @@
 import { cx } from "class-variance-authority";
 import type { ReactNode } from "react";
 
-import { Container } from "@/components/layout/container";
+import { Container, type ContainerSize } from "@/components/layout/container";
 import type { BreadcrumbProps } from "@/components/navigation/breadcrumbs";
 import { BreadcrumbSetter } from "@/components/navigation/breadcrumbs/breadcrumb-setter";
 import { Heading } from "@/components/typography/heading";
@@ -17,6 +17,7 @@ interface EntryscapeResourcePageProps {
   columnsClassName?: string;
   mainClassName?: string;
   sidebarClassName?: string;
+  containerSize?: ContainerSize;
 }
 
 /**
@@ -35,9 +36,10 @@ export function EntryscapeResourcePage({
   columnsClassName,
   mainClassName,
   sidebarClassName,
+  containerSize = "xl",
 }: EntryscapeResourcePageProps) {
   return (
-    <Container>
+    <Container size={containerSize}>
       <BreadcrumbSetter {...breadcrumb} />
       {head}
       <main className="space-y-lg md:space-y-xl">
