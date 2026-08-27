@@ -1,8 +1,4 @@
-import {
-  type EntryStoreName,
-  ESRdfType,
-  ESType,
-} from "@/lib/entrystore/entrystore-core";
+import { ESRdfType, ESType } from "@/lib/entrystore/entrystore-core";
 import {
   classPathResolver,
   conceptsPathResolver,
@@ -37,7 +33,6 @@ interface HitSpecification {
 }
 
 interface SearchProviderConfig {
-  store: EntryStoreName;
   hitSpecifications: Record<string, HitSpecification>;
   facetSpecification: {
     facets: FacetConfig[];
@@ -65,7 +60,6 @@ interface SearchProviderConfig {
 export function createSearchProviderSettings(lang: string) {
   return {
     datasets: {
-      store: "admin",
       hitSpecifications: {
         "http://www.w3.org/ns/dcat#Dataset": {
           path: `/datasets/`,
@@ -246,7 +240,6 @@ export function createSearchProviderSettings(lang: string) {
       },
     },
     "datasets-series": {
-      store: "admin",
       hitSpecifications: {
         "http://www.w3.org/ns/dcat#Dataset": {
           path: `/datasets/`,
@@ -286,7 +279,6 @@ export function createSearchProviderSettings(lang: string) {
       },
     },
     specifications: {
-      store: "admin",
       hitSpecifications: {
         "http://www.w3.org/ns/dx/prof/Profile": {
           path: `/specifications/`,
@@ -383,7 +375,6 @@ export function createSearchProviderSettings(lang: string) {
       },
     },
     organisations: {
-      store: "admin",
       hitSpecifications: {
         "http://xmlns.com/foaf/0.1/Agent": {
           path: `/organisations/`,
@@ -431,7 +422,6 @@ export function createSearchProviderSettings(lang: string) {
       },
     },
     "data-structures": {
-      store: "editera",
       hitSpecifications: {
         "http://www.w3.org/2004/02/skos/core#Concept": {
           path: `/concepts/`,

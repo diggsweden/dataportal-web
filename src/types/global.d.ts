@@ -98,8 +98,6 @@ export type RedirectConfig = {
     | "/terminology"
     | "/class"
     | "/property";
-  /** Which physical store this page's entry lives in. */
-  store: "admin" | "editera";
   param?: string | string[];
   secondParam?: string;
 };

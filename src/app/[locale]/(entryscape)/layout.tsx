@@ -17,11 +17,6 @@ export default function EntryscapeLayout({
     <>
       <link
         rel="preconnect"
-        href="https://editera.dataportal.se"
-        crossOrigin="anonymous"
-      />
-      <link
-        rel="preconnect"
         href="https://admin.dataportal.se"
         crossOrigin="anonymous"
       />

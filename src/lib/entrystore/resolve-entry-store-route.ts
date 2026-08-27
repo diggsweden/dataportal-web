@@ -35,7 +35,6 @@ export async function resolveEntryStoreRoute(
     getResourceLabel(lang),
   ]);
   const entrystoreService = EntrystoreService.getInstance({
-    store: config.store,
     env,
     lang,
     t,
@@ -55,10 +54,13 @@ export async function resolveEntryStoreRoute(
   }
   // Handle regular routes
   else if (param) {
-    if (param.includes("_") && /^\d/.test(param)) {
-      const ids = param.split("_");
-      const eid = ids.pop() || "";
-      const cid = ids.join("_");
+    // `cid_eid`, e.g. `182_147` or `sniDemo_22`. Context ids are not always
+    // numeric, so key off the entry id (always numeric) rather than the first
+    // character of the whole segment.
+    const separator = param.lastIndexOf("_");
+    const eid = separator > 0 ? param.slice(separator + 1) : "";
+    if (/^\d+$/.test(eid)) {
+      const cid = param.slice(0, separator);
 
       try {
         const entry = await entrystoreService.getEntry(cid, eid);

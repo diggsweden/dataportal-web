@@ -9,10 +9,7 @@ import type { EnvSettings } from "@/env";
 import { SettingsUtil } from "@/env";
 import { Settings_Sandbox } from "@/env/settings.sandbox";
 import type { ResourceLabel } from "@/i18n/types";
-import {
-  type EntryStoreName,
-  ROUTE_CONFIG,
-} from "@/lib/entrystore/entrystore-core";
+import { ROUTE_CONFIG } from "@/lib/entrystore/entrystore-core";
 import type { RedirectConfig } from "@/types/global";
 
 import { includeLangInPath } from "@/utilities/check-lang";
@@ -179,13 +176,9 @@ export function buildFacetSearchLink(
   return `/${path}?q=&f=${encodeURIComponent(facetValue)}${rt}`;
 }
 
-/** Base URL of a page's chosen store, resolved against the given env. */
-export function entryStoreBaseUrl(env: EnvSettings, store: EntryStoreName) {
-  const host =
-    store === "editera"
-      ? env.ENTRYSCAPE_EDITERA_PATH
-      : env.ENTRYSCAPE_ADMIN_PATH;
-  return `https://${host}/store`;
+/** Base URL of the EntryStore, resolved against the given env. */
+export function entryStoreBaseUrl(env: EnvSettings) {
+  return `https://${env.ENTRYSCAPE_ADMIN_PATH}/store`;
 }
 
 export function createPathResolver(config: RedirectConfig) {

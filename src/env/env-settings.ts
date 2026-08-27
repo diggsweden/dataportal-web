@@ -3,7 +3,6 @@ export abstract class EnvSettings {
   abstract SANDBOX_BASE_URL: string;
 
   abstract ENTRYSCAPE_ADMIN_PATH: string;
-  abstract ENTRYSCAPE_EDITERA_PATH: string;
 
   abstract ENTRYSCAPE_ORG_STATS_URL: string;
   abstract ENTRYSCAPE_THEME_STATS_URL: string;

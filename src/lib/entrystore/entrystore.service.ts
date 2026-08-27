@@ -9,7 +9,6 @@ import { namespaces } from "@entryscape/rdfjson";
 import type { EnvSettings } from "@/env";
 import type { ResourceLabel, Translate } from "@/i18n/types";
 import {
-  type EntryStoreName,
   type ESFacetField,
   type ESFacetFieldValue,
   ESRdfType,
@@ -49,10 +48,7 @@ import {
 import { entryCache } from "./local-cache";
 
 interface EntryStoreConfig {
-  /** The store this service reads/queries (its primary store). */
-  store: EntryStoreName;
-  /** Resolves store hosts; the admin store is always reachable for cross-store
-   *  links (e.g. a data structure's data vocabulary, which lives in admin). */
+  /** Resolves the EntryStore host. */
   env: EnvSettings;
   lang: string;
   t: Translate;
@@ -77,7 +73,6 @@ export class EntrystoreService {
   private entryStoreUtil: EntryStoreUtil;
   /** Admin-store util for cross-store links; equals entryStoreUtil when this
    *  service's primary store is already admin. */
-  private adminEntryStoreUtil: EntryStoreUtil;
   private t: Translate;
   private resourceLabel: ResourceLabel;
   private lang: string;
@@ -91,20 +86,9 @@ export class EntrystoreService {
   private facetSpecification: FacetSpecification = {};
 
   private constructor(config: EntryStoreConfig) {
-    this.entryStore = new EntryStore(
-      entryStoreBaseUrl(config.env, config.store),
-    );
+    this.entryStore = new EntryStore(entryStoreBaseUrl(config.env));
     this.entryStoreUtil = new EntryStoreUtil(this.entryStore);
     this.entryStoreUtil.loadOnlyPublicEntries(true);
-
-    if (config.store === "admin") {
-      this.adminEntryStoreUtil = this.entryStoreUtil;
-    } else {
-      this.adminEntryStoreUtil = new EntryStoreUtil(
-        new EntryStore(entryStoreBaseUrl(config.env, "admin")),
-      );
-      this.adminEntryStoreUtil.loadOnlyPublicEntries(true);
-    }
 
     this.lang = config.lang;
     this.t = config.t;
@@ -885,9 +869,7 @@ export class EntrystoreService {
         } else if (definedByUri) {
           try {
             const vocabEntry =
-              await this.adminEntryStoreUtil.getEntryByResourceURI(
-                definedByUri,
-              );
+              await this.entryStoreUtil.getEntryByResourceURI(definedByUri);
             if (vocabEntry) {
               const vocabMeta = vocabEntry.getAllMetadata();
               parentUrl = `${includeLangInPath(this.lang)}/data-vocabulary/${vocabEntry

@@ -6,7 +6,6 @@ export class Settings_Sandbox extends EnvSettings {
   SANDBOX_BASE_URL = "https://www-sandbox.dataportal.se";
 
   ENTRYSCAPE_ADMIN_PATH = "sandbox.admin.dataportal.se";
-  ENTRYSCAPE_EDITERA_PATH = "sandbox.editera.dataportal.se";
 
   ENTRYSCAPE_ORG_STATS_URL =
     "https://sandbox.admin.dataportal.se/charts/orgData.json";

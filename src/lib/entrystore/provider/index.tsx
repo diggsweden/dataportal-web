@@ -18,12 +18,7 @@ import {
   useEntryScapeBlocks,
 } from "@/lib/entryscape-blocks/use-blocks";
 import { EntrystoreService } from "@/lib/entrystore/entrystore.service";
-import {
-  type EntryStoreName,
-  type ESEntry,
-  type PageType,
-  ROUTE_CONFIG,
-} from "@/lib/entrystore/entrystore-core";
+import type { ESEntry, PageType } from "@/lib/entrystore/entrystore-core";
 import {
   buildFacetSearchLink,
   formatTerminologyAddress,
@@ -70,16 +65,9 @@ export interface EntrystoreProviderProps {
   pageType: PageType;
 }
 
-/**
- * The two physical EntryStores. `admin` (admin.dataportal.se) holds datasets,
- * specifications, MQA and data vocabularies; `editera` (editera.dataportal.se)
- * holds concepts, terminologies, classes and properties. A page uses its
- * primary store and reaches across to the other explicitly for cross-store
- * links (e.g. a property → its data vocabulary).
- */
+/** The EntryStore, passed to the fetchers that need it. */
 export interface EntryStores {
   admin: EntrystoreService;
-  editera: EntrystoreService;
 }
 
 export const EntrystoreContext = createContext<ESEntry>(defaultESEntry);
@@ -108,16 +96,13 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
   let entry: Entry;
   let resourceUri: string;
 
-  // Both physical stores, always available. The page's `store` picks the
-  // primary (used to load the entry and for its own-store fetches); cross-store
-  // work names the other one explicitly.
-  const makeStore = (name: EntryStoreName) =>
-    EntrystoreService.getInstance({ store: name, env, lang, t, resourceLabel });
-  const stores: EntryStores = {
-    admin: makeStore("admin"),
-    editera: makeStore("editera"),
-  };
-  const entrystoreService = stores[ROUTE_CONFIG[pageType].store];
+  const entrystoreService = EntrystoreService.getInstance({
+    env,
+    lang,
+    t,
+    resourceLabel,
+  });
+  const stores: EntryStores = { admin: entrystoreService };
 
   entrystoreService.getEntryStoreUtil();
 
@@ -366,7 +351,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
             ),
             entrystoreService.getOrganisationLink(publisherEntry),
             entrystoreService.getSpecificationImage(entry),
-            entrystoreService.getSpecTerms(entry, stores.editera),
+            entrystoreService.getSpecTerms(entry, stores.admin),
           ]);
 
         return {
@@ -607,7 +592,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       // Fetch terms counts
       try {
-        const terms = stores.editera
+        const terms = stores.admin
           .getEntryStore()
           .newSolrQuery()
           .publicRead(true)

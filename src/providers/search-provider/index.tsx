@@ -16,11 +16,7 @@ import type { EnvSettings } from "@/env";
 import type { ResourceLabel, Translate } from "@/i18n/types";
 import { useResourceLabel } from "@/i18n/use-resource-label";
 import { EntrystoreService } from "@/lib/entrystore/entrystore.service";
-import {
-  type EntryStoreName,
-  ESRdfType,
-  ESType,
-} from "@/lib/entrystore/entrystore-core";
+import { ESRdfType, ESType } from "@/lib/entrystore/entrystore-core";
 import type {
   ESFacetField,
   FacetSpecification,
@@ -57,9 +53,6 @@ export enum SearchSortOrder {
  * Props for search provider
  */
 export interface SearchProviderProps {
-  /** Primary store the search queries. The admin store is always also
-   *  available for cross-store links (e.g. data vocabularies). */
-  store: EntryStoreName;
   env: EnvSettings;
   hitSpecifications?: { [key: string]: HitSpecification };
   facetSpecification?: FacetSpecification;
@@ -178,7 +171,6 @@ class SearchProviderClass extends Component<
     const { t, lang, resourceLabel } = props.i18n;
 
     this.entrystoreService = EntrystoreService.getInstance({
-      store: props.store,
       env: props.env,
       lang: lang,
       t: t,
@@ -262,7 +254,6 @@ class SearchProviderClass extends Component<
     if (prevProps.i18n.lang !== this.props.i18n.lang) {
       const { t, lang, resourceLabel } = this.props.i18n;
       this.entrystoreService = EntrystoreService.getInstance({
-        store: this.props.store,
         env: this.props.env,
         lang: lang,
         t: t,
