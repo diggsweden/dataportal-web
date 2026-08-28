@@ -95,7 +95,7 @@ export function DistributionList() {
     <div
       data-test-id="datasets-block"
       className="distribution__list [&_li]:shadow-sm [&_li]:mb-lg [&_li]:bg-white"
-      data-entryscape="listStandard"
+      data-entryscape="list"
       data-entryscape-onecol="true"
       data-entryscape-relation="dcat:distribution"
       data-entryscape-registry="true"
