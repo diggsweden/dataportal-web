@@ -277,6 +277,7 @@
   "specification_page": {
     "about_specification": "Om specifikation",
     "address": "Adress för specifikation",
+    "application_profile": "Applikationsprofil",
     "classes_and_properties": "Klasser och Egenskaper",
     "datasets-follows-specification": "Datamängder följer denna specifikation",
     "download": "Ladda ner",

@@ -265,7 +265,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       }
 
       case "dataservice":
-      case "application-profile":
         return {};
 
       case "apiexplore": {
@@ -321,7 +320,8 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         };
       }
 
-      case "specification": {
+      case "specification":
+      case "application-profile": {
         // Fetch all data in parallel
         const [keywords, formats, organisationLink, image] = await Promise.all([
           entrystoreService.getKeywords(entry),

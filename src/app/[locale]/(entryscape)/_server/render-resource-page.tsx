@@ -3,6 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { isAppLocale } from "@/i18n/routing";
 import {
+  type PageType,
   type ResolverPageType,
   ROUTE_CONFIG,
 } from "@/lib/entrystore/entrystore-core";
@@ -18,6 +19,10 @@ interface RenderEntryStoreResourcePageArgs {
   body: ReactNode;
   /** Resource URI for `external*` entry points that resolve via `?resource=`. */
   resourceUri?: string;
+  /** Appended to vanity redirects, e.g. `/ap`. */
+  pathSuffix?: string;
+  /** Overrides `pageType` on the provider when the view differs from the resolver. */
+  providerPageType?: PageType;
 }
 
 /**
@@ -33,6 +38,8 @@ export async function renderEntryStoreResourcePage({
   secondParam,
   body,
   resourceUri,
+  pathSuffix,
+  providerPageType,
 }: RenderEntryStoreResourcePageArgs) {
   if (!isAppLocale(locale)) notFound();
   setRequestLocale(locale);
@@ -45,7 +52,8 @@ export async function renderEntryStoreResourcePage({
     resourceUri,
   );
 
-  if (result.type === "redirect") redirect(result.url);
+  if (result.type === "redirect")
+    redirect(pathSuffix ? `${result.url}${pathSuffix}` : result.url);
   if (result.type === "notFound") notFound();
 
   const idProps =
@@ -54,7 +62,11 @@ export async function renderEntryStoreResourcePage({
       : { cid: result.cid, eid: result.eid };
 
   return (
-    <EntrystoreProvider env={env} pageType={pageType} {...idProps}>
+    <EntrystoreProvider
+      env={env}
+      pageType={providerPageType ?? pageType}
+      {...idProps}
+    >
       {body}
     </EntrystoreProvider>
   );

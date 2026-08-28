@@ -270,6 +270,7 @@
   "specification_page": {
     "about_specification": "About specification",
     "address": "Adress för specifikation",
+    "application_profile": "Application profile",
     "classes_and_properties": "Classes and properties",
     "datasets-follows-specification": "Datasets following this specification",
     "download": "Download",
