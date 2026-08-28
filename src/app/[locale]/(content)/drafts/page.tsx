@@ -15,8 +15,13 @@ import {
   getMultiContainer,
   type MultiContainerResponse,
 } from "@/app/[locale]/(content)/[...containerSlug]/data";
+import { mediaTypeToImage } from "@/components/custom-image";
+import { PageShell } from "@/components/layout/page-shell";
+import { ParentFragment } from "@/graphql/fragments";
+import { getFragmentData } from "@/graphql/gql";
 import { Dataportal_ContainerState } from "@/graphql/gql/graphql";
 import { type AppLocale, isAppLocale } from "@/i18n/routing";
+import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
 import { includeLangInPath } from "@/utilities/check-lang";
 
 import { getRootAggregate, type RootAggregateResponse } from "./data";
@@ -59,32 +64,101 @@ async function getQuery(
         secret,
       });
     default:
-      return await getMultiContainer([slug.substring(1)], locale, {
-        state: Dataportal_ContainerState.Preview,
-        secret,
-      });
+      return await getMultiContainer(
+        slug.replace(/^\//, "").split("/").filter(Boolean),
+        locale,
+        {
+          state: Dataportal_ContainerState.Preview,
+          secret,
+        },
+      );
   }
+}
+
+function publicationParent(
+  publication: NewsItemResponse | GoodExampleResponse,
+) {
+  if (publication.__typename === "dataportal_Digg_News_Item") {
+    return { name: "Nyheter", link: "/nyheter" };
+  }
+
+  return (publication as GoodExampleResponse).reuse
+    ? {
+        name: "Exempel på återanvändning",
+        link: "/exempel-pa-ateranvandning",
+      }
+    : {
+        name: "Goda Exempel",
+        link: "/exempel-datadriven-transformation",
+      };
 }
 
 function RenderDraft(props: DraftPageProps & { locale: AppLocale }) {
   switch (props.type) {
     case "RootAggregate":
-      return <ContainerPage {...props} />;
+      return (
+        <PageShell
+          heading={props.heading}
+          preamble={props.preamble}
+          image={mediaTypeToImage(props.image) ?? undefined}
+          breadcrumb={buildBreadcrumb(props.heading ?? "", [])}
+          search
+        >
+          <ContainerPage {...props} />
+        </PageShell>
+      );
     case "MultiContainer": {
       const { container, related } = props as MultiContainerResponse;
       if (!container) return null;
-      return container.landingPage ? (
-        <LandingPage
-          {...container}
-          locale={props.locale}
-          pathname={`${includeLangInPath(props.locale)}/drafts`}
-        />
-      ) : (
-        <ContainerPage {...container} related={related} />
+
+      const parentData = getFragmentData(ParentFragment, container.parent);
+      const parentCrumbs =
+        parentData?.heading && parentData.slug
+          ? [{ name: parentData.heading, link: parentData.slug }]
+          : [];
+      const slug = (container.slug ?? "").replace(/^\//, "");
+      const isSearchPage = slug === "data-apier" || slug === "data-apis";
+
+      return (
+        <PageShell
+          heading={container.heading}
+          preamble={isSearchPage ? null : container.preamble}
+          image={mediaTypeToImage(container.image) ?? undefined}
+          breadcrumb={buildBreadcrumb(container.heading ?? "", parentCrumbs)}
+          search={isSearchPage}
+        >
+          {container.landingPage ? (
+            <LandingPage
+              {...container}
+              locale={props.locale}
+              pathname={`${includeLangInPath(props.locale)}/drafts`}
+            />
+          ) : (
+            <ContainerPage
+              {...container}
+              related={related?.filter(
+                (item): item is NonNullable<typeof item> => item !== null,
+              )}
+            />
+          )}
+        </PageShell>
       );
     }
-    case "Publication":
-      return <PublicationFull {...props} />;
+    case "Publication": {
+      const image = mediaTypeToImage(props.image) ?? undefined;
+      return (
+        <PageShell
+          heading={props.heading}
+          preamble={props.preamble}
+          image={image}
+          breadcrumb={buildBreadcrumb(props.heading ?? "", [
+            publicationParent(props),
+          ])}
+        >
+          <PublicationFull {...props} />
+        </PageShell>
+      );
+    }
     default:
       return null;
   }
