@@ -21,7 +21,6 @@ import { EntrystoreService } from "@/lib/entrystore/entrystore.service";
 import type { ESEntry, PageType } from "@/lib/entrystore/entrystore-core";
 import {
   buildFacetSearchLink,
-  formatTerminologyAddress,
   getContactEmail,
   getFirstMatchingValue,
   getLocalizedChoiceLabel,
@@ -45,11 +44,6 @@ const defaultESEntry: ESEntry = {
   loading: true,
   title: "",
   description: "",
-  termPublisher: "",
-  definition: "",
-  conformsTo: [],
-  hasResource: [],
-  address: "",
   context: "",
   esId: "",
 };
@@ -179,7 +173,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           "dcterms:description",
           "rdfs:comment",
         ]),
-        address: resourceUri,
         loading: false,
       };
 
@@ -230,28 +223,22 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
     switch (pageType) {
       case "dataset": {
         // Fetch all data in parallel
-        const [specs, keywords, formats, mqa, dataseries, organisationLink] =
+        const [specs, keywords, formats, mqa, organisationLink] =
           await Promise.all([
-            entrystoreService.getRelatedSpecifications(
-              entry,
-              metadata,
-              pageType,
-            ),
+            entrystoreService.getRelatedSpecifications(entry, metadata),
             entrystoreService.getKeywords(entry),
             entrystoreService.getDownloadFormats(
               entry.getEntryInfo().getMetadataURI(),
             ),
             entrystoreService.getRelatedMQA(entry),
-            entrystoreService.getRelatedDatasetSeries(entry, metadata),
             entrystoreService.getOrganisationLink(publisherEntry),
           ]);
 
         return {
-          relatedSpecifications: specs.all,
+          relatedSpecifications: specs,
           keywords,
           downloadFormats: formats,
           mqaCatalog: mqa,
-          relatedDatasetSeries: dataseries,
           relatedResource: publisherName
             ? { title: publisherName, url: organisationLink || undefined }
             : undefined,
@@ -319,8 +306,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       case "data-vocabulary": {
         // Fetch specifications and formats in parallel. Specs live in the
         // admin store.
-        const [specs, formats, organisationLink] = await Promise.all([
-          stores.admin.getRelatedSpecifications(entry, metadata, pageType),
+        const [formats, organisationLink] = await Promise.all([
           entrystoreService.getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
           ),
@@ -328,12 +314,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
         ]);
 
         return {
-          relatedSpecifications: specs.all,
-          relatedSpecificationsInteroperable: specs.interoperable,
-          address: formatTerminologyAddress(resourceUri, [
-            env.PRODUCTION_BASE_URL,
-            env.SANDBOX_BASE_URL,
-          ]),
           downloadFormats: formats,
           relatedResource: publisherName
             ? { title: publisherName, url: organisationLink || undefined }
@@ -343,25 +323,19 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
       case "specification": {
         // Fetch all data in parallel
-        const [datasets, keywords, formats, organisationLink, image, terms] =
-          await Promise.all([
-            entrystoreService.getRelatedDatasets(entry),
-            entrystoreService.getKeywords(entry),
-            entrystoreService.getDownloadFormats(
-              entry.getEntryInfo().getMetadataURI(),
-            ),
-            entrystoreService.getOrganisationLink(publisherEntry),
-            entrystoreService.getSpecificationImage(entry),
-            entrystoreService.getSpecTerms(entry, stores.admin),
-          ]);
+        const [keywords, formats, organisationLink, image] = await Promise.all([
+          entrystoreService.getKeywords(entry),
+          entrystoreService.getDownloadFormats(
+            entry.getEntryInfo().getMetadataURI(),
+          ),
+          entrystoreService.getOrganisationLink(publisherEntry),
+          entrystoreService.getSpecificationImage(entry),
+        ]);
 
         return {
-          relatedDatasets: datasets.all,
-          relatedDatasetsGrunddata: datasets.grunddata,
           keywords,
           downloadFormats: formats,
           image,
-          ...terms,
           relatedResource: publisherName
             ? { title: publisherName, url: organisationLink || undefined }
             : undefined,
@@ -376,13 +350,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
             entry.getEntryInfo().getMetadataURI(),
           ),
         ]);
-        // Specs live in the admin store.
-        const spec = await stores.admin.getRelatedSpecifications(
-          termEntry,
-          termEntry.getAllMetadata(),
-          pageType,
-        );
-
         return {
           relatedResource: {
             title: getLocalizedValue(
@@ -392,7 +359,6 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
             url: `${includeLangInPath(lang)}${termsPathResolver(termEntry)}`,
           },
           downloadFormats: formats,
-          relatedSpecifications: spec.all,
         };
       }
 

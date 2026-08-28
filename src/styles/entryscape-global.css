@@ -1,7 +1,24 @@
 /* This file is for all entryscape global styles that needs the sites own utility classes */
 
-.entryscape a.button {
-  @apply flex items-center gap-sm button--primary button--large hover:text-white hover:no-underline !important;
+.entryscape a.button,
+.entryscape .esbClassesInDatavocContainer a.esbLinkButton.esbShowAllLink,
+.entryscape .esbPropertiesInDatavocContainer a.esbLinkButton.esbShowAllLink,
+.entryscape .esbConceptsInTerminologyContainer a.esbLinkButton.esbShowAllLink,
+[data-attribute="entryscape-page-main"]
+  [data-entryscape="specInspectAPButton"]
+  a,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  a.esbExtLinkButton {
+  @apply flex items-center gap-sm w-fit button--primary button--large text-white no-underline hover:text-white hover:no-underline !important;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  button.esbRdExpandButton {
+  @apply flex items-center gap-sm w-fit button--secondary button--large;
 }
 
 /* SWAGGER UI */

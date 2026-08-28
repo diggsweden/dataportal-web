@@ -7,6 +7,12 @@ import { Button } from "@/components/button";
 import { Modal } from "@/components/modal";
 import { EntrystoreContext } from "@/lib/entrystore/provider";
 
+const InspectAPButton = () => {
+  return (
+    <span data-entryscape="specInspectAPButton" className=" empty:hidden" />
+  );
+};
+
 /**
  * The specification's diagram image, with a "Visa i full storlek" button and a
  * click-to-enlarge modal. Renders nothing when the spec has no image.
@@ -16,10 +22,10 @@ export function SpecificationImage() {
   const t = useTranslations();
   const [modalOpen, setModalOpen] = useState(false);
 
-  if (!entry.image) return null;
+  if (!entry.image) return <InspectAPButton />;
 
   return (
-    <div className="mb-lg md:mb-xl">
+    <div className="space-y-md md:space-y-lg mb-lg md:mb-xl">
       <button
         type="button"
         onClick={() => setModalOpen(true)}
@@ -33,14 +39,17 @@ export function SpecificationImage() {
           className="bg-pink-100 p-lg w-full max-w-full"
         />
       </button>
-      <Button
-        variant="secondary"
-        icon={FullscreenIcon}
-        iconPosition="right"
-        label={t("pages.specification_page.view_image")}
-        onClick={() => setModalOpen(true)}
-        className="mt-md"
-      />
+      <div className="flex gap-lg items-center">
+        <Button
+          variant="secondary"
+          icon={FullscreenIcon}
+          iconPosition="right"
+          label={t("pages.specification_page.view_image")}
+          onClick={() => setModalOpen(true)}
+        />
+        <InspectAPButton />
+      </div>
+
       <Modal
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}

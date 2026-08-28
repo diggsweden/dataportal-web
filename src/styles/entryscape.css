@@ -2,25 +2,435 @@
   @apply font-ubuntu !important;
 }
 
-.entryscape a:not(.button) {
-  @apply inline-flex text-green-600 hover:text-green-600 underline hover:no-underline !important;
+/* -------------------- Entryscape header styles -------------------- */
+
+[data-attribute="entryscape-title"] .entryscape.esbHeading {
+  @apply flex flex-col;
+}
+
+[data-attribute="entryscape-title"] .entryscape h1 {
+  @apply text-wrap text-xl md:text-2xl mb-lg md:mb-xl font-normal;
+}
+
+[data-attribute="entryscape-title"] .entryscape br {
+  @apply hidden;
+}
+
+[data-attribute="entryscape-title"]
+  .entryscape:not([data-attribute="specification-header"])
+  .esbTypeBadge {
+  @apply px-sm py-xs text-sm bg-green-600 text-white rounded-sm;
+}
+
+[data-attribute="entryscape-title"] .entryscape a {
+  @apply text-lg mb-xl inline-flex text-green-600 hover:text-green-600 underline hover:no-underline;
+}
+
+[data-attribute="entryscape-title"]
+  .entryscape[data-attribute="specification-header"]
+  .esbTypeBadge,
+[data-attribute="entryscape-title"]
+  .entryscape[data-attribute="specification-header"]
+  .esbGrunddataMarker {
+  @apply normal-case text-textSecondary p-none m-none inline-flex items-center;
+}
+
+[data-attribute="entryscape-title"]
+  .entryscape[data-attribute="specification-header"]
+  .esbTypeBadge::before {
+  @apply content-[""] size-[1.5rem] mr-xs bg-center bg-no-repeat bg-contain;
+  background-image: var(--icon--interoperable);
+}
+
+[data-attribute="entryscape-title"]
+  .entryscape[data-attribute="specification-header"]
+  span.esbGrunddataMarker::before {
+  @apply content-[""] size-[1.5rem] mr-xs bg-center bg-no-repeat bg-contain;
+  background-image: var(--icon--national);
+}
+
+/* -------------------- End of Entryscape header styles -------------------- */
+
+/* -------------------- Entryscape page main styles -------------------- */
+
+[data-attribute="entryscape-page-main"] .entryscape .esbDescription {
+  @apply text-wrap font-normal text-textSecondary text-md mt-none mb-sm;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape.esbMainContent
+  > *:not(:empty):not(h2) {
+  @apply mb-xl;
 }
 
 [data-attribute="entryscape-page-main"] .entryscape h2 {
   @apply text-wrap font-normal text-lg md:text-xl mt-none mb-sm;
 }
 
+[data-attribute="entryscape-page-main"] .entryscape a {
+  @apply text-md inline-flex text-green-600 hover:text-green-600 underline hover:no-underline;
+}
+
 [data-attribute="entryscape-page-main"] .entryscape li > a {
   @apply text-md mb-xs;
 }
 
-.entryscape .cardgroup .rdformsFields .rdformsGroup {
-  @apply bg-transparent border-none p-none m-none space-y-md;
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbSpecUsageContainer
+  ul {
+  @apply space-y-sm;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbSpecUsageContainer
+  li {
+  @apply bg-white p-md;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbSpecUsageContainer
+  li
+  > a {
+  @apply text-textPrimary no-underline hover:underline mb-none;
+}
+
+[data-attribute="entryscape-page-main"] .entryscape details summary {
+  @apply flex list-none items-center gap-sm py-md;
+}
+
+[data-attribute="entryscape-page-main"] .entryscape details summary h2,
+[data-attribute="entryscape-page-main"] .entryscape details summary h3 {
+  @apply text-lg font-normal my-none;
+}
+
+[data-attribute="entryscape-page-main"] .entryscape details summary:before {
+  @apply content-[""] size-[1.5rem] bg-center bg-no-repeat bg-contain transform rotate-0 transition-transform duration-300;
+  background-image: var(--icon--expand-accordion);
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details:not([open])
+  summary:before {
+  @apply rotate-180;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbClassesInDatavocContainer,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbPropertiesInDatavocContainer,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbConceptsInTerminologyContainer,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbCPInSpecContainer {
+  @apply bg-green-100 p-md mb-md;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbClassesInDatavocContainer
+  ul,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbPropertiesInDatavocContainer
+  ul,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbConceptsInTerminologyContainer
+  ul,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbCPInSpecContainer
+  ul {
+  @apply flex flex-wrap gap-x-lg gap-y-sm;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbClassesInDatavocContainer
+  ul
+  a,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbPropertiesInDatavocContainer
+  ul
+  a,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbConceptsInTerminologyContainer
+  ul
+  a,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  .esbCPInSpecContainer
+  ul
+  a {
+  @apply text-textPrimary mb-none;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .rdformsFields
+  .rdformsGroup {
+  @apply m-none;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbClassesInDatavocContainer
+  a.esbLinkButton.esbShowAllLink::after,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbPropertiesInDatavocContainer
+  a.esbLinkButton.esbShowAllLink::after,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbConceptsInTerminologyContainer
+  a.esbLinkButton.esbShowAllLink::after,
+.entryscape
+  .esbConceptsInTerminologyContainer
+  a.esbLinkButton.esbShowAllLink::after,
+[data-attribute="entryscape-page-main"] .entryscape .esbInspectAPButton::after {
+  @apply content-[""] size-[1.5rem] bg-center bg-no-repeat bg-contain;
+  background-image: var(--icon--arrow-right-white);
+}
+
+[data-attribute="entryscape-page-main"] .entryscape .esbResourceDescriptors ul {
+  @apply space-y-lg;
+}
+[data-attribute="entryscape-page-main"] .entryscape .esbResourceDescriptors h3,
+[data-attribute="entryscape-page-main"] .entryscape .esbResourceDescriptors h4 {
+  @apply text-lg font-normal mb-sm;
+}
+
+[data-attribute="entryscape-page-main"] .entryscape div.esbResourceTypeBadge {
+  @apply float-right ml-md;
+}
+
+[data-attribute="entryscape-page-main"] .entryscape span.esbResourceTypeBadge {
+  @apply px-sm py-xs text-sm font-strong bg-green-200 rounded-sm mr-none;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  .esbRowMain
+  > dl.esbResourcesFeatures
+  > div:not(:empty) {
+  @apply inline-flex;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  .esbRowMain
+  > dl.esbResourcesFeatures
+  > div
+  > dd:not(:last-of-type)::after {
+  content: ",";
+  @apply mr-xs;
+}
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  div:has(> a.esbExtLinkButton) {
+  @apply inline-block;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  button.esbRdExpandButton {
+  @apply clear-both float-right ml-md;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  button.esbRdExpandButton
+  .esbUnexpandLabel,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  button.esbRdExpandButton[aria-expanded="true"]
+  .esbExpandLabel {
+  @apply hidden;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  button.esbRdExpandButton[aria-expanded="true"]
+  .esbUnexpandLabel {
+  @apply inline-block;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  button.esbRdExpandButton::after {
+  @apply content-[""] size-[1.5rem] bg-center bg-no-repeat bg-contain transform rotate-0 transition-transform duration-300;
+  background-image: var(--icon--expand-button);
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  button.esbRdExpandButton[aria-expanded="true"]::after {
+  @apply rotate-180;
+}
+
+/* External is the norm here, so make it the default */
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  a.esbRdButton::after {
+  @apply content-[""] size-[1.5rem] shrink-0 bg-center bg-no-repeat bg-contain;
+  background-image: var(--icon--external-link-white);
+}
+
+/* Internal: relative links and the portal's own hosts */
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  a.esbRdButton[href^="/"]::after,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  a.esbRdButton[href^="https://dataportal.se"]::after,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  a.esbRdButton[href^="https://www.dataportal.se"]::after,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbResourceDescriptors
+  a.esbRdButton[href^="https://www-sandbox.dataportal.se"]::after {
+  background-image: var(--icon--arrow-right-white);
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbRDFormsWrapper
+  .rdformsRow.rdformsTopLevel {
+  @apply flex flex-col;
+}
+
+[data-attribute="entryscape-page-main"] .entryscape dl dt,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .esbRDFormsWrapper
+  .rdformsRow
+  .rdformsLabel {
+  @apply text-wrap text-md mb-xs pt-none text-textSecondary font-normal;
+}
+
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .rdformsRow.rdformsTopLevel
+  .rdformsFields
+  > .rdformsField {
+  @apply m-none p-none;
+}
+
+/* -------------------- End of Entryscape page main styles -------------------- */
+
+/* -------------------- Entryscape sidebar styles -------------------- */
+
+[data-attribute="entryscape-page-sidebar"] .entryscape {
+  @apply text-sm text-textPrimary;
+}
+
+[data-attribute="entryscape-page-sidebar"] .entryscape h2 {
+  @apply text-wrap text-lg md:text-xl mt-none mb-md text-textSecondary md:mb-lg font-normal;
+}
+
+[data-attribute="entryscape-page-sidebar"] .entryscape dl {
+  @apply space-y-lg;
+}
+
+[data-attribute="entryscape-page-sidebar"] .entryscape dl dt {
+  @apply text-wrap text-sm mb-sm text-textSecondary font-normal;
+}
+
+[data-attribute="entryscape-page-sidebar"] .entryscape a,
+[data-test-id="about-section"] .entryscape a,
+[data-test-id="catalog-information"] .entryscape a,
+.entryscape#entryscape_dialogs a {
+  @apply break-all text-sm inline-flex text-green-600 hover:text-green-600 underline hover:no-underline;
+}
+
+.entryscape.pill-list .rdformsRow.rdformsTopLevel .rdformsFields .rdformsField,
+[data-attribute="entryscape-page-sidebar"] .entryscape .esbKeywordsList dd {
+  @apply mb-sm w-fit bg-pink-200 px-sm py-xs font-strong;
+}
+
+[data-attribute="entryscape-page-sidebar"]
+  .entryscape
+  .esbKeywordsList
+  .esbKeywordToggle {
+  @apply bg-transparent hover:bg-brown-200 text-textSecondary;
+}
+
+[data-attribute="entryscape-page-sidebar"] .entryscape .esbVanity {
+  @apply flex flex-col;
+}
+
+[data-attribute="entryscape-page-sidebar"]
+  .entryscape
+  .esbVanity
+  > p:nth-child(2) {
+  @apply mt-lg mb-none;
+}
+
+[data-attribute="entryscape-page-sidebar"] .entryscape .esbVanity > p:empty {
+  @apply hidden;
+}
+
+[data-attribute="entryscape-page-sidebar"] .entryscape .esbVanityStatContainer {
+  @apply flex items-center gap-sm mb-none;
+}
+
+[data-attribute="entryscape-page-sidebar"]
+  .entryscape
+  .esbVanityStatContainer::before {
+  @apply content-[""] size-[3rem] bg-center bg-no-repeat bg-contain shrink-0;
+  background-image: var(--icon--list-block);
+}
+
+[data-attribute="entryscape-page-sidebar"]
+  .entryscape
+  .esbVanityStatContainer
+  .esbVanityNumber {
+  @apply text-xl md:text-2xl text-primary;
 }
 
 .entryscape .rdformsPresenter .rdformsRow.rdformsTopLevel {
   @apply text-sm pt-none mb-lg;
 }
+
 .entryscape .rdformsPresenter .rdformsLabel {
   @apply inline-block text-textSecondary underline-offset-2 mb-sm border-none;
 }
@@ -31,17 +441,8 @@
   @apply text-sm break-all;
 }
 
-.entryscape .escoList .esbPadding.entryListRow .esbRowMain,
-.entryscape .escoList .esbPadding.entryListRow .esbRowExpand {
-  @apply p-lg;
-}
-
 .entryscape .rdformsFields {
   @apply space-y-sm;
-}
-
-.entryscape .rdformsFields .rdformsGroup {
-  @apply m-none;
 }
 
 .entryscape .rdformsFields .rdformsField,
@@ -64,20 +465,15 @@
   @apply m-none p-none;
 }
 
+.entryscape .cardgroup .rdformsFields .rdformsGroup {
+  @apply bg-transparent border-none p-none m-none space-y-md;
+}
+
 .entryscape .rdformsPresenter .rdformsRepeatedValue {
   @apply border-none;
 }
-
 .entryscape .rdformsPresenter .rdformsLanguage {
   @apply hidden;
-}
-
-.entryscape .escoPosition {
-  @apply mt-sm;
-}
-
-.entryscape .escoMap {
-  @apply mb-lg;
 }
 
 .entryscape#entryscape_dialogs h3.popover-head {
@@ -91,19 +487,48 @@
   @apply inline-flex flex-col;
 }
 
-.entryscape .entryList .esbRowHead {
+/* -------------------- End of Entryscape sidebar styles -------------------- */
+
+/* -------------------- Entryscape dataset page stylings specific -------------------- */
+
+.entryscape .rdformsPresenter .rdformsLanguage {
+  @apply hidden;
+}
+
+[data-attribute="entryscape-page-main"] .entryscape .entryList .esbRowHead {
   @apply max-h-none;
 }
 
-.entryscape .entryListRow .esbRowExpand {
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  .entryListRow
+  .esbRowExpand {
   @apply bg-white;
 }
 
-.entryscape.pill-list .rdformsRow.rdformsTopLevel .rdformsFields .rdformsField {
-  @apply mb-sm w-fit bg-pink-200 px-sm py-xs font-strong;
+.entryscape .escoList .esbPadding.entryListRow .esbRowMain,
+.entryscape .escoList .esbPadding.entryListRow .esbRowExpand {
+  @apply bg-white p-lg;
 }
 
-/* Concept hierarchy styles */
+[data-attribute="entryscape-page-main"] .entryscape a:has([class*="button--"]) {
+  @apply no-underline hover:no-underline;
+}
+
+[data-attribute="entryscape-page-main"] .entryscape .escoPosition {
+  @apply mt-sm;
+}
+
+[data-attribute="entryscape-page-main"] .entryscape .escoMap,
+[data-attribute="entryscape-page-main"]
+  .entryscape.distribution__list
+  .entryListRow {
+  @apply mb-lg;
+}
+
+/* -------------------- End of Entryscape dataset page stylings specific -------------------- */
+
+/* -------------------- Concept hierarchy styles -------------------- */
 .concept_hierarchy svg {
   @apply overflow-x-auto overflow-y-auto;
 }
@@ -123,9 +548,9 @@
 .concept_hierarchy .esbHierarchy__leafNode rect {
   @apply fill-brown-600 stroke-brown-600;
 }
-/* End of concept hierarchy styles */
+/* -------------------- End of concept hierarchy styles --------------------   */
 
-/* Entrysvpe pagination styles */
+/* -------------------- Entrysvpe pagination styles -------------------- */
 .entryscape .entryPagination {
   @apply p-none;
 }
@@ -146,53 +571,3 @@
 }
 
 /* End of entrysvpe pagination styles */
-
-/* Resource button label + icon by href host: store (editera/admin) = download,
-   other dataportal.se = internal link, else external. Store rules come last to
-   override the generic dataportal one. */
-.resource-download .resource-download__icon--download,
-.resource-download .resource-download__icon--link {
-  @apply hidden;
-}
-
-/* Internal portal link (any dataportal.se host): arrow instead of external. */
-.resource-download[href*="dataportal.se"] .resource-download__icon--external {
-  @apply hidden;
-}
-
-.resource-download[href*="dataportal.se"] .resource-download__icon--link {
-  @apply inline;
-}
-
-/* Store host = downloadable file: download icon overrides the link arrow. */
-.resource-download[href*="editera.dataportal.se"]
-.resource-download__icon--link,
-.resource-download[href*="admin.dataportal.se"] .resource-download__icon--link {
-  @apply hidden;
-}
-
-.resource-download[href*="editera.dataportal.se"]
-  .resource-download__icon--download,
-.resource-download[href*="admin.dataportal.se"]
-  .resource-download__icon--download {
-  @apply inline;
-}
-
-/* Label: "Ladda ner" only for store (download) hosts, "Gå till resurs" else. */
-.resource-download .resource-download__label--download {
-  @apply hidden;
-}
-
-.resource-download[href*="editera.dataportal.se"]
-  .resource-download__label--goto,
-.resource-download[href*="admin.dataportal.se"]
-  .resource-download__label--goto {
-  @apply hidden;
-}
-
-.resource-download[href*="editera.dataportal.se"]
-  .resource-download__label--download,
-.resource-download[href*="admin.dataportal.se"]
-  .resource-download__label--download {
-  @apply inline;
-}

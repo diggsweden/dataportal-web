@@ -137,28 +137,14 @@ export interface ESEntry {
   title: string;
   description: string;
   relatedResource?: LabelLink;
-  termPublisher?: string;
-  definition?: string;
-  conformsTo?: string[];
-  hasResource?: string[];
   image?: string;
-  address: string;
   context: string;
   esId: string;
   contact?: LabelLink;
   relatedSpecifications?: LabelLink[];
-  relatedSpecificationsInteroperable?: LabelLink[];
-  domain?: LabelLink;
-  range?: LabelLink;
   keywords?: string[];
   downloadFormats?: DownloadFormat[];
   mqaCatalog?: LabelLink | null;
   relatedDatasetSeries?: LabelLink[];
   organisationData?: OrganisationData;
-  relatedDatasets?: LabelLink[];
-  relatedDatasetsGrunddata?: LabelLink[];
-  introducedClasses?: LabelLink[];
-  introducedProperties?: LabelLink[];
-  reusedClasses?: LabelLink[];
-  reusedProperties?: LabelLink[];
 }

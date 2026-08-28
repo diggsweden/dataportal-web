@@ -36,7 +36,6 @@ import {
   getUriNames,
   includeLangInPath,
   listChoices,
-  resourcesSearch,
 } from "@/utilities";
 import type { DCATData } from "@/utilities/dcat-utils";
 import {
@@ -457,32 +456,6 @@ export class EntrystoreService {
       console.error("Error in solrSearch:", error);
       throw error;
     }
-  }
-
-  public async getResources(resources: string[]): Promise<any> {
-    const result: any[] = [];
-    const maxRequestUriLength = 1500;
-    const requestPromises: Promise<any>[] = [];
-
-    while (resources.length) {
-      const resTmp = [];
-      while (
-        resTmp.join(" OR ").length < maxRequestUriLength &&
-        resources.length > 0
-      ) {
-        resTmp.push(resources.splice(0, 1)[0]);
-      }
-      requestPromises.push(resourcesSearch(resTmp, this.entryStore));
-    }
-
-    const responses = await Promise.all(requestPromises);
-    responses.forEach((response) => {
-      if (response && response.length > 0) {
-        result.push(...response);
-      }
-    });
-
-    return result;
   }
 
   // ============================================================================
@@ -985,39 +958,6 @@ export class EntrystoreService {
   // Related Content Operations
   // ============================================================================
 
-  public async getRelatedDatasets(entry: Entry) {
-    const datasets = await this.entryStore
-      .newSolrQuery()
-      .rdfType(["dcat:Dataset", "esterms:IndependentDataService"])
-      .publicRead(true)
-      .uriProperty("dcterms:conformsTo", entry.getResourceURI())
-      .getEntries();
-
-    const all: LabelLink[] = [];
-    const grunddata: LabelLink[] = [];
-    for (const ds of datasets) {
-      const meta = ds.getAllMetadata();
-      const item = {
-        title: getLocalizedValue(meta, "dcterms:title"),
-        url: `${includeLangInPath(
-          this.lang,
-        )}/datasets/${this.entryStore.getContextId(
-          ds.getEntryInfo().getMetadataURI(),
-        )}_${ds.getId()}`,
-      };
-      all.push(item);
-
-      const isGrunddata = meta
-        .find(ds.getResourceURI(), "http://purl.org/dc/terms/subject")
-        .some((s: { getValue: () => string }) =>
-          s.getValue().includes("/concepts/grunddata/"),
-        );
-      if (isGrunddata) grunddata.push(item);
-    }
-
-    return { all, grunddata };
-  }
-
   public async getShowcases(entry: Entry) {
     const showcaseData = await this.entryStore
       .newSolrQuery()
@@ -1036,92 +976,31 @@ export class EntrystoreService {
     }));
   }
 
-  public async getRelatedSpecifications(
-    entry: Entry,
-    metadata: Metadata,
-    pageType: PageType,
-  ) {
+  public async getRelatedSpecifications(entry: Entry, metadata: Metadata) {
     try {
-      if (pageType === "dataset") {
-        const specifications = metadata
-          .find(entry.getResourceURI(), "dcterms:conformsTo")
-          .map((stmt: { getValue: () => string }) => stmt.getValue());
+      const specifications = metadata
+        .find(entry.getResourceURI(), "dcterms:conformsTo")
+        .map((stmt: { getValue: () => string }) => stmt.getValue());
 
-        const resourceEntries =
-          await this.entryStoreUtil.loadEntriesByResourceURIs(
-            specifications,
-            null,
-            true,
-          );
+      const resourceEntries =
+        await this.entryStoreUtil.loadEntriesByResourceURIs(
+          specifications,
+          null,
+          true,
+        );
 
-        return {
-          all: resourceEntries
-            .filter((e: Entry) => e)
-            .map((e: Entry) => ({
-              title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-              url: `${includeLangInPath(this.lang)}${specsPathResolver(e)}`,
-            })),
-          interoperable: [] as LabelLink[],
-        };
-      } else if (
-        pageType === "terminology" ||
-        pageType === "concept" ||
-        pageType === "data-vocabulary"
-      ) {
-        const resourceUri = entry
-          .getResourceURI()
-          .replace(
-            "https://dataportal.se/concepts/",
-            "https://www.dataportal.se/terminology/",
-          )
-          .replace(
-            "https://www-sandbox.dataportal.se/concepts/",
-            "https://www-sandbox.dataportal.se/terminology/",
-          );
-
-        const specifications = await this.entryStore
-          .newSolrQuery()
-          .publicRead(true)
-          .uriProperty("http://www.w3.org/ns/dx/prof/hasResource", resourceUri)
-          .rdfType([ESRdfType.spec_standard, ESRdfType.spec_profile])
-          .getEntries();
-
-        const all: LabelLink[] = [];
-        const interoperable: LabelLink[] = [];
-        for (const e of specifications.filter((e: Entry) => e)) {
-          const meta = e.getAllMetadata();
-          const item = {
-            title: getLocalizedValue(meta, "dcterms:title"),
-            url: `${includeLangInPath(this.lang)}${specsPathResolver(e)}`,
-          };
-          all.push(item);
-
-          // Interoperable specs declare their terms via INSPEC predicates.
-          const isInteroperable =
-            meta.find(
-              e.getResourceURI(),
-              "https://w3id.org/inspec/datavoc/introduces",
-            ).length > 0 ||
-            meta.find(
-              e.getResourceURI(),
-              "https://w3id.org/inspec/datavoc/reuses",
-            ).length > 0;
-          if (isInteroperable) interoperable.push(item);
-        }
-
-        return { all, interoperable };
-      }
-      return { all: [] as LabelLink[], interoperable: [] as LabelLink[] };
+      return resourceEntries
+        .filter((e: Entry) => e)
+        .map((e: Entry) => ({
+          title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
+          url: `${includeLangInPath(this.lang)}${specsPathResolver(e)}`,
+        }));
     } catch (error) {
       console.error("Error fetching specifications:", error);
-      return { all: [] as LabelLink[], interoperable: [] as LabelLink[] };
+      return [] as LabelLink[];
     }
   }
 
-  /**
-   * Resolves a class/property's data vocabulary (`rdfs:isDefinedBy`) to a
-   * /data-vocabulary link, or the raw URI if it has no store entry.
-   */
   public async getDataVocabularyLink(
     metadata: Metadata,
   ): Promise<LabelLink | undefined> {
@@ -1178,82 +1057,6 @@ export class EntrystoreService {
     return undefined;
   }
 
-  /** Resolve a spec relation's targets into class/property links, split by type. */
-  private async termsByType(
-    entry: Entry,
-    predicate: string,
-    resolver: EntrystoreService = this,
-  ): Promise<{ classes: LabelLink[]; properties: LabelLink[] }> {
-    const CLASS = "http://www.w3.org/2000/01/rdf-schema#Class";
-    const PROP = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property";
-
-    const classes: LabelLink[] = [];
-    const properties: LabelLink[] = [];
-    const uris = entry
-      .getAllMetadata()
-      .find(entry.getResourceURI(), predicate)
-      .map((s: { getValue: () => string }) => s.getValue());
-    if (uris.length === 0) return { classes, properties };
-
-    const refs = await Promise.allSettled(
-      uris.map((uri: string) => resolver.getEntryByResourceURI(uri)),
-    );
-    for (const r of refs) {
-      if (r.status !== "fulfilled") continue;
-      const ref = r.value;
-      const refMeta = ref.getAllMetadata();
-      const types = refMeta
-        .find(
-          ref.getResourceURI(),
-          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-        )
-        .map((s: { getValue: () => string }) => s.getValue());
-      const isClass = types.includes(CLASS);
-      if (!isClass && !types.includes(PROP)) continue;
-      const item = {
-        title:
-          getLocalizedValue(refMeta, "rdfs:label") ||
-          getLocalizedValue(refMeta, "dcterms:title") ||
-          ref.getResourceURI(),
-        url: `${includeLangInPath(this.lang)}/${
-          isClass ? "class" : "property"
-        }/${ref.getContext().getId()}_${ref.getId()}`,
-      };
-      (isClass ? classes : properties).push(item);
-    }
-    return { classes, properties };
-  }
-
-  /** A spec's introduced + reused classes/properties (`inspec:introduces`/`reuses`). */
-  public async getSpecTerms(
-    entry: Entry,
-    resolver: EntrystoreService = this,
-  ): Promise<{
-    introducedClasses: LabelLink[];
-    introducedProperties: LabelLink[];
-    reusedClasses: LabelLink[];
-    reusedProperties: LabelLink[];
-  }> {
-    const [introduced, reused] = await Promise.all([
-      this.termsByType(
-        entry,
-        "https://w3id.org/inspec/datavoc/introduces",
-        resolver,
-      ),
-      this.termsByType(
-        entry,
-        "https://w3id.org/inspec/datavoc/reuses",
-        resolver,
-      ),
-    ]);
-    return {
-      introducedClasses: introduced.classes,
-      introducedProperties: introduced.properties,
-      reusedClasses: reused.classes,
-      reusedProperties: reused.properties,
-    };
-  }
-
   public async getRelatedMQA(entry: Entry, pageType?: PageType) {
     let contextId = entry.getContext().getId();
     try {
@@ -1300,30 +1103,6 @@ export class EntrystoreService {
       title: getLocalizedValue(termEntry.getAllMetadata(), "dcterms:title"),
       url: `${includeLangInPath(this.lang)}${termsPathResolver(termEntry)}`,
     };
-  }
-
-  public async getRelatedDatasetSeries(entry: Entry, metadata: Metadata) {
-    try {
-      const datasetSeriesUris = metadata
-        .find(entry.getResourceURI(), "dcat:inSeries")
-        .map((stmt: { getValue: () => string }) => stmt.getValue());
-
-      const datasetSeriesEntries =
-        await this.entryStoreUtil.loadEntriesByResourceURIs(
-          datasetSeriesUris,
-          null,
-          true,
-        );
-
-      return datasetSeriesEntries.map((e: Entry) => ({
-        title: getLocalizedValue(e.getAllMetadata(), "dcterms:title"),
-        url: `${includeLangInPath(this.lang)}/dataset-series/${e
-          .getContext()
-          .getId()}_${e.getId()}`,
-      }));
-    } catch {
-      return [];
-    }
   }
 
   public async getOrganisationLink(publisherEntry: Entry | null) {

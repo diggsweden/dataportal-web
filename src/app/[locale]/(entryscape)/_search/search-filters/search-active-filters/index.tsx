@@ -49,6 +49,13 @@ export function SearchActiveFilters({
   const t = useTranslations();
   const tResource = useResourceLabel();
 
+  // The link's own title is only as good as its builder; prefer the fetched one.
+  const facetTitle = (facetValue: SearchFacetValue) =>
+    Object.values(search.allFacets || {})
+      .find((facet) => facet.predicate === facetValue.facet)
+      ?.facetValues?.find((value) => value.resource === facetValue.resource)
+      ?.title;
+
   // Create an array of active special search filters
   const activecustomSearchFilters = Object.entries(search.allFacets || {})
     .filter(
@@ -90,7 +97,9 @@ export function SearchActiveFilters({
           {search.request.facetValues?.map((facetValue: SearchFacetValue) => {
             const label =
               !facetValue.customFilter && !facetValue.customSearch
-                ? facetValue.title || facetValue.resource
+                ? facetTitle(facetValue) ||
+                  facetValue.title ||
+                  facetValue.resource
                 : tResource(facetValue.customLabel || facetValue.facet);
 
             return (

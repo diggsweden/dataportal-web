@@ -12,7 +12,6 @@ import type { ResourceLabel } from "@/i18n/types";
 import { ROUTE_CONFIG } from "@/lib/entrystore/entrystore-core";
 import type { RedirectConfig } from "@/types/global";
 
-import { includeLangInPath } from "@/utilities/check-lang";
 import type { Choice, ChoiceTemplate, DCATData } from "@/utilities/dcat-utils";
 import { entryCache } from "./local-cache";
 
@@ -128,36 +127,6 @@ export const getUriNames = async (
   return cache;
 };
 
-export function formatDatasetUrl(
-  ds: Entry,
-  lang: string,
-  contextId: string,
-  baseUrls: string[],
-): string {
-  return baseUrls.some((url) => ds.getResourceURI().startsWith(url))
-    ? new URL(ds.getResourceURI()).pathname
-    : `${includeLangInPath(lang)}/datasets/${contextId}_${ds.getId()}`;
-}
-
-export function formatSpecificationUrl(
-  uri: string,
-  lang: string,
-  baseUrls: string[],
-): string {
-  return baseUrls.some((url) => uri.startsWith(url))
-    ? new URL(uri).pathname
-    : `${includeLangInPath(lang)}/externalspecification?resource=${uri}`;
-}
-
-export function formatTerminologyAddress(
-  resourceUri: string,
-  baseUrls: string[],
-): string {
-  return baseUrls.some((url) => resourceUri.startsWith(url))
-    ? resourceUri.replace("concepts", "terminology")
-    : resourceUri;
-}
-
 /**
  * Search URL with one URI facet pre-selected (the `f=` facet-value format).
  * `rdfType` optionally restricts the result type via `rt=` (an `ESRdfType`
@@ -240,23 +209,6 @@ export function getLocalizedChoiceLabel(choice: Choice, lang: string) {
     choice.value
   );
 }
-
-// ============================================================================
-// Search and Query Helpers
-// ============================================================================
-
-export const resourcesSearch = (resources: string[], es: any): Promise<any> => {
-  return new Promise<any>((resolve) => {
-    const esQuery = es.newSolrQuery();
-    esQuery.publicRead(true);
-    esQuery
-      .resource(resources, null)
-      .getEntries(0)
-      .then((children: any) => {
-        resolve(children);
-      });
-  });
-};
 
 // ============================================================================
 // Formatting Helpers

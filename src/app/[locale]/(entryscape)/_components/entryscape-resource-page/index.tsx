@@ -8,7 +8,7 @@ import { Heading } from "@/components/typography/heading";
 
 interface EntryscapeResourcePageProps {
   breadcrumb: BreadcrumbProps;
-  title: string;
+  title?: string;
   intro?: ReactNode;
   main: ReactNode;
   sidebar: ReactNode;
@@ -43,10 +43,12 @@ export function EntryscapeResourcePage({
       <BreadcrumbSetter {...breadcrumb} />
       {head}
       <main className="space-y-lg md:space-y-xl">
-        <div>
-          <Heading level={1} size="lg" className="mb-lg md:mb-xl">
-            {title}
-          </Heading>
+        <div data-attribute="entryscape-title">
+          {title && (
+            <Heading level={1} size="lg" className="mb-lg md:mb-xl">
+              {title}
+            </Heading>
+          )}
           {intro}
         </div>
         <div className={cx("mb-lg gap-2xl md:mb-xl lg:flex", columnsClassName)}>
