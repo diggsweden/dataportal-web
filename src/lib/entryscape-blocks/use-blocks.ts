@@ -49,6 +49,7 @@ const loadScript = (url: string): Promise<void> =>
 
 /** Ordered block-engine scripts, shared by ensureLib (loads) + provider (preloads). */
 export const blockScriptUrls = (env: EnvSettings): string[] => [
+  env.ENTRYSCAPE_RDFORMS_SPEC_URL,
   "https://sandbox.admin.dataportal.se/tmp/blocks.js",
   env.ENTRYSCAPE_OPENDATA_URL,
   env.ENTRYSCAPE_MQA_URL,
