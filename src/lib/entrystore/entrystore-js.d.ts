@@ -29,6 +29,7 @@ declare module "@entryscape/entrystore-js" {
 
     // Core search methods
     rdfType(_type: string | string[], _modifier?: boolean | string): this;
+    resource(_val: string | string[], _modifier?: boolean | string): this;
     publicRead(_val?: boolean): this;
     limit(_num: number): this;
     offset(_num: number): this;

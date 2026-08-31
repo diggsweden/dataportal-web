@@ -130,8 +130,27 @@ export class EntrystoreService {
     );
   }
 
-  public async getEntryByResourceURI(uri: string): Promise<Entry> {
-    return this.entryStoreUtil.getEntryByResourceURI(uri);
+  /**
+   * Look up an entry by resource URI. When `rdfType` is set the query is
+   * restricted to that type — the same URI can exist on several entries
+   * (e.g. a ConceptScheme and an unrelated stub), and an untyped lookup
+   * returns whichever Solr ranks first.
+   */
+  public async getEntryByResourceURI(
+    uri: string,
+    rdfType?: string,
+  ): Promise<Entry> {
+    if (!rdfType) return this.entryStoreUtil.getEntryByResourceURI(uri);
+
+    const entry = await this.entryStore
+      .newSolrQuery()
+      .publicRead(true)
+      .rdfType(rdfType)
+      .resource(uri)
+      .getEntry();
+
+    if (!entry) throw new Error(`No public ${rdfType} entry for ${uri}`);
+    return entry;
   }
 
   public async loadEntriesByResourceURIs(
@@ -817,7 +836,10 @@ export class EntrystoreService {
         // terminology page + publisher), so load it for those only.
         if (inSchemeUri) {
           try {
-            const schemeEntry = await this.getEntryByResourceURI(inSchemeUri);
+            const schemeEntry = await this.getEntryByResourceURI(
+              inSchemeUri,
+              ESRdfType.term_scheme,
+            );
             if (schemeEntry) {
               const schemeMeta = schemeEntry.getAllMetadata();
               parentUrl = termsPathResolver(schemeEntry);
@@ -841,8 +863,10 @@ export class EntrystoreService {
           }
         } else if (definedByUri) {
           try {
-            const vocabEntry =
-              await this.entryStoreUtil.getEntryByResourceURI(definedByUri);
+            const vocabEntry = await this.getEntryByResourceURI(
+              definedByUri,
+              ESRdfType.ontology,
+            );
             if (vocabEntry) {
               const vocabMeta = vocabEntry.getAllMetadata();
               parentUrl = `${includeLangInPath(this.lang)}/data-vocabulary/${vocabEntry
@@ -1008,7 +1032,7 @@ export class EntrystoreService {
     if (!uri) return undefined;
 
     try {
-      const ref = await this.getEntryByResourceURI(uri);
+      const ref = await this.getEntryByResourceURI(uri, ESRdfType.ontology);
 
       const refMeta = ref.getAllMetadata();
       const label =
@@ -1093,7 +1117,10 @@ export class EntrystoreService {
     returnEntry = false,
   ): Promise<LabelLink | Entry> {
     const termUri = metadata.findFirstValue(null, "skos:inScheme");
-    const termEntry = await this.getEntryByResourceURI(termUri);
+    const termEntry = await this.getEntryByResourceURI(
+      termUri,
+      ESRdfType.term_scheme,
+    );
 
     if (returnEntry) {
       return termEntry;

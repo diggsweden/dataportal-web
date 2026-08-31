@@ -18,7 +18,11 @@ import {
   useEntryScapeBlocks,
 } from "@/lib/entryscape-blocks/use-blocks";
 import { EntrystoreService } from "@/lib/entrystore/entrystore.service";
-import type { ESEntry, PageType } from "@/lib/entrystore/entrystore-core";
+import {
+  type ESEntry,
+  ESRdfType,
+  type PageType,
+} from "@/lib/entrystore/entrystore-core";
 import {
   buildFacetSearchLink,
   getContactEmail,
@@ -564,7 +568,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
           .newSolrQuery()
           .publicRead(true)
           .limit(1000)
-          .rdfType("http://www.w3.org/2004/02/skos/core#ConceptScheme")
+          .rdfType(ESRdfType.term_scheme)
           .uriProperty("dcterms:publisher", uri)
           .list();
 
