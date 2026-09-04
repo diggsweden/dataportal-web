@@ -55,7 +55,7 @@ export function DataServicePage() {
             data-entryscape-property="dcterms:description"
           />
 
-          <Box color="white" padding="lg" rounded={true}>
+          <Box color="white" padding="lg">
             <div
               data-entryscape="view"
               data-entryscape-onecol="true"
