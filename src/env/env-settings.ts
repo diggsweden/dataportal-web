@@ -19,6 +19,8 @@ export abstract class EnvSettings {
 
   abstract ENTRYSCAPE_OPENDATA_URL: string;
 
+  abstract ENTRYSCAPE_RDFORMS_SPEC_URL: string;
+
   abstract API_DETECTION_PATH: string;
 
   abstract CANONICAL_URL: string;

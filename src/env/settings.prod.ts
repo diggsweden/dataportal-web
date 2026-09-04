@@ -26,6 +26,9 @@ export class Settings_Prod extends EnvSettings {
   ENTRYSCAPE_OPENDATA_URL =
     "https://static.entryscape.com/blocks-ext/1/opendata/opendata-SE.js";
 
+  ENTRYSCAPE_RDFORMS_SPEC_URL =
+    "https://static.entryscape.com/rdforms/specs/1/specs.js";
+
   ENTRYSCAPE_SITEMAP_JSON_URL = "https://admin.dataportal.se/sitemap.json";
 
   API_DETECTION_PATH = "https://admin.dataportal.se/detectedapis.json";
