@@ -30,7 +30,7 @@
 }
 
 #rdforms-specs-content a {
-  @apply break-all;
+  @apply break-all hover:no-underline;
 }
 
 /* A table box ignores overflow-x; `w-fit` stops the block stretching past
