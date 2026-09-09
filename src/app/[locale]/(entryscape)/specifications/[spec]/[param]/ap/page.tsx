@@ -1,6 +1,8 @@
 import { ApplicationProfilePage } from "@/app/[locale]/(entryscape)/_components/application-profile-page";
 import { renderEntryStoreResourcePage } from "@/app/[locale]/(entryscape)/_server/render-resource-page";
 
+import "@/styles/entryscape-ap.css";
+
 interface PageProps {
   params: Promise<{ locale: string; spec: string; param: string }>;
 }

@@ -4,10 +4,14 @@ import { useTranslations } from "next-intl";
 import { useContext } from "react";
 import { ContactPublisherBlock } from "@/app/[locale]/(entryscape)/_components/contact-publisher-block";
 import { EntryscapeResourcePage } from "@/app/[locale]/(entryscape)/_components/entryscape-resource-page";
+import { ResourceImage } from "@/app/[locale]/(entryscape)/_components/resource-image";
 import { Box } from "@/components/box";
 import { EntrystoreContext } from "@/lib/entrystore/provider";
 import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
-import { SpecificationImage } from "./image";
+
+const InspectAPButton = () => (
+  <span data-entryscape="specInspectAPButton" className=" empty:hidden" />
+);
 
 export function SpecificationPage() {
   const entry = useContext(EntrystoreContext);
@@ -29,7 +33,7 @@ export function SpecificationPage() {
       }
       main={
         <>
-          <SpecificationImage />
+          <ResourceImage actions={<InspectAPButton />} />
 
           <div
             data-entryscape="specMain"

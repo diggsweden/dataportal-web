@@ -11,7 +11,7 @@ import { HtmlParser } from "@/components/typography/html-parser";
 import { isExternalLink } from "@/utilities";
 
 const modalVariants = cva(
-  "fixed inset-none z-50 m-auto w-4/5 overflow-auto p-xl shadow-2xl outline-none [&::backdrop]:bg-brownOpaque5",
+  "fixed inset-none z-50 !m-auto w-4/5 overflow-auto p-xl shadow-2xl outline-none [&::backdrop]:bg-brownOpaque5",
   {
     variants: {
       size: {
