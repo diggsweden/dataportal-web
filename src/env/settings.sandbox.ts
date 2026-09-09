@@ -28,6 +28,9 @@ export class Settings_Sandbox extends EnvSettings {
   ENTRYSCAPE_OPENDATA_URL =
     "https://static.entryscape.com/blocks-ext/1/opendata/opendata-SE.js";
 
+  ENTRYSCAPE_RDFORMS_SPEC_URL =
+    "https://static.entryscape.com/rdforms/specs/1/specs.js";
+
   ENTRYSCAPE_SITEMAP_JSON_URL =
     "https://sandbox.admin.dataportal.se/sitemap.json";
 

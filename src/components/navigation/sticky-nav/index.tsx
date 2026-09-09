@@ -5,6 +5,7 @@ import { type FC, type MouseEvent, useEffect, useRef, useState } from "react";
 import { AppLink } from "@/components/link";
 
 import { Heading } from "@/components/typography/heading";
+import { useActiveHeading } from "@/hooks/use-active-heading";
 import type { AnchorLink } from "@/types/global";
 
 interface StickyNavProps {
@@ -12,16 +13,15 @@ interface StickyNavProps {
   menuHeading: string;
 }
 
-const isInView = (element: HTMLElement) => {
-  const rect = element.getBoundingClientRect();
-  return rect.top >= 0 && rect.bottom <= window.innerHeight;
-};
-
 export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
-  const [activeItemId, setActiveItemId] = useState<string | null>(null);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
   const isScrolling = useRef(false);
   const pathname = usePathname() ?? "";
+
+  const [activeItemId, setActiveItemId] = useActiveHeading(
+    menuItems.map((item) => item.id),
+    { enabled: isLargeScreen, paused: isScrolling },
+  );
 
   useEffect(() => {
     const hash =
@@ -47,46 +47,18 @@ export const StickyNav: FC<StickyNavProps> = ({ menuItems, menuHeading }) => {
     handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
-  }, [pathname, menuItems]);
+  }, [pathname, menuItems, setActiveItemId]);
 
   useEffect(() => {
-    if (!isLargeScreen) return;
+    if (!activeItemId || !window.location.hash) return;
+    if (window.location.pathname !== pathname) return;
 
-    // Store the initial path when the effect runs
-    const initialPath = pathname;
-    const watchScroll = () => {
-      if (isScrolling.current) return;
-
-      // Check if we're still on the same page
-      const currentPath = window.location.pathname;
-      if (currentPath !== initialPath) {
-        return; // We've navigated to a different page
-      }
-
-      requestAnimationFrame(() => {
-        for (const item of menuItems) {
-          const element = document.getElementById(item.id);
-          if (element && isInView(element)) {
-            setActiveItemId(item.id);
-            // Only update URL if we already have a hash and we're on the initial path
-            if (window.location.hash && currentPath === initialPath) {
-              history.replaceState(
-                { ...history.state, as: `${currentPath}#${item.id}` },
-                "",
-                `${currentPath}#${item.id}`,
-              );
-            }
-            break;
-          }
-        }
-      });
-    };
-
-    window.addEventListener("scroll", watchScroll, { passive: true });
-    watchScroll();
-
-    return () => window.removeEventListener("scroll", watchScroll);
-  }, [isLargeScreen, menuItems]);
+    history.replaceState(
+      { ...history.state, as: `${pathname}#${activeItemId}` },
+      "",
+      `${pathname}#${activeItemId}`,
+    );
+  }, [activeItemId, pathname]);
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();

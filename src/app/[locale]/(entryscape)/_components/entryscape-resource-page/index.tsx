@@ -8,10 +8,11 @@ import { Heading } from "@/components/typography/heading";
 
 interface EntryscapeResourcePageProps {
   breadcrumb: BreadcrumbProps;
-  title?: string;
+  title?: string | ReactNode;
   intro?: ReactNode;
   main: ReactNode;
   sidebar: ReactNode;
+  sidebarPosition?: "left" | "right";
   footer?: ReactNode;
   head?: ReactNode;
   columnsClassName?: string;
@@ -31,6 +32,7 @@ export function EntryscapeResourcePage({
   intro,
   main,
   sidebar,
+  sidebarPosition = "right",
   footer,
   head,
   columnsClassName,
@@ -38,6 +40,18 @@ export function EntryscapeResourcePage({
   sidebarClassName,
   containerSize = "xl",
 }: EntryscapeResourcePageProps) {
+  const Sidebar = (
+    <div
+      data-attribute="entryscape-page-sidebar"
+      className={cx(
+        "mb-lg w-full max-w-md space-y-xl pt-none lg:mb-none lg:max-w-[26.25rem]",
+        sidebarClassName,
+      )}
+    >
+      {sidebar}
+    </div>
+  );
+
   return (
     <Container size={containerSize}>
       <BreadcrumbSetter {...breadcrumb} />
@@ -52,6 +66,7 @@ export function EntryscapeResourcePage({
           {intro}
         </div>
         <div className={cx("mb-lg gap-2xl md:mb-xl lg:flex", columnsClassName)}>
+          {sidebarPosition === "left" ? Sidebar : null}
           <div
             data-attribute="entryscape-page-main"
             className={cx(
@@ -61,15 +76,7 @@ export function EntryscapeResourcePage({
           >
             {main}
           </div>
-          <div
-            data-attribute="entryscape-page-sidebar"
-            className={cx(
-              "mb-lg w-full max-w-md space-y-xl pt-none lg:mb-none lg:max-w-[26.25rem]",
-              sidebarClassName,
-            )}
-          >
-            {sidebar}
-          </div>
+          {sidebarPosition === "right" ? Sidebar : null}
         </div>
         {footer}
       </main>
