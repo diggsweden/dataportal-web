@@ -109,6 +109,21 @@
   @apply text-lg font-normal my-none;
 }
 
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  summary
+  h2
+  .esbCount,
+[data-attribute="entryscape-page-main"]
+  .entryscape
+  details
+  summary
+  h3
+  .esbCount {
+  @apply font-strong;
+}
+
 [data-attribute="entryscape-page-main"] .entryscape details summary:before {
   @apply content-[""] size-[1.5rem] bg-center bg-no-repeat bg-contain transform rotate-0 transition-transform duration-300;
   background-image: var(--icon--expand-accordion);
