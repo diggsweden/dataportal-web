@@ -101,6 +101,7 @@ export function ResourceImage({ actions }: ResourceImageProps) {
 
       {diagram && (
         <Modal
+          ariaLabel={diagram.alt || label}
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
           closeBtn={t("common.close")}
