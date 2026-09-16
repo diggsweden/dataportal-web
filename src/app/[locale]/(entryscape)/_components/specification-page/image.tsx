@@ -96,6 +96,9 @@ export function SpecificationImage() {
 
       {image && (
         <Modal
+          ariaLabel={t("pages.specification_page.image_alt", {
+            title: entry.title,
+          })}
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
           closeBtn={t("common.close")}
