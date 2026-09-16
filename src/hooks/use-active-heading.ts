@@ -7,12 +7,6 @@ import {
   useState,
 } from "react";
 
-/** Current only while the heading is fully in the viewport. */
-const isInView = (element: HTMLElement) => {
-  const rect = element.getBoundingClientRect();
-  return rect.top >= 0 && rect.bottom <= window.innerHeight;
-};
-
 interface UseActiveHeadingOptions {
   /** Skip tracking — the sticky nav only tracks on large screens. */
   enabled?: boolean;
@@ -21,9 +15,8 @@ interface UseActiveHeadingOptions {
 }
 
 /**
- * Tracks which of `ids` is the current section while scrolling; the last match
- * stands when nothing is fully visible. Ids resolve through `getElementById`
- * every pass, so targets may appear later and ids like `4.1` still work.
+ * Current section while scrolling: first heading fully on screen, else the last
+ * scrolled past. Resolved with `getElementById`, so ids like `4.1` work.
  */
 export const useActiveHeading = (
   ids: string[],
@@ -45,13 +38,26 @@ export const useActiveHeading = (
       frame = 0;
       if (paused?.current) return;
 
+      // Ids are in document order, so anything past a below-fold heading is too.
+      let scrolledPast: string | null = null;
+
       for (const id of idsRef.current) {
         const element = document.getElementById(id);
-        if (element && isInView(element)) {
+        if (!element) continue;
+
+        const rect = element.getBoundingClientRect();
+        if (rect.top < 0) {
+          scrolledPast = id;
+          continue;
+        }
+        if (rect.bottom <= window.innerHeight) {
           setActiveId(id);
           return;
         }
+        break;
       }
+
+      if (scrolledPast) setActiveId(scrolledPast);
     };
 
     const schedule = () => {
