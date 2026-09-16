@@ -159,8 +159,9 @@ export const datasetBlocks = (
         '<span class="text-textSecondary text-md"></i>API</span>' +
         "{{/ifprop}}" +
         "</div>" +
-        "<span>{{text fallback='<span class=\\'distributionNoName\\'>'}}</span>" +
+        "<span>{{text fallback='<span class=\\'distributionNoName\\'>" +
         t("pages|datasetpage$no_title") +
+        "</span>'}}" +
         "</span>" +
         "</span>" +
         "<div class='flex flex-wrap justify-between items-end md:items-center mt-md md:mt-lg gap-lg'>" +
