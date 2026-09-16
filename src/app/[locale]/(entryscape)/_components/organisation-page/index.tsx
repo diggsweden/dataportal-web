@@ -64,6 +64,7 @@ export function OrganisationPage() {
 
             <Modal
               data-test-id="data-info-modal"
+              ariaLabel={t("pages.organisation_page.data-info")}
               modalOpen={showInfo}
               setModalOpen={setShowInfo}
               onClick={() => setShowInfo(false)}
