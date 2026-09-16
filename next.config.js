@@ -43,6 +43,15 @@ const csp = [
 
 const nextConfig = nextTranslate({
   webpack: (config) => {
+    // swagger-ui-react 5 resolves OpenAPI 3.1 through @swagger-api/apidom-*,
+    // which is very large and does not bundle cleanly here. Point the 3.1
+    // resolver at the 3.0 strategy — 3.1 documents still render.
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "swagger-client/es/resolver/strategies/openapi-3-1-apidom":
+        "swagger-client/es/resolver/strategies/openapi-3-0",
+    };
+
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
