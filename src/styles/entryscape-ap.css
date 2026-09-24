@@ -1,11 +1,15 @@
 /* Styling for Application Profile page */
 
-/* The renderer switches to its sidebar at 80.5x the container's font-size;
-   shrinking it moves that to about lg. Children keep the page's size. */
 [data-entryscape="apView"] .rdforms-specs {
   @apply p-none;
-  font-size: 11.2px;
   --rdforms-specs-top-offset: 1rem;
+}
+
+/* Sidebar switches at 80.5x this font-size; pin it clear of lg either way. */
+@media (min-width: 984px) {
+  [data-entryscape="apView"] .rdforms-specs {
+    font-size: 10px;
+  }
 }
 
 [data-entryscape="apView"] .rdforms-specs > * {
@@ -31,10 +35,6 @@
 [data-entryscape="apView"] .rdforms-specs.toc-sidebar > #toc,
 [data-entryscape="apView"] .rdforms-specs.toc-sidebar > #toc-nav {
   @apply my-none;
-}
-
-[data-entryscape="apView"] .rdforms-specs.toc-sidebar > #toc {
-  @apply bg-brown-100;
 }
 
 /* Collapse the centring gutters onto the container line. */
