@@ -139,6 +139,7 @@ export interface ESEntry {
   title: string;
   description: string;
   relatedResource?: LabelLink;
+  image?: string;
   context: string;
   esId: string;
   contact?: LabelLink;

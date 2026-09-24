@@ -156,8 +156,7 @@ table thead {
   @apply bg-brown-600 text-left text-white;
 }
 
-table thead th,
-table thead td {
+table thead th {
   @apply whitespace-normal border border-brown-200 p-sm font-strong;
 }
 
@@ -165,7 +164,6 @@ table tbody {
   @apply border-collapse;
 }
 
-table tbody th,
 table tbody td {
   @apply border border-brown-200 p-sm;
 }

@@ -44,9 +44,6 @@ const MainNav: FC<MainNavProps> = ({
     }, 0);
   };
 
-  const LogoIcon =
-    env.envName === "sandbox" ? DataportalTestLogo : DataportalLogo;
-
   return (
     <div className="flex flex-row items-center justify-between">
       <Link
@@ -55,11 +52,17 @@ const MainNav: FC<MainNavProps> = ({
         onClick={() => setOpenSideBar(false)}
         className="forced-colors-visible"
       >
-        <LogoIcon
-          className={`min-w-0 max-h-[2rem] w-full max-w-[10rem] md:max-h-[2.75rem] md:max-w-[15.5rem] ${
-            openSearch ? "hidden lg:block" : ""
-          }`}
-        />
+        {env.envName === "sandbox" ? (
+          <DataportalTestLogo />
+        ) : (
+          <DataportalLogo
+            className={`${
+              openSearch
+                ? "hidden lg:block"
+                : "min-w-0 max-h-[2rem] w-full max-w-[10rem] md:max-h-[2.75rem] md:max-w-[15.5rem]"
+            }`}
+          />
+        )}
       </Link>
       <div className="flex flex-row items-center justify-end space-x-md">
         <nav

@@ -47,33 +47,13 @@ const loadScript = (url: string): Promise<void> =>
     container.appendChild(script);
   });
 
-/**
- * Ordered block-engine scripts. Every page loads all of them: each appends to
- * `__entryscape_config`, which the engine reads once at boot.
- */
+/** Ordered block-engine scripts, shared by ensureLib (loads) + provider (preloads). */
 export const blockScriptUrls = (env: EnvSettings): string[] => [
-  env.ENTRYSCAPE_RDFORMS_SPEC_URL,
   "https://sandbox.admin.dataportal.se/tmp/blocks.js",
   env.ENTRYSCAPE_OPENDATA_URL,
   env.ENTRYSCAPE_MQA_URL,
   env.ENTRYSCAPE_BLOCKS_URL,
 ];
-
-/**
- * The subset worth a preload hint: the two route-specific bundles still load
- * everywhere, but only compete for bandwidth where their blocks render.
- */
-export const preloadScriptUrls = (
-  env: EnvSettings,
-  pageType: PageType,
-): string[] =>
-  blockScriptUrls(env).filter((url) => {
-    if (url === env.ENTRYSCAPE_RDFORMS_SPEC_URL) {
-      return pageType === "application-profile";
-    }
-    if (url === env.ENTRYSCAPE_MQA_URL) return pageType === "mqa";
-    return true;
-  });
 
 const ensureLib = (env: EnvSettings): Promise<void> => {
   if (libPromise) return libPromise;
@@ -82,8 +62,10 @@ const ensureLib = (env: EnvSettings): Promise<void> => {
       window.__entryscape_blocks_resolve = resolve;
     });
     window.__entryscape_config = [{ block: "config", spa: true }];
-    // The family base configs must be in place before the engine boots;
-    // addConfig()/setEntryStore()/init() come from the engine itself.
+    // Load both family base configs (opendata + MQA) once, before the engine.
+    // They register the base blocks (e.g. catalogMQA) and RDForms bundles that
+    // the pages rely on; addConfig()/setEntryStore()/init() come from the engine
+    // itself (ENTRYSCAPE_BLOCKS_URL), so no extra bundle is needed.
     for (const url of blockScriptUrls(env)) await loadScript(url);
     await window.__entryscape_blocks_ready;
   })();

@@ -569,11 +569,6 @@
 .entryscape .entryPagination {
   @apply p-none;
 }
-
-.entryscape .entryPagination .pagination .page-item {
-  @apply mt-none !important;
-}
-
 .entryscape .entryPagination .pagination .page-item .page-link {
   @apply rounded-sm;
 }

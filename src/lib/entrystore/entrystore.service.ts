@@ -1072,6 +1072,37 @@ export class EntrystoreService {
     }
   }
 
+  /** The spec's diagram: first image/* `prof:hasResource` URL, or undefined. */
+  public async getSpecificationImage(
+    entry: Entry,
+  ): Promise<string | undefined> {
+    const PROF = "http://www.w3.org/ns/dx/prof/";
+    const resourceUris = entry
+      .getAllMetadata()
+      .find(entry.getResourceURI(), `${PROF}hasResource`)
+      .map((s: { getValue: () => string }) => s.getValue());
+    if (resourceUris.length === 0) return undefined;
+
+    const refs = await Promise.allSettled(
+      resourceUris.map((uri: string) =>
+        this.entryStoreUtil.getEntryByResourceURI(uri),
+      ),
+    );
+    for (const r of refs) {
+      if (r.status !== "fulfilled") continue;
+      const refMeta = r.value.getAllMetadata();
+      const format =
+        refMeta.findFirstValue(null, "http://purl.org/dc/terms/format") ?? "";
+      if (format.startsWith("image/")) {
+        return (
+          refMeta.findFirstValue(null, `${PROF}hasArtifact`) ||
+          r.value.getResourceURI()
+        );
+      }
+    }
+    return undefined;
+  }
+
   public async getRelatedMQA(entry: Entry, pageType?: PageType) {
     let contextId = entry.getContext().getId();
     try {
