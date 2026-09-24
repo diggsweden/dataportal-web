@@ -100,7 +100,7 @@ export function ApplicationProfilePage() {
       main={
         <>
           {/* Decoy: init() throws without a `.rdforms-specs` element. */}
-          <div className="rdforms-specs !hidden" />
+          <div className="rdforms-specs" hidden />
 
           <div
             data-entryscape="loadAp"
