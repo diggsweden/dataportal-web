@@ -19,18 +19,27 @@ import { entryCache } from "./local-cache";
 // Metadata Value Helpers
 // ============================================================================
 
+/**
+ * `lang` is the active locale; omitting it keeps the legacy Swedish-first
+ * order, so existing callers are unaffected.
+ */
 export const getLocalizedValue = (
   metadata: Metadata,
   property: string,
   resourceURI?: string,
+  lang?: string,
 ) => {
   const values = metadata.find(resourceURI || null, property);
+  // Prefer the active locale
+  const langValue = lang
+    ? values.find((v: MetadataValue) => v.getLanguage() === lang)
+    : undefined;
   // Try to find Swedish value first
   const svValue = values.find((v: MetadataValue) => v.getLanguage() === "sv");
   // Fall back to English if no Swedish
   const enValue = values.find((v: MetadataValue) => v.getLanguage() === "en");
   // Fall back to first value if neither Swedish nor English
-  return (svValue || enValue || values[0])?.getValue() || "";
+  return (langValue || svValue || enValue || values[0])?.getValue() || "";
 };
 
 export function getFirstMatchingValue(

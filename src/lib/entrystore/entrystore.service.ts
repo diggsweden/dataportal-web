@@ -427,11 +427,13 @@ export class EntrystoreService {
             metaData,
             hitSpecification.titleResource || "dcterms:title",
             resourceURI,
+            lang,
           ),
           description: getLocalizedValue(
             metaData,
             hitSpecification.descriptionResource || "dcterms:description",
             resourceURI,
+            lang,
           ),
           esEntry: entry,
           metadata: await this.getMetaValues(
@@ -844,8 +846,18 @@ export class EntrystoreService {
               const schemeMeta = schemeEntry.getAllMetadata();
               parentUrl = termsPathResolver(schemeEntry);
               parentName =
-                getLocalizedValue(schemeMeta, "dcterms:title", inSchemeUri) ||
-                getLocalizedValue(schemeMeta, "rdfs:label", inSchemeUri) ||
+                getLocalizedValue(
+                  schemeMeta,
+                  "dcterms:title",
+                  inSchemeUri,
+                  this.lang,
+                ) ||
+                getLocalizedValue(
+                  schemeMeta,
+                  "rdfs:label",
+                  inSchemeUri,
+                  this.lang,
+                ) ||
                 parentName;
 
               // "Utgivare" in the design is the terminology's publisher, not
@@ -869,12 +881,22 @@ export class EntrystoreService {
             );
             if (vocabEntry) {
               const vocabMeta = vocabEntry.getAllMetadata();
-              parentUrl = `${includeLangInPath(this.lang)}/data-vocabulary/${vocabEntry
+              parentUrl = `/data-vocabulary/${vocabEntry
                 .getContext()
                 .getId()}_${vocabEntry.getId()}`;
               parentName =
-                getLocalizedValue(vocabMeta, "dcterms:title", definedByUri) ||
-                getLocalizedValue(vocabMeta, "rdfs:label", definedByUri) ||
+                getLocalizedValue(
+                  vocabMeta,
+                  "dcterms:title",
+                  definedByUri,
+                  this.lang,
+                ) ||
+                getLocalizedValue(
+                  vocabMeta,
+                  "rdfs:label",
+                  definedByUri,
+                  this.lang,
+                ) ||
                 parentName;
             }
           } catch {}
