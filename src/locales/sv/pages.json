@@ -283,6 +283,7 @@
     "download": "Ladda ner",
     "go_to_resource": "Gå till resurs",
     "guidance_download": "Ladda ner guidance",
+    "image_alt": "{title} diagram",
     "interop_bas": "Interoperabel Basspecifikation",
     "interop_profil": "Interoperabel Profilspecifikation",
     "introduced_classes": "introducerade klasser",

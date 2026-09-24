@@ -276,6 +276,7 @@
     "download": "Download",
     "go_to_resource": "Go to resource",
     "guidance_download": "Download guidance",
+    "image_alt": "{title} diagram",
     "interop_bas": "Interoperable base specification",
     "interop_profil": "Interoperable profile specification",
     "introduced_classes": "introduced classes",

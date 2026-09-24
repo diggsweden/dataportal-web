@@ -14,7 +14,7 @@ import type { EnvSettings } from "@/env";
 import { SettingsUtil } from "@/env/settings-util";
 import { useResourceLabel } from "@/i18n/use-resource-label";
 import {
-  blockScriptUrls,
+  preloadScriptUrls,
   useEntryScapeBlocks,
 } from "@/lib/entryscape-blocks/use-blocks";
 import { EntrystoreService } from "@/lib/entrystore/entrystore.service";
@@ -327,19 +327,17 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
       case "specification":
       case "application-profile": {
         // Fetch all data in parallel
-        const [keywords, formats, organisationLink, image] = await Promise.all([
+        const [keywords, formats, organisationLink] = await Promise.all([
           entrystoreService.getKeywords(entry),
           entrystoreService.getDownloadFormats(
             entry.getEntryInfo().getMetadataURI(),
           ),
           entrystoreService.getOrganisationLink(publisherEntry),
-          entrystoreService.getSpecificationImage(entry),
         ]);
 
         return {
           keywords,
           downloadFormats: formats,
-          image,
           relatedResource: publisherName
             ? { title: publisherName, url: organisationLink || undefined }
             : undefined,
@@ -597,7 +595,7 @@ export const EntrystoreProvider: FC<EntrystoreProviderProps> = ({
 
   // Block-script preload lives here (not the layout) so only resource pages
   // request it — search pages would preload-but-never-use it.
-  const blockScriptPreloads = blockScriptUrls(env).map((href) => (
+  const blockScriptPreloads = preloadScriptUrls(env, pageType).map((href) => (
     <link key={href} rel="preload" as="script" href={href} />
   ));
 
