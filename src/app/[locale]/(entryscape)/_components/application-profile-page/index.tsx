@@ -3,7 +3,8 @@
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useContext } from "react";
-import { EntryscapeResourcePage } from "@/app/[locale]/(entryscape)/_components/entryscape-resource-page";
+import { Container } from "@/components/layout/container";
+import { BreadcrumbSetter } from "@/components/navigation/breadcrumbs/breadcrumb-setter";
 import { EntrystoreContext } from "@/lib/entrystore/provider";
 import { buildBreadcrumb } from "@/utilities/breadcrumb-helpers";
 
@@ -17,24 +18,25 @@ export function ApplicationProfilePage() {
     : `/${specificationsPath}/${params.spec}`;
 
   return (
-    <EntryscapeResourcePage
-      containerSize="full"
-      breadcrumb={buildBreadcrumb(
-        t("pages.specification_page.application_profile"),
-        [
-          {
-            name: t("routes.specifications.title"),
-            link: `/${specificationsPath}?q=&f=`,
-          },
-          {
-            name: entry.title,
-            link: specHref,
-          },
-        ],
-      )}
-      title={entry.title}
-      main={null}
-      sidebar={null}
-    />
+    <div className="bg-white">
+      <Container>
+        <BreadcrumbSetter
+          {...buildBreadcrumb(
+            t("pages.specification_page.application_profile"),
+            [
+              {
+                name: t("routes.specifications.title"),
+                link: `/${specificationsPath}?q=&f=`,
+              },
+              {
+                name: entry.title,
+                link: specHref,
+              },
+            ],
+          )}
+        />
+        <div data-entryscape="apView" />
+      </Container>
+    </div>
   );
 }

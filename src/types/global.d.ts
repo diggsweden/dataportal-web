@@ -40,6 +40,9 @@ declare global {
       setEntryStore(entrystoreBase: string): void;
       addConfig(config: unknown[]): Promise<void>;
     };
+    esbBlocks?: {
+      diagram(uri: string): Promise<{ entry: unknown; uri: string } | null>;
+    };
     __entryscape_blocks_click?: (href: string, event?: MouseEvent) => boolean;
     __es_has_apis?: string[];
     screen9?: {

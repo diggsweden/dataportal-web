@@ -1,0 +1,56 @@
+/* Styling for Application Profile page */
+
+/*
+ * rdforms-specs chooses its own layout from the container's width and, since
+ * it wants 80.5em for its sidebar, always lands on `toc-inline`: a
+ * 1fr / 50em / 1fr grid that centres the text and leaves the table of
+ * contents in flow. From lg we replace that with a rail and a text column.
+ *
+ * Its stylesheet is injected at runtime, so it wins any specificity tie on
+ * order; the doubled class outranks it instead. 984px is `screens.lg` —
+ * biome rejects `theme()` in a media query.
+ */
+
+[data-entryscape="apView"] #toc > .toc-sticky h2 {
+  @apply lg:text-lg lg:mt-none;
+}
+
+[data-entryscape="apView"] .head {
+  @apply mt-lg;
+}
+
+[data-entryscape="apView"] .rdforms-specs {
+  @apply p-none;
+}
+
+@media (min-width: 984px) {
+  [data-entryscape="apView"] .rdforms-specs.rdforms-specs {
+    /* Column gap only: row gaps would show between the spec's own
+       elements, starting with the empty `loadAp` wrapper in row 1. */
+    @apply grid gap-x-xl;
+    grid-template-columns: 18rem minmax(0, 1fr);
+    /* Nothing in the renderer sets this; it feeds the rules below. */
+    --rdforms-specs-top-offset: 4.75rem;
+  }
+
+  [data-entryscape="apView"] .rdforms-specs > * {
+    grid-column: 2;
+  }
+
+  /* Spans every row so the sticky child below has the full height to dock
+     within, and so the rail is painted the whole way down. `1 / -1` stops at
+     the explicit rows. Needs a direct child. */
+  [data-entryscape="apView"] .rdforms-specs > #toc {
+    @apply bg-brown-100;
+    grid-column: 1;
+    grid-row: 1 / span 100;
+  }
+
+  /* The docking the renderer gives its own sidebar mode but not inline: a
+     table of contents taller than the viewport scrolls instead of running off. */
+  [data-entryscape="apView"] .toc-sticky {
+    @apply sticky overflow-y-auto overflow-x-hidden p-lg;
+    top: var(--rdforms-specs-top-offset);
+    max-height: max(8em, calc(100vh - var(--rdforms-specs-top-offset)));
+  }
+}
