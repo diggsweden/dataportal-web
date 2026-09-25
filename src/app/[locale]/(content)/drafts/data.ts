@@ -41,11 +41,16 @@ export const getRootAggregate = async (
   const { state, secret } = opts;
 
   try {
-    const data = await gqlFetch(RootAggregateDocument, {
-      locale,
-      state: state || Dataportal_ContainerState.Live,
-      ...(secret ? { previewSecret: secret } : {}),
-    });
+    const data = await gqlFetch(
+      RootAggregateDocument,
+      {
+        locale,
+        state: state || Dataportal_ContainerState.Live,
+        ...(secret ? { previewSecret: secret } : {}),
+      },
+      // Draft preview: editors must always see their latest unpublished edit.
+      { cache: "no-store" },
+    );
 
     const container = data ? data.container[0] : undefined;
 

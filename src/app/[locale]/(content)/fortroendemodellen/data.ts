@@ -54,10 +54,11 @@ export const getForm = async (
   locale?: string,
 ): Promise<FormResponse> => {
   try {
-    const data = await gqlFetch(FormDocument, {
-      identifier,
-      locale,
-    });
+    const data = await gqlFetch(
+      FormDocument,
+      { identifier, locale },
+      { revalidate: 120, tags: ["strapi", "fortroendemodellen"] },
+    );
 
     const form = data.dataportal_Digg_Form;
 
@@ -82,7 +83,11 @@ export const getModule = async (
   };
 
   try {
-    const data = await gqlFetch(ModuleDocument, { identifier, locale });
+    const data = await gqlFetch(
+      ModuleDocument,
+      { identifier, locale },
+      { revalidate: 120, tags: ["strapi", "fortroendemodellen"] },
+    );
 
     const mod = data.dataportal_Digg_Module;
 
