@@ -1,7 +1,13 @@
 "use client";
 
 import { cva, cx, type VariantProps } from "class-variance-authority";
-import { type FC, type PropsWithChildren, useEffect, useRef } from "react";
+import {
+  type FC,
+  type PropsWithChildren,
+  useEffect,
+  useId,
+  useRef,
+} from "react";
 
 import ArrowRightIcon from "@/assets/icons/arrow-right.svg";
 import ExternalIcon from "@/assets/icons/external-link.svg";
@@ -65,10 +71,15 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   size,
   color,
   textSize = "sm",
+  ariaLabel,
   className,
   children,
 }) => {
   const ref = useRef<HTMLDialogElement>(null);
+  const id = useId();
+  const headingId = `${id}-heading`;
+  const textId = `${id}-text`;
+  const describedById = text ? textId : undefined;
 
   useEffect(() => {
     const dialog = ref.current;
@@ -76,6 +87,8 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
 
     if (modalOpen) {
       dialog.showModal();
+      dialog.focus({ preventScroll: true });
+      dialog.scrollTop = 0;
     } else {
       dialog.close();
     }
@@ -90,6 +103,10 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
       data-test-id="modal"
       ref={ref}
       aria-modal="true"
+      tabIndex={-1}
+      aria-labelledby={heading ? headingId : undefined}
+      aria-label={heading ? undefined : ariaLabel}
+      aria-describedby={describedById}
       className={cx(
         modalVariants({ size, color }),
         modalOpen ? "visible" : "hidden",
@@ -105,6 +122,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
     >
       {heading && (
         <Heading
+          id={headingId}
           level={1}
           size={textSize}
           className={text ? "font-thin" : "pb-lg"}
@@ -114,6 +132,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
       )}
       {text && (
         <p
+          id={textId}
           className={`${
             textSize === "md" ? "pt-lg text-lg text-brown-600" : ""
           } pb-lg`}
