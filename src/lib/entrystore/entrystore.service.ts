@@ -410,10 +410,14 @@ export class EntrystoreService {
         const metaData = entry.getAllMetadata();
         const resourceURI = entry.getResourceURI();
         const context = entry.getContext();
-        const rdfType = metaData.findFirstValue(
-          entry.getResourceURI(),
-          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-        );
+        // Entries can have several rdf:types - pick a known one.
+        const rdfTypes: string[] = metaData
+          .find(resourceURI, "http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
+          .map((t: any) => t.getValue());
+        const rdfType =
+          rdfTypes.find((type) => this._hitSpecifications[type]) ??
+          rdfTypes[0] ??
+          "";
 
         const hitSpecification = this._hitSpecifications[rdfType] || {
           titleResource: "dcterms:title",
