@@ -65,7 +65,9 @@ export const getMultiContainer = async (
           ...(state ? { state } : {}),
         },
       },
-      secret ? { cache: "no-store" } : { revalidate: 120 },
+      secret
+        ? { cache: "no-store" }
+        : { revalidate: 120, tags: ["strapi", "containers"] },
     );
 
     const rawContainer = data.dataportal_Digg_Containers[0];

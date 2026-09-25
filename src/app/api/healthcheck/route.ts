@@ -28,9 +28,12 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    await gqlFetch(NewsItemDocument, {
-      filter: { limit: 3 },
-    });
+    await gqlFetch(
+      NewsItemDocument,
+      { filter: { limit: 3 } },
+      // A cached probe would keep reporting "pass" after Strapi goes down.
+      { cache: "no-store" },
+    );
 
     return Response.json(
       { status: "pass" },

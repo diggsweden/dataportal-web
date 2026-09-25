@@ -75,18 +75,23 @@ export const querySearch = async (
   _clientQuery: boolean,
 ) => {
   try {
-    const data = await gqlFetch(SearchDocument, {
-      filter: {
-        highlightPreText: "**",
-        highlightPostText: "**",
-        highlightsLength: 10,
-        getHighlights: true,
-        query: query,
-        limit: limit || 10,
-        offset: offset || 0,
-        locale,
+    const data = await gqlFetch(
+      SearchDocument,
+      {
+        filter: {
+          highlightPreText: "**",
+          highlightPostText: "**",
+          highlightsLength: 10,
+          getHighlights: true,
+          query: query,
+          limit: limit || 10,
+          offset: offset || 0,
+          locale,
+        },
       },
-    });
+      // Per-user query; caching would just fill the data cache with misses.
+      { cache: "no-store" },
+    );
 
     return data;
   } catch (error) {
