@@ -75,6 +75,7 @@ export interface SearchContextData {
   showMoreFacets: (_facetkey: string) => void;
   updateFacetStats: () => Promise<void>;
   fetchFacetNames: (_facetKey: string) => Promise<void>;
+  updateAnyValueCounts: () => Promise<void>;
   facetSelected: (_key: string, _value: string) => boolean;
   doSearch: (
     _appendHits?: boolean,
@@ -123,6 +124,7 @@ export const defaultSearchSettings: SearchContextData = {
   showMoreFacets: () => {},
   updateFacetStats: () => new Promise<void>(() => {}),
   fetchFacetNames: async () => {},
+  updateAnyValueCounts: async () => {},
   facetSelected: () => false,
   doSearch: async () => {},
   setStateToLocation: () => {},
@@ -348,6 +350,7 @@ class SearchProviderClass extends Component<
 
             if (allFacets[group] && esFacetsInGroup?.values) {
               allFacets[group].facetValues.forEach((f: SearchFacetValue) => {
+                if (f.valueRank === 0) return;
                 const resultFacetValue = esFacetsInGroup.values.find(
                   (fv) => fv.name === f.resource,
                 );
@@ -365,6 +368,58 @@ class SearchProviderClass extends Component<
       await Promise.all(searchPromises);
     } catch (error) {
       console.error("Error in updateFacetStatsGrouped:", error);
+    }
+  };
+
+  /**
+   * Hits with any value at all for a pinned "any value" option. Needs its own
+   * search: Solr facets count values, not documents, so summing double-counts.
+   * Runs when a dropdown holding such an option is opened.
+   */
+  updateAnyValueCounts = async (): Promise<void> => {
+    const anyValues = Object.entries(this.state.allFacets || {})
+      .map(
+        ([key, facet]) =>
+          [key, facet.facetValues?.find((v) => v.valueRank === 0)] as const,
+      )
+      .filter(
+        (entry): entry is [string, SearchFacetValue] => entry[1] !== undefined,
+      );
+
+    if (!anyValues.length) return;
+
+    try {
+      const counts = await Promise.all(
+        anyValues.map(async ([key, anyValue]) => {
+          const otherFacets = (this.state.request.facetValues || []).filter(
+            (v) => v.facet !== anyValue.facet,
+          );
+
+          const res = await this.entrystoreService.solrSearch({
+            ...this.state.request,
+            facetValues: [...otherFacets, anyValue],
+            take: 1,
+            fetchFacets: false,
+          });
+
+          return [key, anyValue.resource, res.count || 0] as const;
+        }),
+      );
+
+      this.setState((state) => {
+        const allFacets = { ...state.allFacets };
+
+        for (const [key, resource, count] of counts) {
+          const facetValue = allFacets[key]?.facetValues?.find(
+            (v) => v.resource === resource,
+          );
+          if (facetValue) facetValue.count = count;
+        }
+
+        return { allFacets };
+      });
+    } catch (error) {
+      console.error("Error counting any-value facet options:", error);
     }
   };
 
@@ -392,7 +447,11 @@ class SearchProviderClass extends Component<
           }
         });
 
-        tmpArr.sort((a, b) => b.count - a.count);
+        // A pinned "any value" option (rank 0) stays on top.
+        tmpArr.sort(
+          (a, b) =>
+            (a.valueRank ?? 1) - (b.valueRank ?? 1) || b.count - a.count,
+        );
 
         facet.facetValues = tmpArrSelected.concat(tmpArr);
       }
@@ -427,6 +486,8 @@ class SearchProviderClass extends Component<
               //does allFacet exist in result with values
               if (facets[k]?.facetValues) {
                 v.facetValues.forEach((f) => {
+                  // An "any value" option is counted on demand, not by Solr.
+                  if (f.valueRank === 0) return;
                   const resultFacetValue = facets[k].facetValues.find(
                     (fv) => fv.resource === f.resource, // fv.title === f.title && fv.resource === f.resource
                   );
@@ -1016,6 +1077,7 @@ class SearchProviderClass extends Component<
       fetchAllFacets: this.fetchAllFacets,
       updateFacetStats: this.mergeAllFacetsAndResult,
       fetchFacetNames: this.fetchFacetNames,
+      updateAnyValueCounts: this.updateAnyValueCounts,
       facetSelected: this.facetSelected,
       sortAllFacets: this.sortAllFacets,
       request: this.state.request,

@@ -49,12 +49,29 @@ export function SearchActiveFilters({
   const t = useTranslations();
   const tResource = useResourceLabel();
 
-  // The link's own title is only as good as its builder; prefer the fetched one.
+  // Match the allFacets key, not the predicate: two facets can share one
+  // (accessRights does) and the wrong one labels the value with its raw URI.
   const facetTitle = (facetValue: SearchFacetValue) =>
-    Object.values(search.allFacets || {})
-      .find((facet) => facet.predicate === facetValue.facet)
+    Object.entries(search.allFacets || {})
+      .find(
+        ([key, facet]) =>
+          facet.predicate === facetValue.facet &&
+          (!facetValue.customLabel || key === facetValue.customLabel),
+      )?.[1]
       ?.facetValues?.find((value) => value.resource === facetValue.resource)
       ?.title;
+
+  /** Either source can be just the URI, so a real title always wins. */
+  const facetLabel = (facetValue: SearchFacetValue) => {
+    const named = (title?: string) =>
+      title && title !== facetValue.resource ? title : undefined;
+
+    return (
+      named(facetTitle(facetValue)) ||
+      named(facetValue.title) ||
+      facetValue.resource
+    );
+  };
 
   // Create an array of active special search filters
   const activecustomSearchFilters = Object.entries(search.allFacets || {})
@@ -97,9 +114,7 @@ export function SearchActiveFilters({
           {search.request.facetValues?.map((facetValue: SearchFacetValue) => {
             const label =
               !facetValue.customFilter && !facetValue.customSearch
-                ? facetTitle(facetValue) ||
-                  facetValue.title ||
-                  facetValue.resource
+                ? facetLabel(facetValue)
                 : tResource(facetValue.customLabel || facetValue.facet);
 
             return (

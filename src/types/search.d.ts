@@ -53,6 +53,13 @@ export interface FacetSpecificationItem {
   exclusive?: boolean;
   excludeProperties?: string[];
   includeProperties?: string[];
+  /** Adds an "any value" option, labelled by this resource key. */
+  anyValueOption?: string;
+  /** Only keep matching values; they take their title from the match. */
+  valueConstraint?: {
+    rdfTypes: ESRdfType[];
+    requiredProperties?: string[];
+  };
 }
 
 export interface SearchResult {
@@ -107,6 +114,8 @@ export interface SearchFacetValue {
   customLabel?: string;
   customProperties?: string[];
   customSearch?: ESRdfType[];
+  /** Pins the "any" option: ordinary values rank 1. */
+  valueRank?: number;
 }
 
 export interface SearchRequest {

@@ -49,6 +49,14 @@
   background-image: var(--icon--national);
 }
 
+.entryscape .esbVanity a.esbLinkButton.esbShowAllLink {
+  @apply mt-lg;
+  &::after {
+    @apply content-[""] size-[1.5rem] bg-center bg-no-repeat bg-contain;
+    background-image: var(--icon--arrow-right-white);
+  }
+}
+
 /* -------------------- End of Entryscape header styles -------------------- */
 
 /* -------------------- Entryscape page main styles -------------------- */

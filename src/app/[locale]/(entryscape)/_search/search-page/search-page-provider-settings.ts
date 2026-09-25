@@ -22,6 +22,11 @@ interface FacetConfig {
   customFilter?: string; // Special case for special filters with checkbox
   customSearch?: ESRdfType[]; // Special case for special filters with search
   customLabel?: string; // Overrides the facet key used for its display label
+  anyValueOption?: string; // Adds an "any value" option with this label key
+  valueConstraint?: {
+    rdfTypes: ESRdfType[];
+    requiredProperties?: string[];
+  }; // Only keep values whose resource matches these constraints
 }
 
 interface HitSpecification {
@@ -162,14 +167,18 @@ export function createSearchProviderSettings(lang: string) {
               "http://inspire.ec.europa.eu/metadata-codelist/TopicCategory/*",
           },
           {
+            // conformsTo URIs we can't name are dropped from the list, but
+            // stay reachable through the "any" option.
             resource: "http://purl.org/dc/terms/conformsTo",
             type: ESType.uri,
             dcatProperty: "dcterms:conformsTo",
-            dcatType: "choice",
-            dcatFilterEnabled: false,
             indexOrder: 8,
             group: "type",
-            customFilter: "*",
+            anyValueOption: "http://dataportal.se/filter/any-specification",
+            valueConstraint: {
+              rdfTypes: [ESRdfType.spec_profile, ESRdfType.spec_standard],
+              requiredProperties: ["http://www.w3.org/ns/dx/prof/hasResource"],
+            },
           },
           {
             resource: "http://www.w3.org/ns/dcat#DataService",

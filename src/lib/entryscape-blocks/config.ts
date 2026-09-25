@@ -5,6 +5,7 @@ import { accessServiceCustom, exploreApiLink } from "./global";
 
 const SKOS_IN_SCHEME = "http://www.w3.org/2004/02/skos/core#inScheme";
 const RDFS_IS_DEFINED_BY = "http://www.w3.org/2000/01/rdf-schema#isDefinedBy";
+const DCTERMS_CONFORMS_TO = "http://purl.org/dc/terms/conformsTo";
 
 /**
  * Data-structures search filtered to the current terminology / data vocabulary,
@@ -28,6 +29,23 @@ const dataStructureSearch = (
   ].join("%7C%7C");
 
   return `/data-structures?q=&f=${facet}&rt=${rdfType}`;
+};
+
+/**
+ * Dataset search filtered to the current specification. Same `f` format as
+ * above; the search page swaps in the real title for the `${uri}` label.
+ */
+const conformantDatasetSearch = (label: string) => {
+  const facet = [
+    encodeURIComponent(DCTERMS_CONFORMS_TO),
+    "${uri}",
+    "false",
+    "uri",
+    encodeURIComponent(label),
+    "${uri}",
+  ].join("%7C%7C");
+
+  return `/datasets?q=&f=${facet}`;
 };
 
 interface CreateBlocksConfigProps {
@@ -69,6 +87,7 @@ export const createBlocksConfig = ({
       conceptSearch: `esb:${includeLangInPath(lang)}${dataStructureSearch(SKOS_IN_SCHEME, "term", t("pages.terminology.terminology"))}`,
       classSearch: `esb:${includeLangInPath(lang)}${dataStructureSearch(RDFS_IS_DEFINED_BY, "term_class", t("pages.data-vocabulary.data-vocabulary"))}`,
       propertySearch: `esb:${includeLangInPath(lang)}${dataStructureSearch(RDFS_IS_DEFINED_BY, "term_property", t("pages.data-vocabulary.data-vocabulary"))}`,
+      conformantDatasetSearch: `esb:${includeLangInPath(lang)}${conformantDatasetSearch(t("pages.search.specifications"))}`,
     },
   };
 

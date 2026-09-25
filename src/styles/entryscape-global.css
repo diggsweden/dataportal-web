@@ -10,7 +10,8 @@
 [data-attribute="entryscape-page-main"]
   .entryscape
   .esbResourceDescriptors
-  a.esbExtLinkButton {
+  a.esbExtLinkButton,
+.entryscape .esbVanity a.esbLinkButton.esbShowAllLink {
   @apply flex items-center gap-sm w-fit button--primary button--large text-white no-underline hover:text-white hover:no-underline !important;
 }
 

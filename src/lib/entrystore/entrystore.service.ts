@@ -19,6 +19,7 @@ import {
 import { SearchSortOrder } from "@/providers/search-provider";
 import type {
   FacetSpecification,
+  FacetSpecificationItem,
   HitSpecification,
   SearchFacet,
   SearchFacetValue,
@@ -83,6 +84,11 @@ export class EntrystoreService {
     },
   };
   private facetSpecification: FacetSpecification = {};
+  /** `valueConstraint` matches, keyed by the constraint as JSON. */
+  private constrainedValuesCache = new Map<
+    string,
+    Promise<Map<string, string>>
+  >();
 
   private constructor(config: EntryStoreConfig) {
     this.entryStore = new EntryStore(entryStoreBaseUrl(config.env));
@@ -487,6 +493,84 @@ export class EntrystoreService {
   // Facet Operations
   // ============================================================================
 
+  /**
+   * Resource URI → title for everything matching @param constraint, cached.
+   * Titles come from the constraining entry, not whatever shares the URI.
+   */
+  private async getConstrainedValues(
+    constraint: NonNullable<FacetSpecificationItem["valueConstraint"]>,
+  ): Promise<Map<string, string>> {
+    const cacheKey = JSON.stringify(constraint);
+    let resources = this.constrainedValuesCache.get(cacheKey);
+
+    if (!resources) {
+      resources = this.fetchConstrainedResources(constraint).catch((error) => {
+        console.error("Error resolving constrained facet values:", error);
+        this.constrainedValuesCache.delete(cacheKey);
+        return new Map<string, string>();
+      });
+      this.constrainedValuesCache.set(cacheKey, resources);
+    }
+
+    return resources;
+  }
+
+  private async fetchConstrainedResources(
+    constraint: NonNullable<FacetSpecificationItem["valueConstraint"]>,
+  ): Promise<Map<string, string>> {
+    const resources = new Map<string, string>();
+    const query = this.entryStore
+      .newSolrQuery()
+      .publicRead(true)
+      .rdfType(constraint.rdfTypes)
+      .limit(100);
+
+    for (const predicate of constraint.requiredProperties ?? []) {
+      query.uriProperty(predicate, "*");
+    }
+
+    // `forEach` pages through the list; the limit is the page size.
+    await query.list().forEach((entry: Entry) => {
+      const uri = entry.getResourceURI();
+      const title = getLocalizedValue(
+        entry.getAllMetadata(),
+        "dcterms:title",
+        uri,
+        this.lang,
+      );
+      resources.set(uri, title || uri);
+    });
+
+    return resources;
+  }
+
+  /** The pinned "any value" option, when the facet spec asks for one. */
+  private anyValueFacetValue(
+    f: FacetSpecificationItem,
+    metaFacet: ESFacetField,
+  ): SearchFacetValue | undefined {
+    if (!f.anyValueOption) return undefined;
+
+    const title = this.resourceLabel(f.anyValueOption);
+
+    return {
+      count: 0,
+      facet: metaFacet.predicate,
+      facetType: metaFacet.type,
+      facetValueString: `${metaFacet.predicate}||*||${f.related || false}||${
+        metaFacet.type
+      }||${this.resourceLabel(metaFacet.predicate)}||${title}||*||undefined||${
+        f.anyValueOption
+      }`,
+      related: f.related || false,
+      resource: "*",
+      title,
+      customFilter: "*",
+      customLabel: f.anyValueOption,
+      valueRank: 0,
+    };
+  }
+
   public async getFacets(
     metaFacets: ESFacetField[],
     dcat: DCATData,
@@ -502,6 +586,11 @@ export class EntrystoreService {
       );
 
       if (metaFacet) {
+        const allowedValues = f.valueConstraint
+          ? await this.getConstrainedValues(f.valueConstraint)
+          : undefined;
+        const anyValue = this.anyValueFacetValue(f, metaFacet);
+
         facets[f.customLabel || f.resource] = {
           title: this.resourceLabel(metaFacet.predicate),
           name: metaFacet.name,
@@ -514,10 +603,11 @@ export class EntrystoreService {
           customLabel: f.customLabel,
           customSearch: f.customSearch,
           exclusive: f.exclusive,
-          facetValues:
+          facetValues: (anyValue ? [anyValue] : []).concat(
             metaFacet.values.length > 0
               ? metaFacet.values
                   .filter((value: ESFacetFieldValue) => {
+                    if (allowedValues) return allowedValues.has(value.name);
                     if (f.customProperties && f.customProperties.length > 0) {
                       return f.customProperties.some((property) =>
                         value.name.startsWith(property),
@@ -554,7 +644,9 @@ export class EntrystoreService {
                       }
                     } else {
                       displayName =
-                        entryCache.getValue(value.name) || value.name;
+                        allowedValues?.get(value.name) ||
+                        entryCache.getValue(value.name) ||
+                        value.name;
                     }
                     return {
                       count: value.count,
@@ -599,6 +691,7 @@ export class EntrystoreService {
                     customLabel: f.customLabel,
                   },
                 ],
+          ),
         };
       }
     }

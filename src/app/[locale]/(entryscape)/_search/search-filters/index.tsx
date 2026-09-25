@@ -168,6 +168,49 @@ export function SearchFilters({
     }
   };
 
+  /**
+   * Toggle a value in a dropdown that offers an "any value" option, which is
+   * mutually exclusive with the individual values
+   *
+   * @param key the facet's key in allFacets
+   * @param facet the facet being filtered
+   * @param facetValue the value that was clicked
+   * @returns once the updated search has run
+   */
+  const toggleGroupedValue = async (
+    key: string,
+    facet: SearchFacet,
+    facetValue: SearchFacetValue,
+  ) => {
+    const belongsToFacet = (v: SearchFacetValue) =>
+      (v.customLabel || v.facet) === key ||
+      (v.facet === facet.predicate && !!v.customFilter);
+
+    const current = search.request.facetValues || [];
+    const isSelected = current.some(
+      (v) => belongsToFacet(v) && v.resource === facetValue.resource,
+    );
+
+    let next: SearchFacetValue[];
+    if (isSelected) {
+      next = current.filter(
+        (v) => !(belongsToFacet(v) && v.resource === facetValue.resource),
+      );
+    } else if (facetValue.customFilter) {
+      next = [...current.filter((v) => !belongsToFacet(v)), facetValue];
+    } else {
+      next = [
+        ...current.filter((v) => !(belongsToFacet(v) && v.customFilter)),
+        facetValue,
+      ];
+    }
+
+    clearCurrentScrollPos();
+    await search.set({ facetValues: next, page: 0 });
+    await search.doSearch(false, true, false);
+    search.sortAllFacets(key);
+  };
+
   // Toggle a checkbox facet; exclusive facets are single-select within a group.
   const toggleFilterFacet = (
     facet: SearchFacet,
@@ -347,6 +390,19 @@ export function SearchFilters({
                             .includes(inputFilter[key].toLowerCase()),
                         )
                       : uniqueFacetValues.slice(0, show);
+                    const hasAnyValueOption = uniqueFacetValues.some(
+                      (v) => v.customFilter,
+                    );
+
+                    // Both are too costly to run for every facet on load
+                    let handleOpen: (() => void) | undefined;
+                    if (
+                      value.predicate === "http://purl.org/dc/terms/publisher"
+                    ) {
+                      handleOpen = () => search.fetchFacetNames(key);
+                    } else if (hasAnyValueOption) {
+                      handleOpen = () => search.updateAnyValueCounts();
+                    }
 
                     if (!value.customFilter && !value.customSearch) {
                       return (
@@ -358,12 +414,7 @@ export function SearchFilters({
                               value.facetValues,
                               search.request.facetValues,
                             )}
-                            onOpen={
-                              value.predicate ===
-                              "http://purl.org/dc/terms/publisher"
-                                ? () => search.fetchFacetNames(key)
-                                : undefined
-                            }
+                            onOpen={handleOpen}
                           >
                             <div className="absolute z-10 mr-lg mt-sm max-h-[200px] w-[calc(100vw-4rem)] overflow-y-auto overscroll-contain border border-brown-200 bg-white shadow-md md:max-h-[600px] md:w-full md:max-w-[20.625rem]">
                               <FilterSearch
@@ -406,10 +457,7 @@ export function SearchFilters({
                                       </li>
                                     ))
                                   : facetValues.map(
-                                      (
-                                        facetValue: SearchFacetValue,
-                                        index: number,
-                                      ) => (
+                                      (facetValue: SearchFacetValue) => (
                                         <li
                                           key={facetValue.resource}
                                           role="option"
@@ -426,7 +474,13 @@ export function SearchFilters({
                                               "font-strong"
                                             }`}
                                             onClick={() => {
-                                              doSearch(key, facetValue);
+                                              hasAnyValueOption
+                                                ? toggleGroupedValue(
+                                                    key,
+                                                    value,
+                                                    facetValue,
+                                                  )
+                                                : doSearch(key, facetValue);
                                             }}
                                             aria-pressed={selected(
                                               key,
@@ -434,8 +488,11 @@ export function SearchFilters({
                                             )}
                                           >
                                             {facetValue.title ||
-                                              facetValue.resource}{" "}
-                                            ({facetValue.count})
+                                              facetValue.resource}
+                                            {/* The "any" option has no count until measured */}
+                                            {(!facetValue.customFilter ||
+                                              facetValue.count > 0) &&
+                                              ` (${facetValue.count})`}
                                             {/* Decorative checkbox icon */}
                                             <span
                                               className="absolute right-md top-1/2 -translate-y-1/2 "
