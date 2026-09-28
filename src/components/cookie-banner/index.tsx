@@ -24,6 +24,18 @@ export type CookieProperties = {
   accepted: boolean;
 };
 
+function withAllAccepted(
+  settings: CookieSetting,
+  accepted: boolean,
+): CookieSetting {
+  return Object.fromEntries(
+    Object.entries(settings).map(([key, value]) => [
+      key,
+      { ...value, accepted },
+    ]),
+  );
+}
+
 export const CookieBanner: FC<{
   settingsOpen: boolean;
   // eslint-disable-next-line no-unused-vars
@@ -38,7 +50,7 @@ export const CookieBanner: FC<{
     analytic: {
       label: t("routes.cookies.analytic-heading"),
       description: t("routes.cookies.analytic-description"),
-      accepted: true,
+      accepted: false,
     },
   };
 
@@ -46,18 +58,18 @@ export const CookieBanner: FC<{
     useState<CookieSetting>(initialCookieSetting);
 
   useEffect(() => {
-    setCookieSettings(cookieSettings);
-  }, [cookieSettings]);
-
-  useEffect(() => {
     setCookieSettings(initialCookieSetting);
   }, [lang]);
 
   useEffect(() => {
-    if (store.cookieSettings?.analytic?.accepted) {
-      setConsent(true);
-    }
-  }, [store.cookieSettings?.analytic?.accepted]);
+    setConsent(store.cookieSettings?.analytic?.accepted === true);
+  }, [store.cookieSettings?.analytic?.accepted, setConsent]);
+
+  const persist = (settings: CookieSetting) => {
+    setCookieSettings(settings);
+    set({ cookieSettings: settings });
+    setSettingsOpen(false);
+  };
 
   const necessaryCookieText: NecessaryCookies = {
     heading: t("routes.cookies.necessary-heading"),
@@ -97,29 +109,32 @@ export const CookieBanner: FC<{
               necessaryCookieText={necessaryCookieText}
             />
           )}
-          <div className="flex space-x-lg">
+          <div className="flex flex-wrap gap-md md:gap-lg">
             <Button
               data-test-id="cookie-setting-button"
               type="submit"
               onClick={() => {
-                set({ cookieSettings: cookieSettings });
+                persist(
+                  settingsOpen
+                    ? cookieSettings
+                    : withAllAccepted(cookieSettings, true),
+                );
               }}
             >
               {settingsOpen
                 ? t("routes.cookies.cookie-setting-open")
                 : t("routes.cookies.cookie-setting")}
             </Button>
-            {!settingsOpen && (
-              <Button
-                variant="secondary"
-                type="button"
-                onClick={() => {
-                  setSettingsOpen(!settingsOpen);
-                }}
-              >
-                {t("routes.cookies.settings-heading")}
-              </Button>
-            )}
+            <Button
+              data-test-id="cookie-reject-button"
+              variant="secondary"
+              type="button"
+              onClick={() => {
+                persist(withAllAccepted(cookieSettings, false));
+              }}
+            >
+              {t("routes.cookies.cookie-reject")}
+            </Button>
           </div>
         </form>
       </Container>
