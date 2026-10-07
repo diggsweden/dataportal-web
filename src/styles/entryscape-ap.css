@@ -20,7 +20,7 @@
 }
 
 [data-entryscape="apView"] .toc-sidebar #toc > .toc-sticky h2 {
-  @apply text-lg;
+  @apply text-xl;
 }
 
 /* Its em-based tracks shrank with the font-size. Extra class to outrank its
