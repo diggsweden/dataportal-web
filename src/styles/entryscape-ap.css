@@ -1,8 +1,11 @@
 /* Styling for Application Profile page */
 
+/* Vertical padding in rem so the rail's `-1.6em/-2em` bleed cancels it: the
+   children are reset to 1rem, so em there is not em here. */
 [data-entryscape="apView"] .rdforms-specs {
-  @apply p-none;
-  --rdforms-specs-top-offset: 1rem;
+  @apply px-none;
+  padding-top: 1.6rem;
+  padding-bottom: 2rem;
 }
 
 /* Sidebar switches at 80.5x this font-size; pin it clear of lg either way. */
@@ -16,10 +19,6 @@
   font-size: 1rem;
 }
 
-[data-entryscape="apView"] .head {
-  @apply mt-lg;
-}
-
 [data-entryscape="apView"] .toc-sidebar #toc > .toc-sticky h2 {
   @apply text-lg;
 }
@@ -31,17 +30,7 @@
   grid-template-columns: 18rem minmax(0, 1fr);
 }
 
-/* Bled out through container padding we do not have. */
-[data-entryscape="apView"] .rdforms-specs.toc-sidebar > #toc,
-[data-entryscape="apView"] .rdforms-specs.toc-sidebar > #toc-nav {
-  @apply my-none;
-}
-
 /* Collapse the centring gutters onto the container line. */
 [data-entryscape="apView"] .rdforms-specs.toc-inline {
   grid-template-columns: 0 minmax(0, 1fr) 0;
-}
-
-[data-entryscape="apView"] .rdforms-specs.toc-inline > #toc-nav {
-  margin-left: 0;
 }
