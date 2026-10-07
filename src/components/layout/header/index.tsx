@@ -29,7 +29,7 @@ export const Header: FC<HeaderProps> = ({
   }, [openSideBar]);
 
   return (
-    <header className="flex w-full flex-col gap-md border-b-8 border-b-brown-600 bg-white px-md py-lg md:px-xl">
+    <header className="flex w-full flex-col gap-md border-b-8 border-b-brown-600 bg-white p-lg lg:px-xl">
       <TopNav serviceMenu={serviceMenu} setOpenSideBar={setOpenSideBar} />
       <MainNav
         mainMenu={mainMenu}
