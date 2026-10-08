@@ -27,7 +27,7 @@
    runtime-injected sheet. */
 [data-entryscape="apView"] .rdforms-specs.toc-sidebar {
   @apply gap-x-xl;
-  grid-template-columns: 18rem minmax(0, 1fr);
+  grid-template-columns: 22.5rem minmax(0, 1fr);
 }
 
 /* Collapse the centring gutters onto the container line. */
