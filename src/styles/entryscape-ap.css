@@ -30,6 +30,10 @@
   grid-template-columns: 22.5rem minmax(0, 1fr);
 }
 
+[data-entryscape="apView"] .rdforms-specs.toc-sidebar .toc-sticky {
+  padding-left: calc(1.5em + var(--rdforms-specs-flag-gutter));
+}
+
 /* Collapse the centring gutters onto the container line. */
 [data-entryscape="apView"] .rdforms-specs.toc-inline {
   grid-template-columns: 0 minmax(0, 1fr) 0;
