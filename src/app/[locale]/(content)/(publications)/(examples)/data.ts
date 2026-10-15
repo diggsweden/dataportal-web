@@ -13,6 +13,9 @@ import {
   type SeoDataFragment,
 } from "@/graphql/gql/graphql";
 
+const STRAPI_TAG = "strapi";
+const GOOD_EXAMPLE_TAG = "good-examples";
+
 export const GoodExampleDocument = graphql(`
   query GoodExample($filter: dataportal_QueryContainerArgs) {
     dataportal_Digg_Good_Examples(filter: $filter) {
@@ -45,13 +48,17 @@ export const getGoodExamplesList = async (
   const { seo, basePath, heading, preamble, heroImage, reuse, breadcrumb } =
     opts || {};
   try {
-    const data = await gqlFetch(GoodExampleDocument, {
-      filter: {
-        locale,
-        state: Dataportal_ContainerState.Live,
-        limit: 1000,
+    const data = await gqlFetch(
+      GoodExampleDocument,
+      {
+        filter: {
+          locale,
+          state: Dataportal_ContainerState.Live,
+          limit: 1000,
+        },
       },
-    });
+      { revalidate: 120, tags: [STRAPI_TAG, GOOD_EXAMPLE_TAG] },
+    );
 
     const publications = data?.dataportal_Digg_Good_Examples
       ?.map((publication) => getFragmentData(GoodExampleDataDoc, publication))
@@ -93,15 +100,22 @@ export const getGoodExample = async (
 ): Promise<GoodExampleResponse | null> => {
   const { state, secret } = opts;
   try {
-    const mainPublicationResult = await gqlFetch(GoodExampleDocument, {
-      filter: {
-        slug,
-        limit: 1,
-        locale,
-        ...(secret ? { previewSecret: secret } : {}),
-        ...(state ? { state } : {}),
+    const mainPublicationResult = await gqlFetch(
+      GoodExampleDocument,
+      {
+        filter: {
+          slug,
+          limit: 1,
+          locale,
+          ...(secret ? { previewSecret: secret } : {}),
+          ...(state ? { state } : {}),
+        },
       },
-    });
+      // A preview request must always see the editor's unpublished draft.
+      secret
+        ? { cache: "no-store" }
+        : { revalidate: 120, tags: [STRAPI_TAG, GOOD_EXAMPLE_TAG] },
+    );
 
     const publication = getFragmentData(
       GoodExampleDataDoc,
@@ -125,9 +139,11 @@ export const getGoodExample = async (
       return null;
     }
 
-    const relatedPublicationResult = await gqlFetch(GoodExampleDocument, {
-      filter: { limit: 4, locale },
-    });
+    const relatedPublicationResult = await gqlFetch(
+      GoodExampleDocument,
+      { filter: { limit: 4, locale } },
+      { revalidate: 120, tags: [STRAPI_TAG, GOOD_EXAMPLE_TAG] },
+    );
 
     const relatedPreviews: GoodExampleBlockItemFragment[] =
       relatedPublicationResult.dataportal_Digg_Good_Examples

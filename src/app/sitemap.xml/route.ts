@@ -114,15 +114,21 @@ export async function GET(): Promise<Response> {
       try {
         const [containerResult, newsResult, goodExampleResult] =
           await Promise.all([
-            gqlFetch(ContainersDocument, {
-              filter: { locale, limit: 9999 },
-            }),
-            gqlFetch(NewsItemDocument, {
-              filter: { locale, limit: 9999 },
-            }),
-            gqlFetch(GoodExampleDocument, {
-              filter: { locale, limit: 9999 },
-            }),
+            gqlFetch(
+              ContainersDocument,
+              { filter: { locale, limit: 9999 } },
+              { revalidate: 3600, tags: ["strapi", "sitemap"] },
+            ),
+            gqlFetch(
+              NewsItemDocument,
+              { filter: { locale, limit: 9999 } },
+              { revalidate: 3600, tags: ["strapi", "sitemap"] },
+            ),
+            gqlFetch(
+              GoodExampleDocument,
+              { filter: { locale, limit: 9999 } },
+              { revalidate: 3600, tags: ["strapi", "sitemap"] },
+            ),
           ]);
 
         if (containerResult?.dataportal_Digg_Containers) {

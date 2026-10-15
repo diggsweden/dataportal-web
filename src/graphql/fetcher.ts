@@ -59,9 +59,13 @@ function addTypename(doc: DocumentNode): DocumentNode {
 export interface GqlFetchOptions {
   /**
    * Maps to `fetch(..., { next: { revalidate } })`. Pass `false` to opt out of
-   * caching entirely (equivalent to `cache: "no-store"`). Omit to fall back to
-   * the current default of "no-store" so behaviour matches Apollo's
-   * `fetchPolicy: "no-cache"` until Phase 4 tags individual calls.
+   * caching entirely (equivalent to `cache: "no-store"`).
+   *
+   * Omitting this (and `tags`) falls back to `cache: "no-store"`, which not
+   * only skips the data cache but also opts the calling route out of static
+   * rendering. Server-side callers should therefore pass an explicit
+   * `revalidate` + `tags`, or an explicit `cache: "no-store"` with a comment
+   * saying why the data has to be live.
    */
   revalidate?: number | false;
   /** Maps to `fetch(..., { next: { tags } })`. Enables `revalidateTag()`. */

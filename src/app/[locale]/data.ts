@@ -33,7 +33,7 @@ export const getNavigationData = async (
     const data = await gqlFetch(
       NavigationDocument,
       locale === "all" ? {} : { filter: { locale } },
-      { revalidate: 120 },
+      { revalidate: 120, tags: ["strapi", "navigation"] },
     );
 
     const navigationData = data.dataportal_Digg_Navigation;
@@ -59,7 +59,7 @@ export const getStartPage = async (
     const data = await gqlFetch(
       StartPageDocument,
       { filter: { locale } },
-      { revalidate: 120 },
+      { revalidate: 120, tags: ["strapi", "start-page"] },
     );
 
     const startPage = data.dataportal_Digg_Start_Page;

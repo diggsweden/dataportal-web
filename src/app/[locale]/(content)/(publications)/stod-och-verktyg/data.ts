@@ -38,9 +38,11 @@ export const getToolsList = async (
   const { heading, preamble, heroImage, seo, basePath } = opts || {};
 
   try {
-    const data = await gqlFetch(ToolDocument, {
-      filter: { limit: 100 },
-    });
+    const data = await gqlFetch(
+      ToolDocument,
+      { filter: { limit: 100 } },
+      { revalidate: 120, tags: ["strapi", "tools"] },
+    );
 
     const tools = data?.dataportal_Digg_Tools;
 

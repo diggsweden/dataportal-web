@@ -14,6 +14,9 @@ import {
   type SeoDataFragment,
 } from "@/graphql/gql/graphql";
 
+const STRAPI_TAG = "strapi";
+const NEWS_TAG = "news";
+
 export const NewsItemDocument = graphql(`
   query NewsItem($filter: dataportal_QueryContainerArgs) {
     dataportal_Digg_News_Items(filter: $filter) {
@@ -44,13 +47,17 @@ export const getNewsList = async (
   const { seo, basePath, heading, preamble, heroImage } = opts || {};
 
   try {
-    const data = await gqlFetch(NewsItemDocument, {
-      filter: {
-        locale,
-        state: Dataportal_ContainerState.Live,
-        limit: 1000,
+    const data = await gqlFetch(
+      NewsItemDocument,
+      {
+        filter: {
+          locale,
+          state: Dataportal_ContainerState.Live,
+          limit: 1000,
+        },
       },
-    });
+      { revalidate: 120, tags: [STRAPI_TAG, NEWS_TAG] },
+    );
 
     const publications = data?.dataportal_Digg_News_Items;
 
@@ -88,15 +95,22 @@ export const getNewsItem = async (
   const { state, secret } = opts;
 
   try {
-    const mainPublicationResult = await gqlFetch(NewsItemDocument, {
-      filter: {
-        slug,
-        limit: 1,
-        locale,
-        ...(secret ? { previewSecret: secret } : {}),
-        ...(state ? { state } : {}),
+    const mainPublicationResult = await gqlFetch(
+      NewsItemDocument,
+      {
+        filter: {
+          slug,
+          limit: 1,
+          locale,
+          ...(secret ? { previewSecret: secret } : {}),
+          ...(state ? { state } : {}),
+        },
       },
-    });
+      // A preview request must always see the editor's unpublished draft.
+      secret
+        ? { cache: "no-store" }
+        : { revalidate: 120, tags: [STRAPI_TAG, NEWS_TAG] },
+    );
 
     const publication = getFragmentData(
       NewsItemDataDoc,
@@ -108,9 +122,11 @@ export const getNewsItem = async (
       return null;
     }
 
-    const relatedPublicationResult = await gqlFetch(NewsItemDocument, {
-      filter: { limit: 4, locale },
-    });
+    const relatedPublicationResult = await gqlFetch(
+      NewsItemDocument,
+      { filter: { limit: 4, locale } },
+      { revalidate: 120, tags: [STRAPI_TAG, NEWS_TAG] },
+    );
 
     const relatedPreviews: NewsBlockItemFragment[] =
       relatedPublicationResult.dataportal_Digg_News_Items

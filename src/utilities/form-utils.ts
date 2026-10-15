@@ -207,9 +207,12 @@ export const handleScroll = (scrollRef: RefObject<HTMLSpanElement | null>) => {
 };
 
 export const fetchFortroendemodellenForm = async (locale: string) => {
-  const data = await gqlFetch(FoertroendemodellenFormClientDocument, {
-    locale,
-  });
+  const data = await gqlFetch(
+    FoertroendemodellenFormClientDocument,
+    { locale },
+    // Runs in the browser, where Next's fetch cache hints do not apply.
+    { cache: "no-store" },
+  );
 
   const formData = data?.dataportal_Digg_FoertroendemodellenForm;
 
