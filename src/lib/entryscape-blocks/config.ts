@@ -87,6 +87,9 @@ export const createBlocksConfig = ({
       conceptSearch: `esb:${includeLangInPath(lang)}${dataStructureSearch(SKOS_IN_SCHEME, "term", t("pages.terminology.terminology"))}`,
       classSearch: `esb:${includeLangInPath(lang)}${dataStructureSearch(RDFS_IS_DEFINED_BY, "term_class", t("pages.data-vocabulary.data-vocabulary"))}`,
       propertySearch: `esb:${includeLangInPath(lang)}${dataStructureSearch(RDFS_IS_DEFINED_BY, "term_property", t("pages.data-vocabulary.data-vocabulary"))}`,
+      classLookup: `${includeLangInPath(lang)}/class`,
+      propertyLookup: `${includeLangInPath(lang)}/property`,
+      terminologyLookup: `${includeLangInPath(lang)}/terminology`,
       conformantDatasetSearch: `esb:${includeLangInPath(lang)}${conformantDatasetSearch(t("pages.search.specifications"))}`,
     },
   };
