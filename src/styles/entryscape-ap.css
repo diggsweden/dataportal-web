@@ -13,6 +13,12 @@
   [data-entryscape="apView"] .rdforms-specs {
     font-size: 10px;
   }
+
+  /* Clear of the content, into the container's padding. Mobile keeps the
+     renderer's own -1em: there is only 1.25rem of padding to move into. */
+  [data-entryscape="apView"] .rdforms-specs.toc-inline > #toc-nav {
+    margin-left: -2rem;
+  }
 }
 
 [data-entryscape="apView"] .rdforms-specs > * {
