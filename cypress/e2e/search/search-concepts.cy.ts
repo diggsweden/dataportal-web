@@ -1,31 +1,24 @@
-beforeEach(() => {
-  // Ignore a 3rd party library error with message "ReferenceError: ESJS is not defined".
-  // We don't want to fail the test due to this so we return false.
-  // This is a workaround for the implementation of entryStore (ESJS) in the application.
-  cy.on("uncaught:exception", (e) => {
-    return !e.message.includes("ESJS is not defined");
-  });
-});
+import {
+  ignoreEsjsError,
+  SANDBOX_URL,
+  visitSearch,
+} from "../../support/entryscape";
 
-describe("Search concepts", () => {
+describe("Search data structures", () => {
   /**
-   * Verify that the search page is accessible and that the search for concepts gives results.
+   * Verify that the data structures search gives results and that the type
+   * filters only return their own type.
    */
   const SEARCH_INPUT = "api";
+  const SEARCH_URL = `${SANDBOX_URL}/data-structures?q=&f=`;
 
   beforeEach(() => {
-    cy.visit("/data-structures?q=&f=");
-    /**
-     * Wait for the search button to be visible and not loading.
-     * This is to make sure that the search results are loaded.
-     */
-    cy.get("[data-test-id='search-button']", { timeout: 10000 })
-      .should("have.attr", "data-test-loading", "false")
-      .should("be.visible");
-    cy.wait(1000);
+    ignoreEsjsError();
   });
 
-  it("Verify concepts search input", () => {
+  it("Verify data structures search input", () => {
+    visitSearch(SEARCH_URL);
+
     // verify H1 text exists and is not empty
     cy.get("h1").should("exist").should("not.be.empty");
 
@@ -45,14 +38,15 @@ describe("Search concepts", () => {
   });
 
   it("Verify search result list has default 20 results", () => {
-    cy.get("[data-test-id='search-result-list']")
-      .should("exist")
-      .within(() => {
-        cy.get("li").should("have.length", 20);
-      });
+    visitSearch(SEARCH_URL);
+    cy.get("[data-test-id='search-result-list'] > li").should(
+      "have.length",
+      20,
+    );
   });
 
   it("Verify search filters toggle button exists and toggles", () => {
+    visitSearch(SEARCH_URL);
     cy.get("[data-test-id='search-filters']").within(() => {
       cy.get("[data-test-id='search-filters-toggle']")
         .first()
@@ -70,4 +64,17 @@ describe("Search concepts", () => {
         cy.get("@filterToggle").should("have.attr", "aria-expanded", expected);
       });
   });
+
+  for (const [type, path] of [
+    ["term", "/concepts/"],
+    ["term_class", "/class/"],
+    ["term_property", "/property/"],
+  ]) {
+    it(`Verify "${type}" filter only returns ${path} hits`, () => {
+      visitSearch(`${SEARCH_URL}&rt=${type}`);
+      cy.get("[data-test-id='search-result-list'] > li").each(($li) => {
+        expect($li.find(`a[href^='${path}']`)).to.have.length.gt(0);
+      });
+    });
+  }
 });

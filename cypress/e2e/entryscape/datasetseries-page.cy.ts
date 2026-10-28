@@ -1,34 +1,22 @@
-beforeEach(() => {
-  // Ignore a 3rd party library error with message "ReferenceError: ESJS is not defined".
-  // We don't want to fail the test due to this so we return false.
-  // This is a workaround for the implementation of entryStore (ESJS) in the application.
-  cy.on("uncaught:exception", (e) => {
-    return !e.message.includes("ESJS is not defined");
-  });
-});
+import {
+  checkInternalLinkPaths,
+  checkNoTemplateLeaks,
+  checkTitleMatchesHit,
+  ignoreEsjsError,
+  openFromSearch,
+} from "../../support/entryscape";
 
-describe("Datasetseries page", () => {
+describe("Datasetseries page", { testIsolation: false }, () => {
   /**
    * Verify that datasetseries page is accessible and contains correct elements.
    */
-  beforeEach(() => {
-    // Go to datasets page search
-    cy.visit("/datasets?q=&f=");
-    /**
-     * Wait for the search button to be visible and not loading.
-     * This is to make sure that the search results are loaded.
-     */
-    cy.get("[data-test-id='search-button']", { timeout: 10000 })
-      .should("have.attr", "data-test-loading", "false")
-      .should("be.visible");
-    cy.wait(1000);
+  before(() => {
+    ignoreEsjsError();
+    openFromSearch("/datasets?q=&f=&rt=dataset_series", "/dataset-series/");
+  });
 
-    // Go to first datasetseries page in the search result list
-    cy.get("[data-test-id='search-result-list']", { timeout: 10000 }).within(
-      () => {
-        cy.get("li a").filter('[href^="/dataset-series/"]').first().click();
-      },
-    );
+  beforeEach(() => {
+    ignoreEsjsError();
   });
 
   it("Should display dataset series page header", () => {
@@ -57,5 +45,17 @@ describe("Datasetseries page", () => {
     cy.get("[data-test-id='search-result-list']", { timeout: 20000 }).should(
       "exist",
     );
+  });
+
+  it("Should show the title of the clicked search hit", () => {
+    checkTitleMatchesHit();
+  });
+
+  it("Should render without template leaks", () => {
+    checkNoTemplateLeaks();
+  });
+
+  it("Should not have broken internal link paths", () => {
+    checkInternalLinkPaths("main");
   });
 });

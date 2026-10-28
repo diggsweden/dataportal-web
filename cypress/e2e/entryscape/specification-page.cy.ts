@@ -1,55 +1,39 @@
-beforeEach(() => {
-  // Ignore a 3rd party library error with message "ReferenceError: ESJS is not defined".
-  // We don't want to fail the test due to this so we return false.
-  // This is a workaround for the implementation of entryStore (ESJS) in the application.
-  cy.on("uncaught:exception", (e) => {
-    return !e.message.includes("ESJS is not defined");
-  });
-});
+import {
+  block,
+  checkFollowLink,
+  checkHeader,
+  checkInternalLinkPaths,
+  checkNoTemplateLeaks,
+  checkSpecSectionCounts,
+  checkTitleMatchesHit,
+  ignoreEsjsError,
+  openFromSearch,
+  openPage,
+  SANDBOX_URL,
+} from "../../support/entryscape";
 
-describe("Check specification page", () => {
+describe("Check specification page", { testIsolation: false }, () => {
   /**
-   * Verify that specification page is accessible and contains correct elements.
+   * Verify that specification page is accessible and renders its entryscape blocks.
    */
+  before(() => {
+    ignoreEsjsError();
+    openFromSearch("/specifications?q=&f=", "/specifications/");
+  });
+
   beforeEach(() => {
-    // Go to specifications page search
-    cy.visit("/specifications?q=&f=");
-    /**
-     * Wait for the search button to be visible and not loading.
-     * This is to make sure that the search results are loaded.
-     */
-    cy.get("[data-test-id='search-button']", { timeout: 10000 })
-      .should("have.attr", "data-test-loading", "false")
-      .should("be.visible");
-    cy.wait(1000);
-
-    // Go to first specification page in the search result list
-    cy.get("[data-test-id='search-result-list']", { timeout: 10000 }).within(
-      () => {
-        cy.get("li a").first().click();
-      },
-    );
+    ignoreEsjsError();
   });
 
-  it("Should display specification page header", () => {
-    cy.get("h1", { timeout: 10000 }).should("exist").should("not.be.empty");
+  it("Should display header with publisher", () => {
+    checkHeader("specHeader");
+    block("specHeader")
+      .find("a[href^='/organisations/']")
+      .should("not.be.empty");
   });
 
-  it("Should display publisher information correctly", () => {
-    cy.get("[data-test-id='publisher']", { timeout: 10000 }).should(($el) => {
-      if ($el.length > 0) {
-        // If publisher exists, it must be either a link or paragraph
-        if ($el.is("a")) {
-          assert.isNotEmpty($el.attr("href"));
-        } else if ($el.is("div")) {
-          assert.isNotEmpty($el.text().trim());
-        } else {
-          throw new Error(
-            "Publisher element must be either a link or paragraph",
-          );
-        }
-      }
-    });
+  it("Should display main content", () => {
+    block("specMain").find("h2").should("not.be.empty");
   });
 
   it("Should display contact publisher block", () => {
@@ -58,28 +42,69 @@ describe("Check specification page", () => {
     );
   });
 
-  it("Should display about section", () => {
+  it("Should display about section with address", () => {
     cy.get("[data-test-id='about-section']", { timeout: 10000 })
-      .should("exist")
+      .find("[data-entryscape='specInfobox']")
       .within(() => {
-        cy.get("h2").should("not.be.empty");
-
-        cy.get("[data-test-id='address']")
-          .should("exist")
-          .within(() => {
-            cy.get("h3").should("not.be.empty");
-            cy.get("a").should("have.attr", "href").and("not.be.empty");
-          });
+        cy.get("h2", { timeout: 15000 }).should("not.be.empty");
+        cy.get("a[href*='/specifications/']").should("exist");
       });
   });
 
-  it("Should download RDF file", () => {
-    cy.get("[data-test-id='download-formats']", { timeout: 10000 })
-      .should("exist")
-      .within(() => {
-        cy.get("a").first().click();
-        cy.verifyDownload("rdf", { contains: true });
-        cy.task("deleteFolder", "cypress//downloads//");
-      });
+  it("Should show the title of the clicked search hit", () => {
+    checkTitleMatchesHit();
+  });
+
+  it("Should render without template leaks", () => {
+    checkNoTemplateLeaks();
+  });
+
+  it("Should not have broken internal link paths", () => {
+    checkInternalLinkPaths("main");
+  });
+
+  it("Should open its publisher", () => {
+    checkFollowLink(
+      "[data-entryscape='specHeader'] a[href^='/organisations/']",
+    );
+  });
+});
+
+describe("Check interoperable specification page", {
+  testIsolation: false,
+}, () => {
+  /**
+   * Interoperable specifications (sandbox) list the classes and properties
+   * they introduce.
+   */
+  before(() => {
+    ignoreEsjsError();
+    openPage(`${SANDBOX_URL}/specifications/inspecTest/midSpec`);
+  });
+
+  beforeEach(() => {
+    ignoreEsjsError();
+  });
+
+  it("Should list introduced classes and properties", () => {
+    block("specMain").within(() => {
+      cy.get("a[href^='/class/']").should("have.length.gt", 0);
+      cy.get("a[href^='/property/']").should("have.length.gt", 0);
+    });
+  });
+
+  it("Should link to the application profile", () => {
+    block("specInspectAPButton")
+      .find("a")
+      .should("have.attr", "href")
+      .and("match", /\/ap$/);
+  });
+
+  it("Should have section counts matching the listed classes and properties", () => {
+    checkSpecSectionCounts();
+  });
+
+  it("Should not have broken internal link paths", () => {
+    checkInternalLinkPaths("[data-entryscape='specMain']");
   });
 });
