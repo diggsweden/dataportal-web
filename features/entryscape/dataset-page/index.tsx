@@ -171,18 +171,7 @@ export const DatasetPage: FC = () => {
                 >
                   {t("pages|datasetpage$contact-publisher")}
                 </Heading>
-                <p>
-                  {t("pages|datasetpage$contact-publisher-text")}
-                  {t("pages|datasetpage$contact-publisher-text2")}{" "}
-                  <a
-                    className="link text-md"
-                    href="https://community.dataportal.se/"
-                    lang="en"
-                  >
-                    community
-                  </a>
-                  .
-                </p>
+                <p>{t("pages|datasetpage$contact-publisher-text")}</p>
               </div>
             </div>
           </div>
