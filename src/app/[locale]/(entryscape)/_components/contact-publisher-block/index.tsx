@@ -2,10 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Box } from "@/components/box";
-import { CustomLink } from "@/components/custom-link";
 import { Heading } from "@/components/typography/heading";
-
-const COMMUNITY_URL = "https://community.dataportal.se/";
 
 interface ContactPublisherBlockProps {
   className?: string;
@@ -30,18 +27,7 @@ export function ContactPublisherBlock({
       >
         {t("pages.datasetpage.contact-publisher")}
       </Heading>
-      <p>
-        {t("pages.datasetpage.contact-publisher-text")}
-        {t("pages.datasetpage.contact-publisher-text2")}{" "}
-        <CustomLink
-          className={"hover:no-underline"}
-          href={COMMUNITY_URL}
-          lang="en"
-        >
-          community
-        </CustomLink>
-        .
-      </p>
+      <p>{t("pages.datasetpage.contact-publisher-text")}</p>
     </Box>
   );
 }
