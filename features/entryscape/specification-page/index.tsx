@@ -100,14 +100,7 @@ export const SpecificationPage: FC = () => {
               <Heading level={3} size={"sm"}>
                 {t("pages|datasetpage$contact-publisher")}
               </Heading>
-              <p>
-                {t("pages|datasetpage$contact-publisher-text")}
-                {t("pages|datasetpage$contact-publisher-text2")}{" "}
-                <a href="https://community.dataportal.se/" lang="en">
-                  community
-                </a>
-                .
-              </p>
+              <p>{t("pages|datasetpage$contact-publisher-text")}</p>
             </div>
           </div>
           {/* End left column */}

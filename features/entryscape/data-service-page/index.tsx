@@ -109,18 +109,7 @@ export const DataServicePage: FC<{
               <Heading level={3}>
                 {t("pages|datasetpage$contact-publisher")}
               </Heading>
-              <p>
-                {t("pages|datasetpage$contact-publisher-text")}
-                {t("pages|datasetpage$contact-publisher-text2")}{" "}
-                <a
-                  className="link"
-                  href="https://community.dataportal.se/"
-                  lang="en"
-                >
-                  community
-                </a>
-                .
-              </p>
+              <p>{t("pages|datasetpage$contact-publisher-text")}</p>
             </div>
           </div>
 

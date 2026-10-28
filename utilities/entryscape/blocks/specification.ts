@@ -17,7 +17,7 @@ export const specificationBlocks = (t: Translate, iconSize: number) => [
       '<span class="block mb-md">{{prop "prof:hasRole" class="type" render="label"}}</span>' +
       '<div>{{ text content="${skos:definition}" }}</div>' +
       '<div class="flex justify-between items-end md:items-center mt-md md:mt-lg gap-lg">' +
-      '<a href="{{resourceURI}}">' +
+      '<a href="{{#ifprop "prof:hasArtifact"}}{{prop "prof:hasArtifact"}}{{/ifprop}}{{#ifprop "prof:hasArtifact" invert=true}}{{resourceURI}}{{/ifprop}}">' +
       '<span class="button button--primary button--large text-white">' +
       t("pages|specification_page$specification_download") +
       '<svg xmlns="http://www.w3.org/2000/svg" width="' +

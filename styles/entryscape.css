@@ -607,6 +607,22 @@
   @apply absolute right-[3rem] hidden h-[30px] cursor-pointer bg-brown-600 hover:bg-pink-600 !important;
 }
 
+/* swagger-ui 5 draws its own toggle arrow; the ::after chevrons replace it. */
+.opblock-control-arrow {
+  @apply hidden;
+}
+
+/* This button sits on a dark background, so mask the icon to colour it —
+   the shared rule above paints a black SVG, which suits the white
+   curl/highlight copy buttons but not this one. */
+.opblock-summary .copy-to-clipboard button {
+  background: none;
+  -webkit-mask: url("../assets/icons/copy-to-clipboard.svg") no-repeat center /
+    contain;
+  mask: url("../assets/icons/copy-to-clipboard.svg") no-repeat center / contain;
+  @apply bg-brown-100;
+}
+
 .opblock-summary:hover > .copy-to-clipboard {
   @apply md:flex !important;
 }
