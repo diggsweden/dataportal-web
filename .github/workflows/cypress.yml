@@ -28,6 +28,10 @@ jobs:
           node-version: '22'
           cache: 'yarn'
 
+      # Data structure tests run against the sandbox entrystore via a `sandbox` host.
+      - name: Map sandbox.localhost
+        run: echo "127.0.0.1 sandbox.localhost" | sudo tee -a /etc/hosts
+
       - name: Install dependencies
         run: yarn install
 

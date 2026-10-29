@@ -1,3 +1,5 @@
+import { ignoreEsjsError } from "../../support/entryscape";
+
 beforeEach(() => {
   // Ignore a 3rd party library error with message "ReferenceError: ESJS is not defined".
   // We don't want to fail the test due to this so we return false.
@@ -7,13 +9,15 @@ beforeEach(() => {
   });
 });
 
-describe("Organisation page", () => {
+describe("Organisation page", { testIsolation: false }, () => {
   /**
    * Verify that organisation page is accessible and contains correct elements.
    */
   const SEARCH_INPUT = "myndighet för digital";
 
-  beforeEach(() => {
+  // Open the organisation once; tests share the page.
+  before(() => {
+    ignoreEsjsError();
     // Go to datasets page search
     cy.visit("/organisations?q=&f=");
     /**

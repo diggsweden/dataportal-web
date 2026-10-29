@@ -1,88 +1,74 @@
-beforeEach(() => {
-  // Ignore a 3rd party library error with message "ReferenceError: ESJS is not defined".
-  // We don't want to fail the test due to this so we return false.
-  // This is a workaround for the implementation of entryStore (ESJS) in the application.
-  cy.on("uncaught:exception", (e) => {
-    return !e.message.includes("ESJS is not defined");
-  });
-});
+import {
+  block,
+  checkFollowLink,
+  checkHeader,
+  checkInfobox,
+  checkInternalLinkPaths,
+  checkMetadataLinks,
+  checkNoTemplateLeaks,
+  checkTitleMatchesHit,
+  ignoreEsjsError,
+  openFromSearch,
+  SANDBOX_URL,
+} from "../../support/entryscape";
 
-describe("Concepts page", () => {
+describe("Concept page", { testIsolation: false }, () => {
   /**
-   * Verify that concept page is accessible and contains correct elements.
+   * Verify that concept page is accessible and renders its entryscape blocks.
    */
-  beforeEach(() => {
-    // Go to data-structures page search (formerly /concepts)
-    cy.visit("/data-structures?q=&f=");
-    /**
-     * Wait for the search button to be visible and not loading.
-     * This is to make sure that the search results are loaded.
-     */
-    cy.get("[data-test-id='search-button']", { timeout: 10000 })
-      .should("have.attr", "data-test-loading", "false")
-      .should("be.visible");
-    cy.wait(1000);
-
-    // Go to first concept page in the search result list
-    cy.get("[data-test-id='search-result-list']", { timeout: 6000 }).within(
-      () => {
-        cy.get("li").first().click();
-      },
+  before(() => {
+    ignoreEsjsError();
+    openFromSearch(
+      `${SANDBOX_URL}/data-structures?q=&f=&rt=term`,
+      "/concepts/",
     );
   });
 
-  it("Should display concept page header", () => {
-    cy.get("h1", { timeout: 10000 }).should("exist").should("not.be.empty");
+  beforeEach(() => {
+    ignoreEsjsError();
   });
 
-  it("Should display publisher information correctly", () => {
-    cy.get("[data-test-id='publisher']", { timeout: 10000 }).should(($el) => {
-      if ($el.length > 0) {
-        // If publisher exists, it must be either a link or paragraph
-        if ($el.is("a")) {
-          assert.isNotEmpty($el.attr("href"));
-        } else if ($el.is("div")) {
-          assert.isNotEmpty($el.text().trim());
-        } else {
-          throw new Error(
-            "Publisher element must be either a link or paragraph",
-          );
-        }
-      }
-    });
-  });
-
-  it("Should display about section", () => {
-    cy.get("[data-test-id='about-section']", { timeout: 10000 })
+  it("Should display header with link to terminology", () => {
+    checkHeader("conceptHeader");
+    block("conceptHeader")
+      .find("a[href^='/terminology/']")
       .should("exist")
-      .within(() => {
-        cy.get("h2", { timeout: 10000 }).should("not.be.empty");
-
-        // Should display address and link
-        cy.get("[data-test-id='address']", { timeout: 10000 })
-          .should("exist")
-          .within(() => {
-            cy.get("h3").should("not.be.empty");
-            cy.get("a").should("exist").should("not.be.empty");
-          });
-
-        // Should display related terminology and link
-        cy.get("[data-test-id='related-terminology']", { timeout: 10000 })
-          .should("exist")
-          .within(() => {
-            cy.get("h3").should("not.be.empty");
-            cy.get("a").should("exist").should("not.be.empty");
-          });
-      });
+      .should("not.be.empty");
   });
 
-  it("Should download RDF file", () => {
-    cy.get("[data-test-id='download-formats']")
-      .should("exist")
-      .within(() => {
-        cy.get("a").first().click();
-        cy.verifyDownload("rdf", { contains: true });
-        cy.task("deleteFolder", "cypress//downloads//");
-      });
+  it("Should display main content", () => {
+    block("conceptMain").find("h2").should("exist");
+  });
+
+  it("Should display concept hierarchy", () => {
+    cy.get("[data-entryscape='hierarchy'] svg", { timeout: 15000 }).should(
+      "exist",
+    );
+  });
+
+  it("Should display about section with downloads", () => {
+    checkInfobox("conceptInfobox");
+  });
+
+  it("Should offer metadata downloads for this entry", () => {
+    checkMetadataLinks("conceptInfobox");
+  });
+
+  it("Should show the title of the clicked search hit", () => {
+    checkTitleMatchesHit();
+  });
+
+  it("Should render without template leaks", () => {
+    checkNoTemplateLeaks();
+  });
+
+  it("Should not have broken internal link paths", () => {
+    checkInternalLinkPaths("main");
+  });
+
+  it("Should open its terminology", () => {
+    checkFollowLink(
+      "[data-entryscape='conceptHeader'] a[href^='/terminology/']",
+    );
   });
 });

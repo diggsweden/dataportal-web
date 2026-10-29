@@ -1,54 +1,36 @@
-beforeEach(() => {
-  // Ignore a 3rd party library error with message "ReferenceError: ESJS is not defined".
-  // We don't want to fail the test due to this so we return false.
-  // This is a workaround for the implementation of entryStore (ESJS) in the application.
-  cy.on("uncaught:exception", (e) => {
-    return !e.message.includes("ESJS is not defined");
-  });
-});
+import {
+  checkInternalLinkPaths,
+  checkNoTemplateLeaks,
+  checkTitleMatchesHit,
+  ignoreEsjsError,
+  openFromSearch,
+} from "../../support/entryscape";
 
-describe("Dataset page", () => {
+describe("Dataset page", { testIsolation: false }, () => {
   /**
    * Verify that dataset page is accessible and contains correct elements.
    */
+  before(() => {
+    ignoreEsjsError();
+    openFromSearch("/datasets?q=&f=&rt=dataset", "/datasets/");
+  });
+
   beforeEach(() => {
-    // Go to datasets page search
-    cy.visit("/datasets?q=&f=");
-    /**
-     * Wait for the search button to be visible and not loading.
-     * This is to make sure that the search results are loaded.
-     */
-    cy.get("[data-test-id='search-button']", { timeout: 10000 })
-      .should("have.attr", "data-test-loading", "false")
-      .should("be.visible");
-    cy.wait(1000);
-
-    // Click the first search result link (any type — dataset, data service, or dataset series)
-    cy.get("[data-test-id='search-result-list']", { timeout: 10000 }).within(
-      () => {
-        cy.get("li a").first().click();
-      },
-    );
+    ignoreEsjsError();
   });
 
-  it("Should display dataset page header", () => {
+  it("Should display dataset page header and description", () => {
     cy.get("h1", { timeout: 10000 }).should("exist").should("not.be.empty");
+    cy.get("[data-test-id='description']", { timeout: 15000 }).should(($el) => {
+      expect($el.text().trim()).not.to.equal("");
+    });
   });
 
-  it("Should display publisher information correctly", () => {
-    cy.get("[data-test-id='publisher']", { timeout: 10000 }).should(($el) => {
-      if ($el.length > 0) {
-        // If publisher exists, it must be either a link or paragraph
-        if ($el.is("a")) {
-          assert.isNotEmpty($el.attr("href"));
-        } else if ($el.is("div")) {
-          assert.isNotEmpty($el.text().trim());
-        } else {
-          throw new Error(
-            "Publisher element must be either a link or paragraph",
-          );
-        }
-      }
+  it("Should display distributions", () => {
+    cy.get("[data-test-id='datasets-block'][data-entryscape='list']", {
+      timeout: 15000,
+    }).should(($el) => {
+      expect($el.text().trim()).not.to.equal("");
     });
   });
 
@@ -57,6 +39,39 @@ describe("Dataset page", () => {
       .should("exist")
       .within(() => {
         cy.get("h2", { timeout: 10000 }).should("not.be.empty");
+        cy.get("[data-entryscape='view']", { timeout: 15000 }).should(
+          "have.length.gt",
+          0,
+        );
+      });
+  });
+
+  it("Should display catalog information", () => {
+    cy.get("[data-test-id='catalog-information']", { timeout: 10000 })
+      .should("exist")
+      .find("h2")
+      .should("not.be.empty");
+  });
+
+  it("Should show the title of the clicked search hit", () => {
+    checkTitleMatchesHit();
+  });
+
+  it("Should render without template leaks", () => {
+    checkNoTemplateLeaks();
+  });
+
+  it("Should not have broken internal link paths", () => {
+    checkInternalLinkPaths("main");
+  });
+
+  it("Should download RDF file", () => {
+    cy.get("[data-test-id='download-formats']", { timeout: 10000 })
+      .should("exist")
+      .within(() => {
+        cy.get("a").first().click();
+        cy.verifyDownload("rdf", { contains: true });
+        cy.task("deleteFolder", "cypress//downloads//");
       });
   });
 });
