@@ -15,7 +15,9 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  */
 const documents = {
     "\n  query GoodExample($filter: dataportal_QueryContainerArgs) {\n    dataportal_Digg_Good_Examples(filter: $filter) {\n      ...GoodExampleData\n    }\n  }\n": types.GoodExampleDocument,
+    "\n  query GoodExamplePreviews($filter: dataportal_QueryContainerArgs) {\n    dataportal_Digg_Good_Example_Previews(filter: $filter) {\n      ...GoodExampleBlockItem\n    }\n  }\n": types.GoodExamplePreviewsDocument,
     "\n  query NewsItem($filter: dataportal_QueryContainerArgs) {\n    dataportal_Digg_News_Items(filter: $filter) {\n      ...NewsItemData\n    }\n  }\n": types.NewsItemDocument,
+    "\n  query NewsItemPreviews($filter: dataportal_QueryContainerArgs) {\n    dataportal_Digg_News_Item_Previews(filter: $filter) {\n      ...NewsBlockItem\n    }\n  }\n": types.NewsItemPreviewsDocument,
     "\n  query Tool($filter: dataportal_QueryContainerArgs) {\n    dataportal_Digg_Tools(filter: $filter) {\n      ...ToolData\n    }\n  }\n": types.ToolDocument,
     "\n  query Containers($filter: dataportal_QueryContainerArgs) {\n    dataportal_Digg_Containers(filter: $filter) {\n      ...ContainerData\n    }\n  }\n": types.ContainersDocument,
     "\n  query MultiContainers($container: dataportal_QueryContainerArgs) {\n    container: dataportal_Digg_Containers(filter: $container) {\n      ...ContainerData\n    }\n  }\n": types.MultiContainersDocument,
@@ -56,9 +58,9 @@ const documents = {
     "\n  fragment MenuLinkIcon on dataportal_Digg_MenuLinkIcon {\n    name\n    link\n    icon\n  }\n": types.MenuLinkIconFragmentDoc,
     "\n  fragment Choice on dataportal_Digg_FormChoice {\n    popup\n    label\n    exploratory\n  }\n": types.ChoiceFragmentDoc,
     "\n  fragment FormBlock on dataportal_Digg_FormBlock {\n    elements {\n      ...FormElement\n    }\n  }\n": types.FormBlockFragmentDoc,
-    "\n  fragment NewsBlockItem on dataportal_Digg_NewsItem_Preview {\n    heading\n    publishedAt\n    slug\n    keywords {\n      value\n      id\n    }\n    image {\n      ...Image\n    }\n  }\n": types.NewsBlockItemFragmentDoc,
+    "\n  fragment NewsBlockItem on dataportal_Digg_NewsItem_Preview {\n    locale\n    updatedAt\n    id\n    preamble\n    heading\n    publishedAt\n    slug\n    keywords {\n      value\n      id\n    }\n    image {\n      ...Image\n    }\n  }\n": types.NewsBlockItemFragmentDoc,
     "\n  fragment NewsBlock on dataportal_Digg_NewsBlock {\n    id\n    heading\n    items {\n      ... on dataportal_Digg_NewsItem_Preview {\n        ...NewsBlockItem\n      }\n    }\n  }\n": types.NewsBlockFragmentDoc,
-    "\n  fragment GoodExampleBlockItem on dataportal_Digg_GoodExample_Preview {\n    heading\n    publishedAt\n    slug\n    reuse\n    keywords {\n      value\n      id\n    }\n    image {\n      ...Image\n    }\n  }\n": types.GoodExampleBlockItemFragmentDoc,
+    "\n  fragment GoodExampleBlockItem on dataportal_Digg_GoodExample_Preview {\n    locale\n    updatedAt\n    id\n    preamble\n    heading\n    publishedAt\n    slug\n    reuse\n    keywords {\n      value\n      id\n    }\n    image {\n      ...Image\n    }\n  }\n": types.GoodExampleBlockItemFragmentDoc,
     "\n  fragment GoodExampleBlock on dataportal_Digg_GoodExampleBlock {\n    id\n    heading\n    items {\n      ... on dataportal_Digg_GoodExample_Preview {\n        ...GoodExampleBlockItem\n      }\n    }\n  }\n": types.GoodExampleBlockFragmentDoc,
     "\n  fragment ModuleData on dataportal_Digg_Module {\n    __typename\n    identifier\n    blocks {\n      ...BlockData\n    }\n  }\n": types.ModuleDataFragmentDoc,
     "\n  fragment FoertroendemodellenBlock on dataportal_Digg_FoertroendemodellenBlock {\n    __typename\n    id\n  }\n": types.FoertroendemodellenBlockFragmentDoc,
@@ -89,7 +91,15 @@ export function graphql(source: "\n  query GoodExample($filter: dataportal_Query
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  query GoodExamplePreviews($filter: dataportal_QueryContainerArgs) {\n    dataportal_Digg_Good_Example_Previews(filter: $filter) {\n      ...GoodExampleBlockItem\n    }\n  }\n"): (typeof documents)["\n  query GoodExamplePreviews($filter: dataportal_QueryContainerArgs) {\n    dataportal_Digg_Good_Example_Previews(filter: $filter) {\n      ...GoodExampleBlockItem\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  query NewsItem($filter: dataportal_QueryContainerArgs) {\n    dataportal_Digg_News_Items(filter: $filter) {\n      ...NewsItemData\n    }\n  }\n"): (typeof documents)["\n  query NewsItem($filter: dataportal_QueryContainerArgs) {\n    dataportal_Digg_News_Items(filter: $filter) {\n      ...NewsItemData\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query NewsItemPreviews($filter: dataportal_QueryContainerArgs) {\n    dataportal_Digg_News_Item_Previews(filter: $filter) {\n      ...NewsBlockItem\n    }\n  }\n"): (typeof documents)["\n  query NewsItemPreviews($filter: dataportal_QueryContainerArgs) {\n    dataportal_Digg_News_Item_Previews(filter: $filter) {\n      ...NewsBlockItem\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -253,7 +263,7 @@ export function graphql(source: "\n  fragment FormBlock on dataportal_Digg_FormB
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment NewsBlockItem on dataportal_Digg_NewsItem_Preview {\n    heading\n    publishedAt\n    slug\n    keywords {\n      value\n      id\n    }\n    image {\n      ...Image\n    }\n  }\n"): (typeof documents)["\n  fragment NewsBlockItem on dataportal_Digg_NewsItem_Preview {\n    heading\n    publishedAt\n    slug\n    keywords {\n      value\n      id\n    }\n    image {\n      ...Image\n    }\n  }\n"];
+export function graphql(source: "\n  fragment NewsBlockItem on dataportal_Digg_NewsItem_Preview {\n    locale\n    updatedAt\n    id\n    preamble\n    heading\n    publishedAt\n    slug\n    keywords {\n      value\n      id\n    }\n    image {\n      ...Image\n    }\n  }\n"): (typeof documents)["\n  fragment NewsBlockItem on dataportal_Digg_NewsItem_Preview {\n    locale\n    updatedAt\n    id\n    preamble\n    heading\n    publishedAt\n    slug\n    keywords {\n      value\n      id\n    }\n    image {\n      ...Image\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -261,7 +271,7 @@ export function graphql(source: "\n  fragment NewsBlock on dataportal_Digg_NewsB
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment GoodExampleBlockItem on dataportal_Digg_GoodExample_Preview {\n    heading\n    publishedAt\n    slug\n    reuse\n    keywords {\n      value\n      id\n    }\n    image {\n      ...Image\n    }\n  }\n"): (typeof documents)["\n  fragment GoodExampleBlockItem on dataportal_Digg_GoodExample_Preview {\n    heading\n    publishedAt\n    slug\n    reuse\n    keywords {\n      value\n      id\n    }\n    image {\n      ...Image\n    }\n  }\n"];
+export function graphql(source: "\n  fragment GoodExampleBlockItem on dataportal_Digg_GoodExample_Preview {\n    locale\n    updatedAt\n    id\n    preamble\n    heading\n    publishedAt\n    slug\n    reuse\n    keywords {\n      value\n      id\n    }\n    image {\n      ...Image\n    }\n  }\n"): (typeof documents)["\n  fragment GoodExampleBlockItem on dataportal_Digg_GoodExample_Preview {\n    locale\n    updatedAt\n    id\n    preamble\n    heading\n    publishedAt\n    slug\n    reuse\n    keywords {\n      value\n      id\n    }\n    image {\n      ...Image\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -3,11 +3,14 @@ import type {
   PublicationQueryOptions,
 } from "@/app/[locale]/(content)/(publications)/types";
 import { gqlFetch, logGqlError } from "@/graphql/fetcher";
-import { NewsItemDataFragment as NewsItemDataDoc } from "@/graphql/fragments";
+import {
+  NewsBlockItemFragment as NewsBlockItemDoc,
+  NewsItemDataFragment as NewsItemDataDoc,
+} from "@/graphql/fragments";
 import { getFragmentData, graphql } from "@/graphql/gql";
 import {
   Dataportal_ContainerState,
-  type GoodExampleDataFragment,
+  type GoodExampleBlockItemFragment,
   type ImageFragment,
   type NewsBlockItemFragment,
   type NewsItemDataFragment,
@@ -25,6 +28,14 @@ export const NewsItemDocument = graphql(`
   }
 `);
 
+export const NewsItemPreviewsDocument = graphql(`
+  query NewsItemPreviews($filter: dataportal_QueryContainerArgs) {
+    dataportal_Digg_News_Item_Previews(filter: $filter) {
+      ...NewsBlockItem
+    }
+  }
+`);
+
 export interface NewsItemResponse extends NewsItemDataFragment {
   type: "Publication";
   related?: NewsBlockItemFragment[];
@@ -33,7 +44,7 @@ export interface NewsItemResponse extends NewsItemDataFragment {
 export interface NewsItemListResponse {
   type: "PublicationList";
   heading: string;
-  listItems: NewsItemDataFragment[] | GoodExampleDataFragment[];
+  listItems: NewsBlockItemFragment[] | GoodExampleBlockItemFragment[];
   seo?: SeoDataFragment;
   basePath?: string;
   preamble?: string;
@@ -48,7 +59,7 @@ export const getNewsList = async (
 
   try {
     const data = await gqlFetch(
-      NewsItemDocument,
+      NewsItemPreviewsDocument,
       {
         filter: {
           locale,
@@ -59,7 +70,9 @@ export const getNewsList = async (
       { revalidate: 120, tags: [STRAPI_TAG, NEWS_TAG] },
     );
 
-    const publications = data?.dataportal_Digg_News_Items;
+    const publications = data?.dataportal_Digg_News_Item_Previews?.map((p) =>
+      getFragmentData(NewsBlockItemDoc, p),
+    );
 
     if (!publications) {
       console.warn(`No news found`);
@@ -123,20 +136,19 @@ export const getNewsItem = async (
     }
 
     const relatedPublicationResult = await gqlFetch(
-      NewsItemDocument,
+      NewsItemPreviewsDocument,
       { filter: { limit: 4, locale } },
       { revalidate: 120, tags: [STRAPI_TAG, NEWS_TAG] },
     );
 
     const relatedPreviews: NewsBlockItemFragment[] =
-      relatedPublicationResult.dataportal_Digg_News_Items
-        ?.map((pub) => getFragmentData(NewsItemDataDoc, pub))
+      relatedPublicationResult.dataportal_Digg_News_Item_Previews
+        ?.map((pub) => getFragmentData(NewsBlockItemDoc, pub))
         .filter(
-          (pub): pub is NewsItemDataFragment =>
+          (pub): pub is NewsBlockItemFragment =>
             pub !== null && pub.id !== publication.id,
         )
-        .slice(0, 3)
-        .map(toNewsPreview) || [];
+        .slice(0, 3) || [];
 
     return {
       type: "Publication",
@@ -147,24 +159,4 @@ export const getNewsItem = async (
     logGqlError(error);
     return null;
   }
-};
-
-export const toNewsPreview = (
-  pub: NewsItemDataFragment,
-): NewsBlockItemFragment => {
-  if (!pub.heading || !pub.slug || !pub.publishedAt) {
-    throw new Error(`Invalid publication data for preview: ${pub.id}`);
-  }
-
-  return {
-    __typename: "dataportal_Digg_NewsItem_Preview",
-    heading: pub.heading,
-    slug: pub.slug,
-    publishedAt: pub.publishedAt,
-    image:
-      pub.image?.__typename === "dataportal_Digg_Image"
-        ? (pub.image as NewsBlockItemFragment["image"])
-        : null,
-    keywords: pub.keywords,
-  };
 };

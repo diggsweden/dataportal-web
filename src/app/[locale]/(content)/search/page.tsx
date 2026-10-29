@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import { SearchInput } from "@/app/[locale]/(entryscape)/_search/search-input";
 import { SearchPageSelector } from "@/app/[locale]/(entryscape)/_search/search-page-selector";
 import { Container } from "@/components/layout/container";
@@ -20,7 +20,7 @@ import {
 import { querySearch } from "./data";
 import { formatHitCount, getSearchHit } from "./search-helpers";
 
-export default function SearchPage() {
+function SearchPageInner() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -255,5 +255,14 @@ export default function SearchPage() {
         </Container>
       </div>
     </div>
+  );
+}
+
+// `useSearchParams()` needs a Suspense boundary to be prerenderable.
+export default function SearchPage() {
+  return (
+    <Suspense fallback={null}>
+      <SearchPageInner />
+    </Suspense>
   );
 }

@@ -4,21 +4,21 @@ import url from "node:url";
 import fetchEnhanced from "fetch-enhanced";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import nodeFetch from "node-fetch";
-import { GoodExampleDocument } from "@/app/[locale]/(content)/(publications)/(examples)/data";
-import { NewsItemDocument } from "@/app/[locale]/(content)/(publications)/nyheter/data";
+import { GoodExamplePreviewsDocument } from "@/app/[locale]/(content)/(publications)/(examples)/data";
+import { NewsItemPreviewsDocument } from "@/app/[locale]/(content)/(publications)/nyheter/data";
 import { ContainersDocument } from "@/app/[locale]/(content)/[...containerSlug]/data";
 import { SettingsUtil } from "@/env";
 import { gqlFetch, logGqlError } from "@/graphql/fetcher";
 import {
   ContainerDataFragment as ContainerDataDoc,
-  GoodExampleDataFragment as GoodExampleDataDoc,
-  NewsItemDataFragment as NewsItemDataDoc,
+  GoodExampleBlockItemFragment as GoodExampleBlockItemDoc,
+  NewsBlockItemFragment as NewsBlockItemDoc,
 } from "@/graphql/fragments";
 import { getFragmentData } from "@/graphql/gql";
 import type {
   ContainerDataFragment,
-  GoodExampleDataFragment,
-  NewsItemDataFragment,
+  GoodExampleBlockItemFragment,
+  NewsBlockItemFragment,
 } from "@/graphql/gql/graphql";
 import { getPathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
@@ -35,14 +35,15 @@ const env = SettingsUtil.create();
 
 type ContainerLike =
   | ContainerDataFragment
-  | NewsItemDataFragment
-  | GoodExampleDataFragment;
+  | NewsBlockItemFragment
+  | GoodExampleBlockItemFragment;
 
 const slug = (c: ContainerLike | null): string => {
   if (!c) return "";
   const path = `${includeLangInPath(c.locale ?? routing.defaultLocale)}${c.slug ?? ""}`;
-  if (c.__typename === "dataportal_Digg_News_Item") return `/nyheter${path}`;
-  if (c.__typename === "dataportal_Digg_Good_Example") {
+  if (c.__typename === "dataportal_Digg_NewsItem_Preview")
+    return `/nyheter${path}`;
+  if (c.__typename === "dataportal_Digg_GoodExample_Preview") {
     return `/exempel-datadriven-transformation${path}`;
   }
   return path;
@@ -102,11 +103,14 @@ const getDatasets = async (): Promise<
 };
 
 export async function GET(): Promise<Response> {
-  const datasets = await getDatasets();
+  const datasets = await getDatasets().catch((error) => {
+    console.error({ message: "sitemap: dataset fetch failed", error });
+    return [];
+  });
 
   const allContainers: (ContainerDataFragment | null)[] = [];
-  const allNewsItems: (NewsItemDataFragment | null)[] = [];
-  const allGoodExamples: (GoodExampleDataFragment | null)[] = [];
+  const allNewsItems: (NewsBlockItemFragment | null)[] = [];
+  const allGoodExamples: (GoodExampleBlockItemFragment | null)[] = [];
 
   // `routing.locales` is the source of truth for which locales to emit.
   await Promise.all(
@@ -120,12 +124,12 @@ export async function GET(): Promise<Response> {
               { revalidate: 3600, tags: ["strapi", "sitemap"] },
             ),
             gqlFetch(
-              NewsItemDocument,
+              NewsItemPreviewsDocument,
               { filter: { locale, limit: 9999 } },
               { revalidate: 3600, tags: ["strapi", "sitemap"] },
             ),
             gqlFetch(
-              GoodExampleDocument,
+              GoodExamplePreviewsDocument,
               { filter: { locale, limit: 9999 } },
               { revalidate: 3600, tags: ["strapi", "sitemap"] },
             ),
@@ -138,17 +142,17 @@ export async function GET(): Promise<Response> {
             ),
           );
         }
-        if (newsResult?.dataportal_Digg_News_Items) {
+        if (newsResult?.dataportal_Digg_News_Item_Previews) {
           allNewsItems.push(
-            ...newsResult.dataportal_Digg_News_Items.map((n) =>
-              getFragmentData(NewsItemDataDoc, n),
+            ...newsResult.dataportal_Digg_News_Item_Previews.map((n) =>
+              getFragmentData(NewsBlockItemDoc, n),
             ),
           );
         }
-        if (goodExampleResult?.dataportal_Digg_Good_Examples) {
+        if (goodExampleResult?.dataportal_Digg_Good_Example_Previews) {
           allGoodExamples.push(
-            ...goodExampleResult.dataportal_Digg_Good_Examples.map((g) =>
-              getFragmentData(GoodExampleDataDoc, g),
+            ...goodExampleResult.dataportal_Digg_Good_Example_Previews.map(
+              (g) => getFragmentData(GoodExampleBlockItemDoc, g),
             ),
           );
         }
@@ -158,22 +162,36 @@ export async function GET(): Promise<Response> {
     }),
   );
 
-  const staticPaths = [
-    "",
-    "/datasets?datasets?p=1&q=&s=2&t=20&f=&rt=dataset%24data_service%24dataset_series",
-    "/concepts?p=1&q=&s=2&t=20&f=&rt=term",
-    "/specifications?specifications?p=1&q=&s=2&t=20&f=&rt=spec_standard%24spec_profile",
-    getPathname({ locale: "sv", href: "/statistics" }),
-    getPathname({ locale: "en", href: "/statistics" }),
-    getPathname({ locale: "sv", href: "/search" }),
-    getPathname({ locale: "en", href: "/search" }),
+  // Entryscape pages keep the same slug in both locales; only the prefix
+  // differs. `/statistics` and `/search` have localised slugs.
+  const sharedSlugPaths = [
+    "/datasets",
+    "/specifications",
+    "/data-structures",
+    "/organisations",
     "/metadatakvalitet",
   ];
 
+  const staticPaths = routing.locales.flatMap((locale) => [
+    includeLangInPath(locale),
+    ...sharedSlugPaths.map((path) => `${includeLangInPath(locale)}${path}`),
+    getPathname({ locale, href: "/statistics" }),
+    getPathname({ locale, href: "/search" }),
+  ]);
+
   const now = new Date().toISOString();
+  // `<loc>` must XML-escape; the search URLs carry `&` query strings.
+  const xml = (v: string): string =>
+    v
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;");
+
   const urlEntry = (loc: string, lastmod: string): string => `
     <url>
-        <loc>${loc}</loc>
+        <loc>${xml(loc)}</loc>
         <lastmod>${lastmod}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>1.0</priority>
