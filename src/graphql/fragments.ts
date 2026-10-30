@@ -326,6 +326,10 @@ export const FormBlockFragment = graphql(`
 
 export const NewsBlockItemFragment = graphql(`
   fragment NewsBlockItem on dataportal_Digg_NewsItem_Preview {
+    locale
+    updatedAt
+    id
+    preamble
     heading
     publishedAt
     slug
@@ -353,6 +357,10 @@ export const NewsBlockFragment = graphql(`
 
 export const GoodExampleBlockItemFragment = graphql(`
   fragment GoodExampleBlockItem on dataportal_Digg_GoodExample_Preview {
+    locale
+    updatedAt
+    id
+    preamble
     heading
     publishedAt
     slug

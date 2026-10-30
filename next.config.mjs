@@ -66,7 +66,7 @@ const coreNextConfig = {
   // Next 16 there's no implicit `resolve.fallback: false` shim, so they
   // crash the build when transitively imported from `pages/_error.tsx`.
   serverExternalPackages: ["winston", "@alfalab/winston3-logstash-transport"],
-  productionBrowserSourceMaps: true,
+  productionBrowserSourceMaps: false,
   env: {
     REVALIDATE_INTERVAL: process.env.REVALIDATE_INTERVAL,
   },

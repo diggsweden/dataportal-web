@@ -3,7 +3,10 @@ import type {
   PublicationQueryOptions,
 } from "@/app/[locale]/(content)/(publications)/types";
 import { gqlFetch, logGqlError } from "@/graphql/fetcher";
-import { GoodExampleDataFragment as GoodExampleDataDoc } from "@/graphql/fragments";
+import {
+  GoodExampleBlockItemFragment as GoodExampleBlockItemDoc,
+  GoodExampleDataFragment as GoodExampleDataDoc,
+} from "@/graphql/fragments";
 import { getFragmentData, graphql } from "@/graphql/gql";
 import {
   Dataportal_ContainerState,
@@ -24,6 +27,14 @@ export const GoodExampleDocument = graphql(`
   }
 `);
 
+export const GoodExamplePreviewsDocument = graphql(`
+  query GoodExamplePreviews($filter: dataportal_QueryContainerArgs) {
+    dataportal_Digg_Good_Example_Previews(filter: $filter) {
+      ...GoodExampleBlockItem
+    }
+  }
+`);
+
 export interface GoodExampleResponse extends GoodExampleDataFragment {
   type: "Publication";
   related?: GoodExampleBlockItemFragment[];
@@ -34,7 +45,7 @@ export interface GoodExampleListResponse {
   type: "PublicationList";
   heading: string;
   breadcrumb?: string;
-  listItems: GoodExampleDataFragment[];
+  listItems: GoodExampleBlockItemFragment[];
   seo?: SeoDataFragment;
   basePath?: string;
   preamble?: string;
@@ -49,7 +60,7 @@ export const getGoodExamplesList = async (
     opts || {};
   try {
     const data = await gqlFetch(
-      GoodExampleDocument,
+      GoodExamplePreviewsDocument,
       {
         filter: {
           locale,
@@ -60,8 +71,10 @@ export const getGoodExamplesList = async (
       { revalidate: 120, tags: [STRAPI_TAG, GOOD_EXAMPLE_TAG] },
     );
 
-    const publications = data?.dataportal_Digg_Good_Examples
-      ?.map((publication) => getFragmentData(GoodExampleDataDoc, publication))
+    const publications = data?.dataportal_Digg_Good_Example_Previews
+      ?.map((publication) =>
+        getFragmentData(GoodExampleBlockItemDoc, publication),
+      )
       .filter((publication) => publication && publication.reuse === reuse);
 
     if (!publications) {
@@ -140,20 +153,21 @@ export const getGoodExample = async (
     }
 
     const relatedPublicationResult = await gqlFetch(
-      GoodExampleDocument,
+      GoodExamplePreviewsDocument,
       { filter: { limit: 4, locale } },
       { revalidate: 120, tags: [STRAPI_TAG, GOOD_EXAMPLE_TAG] },
     );
 
     const relatedPreviews: GoodExampleBlockItemFragment[] =
-      relatedPublicationResult.dataportal_Digg_Good_Examples
-        ?.map((pub) => getFragmentData(GoodExampleDataDoc, pub))
+      relatedPublicationResult.dataportal_Digg_Good_Example_Previews
+        ?.map((pub) => getFragmentData(GoodExampleBlockItemDoc, pub))
         .filter(
-          (pub): pub is GoodExampleDataFragment =>
-            pub !== null && pub.id !== publication.id && pub.reuse === reuse,
+          (pub): pub is GoodExampleBlockItemFragment =>
+            pub !== null &&
+            pub.slug !== publication.slug &&
+            pub.reuse === reuse,
         )
-        .slice(0, 3)
-        .map(toGoodExamplePreview) || [];
+        .slice(0, 3) || [];
 
     return {
       type: "Publication",
@@ -164,25 +178,4 @@ export const getGoodExample = async (
     logGqlError(error);
     return null;
   }
-};
-
-export const toGoodExamplePreview = (
-  pub: GoodExampleDataFragment,
-): GoodExampleBlockItemFragment => {
-  if (!pub.heading || !pub.slug || !pub.publishedAt) {
-    throw new Error(`Invalid publication data for preview: ${pub.id}`);
-  }
-
-  return {
-    __typename: "dataportal_Digg_GoodExample_Preview",
-    heading: pub.heading,
-    slug: pub.slug,
-    publishedAt: pub.publishedAt,
-    image:
-      pub.image?.__typename === "dataportal_Digg_Image"
-        ? (pub.image as GoodExampleBlockItemFragment["image"])
-        : null,
-    keywords: pub.keywords,
-    reuse: pub.reuse,
-  };
 };
