@@ -126,15 +126,27 @@ export const CookieBanner: FC<{
                 : t("routes.cookies.cookie-setting")}
             </Button>
             <Button
-              data-test-id="cookie-reject-button"
+              data-test-id="cookie-necessary-button"
               variant="secondary"
               type="button"
               onClick={() => {
                 persist(withAllAccepted(cookieSettings, false));
               }}
             >
-              {t("routes.cookies.cookie-reject")}
+              {t("routes.cookies.cookie-necessary-only")}
             </Button>
+            {!settingsOpen && (
+              <Button
+                data-test-id="cookie-settings-toggle"
+                variant="plain"
+                type="button"
+                onClick={() => {
+                  setSettingsOpen(true);
+                }}
+              >
+                {t("routes.cookies.settings-heading")}
+              </Button>
+            )}
           </div>
         </form>
       </Container>
